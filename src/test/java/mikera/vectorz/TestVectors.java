@@ -95,6 +95,8 @@ public class TestVectors {
 		v=v.clone();
 		
 		int vlen=v.length();
+		if (vlen==0) return;
+		
 		int start=Math.min(vlen/2,vlen-1);
 		
 		AVector s1 = v.subVector(start, vlen-start);
@@ -125,9 +127,16 @@ public class TestVectors {
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector2(1.0,2.0));
 		
+		for (int j=0; j<10; j++) {
+			double[] data=new double[j];
+			for (int i=0; i<j; i++) data[i]=i;
+			doGenericTests(Vectorz.create(data));
+			doGenericTests(new Vector(data));
+		}
+		
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
-		doGenericTests(new Vector(data));
+
 		doGenericTests(new ArraySubVector(data));
 		
 		doGenericTests(new Vector(data).subVector(25, 50));
@@ -140,7 +149,7 @@ public class TestVectors {
 		doGenericTests(joined);
 		
 		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
-		doGenericTests(joined);
+		doGenericTests(v4);
 		
 	}
 }
