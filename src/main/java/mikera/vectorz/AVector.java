@@ -38,4 +38,18 @@ public abstract class AVector {
 			set(i,value);
 		}
 	}
+	
+	public double magnitudeSquared() {
+		int len=length();
+		double total=0.0;
+		for (int i=0; i<len; i++) {
+			double x=get(i);
+			total+=x*x;
+		}
+		return total;
+	}
+	
+	public double magnitude() {
+		return Math.sqrt(magnitudeSquared());
+	}
 }
