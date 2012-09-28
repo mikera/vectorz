@@ -73,6 +73,13 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		}
 	}
 	
+	public void multiply(double factor) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			set(i,get(i)*factor);
+		}	
+	}
+	
 	public double magnitudeSquared() {
 		int len=length();
 		double total=0.0;
@@ -98,5 +105,29 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 	
 	public AVector clone() {
 		return new Vector(this);
+	}
+	
+	public void add(AVector v) {
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new IllegalArgumentException("Source vector has different size: " + vlength);
+		}
+		for (int i = 0; i < length; i++) {
+			double x=get(i)+v.get(i);
+			set(i,x);
+		}
+	}
+	
+	public void addMultiple(AVector v, double factor) {
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new IllegalArgumentException("Source vector has different size: " + vlength);
+		}
+		for (int i = 0; i < length; i++) {
+			double x=get(i)+v.get(i)*factor;
+			set(i,x);
+		}
 	}
 }

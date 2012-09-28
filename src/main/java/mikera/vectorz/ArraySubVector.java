@@ -79,22 +79,27 @@ public final class ArraySubVector extends ArrayVector {
 		data[offset + i] = value;
 	}
 
-
-	public void add(ArraySubVector v) {
-		if (v.length != length) {
-			throw new Error("Source vector has different size: " + v.length);
+	public void add(ArrayVector v) {
+		int vlength=v.length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
 		}
+		double[] vdata=v.getArray();
+		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
-			data[offset + i] += v.data[v.offset + i];
+			data[offset + i] += vdata[voffset + i];
 		}
 	}
 	
-	public void addMultiple(ArraySubVector v, double factor) {
-		if (v.length != length) {
-			throw new Error("Source vector has different size: " + v.length);
+	public void addMultiple(ArrayVector v, double factor) {
+		int vlength=v.length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
 		}
+		double[] vdata=v.getArray();
+		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
-			data[offset + i] += v.data[v.offset + i]*factor;
+			data[offset + i] += vdata[voffset + i]*factor;
 		}
 	}
 	 
@@ -104,7 +109,14 @@ public final class ArraySubVector extends ArrayVector {
 			data[offset + i] += value;
 		}
 	}
-
+	
+	@Override
+	public void multiply(double factor) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			data[i+offset]*=factor;
+		}	
+	}
 
 	/**
 	 * Vector hashcode, designed to match hashcode of Java double array
