@@ -1,6 +1,7 @@
 package mikera.matrixx;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 
 public abstract class AMatrix {
 	// ==============================================
@@ -42,5 +43,60 @@ public abstract class AMatrix {
 			temp[row]=total;
 		}
 		v.setValues(temp);
+	}
+	
+	private class MatrixRow extends AVector {
+		private final int row;
+		private MatrixRow(int row) {
+			this.row=row;
+		}
+		@Override
+		public int length() {
+			return columnCount();
+		}
+		@Override
+		public double get(int i) {
+			return AMatrix.this.get(row,i);
+		}
+		@Override
+		public void set(int i, double value) {
+			AMatrix.this.set(row,i,value);
+		}
+	}
+	
+	private class MatrixColumn extends AVector {
+		private final int column;
+		private MatrixColumn(int column) {
+			this.column=column;
+		}
+		@Override
+		public int length() {
+			return columnCount();
+		}
+		@Override
+		public double get(int i) {
+			return AMatrix.this.get(i, column);
+		}
+		@Override
+		public void set(int i, double value) {
+			AMatrix.this.set(i, column,value);
+		}
+	}
+	
+	public AVector getRow(int row) {
+		return new MatrixRow(row);
+	}
+	
+	public AVector getColumn(int column) {
+		return new MatrixColumn(column);
+	}
+	
+	public AVector cloneRow(int row) {
+		int cc=columnCount();
+		AVector v=Vectorz.createLength(cc);
+		for (int i=0; i<cc; i++) {
+			v.set(i,get(row,i));
+		}
+		return v;
 	}
 }

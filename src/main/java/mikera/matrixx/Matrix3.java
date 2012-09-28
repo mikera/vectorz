@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
 public class Matrix3 extends AMatrix {
@@ -29,6 +30,11 @@ public class Matrix3 extends AMatrix {
 	@Override
 	public void set(int row, int column, double value) {
 		rows[row].set(column,value);
+	}
+	
+	@Override
+	public Vector3 getRow(int row) {
+		return  rows[row];
 	}
 
 }
