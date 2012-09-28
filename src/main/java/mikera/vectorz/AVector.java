@@ -1,6 +1,6 @@
 package mikera.vectorz;
 
-public abstract class AbstractVector {
+public abstract class AVector {
 
 	// ================================================
 	// Abstract interface
