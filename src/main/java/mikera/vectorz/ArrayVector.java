@@ -35,4 +35,34 @@ public abstract class ArrayVector extends AVector {
 	public void copyTo(double[] data, int offset) {
 		System.arraycopy(getArray(), getArrayOffset(), data, offset, length());
 	}
+	
+	public void add(ArrayVector v) {
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
+		}
+		double[] vdata=v.getArray();
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		int voffset=v.getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			data[offset+i] += vdata[voffset + i];
+		}
+	}
+	
+	public void addMultiple(ArrayVector v, double factor) {
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
+		}
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		double[] vdata=v.getArray();
+		int voffset=v.getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			data[offset+i] += vdata[voffset + i]*factor;
+		}
+	}
 }
