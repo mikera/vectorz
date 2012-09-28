@@ -9,7 +9,7 @@ import mikera.vectorz.ArraySubVector;
 import org.junit.Test;
 
 
-public class TestVector {
+public class TestVectors {
 	@Test public void testSubVectors() {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
