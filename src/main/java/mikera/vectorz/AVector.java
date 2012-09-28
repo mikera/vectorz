@@ -83,6 +83,15 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		return total;
 	}
 	
+	public double dotProduct(AVector v) {
+		int len=length();
+		double total=0.0;
+		for (int i=0; i<len; i++) {
+			total+=get(i)*v.get(i);
+		}
+		return total;
+	}
+	
 	public double magnitude() {
 		return Math.sqrt(magnitudeSquared());
 	}
