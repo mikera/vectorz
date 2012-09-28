@@ -67,14 +67,14 @@ public final class ArraySubVector extends ArrayVector {
 
 	@Override
 	public double get(int i) {
-		if ((i < 0) || (i > length))
+		if ((i < 0) || (i >= length))
 			throw new IndexOutOfBoundsException("Index: " + i);
 		return data[offset + i];
 	}
 
 	@Override
 	public void set(int i, double value) {
-		if ((i < 0) || (i > length))
+		if ((i < 0) || (i >= length))
 			throw new IndexOutOfBoundsException("Index: " + i);
 		data[offset + i] = value;
 	}
