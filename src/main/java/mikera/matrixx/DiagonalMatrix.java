@@ -2,7 +2,7 @@ package mikera.matrixx;
 
 import mikera.vectorz.AVector;
 
-public class DiagonalMatrix extends AMatrix {
+public final class DiagonalMatrix extends AMatrix {
 	final int dimensions;
 	final double[] data;
 	

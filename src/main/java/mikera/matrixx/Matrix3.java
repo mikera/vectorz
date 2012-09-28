@@ -3,7 +3,7 @@ package mikera.matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
-public class Matrix3 extends AMatrix {
+public final class Matrix3 extends AMatrix {
 	private Vector3[] rows=new Vector3[3];
 	
 	public Matrix3() {

@@ -45,6 +45,7 @@ public abstract class AMatrix {
 		v.setValues(temp);
 	}
 	
+	@SuppressWarnings("serial")
 	private class MatrixRow extends AVector {
 		private final int row;
 		private MatrixRow(int row) {
@@ -64,6 +65,7 @@ public abstract class AMatrix {
 		}
 	}
 	
+	@SuppressWarnings("serial")
 	private class MatrixColumn extends AVector {
 		private final int column;
 		private MatrixColumn(int column) {
