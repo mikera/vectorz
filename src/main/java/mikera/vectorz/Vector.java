@@ -9,7 +9,7 @@ public final class Vector extends ArrayVector {
 		System.arraycopy(values, 0, data, 0, length);
 	}
 
-	public Vector(int length) {
+	Vector(int length) {
 		data = new double[length];
 	}
 
@@ -53,8 +53,68 @@ public final class Vector extends ArrayVector {
 	public void fill(double value) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			data[i] += value;
+			data[i] = value;
 		}
+	}
+	
+	public void add(ArrayVector v) {
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
+		}
+		double[] vdata=v.getArray();
+		int voffset=v.getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			data[i] += vdata[voffset + i];
+		}
+	}
+	
+	public void addMultiple(ArrayVector v, double factor) {
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
+		}
+		double[] vdata=v.getArray();
+		int voffset=v.getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			data[i] += vdata[voffset + i]*factor;
+		}
+	}
+	
+	@Override
+	public void add(AVector v) {
+		if (v instanceof ArrayVector) {add(((ArrayVector)v)); return;}
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
+		}
+		for (int i = 0; i < length; i++) {
+			data[i] += v.get(i);
+		}
+	}
+	
+	@Override
+	public void addMultiple(AVector v, double factor) {
+		if (v instanceof ArrayVector) {addMultiple(((ArrayVector)v),factor); return;}
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
+		}
+		for (int i = 0; i < length; i++) {
+			data[i] += v.get(i)*factor;
+		}
+	}
+	
+	@Override
+	public void multiply(double factor) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			data[i]*=factor;
+		}	
 	}
 	
 	@Override
