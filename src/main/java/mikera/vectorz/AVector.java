@@ -58,6 +58,22 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		return true;
 	}
 	
+	public boolean approxEquals(AVector v) {
+		return approxEquals(v,Vectorz.DEFAULT_TOLERANCE);
+	}
+	
+	public boolean approxEquals(AVector v,double tolerance) {
+		if (this == v) return true;
+		int len=length();
+		if (len != v.length())
+			return false;
+		for (int i = 0; i < len; i++) {
+			double diff=get(i)-v.get(i);
+			if ((diff>tolerance)||(diff<-tolerance)) return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public int hashCode() {
 		int hashCode = 1;
