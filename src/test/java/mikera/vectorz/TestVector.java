@@ -28,7 +28,7 @@ public class TestVector {
 		assertEquals(-99,v.get(20),0.0);
 	}
 	
-	@Test public void testClone() {
+	@Test public void testSubVectorCopy() {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
 		SubVector v=new SubVector(data);	
@@ -42,11 +42,12 @@ public class TestVector {
 		assertTrue(!v.equals(v2));
 	}
 	
-	public void testChanges(AVector v) {
+	public void testClone(AVector v) {
 		AVector cv=v.clone();
 		int len=cv.length();
 		assertEquals(v.length(), len);
 		
+		assertEquals(v,cv);
 		
 		for (int i=0; i<len; i++) {
 			double x=cv.get(i);
@@ -60,14 +61,25 @@ public class TestVector {
 	}
 	
 	private void doGenericTests(AVector v) {
-		testChanges(v);
+		testClone(v);
 
 	}
 	
 	
 	@Test public void genericTests() {
 		doGenericTests(new Vector3(1.0,2.0,3.0));
+		doGenericTests(new Vector2(1.0,2.0));
 		
+		double[] data=new double[100];
+		for (int i=0; i<100; i++) data[i]=i;
+		doGenericTests(new Vector(data));
+		doGenericTests(new SubVector(data));
+		
+		doGenericTests(new Vector(data).subVector(25, 50));
+		doGenericTests(new SubVector(data).subVector(25, 50));
+		
+		//doGenericTests(new Vector3(1.0,2.0,3.0).subVector(25, 50));
+
 	}
 
 

@@ -94,27 +94,6 @@ public final class SubVector extends ArrayVector {
 		data[offset + i] = value;
 	}
 
-	/**
-	 * Test for equality on vectors. Returns true iff all values in the vector
-	 * are identical
-	 */
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof SubVector))
-			return false;
-		SubVector v = (SubVector) o;
-		if (length != v.length)
-			return false;
-		if ((data == v.data) && (offset == v.offset))
-			return true;
-		for (int i = 0; i < length; i++) {
-			if (v.data[v.offset + i] != data[offset + i])
-				return false;
-		}
-		return true;
-	}
 
 	public void add(SubVector v) {
 		if (v.length != length) {
