@@ -124,5 +124,9 @@ public class TestVector {
 
 		AVector joined = Vectorz.concat(v3, Vectorz.create(data));
 		doGenericTests(joined);
+		
+		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
+		doGenericTests(joined);
+		
 	}
 }

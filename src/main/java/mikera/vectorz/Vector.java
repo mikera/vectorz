@@ -3,8 +3,7 @@ package mikera.vectorz;
 public final class Vector extends ArrayVector {
 	private final double[] data;
 
-
-	public Vector(double[] values) {
+	public Vector(double... values) {
 		int length=values.length;
 		data = new double[length];
 		System.arraycopy(values, 0, data, 0, length);
