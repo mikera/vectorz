@@ -37,6 +37,4 @@ public class WrappedSubVector extends AVector {
 		if ((offset+length)>this.length) throw new IndexOutOfBoundsException("End Index: "+(offset+length));
 		return new WrappedSubVector(wrapped, this.offset+offset,length);
 	}
-
-
 }

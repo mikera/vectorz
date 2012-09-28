@@ -23,4 +23,9 @@ public abstract class ArrayVector extends AVector {
 					+ offset);
 		return new ArraySubVector(this, offset, length);
 	}
+	
+	@Override
+	public void copyTo(double[] data, int offset) {
+		System.arraycopy(getArray(), getArrayOffset(), data, offset, length());
+	}
 }
