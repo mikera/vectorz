@@ -159,6 +159,14 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		}
 	}
 	
+	public void setValues(double... values) {
+		int len=length();
+		if (values.length!=len) throw new IllegalArgumentException("Source array of wrong size: "+values.length);
+		for (int i=0; i<len; i++) {
+			set(i,values[i]);
+		}		
+	}
+	
 	/**
 	 * Clones the vector, creating a new copy of all data
 	 */
