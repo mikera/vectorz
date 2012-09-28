@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import mikera.vectorz.AVector;
+
 public class DiagonalMatrix extends AMatrix {
 	final int dimensions;
 	final double[] data;
@@ -30,6 +32,14 @@ public class DiagonalMatrix extends AMatrix {
 	public void set(int row, int column, double value) {
 		if (row!=column) throw new UnsupportedOperationException("Diagonal matrix cannot be set at position ("+row+","+column+")!");
 		data[row]=value;
+	}
+
+	@Override
+	public void transform(AVector v) {
+		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong length vector: "+v.length());
+		for (int i=0; i<dimensions; i++) {
+			v.set(i,v.get(i)*data[i]);
+		}
 	}
 
 }
