@@ -6,6 +6,11 @@ public class DiagonalMatrix extends AMatrix {
 	final int dimensions;
 	final double[] data;
 	
+	public DiagonalMatrix(int dimensions) {
+		this.dimensions=dimensions;
+		data=new double[dimensions];
+	}
+	
 	public DiagonalMatrix(double... values) {
 		dimensions=values.length;
 		data=new double[dimensions];
