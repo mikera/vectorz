@@ -22,6 +22,15 @@ public class TestVectorMath {
 		assertEquals(m*2.0, v.magnitude(),0.0001);
 	}
 	
+	public void doFillTests(AVector v) {
+		v=v.clone();
+		v.fill(13.0);
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			assertEquals(13.0,v.get(i),0.0);
+		}	
+	}
+	
 	public void doAdditionTests(AVector v) {
 		v=v.clone();
 		AVector ones=v.clone();
@@ -38,6 +47,7 @@ public class TestVectorMath {
 	}
 	
 	public void doGenericMaths(AVector v) {
+		doFillTests(v);
 		doMultiplyTests(v);
 		doAdditionTests(v);
 	}
@@ -46,6 +56,7 @@ public class TestVectorMath {
 		doGenericMaths(new Vector3(1.0,2.0,3.0));
 		doGenericMaths(Vectorz.create(1,2,3,4,5,6,7));
 		doGenericMaths(Vectorz.concat(new Vector2(1.0,2.0),Vectorz.create(1,2,3,4,5,6,7)));
+		doGenericMaths(Vectorz.create(1,2,3,4,5,6,7).subVector(2,3));
 
 	}
 }
