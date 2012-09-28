@@ -1,0 +1,35 @@
+package mikera.matrixx;
+
+public class DiagonalMatrix extends AMatrix {
+	final int dimensions;
+	final double[] data;
+	
+	public DiagonalMatrix(double... values) {
+		dimensions=values.length;
+		data=new double[dimensions];
+		System.arraycopy(values, 0, data, 0, dimensions);
+	}
+	
+	@Override
+	public int rowCount() {
+		return dimensions;
+	}
+
+	@Override
+	public int columnCount() {
+		return dimensions;
+	}
+
+	@Override
+	public double get(int row, int column) {
+		if (row!=column) return 0.0;
+		return data[row];
+	}
+
+	@Override
+	public void set(int row, int column, double value) {
+		if (row!=column) throw new UnsupportedOperationException("Diagonal matrix cannot be set at position ("+row+","+column+")!");
+		data[row]=value;
+	}
+
+}
