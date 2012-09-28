@@ -42,6 +42,11 @@ public class TestVector {
 		assertTrue(!v.equals(v2));
 	}
 	
+	@Test public void testString() {
+		assertEquals("[0.0,0.0]",new Vector2().toString());
+		assertEquals("[1.0,2.0]",Vectorz.create(1,2).toString());
+	}
+	
 	public void testClone(AVector v) {
 		AVector cv=v.clone();
 		int len=cv.length();
