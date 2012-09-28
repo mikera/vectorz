@@ -1,6 +1,6 @@
 package mikera.vectorz;
 
-public class Vector3 extends AVector {
+public class Vector3 extends PrimitiveVector {
 	public double x;
 	public double y;
 	public double z;
