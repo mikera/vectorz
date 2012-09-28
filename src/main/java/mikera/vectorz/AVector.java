@@ -11,7 +11,6 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 	public abstract void set(int i, double value);
 	
 	
-	
 	// ================================================
 	// Standard implementations
 	
@@ -62,5 +61,9 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 	
 	public double magnitude() {
 		return Math.sqrt(magnitudeSquared());
+	}
+	
+	public AVector clone() {
+		return new Vector(this);
 	}
 }
