@@ -5,10 +5,20 @@ public final class Vector3 extends PrimitiveVector {
 	public double y;
 	public double z;
 	
+	public Vector3() {
+		super();
+	}
+	
 	public Vector3(double x, double y, double z) {
 		this.x=x;
 		this.y=y;
 		this.z=z;
+	}
+	
+	public Vector3(double... values) {
+		this.x=values[0];
+		this.y=values[1];
+		this.y=values[2];
 	}
 	
 	@Override
