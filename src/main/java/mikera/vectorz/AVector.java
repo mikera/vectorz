@@ -14,6 +14,10 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 	// ================================================
 	// Standard implementations
 	
+	public AVector subVector(int offset, int length) {
+		return new WrappedSubVector(this,offset,length);
+	}
+	
 	public int compareTo(AVector a) {
 		int len=length();
 		if (len!=a.length()) throw new IllegalArgumentException("Vectors must be same length for comparison");

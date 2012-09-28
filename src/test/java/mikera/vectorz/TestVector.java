@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
-import mikera.vectorz.SubVector;
+import mikera.vectorz.ArraySubVector;
 
 import org.junit.Test;
 
@@ -14,14 +14,14 @@ public class TestVector {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
 		
-		SubVector v=new SubVector(data);
+		ArraySubVector v=new ArraySubVector(data);
 		assertEquals(10,v.get(10),0.0);
 		
-		SubVector v2=v.subVector(5, 90);
+		ArraySubVector v2=v.subVector(5, 90);
 		assertEquals(90,v2.length());
 		assertEquals(15,v2.get(10),0.0);
 		
-		SubVector v3=v2.subVector(5,80);
+		ArraySubVector v3=v2.subVector(5,80);
 		assertEquals(20,v3.get(10),0.0);
 		
 		v3.set(10, -99);
@@ -31,11 +31,11 @@ public class TestVector {
 	@Test public void testSubVectorCopy() {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
-		SubVector v=new SubVector(data);	
+		ArraySubVector v=new ArraySubVector(data);	
 		
 		assertEquals(Arrays.hashCode(data),v.hashCode());
 		
-		SubVector v2=new SubVector(v);
+		ArraySubVector v2=new ArraySubVector(v);
 		assertEquals(v,v2);
 		
 		v.set(10,Math.PI);
@@ -73,10 +73,10 @@ public class TestVector {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
 		doGenericTests(new Vector(data));
-		doGenericTests(new SubVector(data));
+		doGenericTests(new ArraySubVector(data));
 		
 		doGenericTests(new Vector(data).subVector(25, 50));
-		doGenericTests(new SubVector(data).subVector(25, 50));
+		doGenericTests(new ArraySubVector(data).subVector(25, 50));
 		
 		//doGenericTests(new Vector3(1.0,2.0,3.0).subVector(25, 50));
 

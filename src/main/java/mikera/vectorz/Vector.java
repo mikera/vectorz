@@ -35,7 +35,7 @@ public final class Vector extends ArrayVector {
 		data[i]=value;
 	}
 	
-	public SubVector subVector(int offset, int length) {
+	public ArraySubVector subVector(int offset, int length) {
 		int len=length();
 		if ((offset + length) > len)
 			throw new IndexOutOfBoundsException("Upper bound " + len
@@ -43,7 +43,7 @@ public final class Vector extends ArrayVector {
 		if (offset < 0)
 			throw new IndexOutOfBoundsException("Lower bound breached:"
 					+ offset);
-		return new SubVector(this, offset, length);
+		return new ArraySubVector(this, offset, length);
 	}
 
 	@Override
