@@ -47,5 +47,17 @@ public final class JoinedVector extends AVector {
 			right.set(i-split,value);
 		}
 	}
+	
+	@Override 
+	public void fill(double value) {
+		left.fill(value);
+		right.fill(value);
+	}
+	
+	@Override 
+	public void multiply(double value) {
+		left.multiply(value);
+		right.multiply(value);
+	}
 
 }
