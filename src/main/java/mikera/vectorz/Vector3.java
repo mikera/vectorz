@@ -37,6 +37,19 @@ public final class Vector3 extends PrimitiveVector {
 		z+=dz*factor;
 	}
 	
+	public double dotProduct(Vector3 a) {
+		return x*a.x+y*a.y+z*a.z;
+	}
+	
+	public void crossProduct(Vector3 a) {
+		double tx=y*a.z-z*a.y;
+		double ty=z*a.x-x*a.z;
+		double tz=x*a.y-y*a.x;			
+		x=tx;
+		y=ty;
+		z=tz;
+	}
+	
 	@Override
 	public int length() {
 		return 3;
