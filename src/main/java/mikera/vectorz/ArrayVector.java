@@ -1,5 +1,12 @@
 package mikera.vectorz;
 
+/**
+ * Base class for vectors backed by a double[] array.
+ * 
+ * The double array can be directly accessed for performance purposes
+ * 
+ * @author Mike
+ */
 public abstract class ArrayVector extends AVector {
 
 	public abstract double[] getArray();

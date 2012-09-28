@@ -1,5 +1,9 @@
 package mikera.vectorz;
 
+/**
+ * Specialised 3D vector
+ * @author Mike
+ */
 public final class Vector3 extends PrimitiveVector {
 	public double x;
 	public double y;
