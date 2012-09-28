@@ -7,4 +7,9 @@ public class Vectorz {
 	public static AVector create(double[] data) {
 		return new Vector(data);
 	}
+	
+	
+	public static AVector concat(AVector first, AVector second) {
+		return new JoinedVector(first,second);
+	}
 }

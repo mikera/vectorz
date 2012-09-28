@@ -119,9 +119,10 @@ public class TestVector {
 		doGenericTests(new Vector(data).subVector(25, 50));
 		doGenericTests(new ArraySubVector(data).subVector(25, 50));
 		
-		doGenericTests(new Vector3(1.0,2.0,3.0).subVector(1, 2));
+		AVector v3 = new Vector3(1.0,2.0,3.0);
+		doGenericTests(v3.subVector(1, 2));
 
+		AVector joined = Vectorz.concat(v3, Vectorz.create(data));
+		doGenericTests(joined);
 	}
-
-
 }
