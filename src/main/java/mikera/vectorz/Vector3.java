@@ -13,6 +13,12 @@ public final class Vector3 extends PrimitiveVector {
 		super();
 	}
 	
+	public Vector3(Vector3 source) {
+		this.x=source.x;
+		this.y=source.y;
+		this.z=source.z;
+	}
+	
 	public Vector3(double x, double y, double z) {
 		this.x=x;
 		this.y=y;
@@ -29,6 +35,12 @@ public final class Vector3 extends PrimitiveVector {
 		x+=dx;
 		y+=dy;
 		z+=dz;
+	}
+	
+	public void set(Vector3 a) {
+		this.x=a.x;
+		this.y=a.y;
+		this.z=a.z;
 	}
 	
 	public void addMultiple(double dx, double dy, double dz, double factor) {

@@ -133,6 +133,17 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 	}
 	
 	/**
+	 * Sets the vector to equal the value of another vector
+	 */
+	public void set(AVector a) {
+		int len=length();
+		if (a.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+a.length());
+		for (int i=0; i<len; i++) {
+			set(i,a.get(i));
+		}
+	}
+	
+	/**
 	 * Clones the vector, creating a new copy of all data
 	 */
 	public AVector clone() {
