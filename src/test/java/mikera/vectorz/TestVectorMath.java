@@ -22,6 +22,12 @@ public class TestVectorMath {
 		assertEquals(m*2.0, v.magnitude(),0.0001);
 	}
 	
+	public void doNormaliseTests(AVector v) {
+		v=v.clone();
+		v.normalise();
+		assertEquals(1.0,v.magnitude(),0.0001);
+	}
+	
 	public void doFillTests(AVector v) {
 		v=v.clone();
 		v.fill(13.0);
@@ -50,6 +56,7 @@ public class TestVectorMath {
 		doFillTests(v);
 		doMultiplyTests(v);
 		doAdditionTests(v);
+		doNormaliseTests(v);
 	}
 	
 	@Test public void testGenericMaths() {

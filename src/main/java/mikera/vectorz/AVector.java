@@ -127,6 +127,11 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		return Math.sqrt(magnitudeSquared());
 	}
 	
+	public void normalise() {
+		double d=magnitude();
+		if (d>0) multiply(1.0/d);
+	}
+	
 	/**
 	 * Clones the vector, creating a new copy of all data
 	 */
