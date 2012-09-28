@@ -8,7 +8,7 @@ import mikera.vectorz.Tools;
  * @author Mike
  * 
  */
-public final class Vector {
+public final class Vector extends AbstractVector {
 	private final double[] data;
 
 	private final int offset;
@@ -57,6 +57,7 @@ public final class Vector {
 		this.data = source.data;
 	}
 
+	@Override
 	public int length() {
 		return length;
 	}
@@ -78,12 +79,14 @@ public final class Vector {
 		return new Vector(this, offset, length);
 	}
 
+	@Override
 	public double get(int i) {
 		if ((i < 0) || (i > length))
 			throw new IndexOutOfBoundsException("Index = " + i);
 		return data[offset + i];
 	}
 
+	@Override
 	public void set(int i, double value) {
 		if ((i < 0) || (i > length))
 			throw new IndexOutOfBoundsException("Index = " + i);
