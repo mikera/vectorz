@@ -14,6 +14,11 @@ public final class Vector extends ArrayVector {
 		data = new double[length];
 	}
 
+	/**
+	 * Copy constructor from an arbitrary vector
+	 * 
+	 * @param source
+	 */
 	public Vector(AVector source) {
 		int length = source.length();
 		data = new double[length];
@@ -33,17 +38,6 @@ public final class Vector extends ArrayVector {
 	@Override
 	public void set(int i, double value) {
 		data[i]=value;
-	}
-	
-	public ArraySubVector subVector(int offset, int length) {
-		int len=length();
-		if ((offset + length) > len)
-			throw new IndexOutOfBoundsException("Upper bound " + len
-					+ " breached:" + (offset + length));
-		if (offset < 0)
-			throw new IndexOutOfBoundsException("Lower bound breached:"
-					+ offset);
-		return new ArraySubVector(this, offset, length);
 	}
 
 	@Override
