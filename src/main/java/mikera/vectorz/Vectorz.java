@@ -23,9 +23,19 @@ public class Vectorz {
 	}
 	
 	public static AVector zeroVector(int length) {
-		Vector v=new Vector(length);
-		return v;
+		return createLength(length);
 	}
+
+	public static AVector createLength(int length) {
+		switch (length) {
+			case 0: return ZeroLengthVector.INSTANCE;
+			case 1: return new Vector1();
+			case 2: return new Vector2();
+			case 3: return new Vector3();
+			case 4: return new Vector4();
+			default: return new Vector(length);
+		}
+	}	
 	
 	// ===========================
 	// Static maths functions
