@@ -1,7 +1,7 @@
 package mikera.vectorz;
 
 /**
- * Specialised 3D vector
+ * Specialised 4D vector
  * @author Mike
  */
 public final class Vector4 extends PrimitiveVector {
@@ -31,6 +31,7 @@ public final class Vector4 extends PrimitiveVector {
 	}
 	
 	public Vector4(double... values) {
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
 		this.x=values[0];
 		this.y=values[1];
 		this.z=values[2];

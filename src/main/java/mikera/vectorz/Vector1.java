@@ -1,7 +1,7 @@
 package mikera.vectorz;
 
 /**
- * Specialised 2D vector
+ * Specialised 1D vector
  * @author Mike
  */
 public final class Vector1 extends PrimitiveVector {
@@ -13,11 +13,12 @@ public final class Vector1 extends PrimitiveVector {
 		super();
 	}
 	
-	public Vector1(double x, double y) {
+	public Vector1(double x) {
 		this.x=x;
 	}
 	
 	public Vector1(double... values) {
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
 		this.x=values[0];
 	}
 	

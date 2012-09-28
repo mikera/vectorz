@@ -20,6 +20,7 @@ public final class Vector2 extends PrimitiveVector {
 	}
 	
 	public Vector2(double... values) {
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
 		this.x=values[0];
 		this.y=values[1];
 	}
