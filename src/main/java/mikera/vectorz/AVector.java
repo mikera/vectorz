@@ -25,6 +25,26 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		return 0;
 	}
 	
+	/**
+	 * Test for equality on vectors. Returns true iff all values in the vector
+	 * are identical
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof AVector)) return false;
+		
+		AVector v = (AVector) o;
+		int len=length();
+		if (len != v.length())
+			return false;
+		for (int i = 0; i < len; i++) {
+			if (get(i) != v.get(i))
+				return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public int hashCode() {
 		int hashCode = 1;
