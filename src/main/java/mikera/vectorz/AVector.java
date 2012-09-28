@@ -1,5 +1,14 @@
 package mikera.vectorz;
 
+/**
+ * Main abstract base class for all types of vector
+ * 
+ * Contains default implementations for most vector operations which can be
+ * overriden to achieve better performance in derived classes.
+ * 
+ * @author Mike
+ *
+ */
 public abstract class AVector implements Cloneable, Comparable<AVector> {
 
 	// ================================================
@@ -59,6 +68,9 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		return hashCode;
 	}
 
+	/**
+	 * Copies a the contents of a vector to a double array at the specified offset
+	 */
 	public void copyTo(double[] data, int offset) {
 		int len = length();
 		for (int i=0; i<len; i++) {
@@ -66,6 +78,10 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		}
 	}
 	
+	/**
+	 * Fills a vector with a given value
+	 * @param value
+	 */
 	public void fill(double value) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
@@ -73,6 +89,10 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		}
 	}
 	
+	/**
+	 * Multiplies the vector by a constant factor
+	 * @param factor Factor by which to multiply each component of the vector
+	 */
 	public void multiply(double factor) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
@@ -99,14 +119,25 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		return total;
 	}
 	
+	/**
+	 * Returns the magnitude (Euclidean length) of the vector
+	 * @return
+	 */
 	public double magnitude() {
 		return Math.sqrt(magnitudeSquared());
 	}
 	
+	/**
+	 * Clones the vector, creating a new copy of all data
+	 */
 	public AVector clone() {
 		return new Vector(this);
 	}
 	
+	/**
+	 * Adds another vector to this one
+	 * @param v
+	 */
 	public void add(AVector v) {
 		int vlength=v.length();
 		int length=length();
@@ -119,6 +150,10 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 		}
 	}
 	
+	/**
+	 * Adds a scaled multiple of another vector to this one
+	 * @param v
+	 */
 	public void addMultiple(AVector v, double factor) {
 		int vlength=v.length();
 		int length=length();
@@ -129,6 +164,22 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 			double x=get(i)+v.get(i)*factor;
 			set(i,x);
 		}
+	}
+	
+	/**
+	 * Subtracts a vector from this vector
+	 * @param v
+	 */
+	public void subtract(AVector v) {
+		addMultiple(v,-1.0);
+	}
+	
+	/**
+	 * Subtracts a scaled multiple of another vector from this vector
+	 * @param v
+	 */
+	public void subtractMultiple(AVector v, double factor) {
+		addMultiple(v,-factor);
 	}
 	
 	@Override

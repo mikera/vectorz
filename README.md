@@ -1,6 +1,6 @@
 # vectorz
 
-Fast double vector maths library for Java and Clojure
+Fast double-precision vector maths library for Java
 
 ### Key features
 
