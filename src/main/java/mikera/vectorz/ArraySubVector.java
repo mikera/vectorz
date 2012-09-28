@@ -127,4 +127,10 @@ public final class ArraySubVector extends ArrayVector {
 	public int getArrayOffset() {
 		return offset;
 	}
+	
+	@Override
+	public Vector clone() {
+		// we clone using Vector as we want a copy of all the data
+		return new Vector(this);
+	}
 }

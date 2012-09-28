@@ -57,5 +57,10 @@ public final class Vector extends ArrayVector {
 			data[i] += value;
 		}
 	}
+	
+	@Override
+	public Vector clone() {
+		return new Vector(this);
+	}
 
 }
