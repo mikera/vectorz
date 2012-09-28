@@ -60,6 +60,30 @@ public class TestVector {
 		}
 	}
 	
+	public void testSubVectorMutability(AVector v) {
+		// defensive copy
+		v=v.clone();
+		
+		int vlen=v.length();
+		int start=Math.min(vlen/2,vlen-1);
+		
+		AVector s1 = v.subVector(start, vlen-start);
+		AVector s2 = v.subVector(start, vlen-start);
+		
+		assertNotSame(s1,s2);
+		
+		int len=s1.length();
+		for (int i=0; i<len; i++) {
+			double x=s2.get(i);
+			// clone should have equal values
+			assertEquals(s1.get(i),x,0.0000001);
+			s1.set(i, x+1);
+			
+			// change should be reflected in both subvectors
+			assertEquals(s1.get(i),s2.get(i),0.0000001);
+		}
+	}
+	
 	private void doGenericTests(AVector v) {
 		testClone(v);
 

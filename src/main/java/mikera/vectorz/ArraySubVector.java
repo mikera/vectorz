@@ -63,34 +63,19 @@ public final class ArraySubVector extends ArrayVector {
 		return length;
 	}
 
-	/**
-	 * Returns a vector referencing a sub-vector of the current vector
-	 * 
-	 * @param offset
-	 * @param length
-	 * @return
-	 */
-	public ArraySubVector subVector(int offset, int length) {
-		if ((offset + length) > this.length)
-			throw new IndexOutOfBoundsException("Upper bound " + this.length
-					+ " breached:" + (offset + length));
-		if (offset < 0)
-			throw new IndexOutOfBoundsException("Lower bound breached:"
-					+ offset);
-		return new ArraySubVector(this, offset, length);
-	}
+	
 
 	@Override
 	public double get(int i) {
 		if ((i < 0) || (i > length))
-			throw new IndexOutOfBoundsException("Index = " + i);
+			throw new IndexOutOfBoundsException("Index: " + i);
 		return data[offset + i];
 	}
 
 	@Override
 	public void set(int i, double value) {
 		if ((i < 0) || (i > length))
-			throw new IndexOutOfBoundsException("Index = " + i);
+			throw new IndexOutOfBoundsException("Index: " + i);
 		data[offset + i] = value;
 	}
 
