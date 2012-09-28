@@ -19,7 +19,11 @@ public final class Vector2 extends PrimitiveVector {
 	
 	public Vector2(double... values) {
 		this.x=values[0];
-		this.y=values[0];
+		this.y=values[1];
+	}
+	
+	public static Vector2 create(double... values) {
+		return new Vector2(values);
 	}
 	
 	@Override

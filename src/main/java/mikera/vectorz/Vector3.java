@@ -31,6 +31,10 @@ public final class Vector3 extends PrimitiveVector {
 		this.y=values[2];
 	}
 	
+	public static Vector3 create(double... values) {
+		return new Vector3(values);
+	}
+	
 	public void add(double dx, double dy, double dz) {
 		x+=dx;
 		y+=dy;
