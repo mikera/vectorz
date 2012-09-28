@@ -99,4 +99,16 @@ public abstract class AMatrix {
 		}
 		return v;
 	}
+	
+	public void set(AMatrix a) {
+		int rc=rowCount();
+		if (a.rowCount()!=rc) throw new IllegalArgumentException("Source matrix has wrog number of rows: "+a.rowCount());
+		int cc=columnCount();
+		if (a.columnCount()!=cc) throw new IllegalArgumentException("Source matrix has wrog number of columns: "+a.columnCount());
+		for (int row=0; row<rc; row++) {
+			for (int column=0; column<cc; column++) {
+				set(row,column,a.get(row,column));
+			}
+		}
+	}
 }
