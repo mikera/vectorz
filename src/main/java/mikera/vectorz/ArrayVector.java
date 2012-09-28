@@ -1,6 +1,6 @@
 package mikera.vectorz;
 
-public abstract class ArrayVector extends AbstractVector {
+public abstract class ArrayVector extends AVector {
 
 	public abstract double[] getArray();
 	
