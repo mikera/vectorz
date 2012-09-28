@@ -130,4 +130,20 @@ public abstract class AVector implements Cloneable, Comparable<AVector> {
 			set(i,x);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb=new StringBuilder();
+		int length=length();
+		sb.append('[');
+		if (length>0) {
+			sb.append(get(0));
+			for (int i = 1; i < length; i++) {
+				sb.append(',');
+				sb.append(get(i));
+			}
+		}
+		sb.append(']');
+		return sb.toString();
+	}
 }
