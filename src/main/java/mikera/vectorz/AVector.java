@@ -31,4 +31,11 @@ public abstract class AVector {
 			data[i+offset]=get(i);
 		}
 	}
+	
+	public void fill(double value) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			set(i,value);
+		}
+	}
 }
