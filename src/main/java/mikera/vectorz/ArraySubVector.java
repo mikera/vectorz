@@ -8,26 +8,26 @@ import mikera.vectorz.Tools;
  * @author Mike
  * 
  */
-public final class SubVector extends ArrayVector {
+public final class ArraySubVector extends ArrayVector {
 	private final double[] data;
 
 	private final int offset;
 	private final int length;
 
-	public SubVector(double[] values) {
+	public ArraySubVector(double[] values) {
 		offset = 0;
 		length = values.length;
 		data = new double[length];
 		System.arraycopy(values, 0, data, 0, length);
 	}
 
-	public SubVector(int length) {
+	public ArraySubVector(int length) {
 		this.length = length;
 		offset = 0;
 		data = new double[length];
 	}
 
-	public SubVector(SubVector source) {
+	public ArraySubVector(ArraySubVector source) {
 		length = source.length;
 		this.offset = 0;
 		data = new double[length];
@@ -42,7 +42,7 @@ public final class SubVector extends ArrayVector {
 	 * @param offset
 	 * @param length
 	 */
-	SubVector(ArrayVector source, int offset, int length) {
+	ArraySubVector(ArrayVector source, int offset, int length) {
 		int len=source.length();
 		if (offset < 0) {
 			throw new IndexOutOfBoundsException("Negative offset for Vector: "
@@ -70,14 +70,14 @@ public final class SubVector extends ArrayVector {
 	 * @param length
 	 * @return
 	 */
-	public SubVector subVector(int offset, int length) {
+	public ArraySubVector subVector(int offset, int length) {
 		if ((offset + length) > this.length)
 			throw new IndexOutOfBoundsException("Upper bound " + this.length
 					+ " breached:" + (offset + length));
 		if (offset < 0)
 			throw new IndexOutOfBoundsException("Lower bound breached:"
 					+ offset);
-		return new SubVector(this, offset, length);
+		return new ArraySubVector(this, offset, length);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public final class SubVector extends ArrayVector {
 	}
 
 
-	public void add(SubVector v) {
+	public void add(ArraySubVector v) {
 		if (v.length != length) {
 			throw new Error("Source vector has different size: " + v.length);
 		}
@@ -104,7 +104,7 @@ public final class SubVector extends ArrayVector {
 		}
 	}
 	
-	public void addMultiple(SubVector v, double factor) {
+	public void addMultiple(ArraySubVector v, double factor) {
 		if (v.length != length) {
 			throw new Error("Source vector has different size: " + v.length);
 		}
