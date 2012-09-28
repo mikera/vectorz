@@ -1,6 +1,6 @@
 package mikera.vectorz;
 
-public abstract class AVector {
+public abstract class AVector implements Cloneable, Comparable<AVector> {
 
 	// ================================================
 	// Abstract interface
@@ -14,6 +14,17 @@ public abstract class AVector {
 	
 	// ================================================
 	// Standard implementations
+	
+	public int compareTo(AVector a) {
+		int len=length();
+		if (len!=a.length()) throw new IllegalArgumentException("Vectors must be same length for comparison");
+		for (int i=0; i<len; i++) {
+			double diff=get(i)-a.get(i);
+			if (diff<0.0) return -1;
+			if (diff>0.0) return 1;
+		}
+		return 0;
+	}
 	
 	@Override
 	public int hashCode() {
