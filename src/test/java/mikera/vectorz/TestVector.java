@@ -60,6 +60,22 @@ public class TestVector {
 		}
 	}
 	
+	public void testOutOfBounds(AVector v) {
+		try {
+			v.set(-1, 0.0);
+			fail("Should be out of bounds!");
+		} catch (IndexOutOfBoundsException x) {
+			// OK!
+		}
+		
+		try {
+			v.set(v.length(), 0.0);
+			fail("Should be out of bounds!");
+		} catch (IndexOutOfBoundsException x) {
+			// OK!
+		}
+	}
+	
 	public void testSubVectorMutability(AVector v) {
 		// defensive copy
 		v=v.clone();
@@ -86,7 +102,8 @@ public class TestVector {
 	
 	private void doGenericTests(AVector v) {
 		testClone(v);
-
+		testSubVectorMutability(v);
+		testOutOfBounds(v);
 	}
 	
 	
@@ -102,7 +119,7 @@ public class TestVector {
 		doGenericTests(new Vector(data).subVector(25, 50));
 		doGenericTests(new ArraySubVector(data).subVector(25, 50));
 		
-		//doGenericTests(new Vector3(1.0,2.0,3.0).subVector(25, 50));
+		doGenericTests(new Vector3(1.0,2.0,3.0).subVector(1, 2));
 
 	}
 
