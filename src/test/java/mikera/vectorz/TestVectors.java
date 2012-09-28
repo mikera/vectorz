@@ -28,6 +28,15 @@ public class TestVectors {
 		assertEquals(-99,v.get(20),0.0);
 	}
 	
+	@Test public void testWrap() {
+		double[] data=new double[]{1,2,3};
+		
+		Vector v=Vector.wrap(data);
+		data[0]=13;
+		assertEquals(13,v.get(0),0.0);
+	}
+
+	
 	@Test public void testSubVectorCopy() {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;

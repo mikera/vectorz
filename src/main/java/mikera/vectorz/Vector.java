@@ -3,10 +3,8 @@ package mikera.vectorz;
 public final class Vector extends ArrayVector {
 	private final double[] data;
 
-	public Vector(double... values) {
-		int length=values.length;
-		data = new double[length];
-		System.arraycopy(values, 0, data, 0, length);
+	Vector(double... values) {
+		data = values;
 	}
 
 	Vector(int length) {
@@ -22,6 +20,22 @@ public final class Vector extends ArrayVector {
 		int length = source.length();
 		data = new double[length];
 		source.copyTo(this.data, 0);
+	}
+	
+	/**
+	 * Wraps a double array into a Vector, does *no defensive copy*
+	 * @param source
+	 * @return
+	 */
+	public static Vector wrap(double[] source) {
+		return new Vector(source);
+	}
+	
+	public static Vector create(double... source) {
+		int length = source.length;
+		double[] data = new double[length];
+		System.arraycopy(source, 0, data, 0, length);
+		return new Vector(data);
 	}
 	
 	@Override
