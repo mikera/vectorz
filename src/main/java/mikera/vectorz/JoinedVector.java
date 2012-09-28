@@ -8,6 +8,17 @@ public final class JoinedVector extends AVector {
 	private final int length;
 	
 	public JoinedVector(AVector left, AVector right) {
+		// balancing in case of nested joined vectors
+		if ((left.length()*2<right.length())&&(right instanceof JoinedVector)) {
+			JoinedVector v=new JoinedVector(left,((JoinedVector)right).left);
+			left=v;
+			right=((JoinedVector)right).right;
+		} else if ((left.length()>right.length()*2)&&(left instanceof JoinedVector)) {
+			JoinedVector v=new JoinedVector(((JoinedVector)left).right,right);
+			left=((JoinedVector)left).left;
+			right=v;
+		}
+		
 		this.left=left;
 		this.right=right;
 		this.split=left.length();
