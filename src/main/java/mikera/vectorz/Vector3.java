@@ -35,5 +35,10 @@ public class Vector3 extends AVector {
 		default: throw new IndexOutOfBoundsException("Index: i");
 		}
 	}
+	
+	@Override
+	public Vector3 clone() {
+		return new Vector3(x,y,z);	
+	}
 
 }

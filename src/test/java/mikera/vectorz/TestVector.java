@@ -41,4 +41,34 @@ public class TestVector {
 		v.set(10,Math.PI);
 		assertTrue(!v.equals(v2));
 	}
+	
+	public void testChanges(AVector v) {
+		AVector cv=v.clone();
+		int len=cv.length();
+		assertEquals(v.length(), len);
+		
+		
+		for (int i=0; i<len; i++) {
+			double x=cv.get(i);
+			// clone should have equal values
+			assertEquals(v.get(i),x,0.0000001);
+			cv.set(i, x+1);
+			
+			// changing clone should not change original
+			assertNotSame(v.get(i),cv.get(i));
+		}
+	}
+	
+	private void doGenericTests(AVector v) {
+		testChanges(v);
+
+	}
+	
+	
+	@Test public void genericTests() {
+		doGenericTests(new Vector3(1.0,2.0,3.0));
+		
+	}
+
+
 }
