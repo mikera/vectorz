@@ -9,9 +9,17 @@ public class WrappedSubVector extends AVector {
 		if (offset<0) throw new IndexOutOfBoundsException("Start Index: "+offset);
 		if ((offset+length)>source.length()) throw new IndexOutOfBoundsException("End Index: "+(offset+length));
 
-		wrapped=source;
-		this.offset=offset;
-		this.length=length;
+		if (source instanceof WrappedSubVector) {
+			// avoid stacking WrappedSubVectors by using underlying vector
+			WrappedSubVector v=(WrappedSubVector)source;
+			this.wrapped=v.wrapped;
+			this.offset=offset+v.offset;
+			this.length=length;
+		} else {
+			wrapped=source;
+			this.offset=offset;
+			this.length=length;
+		}
 	}
 	
 	@Override
