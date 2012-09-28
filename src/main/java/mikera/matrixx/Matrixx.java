@@ -7,7 +7,7 @@ package mikera.matrixx;
  */
 public class Matrixx {
 
-	public DiagonalMatrix identityMatrix(int dimensions) {
+	public static DiagonalMatrix createIdentityMatrix(int dimensions) {
 		DiagonalMatrix im=new DiagonalMatrix(dimensions);
 		for (int i=0; i<dimensions; i++) {
 			im.set(i,i,1.0);
