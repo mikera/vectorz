@@ -55,5 +55,13 @@ public final class Vector extends ArrayVector {
 	public int getArrayOffset() {
 		return 0;
 	}
+	
+	@Override
+	public void fill(double value) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			data[i] += value;
+		}
+	}
 
 }
