@@ -28,7 +28,7 @@ public final class Vector3 extends PrimitiveVector {
 	public Vector3(double... values) {
 		this.x=values[0];
 		this.y=values[1];
-		this.y=values[2];
+		this.z=values[2];
 	}
 	
 	public static Vector3 create(double... values) {
