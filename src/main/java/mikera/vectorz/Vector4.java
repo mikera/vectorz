@@ -5,6 +5,8 @@ package mikera.vectorz;
  * @author Mike
  */
 public final class Vector4 extends PrimitiveVector {
+	private static final long serialVersionUID = -6018622211027585397L;
+
 	public double x;
 	public double y;
 	public double z;

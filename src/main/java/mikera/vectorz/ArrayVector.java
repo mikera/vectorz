@@ -7,6 +7,7 @@ package mikera.vectorz;
  * 
  * @author Mike
  */
+@SuppressWarnings("serial")
 public abstract class ArrayVector extends AVector {
 
 	public abstract double[] getArray();

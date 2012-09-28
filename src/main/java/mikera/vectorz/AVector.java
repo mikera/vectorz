@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.io.Serializable;
+
 /**
  * Main abstract base class for all types of vector
  * 
@@ -9,8 +11,9 @@ package mikera.vectorz;
  * @author Mike
  *
  */
-public abstract class AVector implements Cloneable, Comparable<AVector> {
-
+@SuppressWarnings("serial")
+public abstract class AVector implements Cloneable, Comparable<AVector>, Serializable {
+	
 	// ================================================
 	// Abstract interface
 	public abstract int length();

@@ -1,6 +1,8 @@
 package mikera.vectorz;
 
 public final class JoinedVector extends AVector {
+	private static final long serialVersionUID = -5535850407701653222L;
+	
 	private final AVector left;
 	private final AVector right;
 	

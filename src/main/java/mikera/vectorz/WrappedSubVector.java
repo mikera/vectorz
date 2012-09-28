@@ -1,6 +1,8 @@
 package mikera.vectorz;
 
 public class WrappedSubVector extends AVector {
+	private static final long serialVersionUID = 2323553136938665228L;
+
 	private final AVector wrapped;
 	private final int offset;
 	private final int length;

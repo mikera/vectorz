@@ -9,6 +9,8 @@ import mikera.vectorz.Tools;
  * 
  */
 public final class ArraySubVector extends ArrayVector {
+	private static final long serialVersionUID = 1262951505515197105L;
+
 	private final double[] data;
 
 	private final int offset;

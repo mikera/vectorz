@@ -1,6 +1,8 @@
 package mikera.vectorz;
 
 public class ZeroLengthVector extends PrimitiveVector {
+	private static final long serialVersionUID = -8153360223054646075L;
+
 	private ZeroLengthVector() {
 	}
 	
@@ -19,6 +21,11 @@ public class ZeroLengthVector extends PrimitiveVector {
 	@Override
 	public void set(int i, double value) {
 		throw new IndexOutOfBoundsException("Attempt to set on zero length vector!");
+	}
+	
+	@Override 
+	public ZeroLengthVector clone() {
+		return this;
 	}
 
 }
