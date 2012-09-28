@@ -10,6 +10,6 @@ public abstract class AMatrix {
 	
 	public abstract double get(int row, int column);
 
-	public abstract double set(int row, int column, double value);
+	public abstract void set(int row, int column, double value);
 
 }
