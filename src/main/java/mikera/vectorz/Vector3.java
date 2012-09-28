@@ -25,6 +25,18 @@ public final class Vector3 extends PrimitiveVector {
 		this.y=values[2];
 	}
 	
+	public void add(double dx, double dy, double dz) {
+		x+=dx;
+		y+=dy;
+		z+=dz;
+	}
+	
+	public void addMultiple(double dx, double dy, double dz, double factor) {
+		x+=dx*factor;
+		y+=dy*factor;
+		z+=dz*factor;
+	}
+	
 	@Override
 	public int length() {
 		return 3;
