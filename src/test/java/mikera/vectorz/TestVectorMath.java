@@ -62,7 +62,7 @@ public class TestVectorMath {
 	@Test public void testGenericMaths() {
 		doGenericMaths(new Vector3(1.0,2.0,3.0));
 		doGenericMaths(Vectorz.create(1,2,3,4,5,6,7));
-		doGenericMaths(Vectorz.concat(new Vector2(1.0,2.0),Vectorz.create(1,2,3,4,5,6,7)));
+		doGenericMaths(Vectorz.join(new Vector2(1.0,2.0),Vectorz.create(1,2,3,4,5,6,7)));
 		doGenericMaths(Vectorz.create(1,2,3,4,5,6,7).subVector(2,3));
 
 	}

@@ -145,7 +145,7 @@ public class TestVectors {
 		AVector v3 = new Vector3(1.0,2.0,3.0);
 		doGenericTests(v3.subVector(1, 2));
 
-		AVector joined = Vectorz.concat(v3, Vectorz.create(data));
+		AVector joined = Vectorz.join(v3, Vectorz.create(data));
 		doGenericTests(joined);
 		
 		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);

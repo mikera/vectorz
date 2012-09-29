@@ -18,7 +18,14 @@ public class Vectorz {
 		}
 	}
 	
-	public static AVector concat(AVector first, AVector second) {
+	/**
+	 * Creates a joined vector that refers to the two underlying vectors
+	 * 
+	 * @param first
+	 * @param second
+	 * @return
+	 */
+	public static AVector join(AVector first, AVector second) {
 		return new JoinedVector(first,second);
 	}
 	

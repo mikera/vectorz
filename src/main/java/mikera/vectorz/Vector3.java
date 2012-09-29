@@ -56,6 +56,24 @@ public final class Vector3 extends PrimitiveVector {
 		z+=dz*factor;
 	}
 	
+	public void addMultiple(Vector3 v, double factor) {
+		x+=v.x*factor;
+		y+=v.y*factor;
+		z+=v.z*factor;
+	}
+	
+	public void add(Vector3 v) {
+		x+=v.x;
+		y+=v.y;
+		z+=v.z;
+	}
+	
+	public void subtract(Vector3 v) {
+		x-=v.x;
+		y-=v.y;
+		z-=v.z;
+	}
+	
 	public double dotProduct(Vector3 a) {
 		return x*a.x+y*a.y+z*a.z;
 	}
