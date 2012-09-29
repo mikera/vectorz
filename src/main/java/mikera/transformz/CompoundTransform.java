@@ -1,4 +1,4 @@
-package mikera.matrixx;
+package mikera.transformz;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
