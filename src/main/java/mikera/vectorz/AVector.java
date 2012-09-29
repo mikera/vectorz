@@ -151,6 +151,10 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		if (d>0) multiply(1.0/d);
 	}
 	
+	public void negate() {
+		multiply(-1.0);
+	}
+	
 	/**
 	 * Sets the vector to equal the value of another vector
 	 */
