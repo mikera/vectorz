@@ -146,6 +146,30 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return Math.sqrt(magnitudeSquared());
 	}
 	
+	public double distanceSquared(AVector v) {
+		int len=length();
+		double total=0.0;
+		for (int i=0; i<len; i++) {
+			double d=get(i)-v.get(i);
+			total+=d*d;
+		}
+		return total;
+	}
+	
+	public double distance(AVector v) {
+		return Math.sqrt(distanceSquared(v));
+	}
+	
+	public double manhattanDistance(AVector v) {
+		int len=length();
+		double total=0.0;
+		for (int i=0; i<len; i++) {
+			double d=get(i)-v.get(i);
+			total+=Math.abs(d);
+		}
+		return total;
+	}
+	
 	/**
 	 * Returns the euclidean angle between this vector and another vector
 	 * @return angle in radians
