@@ -2,7 +2,7 @@
 
 Fast double-precision vector and matrix maths library for Java.
 
-The intention of this library is for use in games, simulations and other situations 
+The intention of this library is for use in games, simulations, raytracers etc. 
 where fast vector maths is important.
 
 ### Key features
