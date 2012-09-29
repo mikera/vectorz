@@ -66,4 +66,14 @@ public class TestVectorMath {
 		doGenericMaths(Vectorz.create(1,2,3,4,5,6,7).subVector(2,3));
 
 	}
+	
+	@Test public void test3DMath() {
+		Vector3 v=Vector3.of(1,2,3);
+		
+		Vector3 v2=v.clone();
+		v2.add(v);
+		v2.multiply(0.5);
+		
+		assertTrue(v.approxEquals(v2));
+	}
 }
