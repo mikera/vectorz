@@ -4,8 +4,10 @@ import static org.junit.Assert.*;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 
 import org.junit.Test;
@@ -52,5 +54,11 @@ public class TestMatrixx {
 	@Test
 	public void testCompoundTransform() {
 		AVector v=Vector.of(1,2,3);
+		
+		AMatrix m1=Matrixx.createScaleMatrix(3, 2.0);
+		AMatrix m2=Matrixx.createScaleMatrix(3, 1.5);
+		ATransform ct = m2.compose(m1);
+		
+		assertTrue(Vector3.of(3,6,9).approxEquals(ct.transform(v)));
 	}
 }
