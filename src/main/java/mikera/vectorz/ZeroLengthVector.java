@@ -7,7 +7,7 @@ import java.io.ObjectStreamException;
  * @author Mike
  *
  */
-public class ZeroLengthVector extends PrimitiveVector {
+public final class ZeroLengthVector extends PrimitiveVector {
 	private static final long serialVersionUID = -8153360223054646075L;
 
 	private ZeroLengthVector() {
