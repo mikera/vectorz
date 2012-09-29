@@ -76,4 +76,13 @@ public class TestVectorMath {
 		
 		assertTrue(v.approxEquals(v2));
 	}
+	
+	@Test public void testAngle() {
+		Vector3 v=Vector3.of(1,2,3);
+		assertEquals(0.0, v.angle(v),0.0001);
+		
+		Vector3 v2=v.clone();
+		v2.negate();
+		assertEquals(Math.PI, v.angle(v2),0.0001);
+	}
 }
