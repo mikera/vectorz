@@ -45,4 +45,9 @@ public class TestMatrixx {
 			assertEquals(v.magnitude()*2.3,tv.magnitude(),0.0001);
 		}
 	}
+	
+	@Test
+	public void testCompoundTransform() {
+		AVector v=Vector.of(1,2,3);
+	}
 }

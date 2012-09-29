@@ -10,11 +10,11 @@ public class Vectorz {
 	public static AVector create(double... data) {
 		switch (data.length) {
 			case 0: return ZeroLengthVector.INSTANCE;
-			case 1: return Vector1.create(data);
-			case 2: return Vector2.create(data);
-			case 3: return Vector3.create(data);
-			case 4: return Vector4.create(data);
-			default: return Vector.create(data);
+			case 1: return Vector1.of(data);
+			case 2: return Vector2.of(data);
+			case 3: return Vector3.of(data);
+			case 4: return Vector4.of(data);
+			default: return Vector.of(data);
 		}
 	}
 	

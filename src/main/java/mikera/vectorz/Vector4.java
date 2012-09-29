@@ -38,7 +38,7 @@ public final class Vector4 extends PrimitiveVector {
 		this.t=values[3];
 	}
 	
-	public static Vector4 create(double... values) {
+	public static Vector4 of(double... values) {
 		return new Vector4(values);
 	}
 	

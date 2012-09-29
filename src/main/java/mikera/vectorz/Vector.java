@@ -33,11 +33,15 @@ public final class Vector extends ArrayVector {
 		return new Vector(source);
 	}
 	
-	public static Vector create(double... source) {
+	public static Vector of(double... source) {
 		int length = source.length;
 		double[] data = new double[length];
 		System.arraycopy(source, 0, data, 0, length);
 		return new Vector(data);
+	}
+	
+	public static Vector createLength(int length) {
+		return new Vector(length);
 	}
 	
 	@Override
