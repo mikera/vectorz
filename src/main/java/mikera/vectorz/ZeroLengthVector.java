@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.io.ObjectStreamException;
+
 public class ZeroLengthVector extends PrimitiveVector {
 	private static final long serialVersionUID = -8153360223054646075L;
 
@@ -26,6 +28,13 @@ public class ZeroLengthVector extends PrimitiveVector {
 	@Override 
 	public ZeroLengthVector clone() {
 		return this;
+	}
+	
+	/**
+	 * Readresolve method to ensure we always use the singleton
+	 */
+	private Object readResolve() throws ObjectStreamException {
+		return INSTANCE; 
 	}
 
 }
