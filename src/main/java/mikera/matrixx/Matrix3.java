@@ -38,8 +38,8 @@ public final class Matrix3 extends AMatrix {
 	}
 	
 	@Override
-	public void transform(AVector v) {
-		if (v instanceof Vector3) { transform((Vector3)v); return;}
+	public void transformInPlace(AVector v) {
+		if (v instanceof Vector3) { transformInPlace((Vector3)v); return;}
 		double x=rows[0].dotProduct(v);
 		double y=rows[1].dotProduct(v);
 		double z=rows[2].dotProduct(v);
@@ -48,7 +48,7 @@ public final class Matrix3 extends AMatrix {
 		v.set(2,z);
 	}
 	
-	public void transform(Vector3 v) {
+	public void transformInPlace(Vector3 v) {
 		double x=rows[0].dotProduct(v);
 		double y=rows[1].dotProduct(v);
 		double z=rows[2].dotProduct(v);

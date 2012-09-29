@@ -40,7 +40,7 @@ public final class DiagonalMatrix extends AMatrix {
 	}
 
 	@Override
-	public void transform(AVector v) {
+	public void transformInPlace(AVector v) {
 		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong length vector: "+v.length());
 		for (int i=0; i<dimensions; i++) {
 			v.set(i,v.get(i)*data[i]);

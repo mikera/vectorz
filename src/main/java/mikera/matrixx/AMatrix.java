@@ -48,7 +48,7 @@ public abstract class AMatrix extends ATransform {
 	}
 	
 	@Override
-	public void transform(AVector v) {
+	public void transformInPlace(AVector v) {
 		double[] temp=new double[v.length()];
 		int rc=rowCount();
 		int cc=columnCount();

@@ -35,14 +35,21 @@ public abstract class ATransform {
 	
 	// =====================================
 	// Standard implementations
+	
+	/**
+	 * Returns true if this transformation is guaranteed to be linear
+	 * @return
+	 */
 	public boolean isLinear() {
 		return false;
 	}
 	
-	public void transform(AVector v) {
-		AVector temp=Vectorz.createLength(outputDimensions());
-		transform(v,temp);
-		v.set(temp);
+	/**
+	 * Transforms a vector destructively. Intended for fast non-allocating transforms
+	 * @param v
+	 */
+	public void transformInPlace(AVector v) {
+		throw new UnsupportedOperationException();
 	}
 
 
