@@ -34,6 +34,10 @@ public final class Vector3 extends PrimitiveVector {
 		this.z=values[2];
 	}
 	
+	public static Vector3 of(double x, double y, double z) {
+		return new Vector3(x,y,z);
+	}
+	
 	public static Vector3 of(double... values) {
 		return new Vector3(values);
 	}
@@ -61,6 +65,13 @@ public final class Vector3 extends PrimitiveVector {
 		y+=v.y*factor;
 		z+=v.z*factor;
 	}
+	
+	public void subtractMultiple(Vector3 v, double factor) {
+		x-=v.x*factor;
+		y-=v.y*factor;
+		z-=v.z*factor;
+	}
+	
 	
 	public void add(Vector3 v) {
 		x+=v.x;

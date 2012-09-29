@@ -25,6 +25,10 @@ public final class Vector2 extends PrimitiveVector {
 		this.y=values[1];
 	}
 	
+	public static Vector2 of(double x, double y) {
+		return new Vector2(x,y);
+	}
+	
 	public static Vector2 of(double... values) {
 		return new Vector2(values);
 	}

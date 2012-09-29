@@ -38,6 +38,10 @@ public final class Vector4 extends PrimitiveVector {
 		this.t=values[3];
 	}
 	
+	public static Vector4 of(double x, double y, double z, double t) {
+		return new Vector4(x,y,z,t);
+	}
+	
 	public static Vector4 of(double... values) {
 		return new Vector4(values);
 	}

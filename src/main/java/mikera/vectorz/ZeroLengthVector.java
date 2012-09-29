@@ -36,11 +36,6 @@ public class ZeroLengthVector extends PrimitiveVector {
 	}
 	
 	@Override
-	public boolean equals(Object o) {
-		return this==o;
-	}
-	
-	@Override
 	public int hashCode() {
 		// 1 is hashcode for zero-length double array
 		return 1;
