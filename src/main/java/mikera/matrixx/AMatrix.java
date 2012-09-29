@@ -3,7 +3,7 @@ package mikera.matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
-public abstract class AMatrix {
+public abstract class AMatrix extends ATransform {
 	// ==============================================
 	// Abstract interface
 	
