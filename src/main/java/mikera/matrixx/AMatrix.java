@@ -19,6 +19,7 @@ public abstract class AMatrix extends ATransform {
 	// =============================================
 	// Standard implementations
 	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		int rc=rowCount();
 		int cc=columnCount();
@@ -31,6 +32,7 @@ public abstract class AMatrix extends ATransform {
 		}
 	}
 	
+	@Override
 	public void transform(AVector v) {
 		double[] temp=new double[v.length()];
 		int rc=rowCount();

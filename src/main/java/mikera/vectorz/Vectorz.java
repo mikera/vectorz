@@ -35,6 +35,10 @@ public class Vectorz {
 			case 4: return new Vector4();
 			default: return new Vector(length);
 		}
+	}
+
+	public static AVector createSameSize(AVector v) {
+		return createLength(v.length());
 	}	
 	
 	// ===========================
