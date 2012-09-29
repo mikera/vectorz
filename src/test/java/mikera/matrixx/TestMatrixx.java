@@ -1,9 +1,12 @@
-package mikera.vectorz;
+package mikera.matrixx;
 
 import static org.junit.Assert.*;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 
 import org.junit.Test;
 
