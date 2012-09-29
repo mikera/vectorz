@@ -45,6 +45,18 @@ public abstract class ATransform {
 	}
 	
 	/**
+	 * Transforms a vector, returning a new transformed vector
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public AVector transform(AVector v) {
+		AVector temp=Vectorz.createLength(outputDimensions());
+		transform(v,temp);
+		return temp;
+	}
+	
+	/**
 	 * Transforms a vector destructively. Intended for fast non-allocating transforms
 	 * @param v
 	 */
