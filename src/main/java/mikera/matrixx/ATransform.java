@@ -37,6 +37,14 @@ public abstract class ATransform {
 	// Standard implementations
 	
 	/**
+	 * Composes this transformation with another transformation, returning
+	 * a new combined transformation
+	 */
+	public ATransform compose(ATransform trans) {
+		return new CompoundTransform(this,trans);
+	}
+	
+	/**
 	 * Returns true if this transformation is guaranteed to be linear
 	 * @return
 	 */

@@ -23,6 +23,11 @@ public class CompoundTransform extends ATransform {
 	}
 
 	@Override
+	public boolean isLinear() {
+		return inner.isLinear()&&outer.isLinear();
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		AVector temp=Vectorz.createLength(inner.outputDimensions());
 		inner.transform(source,temp);
