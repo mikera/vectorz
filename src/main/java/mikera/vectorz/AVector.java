@@ -146,6 +146,14 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return Math.sqrt(magnitudeSquared());
 	}
 	
+	/**
+	 * Returns the euclidean angle between this vector and another vector
+	 * @return angle in radians
+	 */
+	public double angle(AVector v) {
+		return Math.acos(dotProduct(v)/(v.magnitude()*this.magnitude()));
+	}
+	
 	public void normalise() {
 		double d=magnitude();
 		if (d>0) multiply(1.0/d);

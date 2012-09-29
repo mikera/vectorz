@@ -42,6 +42,19 @@ public final class Vector3 extends PrimitiveVector {
 		return new Vector3(values);
 	}
 	
+	@Override
+	public double angle(AVector v) {
+		if (v instanceof Vector3) {return angle((Vector3)v);}
+		return super.angle(v);
+	}
+	
+	public double angle(Vector3 v) {
+		double mag2=(x*x)+(y*y)+(z*z);
+		double vmag2=(v.x*v.x)+(v.y*v.y)+(v.z*v.z);
+		double dot=(x*v.x)+(y*v.y)+(z*v.z);
+		return Math.acos(dot/Math.sqrt(mag2*vmag2));
+	}
+	
 	public void add(double dx, double dy, double dz) {
 		x+=dx;
 		y+=dy;
