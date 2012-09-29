@@ -35,8 +35,11 @@ public final class DiagonalMatrix extends AMatrix {
 
 	@Override
 	public void set(int row, int column, double value) {
-		if (row!=column) throw new UnsupportedOperationException("Diagonal matrix cannot be set at position ("+row+","+column+")!");
-		data[row]=value;
+		if (row!=column) {
+			if (value!=0.0) throw new UnsupportedOperationException("Diagonal matrix cannot be set to non-zero value at position ("+row+","+column+")!");
+		} else {
+			data[row]=value;
+		}
 	}
 
 	@Override
