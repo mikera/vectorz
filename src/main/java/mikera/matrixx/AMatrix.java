@@ -20,6 +20,10 @@ public abstract class AMatrix extends ATransform {
 	// =============================================
 	// Standard implementations
 	
+	public boolean isSquare() {
+		return rowCount()==columnCount();
+	}
+	
 	@Override
 	public int inputDimensions() {
 		return columnCount();

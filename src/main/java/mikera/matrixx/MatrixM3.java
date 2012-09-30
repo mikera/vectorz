@@ -57,5 +57,10 @@ public final class MatrixM3 extends AVectorMatrix {
 			dest.set(i,getRow(i).dotProduct(source));
 		}
 	}
+	
+	@Override
+	public boolean isSquare() {
+		return rowCount==3;
+	}
 
 }

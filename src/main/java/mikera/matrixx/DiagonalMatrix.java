@@ -21,6 +21,11 @@ public final class DiagonalMatrix extends AMatrix {
 	public int rowCount() {
 		return dimensions;
 	}
+	
+	@Override
+	public boolean isSquare() {
+		return true;
+	}
 
 	@Override
 	public int columnCount() {
