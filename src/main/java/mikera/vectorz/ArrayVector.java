@@ -56,6 +56,7 @@ public abstract class ArrayVector extends AVector {
 	public void copy(int start, int length, AVector dest, int destOffset) {
 		if (dest instanceof ArrayVector) {
 			copy(start,length,(ArrayVector)dest,destOffset);
+			return;
 		}
 		double[] src=getArray();
 		int off=getArrayOffset();
