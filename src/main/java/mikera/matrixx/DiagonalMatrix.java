@@ -54,5 +54,11 @@ public final class DiagonalMatrix extends AMatrix {
 			v.set(i,v.get(i)*data[i]);
 		}
 	}
+	
+	@Override
+	public DiagonalMatrix clone() {
+		DiagonalMatrix m=new DiagonalMatrix(data);
+		return m;
+	}
 
 }

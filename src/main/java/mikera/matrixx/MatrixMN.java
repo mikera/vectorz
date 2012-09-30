@@ -43,4 +43,13 @@ public final class MatrixMN extends AVectorMatrix {
 	public boolean isSquare() {
 		return rowCount==columnCount;
 	}
+	
+	@Override
+	public MatrixMN clone() {
+		MatrixMN m=(MatrixMN) super.clone();
+		for (int i=0; i<rowCount; i++) {
+			m.rows[i]=m.rows[i].clone();
+		}
+		return m;
+	}
 }

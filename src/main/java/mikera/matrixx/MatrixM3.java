@@ -62,5 +62,14 @@ public final class MatrixM3 extends AVectorMatrix {
 	public boolean isSquare() {
 		return rowCount==3;
 	}
+	
+	@Override
+	public MatrixM3 clone() {
+		MatrixM3 m=(MatrixM3) super.clone();
+		for (int i=0; i<rowCount; i++) {
+			m.rows[i]=m.rows[i].clone();
+		}
+		return m;
+	}
 
 }

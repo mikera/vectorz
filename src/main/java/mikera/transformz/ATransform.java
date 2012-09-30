@@ -9,7 +9,7 @@ import mikera.vectorz.Vectorz;
  * @author Mike
  *
  */
-public abstract class ATransform {
+public abstract class ATransform implements Cloneable {
 	// =====================================
 	// Abstract interface
 	
@@ -31,10 +31,22 @@ public abstract class ATransform {
 	 * @return
 	 */
 	public abstract int outputDimensions();
+	
 
 	
 	// =====================================
 	// Standard implementations
+	
+	/**
+	 * Clones the transform, performing a deep copy where needed
+	 */
+	public ATransform clone() {
+		try {
+			return (ATransform) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new Error("Clone should be supported!!");
+		}
+	}
 	
 	/**
 	 * Composes this transformation with another transformation, returning

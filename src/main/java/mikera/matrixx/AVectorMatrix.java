@@ -1,7 +1,6 @@
 package mikera.matrixx;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector3;
 
 /**
  * Abstract base class for matrices that use a collection of Vectors 
@@ -33,6 +32,12 @@ public abstract class AVectorMatrix extends AMatrix {
 		for (int i=0; i<rc; i++) {
 			dest.set(i,getRow(i).dotProduct(source));
 		}
+	}
+	
+	@Override
+	public AVectorMatrix clone() {
+		AVectorMatrix avm=(AVectorMatrix) super.clone();
+		return avm;
 	}
 
 }

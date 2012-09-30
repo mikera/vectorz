@@ -15,7 +15,9 @@ public class Matrixx {
 		return im;
 	}
 	
-	public static DiagonalMatrix createScaleMatrix(int dimensions, double factor) {
+	
+	
+	public static AMatrix createScaleMatrix(int dimensions, double factor) {
 		DiagonalMatrix im=new DiagonalMatrix(dimensions);
 		for (int i=0; i<dimensions; i++) {
 			im.set(i,i,factor);

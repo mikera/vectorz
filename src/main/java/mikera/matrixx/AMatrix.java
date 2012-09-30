@@ -138,4 +138,8 @@ public abstract class AMatrix extends ATransform {
 			}
 		}
 	}
+	
+	public AMatrix clone() {
+		return (AMatrix) super.clone();
+	}
 }
