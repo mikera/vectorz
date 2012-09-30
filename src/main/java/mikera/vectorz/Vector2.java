@@ -33,6 +33,16 @@ public final class Vector2 extends PrimitiveVector {
 		return new Vector2(values);
 	}
 	
+	public void add(Vector2 v) {
+		x+=v.x;
+		y+=v.y;
+	}
+	
+	public void addMultiple(Vector2 v, double factor) {
+		x+=v.x*factor;
+		y+=v.y*factor;
+	}
+	
 	@Override
 	public int length() {
 		return 2;

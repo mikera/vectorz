@@ -19,3 +19,4 @@ where fast vector maths is important.
  - Fast paths for most 2D and 3D operations
  - Vectors are generally not thread safe, by design
  
+ If you have a common case that isn't well optimised yet then please post an issue - the aim is to make all common operations efficient.
