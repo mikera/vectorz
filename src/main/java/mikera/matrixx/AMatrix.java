@@ -1,10 +1,11 @@
 package mikera.matrixx;
 
+import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
-public abstract class AMatrix extends ATransform {
+public abstract class AMatrix extends AAffineTransform {
 	// ==============================================
 	// Abstract interface
 	
@@ -33,11 +34,7 @@ public abstract class AMatrix extends ATransform {
 	public int outputDimensions() {
 		return rowCount();
 	}
-	
-	@Override
-	public boolean isLinear() {
-		return true;
-	}
+
 	
 	@Override
 	public void transform(AVector source, AVector dest) {

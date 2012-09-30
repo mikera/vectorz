@@ -83,6 +83,4 @@ public abstract class ATransform implements Cloneable {
 	public void transformInPlace(AVector v) {
 		throw new UnsupportedOperationException();
 	}
-
-
 }
