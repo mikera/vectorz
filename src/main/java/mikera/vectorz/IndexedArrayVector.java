@@ -5,27 +5,18 @@ package mikera.vectorz;
  * @author Mike
  *
  */
-public class IndexedArrayVector extends AVector {
+public class IndexedArrayVector extends IndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
-	private final int length;
-	
-	private final int[] indexes;
 	private final double[] data;
 	
 	private IndexedArrayVector(double[] source, int[] indexes) {
-		this.indexes=indexes;
+		super(indexes);
 		this.data=source;
-		length=indexes.length;
 	}
 	
 	public static IndexedArrayVector wrap(double[] data, int[] indexes) {
 		return new IndexedArrayVector(data,indexes);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override

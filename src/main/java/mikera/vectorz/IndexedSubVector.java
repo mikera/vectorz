@@ -5,27 +5,18 @@ package mikera.vectorz;
  * @author Mike
  *
  */
-public class IndexedSubVector extends AVector {
+public final class IndexedSubVector extends IndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
-	private final int length;
-	
-	private final int[] indexes;
 	private final AVector data;
 	
 	private IndexedSubVector(AVector source, int[] indexes) {
-		this.indexes=indexes;
+		super(indexes);
 		this.data=source;
-		length=indexes.length;
 	}
 	
 	public static IndexedSubVector wrap(AVector source, int[] indexes) {
 		return new IndexedSubVector(source,indexes);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override

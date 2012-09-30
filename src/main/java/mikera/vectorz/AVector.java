@@ -26,8 +26,21 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	// ================================================
 	// Standard implementations
 	
+	/**
+	 * Obtains a sub-vector that refers to this vector.
+	 * Changes to the sub-vector will be reflected in this vector
+	 */
 	public AVector subVector(int offset, int length) {
 		return new WrappedSubVector(this,offset,length);
+	}
+
+	/**
+	 * Returns a new vector that refers to this vector joined to a second vector
+	 * @param second
+	 * @return
+	 */
+	public AVector join(AVector second) {
+		return new JoinedVector(this,second);
 	}
 	
 	public int compareTo(AVector a) {
@@ -277,12 +290,4 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return sb.toString();
 	}
 
-	/**
-	 * Returns a new vector that refers to this vector joined to a second vector
-	 * @param second
-	 * @return
-	 */
-	public AVector join(AVector second) {
-		return new JoinedVector(this,second);
-	}
 }
