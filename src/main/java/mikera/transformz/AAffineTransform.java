@@ -24,6 +24,12 @@ public abstract class AAffineTransform extends ATransform {
 	}
 	
 	@Override 
+	public void transform(AVector source, AVector dest) {
+		getMatrixComponent().transform(source,dest);
+		getTranslationComponent().transformInPlace(dest);
+	}
+	
+	@Override 
 	public void transformInPlace(AVector v) {
 		getMatrixComponent().transformInPlace(v);
 		getTranslationComponent().transformInPlace(v);

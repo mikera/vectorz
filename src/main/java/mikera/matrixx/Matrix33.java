@@ -24,6 +24,19 @@ public final class Matrix33 extends AMatrix {
 		m20=s.m20; m21=s.m21; m22=s.m22;
 	}
 	
+	public Matrix33(double m00, double m01, double m02, double m10,
+			double m11, double m12, double m20, double m21, double m22) {
+		this.m00=m00;
+		this.m01=m01;
+		this.m02=m02;
+		this.m10=m10;
+		this.m11=m11;
+		this.m12=m12;
+		this.m20=m20;
+		this.m21=m21;
+		this.m22=m22;
+	}
+
 	@Override
 	public double determinant() {
 		return (m00*m11*m22)+(m01*m12*m20)+(m02*m10*m21)
@@ -117,6 +130,14 @@ public final class Matrix33 extends AMatrix {
 		dest.x=((m00*s.x)+(m01*s.y)+(m02*s.z));
 		dest.y=((m10*s.x)+(m11*s.y)+(m12*s.z));
 		dest.z=((m20*s.x)+(m21*s.y)+(m22*s.z));
+	}
+	
+	public void transformInPlace(Vector3 dest) {
+		Vector3 s=dest;
+		double tx=((m00*s.x)+(m01*s.y)+(m02*s.z));
+		double ty=((m10*s.x)+(m11*s.y)+(m12*s.z));
+		double tz=((m20*s.x)+(m21*s.y)+(m22*s.z));
+		s.x=tx; s.y=ty; s.z=tz;
 	}
 	
 	@Override

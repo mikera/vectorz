@@ -3,13 +3,13 @@ package mikera.transformz;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
-public final class AffineTransformMN extends AAffineTransform {
+public final class AffineMN extends AAffineTransform {
 	private final AMatrix matrix;
 	private final ATranslation translation;
 	private final int inputDimensions;
 	private final int outputDimensions;
 	
-	public AffineTransformMN(AMatrix matrix, ATranslation translation) {
+	public AffineMN(AMatrix matrix, ATranslation translation) {
 		this.matrix=matrix;
 		this.translation=translation;
 		inputDimensions=matrix.inputDimensions();
