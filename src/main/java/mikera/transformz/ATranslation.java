@@ -6,18 +6,19 @@ public abstract class ATranslation extends AAffineTransform {
 	// =========================================
 	// Abstract interface
 	
-	public abstract AVector translationVector();
+	public abstract AVector getTranslationVector();
 	
 	// =========================================
 	// Standard implementations
 
 	@Override
 	public void transform(AVector source,AVector dest) {
-		getTranslationComponent().transform(source,dest);
+		dest.set(source);
+		dest.add(getTranslationVector());
 	}
 	
 	@Override
 	public void transformInPlace(AVector v) {
-		getTranslationComponent().transformInPlace(v);
+		v.add(getTranslationVector());
 	}
 }

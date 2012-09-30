@@ -14,7 +14,7 @@ public final class PureTranslation extends ATranslation {
 	}
 	
 	@Override
-	public AVector translationVector() {
+	public AVector getTranslationVector() {
 		return translation;
 	}
 	

@@ -55,7 +55,7 @@ public final class IdentityTranslation extends ATranslation {
 	}
 
 	@Override
-	public AVector translationVector() {
+	public AVector getTranslationVector() {
 		return Vectorz.zeroVector(dimensions);
 	}
 }

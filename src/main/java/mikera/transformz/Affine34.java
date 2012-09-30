@@ -30,6 +30,10 @@ public class Affine34 extends AAffineTransform {
 		this.m23=m23;
 	}
 	
+	public Affine34(AMatrix matrix, ATranslation trans) {
+		this(matrix,trans.getTranslationVector());
+	}
+	
 	public Affine34(AMatrix m, AVector v) {
 		assert(v.length()==3);
 		assert(m.inputDimensions()==3);
