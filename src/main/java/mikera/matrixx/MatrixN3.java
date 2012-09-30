@@ -2,7 +2,7 @@ package mikera.matrixx;
 
 import mikera.vectorz.Vector3;
 
-public final class MatrixN3 extends VectorMatrix {
+public final class MatrixN3 extends AVectorMatrix {
 	private int rowCount;	
 	private final Vector3[] rows;
 	
