@@ -124,8 +124,7 @@ public class TestMatrixx {
 		// specialised Mx3 matrix
 		MatrixM3 mm3=new MatrixM3(10);
 		doGenericTests(mm3);
-
-		
+	
 		// general M*N matrix
 		MatrixMN mmn=new MatrixMN(6 ,7);
 		doGenericTests(mmn);
@@ -133,6 +132,5 @@ public class TestMatrixx {
 		// 0x0 matrix should work
 		mmn=new MatrixMN(0 ,0);
 		doGenericTests(mmn);
-
 	}
 }

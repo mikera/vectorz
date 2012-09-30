@@ -1,7 +1,7 @@
 package mikera.transformz;
 
-import mikera.matrixx.DiagonalMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.transforz.impl.IdentityTranslation;
 import mikera.vectorz.AVector;
 
