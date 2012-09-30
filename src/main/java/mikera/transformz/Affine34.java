@@ -6,9 +6,9 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
 public final class Affine34 extends AAffineTransform {
-	private double m00,m01,m02,m03,
-                   m10,m11,m12,m13,
-                   m20,m21,m22,m23;
+	public double m00,m01,m02,m03,
+                  m10,m11,m12,m13,
+                  m20,m21,m22,m23;
 	
 	public Affine34() {	
 	}

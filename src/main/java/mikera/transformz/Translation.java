@@ -49,5 +49,32 @@ public final class Translation extends ATranslation {
 	public int outputDimensions() {
 		return dimensions;
 	}
-
+	
+	@Override 
+	public int dimensions() {
+		return dimensions;
+	}
+	
+	@Override 
+	public void composeWith(ATransform t) {
+		if (t instanceof ATranslation) {
+			composeWith((ATranslation) t);
+			return;
+		}
+		super.composeWith(t);
+	}
+	
+	public void composeWith(ATranslation t) {
+		if (t instanceof Translation) {
+			composeWith((Translation) t);
+			return;
+		}
+		AVector v=t.getTranslationVector();
+		translation.add(v);
+	}
+	
+	public void composeWith(Translation t) {
+		assert(t.dimensions()==this.dimensions());
+		translation.add(t.translation);
+	}
 }

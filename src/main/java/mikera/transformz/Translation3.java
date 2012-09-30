@@ -31,6 +31,11 @@ public final class Translation3 extends ATranslation {
 		return this;
 	}
 
+	@Override 
+	public int dimensions() {
+		return 3;
+	}
+	
 	@Override
 	public int inputDimensions() {
 		return 3;
@@ -74,6 +79,31 @@ public final class Translation3 extends ATranslation {
 		v.x+=dx;
 		v.y+=dy;
 		v.z+=dz;
+	}
+	
+	@Override 
+	public void composeWith(ATransform t) {
+		if (t instanceof Translation3) {
+			composeWith((Translation3) t);
+			return;
+		} else if (t instanceof Translation) {
+			composeWith((Translation) t);
+			return;
+		}
+		super.composeWith(t);
+	}
+	
+	public void composeWith(Translation t) {
+		AVector v=t.getTranslationVector();
+		dx+=v.get(0);
+		dy+=v.get(1);
+		dz+=v.get(2);
+	}
+	
+	public void composeWith(Translation3 t) {
+		dx+=t.dx;
+		dy+=t.dy;
+		dz+=t.dz;
 	}
 
 }

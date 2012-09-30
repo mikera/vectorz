@@ -11,6 +11,10 @@ public abstract class ATranslation extends AAffineTransform {
 	// =========================================
 	// Standard implementations
 
+	public int dimensions() {
+		return getTranslationVector().length();
+	}
+	
 	@Override
 	public void transform(AVector source,AVector dest) {
 		dest.set(source);
