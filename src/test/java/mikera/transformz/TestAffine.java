@@ -45,15 +45,14 @@ public class TestAffine {
 		AVector z=Vectorz.zeroVector(t.inputDimensions());
 		
 		AVector r=t.transform(z);
-		assertTrue(r.approxEquals(t.getTranslationComponent().getTranslationVector()));
-		
+		assertNotNull(r);
+		assertTrue(r.approxEquals(t.getTranslationComponent().getTranslationVector()));	
 	}
 	
 	private void doAffineTests(AAffineTransform t) {
 		testAffineProperty(t);
 		testApplyToZeroVector(t);
-		testAffineDecomposition(t);
-		
+		testAffineDecomposition(t);		
 	}
 	
 	@Test public void genericAffineTests() {
@@ -67,12 +66,17 @@ public class TestAffine {
 		doAffineTests(rmatrix);
 		
 		AVector rvector=Vectorz.createUniformRandomVector(5);
-		PureTranslation rtrans=Transformz.createTranslation(rvector);
+		Translation rtrans=Transformz.createTranslation(rvector);
 		doAffineTests(rtrans);
 		
 		doAffineTests(new AffineMN(rmatrix,rtrans));
 		
 		Affine34 a34=new Affine34(Matrixx.createRandomSquareMatrix(3),Vectorz.createUniformRandomVector(3));
+		doAffineTests(a34);
+		
+		Translation3 t3=new Translation3(Vectorz.createUniformRandomVector(3));
+		doAffineTests(t3);
+
 	}
 
 

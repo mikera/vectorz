@@ -4,11 +4,11 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 
-public final class PureTranslation extends ATranslation {
+public final class Translation extends ATranslation {
 	private final AVector translation;
 	private final int dimensions;
 	
-	public PureTranslation(AVector source) {
+	public Translation(AVector source) {
 		translation=source;
 		dimensions=source.length();
 	}

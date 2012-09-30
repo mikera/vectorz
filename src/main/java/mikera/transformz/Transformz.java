@@ -14,7 +14,7 @@ public class Transformz {
 		return IdentityTranslation.getInstance(dimensions);
 	}
 	
-	public static PureTranslation createTranslation(AVector v) {
-		return new PureTranslation(v);
+	public static Translation createTranslation(AVector v) {
+		return new Translation(v);
 	}
 }
