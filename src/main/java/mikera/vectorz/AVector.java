@@ -2,6 +2,9 @@ package mikera.vectorz;
 
 import java.io.Serializable;
 
+import mikera.vectorz.impl.JoinedVector;
+import mikera.vectorz.impl.WrappedSubVector;
+
 /**
  * Main abstract base class for all types of vector
  * 

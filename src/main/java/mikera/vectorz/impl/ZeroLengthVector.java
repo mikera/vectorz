@@ -1,13 +1,15 @@
-package mikera.vectorz;
+package mikera.vectorz.impl;
 
 import java.io.ObjectStreamException;
+
+import mikera.vectorz.APrimitiveVector;
 
 /**
  * Special singleton zero length vector class.
  * @author Mike
  *
  */
-public final class ZeroLengthVector extends PrimitiveVector {
+public final class ZeroLengthVector extends APrimitiveVector {
 	private static final long serialVersionUID = -8153360223054646075L;
 
 	private ZeroLengthVector() {

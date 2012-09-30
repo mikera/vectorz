@@ -1,36 +1,38 @@
-package mikera.vectorz;
+package mikera.vectorz.impl;
+
+import mikera.vectorz.AVector;
 
 /**
- * Vector that addresses elements indexed into double[] array
+ * Vector that addresses elements indexed into another source vector
  * @author Mike
  *
  */
-public class IndexedArrayVector extends IndexedVector {
+public final class IndexedSubVector extends IndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
-	private final double[] data;
+	private final AVector data;
 	
-	private IndexedArrayVector(double[] source, int[] indexes) {
+	private IndexedSubVector(AVector source, int[] indexes) {
 		super(indexes);
 		this.data=source;
 	}
 	
-	public static IndexedArrayVector wrap(double[] data, int[] indexes) {
-		return new IndexedArrayVector(data,indexes);
+	public static IndexedSubVector wrap(AVector source, int[] indexes) {
+		return new IndexedSubVector(source,indexes);
 	}
 
 	@Override
 	public double get(int i) {
-		return data[indexes[i]];
+		return data.get(indexes[i]);
 	}
 
 	@Override
 	public void set(int i, double value) {
-		data[indexes[i]]=value;
+		data.set(indexes[i],value);
 	}
 	
 	@Override
-	public IndexedArrayVector subVector(int offset, int length) {
+	public IndexedSubVector subVector(int offset, int length) {
 		if (offset<0) throw new IndexOutOfBoundsException("Start Index: "+offset);
 		if ((offset+length)>this.length) throw new IndexOutOfBoundsException("End Index: "+(offset+length));
 

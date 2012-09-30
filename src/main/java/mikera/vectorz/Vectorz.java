@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.ZeroLengthVector;
+
 public class Vectorz {
 	public static final double DEFAULT_TOLERANCE = 0.00001;
 

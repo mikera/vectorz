@@ -4,7 +4,7 @@ package mikera.vectorz;
  * Specialised 4D vector
  * @author Mike
  */
-public final class Vector4 extends PrimitiveVector {
+public final class Vector4 extends APrimitiveVector {
 	private static final long serialVersionUID = -6018622211027585397L;
 
 	public double x;

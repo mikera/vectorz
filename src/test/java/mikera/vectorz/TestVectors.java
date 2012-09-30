@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
-import mikera.vectorz.ArraySubVector;
+import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.IndexedArrayVector;
+import mikera.vectorz.impl.IndexedSubVector;
 
 import org.junit.Test;
 

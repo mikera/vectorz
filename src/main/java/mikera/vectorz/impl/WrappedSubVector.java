@@ -1,4 +1,6 @@
-package mikera.vectorz;
+package mikera.vectorz.impl;
+
+import mikera.vectorz.AVector;
 
 public final class WrappedSubVector extends AVector {
 	private static final long serialVersionUID = 2323553136938665228L;

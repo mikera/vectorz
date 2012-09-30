@@ -1,5 +1,12 @@
-package mikera.vectorz;
+package mikera.vectorz.impl;
 
+import mikera.vectorz.AVector;
+
+/**
+ * Abstract base class for vectors that index into other sources
+ * @author Mike
+ *
+ */
 @SuppressWarnings("serial")
 abstract class IndexedVector extends AVector {
 	protected final int[] indexes;

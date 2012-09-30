@@ -1,6 +1,8 @@
-package mikera.vectorz;
+package mikera.vectorz.impl;
 
+import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Tools;
+import mikera.vectorz.Vector;
 
 /**
  * Class representing a fixed-size vector of mutable double values
@@ -44,7 +46,7 @@ public final class ArraySubVector extends ArrayVector {
 	 * @param offset
 	 * @param length
 	 */
-	ArraySubVector(ArrayVector source, int offset, int length) {
+	public ArraySubVector(ArrayVector source, int offset, int length) {
 		int len=source.length();
 		if (offset < 0) {
 			throw new IndexOutOfBoundsException("Negative offset for Vector: "

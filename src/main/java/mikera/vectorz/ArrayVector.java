@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.ArraySubVector;
+
 /**
  * Base class for vectors backed by a double[] array.
  * 
