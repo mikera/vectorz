@@ -1,12 +1,19 @@
 package mikera.matrixx;
 
+import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
-public final class MatrixN3 extends AVectorMatrix {
+/**
+ * Specialised N*3 Matrix for Vector3 components
+ * 
+ * @author Mike
+ *
+ */
+public final class MatrixM3 extends AVectorMatrix {
 	private int rowCount;	
 	private final Vector3[] rows;
 	
-	public MatrixN3(int rowCount) {
+	public MatrixM3(int rowCount) {
 		this.rowCount=rowCount;
 		rows=new Vector3[rowCount];
 		for (int i=0; i<3; i++) {
@@ -37,6 +44,18 @@ public final class MatrixN3 extends AVectorMatrix {
 	@Override
 	public Vector3 getRow(int row) {
 		return  rows[row];
+	}
+	
+	@Override
+	public void transform(AVector source, AVector dest) {
+		if (source instanceof Vector3) {transform((Vector3)source,dest); return;}
+		super.transform(source,dest);
+	}
+	
+	public void transform(Vector3 source, AVector dest) {
+		for (int i=0; i<rowCount; i++) {
+			dest.set(i,getRow(i).dotProduct(source));
+		}
 	}
 
 }
