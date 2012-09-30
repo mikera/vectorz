@@ -4,7 +4,14 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.transformz.ATranslation;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 
+/**
+ * Immutable identity translation
+ * 
+ * @author Mike
+ *
+ */
 public final class IdentityTranslation extends ATranslation {
 
 	private final int dimensions;
@@ -47,4 +54,8 @@ public final class IdentityTranslation extends ATranslation {
 		return new IdentityTranslation(dimensions);
 	}
 
+	@Override
+	public AVector translationVector() {
+		return Vectorz.zeroVector(dimensions);
+	}
 }
