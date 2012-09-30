@@ -139,6 +139,10 @@ public abstract class AMatrix extends ATransform {
 		}
 	}
 	
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
 	public AMatrix clone() {
 		return (AMatrix) super.clone();
 	}

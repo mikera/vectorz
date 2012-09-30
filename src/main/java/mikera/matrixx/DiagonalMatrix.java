@@ -56,6 +56,11 @@ public final class DiagonalMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
+	
+	@Override
 	public DiagonalMatrix clone() {
 		DiagonalMatrix m=new DiagonalMatrix(data);
 		return m;
