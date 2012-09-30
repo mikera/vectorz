@@ -52,6 +52,42 @@ public class TestMatrixx {
 	}
 	
 	@Test
+	public void testBasicDeterminant() {
+		MatrixMN mmn=new MatrixMN(2,2);
+		mmn.getRow(0).set(Vector.of(2,1));
+		mmn.getRow(1).set(Vector.of(1,2));
+		assertEquals(3.0,mmn.determinant(),0.0);
+	}
+	
+	@Test
+	public void testPermuteDeterminant() {
+		MatrixMN mmn=new MatrixMN(3,3);
+		mmn.set(0,1,1);
+		mmn.set(1,0,1);
+		mmn.set(2,2,1);
+		assertEquals(-1.0,mmn.determinant(),0.0);
+	}
+	
+	@Test
+	public void testEquivalentDeterminant() {
+		Matrix33 m33=new Matrix33();
+		for (int i=0; i<3; i++) for (int j=0; j<3; j++) {
+			m33.set(i,j,Math.random());
+		}
+		
+		MatrixMN mmn=new MatrixMN(3,3);
+		mmn.set(m33);
+		
+		for (int i=0; i<3; i++) for (int j=0; j<3; j++) {
+			assertEquals(m33.get(i, j),mmn.get(i, j),0.0);
+		}
+		
+		assertEquals(m33.determinant(),mmn.determinant(),0.00001);
+
+	}
+
+	
+	@Test
 	public void testCompoundTransform() {
 		AVector v=Vector.of(1,2,3);
 		

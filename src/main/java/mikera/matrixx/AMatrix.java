@@ -146,4 +146,34 @@ public abstract class AMatrix extends ATransform {
 	public AMatrix clone() {
 		return (AMatrix) super.clone();
 	}
+
+	public double determinant() {
+		if (!isSquare()) throw new UnsupportedOperationException("Cannot take determinant of non-squae matrix!");
+		
+		int rc=rowCount();
+		int[] inds=new int[rc];
+		for (int i=0; i<rc; i++) {
+			inds[i]=i;
+		}
+		return calcDeterminant(inds,0);
+	}
+	
+	private static void swap(int[] inds, int a, int b) {
+		int temp=inds[a];
+		inds[a]=inds[b];
+		inds[b]=temp;	
+	}
+
+	private double calcDeterminant(int[] inds, int offset) {
+		int rc=rowCount();
+		if (offset==(rc-1)) return get(offset,inds[offset]);
+		
+		double det=get(offset,inds[offset])*calcDeterminant(inds,offset+1);
+		for (int i=1; i<(rc-offset); i++) {
+			swap(inds,offset,offset+i);
+			det-=get(offset,inds[offset])*calcDeterminant(inds,offset+1);
+			swap(inds,offset,offset+i);
+		}
+		return det;
+	}
 }
