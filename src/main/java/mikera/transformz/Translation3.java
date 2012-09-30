@@ -2,11 +2,11 @@ package mikera.transformz;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 
-public final class Translation3 extends ATranslation {
+public final class Translation3 extends ATranslation  implements ISpecialisedTransform  {
 	public double dx,dy,dz;
 	
 	public Translation3(AVector v) {

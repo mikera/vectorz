@@ -2,10 +2,11 @@ package mikera.transformz;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix33;
+import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
-public final class Affine34 extends AAffineTransform {
+public final class Affine34 extends AAffineTransform  implements ISpecialisedTransform {
 	public double m00,m01,m02,m03,
                   m10,m11,m12,m13,
                   m20,m21,m22,m23;
@@ -110,5 +111,60 @@ public final class Affine34 extends AAffineTransform {
 	public int outputDimensions() {
 		return 3;
 	}
-
+	
+	@Override
+	public void composeWith(ATransform a) {
+		if (a instanceof Affine34) {
+			composeWith((Affine34)a);
+			return;
+		} else if (a instanceof Matrix33) {
+			composeWith((Matrix33)a);
+			return;
+		} else if (a instanceof Translation3) {
+			composeWith((Translation3)a);
+			return;
+		}
+		super.composeWith(a);
+	}
+	
+	public void composeWith(Affine34 a) {
+		double t00=(m00*a.m00)+(m01*a.m10)+(m02*a.m20);
+		double t01=(m00*a.m01)+(m01*a.m11)+(m02*a.m21);
+		double t02=(m00*a.m02)+(m01*a.m12)+(m02*a.m22);
+		double t10=(m10*a.m00)+(m11*a.m10)+(m12*a.m20);
+		double t11=(m10*a.m01)+(m11*a.m11)+(m12*a.m21);
+		double t12=(m10*a.m02)+(m11*a.m12)+(m12*a.m22);
+		double t20=(m20*a.m00)+(m21*a.m10)+(m22*a.m20);
+		double t21=(m20*a.m01)+(m21*a.m11)+(m22*a.m21);
+		double t22=(m20*a.m02)+(m21*a.m12)+(m22*a.m22);
+		
+		double t03=(m00*a.m03)+(m01*a.m13)+(m02*a.m23)+m03;
+		double t13=(m10*a.m03)+(m11*a.m13)+(m12*a.m23)+m13;
+		double t23=(m20*a.m03)+(m21*a.m13)+(m22*a.m23)+m23;
+		m00=t00; m01=t01; m02=t02; m03=t03;
+		m10=t10; m11=t11; m12=t12; m13=t13;
+		m20=t20; m21=t21; m22=t22; m23=t23;
+	}
+	
+	public void composeWith(Matrix33 a) {
+		double t00=(m00*a.m00)+(m01*a.m10)+(m02*a.m20);
+		double t01=(m00*a.m01)+(m01*a.m11)+(m02*a.m21);
+		double t02=(m00*a.m02)+(m01*a.m12)+(m02*a.m22);
+		double t10=(m10*a.m00)+(m11*a.m10)+(m12*a.m20);
+		double t11=(m10*a.m01)+(m11*a.m11)+(m12*a.m21);
+		double t12=(m10*a.m02)+(m11*a.m12)+(m12*a.m22);
+		double t20=(m20*a.m00)+(m21*a.m10)+(m22*a.m20);
+		double t21=(m20*a.m01)+(m21*a.m11)+(m22*a.m21);
+		double t22=(m20*a.m02)+(m21*a.m12)+(m22*a.m22);
+		
+		m00=t00; m01=t01; m02=t02; 
+		m10=t10; m11=t11; m12=t12; 
+		m20=t20; m21=t21; m22=t22; 
+	}
+	
+	public void composeWith(Translation3 a) {
+		m03+=a.dx;
+		m13+=a.dy;
+		m23+=a.dz;
+	}
 }

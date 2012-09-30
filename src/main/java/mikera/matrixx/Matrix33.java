@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
@@ -9,10 +10,10 @@ import mikera.vectorz.Vector3;
  * @author Mike
  *
  */
-public final class Matrix33 extends AMatrix {
-	private double m00,m01,m02,
-	               m10,m11,m12,
-	               m20,m21,m22;
+public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
+	public double m00,m01,m02,
+	              m10,m11,m12,
+	              m20,m21,m22;
 	
 	public Matrix33() {
 	}

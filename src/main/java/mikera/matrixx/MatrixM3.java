@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
@@ -9,7 +10,7 @@ import mikera.vectorz.Vector3;
  * @author Mike
  *
  */
-public final class MatrixM3 extends AVectorMatrix {
+public final class MatrixM3 extends AVectorMatrix  implements ISpecialisedTransform  {
 	private int rowCount;	
 	private final Vector3[] rows;
 	
