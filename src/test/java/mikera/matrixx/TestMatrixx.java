@@ -61,4 +61,27 @@ public class TestMatrixx {
 		
 		assertTrue(Vector3.of(3,6,9).approxEquals(ct.transform(v)));
 	}
+	
+	void doMutationTest(AMatrix m) {
+		m=m.clone();
+		AMatrix m2=m.clone();
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				m2.set(i,j,m2.get(i,j)+1.3);
+				assertEquals(m2.get(i,j),m2.getRow(i).get(j),0.0);
+				assertNotSame(m.get(i,j),m2.get(i, j));
+			}
+		}
+	}
+	
+	void doGenericTests(AMatrix m) {
+		doMutationTest(m);
+	}
+	
+	@Test public void genericTests() {
+		Matrix33 m33=new Matrix33();
+		doGenericTests(m33);
+	}
 }
