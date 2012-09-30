@@ -67,6 +67,14 @@ public class Vectorz {
 	public static void copy(AVector source, int srcOffset, AVector dest, int destOffset, int length) {
 		source.copy(srcOffset, length, dest, destOffset);
 	}
+
+	public static AVector createUniformRandomVector(int dimensions) {
+		AVector v=Vectorz.createLength(dimensions);
+		for (int i=0; i<dimensions; i++) {
+			v.set(i,Math.random());
+		}
+		return v;
+	}
 	
 	// ===========================
 	// Static maths functions

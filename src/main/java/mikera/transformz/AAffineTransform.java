@@ -1,6 +1,7 @@
 package mikera.transformz;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
 
 /**
  * Abstract base class for affine transformations
@@ -20,5 +21,11 @@ public abstract class AAffineTransform extends ATransform {
 	@Override
 	public boolean isLinear() {
 		return true;
+	}
+	
+	@Override 
+	public void transformInPlace(AVector v) {
+		getMatrixComponent().transformInPlace(v);
+		getTranslationComponent().transformInPlace(v);
 	}
 }

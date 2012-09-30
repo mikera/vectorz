@@ -27,6 +27,11 @@ public final class IdentityTranslation extends ATranslation {
 	public void transform(AVector source, AVector dest) {
 		dest.set(source);		
 	}
+	
+	@Override
+	public void transformInPlace(AVector v) {
+		// no change!
+	}
 
 	@Override
 	public int inputDimensions() {
