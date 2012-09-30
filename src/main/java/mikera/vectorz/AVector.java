@@ -111,7 +111,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
-	 * Copies a the contents of a vector to a double array at the specified offset
+	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
 	public void copyTo(AVector dest, int offset) {
 		int len = length();
@@ -120,6 +120,15 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		}
 	}
 	
+	/**
+	 * Copies a suset of this vector to a vector at the specified offset
+	 */
+	public void copy(int start, int length, AVector dest, int destOffset) {
+		for (int i=0; i<length; i++) {
+			dest.set(destOffset+i,get(start+i));
+		}
+	}
+
 	/**
 	 * Fills a vector with a given value
 	 * @param value
@@ -240,7 +249,6 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	
 	/**
 	 * Returns true if this vector references other vectors / data.
-	 * If true, clone() is not guaran
 	 * @return
 	 */
 	public boolean isReference() {

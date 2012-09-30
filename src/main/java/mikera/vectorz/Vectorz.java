@@ -62,6 +62,10 @@ public class Vectorz {
 		return nv;
 	}	
 	
+	public static void copy(AVector source, int srcOffset, AVector dest, int destOffset, int length) {
+		source.copy(srcOffset, length, dest, destOffset);
+	}
+	
 	// ===========================
 	// Static maths functions
 	
