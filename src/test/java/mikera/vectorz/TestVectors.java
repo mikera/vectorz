@@ -135,9 +135,14 @@ public class TestVectors {
 		}
 		
 		double[] data=new double[100];
-		for (int i=0; i<100; i++) data[i]=i;
+		int[] indexes=new int[100];
+		for (int i=0; i<100; i++) {
+			data[i]=i;
+			indexes[i]=i;
+		}
 
 		doGenericTests(new ArraySubVector(data));
+		doGenericTests(ArrayIndexedVector.wrap(data,indexes));
 		
 		doGenericTests(new Vector(data).subVector(25, 50));
 		doGenericTests(new ArraySubVector(data).subVector(25, 50));
