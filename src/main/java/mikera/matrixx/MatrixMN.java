@@ -1,12 +1,22 @@
 package mikera.matrixx;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 
 public final class MatrixMN extends AVectorMatrix {
-	private int rowCount;	
-	private int columnCount;	
-	private AVector[] rows;
+	private final int rowCount;	
+	private final int columnCount;	
+	private final AVector[] rows;
 	
+	public MatrixMN(int rowCount, int columnCount) {
+		this.rows=new AVector[rowCount];
+		this.rowCount=rowCount;
+		this.columnCount=columnCount;
+		for (int i=0; i<rowCount; i++) {
+			rows[i]=Vectorz.createLength(columnCount);
+		}
+	}
+
 	@Override
 	public AVector getRow(int row) {
 		return rows[row];

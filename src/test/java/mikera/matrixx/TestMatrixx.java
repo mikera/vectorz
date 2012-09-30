@@ -83,5 +83,9 @@ public class TestMatrixx {
 	@Test public void genericTests() {
 		Matrix33 m33=new Matrix33();
 		doGenericTests(m33);
+		
+		MatrixMN mmn=new MatrixMN(4 ,5);
+		doGenericTests(mmn);
+
 	}
 }
