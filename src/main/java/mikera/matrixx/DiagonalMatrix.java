@@ -65,5 +65,14 @@ public final class DiagonalMatrix extends AMatrix {
 		DiagonalMatrix m=new DiagonalMatrix(data);
 		return m;
 	}
+	
+	@Override
+	public double determinant() {
+		double det=1.0;
+		for (int i=0; i<dimensions; i++) {
+			det*=data[i];
+		}
+		return det;
+	}
 
 }
