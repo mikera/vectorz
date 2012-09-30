@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+@SuppressWarnings("serial")
 abstract class IndexedVector extends AVector {
 	protected final int[] indexes;
 	protected final int length;
@@ -12,6 +13,11 @@ abstract class IndexedVector extends AVector {
 	public IndexedVector(int[] indexes) {
 		this.indexes=indexes;
 		this.length=indexes.length;
+	}
+	
+	@Override
+	public boolean isReference() {
+		return true;
 	}
 
 	@Override

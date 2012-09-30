@@ -53,6 +53,13 @@ public class Vectorz {
 
 	public static AVector createSameSize(AVector v) {
 		return createLength(v.length());
+	}
+
+	public static AVector deepCopy(AVector vector) {
+		if (!vector.isReference()) return vector.clone();
+		AVector nv=createLength(vector.length());
+		vector.copyTo(nv, 0);
+		return nv;
 	}	
 	
 	// ===========================

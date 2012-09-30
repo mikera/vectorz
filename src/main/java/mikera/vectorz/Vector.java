@@ -137,8 +137,12 @@ public final class Vector extends ArrayVector {
 		}	
 	}
 	
+	public boolean isReference() {
+		return false;
+	}
+	
 	@Override
-	public Vector clone() {
+	public AVector clone() {
 		return new Vector(this);
 	}
 

@@ -1,7 +1,7 @@
 package mikera.vectorz;
 
 /**
- * Vector that addressed elements indexed into double[] array
+ * Vector that addresses elements indexed into double[] array
  * @author Mike
  *
  */

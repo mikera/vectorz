@@ -28,6 +28,11 @@ public final class WrappedSubVector extends AVector {
 	public int length() {
 		return length;
 	}
+	
+	@Override
+	public boolean isReference() {
+		return true;
+	}
 
 	@Override
 	public double get(int i) {

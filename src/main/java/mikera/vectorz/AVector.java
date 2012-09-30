@@ -111,6 +111,16 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
+	 * Copies a the contents of a vector to a double array at the specified offset
+	 */
+	public void copyTo(AVector dest, int offset) {
+		int len = length();
+		for (int i=0; i<len; i++) {
+			dest.set(offset+i,get(i));
+		}
+	}
+	
+	/**
 	 * Fills a vector with a given value
 	 * @param value
 	 */
@@ -223,7 +233,18 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	 * Clones the vector, creating a new copy of all data
 	 */
 	public AVector clone() {
-		return new Vector(this);
+		// we use a deep copy in case this vector is a reference vector type
+		
+		return Vectorz.deepCopy(this);
+	}
+	
+	/**
+	 * Returns true if this vector references other vectors / data.
+	 * If true, clone() is not guaran
+	 * @return
+	 */
+	public boolean isReference() {
+		return true;
 	}
 	
 	/**
