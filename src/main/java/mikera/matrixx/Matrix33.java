@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.transformz.Affine34;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
@@ -144,6 +145,13 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	@Override
 	public boolean isSquare() {
 		return true;
+	}
+
+	@Override
+	public Affine34 toAffineTransform() {
+		return new Affine34(m00,m01,m02,0.0,
+				            m10,m11,m12,0.0,
+				            m20,m21,m22,0.0);
 	}
 
 }

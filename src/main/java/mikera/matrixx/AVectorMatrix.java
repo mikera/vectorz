@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import mikera.transformz.AffineMN;
+import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 
 /**
@@ -39,5 +41,6 @@ public abstract class AVectorMatrix extends AMatrix {
 		AVectorMatrix avm=(AVectorMatrix) super.clone();
 		return avm;
 	}
+	
 
 }

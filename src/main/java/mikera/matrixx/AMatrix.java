@@ -2,6 +2,7 @@ package mikera.matrixx;
 
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATranslation;
+import mikera.transformz.AffineMN;
 import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
@@ -17,10 +18,13 @@ public abstract class AMatrix extends AAffineTransform {
 	public abstract double get(int row, int column);
 
 	public abstract void set(int row, int column, double value);
-
 	
 	// =============================================
 	// Standard implementations
+	
+	public AAffineTransform toAffineTransform() {
+		return new AffineMN(this.clone(),Transformz.identityTransform(outputDimensions()));
+	}
 	
 	@Override
 	public AMatrix getMatrixComponent() {

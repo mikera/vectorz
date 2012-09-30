@@ -11,7 +11,6 @@ import mikera.vectorz.Vectorz;
 public class TestAffine {
 
 	void testAffineProperty(AAffineTransform t) {
-		int outputDim=t.outputDimensions();
 		int inputDim=t.inputDimensions();
 		
 		AVector v=Vectorz.createUniformRandomVector(inputDim);
@@ -49,12 +48,22 @@ public class TestAffine {
 		assertTrue(r.approxEquals(t.getTranslationComponent().getTranslationVector()));	
 	}
 	
+
+	private void testCloneTransform(AAffineTransform t) {
+		AVector z=Vectorz.zeroVector(t.inputDimensions());
+		AVector r1=t.transform(z);
+		AVector r2=t.clone().transform(z);
+		assertTrue(r1.approxEquals(r2));	
+	}
+	
 	private void doAffineTests(AAffineTransform t) {
 		testAffineProperty(t);
 		testApplyToZeroVector(t);
 		testAffineDecomposition(t);		
+		testCloneTransform(t);		
 	}
 	
+
 	@Test public void genericAffineTests() {
 		doAffineTests(Transformz.identityTransform(3));
 		doAffineTests(Transformz.identityTransform(7));
