@@ -256,6 +256,14 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
+	 * Returns true if this vector is mutable.
+	 * @return
+	 */
+	public boolean isMutable() {
+		return true;
+	}
+	
+	/**
 	 * Adds another vector to this one
 	 * @param v
 	 */
