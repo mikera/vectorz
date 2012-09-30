@@ -32,4 +32,12 @@ public class Transformz {
 	public static Affine34 createAffineTransform(Matrix33 m, Vector3 v) {
 		return new Affine34(m,v);
 	}
+
+	public static ATranslation createMutableTranslation(ATranslation t) {
+		if (t.dimensions()==3) {
+			return new Translation3(t);
+		} else {
+			return new Translation(t);
+		}
+	}
 }

@@ -16,6 +16,10 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 		dz=v.get(2);
 	}
 
+	public Translation3(ATranslation t) {
+		this(t.getTranslationVector());
+	}
+
 	@Override
 	public Vector3 getTranslationVector() {
 		return Vector3.of(dx,dy,dz);

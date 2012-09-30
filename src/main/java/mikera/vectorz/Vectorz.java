@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import mikera.transformz.ATranslation;
 import mikera.vectorz.impl.ZeroLengthVector;
 
 public class Vectorz {
@@ -73,6 +74,12 @@ public class Vectorz {
 		for (int i=0; i<dimensions; i++) {
 			v.set(i,Math.random());
 		}
+		return v;
+	}
+
+	public static AVector createMutableVector(AVector t) {
+		AVector v=createLength(t.length());
+		v.set(t);
 		return v;
 	}
 	

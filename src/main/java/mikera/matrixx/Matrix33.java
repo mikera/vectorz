@@ -39,6 +39,20 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 		this.m22=m22;
 	}
 
+	public Matrix33(AMatrix m) {
+		assert(m.rowCount()==3);
+		assert(m.columnCount()==3);
+		m00=m.get(0,0);
+		m01=m.get(0,1);
+		m02=m.get(0,2);
+		m10=m.get(1,0);
+		m11=m.get(1,1);
+		m12=m.get(1,2);
+		m20=m.get(2,0);
+		m21=m.get(2,1);
+		m22=m.get(2,2);
+	}
+
 	@Override
 	public double determinant() {
 		return (m00*m11*m22)+(m01*m12*m20)+(m02*m10*m21)

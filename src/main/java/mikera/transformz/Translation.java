@@ -3,6 +3,7 @@ package mikera.transformz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 
 public final class Translation extends ATranslation {
 	private final AVector translation;
@@ -13,6 +14,10 @@ public final class Translation extends ATranslation {
 		dimensions=source.length();
 	}
 	
+	public Translation(ATranslation t) {
+		this(Vectorz.createMutableVector(t.getTranslationComponent().getTranslationVector()));
+	}
+
 	@Override
 	public AVector getTranslationVector() {
 		return translation;

@@ -55,4 +55,13 @@ public class Matrixx {
 		default: return new MatrixMN(dimensions,dimensions);
 		}
 	}
+
+	public static AMatrix createMutableCopy(AMatrix m) {
+		int rows=m.rowCount();
+		int columns=m.columnCount();
+		if((rows==3)&&(columns==3)) {
+			return new Matrix33(m);
+		}
+		return new MatrixMN(m);
+	}
 }

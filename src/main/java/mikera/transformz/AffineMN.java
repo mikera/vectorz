@@ -1,6 +1,7 @@
 package mikera.transformz;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 
 public final class AffineMN extends AAffineTransform {
@@ -18,7 +19,24 @@ public final class AffineMN extends AAffineTransform {
 			throw new IllegalArgumentException("matrix and translation have incompatible dimensionality");
 		}
 	}
+
+	public AffineMN(AAffineTransform at) {
+		this(at.getMatrixComponent().toMutableMatrix(),at.getTranslationComponent().toMutableTranslation());
+	}
+
+	@Override
+	public void composeWith(ATransform trans) {
+		if (trans instanceof AffineMN) {
+			composeWith((AffineMN)trans);
+			return;
+		}
+		super.composeWith(trans);
+	}
 	
+	public void composeWith(AffineMN trans) {
+		super.composeWith(trans);
+	}
+
 	@Override
 	public AMatrix getMatrixComponent() {
 		return matrix;

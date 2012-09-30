@@ -22,6 +22,7 @@ public abstract class AMatrix extends AAffineTransform {
 	// =============================================
 	// Standard implementations
 	
+	@Override
 	public AAffineTransform toAffineTransform() {
 		return new AffineMN(new MatrixMN(this),Transformz.identityTransform(outputDimensions()));
 	}
@@ -187,5 +188,9 @@ public abstract class AMatrix extends AAffineTransform {
 			swap(inds,offset,offset+i);
 		}
 		return det;
+	}
+
+	public AMatrix toMutableMatrix() {
+		return Matrixx.createMutableCopy(this);
 	}
 }

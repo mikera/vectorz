@@ -34,4 +34,8 @@ public abstract class AAffineTransform extends ATransform {
 		getMatrixComponent().transformInPlace(v);
 		getTranslationComponent().transformInPlace(v);
 	}
+
+	public AAffineTransform toAffineTransform() {
+		return new AffineMN(this);
+	}
 }
