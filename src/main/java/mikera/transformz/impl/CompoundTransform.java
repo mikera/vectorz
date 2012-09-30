@@ -1,5 +1,6 @@
-package mikera.transformz;
+package mikera.transformz.impl;
 
+import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 

@@ -1,5 +1,6 @@
 package mikera.transformz;
 
+import mikera.transformz.impl.CompoundTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
