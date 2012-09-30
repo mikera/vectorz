@@ -33,6 +33,13 @@ public class Vectorz {
 		return createLength(length);
 	}
 
+	/**
+	 * Returns a vector filled with zeros of the specified length.
+	 * 
+	 * Attempts to select the most efficient concrete Vector type for any given length.
+	 * @param length
+	 * @return
+	 */
 	public static AVector createLength(int length) {
 		switch (length) {
 			case 0: return ZeroLengthVector.INSTANCE;

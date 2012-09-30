@@ -81,10 +81,21 @@ public class TestMatrixx {
 	}
 	
 	@Test public void genericTests() {
+		// specialised 3x3 matrix
 		Matrix33 m33=new Matrix33();
 		doGenericTests(m33);
 		
-		MatrixMN mmn=new MatrixMN(4 ,5);
+		// specialised Mx3 matrix
+		MatrixM3 mm3=new MatrixM3(10);
+		doGenericTests(mm3);
+
+		
+		// general M*N matrix
+		MatrixMN mmn=new MatrixMN(6 ,7);
+		doGenericTests(mmn);
+		
+		// 0x0 matrix should work
+		mmn=new MatrixMN(0 ,0);
 		doGenericTests(mmn);
 
 	}

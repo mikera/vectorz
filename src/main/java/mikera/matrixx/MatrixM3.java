@@ -16,7 +16,7 @@ public final class MatrixM3 extends AVectorMatrix {
 	public MatrixM3(int rowCount) {
 		this.rowCount=rowCount;
 		rows=new Vector3[rowCount];
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<rowCount; i++) {
 			rows[i]=new Vector3();
 		}
 	}
