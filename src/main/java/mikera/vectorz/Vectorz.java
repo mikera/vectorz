@@ -26,7 +26,7 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector join(AVector first, AVector second) {
-		return new JoinedVector(first,second);
+		return first.join(second);
 	}
 	
 	public static AVector zeroVector(int length) {

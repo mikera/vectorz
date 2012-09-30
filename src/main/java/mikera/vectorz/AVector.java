@@ -276,4 +276,13 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		sb.append(']');
 		return sb.toString();
 	}
+
+	/**
+	 * Returns a new vector that refers to this vector joined to a second vector
+	 * @param second
+	 * @return
+	 */
+	public AVector join(AVector second) {
+		return new JoinedVector(this,second);
+	}
 }
