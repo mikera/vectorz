@@ -16,6 +16,15 @@ public final class MatrixMN extends AVectorMatrix {
 			rows[i]=Vectorz.createLength(columnCount);
 		}
 	}
+	
+	public MatrixMN(AMatrix source) {
+		this(source.rowCount(),source.columnCount());
+		for (int i=0; i<rowCount; i++) {
+			for (int j=0; j<columnCount; j++) {
+				set(i,j,source.get(i, j));
+			}
+		}
+	}
 
 	@Override
 	public AVector getRow(int row) {
