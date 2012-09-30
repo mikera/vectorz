@@ -4,7 +4,7 @@ import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATransform;
 import mikera.transformz.ATranslation;
 import mikera.transformz.Transformz;
-import mikera.transforz.impl.IdentityTranslation;
+import mikera.transformz.impl.IdentityTranslation;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 

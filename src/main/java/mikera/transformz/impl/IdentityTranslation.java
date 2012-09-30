@@ -1,4 +1,4 @@
-package mikera.transforz.impl;
+package mikera.transformz.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
