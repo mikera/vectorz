@@ -5,22 +5,22 @@ package mikera.vectorz;
  * @author Mike
  *
  */
-public class ArrayIndexedVector extends AVector {
+public class IndexedArrayVector extends AVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
-	private int length;
+	private final int length;
 	
-	private int[] indexes;
-	private double[] data;
+	private final int[] indexes;
+	private final double[] data;
 	
-	private ArrayIndexedVector(double[] source, int[] indexes) {
+	private IndexedArrayVector(double[] source, int[] indexes) {
 		this.indexes=indexes;
 		this.data=source;
 		length=indexes.length;
 	}
 	
-	public static ArrayIndexedVector wrap(double[] data, int[] indexes) {
-		return new ArrayIndexedVector(data,indexes);
+	public static IndexedArrayVector wrap(double[] data, int[] indexes) {
+		return new IndexedArrayVector(data,indexes);
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class ArrayIndexedVector extends AVector {
 	}
 	
 	@Override
-	public ArrayIndexedVector subVector(int offset, int length) {
+	public IndexedArrayVector subVector(int offset, int length) {
 		if (offset<0) throw new IndexOutOfBoundsException("Start Index: "+offset);
 		if ((offset+length)>this.length) throw new IndexOutOfBoundsException("End Index: "+(offset+length));
 

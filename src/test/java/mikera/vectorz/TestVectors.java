@@ -142,7 +142,8 @@ public class TestVectors {
 		}
 
 		doGenericTests(new ArraySubVector(data));
-		doGenericTests(ArrayIndexedVector.wrap(data,indexes));
+		doGenericTests(IndexedArrayVector.wrap(data,indexes));
+		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
 		
 		doGenericTests(new Vector(data).subVector(25, 50));
 		doGenericTests(new ArraySubVector(data).subVector(25, 50));
