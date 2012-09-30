@@ -3,6 +3,7 @@ package mikera.transformz;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
@@ -10,10 +11,11 @@ import mikera.vectorz.Vectorz;
 public class TestAffine {
 
 	void testAffineProperty(AAffineTransform t) {
-		int rc=t.outputDimensions();
-		AVector v=Vectorz.createUniformRandomVector(rc);
+		int outputDim=t.outputDimensions();
+		int inputDim=t.inputDimensions();
 		
-		AVector d=Vectorz.createUniformRandomVector(rc);
+		AVector v=Vectorz.createUniformRandomVector(inputDim);
+		AVector d=Vectorz.createUniformRandomVector(inputDim);
 		
 		AVector td=t.getMatrixComponent().transform(d);
 		AVector tv=t.transform(v);
@@ -23,7 +25,7 @@ public class TestAffine {
 		
 		AVector r2=v.clone();
 		r2.add(d);
-		t.transformInPlace(r2);
+		r2=t.transform(r2);
 		
 		assertTrue(r1.approxEquals(r2));
 	}
@@ -49,7 +51,14 @@ public class TestAffine {
 		doAffineTests(Matrixx.createRandomSquareMatrix(3));
 		doAffineTests(Matrixx.createRandomSquareMatrix(5));
 		
-		doAffineTests(Transformz.createTranslation(Vectorz.createUniformRandomVector(5)));
+		AMatrix rmatrix=Matrixx.createRandomMatrix(5, 6);
+		doAffineTests(rmatrix);
+		
+		AVector rvector=Vectorz.createUniformRandomVector(5);
+		PureTranslation rtrans=Transformz.createTranslation(rvector);
+		doAffineTests(rtrans);
+		
+		doAffineTests(new AffineTransformMN(rmatrix,rtrans));
 	}
 
 
