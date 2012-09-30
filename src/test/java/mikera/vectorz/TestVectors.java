@@ -58,6 +58,8 @@ public class TestVectors {
 	
 	public void testClone(AVector v) {
 		AVector cv=v.clone();
+		assertFalse(cv.isReference());
+		
 		int len=cv.length();
 		assertEquals(v.length(), len);
 		
@@ -102,6 +104,7 @@ public class TestVectors {
 		AVector s1 = v.subVector(start, vlen-start);
 		AVector s2 = v.subVector(start, vlen-start);
 		
+		assertTrue(s1.isReference());
 		assertNotSame(s1,s2);
 		
 		int len=s1.length();
