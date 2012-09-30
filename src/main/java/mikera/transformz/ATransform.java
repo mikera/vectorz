@@ -58,6 +58,14 @@ public abstract class ATransform implements Cloneable {
 	}
 	
 	/**
+	 * Composes this transformation with a given transformation, 
+	 * mutating the transformation to represent the combined transform
+	 */
+	public void composeWith(ATransform trans) {
+		throw new UnsupportedOperationException(this.getClass()+" cannot compose with "+trans.getClass());
+	}
+	
+	/**
 	 * Returns true if this transformation is guaranteed to be linear
 	 * @return
 	 */
