@@ -16,6 +16,13 @@ public final class Matrix33 extends AMatrix {
 	
 	public Matrix33() {
 	}
+	
+	public Matrix33(Matrix33 source) {
+		Matrix33 s=source;
+		m00=s.m00; m01=s.m01; m02=s.m02;
+		m10=s.m10; m11=s.m11; m12=s.m12;
+		m20=s.m20; m21=s.m21; m22=s.m22;
+	}
 
 	@Override
 	public int rowCount() {
