@@ -23,7 +23,7 @@ public abstract class AMatrix extends AAffineTransform {
 	// Standard implementations
 	
 	public AAffineTransform toAffineTransform() {
-		return new AffineMN(this.clone(),Transformz.identityTransform(outputDimensions()));
+		return new AffineMN(new MatrixMN(this),Transformz.identityTransform(outputDimensions()));
 	}
 	
 	@Override
