@@ -48,11 +48,14 @@ public abstract class AMatrix extends ATransform {
 		}
 	}
 	
+	
+	
 	@Override
 	public void transformInPlace(AVector v) {
 		double[] temp=new double[v.length()];
 		int rc=rowCount();
 		int cc=columnCount();
+		if (rc!=cc) throw new UnsupportedOperationException("Cannot transform in place with a non-square transformation");
 		for (int row=0; row<rc; row++) {
 			double total=0.0;
 			for (int column=0; column<cc; column++) {
