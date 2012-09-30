@@ -23,6 +23,12 @@ public final class Matrix33 extends AMatrix {
 		m10=s.m10; m11=s.m11; m12=s.m12;
 		m20=s.m20; m21=s.m21; m22=s.m22;
 	}
+	
+	@Override
+	public double determinant() {
+		return (m00*m11*m22)+(m01*m12*m20)+(m02*m10*m21)
+		      -(m00*m12*m21)-(m01*m10*m22)-(m02*m11*m20);
+	}
 
 	@Override
 	public int rowCount() {
