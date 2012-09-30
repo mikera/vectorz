@@ -2,6 +2,9 @@ package mikera.matrixx;
 
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATransform;
+import mikera.transformz.ATranslation;
+import mikera.transformz.Transformz;
+import mikera.transforz.impl.IdentityTranslation;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
@@ -20,6 +23,16 @@ public abstract class AMatrix extends AAffineTransform {
 	
 	// =============================================
 	// Standard implementations
+	
+	@Override
+	public AMatrix getMatrixComponent() {
+		return this;
+	}
+	
+	@Override
+	public ATranslation getTranslationComponent() {
+		return Transformz.identityTransform(rowCount());
+	}
 	
 	public boolean isSquare() {
 		return rowCount()==columnCount();
