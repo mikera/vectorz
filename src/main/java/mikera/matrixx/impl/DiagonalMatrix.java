@@ -3,6 +3,11 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
+/**
+ * Specialised diagonal matrix class
+ * @author Mike
+ *
+ */
 public final class DiagonalMatrix extends AMatrix {
 	final int dimensions;
 	final double[] data;

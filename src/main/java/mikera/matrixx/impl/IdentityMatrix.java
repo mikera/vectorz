@@ -34,5 +34,10 @@ public class IdentityMatrix extends AMatrix {
 	public void transform(AVector source, AVector dest) {
 		dest.set(source);
 	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
 
 }

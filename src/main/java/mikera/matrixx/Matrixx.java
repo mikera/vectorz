@@ -31,6 +31,23 @@ public class Matrixx {
 		}
 		return m;
 	}
+	
+	public static AMatrix createRandomMatrix(int rows, int columns) {
+		AMatrix m=createMatrix(rows,columns);
+		for (int i=0; i<rows; i++) {
+			for (int j=0; j<columns; j++) {
+				m.set(i,j,Math.random());
+			}
+		}
+		return m;
+	}
+
+	private static AMatrix createMatrix(int rows, int columns) {
+		if ((rows==columns)) {
+			if (rows==3) return new Matrix33();
+		}
+		return new MatrixMN(rows,columns);
+	}
 
 	private static AMatrix createSquareMatrix(int dimensions) {
 		switch (dimensions) {
