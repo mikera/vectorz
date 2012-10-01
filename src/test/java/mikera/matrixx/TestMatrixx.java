@@ -112,10 +112,23 @@ public class TestMatrixx {
 		}
 	}
 	
+	private void doTransposeTest(AMatrix m) {
+		if (!m.isSquare()) return;
+		AMatrix m2=m.clone();
+		m2.transposeInPlace();
+		m2.transposeInPlace();
+		assertEquals(m,m2);
+	}
+
+	
+	
 	void doGenericTests(AMatrix m) {
 		doMutationTest(m);
+		doTransposeTest(m);
 	}
 	
+
+
 	@Test public void genericTests() {
 		// specialised 3x3 matrix
 		Matrix33 m33=new Matrix33();
@@ -127,6 +140,10 @@ public class TestMatrixx {
 	
 		// general M*N matrix
 		MatrixMN mmn=new MatrixMN(6 ,7);
+		doGenericTests(mmn);
+		
+		// square M*M matrix
+		mmn=new MatrixMN(6 ,6);
 		doGenericTests(mmn);
 		
 		// 0x0 matrix should work
