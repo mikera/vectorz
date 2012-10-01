@@ -205,4 +205,20 @@ public abstract class AMatrix extends AAffineTransform {
 			}
 		}
 	}
+	
+	@Override public boolean equals(Object o) {
+		if (!(o instanceof AMatrix)) return false;
+		return equals((AMatrix)o);
+	}
+	
+	public boolean equals(AMatrix a) {
+		int rc=rowCount(); if (rc!=a.rowCount()) return false;
+		int cc=columnCount(); if (cc!=a.columnCount()) return false;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				if (get(i,j)!=a.get(i, j)) return false;
+			}
+		}
+		return true;
+	}
 }
