@@ -88,4 +88,23 @@ public abstract class ArrayVector extends AVector {
 			data[offset+i] += vdata[voffset + i]*factor;
 		}
 	}
+	
+	
+	@Override 
+	public double magnitudeSquared() {
+		int length=length();
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			double v=data[offset+i];
+			result+=v*v;
+		}
+		return result;
+	}
+	
+	@Override 
+	public double magnitude() {
+		return Math.sqrt(magnitudeSquared());
+	}
 }
