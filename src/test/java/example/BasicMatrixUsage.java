@@ -2,7 +2,6 @@ package example;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix33;
-import mikera.matrixx.MatrixMN;
 import mikera.matrixx.Matrixx;
 
 public class BasicMatrixUsage {
