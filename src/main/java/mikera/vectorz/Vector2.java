@@ -47,6 +47,16 @@ public final class Vector2 extends APrimitiveVector {
 	public int length() {
 		return 2;
 	}
+	
+	@Override 
+	public double magnitudeSquared() {
+		return (x*x)+(y*y);
+	}
+	
+	@Override 
+	public double magnitude() {
+		return Math.sqrt(magnitudeSquared());
+	}
 
 	@Override
 	public double get(int i) {

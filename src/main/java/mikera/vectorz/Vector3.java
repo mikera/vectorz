@@ -61,6 +61,16 @@ public final class Vector3 extends APrimitiveVector {
 		z+=dz;
 	}
 	
+	@Override 
+	public double magnitudeSquared() {
+		return (x*x)+(y*y)+(z*z);
+	}
+	
+	@Override 
+	public double magnitude() {
+		return Math.sqrt(magnitudeSquared());
+	}
+	
 	public void set(Vector3 a) {
 		this.x=a.x;
 		this.y=a.y;
