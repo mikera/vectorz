@@ -43,6 +43,11 @@ public final class ZeroLengthVector extends APrimitiveVector {
 		return 1;
 	}
 	
+	@Override
+	public boolean isZeroVector() {
+		return true;
+	}
+	
 	/**
 	 * Readresolve method to ensure we always use the singleton
 	 */

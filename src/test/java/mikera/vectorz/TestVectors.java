@@ -121,13 +121,22 @@ public class TestVectors {
 		}
 	}
 	
+	
+	private void testZero(AVector v) {
+		v=v.clone();
+		v.multiply(0.0);
+		assertTrue(v.isZeroVector());
+	}
+	
 	private void doGenericTests(AVector v) {
 		testClone(v);
+		testZero(v);
 		testSubVectorMutability(v);
 		testOutOfBounds(v);
 	}
 	
-	
+
+
 	@Test public void genericTests() {
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector2(1.0,2.0));

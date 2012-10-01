@@ -1,7 +1,6 @@
 package mikera.transformz;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 
 public final class AffineMN extends AAffineTransform {

@@ -1,6 +1,5 @@
 package mikera.vectorz;
 
-import mikera.transformz.ATranslation;
 import mikera.vectorz.impl.ZeroLengthVector;
 
 public class Vectorz {
