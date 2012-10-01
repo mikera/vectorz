@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import mikera.vectorz.impl.ZeroLengthVector;
+import mikera.vectorz.impl.ZeroVector;
 
 public class Vectorz {
 	public static final double DEFAULT_TOLERANCE = 0.00001;
@@ -31,7 +32,7 @@ public class Vectorz {
 		return first.join(second);
 	}
 	
-	public static AVector zeroVector(int length) {
+	public static AVector createZeroVector(int length) {
 		return createLength(length);
 	}
 
@@ -80,6 +81,24 @@ public class Vectorz {
 		AVector v=createLength(t.length());
 		v.set(t);
 		return v;
+	}
+	
+	private static final AVector[] ZERO_VECTORS = new AVector[] {
+		ZeroLengthVector.INSTANCE,
+		new ZeroVector(1),
+		new ZeroVector(2),
+		new ZeroVector(3),
+		new ZeroVector(4)
+	};
+	
+	/**
+	 * Returns an immutable vector of zeros
+	 * @param dimensions
+	 * @return
+	 */
+	public static AVector immutableZeroVector(int dimensions) {
+		if (dimensions>=ZERO_VECTORS.length) return new ZeroVector(dimensions);
+		return ZERO_VECTORS[dimensions];
 	}
 	
 	// ===========================

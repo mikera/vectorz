@@ -41,7 +41,7 @@ public class TestAffine {
 	}
 	
 	private void testApplyToZeroVector(AAffineTransform t) {
-		AVector z=Vectorz.zeroVector(t.inputDimensions());
+		AVector z=Vectorz.createZeroVector(t.inputDimensions());
 		
 		AVector r=t.transform(z);
 		assertNotNull(r);
@@ -50,7 +50,7 @@ public class TestAffine {
 	
 
 	private void testCloneTransform(AAffineTransform t) {
-		AVector z=Vectorz.zeroVector(t.inputDimensions());
+		AVector z=Vectorz.createZeroVector(t.inputDimensions());
 		AVector r1=t.transform(z);
 		AVector r2=t.clone().transform(z);
 		assertTrue(r1.approxEquals(r2));	
