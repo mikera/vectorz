@@ -5,6 +5,7 @@ import mikera.transformz.ATranslation;
 import mikera.transformz.AffineMN;
 import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
 
 public abstract class AMatrix extends AAffineTransform {
@@ -244,5 +245,19 @@ public abstract class AMatrix extends AAffineTransform {
 		}
 		sb.append("]");
 		return sb.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		// hashcode is hashcode of all doubles, row by row
+		int hashCode = 1;
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int i = 0; i < rc; i++) {
+			for (int j=0; j<cc; j++) {
+				hashCode = 31 * hashCode + (Tools.hashCode(get(i,j)));
+			}
+		}
+		return hashCode;
 	}
 }
