@@ -306,12 +306,25 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		addMultiple(v,-1.0);
 	}
 	
+	/**
+	 * Returns true if this vector is the zero vector
+	 * @return
+	 */
 	public boolean isZeroVector() {
 		int len=length();
 		for (int i=0; i<len; i++) {
 			if (get(i)!=0.0) return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Returns true if the vector has unit length
+	 * @return
+	 */
+	public boolean isUnitLengthVector() {
+		double mag=magnitudeSquared();
+		return Math.abs(mag-1.0)<0.0000001;
 	}
 	
 	/**

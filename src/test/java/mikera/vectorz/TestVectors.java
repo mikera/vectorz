@@ -37,7 +37,6 @@ public class TestVectors {
 		data[0]=13;
 		assertEquals(13,v.get(0),0.0);
 	}
-
 	
 	@Test public void testSubVectorCopy() {
 		double[] data=new double[100];
@@ -128,13 +127,24 @@ public class TestVectors {
 		assertTrue(v.isZeroVector());
 	}
 	
+
+	private void testNormalise(AVector v) {
+		if (v.length()==0) return;
+		v=v.clone();
+		v.set(0,v.get(0)+Math.random());
+		v.normalise();
+		assertTrue(v.isUnitLengthVector());
+	}
+	
 	private void doGenericTests(AVector v) {
 		testClone(v);
+		testNormalise(v);
 		testZero(v);
 		testSubVectorMutability(v);
 		testOutOfBounds(v);
 	}
 	
+
 
 
 	@Test public void genericTests() {
