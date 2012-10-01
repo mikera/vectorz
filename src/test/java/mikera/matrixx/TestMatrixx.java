@@ -116,6 +116,10 @@ public class TestMatrixx {
 		if (!m.isSquare()) return;
 		AMatrix m2=m.clone();
 		m2.transposeInPlace();
+		
+		AMatrix tm=m.transpose();
+		assertEquals(tm,m2);
+		
 		m2.transposeInPlace();
 		assertEquals(m,m2);
 	}
