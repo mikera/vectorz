@@ -41,6 +41,4 @@ public abstract class AVectorMatrix extends AMatrix {
 		AVectorMatrix avm=(AVectorMatrix) super.clone();
 		return avm;
 	}
-	
-
 }

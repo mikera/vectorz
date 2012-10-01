@@ -155,7 +155,8 @@ public abstract class AMatrix extends AAffineTransform {
 	public boolean isFullyMutable() {
 		return true;
 	}
-	
+
+	@Override
 	public AMatrix clone() {
 		return (AMatrix) super.clone();
 	}
@@ -195,10 +196,10 @@ public abstract class AMatrix extends AAffineTransform {
 	}
 	
 	public void transposeInPlace() {
-		if (!isSquare()) throw new Error("Inly square matrixes can be transposed in place!");
-		int rc=rowCount();
-		for (int i=0; i<rc; i++) {
-			for (int j=i+1; j<rc; j++) {
+		if (!isSquare()) throw new Error("Only square matrixes can be transposed in place!");
+		int dims=rowCount();
+		for (int i=0; i<dims; i++) {
+			for (int j=i+1; j<dims; j++) {
 				double temp=get(i,j);
 				set(i,j,get(j,i));
 				set(j,i,temp);
@@ -232,5 +233,16 @@ public abstract class AMatrix extends AAffineTransform {
 			}
 		}
 		return true;
+	}
+	
+	public String toString() {
+		StringBuilder sb=new StringBuilder();
+		int rc=rowCount();
+		sb.append("[");
+		for (int i=0; i<rc; i++) {
+			sb.append(getRow(i).toString());
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 }

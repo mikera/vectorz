@@ -24,21 +24,13 @@ public class Matrixx {
 	
 	public static AMatrix createRandomSquareMatrix(int dimensions) {
 		AMatrix m=createSquareMatrix(dimensions);
-		for (int i=0; i<dimensions; i++) {
-			for (int j=0; j<dimensions; j++) {
-				m.set(i,j,Math.random());
-			}
-		}
+		fillRandomValues(m);
 		return m;
 	}
 	
 	public static AMatrix createRandomMatrix(int rows, int columns) {
 		AMatrix m=createMatrix(rows,columns);
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<columns; j++) {
-				m.set(i,j,Math.random());
-			}
-		}
+		fillRandomValues(m);
 		return m;
 	}
 
@@ -70,5 +62,15 @@ public class Matrixx {
 			return new Matrix33(m);
 		}
 		return new MatrixMN(m);
+	}
+
+	public static void fillRandomValues(AMatrix m) {
+		int rows=m.rowCount();
+		int columns=m.columnCount();
+		for (int i=0; i<rows; i++) {
+			for (int j=0; j<columns; j++) {
+				m.set(i,j,Math.random());
+			}
+		}
 	}
 }

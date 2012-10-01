@@ -101,6 +101,7 @@ public class TestMatrixx {
 	void doMutationTest(AMatrix m) {
 		m=m.clone();
 		AMatrix m2=m.clone();
+		assertEquals(m,m2);
 		int rc=m.rowCount();
 		int cc=m.columnCount();
 		for (int i=0; i<rc; i++) {
@@ -112,11 +113,14 @@ public class TestMatrixx {
 		}
 	}
 	
-	private void doTransposeTest(AMatrix m) {
+	private void doSquareTransposeTest(AMatrix m) {
 		if (!m.isSquare()) return;
+		
 		AMatrix m2=m.clone();
+
 		m2.transposeInPlace();
 		
+		// two different kinds of transpose should produce same result
 		AMatrix tm=m.transpose();
 		assertEquals(tm,m2);
 		
@@ -124,13 +128,31 @@ public class TestMatrixx {
 		assertEquals(m,m2);
 	}
 
+	void doRandomTests(AMatrix m) {
+		m=m.clone();
+		Matrixx.fillRandomValues(m);
+		doMutationTest(m);
+		doSquareTransposeTest(m);
+	}
+	
+
+	private void doCloneSafeTest(AMatrix m) {
+		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
+		AMatrix m2=m.clone();
+		m2.set(0,0,Math.PI);
+		assertNotSame(m.get(0,0),m2.get(0,0));
+	}
+
 	
 	
 	void doGenericTests(AMatrix m) {
+		doCloneSafeTest(m);
 		doMutationTest(m);
-		doTransposeTest(m);
+		doSquareTransposeTest(m);
+		doRandomTests(m);
 	}
 	
+
 
 
 	@Test public void genericTests() {
@@ -145,7 +167,11 @@ public class TestMatrixx {
 		// general M*N matrix
 		MatrixMN mmn=new MatrixMN(6 ,7);
 		doGenericTests(mmn);
-		
+
+		// square M*M matrix
+		mmn=new MatrixMN(2,2);
+		doGenericTests(mmn);
+
 		// square M*M matrix
 		mmn=new MatrixMN(6 ,6);
 		doGenericTests(mmn);

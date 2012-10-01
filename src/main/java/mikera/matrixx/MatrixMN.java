@@ -65,9 +65,9 @@ public final class MatrixMN extends AVectorMatrix {
 	
 	@Override
 	public MatrixMN clone() {
-		MatrixMN m=(MatrixMN) super.clone();
+		MatrixMN m=new MatrixMN(rowCount,columnCount);
 		for (int i=0; i<rowCount; i++) {
-			m.rows[i]=m.rows[i].clone();
+			m.rows[i].set(rows[i]);
 		}
 		return m;
 	}

@@ -41,6 +41,11 @@ public class IdentityMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isSquare() {
+		return true;
+	}
+	
+	@Override
 	public void transposeInPlace() {
 		// already done!
 	}
