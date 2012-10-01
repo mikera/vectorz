@@ -39,5 +39,9 @@ public class IdentityMatrix extends AMatrix {
 	public boolean isFullyMutable() {
 		return false;
 	}
-
+	
+	@Override
+	public void transposeInPlace() {
+		// already done!
+	}
 }

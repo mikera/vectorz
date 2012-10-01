@@ -80,5 +80,10 @@ public final class DiagonalMatrix extends AMatrix {
 		}
 		return det;
 	}
+	
+	@Override
+	public void transposeInPlace() {
+		// already done!
+	}
 
 }

@@ -193,4 +193,16 @@ public abstract class AMatrix extends AAffineTransform {
 	public AMatrix toMutableMatrix() {
 		return Matrixx.createMutableCopy(this);
 	}
+	
+	public void transposeInPlace() {
+		if (!isSquare()) throw new Error("Inly square matrixes can be transposed in place!");
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			for (int j=i+1; j<rc; j++) {
+				double temp=get(i,j);
+				set(i,j,get(j,i));
+				set(j,i,temp);
+			}
+		}
+	}
 }
