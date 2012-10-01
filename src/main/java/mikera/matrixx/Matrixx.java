@@ -42,7 +42,14 @@ public class Matrixx {
 		return m;
 	}
 
-	private static AMatrix createMatrix(int rows, int columns) {
+	/**
+	 * Creates an empty matrix of the specified size
+	 * 
+	 * @param rows
+	 * @param columns
+	 * @return
+	 */
+	public static AMatrix createMatrix(int rows, int columns) {
 		if ((rows==columns)) {
 			if (rows==3) return new Matrix33();
 		}

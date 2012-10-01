@@ -167,5 +167,12 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 				            m10,m11,m12,0.0,
 				            m20,m21,m22,0.0);
 	}
+	
+	@Override
+	public Matrix33 transpose() {
+		return new Matrix33(m00,m10,m20,
+				            m01,m11,m21,
+				            m02,m12,m22);
+	}
 
 }

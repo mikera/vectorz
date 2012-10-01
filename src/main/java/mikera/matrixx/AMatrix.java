@@ -206,6 +206,18 @@ public abstract class AMatrix extends AAffineTransform {
 		}
 	}
 	
+	public AMatrix transpose() {
+		int rc=rowCount();	
+		int cc=columnCount();
+		AMatrix m=Matrixx.createMatrix(cc,rc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				m.set(j,i,get(i,j));
+			}
+		}		
+		return m;
+	}
+	
 	@Override public boolean equals(Object o) {
 		if (!(o instanceof AMatrix)) return false;
 		return equals((AMatrix)o);
