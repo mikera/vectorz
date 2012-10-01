@@ -54,6 +54,8 @@ public class TestAffine {
 		AVector r1=t.transform(z);
 		AVector r2=t.clone().transform(z);
 		assertTrue(r1.approxEquals(r2));	
+		
+		assertEquals(t,t.clone());
 	}
 	
 	private void doAffineTests(AAffineTransform t) {

@@ -306,6 +306,14 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		addMultiple(v,-1.0);
 	}
 	
+	public boolean isZeroVector() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			if (get(i)!=0.0) return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Subtracts a scaled multiple of another vector from this vector
 	 * @param v

@@ -236,6 +236,12 @@ public abstract class AMatrix extends AAffineTransform {
 		return true;
 	}
 	
+	public boolean equals(AAffineTransform a) {
+		
+		return a.getTranslationComponent().isIdentity()&&
+				this.equals(a.getMatrixComponent());	
+	}
+	
 	public String toString() {
 		StringBuilder sb=new StringBuilder();
 		int rc=rowCount();

@@ -35,4 +35,22 @@ public abstract class ATranslation extends AAffineTransform {
 	public ATranslation toMutableTranslation() {
 		return Transformz.createMutableTranslation(this);
 	}
+
+	/**
+	 * Returns true if this transform is an identity transform
+	 */
+	@Override
+	public boolean isIdentity() {
+		return getTranslationVector().isZeroVector();
+	}
+	
+	public boolean equals(ATranslation a) {
+		return this.getTranslationVector().equals(a.getTranslationVector());
+	}
+	
+	@Override
+	public boolean equals(AAffineTransform a) {
+		return this.equals(a.getTranslationComponent())&&
+				a.getMatrixComponent().isIdentity();
+	}
 }

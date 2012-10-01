@@ -66,6 +66,14 @@ public final class DiagonalMatrix extends AMatrix {
 		return false;
 	}
 	
+	@Override 
+	public boolean isIdentity() {
+		for (int i=0; i<dimensions; i++) {
+			if (data[i]!=1.0) return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public DiagonalMatrix clone() {
 		DiagonalMatrix m=new DiagonalMatrix(data);

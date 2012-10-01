@@ -1,7 +1,5 @@
 package mikera.matrixx;
 
-import mikera.transformz.AffineMN;
-import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 
 /**

@@ -38,4 +38,21 @@ public abstract class AAffineTransform extends ATransform {
 	public AAffineTransform toAffineTransform() {
 		return new AffineMN(this);
 	}
+	
+	@Override
+	public int hashCode() {
+		return getMatrixComponent().hashCode()+getTranslationComponent().hashCode();
+	}
+	
+	@Override
+	public boolean  equals(Object o) {
+		if (!(o instanceof AAffineTransform)) return false;
+		return equals((AAffineTransform)o);
+	}
+	
+	public boolean equals(AAffineTransform a) {
+		
+		return a.getMatrixComponent().equals(getMatrixComponent()) &&
+			   a.getTranslationComponent().equals(getTranslationComponent());	
+	}
 }
