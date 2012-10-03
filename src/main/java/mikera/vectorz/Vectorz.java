@@ -35,6 +35,20 @@ public class Vectorz {
 	public static AVector createZeroVector(int length) {
 		return createLength(length);
 	}
+	
+	public static AVector wrap(double[] data) {
+		return Vector.wrap(data);
+	}
+	
+	public static AVector wrap(double[][] data) {
+		if ((data.length)==0) return ZeroLengthVector.INSTANCE;
+		
+		AVector v=wrap(data[0]);
+		for (int i=1; i<data.length; i++) {
+			v=join(v,wrap(data[i]));
+		}
+		return v;
+	}
 
 	/**
 	 * Returns a vector filled with zeros of the specified length.
