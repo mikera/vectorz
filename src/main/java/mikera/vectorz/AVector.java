@@ -318,7 +318,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
-	 * Returns true if this vector is the zero vector
+	 * Returns true if this vector is a zero vector (all components zero)
 	 * @return
 	 */
 	public boolean isZeroVector() {

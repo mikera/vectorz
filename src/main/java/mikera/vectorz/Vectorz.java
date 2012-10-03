@@ -77,7 +77,7 @@ public class Vectorz {
 		return v;
 	}
 
-	public static AVector createMutableVector(AVector t) {
+	public static AVector createMutableCopy(AVector t) {
 		AVector v=createLength(t.length());
 		v.set(t);
 		return v;

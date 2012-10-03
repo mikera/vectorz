@@ -1,8 +1,10 @@
 package mikera.vectorz.impl;
 
+import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 
 /**
  * Class representing a fixed-size vector of mutable double values
@@ -145,8 +147,12 @@ public final class ArraySubVector extends ArrayVector {
 	}
 	
 	@Override
-	public Vector clone() {
-		// we clone using Vector as we want a copy of all the data
-		return new Vector(this);
+	public boolean isReference() {
+		return true;
+	}
+	
+	@Override
+	public AVector clone() {
+		return Vectorz.createMutableCopy(this);
 	}
 }

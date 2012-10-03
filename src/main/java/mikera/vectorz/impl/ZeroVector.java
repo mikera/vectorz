@@ -32,6 +32,11 @@ public final class ZeroVector extends APrimitiveVector {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		return false;
+	}
+	
+	@Override
 	public boolean isUnitLengthVector() {
 		return false;
 	}

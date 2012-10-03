@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ObjectStreamException;
 
 import mikera.vectorz.APrimitiveVector;
@@ -35,6 +37,12 @@ public final class ZeroLengthVector extends APrimitiveVector {
 	@Override 
 	public ZeroLengthVector clone() {
 		return this;
+	}
+
+	
+	@Override
+	public boolean isMutable() {
+		return false;
 	}
 	
 	@Override
