@@ -40,6 +40,16 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public AVector subVector(int start, int length) {
+		if (start>=split) return right.subVector(start-split, length);
+		if ((start+length)<=split) return left.subVector(start, length);
+		
+		AVector v1=left.subVector(start, split-start);
+		AVector v2=right.subVector(0, length-(split-start));
+		return new JoinedVector(v1,v2);
+	}
+	
+	@Override
 	public double get(int i) {
 		if (i<split) {
 			return left.get(i);
