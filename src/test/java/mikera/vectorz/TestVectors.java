@@ -102,6 +102,7 @@ public class TestVectors {
 	public void testSubVectorMutability(AVector v) {
 		// defensive copy
 		v=v.clone();
+		assertTrue(!v.isReference());
 		
 		int vlen=v.length();
 		if (vlen==0) return;

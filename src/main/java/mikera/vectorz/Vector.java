@@ -3,7 +3,7 @@ package mikera.vectorz;
 public final class Vector extends ArrayVector {
 	private static final long serialVersionUID = 6283741614665875877L;
 
-	private final double[] data;
+	public final double[] data;
 
 	Vector(double... values) {
 		data = values;
