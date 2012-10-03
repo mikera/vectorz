@@ -112,7 +112,7 @@ public abstract class AMatrix extends AAffineTransform {
 		}
 		@Override
 		public int length() {
-			return columnCount();
+			return rowCount();
 		}
 		@Override
 		public double get(int i) {

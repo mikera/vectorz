@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -147,9 +149,6 @@ public class TestVectors {
 		testSubVectorMutability(v);
 		testOutOfBounds(v);
 	}
-	
-
-
 
 	@Test public void genericTests() {
 		doGenericTests(new Vector3(1.0,2.0,3.0));
@@ -184,6 +183,15 @@ public class TestVectors {
 		
 		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
 		doGenericTests(v4);
+		
+		AMatrix m1=Matrixx.createRandomSquareMatrix(5);
+		doGenericTests(m1.getRow(1));
+		doGenericTests(m1.getColumn(1));
+		
+		AMatrix m2=Matrixx.createRandomSquareMatrix(3);
+		doGenericTests(m2.getRow(1));
+		doGenericTests(m2.getColumn(1));
+
 		
 	}
 }

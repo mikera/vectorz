@@ -143,9 +143,26 @@ public class TestMatrixx {
 		assertNotSame(m.get(0,0),m2.get(0,0));
 	}
 
-	
+
+
+	private void doRowColumnTests(AMatrix m) {
+		m=m.clone();
+		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
+		AVector row=m.getRow(0);
+		AVector col=m.getColumn(0);
+		assertEquals(m.columnCount(),row.length());
+		assertEquals(m.rowCount(),col.length());
+		
+		row.set(0,1.77);
+		assertEquals(1.77,m.get(0,0),0.0);
+		
+		col.set(0,0.23);
+		assertEquals(0.23,m.get(0,0),0.0);
+
+	}
 	
 	void doGenericTests(AMatrix m) {
+		doRowColumnTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);
 		doSquareTransposeTest(m);
