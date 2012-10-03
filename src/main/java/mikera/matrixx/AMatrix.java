@@ -7,6 +7,7 @@ import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.ZeroLengthVector;
 
 public abstract class AMatrix extends AAffineTransform {
 	// ==============================================
@@ -265,5 +266,20 @@ public abstract class AMatrix extends AAffineTransform {
 			}
 		}
 		return hashCode;
+	}
+	
+	/**
+	 * Returns the matrix values as a single reference Vector in thr for [row0 row1 row2....]
+	 * @return
+	 */
+	public AVector asVector() {
+		int rc=rowCount();
+		if (rc==0) return ZeroLengthVector.INSTANCE;
+		
+		AVector v=getRow(0);
+		for (int i=1; i<rc; i++) {
+			v=Vectorz.join(v, getRow(i));
+		}
+		return v;
 	}
 }
