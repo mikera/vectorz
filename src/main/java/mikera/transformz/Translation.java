@@ -15,7 +15,7 @@ public final class Translation extends ATranslation {
 	}
 	
 	public Translation(ATranslation t) {
-		this(Vectorz.createMutableCopy(t.getTranslationComponent().getTranslationVector()));
+		this(Vectorz.createMutableVector(t.getTranslationComponent().getTranslationVector()));
 	}
 
 	@Override
