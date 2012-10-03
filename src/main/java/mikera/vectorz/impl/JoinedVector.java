@@ -2,6 +2,12 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 
+/**
+ * A vector that represents the concatenation of two vectors.
+ * 
+ * @author Mike
+ *
+ */
 public final class JoinedVector extends AVector {
 	private static final long serialVersionUID = -5535850407701653222L;
 	

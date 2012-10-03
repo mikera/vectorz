@@ -25,7 +25,9 @@ public class TestVectorMath {
 	public void doNormaliseTests(AVector v) {
 		v=v.clone();
 		v.normalise();
-		assertEquals(1.0,v.magnitude(),0.0001);
+		if (v.magnitude()>0.0) {
+			assertEquals(1.0,v.magnitude(),0.0001);
+		}
 	}
 	
 	public void doFillTests(AVector v) {
@@ -52,18 +54,30 @@ public class TestVectorMath {
 		}
 	}
 	
+	private void doMagnitudeTests(AVector v) {
+		assertEquals(v.magnitude(),Vectorz.createMutableVector(v).magnitude(),0.000001);
+		
+	}
 	public void doGenericMaths(AVector v) {
 		doFillTests(v);
 		doMultiplyTests(v);
 		doAdditionTests(v);
 		doNormaliseTests(v);
+		doMagnitudeTests(v);
 	}
 	
+
+
 	@Test public void testGenericMaths() {
 		doGenericMaths(new Vector3(1.0,2.0,3.0));
 		doGenericMaths(Vectorz.create(1,2,3,4,5,6,7));
 		doGenericMaths(Vectorz.join(new Vector2(1.0,2.0),Vectorz.create(1,2,3,4,5,6,7)));
 		doGenericMaths(Vectorz.create(1,2,3,4,5,6,7).subVector(2,3));
+		
+		for (int dim=0; dim<10; dim++) {
+			AVector v=Vectorz.createLength(dim);
+			doGenericMaths(v);
+		}
 
 	}
 	

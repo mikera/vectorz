@@ -6,7 +6,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
 
 /**
- * Class representing a fixed-size vector of mutable double values
+ * Vector referring to an offset into a double[] array
  * 
  * @author Mike
  * 

@@ -25,6 +25,17 @@ public final class ZeroVector extends APrimitiveVector {
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException("Cannot set on immutable ZeroVector");
 	}
+	
+	@Override
+	public double magnitudeSquared() {
+		return 0.0;
+	}
+	
+	@Override
+	public double magnitude() {
+		return 0.0;
+	}
+
 
 	@Override
 	public boolean isZeroVector() {

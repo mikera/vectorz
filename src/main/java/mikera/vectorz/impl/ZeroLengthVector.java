@@ -54,6 +54,16 @@ public final class ZeroLengthVector extends APrimitiveVector {
 		return true;
 	}
 	
+	@Override
+	public double magnitudeSquared() {
+		return 0.0;
+	}
+	
+	@Override
+	public double magnitude() {
+		return 0.0;
+	}
+	
 	/**
 	 * Readresolve method to ensure we always use the singleton
 	 */
