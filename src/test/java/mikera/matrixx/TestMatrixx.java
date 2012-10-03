@@ -160,6 +160,7 @@ public class TestMatrixx {
 		assertEquals(0.23,m.get(0,0),0.0);
 		
 		AVector all=m.asVector();
+		assertEquals(m.rowCount()*m.columnCount(),all.length());
 		all.set(0,0.78);
 		assertEquals(0.78,row.get(0),0.0);
 		assertEquals(0.78,col.get(0),0.0);
