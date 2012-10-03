@@ -1,6 +1,8 @@
 package mikera.vectorz;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.WrappedSubVector;
@@ -79,6 +81,15 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	
 	public boolean approxEquals(AVector v) {
 		return approxEquals(v,Vectorz.DEFAULT_TOLERANCE);
+	}
+	
+	public List<Double> toList() {
+		ArrayList<Double> al=new ArrayList<Double>();
+		int len=length();
+		for (int i=0; i<len; i++) {
+			al.add(get(i));
+		}
+		return al;
 	}
 	
 	public boolean approxEquals(AVector v,double tolerance) {
