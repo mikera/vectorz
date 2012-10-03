@@ -1,7 +1,5 @@
 package mikera.vectorz.impl;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.ObjectStreamException;
 
 import mikera.vectorz.APrimitiveVector;

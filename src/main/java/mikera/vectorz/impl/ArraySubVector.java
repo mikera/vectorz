@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Tools;
-import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
 /**
