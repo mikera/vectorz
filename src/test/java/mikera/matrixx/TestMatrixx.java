@@ -143,8 +143,6 @@ public class TestMatrixx {
 		assertNotSame(m.get(0,0),m2.get(0,0));
 	}
 
-
-
 	private void doRowColumnTests(AMatrix m) {
 		m=m.clone();
 		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
@@ -171,6 +169,8 @@ public class TestMatrixx {
 	void doVectorTest(AMatrix m) {
 		m=m.clone();
 		AVector v=m.asVector();
+		assertEquals(v,m.toVector());
+		
 		AMatrix m2=Matrixx.createFromVector(v, m.rowCount(), m.columnCount());
 		
 		assertEquals(m,m2);
