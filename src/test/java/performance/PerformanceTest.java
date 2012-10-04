@@ -1,0 +1,56 @@
+package performance;
+
+import mikera.vectorz.Vector3;
+
+public class PerformanceTest {
+	private static final int ITERATIONS=10000;
+	private static final int REPEATS=100;
+	private static final int BURN_IN=20;
+	
+	public static void main(String[] args) {
+		double a=benchmark(testA);
+		System.out.println ("Time per operation for test A: " + a + " ns");
+		
+		double b=benchmark(testB);
+		System.out.println ("Time per operation for test B: " + b + " ns");
+
+	}
+	
+	private static final double benchmark(Runnable a) {
+		// burn-in
+		for (int i=0; i<BURN_IN; i++) {
+			a.run();
+		}
+
+		long time=System.nanoTime();
+		for (int i=0; i<REPEATS; i++) {
+			a.run();
+		}
+		double ns= (System.nanoTime()-time)/(1.0*ITERATIONS*REPEATS);	
+		return ns;
+	}
+	
+	
+	public static Runnable testA = new Runnable() {
+		public void run() {
+			Vector3 v=Vector3.of(1,2,3);
+			Vector3 v2=Vector3.of(1,2,3);
+			
+			for (int i=0; i<ITERATIONS; i++) {
+				v.add(v2);
+				v.set(0,v.dotProduct(v2));
+			}
+		}
+	};
+	
+	public static Runnable testB = new Runnable() {
+		public void run() {
+			Vector3 v=Vector3.of(1,2,3);
+			Vector3 v2=Vector3.of(1,2,3);
+			
+			for (int i=0; i<ITERATIONS; i++) {
+				v.addMultiple(v2,2.0);
+			}
+		}
+	};
+}

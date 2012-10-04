@@ -3,7 +3,9 @@
 Fast double-precision vector and matrix maths library for Java.
 
 The intention of this library is for use in games, simulations, raytracers etc. 
-where fast vector maths is important.
+where fast vector maths is important. 
+
+Fast means really fast. Vectorz can do over 300 million 3D vector operations per second.
 
 ### Example usage
 
