@@ -13,10 +13,9 @@ import mikera.vectorz.Vectorz;
 import org.junit.Test;
 
 public class TestMatrixx {
-	@Test
-	public void testInverse33() {
-		AMatrix m = Matrixx.createRandomSquareMatrix(3);
-		AVector v = Vectorz.createUniformRandomVector(3);
+	private void doInverseTest(AMatrix m) {
+		assert(m.rowCount()==m.columnCount());
+		AVector v = Vectorz.createUniformRandomVector(m.rowCount());
 		
 		AMatrix mi=m.inverse();
 		assertEquals(1.0/m.determinant(),mi.determinant(),0.000001);
@@ -24,7 +23,13 @@ public class TestMatrixx {
 		AVector mv=m.transform(v);
 		AVector mimv=mi.transform(mv);
 		
-		assertTrue(mimv.approxEquals(v));
+		assertTrue(mimv.approxEquals(v));		
+	}
+	
+	@Test
+	public void testInverse33() {
+		doInverseTest(Matrixx.createRandomSquareMatrix(3));
+		doInverseTest(Matrixx.createRandomSquareMatrix(2));
 	}
 	
 	
