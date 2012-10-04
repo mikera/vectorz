@@ -1,5 +1,7 @@
 package performance;
 
+import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 
 public class PerformanceTest {
@@ -38,15 +40,14 @@ public class PerformanceTest {
 			
 			for (int i=0; i<ITERATIONS; i++) {
 				v.add(v2);
-				v.set(0,v.dotProduct(v2));
 			}
 		}
 	};
 	
 	public static Runnable testB = new Runnable() {
 		public void run() {
-			Vector3 v=Vector3.of(1,2,3);
-			Vector3 v2=Vector3.of(1,2,3);
+			AVector v=Vector.of(1,2,3);
+			AVector v2=Vector3.of(1,2,3);
 			
 			for (int i=0; i<ITERATIONS; i++) {
 				v.addMultiple(v2,2.0);

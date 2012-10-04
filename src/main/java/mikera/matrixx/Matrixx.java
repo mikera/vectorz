@@ -50,6 +50,7 @@ public class Matrixx {
 
 	private static AMatrix createSquareMatrix(int dimensions) {
 		switch (dimensions) {
+		case 2: return new Matrix22();
 		case 3: return new Matrix33();
 		default: return new MatrixMN(dimensions,dimensions);
 		}

@@ -195,5 +195,4 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 			(m21==m.m21) &&
 			(m22==m.m22);
 	}
-
 }
