@@ -59,6 +59,5 @@ public abstract class ATranslation extends AAffineTransform {
 		AVector v=getTranslationVector().clone();
 		v.negate();
 		return Transformz.createTranslation(v);
-		
 	}
 }
