@@ -183,7 +183,7 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 		return new Matrix33(
 				invDet*((m11*m22-m12*m21)),
 				invDet*((m02*m21-m01*m22)),
-				invDet*((m01*m12-m11*m12)),
+				invDet*((m01*m12-m02*m11)),
 				invDet*((m12*m20-m10*m22)),
 				invDet*((m00*m22-m02*m20)),
 				invDet*((m02*m10-m00*m12)),

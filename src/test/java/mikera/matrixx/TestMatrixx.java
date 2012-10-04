@@ -13,7 +13,21 @@ import mikera.vectorz.Vectorz;
 import org.junit.Test;
 
 public class TestMatrixx {
-
+	@Test
+	public void testInverse33() {
+		AMatrix m = Matrixx.createRandomSquareMatrix(3);
+		AVector v = Vectorz.createUniformRandomVector(3);
+		
+		AMatrix mi=m.inverse();
+		assertEquals(1.0/m.determinant(),mi.determinant(),0.000001);
+		
+		AVector mv=m.transform(v);
+		AVector mimv=mi.transform(mv);
+		
+		assertTrue(mimv.approxEquals(v));
+	}
+	
+	
 	@Test
 	public void testIdentity() {
 		for (int i=1; i<10; i++) {
