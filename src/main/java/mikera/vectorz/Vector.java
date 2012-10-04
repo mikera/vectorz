@@ -122,6 +122,32 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void subtract(AVector v) {
+		if (v instanceof ArrayVector) {subtract(((ArrayVector)v)); return;}
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
+		}
+		for (int i = 0; i < length; i++) {
+			data[i] -= v.get(i);
+		}
+	}
+	
+	public void subtract(ArrayVector v) {
+		int vlength=v.length();
+		int length=length();
+		if (vlength != length) {
+			throw new Error("Source vector has different size: " + vlength);
+		}
+		double[] vdata=v.getArray();
+		int voffset=v.getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			data[i] -= vdata[voffset + i];
+		}
+	}
+	
+	@Override
 	public void addMultiple(AVector v, double factor) {
 		if (v instanceof ArrayVector) {addMultiple(((ArrayVector)v),factor); return;}
 		int vlength=v.length();

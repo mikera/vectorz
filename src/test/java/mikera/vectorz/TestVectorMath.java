@@ -54,6 +54,25 @@ public class TestVectorMath {
 		}
 	}
 	
+	public void doSubtractionTests(AVector v) {
+		v=v.clone();
+		AVector ones=v.clone();
+		ones.fill(1.0);
+		
+		AVector av=v.clone();
+		av.add(ones);
+		av.subtract(ones);
+		assertEquals(v,av);
+		
+		av.addMultiple(ones,4);
+		av.subtractMultiple(ones,1.5);
+
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			assertEquals(v.get(i)+2.5,av.get(i),0.0001);
+		}
+	}
+	
 	private void doMagnitudeTests(AVector v) {
 		assertEquals(v.magnitude(),Vectorz.createMutableVector(v).magnitude(),0.000001);
 		
@@ -62,6 +81,7 @@ public class TestVectorMath {
 		doFillTests(v);
 		doMultiplyTests(v);
 		doAdditionTests(v);
+		doSubtractionTests(v);
 		doNormaliseTests(v);
 		doMagnitudeTests(v);
 	}
