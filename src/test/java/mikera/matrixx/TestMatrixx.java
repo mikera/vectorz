@@ -24,6 +24,11 @@ public class TestMatrixx {
 		AVector mimv=mi.transform(mv);
 		
 		assertTrue(mimv.approxEquals(v));		
+		
+		// composition of matrix and its inverse should be an identity transform
+		ATransform id=m.compose(mi);
+		AVector idv=id.transform(v);
+		assertTrue(idv.approxEquals(v));		
 	}
 	
 	@Test
