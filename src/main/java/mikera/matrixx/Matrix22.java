@@ -3,6 +3,7 @@ package mikera.matrixx;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector2;
+import mikera.vectorz.Vector4;
 
 /**
  * Specialised 3*3 Matrix for Vector3 maths, using primitive matrix elements
@@ -121,6 +122,11 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	@Override
 	public boolean isSquare() {
 		return true;
+	}
+	
+	@Override
+	public Vector4 toVector() {
+		return new Vector4(m00,m01,m10,m11);
 	}
 
 	@Override

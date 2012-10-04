@@ -2,6 +2,7 @@ package mikera.matrixx;
 
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.vectorz.AVector;
 
 /**
  * Static method class for matrices
@@ -46,6 +47,17 @@ public class Matrixx {
 			if (rows==3) return new Matrix33();
 		}
 		return new MatrixMN(rows,columns);
+	}
+	
+	public static AMatrix createFromVector(AVector data, int rows, int columns) {
+		assert(data.length()==rows*columns);
+		AMatrix m=createMatrix(rows, columns);
+		for (int i=0; i<rows; i++) {
+			for (int j=0; j<columns; j++) {
+				m.set(i,j,data.get(i*columns+j));
+			}
+		}
+		return m;
 	}
 
 	private static AMatrix createSquareMatrix(int dimensions) {

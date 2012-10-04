@@ -48,4 +48,10 @@ public class TransposedMatrix extends AMatrix {
 	public AVector getColumn(int column) {
 		return source.getRow(column);
 	}
+	
+	@Override 
+	public AMatrix transpose() {
+		// Transposing again just gets us back to the original source matrix
+		return source;
+	}
 }

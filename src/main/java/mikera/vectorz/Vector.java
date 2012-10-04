@@ -1,5 +1,13 @@
 package mikera.vectorz;
 
+import java.util.Arrays;
+
+/**
+ * General purpose vector or arbitrary length, backed by an internal double[] array
+ * 
+ * @author Mike
+ *
+ */
 public final class Vector extends ArrayVector {
 	private static final long serialVersionUID = 6283741614665875877L;
 
@@ -33,10 +41,10 @@ public final class Vector extends ArrayVector {
 		return new Vector(source);
 	}
 	
-	public static Vector of(double... source) {
-		int length = source.length;
+	public static Vector of(double... values) {
+		int length = values.length;
 		double[] data = new double[length];
-		System.arraycopy(source, 0, data, 0, length);
+		System.arraycopy(values, 0, data, 0, length);
 		return new Vector(data);
 	}
 	
@@ -71,10 +79,7 @@ public final class Vector extends ArrayVector {
 	
 	@Override
 	public void fill(double value) {
-		int len=length();
-		for (int i = 0; i < len; i++) {
-			data[i] = value;
-		}
+		Arrays.fill(data, value);
 	}
 	
 	public void add(ArrayVector v) {

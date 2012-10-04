@@ -269,7 +269,7 @@ public abstract class AMatrix extends AAffineTransform {
 	}
 	
 	/**
-	 * Returns the matrix values as a single reference Vector in thr for [row0 row1 row2....]
+	 * Returns the matrix values as a single reference Vector in the form [row0 row1 row2....]
 	 * @return
 	 */
 	public AVector asVector() {
@@ -279,6 +279,18 @@ public abstract class AMatrix extends AAffineTransform {
 		AVector v=getRow(0);
 		for (int i=1; i<rc; i++) {
 			v=Vectorz.join(v, getRow(i));
+		}
+		return v;
+	}
+	
+	public AVector toVector() {
+		int rc=rowCount();
+		int cc=columnCount();
+		AVector v=Vectorz.createLength(rc*cc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				v.set(i*cc+j,get(i,j));
+			}
 		}
 		return v;
 	}

@@ -124,6 +124,12 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		}
 	}
 	
+	public double[] toArray() {
+		double[] result=new double[length()];
+		copyTo(result,0);
+		return result;
+	}
+	
 	/**
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
@@ -262,7 +268,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
-	 * Returns true if this vector references other vectors / data.
+	 * Returns true if this vector is of a type that references other vectors / data.
 	 * @return
 	 */
 	public boolean isReference() {

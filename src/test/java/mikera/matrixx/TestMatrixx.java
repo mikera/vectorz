@@ -168,7 +168,16 @@ public class TestMatrixx {
 
 	}
 	
+	void doVectorTest(AMatrix m) {
+		m=m.clone();
+		AVector v=m.asVector();
+		AMatrix m2=Matrixx.createFromVector(v, m.rowCount(), m.columnCount());
+		
+		assertEquals(m,m2);
+	}
+	
 	void doGenericTests(AMatrix m) {
+		doVectorTest(m);
 		doRowColumnTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);
