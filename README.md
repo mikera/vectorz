@@ -17,7 +17,8 @@ where fast vector maths is important.
 
  - Supports double vectors of arbitrary size
  - Primitive-backed small vectors (1,2,3 and 4 dimensions)
- - All vector values are mutable
+ - Vector values are mutable
+ - Ability to create lightweight "reference" vectors (e.g. to access subranges of other vectors)
  - Library of useful mathematical functions on vectors
  - Vectors have lots of utility functionality implemented - Cloneable, Serializable, Comparable etc.
 
