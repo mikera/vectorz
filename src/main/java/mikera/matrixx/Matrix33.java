@@ -176,6 +176,23 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public Matrix33 inverse() {
+		double det=determinant();
+		if (det==0.0) throw new IllegalArgumentException("Matrix has zero determinant: not invertible");
+		double invDet=1.0/det;
+		return new Matrix33(
+				invDet*((m11*m22-m12*m21)),
+				invDet*((m02*m21-m01*m22)),
+				invDet*((m01*m12-m11*m12)),
+				invDet*((m12*m20-m10*m22)),
+				invDet*((m00*m22-m02*m20)),
+				invDet*((m02*m10-m00*m12)),
+				invDet*((m10*m21-m11*m20)),
+				invDet*((m01*m20-m00*m21)),
+				invDet*((m00*m11-m01*m10)));		
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Matrix33) {
 			return equals((Matrix33)o);
