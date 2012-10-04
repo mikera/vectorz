@@ -29,3 +29,12 @@ where fast vector maths is important.
  - Vectors are generally not thread safe, by design
  
 If you have a common case that isn't well optimised yet then please post an issue - the aim is to make all common operations efficient.
+
+### Linear algebra
+
+While Vectorz has some support for linear algebra and big matrix computations, this isn't the primary focus. 
+
+If you are interested in doing mathematical computations with large matrices, you might want to check out:
+
+ - http://code.google.com/p/efficient-java-matrix-library/
+ - http://code.google.com/p/java-matrix-benchmark/
