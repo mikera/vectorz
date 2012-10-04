@@ -155,8 +155,10 @@ public class TestVectors {
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector2(1.0,2.0));
 		
-		// zero-length Vector
+		// zero-length Vectors
 		doGenericTests(Vector.of());
+		doGenericTests(Vector.wrap(new double[0]));
+		doGenericTests(new Vector3(1.0,2.0,3.0).subVector(2, 0));
 		
 		for (int j=0; j<10; j++) {
 			double[] data=new double[j];

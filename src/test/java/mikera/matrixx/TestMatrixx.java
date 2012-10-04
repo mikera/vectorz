@@ -193,6 +193,10 @@ public class TestMatrixx {
 		Matrix33 m33=new Matrix33();
 		doGenericTests(m33);
 		
+		// specialised 2*2 matrix
+		Matrix22 m22=new Matrix22();
+		doGenericTests(m22);
+		
 		// specialised Mx3 matrix
 		MatrixM3 mm3=new MatrixM3(10);
 		doGenericTests(mm3);
@@ -201,9 +205,10 @@ public class TestMatrixx {
 		MatrixMN mmn=new MatrixMN(6 ,7);
 		doGenericTests(mmn);
 
-		// square M*M matrix
+		// small 2*2 matrix
 		mmn=new MatrixMN(2,2);
 		doGenericTests(mmn);
+		
 
 		// square M*M matrix
 		mmn=new MatrixMN(6 ,6);
