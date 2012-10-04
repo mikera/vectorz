@@ -23,6 +23,10 @@ public final class AffineMN extends AAffineTransform {
 		this(at.getMatrixComponent().toMutableMatrix(),at.getTranslationComponent().toMutableTranslation());
 	}
 
+	public AffineMN(AMatrix m, AVector v) {
+		this(m,Transformz.createTranslation(v));
+	}
+
 	@Override
 	public void composeWith(ATransform trans) {
 		if (trans instanceof AffineMN) {

@@ -53,4 +53,12 @@ public abstract class ATranslation extends AAffineTransform {
 		return this.equals(a.getTranslationComponent())&&
 				a.getMatrixComponent().isIdentity();
 	}
+	
+	@Override
+	public ATranslation inverse() {
+		AVector v=getTranslationVector().clone();
+		v.negate();
+		return Transformz.createTranslation(v);
+		
+	}
 }

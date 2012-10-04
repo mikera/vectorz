@@ -55,4 +55,13 @@ public abstract class AAffineTransform extends ATransform {
 		return a.getMatrixComponent().equals(getMatrixComponent()) &&
 			   a.getTranslationComponent().equals(getTranslationComponent());	
 	}
+
+	@Override
+	public AAffineTransform inverse() {
+		AMatrix m=getMatrixComponent().inverse();
+		AVector v=getTranslationComponent().getTranslationVector().clone();
+		v.negate();
+		m.transformInPlace(v);
+		return Transformz.createAffineTransform(m, v);
+	}
 }

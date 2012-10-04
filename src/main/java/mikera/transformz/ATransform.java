@@ -96,4 +96,12 @@ public abstract class ATransform implements Cloneable {
 	public boolean isIdentity() {
 		throw new UnsupportedOperationException();
 	}
+
+	/**
+	 * Return the inverse of this transformation if possible
+	 * @return
+	 */
+	public AAffineTransform inverse() {
+		throw new UnsupportedOperationException("inverse not supported by "+this.getClass());
+	}
 }

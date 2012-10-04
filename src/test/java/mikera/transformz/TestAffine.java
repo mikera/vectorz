@@ -77,7 +77,7 @@ public class TestAffine {
 		doAffineTests(rmatrix);
 		
 		AVector rvector=Vectorz.createUniformRandomVector(5);
-		Translation rtrans=Transformz.createTranslation(rvector);
+		ATranslation rtrans=Transformz.createTranslation(rvector);
 		doAffineTests(rtrans);
 		
 		doAffineTests(new AffineMN(rmatrix,rtrans));

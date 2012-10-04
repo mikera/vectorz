@@ -1,5 +1,6 @@
 package mikera.transformz;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.DiagonalMatrix;
@@ -16,7 +17,10 @@ public class Transformz {
 		return IdentityTranslation.getInstance(dimensions);
 	}
 	
-	public static Translation createTranslation(AVector v) {
+	public static ATranslation createTranslation(AVector v) {
+		if (v.length()==3) {
+			return new Translation3(v);
+		}
 		return new Translation(v);
 	}
 	
@@ -39,5 +43,12 @@ public class Transformz {
 		} else {
 			return new Translation(t);
 		}
+	}
+
+	public static AAffineTransform createAffineTransform(AMatrix m, AVector v) {
+		if (m instanceof Matrix33) {
+			return createAffineTransform((Matrix33)m,v);
+		}
+		return new AffineMN(m,v);
 	}
 }

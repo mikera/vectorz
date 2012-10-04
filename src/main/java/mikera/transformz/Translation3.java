@@ -20,6 +20,12 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 		this(t.getTranslationVector());
 	}
 
+	public Translation3(double dx, double dy, double dz) {
+		this.dx=dx;
+		this.dy=dy;
+		this.dz=dz;
+	}
+
 	@Override
 	public Vector3 getTranslationVector() {
 		return Vector3.of(dx,dy,dz);
@@ -108,6 +114,11 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 		dx+=t.dx;
 		dy+=t.dy;
 		dz+=t.dz;
+	}
+	
+	@Override 
+	public Translation3 inverse() {
+		return new Translation3(-dx,-dy,-dz);
 	}
 
 }

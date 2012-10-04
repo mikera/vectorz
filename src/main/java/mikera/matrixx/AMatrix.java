@@ -283,6 +283,12 @@ public abstract class AMatrix extends AAffineTransform {
 		return v;
 	}
 	
+	@Override
+	public AMatrix inverse() {
+		if (rowCount()!=columnCount()) throw new IllegalArgumentException("Matrix must be square for inverse!");
+		throw new UnsupportedOperationException("inverse not supported by "+this.getClass());
+	}
+	
 	public AVector toVector() {
 		int rc=rowCount();
 		int cc=columnCount();
