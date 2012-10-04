@@ -44,6 +44,15 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	public double determinant() {
 		return (m00*m11)-(m01*m10);
 	}
+	
+	@Override
+	public Matrix22 inverse() {
+		double det=determinant();
+		if (det==0.0) throw new IllegalArgumentException("Matrix has zero determinant: not invertible");
+		double invDet=1.0/det;
+		return new Matrix22( invDet*m11, -invDet*m01,
+				            -invDet*m10,  invDet*m00);		
+	}
 
 	@Override
 	public int rowCount() {
