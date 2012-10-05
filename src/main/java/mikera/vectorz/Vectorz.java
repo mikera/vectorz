@@ -1,7 +1,15 @@
 package mikera.vectorz;
 
+import java.io.StringReader;
+
+import bpsm.edn.parser.CollectionBuilder;
+import bpsm.edn.parser.CollectionBuilder.Factory;
+import bpsm.edn.parser.Parser;
+import bpsm.edn.parser.Parsers;
 import mikera.vectorz.impl.ZeroLengthVector;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.VectorBuilder;
+import mikera.vectorz.util.VectorzException;
 
 public class Vectorz {
 	public static final double DEFAULT_TOLERANCE = 0.00001;
@@ -115,8 +123,48 @@ public class Vectorz {
 		return ZERO_VECTORS[dimensions];
 	}
 	
-	// ===========================
-	// Static maths functions
+	// ====================================
+	// Edn formatting and parsing functions
 	
+	private static class ParserConfigHolder {
+		static final Parser.Config parserConfig;
+		static {
+			Parser.Config.Builder b= Parsers.newParserConfigBuilder();
+			b.setVectorFactory(new Factory() {
+				@Override
+				public CollectionBuilder builder() {
+					return new CollectionBuilder() {
+						VectorBuilder b=new VectorBuilder();
+						@Override
+						public void add(Object o) {
+							double d;
+							if (o instanceof Double) {
+								d=(Double)o;
+							} else if (o instanceof Number) {
+								d=((Number)o).doubleValue();
+							} else {
+								throw new VectorzException("Cannot parse double value from class: "+o.getClass());
+							}
+							b.add(d);
+						}
+
+						@Override
+						public Object build() {
+							return b.toVector();
+						}					
+					};
+				}}
+			);
+			parserConfig=b.build();
+		}
+	}
 	
+	private static Parser.Config getParserConfig() {
+		return ParserConfigHolder.parserConfig;
+	}
+	
+	public static AVector parse(String ednString) {
+		Parser p=Parsers.newParser(getParserConfig(),new StringReader(ednString));
+		return (AVector)p.nextValue();
+	}
 }

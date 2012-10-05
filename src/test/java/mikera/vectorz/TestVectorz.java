@@ -2,15 +2,43 @@ package mikera.vectorz;
 
 import static org.junit.Assert.*;
 
+import mikera.vectorz.impl.ZeroLengthVector;
+import mikera.vectorz.util.VectorBuilder;
+
 import org.junit.Test;
 
 public class TestVectorz {
 
+	@Test
+	public void testVectorBuilder() {
+		VectorBuilder vb=new VectorBuilder();
+		
+		assertEquals(ZeroLengthVector.INSTANCE,vb.toVector());
+		vb.add(1.0);
+		assertEquals(Vector1.of(1.0),vb.toVector());
+		vb.add(2.0);
+		assertEquals(Vector2.of(1.0,2.0),vb.toVector());
+		vb.add(3.0);
+		assertEquals(Vector3.of(1.0,2.0,3.0),vb.toVector());
+		vb.add(4.0);
+		assertEquals(Vector4.of(1.0,2.0,3.0,4.0),vb.toVector());
+		vb.add(5.0);
+		assertEquals(Vector.of(1.0,2.0,3.0,4.0,5.0),vb.toVector());
+	}
+	
 	@Test
 	public void testCreateLength() {
 		for (int i=0; i<10; i++) {
 			AVector v=Vectorz.createLength(i);
 			assertEquals(i,v.length());
 		}
+	}
+	
+	@Test
+	public void testParseString() {
+		assertEquals(Vector.of(1.0),Vectorz.parse("[1.0]"));		
+		assertEquals(Vector.of(1.0,2.0),Vectorz.parse(" [1.0  2.0] "));
+		assertEquals(Vector.of(1.0,2.0,3.0,4.0,5.0),Vectorz.parse(" [1.0  2.0 3 4 5] "));
+
 	}
 }
