@@ -1,8 +1,17 @@
 package mikera.matrixx;
 
+import java.io.StringReader;
+import java.util.List;
+
+import bpsm.edn.parser.CollectionBuilder;
+import bpsm.edn.parser.Parser;
+import bpsm.edn.parser.Parsers;
+import bpsm.edn.parser.CollectionBuilder.Factory;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.util.MatrixBuilder;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Static method class for matrices
@@ -95,5 +104,54 @@ public class Matrixx {
 			m.getRow(i).set(data[i]);
 		}
 		return m;
+	}
+	
+	// ====================================
+	// Edn formatting and parsing functions
+	
+	private static class ParserConfigHolder {
+		static final Parser.Config parserConfig;
+		static {
+			Parser.Config.Builder b= Parsers.newParserConfigBuilder();
+			b.setVectorFactory(new Factory() {
+				@Override
+				public CollectionBuilder builder() {
+					return new CollectionBuilder() {
+						MatrixBuilder b=new MatrixBuilder();
+						@SuppressWarnings("unchecked")
+						@Override
+						public void add(Object o) {
+							List<Object> d;
+							if (o instanceof List<?>) {
+								d=(List<Object>)o;
+							} else {
+								throw new VectorzException("Cannot parse vector value from class: "+o.getClass());
+							}
+							b.add(d);
+						}
+
+						@Override
+						public Object build() {
+							return b.toVector();
+						}					
+					};
+				}}
+			);
+			parserConfig=b.build();
+		}
+	}
+	
+	private static Parser.Config getMatrixParserConfig() {
+		return ParserConfigHolder.parserConfig;
+	}
+	
+	/**
+	 * Parse a vector in edn format
+	 * @param ednString
+	 * @return
+	 */
+	public static AVector parse(String ednString) {
+		Parser p=Parsers.newParser(getMatrixParserConfig(),new StringReader(ednString));
+		return (AVector)p.nextValue();
 	}
 }

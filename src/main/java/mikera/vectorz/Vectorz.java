@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import java.io.StringReader;
+import java.util.List;
 
 import bpsm.edn.parser.CollectionBuilder;
 import bpsm.edn.parser.CollectionBuilder.Factory;
@@ -171,6 +172,26 @@ public class Vectorz {
 	public static AVector parse(String ednString) {
 		Parser p=Parsers.newParser(getVectorParserConfig(),new StringReader(ednString));
 		return (AVector)p.nextValue();
+	}
+
+	public static AVector create(List<Object> d) {
+		int length=d.size();
+		double[] data=new double[length];
+		for (int i=0; i<length; i++) {
+			double v;
+			Object o=d.get(i);
+			if (o instanceof Double) {
+				v=(Double)o;
+			} else if (o instanceof Number) {
+				v=((Number)o).doubleValue();
+			} else {
+				throw new VectorzException("Cannot parse double value from class: "+o.getClass());
+			}			
+			data[i]=v;
+		}
+		AVector v=createLength(length);
+		v.setValues(data);
+		return v;
 	}
 	
 	

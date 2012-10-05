@@ -1,8 +1,11 @@
 package mikera.matrixx.util;
 
+import java.util.List;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 
 /**
  * Utility class for efficiently building vectors by addition of doubles
@@ -21,9 +24,9 @@ public class MatrixBuilder {
 		}
 	}
 
-	public void add(AVector d) {
+	public void add(List<Object> d) {
 		ensureSize(length+1);
-		data[length++]=d;
+		data[length++]=Vectorz.create(d);
 	}
 
 

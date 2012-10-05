@@ -200,8 +200,14 @@ public class TestMatrixx {
 		assertEquals(m,m2);
 	}
 	
+	void doParseTest(AMatrix m) {
+		// TODO: fix this
+		// assertEquals(m,Matrixx.parse(m.toString()));
+	}
+	
 	void doGenericTests(AMatrix m) {
 		doVectorTest(m);
+		doParseTest(m);
 		doRowColumnTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);

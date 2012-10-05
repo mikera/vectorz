@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import java.util.Arrays;
 
+
 /**
  * General purpose vector or arbitrary length, backed by an internal double[] array
  * 
