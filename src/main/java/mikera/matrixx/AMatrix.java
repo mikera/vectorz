@@ -243,6 +243,7 @@ public abstract class AMatrix extends AAffineTransform {
 				this.equals(a.getMatrixComponent());	
 	}
 	
+	@Override
 	public String toString() {
 		StringBuilder sb=new StringBuilder();
 		int rc=rowCount();

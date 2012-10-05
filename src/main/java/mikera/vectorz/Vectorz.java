@@ -159,7 +159,7 @@ public class Vectorz {
 		}
 	}
 	
-	private static Parser.Config getParserConfig() {
+	private static Parser.Config getVectorParserConfig() {
 		return ParserConfigHolder.parserConfig;
 	}
 	
@@ -169,7 +169,7 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector parse(String ednString) {
-		Parser p=Parsers.newParser(getParserConfig(),new StringReader(ednString));
+		Parser p=Parsers.newParser(getVectorParserConfig(),new StringReader(ednString));
 		return (AVector)p.nextValue();
 	}
 	

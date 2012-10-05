@@ -86,4 +86,14 @@ public class Matrixx {
 			}
 		}
 	}
+
+	public static AMatrix createFromVectors(AVector... data) {
+		int rc=data.length;
+		int cc=(rc==0)?0:data[0].length();
+		AMatrix m=createMatrix(rc,cc);
+		for (int i=0; i<rc; i++) {
+			m.getRow(i).set(data[i]);
+		}
+		return m;
+	}
 }
