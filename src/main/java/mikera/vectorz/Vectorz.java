@@ -163,8 +163,15 @@ public class Vectorz {
 		return ParserConfigHolder.parserConfig;
 	}
 	
+	/**
+	 * Parse a vector in edn format
+	 * @param ednString
+	 * @return
+	 */
 	public static AVector parse(String ednString) {
 		Parser p=Parsers.newParser(getParserConfig(),new StringReader(ednString));
 		return (AVector)p.nextValue();
 	}
+	
+	
 }

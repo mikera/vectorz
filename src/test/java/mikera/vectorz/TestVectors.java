@@ -63,7 +63,12 @@ public class TestVectors {
 		assertEquals("[1.0,2.0]",Vectorz.create(1,2).toString());
 	}
 	
-	public void testClone(AVector v) {
+	private void testParse(AVector v) {
+		assertEquals(v,Vectorz.parse(v.toString()));
+	}
+
+	
+	private void testClone(AVector v) {
 		AVector cv=v.clone();
 		assertFalse(cv.isReference());
 		
@@ -145,6 +150,7 @@ public class TestVectors {
 	
 	private void doGenericTests(AVector v) {
 		testClone(v);
+		testParse(v);
 		testNormalise(v);
 		testZero(v);
 		testSubVectorMutability(v);

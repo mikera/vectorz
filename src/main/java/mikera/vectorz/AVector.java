@@ -366,5 +366,5 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		sb.append(']');
 		return sb.toString();
 	}
-
+	
 }
