@@ -9,8 +9,8 @@ import bpsm.edn.parser.Parsers;
 import bpsm.edn.parser.CollectionBuilder.Factory;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
-import mikera.matrixx.util.MatrixBuilder;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.MatrixBuilder;
 import mikera.vectorz.util.VectorzException;
 
 /**

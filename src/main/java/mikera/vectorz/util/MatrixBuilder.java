@@ -1,4 +1,4 @@
-package mikera.matrixx.util;
+package mikera.vectorz.util;
 
 import java.util.List;
 

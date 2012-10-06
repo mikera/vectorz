@@ -18,8 +18,9 @@ Vectorz can do over *300 million* 3D vector operations per second.
 ### Key features
 
  - Supports double vectors of arbitrary size
- - Primitive-backed small vectors (1,2,3 and 4 dimensions)
  - Vector values are mutable
+ - Support for general matrices
+ - Support for affine transformations
  - Ability to create lightweight "reference" vectors (e.g. to access subranges of other vectors)
  - Library of useful mathematical functions on vectors
  - Vectors have lots of utility functionality implemented - Cloneable, Serializable, Comparable etc.
@@ -27,11 +28,18 @@ Vectorz can do over *300 million* 3D vector operations per second.
 
 ### Focus on performance
 
- - Multiple types of vector are provided for optimised performance in different cases
- - Fast paths for most 2D and 3D operations
- - Vectors are generally not thread safe, by design
+Vectorz is deigned to allow the maximum performance possible for vector / matrix maths on the JVM.
+
+This focus has driven a number of important design decisions:
+
+ - Specialised primitive-backed small vectors (1,2,3 and 4 dimensions) and matrixes (2x2, 3x3 and M*3)
+ - Abstract base classes preferred over interfaces to allow more efficient dispatch
+ - Multiple types of vector are provided for optimised performance in special cases
+ - Hard-coded fast paths for most 2D and 3D operations
+ - Vector operations are generally not thread safe, by design
+ - Concrete classes are generally final
  
-If you have a common case that isn't well optimised yet then please post an issue - the aim is to make all common operations efficient.
+If you have a common case that isn't yet well optimised then please post an issue - the aim is to make all common operations efficient.
 
 ### Linear algebra
 
