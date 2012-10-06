@@ -10,9 +10,9 @@ Vectorz can do over *300 million* 3D vector operations per second.
 ### Example usage
 
     Vector3 v=Vector3.of(1.0,2.0,3.0);		
-    v.normalise();		
+    v.normalise();                       // normalise v to a unit vector		
     Vector3 d=Vector3.of(10.0,0.0,0.0);		
-    d.addMultiple(v, 5.0);
+    d.addMultiple(v, 5.0);               // d = d + (v * 5)
 	System.out.println(d);	    
 
 ### Key features
@@ -23,6 +23,7 @@ Vectorz can do over *300 million* 3D vector operations per second.
  - Ability to create lightweight "reference" vectors (e.g. to access subranges of other vectors)
  - Library of useful mathematical functions on vectors
  - Vectors have lots of utility functionality implemented - Cloneable, Serializable, Comparable etc.
+ - Input / output of vectors and matrices in edn format
 
 ### Focus on performance
 
