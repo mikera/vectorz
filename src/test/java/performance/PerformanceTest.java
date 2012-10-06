@@ -4,6 +4,15 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 
+/**
+ * This is not exactly a full benchmarking suite
+ * 
+ * But enough to test efficiency of various vectorz operations
+ * 
+ * @author Mike
+ *
+ */
+
 public class PerformanceTest {
 	private static final int ITERATIONS=10000;
 	private static final int REPEATS=100;
