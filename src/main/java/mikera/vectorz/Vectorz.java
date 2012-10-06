@@ -41,6 +41,15 @@ public class Vectorz {
 		return first.join(second);
 	}
 	
+	public static AVector join(List<AVector> vectors) {
+		int count=vectors.size();
+		AVector v=vectors.get(0);
+		for (int i=1; i<count; i++) {
+			v=v.join(vectors.get(i));
+		}
+		return v;
+	}
+	
 	public static AVector createZeroVector(int length) {
 		return createLength(length);
 	}
