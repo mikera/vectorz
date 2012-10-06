@@ -178,16 +178,7 @@ public class Vectorz {
 		int length=d.size();
 		double[] data=new double[length];
 		for (int i=0; i<length; i++) {
-			double v;
-			Object o=d.get(i);
-			if (o instanceof Double) {
-				v=(Double)o;
-			} else if (o instanceof Number) {
-				v=((Number)o).doubleValue();
-			} else {
-				throw new VectorzException("Cannot parse double value from class: "+o.getClass());
-			}			
-			data[i]=v;
+			data[i]=Tools.toDouble(d.get(i));
 		}
 		AVector v=createLength(length);
 		v.setValues(data);

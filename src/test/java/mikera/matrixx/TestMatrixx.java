@@ -201,8 +201,7 @@ public class TestMatrixx {
 	}
 	
 	void doParseTest(AMatrix m) {
-		// TODO: fix this
-		// assertEquals(m,Matrixx.parse(m.toString()));
+		assertEquals(m,Matrixx.parse(m.toString()));
 	}
 	
 	void doGenericTests(AMatrix m) {

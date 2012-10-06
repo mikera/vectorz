@@ -10,6 +10,7 @@ import bpsm.edn.parser.CollectionBuilder.Factory;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Tools;
 import mikera.vectorz.util.MatrixBuilder;
 import mikera.vectorz.util.VectorzException;
 
@@ -108,50 +109,27 @@ public class Matrixx {
 	
 	// ====================================
 	// Edn formatting and parsing functions
-	
-	private static class ParserConfigHolder {
-		static final Parser.Config parserConfig;
-		static {
-			Parser.Config.Builder b= Parsers.newParserConfigBuilder();
-			b.setVectorFactory(new Factory() {
-				@Override
-				public CollectionBuilder builder() {
-					return new CollectionBuilder() {
-						MatrixBuilder b=new MatrixBuilder();
-						@SuppressWarnings("unchecked")
-						@Override
-						public void add(Object o) {
-							List<Object> d;
-							if (o instanceof List<?>) {
-								d=(List<Object>)o;
-							} else {
-								throw new VectorzException("Cannot parse vector value from class: "+o.getClass());
-							}
-							b.add(d);
-						}
 
-						@Override
-						public Object build() {
-							return b.toVector();
-						}					
-					};
-				}}
-			);
-			parserConfig=b.build();
-		}
-	}
-	
 	private static Parser.Config getMatrixParserConfig() {
-		return ParserConfigHolder.parserConfig;
+		return Parsers.defaultConfiguration();
 	}
 	
 	/**
-	 * Parse a vector in edn format
+	 * Parse a matrix in edn format
 	 * @param ednString
 	 * @return
 	 */
-	public static AVector parse(String ednString) {
+	public static AMatrix parse(String ednString) {
 		Parser p=Parsers.newParser(getMatrixParserConfig(),new StringReader(ednString));
-		return (AVector)p.nextValue();
+		List<List<Object>> data=(List<List<Object>>) p.nextValue();
+		int rc=data.size();
+		int cc=(rc==0)?0:data.get(0).size();
+		AMatrix m=createMatrix(rc,cc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				m.set(i,j,Tools.toDouble(data.get(i).get(j)));
+			}
+		}
+		return m;
 	}
 }

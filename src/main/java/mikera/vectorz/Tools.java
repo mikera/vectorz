@@ -35,5 +35,15 @@ public final class Tools {
 		return (int) (l ^ (l >>> 32));
 	}
 
+	public static double toDouble(Object object) {
+		if (object instanceof Double) {
+			return (Double)object;
+		} else if (object instanceof Number) {
+			return ((Number)object).doubleValue();
+		} else {
+			throw new IllegalArgumentException("Cannot convert to double: "+object.toString());
+		}
+	}
+
 	
 }
