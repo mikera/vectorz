@@ -46,6 +46,17 @@ public class TestMatrixx {
 	}
 	
 	@Test
+	public void test180RotationMatrix() {
+		AVector v=Vector.of(Math.random(),0,0);	
+		double angle=Math.PI;
+		Matrix33 rot=Matrixx.createYAxisRotationMatrix(angle);
+		
+		AVector r=rot.transform(v);
+		v.negate();
+		assertTrue(v.epsilonEquals(r));
+	}
+	
+	@Test
 	public void testRandomRotation() {
 		AVector v=Vectorz.createUniformRandomVector(3);	
 		AVector axis=Vectorz.createUniformRandomVector(3);	

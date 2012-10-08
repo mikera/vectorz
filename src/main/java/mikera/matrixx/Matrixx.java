@@ -62,6 +62,19 @@ public class Matrixx {
 		return createRotationMatrix(v.get(0),v.get(1),v.get(2),angle);
 	}
 	
+	public static Matrix33 createXAxisRotationMatrix(double angle) {
+		return createRotationMatrix(1,0,0,angle);
+	}
+	
+	public static Matrix33 createYAxisRotationMatrix(double angle) {
+		return createRotationMatrix(0,1,0,angle);
+	}
+
+	public static Matrix33 createZAxisRotationMatrix(double angle) {
+		return createRotationMatrix(0,0,1,angle);
+	}
+
+	
 	public static AMatrix createRandomSquareMatrix(int dimensions) {
 		AMatrix m=createSquareMatrix(dimensions);
 		fillRandomValues(m);
