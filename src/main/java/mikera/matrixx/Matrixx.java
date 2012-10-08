@@ -40,6 +40,14 @@ public class Matrixx {
 		return im;
 	}
 	
+	public static Matrix22 create2DRotationMatrix(double angle) {
+		double sa=Math.sin(angle);
+		double ca=Math.cos(angle);
+		return new Matrix22(
+				ca,-sa,
+				sa, ca);
+	}
+	
 	public static Matrix33 createRotationMatrix(Vector3 axis, double angle) {
 		return createRotationMatrix(axis.x,axis.y,axis.z,angle);
 	}
