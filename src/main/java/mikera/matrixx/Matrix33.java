@@ -148,6 +148,21 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 		dest.z=((m20*s.x)+(m21*s.y)+(m22*s.z));
 	}
 	
+	@Override
+	public void transformInPlace(AVector dest) {
+		if (dest instanceof Vector3) {
+			transformInPlace((Vector3)dest);
+			return;
+		}
+		double sx=dest.get(0), sy=dest.get(1), sz=dest.get(2);
+		double tx=((m00*sx)+(m01*sy)+(m02*sz));
+		double ty=((m10*sx)+(m11*sy)+(m12*sz));
+		double tz=((m20*sx)+(m21*sy)+(m22*sz));
+		dest.set(0,tx);
+		dest.set(1,ty);
+		dest.set(2,tz);
+	}
+	
 	public void transformInPlace(Vector3 dest) {
 		Vector3 s=dest;
 		double tx=((m00*s.x)+(m01*s.y)+(m02*s.z));
