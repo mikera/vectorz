@@ -3,16 +3,12 @@ package mikera.matrixx;
 import java.io.StringReader;
 import java.util.List;
 
-import bpsm.edn.parser.CollectionBuilder;
 import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
-import bpsm.edn.parser.CollectionBuilder.Factory;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
-import mikera.vectorz.util.MatrixBuilder;
-import mikera.vectorz.util.VectorzException;
 
 /**
  * Static method class for matrices
