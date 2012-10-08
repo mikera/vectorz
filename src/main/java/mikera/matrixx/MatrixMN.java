@@ -1,12 +1,14 @@
 package mikera.matrixx;
 
+import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.VectorzException;
 
 /** 
- * A matrix class backed by a double[] array
+ * Standard MxN matrix class backed by a flat double[] array
+ * 
  * @author Mike
- *
  */
 public final class MatrixMN extends AMatrix{
 	private final int rows;
@@ -38,6 +40,18 @@ public final class MatrixMN extends AMatrix{
 	}
 	
 	@Override
+	public void transform(AVector source, AVector dest) {
+		int index=0;
+		for (int i=0; i<rows; i++) {
+			double acc=0.0;
+			for (int j=0; j<columns; j++) {
+				acc+=data[index++]*source.get(j);
+			}
+			dest.set(i,acc);
+		}
+	}
+	
+	@Override
 	public ArraySubVector getRow(int row) {
 		return ArraySubVector.wrap(data,row*columns,columns);
 	}
@@ -50,6 +64,24 @@ public final class MatrixMN extends AMatrix{
 	@Override
 	public int columnCount() {
 		return columns;
+	}
+	
+	@Override
+	public void swapRows(int i, int j) {
+		if (i == j) return;
+		int a = i*columns;
+		int b = j*columns;
+		int cc = columnCount();
+		for (int k = 0; k < cc; k++) {
+			double t = data[a+k];
+			data[a+k]=data[b+k];
+			data[b+k]=t;
+		}
+	}
+	
+	@Override
+	public Vector asVector() {
+		return Vector.wrap(data);
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
-import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector3;

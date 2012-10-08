@@ -389,7 +389,7 @@ public abstract class AMatrix extends AAffineTransform {
 		AVector a = getColumn(i);
 		AVector b = getColumn(j);
 		int rc = rowCount();
-		for (int k = 0; i < rc; k++) {
+		for (int k = 0; k < rc; k++) {
 			double t = a.get(k);
 			a.set(k, b.get(k));
 			b.set(k, t);

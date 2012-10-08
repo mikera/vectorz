@@ -199,14 +199,28 @@ public class TestMatrixx {
 		m2.transposeInPlace();
 		assertEquals(m,m2);
 	}
+	
+	private void doSwapTest(AMatrix m) {
+		if ((m.rowCount()<2)||(m.columnCount()<2)) return;
+		m=m.clone();
+		AMatrix m2=m.clone();
+		m2.swapRows(0, 1);
+		assert(!m2.equals(m));
+		m2.swapRows(0, 1);
+		assert(m2.equals(m));
+		m2.swapColumns(0, 1);
+		assert(!m2.equals(m));
+		m2.swapColumns(0, 1);
+		assert(m2.equals(m));	
+	}
 
 	void doRandomTests(AMatrix m) {
 		m=m.clone();
 		Matrixx.fillRandomValues(m);
+		doSwapTest(m);
 		doMutationTest(m);
 		doSquareTransposeTest(m);
 	}
-	
 
 	private void doCloneSafeTest(AMatrix m) {
 		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
