@@ -11,10 +11,19 @@ import mikera.vectorz.util.VectorzException;
 public final class ArrayMatrix extends AMatrix{
 	private final int rows;
 	private final int columns;
-	private final double[] data;
+	public final double[] data;
 	
 	public ArrayMatrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
+	}
+	
+	public ArrayMatrix(AMatrix m) {
+		this(m.rowCount(),m.columnCount());
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				data[(i * rows) + j] = m.get(i, j);
+			}
+		}
 	}
 	
 	private ArrayMatrix(int rowCount, int columnCount, double[] data) {
