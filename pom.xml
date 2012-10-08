@@ -33,9 +33,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>info.bsmithmannschott</groupId>
+			<groupId>net.mikera</groupId>
 			<artifactId>edn-java</artifactId>
-			<version>[0.1.0,)</version>
+			<version>0.2.0</version>
 		</dependency>
 	</dependencies>
 </project>
