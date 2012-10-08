@@ -260,6 +260,12 @@ public class TestMatrixx {
 		AMatrix m2=Matrixx.createFromVector(v, m.rowCount(), m.columnCount());
 		
 		assertEquals(m,m2);
+		assertEquals(v,m2.asVector());
+		
+		if (v.length()>0) {
+			v.set(0,10.0);
+			assertEquals(10.0,m.get(0,0),0.0);
+		}
 	}
 	
 	void doParseTest(AMatrix m) {

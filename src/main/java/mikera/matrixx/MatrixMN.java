@@ -21,11 +21,7 @@ public final class MatrixMN extends AMatrix{
 	
 	public MatrixMN(AMatrix m) {
 		this(m.rowCount(),m.columnCount());
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				data[(i * columns) + j] = m.get(i, j);
-			}
-		}
+		set(m);
 	}
 	
 	private MatrixMN(int rowCount, int columnCount, double[] data) {
@@ -41,6 +37,8 @@ public final class MatrixMN extends AMatrix{
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
+		assert(rowCount()==dest.length());
+		assert(columnCount()==source.length());
 		int index=0;
 		for (int i=0; i<rows; i++) {
 			double acc=0.0;
@@ -92,5 +90,18 @@ public final class MatrixMN extends AMatrix{
 	@Override
 	public void set(int row, int column, double value) {
 		data[(row*columns)+column]=value;
+	}
+	
+	@Override
+	public void set(AMatrix a) {
+		int rc = rowCount();
+		assert(rc==a.rowCount());
+		int cc = columnCount();
+		assert(cc==a.columnCount());
+		for (int row = 0; row < rc; row++) {
+			for (int column = 0; column < cc; column++) {
+				set(row, column, a.get(row, column));
+			}
+		}
 	}
 }
