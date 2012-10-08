@@ -26,7 +26,7 @@ public class TestAffine {
 		r2.add(d);
 		r2=t.transform(r2);
 		
-		assertTrue(r1.approxEquals(r2));
+		assertTrue(r1.epsilonEquals(r2));
 	}
 	
 	private void testAffineDecomposition(AAffineTransform t) {
@@ -37,7 +37,7 @@ public class TestAffine {
 		AVector r2=t.getMatrixComponent().transform(z);
 		t.getTranslationComponent().transformInPlace(r2);
 		
-		assertTrue(r1.approxEquals(r2));
+		assertTrue(r1.epsilonEquals(r2));
 	}
 	
 	private void testApplyToZeroVector(AAffineTransform t) {
@@ -45,7 +45,7 @@ public class TestAffine {
 		
 		AVector r=t.transform(z);
 		assertNotNull(r);
-		assertTrue(r.approxEquals(t.getTranslationComponent().getTranslationVector()));	
+		assertTrue(r.epsilonEquals(t.getTranslationComponent().getTranslationVector()));	
 	}
 	
 
@@ -53,7 +53,7 @@ public class TestAffine {
 		AVector z=Vectorz.createZeroVector(t.inputDimensions());
 		AVector r1=t.transform(z);
 		AVector r2=t.clone().transform(z);
-		assertTrue(r1.approxEquals(r2));	
+		assertTrue(r1.epsilonEquals(r2));	
 		
 		assertEquals(t,t.clone());
 	}

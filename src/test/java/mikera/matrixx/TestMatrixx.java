@@ -23,12 +23,12 @@ public class TestMatrixx {
 		AVector mv=m.transform(v);
 		AVector mimv=mi.transform(mv);
 		
-		assertTrue(mimv.approxEquals(v));		
+		assertTrue(mimv.epsilonEquals(v));		
 		
 		// composition of matrix and its inverse should be an identity transform
 		ATransform id=m.compose(mi);
 		AVector idv=id.transform(v);
-		assertTrue(idv.approxEquals(v));		
+		assertTrue(idv.epsilonEquals(v));		
 	}
 	
 	@Test
@@ -52,7 +52,7 @@ public class TestMatrixx {
 			
 			m.transform(v, tv);
 			
-			assertTrue(v.approxEquals(tv));
+			assertTrue(v.epsilonEquals(tv));
 		}
 	}
 	
@@ -119,7 +119,7 @@ public class TestMatrixx {
 		AMatrix m2=Matrixx.createScaleMatrix(3, 1.5);
 		ATransform ct = m2.compose(m1);
 		
-		assertTrue(Vector3.of(3,6,9).approxEquals(ct.transform(v)));
+		assertTrue(Vector3.of(3,6,9).epsilonEquals(ct.transform(v)));
 	}
 	
 	void doMutationTest(AMatrix m) {

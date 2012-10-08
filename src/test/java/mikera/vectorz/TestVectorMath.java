@@ -108,7 +108,7 @@ public class TestVectorMath {
 		v2.add(v);
 		v2.multiply(0.5);
 		
-		assertTrue(v.approxEquals(v2));
+		assertTrue(v.epsilonEquals(v2));
 	}
 	
 	@Test public void testAngle() {

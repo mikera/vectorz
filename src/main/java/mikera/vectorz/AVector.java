@@ -79,8 +79,8 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return true;
 	}
 	
-	public boolean approxEquals(AVector v) {
-		return approxEquals(v,Vectorz.TEST_EPSILON);
+	public boolean epsilonEquals(AVector v) {
+		return epsilonEquals(v,Vectorz.TEST_EPSILON);
 	}
 	
 	public List<Double> toList() {
@@ -92,7 +92,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return al;
 	}
 	
-	public boolean approxEquals(AVector v,double tolerance) {
+	public boolean epsilonEquals(AVector v,double tolerance) {
 		if (this == v) return true;
 		int len=length();
 		if (len != v.length()) return false;
@@ -160,6 +160,42 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
+	 * Clamps all values in the vector to a given range
+	 * @param value
+	 */
+	public void clamp(double min, double max) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			double v=get(i);
+			if (v<min) {
+				set(i,min);
+			} else if (v>max) {
+				set(i,max);
+			}
+		}
+	}
+	
+	public void clampMax(double max) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			double v=get(i);
+			if (v>max) {
+				set(i,max);
+			}
+		}
+	}
+	
+	public void clampMin(double min) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			double v=get(i);
+			if (v<min) {
+				set(i,min);
+			} 
+		}
+	}
+	
+	/**
 	 * Multiplies the vector by a constant factor
 	 * @param factor Factor by which to multiply each component of the vector
 	 */
@@ -170,8 +206,30 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		}	
 	}
 	
+	public void absolute() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			set(i,Math.abs(get(i)));
+		}
+	}
+	
 	public void scale(double factor) {
 		multiply(factor);
+	}
+	
+	public void scaleAdd(double factor, AVector v) {
+		multiply(factor);
+		add(v);
+	}
+	
+	public void interpolate(AVector v, double alpha) {
+		multiply(1.0-alpha);
+		addMultiple(v,alpha);
+	}
+	
+	public void interpolate(AVector a, AVector b, double alpha) {
+		set(a);
+		interpolate(b,alpha);
 	}
 	
 	public double magnitudeSquared() {
