@@ -4,5 +4,13 @@ import mikera.vectorz.AVector;
 
 @SuppressWarnings("serial")
 public abstract class MatrixSubVector extends AVector {
-	// none yet
+	@Override
+	public boolean isReference() {
+		return true;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return true;
+	}
 }
