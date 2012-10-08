@@ -273,7 +273,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return Math.sqrt(distanceSquared(v));
 	}
 	
-	public double manhattanDistance(AVector v) {
+	public double distanceL1(AVector v) {
 		int len=length();
 		double total=0.0;
 		for (int i=0; i<len; i++) {
@@ -281,6 +281,16 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 			total+=Math.abs(d);
 		}
 		return total;
+	}
+	
+	public double distanceLinf(AVector v) {
+		int len=length();
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			double d=get(i)-v.get(i);
+			result=Math.max(result,d);
+		}
+		return result;
 	}
 	
 	/**
