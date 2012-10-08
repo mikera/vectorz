@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.matrixx.impl.MatrixSubVector;
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATranslation;
 import mikera.transformz.AffineMN;
@@ -86,7 +87,7 @@ public abstract class AMatrix extends AAffineTransform {
 	}
 	
 	@SuppressWarnings("serial")
-	private class MatrixRow extends AVector {
+	private class MatrixRow extends MatrixSubVector {
 		private final int row;
 		private MatrixRow(int row) {
 			this.row=row;
@@ -106,7 +107,7 @@ public abstract class AMatrix extends AAffineTransform {
 	}
 	
 	@SuppressWarnings("serial")
-	private class MatrixColumn extends AVector {
+	private class MatrixColumn extends MatrixSubVector {
 		private final int column;
 		private MatrixColumn(int column) {
 			this.column=column;
