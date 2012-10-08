@@ -99,6 +99,13 @@ public final class Vector4 extends APrimitiveVector {
 		}
 	}
 	
+	public void setValues(double x, double y, double z, double t) {
+		this.x=x;
+		this.y=y;
+		this.z=z;
+		this.t=t;
+	}
+	
 	@Override
 	public Vector4 clone() {
 		return new Vector4(x,y,z,t);	

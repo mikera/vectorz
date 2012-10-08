@@ -53,6 +53,10 @@ public final class Vector1 extends APrimitiveVector {
 		}
 	}
 	
+	public void setValues(double x) {
+		this.x=x;
+	}
+	
 	@Override
 	public Vector1 clone() {
 		return new Vector1(x);	

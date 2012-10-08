@@ -164,6 +164,12 @@ public final class Vector3 extends APrimitiveVector {
 		}
 	}
 	
+	public void setValues(double x, double y, double z) {
+		this.x=x;
+		this.y=y;
+		this.z=z;
+	}
+	
 	@Override
 	public Vector3 clone() {
 		return new Vector3(x,y,z);	
