@@ -70,11 +70,10 @@ public class TestVectors {
 	
 	private void testClone(AVector v) {
 		AVector cv=v.clone();
-		assertFalse(cv.isReference());
-		
 		int len=cv.length();
 		assertEquals(v.length(), len);
-		
+		assertFalse(cv.isReference());
+		assertTrue((cv.length()==0)||cv.isMutable());		
 		assertEquals(v,cv);
 		
 		for (int i=0; i<len; i++) {

@@ -258,11 +258,16 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
-	 * Clones the vector, creating a new copy of all data
+	 * Clones the vector, creating a new copy of all data. 
+	 * 
+	 * The clone is:
+	 *  - not guaranteed to be of the same type. 
+	 *  - guaranteed to be fully mutable
+	 *  - guaranteed not to contain a reference (i.e. is a full deep copy)
 	 */
+	@Override
 	public AVector clone() {
-		// we use a deep copy in case this vector is a reference vector type
-		
+		// by default use a deep copy in case this vector is a reference vector type		
 		return Vectorz.deepCopy(this);
 	}
 	
