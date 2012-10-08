@@ -205,4 +205,22 @@ public class TestVectors {
 
 		
 	}
+	
+	@Test public void testClamping() {
+		Vector3 v=Vector3.of(1,2,3);
+		v.clamp(1.5, 2.5);
+		assertEquals(Vector3.of(1.5,2,2.5),v);
+	}
+	
+	@Test public void testClampMin() {
+		Vector3 v=Vector3.of(1,2,3);
+		v.clampMin(1.5);
+		assertEquals(Vector3.of(1.5,2,3),v);
+	}
+	
+	@Test public void testClampMax() {
+		Vector3 v=Vector3.of(1,2,3);
+		v.clampMax(2.5);
+		assertEquals(Vector3.of(1,2,2.5),v);
+	}
 }
