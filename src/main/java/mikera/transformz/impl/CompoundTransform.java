@@ -39,6 +39,11 @@ public class CompoundTransform extends ATransform {
 	public int inputDimensions() {
 		return inner.inputDimensions();
 	}
+	
+	@Override
+	public CompoundTransform compose(ATransform trans) {
+		return new CompoundTransform(outer,inner.compose(trans));
+	}
 
 	@Override
 	public int outputDimensions() {

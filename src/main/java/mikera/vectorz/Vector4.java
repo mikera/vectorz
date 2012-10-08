@@ -68,7 +68,7 @@ public final class Vector4 extends APrimitiveVector {
 	}
 	
 	public double dotProduct(Vector4 a) {
-		return x*a.x+y*a.y+z*a.z+t*a.t;
+		return (x*a.x)+(y*a.y)+(z*a.z)+(t*a.t);
 	}
 
 	

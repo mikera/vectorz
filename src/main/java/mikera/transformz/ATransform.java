@@ -5,10 +5,9 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 /**
- * Base class for all vector transformations
+ * Abstract base class for all vector transformations
  * 
  * @author Mike
- *
  */
 public abstract class ATransform implements Cloneable {
 	// =====================================

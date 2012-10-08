@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.impl.ArrayMatrix;
+import mikera.matrixx.impl.VectorMatrixM3;
+import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -35,7 +36,8 @@ public class TestMatrixx {
 	@Test
 	public void testRotationMatrix() {
 		AVector v=Vectorz.createUniformRandomVector(3);	
-		Matrix33 rot=Matrixx.createRotationMatrix(v, Math.random());
+		double angle=Math.random();
+		Matrix33 rot=Matrixx.createRotationMatrix(v, angle);
 		
 		AVector r=rot.transform(v);
 		assertTrue(r instanceof Vector3);
@@ -44,6 +46,8 @@ public class TestMatrixx {
 		assertEquals(v.get(2),r.get(2),0.00001);
 		assertEquals(v.magnitude(),r.magnitude(),0.00001);
 		assertTrue(r.epsilonEquals(v));
+		
+		
 	}
 	
 	@Test
@@ -66,6 +70,10 @@ public class TestMatrixx {
 		
 		AVector r=rot.transform(v);
 		assertEquals(v.magnitude(),r.magnitude(),0.00001);
+		
+		Matrix33 inv=rot.inverse();
+		AVector ri=inv.transform(r);
+		assertTrue(v.epsilonEquals(ri));
 	}
 	
 	@Test
@@ -117,7 +125,7 @@ public class TestMatrixx {
 	
 	@Test
 	public void testBasicDeterminant() {
-		MatrixMN mmn=new MatrixMN(2,2);
+		VectorMatrixMN mmn=new VectorMatrixMN(2,2);
 		mmn.getRow(0).set(Vector.of(2,1));
 		mmn.getRow(1).set(Vector.of(1,2));
 		assertEquals(3.0,mmn.determinant(),0.0);
@@ -125,7 +133,7 @@ public class TestMatrixx {
 	
 	@Test
 	public void testPermuteDeterminant() {
-		MatrixMN mmn=new MatrixMN(3,3);
+		VectorMatrixMN mmn=new VectorMatrixMN(3,3);
 		mmn.set(0,1,1);
 		mmn.set(1,0,1);
 		mmn.set(2,2,1);
@@ -139,7 +147,7 @@ public class TestMatrixx {
 			m33.set(i,j,Math.random());
 		}
 		
-		MatrixMN mmn=new MatrixMN(3,3);
+		VectorMatrixMN mmn=new VectorMatrixMN(3,3);
 		mmn.set(m33);
 		
 		for (int i=0; i<3; i++) for (int j=0; j<3; j++) {
@@ -267,29 +275,29 @@ public class TestMatrixx {
 		doGenericTests(m22);
 		
 		// specialised Mx3 matrix
-		MatrixM3 mm3=new MatrixM3(10);
+		VectorMatrixM3 mm3=new VectorMatrixM3(10);
 		doGenericTests(mm3);
 	
 		// general M*N matrix
-		MatrixMN mmn=new MatrixMN(6 ,7);
+		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
 		doGenericTests(mmn);
 
 		// small 2*2 matrix
-		mmn=new MatrixMN(2,2);
+		mmn=new VectorMatrixMN(2,2);
 		doGenericTests(mmn);
 		
 		// 0x0 matrix should work
-		mmn=new MatrixMN(0 ,0);
+		mmn=new VectorMatrixMN(0 ,0);
 		doGenericTests(mmn);
 
 		// square M*M matrix
-		mmn=new MatrixMN(6 ,6);
+		mmn=new VectorMatrixMN(6 ,6);
 		doGenericTests(mmn);
 
-		ArrayMatrix am1=new ArrayMatrix(m33);
+		MatrixMN am1=new MatrixMN(m33);
 		doGenericTests(am1);
 		
-		ArrayMatrix am2=new ArrayMatrix(mmn);
+		MatrixMN am2=new MatrixMN(mmn);
 		doGenericTests(am2);
 
 		

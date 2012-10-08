@@ -5,8 +5,8 @@ import mikera.vectorz.AVector;
 
 /**
  * Specialised diagonal matrix class
+ * 
  * @author Mike
- *
  */
 public final class DiagonalMatrix extends AMatrix {
 	final int dimensions;

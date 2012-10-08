@@ -1,5 +1,6 @@
-package mikera.matrixx;
+package mikera.matrixx.impl;
 
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**

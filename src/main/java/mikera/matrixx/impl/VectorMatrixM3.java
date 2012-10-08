@@ -1,20 +1,20 @@
-package mikera.matrixx;
+package mikera.matrixx.impl;
 
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
 /**
- * Specialised N*3 Matrix for Vector3 components
+ * Specialised N*3 Matrix with Vector3 row components
  * 
  * @author Mike
  *
  */
-public final class MatrixM3 extends AVectorMatrix  implements ISpecialisedTransform  {
+public final class VectorMatrixM3 extends AVectorMatrix  implements ISpecialisedTransform  {
 	private final int rowCount;	
 	private final Vector3[] rows;
 	
-	public MatrixM3(int rowCount) {
+	public VectorMatrixM3(int rowCount) {
 		this.rowCount=rowCount;
 		rows=new Vector3[rowCount];
 		for (int i=0; i<rowCount; i++) {
@@ -22,7 +22,7 @@ public final class MatrixM3 extends AVectorMatrix  implements ISpecialisedTransf
 		}
 	}
 	
-	private MatrixM3(Vector3[] rows) {
+	private VectorMatrixM3(Vector3[] rows) {
 		rowCount=rows.length;
 		this.rows=rows;
 	}
@@ -70,8 +70,8 @@ public final class MatrixM3 extends AVectorMatrix  implements ISpecialisedTransf
 	}
 	
 	@Override
-	public MatrixM3 clone() {
-		MatrixM3 m=new MatrixM3(rows.clone());
+	public VectorMatrixM3 clone() {
+		VectorMatrixM3 m=new VectorMatrixM3(rows.clone());
 		for (int i=0; i<rowCount; i++) {
 			m.rows[i]=m.rows[i].clone();
 		}

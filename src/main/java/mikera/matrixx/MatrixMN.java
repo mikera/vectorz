@@ -1,74 +1,64 @@
 package mikera.matrixx;
 
-import mikera.vectorz.AVector;
-import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.util.VectorzException;
 
-public final class MatrixMN extends AVectorMatrix {
-	private final int rowCount;	
-	private final int columnCount;	
-	private final AVector[] rows;
+/** 
+ * A matrix class backed by a double[] array
+ * @author Mike
+ *
+ */
+public final class MatrixMN extends AMatrix{
+	private final int rows;
+	private final int columns;
+	public final double[] data;
 	
 	public MatrixMN(int rowCount, int columnCount) {
-		this.rows=new AVector[rowCount];
-		this.rowCount=rowCount;
-		this.columnCount=columnCount;
-		for (int i=0; i<rowCount; i++) {
-			rows[i]=Vectorz.createLength(columnCount);
-		}
+		this(rowCount,columnCount,new double[rowCount*columnCount]);
 	}
 	
-	public MatrixMN(AMatrix source) {
-		this(source.rowCount(),source.columnCount());
-		for (int i=0; i<rowCount; i++) {
-			for (int j=0; j<columnCount; j++) {
-				set(i,j,source.get(i, j));
+	public MatrixMN(AMatrix m) {
+		this(m.rowCount(),m.columnCount());
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				data[(i * columns) + j] = m.get(i, j);
 			}
 		}
 	}
-
+	
+	private MatrixMN(int rowCount, int columnCount, double[] data) {
+		this.rows=rowCount;
+		this.columns=columnCount;
+		this.data=data;
+	}
+	
+	public static MatrixMN wrap(int rowCount, int columnCount, double[] data) {
+		if (data.length!=rowCount*columnCount) throw new VectorzException("data array is of wrong size: "+data.length);
+		return new MatrixMN(rowCount,columnCount,data);
+	}
+	
 	@Override
-	public AVector getRow(int row) {
-		return rows[row];
+	public ArraySubVector getRow(int row) {
+		return ArraySubVector.wrap(data,row*columns,columns);
 	}
 
 	@Override
 	public int rowCount() {
-		return rowCount;
+		return rows;
 	}
 
 	@Override
 	public int columnCount() {
-		return columnCount;
+		return columns;
 	}
-	
+
 	@Override
 	public double get(int row, int column) {
-		return rows[row].get(column);
+		return data[(row*columns)+column];
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		rows[row].set(column,value);
-	}
-	
-	@Override
-	public void transform(AVector source, AVector dest) {
-		for (int i=0; i<rowCount; i++) {
-			dest.set(i,getRow(i).dotProduct(source));
-		}
-	}
-	
-	@Override
-	public boolean isSquare() {
-		return rowCount==columnCount;
-	}
-	
-	@Override
-	public MatrixMN clone() {
-		MatrixMN m=new MatrixMN(rowCount,columnCount);
-		for (int i=0; i<rowCount; i++) {
-			m.rows[i].set(rows[i]);
-		}
-		return m;
+		data[(row*columns)+column]=value;
 	}
 }

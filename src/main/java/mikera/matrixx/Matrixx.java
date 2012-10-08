@@ -5,9 +5,9 @@ import java.util.List;
 
 import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
-import mikera.matrixx.impl.ArrayMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector3;
@@ -88,14 +88,14 @@ public class Matrixx {
 		return m;
 	}
 
-	static ArrayMatrix createInverse(AMatrix m) {
+	static MatrixMN createInverse(AMatrix m) {
 		if (m.rowCount() != m.columnCount()) {
 			throw new IllegalArgumentException("Matrix must be square for inverse!");
 		}
 
 		int dims = m.rowCount();
 
-		ArrayMatrix am = new ArrayMatrix(m);
+		MatrixMN am = new MatrixMN(m);
 		int[] rowPermutations = new int[dims];
 
 		// perform LU-based inverse on matrix
@@ -104,10 +104,10 @@ public class Matrixx {
 	}
 	
 	/**
-	 * Computes LU decomposition of a matrix in a double array, returns true if
+	 * Computes LU decomposition of a matrix, returns true if
 	 * successful (i.e. if matrix is non-singular)
 	 */
-	private static void decomposeLU(ArrayMatrix am, int[] permutations) {
+	private static void decomposeLU(MatrixMN am, int[] permutations) {
 		int dims = permutations.length;
 		double[] data=am.data;
 
@@ -187,12 +187,12 @@ public class Matrixx {
 		}
 	}
 
-	private static ArrayMatrix backSubstituteLU(ArrayMatrix am, int[] permutations) {
+	private static MatrixMN backSubstituteLU(MatrixMN am, int[] permutations) {
 		int dims = permutations.length;
 		double[] dataIn=am.data;
 		
 		// create identity matrix in output
-		ArrayMatrix result=new ArrayMatrix(Matrixx.createIdentityMatrix(dims));
+		MatrixMN result=new MatrixMN(Matrixx.createIdentityMatrix(dims));
 		double[] dataOut = result.data;
 
 		for (int col = 0; col < dims; col++) {
@@ -262,7 +262,7 @@ public class Matrixx {
 		switch (dimensions) {
 		case 2: return new Matrix22();
 		case 3: return new Matrix33();
-		default: return new MatrixMN(dimensions,dimensions);
+		default: return createMatrix(dimensions,dimensions);
 		}
 	}
 

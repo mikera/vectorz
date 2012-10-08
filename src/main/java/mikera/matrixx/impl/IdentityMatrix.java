@@ -50,6 +50,11 @@ public class IdentityMatrix extends AMatrix {
 		return true;
 	}
 	
+	@Override 
+	public AMatrix inverse() {
+		return this;
+	}
+	
 	@Override
 	public void transposeInPlace() {
 		// already done!

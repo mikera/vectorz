@@ -1,6 +1,7 @@
 package mikera.matrixx;
 
 import mikera.matrixx.impl.MatrixSubVector;
+import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATranslation;
 import mikera.transformz.AffineMN;
@@ -27,7 +28,7 @@ public abstract class AMatrix extends AAffineTransform {
 
 	@Override
 	public AAffineTransform toAffineTransform() {
-		return new AffineMN(new MatrixMN(this),
+		return new AffineMN(new VectorMatrixMN(this),
 				Transformz.identityTransform(outputDimensions()));
 	}
 
@@ -134,10 +135,16 @@ public abstract class AMatrix extends AAffineTransform {
 		}
 	}
 
+	/**
+	 * Returns a row of the matrix as a vector reference
+	 */
 	public AVector getRow(int row) {
 		return new MatrixRow(row);
 	}
 
+	/**
+	 * Returns a column of the matrix as a vector reference
+	 */
 	public AVector getColumn(int column) {
 		return new MatrixColumn(column);
 	}
@@ -239,6 +246,33 @@ public abstract class AMatrix extends AAffineTransform {
 			}
 		}
 		return m;
+	}
+	
+	
+	public void add(AMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(rc==m.rowCount());
+		assert(cc==m.columnCount());
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				set(i,j,get(i,j)+m.get(i, j));
+			}
+		}
+	}
+	
+	public void addMultiple(AMatrix m, double factor) {
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(rc==m.rowCount());
+		assert(cc==m.columnCount());
+		
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				set(i,j,get(i,j)+(m.get(i, j)*factor));
+			}
+		}
 	}
 
 	@Override

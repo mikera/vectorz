@@ -66,7 +66,10 @@ public class TestVectors {
 	private void testParse(AVector v) {
 		assertEquals(v,Vectorz.parse(v.toString()));
 	}
-
+	
+	private void testHashCode(AVector v) {
+		assertEquals(v.hashCode(),v.toList().hashCode());
+	}
 	
 	private void testClone(AVector v) {
 		AVector cv=v.clone();
@@ -156,6 +159,7 @@ public class TestVectors {
 		testClone(v);
 		testParse(v);
 		testZero(v);
+		testHashCode(v);
 		testOutOfBounds(v);
 	}
 

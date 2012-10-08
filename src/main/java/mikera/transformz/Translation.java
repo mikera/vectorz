@@ -5,6 +5,11 @@ import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
+/**
+ * Represents a translation by a fixed vector
+ * 
+ * @author Mike
+ */
 public final class Translation extends ATranslation {
 	private final AVector translation;
 	private final int dimensions;

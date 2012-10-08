@@ -7,6 +7,10 @@ public abstract class ATranslation extends AAffineTransform {
 	// =========================================
 	// Abstract interface
 	
+	/**
+	 * Gets the vector offset that this translation represents. Not guaranteed to be a reference.
+	 * @return
+	 */
 	public abstract AVector getTranslationVector();
 	
 	// =========================================

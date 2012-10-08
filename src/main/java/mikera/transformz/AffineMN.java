@@ -3,6 +3,11 @@ package mikera.transformz;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
+/**
+ * General purpose MxN affine transformation
+ * 
+ * @author Mike
+ */
 public final class AffineMN extends AAffineTransform {
 	private final AMatrix matrix;
 	private final ATranslation translation;
