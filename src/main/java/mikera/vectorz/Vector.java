@@ -34,7 +34,7 @@ public final class Vector extends ArrayVector {
 	}
 	
 	/**
-	 * Wraps a double array into a Vector, does *no defensive copy*
+	 * Wraps a double array into a Vector, does *no defensive copy* so use with caution
 	 * @param source
 	 * @return
 	 */
@@ -97,11 +97,8 @@ public final class Vector extends ArrayVector {
 	}
 	
 	public void addMultiple(ArrayVector v, double factor) {
-		int vlength=v.length();
 		int length=length();
-		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
-		}
+		assert(length==v.length());
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
@@ -111,7 +108,9 @@ public final class Vector extends ArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if (v instanceof ArrayVector) {add(((ArrayVector)v)); return;}
+		if (v instanceof ArrayVector) {
+			add(((ArrayVector)v)); return;
+		}
 		int vlength=v.length();
 		int length=length();
 		if (vlength != length) {
@@ -123,24 +122,18 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
-	public void subtract(AVector v) {
+	public void sub(AVector v) {
 		if (v instanceof ArrayVector) {subtract(((ArrayVector)v)); return;}
-		int vlength=v.length();
 		int length=length();
-		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
-		}
+		assert(length==v.length());
 		for (int i = 0; i < length; i++) {
 			data[i] -= v.get(i);
 		}
 	}
 	
 	public void subtract(ArrayVector v) {
-		int vlength=v.length();
 		int length=length();
-		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
-		}
+		assert(length==v.length());
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
@@ -151,11 +144,8 @@ public final class Vector extends ArrayVector {
 	@Override
 	public void addMultiple(AVector v, double factor) {
 		if (v instanceof ArrayVector) {addMultiple(((ArrayVector)v),factor); return;}
-		int vlength=v.length();
 		int length=length();
-		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
-		}
+		assert(length==v.length());
 		for (int i = 0; i < length; i++) {
 			data[i] += v.get(i)*factor;
 		}

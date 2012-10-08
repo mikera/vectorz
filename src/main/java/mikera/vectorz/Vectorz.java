@@ -13,7 +13,10 @@ import mikera.vectorz.util.VectorBuilder;
 import mikera.vectorz.util.VectorzException;
 
 public class Vectorz {
-	public static final double DEFAULT_TOLERANCE = 0.00001;
+	/**
+	 * Constant tolerance used for testing double values
+	 */
+	public static final double TEST_EPSILON = 0.0000001;
 
 	// ===========================
 	// Factory functions
@@ -122,6 +125,7 @@ public class Vectorz {
 		new ZeroVector(3),
 		new ZeroVector(4)
 	};
+	
 	
 	/**
 	 * Returns an immutable vector of zeros

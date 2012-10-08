@@ -61,11 +61,11 @@ public class TestVectorMath {
 		
 		AVector av=v.clone();
 		av.add(ones);
-		av.subtract(ones);
+		av.sub(ones);
 		assertEquals(v,av);
 		
 		av.addMultiple(ones,4);
-		av.subtractMultiple(ones,1.5);
+		av.subMultiple(ones,1.5);
 
 		int len=v.length();
 		for (int i=0; i<len; i++) {

@@ -80,7 +80,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	public boolean approxEquals(AVector v) {
-		return approxEquals(v,Vectorz.DEFAULT_TOLERANCE);
+		return approxEquals(v,Vectorz.TEST_EPSILON);
 	}
 	
 	public List<Double> toList() {
@@ -95,8 +95,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	public boolean approxEquals(AVector v,double tolerance) {
 		if (this == v) return true;
 		int len=length();
-		if (len != v.length())
-			return false;
+		if (len != v.length()) return false;
 		for (int i = 0; i < len; i++) {
 			double diff=get(i)-v.get(i);
 			if ((diff>tolerance)||(diff<-tolerance)) return false;
@@ -169,6 +168,10 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		for (int i = 0; i < len; i++) {
 			set(i,get(i)*factor);
 		}	
+	}
+	
+	public void scale(double factor) {
+		multiply(factor);
 	}
 	
 	public double magnitudeSquared() {
@@ -323,7 +326,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	 * Subtracts a vector from this vector
 	 * @param v
 	 */
-	public void subtract(AVector v) {
+	public void sub(AVector v) {
 		addMultiple(v,-1.0);
 	}
 	
@@ -345,14 +348,14 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	 */
 	public boolean isUnitLengthVector() {
 		double mag=magnitudeSquared();
-		return Math.abs(mag-1.0)<0.0000001;
+		return Math.abs(mag-1.0)<Vectorz.TEST_EPSILON;
 	}
 	
 	/**
 	 * Subtracts a scaled multiple of another vector from this vector
 	 * @param v
 	 */
-	public void subtractMultiple(AVector v, double factor) {
+	public void subMultiple(AVector v, double factor) {
 		addMultiple(v,-factor);
 	}
 	
