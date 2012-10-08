@@ -102,10 +102,14 @@ public final class Vector3 extends APrimitiveVector {
 		z+=v.z;
 	}
 	
-	public void subtract(Vector3 v) {
+	public void sub(Vector3 v) {
 		x-=v.x;
 		y-=v.y;
 		z-=v.z;
+	}
+	
+	public void subMultiple(Vector3 v, double factor) {
+		addMultiple(v,-factor);
 	}
 	
 	public double dotProduct(Vector3 a) {
