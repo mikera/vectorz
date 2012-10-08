@@ -45,5 +45,21 @@ public final class Tools {
 		}
 	}
 
+	/**
+	 * Tests if two double values are approximately equal
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static boolean epsilonEquals(double a, double b) {
+		return epsilonEquals(a,b,Vectorz.TEST_EPSILON);
+	}
+	
+	public static boolean epsilonEquals(double a, double b,double tolerance) {
+		double diff=a-b;
+		if ((diff>tolerance)||(diff<-tolerance)) return false;
+		return true;
+	}
+
 	
 }

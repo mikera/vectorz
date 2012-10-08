@@ -109,7 +109,6 @@ public class TestVectors {
 		assertTrue(!v.isReference());
 		
 		int vlen=v.length();
-		if (vlen==0) return;
 		
 		int start=Math.min(vlen/2,vlen-1);
 		
@@ -140,19 +139,23 @@ public class TestVectors {
 	
 
 	private void testNormalise(AVector v) {
-		if (v.length()==0) return;
 		v=v.clone();
 		v.set(0,v.get(0)+Math.random());
 		v.normalise();
 		assertTrue(v.isUnitLengthVector());
 	}
 	
+	private void doNonDegenerateTests(AVector v) {
+		if (v.length()==0) return;
+		testSubVectorMutability(v);
+		testNormalise(v);
+	}
+	
 	private void doGenericTests(AVector v) {
+		doNonDegenerateTests(v);
 		testClone(v);
 		testParse(v);
-		testNormalise(v);
 		testZero(v);
-		testSubVectorMutability(v);
 		testOutOfBounds(v);
 	}
 
@@ -204,6 +207,14 @@ public class TestVectors {
 		doGenericTests(m2.getColumn(1));
 
 		
+	}
+	
+	@Test public void testDistances() {
+		Vector3 v=Vector3.of(1,2,3);
+		Vector3 v2=Vector3.of(2,4,6);
+		assertEquals(v.magnitude(),v.distance(v2),0.000001);
+		assertEquals(6,v.distanceL1(v2),0.000001);
+		assertEquals(3,v.distanceLinf(v2),0.000001);
 	}
 	
 	@Test public void testClamping() {

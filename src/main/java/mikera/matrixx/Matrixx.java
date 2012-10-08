@@ -9,6 +9,8 @@ import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
+import mikera.vectorz.Vector3;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Static method class for matrices
@@ -27,6 +29,37 @@ public class Matrixx {
 			im.set(i,i,factor);
 		}
 		return im;
+	}
+	
+	public static DiagonalMatrix createScaleMatrix(double... scalingFactors) {
+		int dimensions=scalingFactors.length;
+		DiagonalMatrix im=new DiagonalMatrix(dimensions);
+		for (int i=0; i<dimensions; i++) {
+			im.set(i,i,scalingFactors[i]);
+		}
+		return im;
+	}
+	
+	public static Matrix33 createRotationMatrix(Vector3 axis, double angle) {
+		return createRotationMatrix(axis.x,axis.y,axis.z,angle);
+	}
+	
+	public static Matrix33 createRotationMatrix(double x, double y, double z, double angle) {
+		double d=Math.sqrt(x*x+y*y+z*z);
+		double u=x/d;
+		double v=y/d;
+		double w=z/d;
+		double ca=Math.cos(angle);
+		double sa=Math.sin(angle);
+		return new Matrix33(
+				u*u+(1-u*u)*ca , u*v*(1-ca)-w*sa , u*w*(1-ca) + v*sa,
+				u*v*(1-ca)+w*sa, v*v+(1-v*v)*ca  , v*w*(1-ca) - u*sa,
+				u*w*(1-ca)-v*sa, v*w*(1-ca)+u*sa , w*w+(1-w*w)*ca);
+	}
+	
+	public static Matrix33 createRotationMatrix(AVector v, double angle) {
+		if (!(v.length()==3)) throw new VectorzException("Rotation matrix requires a 3d axis vector");
+		return createRotationMatrix(v.get(0),v.get(1),v.get(2),angle);
 	}
 	
 	public static AMatrix createRandomSquareMatrix(int dimensions) {
@@ -128,4 +161,6 @@ public class Matrixx {
 		}
 		return m;
 	}
+
+
 }

@@ -79,10 +79,6 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return true;
 	}
 	
-	public boolean epsilonEquals(AVector v) {
-		return epsilonEquals(v,Vectorz.TEST_EPSILON);
-	}
-	
 	public List<Double> toList() {
 		ArrayList<Double> al=new ArrayList<Double>();
 		int len=length();
@@ -92,13 +88,16 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return al;
 	}
 	
+	public boolean epsilonEquals(AVector v) {
+		return epsilonEquals(v,Vectorz.TEST_EPSILON);
+	}
+	
 	public boolean epsilonEquals(AVector v,double tolerance) {
 		if (this == v) return true;
 		int len=length();
 		if (len != v.length()) return false;
 		for (int i = 0; i < len; i++) {
-			double diff=get(i)-v.get(i);
-			if ((diff>tolerance)||(diff<-tolerance)) return false;
+			if (!Tools.epsilonEquals(get(i), v.get(i), tolerance)) return false;
 		}
 		return true;
 	}
@@ -287,7 +286,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		int len=length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			double d=get(i)-v.get(i);
+			double d=Math.abs(get(i)-v.get(i));
 			result=Math.max(result,d);
 		}
 		return result;

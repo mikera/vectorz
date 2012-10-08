@@ -238,6 +238,17 @@ public abstract class AMatrix extends AAffineTransform {
 		return true;
 	}
 	
+	public boolean epsilonEquals(AMatrix a) {
+		int rc=rowCount(); if (rc!=a.rowCount()) return false;
+		int cc=columnCount(); if (cc!=a.columnCount()) return false;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				if (!Tools.epsilonEquals(get(i,j),a.get(i, j))) return false;
+			}
+		}
+		return true;
+	}
+	
 	public boolean equals(AAffineTransform a) {
 		
 		return a.getTranslationComponent().isIdentity()&&

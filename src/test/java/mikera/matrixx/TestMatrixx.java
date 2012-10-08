@@ -32,6 +32,32 @@ public class TestMatrixx {
 	}
 	
 	@Test
+	public void testRotationMatrix() {
+		AVector v=Vectorz.createUniformRandomVector(3);	
+		Matrix33 rot=Matrixx.createRotationMatrix(v, Math.random());
+		
+		AVector r=rot.transform(v);
+		assertTrue(r instanceof Vector3);
+		assertEquals(v.get(0),r.get(0),0.00001);
+		assertEquals(v.get(1),r.get(1),0.00001);
+		assertEquals(v.get(2),r.get(2),0.00001);
+		assertEquals(v.magnitude(),r.magnitude(),0.00001);
+		assertTrue(r.epsilonEquals(v));
+	}
+	
+	@Test
+	public void testRandomRotation() {
+		AVector v=Vectorz.createUniformRandomVector(3);	
+		AVector axis=Vectorz.createUniformRandomVector(3);	
+		double angle=Math.random();
+		Matrix33 rot=Matrixx.createRotationMatrix(axis, angle);
+		
+		AVector r=rot.transform(v);
+		assertEquals(v.magnitude(),r.magnitude(),0.00001);
+		assertEquals(angle*Math.sin(v.angle(axis)),r.angle(v),0.01);
+	}
+	
+	@Test
 	public void testInverse33() {
 		doInverseTest(Matrixx.createRandomSquareMatrix(3));
 		doInverseTest(Matrixx.createRandomSquareMatrix(2));
