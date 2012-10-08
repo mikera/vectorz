@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.WrappedSubVector;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Main abstract base class for all types of vector
@@ -95,7 +96,8 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	public boolean epsilonEquals(AVector v,double tolerance) {
 		if (this == v) return true;
 		int len=length();
-		if (len != v.length()) return false;
+		if (len!=v.length())
+			throw new VectorzException("Mismatched vector sizes!");
 		for (int i = 0; i < len; i++) {
 			if (!Tools.epsilonEquals(get(i), v.get(i), tolerance)) return false;
 		}

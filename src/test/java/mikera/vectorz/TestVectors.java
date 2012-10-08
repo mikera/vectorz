@@ -203,14 +203,20 @@ public class TestVectors {
 		doGenericTests(v4);
 		
 		AMatrix m1=Matrixx.createRandomSquareMatrix(5);
-		doGenericTests(m1.getRow(1));
+		doGenericTests(m1.asVector());
+		doGenericTests(m1.getRow(4));
 		doGenericTests(m1.getColumn(1));
 		
 		AMatrix m2=Matrixx.createRandomSquareMatrix(3);
+		doGenericTests(m2.asVector());
 		doGenericTests(m2.getRow(1));
 		doGenericTests(m2.getColumn(1));
 
-		
+		AMatrix m3=Matrixx.createRandomMatrix(4,5);
+		doGenericTests(m3.asVector());
+		doGenericTests(m3.getRow(2));
+		doGenericTests(m3.getColumn(2));
+
 	}
 	
 	@Test public void testDistances() {

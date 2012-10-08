@@ -1,6 +1,7 @@
 package mikera.matrixx;
 
 import mikera.matrixx.impl.MatrixSubVector;
+import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATranslation;
@@ -10,6 +11,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ZeroLengthVector;
+import mikera.vectorz.util.VectorzException;
 
 public abstract class AMatrix extends AAffineTransform {
 	// ==============================================
@@ -236,19 +238,18 @@ public abstract class AMatrix extends AAffineTransform {
 		}
 	}
 
+	/**
+	 * Returns a transposed version of this matrix. May or may not be a reference.
+	 * @return
+	 */
 	public AMatrix transpose() {
-		int rc = rowCount();
-		int cc = columnCount();
-		AMatrix m = Matrixx.createMatrix(cc, rc);
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				m.set(j, i, get(i, j));
-			}
-		}
-		return m;
+		return TransposedMatrix.wrap(this);
 	}
 	
-	
+	/**
+	 * Adds another matrix to this matrix. Matrices must be the same size.
+	 * @param m
+	 */
 	public void add(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
@@ -300,11 +301,9 @@ public abstract class AMatrix extends AAffineTransform {
 
 	public boolean epsilonEquals(AMatrix a) {
 		int rc = rowCount();
-		if (rc != a.rowCount())
-			return false;
 		int cc = columnCount();
-		if (cc != a.columnCount())
-			return false;
+		if ((rc != a.rowCount())||(cc!=a.columnCount()))
+			throw new VectorzException("Mismatched matrix sizes!");
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
 				if (!Tools.epsilonEquals(get(i, j), a.get(i, j)))

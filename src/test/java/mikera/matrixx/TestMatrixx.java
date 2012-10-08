@@ -319,7 +319,5 @@ public class TestMatrixx {
 		
 		MatrixMN am2=new MatrixMN(mmn);
 		doGenericTests(am2);
-
-		
 	}
 }
