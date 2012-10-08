@@ -10,10 +10,17 @@ public class TestVectorMath {
 		assertEquals(10.0,new Vector3(1,2,3).dotProduct(new Vector3(3,2,1)),0.000001);
 	}
 	
+	@Test public void testProjection() {
+		Vector3 v=Vector3.of(1,2,3);
+		v.projectToPlane(Vector3.of(1,0,0), 10);
+		assertTrue(Vector3.of(10,2,3).epsilonEquals(v));
+	}
+	
 	@Test public void testMagnitude() {
 		assertEquals(14.0,new Vector3(1,-2,3).magnitudeSquared(),0.000001);
 		assertEquals(5.0,new Vector2(3,4).magnitude(),0.000001);
 	}
+	
 	
 	public void doMultiplyTests(AVector v) {
 		v=v.clone();

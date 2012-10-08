@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.ArrayMatrix;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -65,13 +66,15 @@ public class TestMatrixx {
 		
 		AVector r=rot.transform(v);
 		assertEquals(v.magnitude(),r.magnitude(),0.00001);
-		assertEquals(angle*Math.sin(v.angle(axis)),r.angle(v),0.01);
 	}
 	
 	@Test
-	public void testInverse33() {
+	public void testInverse() {
+		doInverseTest(Matrixx.createRandomSquareMatrix(5));
+		doInverseTest(Matrixx.createRandomSquareMatrix(4));
 		doInverseTest(Matrixx.createRandomSquareMatrix(3));
 		doInverseTest(Matrixx.createRandomSquareMatrix(2));
+		doInverseTest(Matrixx.createRandomSquareMatrix(1));
 	}
 	
 	
@@ -275,13 +278,20 @@ public class TestMatrixx {
 		mmn=new MatrixMN(2,2);
 		doGenericTests(mmn);
 		
+		// 0x0 matrix should work
+		mmn=new MatrixMN(0 ,0);
+		doGenericTests(mmn);
 
 		// square M*M matrix
 		mmn=new MatrixMN(6 ,6);
 		doGenericTests(mmn);
+
+		ArrayMatrix am1=new ArrayMatrix(m33);
+		doGenericTests(am1);
 		
-		// 0x0 matrix should work
-		mmn=new MatrixMN(0 ,0);
-		doGenericTests(mmn);
+		ArrayMatrix am2=new ArrayMatrix(mmn);
+		doGenericTests(am2);
+
+		
 	}
 }

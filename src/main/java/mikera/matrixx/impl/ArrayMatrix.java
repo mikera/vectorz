@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.VectorzException;
 
 /** 
@@ -21,7 +22,7 @@ public final class ArrayMatrix extends AMatrix{
 		this(m.rowCount(),m.columnCount());
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				data[(i * rows) + j] = m.get(i, j);
+				data[(i * columns) + j] = m.get(i, j);
 			}
 		}
 	}
@@ -32,9 +33,14 @@ public final class ArrayMatrix extends AMatrix{
 		this.data=data;
 	}
 	
-	public ArrayMatrix wrap(int rowCount, int columnCount, double[] data) {
+	public static ArrayMatrix wrap(int rowCount, int columnCount, double[] data) {
 		if (data.length!=rowCount*columnCount) throw new VectorzException("data array is of wrong size: "+data.length);
 		return new ArrayMatrix(rowCount,columnCount,data);
+	}
+	
+	@Override
+	public ArraySubVector getRow(int row) {
+		return ArraySubVector.wrap(data,row*columns,columns);
 	}
 
 	@Override
@@ -49,11 +55,11 @@ public final class ArrayMatrix extends AMatrix{
 
 	@Override
 	public double get(int row, int column) {
-		return data[row*columns+column];
+		return data[(row*columns)+column];
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		data[row*columns+column]=value;
+		data[(row*columns)+column]=value;
 	}
 }

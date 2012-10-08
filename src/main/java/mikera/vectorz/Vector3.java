@@ -122,6 +122,20 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void projectToPlane(AVector normal, double distance) {
+		if (normal instanceof Vector3) {projectToPlane((Vector3)normal,distance); return;}
+		super.projectToPlane(normal, distance);
+	}
+	
+	public void projectToPlane(Vector3 normal, double distance) {
+		assert(Tools.epsilonEquals(normal.magnitude(), 1.0));
+		double d=dotProduct(normal);
+		addMultiple(normal,distance-d);
+	}
+
+
+	
+	@Override
 	public int length() {
 		return 3;
 	}

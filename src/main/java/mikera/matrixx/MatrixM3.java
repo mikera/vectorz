@@ -11,7 +11,7 @@ import mikera.vectorz.Vector3;
  *
  */
 public final class MatrixM3 extends AVectorMatrix  implements ISpecialisedTransform  {
-	private int rowCount;	
+	private final int rowCount;	
 	private final Vector3[] rows;
 	
 	public MatrixM3(int rowCount) {
@@ -20,6 +20,11 @@ public final class MatrixM3 extends AVectorMatrix  implements ISpecialisedTransf
 		for (int i=0; i<rowCount; i++) {
 			rows[i]=new Vector3();
 		}
+	}
+	
+	private MatrixM3(Vector3[] rows) {
+		rowCount=rows.length;
+		this.rows=rows;
 	}
 
 	@Override
@@ -66,7 +71,7 @@ public final class MatrixM3 extends AVectorMatrix  implements ISpecialisedTransf
 	
 	@Override
 	public MatrixM3 clone() {
-		MatrixM3 m=(MatrixM3) super.clone();
+		MatrixM3 m=new MatrixM3(rows.clone());
 		for (int i=0; i<rowCount; i++) {
 			m.rows[i]=m.rows[i].clone();
 		}

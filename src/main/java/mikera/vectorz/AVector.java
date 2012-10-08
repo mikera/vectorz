@@ -418,6 +418,12 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return Math.abs(mag-1.0)<Vectorz.TEST_EPSILON;
 	}
 	
+	public void projectToPlane(AVector normal, double distance) {
+		assert(Tools.epsilonEquals(normal.magnitude(), 1.0));
+		double d=dotProduct(normal);
+		addMultiple(normal,distance-d);
+	}
+	
 	/**
 	 * Subtracts a scaled multiple of another vector from this vector
 	 * @param v

@@ -20,11 +20,15 @@ public final class ArraySubVector extends ArrayVector {
 	private final int length;
 
 	public ArraySubVector(double[] values) {
-		offset = 0;
-		length = values.length;
-		data = new double[length];
-		System.arraycopy(values, 0, data, 0, length);
+		this(values.clone(),0,values.length);
 	}
+	
+	private ArraySubVector(double[] data, int offset, int length) {
+		this.data=data;
+		this.offset=offset;
+		this.length=length;
+	}
+
 
 	public ArraySubVector(int length) {
 		this.length = length;
@@ -37,6 +41,10 @@ public final class ArraySubVector extends ArrayVector {
 		this.offset = 0;
 		data = new double[length];
 		System.arraycopy(source.data, source.offset, this.data, 0, length);
+	}
+	
+	public static ArraySubVector wrap(double[] data, int offset, int length) {
+		return new ArraySubVector(data,offset,length);
 	}
 
 	/**
@@ -62,6 +70,7 @@ public final class ArraySubVector extends ArrayVector {
 		this.offset = source.getArrayOffset() + offset;
 		this.data = source.getArray();
 	}
+
 
 	@Override
 	public int length() {
@@ -154,4 +163,6 @@ public final class ArraySubVector extends ArrayVector {
 	public AVector clone() {
 		return Vectorz.createMutableVector(this);
 	}
+
+
 }
