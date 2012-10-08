@@ -121,6 +121,14 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 		dest.y=((m10*s.x)+(m11*s.y));
 	}
 	
+	public Vector2 transform(Vector2 source) {
+		Vector2 s=source;
+		Vector2 result=new Vector2(
+				((m00*s.x)+(m01*s.y)),
+				((m10*s.x)+(m11*s.y)));
+		return result;
+	}
+	
 	public void transformInPlace(Vector2 dest) {
 		Vector2 s=dest;
 		double tx=((m00*s.x)+(m01*s.y));
