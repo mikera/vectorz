@@ -89,7 +89,7 @@ public abstract class ATransform implements Cloneable {
 	 * @param v
 	 */
 	public void transformInPlace(AVector v) {
-		throw new UnsupportedOperationException("Cannot transform in place");
+		throw new UnsupportedOperationException(""+this.getClass()+" does not support transform in place");
 	}
 
 	public boolean isIdentity() {
