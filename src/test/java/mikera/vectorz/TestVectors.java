@@ -99,6 +99,7 @@ public class TestVectors {
 		}
 		
 		try {
+			if (v instanceof GrowableVector) return;
 			v.set(v.length(), 0.0);
 			fail("Should be out of bounds!");
 		} catch (IndexOutOfBoundsException x) {
@@ -201,6 +202,12 @@ public class TestVectors {
 		
 		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
 		doGenericTests(v4);
+		
+		AVector g0=new GrowableVector(0);
+		doGenericTests(g0);
+		
+		AVector g4=new GrowableVector(v4);
+		doGenericTests(g4);
 		
 		AMatrix m1=Matrixx.createRandomSquareMatrix(5);
 		doGenericTests(m1.asVector());
