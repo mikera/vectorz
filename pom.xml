@@ -4,7 +4,7 @@
 	<version>0.1.2-SNAPSHOT</version>
 
 	<name>vectorz</name>
-	<description>Fast double vector and matrix maths library for Java</description>
+	<description>Fast double-precision vector and matrix maths library for Java</description>
 	<parent>
 		<groupId>net.mikera</groupId>
 		<artifactId>mikera-pom</artifactId>
