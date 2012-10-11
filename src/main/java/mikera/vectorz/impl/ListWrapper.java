@@ -1,13 +1,13 @@
 package mikera.vectorz.impl;
 
 import java.util.AbstractList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
 import mikera.vectorz.AVector;
 
+/**
+ * Simple wrapper class to view a vector according to the java.util.List interface
+ * 
+ * @author Mike
+ */
 public final class ListWrapper extends AbstractList<Double> {
 	private final AVector wrappedVector;
 			
@@ -18,6 +18,12 @@ public final class ListWrapper extends AbstractList<Double> {
 	@Override
 	public Double get(int index) {
 		return wrappedVector.get(index);
+	}
+	
+	@Override
+	public Double set(int index, Double value) {
+		wrappedVector.set(index,value);
+		return null;
 	}
 
 	@Override
