@@ -6,7 +6,7 @@ import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector4;
 
 /**
- * Specialised 3*3 Matrix for Vector3 maths, using primitive matrix elements
+ * Specialised 2*2 Matrix for Vector2 maths, using primitive matrix elements
  * 
  * @author Mike
  *

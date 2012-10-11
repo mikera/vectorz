@@ -3,6 +3,9 @@ package mikera.vectorz;
 /**
  * Implements a growable vector.
  * 
+ * Note that getting the underlying array or a subVector is unsafe, since the 
+ * underlying array may be discarded as the vector is grown.
+ * 
  * @author Mike
  *
  */

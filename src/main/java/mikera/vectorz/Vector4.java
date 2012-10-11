@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 /**
  * Specialised 4D vector
+ * 
  * @author Mike
  */
 public final class Vector4 extends APrimitiveVector {

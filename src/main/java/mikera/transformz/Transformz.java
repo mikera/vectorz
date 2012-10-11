@@ -8,6 +8,12 @@ import mikera.transformz.impl.IdentityTranslation;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
+/**
+ * Class containing static utility methods for vector transformations.
+ * 
+ * @author Mike
+ *
+ */
 public class Transformz {
 	public static DiagonalMatrix scale3D(double factor) {
 		return Matrixx.createScaleMatrix(3, factor);

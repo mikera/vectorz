@@ -3,6 +3,11 @@ package mikera.transformz;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 
+/**
+ * Abstract base class for translations of arbitrary dimensionality.
+ * 
+ * @author Mike
+ */
 public abstract class ATranslation extends AAffineTransform {
 	// =========================================
 	// Abstract interface

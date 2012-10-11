@@ -6,8 +6,10 @@ import mikera.vectorz.APrimitiveVector;
 
 /**
  * Special singleton zero length vector class.
+ * 
+ * Mainly for convenience when doing vector construction / appending etc.
+ * 
  * @author Mike
- *
  */
 public final class ZeroLengthVector extends APrimitiveVector {
 	private static final long serialVersionUID = -8153360223054646075L;
@@ -70,5 +72,4 @@ public final class ZeroLengthVector extends APrimitiveVector {
 	private Object readResolve() throws ObjectStreamException {
 		return INSTANCE; 
 	}
-
 }

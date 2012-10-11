@@ -3,6 +3,12 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
+/**
+ * Specialised identity matrix class. Immutable.
+ * 
+ * @author Mike
+ *
+ */
 public class IdentityMatrix extends AMatrix {
 	private final int dimensions;
 	
@@ -57,6 +63,6 @@ public class IdentityMatrix extends AMatrix {
 	
 	@Override
 	public void transposeInPlace() {
-		// already done!
+		// Nothing to do!
 	}
 }

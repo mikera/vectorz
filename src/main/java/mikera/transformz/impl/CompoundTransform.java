@@ -5,8 +5,8 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 /**
- * Class to represent a compound transform when it is not know how to combine the transforms
- * directly.
+ * Class to represent a compound transform when it is not known how to 
+ * combine the transforms directly.
  * 
  * @author Mike
  *

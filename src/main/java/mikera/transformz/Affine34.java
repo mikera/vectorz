@@ -6,6 +6,13 @@ import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
+/**
+ * Specialised 3*4 affine transformation class
+ * 
+ * Intended for composing 3d affine transformations.
+ * 
+ * @author Mike
+ */
 public final class Affine34 extends AAffineTransform  implements ISpecialisedTransform {
 	public double m00,m01,m02,m03,
                   m10,m11,m12,m13,

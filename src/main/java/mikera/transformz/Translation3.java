@@ -6,6 +6,11 @@ import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
+/**
+ * Specialised 3D translation class
+ * 
+ * @author Mike
+ */
 public final class Translation3 extends ATranslation  implements ISpecialisedTransform  {
 	public double dx,dy,dz;
 	

@@ -13,6 +13,13 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ZeroLengthVector;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * General abstract matrix class.
+ * 
+ * Implements generic version of most key matrix operations.
+ * 
+ * @author Mike
+ */
 public abstract class AMatrix extends AAffineTransform {
 	// ==============================================
 	// Abstract interface

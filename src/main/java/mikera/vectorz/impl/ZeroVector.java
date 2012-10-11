@@ -2,6 +2,11 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.APrimitiveVector;
 
+/**
+ * Specialised vector containing nothing but zeros.
+ * 
+ * @author Mike
+ */
 public final class ZeroVector extends APrimitiveVector {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
@@ -51,4 +56,5 @@ public final class ZeroVector extends APrimitiveVector {
 	public boolean isUnitLengthVector() {
 		return false;
 	}
+
 }
