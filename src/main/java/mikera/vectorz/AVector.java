@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mikera.vectorz.impl.JoinedVector;
+import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -450,4 +451,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		return sb.toString();
 	}
 	
+	public List<Double> asList() {
+		return new ListWrapper(this);
+	}
 }

@@ -3,6 +3,7 @@ package mikera.vectorz;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
@@ -155,12 +156,23 @@ public class TestVectors {
 		testNormalise(v);
 	}
 	
+	private void testAsList(AVector v) {
+		List<Double> al=v.asList();
+		List<Double> tl=v.toList();
+		assertEquals(al,tl);
+		
+		int len=v.length();
+		assertEquals(len,al.size());
+		assertEquals(len,tl.size());
+	}
+	
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
 		testClone(v);
 		testParse(v);
 		testZero(v);
 		testHashCode(v);
+		testAsList(v);
 		testOutOfBounds(v);
 	}
 
