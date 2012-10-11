@@ -23,7 +23,21 @@ public class TestGrowableVector {
 		assertEquals(1.0,v.get(0),0.0);
 		assertEquals(3.0,g.get(0),0.0);
 		
+		g.append(10.0);
+		assertEquals(10.0,g.get(5),0.0);
+		assertEquals(6,g.length());
+		
 		doGrowableTest(g);
 	}
-
+	
+	@Test public void testGrowingLarge() {
+		GrowableVector g=new GrowableVector(10);
+		for (int i=0; i<1000; i++) {
+			g.append(i);
+		}
+		assertEquals(1000,g.length());
+		for (int i=0; i<1000; i++) {
+			assertEquals(i,g.get(i),0.0);
+		}
+	}
 }
