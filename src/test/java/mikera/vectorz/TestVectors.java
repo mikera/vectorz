@@ -150,10 +150,24 @@ public class TestVectors {
 		assertTrue(v.isUnitLengthVector());
 	}
 	
+	private void testFilling(AVector v) {
+		v=v.clone();
+		v.fill(1.23);
+		assertEquals(1.23,Vectorz.minValue(v),0.0);
+		assertEquals(1.23,Vectorz.maxValue(v),0.0);
+		
+		v.fillRange(0, v.length(), 1.24);
+		assertEquals(1.24,Vectorz.minValue(v),0.0);
+		assertEquals(1.24,Vectorz.maxValue(v),0.0);
+		assertEquals(1.24,Vectorz.averageValue(v),0.0001);
+	}
+	
 	private void doNonDegenerateTests(AVector v) {
 		if (v.length()==0) return;
 		testSubVectorMutability(v);
 		testNormalise(v);
+		testFilling(v);
+
 	}
 	
 	private void testAsList(AVector v) {

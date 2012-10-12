@@ -197,6 +197,44 @@ public class Vectorz {
 		v.setValues(data);
 		return v;
 	}
+
+	public static double minValue(AVector v) {
+		int len=v.length();
+		double min = Double.MAX_VALUE;
+		for (int i=0; i<len; i++) {
+			double d=v.get(i);
+			if (d<min) min=d;
+		}
+		return min;
+	}
+	
+	public static double maxValue(AVector v) {
+		int len=v.length();
+		double max = -Double.MAX_VALUE;
+		for (int i=0; i<len; i++) {
+			double d=v.get(i);
+			if (d>max) max=d;
+		}
+		return max;
+	}
+	
+	public static double totalValue(AVector v) {
+		int len=v.length();
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			result+=v.get(i);
+		}
+		return result;
+	}
+	
+	public static double averageValue(AVector v) {
+		int len=v.length();
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			result+=v.get(i);
+		}
+		return result/len;
+	}
 	
 	
 }
