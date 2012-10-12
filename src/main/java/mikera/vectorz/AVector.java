@@ -161,6 +161,10 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		}
 	}
 	
+	public void fillRange(int offset, int length, double value) {
+		subVector(offset,length).fill(value);
+	}
+	
 	/**
 	 * Clamps all values in the vector to a given range
 	 * @param value
@@ -454,4 +458,6 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	public List<Double> asList() {
 		return new ListWrapper(this);
 	}
+
+
 }

@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.util.Arrays;
+
 import mikera.vectorz.impl.ArraySubVector;
 
 /**
@@ -37,6 +39,16 @@ public abstract class ArrayVector extends AVector {
 	@Override
 	public void copyTo(double[] data, int offset) {
 		System.arraycopy(getArray(), getArrayOffset(), data, offset, length());
+	}
+	
+	@Override
+	public void fillRange(int offset, int length, double value) {
+		if ((offset<0)||((offset+length)>length())) {
+			throw new IndexOutOfBoundsException("Filling range offset="+offset+" length="+length);
+		}
+		double[] arr=getArray();
+		int off=getArrayOffset();
+		Arrays.fill(arr, off+offset, off+offset+length, value);
 	}
 	
 	public void add(ArrayVector v) {
