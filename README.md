@@ -9,6 +9,7 @@ Vectorz can do over *1 billion* 3D vector operations per second on a single thre
 
 ### Example usage
 
+```Java
     Vector3 v=Vector3.of(1.0,2.0,3.0);		
     v.normalise();                       // normalise v to a unit vector
     		
@@ -17,6 +18,7 @@ Vectorz can do over *1 billion* 3D vector operations per second on a single thre
     
 	Matrix33 m=Matrixx.createXAxisRotationMatrix(Math.PI);
 	Vector3 rotated=m.transform(d);      // rotate 180 degrees around x axis	    
+```
 
 ### Key features
 
