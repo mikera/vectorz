@@ -51,6 +51,11 @@ public abstract class ArrayVector extends AVector {
 		Arrays.fill(arr, off+offset, off+offset+length, value);
 	}
 	
+	@Override
+	public void set(AVector a) {
+		a.copyTo(getArray(),getArrayOffset());
+	}
+	
 	public void add(ArrayVector v) {
 		int vlength=v.length();
 		int length=length();
