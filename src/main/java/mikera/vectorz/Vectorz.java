@@ -7,6 +7,7 @@ import bpsm.edn.parser.CollectionBuilder;
 import bpsm.edn.parser.CollectionBuilder.Factory;
 import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
+import mikera.util.Rand;
 import mikera.vectorz.impl.ZeroLengthVector;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.VectorBuilder;
@@ -107,7 +108,7 @@ public class Vectorz {
 	public static AVector createUniformRandomVector(int dimensions) {
 		AVector v=Vectorz.createLength(dimensions);
 		for (int i=0; i<dimensions; i++) {
-			v.set(i,Math.random());
+			v.set(i,Rand.nextDouble());
 		}
 		return v;
 	}

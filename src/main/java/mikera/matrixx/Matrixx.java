@@ -7,6 +7,7 @@ import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.util.Rand;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector3;
@@ -291,7 +292,7 @@ public class Matrixx {
 		int columns=m.columnCount();
 		for (int i=0; i<rows; i++) {
 			for (int j=0; j<columns; j++) {
-				m.set(i,j,Math.random());
+				m.set(i,j,Rand.nextDouble());
 			}
 		}
 	}
