@@ -13,7 +13,7 @@ import mikera.vectorz.Tools;
  */
 public final class Index implements Serializable, Cloneable {
 	private static final long serialVersionUID = 8698831088064498284L;
-	private final int[] data;
+	final int[] data;
 	
 	public Index(int length) {
 		data=new int[length];

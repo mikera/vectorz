@@ -2,6 +2,8 @@ package mikera.indexz;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
+
 import org.junit.Test;
 
 public class TestIndex {
@@ -21,6 +23,17 @@ public class TestIndex {
 		
 		assertEquals(ind1,ind2);
 		assertEquals(ind2,ind3);
+	}
+	
+	@Test public void testPermutations() {
+		HashSet<Index> hs=new HashSet<Index>();
+		
+		for (int i=0; i<2000; i++) {
+			Index ind=Indexz.createRandomPermutation(4);
+			assertEquals(4,ind.length());
+			hs.add(ind);
+		}
+		assertEquals(24,hs.size());
 	}
 	
 	@Test public void testReverse() {

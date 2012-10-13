@@ -1,5 +1,7 @@
 package mikera.indexz;
 
+import mikera.util.Rand;
+
 /**
  * Class for static index methods
  * 
@@ -28,6 +30,18 @@ public class Indexz {
 
 	public static Index createSequence(int length) {
 		return createSequence(0,length);
+	}
+	
+	public static Index createRandomPermutation(int length) {
+		Index result=createSequence(length);
+		for (int j=length-1; j>0; j--) {
+			result.swap(Rand.r(j+1), j);
+		}
+		return result;
+	}
+
+	public static Index createLength(int length) {
+		return new Index(length);
 	}
 
 }
