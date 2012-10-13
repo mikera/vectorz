@@ -7,6 +7,7 @@ import mikera.vectorz.Tools;
 
 /**
  * Class to represent a set of integer indexes
+ * 
  * @author Mike
  *
  */
@@ -42,28 +43,6 @@ public final class Index implements Serializable, Cloneable {
 	
 	public static Index of(int... indexes) {
 		return new Index(indexes.clone());
-	}
-	
-	public static Index createSequence(int length) {
-		return createSequence(0,length);
-	}
-	
-	public static Index createSequence(int start, int length) {
-		Index result=new Index(length);
-		for (int i=0; i<length; i++) {
-			result.data[i]=start+i;
-		}
-		return result;
-	}
-	
-	public static Index createProgression(int start, int length, int skip) {
-		Index result=new Index(length);
-		int pos=start;
-		for (int i=0; i<length; i++) {
-			result.data[i]=pos;
-			pos+=skip;
-		}
-		return result;
 	}
 	
 	public int get(int i) {
