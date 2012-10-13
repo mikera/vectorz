@@ -1,5 +1,11 @@
 package mikera.indexz;
 
+/**
+ * Class for static index methods
+ * 
+ * @author Mike
+ *
+ */
 public class Indexz {
 
 	public static Index createProgression(int start, int length, int skip) {
