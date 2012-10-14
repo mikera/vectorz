@@ -74,7 +74,17 @@ public class TestIndex {
 		
 		Index index3=Indexz.createCopy(index);
 		assertEquals(index,index3);
+		
+		Index index4=Indexz.create(index.toList());
+		assertEquals(index,index4);
 
+		// all indexes should map to same hashcode
+		HashSet<AIndex> hs=new HashSet<AIndex>();
+		hs.add(index);
+		hs.add(index2);
+		hs.add(index3);
+		hs.add(index4);
+		assertEquals(1,hs.size());
 	}
 	
 	private void doTests(AIndex index) {
@@ -83,8 +93,19 @@ public class TestIndex {
 	}
 
 
+	@SuppressWarnings("serial")
 	@Test public void genericTests() {
 		doTests(Indexz.createProgression(10, 4, 2));
+		doTests(Indexz.createLength(0));
+		doTests(Indexz.createRandomPermutation(20));
+
+		ComputedIndex ci=new ComputedIndex(4) {
+			@Override
+			public int get(int i) {
+				return length-1-i;
+			}	
+		};
+		doTests(ci);
 	}
 
 

@@ -1,7 +1,9 @@
 package mikera.indexz;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import mikera.vectorz.Tools;
 
@@ -53,6 +55,15 @@ public abstract class AIndex  implements Serializable, Cloneable {
 		int[] arr=new int[len];
 		copyTo(arr,0);
 		return arr;
+	}
+	
+	public List<Integer> toList() {
+		int len=length();
+		ArrayList<Integer> al=new ArrayList<Integer>();
+		for (int i=0; i<len; i++) {
+			al.add(get(i));
+		}
+		return al;
 	}
 	
 	public void swap(int i, int j) {

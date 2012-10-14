@@ -10,9 +10,19 @@ package mikera.indexz;
  */
 @SuppressWarnings("serial")
 public abstract class ComputedIndex extends AIndex {
+	protected final int length;
+	
+	public ComputedIndex(int length) {
+		this.length=length;
+	}
 
 	@Override
 	public boolean isFullyMutable() {
 		return false;
+	}
+	
+	@Override
+	public final int length() {
+		return length;
 	}
 }
