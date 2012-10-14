@@ -39,6 +39,15 @@ public class Indexz {
 		}
 		return result;
 	}
+	
+	public static Index createRandomChoice(int count, Index source) {
+		Index result=createSequence(count);
+		Rand.chooseIntegers(result.data, 0, count, source.length());
+		assert(result.isDistinct()&&result.isSorted());
+		result.lookupWith(source);
+		return result;
+	}
+	
 
 	public static Index createLength(int length) {
 		return new Index(length);
