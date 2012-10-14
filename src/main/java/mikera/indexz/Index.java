@@ -121,4 +121,8 @@ public final class Index implements Serializable, Cloneable {
 		sb.append(']');
 		return sb.toString();
 	}
+
+	public int[] getData() {
+		return data;
+	}
 }

@@ -2,6 +2,8 @@ package mikera.vectorz;
 
 import java.util.Arrays;
 
+import mikera.indexz.Index;
+
 
 /**
  * General purpose vector or arbitrary length, backed by an internal double[] array
@@ -129,6 +131,52 @@ public final class Vector extends ArrayVector {
 		for (int i = 0; i < length; i++) {
 			data[i] -= v.get(i);
 		}
+	}
+	
+	@Override
+	public double dotProduct(AVector v, Index ix) {
+		if ((v instanceof Vector)) return dotProduct((Vector)v,ix);
+		int vl=v.length();
+		assert(v.length()==ix.length());
+		double result=0.0;
+		int[] idata=ix.getData();
+		for (int i=0; i<vl; i++) {
+			result+=data[idata[i]]*v.get(i);
+		}
+		return result;
+	}
+	
+	public double dotProduct(Vector v, Index ix) {
+		int vl=v.length();
+		assert(v.length()==ix.length());
+		double result=0.0;
+		int[] idata=ix.getData();
+		for (int i=0; i<vl; i++) {
+			result+=data[idata[i]]*v.data[i];
+		}
+		return result;
+	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		if ((v instanceof Vector)) return dotProduct((Vector)v);
+		int len=length();
+		assert(v.length()==len);
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			result+=data[i]*v.get(i);
+		}
+		return result;
+	}
+	
+	public double dotProduct(Vector v) {
+		int len=length();
+		assert(v.length()==len);
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			result+=data[i]*v.data[i];
+		}
+		return result;
 	}
 	
 	public void subtract(ArrayVector v) {

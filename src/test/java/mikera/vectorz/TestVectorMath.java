@@ -2,10 +2,20 @@ package mikera.vectorz;
 
 import static org.junit.Assert.*;
 
+import mikera.indexz.Index;
+
 import org.junit.Test;
 
 public class TestVectorMath {
 
+	@Test public void testIndexedDotProduct() {
+		Vector v1=Vector.of(0,1,2,3,4,5,6,7,8,9);
+		Vector v2=Vector.of(1,2,3);
+		Index ix=Index.of (2,7,4);
+		
+		assertEquals((1*2)+(2*7)+(3*4),v1.dotProduct(v2,ix),0.0);
+	}
+	
 	@Test public void testDotProduct() {
 		assertEquals(10.0,new Vector3(1,2,3).dotProduct(new Vector3(3,2,1)),0.000001);
 	}

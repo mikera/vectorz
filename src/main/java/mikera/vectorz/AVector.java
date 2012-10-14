@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import mikera.indexz.Index;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.WrappedSubVector;
@@ -255,6 +256,16 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 			total+=get(i)*v.get(i);
 		}
 		return total;
+	}
+	
+	public double dotProduct(AVector v, Index ix) {
+		int vl=v.length();
+		assert(v.length()==ix.length());
+		double result=0.0;
+		for (int i=0; i<vl; i++) {
+			result+=get(ix.get(i))*v.get(i);
+		}
+		return result;
 	}
 	
 	/**

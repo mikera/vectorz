@@ -5,7 +5,6 @@ import mikera.vectorz.AVector;
 /**
  * Abstract base class for vectors that index into other sources
  * @author Mike
- *
  */
 @SuppressWarnings("serial")
 abstract class IndexedVector extends AVector {
