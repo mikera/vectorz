@@ -1,7 +1,7 @@
 package mikera.vectorz;
 
 /**
- * Implements a growable vector.
+ * Implements a growable vector, intended for incrementally building vectors
  * 
  * Note that getting the underlying array or a subVector is unsafe, since the 
  * underlying array may be discarded as the vector is grown.
@@ -94,6 +94,15 @@ public class GrowableVector extends ArrayVector {
 		ensureCapacity(length+vl);
 		v.copyTo(data, length);
 		length+=vl;
+	}
+	
+	/**
+	 * Function to build a fixed-size vector containing a copy of data
+	 * once the GrowableVector is constructed
+	 * @return
+	 */
+	public AVector build() {
+		return Vectorz.createMutableVector(this);
 	}
 
 	@Override
