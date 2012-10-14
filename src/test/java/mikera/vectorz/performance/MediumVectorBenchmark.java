@@ -31,10 +31,39 @@ public class MediumVectorBenchmark extends SimpleBenchmark {
 		}
 	}
 	
+	public void timeVectorAddProduct(int runs) {
+		Vector v=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		Vector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		Vector v3=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		for (int i=0; i<runs; i++) {
+			v.addProduct(v2,v3);
+		}
+	}
+	
 	public void timeVectorOffsetAddition(int runs) {
 		Vector v=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
 		for (int i=0; i<runs; i++) {
 			v.add(source,100);
+		}
+	}
+	
+	public void timeJoinedVectorAddition(int runs) {
+		AVector v=Vectorz.createLength(VECTOR_SIZE/2);
+		v=v.join(Vectorz.createLength(VECTOR_SIZE-v.length()));
+
+		Vector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		for (int i=0; i<runs; i++) {
+			v.add(v2);
+		}
+	}
+	
+	public void timeJoinedVectorSet(int runs) {
+		AVector v=Vectorz.createLength(VECTOR_SIZE/2);
+		v=v.join(Vectorz.createLength(VECTOR_SIZE-v.length()));
+
+		Vector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		for (int i=0; i<runs; i++) {
+			v.set(v2);
 		}
 	}
 	
