@@ -13,7 +13,7 @@ import mikera.vectorz.Tools;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class AIndex  implements Serializable, Cloneable {
+public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIndex> {
 	// ===================================
 	// Abstract interface
 	
@@ -185,5 +185,18 @@ public abstract class AIndex  implements Serializable, Cloneable {
 		} catch (CloneNotSupportedException e) {
 			throw new Error(e);
 		}
+	}
+	
+	@Override
+	public int compareTo(AIndex a) {
+		int len=length();
+		int alen=a.length();
+		if (len!=alen) return len-alen;
+		
+		for (int i=0; i<len; i++) {
+			int d=get(i)-a.get(i);
+			if (d!=0) return d;
+		}
+		return 0;
 	}
 }
