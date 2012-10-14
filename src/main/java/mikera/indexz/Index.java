@@ -1,9 +1,6 @@
 package mikera.indexz;
 
 import java.util.Arrays;
-import java.util.HashSet;
-
-import mikera.vectorz.Tools;
 
 /**
  * Class to represent a set of integer indexes
