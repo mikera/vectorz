@@ -142,7 +142,7 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
-	 * Copies a suset of this vector to a vector at the specified offset
+	 * Copies a subset of this vector to a vector at the specified offset
 	 */
 	public void copy(int start, int length, AVector dest, int destOffset) {
 		for (int i=0; i<length; i++) {

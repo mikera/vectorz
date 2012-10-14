@@ -46,9 +46,30 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void copyTo(AVector dest, int offset) {
+		left.copyTo(dest, offset);
+		right.copyTo(dest, offset+split);
+	}
+	
+	@Override
+	public void copyTo(double[] data, int offset) {
+		left.copyTo(data, offset);
+		right.copyTo(data, offset+split);
+	}
+	
+	@Override
+	public void copy(int start, int length, AVector dest, int destOffset) {
+		subVector(start,length).copyTo(dest, destOffset);
+	}
+
+	
+	@Override
 	public AVector subVector(int start, int length) {
+		assert(start>=0);
+		assert(length<=this.length);
 		if (start>=split) return right.subVector(start-split, length);
 		if ((start+length)<=split) return left.subVector(start, length);
+		if(length==this.length) return this;
 		
 		AVector v1=left.subVector(start, split-start);
 		AVector v2=right.subVector(0, length-(split-start));
