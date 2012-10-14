@@ -110,6 +110,23 @@ public class TestVectors {
 		assertEquals(v,v2);
 	}
 	
+	private void testAdd(AVector v) {
+		v=v.clone();
+		int len=v.length();
+		int split=len/2;
+		int slen=len-split;
+		
+		AVector t=Vectorz.createLength(slen);
+		t.add(v,split);
+		assertEquals(t,v.subVector(split, slen));
+		
+		t.multiply(0.5);
+		t.set(v,split);
+		assertEquals(t,v.subVector(split, slen));
+		t.addProduct(t, Vectorz.createZeroVector(slen));
+		assertEquals(t,v.subVector(split, slen));
+	}
+	
 	public void testOutOfBounds(AVector v) {
 		try {
 			v.set(-1, 0.0);
@@ -201,6 +218,7 @@ public class TestVectors {
 	
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
+		testAdd(v);
 		testSet(v);
 		testClone(v);
 		testParse(v);
@@ -254,6 +272,9 @@ public class TestVectors {
 		
 		AVector g4=new GrowableVector(v4);
 		doGenericTests(g4);
+		
+		AVector j5=Vectorz.join(g4,joined,v3,v4,g0,g0,joined);
+		doGenericTests(j5);
 		
 		AMatrix m1=Matrixx.createRandomSquareMatrix(5);
 		doGenericTests(m1.asVector());

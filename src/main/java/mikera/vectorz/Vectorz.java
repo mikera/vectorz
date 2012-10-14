@@ -42,7 +42,17 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector join(AVector first, AVector second) {
-		return first.join(second);
+		AVector result=first.join(second);
+		assert(result.length()==first.length()+second.length());
+		return result;
+	}
+	
+	public static AVector join(AVector... vectors) {
+		AVector result=vectors[0];
+		for (int i=1; i<vectors.length; i++) {
+			result=result.join(vectors[i]);
+		}
+		return result;
 	}
 	
 	public static AVector join(List<AVector> vectors) {

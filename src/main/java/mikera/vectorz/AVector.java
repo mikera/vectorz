@@ -405,6 +405,29 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	}
 	
 	/**
+	 * Adds another vector to this one
+	 * @param v
+	 */
+	public void add(AVector v, int offset) {
+		int length=length();
+		assert(offset>=0);
+		assert(offset+length<=v.length());
+		for (int i = 0; i < length; i++) {
+			double x=get(i)+v.get(offset+i);
+			set(i,x);
+		}
+	}
+	
+	public void addProduct(AVector a, AVector b) {
+		int length=length();
+		assert((a.length()==length)&&(b.length()==length));
+		for (int i = 0; i < length; i++) {
+			double x=get(i)+(a.get(i)*b.get(i));
+			set(i,x);
+		}
+	}
+	
+	/**
 	 * Adds a scaled multiple of another vector to this one
 	 * @param v
 	 */
