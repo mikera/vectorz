@@ -9,7 +9,7 @@ package mikera.vectorz;
  * @author Mike
  *
  */
-public class GrowableVector extends ArrayVector {
+public final class GrowableVector extends ArrayVector {
 	private static final long serialVersionUID = -4560854157937758671L;
 
 	private double[] data;
@@ -108,5 +108,9 @@ public class GrowableVector extends ArrayVector {
 	@Override
 	public GrowableVector clone() {
 		return new GrowableVector(data.clone(),length);
+	}
+
+	public void clear() {
+		length=0;
 	}
 }

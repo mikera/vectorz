@@ -3,12 +3,8 @@ package mikera.vectorz.performance;
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
-import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix33;
-import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 
 /**
@@ -40,20 +36,20 @@ public class MediumVectorBenchmark extends SimpleBenchmark {
 		}
 	}
 	
+	public Object timeAVectorDotProduct(int runs) {
+		AVector v=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		AVector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		double r=0.0;
+		for (int i=0; i<runs; i++) {
+			r+=v.dotProduct(v2);
+		}
+		return r;
+	}
+	
 	public void timeVectorOffsetAddition(int runs) {
 		Vector v=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
 		for (int i=0; i<runs; i++) {
 			v.add(source,100);
-		}
-	}
-	
-	public void timeJoinedVectorAddition(int runs) {
-		AVector v=Vectorz.createLength(VECTOR_SIZE/2);
-		v=v.join(Vectorz.createLength(VECTOR_SIZE-v.length()));
-
-		Vector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
-		for (int i=0; i<runs; i++) {
-			v.add(v2);
 		}
 	}
 	
@@ -66,6 +62,17 @@ public class MediumVectorBenchmark extends SimpleBenchmark {
 			v.set(v2);
 		}
 	}
+	
+	public void timeJoinedVectorAddition(int runs) {
+		AVector v=Vectorz.createLength(VECTOR_SIZE/2);
+		v=v.join(Vectorz.createLength(VECTOR_SIZE-v.length()));
+
+		Vector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		for (int i=0; i<runs; i++) {
+			v.add(v2);
+		}
+	}
+
 	
 	/**
 	 * @param args
