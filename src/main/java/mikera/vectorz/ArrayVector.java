@@ -53,24 +53,29 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void set(AVector a) {
+		assert(a.length()==length());
 		a.copyTo(getArray(),getArrayOffset());
 	}
 	
+	@Override
 	public void set(AVector a, int offset) {
+		assert(offset>=0);
 		assert(offset+length()<=a.length());
 		a.copy(offset, length(), this, 0);
 	}
 	
+	
 	public void add(ArrayVector v) {
-		int vlength=v.length();
+		assert(length()==v.length());
+		add(v,0);
+	}
+	
+	public void add(ArrayVector src, int srcOffset) {
 		int length=length();
-		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
-		}
-		double[] vdata=v.getArray();
+		double[] vdata=src.getArray();
 		double[] data=getArray();
 		int offset=getArrayOffset();
-		int voffset=v.getArrayOffset();
+		int voffset=src.getArrayOffset()+srcOffset;
 		for (int i = 0; i < length; i++) {
 			data[offset+i] += vdata[voffset + i];
 		}
