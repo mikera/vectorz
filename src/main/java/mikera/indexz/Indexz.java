@@ -57,6 +57,13 @@ public class Indexz {
 		return result;
 	}
 	
+	public static Index createRandomChoice(int count, int max) {
+		Index result=createSequence(count);
+		Rand.chooseIntegers(result.data, 0, count, max);
+		assert(result.isDistinct()&&result.isSorted());
+		return result;
+	}
+	
 	public static Index createRandomChoice(int count, Index source) {
 		Index result=createSequence(count);
 		Rand.chooseIntegers(result.data, 0, count, source.length());
