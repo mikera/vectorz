@@ -43,6 +43,7 @@ public class TestIndex {
 		for (int i=0; i<2000; i++) {
 			Index ind=Indexz.createRandomPermutation(4);
 			assertEquals(4,ind.length());
+			assertTrue(ind.isPermutation());
 			hs.add(ind);
 		}
 		assertEquals(24,hs.size());

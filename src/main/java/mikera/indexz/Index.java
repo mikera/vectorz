@@ -24,12 +24,14 @@ public final class Index extends AIndex {
 		data=indexes;
 	}
 	
+	@Override
 	public void swap(int i, int j) {
 		int t=data[i];
 		data[i]=data[j];
 		data[j]=t;
 	}
 	
+	@Override
 	public void reverse() {
 		final int len=length();
 		int m=len/2;
@@ -66,8 +68,13 @@ public final class Index extends AIndex {
 		return new Index(data.clone());
 	}
 	
+	/**
+	 * Permutes this vector according to a given permutation index
+	 * @param permutationIndex
+	 */
 	public void permute(Index permutationIndex) {
 		int len=length();
+		assert(len==permutationIndex.length());
 		int[] temp=data.clone();
 		for (int i=0; i<len; i++) {
 			data[i]=temp[permutationIndex.get(i)];

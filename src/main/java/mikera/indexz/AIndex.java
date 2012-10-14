@@ -44,6 +44,19 @@ public abstract class AIndex  implements Serializable, Cloneable {
 		return arr;
 	}
 	
+	public void swap(int i, int j) {
+		int t=get(i);
+		set(i,get(j));
+		set(j,t);
+	}
+	
+	public void reverse() {
+		final int len=length();
+		int m=len/2;
+		for (int i=0; i<m; i++) {
+			swap(i,(len-1)-i);
+		}
+	}
 
 	public boolean isSorted() {
 		int len=length();
@@ -68,6 +81,25 @@ public abstract class AIndex  implements Serializable, Cloneable {
 		return true;
 	}
 	
+	/**
+	 * Returns true if this index represents a permutation of positions 0..length-1
+	 * @return
+	 */
+	public boolean isPermutation() {
+		if (!isWithinRange(0,length())) return false;
+		if (!isDistinct()) return false;
+		return true;
+	}
+	
+	private boolean isWithinRange(int start, int length) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			int v=get(i)-start;
+			if ((v<0)||(v>=length)) return false;
+		}
+		return true;
+	}
+
 	public boolean contains(int index) {
 		int len=length();
 		for (int i=0; i<len; i++) {
