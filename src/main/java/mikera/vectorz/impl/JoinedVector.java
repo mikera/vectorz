@@ -77,6 +77,19 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void add(AVector a) {
+		assert(length()==a.length());
+		add(a,0);
+	}
+	
+	@Override
+	public void add(AVector a,int offset) {
+		left.add(a,offset);
+		right.add(a,offset+split);
+	}
+	
+	
+	@Override
 	public double get(int i) {
 		if (i<split) {
 			return left.get(i);
