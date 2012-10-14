@@ -3,13 +3,8 @@ package mikera.vectorz.performance;
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
-import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix33;
-import mikera.matrixx.Matrixx;
-import mikera.vectorz.AVector;
 import mikera.vectorz.GrowableVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 
 /**
