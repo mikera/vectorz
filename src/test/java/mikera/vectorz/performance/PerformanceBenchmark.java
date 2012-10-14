@@ -16,7 +16,7 @@ import mikera.vectorz.Vector3;
  * @author Mike
  */
 
-public class PerformanceTest extends SimpleBenchmark {
+public class PerformanceBenchmark extends SimpleBenchmark {
 	
 	public void timeVector3Addition(int runs) {
 		Vector3 v=Vector3.of(1,2,3);
@@ -56,7 +56,7 @@ public class PerformanceTest extends SimpleBenchmark {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new PerformanceTest().run();
+		new PerformanceBenchmark().run();
 	}
 
 	private void run() {
