@@ -91,6 +91,25 @@ public class TestVectors {
 		}
 	}
 	
+	private void testSet(AVector v) {
+		v=v.clone();
+		int len=v.length();
+		
+		Vectorz.fillRandom(v);
+		AVector v2=Vector.createLength(len);
+		v2.set(v);
+		assertEquals(v,v2);
+		
+		Vectorz.fillRandom(v);
+		v2.set(v,0);
+		assertEquals(v,v2);
+
+		Vectorz.fillRandom(v);
+		double[] data=v.toArray();
+		v2.setValues(data);
+		assertEquals(v,v2);
+	}
+	
 	public void testOutOfBounds(AVector v) {
 		try {
 			v.set(-1, 0.0);
@@ -182,6 +201,7 @@ public class TestVectors {
 	
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
+		testSet(v);
 		testClone(v);
 		testParse(v);
 		testZero(v);

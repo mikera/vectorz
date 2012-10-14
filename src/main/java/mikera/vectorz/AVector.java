@@ -338,6 +338,19 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 		}
 	}
 	
+	/**
+	 * Set the vector equal to an offset into another vector
+	 * @param a
+	 * @param offset
+	 */
+	public void set(AVector a, int offset) {
+		int len=length();
+		assert(len+offset<=a.length());
+		for (int i=0; i<len; i++) {
+			set(i,a.get(offset+i));
+		}
+	}
+	
 	public void setValues(double... values) {
 		int len=length();
 		for (int i=0; i<len; i++) {

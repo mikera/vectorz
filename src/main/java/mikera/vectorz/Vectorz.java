@@ -236,6 +236,24 @@ public class Vectorz {
 		}
 		return result/len;
 	}
+
+	public static void fillRandom(AVector v) {
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			v.set(i,Rand.nextDouble());
+		}
+	}
+	
+	public static void fillGaussian(AVector v) {
+		fillGaussian(v,0.0,1.0);
+	}
+	
+	public static void fillGaussian(AVector v, double mean, double sd) {
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			v.set(i,mean+Rand.nextGaussian()*sd);
+		}
+	}
 	
 	
 }

@@ -56,6 +56,11 @@ public abstract class ArrayVector extends AVector {
 		a.copyTo(getArray(),getArrayOffset());
 	}
 	
+	public void set(AVector a, int offset) {
+		assert(offset+length()<=a.length());
+		a.copy(offset, length(), this, 0);
+	}
+	
 	public void add(ArrayVector v) {
 		int vlength=v.length();
 		int length=length();

@@ -84,6 +84,17 @@ public final class JoinedVector extends AVector {
 			return right.get(i-split);
 		}
 	}
+	
+	@Override
+	public void set(AVector src) {
+		set(src,0);
+	}
+	
+	@Override
+	public void set(AVector src, int offset) {
+		left.set(src,offset);
+		right.set(src,offset+split);
+	}
 
 	@Override
 	public void set(int i, double value) {
