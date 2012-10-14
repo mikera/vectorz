@@ -85,14 +85,15 @@ public final class Vector extends ArrayVector {
 		Arrays.fill(data, value);
 	}
 	
-	public void add(ArrayVector v) {
+	@Override
+	public void add(ArrayVector v, int offset) {
 		int vlength=v.length();
 		int length=length();
 		if (vlength != length) {
 			throw new Error("Source vector has different size: " + vlength);
 		}
 		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
+		int voffset=v.getArrayOffset()+offset;
 		for (int i = 0; i < length; i++) {
 			data[i] += vdata[voffset + i];
 		}
@@ -111,21 +112,36 @@ public final class Vector extends ArrayVector {
 	@Override
 	public void add(AVector v) {
 		if (v instanceof ArrayVector) {
-			add(((ArrayVector)v)); return;
+			add(((ArrayVector)v),0); return;
 		}
 		int vlength=v.length();
 		int length=length();
-		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
-		}
+		assert(length==vlength);
 		for (int i = 0; i < length; i++) {
 			data[i] += v.get(i);
 		}
 	}
 	
 	@Override
+	public void addProduct(AVector a, AVector b) {
+		if((a instanceof Vector)&&(b instanceof Vector)) {
+			addProduct((Vector)a,(Vector)b);
+			return;
+		}
+		super.addProduct(a,b);
+	}
+	
+	public void addProduct(Vector a, Vector b) {
+		int length=length();
+		assert((a.length()==length)&&(b.length()==length));
+		for (int i = 0; i < length; i++) {
+			data[i]+=(a.data[i]*b.data[i]);
+		}
+	}
+	
+	@Override
 	public void sub(AVector v) {
-		if (v instanceof ArrayVector) {subtract(((ArrayVector)v)); return;}
+		if (v instanceof ArrayVector) {sub(((ArrayVector)v)); return;}
 		int length=length();
 		assert(length==v.length());
 		for (int i = 0; i < length; i++) {
@@ -179,11 +195,15 @@ public final class Vector extends ArrayVector {
 		return result;
 	}
 	
-	public void subtract(ArrayVector v) {
+	public void sub(ArrayVector v) {
+		sub(v,0);
+	}
+	
+	public void sub(ArrayVector v,int offset) {
 		int length=length();
 		assert(length==v.length());
 		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
+		int voffset=v.getArrayOffset()+offset;
 		for (int i = 0; i < length; i++) {
 			data[i] -= vdata[voffset + i];
 		}
