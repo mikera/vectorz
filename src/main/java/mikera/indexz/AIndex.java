@@ -6,7 +6,7 @@ import java.util.HashSet;
 import mikera.vectorz.Tools;
 
 /**
- * Abstract base class for Index functionality
+ * Abstract base class for a list of integer indexes
  * 
  * @author Mike
  */
@@ -15,8 +15,19 @@ public abstract class AIndex  implements Serializable, Cloneable {
 	// ===================================
 	// Abstract interface
 	
+	/**
+	 * Gets the index value at position i
+	 * 
+	 * @param i
+	 * @return
+	 */
 	public abstract int get(int i);
 
+	/**
+	 * Returns the length of this index list
+	 * 
+	 * @return
+	 */
 	public abstract int length();
 	
 	// ===================================
@@ -154,5 +165,14 @@ public abstract class AIndex  implements Serializable, Cloneable {
 		}
 		sb.append(']');
 		return sb.toString();
+	}
+	
+	@Override
+	public AIndex clone() {
+		try {
+			return (AIndex) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new Error(e);
+		}
 	}
 }

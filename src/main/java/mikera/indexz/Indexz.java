@@ -1,5 +1,7 @@
 package mikera.indexz;
 
+import java.util.List;
+
 import mikera.util.Rand;
 
 /**
@@ -9,6 +11,21 @@ import mikera.util.Rand;
  *
  */
 public class Indexz {
+	
+	public static Index create(List<Integer> data) {
+		int length=data.size();
+		Index result=new Index(length);
+		for (int i=0; i<length; i++) {
+			result.set(i,data.get(i));
+		}		
+		return result;
+	}
+	
+	public static Index createCopy(AIndex source) {
+		Index result=new Index(source.length());
+		source.copyTo(result.getData(), 0);
+		return result;
+	}
 
 	public static Index createProgression(int start, int length, int skip) {
 		Index result=new Index(length);

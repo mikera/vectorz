@@ -66,4 +66,26 @@ public class TestIndex {
 		ind2.reverse();
 		assertEquals(ind1,ind2);
 	}
+	
+	
+	private void doCloneTest(AIndex index) {
+		AIndex index2=index.clone();
+		assertEquals(index,index2);
+		
+		Index index3=Indexz.createCopy(index);
+		assertEquals(index,index3);
+
+	}
+	
+	private void doTests(AIndex index) {
+		doCloneTest(index);
+		
+	}
+
+
+	@Test public void genericTests() {
+		doTests(Indexz.createProgression(10, 4, 2));
+	}
+
+
 }

@@ -3,7 +3,7 @@ package mikera.indexz;
 import java.util.Arrays;
 
 /**
- * Class to represent a set of integer indexes
+ * Class to represent a mutable list of integer indexes
  * 
  * @author Mike
  *
