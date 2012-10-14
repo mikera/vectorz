@@ -2,8 +2,10 @@ package mikera.matrixx;
 
 import static org.junit.Assert.*;
 
+import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.PermutedMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.ATransform;
@@ -301,6 +303,12 @@ public class TestMatrixx {
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
 		doGenericTests(mmn);
+		
+		// permuted matrix
+		PermutedMatrix pmm=new PermutedMatrix(mmn,
+				Indexz.createRandomPermutation(mmn.rowCount()),
+				Indexz.createRandomPermutation(mmn.columnCount()));
+		doGenericTests(pmm);
 
 		// small 2*2 matrix
 		mmn=new VectorMatrixMN(2,2);
