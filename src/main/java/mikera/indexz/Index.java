@@ -12,7 +12,7 @@ import mikera.vectorz.Tools;
  * @author Mike
  *
  */
-public final class Index implements Serializable, Cloneable {
+public final class Index extends AIndex {
 	private static final long serialVersionUID = 8698831088064498284L;
 	final int[] data;
 	
@@ -46,14 +46,17 @@ public final class Index implements Serializable, Cloneable {
 		return new Index(indexes.clone());
 	}
 	
+	@Override
 	public int get(int i) {
 		return data[i];
 	}
 	
+	@Override
 	public void set(int i, int value) {
 		data[i]=value;
 	}
 	
+	@Override
 	public int length() {
 		return data.length;
 	}
