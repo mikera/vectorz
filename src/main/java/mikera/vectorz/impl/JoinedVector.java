@@ -93,9 +93,8 @@ public final class JoinedVector extends AVector {
 	public double get(int i) {
 		if (i<split) {
 			return left.get(i);
-		} else {
-			return right.get(i-split);
 		}
+		return right.get(i-split);
 	}
 	
 	@Override
