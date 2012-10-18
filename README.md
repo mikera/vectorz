@@ -7,6 +7,8 @@ where fast vector maths is important.
 
 Vectorz can do over *1 billion* 3D vector operations per second on a single thread.
 
+[![Build Status](https://secure.travis-ci.org/mikera/vectorz.png)](http://travis-ci.org/mikera/vectorz)
+
 ### Example usage
 
 ```Java
