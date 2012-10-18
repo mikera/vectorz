@@ -40,9 +40,8 @@ public final class Vector1 extends APrimitiveVector {
 	public double get(int i) {
 		if (i==0) {
 			return x;
-		} else {
-			throw new IndexOutOfBoundsException("Index: i");
 		}
+		throw new IndexOutOfBoundsException("Index: i");
 	}
 
 	@Override

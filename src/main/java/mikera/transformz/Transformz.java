@@ -45,10 +45,11 @@ public class Transformz {
 
 	public static ATranslation createMutableTranslation(ATranslation t) {
 		if (t.dimensions()==3) {
+			// fast path for 3D translation
 			return new Translation3(t);
-		} else {
-			return new Translation(t);
 		}
+		
+		return new Translation(t);
 	}
 
 	public static AAffineTransform createAffineTransform(AMatrix m, AVector v) {
