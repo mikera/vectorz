@@ -232,6 +232,7 @@ public class Vectorz {
 	public static double totalValue(AVector v) {
 		int len=v.length();
 		double result=0.0;
+		
 		for (int i=0; i<len; i++) {
 			result+=v.get(i);
 		}

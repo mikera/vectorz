@@ -216,6 +216,20 @@ public class TestVectors {
 		assertEquals(len,tl.size());
 	}
 	
+	private void testIterator(AVector v) {
+		int count=0;
+		double total=0.0;
+		
+		for (double d: v) {
+			count++;
+			total+=d;
+		}
+		
+		assertEquals(v.length(),count);
+		assertEquals(Vectorz.totalValue(v),total,0.00000001);
+	}
+	
+	
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
 		testAdd(v);
@@ -225,6 +239,7 @@ public class TestVectors {
 		testZero(v);
 		testHashCode(v);
 		testAsList(v);
+		testIterator(v);
 		testOutOfBounds(v);
 	}
 
