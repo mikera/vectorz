@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import mikera.indexz.Index;
@@ -20,7 +21,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AVector implements Cloneable, Comparable<AVector>, Serializable {
+public abstract class AVector implements Cloneable, Comparable<AVector>, Serializable, Iterable<Double> {
 	
 	// ================================================
 	// Abstract interface
@@ -504,6 +505,10 @@ public abstract class AVector implements Cloneable, Comparable<AVector>, Seriali
 	
 	public List<Double> asList() {
 		return new ListWrapper(this);
+	}
+	
+	public Iterator<Double> iterator() {
+		return new VectorIterator(this);
 	}
 
 
