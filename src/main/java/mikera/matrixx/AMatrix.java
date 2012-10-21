@@ -20,7 +20,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AMatrix extends AAffineTransform {
+public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	// ==============================================
 	// Abstract interface
 
