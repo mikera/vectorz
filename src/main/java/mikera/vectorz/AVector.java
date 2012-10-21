@@ -21,7 +21,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AVector implements Cloneable, Comparable<AVector>, Serializable, Iterable<Double> {
+public abstract class AVector implements IVector, Cloneable, Comparable<AVector>, Serializable, Iterable<Double> {
 	
 	// ================================================
 	// Abstract interface
