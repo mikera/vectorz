@@ -35,6 +35,11 @@ public final class Vector3 extends APrimitiveVector {
 		this.z=values[2];
 	}
 	
+	public Vector3(AVector v) {
+		assert(v.length()==3);
+		this.set(v);
+	}
+
 	public static Vector3 of(double x, double y, double z) {
 		return new Vector3(x,y,z);
 	}
@@ -153,6 +158,14 @@ public final class Vector3 extends APrimitiveVector {
 		case 2: return z;
 		default: throw new IndexOutOfBoundsException("Index: i");
 		}
+	}
+	
+	@Override 
+	public void set(AVector v) {
+		assert(v.length()==3);
+		x=v.get(0);
+		y=v.get(1);
+		z=v.get(2);
 	}
 
 	@Override

@@ -5,9 +5,9 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 public final class VectorMatrixMN extends AVectorMatrix {
-	private final int rowCount;	
+	private int rowCount;	
 	private final int columnCount;	
-	private final AVector[] rows;
+	private AVector[] rows;
 	
 	public VectorMatrixMN(int rowCount, int columnCount) {
 		this.rows=new AVector[rowCount];
@@ -25,6 +25,20 @@ public final class VectorMatrixMN extends AVectorMatrix {
 				set(i,j,source.get(i, j));
 			}
 		}
+	}
+	
+	private void ensureRowCapacity(int size) {
+		if (size<=rows.length) return;
+		int newSize=Math.max(size, rows.length*2);
+		AVector[] newRows=new AVector[newSize];
+		System.arraycopy(rows, 0, newRows, 0, rowCount);
+		rows=newRows;
+	}
+	
+	@Override 
+	public void appendRow(AVector row) {
+		ensureRowCapacity(rowCount+1);
+		rows[rowCount++]=row;
 	}
 
 	@Override

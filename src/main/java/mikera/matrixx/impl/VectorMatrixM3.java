@@ -11,8 +11,8 @@ import mikera.vectorz.Vector3;
  *
  */
 public final class VectorMatrixM3 extends AVectorMatrix  implements ISpecialisedTransform  {
-	private final int rowCount;	
-	private final Vector3[] rows;
+	private int rowCount;	
+	private Vector3[] rows;
 	
 	public VectorMatrixM3(int rowCount) {
 		this.rowCount=rowCount;
@@ -20,6 +20,28 @@ public final class VectorMatrixM3 extends AVectorMatrix  implements ISpecialised
 		for (int i=0; i<rowCount; i++) {
 			rows[i]=new Vector3();
 		}
+	}
+	
+	private void ensureRowCapacity(int size) {
+		if (size<=rows.length) return;
+		int newSize=Math.max(size, rows.length*2);
+		Vector3[] newRows=new Vector3[newSize];
+		System.arraycopy(rows, 0, newRows, 0, rowCount);
+		rows=newRows;
+	}
+	
+	@Override 
+	public void appendRow(AVector row) {
+		if (row instanceof Vector3) {
+			appendRow((Vector3)row);
+		} else {
+			appendRow(new Vector3(row));
+		}
+	}
+	
+	public void appendRow(Vector3 row) {
+		ensureRowCapacity(rowCount+1);
+		rows[rowCount++]=row;
 	}
 	
 	private VectorMatrixM3(Vector3[] rows) {

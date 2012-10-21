@@ -7,11 +7,19 @@ import mikera.vectorz.AVector;
  * Abstract base class for matrices that use a collection of Vectors 
  * as storage for the matrix rows.
  * 
+ * Vector matrices support appending with new rows - this functionality can be useful
+ * e.g. when building a matrix to represent a data set.
  * 
  * @author Mike
  *
  */
 public abstract class AVectorMatrix extends AMatrix {
+	/* ================================
+	 * Abstract interface
+	 */
+	
+	public abstract void appendRow(AVector row);
+	
 	/**
 	 * Gets a row of the matrix. Should be guaranteed to be an existing vector by all
 	 * descendents of VectorMatrix.
