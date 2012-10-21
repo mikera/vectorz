@@ -3,8 +3,8 @@ package mikera.vectorz;
 /**
  * Basic interface for a Vector
  * 
- * Implementation should normally extend AVector directly, which implements IVector plus 
- * a considerable amount of other useful functionality.
+ * Implementations should normally extend AVector directly, which implements IVector plus 
+ * a considerable amount of other important functionality.
  * 
  * @author Mike
  */

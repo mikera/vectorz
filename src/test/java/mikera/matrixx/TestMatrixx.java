@@ -91,7 +91,7 @@ public class TestMatrixx {
 	@Test
 	public void testIdentity() {
 		for (int i=1; i<10; i++) {
-			AVector v=Vectorz.createLength(i);
+			AVector v=Vectorz.newVector(i);
 			for (int j=0; j<v.length(); j++) {
 				v.set(j,j+1.3);
 			}
@@ -110,7 +110,7 @@ public class TestMatrixx {
 	@Test
 	public void testScale() {
 		for (int i=1; i<10; i++) {
-			AVector v=Vectorz.createLength(i);
+			AVector v=Vectorz.newVector(i);
 			for (int j=0; j<v.length(); j++) {
 				v.set(j,j+1.3);
 			}

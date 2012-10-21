@@ -54,8 +54,8 @@ public class MediumVectorBenchmark extends SimpleBenchmark {
 	}
 	
 	public void timeJoinedVectorSet(int runs) {
-		AVector v=Vectorz.createLength(VECTOR_SIZE/2);
-		v=v.join(Vectorz.createLength(VECTOR_SIZE-v.length()));
+		AVector v=Vectorz.newVector(VECTOR_SIZE/2);
+		v=v.join(Vectorz.newVector(VECTOR_SIZE-v.length()));
 
 		Vector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
 		for (int i=0; i<runs; i++) {
@@ -64,8 +64,8 @@ public class MediumVectorBenchmark extends SimpleBenchmark {
 	}
 	
 	public void timeJoinedVectorAddition(int runs) {
-		AVector v=Vectorz.createLength(VECTOR_SIZE/2);
-		v=v.join(Vectorz.createLength(VECTOR_SIZE-v.length()));
+		AVector v=Vectorz.newVector(VECTOR_SIZE/2);
+		v=v.join(Vectorz.newVector(VECTOR_SIZE-v.length()));
 
 		Vector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
 		for (int i=0; i<runs; i++) {

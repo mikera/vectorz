@@ -116,7 +116,7 @@ public class TestVectors {
 		int split=len/2;
 		int slen=len-split;
 		
-		AVector t=Vectorz.createLength(slen);
+		AVector t=Vectorz.newVector(slen);
 		t.add(v,split);
 		assertEquals(t,v.subVector(split, slen));
 		

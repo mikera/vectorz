@@ -14,7 +14,7 @@ public final class VectorMatrixMN extends AVectorMatrix {
 		this.rowCount=rowCount;
 		this.columnCount=columnCount;
 		for (int i=0; i<rowCount; i++) {
-			rows[i]=Vectorz.createLength(columnCount);
+			rows[i]=Vectorz.newVector(columnCount);
 		}
 	}
 	

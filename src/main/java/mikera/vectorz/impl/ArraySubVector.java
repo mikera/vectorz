@@ -161,7 +161,7 @@ public final class ArraySubVector extends ArrayVector {
 	
 	@Override
 	public AVector clone() {
-		return Vectorz.createMutableVector(this);
+		return Vectorz.create(this);
 	}
 
 

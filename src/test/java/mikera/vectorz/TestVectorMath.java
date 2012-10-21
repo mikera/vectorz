@@ -91,7 +91,7 @@ public class TestVectorMath {
 	}
 	
 	private void doMagnitudeTests(AVector v) {
-		assertEquals(v.magnitude(),Vectorz.createMutableVector(v).magnitude(),0.000001);
+		assertEquals(v.magnitude(),Vectorz.create(v).magnitude(),0.000001);
 		
 	}
 	public void doGenericMaths(AVector v) {
@@ -112,7 +112,7 @@ public class TestVectorMath {
 		doGenericMaths(Vectorz.create(1,2,3,4,5,6,7).subVector(2,3));
 		
 		for (int dim=0; dim<10; dim++) {
-			AVector v=Vectorz.createLength(dim);
+			AVector v=Vectorz.newVector(dim);
 			doGenericMaths(v);
 		}
 

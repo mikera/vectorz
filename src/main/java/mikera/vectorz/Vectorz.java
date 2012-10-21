@@ -65,7 +65,7 @@ public class Vectorz {
 	}
 	
 	public static AVector createZeroVector(int length) {
-		return createLength(length);
+		return newVector(length);
 	}
 	
 	public static AVector wrap(double[] data) {
@@ -89,7 +89,7 @@ public class Vectorz {
 	 * @param length
 	 * @return
 	 */
-	public static AVector createLength(int length) {
+	public static AVector newVector(int length) {
 		switch (length) {
 			case 0: return ZeroLengthVector.INSTANCE;
 			case 1: return new Vector1();
@@ -101,13 +101,19 @@ public class Vectorz {
 	}
 
 	public static AVector createSameSize(AVector v) {
-		return createLength(v.length());
+		return newVector(v.length());
 	}
 
-	public static AVector deepCopy(AVector vector) {
+	public static AVector create(AVector vector) {
 		if (!vector.isReference()) return vector.clone();
-		AVector nv=createLength(vector.length());
+		AVector nv=newVector(vector.length());
 		vector.copyTo(nv, 0);
+		return nv;
+	}	
+	
+	public static AVector deepCopy(IVector vector) {
+		AVector nv=newVector(vector.length());
+		nv.set(vector);
 		return nv;
 	}	
 	
@@ -116,7 +122,7 @@ public class Vectorz {
 	}
 
 	public static AVector createUniformRandomVector(int dimensions) {
-		AVector v=Vectorz.createLength(dimensions);
+		AVector v=Vectorz.newVector(dimensions);
 		for (int i=0; i<dimensions; i++) {
 			v.set(i,Rand.nextDouble());
 		}
@@ -124,7 +130,7 @@ public class Vectorz {
 	}
 
 	public static AVector createMutableVector(AVector t) {
-		AVector v=createLength(t.length());
+		AVector v=newVector(t.length());
 		v.set(t);
 		return v;
 	}
@@ -204,7 +210,7 @@ public class Vectorz {
 		for (int i=0; i<length; i++) {
 			data[i]=Tools.toDouble(d.get(i));
 		}
-		AVector v=createLength(length);
+		AVector v=newVector(length);
 		v.setValues(data);
 		return v;
 	}

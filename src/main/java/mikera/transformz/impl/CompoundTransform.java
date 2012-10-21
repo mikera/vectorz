@@ -30,7 +30,7 @@ public class CompoundTransform extends ATransform {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
-		AVector temp=Vectorz.createLength(inner.outputDimensions());
+		AVector temp=Vectorz.newVector(inner.outputDimensions());
 		inner.transform(source,temp);
 		outer.transform(temp,dest);
 	}

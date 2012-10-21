@@ -29,7 +29,7 @@ public class TestVectorz {
 	@Test
 	public void testCreateLength() {
 		for (int i=0; i<10; i++) {
-			AVector v=Vectorz.createLength(i);
+			AVector v=Vectorz.newVector(i);
 			assertEquals(i,v.length());
 		}
 	}

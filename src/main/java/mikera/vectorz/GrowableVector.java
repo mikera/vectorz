@@ -102,7 +102,7 @@ public final class GrowableVector extends ArrayVector {
 	 * @return
 	 */
 	public AVector build() {
-		return Vectorz.createMutableVector(this);
+		return Vectorz.create(this);
 	}
 
 	@Override

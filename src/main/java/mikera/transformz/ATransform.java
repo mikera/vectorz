@@ -79,7 +79,7 @@ public abstract class ATransform implements Cloneable {
 	 * @return
 	 */
 	public AVector transform(AVector v) {
-		AVector temp=Vectorz.createLength(outputDimensions());
+		AVector temp=Vectorz.newVector(outputDimensions());
 		transform(v,temp);
 		return temp;
 	}

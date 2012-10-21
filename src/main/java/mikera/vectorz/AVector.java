@@ -370,7 +370,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	@Override
 	public AVector clone() {
 		// by default use a deep copy in case this vector is a reference vector type		
-		return Vectorz.deepCopy(this);
+		return Vectorz.create(this);
 	}
 	
 	/**
@@ -509,6 +509,14 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	
 	public Iterator<Double> iterator() {
 		return new VectorIterator(this);
+	}
+
+	public void set(IVector vector) {
+		int len=length();
+		assert(len==vector.length());
+		for (int i=0; i<len; i++) {
+			this.set(i,vector.get(i));
+		}
 	}
 
 

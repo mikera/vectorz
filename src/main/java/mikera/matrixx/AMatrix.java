@@ -160,7 +160,7 @@ public abstract class AMatrix extends AAffineTransform {
 
 	public AVector cloneRow(int row) {
 		int cc = columnCount();
-		AVector v = Vectorz.createLength(cc);
+		AVector v = Vectorz.newVector(cc);
 		for (int i = 0; i < cc; i++) {
 			v.set(i, get(row, i));
 		}
@@ -406,7 +406,7 @@ public abstract class AMatrix extends AAffineTransform {
 	public AVector toVector() {
 		int rc = rowCount();
 		int cc = columnCount();
-		AVector v = Vectorz.createLength(rc * cc);
+		AVector v = Vectorz.newVector(rc * cc);
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
 				v.set(i * cc + j, get(i, j));

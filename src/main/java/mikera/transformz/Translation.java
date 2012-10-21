@@ -20,7 +20,7 @@ public final class Translation extends ATranslation {
 	}
 	
 	public Translation(ATranslation t) {
-		this(Vectorz.createMutableVector(t.getTranslationComponent().getTranslationVector()));
+		this(Vectorz.create(t.getTranslationComponent().getTranslationVector()));
 	}
 
 	@Override
