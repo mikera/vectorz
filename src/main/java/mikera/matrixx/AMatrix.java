@@ -249,7 +249,7 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	 * Returns a transposed version of this matrix. May or may not be a reference.
 	 * @return
 	 */
-	public AMatrix transpose() {
+	public AMatrix getTranspose() {
 		return TransposedMatrix.wrap(this);
 	}
 	

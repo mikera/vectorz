@@ -194,7 +194,7 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
-	public Matrix33 transpose() {
+	public Matrix33 getTranspose() {
 		return new Matrix33(m00,m10,m20,
 				            m01,m11,m21,
 				            m02,m12,m22);

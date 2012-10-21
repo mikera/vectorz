@@ -147,7 +147,7 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 
 	@Override
-	public Matrix22 transpose() {
+	public Matrix22 getTranspose() {
 		return new Matrix22(m00,m10,
 				            m01,m11);
 	}

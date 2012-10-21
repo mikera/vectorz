@@ -14,13 +14,13 @@ public class BasicMatrixUsage {
 		
 		Matrixx.fillRandomValues(m);
 		System.out.println(m);
-		System.out.println(m.transpose());
+		System.out.println(m.getTranspose());
 
 		System.out.println();
 		
 		AMatrix m2=Matrixx.createRandomSquareMatrix(2);
 		System.out.println(m2);
-		System.out.println(m2.transpose());
+		System.out.println(m2.getTranspose());
 		m2.transposeInPlace();
 		System.out.println(m2);
 		

@@ -50,7 +50,7 @@ public class TransposedMatrix extends AMatrix {
 	}
 	
 	@Override 
-	public AMatrix transpose() {
+	public AMatrix getTranspose() {
 		// Transposing again just gets us back to the original source matrix
 		return source;
 	}

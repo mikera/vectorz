@@ -195,7 +195,7 @@ public class TestMatrixx {
 		m2.transposeInPlace();
 		
 		// two different kinds of transpose should produce same result
-		AMatrix tm=m.transpose();
+		AMatrix tm=m.getTranspose();
 		assertEquals(tm,m2);
 		
 		m2.transposeInPlace();
