@@ -85,7 +85,7 @@ public class Vectorz {
 	/**
 	 * Returns a vector filled with zeros of the specified length.
 	 * 
-	 * Attempts to select the most efficient concrete Vector type for any given length.
+	 * Attempts to select the most efficient mutable concrete Vector type for any given length.
 	 * @param length
 	 * @return
 	 */
@@ -111,7 +111,7 @@ public class Vectorz {
 		return nv;
 	}	
 	
-	public static AVector deepCopy(IVector vector) {
+	public static AVector create(IVector vector) {
 		AVector nv=newVector(vector.length());
 		nv.set(vector);
 		return nv;
