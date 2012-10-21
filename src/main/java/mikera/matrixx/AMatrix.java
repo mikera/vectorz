@@ -229,7 +229,7 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	}
 
 	public AMatrix toMutableMatrix() {
-		return Matrixx.createMutableCopy(this);
+		return Matrixx.create(this);
 	}
 
 	public void transposeInPlace() {

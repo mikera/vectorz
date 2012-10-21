@@ -29,6 +29,7 @@ public final class VectorMatrixMN extends AVectorMatrix {
 
 	@Override
 	public AVector getRow(int row) {
+		assert(row<rowCount);
 		return rows[row];
 	}
 
@@ -44,11 +45,13 @@ public final class VectorMatrixMN extends AVectorMatrix {
 	
 	@Override
 	public double get(int row, int column) {
+		assert(row<rowCount);
 		return rows[row].get(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
+		assert(row<rowCount);
 		rows[row].set(column,value);
 	}
 	

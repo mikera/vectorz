@@ -91,7 +91,7 @@ public class Matrixx {
 	}
 	
 	public static AMatrix createRandomMatrix(int rows, int columns) {
-		AMatrix m=createMatrix(rows,columns);
+		AMatrix m=newMatrix(rows,columns);
 		fillRandomValues(m);
 		return m;
 	}
@@ -242,22 +242,23 @@ public class Matrixx {
 
 	
 	/**
-	 * Creates an empty matrix of the specified size
+	 * Creates an empty (zero-filled) mutable matrix of the specified size
 	 * 
 	 * @param rows
 	 * @param columns
 	 * @return
 	 */
-	public static AMatrix createMatrix(int rows, int columns) {
+	public static AMatrix newMatrix(int rows, int columns) {
 		if ((rows==columns)) {
 			if (rows==3) return new Matrix33();
+			if (rows==2) return new Matrix22();
 		}
 		return new MatrixMN(rows,columns);
 	}
 	
 	public static AMatrix createFromVector(AVector data, int rows, int columns) {
 		assert(data.length()==rows*columns);
-		AMatrix m=createMatrix(rows, columns);
+		AMatrix m=newMatrix(rows, columns);
 		for (int i=0; i<rows; i++) {
 			for (int j=0; j<columns; j++) {
 				m.set(i,j,data.get(i*columns+j));
@@ -270,11 +271,11 @@ public class Matrixx {
 		switch (dimensions) {
 		case 2: return new Matrix22();
 		case 3: return new Matrix33();
-		default: return createMatrix(dimensions,dimensions);
+		default: return newMatrix(dimensions,dimensions);
 		}
 	}
 
-	public static AMatrix createMutableCopy(AMatrix m) {
+	public static AMatrix create(AMatrix m) {
 		int rows=m.rowCount();
 		int columns=m.columnCount();
 		if (rows==columns) {
@@ -285,6 +286,18 @@ public class Matrixx {
 			}				
 		}
 		return new MatrixMN(m);
+	}
+	
+	public static AMatrix create(IMatrix m) {
+		int rows=m.rowCount();
+		int columns=m.columnCount();
+		AMatrix result=newMatrix(rows,columns);
+		for (int i=0; i<rows; i++) {
+			for (int j=0; j<columns; j++) {
+				result.set(i,j,m.get(i, j));
+			}
+		}
+		return result;
 	}
 
 	public static void fillRandomValues(AMatrix m) {
@@ -300,7 +313,7 @@ public class Matrixx {
 	public static AMatrix createFromVectors(AVector... data) {
 		int rc=data.length;
 		int cc=(rc==0)?0:data[0].length();
-		AMatrix m=createMatrix(rc,cc);
+		AMatrix m=newMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
 			m.getRow(i).set(data[i]);
 		}
@@ -324,7 +337,7 @@ public class Matrixx {
 		List<List<Object>> data=(List<List<Object>>) p.nextValue();
 		int rc=data.size();
 		int cc=(rc==0)?0:data.get(0).size();
-		AMatrix m=createMatrix(rc,cc);
+		AMatrix m=newMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				m.set(i,j,Tools.toDouble(data.get(i).get(j)));
@@ -334,7 +347,7 @@ public class Matrixx {
 	}
 
 	public static AMatrix deepCopy(AMatrix m) {
-		return createMutableCopy(m);
+		return create(m);
 	}
 
 

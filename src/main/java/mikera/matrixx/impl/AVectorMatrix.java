@@ -5,7 +5,8 @@ import mikera.vectorz.AVector;
 
 /**
  * Abstract base class for matrices that use a collection of Vectors 
- * as storage for the matrix rows
+ * as storage for the matrix rows.
+ * 
  * 
  * @author Mike
  *
