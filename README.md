@@ -33,12 +33,6 @@ Vectorz can do over *1 billion* 3D vector operations per second on a single thre
  - Vectors have lots of utility functionality implemented - Cloneable, Serializable, Comparable etc.
  - Input / output of vectors and matrices in edn format
 
-### Build Status
-
-[![Build Status](https://secure.travis-ci.org/mikera/vectorz.png)](http://travis-ci.org/mikera/vectorz)
-
-### Focus on performance
-
 Vectorz is deigned to allow the maximum performance possible for vector / matrix maths on the JVM.
 
 This focus has driven a number of important design decisions:
@@ -56,7 +50,7 @@ If you have a common case that isn't yet well optimised then please post an issu
 
 While Vectorz has some support for linear algebra and big matrix computations, this isn't the primary focus. 
 
-If you are interested in doing mathematical computations with large matrices, you might want to check out some of the more specialised linear algebra libraries:
+If you are interested in doing mathematical computations with large matrices, you might also want to check out some of the more specialised linear algebra libraries:
 
  - http://code.google.com/p/efficient-java-matrix-library/
  - http://code.google.com/p/java-matrix-benchmark/
