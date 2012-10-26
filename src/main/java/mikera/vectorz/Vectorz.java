@@ -272,5 +272,16 @@ public class Vectorz {
 		}
 	}
 	
+	public static void fillBinaryRandom(AVector v) {
+		fillBinaryRandom(v,0.5);
+	}
+
+	public static void fillBinaryRandom(AVector v, double prob) {
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			v.set(i,Rand.binary(prob));
+		}
+	}
+	
 	
 }
