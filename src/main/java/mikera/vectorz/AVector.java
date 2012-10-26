@@ -214,6 +214,14 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		}	
 	}
 	
+	public void multiply(AVector v) {
+		int len=length();
+		assert(len==v.length());
+		for (int i = 0; i < len; i++) {
+			set(i,get(i)*v.get(i));
+		}	
+	}
+	
 	public void absolute() {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -420,10 +428,14 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	public void addProduct(AVector a, AVector b) {
+		addProduct(a,b,1.0);
+	}
+	
+	public void addProduct(AVector a, AVector b, double factor) {
 		int length=length();
 		assert((a.length()==length)&&(b.length()==length));
 		for (int i = 0; i < length; i++) {
-			double x=get(i)+(a.get(i)*b.get(i));
+			double x=get(i)+(a.get(i)*b.get(i)*factor);
 			set(i,x);
 		}
 	}

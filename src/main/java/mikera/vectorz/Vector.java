@@ -244,6 +244,24 @@ public final class Vector extends ArrayVector {
 		}	
 	}
 	
+	@Override
+	public void multiply(AVector v) {
+		if (v instanceof Vector) {multiply(((Vector)v)); return;}
+		int len=length();
+		assert(len==v.length());
+		for (int i = 0; i < len; i++) {
+			set(i,get(i)*v.get(i));
+		}	
+	}
+	
+	public void multiply(Vector v) {
+		int len=length();
+		assert(len==v.length());
+		for (int i = 0; i < len; i++) {
+			set(i,data[i]*v.data[i]);
+		}	
+	}
+	
 	public boolean isReference() {
 		return false;
 	}
