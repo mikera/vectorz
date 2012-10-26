@@ -13,7 +13,7 @@ import mikera.vectorz.Tools;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIndex> {
+public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIndex>, Iterable<Integer> {
 	// ===================================
 	// Abstract interface
 	
@@ -198,5 +198,9 @@ public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIn
 			if (d!=0) return d;
 		}
 		return 0;
+	}
+	
+	public IndexIterator iterator() {
+		return new IndexIterator(this);
 	}
 }
