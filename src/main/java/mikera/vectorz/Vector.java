@@ -231,7 +231,7 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
-	public AVector clone() {
+	public Vector clone() {
 		return new Vector(this);
 	}
 
