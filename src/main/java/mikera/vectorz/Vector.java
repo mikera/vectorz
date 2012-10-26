@@ -138,6 +138,14 @@ public final class Vector extends ArrayVector {
 		}
 	}
 	
+	public void addProduct(Vector a, Vector b, double factor) {
+		int length=length();
+		assert((a.length()==length)&&(b.length()==length));
+		for (int i = 0; i < length; i++) {
+			data[i]+=(a.data[i]*b.data[i])*factor;
+		}
+	}
+	
 	@Override
 	public void sub(AVector v) {
 		if (v instanceof ArrayVector) {sub(((ArrayVector)v)); return;}
