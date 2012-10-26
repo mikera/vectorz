@@ -235,6 +235,23 @@ public class Vectorz {
 		return max;
 	}
 	
+	public static void invSqrt(AVector v) {
+		if (v instanceof Vector) {invSqrt((Vector) v); return;}
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			double d=1.0/Math.sqrt(v.get(i));
+			v.set(i,d);
+		}		
+	}
+	
+	public static void invSqrt(Vector v) {
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			double d=1.0/Math.sqrt(v.data[i]);
+			v.data[i]=d;
+		}		
+	}
+	
 	public static double totalValue(AVector v) {
 		int len=v.length();
 		double result=0.0;
