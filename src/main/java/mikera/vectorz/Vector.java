@@ -219,6 +219,16 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void addMultiple(Vector vector, Index index, double factor) {
+		int len=vector.length();
+		assert(len==index.length());
+		for (int i=0; i<len; i++) {
+			int j=index.data[i];
+			this.data[j]+=vector.data[i]*factor;
+		}
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		int len=length();
 		for (int i = 0; i < len; i++) {

@@ -11,7 +11,7 @@ import java.util.Arrays;
 public final class Index extends AIndex {
 	private static final long serialVersionUID = 8698831088064498284L;
 
-	final int[] data;
+	public final int[] data;
 	
 	public Index(int length) {
 		data=new int[length];
