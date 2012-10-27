@@ -270,6 +270,21 @@ public class Vectorz {
 		}
 		return result/len;
 	}
+	
+	public static double averageSquaredDifference(AVector a, AVector b) {
+		int len=a.length();
+		assert(len==b.length());
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			double d=a.get(i)-b.get(i);
+			result+=d*d;
+		}
+		return result/len;
+	}
+	
+	public static double rmsDifference(AVector a, AVector b) {
+		return Math.sqrt(averageSquaredDifference(a,b));
+	}
 
 	public static void fillRandom(AVector v) {
 		int len=v.length();
