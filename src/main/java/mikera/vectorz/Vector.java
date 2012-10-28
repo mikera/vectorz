@@ -227,6 +227,26 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void addWeighted(AVector v, double factor) {
+		if (v instanceof ArrayVector) {addWeighted(((ArrayVector)v),factor); return;}
+		int length=length();
+		assert(length==v.length());
+		for (int i = 0; i < length; i++) {
+			data[i] = (data[i]*(1.0-factor)) + (v.get(i)*factor);
+		}
+	}
+	
+	public void addWeighted(ArrayVector v, double factor) {
+		int length=length();
+		assert(length==v.length());
+		double[] arr=v.getArray();
+		int offset=v.getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			data[i] = (data[i]*(1.0-factor)) + (arr[i+offset]*factor);
+		}
+	}
+	
+	@Override
 	public void addMultiple(Vector vector, Index index, double factor) {
 		int len=vector.length();
 		assert(len==index.length());

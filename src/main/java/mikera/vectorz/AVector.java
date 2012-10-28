@@ -457,6 +457,15 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
+	 * Updates a weighted average of this vector with another vector
+	 * @param v
+	 */
+	public void addWeighted(AVector v, double factor) {
+		multiply(1.0-factor);
+		addMultiple(v,factor);
+	}
+	
+	/**
 	 * Subtracts a vector from this vector
 	 * @param v
 	 */

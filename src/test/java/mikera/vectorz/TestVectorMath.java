@@ -71,6 +71,21 @@ public class TestVectorMath {
 		}
 	}
 	
+	public void doWeightedTests(AVector v) {
+		v=v.clone();
+		
+		AVector a=v.clone();
+		Vectorz.fillRandom(a);
+		AVector b=a.clone();
+		
+		b.addWeighted(v,0.0);
+		assertTrue(b.epsilonEquals(a));
+		
+		b.addWeighted(v,1.0);
+		assertTrue(b.epsilonEquals(v));
+
+	}
+	
 	public void doSubtractionTests(AVector v) {
 		v=v.clone();
 		AVector ones=v.clone();
@@ -98,6 +113,7 @@ public class TestVectorMath {
 		doFillTests(v);
 		doMultiplyTests(v);
 		doAdditionTests(v);
+		doWeightedTests(v);
 		doSubtractionTests(v);
 		doNormaliseTests(v);
 		doMagnitudeTests(v);
