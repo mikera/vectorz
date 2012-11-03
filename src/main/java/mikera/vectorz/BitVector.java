@@ -27,6 +27,16 @@ public final class BitVector extends AVector {
 		this(source.length());
 		set(source);
 	}
+	
+	public BitVector(BitVector source) {
+		this(source.data,source.length());
+	}
+
+
+	private BitVector(long[] data, int length) {
+		this.length=length;
+		this.data=data;
+	}
 
 	@Override
 	public int length() {
@@ -44,15 +54,36 @@ public final class BitVector extends AVector {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
+	
+	
+	@Override
 	public boolean isReference() {
 		return false;
 	}
 
 	@Override
 	public void set(int i, double value) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
 		int b=i%64;
 		long mask = (1<<b);
 		int p=i/64;
 		data[p]=(data[p]&(~mask))+(value>=0.5?mask:0);
+	}
+	
+	@Override
+	public AVector clone() {
+		AVector v=Vectorz.newVector(length);
+		v.set(this);
+		return v;
+	}
+
+	public static BitVector of(double... values) {
+		int len=values.length;
+		BitVector b=new BitVector(len);
+		b.setValues(values);
+		return b;
 	}
 }

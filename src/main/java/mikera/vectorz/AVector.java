@@ -398,6 +398,14 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
+	 * Returns true if this vector is fully mutable, i.e. can contain any unconstrained double values
+	 * @return
+	 */
+	public boolean isFullyMutable() {
+		return isMutable();
+	}
+	
+	/**
 	 * Adds another vector to this one
 	 * @param v
 	 */

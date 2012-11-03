@@ -247,6 +247,11 @@ public class TestVectors {
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector2(1.0,2.0));
 		
+		// bit vectors
+		doGenericTests(BitVector.of());
+		doGenericTests(BitVector.of(0));
+		doGenericTests(BitVector.of(0,1,0));
+		
 		// zero-length Vectors
 		doGenericTests(Vector.of());
 		doGenericTests(Vector.wrap(new double[0]));
