@@ -49,7 +49,7 @@ public final class BitVector extends AVector {
 
 	@Override
 	public double get(int i) {
-		return ((((data[i/64])>>>(i%64))&1)==0) ? BIT_OFF : BIT_ON;
+		return (((data[i>>>6] >>> (i%64))&1)==0) ? BIT_OFF : BIT_ON;
 	}
 	
 	@Override
@@ -79,9 +79,9 @@ public final class BitVector extends AVector {
 	@Override
 	public void set(int i, double value) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
-		int b=i%64;
-		long mask = (1<<b);
-		int p=i/64;
+		int bit=i%64;
+		long mask = (1L<<bit);
+		int p=i>>>6;
 		data[p]=(data[p]&(~mask))+(value>=BIT_THRESHOLD?mask:0);
 	}
 	
