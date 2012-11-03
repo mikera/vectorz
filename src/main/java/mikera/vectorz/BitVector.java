@@ -6,6 +6,9 @@ package mikera.vectorz;
  */
 public final class BitVector extends AVector {
 	private static final long serialVersionUID = 349277216077562294L;
+	public static final double BIT_ON=1.0;
+	public static final double BIT_OFF=0.0;
+	public static final double BIT_THRESHOLD=0.5;
 
 	private final int length;
 	private long[] data;
@@ -45,7 +48,7 @@ public final class BitVector extends AVector {
 
 	@Override
 	public double get(int i) {
-		return ((((data[i/64])>>>(i%64))&1)==0) ? 0.0 : 1.0;
+		return ((((data[i/64])>>>(i%64))&1)==0) ? BIT_OFF : BIT_ON;
 	}
 	
 	@Override
@@ -70,7 +73,7 @@ public final class BitVector extends AVector {
 		int b=i%64;
 		long mask = (1<<b);
 		int p=i/64;
-		data[p]=(data[p]&(~mask))+(value>=0.5?mask:0);
+		data[p]=(data[p]&(~mask))+(value>=BIT_THRESHOLD?mask:0);
 	}
 	
 	@Override
