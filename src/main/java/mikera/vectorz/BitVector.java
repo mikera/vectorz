@@ -2,6 +2,9 @@ package mikera.vectorz;
 
 /**
  * Vector of bits - constrained to 0.0 / 1.0 values
+ * 
+ * Intended for compact representation/storage of binary vectors
+ * 
  * @author Mike
  */
 
@@ -49,7 +52,7 @@ public final class BitVector extends AVector {
 
 	@Override
 	public double get(int i) {
-		return (((data[i>>>6] >>> (i%64))&1)==0) ? BIT_OFF : BIT_ON;
+		return (((data[i>>>6] >>> (i%64))&1L)==0L) ? BIT_OFF : BIT_ON;
 	}
 	
 	@Override
@@ -82,7 +85,7 @@ public final class BitVector extends AVector {
 		int bit=i%64;
 		long mask = (1L<<bit);
 		int p=i>>>6;
-		data[p]=(data[p]&(~mask))+(value>=BIT_THRESHOLD?mask:0);
+		data[p]=(data[p]&(~mask))+(value>=BIT_THRESHOLD?mask:0L);
 	}
 	
 	@Override
