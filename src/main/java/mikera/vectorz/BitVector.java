@@ -4,6 +4,7 @@ package mikera.vectorz;
  * Vector of bits - constrained to 0.0 / 1.0 values
  * @author Mike
  */
+
 public final class BitVector extends AVector {
 	private static final long serialVersionUID = 349277216077562294L;
 	public static final double BIT_ON=1.0;
@@ -54,6 +55,14 @@ public final class BitVector extends AVector {
 	@Override
 	public boolean isMutable() {
 		return true;
+	}
+	
+	@Override
+	public void copyTo(double[] data, int offset) {
+		int len = length();
+		for (int i=0; i<len; i++) {
+			data[i+offset]=get(i);
+		}
 	}
 	
 	@Override
