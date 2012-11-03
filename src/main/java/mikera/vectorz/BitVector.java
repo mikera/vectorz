@@ -15,7 +15,7 @@ public final class BitVector extends AVector {
 	public static final double BIT_THRESHOLD=0.5;
 
 	private final int length;
-	private long[] data;
+	private final long[] data;
 	
 	public BitVector(int length) {
 		this.length=length;
