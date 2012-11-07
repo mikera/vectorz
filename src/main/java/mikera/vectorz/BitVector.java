@@ -49,11 +49,17 @@ public final class BitVector extends AVector {
 	public int length() {
 		return length;
 	}
+	
+	public final boolean getBit(int i) {
+		return (((data[i>>>6] >>> (i%64))&1L)!=0L);
+	}
 
 	@Override
 	public double get(int i) {
-		return (((data[i>>>6] >>> (i%64))&1L)==0L) ? BIT_OFF : BIT_ON;
+		return getBit(i) ? BIT_ON : BIT_OFF;
 	}
+	
+	
 	
 	@Override
 	public boolean isMutable() {
@@ -85,7 +91,7 @@ public final class BitVector extends AVector {
 		int bit=i%64;
 		long mask = (1L<<bit);
 		int p=i>>>6;
-		data[p]=(data[p]&(~mask))+(value>=BIT_THRESHOLD?mask:0L);
+		data[p]=(data[p]&(~mask))|(value>=BIT_THRESHOLD?mask:0L);
 	}
 	
 	@Override
@@ -100,5 +106,21 @@ public final class BitVector extends AVector {
 		BitVector b=new BitVector(len);
 		b.setValues(values);
 		return b;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb=new StringBuilder();
+		int length=length();
+		sb.append('[');
+		if (length>0) {
+			sb.append(getBit(0)?'1':'0');
+			for (int i = 1; i < length; i++) {
+				sb.append(',');
+				sb.append(getBit(i)?'1':'0');
+			}
+		}
+		sb.append(']');
+		return sb.toString();
 	}
 }

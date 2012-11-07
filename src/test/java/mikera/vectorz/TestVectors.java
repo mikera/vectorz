@@ -15,6 +15,8 @@ import org.junit.Test;
 
 
 public class TestVectors {
+	
+	
 	@Test public void testSubVectors() {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
@@ -65,7 +67,12 @@ public class TestVectors {
 	}
 	
 	private void testParse(AVector v) {
-		assertEquals(v,Vectorz.parse(v.toString()));
+		String str = v.toString();
+		AVector v2=Vectorz.parse(str);
+		if (v.length()>0) {
+			assertEquals(v.get(0),v2.get(0),0.0);			
+		}
+		assertEquals(v,v2);
 	}
 	
 	private void testHashCode(AVector v) {
