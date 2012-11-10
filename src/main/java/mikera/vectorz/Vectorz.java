@@ -1,6 +1,8 @@
 package mikera.vectorz;
 
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import bpsm.edn.parser.CollectionBuilder;
@@ -210,9 +212,16 @@ public class Vectorz {
 		for (int i=0; i<length; i++) {
 			data[i]=Tools.toDouble(d.get(i));
 		}
-		AVector v=newVector(length);
-		v.setValues(data);
+		AVector v=Vector.wrap(data);
 		return v;
+	}
+	
+	public static AVector create(Iterable<Object> d) {
+		ArrayList<Object> al=new ArrayList<Object>();
+		for (Object o:d) {
+			al.add(o);
+		}
+		return create(al);
 	}
 
 	public static double minValue(AVector v) {

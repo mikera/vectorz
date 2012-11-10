@@ -28,7 +28,9 @@ public final class BitVector extends AVector {
 		return (length+63)/64;
 	}
 	
-	
+	public static BitVector createLength(int length) {
+		return new BitVector(length);
+	}
 
 	public BitVector(AVector source) {
 		this(source.length());
