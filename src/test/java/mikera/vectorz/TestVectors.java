@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -344,5 +345,15 @@ public class TestVectors {
 		Vector3 v=Vector3.of(1,2,3);
 		v.clampMax(2.5);
 		assertEquals(Vector3.of(1,2,2.5),v);
+	}
+	
+	
+	@Test public void testCreateFromIterable() {
+		ArrayList<Object> al=new ArrayList<Object>();
+		al.add(1);
+		al.add(2L);
+		al.add(3.0);
+		AVector v=Vectorz.create((Iterable<Object>)al);
+		assertEquals(Vector.of(1,2,3),v);
 	}
 }
