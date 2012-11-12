@@ -244,6 +244,20 @@ public class Vectorz {
 		return max;
 	}
 	
+	public static int indexOfMaxValue(AVector v) {
+		int len=v.length();
+		double max = v.get(0);
+		int ind=0;
+		for (int i=1; i<len; i++) {
+			double d=v.get(i);
+			if (d>max) {
+				max=d;
+				ind=i;
+			}
+		}
+		return ind;
+	}
+	
 	public static void invSqrt(AVector v) {
 		if (v instanceof Vector) {invSqrt((Vector) v); return;}
 		int len=v.length();

@@ -35,6 +35,13 @@ public class TestVectorz {
 	}
 	
 	@Test
+	public void testIndexOf() {
+		AVector v = Vector.of(1 ,2,3,4,1,2,3);
+		assertEquals(4.0,Vectorz.maxValue(v),0.0);
+		assertEquals(3,Vectorz.indexOfMaxValue(v));
+	}
+	
+	@Test
 	public void testParseString() {
 		assertEquals(Vector.of(1.0),Vectorz.parse("[1.0]"));		
 		assertEquals(Vector.of(1.0,2.0),Vectorz.parse(" [1.0  2.0] "));
