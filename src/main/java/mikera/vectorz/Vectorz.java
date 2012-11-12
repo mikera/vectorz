@@ -234,6 +234,20 @@ public class Vectorz {
 		return min;
 	}
 	
+	public static int indexOfMinValue(AVector v) {
+		int len=v.length();
+		double min = v.get(0);
+		int ind=0;
+		for (int i=1; i<len; i++) {
+			double d=v.get(i);
+			if (d<min) {
+				min=d;
+				ind=i;
+			}
+		}
+		return ind;
+	}
+	
 	public static double maxValue(AVector v) {
 		int len=v.length();
 		double max = -Double.MAX_VALUE;
