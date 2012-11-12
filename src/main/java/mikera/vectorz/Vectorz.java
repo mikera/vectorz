@@ -344,6 +344,12 @@ public class Vectorz {
 	public static void fillBinaryRandom(AVector v) {
 		fillBinaryRandom(v,0.5);
 	}
+	
+	public static AVector axisVector(int axisIndex, int dimensions) {
+		AVector v=Vectorz.newVector(dimensions);
+		v.set(axisIndex,1.0);
+		return v;
+	}
 
 	public static void fillBinaryRandom(AVector v, double prob) {
 		int len=v.length();

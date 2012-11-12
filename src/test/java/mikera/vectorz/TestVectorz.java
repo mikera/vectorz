@@ -46,6 +46,12 @@ public class TestVectorz {
 	}
 	
 	@Test
+	public void testAxisVector() {
+		AVector v = Vectorz.axisVector(1, 3);
+		assertEquals(Vector.of(0,1,0),v);
+	}
+	
+	@Test
 	public void testParseString() {
 		assertEquals(Vector.of(1.0),Vectorz.parse("[1.0]"));		
 		assertEquals(Vector.of(1.0,2.0),Vectorz.parse(" [1.0  2.0] "));
