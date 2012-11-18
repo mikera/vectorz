@@ -2,7 +2,6 @@ package mikera.vectorz;
 
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import bpsm.edn.parser.CollectionBuilder;
