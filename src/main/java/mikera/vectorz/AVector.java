@@ -49,7 +49,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 * @return
 	 */
 	public AVector join(AVector second) {
-		return new JoinedVector(this,second);
+		return JoinedVector.join(this,second);
 	}
 	
 	public int compareTo(AVector a) {

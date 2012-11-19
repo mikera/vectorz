@@ -17,22 +17,33 @@ public final class JoinedVector extends AVector {
 	private final int split;
 	private final int length;
 	
-	public JoinedVector(AVector left, AVector right) {
-		// balancing in case of nested joined vectors
-		if ((left.length()*2<right.length())&&(right instanceof JoinedVector)) {
-			JoinedVector v=new JoinedVector(left,((JoinedVector)right).left);
-			left=v;
-			right=((JoinedVector)right).right;
-		} else if ((left.length()>right.length()*2)&&(left instanceof JoinedVector)) {
-			JoinedVector v=new JoinedVector(((JoinedVector)left).right,right);
-			left=((JoinedVector)left).left;
-			right=v;
-		}
-		
+	private JoinedVector(AVector left, AVector right) {
 		this.left=left;
 		this.right=right;
 		this.split=left.length();
 		this.length=split+right.length();
+	}
+	
+	/**
+	 *  returns a JoinedVector connecting the two vectors
+	 * @param left
+	 * @param right
+	 * @return
+	 */
+	
+	public static AVector join(AVector left, AVector right) {
+		// balancing in case of nested joined vectors
+		while ((left.length()>right.length()*2)&&(left instanceof JoinedVector)) {
+			JoinedVector bigLeft=((JoinedVector)left);
+			left=bigLeft.left;
+			right=join(bigLeft.right,right);
+		}
+		while ((left.length()*2<right.length())&&(right instanceof JoinedVector)) {
+			JoinedVector bigRight=((JoinedVector)right);
+			left=join(left,bigRight.left);
+			right=bigRight.right;
+		} 
+		return new JoinedVector(left,right);
 	}
 	
 	@Override
@@ -127,6 +138,18 @@ public final class JoinedVector extends AVector {
 	public void multiply(double value) {
 		left.multiply(value);
 		right.multiply(value);
+	}
+	
+	public static int depthCalc(AVector v) {
+		if (v instanceof JoinedVector) {
+			JoinedVector jv=(JoinedVector)v;
+			return 1+Math.max(depthCalc(jv.left), depthCalc(jv.right));
+		}
+		return 1;
+	}
+	
+	public int depth() {
+		return depthCalc(this);
 	}
 
 }
