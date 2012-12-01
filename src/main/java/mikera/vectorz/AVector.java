@@ -222,6 +222,14 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		}	
 	}
 	
+	public void divide(AVector v) {
+		int len=length();
+		assert(len==v.length());
+		for (int i = 0; i < len; i++) {
+			set(i,get(i)/v.get(i));
+		}	
+	}
+	
 	public void multiply(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
