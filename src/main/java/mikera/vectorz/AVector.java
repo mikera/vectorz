@@ -222,21 +222,6 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		}	
 	}
 	
-	public void divide(AVector v) {
-		int len=length();
-		assert(len==v.length());
-		for (int i = 0; i < len; i++) {
-			set(i,get(i)/v.get(i));
-		}	
-	}
-	
-	public void divideTo(double[] data, int offset) {
-		int len=length();
-		for (int i = 0; i < len; i++) {
-			data[i+offset]/=get(i);
-		}	
-	}
-	
 	public void multiply(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
@@ -250,6 +235,35 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 			data[i+offset]*=get(i);
 		}	
 	}
+	
+	public void divide(double factor) {
+		multiply(1.0/factor);
+	}
+	
+	public void divide(AVector v) {
+		int len=length();
+		assert(len==v.length());
+		for (int i = 0; i < len; i++) {
+			set(i,get(i)/v.get(i));
+		}	
+	}
+	
+	public void divide(double[] data, int offset) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			set(i,get(i)/data[i+offset]);
+		}	
+	}
+	
+	public void divideTo(double[] data, int offset) {
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			data[i+offset]/=get(i);
+		}	
+	}
+	
+
+	
 	
 	public void absolute() {
 		int len=length();
@@ -585,6 +599,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 			this.set(j,this.get(j)+vector.data[i]*factor);
 		}
 	}
+
 
 
 }

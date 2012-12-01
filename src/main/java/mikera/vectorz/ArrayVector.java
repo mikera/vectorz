@@ -97,6 +97,16 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void divide(double[] data, int offset) {
+		int len=length();
+		double[] cdata=getArray();
+		int coffset=getArrayOffset();
+		for (int i = 0; i < len; i++) {
+			set(i,cdata[i+coffset]/data[i+offset]);
+		}	
+	}
+	
+	@Override
 	public void divide(AVector v) {
 		v.divideTo(getArray(), getArrayOffset());
 	}
