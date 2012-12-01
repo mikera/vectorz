@@ -236,6 +236,17 @@ public class TestVectors {
 		assertTrue(v.epsilonEquals(v2,0.00001));
 	}
 	
+	private void testDivide(AVector v) {
+		v=v.clone();
+		
+		Vectorz.fillGaussian(v);
+		
+		AVector m=v.clone();
+		m.multiply(v);
+		m.divide(v);
+		assertTrue(v.epsilonEquals(m,0.00001));
+	}
+	
 	private void testIterator(AVector v) {
 		int count=0;
 		double total=0.0;
@@ -254,6 +265,7 @@ public class TestVectors {
 		doNonDegenerateTests(v);
 		testAdd(v);
 		testMultiply(v);
+		testDivide(v);
 		testSet(v);
 		testClone(v);
 		testParse(v);

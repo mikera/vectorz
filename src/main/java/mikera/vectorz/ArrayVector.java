@@ -97,6 +97,21 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void multiplyTo(double[] data, int offset) {
+		int len=length();
+		double[] cdata=getArray();
+		int coffset=getArrayOffset();
+		for (int i = 0; i < len; i++) {
+			data[i+offset]*=cdata[i+coffset];
+		}	
+	}
+	
+	@Override
+	public void divide(AVector v) {
+		v.divideTo(getArray(), getArrayOffset());
+	}
+	
+	@Override
 	public void divide(double[] data, int offset) {
 		int len=length();
 		double[] cdata=getArray();
@@ -107,9 +122,15 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
-	public void divide(AVector v) {
-		v.divideTo(getArray(), getArrayOffset());
+	public void divideTo(double[] data, int offset) {
+		int len=length();
+		double[] cdata=getArray();
+		int coffset=getArrayOffset();
+		for (int i = 0; i < len; i++) {
+			data[i+offset]/=cdata[i+coffset];
+		}	
 	}
+	
 	
 	@Override
 	public void copy(int start, int length, AVector dest, int destOffset) {
