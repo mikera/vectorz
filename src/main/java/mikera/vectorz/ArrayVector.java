@@ -97,6 +97,11 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void divide(AVector v) {
+		v.divideTo(getArray(), getArrayOffset());
+	}
+	
+	@Override
 	public void copy(int start, int length, AVector dest, int destOffset) {
 		if (dest instanceof ArrayVector) {
 			copy(start,length,(ArrayVector)dest,destOffset);
