@@ -224,6 +224,18 @@ public class TestVectors {
 		assertEquals(len,tl.size());
 	}
 	
+	private void testMultiply(AVector v) {
+		int len=v.length();
+		v=v.clone();
+		
+		AVector m=Vectorz.newVector(len);
+		m.fill(2);
+		AVector v2=v.clone();
+		v2.multiply(m);
+		v.multiply(2);
+		assertTrue(v.epsilonEquals(v2,0.00001));
+	}
+	
 	private void testIterator(AVector v) {
 		int count=0;
 		double total=0.0;
@@ -241,6 +253,7 @@ public class TestVectors {
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
 		testAdd(v);
+		testMultiply(v);
 		testSet(v);
 		testClone(v);
 		testParse(v);

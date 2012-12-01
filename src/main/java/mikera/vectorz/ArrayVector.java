@@ -82,6 +82,21 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void multiply(AVector v) {
+		v.multiplyTo(getArray(), getArrayOffset());
+	}
+	
+	@Override
+	public void multiply(double[] data, int offset) {
+		int len=length();
+		double[] cdata=getArray();
+		int coffset=getArrayOffset();
+		for (int i = 0; i < len; i++) {
+			set(i,cdata[i+coffset]*data[i+offset]);
+		}	
+	}
+	
+	@Override
 	public void copy(int start, int length, AVector dest, int destOffset) {
 		if (dest instanceof ArrayVector) {
 			copy(start,length,(ArrayVector)dest,destOffset);

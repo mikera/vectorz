@@ -69,6 +69,12 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void multiplyTo(double[] data, int offset) {
+		left.multiplyTo(data, offset);
+		right.multiplyTo(data, offset+split);
+	}
+	
+	@Override
 	public void copy(int start, int length, AVector dest, int destOffset) {
 		subVector(start,length).copyTo(dest, destOffset);
 	}
