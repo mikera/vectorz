@@ -44,7 +44,6 @@ public abstract class AAffineTransform extends ATransform {
 	}
 	
 	public ATransform compose(AAffineTransform a) {
-		
 		AVector v=a.copyOfTranslationVector();
 		AMatrix thisM=getMatrixComponent();
 		thisM.transformInPlace(v);

@@ -21,6 +21,9 @@ public final class Index extends AIndex {
 		data=indexes;
 	}
 	
+	/**
+	 * Swaps (in-place) the indexes at two positions
+	 */
 	@Override
 	public void swap(int i, int j) {
 		int t=data[i];
@@ -87,6 +90,9 @@ public final class Index extends AIndex {
 		}
 	}
 	
+	/**
+	 * Sorts the index (in-place)
+	 */
 	public void sort() {
 		Arrays.sort(data);
 	}

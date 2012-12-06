@@ -15,6 +15,9 @@ public final class AffineMN extends AAffineTransform {
 	private final int outputDimensions;
 	
 	public AffineMN(AMatrix matrix, ATranslation translation) {
+		if (!matrix.isSquare()) {
+			throw new IllegalArgumentException("Matrix in affine transform must be square");
+		}
 		this.matrix=matrix;
 		this.translation=translation;
 		inputDimensions=matrix.inputDimensions();
