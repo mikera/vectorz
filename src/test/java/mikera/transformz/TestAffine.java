@@ -81,7 +81,7 @@ public class TestAffine {
 		ATranslation rtrans=Transformz.createTranslation(rvector);
 		doAffineTests(rtrans);
 		
-		doAffineTests(new AffineMN(rmatrix,rtrans));
+		doAffineTests(new AffineMN(Matrixx.createRandomSquareMatrix(5),rtrans));
 		
 		Affine34 a34=new Affine34(Matrixx.createRandomSquareMatrix(3),Vectorz.createUniformRandomVector(3));
 		doAffineTests(a34);
