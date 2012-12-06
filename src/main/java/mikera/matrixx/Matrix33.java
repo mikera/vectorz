@@ -4,6 +4,7 @@ import mikera.transformz.Affine34;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Specialised 3*3 Matrix for Vector3 maths, using primitive matrix elements
@@ -16,6 +17,9 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	              m10,m11,m12,
 	              m20,m21,m22;
 	
+	/**
+	 * Create a new (zer-initialised) 3x3 Matrix
+	 */
 	public Matrix33() {
 	}
 	
@@ -125,6 +129,28 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 
 		default: throw new IndexOutOfBoundsException("Row: "+row);
 		}	
+	}
+	
+	@Override
+	public AMatrix compose(AMatrix a) {
+		if (a instanceof Matrix33) {
+			return compose((Matrix33)a);
+		}
+		return super.compose(a);
+	}
+	
+	public Matrix33 compose(Matrix33 a) {
+		Matrix33 r=new Matrix33();
+		for (int i=0; i<3; i++) {
+			for (int j=0; j<3; j++) {
+				double acc=0.0;
+				for (int k=0; k<3; k++) {
+					acc+=this.get(i, k)*a.get(k, j);
+				}
+				r.set(i,j,acc);
+			}
+		}
+		return r;
 	}
 	
 	@Override
