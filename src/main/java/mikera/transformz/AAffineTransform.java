@@ -31,6 +31,12 @@ public abstract class AAffineTransform extends ATransform {
 		return true;
 	}
 	
+	@Override 
+	public boolean isIdentity() {
+		return getMatrixComponent().isIdentity()
+		    && getTranslationComponent().isIdentity();
+	}
+	
 	@Override
 	public ATransform compose(ATransform a) {
 		if (a instanceof AAffineTransform) return compose((AAffineTransform)a);
