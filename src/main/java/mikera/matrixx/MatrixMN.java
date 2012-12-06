@@ -10,7 +10,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class MatrixMN extends AMatrix{
+public final class MatrixMN extends AMatrix {
 	private final int rows;
 	private final int columns;
 	public final double[] data;

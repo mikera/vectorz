@@ -275,6 +275,9 @@ public class Matrixx {
 		}
 	}
 
+	/**
+	 * Creates a mutable copy of a matrix
+	 */
 	public static AMatrix create(AMatrix m) {
 		int rows=m.rowCount();
 		int columns=m.columnCount();
@@ -288,6 +291,9 @@ public class Matrixx {
 		return new MatrixMN(m);
 	}
 	
+	/**
+	 * Creates a mutable copy of a matrix
+	 */
 	public static AMatrix create(IMatrix m) {
 		int rows=m.rowCount();
 		int columns=m.columnCount();
