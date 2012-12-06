@@ -18,9 +18,35 @@ public abstract class AAffineTransform extends ATransform {
 	// ===========================================
 	// Standard implementation
 	
+	public AVector copyOfTranslationVector() {
+		return getTranslationComponent().getTranslationVector().clone();
+	}
+	
+	public AMatrix copyOfSquareMatrix() {
+		return getMatrixComponent().clone();
+	}
+	
 	@Override
 	public boolean isLinear() {
 		return true;
+	}
+	
+	@Override
+	public ATransform compose(ATransform a) {
+		if (a instanceof AAffineTransform) return compose((AAffineTransform)a);
+		return super.compose(a);
+	}
+	
+	public ATransform compose(AAffineTransform a) {
+		
+		AVector v=a.copyOfTranslationVector();
+		AMatrix thisM=getMatrixComponent();
+		thisM.transformInPlace(v);
+		v.add(getTranslationComponent().getTranslationVector());
+		
+		AMatrix m=thisM.compose(a.getMatrixComponent());
+		
+		return Transformz.createAffineTransform(m, v);
 	}
 	
 	@Override 

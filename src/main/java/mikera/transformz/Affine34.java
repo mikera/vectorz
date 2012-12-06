@@ -80,12 +80,22 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 
 	@Override
 	public AMatrix getMatrixComponent() {
-		return new Matrix33(m00,m01,m02,m10,m11,m12,m20,m21,m22);
+		return copyOfSquareMatrix();
 	}
 
 	@Override
 	public ATranslation getTranslationComponent() {
-		return Transformz.createTranslation(Vector3.of(m03,m13,m23));
+		return Transformz.createTranslation(copyOfTranslationVector());
+	}
+	
+	@Override
+	public Matrix33 copyOfSquareMatrix() {
+		return new Matrix33(m00,m01,m02,m10,m11,m12,m20,m21,m22);
+	}
+	
+	@Override
+	public Vector3 copyOfTranslationVector() {
+		return Vector3.of(m03,m13,m23);
 	}
 
 	@Override

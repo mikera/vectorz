@@ -10,6 +10,7 @@ import mikera.transformz.AffineMN;
 import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
+import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ZeroLengthVector;
 import mikera.vectorz.util.VectorzException;
@@ -324,6 +325,18 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	public void composeWith(AMatrix a) {
 		AMatrix t=compose(a);
 		this.set(t);
+	}
+	
+	@Override
+	public AMatrix copyOfSquareMatrix() {
+		assert(this.isSquare());
+		return this.clone();
+	}
+	
+	@Override
+	public AVector copyOfTranslationVector() {
+		assert(this.isSquare());
+		return Vectorz.createZeroVector(this.rowCount());
 	}
 	
 	public void addMultiple(AMatrix m, double factor) {
