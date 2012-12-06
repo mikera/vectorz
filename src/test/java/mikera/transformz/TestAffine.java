@@ -46,6 +46,7 @@ public class TestAffine {
 		AVector r=t.transform(z);
 		assertNotNull(r);
 		assertTrue(r.epsilonEquals(t.getTranslationComponent().getTranslationVector()));	
+		assertTrue(r.epsilonEquals(t.copyOfTranslationVector()));	
 	}
 	
 
