@@ -10,7 +10,6 @@ import mikera.transformz.AffineMN;
 import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
-import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ZeroLengthVector;
 import mikera.vectorz.util.VectorzException;
