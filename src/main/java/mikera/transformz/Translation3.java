@@ -1,7 +1,7 @@
 package mikera.transformz;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrixx;
+import mikera.matrixx.Matrix33;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
@@ -38,7 +38,17 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 
 	@Override
 	public AMatrix getMatrixComponent() {
-		return Matrixx.createIdentityMatrix(3);
+		return copyOfSquareMatrix();
+	}
+	
+	@Override
+	public Vector3 copyOfTranslationVector() {
+		return Vector3.of(dx,dy,dz);
+	}
+	
+	@Override
+	public Matrix33 copyOfSquareMatrix() {
+		return Matrix33.createIdentityMatrix();
 	}
 
 	@Override

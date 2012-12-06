@@ -267,4 +267,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 			(m21==m.m21) &&
 			(m22==m.m22);
 	}
+
+	public static Matrix33 createIdentityMatrix() {
+		return new Matrix33(
+				1.0,0.0,0.0,
+				0.0,1.0,0.0,
+				0.0,0.0,1.0);
+	}
 }
