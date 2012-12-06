@@ -39,6 +39,11 @@ public final class IdentityTranslation extends ATranslation {
 	public void transformInPlace(AVector v) {
 		// no change!
 	}
+	
+	@Override
+	public boolean isIdentity() {
+		return true;
+	}
 
 	@Override
 	public int inputDimensions() {

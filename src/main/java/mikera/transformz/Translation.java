@@ -54,6 +54,11 @@ public final class Translation extends ATranslation {
 	public int inputDimensions() {
 		return dimensions;
 	}
+	
+	@Override
+	public boolean isIdentity() {
+		return getTranslationVector().isZeroVector();
+	}
 
 	@Override
 	public int outputDimensions() {
