@@ -53,6 +53,28 @@ public class TestMatrixx {
 	}
 	
 	@Test
+	public void testCompose() {
+		double angle=Math.random();
+		AVector v=Vectorz.createUniformRandomVector(3);	
+		Matrix33 rot=Matrixx.createRotationMatrix(v, angle);
+		
+		AMatrix tr=Matrixx.createRandomMatrix(6, 3);
+		
+		AMatrix r=tr.compose(rot);
+		
+		assertEquals(6,r.rowCount());
+		assertEquals(3,r.columnCount());
+		
+		AVector x=Vectorz.createUniformRandomVector(3);
+		AVector x2=x.clone();
+		
+		AVector y=r.transform(x);
+		AVector y2=tr.transform(rot.transform(x2));
+		
+		assertTrue(y.epsilonEquals(y2));
+	}
+	
+	@Test
 	public void test180RotationMatrix() {
 		AVector v=Vector.of(Math.random(),0,0);	
 		double angle=Math.PI;

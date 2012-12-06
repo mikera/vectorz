@@ -4,6 +4,7 @@ import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.AAffineTransform;
+import mikera.transformz.ATransform;
 import mikera.transformz.ATranslation;
 import mikera.transformz.AffineMN;
 import mikera.transformz.Transformz;
@@ -89,6 +90,8 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 			dest.set(row, total);
 		}
 	}
+	
+	
 
 	@Override
 	public void transformInPlace(AVector v) {
@@ -387,6 +390,32 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 			v = Vectorz.join(v, getRow(i));
 		}
 		return v;
+	}
+	
+	@Override
+	public ATransform compose(ATransform a) {
+		if (!(a instanceof AMatrix)) return super.compose(a);
+		return compose((AMatrix)a);
+	}
+	
+	public AMatrix compose(AMatrix a) {
+		if ((this.columnCount()!=a.rowCount())) {
+			throw new VectorzException("Matrix sizes not compatible!");
+		}
+		int rc=this.rowCount();
+		int cc=a.columnCount();
+		int ic=this.columnCount();
+		AMatrix result=Matrixx.newMatrix(rc,cc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				double acc=0.0;
+				for (int k=0; k<ic; k++) {
+					acc+=this.get(i, k)*a.get(k, j);
+				}
+				result.set(i,j,acc);
+			}
+		}
+		return result;
 	}
 
 	@Override
