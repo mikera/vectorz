@@ -13,6 +13,8 @@ public class TestAffine {
 	void testAffineProperty(AAffineTransform t) {
 		int inputDim=t.inputDimensions();
 		
+		assertTrue(t.getMatrixComponent().isSquare());
+		
 		AVector v=Vectorz.createUniformRandomVector(inputDim);
 		AVector d=Vectorz.createUniformRandomVector(inputDim);
 		
@@ -66,16 +68,17 @@ public class TestAffine {
 		testCloneTransform(t);		
 	}
 	
-
+	@Test (expected = java.lang.Throwable.class)
+	public void testNonSquareNotAffine() {
+		doAffineTests(Matrixx.createRandomMatrix(6,5));
+	}
+	
 	@Test public void genericAffineTests() {
 		doAffineTests(Transformz.identityTransform(3));
 		doAffineTests(Transformz.identityTransform(7));
 		
 		doAffineTests(Matrixx.createRandomSquareMatrix(3));
 		doAffineTests(Matrixx.createRandomSquareMatrix(5));
-		
-		AMatrix rmatrix=Matrixx.createRandomMatrix(5, 6);
-		doAffineTests(rmatrix);
 		
 		AVector rvector=Vectorz.createUniformRandomVector(5);
 		ATranslation rtrans=Transformz.createTranslation(rvector);
