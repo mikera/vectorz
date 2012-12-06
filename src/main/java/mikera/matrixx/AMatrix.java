@@ -24,12 +24,24 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	// ==============================================
 	// Abstract interface
 
+	/**
+	 * Returns the number of rows in the matrix
+	 */
 	public abstract int rowCount();
 
+	/**
+	 * Returns the number of columns in the matrix
+	 */
 	public abstract int columnCount();
 
+	/**
+	 * Returns a specified element in the matrix
+	 */
 	public abstract double get(int row, int column);
 
+	/**
+	 * Sets a specified element in the matrix
+	 */
 	public abstract void set(int row, int column, double value);
 
 	// =============================================
@@ -193,10 +205,13 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		return Matrixx.deepCopy(this);
 	}
 
+	/**
+	 * Calculates the determinant of the matrix.
+	 */
 	public double determinant() {
 		if (!isSquare())
 			throw new UnsupportedOperationException(
-					"Cannot take determinant of non-squae matrix!");
+					"Cannot take determinant of non-square matrix!");
 
 		int rc = rowCount();
 		int[] inds = new int[rc];
@@ -306,6 +321,10 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		return true;
 	}
 
+	/**
+	 * Returns true if this matrix is approximately equal to 
+	 * a second matrix, up to a default tolerance level
+	 */
 	public boolean epsilonEquals(AMatrix a) {
 		int rc = rowCount();
 		int cc = columnCount();
@@ -376,6 +395,9 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		return result;
 	}
 
+	/**
+	 * Swaps two rows of the matrix in place
+	 */
 	public void swapRows(int i, int j) {
 		if (i == j)
 			return;
@@ -389,6 +411,9 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		}
 	}
 
+	/**
+	 * Swaps two columns of the matrix in place
+	 */
 	public void swapColumns(int i, int j) {
 		if (i == j)
 			return;
@@ -402,7 +427,10 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		}
 	}
 
-
+	/**
+	 * Converts the matrix to a single flattened vector
+	 * in row major order.
+	 */
 	public AVector toVector() {
 		int rc = rowCount();
 		int cc = columnCount();

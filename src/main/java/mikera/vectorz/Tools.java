@@ -55,6 +55,10 @@ public final class Tools {
 		return epsilonEquals(a,b,Vectorz.TEST_EPSILON);
 	}
 	
+	/**
+	 * Tests if two double values are approximately equal,
+	 * up to a given tolerance
+     */ 
 	public static boolean epsilonEquals(double a, double b,double tolerance) {
 		double diff=a-b;
 		if ((diff>tolerance)||(diff<-tolerance)) return false;

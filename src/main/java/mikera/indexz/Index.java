@@ -28,6 +28,9 @@ public final class Index extends AIndex {
 		data[j]=t;
 	}
 	
+	/**
+	 * Reverses an index
+	 */
 	@Override
 	public void reverse() {
 		final int len=length();
@@ -37,10 +40,16 @@ public final class Index extends AIndex {
 		}
 	}
 	
+	/**
+	 * Creates a new Index, wrapping the provided index array
+	 */
 	public static Index wrap(int[] indexes) {
 		return new Index(indexes);
 	}
 	
+	/**
+	 * Creates a new Index, using the specified index values
+	 */
 	public static Index of(int... indexes) {
 		return new Index(indexes.clone());
 	}
