@@ -17,7 +17,7 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	              m20,m21,m22;
 	
 	/**
-	 * Create a new (zer-initialised) 3x3 Matrix
+	 * Create a new (zero-initialised) 3x3 Matrix
 	 */
 	public Matrix33() {
 	}
@@ -240,6 +240,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 				invDet*((m10*m21-m11*m20)),
 				invDet*((m01*m20-m00*m21)),
 				invDet*((m00*m11-m01*m10)));		
+	}
+	
+	@Override
+	public Matrix33 clone() {
+		return new Matrix33(this);
 	}
 	
 	@Override
