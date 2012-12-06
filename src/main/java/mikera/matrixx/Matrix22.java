@@ -167,4 +167,9 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 			(m10==m.m10) &&
 			(m11==m.m11);
 	}
+	
+	@Override
+	public Matrix22 clone() {
+		return new Matrix22(this);
+	}
 }
