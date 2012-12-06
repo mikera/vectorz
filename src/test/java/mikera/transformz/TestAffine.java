@@ -3,7 +3,6 @@ package mikera.transformz;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
