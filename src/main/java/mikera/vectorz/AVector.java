@@ -420,8 +420,10 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 */
 	@Override
 	public AVector clone() {
-		// by default use a deep copy in case this vector is a reference vector type		
-		return Vectorz.create(this);
+		// use a deep copy in case this vector is a reference vector type		
+		AVector nv=Vectorz.newVector(length());
+		this.copyTo(nv, 0);
+		return nv;
 	}
 	
 	/**

@@ -63,6 +63,19 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	public ATranslation getTranslationComponent() {
 		return Transformz.identityTransform(rowCount());
 	}
+	
+	@Override
+	public boolean isIdentity() {
+		int rc=this.rowCount();
+		int cc=this.columnCount();
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				double expected=(i==j)?1.0:0.0;
+				if (!(this.get(i,j)==expected)) return false;
+			}
+		}
+		return true;
+	}
 
 	public boolean isSquare() {
 		return rowCount() == columnCount();
