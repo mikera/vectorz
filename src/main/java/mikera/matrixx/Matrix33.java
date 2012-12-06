@@ -4,7 +4,6 @@ import mikera.transformz.Affine34;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
-import mikera.vectorz.util.VectorzException;
 
 /**
  * Specialised 3*3 Matrix for Vector3 maths, using primitive matrix elements
