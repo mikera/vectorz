@@ -31,8 +31,10 @@ public class TestMatrixx {
 		
 		// composition of matrix and its inverse should be an identity transform
 		ATransform id=m.compose(mi);
+		assertTrue(id instanceof AMatrix);
 		AVector idv=id.transform(v);
 		assertTrue(idv.epsilonEquals(v));		
+		
 	}
 	
 	@Test

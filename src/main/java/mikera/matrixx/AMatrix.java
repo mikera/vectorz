@@ -288,6 +288,44 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		}
 	}
 	
+	/**
+	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
+	 * @param m
+	 */
+	public void entrywiseMul(AMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(rc==m.rowCount());
+		assert(cc==m.columnCount());
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				set(i,j,get(i,j)*m.get(i, j));
+			}
+		}
+	}
+	
+	/**
+	 * "Multiplies" this matrix by another, composing the transformation
+	 * @param a
+	 */
+	public void mul(AMatrix a) {
+		this.composeWith(a);
+	}
+	
+	@Override
+	public void composeWith(ATransform a) {
+		if (a instanceof AMatrix) {
+			composeWith((AMatrix)a);
+		}
+		super.composeWith(a);
+	}
+	
+	public void composeWith(AMatrix a) {
+		AMatrix t=compose(a);
+		this.set(t);
+	}
+	
 	public void addMultiple(AMatrix m, double factor) {
 		int rc=rowCount();
 		int cc=columnCount();
