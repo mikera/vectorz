@@ -72,6 +72,11 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 	}
 	
 	@Override
+	public boolean isIdentity() {
+		return (dx==0.0)&&(dy==0.0)&&(dz==0.0);
+	}
+	
+	@Override
 	public void transform(AVector source,AVector dest) {
 		if ((source instanceof Vector3)&&(dest instanceof Vector3)) {
 			transform((Vector3)source,(Vector3)dest);
