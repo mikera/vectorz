@@ -43,6 +43,25 @@ public class ThreeDBenchmark extends SimpleBenchmark {
 		r.set(t);
 	}
 	
+	public void timeMatrix33Clone(int runs) {
+		Matrix33 m=new Matrix33(1,2,3,4,5,6,7,8,9);
+		
+		for (int i=0; i<runs; i++) {
+			m=m.clone();
+		}
+	}
+	
+	public void timeMatrix33Determinant(int runs) {
+		Matrix33 m=new Matrix33(1,2,3,4,5,6,7,8,9);
+		double res=0;
+		
+		for (int i=0; i<runs; i++) {
+			m.m00+=0.0000001;
+			res+=m.determinant();
+		}
+		r.set(0,res);
+	}
+	
 	
 	/**
 	 * @param args
