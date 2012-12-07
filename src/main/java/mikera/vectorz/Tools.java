@@ -35,6 +35,9 @@ public final class Tools {
 		return (int) (l ^ (l >>> 32));
 	}
 
+	/**
+	 * Converts an numerical object (instance of java.lang.Number) to a primitive double
+	 */
 	public static double toDouble(Object object) {
 		if (object instanceof Double) {
 			return (Double)object;

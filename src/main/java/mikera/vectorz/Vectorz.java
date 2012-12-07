@@ -205,13 +205,15 @@ public class Vectorz {
 		return (AVector)p.nextValue();
 	}
 
+	/**
+	 * Create a vector from a list of numerical values (must be java.lang.Number instances)
+	 */
 	public static AVector create(List<Object> d) {
 		int length=d.size();
-		double[] data=new double[length];
+		AVector v=Vectorz.newVector(length);
 		for (int i=0; i<length; i++) {
-			data[i]=Tools.toDouble(d.get(i));
+			v.set(i,Tools.toDouble(d.get(i)));
 		}
-		AVector v=Vector.wrap(data);
 		return v;
 	}
 	
