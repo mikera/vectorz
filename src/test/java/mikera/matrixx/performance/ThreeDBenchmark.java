@@ -4,10 +4,7 @@ import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
 import mikera.matrixx.Matrix33;
-import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
-import mikera.vectorz.Vectorz;
 
 /**
  * Caliper based benchmarks
@@ -18,12 +15,16 @@ import mikera.vectorz.Vectorz;
 public class ThreeDBenchmark extends SimpleBenchmark {
 	public static final int VECTOR_SIZE=3;
 	public static final Vector3 r=Vector3.of(0,0,0);
+
+	public static final Vector3 smallDelta=Vector3.of(0.00001,0.00001,0.00001);
+
 	
 	public void timeMatrix33Transform(int runs) {
 		Vector3 v=new Vector3(1,2,3);
 		Matrix33 m=new Matrix33(1,2,3,4,5,6,7,8,9);
 		
 		for (int i=0; i<runs; i++) {
+			v.add(smallDelta);
 			r.set(m.transform(v));
 		}		
 	}
@@ -34,6 +35,7 @@ public class ThreeDBenchmark extends SimpleBenchmark {
 		Matrix33 m=new Matrix33(1,2,3,4,5,6,7,8,9);
 		
 		for (int i=0; i<runs; i++) {
+			v.add(smallDelta);
 			t.set(v);
 			m.transformInPlace(t);
 		}
