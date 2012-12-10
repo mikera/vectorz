@@ -119,8 +119,8 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	public double dotProduct(Vector3 a) {
-		return x*a.x+y*a.y+z*a.z;
-	}
+		return (x*a.x) + (y*a.y) + (z*a.z);
+	} 
 	
 	public void crossProduct(Vector3 a) {
 		double tx=y*a.z-z*a.y;

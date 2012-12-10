@@ -6,7 +6,7 @@ import mikera.indexz.Index;
 
 
 /**
- * General purpose vector or arbitrary length, backed by an internal double[] array
+ * General purpose vector of arbitrary length, backed by an internal double[] array
  * 
  * @author Mike
  *
@@ -44,6 +44,11 @@ public final class Vector extends ArrayVector {
 		return new Vector(source);
 	}
 	
+	/**
+	 * Create a vector with specific component values
+	 * @param values
+	 * @return
+	 */
 	public static Vector of(double... values) {
 		int length = values.length;
 		double[] data = new double[length];
@@ -51,6 +56,11 @@ public final class Vector extends ArrayVector {
 		return new Vector(data);
 	}
 	
+	/**
+	 * Create an empty (zero-filled) vector of a specified length
+	 * @param length
+	 * @return
+	 */
 	public static Vector createLength(int length) {
 		return new Vector(length);
 	}
@@ -98,6 +108,7 @@ public final class Vector extends ArrayVector {
 		}
 	}
 	
+	@Override
 	public void addMultiple(ArrayVector v, double factor) {
 		int length=length();
 		assert(length==v.length());
