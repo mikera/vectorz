@@ -9,22 +9,29 @@ import java.util.Iterator;
  */
 public class VectorIterator implements Iterator<Double> {
 	private final AVector source;
-	private final int length;
-	private int pos=0;
+	private final int maxPos;
+	private int pos;
 	
 	public VectorIterator(AVector source) {
+		this.pos=0;
 		this.source=source;
-		this.length=source.length();
+		this.maxPos=source.length();
+	}
+	
+	public VectorIterator(AVector source, int start, int length) {
+		this.pos=start;
+		this.source=source;
+		this.maxPos=start+length;
 	}
 	
 	@Override
 	public boolean hasNext() {
-		return pos<length;
+		return pos<maxPos;
 	}
 
 	@Override
 	public Double next() {
-		assert(pos<length);
+		assert(pos<maxPos);
 		return source.get(pos++);
 	}
 
