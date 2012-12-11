@@ -48,6 +48,20 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	// =============================================
 	// Standard implementations
 
+	/**
+	 * Returns a new vector that contains the leading diagonal values of the matrix
+	 * @return
+	 */
+	public AVector getLeadingDiagonal() {
+		if (isSquare()) throw new UnsupportedOperationException("Not a square matrix!");
+		int dims=rowCount();
+		AVector v=Vectorz.newVector(dims);
+		for (int i=0; i<dims; i++) {
+			v.set(i,this.get(i,i));
+		}
+		return v;
+	}
+	
 	@Override
 	public AAffineTransform toAffineTransform() {
 		return new AffineMN(new VectorMatrixMN(this),
