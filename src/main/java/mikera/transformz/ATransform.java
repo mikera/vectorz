@@ -6,7 +6,9 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 /**
- * Abstract base class for all vector transformations
+ * Abstract base class for all vector transformations.
+ * 
+ * A transformation is defined as any function mapping an N-dimensional vector to an M-dimensional vector.
  * 
  * @author Mike
  */
@@ -54,6 +56,7 @@ public abstract class ATransform implements Cloneable {
 	 * a new combined transformation
 	 */
 	public ATransform compose(ATransform trans) {
+		// transforming a constant should be a constant result
 		if (trans instanceof AConstantTransform) {
 			return Transformz.constantTransform(
 					trans.inputDimensions(), 
@@ -99,6 +102,9 @@ public abstract class ATransform implements Cloneable {
 		throw new UnsupportedOperationException(""+this.getClass()+" does not support transform in place");
 	}
 
+	/**
+	 * Returns true if this transform is the identity function, i.e. it maps all vectors to themselves
+	 */
 	public boolean isIdentity() {
 		throw new UnsupportedOperationException();
 	}

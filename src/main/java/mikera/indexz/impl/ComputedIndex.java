@@ -1,4 +1,6 @@
-package mikera.indexz;
+package mikera.indexz.impl;
+
+import mikera.indexz.AIndex;
 
 /**
  * Abstract base class for computed indexes.

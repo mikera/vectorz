@@ -1,6 +1,5 @@
 package mikera.indexz.impl;
 
-import mikera.indexz.ComputedIndex;
 
 public class SequentialIndex extends ComputedIndex {
 	private static final long serialVersionUID = 8586796655048075367L;

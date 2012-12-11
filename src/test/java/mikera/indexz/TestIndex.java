@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.HashSet;
 
+import mikera.indexz.impl.ComputedIndex;
+
 import org.junit.Test;
 
 public class TestIndex {
