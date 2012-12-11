@@ -76,14 +76,16 @@ public class TestAffine {
 		testCloneTransform(t);		
 	}
 	
-	
-	@Test public void genericAffineTests() {
-		doAffineTests(Matrixx.createRandomMatrix(6,5));
-		
+	@Test public void genericConstantTests() {
 		doAffineTests(new Constant(2, Vector3.of(1,2,3)));
 		doAffineTests(new Constant(3, Vector3.of(1,2,3)));
 		doAffineTests(new Constant(7, Vector.of(1,2,3,4,5,6)));
 		doAffineTests(new Constant(0, Vector.of()));
+	}
+	
+	@Test public void genericAffineTests() {
+		doAffineTests(Matrixx.createRandomMatrix(6,5));
+		
 
 		doAffineTests(Transformz.identityTransform(3));
 		doAffineTests(Transformz.identityTransform(7));

@@ -361,7 +361,6 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	
 	@Override
 	public AVector copyOfTranslationVector() {
-		assert(this.isSquare());
 		return Vectorz.createZeroVector(this.rowCount());
 	}
 	
