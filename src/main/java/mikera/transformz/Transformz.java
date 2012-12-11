@@ -15,10 +15,16 @@ import mikera.vectorz.Vector3;
  *
  */
 public class Transformz {
+	/**
+	 * Creates a 3D scaling transform
+	 */
 	public static DiagonalMatrix scale3D(double factor) {
 		return Matrixx.createScaleMatrix(3, factor);
 	}
 	
+	/**
+	 * Creates an identity transform with the given number of dimensions
+	 */
 	public static IdentityTranslation identityTransform(int dimensions) {
 		return IdentityTranslation.getInstance(dimensions);
 	}
