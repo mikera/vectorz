@@ -29,6 +29,10 @@ public class IdentityMatrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
+		assert(row>=0);
+		assert(column>=0);
+		assert(row<dimensions);
+		assert(column<dimensions);
 		return (row==column)?1.0:0.0;
 	}
 
