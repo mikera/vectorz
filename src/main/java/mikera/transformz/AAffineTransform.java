@@ -8,7 +8,7 @@ import mikera.vectorz.AVector;
  * 
  * @author Mike
  */
-public abstract class AAffineTransform extends ATransform {
+public abstract class AAffineTransform extends ALinearTransform {
 	// ===========================================
 	// Abstract interface
 	public abstract AMatrix getMatrixComponent();
@@ -24,11 +24,6 @@ public abstract class AAffineTransform extends ATransform {
 	
 	public AMatrix copyOfSquareMatrix() {
 		return getMatrixComponent().clone();
-	}
-	
-	@Override
-	public boolean isLinear() {
-		return true;
 	}
 	
 	@Override 
