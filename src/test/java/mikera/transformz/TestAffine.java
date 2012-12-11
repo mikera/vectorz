@@ -14,8 +14,6 @@ public class TestAffine {
 		
 		assertTrue(t.isLinear());
 		
-		assertTrue(t.getMatrixComponent().isSquare());
-		
 		AVector v=Vectorz.createUniformRandomVector(inputDim);
 		AVector d=Vectorz.createUniformRandomVector(inputDim);
 		
@@ -70,12 +68,10 @@ public class TestAffine {
 		testCloneTransform(t);		
 	}
 	
-	@Test (expected = java.lang.Throwable.class)
-	public void testNonSquareNotAffine() {
-		doAffineTests(Matrixx.createRandomMatrix(6,5));
-	}
 	
 	@Test public void genericAffineTests() {
+		doAffineTests(Matrixx.createRandomMatrix(6,5));
+
 		doAffineTests(Transformz.identityTransform(3));
 		doAffineTests(Transformz.identityTransform(7));
 		
