@@ -53,7 +53,7 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	 * @return
 	 */
 	public AVector getLeadingDiagonal() {
-		if (isSquare()) throw new UnsupportedOperationException("Not a square matrix!");
+		if (!isSquare()) throw new UnsupportedOperationException("Not a square matrix!");
 		int dims=rowCount();
 		AVector v=Vectorz.newVector(dims);
 		for (int i=0; i<dims; i++) {

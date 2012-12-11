@@ -211,9 +211,7 @@ public class TestMatrixx {
 		}
 	}
 	
-	private void doSquareTransposeTest(AMatrix m) {
-		if (!m.isSquare()) return;
-		
+	private void doTransposeTest(AMatrix m) {
 		AMatrix m2=m.clone();
 
 		m2.transposeInPlace();
@@ -224,6 +222,36 @@ public class TestMatrixx {
 		
 		m2.transposeInPlace();
 		assertEquals(m,m2);
+	}
+	
+	private void doNotSquareTests(AMatrix m) {
+		try {
+			m.getLeadingDiagonal();
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+	}
+	
+	private void doLeadingDiagonalTests(AMatrix m) {
+		int dims=m.rowCount();
+		assertEquals(dims,m.columnCount());
+		AVector v=m.getLeadingDiagonal();
+		
+		for (int i=0; i<dims; i++) {
+			assertEquals(v.get(i),m.get(i, i),0.0);
+		}
+	}
+	
+	private void doMaybeSquareTests(AMatrix m) {
+		if (!m.isSquare()) {
+			assertNotEquals(m.rowCount(),m.columnCount());
+			doNotSquareTests(m);
+		} else {
+			assertEquals(m.rowCount(),m.columnCount());
+			doTransposeTest(m);
+			doLeadingDiagonalTests(m);
+		}
 	}
 	
 	private void doSwapTest(AMatrix m) {
@@ -245,7 +273,6 @@ public class TestMatrixx {
 		Matrixx.fillRandomValues(m);
 		doSwapTest(m);
 		doMutationTest(m);
-		doSquareTransposeTest(m);
 	}
 
 	private void doCloneSafeTest(AMatrix m) {
@@ -304,14 +331,17 @@ public class TestMatrixx {
 		doRowColumnTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);
-		doSquareTransposeTest(m);
+		doMaybeSquareTests(m);
 		doRandomTests(m);
 	}
-	
-
-
 
 	@Test public void genericTests() {
+		// zero matrices
+		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 2));
+		doGenericTests(Matrixx.createImmutableZeroMatrix(5, 5));
+		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 3));
+		doGenericTests(Matrixx.createImmutableZeroMatrix(1, 7));
+		
 		// specialised 3x3 matrix
 		Matrix33 m33=new Matrix33();
 		doGenericTests(m33);
