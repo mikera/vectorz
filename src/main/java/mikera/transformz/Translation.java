@@ -42,7 +42,7 @@ public final class Translation extends ATranslation {
 
 	@Override
 	public AMatrix getMatrixComponent() {
-		return Matrixx.createIdentityMatrix(dimensions);
+		return Matrixx.createImmutableIdentityMatrix(dimensions);
 	}
 
 	@Override

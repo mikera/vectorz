@@ -22,7 +22,7 @@ public final class IdentityTranslation extends ATranslation {
 
 	@Override
 	public AMatrix getMatrixComponent() {
-		return Matrixx.createIdentityMatrix(dimensions);
+		return Matrixx.createImmutableIdentityMatrix(dimensions);
 	}
 
 	@Override

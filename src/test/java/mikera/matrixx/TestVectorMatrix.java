@@ -29,7 +29,7 @@ public class TestVectorMatrix {
 		m.appendRow(Vector3.of(0,1,0));
 		m.appendRow(Vectorz.join(Vector.of(0,0),Vector1.of(1)));
 		
-		assertTrue(m.epsilonEquals(Matrixx.createIdentityMatrix(3)));
+		assertTrue(m.epsilonEquals(Matrixx.createImmutableIdentityMatrix(3)));
 	}
 	
 	@Test public void testCreateMN() {
@@ -49,6 +49,6 @@ public class TestVectorMatrix {
 		m.appendRow(Vector3.of(0,1,0));
 		m.appendRow(Vectorz.join(Vector.of(0,0),Vector1.of(1)));
 		
-		assertTrue(m.epsilonEquals(Matrixx.createIdentityMatrix(3)));
+		assertTrue(m.epsilonEquals(Matrixx.createImmutableIdentityMatrix(3)));
 	}
 }

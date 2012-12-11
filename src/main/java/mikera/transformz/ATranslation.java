@@ -38,7 +38,7 @@ public abstract class ATranslation extends AAffineTransform {
 	
 	@Override
 	public AAffineTransform toAffineTransform() {
-		return new AffineMN(Matrixx.createIdentityMatrix(dimensions()),this);
+		return new AffineMN(Matrixx.createImmutableIdentityMatrix(dimensions()),this);
 	}
 
 	public ATranslation toMutableTranslation() {
