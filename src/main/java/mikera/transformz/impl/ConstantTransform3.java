@@ -10,7 +10,7 @@ import mikera.vectorz.Vector3;
  * @author Mike
  *
  */
-public final class Constant3 extends AConstantTransform {
+public final class ConstantTransform3 extends AConstantTransform {
 	private double x,y,z;
 	
 	/**
@@ -19,7 +19,7 @@ public final class Constant3 extends AConstantTransform {
 	 * @param inputDimensions
 	 * @param value
 	 */
-	public Constant3(int inputDimensions, AVector value) {
+	public ConstantTransform3(int inputDimensions, AVector value) {
 		super(inputDimensions);
 		x=value.get(0);
 		y=value.get(1);

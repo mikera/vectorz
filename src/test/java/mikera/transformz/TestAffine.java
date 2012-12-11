@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import mikera.matrixx.Matrixx;
-import mikera.transformz.impl.Constant;
+import mikera.transformz.impl.ConstantTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
@@ -77,10 +77,10 @@ public class TestAffine {
 	}
 	
 	@Test public void genericConstantTests() {
-		doAffineTests(new Constant(2, Vector3.of(1,2,3)));
-		doAffineTests(new Constant(3, Vector3.of(1,2,3)));
-		doAffineTests(new Constant(7, Vector.of(1,2,3,4,5,6)));
-		doAffineTests(new Constant(0, Vector.of()));
+		doAffineTests(new ConstantTransform(2, Vector3.of(1,2,3)));
+		doAffineTests(new ConstantTransform(3, Vector3.of(1,2,3)));
+		doAffineTests(new ConstantTransform(7, Vector.of(1,2,3,4,5,6)));
+		doAffineTests(new ConstantTransform(0, Vector.of()));
 	}
 	
 	@Test public void genericAffineTests() {

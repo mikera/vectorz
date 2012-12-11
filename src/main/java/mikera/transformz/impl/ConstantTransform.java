@@ -9,7 +9,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public final class Constant extends AConstantTransform {
+public final class ConstantTransform extends AConstantTransform {
 	private final int outputDimensions;
 	private double[] constant;
 	
@@ -19,7 +19,7 @@ public final class Constant extends AConstantTransform {
 	 * @param inputDimensions
 	 * @param value
 	 */
-	public Constant(int inputDimensions, AVector value) {
+	public ConstantTransform(int inputDimensions, AVector value) {
 		super(inputDimensions);
 		outputDimensions=value.length();
 		constant=new double[outputDimensions];
