@@ -320,7 +320,7 @@ public class TestVectors {
 		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
 		doGenericTests(v4);
 		
-		AVector g0=new GrowableVector(0);
+		AVector g0=new GrowableVector();
 		doGenericTests(g0);
 		
 		AVector g4=new GrowableVector(v4);

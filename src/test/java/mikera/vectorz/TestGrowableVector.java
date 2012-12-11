@@ -31,7 +31,7 @@ public class TestGrowableVector {
 	}
 	
 	@Test public void testGrowingLarge() {
-		GrowableVector g=new GrowableVector(10);
+		GrowableVector g=new GrowableVector();
 		for (int i=0; i<1000; i++) {
 			g.append(i);
 		}

@@ -20,12 +20,19 @@ public final class GrowableVector extends ArrayVector {
 		append(v);
 	}
 	
-	public GrowableVector(int initialCapacity) {
+	private GrowableVector(int initialCapacity) {
 		this(new double[initialCapacity],0);
 	}
 	
 	public GrowableVector() {
-		this(10);
+		this(4);
+	}
+	
+	/**
+	 * Returns a new, empty GrowableVector with the specified initial capacity
+	 */
+	public static GrowableVector ofInitialCapacity(int capacity) {
+		return new GrowableVector(capacity);
 	}
 	
 	private GrowableVector(double[] array, int length) {
@@ -61,7 +68,7 @@ public final class GrowableVector extends ArrayVector {
 		int cc=currentCapacity();
 		if (capacity<=cc) return;
 		
-		double[] newData=new double[Math.max(capacity, cc*2)];
+		double[] newData=new double[Math.max(capacity+5, cc*2)];
 		System.arraycopy(data, 0, newData, 0, length);
 		data=newData;
 	}
