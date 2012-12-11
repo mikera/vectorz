@@ -1,7 +1,5 @@
 package mikera.transformz.impl;
 
-import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrixx;
 import mikera.transformz.ATranslation;
 import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
@@ -28,8 +26,6 @@ public final class Constant extends AConstantTransform {
 		value.copyTo(constant, 0);
 	}
 
-	
-
 	@Override
 	public int outputDimensions() {
 		return outputDimensions;
@@ -41,10 +37,6 @@ public final class Constant extends AConstantTransform {
 		dest.setValues(constant);
 	}
 
-	@Override
-	public AMatrix getMatrixComponent() {
-		return Matrixx.createImmutableZeroMatrix(outputDimensions, inputDimensions());
-	}
 
 	@Override
 	public ATranslation getTranslationComponent() {

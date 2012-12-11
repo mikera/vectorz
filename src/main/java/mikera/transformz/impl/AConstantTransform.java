@@ -1,5 +1,7 @@
 package mikera.transformz.impl;
 
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.transformz.AAffineTransform;
 
 public abstract class AConstantTransform extends AAffineTransform {
@@ -13,4 +15,10 @@ public abstract class AConstantTransform extends AAffineTransform {
 	public int inputDimensions() {
 		return inputDimensions;
 	}
+	
+	@Override
+	public AMatrix getMatrixComponent() {
+		return Matrixx.createImmutableZeroMatrix(outputDimensions(), inputDimensions());
+	}
+
 }
