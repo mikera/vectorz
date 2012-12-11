@@ -33,6 +33,10 @@ public final class ConstantTransform3 extends AConstantTransform {
 
 	@Override
 	public void transform(AVector source, AVector dest) {
+		if (dest instanceof Vector3) {
+			transform(source,(Vector3)dest);
+			return;
+		}
 		assert(source.length()==inputDimensions());
 		dest.set(0,x);
 		dest.set(1,y);
