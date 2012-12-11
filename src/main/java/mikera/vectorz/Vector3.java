@@ -188,5 +188,20 @@ public final class Vector3 extends APrimitiveVector {
 	public Vector3 clone() {
 		return new Vector3(x,y,z);	
 	}
+	
+	@Override
+	public double getX() {
+		return x;
+	}
+	
+	@Override
+	public double getY() {
+		return y;
+	}
+	
+	@Override
+	public double getZ() {
+		return z;
+	}
 
 }

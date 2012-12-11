@@ -87,5 +87,13 @@ public final class Vector2 extends APrimitiveVector {
 		return new Vector2(x,y);	
 	}
 
-
+	@Override
+	public double getX() {
+		return x;
+	}
+	
+	@Override
+	public double getY() {
+		return y;
+	}
 }

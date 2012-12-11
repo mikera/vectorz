@@ -112,4 +112,23 @@ public final class Vector4 extends APrimitiveVector {
 		return new Vector4(x,y,z,t);	
 	}
 
+	@Override
+	public double getX() {
+		return x;
+	}
+	
+	@Override
+	public double getY() {
+		return y;
+	}
+	
+	@Override
+	public double getZ() {
+		return z;
+	}
+	
+	@Override
+	public double getT() {
+		return t;
+	}
 }

@@ -61,4 +61,9 @@ public final class Vector1 extends APrimitiveVector {
 	public Vector1 clone() {
 		return new Vector1(x);	
 	}
+	
+	@Override
+	public double getX() {
+		return x;
+	}
 }
