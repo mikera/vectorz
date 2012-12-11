@@ -67,6 +67,6 @@ public class Transformz {
 	}
 
 	public static ATransform constantTransform(int inputDimensions, AVector v) {
-		return new Constant(inputDimensions,v.isMutable()?v.clone():v);
+		return new Constant(inputDimensions,v);
 	}
 }
