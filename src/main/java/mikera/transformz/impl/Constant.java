@@ -8,7 +8,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public class Constant extends ATransform {
+public final class Constant extends ATransform {
 	private final int inputDimensions;
 	private final int outputDimensions;
 	private double[] constant;
