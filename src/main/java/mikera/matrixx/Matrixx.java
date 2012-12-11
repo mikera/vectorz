@@ -32,10 +32,19 @@ public class Matrixx {
 		return m;	
 	}
 	
+	// singleton small identity matrices
+	private static final IdentityMatrix[] IDENTITY_MATRICES=new IdentityMatrix[5];
+	static {
+		for (int i=0; i<=4; i++) {
+			IDENTITY_MATRICES[i]=new IdentityMatrix(i);
+		}
+	}
+	
 	/**
 	 * Creates an immutable identity matrix
 	 */
 	public static IdentityMatrix createImmutableIdentityMatrix(int dimensions) {
+		if (dimensions<=4) return IDENTITY_MATRICES[dimensions];
 		return new IdentityMatrix(dimensions);
 	}
 	
