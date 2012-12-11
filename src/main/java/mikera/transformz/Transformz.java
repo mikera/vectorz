@@ -69,4 +69,13 @@ public class Transformz {
 	public static ATransform constantTransform(int inputDimensions, AVector v) {
 		return new Constant(inputDimensions,v);
 	}
+
+	public static ATranslation createTranslation(double[] v) {
+		int dims=v.length;
+		if (dims==3) {
+			return new Translation3(v[0],v[1],v[2]);
+		} else {
+			return new Translation(v);
+		}
+	}
 }

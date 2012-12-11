@@ -23,6 +23,11 @@ public final class Translation extends ATranslation {
 		this(Vectorz.create(t.getTranslationComponent().getTranslationVector()));
 	}
 
+	public Translation(double[] v) {
+		dimensions=v.length;
+		translation=Vectorz.create(v);
+	}
+
 	@Override
 	public AVector getTranslationVector() {
 		return translation;

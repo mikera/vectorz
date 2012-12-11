@@ -1,6 +1,10 @@
 package mikera.transformz.impl;
 
-import mikera.transformz.ATransform;
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
+import mikera.transformz.AAffineTransform;
+import mikera.transformz.ATranslation;
+import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 
 /**
@@ -8,7 +12,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public final class Constant extends ATransform {
+public final class Constant extends AAffineTransform {
 	private final int inputDimensions;
 	private final int outputDimensions;
 	private double[] constant;
@@ -40,6 +44,16 @@ public final class Constant extends ATransform {
 	public void transform(AVector source, AVector dest) {
 		assert(source.length()==inputDimensions);
 		dest.setValues(constant);
+	}
+
+	@Override
+	public AMatrix getMatrixComponent() {
+		return Matrixx.createImmutableZeroMatrix(outputDimensions, inputDimensions);
+	}
+
+	@Override
+	public ATranslation getTranslationComponent() {
+		return Transformz.createTranslation(constant);
 	}
 
 }
