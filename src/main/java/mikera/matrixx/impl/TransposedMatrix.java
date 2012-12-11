@@ -5,6 +5,8 @@ import mikera.vectorz.AVector;
 
 /**
  * Class representing a transposed view of another matrix
+ * The transposed matrix is a reference to the underlying matrix data
+ * 
  * @author Mike
  *
  */

@@ -5,6 +5,7 @@ import mikera.vectorz.AVector;
 
 /**
  * Specialised diagonal matrix class
+ * Not fully mutable - only the diagonal values can be changed
  * 
  * @author Mike
  */

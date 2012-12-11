@@ -8,8 +8,8 @@ import mikera.vectorz.util.VectorzException;
 
 /**
  * Reference matrix class representing a permutation of a matrix
+ * 
  * @author Mike
- *
  */
 public class PermutedMatrix extends AMatrix {
 	private final AMatrix source;
