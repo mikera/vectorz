@@ -32,12 +32,12 @@ public class ZeroMatrix extends AMatrix {
 
 	@Override
 	public int rowCount() {
-		return inputDimensions;
+		return outputDimensions;
 	}
 
 	@Override
 	public int columnCount() {
-		return outputDimensions;
+		return inputDimensions;
 	}
 
 	@Override

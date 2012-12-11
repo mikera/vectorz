@@ -74,8 +74,7 @@ public class Transformz {
 		int dims=v.length;
 		if (dims==3) {
 			return new Translation3(v[0],v[1],v[2]);
-		} else {
-			return new Translation(v);
 		}
+		return new Translation(v);
 	}
 }

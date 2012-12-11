@@ -283,6 +283,9 @@ public class TestMatrixx {
 	}
 
 	private void doRowColumnTests(AMatrix m) {
+		assertEquals(m.rowCount(),m.outputDimensions());
+		assertEquals(m.columnCount(),m.inputDimensions());
+		
 		m=m.clone();
 		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
 		AVector row=m.getRow(0);
