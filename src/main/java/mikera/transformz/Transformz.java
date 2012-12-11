@@ -75,7 +75,6 @@ public class Transformz {
 			case 4: return new ConstantTransform4(inputDimensions,v);
 			default: return new ConstantTransform(inputDimensions,v);
 		}
-		
 	}
 
 	public static ATranslation createTranslation(double[] v) {
