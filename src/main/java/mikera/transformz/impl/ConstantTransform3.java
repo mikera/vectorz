@@ -56,4 +56,9 @@ public final class ConstantTransform3 extends AConstantTransform {
 		return new Translation3(x,y,z);
 	}
 
+	@Override
+	public AVector getConstantValue() {
+		return new Vector3(x,y,z);
+	}
+
 }

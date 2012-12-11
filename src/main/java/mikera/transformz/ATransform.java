@@ -1,5 +1,6 @@
 package mikera.transformz;
 
+import mikera.transformz.impl.AConstantTransform;
 import mikera.transformz.impl.CompoundTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
@@ -53,6 +54,12 @@ public abstract class ATransform implements Cloneable {
 	 * a new combined transformation
 	 */
 	public ATransform compose(ATransform trans) {
+		if (trans instanceof AConstantTransform) {
+			return Transformz.constantTransform(
+					trans.inputDimensions(), 
+					this.transform(((AConstantTransform)trans).getConstantValue()));
+		}
+
 		return new CompoundTransform(this,trans);
 	}
 	

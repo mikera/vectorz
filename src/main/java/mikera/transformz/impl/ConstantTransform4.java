@@ -59,4 +59,9 @@ public final class ConstantTransform4 extends AConstantTransform {
 		return new Translation(new double[]{x,y,z,t});
 	}
 
+	@Override
+	public AVector getConstantValue() {
+		return new Vector4(x,y,z,y);
+	}
+
 }

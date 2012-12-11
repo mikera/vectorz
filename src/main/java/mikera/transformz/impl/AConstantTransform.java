@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATransform;
+import mikera.vectorz.AVector;
 
 public abstract class AConstantTransform extends AAffineTransform {
 	private final int inputDimensions;
@@ -37,5 +38,7 @@ public abstract class AConstantTransform extends AAffineTransform {
 	public AMatrix getMatrixComponent() {
 		return Matrixx.createImmutableZeroMatrix(outputDimensions(), inputDimensions());
 	}
+
+	public abstract AVector getConstantValue();
 
 }

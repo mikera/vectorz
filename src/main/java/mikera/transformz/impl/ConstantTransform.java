@@ -3,6 +3,7 @@ package mikera.transformz.impl;
 import mikera.transformz.ATranslation;
 import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 
 /**
  * Class representing a transform that returns a constant
@@ -41,6 +42,11 @@ public final class ConstantTransform extends AConstantTransform {
 	@Override
 	public ATranslation getTranslationComponent() {
 		return Transformz.createTranslation(constant);
+	}
+
+	@Override
+	public AVector getConstantValue() {
+		return Vector.wrap(constant);
 	}
 
 }
