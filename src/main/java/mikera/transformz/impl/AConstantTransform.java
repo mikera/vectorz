@@ -3,6 +3,7 @@ package mikera.transformz.impl;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.transformz.AAffineTransform;
+import mikera.transformz.ATransform;
 
 public abstract class AConstantTransform extends AAffineTransform {
 	private final int inputDimensions;
@@ -18,6 +19,12 @@ public abstract class AConstantTransform extends AAffineTransform {
 	@Override
 	public boolean isIdentity() {
 		return false;
+	}
+	
+	@Override
+	public AConstantTransform compose(ATransform trans) {
+		// constant transforms map everything to the same constant!
+		return this;
 	}
 
 	

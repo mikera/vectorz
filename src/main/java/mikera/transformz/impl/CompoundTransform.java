@@ -47,7 +47,6 @@ public class CompoundTransform extends ATransform {
 
 	@Override
 	public int outputDimensions() {
-		// TODO Auto-generated method stub
 		return outer.outputDimensions();
 	}
 }
