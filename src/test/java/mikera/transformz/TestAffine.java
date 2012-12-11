@@ -12,6 +12,8 @@ public class TestAffine {
 	void testAffineProperty(AAffineTransform t) {
 		int inputDim=t.inputDimensions();
 		
+		assertTrue(t.isLinear());
+		
 		assertTrue(t.getMatrixComponent().isSquare());
 		
 		AVector v=Vectorz.createUniformRandomVector(inputDim);
