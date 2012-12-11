@@ -1,13 +1,15 @@
-package mikera.indexz;
+package mikera.indexz.impl;
 
 import java.util.Iterator;
+
+import mikera.indexz.AIndex;
 
 /**
  * General purpose iterator for arbitrary vectors.
  * 
  * @author Mike
  */
-class IndexIterator implements Iterator<Integer> {
+public class IndexIterator implements Iterator<Integer> {
 	private final AIndex source;
 	private final int length;
 	private int pos=0;
