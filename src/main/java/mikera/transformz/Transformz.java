@@ -6,6 +6,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.transformz.impl.ConstantTransform;
 import mikera.transformz.impl.ConstantTransform3;
+import mikera.transformz.impl.ConstantTransform4;
 import mikera.transformz.impl.IdentityTranslation;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
@@ -71,6 +72,7 @@ public class Transformz {
 		int dims=v.length();
 		switch (dims) {
 			case 3: return new ConstantTransform3(inputDimensions,v);
+			case 4: return new ConstantTransform4(inputDimensions,v);
 			default: return new ConstantTransform(inputDimensions,v);
 		}
 		

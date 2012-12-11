@@ -5,7 +5,7 @@ import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 
 /**
- * Class represnting a transform that returns a constant
+ * Class representing a transform that returns a constant
  * @author Mike
  *
  */
