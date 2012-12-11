@@ -18,11 +18,17 @@ public abstract class AAffineTransform extends ALinearTransform {
 	// ===========================================
 	// Standard implementation
 	
+	/**
+	 * Returns a deep copy of the translation vector for this affine transform
+	 */
 	public AVector copyOfTranslationVector() {
 		return getTranslationComponent().getTranslationVector().clone();
 	}
 	
-	public AMatrix copyOfSquareMatrix() {
+	/**
+	 * Returns a deep copy of the transformation matrix for this affine transform
+	 */
+	public AMatrix copyOfMatrix() {
 		return getMatrixComponent().clone();
 	}
 	

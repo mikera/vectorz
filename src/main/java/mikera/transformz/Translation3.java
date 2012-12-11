@@ -38,7 +38,7 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 
 	@Override
 	public AMatrix getMatrixComponent() {
-		return copyOfSquareMatrix();
+		return copyOfMatrix();
 	}
 	
 	@Override
@@ -47,7 +47,7 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 	}
 	
 	@Override
-	public Matrix33 copyOfSquareMatrix() {
+	public Matrix33 copyOfMatrix() {
 		return Matrix33.createIdentityMatrix();
 	}
 

@@ -354,7 +354,7 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	}
 	
 	@Override
-	public AMatrix copyOfSquareMatrix() {
+	public AMatrix copyOfMatrix() {
 		assert(this.isSquare());
 		return this.clone();
 	}

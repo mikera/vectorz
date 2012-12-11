@@ -80,7 +80,7 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 
 	@Override
 	public AMatrix getMatrixComponent() {
-		return copyOfSquareMatrix();
+		return copyOfMatrix();
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	@Override
-	public Matrix33 copyOfSquareMatrix() {
+	public Matrix33 copyOfMatrix() {
 		return new Matrix33(m00,m01,m02,m10,m11,m12,m20,m21,m22);
 	}
 	
