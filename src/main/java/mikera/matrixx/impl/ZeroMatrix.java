@@ -54,4 +54,9 @@ public class ZeroMatrix extends AMatrix {
 	public AMatrix clone() {
 		return Matrixx.newMatrix(outputDimensions, inputDimensions);
 	}
+	
+	@Override
+	public boolean isZeroMatrix() {
+		return true;
+	}
 }

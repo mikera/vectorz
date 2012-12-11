@@ -87,6 +87,18 @@ public class TestMatrixx {
 		assertTrue(v.epsilonEquals(r));
 	}
 	
+	@Test public void testGeneralGenerator() {
+		for (int rows=0; rows<6; rows++) {
+			for (int columns=0; columns<6; columns++) {
+				AMatrix m=Matrixx.newMatrix(rows, columns);
+				assertTrue( m.isFullyMutable());
+				assertEquals(rows, m.rowCount());
+				assertEquals(columns,m.columnCount());
+				assertTrue(m.isZeroMatrix());
+			}
+		}
+	}
+	
 	@Test
 	public void testRandomRotation() {
 		AVector v=Vectorz.createUniformRandomVector(3);	

@@ -546,4 +546,18 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		}
 		return v;
 	}
+
+	/**
+	 * Returns true if the matrix is the zero matrix (all components zero)
+	 */
+	public boolean isZeroMatrix() {
+		int rc = rowCount();
+		int cc = columnCount();
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				if (get(i,j)!=0.0) return false;
+			}
+		}
+		return true;
+	}
 }
