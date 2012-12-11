@@ -5,7 +5,7 @@ import java.util.Iterator;
 import mikera.indexz.AIndex;
 
 /**
- * General purpose iterator for arbitrary vectors.
+ * General purpose iterator for arbitrary indexes.
  * 
  * @author Mike
  */
@@ -32,7 +32,7 @@ public class IndexIterator implements Iterator<Integer> {
 
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException("Cannot remove from VectorIterator");
+		throw new UnsupportedOperationException("Cannot remove from IndexIterator");
 	}
 
 }
