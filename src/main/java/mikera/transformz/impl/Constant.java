@@ -11,7 +11,7 @@ import mikera.vectorz.AVector;
 public class Constant extends ATransform {
 	private final int inputDimensions;
 	private final int outputDimensions;
-	private AVector constant;
+	private double[] constant;
 	
 	/**
 	 * Creates a new constant transform, using the provided vector as the constant value
@@ -21,8 +21,9 @@ public class Constant extends ATransform {
 	 */
 	public Constant(int inputDimensions, AVector value) {
 		this.inputDimensions=inputDimensions;
-		constant=value;
 		outputDimensions=value.length();
+		constant=new double[outputDimensions];
+		value.copyTo(constant, 0);
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class Constant extends ATransform {
 	@Override
 	public void transform(AVector source, AVector dest) {
 		assert(source.length()==inputDimensions);
-		dest.set(constant);
+		dest.setValues(constant);
 	}
 
 }
