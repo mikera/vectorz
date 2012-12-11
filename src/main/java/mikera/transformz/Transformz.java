@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.DiagonalMatrix;
+import mikera.transformz.impl.Constant;
 import mikera.transformz.impl.IdentityTranslation;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
@@ -63,5 +64,9 @@ public class Transformz {
 			return createAffineTransform((Matrix33)m,v);
 		}
 		return new AffineMN(m,v);
+	}
+
+	public static ATransform constantTransform(int inputDimensions, AVector v) {
+		return new Constant(inputDimensions,v.isMutable()?v.clone():v);
 	}
 }

@@ -3,6 +3,7 @@ package mikera.transformz.impl;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.AAffineTransform;
+import mikera.transformz.ATransform;
 import mikera.transformz.ATranslation;
 import mikera.transformz.Translation;
 import mikera.vectorz.AVector;
@@ -12,26 +13,21 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public class Constant extends AAffineTransform {
+public class Constant extends ATransform {
 	private final int inputDimensions;
 	private final int outputDimensions;
 	private AVector constant;
 	
+	/**
+	 * Creates a new constant transform, using the provided vector as the constant value
+	 * Does *not* take a defensive copy
+	 * @param inputDimensions
+	 * @param value
+	 */
 	public Constant(int inputDimensions, AVector value) {
 		this.inputDimensions=inputDimensions;
-		constant=value.isMutable()?value.clone():value;
+		constant=value;
 		outputDimensions=value.length();
-	}
-	
-	@Override
-	public AMatrix getMatrixComponent() {
-		return new ZeroMatrix(outputDimensions,inputDimensions);
-	}
-
-	@Override
-	public ATranslation getTranslationComponent() {
-		// TODO: consider defensive copy?
-		return new Translation(constant);
 	}
 
 	@Override
@@ -42,6 +38,12 @@ public class Constant extends AAffineTransform {
 	@Override
 	public int outputDimensions() {
 		return outputDimensions;
+	}
+
+	@Override
+	public void transform(AVector source, AVector dest) {
+		assert(source.length()==inputDimensions);
+		dest.set(constant);
 	}
 
 }
