@@ -7,6 +7,10 @@ import mikera.transformz.AAffineTransform;
 public abstract class AConstantTransform extends AAffineTransform {
 	private final int inputDimensions;
 
+	public AAffineTransform inverse() {
+		throw new UnsupportedOperationException("Cannot get inverse of a constant transform!");
+	}
+	
 	AConstantTransform(int inputDimensions) {
 		this.inputDimensions=inputDimensions;
 	}
