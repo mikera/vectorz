@@ -31,6 +31,11 @@ public class TestAffine {
 	}
 	
 	private void testAffineDecomposition(AAffineTransform t) {
+		assertTrue(t.getMatrixComponent().inputDimensions()==t.inputDimensions());
+		assertTrue(t.getMatrixComponent().outputDimensions()==t.outputDimensions());
+		assertTrue(t.getTranslationComponent().inputDimensions()==t.outputDimensions());
+		assertTrue(t.getTranslationComponent().outputDimensions()==t.outputDimensions());
+		
 		AVector z=Vectorz.createUniformRandomVector(t.inputDimensions());
 		
 		AVector r1=t.transform(z);
