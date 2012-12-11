@@ -16,6 +16,12 @@ public abstract class AConstantTransform extends AAffineTransform {
 	}
 	
 	@Override
+	public boolean isIdentity() {
+		return false;
+	}
+
+	
+	@Override
 	public int inputDimensions() {
 		return inputDimensions;
 	}
