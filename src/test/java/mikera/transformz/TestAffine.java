@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
-import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 
 public class TestAffine {
@@ -76,8 +74,6 @@ public class TestAffine {
 	}
 	
 	@Test public void genericAffineTests() {
-
-		
 		doAffineTests(Transformz.identityTransform(3));
 		doAffineTests(Transformz.identityTransform(7));
 		

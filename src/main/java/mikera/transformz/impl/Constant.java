@@ -1,11 +1,6 @@
 package mikera.transformz.impl;
 
-import mikera.matrixx.AMatrix;
-import mikera.matrixx.impl.ZeroMatrix;
-import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATransform;
-import mikera.transformz.ATranslation;
-import mikera.transformz.Translation;
 import mikera.vectorz.AVector;
 
 /**
