@@ -73,6 +73,11 @@ public class IdentityMatrix extends AMatrix {
 		return this;
 	}
 	
+	@Override 
+	public AMatrix getTranspose() {
+		return this;
+	}
+	
 	@Override
 	public void transposeInPlace() {
 		// Nothing to do!
