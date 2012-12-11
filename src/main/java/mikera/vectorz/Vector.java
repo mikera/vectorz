@@ -45,7 +45,8 @@ public final class Vector extends ArrayVector {
 	}
 	
 	/**
-	 * Create a vector with specific component values
+	 * Create a vector with specific component values. 
+	 * Creates a copy of the value array
 	 * @param values
 	 * @return
 	 */

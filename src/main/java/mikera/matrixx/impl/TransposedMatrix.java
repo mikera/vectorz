@@ -47,6 +47,11 @@ public class TransposedMatrix extends AMatrix {
 	}
 	
 	@Override
+	public AVector getLeadingDiagonal() {
+		return source.getLeadingDiagonal();
+	}
+	
+	@Override
 	public AVector getColumn(int column) {
 		return source.getRow(column);
 	}
