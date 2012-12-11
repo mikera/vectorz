@@ -1,9 +1,10 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 
 /**
- * Immutable zero matrix class
+ * Lightweight immutable zero matrix class
  */
 public class ZeroMatrix extends AMatrix {
 	private final int inputDimensions;
@@ -47,5 +48,10 @@ public class ZeroMatrix extends AMatrix {
 	@Override
 	public void set(int row, int column, double value) {
 		throw new UnsupportedOperationException("ZeroMatrix is immutable!");
+	}
+	
+	@Override
+	public AMatrix clone() {
+		return Matrixx.newMatrix(outputDimensions, inputDimensions);
 	}
 }
