@@ -7,6 +7,7 @@ import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.util.Rand;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
@@ -20,8 +21,29 @@ import mikera.vectorz.util.VectorzException;
  */
 public class Matrixx {
 
-	public static IdentityMatrix createIdentityMatrix(int dimensions) {
+	/**
+	 * Creates an mutable identity matrix
+	 */
+	public static AMatrix createIdentityMatrix(int dimensions) {
+		AMatrix m= newMatrix(dimensions,dimensions);
+		for (int i=0; i<dimensions; i++) {
+			m.set(i,i,1.0);
+		}
+		return m;	
+	}
+	
+	/**
+	 * Creates an immutable identity matrix
+	 */
+	public static IdentityMatrix createImmutableIdentityMatrix(int dimensions) {
 		return new IdentityMatrix(dimensions);
+	}
+	
+	/**
+	 * Creates an immutable zero-filled matrix
+	 */
+	public static ZeroMatrix createImmutableZeroMatrix(int rows, int columns) {
+		return new ZeroMatrix(rows,columns);
 	}
 	
 	public static DiagonalMatrix createScaleMatrix(int dimensions, double factor) {
@@ -200,7 +222,7 @@ public class Matrixx {
 		double[] dataIn=am.data;
 		
 		// create identity matrix in output
-		MatrixMN result=new MatrixMN(Matrixx.createIdentityMatrix(dims));
+		MatrixMN result=new MatrixMN(Matrixx.createImmutableIdentityMatrix(dims));
 		double[] dataOut = result.data;
 
 		for (int col = 0; col < dims; col++) {

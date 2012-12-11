@@ -122,7 +122,7 @@ public class TestMatrixx {
 			
 			AVector tv=v.clone();
 			
-			AMatrix m=Matrixx.createIdentityMatrix(i);
+			AMatrix m=Matrixx.createImmutableIdentityMatrix(i);
 			
 			m.transform(v, tv);
 			
