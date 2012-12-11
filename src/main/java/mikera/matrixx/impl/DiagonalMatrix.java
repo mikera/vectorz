@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 
 /**
  * Specialised diagonal matrix class
@@ -89,6 +90,12 @@ public final class DiagonalMatrix extends AMatrix {
 		}
 		return det;
 	}
+	
+	@Override
+	public AVector getLeadingDiagonal() {
+		return Vectorz.create(data);
+	}
+
 	
 	@Override
 	public void transposeInPlace() {

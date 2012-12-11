@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 
 /**
  * Specialised identity matrix class. Immutable.
@@ -44,6 +45,13 @@ public class IdentityMatrix extends AMatrix {
 	@Override
 	public boolean isFullyMutable() {
 		return false;
+	}
+	
+	@Override
+	public AVector getLeadingDiagonal() {
+		AVector v= Vectorz.newVector(dimensions);
+		v.fill(1.0);
+		return v;
 	}
 	
 	@Override
