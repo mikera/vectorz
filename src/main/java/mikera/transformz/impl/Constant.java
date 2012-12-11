@@ -2,7 +2,6 @@ package mikera.transformz.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
-import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATranslation;
 import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
@@ -12,8 +11,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public final class Constant extends AAffineTransform {
-	private final int inputDimensions;
+public final class Constant extends AConstantTransform {
 	private final int outputDimensions;
 	private double[] constant;
 	
@@ -24,16 +22,13 @@ public final class Constant extends AAffineTransform {
 	 * @param value
 	 */
 	public Constant(int inputDimensions, AVector value) {
-		this.inputDimensions=inputDimensions;
+		super(inputDimensions);
 		outputDimensions=value.length();
 		constant=new double[outputDimensions];
 		value.copyTo(constant, 0);
 	}
 
-	@Override
-	public int inputDimensions() {
-		return inputDimensions;
-	}
+	
 
 	@Override
 	public int outputDimensions() {
@@ -42,13 +37,13 @@ public final class Constant extends AAffineTransform {
 
 	@Override
 	public void transform(AVector source, AVector dest) {
-		assert(source.length()==inputDimensions);
+		assert(source.length()==inputDimensions());
 		dest.setValues(constant);
 	}
 
 	@Override
 	public AMatrix getMatrixComponent() {
-		return Matrixx.createImmutableZeroMatrix(outputDimensions, inputDimensions);
+		return Matrixx.createImmutableZeroMatrix(outputDimensions, inputDimensions());
 	}
 
 	@Override
