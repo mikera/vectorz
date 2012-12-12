@@ -363,6 +363,24 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
+	 * Returns the maximum absolute component of a vector
+	 * @return
+	 */
+	public double maxAbsComponent() {
+		int len=length();
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			double comp=get(i);
+			if (comp>result) {
+				result=comp;
+			} else if (-comp>result) {
+				result=-comp;
+			}
+		}		
+		return result;
+	}
+	
+	/**
 	 * Returns the euclidean angle between this vector and another vector
 	 * @return angle in radians
 	 */

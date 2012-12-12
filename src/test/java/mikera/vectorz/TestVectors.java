@@ -269,6 +269,7 @@ public class TestVectors {
 		testSet(v);
 		testClone(v);
 		testParse(v);
+		testDistances(v);
 		testZero(v);
 		testHashCode(v);
 		testAsList(v);
@@ -352,6 +353,13 @@ public class TestVectors {
 		assertEquals(v.magnitude(),v.distance(v2),0.000001);
 		assertEquals(6,v.distanceL1(v2),0.000001);
 		assertEquals(3,v.distanceLinf(v2),0.000001);
+	}
+	
+	public void testDistances(AVector v) {
+		AVector z=v.clone();
+		z.fill(0.0);
+		
+		assertEquals(v.maxAbsComponent(),v.distanceLinf(z),0.0);
 	}
 	
 	@Test public void testClamping() {
