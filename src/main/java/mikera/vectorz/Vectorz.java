@@ -9,7 +9,7 @@ import bpsm.edn.parser.CollectionBuilder.Factory;
 import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
 import mikera.util.Rand;
-import mikera.vectorz.impl.ZeroLengthVector;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.VectorBuilder;
 import mikera.vectorz.util.VectorzException;
@@ -26,7 +26,7 @@ public class Vectorz {
 
 	public static AVector create(double... data) {
 		switch (data.length) {
-			case 0: return ZeroLengthVector.INSTANCE;
+			case 0: return Vector0.INSTANCE;
 			case 1: return Vector1.of(data);
 			case 2: return Vector2.of(data);
 			case 3: return Vector3.of(data);
@@ -74,7 +74,7 @@ public class Vectorz {
 	}
 	
 	public static AVector wrap(double[][] data) {
-		if ((data.length)==0) return ZeroLengthVector.INSTANCE;
+		if ((data.length)==0) return Vector0.INSTANCE;
 		
 		AVector v=wrap(data[0]);
 		for (int i=1; i<data.length; i++) {
@@ -92,7 +92,7 @@ public class Vectorz {
 	 */
 	public static AVector newVector(int length) {
 		switch (length) {
-			case 0: return ZeroLengthVector.INSTANCE;
+			case 0: return Vector0.INSTANCE;
 			case 1: return new Vector1();
 			case 2: return new Vector2();
 			case 3: return new Vector3();
@@ -137,7 +137,7 @@ public class Vectorz {
 	}
 	
 	private static final AVector[] ZERO_VECTORS = new AVector[] {
-		ZeroLengthVector.INSTANCE,
+		Vector0.INSTANCE,
 		new ZeroVector(1),
 		new ZeroVector(2),
 		new ZeroVector(3),

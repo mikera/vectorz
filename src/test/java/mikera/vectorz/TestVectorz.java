@@ -2,7 +2,7 @@ package mikera.vectorz;
 
 import static org.junit.Assert.*;
 
-import mikera.vectorz.impl.ZeroLengthVector;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorBuilder;
 
 import org.junit.Test;
@@ -13,7 +13,7 @@ public class TestVectorz {
 	public void testVectorBuilder() {
 		VectorBuilder vb=new VectorBuilder();
 		
-		assertEquals(ZeroLengthVector.INSTANCE,vb.toVector());
+		assertEquals(Vector0.INSTANCE,vb.toVector());
 		vb.add(1.0);
 		assertEquals(Vector1.of(1.0),vb.toVector());
 		vb.add(2.0);

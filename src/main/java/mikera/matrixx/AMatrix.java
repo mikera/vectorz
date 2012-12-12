@@ -11,7 +11,7 @@ import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.ZeroLengthVector;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -458,7 +458,7 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	public AVector asVector() {
 		int rc = rowCount();
 		if (rc == 0)
-			return ZeroLengthVector.INSTANCE;
+			return Vector0.INSTANCE;
 
 		AVector v = getRow(0);
 		for (int i = 1; i < rc; i++) {

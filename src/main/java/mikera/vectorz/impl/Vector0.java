@@ -11,13 +11,17 @@ import mikera.vectorz.APrimitiveVector;
  * 
  * @author Mike
  */
-public final class ZeroLengthVector extends APrimitiveVector {
+public final class Vector0 extends APrimitiveVector {
 	private static final long serialVersionUID = -8153360223054646075L;
 
-	private ZeroLengthVector() {
+	private Vector0() {
 	}
 	
-	public static ZeroLengthVector INSTANCE=new ZeroLengthVector();
+	public Vector0 of() {
+		return INSTANCE;
+	}
+	
+	public static Vector0 INSTANCE=new Vector0();
 	
 	@Override
 	public int length() {
@@ -35,7 +39,7 @@ public final class ZeroLengthVector extends APrimitiveVector {
 	}
 	
 	@Override 
-	public ZeroLengthVector clone() {
+	public Vector0 clone() {
 		return this;
 	}
 
