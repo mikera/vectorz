@@ -262,9 +262,9 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		}	
 	}
 	
-
-	
-	
+	/**
+	 * Sets each component of the vector to its absolute value
+	 */
 	public void absolute() {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -272,8 +272,30 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		}
 	}
 	
+	/**
+	 * Scales the vector by a scalar factor
+	 * @param factor
+	 */
 	public void scale(double factor) {
 		multiply(factor);
+	}
+	
+	/**
+	 * Scales the vector by another vector of the same size
+	 * @param v
+	 */
+	public void scale(AVector v) {
+		multiply(v);
+	}
+	
+	/**
+	 * Scales the vector up to a specific target magnitude
+	 * @return the old magnitude of the vector
+	 */
+	public double scaleToMagnitude(double targetMagnitude) {
+		double oldMagnitude=magnitude();
+		multiply(targetMagnitude/oldMagnitude);
+		return oldMagnitude;
 	}
 	
 	public void scaleAdd(double factor, AVector v) {
