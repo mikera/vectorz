@@ -15,7 +15,7 @@ public class ZeroMatrix extends AMatrix {
 		return false;
 	}
 	
-	public ZeroMatrix(int rows, int columns) {
+	private ZeroMatrix(int rows, int columns) {
 		outputDimensions=rows;
 		inputDimensions=columns;
 	}
@@ -58,5 +58,9 @@ public class ZeroMatrix extends AMatrix {
 	@Override
 	public boolean isZeroMatrix() {
 		return true;
+	}
+
+	public static ZeroMatrix create(int rows, int columns) {
+		return new ZeroMatrix(rows,columns);
 	}
 }

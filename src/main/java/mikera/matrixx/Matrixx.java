@@ -52,7 +52,7 @@ public class Matrixx {
 	 * Creates an immutable zero-filled matrix
 	 */
 	public static ZeroMatrix createImmutableZeroMatrix(int rows, int columns) {
-		return new ZeroMatrix(rows,columns);
+		return ZeroMatrix.create(rows,columns);
 	}
 	
 	public static DiagonalMatrix createScaleMatrix(int dimensions, double factor) {
