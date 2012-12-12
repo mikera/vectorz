@@ -21,6 +21,11 @@ public final class Vector0 extends APrimitiveVector {
 		return INSTANCE;
 	}
 	
+	public static Vector0 of(double... values) {
+		if (values.length!=0) throw new IllegalArgumentException("Vector0 cannot have compoenents!");
+		return INSTANCE;
+	}
+	
 	public static Vector0 INSTANCE=new Vector0();
 	
 	@Override
