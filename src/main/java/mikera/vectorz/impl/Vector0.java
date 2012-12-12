@@ -17,7 +17,7 @@ public final class Vector0 extends APrimitiveVector {
 	private Vector0() {
 	}
 	
-	public Vector0 of() {
+	public static Vector0 of() {
 		return INSTANCE;
 	}
 	

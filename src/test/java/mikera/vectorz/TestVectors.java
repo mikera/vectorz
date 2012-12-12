@@ -11,6 +11,7 @@ import mikera.matrixx.Matrixx;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
+import mikera.vectorz.impl.Vector0;
 
 import org.junit.Test;
 
@@ -278,6 +279,8 @@ public class TestVectors {
 	}
 
 	@Test public void genericTests() {
+		doGenericTests(Vector0.of());
+		
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector2(1.0,2.0));
 		
