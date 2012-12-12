@@ -28,6 +28,13 @@ public final class Vector3 extends APrimitiveVector {
 		this.z=z;
 	}
 	
+	@Override
+	public double normalise() {
+		double d=magnitude();
+		if (d>0) multiply(1.0/d);
+		return d;
+	}
+	
 	public Vector3(double... values) {
 		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
 		this.x=values[0];

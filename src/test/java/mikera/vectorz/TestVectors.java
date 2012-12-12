@@ -190,8 +190,14 @@ public class TestVectors {
 
 	private void testNormalise(AVector v) {
 		v=v.clone();
+		
 		v.set(0,v.get(0)+Math.random());
-		v.normalise();
+ 
+		double d=v.magnitude();
+		double nresult=v.normalise();
+		
+		assertEquals(d,nresult,0.0000001);
+		
 		assertTrue(v.isUnitLengthVector());
 	}
 	

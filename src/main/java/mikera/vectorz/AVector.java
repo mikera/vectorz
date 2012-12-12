@@ -388,9 +388,10 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		return Math.acos(dotProduct(v)/(v.magnitude()*this.magnitude()));
 	}
 	
-	public void normalise() {
+	public double normalise() {
 		double d=magnitude();
 		if (d>0) multiply(1.0/d);
+		return d;
 	}
 	
 	public void negate() {
