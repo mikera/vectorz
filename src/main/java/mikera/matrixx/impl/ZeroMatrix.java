@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.vectorz.Tools;
 
 /**
  * Lightweight immutable zero matrix class
@@ -58,6 +59,11 @@ public class ZeroMatrix extends AMatrix {
 	@Override
 	public boolean isZeroMatrix() {
 		return true;
+	}
+	
+	@Override 
+	public int hashCode() {
+		return Tools.zeroVectorHash(inputDimensions*outputDimensions);
 	}
 
 	public static ZeroMatrix create(int rows, int columns) {

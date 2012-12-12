@@ -340,9 +340,14 @@ public class TestMatrixx {
 		assertEquals(m,Matrixx.parse(m.toString()));
 	}
 	
+	void doHashTest(AMatrix m) {
+		assertEquals(m.hashCode(),m.toVector().hashCode());
+	}
+	
 	void doGenericTests(AMatrix m) {
 		doVectorTest(m);
 		doParseTest(m);
+		doHashTest(m);
 		doRowColumnTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);

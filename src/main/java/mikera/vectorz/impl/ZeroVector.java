@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.APrimitiveVector;
+import mikera.vectorz.Tools;
 
 /**
  * Specialised vector containing nothing but zeros.
@@ -55,6 +56,11 @@ public final class ZeroVector extends APrimitiveVector {
 	@Override
 	public boolean isUnitLengthVector() {
 		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Tools.zeroVectorHash(length);
 	}
 
 }

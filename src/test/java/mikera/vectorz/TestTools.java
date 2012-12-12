@@ -28,4 +28,16 @@ public class TestTools {
 	public void testNullToDouble() {
 		Tools.toDouble(null);
 	}
+	
+	@Test
+	public void testDoubleHash() {
+		assertEquals(0,Tools.hashCode(0.0));
+		assertEquals(1,Tools.zeroVectorHash(0));
+		assertEquals(31,Tools.zeroVectorHash(1));
+		
+		for (int i=0; i<100; i++) {
+			// System.out.println(i);
+			assertEquals(Tools.zeroVectorHash(i),Vectorz.newVector(i).hashCode());
+		}
+	}
 }
