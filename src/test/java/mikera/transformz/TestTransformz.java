@@ -53,8 +53,14 @@ public class TestTransformz {
 		
 		assertTrue(x.equals(x2));
 	}
+	
+	public static void doHashTest(ATransform t) {
+		t.hashCode();
+	}
+
 
 	public static void doTransformTests(ATransform t) {
+		doHashTest(t);
 		doApplyTest(t);
 	}
 }

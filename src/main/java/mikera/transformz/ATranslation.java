@@ -69,4 +69,9 @@ public abstract class ATranslation extends AAffineTransform {
 		v.negate();
 		return Transformz.createTranslation(v);
 	}
+	
+	@Override
+	public int hashCode() {
+		return getTranslationVector().hashCode();
+	}
 }
