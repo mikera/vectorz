@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.transformz.ATranslation;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
 
 /**
@@ -71,5 +72,10 @@ public final class IdentityTranslation extends ATranslation {
 	@Override
 	public AVector getTranslationVector() {
 		return Vectorz.immutableZeroVector(dimensions);
+	}
+	
+	@Override 
+	public int hashCode() {
+		return Tools.zeroVectorHash(dimensions);
 	}
 }
