@@ -13,11 +13,24 @@ import mikera.vectorz.Vectorz;
  *
  */
 public final class IdentityTranslation extends ATranslation {
+	private static final int INSTANCE_COUNT=6;
 
 	private final int dimensions;
 	
 	private IdentityTranslation(int dims) {
 		this.dimensions=dims;
+	}
+	
+	private static final  IdentityTranslation[] INSTANCES=new IdentityTranslation[INSTANCE_COUNT];
+	static {
+		for (int i=0; i<INSTANCE_COUNT; i++) {
+			INSTANCES[i]=new IdentityTranslation(i);
+		}
+	}
+	
+	public static IdentityTranslation create(int i) {
+		if (i<INSTANCE_COUNT) return INSTANCES[i];
+		return new IdentityTranslation(i);
 	}
 
 	@Override
@@ -53,10 +66,6 @@ public final class IdentityTranslation extends ATranslation {
 	@Override
 	public int outputDimensions() {
 		return dimensions;
-	}
-
-	public static IdentityTranslation getInstance(int dimensions) {
-		return new IdentityTranslation(dimensions);
 	}
 
 	@Override

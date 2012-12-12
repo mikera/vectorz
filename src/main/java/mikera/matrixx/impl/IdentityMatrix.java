@@ -12,20 +12,21 @@ import mikera.vectorz.Vectorz;
  */
 public class IdentityMatrix extends AMatrix {
 	private final int dimensions;
+	private static final int INSTANCE_COUNT=6;
 	
 	private IdentityMatrix(int dimensions) {
 		this.dimensions=dimensions;
 	}
 	
-	private static final  IdentityMatrix[] INSTANCES=new IdentityMatrix[6];
+	private static final  IdentityMatrix[] INSTANCES=new IdentityMatrix[INSTANCE_COUNT];
 	static {
-		for (int i=0; i<INSTANCES.length; i++) {
+		for (int i=0; i<INSTANCE_COUNT; i++) {
 			INSTANCES[i]=new IdentityMatrix(i);
 		}
 	}
 	
 	public static IdentityMatrix create(int i) {
-		if (i<INSTANCES.length) return INSTANCES[i];
+		if (i<INSTANCE_COUNT) return INSTANCES[i];
 		return new IdentityMatrix(i);
 	}
 	
@@ -94,6 +95,5 @@ public class IdentityMatrix extends AMatrix {
 	public void transposeInPlace() {
 		// Nothing to do!
 	}
-
 
 }

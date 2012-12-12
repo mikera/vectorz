@@ -87,8 +87,8 @@ public class TestAffine {
 		doAffineTests(Matrixx.createRandomMatrix(6,5));
 		
 
-		doAffineTests(Transformz.identityTransform(3));
-		doAffineTests(Transformz.identityTransform(7));
+		doAffineTests(Transformz.identityTranslation(3));
+		doAffineTests(Transformz.identityTranslation(7));
 		
 		doAffineTests(Matrixx.createRandomSquareMatrix(3));
 		doAffineTests(Matrixx.createRandomSquareMatrix(5));

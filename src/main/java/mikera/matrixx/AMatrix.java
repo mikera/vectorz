@@ -65,7 +65,7 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	@Override
 	public AAffineTransform toAffineTransform() {
 		return new AffineMN(new VectorMatrixMN(this),
-				Transformz.identityTransform(outputDimensions()));
+				Transformz.identityTranslation(outputDimensions()));
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 
 	@Override
 	public ATranslation getTranslationComponent() {
-		return Transformz.identityTransform(rowCount());
+		return Transformz.identityTranslation(rowCount());
 	}
 	
 	@Override

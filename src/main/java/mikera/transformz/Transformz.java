@@ -28,8 +28,8 @@ public class Transformz {
 	/**
 	 * Creates an identity transform with the given number of dimensions
 	 */
-	public static IdentityTranslation identityTransform(int dimensions) {
-		return IdentityTranslation.getInstance(dimensions);
+	public static IdentityTranslation identityTranslation(int dimensions) {
+		return IdentityTranslation.create(dimensions);
 	}
 	
 	public static ATranslation createTranslation(AVector v) {
