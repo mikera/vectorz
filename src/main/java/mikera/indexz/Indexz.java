@@ -78,7 +78,7 @@ public class Indexz {
 	 * @param probability
 	 * @return
 	 */
-	public static AIndex createRandomSubset(AIndex index, double probability) {
+	public static Index createRandomSubset(AIndex index, double probability) {
 		ArrayList<Integer> al=new ArrayList<Integer>();
 		int len=index.length();
 		for (int i=0; i<len; i++) {
@@ -89,9 +89,15 @@ public class Indexz {
 		return Indexz.create(al);
 	}
 	
+	public static Index createRandomSubset(int length,double probability) {
+		return createRandomSubset(Indexz.createSequence(length),probability);
+	}
+	
 
 	public static Index createLength(int length) {
 		return new Index(length);
 	}
+
+
 
 }

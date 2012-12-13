@@ -3,6 +3,7 @@ package mikera.transformz;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import mikera.indexz.Indexz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
@@ -57,9 +58,19 @@ public class TestTransformz {
 	public static void doHashTest(ATransform t) {
 		t.hashCode();
 	}
+	
+	public static void doSubTest(ATransform t) {
+		ATransform st=t.takeComponents(Indexz.createRandomSubset(t.outputDimensions(), 0.5));
+		
+		AVector v=Vectorz.createUniformRandomVector(st.inputDimensions());
+		
+		st.transform(v);
+	}
+
 
 
 	public static void doTransformTests(ATransform t) {
+		doSubTest(t);
 		doHashTest(t);
 		doApplyTest(t);
 	}
