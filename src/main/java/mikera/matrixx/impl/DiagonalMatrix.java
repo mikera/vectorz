@@ -54,6 +54,11 @@ public final class DiagonalMatrix extends AMatrix {
 			data[row]=value;
 		}
 	}
+	
+	@Override
+	public double calculateComponent(int i, AVector v) {
+		return v.get(i)*data[i];
+	}
 
 	@Override
 	public void transformInPlace(AVector v) {

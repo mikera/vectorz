@@ -26,6 +26,15 @@ public abstract class ATranslation extends AAffineTransform {
 	}
 	
 	@Override
+	public double calculateComponent(int i, AVector v) {
+		return v.get(i)+getTranslationComponent(i);
+	}
+	
+	public double getTranslationComponent(int i) {
+		return getTranslationVector().get(i);
+	}
+	
+	@Override
 	public void transform(AVector source,AVector dest) {
 		dest.set(source);
 		dest.add(getTranslationVector());

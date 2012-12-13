@@ -31,6 +31,11 @@ public class IdentityMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double calculateComponent(int i, AVector v) {
+		return v.get(i);
+	}
+	
+	@Override
 	public int rowCount() {
 		return dimensions;
 	}

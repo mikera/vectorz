@@ -30,6 +30,21 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 		this.dy=dy;
 		this.dz=dz;
 	}
+	
+	@Override
+	public double calculateComponent(int i, AVector v) {
+		return v.get(i)+getTranslationComponent(i);
+	}
+	
+	@Override
+	public double getTranslationComponent(int i) {
+		switch (i) {
+			case 0: return dx;
+			case 1: return dy;
+			case 2: return dz;
+			default: throw new IndexOutOfBoundsException("Index = "+i);
+		}
+	}
 
 	@Override
 	public Vector3 getTranslationVector() {

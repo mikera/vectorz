@@ -11,37 +11,42 @@ import mikera.vectorz.Vectorz;
  * @author Mike
  */
 public final class Translation extends ATranslation {
-	private final AVector translation;
+	private final AVector translationVector;
 	private final int dimensions;
 	
 	public Translation(AVector source) {
-		translation=source;
+		translationVector=source;
 		dimensions=source.length();
 	}
 	
 	public Translation(ATranslation t) {
 		this(Vectorz.create(t.getTranslationComponent().getTranslationVector()));
 	}
+	
+	@Override
+	public double calculateComponent(int i, AVector v) {
+		return v.get(i)+translationVector.get(i);
+	}
 
 	public Translation(double[] v) {
 		dimensions=v.length;
-		translation=Vectorz.create(v);
+		translationVector=Vectorz.create(v);
 	}
 
 	@Override
 	public AVector getTranslationVector() {
-		return translation;
+		return translationVector;
 	}
 	
 	@Override
 	public void transform(AVector source,AVector dest) {
 		dest.set(source);
-		dest.add(translation);
+		dest.add(translationVector);
 	}
 	
 	@Override
 	public void transformInPlace(AVector v) {
-		v.add(translation);
+		v.add(translationVector);
 	}
 	
 
@@ -85,11 +90,11 @@ public final class Translation extends ATranslation {
 			return;
 		}
 		AVector v=t.getTranslationVector();
-		translation.add(v);
+		translationVector.add(v);
 	}
 	
 	public void composeWith(Translation t) {
 		assert(t.dimensions()==this.dimensions());
-		translation.add(t.translation);
+		translationVector.add(t.translationVector);
 	}
 }
