@@ -132,4 +132,19 @@ public final class Index extends AIndex {
 			data[i]=source.data[data[i]];
 		}
 	}
+	
+	@Override
+	public Index compose(AIndex a) {
+		if (a instanceof Index) return compose((Index)a);
+		return super.compose(a);
+	}
+
+	public Index compose(Index a) {
+		int len=this.length();
+		Index r=new Index(len);
+		for (int i=0; i<len; i++) {
+			r.data[i]=a.data[data[i]];
+		}
+		return r;
+	}
 }

@@ -204,4 +204,13 @@ public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIn
 	public IndexIterator iterator() {
 		return new IndexIterator(this);
 	}
+	
+	public Index compose(AIndex a) {
+		int len=this.length();
+		Index r=new Index(len);
+		for (int i=0; i<len; i++) {
+			r.data[i]=a.get(get(i));
+		}
+		return r;
+	}
 }

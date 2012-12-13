@@ -643,6 +643,17 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		}
 	}
 
+	/**
+	 * sets the vector using values indexed from another vector
+	 */
+	public void set(AVector v, Index indexes) {
+		int len=length();
+		assert(indexes.length()==len);
+		for (int i=0; i<len ; i++) {
+			set(i, v.get(indexes.get(i)));
+		}
+	}
+
 
 
 }
