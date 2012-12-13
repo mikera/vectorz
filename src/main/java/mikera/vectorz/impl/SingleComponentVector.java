@@ -26,11 +26,13 @@ public final class SingleComponentVector extends AVector {
 
 	@Override
 	public double get(int i) {
+		assert((i>=0)&&(i<dimensions));
 		return (i==index)?value:0.0;
 	}
 
 	@Override
 	public void set(int i, double value) {
+		assert((i>=0)&&(i<dimensions));
 		if (i==index) this.value=value;
 	}
 

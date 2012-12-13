@@ -7,7 +7,6 @@ import mikera.transformz.impl.CompoundTransform;
 import mikera.transformz.impl.SubsetTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.IdenticalComponentVector;
 import mikera.vectorz.impl.SingleComponentVector;
 
 /**
@@ -100,7 +99,8 @@ public abstract class ATransform implements Cloneable {
 	}
 	
 	/**
-	 * 
+	 * Calculates a single component of the output. 
+	 * Not necessarily faster than calculating full output, but can be in some circumstances.
 	 */
 	public double calculateComponent(int i, AVector v) {
 		SingleComponentVector r=new SingleComponentVector(i,outputDimensions());

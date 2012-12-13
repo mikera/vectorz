@@ -64,10 +64,20 @@ public class TestTransformz {
 		AVector v=Vectorz.createUniformRandomVector(st.inputDimensions());
 		st.transform(v);
 	}
+	
+	public static void doComponentTests(ATransform t) {
+		AVector v=Vectorz.createUniformRandomVector(t.inputDimensions());
+		AVector r=t.transform(v);
+		
+		for (int i=0; i<t.outputDimensions(); i++) {
+			assertEquals(r.get(i),t.calculateComponent(i, v),0.0);
+		}
+	}
 
 	public static void doTransformTests(ATransform t) {
 		doSubTest(t);
 		doHashTest(t);
 		doApplyTest(t);
+		doComponentTests(t);
 	}
 }

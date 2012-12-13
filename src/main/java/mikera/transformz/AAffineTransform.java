@@ -61,6 +61,14 @@ public abstract class AAffineTransform extends ALinearTransform {
 		getTranslationComponent().transformInPlace(dest);
 	}
 	
+	@Override
+	public double calculateComponent(int i, AVector v) {
+		return getMatrixComponent().calculateComponent(i,v)
+				+getTranslationComponent().getTranslationComponent(i);
+		
+	}
+
+	
 	@Override 
 	public void transformInPlace(AVector v) {
 		getMatrixComponent().transformInPlace(v);
