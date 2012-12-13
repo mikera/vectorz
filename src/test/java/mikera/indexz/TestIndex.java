@@ -18,6 +18,14 @@ public class TestIndex {
 		}
 	}
 	
+	@Test public void testCompose() {
+		Index a=Index.of(2,1,4);
+		Index b=Index.of(10,20,30,40,50);
+		
+		Index c=a.compose(b);
+		assertEquals(Index.of(30,20,50),c);
+	}
+	
 	@Test public void testEquals() {
 		Index ind1=Index.of(0,1,2);
 		Index ind2=Indexz.createSequence(3);
