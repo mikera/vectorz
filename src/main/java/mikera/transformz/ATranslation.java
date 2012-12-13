@@ -80,6 +80,11 @@ public abstract class ATranslation extends AAffineTransform {
 	}
 	
 	@Override
+	public boolean isInvertible() {
+		return true;
+	}
+	
+	@Override
 	public int hashCode() {
 		return getTranslationVector().hashCode();
 	}

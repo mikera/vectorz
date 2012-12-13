@@ -68,6 +68,7 @@ public abstract class AAffineTransform extends ALinearTransform {
 		
 	}
 
+
 	
 	@Override 
 	public void transformInPlace(AVector v) {
@@ -103,5 +104,10 @@ public abstract class AAffineTransform extends ALinearTransform {
 		v.negate();
 		m.transformInPlace(v);
 		return Transformz.createAffineTransform(m, v);
+	}
+	
+	@Override
+	public boolean isInvertible() {
+		return getMatrixComponent().isInvertible();
 	}
 }

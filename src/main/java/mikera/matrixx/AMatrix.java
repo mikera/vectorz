@@ -503,6 +503,11 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		AMatrix result = Matrixx.createInverse(this);
 		return result;
 	}
+	
+	@Override
+	public boolean isInvertible() {
+		return isSquare()&&(determinant()!=0.0);
+	}
 
 	/**
 	 * Swaps two rows of the matrix in place

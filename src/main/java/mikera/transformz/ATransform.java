@@ -150,4 +150,11 @@ public abstract class ATransform implements Cloneable {
 	public AAffineTransform inverse() {
 		throw new UnsupportedOperationException("inverse not supported by "+this.getClass());
 	}
+	
+	/**
+	 * Returns true if this transform is invertible
+	 */
+	public boolean isInvertible() {
+		return false;
+	}
 }

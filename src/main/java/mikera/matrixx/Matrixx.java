@@ -119,7 +119,7 @@ public class Matrixx {
 	}
 
 	static MatrixMN createInverse(AMatrix m) {
-		if (m.rowCount() != m.columnCount()) {
+		if (!m.isSquare()) {
 			throw new IllegalArgumentException("Matrix must be square for inverse!");
 		}
 
