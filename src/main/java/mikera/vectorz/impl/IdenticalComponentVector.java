@@ -16,6 +16,12 @@ public final class IdenticalComponentVector extends AVector {
 	public IdenticalComponentVector(int dims) {
 		this.dimensions=dims;
 	}
+	
+	public static IdenticalComponentVector create(int dims, double value) {
+		IdenticalComponentVector r=new IdenticalComponentVector(dims);
+		r.value=value;
+		return r;
+	}
 
 	@Override
 	public int length() {
@@ -30,6 +36,7 @@ public final class IdenticalComponentVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
+		assert((i>=0)&&(i<dimensions));
 		this.value=value;
 	}
 
