@@ -60,14 +60,10 @@ public class TestTransformz {
 	}
 	
 	public static void doSubTest(ATransform t) {
-		ATransform st=t.takeComponents(Indexz.createRandomSubset(t.outputDimensions(), 0.5));
-		
+		ATransform st=t.takeComponents(Indexz.createRandomSubset(t.outputDimensions(), 0.5));	
 		AVector v=Vectorz.createUniformRandomVector(st.inputDimensions());
-		
 		st.transform(v);
 	}
-
-
 
 	public static void doTransformTests(ATransform t) {
 		doSubTest(t);
