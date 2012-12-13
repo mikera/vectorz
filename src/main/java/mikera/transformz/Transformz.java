@@ -26,9 +26,16 @@ public class Transformz {
 	}
 	
 	/**
-	 * Creates an identity transform with the given number of dimensions
+	 * Creates an identity translation with the given number of dimensions
 	 */
 	public static IdentityTranslation identityTranslation(int dimensions) {
+		return IdentityTranslation.create(dimensions);
+	}
+	
+	/**
+	 * Creates an identity transform with the given number of dimensions
+	 */
+	public static ATransform identityTransform(int dimensions) {
 		return IdentityTranslation.create(dimensions);
 	}
 	
