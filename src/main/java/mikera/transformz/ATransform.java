@@ -7,6 +7,8 @@ import mikera.transformz.impl.CompoundTransform;
 import mikera.transformz.impl.SubsetTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.IdenticalComponentVector;
+import mikera.vectorz.impl.SingleComponentVector;
 
 /**
  * Abstract base class for all vector transformations.
@@ -101,7 +103,8 @@ public abstract class ATransform implements Cloneable {
 	 * 
 	 */
 	public double calculateComponent(int i, AVector v) {
-		throw new UnsupportedOperationException(this.getClass().toString()+ " does not support caomputing individual components");
+		SingleComponentVector r=new SingleComponentVector(i,outputDimensions());
+		return r.get(i);
 	}
 	
 	/**
