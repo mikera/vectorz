@@ -17,6 +17,11 @@ public final class IdenticalComponentVector extends AVector {
 		this.dimensions=dims;
 	}
 	
+	public IdenticalComponentVector(int dims, double value) {
+		this.dimensions=dims;
+		this.value=value;
+	}
+	
 	public static IdenticalComponentVector create(int dims, double value) {
 		IdenticalComponentVector r=new IdenticalComponentVector(dims);
 		r.value=value;
