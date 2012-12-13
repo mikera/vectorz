@@ -113,21 +113,21 @@ public abstract class ATransform implements Cloneable {
 	}
 	
 	/**
-	 * Returns a wrapper transform that returns a subset of this transform's components
+	 * Returns a wrapper transform that returns a subset of this transform's output components
 	 */
 	public ATransform takeComponents(int length) {
-		return SubsetTransform.create(this,Indexz.createSequence(length));
+		return takeComponents(Indexz.createSequence(length));
 	}
 	
 	/**
-	 * Returns a wrapper transform that returns a subset of this transform's components
+	 * Returns a wrapper transform that returns a subset of this transform's output components
 	 */
 	public ATransform takeComponents(int start, int length) {
-		return SubsetTransform.create(this,Indexz.createSequence(start,length));
+		return takeComponents(Indexz.createSequence(start,length));
 	}
 	
 	/**
-	 * Returns a wrapper transform that returns a subset of this transform's components
+	 * Returns a wrapper transform that returns a subset of this transform's output components
 	 */
 	public ATransform takeComponents(Index components) {
 		return SubsetTransform.create(this,components);
