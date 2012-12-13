@@ -9,7 +9,7 @@ import mikera.vectorz.AVector;
  * 
  * @author Mike
  */
-public class SubsetTransform extends ATransform {
+public final class SubsetTransform extends ATransform {
 	
 	private ATransform source;
 	private Index components;
@@ -19,15 +19,15 @@ public class SubsetTransform extends ATransform {
 		this.components=components;
 	}
 	
-	public SubsetTransform create(ATransform trans, Index components) {
+	public static SubsetTransform create(ATransform trans, Index components) {
 		if (trans instanceof SubsetTransform) {
 			return create((SubsetTransform)trans, components);
 		}
 		return new SubsetTransform(trans,components);
 	}
 	
-	public SubsetTransform create(SubsetTransform trans, Index components) {
-		return new SubsetTransform(trans.source,this.components.compose(components));
+	public static SubsetTransform create(SubsetTransform trans, Index components) {
+		return new SubsetTransform(trans.source,components.compose(trans.components));
 	}
 	
 	@Override

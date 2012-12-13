@@ -12,6 +12,16 @@ public class SequentialIndex extends ComputedIndex {
 	}
 	
 	@Override
+	public int minIndex() {
+		return start;
+	}
+
+	@Override
+	public int maxIndex() {
+		return start+length-1;
+	}
+	
+	@Override
 	public int get(int i) {
 		assert((i>=0)&&(i<length));
 		return start+i;

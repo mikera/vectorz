@@ -1,7 +1,10 @@
 package mikera.transformz;
 
+import mikera.indexz.Index;
+import mikera.indexz.Indexz;
 import mikera.transformz.impl.AConstantTransform;
 import mikera.transformz.impl.CompoundTransform;
+import mikera.transformz.impl.SubsetTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
@@ -107,6 +110,27 @@ public abstract class ATransform implements Cloneable {
 	 */
 	public boolean isIdentity() {
 		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * Returns a wrapper transform that returns a subset of this transform's components
+	 */
+	public ATransform takeComponents(int length) {
+		return SubsetTransform.create(this,Indexz.createSequence(length));
+	}
+	
+	/**
+	 * Returns a wrapper transform that returns a subset of this transform's components
+	 */
+	public ATransform takeComponents(int start, int length) {
+		return SubsetTransform.create(this,Indexz.createSequence(start,length));
+	}
+	
+	/**
+	 * Returns a wrapper transform that returns a subset of this transform's components
+	 */
+	public ATransform takeComponents(Index components) {
+		return SubsetTransform.create(this,components);
 	}
 
 	/**

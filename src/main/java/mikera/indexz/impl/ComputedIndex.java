@@ -15,6 +15,7 @@ public abstract class ComputedIndex extends AIndex {
 	protected final int length;
 	
 	public ComputedIndex(int length) {
+		assert(length>=0);
 		this.length=length;
 	}
 
