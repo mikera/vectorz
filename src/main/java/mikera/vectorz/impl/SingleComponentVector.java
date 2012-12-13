@@ -49,6 +49,11 @@ public final class SingleComponentVector extends AVector {
 	public boolean isFullyMutable() {
 		return false;
 	}
+	
+	@Override
+	public void scale(double factor) {
+		value*=factor;
+	}
 
 	@Override
 	public double get(int i) {

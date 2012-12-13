@@ -150,8 +150,6 @@ public final class Vector3 extends APrimitiveVector {
 		addMultiple(normal,distance-d);
 	}
 
-
-	
 	@Override
 	public int length() {
 		return 3;

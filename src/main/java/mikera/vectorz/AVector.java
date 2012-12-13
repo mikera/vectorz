@@ -403,6 +403,16 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
+	 * Normalises so that the maximum absolute component is 1.0
+	 * Returns the prvious maximum absoute component.
+	 */
+	public double normaliseMaxAbsComponent() {
+		double scale=maxAbsComponent();
+		scale(1.0/scale);
+		return scale;
+	}
+	
+	/**
 	 * Returns the euclidean angle between this vector and another vector
 	 * @return angle in radians
 	 */

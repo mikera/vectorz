@@ -43,6 +43,11 @@ public final class IdenticalComponentVector extends AVector {
 		assert((i>=0)&&(i<dimensions));
 		return value;
 	}
+	
+	@Override
+	public void scale(double factor) {
+		value*=factor;
+	}
 
 	@Override
 	public void set(int i, double value) {
