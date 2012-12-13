@@ -4,7 +4,7 @@ import mikera.vectorz.AVector;
 
 /**
  * A mutable vector that always has one non-zero components.
- * All other components are forced to remain at zero.
+ * All other components are forced to remain at zero, setting them is ignored.
  * @author Mike
  *
  */
@@ -22,6 +22,32 @@ public final class SingleComponentVector extends AVector {
 	@Override
 	public int length() {
 		return dimensions;
+	}
+	
+	@Override
+	public double magnitude() {
+		return value;
+	}
+	
+	@Override
+	public double magnitudeSquared() {
+		return value*value;
+	}
+	
+	@Override
+	public double normalise() {
+		double ret=value;
+		if (value>0) {
+			value=1.0;
+		} else if (value<0) {
+			value=-1.0;
+		} 
+		return ret;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return false;
 	}
 
 	@Override
