@@ -80,7 +80,27 @@ public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIn
 			swap(i,(len-1)-i);
 		}
 	}
+	
+	public int minIndex() {
+		int len=length();
+		int min=get(0);
+		for (int i=1; i<len; i++) {
+			int x=get(i);
+			if (x<min) min=x;
+		}
+		return min;
+	}
 
+	public int maxIndex() {
+		int len=length();
+		int max=get(0);
+		for (int i=1; i<len; i++) {
+			int x=get(i);
+			if (x>max) max=x;
+		}
+		return max;
+	}
+	
 	public boolean isSorted() {
 		int len=length();
 		for (int i=1; i<len; i++) {
