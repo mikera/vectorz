@@ -9,8 +9,10 @@ import java.util.List;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.IdenticalComponentVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
+import mikera.vectorz.impl.SingleComponentVector;
 import mikera.vectorz.impl.Vector0;
 
 import org.junit.Test;
@@ -137,6 +139,7 @@ public class TestVectors {
 	}
 	
 	public void testOutOfBounds(AVector v) {
+		if (!v.isFullyMutable()) return;
 		try {
 			v.set(-1, 0.0);
 			fail("Should be out of bounds!");
@@ -353,7 +356,12 @@ public class TestVectors {
 		doGenericTests(m3.asVector());
 		doGenericTests(m3.getRow(2));
 		doGenericTests(m3.getColumn(2));
+		
+		doGenericTests(new SingleComponentVector(1,3));
+		doGenericTests(new SingleComponentVector(1,1));
 
+		doGenericTests(new IdenticalComponentVector(1,1.0));
+		doGenericTests(new IdenticalComponentVector(10,1.0));
 	}
 	
 	@Test public void testDistances() {

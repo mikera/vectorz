@@ -34,6 +34,11 @@ public final class IdenticalComponentVector extends AVector {
 	}
 
 	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
+	
+	@Override
 	public double get(int i) {
 		assert((i>=0)&&(i<dimensions));
 		return value;
