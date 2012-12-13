@@ -19,10 +19,20 @@ public final class DiagonalMatrix extends AMatrix {
 		data=new double[dimensions];
 	}
 	
-	public DiagonalMatrix(double... values) {
+	private DiagonalMatrix(double... values) {
 		dimensions=values.length;
-		data=new double[dimensions];
+		data=values;
+	}
+	
+	public static DiagonalMatrix create(double... values) {
+		int dimensions=values.length;
+		double[] data=new double[dimensions];
 		System.arraycopy(values, 0, data, 0, dimensions);
+		return new DiagonalMatrix(data);
+	}
+	
+	public static DiagonalMatrix wrap(double[] data) {
+		return new DiagonalMatrix(data);
 	}
 	
 	@Override
@@ -94,6 +104,15 @@ public final class DiagonalMatrix extends AMatrix {
 			det*=data[i];
 		}
 		return det;
+	}
+	
+	@Override
+	public DiagonalMatrix inverse() {
+		double[] newData=new double[dimensions];
+		for (int i=0; i<dimensions; i++) {
+			newData[i]=1.0/data[i];
+		}
+		return new DiagonalMatrix(newData);
 	}
 	
 	@Override

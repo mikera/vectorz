@@ -43,6 +43,12 @@ public class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double determinant() {
+		assert(isSquare());
+		return 0.0;
+	}
+	
+	@Override
 	public double calculateComponent(int i, AVector v) {
 		return 0.0;
 	}
@@ -70,6 +76,11 @@ public class ZeroMatrix extends AMatrix {
 	@Override 
 	public int hashCode() {
 		return Tools.zeroVectorHash(inputDimensions*outputDimensions);
+	}
+	
+	@Override
+	public boolean isInvertible() {
+		return false;
 	}
 
 	public static ZeroMatrix create(int rows, int columns) {
