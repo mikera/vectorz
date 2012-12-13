@@ -57,6 +57,11 @@ public class TransposedMatrix extends AMatrix {
 	}
 	
 	@Override 
+	public double determinant() {
+		return source.determinant();
+	}
+	
+	@Override 
 	public AMatrix getTranspose() {
 		// Transposing again just gets us back to the original source matrix
 		return source;

@@ -92,6 +92,11 @@ public class IdentityMatrix extends AMatrix {
 	}
 	
 	@Override 
+	public double determinant() {
+		return 1.0;
+	}
+	
+	@Override 
 	public AMatrix getTranspose() {
 		return this;
 	}
