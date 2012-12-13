@@ -1,5 +1,6 @@
 package mikera.indexz;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mikera.util.Rand;
@@ -70,6 +71,22 @@ public class Indexz {
 		assert(result.isDistinct()&&result.isSorted());
 		result.lookupWith(source);
 		return result;
+	}
+	
+	/**
+	 * Returns a random subset of an Index, including each element with the given probability
+	 * @param probability
+	 * @return
+	 */
+	public static AIndex createRandomSubset(AIndex index, double probability) {
+		ArrayList<Integer> al=new ArrayList<Integer>();
+		int len=index.length();
+		for (int i=0; i<len; i++) {
+			if (Rand.chance(probability)) {
+				al.add(index.get(i));
+			}
+		}
+		return Indexz.create(al);
 	}
 	
 

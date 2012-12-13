@@ -73,9 +73,15 @@ public class TestIndex {
 		assertEquals(1,hs.size());
 	}
 	
+	private void doRandomSubsetTest(AIndex index) {
+		AIndex b=Indexz.createRandomSubset(index, 0.5);
+		assertTrue(b.length()<=index.length());
+	}
+
+	
 	private void doTests(AIndex index) {
 		doCloneTest(index);
-		
+		doRandomSubsetTest(index);
 	}
 
 
