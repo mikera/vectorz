@@ -26,6 +26,11 @@ public final class ConstantTransform extends AConstantTransform {
 		constant=new double[outputDimensions];
 		value.copyTo(constant, 0);
 	}
+	
+	@Override
+	public double calculateComponent(int i, AVector v) {
+		return constant[i];
+	}
 
 	@Override
 	public int outputDimensions() {

@@ -55,6 +55,11 @@ public final class IdentityTranslation extends ATranslation {
 	}
 	
 	@Override
+	public double calculateComponent(int i, AVector v) {
+		return v.get(i);
+	}
+	
+	@Override
 	public boolean isIdentity() {
 		return true;
 	}

@@ -98,6 +98,13 @@ public abstract class ATransform implements Cloneable {
 	}
 	
 	/**
+	 * 
+	 */
+	public double calculateComponent(int i, AVector v) {
+		throw new UnsupportedOperationException(this.getClass().toString()+ " does not support caomputing individual components");
+	}
+	
+	/**
 	 * Transforms a vector destructively. Intended for fast non-allocating transforms
 	 * @param v
 	 */

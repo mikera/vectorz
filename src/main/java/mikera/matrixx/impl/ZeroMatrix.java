@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 
 /**
@@ -39,6 +40,11 @@ public class ZeroMatrix extends AMatrix {
 	@Override
 	public int columnCount() {
 		return inputDimensions;
+	}
+	
+	@Override
+	public double calculateComponent(int i, AVector v) {
+		return 0.0;
 	}
 
 	@Override

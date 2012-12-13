@@ -63,6 +63,11 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	}
 	
 	@Override
+	public double calculateComponent(int i, AVector v) {
+		return getRow(i).dotProduct(v);
+	}
+	
+	@Override
 	public AAffineTransform toAffineTransform() {
 		return new AffineMN(new VectorMatrixMN(this),
 				Transformz.identityTranslation(outputDimensions()));
