@@ -347,6 +347,19 @@ public class TestMatrixx {
 		assertEquals(m.hashCode(),m.toVector().hashCode());
 	}
 	
+	void doBigComposeTest(AMatrix m) {
+		AMatrix a=Matrixx.createRandomSquareMatrix(m.outputDimensions());
+		AMatrix b=Matrixx.createRandomSquareMatrix(m.inputDimensions());
+		AMatrix mb=m.compose(b);
+		AMatrix amb=a.compose(mb);
+		
+		AVector v=Vectorz.createUniformRandomVector(b.inputDimensions());
+		
+		AVector ambv=a.transform(m.transform(b.transform(v)));
+		assertTrue(amb.transform(v).epsilonEquals(ambv));
+	}
+	
+	
 	void doGenericTests(AMatrix m) {
 		doVectorTest(m);
 		doParseTest(m);
@@ -356,6 +369,7 @@ public class TestMatrixx {
 		doMutationTest(m);
 		doMaybeSquareTests(m);
 		doRandomTests(m);
+		doBigComposeTest(m);
 	}
 
 	@Test public void genericTests() {
