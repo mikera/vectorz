@@ -13,6 +13,12 @@ public class TestTools {
 			assertEquals(new Double(v).hashCode(),Tools.hashCode(v));
 		}
 	}
+	
+	@Test public void testZeroVectorHash() {
+		assertEquals(1,Tools.zeroVectorHash(0));
+		assertEquals(31,Tools.zeroVectorHash(1));
+	}
+	
 	@Test public void testToDouble() {
 		assertEquals(1.3,Tools.toDouble(new Double(1.3)),0.0);
 		assertEquals(1.0,Tools.toDouble(new Integer(1)),0.0);

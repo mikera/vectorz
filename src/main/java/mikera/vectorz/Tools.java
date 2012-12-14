@@ -82,7 +82,8 @@ public final class Tools {
 	 * @return
 	 */
 	public static int zeroVectorHash(int length) {
-		// TODO: more efficient version? check StackOverflow question
+		// TODO: when updating to latest mathz version use 
+		// Maths.modPower32Bit(31,length); 
 		
 		if (length<ZERO_HASHES.length) return ZERO_HASHES[length];
 		
