@@ -11,11 +11,10 @@ import mikera.vectorz.Vectorz;
  *
  */
 public class IdentityMatrix extends ADiagonalMatrix {
-	private final int dimensions;
 	private static final int INSTANCE_COUNT=6;
 	
 	private IdentityMatrix(int dimensions) {
-		this.dimensions=dimensions;
+		super(dimensions);
 	}
 	
 	private static final  IdentityMatrix[] INSTANCES=new IdentityMatrix[INSTANCE_COUNT];
@@ -33,16 +32,6 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	@Override
 	public double calculateComponent(int i, AVector v) {
 		return v.get(i);
-	}
-	
-	@Override
-	public int rowCount() {
-		return dimensions;
-	}
-
-	@Override
-	public int columnCount() {
-		return dimensions;
 	}
 
 	@Override
@@ -90,10 +79,4 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	public AMatrix getTranspose() {
 		return this;
 	}
-	
-	@Override
-	public void transposeInPlace() {
-		// Nothing to do!
-	}
-
 }

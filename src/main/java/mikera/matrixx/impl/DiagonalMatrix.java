@@ -115,9 +115,6 @@ public final class DiagonalMatrix extends AMatrix {
 	}
 
 	
-	@Override
-	public void transposeInPlace() {
-		// already done!
-	}
+
 
 }
