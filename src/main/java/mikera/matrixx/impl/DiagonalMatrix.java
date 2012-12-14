@@ -10,17 +10,16 @@ import mikera.vectorz.Vectorz;
  * 
  * @author Mike
  */
-public final class DiagonalMatrix extends AMatrix {
-	final int dimensions;
-	final double[] data;
+public final class DiagonalMatrix extends ADiagonalMatrix {
+	private final double[] data;
 	
 	public DiagonalMatrix(int dimensions) {
-		this.dimensions=dimensions;
+		super(dimensions);
 		data=new double[dimensions];
 	}
 	
 	private DiagonalMatrix(double... values) {
-		dimensions=values.length;
+		super(values.length);
 		data=values;
 	}
 	
@@ -33,18 +32,6 @@ public final class DiagonalMatrix extends AMatrix {
 	
 	public static DiagonalMatrix wrap(double[] data) {
 		return new DiagonalMatrix(data);
-	}
-	
-	@Override
-	public int rowCount() {
-		return dimensions;
-	}
-	
-
-
-	@Override
-	public int columnCount() {
-		return dimensions;
 	}
 
 	@Override
@@ -64,7 +51,7 @@ public final class DiagonalMatrix extends AMatrix {
 	
 	@Override
 	public double calculateComponent(int i, AVector v) {
-		return v.get(i)*data[i];
+		return data[i]*v.get(i);
 	}
 
 	@Override
@@ -74,8 +61,6 @@ public final class DiagonalMatrix extends AMatrix {
 			v.set(i,v.get(i)*data[i]);
 		}
 	}
-	
-
 	
 	@Override 
 	public boolean isIdentity() {
@@ -107,6 +92,11 @@ public final class DiagonalMatrix extends AMatrix {
 			newData[i]=1.0/data[i];
 		}
 		return new DiagonalMatrix(newData);
+	}
+	
+	@Override
+	public double getDiagonalValue(int i) {
+		return data[i];
 	}
 	
 	@Override

@@ -3,7 +3,7 @@ package mikera.transformz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.impl.DiagonalMatrix;
+import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.transformz.impl.ConstantTransform;
 import mikera.transformz.impl.ConstantTransform3;
 import mikera.transformz.impl.ConstantTransform4;
@@ -21,7 +21,7 @@ public class Transformz {
 	/**
 	 * Creates a 3D scaling transform
 	 */
-	public static DiagonalMatrix scale3D(double factor) {
+	public static ADiagonalMatrix scale3D(double factor) {
 		return Matrixx.createScaleMatrix(3, factor);
 	}
 	

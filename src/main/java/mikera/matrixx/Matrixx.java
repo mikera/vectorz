@@ -5,8 +5,10 @@ import java.util.List;
 
 import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
+import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.util.Rand;
 import mikera.vectorz.AVector;
@@ -46,12 +48,16 @@ public class Matrixx {
 		return ZeroMatrix.create(rows,columns);
 	}
 	
-	public static DiagonalMatrix createScaleMatrix(int dimensions, double factor) {
+	public static ADiagonalMatrix createScaleMatrix(int dimensions, double factor) {
 		DiagonalMatrix im=new DiagonalMatrix(dimensions);
 		for (int i=0; i<dimensions; i++) {
 			im.set(i,i,factor);
 		}
 		return im;
+	}
+	
+	public static ADiagonalMatrix createScalarMatrix(int dimensions, double factor) {
+		return (ADiagonalMatrix) ScalarMatrix.create(dimensions, factor);
 	}
 	
 	public static DiagonalMatrix createScaleMatrix(double... scalingFactors) {
