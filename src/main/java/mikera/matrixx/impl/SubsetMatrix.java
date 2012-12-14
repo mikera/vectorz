@@ -5,7 +5,8 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**
- * Transform wrapper that produces a subset of the output components of another transform
+ * Matrix that selects a subset of components of the source
+ * i.e. has a single 1 in each row
  * 
  * @author Mike
  */

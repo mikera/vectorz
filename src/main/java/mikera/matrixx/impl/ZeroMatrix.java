@@ -8,7 +8,7 @@ import mikera.vectorz.Tools;
 /**
  * Lightweight immutable zero matrix class
  */
-public class ZeroMatrix extends AMatrix {
+public final class ZeroMatrix extends AMatrix {
 	private final int inputDimensions;
 	private final int outputDimensions;
 

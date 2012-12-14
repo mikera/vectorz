@@ -40,10 +40,7 @@ public final class DiagonalMatrix extends AMatrix {
 		return dimensions;
 	}
 	
-	@Override
-	public boolean isSquare() {
-		return true;
-	}
+
 
 	@Override
 	public int columnCount() {
@@ -78,10 +75,7 @@ public final class DiagonalMatrix extends AMatrix {
 		}
 	}
 	
-	@Override
-	public boolean isFullyMutable() {
-		return false;
-	}
+
 	
 	@Override 
 	public boolean isIdentity() {

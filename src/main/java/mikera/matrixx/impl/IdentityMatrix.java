@@ -10,7 +10,7 @@ import mikera.vectorz.Vectorz;
  * @author Mike
  *
  */
-public class IdentityMatrix extends AMatrix {
+public class IdentityMatrix extends ADiagonalMatrix {
 	private final int dimensions;
 	private static final int INSTANCE_COUNT=6;
 	
@@ -65,20 +65,10 @@ public class IdentityMatrix extends AMatrix {
 	}
 	
 	@Override
-	public boolean isFullyMutable() {
-		return false;
-	}
-	
-	@Override
 	public AVector getLeadingDiagonal() {
 		AVector v= Vectorz.newVector(dimensions);
 		v.fill(1.0);
 		return v;
-	}
-	
-	@Override
-	public boolean isSquare() {
-		return true;
 	}
 	
 	@Override 
