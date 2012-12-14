@@ -298,7 +298,7 @@ public class Matrixx {
 	}
 
 	/**
-	 * Creates a mutable copy of a matrix
+	 * Creates a mutable deep copy of a matrix
 	 */
 	public static AMatrix create(AMatrix m) {
 		int rows=m.rowCount();

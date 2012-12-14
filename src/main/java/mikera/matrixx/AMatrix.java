@@ -4,10 +4,9 @@ import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.AAffineTransform;
+import mikera.transformz.ALinearTransform;
 import mikera.transformz.ATransform;
-import mikera.transformz.ATranslation;
 import mikera.transformz.AffineMN;
-import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
@@ -21,7 +20,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AMatrix extends AAffineTransform implements IMatrix {
+public abstract class AMatrix extends ALinearTransform implements IMatrix {
 	// ==============================================
 	// Abstract interface
 
@@ -69,18 +68,12 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 	
 	@Override
 	public AAffineTransform toAffineTransform() {
-		return new AffineMN(new VectorMatrixMN(this),
-				Transformz.identityTranslation(outputDimensions()));
+		return new AffineMN(new VectorMatrixMN(this),getTranslationComponent());
 	}
 
 	@Override
 	public AMatrix getMatrixComponent() {
 		return this;
-	}
-
-	@Override
-	public ATranslation getTranslationComponent() {
-		return Transformz.identityTranslation(rowCount());
 	}
 	
 	@Override
@@ -278,6 +271,10 @@ public abstract class AMatrix extends AAffineTransform implements IMatrix {
 		return det;
 	}
 
+	/**
+	 * Creates a fully mutable deep copy of this matrix
+	 * @return A new matrix
+	 */
 	public AMatrix toMutableMatrix() {
 		return Matrixx.create(this);
 	}

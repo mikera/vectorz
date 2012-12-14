@@ -8,7 +8,7 @@ import mikera.vectorz.AVector;
  * 
  * @author Mike
  */
-public abstract class AAffineTransform extends ALinearTransform {
+public abstract class AAffineTransform extends ATransform {
 	// ===========================================
 	// Abstract interface
 	public abstract AMatrix getMatrixComponent();
@@ -104,6 +104,11 @@ public abstract class AAffineTransform extends ALinearTransform {
 		v.negate();
 		m.transformInPlace(v);
 		return Transformz.createAffineTransform(m, v);
+	}
+	
+	@Override 
+	public boolean isLinear() {
+		return true;
 	}
 	
 	@Override
