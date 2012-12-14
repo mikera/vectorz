@@ -663,7 +663,4 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 			set(i, v.get(indexes.get(i)));
 		}
 	}
-
-
-
 }

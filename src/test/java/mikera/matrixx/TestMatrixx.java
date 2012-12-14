@@ -2,10 +2,12 @@ package mikera.matrixx;
 
 import static org.junit.Assert.*;
 
+import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.PermutedMatrix;
+import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.ATransform;
@@ -401,5 +403,9 @@ public class TestMatrixx {
 		
 		MatrixMN am2=new MatrixMN(mmn);
 		doGenericTests(am2);
+		
+		doGenericTests(SubsetMatrix.create(Index.of(0,1,2),3));
+		doGenericTests(SubsetMatrix.create(Index.of(0,1,3,10),12));
+		doGenericTests(SubsetMatrix.create(Index.of(0,3,2,1),4));
 	}
 }
