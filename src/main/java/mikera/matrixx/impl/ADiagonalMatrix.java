@@ -72,4 +72,8 @@ public abstract class ADiagonalMatrix extends AMatrix {
 		throw new UnsupportedOperationException("Matrix set not supported by "+this.getClass());
 	}
 
+	public double getDiagonalValue(int i) {
+		return get(i,i);
+	}
+
 }

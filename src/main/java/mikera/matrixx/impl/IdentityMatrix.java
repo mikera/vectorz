@@ -76,6 +76,12 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override 
+	public AMatrix compose(AMatrix a) {
+		assert(a.rowCount()==this.dimensions);
+		return a.clone();
+	}
+	
+	@Override 
 	public AMatrix getTranspose() {
 		return this;
 	}

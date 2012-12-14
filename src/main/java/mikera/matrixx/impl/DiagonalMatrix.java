@@ -114,7 +114,19 @@ public final class DiagonalMatrix extends AMatrix {
 		return Vectorz.create(data);
 	}
 
+	public AMatrix compose(AMatrix a) {
+		if (a instanceof ADiagonalMatrix) {
+			return compose((ADiagonalMatrix) a);
+		}
+		return super.compose(a);
+	}
 	
-
-
+	public AMatrix compose(ADiagonalMatrix a) {
+		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
+		DiagonalMatrix result=DiagonalMatrix.create(this.data);
+		for (int i=0; i<dimensions; i++) {
+			result.data[i]*=a.getDiagonalValue(i);
+		}
+		return result;
+	}
 }
