@@ -2,6 +2,10 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 
+/**
+ * Scalar matrix class - i.e. multiplies every component by a constant factor
+ * @author Mike
+ */
 public class ScalarMatrix extends ADiagonalMatrix {
 	
 	private double scale;

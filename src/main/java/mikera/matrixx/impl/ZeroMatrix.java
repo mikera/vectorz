@@ -50,6 +50,8 @@ public final class ZeroMatrix extends AMatrix {
 	
 	@Override
 	public double calculateComponent(int i, AVector v) {
+		assert(i>=0);
+		assert(i<outputDimensions);
 		return 0.0;
 	}
 

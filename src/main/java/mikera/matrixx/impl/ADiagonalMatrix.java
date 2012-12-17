@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
 
 /**
  * Abstract base class for diagonal matrices
@@ -43,6 +44,13 @@ public abstract class ADiagonalMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void transformInPlace(AVector v) {
+		for (int i=0; i<dimensions; i++) {
+			v.set(i,v.get(i)*getDiagonalValue(i));
+		}
+	}
+	
+	@Override
 	public int rowCount() {
 		return dimensions;
 	}
@@ -65,6 +73,11 @@ public abstract class ADiagonalMatrix extends AMatrix {
 	@Override
 	public void transposeInPlace() {
 		// already done!
+	}
+	
+	@Override
+	public double calculateComponent(int i, AVector v) {
+		return v.get(i)*getDiagonalValue(i);
 	}
 	
 	@Override
