@@ -25,6 +25,16 @@ public final class ConstantTransform3 extends AConstantTransform {
 		y=value.get(1);
 		z=value.get(2);
 	}
+	
+	@Override
+	public double calculateComponent(int i, AVector inputVector) {
+		switch (i) {
+			case 0: return x;
+			case 1: return y;
+			case 2: return z;
+			default: throw new IndexOutOfBoundsException("Index: "+i);
+		}
+	}
 
 	@Override
 	public int outputDimensions() {

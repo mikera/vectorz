@@ -6,6 +6,10 @@ import mikera.transformz.AAffineTransform;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 
+/**
+ * Abstract base class for transforms that produce a constant result.
+ * @author Mike
+ */
 public abstract class AConstantTransform extends AAffineTransform {
 	private final int inputDimensions;
 
@@ -19,6 +23,7 @@ public abstract class AConstantTransform extends AAffineTransform {
 	
 	@Override
 	public boolean isIdentity() {
+		// constant transform can't be identity!
 		return false;
 	}
 	
