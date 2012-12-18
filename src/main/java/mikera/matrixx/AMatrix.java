@@ -89,6 +89,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix {
 		return true;
 	}
 
+	@Override
 	public boolean isSquare() {
 		return rowCount() == columnCount();
 	}

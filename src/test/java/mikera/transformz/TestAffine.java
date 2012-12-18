@@ -3,6 +3,7 @@ package mikera.transformz;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.transformz.impl.ConstantTransform;
 import mikera.vectorz.AVector;
@@ -14,7 +15,9 @@ public class TestAffine {
 
 	void testAffineProperty(AAffineTransform t) {
 		int inputDim=t.inputDimensions();
+		int outputDim=t.outputDimensions();
 		
+		assertEquals(inputDim==outputDim,t.isSquare());
 		assertTrue(t.isLinear());
 		
 		AVector v=Vectorz.createUniformRandomVector(inputDim);
@@ -68,12 +71,26 @@ public class TestAffine {
 		assertEquals(t,t.clone());
 	}
 	
+	private void testNormalTransform(AAffineTransform t) {
+		if (!t.isSquare()) return;
+		int dimensions=t.inputDimensions();
+		AVector d=Vectorz.newVector(dimensions);
+		Vectorz.fillGaussian(d);
+		d.normalise();
+		
+		AVector r=Vectorz.newVector(dimensions);
+		
+		t.transformNormal(d, r);
+		assertTrue(r.isZeroVector()||r.isUnitLengthVector());
+	}
+	
 	private void doAffineTests(AAffineTransform t) {
 		testAffineDecomposition(t);		
 		TestTransformz.doTransformTests(t);
 		testAffineProperty(t);
 		testApplyToZeroVector(t);
 		testCloneTransform(t);		
+		testNormalTransform(t);		
 	}
 	
 	@Test public void genericConstantTests() {
@@ -84,7 +101,9 @@ public class TestAffine {
 	}
 	
 	@Test public void genericAffineTests() {
-		doAffineTests(Matrixx.createRandomMatrix(6,5));
+		AMatrix m65=Matrixx.createRandomMatrix(6,5);
+		assertTrue(!m65.isSquare());
+		doAffineTests(m65);
 		
 
 		doAffineTests(Transformz.identityTranslation(3));

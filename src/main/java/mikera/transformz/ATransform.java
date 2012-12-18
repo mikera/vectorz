@@ -87,6 +87,14 @@ public abstract class ATransform implements Cloneable {
 	}
 	
 	/**
+	 * Returns true if the transform is square (same number of input and output dimensions)
+	 * @return
+	 */
+	public boolean isSquare() {
+		return inputDimensions()==outputDimensions();
+	}
+	
+	/**
 	 * Transforms a vector, returning a new transformed vector
 	 * 
 	 * @param v
@@ -98,16 +106,7 @@ public abstract class ATransform implements Cloneable {
 		return temp;
 	}
 	
-	/**
-	 * Transforms a normalised vector
-	 * 
-	 * @param v
-	 * @return
-	 */
-	public void transformNormal(AVector inputNormal, AVector outputNormal) {
-		transform(inputNormal,outputNormal);
-		outputNormal.normalise();
-	}
+
 	
 	/**
 	 * Calculates a single component of the output. 

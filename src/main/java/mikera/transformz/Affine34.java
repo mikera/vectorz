@@ -113,7 +113,7 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	@Override
 	public void transformNormal(AVector source, AVector dest) {
 		if ((source instanceof Vector3)&&(dest instanceof Vector3)) {
-			transform((Vector3)source,(Vector3)dest);
+			transformNormal((Vector3)source,(Vector3)dest);
 			return;
 		}		
 		transform(source, dest);
