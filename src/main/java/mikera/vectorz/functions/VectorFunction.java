@@ -5,7 +5,7 @@ import mikera.transformz.ATransform;
 /**
  * Abstract base class representing an arbitrary vector function.
  * 
- * Intended for overriding by external users want to creat enew forms of vector function
+ * Intended for overriding by external users want to create new forms of vector function
  * 
  * @author Mike
  */
