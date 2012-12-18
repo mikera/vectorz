@@ -41,6 +41,12 @@ public abstract class ATranslation extends AAffineTransform {
 	}
 	
 	@Override
+	public void transformNormal(AVector source, AVector dest) {
+		// translation does not affect normal
+		dest.set(source);
+	}
+	
+	@Override
 	public void transformInPlace(AVector v) {
 		v.add(getTranslationVector());
 	}

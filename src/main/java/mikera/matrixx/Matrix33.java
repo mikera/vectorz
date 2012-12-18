@@ -167,10 +167,25 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	public void transform(Vector3 source, Vector3 dest) {
-		Vector3 s=source;
-		dest.x=((m00*s.x)+(m01*s.y)+(m02*s.z));
-		dest.y=((m10*s.x)+(m11*s.y)+(m12*s.z));
-		dest.z=((m20*s.x)+(m21*s.y)+(m22*s.z));
+		double x=source.x, y=source.y, z=source.z;
+		dest.x=((m00*x)+(m01*y)+(m02*z));
+		dest.y=((m10*x)+(m11*y)+(m12*z));
+		dest.z=((m20*x)+(m21*y)+(m22*z));
+	}
+	
+	@Override
+	public void transformNormal(AVector source, AVector dest) {
+		if ((source instanceof Vector3)&&(dest instanceof Vector3)) {
+			transformNormal((Vector3)source,(Vector3)dest);
+			return;
+		}		
+		transform(source, dest);
+		dest.normalise();
+	}
+	
+	public void transformNormal(Vector3 source, Vector3 dest) {
+		transform(source,dest);
+		dest.normalise();
 	}
 	
 	public Vector3 transform(Vector3 source) {

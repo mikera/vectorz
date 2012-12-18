@@ -45,6 +45,10 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 			default: throw new IndexOutOfBoundsException("Index = "+i);
 		}
 	}
+	
+	public void transformNormal(Vector3 source, Vector3 dest) {
+		dest.set(source);
+	}
 
 	@Override
 	public Vector3 getTranslationVector() {

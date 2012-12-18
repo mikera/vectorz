@@ -111,6 +111,24 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	@Override
+	public void transformNormal(AVector source, AVector dest) {
+		if ((source instanceof Vector3)&&(dest instanceof Vector3)) {
+			transform((Vector3)source,(Vector3)dest);
+			return;
+		}		
+		transform(source, dest);
+		dest.normalise();
+	}
+	
+	public void transformNormal(Vector3 source, Vector3 dest) {
+		double x=source.x, y=source.y, z=source.z;
+		dest.set(0,((m00*x)+(m01*y)+(m02*z)));
+		dest.set(1,((m10*x)+(m11*y)+(m12*z)));
+		dest.set(2,((m20*x)+(m21*y)+(m22*z)));
+		dest.normalise();
+	}
+	
+	@Override
 	public void transformInPlace(AVector dest) {
 		if (dest instanceof Vector3) {
 			transformInPlace((Vector3)dest);

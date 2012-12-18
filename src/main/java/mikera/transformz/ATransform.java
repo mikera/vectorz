@@ -99,6 +99,17 @@ public abstract class ATransform implements Cloneable {
 	}
 	
 	/**
+	 * Transforms a normalised vector
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public void transformNormal(AVector inputNormal, AVector outputNormal) {
+		transform(inputNormal,outputNormal);
+		outputNormal.normalise();
+	}
+	
+	/**
 	 * Calculates a single component of the output. 
 	 * Not necessarily faster than calculating full output, but can be in some circumstances.
 	 */
