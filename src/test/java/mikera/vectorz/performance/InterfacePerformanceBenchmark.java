@@ -13,7 +13,6 @@ import mikera.vectorz.Vector3;
  * @author Mike
  */
 
-@SuppressWarnings("cast")
 public class InterfacePerformanceBenchmark extends SimpleBenchmark {
 	double r;
 	
