@@ -113,6 +113,21 @@ public final class ZeroMatrix extends AMatrix {
 	public void composeWith(AMatrix t) {
 		assert(t.inputDimensions()==t.outputDimensions());
 	}
+	
+	@Override 
+	public void entrywiseMul(AMatrix m) {
+		// do nothing, already zero!
+	}
+
+	@Override
+	public boolean equals(AMatrix m) {
+		return m.isZeroMatrix();
+	}
+	
+	@Override
+	public ZeroMatrix getTranspose() {
+		return ZeroMatrix.create(inputDimensions, outputDimensions);
+	}
 
 	public static ZeroMatrix create(int rows, int columns) {
 		return new ZeroMatrix(rows,columns);
