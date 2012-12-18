@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ADiagonalMatrix;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.impl.ConstantTransform;
 import mikera.transformz.impl.ConstantTransform3;
 import mikera.transformz.impl.ConstantTransform4;
@@ -37,6 +38,13 @@ public class Transformz {
 	 */
 	public static ATransform identityTransform(int dimensions) {
 		return IdentityTranslation.create(dimensions);
+	}
+	
+	/**
+	 * Creates a zero transform (maps every vector to zero)
+	 */
+	public static AMatrix zeroTransform(int inputDimensions, int outputDimensions) {
+		return ZeroMatrix.create(outputDimensions,inputDimensions);
 	}
 	
 	public static ATranslation createTranslation(AVector v) {

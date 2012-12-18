@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 
@@ -57,7 +58,7 @@ public final class ZeroMatrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		return 0;
+		return 0.0;
 	}
 
 	@Override
@@ -81,8 +82,36 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void transform(AVector input, AVector output) {
+		assert(output.length()==outputDimensions);
+		output.fill(0.0);
+	}
+	
+	@Override
 	public boolean isInvertible() {
 		return false;
+	}
+	
+	@Override
+	public AMatrix compose(ATransform t) {
+		assert(inputDimensions()==t.outputDimensions());
+		return ZeroMatrix.create(outputDimensions, t.inputDimensions());
+	}
+	
+	@Override
+	public AMatrix compose(AMatrix m) {
+		assert(inputDimensions()==m.outputDimensions());
+		return ZeroMatrix.create(outputDimensions, m.inputDimensions());
+	}
+	
+	@Override
+	public void composeWith(ATransform t) {
+		assert(t.inputDimensions()==t.outputDimensions());
+	}
+	
+	@Override
+	public void composeWith(AMatrix t) {
+		assert(t.inputDimensions()==t.outputDimensions());
 	}
 
 	public static ZeroMatrix create(int rows, int columns) {
