@@ -6,6 +6,6 @@ package mikera.transformz.marker;
  * @author Mike
  */
 public interface ISpecialisedTransform {
-	// no implementation
-
+	
+	// no implementation, just a marker interface
 }

@@ -3,7 +3,6 @@ package mikera.vectorz;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
-
 import org.junit.Test;
 
 public class TestTools {

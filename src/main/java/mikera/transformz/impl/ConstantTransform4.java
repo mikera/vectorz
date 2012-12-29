@@ -2,6 +2,7 @@ package mikera.transformz.impl;
 
 import mikera.transformz.ATranslation;
 import mikera.transformz.Translation;
+import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector4;
 
@@ -10,7 +11,7 @@ import mikera.vectorz.Vector4;
  * @author Mike
  *
  */
-public final class ConstantTransform4 extends AConstantTransform {
+public final class ConstantTransform4 extends AConstantTransform implements ISpecialisedTransform {
 	private double x,y,z,t;
 	
 	/**
