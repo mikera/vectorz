@@ -31,6 +31,11 @@ public final class SubsetTransform extends ATransform {
 	}
 	
 	@Override
+	public double calculateComponent(int i, AVector source) {
+		return this.source.calculateComponent(components.get(i),source);
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		AVector v=this.source.transform(source);
 		dest.set(v,components);
