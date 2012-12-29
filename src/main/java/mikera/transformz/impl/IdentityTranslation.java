@@ -50,6 +50,11 @@ public final class IdentityTranslation extends ATranslation {
 	}
 	
 	@Override
+	public AVector transform(AVector source) {
+		return source.clone();		
+	}
+	
+	@Override
 	public void transformInPlace(AVector v) {
 		// no change!
 	}

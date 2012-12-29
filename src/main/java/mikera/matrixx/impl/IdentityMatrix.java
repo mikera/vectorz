@@ -54,6 +54,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public AVector transform(AVector source) {
+		return source.clone();		
+	}
+	
+	@Override
 	public AVector getLeadingDiagonal() {
 		AVector v= Vectorz.newVector(dimensions);
 		v.fill(1.0);
