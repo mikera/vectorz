@@ -21,6 +21,9 @@ public abstract class ATranslation extends AAffineTransform {
 	// =========================================
 	// Standard implementations
 
+	/**
+	 * Returns the number of dimensions of this translation
+	 */
 	public int dimensions() {
 		return getTranslationVector().length();
 	}
