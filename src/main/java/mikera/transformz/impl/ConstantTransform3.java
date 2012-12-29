@@ -6,7 +6,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
 
 /**
- * Class represnting a transform that returns a 3D constant
+ * Class representing a transform that returns a 3D constant
  * @author Mike
  *
  */
@@ -51,6 +51,11 @@ public final class ConstantTransform3 extends AConstantTransform {
 		dest.set(0,x);
 		dest.set(1,y);
 		dest.set(2,z);
+	}
+	
+	@Override
+	public Vector3 transform(AVector source) {
+		return Vector3.of(x,y,z);
 	}
 	
 	public void transform(AVector source, Vector3 dest) {
