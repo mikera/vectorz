@@ -9,9 +9,17 @@ import mikera.vectorz.impl.ArraySubVector;
  * @author Mike
  */
 public class VectorBuilder {
-	private double[] data=new double[4];
+	private double[] data;
 	
 	int length=0;
+	
+	public VectorBuilder() {
+		data=new double[4];
+	}
+	
+	public VectorBuilder(int initialCapacity) {
+		data=new double[initialCapacity];
+	}
 	
 	private void ensureSize(int newSize) {
 		if (newSize>data.length) {
