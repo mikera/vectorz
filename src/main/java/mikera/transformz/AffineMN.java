@@ -4,7 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**
- * General purpose MxN affine transformation
+ * General purpose MxN affine transformation, composed of a matrix and translation.
  * 
  * @author Mike
  */

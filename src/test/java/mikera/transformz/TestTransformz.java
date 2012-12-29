@@ -70,8 +70,20 @@ public class TestTransformz {
 			assertEquals(r.get(i),t.calculateComponent(i, v),0.0);
 		}
 	}
+	
+	public static void doSizeTest(ATransform t) {
+		assertEquals(t.inputDimensions()==t.outputDimensions(),t.isSquare());
+		
+		AVector iv=Vectorz.createUniformRandomVector(t.inputDimensions());
+		AVector ov=Vectorz.createUniformRandomVector(t.outputDimensions());
+		
+		assertEquals(t.outputDimensions(),t.transform(iv).length());
+		
+		t.transform(iv, ov);
+	}
 
 	public static void doTransformTests(ATransform t) {
+		doSizeTest(t);
 		doSubTest(t);
 		doHashTest(t);
 		doApplyTest(t);

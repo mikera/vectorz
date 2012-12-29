@@ -89,6 +89,11 @@ public abstract class ATranslation extends AAffineTransform {
 	}
 	
 	@Override
+	public boolean isSquare() {
+		return true;
+	}
+	
+	@Override
 	public boolean isInvertible() {
 		return true;
 	}
