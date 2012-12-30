@@ -358,6 +358,18 @@ public class Vectorz {
 			v.set(i,Rand.binary(prob));
 		}
 	}
+
+	/**
+	 * Coerce to AVector
+	 * @param o
+	 * @return
+	 */
+	public static AVector toVector(Object o) {
+		if (o instanceof AVector) {
+			return (AVector)o;
+		}
+		throw new UnsupportedOperationException("Cannot co-erce to AVector: "+o.getClass());
+	}
 	
 	
 }

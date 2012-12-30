@@ -1,6 +1,7 @@
 package mikera.matrixx;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import bpsm.edn.parser.Parser;
@@ -14,6 +15,7 @@ import mikera.util.Rand;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -39,6 +41,22 @@ public class Matrixx {
 	 */
 	public static IdentityMatrix createImmutableIdentityMatrix(int dimensions) {
 		return IdentityMatrix.create(dimensions);
+	}
+	
+	/**
+	 * Coerces to a matrix
+	 */
+	public static AMatrix toMatrix(Object o) {
+		if (o instanceof AMatrix) {
+			return (AMatrix) o;
+		} else if (o instanceof Iterable<?>) {
+			ArrayList<AVector> al=new ArrayList<AVector>();
+			for (Object obj: (Iterable<?>)o) {
+				al.add(Vectorz.toVector(obj));
+			}
+			return createFromVectors(al);
+		}
+		throw new UnsupportedOperationException("Can't convert to matrix: "+o.getClass());
 	}
 	
 	/**
@@ -350,6 +368,16 @@ public class Matrixx {
 		AMatrix m=newMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
 			m.getRow(i).set(data[i]);
+		}
+		return m;
+	}
+	
+	public static AMatrix createFromVectors(List<AVector> data) {
+		int rc=data.size();
+		int cc=(rc==0)?0:data.get(0).length();
+		AMatrix m=newMatrix(rc,cc);
+		for (int i=0; i<rc; i++) {
+			m.getRow(i).set(data.get(i));
 		}
 		return m;
 	}
