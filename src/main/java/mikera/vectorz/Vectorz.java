@@ -230,6 +230,11 @@ public class Vectorz {
 		return create(al);
 	}
 
+	/**
+	 * Returns the minimum-valued component in a vector
+	 * @param v
+	 * @return
+	 */
 	public static double minValue(AVector v) {
 		int len=v.length();
 		double min = Double.MAX_VALUE;
@@ -240,6 +245,11 @@ public class Vectorz {
 		return min;
 	}
 	
+	/**
+	 * Returns the index of the minimum-valued component in a vector
+	 * @param v
+	 * @return
+	 */
 	public static int indexOfMinValue(AVector v) {
 		int len=v.length();
 		double min = v.get(0);

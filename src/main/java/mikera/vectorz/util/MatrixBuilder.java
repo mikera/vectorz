@@ -24,7 +24,7 @@ public class MatrixBuilder {
 		}
 	}
 
-	public void add(List<Object> d) {
+	public void add(Iterable<Object> d) {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(d);
 	}
@@ -35,6 +35,10 @@ public class MatrixBuilder {
 	}
 
 
+	/**
+	 * Builds a matrix using a copy of the data in this MatrixBuilder
+	 * @return
+	 */
 	public AMatrix toMatrix() {
 		AVector[] nd=new AVector[length];
 		System.arraycopy(data, 0, nd, 0, length);
