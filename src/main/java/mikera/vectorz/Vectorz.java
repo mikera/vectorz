@@ -206,7 +206,7 @@ public class Vectorz {
 	}
 
 	/**
-	 * Create a vector from a list of numerical values (must be java.lang.Number instances)
+	 * Create a vector from a list of numerical values (objects should be java.lang.Number instances)
 	 */
 	public static AVector create(List<Object> d) {
 		int length=d.size();
@@ -364,9 +364,14 @@ public class Vectorz {
 	 * @param o
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static AVector toVector(Object o) {
 		if (o instanceof AVector) {
 			return (AVector)o;
+		} else if (o instanceof double[]) {
+			return Vectorz.create((double[])o);
+		} else if (o instanceof Iterable<?>) {
+			return Vectorz.create((Iterable<Object>)o);
 		}
 		throw new UnsupportedOperationException("Cannot co-erce to AVector: "+o.getClass());
 	}

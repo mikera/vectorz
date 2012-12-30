@@ -47,6 +47,20 @@ public final class Tools {
 			throw new IllegalArgumentException("Cannot convert to double: "+object.toString());
 		}
 	}
+	
+	/**
+	 * Convenience overload to convert a Double to a primitive double
+	 */
+	public static double toDouble(Double d) {
+		return d;
+	}
+	
+	/**
+	 * Convenience overload to convert a Number to a primitive double
+	 */
+	public static double toDouble(Number d) {
+		return d.doubleValue();
+	}
 
 	/**
 	 * Tests if two double values are approximately equal
