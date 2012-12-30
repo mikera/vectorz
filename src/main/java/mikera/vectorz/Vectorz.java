@@ -217,6 +217,11 @@ public class Vectorz {
 		return v;
 	}
 	
+	/**
+	 * Create a vector from an arbitrary iterable object
+	 * @param d
+	 * @return
+	 */
 	public static AVector create(Iterable<Object> d) {
 		ArrayList<Object> al=new ArrayList<Object>();
 		for (Object o:d) {
@@ -370,10 +375,12 @@ public class Vectorz {
 			return (AVector)o;
 		} else if (o instanceof double[]) {
 			return Vectorz.create((double[])o);
+		} else if (o instanceof List<?>) {
+			return Vectorz.create((List<Object>)o);
 		} else if (o instanceof Iterable<?>) {
 			return Vectorz.create((Iterable<Object>)o);
 		}
-		throw new UnsupportedOperationException("Cannot co-erce to AVector: "+o.getClass());
+		throw new UnsupportedOperationException("Cannot coerce to AVector: "+o.getClass());
 	}
 	
 	
