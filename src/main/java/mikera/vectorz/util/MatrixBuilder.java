@@ -8,7 +8,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 /**
- * Utility class for efficiently building vectors by addition of doubles
+ * Utility class for efficiently building matrices by addition of vector rows
  * @author Mike
  */
 public class MatrixBuilder {
@@ -28,9 +28,14 @@ public class MatrixBuilder {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(d);
 	}
+	
+	public void add(AVector v) {
+		ensureSize(length+1);
+		data[length++]=Vectorz.create(v);
+	}
 
 
-	public AMatrix toVector() {
+	public AMatrix toMatrix() {
 		AVector[] nd=new AVector[length];
 		System.arraycopy(data, 0, nd, 0, length);
 		return Matrixx.createFromVectors(nd);
