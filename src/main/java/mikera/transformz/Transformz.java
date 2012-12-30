@@ -41,6 +41,22 @@ public class Transformz {
 	}
 	
 	/**
+	 * Coerce to a transform:
+	 *  - vectors translate into constant transforms.
+	 * @param o
+	 * @return
+	 */
+	public ATransform toTransform(Object o) {
+		if (o instanceof ATransform) {
+			return (ATransform)o;
+		} else if (o instanceof AVector) {
+			AVector v=(AVector)o;
+			return constantTransform(v.length(),v);
+		}
+		throw new UnsupportedOperationException("Don't know to to convert to transform: "+o.getClass());
+	}
+	
+	/**
 	 * Creates a zero transform (maps every vector to zero)
 	 */
 	public static AMatrix zeroTransform(int inputDimensions, int outputDimensions) {

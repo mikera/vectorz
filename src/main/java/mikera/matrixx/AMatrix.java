@@ -1,5 +1,8 @@
 package mikera.matrixx;
 
+import java.util.Iterator;
+
+import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -20,7 +23,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AMatrix extends ALinearTransform implements IMatrix {
+public abstract class AMatrix extends ALinearTransform implements IMatrix, Iterable<AVector> {
 	// ==============================================
 	// Abstract interface
 
@@ -377,6 +380,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix {
 				set(i,j,get(i,j)+(m.get(i, j)*factor));
 			}
 		}
+	}
+	
+	/**
+	 * Returns an iterator over rows in this Matrix
+	 */
+	public Iterator<AVector> iterator() {
+		return new MatrixIterator(this);
 	}
 
 	@Override
