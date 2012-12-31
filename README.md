@@ -46,9 +46,9 @@ This focus has driven a number of important design decisions:
  
 If you have a common case that isn't yet well optimised then please post an issue - the aim is to make all common operations efficient as efficient as they can possibly be on the JVM.
 
-### Linear algebra
+### Linear algebra / large matrix algorithms
 
-While Vectorz has some support for linear algebra and big matrix computations, this isn't the primary focus. 
+While Vectorz has support for linear algebra and big matrix computations, this isn't the primary focus. In particular, there isn't much support for large sparse matrices as of yet. So if you are trying to solve large linear algebra equations, you may want to look elsewhere.
 
 If you are interested in doing mathematical computations with large matrices, you might also want to check out some of the more specialised linear algebra libraries:
 

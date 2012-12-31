@@ -5,7 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**
- * Matrix that selects a subset of components of the source
+ * Matrix that transforms to a subset of components of the source vector
  * i.e. has a single 1 in each row
  * 
  * @author Mike
