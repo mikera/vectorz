@@ -6,7 +6,9 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
+import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
@@ -426,5 +428,10 @@ public class TestMatrixx {
 		doGenericTests(ScalarMatrix.create(0,3.0));
 		doGenericTests(ScalarMatrix.create(3,3.0));
 		doGenericTests(ScalarMatrix.create(5,0));
+		
+		doGenericTests(new RowMatrix(Vector.of(1,2,3,4)));
+		doGenericTests(new ColumnMatrix(Vector.of(1,2,3,4)));
+		doGenericTests(new RowMatrix(Vector3.of(1,2,3)));
+		doGenericTests(new ColumnMatrix(Vector3.of(1,2,3)));
 	}
 }
