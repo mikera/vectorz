@@ -1,7 +1,5 @@
 package mikera.vectorz.util;
 
-import java.util.List;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
@@ -34,6 +32,10 @@ public class MatrixBuilder {
 		data[length++]=Vectorz.create(v);
 	}
 
+	public void add(double[] ds) {
+		ensureSize(length+1);
+		data[length++]=Vectorz.create(ds);
+	}
 
 	/**
 	 * Builds a matrix using a copy of the data in this MatrixBuilder
@@ -44,4 +46,6 @@ public class MatrixBuilder {
 		System.arraycopy(data, 0, nd, 0, length);
 		return Matrixx.createFromVectors(nd);
 	}
+
+
 }
