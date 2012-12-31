@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 /**
  * Class to represent a mutable list of integer indexes
+ * Backed by an array
  * 
  * @author Mike
  *
@@ -91,8 +92,9 @@ public final class Index extends AIndex {
 	}
 	
 	/**
-	 * Sorts the index (in-place)
+	 * Sorts the Index (in-place)
 	 */
+	@Override
 	public void sort() {
 		Arrays.sort(data);
 	}

@@ -101,12 +101,24 @@ public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIn
 		return max;
 	}
 	
+	/**
+	 * Returns true if this index is sorted (in strictly increasing order)
+	 * @return
+	 */
 	public boolean isSorted() {
 		int len=length();
 		for (int i=1; i<len; i++) {
 			if (get(i-1)>get(i)) return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Sorts the index in place. May not be supported by some AIndex implementations
+	 * e.g. if the index is immutable.
+	 */
+	public void sort() {
+		throw new UnsupportedOperationException();
 	}
 	
 	/**

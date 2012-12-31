@@ -1,6 +1,10 @@
 package mikera.indexz.impl;
 
-
+/**
+ * Class representing a sequential index [a, a+1, a+2..... b]
+ * @author Mike
+ *
+ */
 public class SequentialIndex extends ComputedIndex {
 	private static final long serialVersionUID = 8586796655048075367L;
 
