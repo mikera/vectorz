@@ -3,6 +3,10 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
+/**
+ * Matrix class that wraps a vector as a 1-row matrix
+ * @author Mike
+ */
 public class RowMatrix extends AMatrix {
 	private final AVector vector;
 	
