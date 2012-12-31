@@ -1,0 +1,39 @@
+package mikera.matrixx.impl;
+
+import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
+
+/**
+ * Matrix class that wraps a vector as a 1-columns matrix
+ * @author Mike
+ */
+public class ColumnMatrix extends AMatrix {
+	private final AVector vector;
+	
+	public ColumnMatrix(AVector v) {
+		vector=v;
+	}
+
+	@Override
+	public int rowCount() {
+		return vector.length();
+	}
+
+	@Override
+	public int columnCount() {
+		return 1;
+	}
+
+	@Override
+	public double get(int row, int column) {
+		assert(column==0);
+		return vector.get(row);
+	}
+
+	@Override
+	public void set(int row, int column, double value) {
+		assert(column==0);
+		vector.set(row,value);
+	}
+
+}
