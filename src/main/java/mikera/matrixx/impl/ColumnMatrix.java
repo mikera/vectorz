@@ -45,5 +45,11 @@ public class ColumnMatrix extends AMatrix {
 	public RowMatrix getTranspose() {
 		return new RowMatrix(vector);
 	}
+	
+	@Override
+	public AVector toVector() {
+		return vector.clone();
+	}
+
 
 }
