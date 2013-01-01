@@ -240,6 +240,18 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 				            m02,m12,m22);
 	}
 	
+	/**
+	 * Returns a row of the matrix as a vector reference
+	 */
+	public AVector cloneRow(int row) {
+		switch (row) {
+			case 0: return Vector3.of(m00,m01,m02);
+			case 1: return Vector3.of(m10,m11,m12);
+			case 2: return Vector3.of(m20,m21,m22);
+			default: throw new IndexOutOfBoundsException("Row index = "+row);
+		}
+	}
+	
 	@Override
 	public Matrix33 inverse() {
 		double det=determinant();
