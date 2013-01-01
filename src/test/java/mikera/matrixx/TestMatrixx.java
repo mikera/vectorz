@@ -230,6 +230,13 @@ public class TestMatrixx {
 	
 	private void doTransposeTest(AMatrix m) {
 		AMatrix m2=m.clone();
+		m2=m2.getTranspose();
+		m2=m2.getTranspose();
+		assertEquals(m,m2);
+	}
+	
+	private void doSquareTransposeTest(AMatrix m) {
+		AMatrix m2=m.clone();
 
 		m2.transposeInPlace();
 		
@@ -266,7 +273,7 @@ public class TestMatrixx {
 			doNotSquareTests(m);
 		} else {
 			assertEquals(m.rowCount(),m.columnCount());
-			doTransposeTest(m);
+			doSquareTransposeTest(m);
 			doLeadingDiagonalTests(m);
 		}
 	}
@@ -363,6 +370,7 @@ public class TestMatrixx {
 	
 	
 	void doGenericTests(AMatrix m) {
+		doTransposeTest(m);
 		doVectorTest(m);
 		doParseTest(m);
 		doHashTest(m);

@@ -39,5 +39,11 @@ public class RowMatrix extends AMatrix {
 		assert(row==0);
 		vector.set(column,value);
 	}
+	
+	@Override
+	public ColumnMatrix getTranspose() {
+		return new ColumnMatrix(vector);
+	}
+
 
 }
