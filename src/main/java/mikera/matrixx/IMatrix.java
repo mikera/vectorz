@@ -1,7 +1,7 @@
 package mikera.matrixx;
 
 /**
- * Interface for fundamental matrix access opertations.
+ * Interface for fundamental matrix access operations.
  * 
  * Matrix implementation should generally extend AMatrix which contains important
  * functionality implementations.

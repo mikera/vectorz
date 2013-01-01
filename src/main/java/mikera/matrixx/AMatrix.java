@@ -470,8 +470,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 */
 	public AVector asVector() {
 		int rc = rowCount();
-		if (rc == 0)
+		if (rc == 0) {
 			return Vector0.INSTANCE;
+		}
 
 		AVector v = getRow(0);
 		for (int i = 1; i < rc; i++) {
