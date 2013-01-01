@@ -13,6 +13,11 @@ public class ColumnMatrix extends AMatrix {
 	public ColumnMatrix(AVector v) {
 		vector=v;
 	}
+	
+	public static ColumnMatrix wrap(AVector v) {
+		return new ColumnMatrix(v);
+	}
+
 
 	@Override
 	public int rowCount() {

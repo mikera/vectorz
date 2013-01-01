@@ -13,6 +13,10 @@ public class RowMatrix extends AMatrix {
 	public RowMatrix(AVector v) {
 		vector=v;
 	}
+	
+	public static RowMatrix wrap(AVector v) {
+		return new RowMatrix(v);
+	}
 
 	@Override
 	public int rowCount() {
