@@ -241,9 +241,10 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	/**
-	 * Returns a row of the matrix as a vector reference
+	 * Returns a row of the matrix as a cloned vector
 	 */
-	public AVector cloneRow(int row) {
+	@Override
+	public Vector3 cloneRow(int row) {
 		switch (row) {
 			case 0: return Vector3.of(m00,m01,m02);
 			case 1: return Vector3.of(m10,m11,m12);

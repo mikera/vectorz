@@ -63,6 +63,15 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	public int columnCount() {
 		return 2;
 	}
+	
+	@Override
+	public Vector2 cloneRow(int row) {
+		switch (row) {
+			case 0: return Vector2.of(m00,m01);
+			case 1: return Vector2.of(m10,m11);
+			default: throw new IndexOutOfBoundsException("Row index = "+row);
+		}
+	}
 
 	@Override
 	public double get(int row, int column) {
