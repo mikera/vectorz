@@ -50,6 +50,11 @@ public class ColumnMatrix extends AMatrix {
 	public AVector toVector() {
 		return vector.clone();
 	}
+	
+	@Override
+	public AVector asVector() {
+		return vector;
+	}
 
 
 }

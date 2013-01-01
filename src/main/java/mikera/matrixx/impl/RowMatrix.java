@@ -27,6 +27,11 @@ public class RowMatrix extends AMatrix {
 	public AVector toVector() {
 		return vector.clone();
 	}
+	
+	@Override
+	public AVector asVector() {
+		return vector;
+	}
 
 	@Override
 	public int columnCount() {
