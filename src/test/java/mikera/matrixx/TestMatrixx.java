@@ -312,6 +312,9 @@ public class TestMatrixx {
 		
 		m=m.clone();
 		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
+		
+		assertEquals(m.getRow(0),m.cloneRow(0));
+		
 		AVector row=m.getRow(0);
 		AVector col=m.getColumn(0);
 		assertEquals(m.columnCount(),row.length());
