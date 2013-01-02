@@ -2,7 +2,7 @@
 
 Fast double-precision vector and matrix maths library for Java.
 
-The intention of this library is for use in games, simulations, raytracers etc. 
+This library is designed for use in games, simulations, raytracers etc. 
 where fast vector maths is important. 
 
 Vectorz can do over *1 billion* 3D vector operations per second on a single thread.
@@ -26,7 +26,7 @@ Vectorz can do over *1 billion* 3D vector operations per second on a single thre
 
  - Supports double vectors of arbitrary size
  - Vector values are mutable
- - Support for general matrices
+ - Support for any size matrices
  - Support for affine transformations
  - Ability to create lightweight "reference" vectors (e.g. to access subranges of other vectors)
  - Library of useful mathematical functions on vectors
@@ -48,7 +48,7 @@ If you have a common case that isn't yet well optimised then please post an issu
 
 ### Linear algebra / large matrix algorithms
 
-While Vectorz has support for linear algebra and big matrix computations, this isn't the primary focus. In particular, there isn't much support for large sparse matrices as of yet. So if you are trying to solve large linear algebra equations, you may want to look elsewhere.
+While Vectorz has support for linear algebra and big matrix computations, this isn't the primary focus. In particular, there isn't any support for large sparse matrices as of yet. So if you are trying to solve large linear algebra equations, you may want to look elsewhere.
 
 If you are interested in doing mathematical computations with large matrices, you might also want to check out some of the more specialised linear algebra libraries:
 
