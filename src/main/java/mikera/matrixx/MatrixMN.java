@@ -114,6 +114,13 @@ public final class MatrixMN extends AMatrix {
 	}
 	
 	@Override
+	public void scale(double factor) {
+		for (int i=0; i<data.length; i++) {
+			data[i]*=factor;
+		}
+	}
+	
+	@Override
 	public void set(AMatrix a) {
 		int rc = rowCount();
 		assert(rc==a.rowCount());
