@@ -26,6 +26,11 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public void scale(double factor) {
+		scale*=factor;
+	}
+	
+	@Override
 	public void transformInPlace(AVector v) {
 		for (int i=0; i<dimensions; i++) {
 			v.scale(scale);
