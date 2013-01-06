@@ -322,6 +322,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
+	 * Subtracts another matrix from this one
+	 * @param m
+	 */
+	public void sub(AMatrix m) {
+		addMultiple(m,-1.0);
+	}
+	
+	/**
 	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
 	 * @param m
 	 */
