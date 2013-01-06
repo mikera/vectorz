@@ -50,6 +50,13 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public void scale(double factor) {
+		for (int i=0; i<data.length; i++) {
+			data[i]*=factor;
+		}
+	}
+	
+	@Override
 	public double calculateComponent(int i, AVector v) {
 		return data[i]*v.get(i);
 	}
