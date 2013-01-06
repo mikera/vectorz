@@ -28,6 +28,11 @@ public class ColumnMatrix extends AMatrix {
 	public int columnCount() {
 		return 1;
 	}
+	
+	@Override
+	public void scale(double factor) {
+		vector.scale(factor);
+	}
 
 	@Override
 	public double get(int row, int column) {

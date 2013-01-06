@@ -32,6 +32,11 @@ public class RowMatrix extends AMatrix {
 	public AVector asVector() {
 		return vector;
 	}
+	
+	@Override
+	public void scale(double factor) {
+		vector.scale(factor);
+	}
 
 	@Override
 	public int columnCount() {
