@@ -322,6 +322,21 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
+	 * Scales a matrix by a constant scalar factor.
+	 * @param m
+	 */
+	public void scale(double factor) {
+		int rc=rowCount();
+		int cc=columnCount();
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				set(i,j,get(i,j)*factor);
+			}
+		}
+	}
+	
+	/**
 	 * Subtracts another matrix from this one
 	 * @param m
 	 */

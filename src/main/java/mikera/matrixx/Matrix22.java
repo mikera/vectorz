@@ -39,6 +39,12 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 		m10=m.get(1,0);
 		m11=m.get(1,1);
 	}
+	
+	@Override
+	public void scale(double factor) {
+		m00*=factor; m01*=factor;
+		m10*=factor; m11*=factor;
+	}
 
 	@Override
 	public double determinant() {

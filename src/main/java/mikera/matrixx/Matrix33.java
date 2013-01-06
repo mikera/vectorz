@@ -61,6 +61,13 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 		return (m00*m11*m22)+(m01*m12*m20)+(m02*m10*m21)
 		      -(m00*m12*m21)-(m01*m10*m22)-(m02*m11*m20);
 	}
+	
+	@Override
+	public void scale(double factor) {
+		m00*=factor; m01*=factor; m02*=factor;
+		m10*=factor; m11*=factor; m12*=factor;
+		m20*=factor; m21*=factor; m22*=factor;
+	}
 
 	@Override
 	public int rowCount() {

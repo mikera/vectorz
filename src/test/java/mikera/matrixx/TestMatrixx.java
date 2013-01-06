@@ -371,12 +371,25 @@ public class TestMatrixx {
 		assertTrue(amb.transform(v).epsilonEquals(ambv));
 	}
 	
+	void doScaleTest(AMatrix m) {
+		AMatrix m1=m.clone();
+		AMatrix m2=m.clone();
+		
+		m1.scale(2.0);
+		m2.add(m);
+		
+		assertTrue(m1.epsilonEquals(m2));
+		
+		m1.scale(0.0);
+		assertTrue(m1.isZeroMatrix());
+	}
 	
 	void doGenericTests(AMatrix m) {
 		doTransposeTest(m);
 		doVectorTest(m);
 		doParseTest(m);
 		doHashTest(m);
+		doScaleTest(m);
 		doRowColumnTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);
