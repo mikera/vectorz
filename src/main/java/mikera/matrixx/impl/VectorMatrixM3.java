@@ -30,6 +30,13 @@ public final class VectorMatrixM3 extends AVectorMatrix  implements ISpecialised
 		rows=newRows;
 	}
 	
+	@Override
+	public void scale(double factor) {
+		for (Vector3 vector:rows) {
+			vector.scale(factor);
+		}
+	}
+	
 	@Override 
 	public void appendRow(AVector row) {
 		if (row instanceof Vector3) {

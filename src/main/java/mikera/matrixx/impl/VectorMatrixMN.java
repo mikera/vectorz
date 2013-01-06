@@ -18,6 +18,13 @@ public final class VectorMatrixMN extends AVectorMatrix {
 		}
 	}
 	
+	@Override
+	public void scale(double factor) {
+		for (AVector vector:rows) {
+			vector.scale(factor);
+		}
+	}
+	
 	public VectorMatrixMN(AMatrix source) {
 		this(source.rowCount(),source.columnCount());
 		for (int i=0; i<rowCount; i++) {
