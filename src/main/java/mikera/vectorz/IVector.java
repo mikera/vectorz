@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.arrayz.INDArray;
+
 /**
  * Basic interface for a Vector
  * 
@@ -8,7 +10,7 @@ package mikera.vectorz;
  * 
  * @author Mike
  */
-public interface IVector {
+public interface IVector extends INDArray {
 
 	public int length();
 

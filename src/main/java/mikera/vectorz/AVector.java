@@ -35,6 +35,18 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	// ================================================
 	// Standard implementations
 	
+	
+	@Override
+	public int dimensionality() {
+		return 1;
+	}
+	
+	@Override
+	public double get(int... indexes) {
+		assert(indexes.length==1);
+		return get(indexes[0]);
+	}
+	
 	/**
 	 * Obtains a sub-vector that refers to this vector.
 	 * Changes to the sub-vector will be reflected in this vector
