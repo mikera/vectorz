@@ -2,6 +2,7 @@ package mikera.matrixx;
 
 import java.util.Iterator;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
@@ -23,7 +24,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AMatrix extends ALinearTransform implements IMatrix, Iterable<AVector> {
+public abstract class AMatrix extends ALinearTransform implements IMatrix, Iterable<AVector>, INDArray {
 	// ==============================================
 	// Abstract interface
 
@@ -50,6 +51,17 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	// =============================================
 	// Standard implementations
 
+	@Override
+	public int dimensionality() {
+		return 2;
+	}
+	
+	@Override
+	public double get(int... indexes) {
+		assert(indexes.length==2);
+		return get(indexes[0],indexes[1]);
+	}
+	
 	/**
 	 * Returns a new vector that contains the leading diagonal values of the matrix
 	 * @return
