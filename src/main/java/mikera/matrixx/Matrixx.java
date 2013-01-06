@@ -7,6 +7,7 @@ import java.util.List;
 import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
 import mikera.matrixx.impl.ADiagonalMatrix;
+import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
@@ -49,7 +50,9 @@ public class Matrixx {
 	public static AMatrix toMatrix(Object o) {
 		if (o instanceof AMatrix) {
 			return (AMatrix) o;
-		} else if (o instanceof Iterable<?>) {
+		} else if (o instanceof AVector) {
+			return ColumnMatrix.wrap((AVector)o);
+	    } else if (o instanceof Iterable<?>) {
 			ArrayList<AVector> al=new ArrayList<AVector>();
 			for (Object obj: (Iterable<?>)o) {
 				al.add(Vectorz.toVector(obj));
