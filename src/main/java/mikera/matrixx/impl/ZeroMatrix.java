@@ -27,6 +27,11 @@ public final class ZeroMatrix extends AMatrix {
 	public int inputDimensions() {
 		return inputDimensions;
 	}
+	
+	@Override
+	public void scale(double factor) {
+		// no change
+	}
 
 	@Override
 	public int outputDimensions() {
