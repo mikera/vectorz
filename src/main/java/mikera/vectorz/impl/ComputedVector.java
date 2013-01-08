@@ -13,7 +13,7 @@ public abstract class ComputedVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException("ComputedVector is immutable!");
+		throw new UnsupportedOperationException("Vector is immutable: "+this.getClass());
 	}
 	
 	@Override
