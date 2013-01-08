@@ -13,4 +13,6 @@ public interface INDArray {
 	public double get(int... indexes);
 	
 	public AVector asVector();
+	
+	public INDArray reshape(int... dimensions);
 }

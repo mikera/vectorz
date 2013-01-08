@@ -175,6 +175,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			AMatrix.this.set(row, i, value);
 		}
 	}
+	
+	@Override
+	public INDArray reshape(int... dimensions) {
+		int ndims=dimensions.length;
+		if (ndims==1) {
+			return toVector();
+		} else if (ndims==2) {
+			return Matrixx.createFromVector(asVector(), dimensions[0], dimensions[1]);
+		} else {
+			throw new UnsupportedOperationException("Can't reshape to dimensionality: "+ndims);
+		}
+	}
 
 	@SuppressWarnings("serial")
 	private class MatrixColumn extends MatrixSubVector {

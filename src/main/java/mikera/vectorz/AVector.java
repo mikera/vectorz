@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.WrappedSubVector;
@@ -492,6 +494,18 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	@Override
 	public AVector asVector() {
 		return this;
+	}
+	
+	@Override
+	public INDArray reshape(int... dimensions) {
+		int ndims=dimensions.length;
+		if (ndims==1) {
+			return clone();
+		} else if (ndims==2) {
+			return Matrixx.createFromVector(this, dimensions[0], dimensions[1]);
+		} else {
+			throw new UnsupportedOperationException("Can't reshape to dimensionality: "+ndims);
+		}
 	}
 	
 	/**
