@@ -489,6 +489,11 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		return nv;
 	}
 	
+	@Override
+	public AVector asVector() {
+		return this;
+	}
+	
 	/**
 	 * Returns true if this vector is of a type that references other vectors / data.
 	 * @return
