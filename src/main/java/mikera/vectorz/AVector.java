@@ -418,7 +418,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	
 	/**
 	 * Normalises so that the maximum absolute component is 1.0
-	 * Returns the prvious maximum absoute component.
+	 * Returns the previous maximum absolute component.
 	 */
 	public double normaliseMaxAbsComponent() {
 		double scale=maxAbsComponent();
@@ -427,7 +427,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
-	 * Returns the euclidean angle between this vector and another vector
+	 * Returns the Euclidean angle between this vector and another vector
 	 * @return angle in radians
 	 */
 	public double angle(AVector v) {
