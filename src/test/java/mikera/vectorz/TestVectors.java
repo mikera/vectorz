@@ -9,6 +9,7 @@ import java.util.List;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.IdenticalComponentVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -357,6 +358,10 @@ public class TestVectors {
 		doGenericTests(m3.asVector());
 		doGenericTests(m3.getRow(2));
 		doGenericTests(m3.getColumn(2));
+		
+		doGenericTests(new AxisVector(1,3));
+		doGenericTests(new AxisVector(0,1));
+		doGenericTests(new AxisVector(5,10));
 		
 		doGenericTests(new SingleComponentVector(1,3));
 		doGenericTests(new SingleComponentVector(1,1));
