@@ -84,6 +84,21 @@ public class TestVectors {
 		assertEquals(v.hashCode(),v.toList().hashCode());
 	}
 	
+	private void testAddToArray(AVector v) {
+		int len=v.length();
+		double[] ds=new double[len+10];
+		if (len>=3) {
+			v.addToArray(2, len-2, ds, 5);
+			assertEquals(v.get(2),ds[5],0.000);
+			assertEquals(0.0,ds[5+len],0.0);
+		}
+		
+		v.addToArray(0, len, ds, 0);
+		if (len>0) {
+			assertEquals(ds[0],v.get(0),0.0);
+		}
+	}
+	
 	private void testClone(AVector v) {
 		AVector cv=v.clone();
 		int len=cv.length();
@@ -274,6 +289,7 @@ public class TestVectors {
 	
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
+		testAddToArray(v);
 		testAdd(v);
 		testMultiply(v);
 		testDivide(v);

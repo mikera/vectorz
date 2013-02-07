@@ -167,7 +167,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 
 	/**
-	 * Fills a vector with a given value
+	 * Fills the entire vector with a given value
 	 * @param value
 	 */
 	public void fill(double value) {
@@ -692,6 +692,13 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		assert(indexes.length()==len);
 		for (int i=0; i<len ; i++) {
 			set(i, v.get(indexes.get(i)));
+		}
+	}
+
+	public void addToArray(int offset, int length, double[] array, int arrayOffset) {
+		assert(offset+length<length());
+		for (int i=0; i<length; i++) {
+			array[i+arrayOffset]+=get(i+offset);
 		}
 	}
 }

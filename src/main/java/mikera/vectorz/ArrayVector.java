@@ -70,6 +70,26 @@ public abstract class ArrayVector extends AVector {
 		add(v,0);
 	}
 	
+	@Override
+	public void add(AVector src, int srcOffset) {
+		if (src instanceof ArrayVector) {
+			add ((ArrayVector)src,srcOffset);
+			return;
+		}
+		int length=length();
+		src.addToArray(srcOffset,length,getArray(),getArrayOffset());
+	}
+	
+	@Override
+	public void addToArray(int offset, int length, double[] array, int arrayOffset) {
+		double[] data=getArray();
+		int dataOffset=getArrayOffset()+offset;
+		
+		for (int i=0; i<length; i++) {
+			array[i+arrayOffset]+=data[i+dataOffset];
+		}
+	}
+	
 	public void add(ArrayVector src, int srcOffset) {
 		int length=length();
 		double[] vdata=src.getArray();
