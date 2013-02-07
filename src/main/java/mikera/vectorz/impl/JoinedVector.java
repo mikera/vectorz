@@ -130,7 +130,20 @@ public final class JoinedVector extends AVector {
 	@Override
 	public void add(AVector a) {
 		assert(length()==a.length());
-		add(a,0);
+		if (a instanceof JoinedVector) {
+			add((JoinedVector)a);	
+		} else {
+			add(a,0);
+		}
+	}
+	
+	public void add(JoinedVector a) {
+		if (split==a.split) {
+			left.add(a.left);
+			right.add(a.right);
+		} else {
+			add(a,0);
+		}
 	}
 	
 	@Override
@@ -141,8 +154,22 @@ public final class JoinedVector extends AVector {
 	
 	@Override
 	public void addMultiple(AVector a, double factor) {
-		left.addMultiple(a, factor, 0);
-		right.addMultiple(a, factor, split);
+		if (a instanceof JoinedVector) {
+			addMultiple((JoinedVector)a,factor);	
+		} else {
+			left.addMultiple(a, factor, 0);
+			right.addMultiple(a, factor, split);
+		}
+	}
+	
+	public void addMultiple(JoinedVector a, double factor) {
+		if (split==a.split) {
+			left.addMultiple(a.left,factor);	
+			right.addMultiple(a.right,factor);	
+		} else {
+			left.addMultiple(a, factor, 0);
+			right.addMultiple(a, factor, split);
+		}
 	}
 	
 	@Override
