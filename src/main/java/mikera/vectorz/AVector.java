@@ -709,4 +709,11 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 			array[i+arrayOffset]+=factor*get(i+offset);
 		}
 	}
+
+	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
+		int length=length();
+		for (int i=0; i<length; i++) {
+			set(i, get(i)+ (a.get(i+aOffset)* b.get(i+bOffset)*factor));
+		}
+	}
 }

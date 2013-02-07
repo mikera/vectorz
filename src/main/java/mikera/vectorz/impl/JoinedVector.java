@@ -151,6 +151,18 @@ public final class JoinedVector extends AVector {
 		right.addMultiple(a, factor, offset+split);
 	}
 	
+	@Override
+	public void addProduct(AVector a, AVector b, double factor) {
+		left.addProduct(a, 0, b, 0, factor);
+		right.addProduct(a, split, b, split, factor);
+	}
+	
+	@Override
+	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
+		left.addProduct(a, aOffset,b,bOffset, factor);
+		right.addProduct(a, aOffset+split,b,bOffset+split, factor);
+	}
+	
 	
 	@Override
 	public double get(int i) {
