@@ -580,13 +580,14 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 * @param v
 	 */
 	public void addMultiple(AVector v, double factor) {
-		int vlength=v.length();
+		if (v.length()!=length()) throw new RuntimeException("Source vector has different size!" + v.length());
+		addMultiple(v,factor,0);
+	}
+	
+	public void addMultiple(AVector v, double factor, int srcOffset) {
 		int length=length();
-		if (vlength != length) {
-			throw new IllegalArgumentException("Source vector has different size: " + vlength);
-		}
 		for (int i = 0; i < length; i++) {
-			double x=get(i)+v.get(i)*factor;
+			double x=get(i)+v.get(i+srcOffset)*factor;
 			set(i,x);
 		}
 	}
