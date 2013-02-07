@@ -77,11 +77,11 @@ public abstract class ArrayVector extends AVector {
 			return;
 		}
 		int length=length();
-		src.addToArray(srcOffset,length,getArray(),getArrayOffset());
+		src.addToArray(srcOffset,getArray(),getArrayOffset(),length);
 	}
 	
 	@Override
-	public void addToArray(int offset, int length, double[] array, int arrayOffset) {
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		double[] data=getArray();
 		int dataOffset=getArrayOffset()+offset;
 		

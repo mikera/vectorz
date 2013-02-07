@@ -88,12 +88,12 @@ public class TestVectors {
 		int len=v.length();
 		double[] ds=new double[len+10];
 		if (len>=3) {
-			v.addToArray(2, len-2, ds, 5);
+			v.addToArray(2, ds, 5, len-2);
 			assertEquals(v.get(2),ds[5],0.000);
 			assertEquals(0.0,ds[5+len],0.0);
 		}
 		
-		v.addToArray(0, len, ds, 0);
+		v.addToArray(0, ds, 0, len);
 		if (len>0) {
 			assertEquals(ds[0],v.get(0),0.0);
 		}
