@@ -5,7 +5,12 @@ import static org.junit.Assert.*;
 import mikera.vectorz.impl.ComputedVector;
 import org.junit.Test;
 
-
+/**
+ * Test a lot of different 3D vectors in different combinations
+ * 
+ * @author Mike
+ *
+ */
 public class Test3DVectors {
 	private void testDot(AVector v) {
 		assertEquals(v.magnitudeSquared(),v.dotProduct(v),0.0001);
@@ -17,9 +22,28 @@ public class Test3DVectors {
 		new Vector(v).fill(Double.NaN);
 	}
 	
+	private void testNegate(AVector v) {
+		AVector n=v.clone();
+		n.negate();
+		assertNotEquals(v, n);
+		n.negate();
+		assertEquals(v, n);
+		n.negate();
+		n.add(v);
+		assertEquals(Vector3.of(0,0,0),n);
+	}
+	
+	private void testValues(AVector v) {
+		assertEquals(1.0,v.get(0),0.0);
+		assertEquals(2.0,v.get(1),0.0);
+		assertEquals(3.0,v.get(2),0.0);
+	}
+	
 	private void testVector(AVector v) {
 		AVector temp=v.clone();
 		testDot(v);
+		testNegate(v);
+		testValues(v);
 		testMutateClone(v);
 		assertEquals(temp,v);
 	}
