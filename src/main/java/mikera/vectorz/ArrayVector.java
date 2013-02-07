@@ -90,6 +90,16 @@ public abstract class ArrayVector extends AVector {
 		}
 	}
 	
+	@Override
+	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
+		double[] data=getArray();
+		int dataOffset=getArrayOffset()+offset;
+		
+		for (int i=0; i<length; i++) {
+			array[i+arrayOffset]+=factor*data[i+dataOffset];
+		}
+	}
+	
 	public void add(ArrayVector src, int srcOffset) {
 		int length=length();
 		double[] vdata=src.getArray();

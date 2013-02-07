@@ -99,6 +99,21 @@ public class TestVectors {
 		}
 	}
 	
+	private void testAddMultipleToArray(AVector v) {
+		int len=v.length();
+		double[] ds=new double[len+10];
+		if (len>=3) {
+			v.addMultipleToArray(3.0,2, ds, 5, len-2);
+			assertEquals(v.get(2)*3.0,ds[5],0.000);
+			assertEquals(0.0,ds[5+len],0.0);
+		}
+		
+		v.addMultipleToArray(2.0,0, ds, 0, len);
+		if (len>0) {
+			assertEquals(v.get(0)*2.0,ds[0],0.0);
+		}
+	}
+	
 	private void testClone(AVector v) {
 		AVector cv=v.clone();
 		int len=cv.length();
@@ -289,8 +304,9 @@ public class TestVectors {
 	
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
-		testAddToArray(v);
 		testAdd(v);
+		testAddToArray(v);
+		testAddMultipleToArray(v);
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
