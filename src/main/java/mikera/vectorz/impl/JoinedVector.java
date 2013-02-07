@@ -77,6 +77,20 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
+		assert(arrayOffset+length<=array.length);
+		assert(offset+length<=length());
+		if (offset>=split) {
+			right.addMultipleToArray(factor,offset-split, array, arrayOffset, length);
+		} else if ((offset+length)<=split) {
+			left.addMultipleToArray(factor,offset, array, arrayOffset, length);
+		} else {
+			left.addMultipleToArray(factor,offset, array, arrayOffset, (split-offset));
+			right.addMultipleToArray(factor,0, array, arrayOffset+(split-offset), length-(split-offset));		
+		}
+	}
+	
+	@Override
 	public void copyTo(double[] data, int offset) {
 		left.copyTo(data, offset);
 		right.copyTo(data, offset+split);
