@@ -100,6 +100,16 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
+		int length=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			array[i+offset]+=(a.get(i+aOffset)* b.get(i+bOffset)*factor);
+		}
+	}
+	
+	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		double[] data=getArray();
 		int dataOffset=getArrayOffset()+offset;
