@@ -96,6 +96,17 @@ public final class Vector3 extends APrimitiveVector {
 		z+=dz*factor;
 	}
 	
+	@Override
+	public void addMultiple(AVector v, double factor) {
+		if (v instanceof Vector3) {
+			addMultiple((Vector3)v,factor);
+		} else {
+			x+=v.get(0)*factor;
+			y+=v.get(1)*factor;
+			z+=v.get(2)*factor;
+		}
+	}
+	
 	public void addMultiple(Vector3 v, double factor) {
 		x+=v.x*factor;
 		y+=v.y*factor;
@@ -108,6 +119,16 @@ public final class Vector3 extends APrimitiveVector {
 		z-=v.z*factor;
 	}
 	
+	@Override
+	public void add(AVector v) {
+		if (v instanceof Vector3) {
+			add((Vector3)v);
+		} else {
+			x+=v.get(0);
+			y+=v.get(1);
+			z+=v.get(2);
+		}
+	}
 	
 	public void add(Vector3 v) {
 		x+=v.x;
