@@ -82,6 +82,16 @@ public class MediumVectorBenchmark extends SimpleBenchmark {
 			v.addMultiple(v2,0.5);
 		}
 	}
+	
+	public void timeJoinedVectorAddProduct(int runs) {
+		AVector v=Vectorz.newVector(VECTOR_SIZE/2);
+		v=v.join(Vectorz.newVector(VECTOR_SIZE-v.length()));
+
+		Vector v2=new Vector(Vectorz.createUniformRandomVector(VECTOR_SIZE));
+		for (int i=0; i<runs; i++) {
+			v.addProduct(v2,v2,0.001);
+		}
+	}
 
 	
 	/**
