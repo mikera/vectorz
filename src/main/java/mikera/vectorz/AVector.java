@@ -697,14 +697,14 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		assert(offset+length<length());
+		assert(offset+length<=length());
 		for (int i=0; i<length; i++) {
 			array[i+arrayOffset]+=get(i+offset);
 		}
 	}
 	
 	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
-		assert(offset+length<length());
+		assert(offset+length<=length());
 		for (int i=0; i<length; i++) {
 			array[i+arrayOffset]+=factor*get(i+offset);
 		}
