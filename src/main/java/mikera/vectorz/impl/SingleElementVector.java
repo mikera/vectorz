@@ -9,12 +9,12 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public final class SingleComponentVector extends AVector {
+public final class SingleElementVector extends AVector {
 	private final int dimensions;
 	private final int index;
 	private double value;
 	
-	public SingleComponentVector(int componentIndex, int dimensions) {
+	public SingleElementVector(int componentIndex, int dimensions) {
 		this.dimensions=dimensions;
 		this.index=componentIndex;
 	}

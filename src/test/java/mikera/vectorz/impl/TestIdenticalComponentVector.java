@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class TestIdenticalComponentVector {
 	@Test public void test1() {
-		IdenticalComponentVector v=new IdenticalComponentVector(3);
+		IdenticalElementVector v=new IdenticalElementVector(3);
 		
 		assertEquals(0.0,v.get(0),0.0);
 		

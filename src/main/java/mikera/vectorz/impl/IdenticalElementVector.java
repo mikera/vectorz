@@ -9,21 +9,21 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public final class IdenticalComponentVector extends AVector {
+public final class IdenticalElementVector extends AVector {
 	private final int dimensions;
 	private double value;
 	
-	public IdenticalComponentVector(int dims) {
+	public IdenticalElementVector(int dims) {
 		this.dimensions=dims;
 	}
 	
-	public IdenticalComponentVector(int dims, double value) {
+	public IdenticalElementVector(int dims, double value) {
 		this.dimensions=dims;
 		this.value=value;
 	}
 	
-	public static IdenticalComponentVector create(int dims, double value) {
-		IdenticalComponentVector r=new IdenticalComponentVector(dims);
+	public static IdenticalElementVector create(int dims, double value) {
+		IdenticalElementVector r=new IdenticalElementVector(dims);
 		r.value=value;
 		return r;
 	}
