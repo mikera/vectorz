@@ -150,11 +150,16 @@ public final class JoinedVector extends AVector {
 	public double dotProduct (AVector v) {
 		if (v instanceof JoinedVector) {
 			JoinedVector jv=(JoinedVector)v;
-			if (jv.left.length()==left.length()) {
-				return left.dotProduct(jv.left)+right.dotProduct(jv.right);
-			}
+			return dotProduct(jv);
 		}
 		return super.dotProduct(v);
+	}
+	
+	public double dotProduct (JoinedVector jv) {
+		if (jv.left.length()==left.length()) {
+			return left.dotProduct(jv.left)+right.dotProduct(jv.right);
+		}
+		return super.dotProduct(jv);
 	}
 	
 	@Override
