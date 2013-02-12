@@ -17,4 +17,9 @@ public class TestSparseIndexedVector {
 		assertEquals(6.0,sv.elementSum(),0.0);
 
 	}
+	
+	@Test (expected=java.lang.Throwable.class)
+	public void testFaultyConstruction() {
+		SparseIndexedVector.create(10, Index.of(10,3,6), Vector.of(1.0,2.0,3.0));
+	}
 }
