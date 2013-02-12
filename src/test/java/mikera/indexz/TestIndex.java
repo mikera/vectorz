@@ -26,6 +26,21 @@ public class TestIndex {
 		assertEquals(Index.of(30,20,50),c);
 	}
 	
+	@Test public void testDistinctSorted() {
+		assertTrue(Index.of(2,1,4).isDistinct());
+		assertFalse(Index.of(2,1,4).isSorted());
+		assertFalse(Index.of(2,1,4).isDistinctSorted());
+		
+		assertFalse(Index.of(1,1,4).isDistinct());
+		assertTrue(Index.of(1,1,4).isSorted());
+		assertFalse(Index.of(1,1,4).isDistinctSorted());
+		
+		assertTrue(Index.of(1,10,40).isDistinct());
+		assertTrue(Index.of(1,10,40).isSorted());
+		assertTrue(Index.of(1,10,40).isDistinctSorted());
+		
+	}
+	
 	@Test public void testEquals() {
 		Index ind1=Index.of(0,1,2);
 		Index ind2=Indexz.createSequence(3);
