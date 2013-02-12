@@ -102,13 +102,25 @@ public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIn
 	}
 	
 	/**
-	 * Returns true if this index is sorted (in strictly increasing order)
+	 * Returns true if this index is sorted (in increasing order)
 	 * @return
 	 */
 	public boolean isSorted() {
 		int len=length();
 		for (int i=1; i<len; i++) {
 			if (get(i-1)>get(i)) return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true if this index is distinct and sorted (in strictly increasing order)
+	 * @return
+	 */
+	public boolean isDistinctSorted() {
+		int len=length();
+		for (int i=1; i<len; i++) {
+			if (get(i-1)>=get(i)) return false;
 		}
 		return true;
 	}
