@@ -190,6 +190,10 @@ public final class JoinedVector extends AVector {
 		right.addProduct(a, aOffset+split,b,bOffset+split, factor);
 	}
 	
+	@Override
+	public double elementSum() {
+		return left.elementSum()+right.elementSum();
+	}
 	
 	@Override
 	public double get(int i) {
