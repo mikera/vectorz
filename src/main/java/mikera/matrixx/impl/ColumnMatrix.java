@@ -33,6 +33,11 @@ public class ColumnMatrix extends AMatrix {
 	public void scale(double factor) {
 		vector.scale(factor);
 	}
+	
+	@Override 
+	public double elementSum() {
+		return vector.elementSum();
+	}
 
 	@Override
 	public double get(int row, int column) {

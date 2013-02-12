@@ -42,6 +42,11 @@ public class RowMatrix extends AMatrix {
 	public int columnCount() {
 		return vector.length();
 	}
+	
+	@Override 
+	public double elementSum() {
+		return vector.elementSum();
+	}
 
 	@Override
 	public double get(int row, int column) {
