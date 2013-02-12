@@ -394,8 +394,10 @@ public class TestVectors {
 	@Test public void genericTests() {
 		doGenericTests(Vector0.of());
 		
+		doGenericTests(new Vector4(1.0,2.0,3.0,4.0));
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector2(1.0,2.0));
+		doGenericTests(new Vector1(1.0));
 		
 		// bit vectors
 		doGenericTests(BitVector.of());
