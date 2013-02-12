@@ -359,6 +359,24 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 	}
+
+	/**
+	 * Returns the sum of all elements in the matrix
+	 * @param m
+	 * @return 
+	 */
+	public double elementSum() {
+		int rc=rowCount();
+		int cc=columnCount();
+		
+		double result=0.0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				result+=get(i,j);
+			}
+		}
+		return result;
+	}
 	
 	/**
 	 * Subtracts another matrix from this one
