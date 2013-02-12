@@ -156,6 +156,7 @@ public final class JoinedVector extends AVector {
 	}
 	
 	public double dotProduct (JoinedVector jv) {
+		// in likely case of two equally structured JoinedVectors....
 		if (jv.left.length()==left.length()) {
 			return left.dotProduct(jv.left)+right.dotProduct(jv.right);
 		}
