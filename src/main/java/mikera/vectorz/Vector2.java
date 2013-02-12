@@ -49,6 +49,11 @@ public final class Vector2 extends APrimitiveVector {
 		return 2;
 	}
 	
+	@Override
+	public double elementSum() {
+		return x+y;
+	}
+	
 	@Override 
 	public double magnitudeSquared() {
 		return (x*x)+(y*y);

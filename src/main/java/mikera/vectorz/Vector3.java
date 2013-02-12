@@ -175,6 +175,12 @@ public final class Vector3 extends APrimitiveVector {
 	public int length() {
 		return 3;
 	}
+	
+	@Override
+	public double elementSum() {
+		return x+y+z;
+	}
+	
 
 	@Override
 	public double get(int i) {

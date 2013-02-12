@@ -35,6 +35,11 @@ public final class Vector1 extends APrimitiveVector {
 	public int length() {
 		return 1;
 	}
+	
+	@Override
+	public double elementSum() {
+		return x;
+	}
 
 	@Override
 	public double get(int i) {
