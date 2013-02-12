@@ -41,7 +41,11 @@ public final class ZeroVector extends APrimitiveVector {
 	public double magnitude() {
 		return 0.0;
 	}
-
+	
+	@Override
+	public double elementSum() {
+		return 0.0;
+	}
 
 	@Override
 	public boolean isZeroVector() {
