@@ -71,7 +71,6 @@ public class SparseIndexedVector extends ASparseVector {
 	public int nonSparseElementCount() {
 		return data.length;
 	}
-
 	
 	@Override
 	public int length() {
@@ -99,8 +98,49 @@ public class SparseIndexedVector extends ASparseVector {
 			data[i]*=array[offset+index.data[i]];
 		}
 	}
-
 	
+	@Override
+	public double magnitudeSquared() {
+		double result=0.0;
+		for (int i=0; i<data.length; i++) {
+			double d=data[i];
+			result+=d*d;
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean isZeroVector() {
+		for (int i=0; i<data.length; i++) {
+			if (data[i]!=0.0) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public double maxAbsElement() {
+		double result=0.0;
+		for (int i=0; i<data.length; i++) {
+			double d=Math.abs(data[i]);
+			if (d>result) result=d; 
+		}
+		return result;
+	}
+	
+	@Override
+	public void negate() {
+		for (int i=0; i<data.length; i++) {
+			data[i]=-data[i]; 
+		}
+	}
+	
+	@Override
+	public void absolute() {
+		for (int i=0; i<data.length; i++) {
+			data[i]=Math.abs(data[i]); 
+		}
+	}
+
 	@Override
 	public double get(int i) {
 		int ip=index.indexPosition(i);
