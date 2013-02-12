@@ -117,7 +117,7 @@ public final class JoinedVector extends AVector {
 	@Override
 	public AVector subVector(int start, int length) {
 		assert(start>=0);
-		assert(length<=this.length);
+		assert((start+length)<=this.length);
 		if ((start==0)&&(length==this.length)) return this;
 		if (start>=split) return right.subVector(start-split, length);
 		if ((start+length)<=split) return left.subVector(start, length);
