@@ -44,6 +44,14 @@ public final class Index extends AIndex {
 		}
 	}
 	
+	public boolean isDistinctSorted() {
+		int len=length();
+		for (int i=1; i<len; i++) {
+			if (data[i-1]>=data[i]) return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Creates a new Index, wrapping the provided index array
 	 */
