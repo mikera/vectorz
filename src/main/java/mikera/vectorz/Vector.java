@@ -96,6 +96,16 @@ public final class Vector extends ArrayVector {
 		Arrays.fill(data, value);
 	}
 	
+	
+	@Override
+	public double elementSum() {
+		double result=0.0;
+		for (int i=0; i<data.length; i++) {
+			result+=data[i];
+		}
+		return result;
+	}
+	
 	@Override
 	public void add(ArrayVector v, int offset) {
 		int vlength=v.length();
