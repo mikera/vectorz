@@ -5,7 +5,7 @@ import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
 
 /**
- * Specialized unit axis vector
+ * Specialized unit axis vector. Has a 1.0 in one element, 0.0 everywhere else.
  * 
  * @author Mike
  */
@@ -16,6 +16,8 @@ public class AxisVector extends ComputedVector {
 	private final int length;
 	
 	public AxisVector(int axisIndex, int length) {
+		assert(length>=1);
+		assert((axisIndex>=0)&&(axisIndex<length));
 		this.axis=axisIndex;
 		this.length=length;
 	}
