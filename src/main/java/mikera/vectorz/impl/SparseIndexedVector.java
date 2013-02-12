@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
+
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
@@ -139,6 +141,17 @@ public class SparseIndexedVector extends ASparseVector {
 		}
 	}
 	
+	@Override public void copyTo(double[] array, int offset) {
+		Arrays.fill(array,offset,offset+length,0.0);
+		copySparseValuesTo(array,offset);
+	}
+	
+	public void copySparseValuesTo(double[] array, int offset) {
+		for (int i=0; i<data.length; i++) {
+			array[offset+index.data[i]]=data[i];
+		}	
+	}
+
 	@Override
 	public void set(int i, double value) {
 		int ip=index.indexPosition(i);
