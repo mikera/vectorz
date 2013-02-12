@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
+import mikera.vectorz.ArrayVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -61,6 +62,7 @@ public class SparseIndexedVector extends ASparseVector {
 	public int nonSparseElementCount() {
 		return data.length;
 	}
+
 	
 	@Override
 	public int length() {
@@ -104,6 +106,26 @@ public class SparseIndexedVector extends ASparseVector {
 		double result=0.0;
 		for (int i=0; i<data.length; i++) {
 			result+=data[i];
+		}
+		return result;
+	}
+	
+	
+	@Override
+	public double dotProduct(AVector v) {
+		double result=0.0;
+		for (int i=0; i<data.length; i++) {
+			result+=data[i]*v.get(index.data[i]);
+		}
+		return result;
+	}
+	
+	public double dotProduct(ArrayVector v) {
+		double[] array=v.getArray();
+		int offset=v.getArrayOffset();
+		double result=0.0;
+		for (int i=0; i<data.length; i++) {
+			result+=data[i]*array[offset+index.data[i]];
 		}
 		return result;
 	}
