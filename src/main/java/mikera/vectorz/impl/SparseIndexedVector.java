@@ -42,17 +42,17 @@ public class SparseIndexedVector extends ASparseVector {
 	 * Creates a SparseIndexedVector with the specified index and data values.
 	 * Index must be distinct and sorted.
 	 */
-	public SparseIndexedVector wrap(int length, Index index, double[] data) {
+	public static SparseIndexedVector wrap(int length, Index index, double[] data) {
 		assert(index.length()==data.length);
 		assert(index.isDistinctSorted());
 		return new SparseIndexedVector(length, index,data);
 	}
 	
-	public SparseIndexedVector create(int length, Index index, double[] data) {
+	public static SparseIndexedVector create(int length, Index index, double[] data) {
 		return new SparseIndexedVector(length, index,data);
 	}
 	
-	public SparseIndexedVector create(int length, Index index, AVector data) {
+	public static SparseIndexedVector create(int length, Index index, AVector data) {
 		SparseIndexedVector sv= new SparseIndexedVector(length, index);
 		data.copyTo(sv.data, 0);
 		return sv;
