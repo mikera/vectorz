@@ -78,6 +78,27 @@ public class SparseIndexedVector extends ASparseVector {
 		return length;
 	}
 	
+	@Override
+	public void multiply (AVector v) {
+		if (v instanceof ArrayVector) {
+			multiply((ArrayVector)v);
+			return;
+		}
+		for (int i=0; i<data.length; i++) {
+			data[i]*=v.get(index.data[i]);
+		}
+	}
+	
+	public void multiply(ArrayVector v) {
+		multiply(v.getArray(),v.getArrayOffset());
+	}
+	
+	@Override
+	public void multiply(double[] array, int offset) {
+		for (int i=0; i<data.length; i++) {
+			data[i]*=array[offset+index.data[i]];
+		}
+	}
 
 	
 	@Override
