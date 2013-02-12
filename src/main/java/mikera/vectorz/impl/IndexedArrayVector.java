@@ -5,7 +5,7 @@ package mikera.vectorz.impl;
  * @author Mike
  *
  */
-public final class IndexedArrayVector extends IndexedVector {
+public final class IndexedArrayVector extends AIndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
 	private final double[] data;

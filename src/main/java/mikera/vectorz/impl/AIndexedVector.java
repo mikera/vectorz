@@ -7,16 +7,16 @@ import mikera.vectorz.AVector;
  * @author Mike
  */
 @SuppressWarnings("serial")
-abstract class IndexedVector extends AVector {
+abstract class AIndexedVector extends AVector {
 	protected final int[] indexes;
 	protected final int length;
 
-	protected IndexedVector(int length) {
+	protected AIndexedVector(int length) {
 		indexes=new int[length];
 		this.length=length;
 	}
 	
-	public IndexedVector(int[] indexes) {
+	public AIndexedVector(int[] indexes) {
 		this.indexes=indexes;
 		this.length=indexes.length;
 	}

@@ -7,7 +7,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public final class IndexedSubVector extends IndexedVector {
+public final class IndexedSubVector extends AIndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
 	private final AVector data;
