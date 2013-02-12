@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.impl.ArraySubVector;
@@ -14,6 +15,7 @@ import mikera.vectorz.impl.IdenticalElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.SingleElementVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.Vector0;
 
 import org.junit.Test;
@@ -400,6 +402,9 @@ public class TestVectors {
 
 		doGenericTests(new IdenticalElementVector(1,1.0));
 		doGenericTests(new IdenticalElementVector(10,1.0));
+		
+		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
+
 	}
 	
 	@Test public void testDistances() {
