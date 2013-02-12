@@ -77,10 +77,15 @@ public class TestIndex {
 		AIndex b=Indexz.createRandomSubset(index, 0.5);
 		assertTrue(b.length()<=index.length());
 	}
+	
+	private void doDistinctSortedTest(AIndex index) {
+		assertTrue(index.isDistinctSorted() == (index.isSorted() & index.isDistinct()));
+	}
 
 	
 	private void doTests(AIndex index) {
 		doCloneTest(index);
+		doDistinctSortedTest(index);
 		doRandomSubsetTest(index);
 	}
 
