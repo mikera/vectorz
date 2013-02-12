@@ -22,7 +22,61 @@ import org.junit.Test;
 
 
 public class TestVectors {
+	@Test public void testDistances() {
+		Vector3 v=Vector3.of(1,2,3);
+		Vector3 v2=Vector3.of(2,4,6);
+		assertEquals(v.magnitude(),v.distance(v2),0.000001);
+		assertEquals(6,v.distanceL1(v2),0.000001);
+		assertEquals(3,v.distanceLinf(v2),0.000001);
+	}
 	
+	public void testDistances(AVector v) {
+		AVector z=v.clone();
+		z.fill(0.0);
+		
+		assertEquals(v.maxAbsElement(),v.distanceLinf(z),0.0);
+	}
+	
+	public void testMagnitudes(AVector v) {
+		double d=v.magnitude();
+		double d2=v.magnitudeSquared();
+		assertEquals(d*d,d2,0.00001);
+		
+		assertTrue(d<=(v.maxAbsElement()*v.length()));
+	}
+	
+	@Test public void testClamping() {
+		Vector3 v=Vector3.of(1,2,3);
+		v.clamp(1.5, 2.5);
+		assertEquals(Vector3.of(1.5,2,2.5),v);
+	}
+	
+	@Test public void testClampMin() {
+		Vector3 v=Vector3.of(1,2,3);
+		v.clampMin(1.5);
+		assertEquals(Vector3.of(1.5,2,3),v);
+	}
+	
+	@Test public void testClampMax() {
+		Vector3 v=Vector3.of(1,2,3);
+		v.clampMax(2.5);
+		assertEquals(Vector3.of(1,2,2.5),v);
+	}
+	
+	@Test public void testElementSum() {
+		Vector3 v=Vector3.of(1,2,3);
+		assertEquals(6.0,v.elementSum(),0.0);
+	}
+	
+	
+	@Test public void testCreateFromIterable() {
+		ArrayList<Object> al=new ArrayList<Object>();
+		al.add(1);
+		al.add(2L);
+		al.add(3.0);
+		AVector v=Vectorz.create((Iterable<Object>)al);
+		assertEquals(Vector.of(1,2,3),v);
+	}
 	
 	@Test public void testSubVectors() {
 		double[] data=new double[100];
@@ -249,13 +303,18 @@ public class TestVectors {
 		assertEquals(1.24,Vectorz.averageValue(v),0.0001);
 	}
 	
-	private void doNonDegenerateTests(AVector v) {
-		if (v.length()==0) return;
-		testSubVectorMutability(v);
-		testNormalise(v);
-		testFilling(v);
-
+	private void testCopyTo(AVector v) {
+		int len=v.length();
+		Vector tv=Vector.createLength(len+2);
+		tv.fill(Double.NaN);
+		v.copyTo(tv, 1);
+		assertTrue(Double.isNaN(tv.get(0)));
+		assertTrue(Double.isNaN(tv.get(len+1)));
+		assertFalse(Double.isNaN(tv.get(1)));
+		assertFalse(Double.isNaN(tv.get(len)));
 	}
+
+
 	
 	private void testAsList(AVector v) {
 		List<Double> al=v.asList();
@@ -279,17 +338,6 @@ public class TestVectors {
 		assertTrue(v.epsilonEquals(v2,0.00001));
 	}
 	
-	private void testCopyTo(AVector v) {
-		if (v.length()==0) return;
-		int len=v.length();
-		Vector tv=Vector.createLength(len+2);
-		tv.fill(Double.NaN);
-		v.copyTo(tv, 1);
-		assertTrue(Double.isNaN(tv.get(0)));
-		assertTrue(Double.isNaN(tv.get(len+1)));
-		assertFalse(Double.isNaN(tv.get(1)));
-		assertFalse(Double.isNaN(tv.get(len)));
-	}
 
 	
 	private void testDivide(AVector v) {
@@ -316,12 +364,18 @@ public class TestVectors {
 		assertEquals(Vectorz.totalValue(v),total,0.00000001);
 	}
 	
+	private void doNonDegenerateTests(AVector v) {
+		if (v.length()==0) return;
+		testSubVectorMutability(v);
+		testCopyTo(v);
+		testNormalise(v);
+		testFilling(v);
+	}
 	
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
 		testAdd(v);
 		testAddToArray(v);
-		testCopyTo(v);
 		testAddMultipleToArray(v);
 		testMultiply(v);
 		testDivide(v);
@@ -336,7 +390,6 @@ public class TestVectors {
 		testIterator(v);
 		testOutOfBounds(v);
 	}
-
 
 	@Test public void genericTests() {
 		doGenericTests(Vector0.of());
@@ -420,61 +473,5 @@ public class TestVectors {
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 
-	}
-	
-	@Test public void testDistances() {
-		Vector3 v=Vector3.of(1,2,3);
-		Vector3 v2=Vector3.of(2,4,6);
-		assertEquals(v.magnitude(),v.distance(v2),0.000001);
-		assertEquals(6,v.distanceL1(v2),0.000001);
-		assertEquals(3,v.distanceLinf(v2),0.000001);
-	}
-	
-	public void testDistances(AVector v) {
-		AVector z=v.clone();
-		z.fill(0.0);
-		
-		assertEquals(v.maxAbsElement(),v.distanceLinf(z),0.0);
-	}
-	
-	public void testMagnitudes(AVector v) {
-		double d=v.magnitude();
-		double d2=v.magnitudeSquared();
-		assertEquals(d*d,d2,0.00001);
-		
-		assertTrue(d<=(v.maxAbsElement()*v.length()));
-	}
-	
-	@Test public void testClamping() {
-		Vector3 v=Vector3.of(1,2,3);
-		v.clamp(1.5, 2.5);
-		assertEquals(Vector3.of(1.5,2,2.5),v);
-	}
-	
-	@Test public void testClampMin() {
-		Vector3 v=Vector3.of(1,2,3);
-		v.clampMin(1.5);
-		assertEquals(Vector3.of(1.5,2,3),v);
-	}
-	
-	@Test public void testClampMax() {
-		Vector3 v=Vector3.of(1,2,3);
-		v.clampMax(2.5);
-		assertEquals(Vector3.of(1,2,2.5),v);
-	}
-	
-	@Test public void testElementSum() {
-		Vector3 v=Vector3.of(1,2,3);
-		assertEquals(6.0,v.elementSum(),0.0);
-	}
-	
-	
-	@Test public void testCreateFromIterable() {
-		ArrayList<Object> al=new ArrayList<Object>();
-		al.add(1);
-		al.add(2L);
-		al.add(3.0);
-		AVector v=Vectorz.create((Iterable<Object>)al);
-		assertEquals(Vector.of(1,2,3),v);
 	}
 }
