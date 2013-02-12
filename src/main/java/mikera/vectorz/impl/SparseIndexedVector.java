@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -143,6 +144,11 @@ public class SparseIndexedVector extends ASparseVector {
 			throw new VectorzException("Can't set SparseIndexedVector at non-indexed position: "+i);
 		}
 		data[ip]=value;
+	}
+
+	@Override
+	public Vector nonSparseView() {
+		return Vector.wrap(data);
 	}
 
 }

@@ -15,4 +15,6 @@ public abstract class ASparseVector extends AVector {
 	 * @return
 	 */
 	public abstract int nonSparseElementCount();
+	
+	public abstract AVector nonSparseView();
 }
