@@ -402,7 +402,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 * Returns the maximum absolute component of a vector
 	 * @return
 	 */
-	public double maxAbsComponent() {
+	public double maxAbsElement() {
 		int len=length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
@@ -417,11 +417,11 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
-	 * Normalises so that the maximum absolute component is 1.0
-	 * Returns the previous maximum absolute component.
+	 * Normalises so that the maximum absolute element is 1.0
+	 * Returns the previous maximum absolute element.
 	 */
-	public double normaliseMaxAbsComponent() {
-		double scale=maxAbsComponent();
+	public double normaliseMaxAbsElement() {
+		double scale=maxAbsElement();
 		scale(1.0/scale);
 		return scale;
 	}

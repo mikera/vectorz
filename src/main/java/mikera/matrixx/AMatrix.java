@@ -77,7 +77,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
-	public double calculateComponent(int i, AVector v) {
+	public double calculateElement(int i, AVector v) {
 		return getRow(i).dotProduct(v);
 	}
 	

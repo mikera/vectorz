@@ -28,7 +28,7 @@ public final class ConstantTransform3 extends AConstantTransform implements ISpe
 	}
 	
 	@Override
-	public double calculateComponent(int i, AVector inputVector) {
+	public double calculateElement(int i, AVector inputVector) {
 		switch (i) {
 			case 0: return x;
 			case 1: return y;

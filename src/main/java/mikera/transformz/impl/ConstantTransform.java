@@ -28,7 +28,7 @@ public final class ConstantTransform extends AConstantTransform {
 	}
 	
 	@Override
-	public double calculateComponent(int i, AVector v) {
+	public double calculateElement(int i, AVector v) {
 		return constant[i];
 	}
 

@@ -414,7 +414,7 @@ public class TestVectors {
 		AVector z=v.clone();
 		z.fill(0.0);
 		
-		assertEquals(v.maxAbsComponent(),v.distanceLinf(z),0.0);
+		assertEquals(v.maxAbsElement(),v.distanceLinf(z),0.0);
 	}
 	
 	public void testMagnitudes(AVector v) {
@@ -422,7 +422,7 @@ public class TestVectors {
 		double d2=v.magnitudeSquared();
 		assertEquals(d*d,d2,0.00001);
 		
-		assertTrue(d<=(v.maxAbsComponent()*v.length()));
+		assertTrue(d<=(v.maxAbsElement()*v.length()));
 	}
 	
 	@Test public void testClamping() {

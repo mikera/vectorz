@@ -30,7 +30,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public double calculateComponent(int i, AVector v) {
+	public double calculateElement(int i, AVector v) {
 		return v.get(i);
 	}
 

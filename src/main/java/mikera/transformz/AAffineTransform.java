@@ -67,8 +67,8 @@ public abstract class AAffineTransform extends ATransform {
 	}
 	
 	@Override
-	public double calculateComponent(int i, AVector v) {
-		return getMatrixComponent().calculateComponent(i,v)
+	public double calculateElement(int i, AVector v) {
+		return getMatrixComponent().calculateElement(i,v)
 				+getTranslationComponent().getTranslationComponent(i);
 		
 	}

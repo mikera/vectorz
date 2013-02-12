@@ -109,10 +109,10 @@ public abstract class ATransform implements Cloneable {
 
 	
 	/**
-	 * Calculates a single component of the output. 
+	 * Calculates a single element of the output. 
 	 * Not necessarily faster than calculating full output, but can be in some circumstances.
 	 */
-	public double calculateComponent(int i, AVector inputVector) {
+	public double calculateElement(int i, AVector inputVector) {
 		SingleComponentVector r=new SingleComponentVector(i,outputDimensions());
 		return r.get(i);
 	}

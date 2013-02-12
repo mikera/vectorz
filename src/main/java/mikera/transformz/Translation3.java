@@ -32,7 +32,7 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 	}
 	
 	@Override
-	public double calculateComponent(int i, AVector v) {
+	public double calculateElement(int i, AVector v) {
 		return v.get(i)+getTranslationComponent(i);
 	}
 	
