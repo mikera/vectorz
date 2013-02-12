@@ -79,6 +79,15 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementSum() {
+		double result=0.0;
+		for (int i=0; i<data.length; i++) {
+			result+=data[i];
+		}
+		return result;
+	}
+	
+	@Override
 	public void set(int i, double value) {
 		int ip=indexPosition(i);
 		if (ip<0) {
