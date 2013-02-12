@@ -120,6 +120,16 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
+		int start=index.seekPosition(offset);
+		for (int i=start; i<data.length; i++) {
+			int di=index.data[i];
+			if (di>=(offset+length)) return;
+			array[di+arrayOffset]+=factor*data[i];
+		}
+	}
+	
+	@Override
 	public void set(int i, double value) {
 		int ip=index.indexPosition(i);
 		if (ip<0) {

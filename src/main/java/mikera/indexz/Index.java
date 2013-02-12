@@ -178,4 +178,24 @@ public final class Index extends AIndex {
 		}
 		return -1;
 	}
+
+	/**
+	 * Finds the position a value would take in a sorted index.
+	 * @param i The position of the value - will point to either the value or the next higher value present 
+	 * @return
+	 */
+	public int seekPosition(int i) {
+		int min=0; int max=data.length;
+		while (min<max) {
+			int mid=(min+max)>>1;
+			int mi=data[mid];
+			if (i==mi) return mid;
+			if (i<mi) {
+				max=mid;
+			} else {
+				min=mid+1;
+			}
+		}
+		return min;
+	}
 }
