@@ -147,6 +147,17 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public double dotProduct (AVector v) {
+		if (v instanceof JoinedVector) {
+			JoinedVector jv=(JoinedVector)v;
+			if (jv.left.length()==left.length()) {
+				return left.dotProduct(jv.left)+right.dotProduct(jv.right);
+			}
+		}
+		return super.dotProduct(v);
+	}
+	
+	@Override
 	public void add(AVector a,int offset) {
 		left.add(a,offset);
 		right.add(a,offset+split);
