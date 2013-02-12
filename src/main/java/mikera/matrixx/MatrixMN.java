@@ -57,6 +57,15 @@ public final class MatrixMN extends AMatrix {
 	}
 	
 	@Override
+	public double elementSum() {
+		double result=0.0;
+		for (int i=0; i<data.length; i++) {
+			result+=data[i];
+		}
+		return result;
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		assert(rowCount()==dest.length());
 		assert(columnCount()==source.length());
