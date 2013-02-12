@@ -445,7 +445,7 @@ public class TestVectors {
 	
 	@Test public void testElementSum() {
 		Vector3 v=Vector3.of(1,2,3);
-		assertEquals(6.0,v.elememtSum(),0.0);
+		assertEquals(6.0,v.elementSum(),0.0);
 	}
 	
 	

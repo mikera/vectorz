@@ -340,7 +340,7 @@ public class TestMatrixx {
 		AVector v=m.asVector();
 		assertEquals(v,m.toVector());
 		
-		assertEquals(m.elementSum(),v.elememtSum(),0.0);
+		assertEquals(m.elementSum(),v.elementSum(),0.0);
 		
 		AMatrix m2=Matrixx.createFromVector(v, m.rowCount(), m.columnCount());
 		

@@ -49,7 +49,7 @@ public abstract class AVectorMatrix extends AMatrix {
 		int rc=rowCount();
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
-			result+=getRow(i).elememtSum();
+			result+=getRow(i).elementSum();
 		}
 		return result;
 	}

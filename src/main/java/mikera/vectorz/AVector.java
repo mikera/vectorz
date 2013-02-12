@@ -430,7 +430,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 * Returns the sum of all elements in a vector
 	 * @return
 	 */
-	public double elememtSum() {
+	public double elementSum() {
 		int len=length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
