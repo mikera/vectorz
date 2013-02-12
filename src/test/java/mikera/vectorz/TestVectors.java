@@ -279,6 +279,19 @@ public class TestVectors {
 		assertTrue(v.epsilonEquals(v2,0.00001));
 	}
 	
+	private void testCopyTo(AVector v) {
+		if (v.length()==0) return;
+		int len=v.length();
+		Vector tv=Vector.createLength(len+2);
+		tv.fill(Double.NaN);
+		v.copyTo(tv, 1);
+		assertTrue(Double.isNaN(tv.get(0)));
+		assertTrue(Double.isNaN(tv.get(len+1)));
+		assertFalse(Double.isNaN(tv.get(1)));
+		assertFalse(Double.isNaN(tv.get(len)));
+	}
+
+	
 	private void testDivide(AVector v) {
 		v=v.clone();
 		
@@ -308,6 +321,7 @@ public class TestVectors {
 		doNonDegenerateTests(v);
 		testAdd(v);
 		testAddToArray(v);
+		testCopyTo(v);
 		testAddMultipleToArray(v);
 		testMultiply(v);
 		testDivide(v);
@@ -322,6 +336,7 @@ public class TestVectors {
 		testIterator(v);
 		testOutOfBounds(v);
 	}
+
 
 	@Test public void genericTests() {
 		doGenericTests(Vector0.of());
