@@ -141,6 +141,18 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public double elementSum() {
+		double result=0.0;
+		int offset=getArrayOffset();
+		int length=length();
+		double[] array=getArray();
+		for (int i=0; i<length; i++) {
+			result+=array[offset+i];
+		}
+		return result;
+	}
+	
+	@Override
 	public void multiply(AVector v) {
 		v.multiplyTo(getArray(), getArrayOffset());
 	}
