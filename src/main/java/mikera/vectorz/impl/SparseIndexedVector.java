@@ -5,7 +5,10 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Indexed sparse vector. Mutable only in the elements included in the index
+ * Indexed sparse vector. Mutable only in the elements included in the index.
+ * 
+ * Index must be distinct and sorted.
+ * 
  * @author Mike
  *
  */
@@ -18,12 +21,15 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	public SparseIndexedVector(int length, Index index, double[] data) {
 		assert(index.length()==data.length);
+		assert(index.isDistinctSorted());
 		this.length=length;
 		this.index=index;
 		this.data=data;
 	}
 	
 	public SparseIndexedVector(int length, Index index, AVector data) {
+		assert(index.length()==data.length());
+		assert(index.isDistinctSorted());
 		this.length=length;
 		this.index=index;
 		this.data=new double[index.length()];
