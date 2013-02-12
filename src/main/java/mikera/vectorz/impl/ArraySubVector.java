@@ -105,11 +105,9 @@ public final class ArraySubVector extends ArrayVector {
 		}
 	}
 	
+	@Override
 	public void addMultiple(ArrayVector v, double factor) {
-		int vlength=v.length();
-		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
-		}
+		assert (v.length() == length);
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
