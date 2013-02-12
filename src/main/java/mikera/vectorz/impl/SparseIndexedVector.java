@@ -40,7 +40,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	/**
 	 * Creates a SparseIndexedVector with the specified index and data values.
-	 * Index must be distinct and sorted.
+	 * Performs no checking - Index must be distinct and sorted.
 	 */
 	public static SparseIndexedVector wrap(int length, Index index, double[] data) {
 		assert(index.length()==data.length);
@@ -49,11 +49,17 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	public static SparseIndexedVector create(int length, Index index, double[] data) {
+		if (!index.isDistinctSorted()) {
+			throw new VectorzException("Index must be sorted and distinct");
+		}
+		if (!(index.length()==data.length)) {
+			throw new VectorzException("Length of index: mismatch woth data");			
+		}
 		return new SparseIndexedVector(length, index,data);
 	}
 	
 	public static SparseIndexedVector create(int length, Index index, AVector data) {
-		SparseIndexedVector sv= new SparseIndexedVector(length, index);
+		SparseIndexedVector sv= create(length, index, new double[index.length()]);
 		data.copyTo(sv.data, 0);
 		return sv;
 	}
