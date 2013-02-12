@@ -3,7 +3,7 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 
 /**
- * A mutable vector that always has one non-zero components.
+ * A mutable vector that has one non-zero element.
  * All other components are forced to remain at zero, setting them is ignored.
  * @author Mike
  *
@@ -26,6 +26,11 @@ public final class SingleComponentVector extends AVector {
 	
 	@Override
 	public double magnitude() {
+		return value;
+	}
+	
+	@Override
+	public double elementSum() {
 		return value;
 	}
 	

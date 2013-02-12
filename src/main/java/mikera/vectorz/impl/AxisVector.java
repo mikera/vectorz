@@ -41,6 +41,11 @@ public class AxisVector extends ComputedVector {
 		return 1.0;
 	}
 	
+	@Override
+	public double elementSum() {
+		return 1.0;
+	}
+	
 	@Override 
 	public double dotProduct(AVector v) {
 		assert(length==v.length());
@@ -51,6 +56,7 @@ public class AxisVector extends ComputedVector {
 	public boolean isZeroVector() {
 		return false;
 	}
+
 	
 	@Override
 	public boolean isUnitLengthVector() {
