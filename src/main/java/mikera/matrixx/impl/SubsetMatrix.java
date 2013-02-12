@@ -5,8 +5,8 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**
- * Matrix that transforms to a subset of components of the source vector
- * i.e. has a single 1 in each row
+ * Matrix that transforms to a subset of elements of the source vector
+ * i.e. has exactly one 1.0 in each row
  * 
  * @author Mike
  */
@@ -36,6 +36,11 @@ public final class SubsetMatrix extends AMatrix {
 	@Override
 	public int outputDimensions() {
 		return components.length();
+	}
+	
+	@Override
+	public double elementSum() {
+		return rowCount();
 	}
 
 	@Override
