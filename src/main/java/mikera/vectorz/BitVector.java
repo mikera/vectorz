@@ -61,8 +61,15 @@ public final class BitVector extends AVector {
 		return getBit(i) ? BIT_ON : BIT_OFF;
 	}
 	
-	
-	
+		@Override
+	public double elementSum() {
+		double result=0.0;
+		for (int i=0; i<data.length; i++) {
+			result+=Long.bitCount(i);
+		}
+		return result;
+	}
+
 	@Override
 	public boolean isMutable() {
 		return true;
