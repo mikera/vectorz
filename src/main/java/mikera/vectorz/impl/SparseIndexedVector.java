@@ -15,9 +15,9 @@ import mikera.vectorz.util.VectorzException;
 public class SparseIndexedVector extends ASparseVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
-	final int length;
-	final Index index;
-	final double[] data;
+	private final int length;
+	public final Index index;
+	public final double[] data;
 	
 	public SparseIndexedVector(int length, Index index, double[] data) {
 		assert(index.length()==data.length);
