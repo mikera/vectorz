@@ -147,7 +147,7 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 
 	@Override
-	public Vector nonSparseView() {
+	public Vector nonSparseValues() {
 		return Vector.wrap(data);
 	}
 
