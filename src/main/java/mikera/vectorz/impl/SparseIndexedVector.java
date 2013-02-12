@@ -19,21 +19,42 @@ public class SparseIndexedVector extends ASparseVector {
 	public final Index index;
 	public final double[] data;
 	
-	public SparseIndexedVector(int length, Index index, double[] data) {
-		assert(index.length()==data.length);
-		assert(index.isDistinctSorted());
+	
+	private SparseIndexedVector(int length, Index index) {
+		this(length,index,new double[index.length()]);
+	}
+	
+	private SparseIndexedVector(int length, Index index, double[] data) {
 		this.length=length;
 		this.index=index;
 		this.data=data;
 	}
 	
-	public SparseIndexedVector(int length, Index index, AVector data) {
-		assert(index.length()==data.length());
-		assert(index.isDistinctSorted());
+	private SparseIndexedVector(int length, Index index, AVector data) {
 		this.length=length;
 		this.index=index;
 		this.data=new double[index.length()];
 		data.copyTo(this.data, 0);
+	}
+	
+	/**
+	 * Creates a SparseIndexedVector with the specified index and data values.
+	 * Index must be distinct and sorted.
+	 */
+	public SparseIndexedVector wrap(int length, Index index, double[] data) {
+		assert(index.length()==data.length);
+		assert(index.isDistinctSorted());
+		return new SparseIndexedVector(length, index,data);
+	}
+	
+	public SparseIndexedVector create(int length, Index index, double[] data) {
+		return new SparseIndexedVector(length, index,data);
+	}
+	
+	public SparseIndexedVector create(int length, Index index, AVector data) {
+		SparseIndexedVector sv= new SparseIndexedVector(length, index);
+		data.copyTo(sv.data, 0);
+		return sv;
 	}
 	
 	@Override
