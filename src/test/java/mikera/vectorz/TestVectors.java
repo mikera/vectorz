@@ -407,6 +407,7 @@ public class TestVectors {
 		
 		// zero-length Vectors
 		doGenericTests(Vector.of());
+		doGenericTests(new GrowableVector(Vector.of()));
 		doGenericTests(Vector.wrap(new double[0]));
 		doGenericTests(new Vector3(1.0,2.0,3.0).subVector(2, 0));
 		
