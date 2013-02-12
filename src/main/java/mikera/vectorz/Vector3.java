@@ -3,6 +3,8 @@ package mikera.vectorz;
 /**
  * Specialised 3D vector
  * 
+ * Represents a point in 3D x,y,z space.
+ * 
  * @author Mike
  */
 public final class Vector3 extends APrimitiveVector {

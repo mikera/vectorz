@@ -4,6 +4,11 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
+/**
+ * A matrix implemented as a composition of M length N vectors
+ * @author Mike
+ *
+ */
 public final class VectorMatrixMN extends AVectorMatrix {
 	private int rowCount;	
 	private final int columnCount;	

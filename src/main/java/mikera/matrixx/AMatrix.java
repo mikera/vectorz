@@ -18,7 +18,7 @@ import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General abstract matrix class.
+ * General abstract 2D matrix class.
  * 
  * Implements generic version of most key matrix operations.
  * 
@@ -213,14 +213,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	/**
-	 * Returns a row of the matrix as a vector reference
+	 * Returns a row of the matrix as a vector view
 	 */
 	public AVector getRow(int row) {
 		return new MatrixRow(row);
 	}
 
 	/**
-	 * Returns a column of the matrix as a vector reference
+	 * Returns a column of the matrix as a vector view
 	 */
 	public AVector getColumn(int column) {
 		return new MatrixColumn(column);
