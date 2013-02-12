@@ -443,6 +443,11 @@ public class TestVectors {
 		assertEquals(Vector3.of(1,2,2.5),v);
 	}
 	
+	@Test public void testElementSum() {
+		Vector3 v=Vector3.of(1,2,3);
+		assertEquals(6.0,v.elememtSum(),0.0);
+	}
+	
 	
 	@Test public void testCreateFromIterable() {
 		ArrayList<Object> al=new ArrayList<Object>();

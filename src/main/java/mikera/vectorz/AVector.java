@@ -399,7 +399,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
-	 * Returns the maximum absolute component of a vector
+	 * Returns the maximum absolute element of a vector
 	 * @return
 	 */
 	public double maxAbsElement() {
@@ -424,6 +424,19 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		double scale=maxAbsElement();
 		scale(1.0/scale);
 		return scale;
+	}
+	
+	/**
+	 * Returns the sum of all elements in a vector
+	 * @return
+	 */
+	public double elememtSum() {
+		int len=length();
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			result+=get(i);
+		}		
+		return result;
 	}
 	
 	/**
