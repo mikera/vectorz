@@ -151,6 +151,17 @@ public class SparseIndexedVector extends ASparseVector {
 			array[offset+index.data[i]]=data[i];
 		}	
 	}
+	
+	@Override public void copyTo(AVector v, int offset) {
+		if (v instanceof ArrayVector) {
+			ArrayVector av=(ArrayVector)v;
+			copyTo(av.getArray(),av.getArrayOffset()+offset);
+		}
+		v.fillRange(offset,length,0.0);
+		for (int i=0; i<data.length; i++) {
+			v.set(offset+index.data[i],data[i]);
+		}	
+	}
 
 	@Override
 	public void set(int i, double value) {
