@@ -45,6 +45,16 @@ public abstract class AVectorMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double elementSum() {
+		int rc=rowCount();
+		double result=0.0;
+		for (int i=0; i<rc; i++) {
+			result+=getRow(i).elememtSum();
+		}
+		return result;
+	}
+	
+	@Override
 	public AVectorMatrix clone() {
 		AVectorMatrix avm=(AVectorMatrix) super.clone();
 		return avm;
