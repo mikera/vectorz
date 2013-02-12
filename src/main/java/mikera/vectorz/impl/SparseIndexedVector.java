@@ -76,29 +76,11 @@ public class SparseIndexedVector extends ASparseVector {
 		return length;
 	}
 	
-	/**
-	 * Looks up an index in the index vector, returning its position or -1 if not found
-	 * @param i
-	 * @return
-	 */
-	public int indexPosition(int i) {
-		int min=0; int max=data.length;
-		while (min<max) {
-			int mid=(min+max)>>1;
-			int mi=index.data[mid];
-			if (i==mi) return mid;
-			if (i<mi) {
-				max=mid;
-			} else {
-				min=mid+1;
-			}
-		}
-		return -1;
-	}
+
 	
 	@Override
 	public double get(int i) {
-		int ip=indexPosition(i);
+		int ip=index.indexPosition(i);
 		if (ip<0) return 0.0;
 		return data[ip];
 	}
@@ -139,7 +121,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void set(int i, double value) {
-		int ip=indexPosition(i);
+		int ip=index.indexPosition(i);
 		if (ip<0) {
 			throw new VectorzException("Can't set SparseIndexedVector at non-indexed position: "+i);
 		}

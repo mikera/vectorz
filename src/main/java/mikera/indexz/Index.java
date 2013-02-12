@@ -157,4 +157,25 @@ public final class Index extends AIndex {
 		}
 		return r;
 	}
+	
+	/**
+	 * Looks up an index value in the index, returning its position or -1 if not found
+	 * Index must be both sorted and distinct.
+	 * @param i
+	 * @return
+	 */
+	public int indexPosition(int i) {
+		int min=0; int max=data.length;
+		while (min<max) {
+			int mid=(min+max)>>1;
+			int mi=data[mid];
+			if (i==mi) return mid;
+			if (i<mi) {
+				max=mid;
+			} else {
+				min=mid+1;
+			}
+		}
+		return -1;
+	}
 }
