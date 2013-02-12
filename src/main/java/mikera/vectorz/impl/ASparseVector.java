@@ -21,4 +21,11 @@ public abstract class ASparseVector extends AVector {
 	 * @return
 	 */
 	public abstract AVector nonSparseValues();
+	
+	/**
+	 * Returns true iff the sparse vector contains the index i 
+	 * @param i
+	 * @return
+	 */
+	public abstract boolean includesIndex(int i);
 }

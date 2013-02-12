@@ -15,7 +15,8 @@ public class TestSparseIndexedVector {
 		assertEquals(1.0,sv.get(1),0.0);
 		assertEquals(0.0,sv.get(9),0.0);
 		assertEquals(6.0,sv.elementSum(),0.0);
-
+        assertTrue(sv.includesIndex(6));
+        assertFalse(sv.includesIndex(5));
 	}
 	
 	@Test (expected=java.lang.Throwable.class)

@@ -198,4 +198,9 @@ public class SparseIndexedVector extends ASparseVector {
 		return Vector.wrap(data);
 	}
 
+	@Override
+	public boolean includesIndex(int i) {
+		return index.indexPosition(i)>=0;
+	}
+
 }
