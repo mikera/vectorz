@@ -17,6 +17,7 @@ import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.impl.WrappedSubVector;
 
 import org.junit.Test;
 
@@ -432,6 +433,7 @@ public class TestVectors {
 		
 		AVector v3 = new Vector3(1.0,2.0,3.0);
 		doGenericTests(v3.subVector(1, 2));
+		doGenericTests(new WrappedSubVector(v3,1,2));
 
 		AVector joined = Vectorz.join(v3, Vectorz.create(data));
 		doGenericTests(joined);
@@ -474,6 +476,7 @@ public class TestVectors {
 		doGenericTests(new IdenticalElementVector(10,1.0));
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
+		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
 
 	}
 }
