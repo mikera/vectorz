@@ -11,6 +11,8 @@ import mikera.vectorz.impl.ScalarVector;
  * @author Mike
  */
 public abstract class AScalar implements INDArray {
+	
+	private static final int[] SCALAR_SHAPE=new int[0];
 
 	public abstract double get();
 	
@@ -32,6 +34,11 @@ public abstract class AScalar implements INDArray {
 	public double get(int... indexes) {
 		assert(indexes.length==0);
 		return get();
+	}
+	
+	@Override
+	public int[] getShape() {
+		return SCALAR_SHAPE;
 	}
 	
 	@Override

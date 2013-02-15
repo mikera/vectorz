@@ -10,6 +10,8 @@ public interface INDArray {
 	
 	public int dimensionality();
 	
+	public int[] getShape();
+	
 	public double get(int... indexes);
 	
 	public AVector asVector();

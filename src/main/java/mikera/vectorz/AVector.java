@@ -54,6 +54,12 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		throw new UnsupportedOperationException();
 	}
 	
+	
+	@Override
+	public int[] getShape() {
+		return new int[] {length()};
+	}
+	
 	/**
 	 * Obtains a sub-vector that refers to this vector.
 	 * Changes to the sub-vector will be reflected in this vector
