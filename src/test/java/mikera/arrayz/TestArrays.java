@@ -26,7 +26,7 @@ public class TestArrays {
 	private void testAsVector(INDArray a) {
 		AVector v=a.asVector();
 		assertTrue(v.length()>=0);
-		
+		assertEquals(a.elementCount(),v.length());
 	}
 	
 	public void testArray(INDArray a) {
