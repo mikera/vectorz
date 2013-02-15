@@ -44,6 +44,12 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public boolean isView() {
+		// ArrayVector is usually a view
+		return true;
+	}
+	
+	@Override
 	public void copyTo(double[] data, int offset) {
 		System.arraycopy(getArray(), getArrayOffset(), data, offset, length());
 	}
