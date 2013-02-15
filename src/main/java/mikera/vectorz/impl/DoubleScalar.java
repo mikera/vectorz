@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
-import mikera.vectorz.AVector;
 
 public class DoubleScalar extends AScalar {
 	public double value;
