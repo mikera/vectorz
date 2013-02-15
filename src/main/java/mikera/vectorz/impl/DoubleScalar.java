@@ -11,12 +11,6 @@ public class DoubleScalar extends AScalar {
 	}
 
 	@Override
-	public AVector asVector() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public double get() {
 		return value;
 	}	

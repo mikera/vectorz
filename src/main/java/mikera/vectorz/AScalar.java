@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.impl.ScalarVector;
 
 /**
  * Class to represent a wrapped 0-d scalar value.
@@ -28,7 +29,10 @@ public abstract class AScalar implements INDArray {
 		return get();
 	}
 	
-	
+	@Override
+	public AVector asVector() {
+		return new ScalarVector(this);
+	}
 	
 	@Override
 	public INDArray reshape(int... dimensions) {
