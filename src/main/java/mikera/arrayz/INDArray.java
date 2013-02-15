@@ -15,4 +15,6 @@ public interface INDArray {
 	public AVector asVector();
 	
 	public INDArray reshape(int... dimensions);
+	
+	public INDArray slice(int majorSlice);
 }

@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import java.util.Arrays;
 
+import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 
 /**
@@ -34,6 +35,12 @@ public abstract class ArrayVector extends AVector {
 			throw new IndexOutOfBoundsException("Lower bound breached:"
 					+ offset);
 		return new ArraySubVector(this, offset, length);
+	}
+	
+	@Override
+	public AScalar slice(int position) {
+		assert((position>=0) && (position<length()));
+		return new ArrayIndexScalar(getArray(),getArrayOffset()+position);
 	}
 	
 	@Override

@@ -57,6 +57,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public AVector slice (int rowNumber) {
+		return getRow(rowNumber);
+	}
+
+	
+	@Override
 	public double get(int... indexes) {
 		assert(indexes.length==2);
 		return get(indexes[0],indexes[1]);

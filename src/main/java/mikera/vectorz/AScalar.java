@@ -23,6 +23,11 @@ public abstract class AScalar implements INDArray {
 		return 0;
 	}
 	
+	@Override
+	public INDArray slice(int position) {
+		throw new UnsupportedOperationException("Can't slice a scalar!");
+	}
+	
 	@Override 
 	public double get(int... indexes) {
 		assert(indexes.length==0);
