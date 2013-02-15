@@ -19,4 +19,6 @@ public interface INDArray {
 	public INDArray reshape(int... dimensions);
 	
 	public INDArray slice(int majorSlice);
+	
+	public long elementCount();
 }

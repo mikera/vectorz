@@ -42,6 +42,11 @@ public abstract class AScalar implements INDArray {
 	}
 	
 	@Override
+	public long elementCount() {
+		return 1;
+	}
+	
+	@Override
 	public AVector asVector() {
 		return new ScalarVector(this);
 	}

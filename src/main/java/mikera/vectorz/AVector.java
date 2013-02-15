@@ -60,6 +60,11 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		return new int[] {length()};
 	}
 	
+	@Override
+	public long elementCount() {
+		return length();
+	}
+	
 	/**
 	 * Obtains a sub-vector that refers to this vector.
 	 * Changes to the sub-vector will be reflected in this vector

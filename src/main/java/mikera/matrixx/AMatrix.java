@@ -57,6 +57,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public long elementCount() {
+		return rowCount()*columnCount();
+	}
+	
+	@Override
 	public AVector slice (int rowNumber) {
 		return getRow(rowNumber);
 	}
