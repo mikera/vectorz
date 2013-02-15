@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
@@ -391,6 +392,7 @@ public class TestVectors {
 		testAsList(v);
 		testIterator(v);
 		testOutOfBounds(v);
+		new TestArrays().testArray(v);
 	}
 
 	@Test public void genericTests() {
