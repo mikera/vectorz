@@ -9,7 +9,7 @@ import mikera.vectorz.AVector;
 @SuppressWarnings("serial")
 public abstract class MatrixSubVector extends AVector {
 	@Override
-	public boolean isReference() {
+	public boolean isView() {
 		return true;
 	}
 	

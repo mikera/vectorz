@@ -40,7 +40,7 @@ public final class WrappedSubVector extends AVector {
 	}
 	
 	@Override
-	public boolean isReference() {
+	public boolean isView() {
 		return true;
 	}
 

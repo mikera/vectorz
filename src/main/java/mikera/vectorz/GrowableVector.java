@@ -87,7 +87,7 @@ public final class GrowableVector extends ArrayVector {
 	}
 	
 	@Override
-	public boolean isReference() {
+	public boolean isView() {
 		return false;
 	}
 	

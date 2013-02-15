@@ -9,7 +9,7 @@ package mikera.vectorz;
 @SuppressWarnings("serial")
 public abstract class APrimitiveVector extends AVector {
 	@Override
-	public boolean isReference() {
+	public boolean isView() {
 		return false;
 	}
 	

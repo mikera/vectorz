@@ -106,7 +106,7 @@ public class Vectorz {
 	}
 
 	public static AVector create(AVector vector) {
-		if (!vector.isReference()) return vector.clone();
+		if (!vector.isView()) return vector.clone();
 		AVector nv=newVector(vector.length());
 		vector.copyTo(nv, 0);
 		return nv;

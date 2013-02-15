@@ -27,4 +27,5 @@ public interface INDArray {
 	 * @return
 	 */
 	public boolean isMutable();
+
 }

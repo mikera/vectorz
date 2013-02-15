@@ -22,7 +22,7 @@ abstract class AIndexedVector extends AVector {
 	}
 	
 	@Override
-	public boolean isReference() {
+	public boolean isView() {
 		return true;
 	}
 

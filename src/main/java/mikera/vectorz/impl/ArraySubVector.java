@@ -153,7 +153,7 @@ public final class ArraySubVector extends ArrayVector {
 	}
 	
 	@Override
-	public boolean isReference() {
+	public boolean isView() {
 		return true;
 	}
 	

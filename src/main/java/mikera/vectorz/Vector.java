@@ -304,7 +304,7 @@ public final class Vector extends ArrayVector {
 		}	
 	}
 	
-	public boolean isReference() {
+	public boolean isView() {
 		return false;
 	}
 	

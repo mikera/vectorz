@@ -90,7 +90,7 @@ public final class BitVector extends AVector {
 	
 	
 	@Override
-	public boolean isReference() {
+	public boolean isView() {
 		return false;
 	}
 

@@ -52,7 +52,7 @@ public final class JoinedVector extends AVector {
 	}
 
 	@Override
-	public boolean isReference() {
+	public boolean isView() {
 		return true;
 	}
 	

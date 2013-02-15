@@ -539,10 +539,10 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
-	 * Returns true if this vector is of a type that references other vectors / data.
+	 * Returns true if this vector is of a view type that references other vectors / data.
 	 * @return
 	 */
-	public boolean isReference() {
+	public boolean isView() {
 		return true;
 	}
 	

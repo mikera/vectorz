@@ -87,16 +87,16 @@ public class TestVectors {
 		
 		ArraySubVector v=new ArraySubVector(data);
 		assertEquals(10,v.get(10),0.0);
-		assertTrue(v.isReference());
+		assertTrue(v.isView());
 		
 		ArraySubVector v2=v.subVector(5, 90);
 		assertEquals(90,v2.length());
 		assertEquals(15,v2.get(10),0.0);
-		assertTrue(v2.isReference());
+		assertTrue(v2.isView());
 		
 		ArraySubVector v3=v2.subVector(5,80);
 		assertEquals(20,v3.get(10),0.0);
-		assertTrue(v3.isReference());
+		assertTrue(v3.isView());
 		
 		v3.set(10, -99);
 		assertEquals(-99,v.get(20),0.0);
@@ -119,7 +119,7 @@ public class TestVectors {
 		
 		ArraySubVector v2=new ArraySubVector(v);
 		assertEquals(v,v2);
-		assertTrue(v2.isReference());
+		assertTrue(v2.isView());
 		
 		v.set(10,Math.PI);
 		assertTrue(!v.equals(v2));
@@ -177,7 +177,7 @@ public class TestVectors {
 		AVector cv=v.clone();
 		int len=cv.length();
 		assertEquals(v.length(), len);
-		assertFalse(cv.isReference());
+		assertFalse(cv.isView());
 		assertTrue((cv.length()==0)||cv.isMutable());		
 		assertEquals(v,cv);
 		
@@ -249,7 +249,7 @@ public class TestVectors {
 	public void testSubVectorMutability(AVector v) {
 		// defensive copy
 		v=v.clone();
-		assertTrue(!v.isReference());
+		assertTrue(!v.isView());
 		
 		int vlen=v.length();
 		
@@ -258,7 +258,7 @@ public class TestVectors {
 		AVector s1 = v.subVector(start, vlen-start);
 		AVector s2 = v.subVector(start, vlen-start);
 		
-		assertTrue(s1.isReference());
+		assertTrue(s1.isView());
 		assertNotSame(s1,s2);
 		
 		int len=s1.length();
