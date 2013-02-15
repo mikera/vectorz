@@ -392,6 +392,7 @@ public class TestVectors {
 		testAsList(v);
 		testIterator(v);
 		testOutOfBounds(v);
+		
 		new TestArrays().testArray(v);
 	}
 

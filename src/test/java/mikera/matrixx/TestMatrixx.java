@@ -2,6 +2,7 @@ package mikera.matrixx;
 
 import static org.junit.Assert.*;
 
+import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
@@ -398,6 +399,8 @@ public class TestMatrixx {
 		doMaybeSquareTests(m);
 		doRandomTests(m);
 		doBigComposeTest(m);
+		
+		new TestArrays().testArray(m);
 	}
 
 	@Test public void genericTests() {
