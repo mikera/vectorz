@@ -25,7 +25,7 @@ public class ScalarVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
-		assert(i==0);
+		if (i!=0) throw new IndexOutOfBoundsException();
 		scalar.set(value);
 	}
 
