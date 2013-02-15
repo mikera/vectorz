@@ -23,4 +23,9 @@ public abstract class AScalar implements INDArray {
 		assert(indexes.length==0);
 		return get();
 	}
+	
+	@Override
+	public INDArray reshape(int... dimensions) {
+		throw new UnsupportedOperationException();
+	}
 }
