@@ -24,6 +24,11 @@ public final class MatrixMN extends AMatrix {
 		set(m);
 	}
 	
+	@Override
+	public boolean isView() {
+		return false;
+	}
+	
 	private MatrixMN(int rowCount, int columnCount, double[] data) {
 		this.rows=rowCount;
 		this.columns=columnCount;

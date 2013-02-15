@@ -19,5 +19,10 @@ public class DoubleScalar extends AScalar {
 		this.value=value;
 	}
 	
+	@Override
+	public boolean isView() {
+		return false;
+	}
+	
 	
 }

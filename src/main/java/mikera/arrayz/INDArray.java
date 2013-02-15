@@ -27,5 +27,11 @@ public interface INDArray {
 	 * @return
 	 */
 	public boolean isMutable();
+	
+	/**
+	 * Return true if this is a view
+	 * @return
+	 */
+	public boolean isView();
 
 }

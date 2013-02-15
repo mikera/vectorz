@@ -447,6 +447,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public boolean isView() {
+		return false;
+	}
+	
+	@Override
 	public AMatrix copyOfMatrix() {
 		return this.clone();
 	}

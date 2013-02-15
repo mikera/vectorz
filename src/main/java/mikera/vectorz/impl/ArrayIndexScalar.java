@@ -20,5 +20,10 @@ public class ArrayIndexScalar extends AScalar {
 	public void set(double value) {
 		array[index]=value;
 	}
+	
+	@Override
+	public boolean isView() {
+		return true;
+	}
 
 }

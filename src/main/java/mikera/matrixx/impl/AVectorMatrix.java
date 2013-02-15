@@ -45,6 +45,11 @@ public abstract class AVectorMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isView() {
+		return true;
+	}
+	
+	@Override
 	public double elementSum() {
 		int rc=rowCount();
 		double result=0.0;
