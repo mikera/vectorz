@@ -24,6 +24,11 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		return false;
+	}
+	
+	@Override
 	public int inputDimensions() {
 		return inputDimensions;
 	}

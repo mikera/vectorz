@@ -26,6 +26,11 @@ public abstract class ADiagonalMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		return false;
+	}
+	
+	@Override
 	public double determinant() {
 		int dimensions=rowCount();
 		double det=1.0;

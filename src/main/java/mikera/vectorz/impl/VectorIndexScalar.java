@@ -22,5 +22,10 @@ public class VectorIndexScalar extends AScalar {
 	public void set(double value) {
 		vector.set(index,value);
 	}
+	
+	@Override
+	public boolean isMutable() {
+		return vector.isMutable();
+	}
 
 }

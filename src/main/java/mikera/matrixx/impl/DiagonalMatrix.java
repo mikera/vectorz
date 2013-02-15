@@ -50,6 +50,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		return true;
+	}
+	
+	@Override
 	public void scale(double factor) {
 		for (int i=0; i<data.length; i++) {
 			data[i]*=factor;

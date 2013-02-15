@@ -15,6 +15,12 @@ public class ScalarMatrix extends ADiagonalMatrix {
 		super(dimensions);
 		this.scale=scale;
 	}
+	
+	
+	@Override
+	public boolean isMutable() {
+		return true;
+	}
 
 	@Override
 	public double get(int row, int column) {

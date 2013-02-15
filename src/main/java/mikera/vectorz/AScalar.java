@@ -30,6 +30,12 @@ public abstract class AScalar implements INDArray {
 		throw new UnsupportedOperationException("Can't slice a scalar!");
 	}
 	
+	@Override
+	public boolean isMutable() {
+		// scalars are generally going to be mutable, so express this in default
+		return true;
+	}
+	
 	@Override 
 	public double get(int... indexes) {
 		assert(indexes.length==0);

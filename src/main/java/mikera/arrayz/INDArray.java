@@ -21,4 +21,10 @@ public interface INDArray {
 	public INDArray slice(int majorSlice);
 	
 	public long elementCount();
+	
+	/**
+	 * Returns true if the NDArray is mutable (at least partially)
+	 * @return
+	 */
+	public boolean isMutable();
 }
