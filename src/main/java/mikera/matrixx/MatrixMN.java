@@ -2,7 +2,6 @@ package mikera.matrixx;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.VectorzException;
 
 /** 
@@ -85,8 +84,8 @@ public final class MatrixMN extends AMatrix {
 	}
 	
 	@Override
-	public ArraySubVector getRow(int row) {
-		return ArraySubVector.wrap(data,row*columns,columns);
+	public Vector getRow(int row) {
+		return Vector.wrap(data);
 	}
 
 	@Override

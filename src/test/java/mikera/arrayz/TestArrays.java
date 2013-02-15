@@ -23,6 +23,7 @@ public class TestArrays {
 		if ((a.elementCount()==0)||(a.dimensionality()==0)) return;
 		
 		INDArray sl= a.slice(0);
+		// assertTrue(sl.isView()); not always... damn contained vectors
 		assertTrue(sl.dimensionality()==(a.dimensionality()-1));
 	}
 	
@@ -30,6 +31,10 @@ public class TestArrays {
 		AVector v=a.asVector();
 		assertTrue(v.length()>=0);
 		assertEquals(a.elementCount(),v.length());
+		if (a.isMutable()&&(v.length()>0)) {
+			assertTrue(v.isMutable());
+			// assertTrue((a==v)||(v.isView())); not always...
+		}
 	}
 	
 	public void testArray(INDArray a) {

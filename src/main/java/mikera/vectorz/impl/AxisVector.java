@@ -48,6 +48,11 @@ public class AxisVector extends ComputedVector {
 		return 1.0;
 	}
 	
+	@Override
+	public boolean isMutable() {
+		return false;
+	}
+	
 	@Override 
 	public double dotProduct(AVector v) {
 		assert(length==v.length());
