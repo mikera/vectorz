@@ -273,6 +273,20 @@ public class TestVectors {
 		}
 	}
 	
+	public void testVectorMutability(AVector v) {
+		if (v.isFullyMutable()) {
+			assertTrue(v.isMutable());
+			for (int i=0; i<v.length(); i++) {
+				v.set(i,i);
+				assertEquals(i,v.get(i),0.0);
+			}
+		}
+		
+		if (v.isMutable()) {
+			// v.set(0,0.01); not always, may not be fully mutable
+		}
+	}
+	
 	
 	private void testZero(AVector v) {
 		v=v.clone();
@@ -370,6 +384,7 @@ public class TestVectors {
 	private void doNonDegenerateTests(AVector v) {
 		if (v.length()==0) return;
 		testSubVectorMutability(v);
+		testVectorMutability(v);
 		testCopyTo(v);
 		testNormalise(v);
 		testFilling(v);
