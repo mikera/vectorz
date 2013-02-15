@@ -20,7 +20,10 @@ public class TestArrays {
 	}
 	
 	private void testSlices(INDArray a) {
-		// TODO
+		if ((a.elementCount()==0)||(a.dimensionality()==0)) return;
+		
+		INDArray sl= a.slice(0);
+		assertTrue(sl.dimensionality()==(a.dimensionality()-1));
 	}
 	
 	private void testAsVector(INDArray a) {

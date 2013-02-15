@@ -10,6 +10,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
+import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -51,7 +52,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	
 	@Override
 	public AScalar slice(int position) {
-		throw new UnsupportedOperationException();
+		return new VectorIndexScalar(this,position);
 	}
 	
 	
