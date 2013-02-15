@@ -56,6 +56,12 @@ public final class JoinedVector extends AVector {
 		return true;
 	}
 	
+
+	@Override
+	public boolean isFullyMutable() {
+		return left.isFullyMutable() && right.isFullyMutable();
+	}
+	
 	@Override
 	public void copyTo(AVector dest, int offset) {
 		left.copyTo(dest, offset);

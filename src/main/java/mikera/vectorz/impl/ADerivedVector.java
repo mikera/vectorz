@@ -34,5 +34,15 @@ public abstract class ADerivedVector extends AVector {
 	public boolean isView() {
 		return true;
 	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return source.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return source.isMutable();
+	}
 
 }
