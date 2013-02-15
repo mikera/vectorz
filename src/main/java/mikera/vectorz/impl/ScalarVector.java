@@ -6,7 +6,6 @@ import mikera.vectorz.AVector;
 public class ScalarVector extends AVector {
 	private static final long serialVersionUID = 1912695454407729415L;
 	
-	
 	public final AScalar scalar;
 	
 	public ScalarVector(AScalar s) {
