@@ -13,4 +13,9 @@ public class UnmodifiableVector extends ADerivedVector {
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException("UnmodifiableVector is immutable!");
 	}
+	
+	@Override
+	public boolean isMutable() {
+		return false;
+	}
 }

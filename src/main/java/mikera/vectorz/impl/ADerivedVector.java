@@ -29,5 +29,10 @@ public abstract class ADerivedVector extends AVector {
 	public void set(int i, double value) {
 		source.set(i,value);
 	}
+	
+	@Override
+	public boolean isView() {
+		return true;
+	}
 
 }
