@@ -3,6 +3,7 @@ package mikera.vectorz;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import mikera.arrayz.TestArrays;
 import mikera.vectorz.impl.DoubleScalar;
 
 public class TestScalars {
@@ -16,6 +17,8 @@ public class TestScalars {
 	private void testScalar(AScalar s) {
 		testAsVector(s);
 		assertEquals(0,s.dimensionality());
+		
+		new TestArrays().testArray(s);
 	}
 	
 	@Test public void genericTests() {
