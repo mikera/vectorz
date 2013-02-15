@@ -34,6 +34,15 @@ public class TestArrays {
 		if (a.isMutable()&&(v.length()>0)) {
 			assertTrue(v.isMutable());
 			// assertTrue((a==v)||(v.isView())); not always...
+		} else {
+			if (v.length()>0) {
+				try {
+					v.set(0,10.0);
+					fail("Shouldn't be able to set an immutable view vector");
+				} catch (Throwable t) {
+					// OK
+				}
+			}
 		}
 	}
 	
