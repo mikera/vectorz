@@ -13,6 +13,10 @@ public abstract class AScalar implements INDArray {
 
 	public abstract double get();
 	
+	public void set(double value) {
+		throw new UnsupportedOperationException();
+	}
+	
 	@Override
 	public int dimensionality() {
 		return 0;
@@ -23,6 +27,8 @@ public abstract class AScalar implements INDArray {
 		assert(indexes.length==0);
 		return get();
 	}
+	
+	
 	
 	@Override
 	public INDArray reshape(int... dimensions) {

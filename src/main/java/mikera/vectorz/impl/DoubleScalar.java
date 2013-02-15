@@ -17,4 +17,10 @@ public class DoubleScalar extends AScalar {
 		return value;
 	}	
 	
+	@Override
+	public void set(double value) {
+		this.value=value;
+	}
+	
+	
 }
