@@ -18,6 +18,11 @@ public abstract class APrimitiveVector extends AVector {
 		return true;
 	}
 	
+	@Override
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
 	public double getX() {
 		throw new IndexOutOfBoundsException("Cannot get x co-ordinate of "+this.length()+" dimensional vector");
 	}
