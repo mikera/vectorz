@@ -5,8 +5,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * Tests for general purpose INDArray implementations
+ * @author Mike
+ *
+ */
 public class TestArrays {
-
 
 	private void testShape(INDArray a) {
 		AVector v=a.asVector();
@@ -59,10 +63,9 @@ public class TestArrays {
 		testShape(a);
 	}
 
-
-
 	@Test
 	public void genericTests() {
 		// TODO
+		// note that vectors, matrices and scalars get passed to testArray directly
 	}
 }
