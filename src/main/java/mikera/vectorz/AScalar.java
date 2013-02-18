@@ -36,6 +36,11 @@ public abstract class AScalar implements INDArray {
 		return true;
 	}
 	
+	@Override
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
 	@Override 
 	public double get(int... indexes) {
 		assert(indexes.length==0);

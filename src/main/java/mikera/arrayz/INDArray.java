@@ -23,15 +23,22 @@ public interface INDArray {
 	public long elementCount();
 	
 	/**
-	 * Returns true if the NDArray is mutable (at least partially)
+	 * Returns true if the INDArray is mutable (at least partially)
 	 * @return
 	 */
 	public boolean isMutable();
+	
+	/**
+	 * Returns true if the INDArray is mutable in all positions
+	 * @return
+	 */
+	public boolean isFullyMutable();
 	
 	/**
 	 * Return true if this is a view
 	 * @return
 	 */
 	public boolean isView();
+
 
 }
