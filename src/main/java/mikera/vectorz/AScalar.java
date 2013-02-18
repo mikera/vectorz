@@ -38,7 +38,7 @@ public abstract class AScalar implements INDArray {
 	
 	@Override
 	public boolean isFullyMutable() {
-		return true;
+		return isMutable();
 	}
 	
 	@Override 

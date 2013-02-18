@@ -25,6 +25,13 @@ public class TestArrays {
 		INDArray sl= a.slice(0);
 		// assertTrue(sl.isView()); not always... damn contained vectors
 		assertTrue(sl.dimensionality()==(a.dimensionality()-1));
+		
+		if (a.isFullyMutable()) {
+			assert(sl.isFullyMutable());
+			assert(sl.isMutable());
+		}
+		
+		testArray(sl);
 	}
 	
 	private void testAsVector(INDArray a) {
