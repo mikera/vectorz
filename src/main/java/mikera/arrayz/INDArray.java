@@ -40,5 +40,7 @@ public interface INDArray {
 	 */
 	public boolean isView();
 
+	public INDArray clone();
+
 
 }

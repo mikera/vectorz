@@ -57,10 +57,15 @@ public class TestArrays {
 		}
 	}
 	
+	private void testClone(INDArray a) {
+		INDArray c=a.clone();
+	}
+	
 	public void testArray(INDArray a) {
 		testAsVector(a);
 		testSlices(a);
 		testShape(a);
+		testClone(a);
 	}
 
 	@Test

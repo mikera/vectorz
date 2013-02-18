@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.impl.ScalarVector;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Class to represent a wrapped 0-d scalar value.
@@ -10,7 +11,7 @@ import mikera.vectorz.impl.ScalarVector;
  * 
  * @author Mike
  */
-public abstract class AScalar implements INDArray {
+public abstract class AScalar implements INDArray, Cloneable {
 	
 	private static final int[] SCALAR_SHAPE=new int[0];
 
@@ -65,5 +66,14 @@ public abstract class AScalar implements INDArray {
 	@Override
 	public INDArray reshape(int... dimensions) {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public AScalar clone() {
+		try {
+			return (AScalar) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new VectorzException("AScalar clone failed");
+		}
 	}
 }
