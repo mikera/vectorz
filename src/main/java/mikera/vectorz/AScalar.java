@@ -76,4 +76,22 @@ public abstract class AScalar implements INDArray, Cloneable {
 			throw new VectorzException("AScalar clone failed");
 		}
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof AScalar) {
+			return equals((AScalar)o);
+		} else if (o instanceof INDArray) {
+			return equals((INDArray) o);
+		}
+		return false;
+	}
+	
+	public boolean equals(INDArray o) {
+		return (o.dimensionality()==0)&&(o.get(SCALAR_SHAPE)==get());
+	}
+	
+	public boolean equals(AScalar o) {
+		return get()==o.get();
+	}
 }

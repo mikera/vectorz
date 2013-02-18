@@ -59,6 +59,7 @@ public class TestArrays {
 	
 	private void testClone(INDArray a) {
 		INDArray c=a.clone();
+		assertTrue(c.equals(a));
 	}
 	
 	public void testArray(INDArray a) {

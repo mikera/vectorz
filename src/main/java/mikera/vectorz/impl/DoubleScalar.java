@@ -24,5 +24,10 @@ public class DoubleScalar extends AScalar {
 		return false;
 	}
 	
+	@Override
+	public DoubleScalar clone() {
+		return new DoubleScalar(value);
+	}
+	
 	
 }

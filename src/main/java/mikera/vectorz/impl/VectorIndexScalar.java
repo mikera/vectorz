@@ -37,5 +37,10 @@ public class VectorIndexScalar extends AScalar {
 	public boolean isView() {
 		return true;
 	}
+	
+	@Override
+	public DoubleScalar clone() {
+		return new DoubleScalar(get());
+	}
 
 }

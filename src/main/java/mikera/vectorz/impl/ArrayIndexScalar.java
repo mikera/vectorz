@@ -25,5 +25,11 @@ public class ArrayIndexScalar extends AScalar {
 	public boolean isView() {
 		return true;
 	}
+	
+	
+	@Override
+	public DoubleScalar clone() {
+		return new DoubleScalar(array[index]);
+	}
 
 }
