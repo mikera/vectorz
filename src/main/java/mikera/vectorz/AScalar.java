@@ -94,4 +94,10 @@ public abstract class AScalar implements INDArray, Cloneable {
 	public boolean equals(AScalar o) {
 		return get()==o.get();
 	}
+
+	@Override
+	public int hashCode() {
+		long v = Double.doubleToLongBits(get());
+		return (int)(v^(v>>>32));
+	}
 }
