@@ -17,6 +17,7 @@ public class TestScalars {
 	private void testScalar(AScalar s) {
 		testAsVector(s);
 		assertEquals(0,s.dimensionality());
+		assertEquals(new Double(s.get()).hashCode(),s.hashCode());
 		
 		new TestArrays().testArray(s);
 	}

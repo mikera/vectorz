@@ -97,7 +97,6 @@ public abstract class AScalar implements INDArray, Cloneable {
 
 	@Override
 	public int hashCode() {
-		long v = Double.doubleToLongBits(get());
-		return (int)(v^(v>>>32));
+		return Tools.hashCode(get());
 	}
 }
