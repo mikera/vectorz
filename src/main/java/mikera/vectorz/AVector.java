@@ -12,6 +12,7 @@ import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.WrappedSubVector;
+import mikera.vectorz.op.AUnaryOp;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -744,6 +745,14 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		int length=length();
 		for (int i=0; i<length; i++) {
 			set(i, get(i)+ (a.get(i+aOffset)* b.get(i+bOffset)*factor));
+		}
+	}
+
+	@Override
+	public void applyOp(AUnaryOp op) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			set(i,op.apply(get(i)));
 		}
 	}
 }

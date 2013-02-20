@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.op.AUnaryOp;
 
 /**
  * Interface for general multi-dimensional arrays of doubles
@@ -41,6 +42,12 @@ public interface INDArray {
 	public boolean isView();
 
 	public INDArray clone();
+
+	/**
+	 * Applies a unary operator to all elements of the array (in-place)
+	 * @param op
+	 */
+	void applyOp(AUnaryOp op);
 
 
 }

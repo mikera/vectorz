@@ -15,6 +15,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.op.AUnaryOp;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -656,6 +657,17 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 		return v;
+	}
+	
+	@Override
+	public void applyOp(AUnaryOp op) {
+		int rc = rowCount();
+		int cc = columnCount();
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				set(i,j,op.apply(get(i,j)));
+			}
+		}
 	}
 
 	/**

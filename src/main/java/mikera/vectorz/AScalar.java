@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.impl.ScalarVector;
+import mikera.vectorz.op.AUnaryOp;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -66,6 +67,11 @@ public abstract class AScalar implements INDArray, Cloneable {
 	@Override
 	public INDArray reshape(int... dimensions) {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void applyOp(AUnaryOp op) {
+		set(op.apply(get()));
 	}
 	
 	@Override
