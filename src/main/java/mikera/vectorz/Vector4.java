@@ -47,6 +47,15 @@ public final class Vector4 extends APrimitiveVector {
 		return new Vector4(values);
 	}
 	
+	@Override
+	public void applyOp(Op op) {
+		x=op.apply(x);
+		y=op.apply(y);
+		z=op.apply(z);
+		t=op.apply(t);
+	}
+
+	
 	public void add(double dx, double dy, double dz, double dt) {
 		x+=dx;
 		y+=dy;

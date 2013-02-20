@@ -31,6 +31,13 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void applyOp(Op op) {
+		x=op.apply(x);
+		y=op.apply(y);
+		z=op.apply(z);
+	}
+	
+	@Override
 	public double normalise() {
 		double d=magnitude();
 		if (d>0) multiply(1.0/d);

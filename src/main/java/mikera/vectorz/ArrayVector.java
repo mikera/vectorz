@@ -154,6 +154,11 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void applyOp(Op op) {
+		op.applyTo(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
 	public double elementSum() {
 		double result=0.0;
 		int offset=getArrayOffset();

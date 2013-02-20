@@ -34,6 +34,12 @@ public final class Vector2 extends APrimitiveVector {
 		return new Vector2(values);
 	}
 	
+	@Override
+	public void applyOp(Op op) {
+		x=op.apply(x);
+		y=op.apply(y);
+	}
+	
 	public void add(Vector2 v) {
 		x+=v.x;
 		y+=v.y;

@@ -40,6 +40,11 @@ public final class Vector1 extends APrimitiveVector {
 	public double elementSum() {
 		return x;
 	}
+	
+	@Override
+	public void applyOp(Op op) {
+		x=op.apply(x);
+	}
 
 	@Override
 	public double get(int i) {

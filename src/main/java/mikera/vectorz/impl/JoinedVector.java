@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 
 /**
  * A vector that represents the concatenation of two vectors.
@@ -212,6 +213,13 @@ public final class JoinedVector extends AVector {
 		left.addProduct(a, aOffset,b,bOffset, factor);
 		right.addProduct(a, aOffset+split,b,bOffset+split, factor);
 	}
+	
+	@Override
+	public void applyOp(Op op) {
+		left.applyOp(op);
+		right.applyOp(op);
+	}
+	
 	
 	@Override
 	public double elementSum() {

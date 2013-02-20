@@ -750,6 +750,9 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 
 	@Override
 	public void applyOp(IOp op) {
+		if (op instanceof Op) {
+			applyOp((Op) op);
+		}
 		int len=length();
 		for (int i=0; i<len; i++) {
 			set(i,op.apply(get(i)));

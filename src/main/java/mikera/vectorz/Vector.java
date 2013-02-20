@@ -92,6 +92,11 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void applyOp(Op op) {
+		op.applyTo(data, 0, data.length);
+	}
+	
+	@Override
 	public void fill(double value) {
 		Arrays.fill(data, value);
 	}
