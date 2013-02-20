@@ -25,6 +25,10 @@ public abstract class Op implements IOp {
 		}
 	}
 	
+	public void applyTo(double[] data) {
+		applyTo(data,0,data.length);
+	}
+	
 	public AOpTransform getTransform(int dims) {
 		return new AOpTransform(this,dims);
 	}
