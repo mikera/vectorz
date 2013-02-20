@@ -12,8 +12,6 @@ import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.WrappedSubVector;
-import mikera.vectorz.op.Op;
-import mikera.vectorz.op.IOp;
 import mikera.vectorz.util.VectorzException;
 
 /**

@@ -1,8 +1,6 @@
-package mikera.vectorz.op;
+package mikera.vectorz;
 
 import mikera.transformz.impl.AOpTransform;
-import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
 
 public abstract class Op implements IOp {
 

@@ -2,7 +2,7 @@ package mikera.transformz.impl;
 
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
-import mikera.vectorz.op.Op;
+import mikera.vectorz.Op;
 
 public class AOpTransform extends ATransform  {
 	private final Op op;

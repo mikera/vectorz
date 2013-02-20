@@ -1,8 +1,8 @@
 package mikera.arrayz;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.op.Op;
-import mikera.vectorz.op.IOp;
+import mikera.vectorz.IOp;
+import mikera.vectorz.Op;
 
 /**
  * Interface for general multi-dimensional arrays of doubles

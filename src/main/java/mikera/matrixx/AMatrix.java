@@ -12,11 +12,11 @@ import mikera.transformz.ALinearTransform;
 import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
 import mikera.vectorz.AVector;
+import mikera.vectorz.IOp;
+import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.Vector0;
-import mikera.vectorz.op.Op;
-import mikera.vectorz.op.IOp;
 import mikera.vectorz.util.VectorzException;
 
 /**

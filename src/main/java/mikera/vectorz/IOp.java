@@ -1,6 +1,5 @@
-package mikera.vectorz.op;
+package mikera.vectorz;
 
-import mikera.vectorz.AVector;
 
 public interface IOp {
 

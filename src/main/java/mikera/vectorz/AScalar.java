@@ -2,8 +2,6 @@ package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.impl.ScalarVector;
-import mikera.vectorz.op.Op;
-import mikera.vectorz.op.IOp;
 import mikera.vectorz.util.VectorzException;
 
 /**
