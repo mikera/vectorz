@@ -2,13 +2,13 @@ package mikera.transformz.impl;
 
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
-import mikera.vectorz.op.AUnaryOp;
+import mikera.vectorz.op.Op;
 
 public class AOpTransform extends ATransform  {
-	private final AUnaryOp op;
+	private final Op op;
 	private final int dims;
 
-	public AOpTransform(AUnaryOp op, int dims) {
+	public AOpTransform(Op op, int dims) {
 		this.op=op;
 		this.dims=dims;
 	}

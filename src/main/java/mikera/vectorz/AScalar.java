@@ -2,8 +2,8 @@ package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.impl.ScalarVector;
-import mikera.vectorz.op.AUnaryOp;
-import mikera.vectorz.op.IUnaryOp;
+import mikera.vectorz.op.Op;
+import mikera.vectorz.op.IOp;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -71,12 +71,12 @@ public abstract class AScalar implements INDArray, Cloneable {
 	}
 	
 	@Override
-	public void applyOp(IUnaryOp op) {
+	public void applyOp(IOp op) {
 		set(op.apply(get()));
 	}
 	
 	@Override
-	public void applyOp(AUnaryOp op) {
+	public void applyOp(Op op) {
 		set(op.apply(get()));
 	}
 	

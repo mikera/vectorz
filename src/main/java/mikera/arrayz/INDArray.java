@@ -1,8 +1,8 @@
 package mikera.arrayz;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.op.AUnaryOp;
-import mikera.vectorz.op.IUnaryOp;
+import mikera.vectorz.op.Op;
+import mikera.vectorz.op.IOp;
 
 /**
  * Interface for general multi-dimensional arrays of doubles
@@ -48,12 +48,12 @@ public interface INDArray {
 	 * Applies a unary operator to all elements of the array (in-place)
 	 * @param op
 	 */
-	void applyOp(AUnaryOp op);
+	void applyOp(Op op);
 
 	/**
 	 * Applies a unary operator to all elements of the array (in-place)
 	 * @param op
 	 */
-	void applyOp(IUnaryOp op);
+	void applyOp(IOp op);
 
 }

@@ -2,7 +2,7 @@ package mikera.vectorz.op;
 
 import mikera.vectorz.AVector;
 
-public interface IUnaryOp {
+public interface IOp {
 
 	public void applyTo(AVector v);
 	

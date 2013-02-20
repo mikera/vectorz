@@ -3,7 +3,7 @@ package mikera.vectorz.op;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 
-public abstract class AUnaryOp implements IUnaryOp {
+public abstract class Op implements IOp {
 
 	@Override
 	public void applyTo(AVector v) {
