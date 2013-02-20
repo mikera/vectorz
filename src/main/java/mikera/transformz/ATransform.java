@@ -126,7 +126,7 @@ public abstract class ATransform implements Cloneable {
 	}
 
 	/**
-	 * Returns true if this transform is the identity function, i.e. it maps all vectors to themselves
+	 * Returns true if this transform is known to be the identity function, i.e. it maps all vectors to themselves
 	 */
 	public boolean isIdentity() {
 		throw new UnsupportedOperationException();
