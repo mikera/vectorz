@@ -11,6 +11,10 @@ public abstract class Op implements IOp {
 
 	public abstract double apply(double x);
 	
+	public double applyInverse(double y) {
+		throw new UnsupportedOperationException("Inverse not defined for operator: "+this.toString());
+	}
+	
 	@Override
 	public void applyTo(AVector v) {
 		if (v instanceof ArrayVector) {
@@ -34,6 +38,7 @@ public abstract class Op implements IOp {
 		applyTo(data,0,data.length);
 	}
 	
+	@Override
 	public AOpTransform getTransform(int dims) {
 		return new AOpTransform(this,dims);
 	}
