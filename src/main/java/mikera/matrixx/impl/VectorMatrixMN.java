@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
 
 /**
@@ -27,6 +28,13 @@ public final class VectorMatrixMN extends AVectorMatrix {
 	public void scale(double factor) {
 		for (AVector vector:rows) {
 			vector.scale(factor);
+		}
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		for (AVector v:rows) {
+			v.applyOp(op);
 		}
 	}
 	

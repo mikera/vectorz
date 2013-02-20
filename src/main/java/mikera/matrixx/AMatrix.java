@@ -673,6 +673,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override
 	public void applyOp(IOp op) {
+		if (op instanceof Op) {applyOp((Op)op); return;}
 		int rc = rowCount();
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {

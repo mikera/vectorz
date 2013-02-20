@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 
 /**
  * Matrix class that wraps a vector as a 1-columns matrix
@@ -27,6 +28,11 @@ public class ColumnMatrix extends AMatrix {
 	@Override
 	public int columnCount() {
 		return 1;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		vector.applyOp(op);
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 
 /**
  * Matrix class that wraps a vector as a 1-row matrix
@@ -36,6 +37,11 @@ public class RowMatrix extends AMatrix {
 	@Override
 	public void scale(double factor) {
 		vector.scale(factor);
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		vector.applyOp(op);
 	}
 
 	@Override
