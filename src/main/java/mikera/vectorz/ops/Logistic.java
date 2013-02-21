@@ -4,7 +4,7 @@ public final class Logistic extends ABoundedOp {
 	
 	public static final Logistic INSTANCE=new Logistic();
 	
-	private static double logisticFunction(double a) {
+	static double logisticFunction(double a) {
 		double ea=Math.exp(-a);
 		double df=(1/(1.0f+ea));
 		if (Double.isNaN(df)) return (a>0)?1:0;

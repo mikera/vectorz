@@ -8,6 +8,7 @@ import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.InverseOp;
 import mikera.vectorz.ops.Logistic;
+import mikera.vectorz.ops.SoftPlus;
 import mikera.vectorz.ops.StochasticBinary;
 import mikera.vectorz.ops.Tanh;
 
@@ -23,6 +24,7 @@ public abstract class Op implements IOp, ITransform {
 	public static final Op LOGISTIC=Logistic.INSTANCE;
 	public static final Op STOCHASTIC_LOGISTIC=compose(STOCHASTIC_BINARY,Logistic.INSTANCE);
 	public static final Op TANH=Tanh.INSTANCE;
+	public static final Op SOFTPLUS=SoftPlus.INSTANCE;
 
 	public abstract double apply(double x);
 	
