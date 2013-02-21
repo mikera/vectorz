@@ -120,7 +120,7 @@ public final class ArraySubVector extends ArrayVector {
 	@Override
 	public void fill(double value) {
 		for (int i = 0; i < length; i++) {
-			data[offset + i] += value;
+			data[offset + i] = value;
 		}
 	}
 	

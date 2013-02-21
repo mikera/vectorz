@@ -34,9 +34,12 @@ public class TestVectors {
 	}
 	
 	public void testDistances(AVector v) {
-		AVector z=v.clone();
-		z.fill(0.0);
+		AVector zero=Vectorz.newVector(v.length());
+		assertEquals(v.maxAbsElement(),v.distanceLinf(zero),0.0);
 		
+		if (!v.isFullyMutable()) return;
+		AVector z=v.exactClone();
+		z.fill(0.0);
 		assertEquals(v.maxAbsElement(),v.distanceLinf(z),0.0);
 	}
 	
@@ -194,8 +197,14 @@ public class TestVectors {
 	
 	private void testExactClone(AVector v) {
 		AVector cv=v.exactClone();
+		AVector cv2=v.clone();
 		assertEquals(v,cv);
 		assertEquals(v.getClass(),cv.getClass());
+		
+		if (cv.isFullyMutable()) {
+			cv.fill(Double.NaN);
+			assertEquals(cv2,v);
+		}
 	}
 	
 	private void testSet(AVector v) {
