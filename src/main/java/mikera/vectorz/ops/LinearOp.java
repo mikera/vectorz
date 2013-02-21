@@ -55,12 +55,12 @@ public final class LinearOp extends Op {
 	
 	@Override
 	public double derivative(double x) {
-		return 1.0;
+		return factor;
 	}
 	
 	@Override
 	public double derivativeForOutput(double y) {
-		return 1.0;
+		return factor;
 	}
 	
 	@Override
@@ -69,7 +69,12 @@ public final class LinearOp extends Op {
 	}
 	
 	@Override
+	public boolean hasInverse() {
+		return true;
+	}
+	
+	@Override
 	public LinearOp getInverse() {
-		return this;
+		return LinearOp.create(1.0/factor, -constant/factor);
 	}
 }

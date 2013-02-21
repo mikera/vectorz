@@ -62,4 +62,8 @@ public final class IdentityOp extends Op {
 	public IdentityOp getInverse() {
 		return this;
 	}
+	
+	public Op compose(Op op) {
+		return op;
+	}
 }

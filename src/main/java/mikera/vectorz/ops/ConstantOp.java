@@ -3,10 +3,11 @@ package mikera.vectorz.ops;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 
 public final class ConstantOp extends ABoundedOp {
 	
-	private final double value;
+	public final double value;
 	
 	public ConstantOp(double value) {
 		this.value=value;
@@ -55,6 +56,10 @@ public final class ConstantOp extends ABoundedOp {
 	@Override
 	public double derivativeForOutput(double y) {
 		return 0.0;
+	}
+	
+	public Op compose(Op op) {
+		return this;
 	}
 
 }

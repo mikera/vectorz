@@ -4,6 +4,8 @@ import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
 import mikera.vectorz.ops.ComposedOp;
+import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.InverseOp;
 
 /**
@@ -30,8 +32,9 @@ public abstract class Op implements IOp, ITransform {
 	public void applyTo(AVector v) {
 		if (v instanceof ArrayVector) {
 			applyTo((ArrayVector)v);
+		} else {
+			v.applyOp(this);
 		}
-		v.applyOp(this);
 	}
 	
 	public void applyTo(ArrayVector v) {
@@ -41,7 +44,8 @@ public abstract class Op implements IOp, ITransform {
 	@Override
 	public void applyTo(double[] data, int start, int length) {
 		for (int i=0; i<length; i++) {
-			data[start+i]=apply(data[start+i]);
+			double x=data[start+i];
+			data[start+i]=apply(x);
 		}
 	}
 	
@@ -170,8 +174,10 @@ public abstract class Op implements IOp, ITransform {
 	public boolean isBounded() {
 		return (minValue()>-Double.MAX_VALUE)||(maxValue()<Double.MAX_VALUE);
 	}
-
+ 
 	public Op compose(Op op) {
+		if (op instanceof IdentityOp) return this;
+		if (op instanceof ConstantOp) return new ConstantOp(apply(((ConstantOp)op).value));
 		return new ComposedOp(this,op);
 	}
 

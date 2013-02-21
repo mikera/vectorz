@@ -37,6 +37,11 @@ public class ComposedOp extends Op {
 	}
 	
 	@Override
+	public double derivative(double x) {
+		return outer.derivativeForOutput(inner.apply(x))*inner.derivativeForOutput(x);
+	}
+	
+	@Override
 	public double maxValue() {
 		return outer.maxValue();
 	}
