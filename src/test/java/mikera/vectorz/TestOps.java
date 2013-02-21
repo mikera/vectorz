@@ -24,6 +24,28 @@ public class TestOps {
 		assertEquals(221.0,v.get(0),0.0);
 	}
 	
+	@Test public void testLogistic() {
+		Op op=Op.LOGISTIC;
+		assertEquals(0.0, op.apply(-1000),0.0001);
+		assertEquals(0.5, op.apply(0.0),0.0001);
+		assertEquals(1.0, op.apply(1000.0),0.0001);
+
+		assertEquals(0.0, op.derivative(-1000.0),0.0001);
+		assertEquals(0.25, op.derivative(0.0),0.0001);
+		assertEquals(0.0, op.derivative(1000.0),0.0001);
+	}
+	
+	@Test public void testTanh() {
+		Op op=Op.TANH;
+		assertEquals(-1.0, op.apply(-1000),0.0001);
+		assertEquals(0.0, op.apply(0.0),0.0001);
+		assertEquals(1.0, op.apply(1000.0),0.0001);
+
+		assertEquals(0.0, op.derivative(-1000.0),0.0001);
+		assertEquals(1.0, op.derivative(0.0),0.0001);
+		assertEquals(0.0, op.derivative(1000.0),0.0001);
+	}
+	
 	private void testApply(Op op) {
 		double r=op.apply(Rand.nextGaussian()*1000);
 		assertTrue(r<=op.maxValue());
