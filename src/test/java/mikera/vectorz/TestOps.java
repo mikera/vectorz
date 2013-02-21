@@ -186,8 +186,11 @@ public class TestOps {
 		
 		doOpTest(ClampOp.ZERO_TO_ONE);
 		
-		doOpTest(Logistic.INSTANCE);
-		doOpTest(Tanh.INSTANCE);
+		doOpTest(Op.LINEAR);
+		doOpTest(Op.LOGISTIC);
+		doOpTest(Op.STOCHASTIC_BINARY);
+		doOpTest(Op.STOCHASTIC_LOGISTIC);
+		doOpTest(Op.TANH);
 		
 		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
 		doComposeTest(ConstantOp.create(1.0),LinearOp.create(Double.NaN, 11.0));

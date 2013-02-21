@@ -7,7 +7,9 @@ import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.InverseOp;
+import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.StochasticBinary;
+import mikera.vectorz.ops.Tanh;
 
 /**
  * Abstract class for representing a unary operation
@@ -18,7 +20,9 @@ public abstract class Op implements IOp, ITransform {
 	
 	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
 	public static final Op LINEAR=IdentityOp.INSTANCE;
-	public static final Op LOGISTIC=null;
+	public static final Op LOGISTIC=Logistic.INSTANCE;
+	public static final Op STOCHASTIC_LOGISTIC=compose(STOCHASTIC_BINARY,Logistic.INSTANCE);
+	public static final Op TANH=Tanh.INSTANCE;
 
 	public abstract double apply(double x);
 	
@@ -188,6 +192,10 @@ public abstract class Op implements IOp, ITransform {
 	
 	public boolean isBounded() {
 		return (minValue()>-Double.MAX_VALUE)||(maxValue()<Double.MAX_VALUE);
+	}
+	
+	public static Op compose(Op op1, Op op2) {
+		return op1.compose(op2);
 	}
  
 	public Op compose(Op op) {
