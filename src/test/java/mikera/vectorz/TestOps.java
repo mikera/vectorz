@@ -89,6 +89,20 @@ public class TestOps {
 		}
 	}
 	
+	private void testComposedDerivative(Op op1, Op op2) {
+		Op cop=op1.compose(op2);
+		if (!cop.hasDerivative()) return;
+		
+		double x=Rand.nextGaussian();
+		double y=op2.apply(x);
+		
+		double d2=op2.derivative(x);
+		double d1=op1.derivative(y);
+		double d=(d1==0.0)?0.0:d1*d2;
+		
+		assertEquals(d, cop.derivative(x), 0.001);
+	}
+	
 	private void doOpTest(Op op) {
 		testApply(op);
 		testInverse(op);
@@ -98,7 +112,7 @@ public class TestOps {
 		TestTransformz.doITransformTests(op);
 	}
 	
-	public void doComposeTest(Op op1, Op op2) {
+	private void doComposeTest(Op op1, Op op2) {
 		Op cop=op1.compose(op2);
 		doOpTest(cop);
 		
@@ -116,6 +130,8 @@ public class TestOps {
 	
 		assertTrue(v.epsilonEquals(v2, 0.00001));
 		assertTrue(v.epsilonEquals(v3, 0.00001));
+		
+		testComposedDerivative(op1,op2);
 	}
 	
 	@Test public void genericTests() {
