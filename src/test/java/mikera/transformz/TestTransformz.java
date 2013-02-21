@@ -36,7 +36,7 @@ public class TestTransformz {
 	}
 	
 
-	public static void doApplyTest(ATransform t) {
+	public static void doApplyTest(ITransform t) {
 		AVector x=Vectorz.createUniformRandomVector(t.inputDimensions());
 		AVector y=Vectorz.newVector(t.outputDimensions());
 		y.fill(Double.NaN);
@@ -81,12 +81,16 @@ public class TestTransformz {
 		
 		t.transform(iv, ov);
 	}
+	
+	public static void doITransformTests(ITransform t) {
+		doApplyTest(t);
+	}
 
 	public static void doTransformTests(ATransform t) {
+		doITransformTests(t);
 		doSizeTest(t);
 		doSubTest(t);
 		doHashTest(t);
-		doApplyTest(t);
 		doComponentTests(t);
 	}
 	
@@ -97,5 +101,4 @@ public class TestTransformz {
 		doTransformTests(Transformz.identityTransform(10));
 		doTransformTests(SubsetTransform.create(Transformz.identityTransform(10), Index.of(0,3,9)));
 	}
-	
 }

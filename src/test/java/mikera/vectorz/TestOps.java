@@ -85,6 +85,7 @@ public class TestOps {
 		testVectorApply(op);
 		testTransforms(op);
 		testDerivative(op);
+		TestTransformz.doITransformTests(op);
 	}
 	
 	@Test public void generticTests() {
