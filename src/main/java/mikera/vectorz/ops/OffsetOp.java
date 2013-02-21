@@ -10,7 +10,7 @@ public final class OffsetOp extends ALinearOp {
 		this.constant=constant;
 	}
 	
-	public static ALinearOp create(double offset) {
+	public static OffsetOp create(double offset) {
 		return new OffsetOp(offset);
 	}
 	
@@ -75,7 +75,7 @@ public final class OffsetOp extends ALinearOp {
 	}
 	
 	@Override
-	public ALinearOp getInverse() {
+	public OffsetOp getInverse() {
 		return OffsetOp.create(-constant);
 	}
 

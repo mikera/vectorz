@@ -18,6 +18,7 @@ public final class LinearOp extends ALinearOp {
 		}
 		if (factor==1.0) {
 			if (constant==0.0) return IdentityOp.INSTANCE;
+			return OffsetOp.create(constant);
 		}
 		return new LinearOp(factor,constant);
 	}
@@ -88,7 +89,7 @@ public final class LinearOp extends ALinearOp {
 	}
 	
 	public Op compose(ALinearOp op) {
-		return new LinearOp(factor*op.getFactor(),factor*op.getConstant()+constant);
+		return LinearOp.create(factor*op.getFactor(),factor*op.getConstant()+constant);
 	}
 	
 	@Override

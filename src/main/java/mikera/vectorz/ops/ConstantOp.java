@@ -9,8 +9,15 @@ public final class ConstantOp extends ALinearOp {
 	
 	public final double value;
 	
-	public ConstantOp(double value) {
+	public static final ConstantOp ZERO=new ConstantOp(0.0);
+	
+	private ConstantOp(double value) {
 		this.value=value;
+	}
+	
+	public static final ConstantOp create(double constant) {
+		if (constant==0) return ZERO;
+		return new ConstantOp(constant);
 	}
 	
 	@Override
@@ -71,9 +78,4 @@ public final class ConstantOp extends ALinearOp {
 	public Op compose(Op op) {
 		return this;
 	}
-
-	public static ALinearOp create(double constant) {
-		return new ConstantOp(constant);
-	}
-
 }

@@ -99,7 +99,7 @@ public class TestOps {
 	}
 	
 	@Test public void genericTests() {
-		doOpTest(new ConstantOp(5.0));
+		doOpTest(ConstantOp.create(5.0));
 		doOpTest(LinearOp.create(0.5, 3.0));
 		doOpTest(IdentityOp.INSTANCE);
 		doOpTest(OffsetOp.create(1.3));
