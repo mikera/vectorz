@@ -190,6 +190,19 @@ public final class Vector3 extends APrimitiveVector {
 		return x+y+z;
 	}
 	
+	@Override
+	public void scaleAdd(double factor, double constant) {
+		x=(x*factor)+constant;
+		y=(y*factor)+constant;
+		z=(z*factor)+constant;
+	}
+
+	@Override
+	public void add(double constant) {
+		x=x+constant;
+		y=y+constant;
+		z=z+constant;
+	}
 
 	@Override
 	public double get(int i) {

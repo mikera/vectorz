@@ -51,6 +51,18 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void scaleAdd(double factor, double constant) {
+		x=(x*factor)+constant;
+		y=(y*factor)+constant;
+	}
+
+	@Override
+	public void add(double constant) {
+		x=x+constant;
+		y=y+constant;
+	}
+	
+	@Override
 	public int length() {
 		return 2;
 	}
