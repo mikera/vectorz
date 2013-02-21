@@ -107,6 +107,20 @@ public class TestOps {
 		}
 	}
 	
+	private void testStochastic(Op op) {
+		if (op.isStochastic()) {
+			// TODO: figure out what we can test....
+		} else {
+			for (int i=0; i<30; i++) {
+				double x=Rand.nextGaussian()*20.0;
+				double y=op.apply(x);
+				for (int j=0; j<30; j++) {
+					assertEquals(y,op.apply(x),0.0);
+				}
+			}
+		}
+	}
+	
 	private void testComposedDerivative(Op op1, Op op2) {
 		Op cop=op1.compose(op2);
 		if (!cop.hasDerivative()) return;
@@ -124,6 +138,7 @@ public class TestOps {
 	private void doOpTest(Op op) {
 		testApply(op);
 		testInverse(op);
+		testStochastic(op);
 		testVectorApply(op);
 		testTransforms(op);
 		testBounds(op);
