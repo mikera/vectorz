@@ -385,13 +385,28 @@ public class TestMatrixx {
 		assertTrue(c.equals(d));
 	}
 	
+	private void testExactClone(AMatrix m) {
+		AMatrix c=m.exactClone();
+		AMatrix d=m.clone();
+		
+		assertEquals(m,c);
+		assertEquals(m,d);
+	}
+	
 	void doScaleTest(AMatrix m) {
-		AMatrix m1=m.clone();
+		if(!m.isMutable()) return;
+		AMatrix m1=m.exactClone();
 		AMatrix m2=m.clone();
 		
 		m1.scale(2.0);
 		m2.add(m);
 		
+		if (!m1.epsilonEquals(m2)) {
+			System.out.println("Problem with doScaleTest on: "+m.getClass());
+			System.out.println(m);
+			System.out.println(m1);
+			System.out.println(m2);
+		}
 		assertTrue(m1.epsilonEquals(m2));
 		
 		m1.scale(0.0);
@@ -400,6 +415,7 @@ public class TestMatrixx {
 	
 	void doGenericTests(AMatrix m) {
 		testApplyOp(m);
+		testExactClone(m);
 		
 		doTransposeTest(m);
 		doVectorTest(m);

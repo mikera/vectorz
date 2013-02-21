@@ -25,22 +25,23 @@ public final class VectorMatrixMN extends AVectorMatrix {
 	}
 	
 	private VectorMatrixMN(AVector[] rows, int rowCount, int columnCount) {
+		if (rows.length<rowCount) throw new IllegalArgumentException("Insufficient rows provided!");
 		this.rows=rows;
-		this.rowCount=rows.length;
+		this.rowCount=rowCount;
 		this.columnCount=columnCount;
 	}
 	
 	@Override
 	public void scale(double factor) {
-		for (AVector vector:rows) {
-			vector.scale(factor);
+		for (int i=0; i<rowCount; i++) {
+			rows[i].scale(factor);
 		}
 	}
 	
 	@Override
 	public void applyOp(Op op) {
-		for (AVector v:rows) {
-			v.applyOp(op);
+		for (int i=0; i<rowCount; i++) {
+			rows[i].applyOp(op);
 		}
 	}
 	
@@ -109,11 +110,11 @@ public final class VectorMatrixMN extends AVectorMatrix {
 	
 	@Override
 	public VectorMatrixMN clone() {
-		VectorMatrixMN m=new VectorMatrixMN(rowCount,columnCount);
+		AVector[] newRows=rows.clone();
 		for (int i=0; i<rowCount; i++) {
-			m.rows[i].set(rows[i]);
+			newRows[i]=newRows[i].clone();
 		}
-		return m;
+		return new VectorMatrixMN(newRows,rowCount,columnCount);
 	}
 	
 	@Override
@@ -122,6 +123,6 @@ public final class VectorMatrixMN extends AVectorMatrix {
 		for (int i=0; i<rowCount; i++) {
 			newRows[i]=newRows[i].exactClone();
 		}
-		return new VectorMatrixMN(rows,rowCount,columnCount);
+		return new VectorMatrixMN(newRows,rowCount,columnCount);
 	}
 }

@@ -4,6 +4,7 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -53,16 +54,16 @@ public class PermutedMatrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		row=rowPermutations.get(row);
-		column=columnPermutations.get(row);
-		return source.get(row, column);
+		int sourceRow=rowPermutations.get(row);
+		int sourceColumn=columnPermutations.get(column);
+		return source.get(sourceRow, sourceColumn);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		row=rowPermutations.get(row);
-		column=columnPermutations.get(row);
-		source.set(row, column,value);
+		int sourceRow=rowPermutations.get(row);
+		int sourceColumn=columnPermutations.get(column);
+		source.set(sourceRow, sourceColumn,value);
 	}
 	
 	/**
@@ -70,7 +71,7 @@ public class PermutedMatrix extends AMatrix {
 	 */
 	@Override
 	public AVector getRow(int row) {
-		return source.getRow(rowPermutations.get(row));
+		return IndexedSubVector.wrap(source.getRow(rowPermutations.get(row)),columnPermutations.getData());
 	}
 
 	/**
@@ -78,7 +79,7 @@ public class PermutedMatrix extends AMatrix {
 	 */
 	@Override
 	public AVector getColumn(int column) {
-		return source.getColumn(columnPermutations.get(column));
+		return IndexedSubVector.wrap(source.getColumn(columnPermutations.get(column)),rowPermutations.getData());
 	}
 	
 	@Override
