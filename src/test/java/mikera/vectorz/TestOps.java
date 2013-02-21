@@ -20,10 +20,28 @@ public class TestOps {
 		TestTransformz.doTransformTests(op.getTransform(1));
 		TestTransformz.doTransformTests(op.getTransform(10));		
 	}
+	
+	private void testDerivative(Op op) {
+		double x=Rand.nextGaussian()*100;
+		double y=op.apply(x);
+		if (op.hasDerivative()) {
+			op.derivative(x);
+			op.derivativeForOutput(y);
+		} else {
+			try {
+				op.derivative(x);
+				op.derivativeForOutput(y);
+				fail("Derivative did not throw exception!");
+			} catch (Throwable t) {
+				// OK
+			}
+		}
+	}
 
 	private void doOpTest(Op op) {
 		testApply(op);
 		testTransforms(op);
+		testDerivative(op);
 	}
 	
 	@Test public void generticTests() {
