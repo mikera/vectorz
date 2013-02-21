@@ -399,6 +399,8 @@ public class TestMatrixx {
 	}
 	
 	void doGenericTests(AMatrix m) {
+		testApplyOp(m);
+		
 		doTransposeTest(m);
 		doVectorTest(m);
 		doParseTest(m);

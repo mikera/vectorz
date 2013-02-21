@@ -27,6 +27,11 @@ public final class SubsetMatrix extends AMatrix {
 	public void transform(AVector source, AVector dest) {
 		dest.set(source, components);
 	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
 
 	@Override
 	public int inputDimensions() {
