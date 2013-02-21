@@ -196,8 +196,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		
 		@Override
 		public MatrixRow exactClone() {
-			// TODO: exactClone() for matrix?
-			return AMatrix.this.clone().new MatrixRow(row);
+			return AMatrix.this.exactClone().new MatrixRow(row);
 		}
 	}
 	
@@ -238,8 +237,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		
 		@Override
 		public MatrixColumn exactClone() {
-			// TODO: exactClone() for matrix?
-			return AMatrix.this.clone().new MatrixColumn(column);
+			return AMatrix.this.exactClone().new MatrixColumn(column);
 		}
 	}
 
