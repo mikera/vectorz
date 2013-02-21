@@ -22,4 +22,6 @@ public interface IOp {
 	 */
 	public ATransform getTransform(int dims);
 
+	public Op getInverse();
+
 }

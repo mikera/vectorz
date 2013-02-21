@@ -44,6 +44,11 @@ public abstract class Op implements IOp {
 		return new AOpTransform(this,dims);
 	}
 	
+	@Override 
+	public Op getInverse() {
+		throw new UnsupportedOperationException();
+	}
+	
 	/**
 	 * Returns the derivative of this Op for a given output value y
 	 * 
