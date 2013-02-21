@@ -8,9 +8,11 @@ import mikera.util.Rand;
 import mikera.vectorz.ops.ClampOp;
 import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.GaussianNoise;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.LinearOp;
 import mikera.vectorz.ops.OffsetOp;
+import mikera.vectorz.ops.StochasticBinary;
 
 public class TestOps {
 	
@@ -28,6 +30,8 @@ public class TestOps {
 	}
 	
 	private void testVectorApply(Op op) {
+		if (op.isStochastic()) return;
+		
 		Vector sv=Vector.createLength(10);
 		Vectorz.fillGaussian(sv);
 		
@@ -52,6 +56,7 @@ public class TestOps {
 	}
 	
 	private void testTransforms(Op op) {
+		if (op.isStochastic()) return;
 		TestTransformz.doTransformTests(op.getTransform(1));
 		TestTransformz.doTransformTests(op.getTransform(10));		
 	}
@@ -154,6 +159,8 @@ public class TestOps {
 		Op compop=new ComposedOp(op1,op2);
 		doOpTest(compop);
 		
+		if (compop.isStochastic()) return;
+		
 		AVector v=Vectorz.createUniformRandomVector(10);
 		AVector v2=v.clone();
 		AVector v3=v.clone();
@@ -179,5 +186,6 @@ public class TestOps {
 		
 		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
 		doComposeTest(ConstantOp.create(1.0),LinearOp.create(Double.NaN, 11.0));
+		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));
 	}
 }

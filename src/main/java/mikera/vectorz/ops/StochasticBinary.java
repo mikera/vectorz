@@ -15,6 +15,12 @@ public class StochasticBinary extends ABoundedOp {
 	}
 	
 	@Override
+	public double applyInverse(double y) {
+		return y;
+	}
+	
+	
+	@Override
 	public double minValue() {
 		return 0.0;
 	}

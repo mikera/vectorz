@@ -50,7 +50,6 @@ public final class LinearOp extends ALinearOp {
 		for (int i=0; i<length; i++) {
 			data[i+start]=(data[i+start]*factor)+constant;
 		}	
-		
 	}
 	
 	@Override
