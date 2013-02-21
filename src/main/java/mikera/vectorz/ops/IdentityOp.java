@@ -34,6 +34,11 @@ public final class IdentityOp extends Op {
 	}
 	
 	@Override
+	public boolean hasDerivative() {
+		return true;
+	}
+	
+	@Override
 	public double derivative(double x) {
 		return 1.0;
 	}

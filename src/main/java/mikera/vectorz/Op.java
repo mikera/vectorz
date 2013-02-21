@@ -49,6 +49,10 @@ public abstract class Op implements IOp {
 		throw new UnsupportedOperationException();
 	}
 	
+	public boolean hasDerivative() {
+		return false;
+	}
+	
 	/**
 	 * Returns the derivative of this Op for a given output value y
 	 * 
@@ -58,6 +62,7 @@ public abstract class Op implements IOp {
 	 * @return
 	 */
 	public double derivativeForOutput(double y) {
+		assert(!hasDerivative());
 		throw new UnsupportedOperationException("No derivative defined for "+this.toString());
 	}
 	
@@ -70,6 +75,7 @@ public abstract class Op implements IOp {
 	 * @return
 	 */
 	public double derivative(double x) {
+		assert(!hasDerivative());
 		return derivativeForOutput(apply(x));
 	}
 	
@@ -129,4 +135,6 @@ public abstract class Op implements IOp {
 	public boolean isBounded() {
 		return (minValue()>-Double.MAX_VALUE)||(maxValue()<Double.MAX_VALUE);
 	}
+
+
 }
