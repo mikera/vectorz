@@ -17,6 +17,12 @@ public class ComposedOp extends Op {
 	}
 	
 	@Override
+	public void applyTo(double[] data, int start,int length) {
+		inner.applyTo(data, start, length);
+		outer.applyTo(data, start, length);
+	}
+	
+	@Override
 	public boolean isBounded() {
 		return outer.isBounded();
 	}
