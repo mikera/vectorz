@@ -154,6 +154,18 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void scaleAdd(double factor, double constant) {
+		left.scaleAdd(factor, constant);
+		right.scaleAdd(factor, constant);
+	}
+
+	@Override
+	public void add(double constant) {
+		left.add(constant);
+		right.add(constant);
+	}
+	
+	@Override
 	public double dotProduct (AVector v) {
 		if (v instanceof JoinedVector) {
 			JoinedVector jv=(JoinedVector)v;
