@@ -24,6 +24,11 @@ public final class LinearOp extends Op {
 	}
 	
 	@Override
+	public double applyInverse(double y) {
+		return (y-constant)/factor;
+	}
+	
+	@Override
 	public void applyTo(AVector v) {
 		v.scaleAdd(factor,constant);
 	}

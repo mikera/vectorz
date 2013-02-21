@@ -53,6 +53,10 @@ public abstract class Op implements IOp {
 		return false;
 	}
 	
+	public boolean hasInverse() {
+		return false;
+	}
+	
 	/**
 	 * Returns the derivative of this Op for a given output value y
 	 * 

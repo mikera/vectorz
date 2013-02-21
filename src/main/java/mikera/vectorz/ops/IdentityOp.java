@@ -19,6 +19,11 @@ public final class IdentityOp extends Op {
 	}
 	
 	@Override
+	public double applyInverse(double y) {
+		return y;
+	}
+	
+	@Override
 	public void applyTo(AVector v) {
 		// done!
 	}
