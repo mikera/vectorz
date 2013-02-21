@@ -1,7 +1,5 @@
 package mikera.vectorz.impl;
 
-import mikera.vectorz.Vector2;
-
 /**
  * Vector that addresses elements indexed into double[] array
  * @author Mike

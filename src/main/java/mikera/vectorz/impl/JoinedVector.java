@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
-import mikera.vectorz.Vector2;
 
 /**
  * A vector that represents the concatenation of two vectors.

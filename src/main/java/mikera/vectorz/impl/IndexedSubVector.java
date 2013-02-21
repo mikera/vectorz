@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector2;
 
 /**
  * Vector that addresses elements indexed into another source vector
