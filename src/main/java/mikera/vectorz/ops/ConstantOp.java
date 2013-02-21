@@ -3,7 +3,6 @@ package mikera.vectorz.ops;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.Op;
 
 public class ConstantOp extends ABoundedOp {
 	
