@@ -44,7 +44,8 @@ public class ComposedOp extends Op {
 	
 	@Override
 	public double derivative(double x) {
-		return outer.derivative(inner.apply(x))*inner.derivative(x);
+		double y=inner.apply(x);
+		return outer.derivative(y)*inner.derivativeForOutput(y);
 	}
 	
 	@Override
