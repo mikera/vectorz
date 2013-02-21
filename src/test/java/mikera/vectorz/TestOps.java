@@ -111,6 +111,7 @@ public class TestOps {
 		if (op.isStochastic()) {
 			// TODO: figure out what we can test....
 		} else {
+			// op should reliably return same value
 			for (int i=0; i<30; i++) {
 				double x=Rand.nextGaussian()*20.0;
 				double y=op.apply(x);
