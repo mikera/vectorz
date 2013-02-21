@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import mikera.vectorz.AVector;
 
-public class ConstantOp extends ABoundedOp {
+public final class ConstantOp extends ABoundedOp {
 	
 	private final double value;
 	

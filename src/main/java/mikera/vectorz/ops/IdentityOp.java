@@ -5,7 +5,7 @@ import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public class IdentityOp extends Op {
+public final class IdentityOp extends Op {
 	
 	public static final IdentityOp INSTANCE = new IdentityOp();
 
