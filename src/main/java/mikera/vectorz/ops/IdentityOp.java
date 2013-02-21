@@ -5,12 +5,27 @@ import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public final class IdentityOp extends Op {
+/**
+ * Singleton identity operator
+ * 
+ * @author Mike
+ */
+public final class IdentityOp extends ALinearOp {
 	
 	public static final IdentityOp INSTANCE = new IdentityOp();
 
 	private IdentityOp() {
 		// no content
+	}
+	
+	@Override
+	public double getFactor() {
+		return 1.0;
+	}
+	
+	@Override
+	public double getConstant() {
+		return 0.0;
 	}
 	
 	@Override
