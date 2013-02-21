@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import mikera.transformz.TestTransformz;
 import mikera.util.Rand;
+import mikera.vectorz.ops.ClampOp;
 import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.IdentityOp;
@@ -100,6 +101,8 @@ public class TestOps {
 		doOpTest(new ConstantOp(5.0));
 		doOpTest(LinearOp.create(0.5, 3.0));
 		doOpTest(IdentityOp.INSTANCE);
+		
+		doOpTest(ClampOp.ZERO_TO_ONE);
 		
 		doOpTest(new ComposedOp(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0)));
 	}
