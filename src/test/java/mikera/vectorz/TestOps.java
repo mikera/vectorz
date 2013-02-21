@@ -10,6 +10,7 @@ import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.LinearOp;
+import mikera.vectorz.ops.OffsetOp;
 
 public class TestOps {
 	
@@ -101,6 +102,7 @@ public class TestOps {
 		doOpTest(new ConstantOp(5.0));
 		doOpTest(LinearOp.create(0.5, 3.0));
 		doOpTest(IdentityOp.INSTANCE);
+		doOpTest(OffsetOp.create(1.3));
 		
 		doOpTest(ClampOp.ZERO_TO_ONE);
 		
