@@ -1,13 +1,11 @@
 package mikera.vectorz.ops;
 
-import mikera.vectorz.Op;
-
 /**
  * Operator for clamping values within a given range
  * @author Mike
  *
  */
-public final class ClampOp extends Op {
+public final class ClampOp extends ABoundedOp {
 	private final double min;
 	private final double max;
 	
@@ -31,11 +29,6 @@ public final class ClampOp extends Op {
 			double x=data[start+i];
 			data[start+i]=(x<min) ? min : ((x>max)?max:x);
 		}
-	}
-	
-	@Override
-	public boolean isBounded() {
-		return true;
 	}
 	
 	@Override
