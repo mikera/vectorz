@@ -2,6 +2,12 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 
+/**
+ * Base class for computed vectors. Assumed to be immutable and fixed size.
+ * 
+ * @author Mike
+ *
+ */
 @SuppressWarnings("serial")
 public abstract class ComputedVector extends AVector {
 
@@ -20,5 +26,9 @@ public abstract class ComputedVector extends AVector {
 	public boolean isMutable() {
 		return false;
 	}
-
+	
+	@Override
+	public ComputedVector exactClone() {
+		return this;
+	}
 }

@@ -257,5 +257,10 @@ public final class Vector3 extends APrimitiveVector {
 	public double getZ() {
 		return z;
 	}
+	
+	@Override 
+	public Vector3 exactClone() {
+		return clone();
+	}
 
 }

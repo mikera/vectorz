@@ -778,4 +778,10 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 			set(i,get(i)+constant);
 		}
 	}
+	
+	/**
+	 * Returns an exact clone of this vector, i.e. of the same type
+	 * @return
+	 */
+	public abstract AVector exactClone();
 }

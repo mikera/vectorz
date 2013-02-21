@@ -333,5 +333,9 @@ public final class Vector extends ArrayVector {
 	public Vector clone() {
 		return new Vector(this);
 	}
-
+	
+	@Override 
+	public Vector exactClone() {
+		return clone();
+	}
 }

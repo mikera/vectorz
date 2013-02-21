@@ -94,5 +94,10 @@ public class AxisVector extends ComputedVector {
 		assert((i>=0)&&(i<length));
 		return (i==axis)?1.0:0.0;
 	}
-
+	
+	@Override
+	public AxisVector exactClone() {
+		// immutable, so return self
+		return this;
+	}
 }

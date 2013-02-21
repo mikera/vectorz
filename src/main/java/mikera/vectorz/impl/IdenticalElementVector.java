@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector2;
 
 /**
  * A mutable vector that always has identical components.
@@ -55,4 +56,8 @@ public final class IdenticalElementVector extends AVector {
 		this.value=value;
 	}
 
+	@Override 
+	public IdenticalElementVector exactClone() {
+		return new IdenticalElementVector(dimensions,value);
+	}
 }

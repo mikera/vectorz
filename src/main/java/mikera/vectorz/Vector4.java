@@ -145,4 +145,9 @@ public final class Vector4 extends APrimitiveVector {
 	public double getT() {
 		return t;
 	}
+	
+	@Override 
+	public Vector4 exactClone() {
+		return clone();
+	}
 }

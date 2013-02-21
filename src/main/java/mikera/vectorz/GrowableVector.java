@@ -120,4 +120,11 @@ public final class GrowableVector extends ArrayVector {
 	public void clear() {
 		length=0;
 	}
+	
+	@Override 
+	public GrowableVector exactClone() {
+		GrowableVector g=new GrowableVector();
+		g.append(this);
+		return g;
+	}
 }

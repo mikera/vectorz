@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import mikera.vectorz.Vector2;
+
 /**
  * Vector that addresses elements indexed into double[] array
  * @author Mike
@@ -41,4 +43,8 @@ public final class IndexedArrayVector extends AIndexedVector {
 		return wrap(this.data,newIndexes);
 	}
 
+	@Override 
+	public IndexedArrayVector exactClone() {
+		return IndexedArrayVector.wrap(data.clone(), indexes.clone());
+	}
 }

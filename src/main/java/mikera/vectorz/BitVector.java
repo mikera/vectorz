@@ -132,4 +132,9 @@ public final class BitVector extends AVector {
 		sb.append(']');
 		return sb.toString();
 	}
+	
+	@Override 
+	public BitVector exactClone() {
+		return new BitVector(this);
+	}
 }

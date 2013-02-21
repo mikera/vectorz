@@ -66,5 +66,9 @@ public final class ZeroVector extends APrimitiveVector {
 	public int hashCode() {
 		return Tools.zeroVectorHash(length);
 	}
-
+	
+	@Override
+	public ZeroVector exactClone() {
+		return new ZeroVector(length);
+	}
 }

@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Tools;
@@ -162,5 +164,8 @@ public final class ArraySubVector extends ArrayVector {
 		return Vectorz.create(this);
 	}
 
-
+	@Override 
+	public ArraySubVector exactClone() {
+		return new ArraySubVector(Arrays.copyOfRange(data, offset, offset+length),0,length);
+	}
 }

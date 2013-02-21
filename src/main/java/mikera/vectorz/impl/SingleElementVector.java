@@ -18,6 +18,12 @@ public final class SingleElementVector extends AVector {
 		this.dimensions=dimensions;
 		this.index=componentIndex;
 	}
+	
+	public SingleElementVector(int componentIndex, int dimensions, double value) {
+		this.dimensions=dimensions;
+		this.index=componentIndex;
+		this.value=value;
+	}
 
 	@Override
 	public int length() {
@@ -70,6 +76,11 @@ public final class SingleElementVector extends AVector {
 	public void set(int i, double value) {
 		assert((i>=0)&&(i<dimensions));
 		if (i==index) this.value=value;
+	}
+	
+	@Override
+	public SingleElementVector exactClone() {
+		return new SingleElementVector(index,dimensions,value);
 	}
 
 }

@@ -242,5 +242,10 @@ public class SparseIndexedVector extends ASparseVector {
 	public boolean includesIndex(int i) {
 		return index.indexPosition(i)>=0;
 	}
+	
+	@Override
+	public SparseIndexedVector exactClone() {
+		return new SparseIndexedVector(length,index.clone(),data.clone());
+	}
 
 }

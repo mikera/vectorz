@@ -86,4 +86,10 @@ public final class Vector0 extends APrimitiveVector {
 	private Object readResolve() throws ObjectStreamException {
 		return INSTANCE; 
 	}
+	
+	@Override
+	public Vector0 exactClone() {
+		// immutable, so return self
+		return this;
+	}
 }

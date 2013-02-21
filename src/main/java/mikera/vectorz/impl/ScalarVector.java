@@ -28,5 +28,11 @@ public class ScalarVector extends AVector {
 		if (i!=0) throw new IndexOutOfBoundsException();
 		scalar.set(value);
 	}
+	
+	@Override
+	public ScalarVector exactClone() {
+		// TODO: scalar.exactClone()
+		return new ScalarVector(scalar.clone());
+	}
 
 }

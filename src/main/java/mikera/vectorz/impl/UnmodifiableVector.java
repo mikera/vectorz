@@ -18,4 +18,9 @@ public class UnmodifiableVector extends ADerivedVector {
 	public boolean isMutable() {
 		return false;
 	}
+	
+	@Override
+	public UnmodifiableVector exactClone() {
+		return new UnmodifiableVector(source);
+	}
 }

@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vector2;
 
 /**
  * A vector that represents the concatenation of two vectors.
@@ -288,6 +289,11 @@ public final class JoinedVector extends AVector {
 	
 	public int depth() {
 		return depthCalc(this);
+	}
+	
+	@Override 
+	public JoinedVector exactClone() {
+		return new JoinedVector(left.exactClone(),right.exactClone());
 	}
 
 }
