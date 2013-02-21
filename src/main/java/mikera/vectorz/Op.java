@@ -122,6 +122,10 @@ public abstract class Op implements IOp, ITransform {
 		return derivativeForOutput(apply(x));
 	}
 	
+	/**
+	 * Returns true if the operator is stochastic, i.e returns random values for at least some inputs
+	 * @return
+	 */
 	public boolean isStochastic() {
 		return false;
 	}
