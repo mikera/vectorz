@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -20,6 +21,7 @@ import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
+import mikera.vectorz.ops.ConstantOp;
 
 import org.junit.Test;
 
@@ -201,6 +203,7 @@ public class TestVectors {
 		assertEquals(v,cv);
 		assertEquals(v.getClass(),cv.getClass());
 		
+		// test that trashing the exact clone doesn't affect the original vector
 		if (cv.isFullyMutable()) {
 			cv.fill(Double.NaN);
 			assertEquals(cv2,v);
@@ -397,6 +400,16 @@ public class TestVectors {
 		assertEquals(Vectorz.totalValue(v),total,0.00000001);
 	}
 	
+	private void testApplyOp(AVector v) {
+		if (!v.isFullyMutable()) return;
+		AVector c=v.exactClone();
+		AVector d=v.exactClone();
+		
+		c.fill(5.0);
+		d.applyOp(ConstantOp.create(5.0));
+		assertTrue(c.equals(d));
+	}
+	
 	private void doNonDegenerateTests(AVector v) {
 		if (v.length()==0) return;
 		testSubVectorMutability(v);
@@ -413,6 +426,7 @@ public class TestVectors {
 		testAdd(v);
 		testAddToArray(v);
 		testAddMultipleToArray(v);
+		testApplyOp(v);
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
