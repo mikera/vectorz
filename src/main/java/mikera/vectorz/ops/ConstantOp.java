@@ -72,4 +72,8 @@ public final class ConstantOp extends ALinearOp {
 		return this;
 	}
 
+	public static ALinearOp create(double constant) {
+		return new ConstantOp(constant);
+	}
+
 }

@@ -1,7 +1,5 @@
 package mikera.vectorz.ops;
 
-import mikera.transformz.ATransform;
-import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
@@ -9,12 +7,18 @@ public final class LinearOp extends ALinearOp {
 	private final double factor;
 	private final double constant;
 	
-	public LinearOp(double factor, double constant) {
+	private LinearOp(double factor, double constant) {
 		this.factor=factor;
 		this.constant=constant;
 	}
 	
-	public static LinearOp create(double factor, double constant) {
+	public static ALinearOp create(double factor, double constant) {
+		if (factor==0.0) {
+			return ConstantOp.create(constant);
+		}
+		if (factor==1.0) {
+			if (constant==0.0) return IdentityOp.INSTANCE;
+		}
 		return new LinearOp(factor,constant);
 	}
 	
@@ -74,17 +78,12 @@ public final class LinearOp extends ALinearOp {
 	}
 	
 	@Override
-	public ATransform getTransform(int dimensions) {
-		return Transformz.identityTransform(dimensions);
-	}
-	
-	@Override
 	public boolean hasInverse() {
 		return true;
 	}
 	
 	@Override
-	public LinearOp getInverse() {
+	public ALinearOp getInverse() {
 		return LinearOp.create(1.0/factor, -constant/factor);
 	}
 	
