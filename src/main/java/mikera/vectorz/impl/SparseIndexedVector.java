@@ -198,7 +198,7 @@ public class SparseIndexedVector extends ASparseVector {
 		for (int i=start; i<data.length; i++) {
 			int di=index.data[i];
 			if (di>=(offset+length)) return;
-			array[di+arrayOffset]+=data[i];
+			array[di-offset+arrayOffset]+=data[i];
 		}
 	}
 	

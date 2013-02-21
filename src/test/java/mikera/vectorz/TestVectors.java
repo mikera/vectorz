@@ -192,8 +192,15 @@ public class TestVectors {
 		}
 	}
 	
+	private void testExactClone(AVector v) {
+		AVector cv=v.exactClone();
+		assertEquals(v,cv);
+		assertEquals(v.getClass(),cv.getClass());
+	}
+	
 	private void testSet(AVector v) {
-		v=v.clone();
+		v= (v.isFullyMutable()) ? v.exactClone() : v.clone();
+		
 		int len=v.length();
 		
 		Vectorz.fillRandom(v);
@@ -212,7 +219,7 @@ public class TestVectors {
 	}
 	
 	private void testAdd(AVector v) {
-		v=v.clone();
+		v=v.exactClone();
 		int len=v.length();
 		int split=len/2;
 		int slen=len-split;
@@ -392,13 +399,14 @@ public class TestVectors {
 	
 	private void doGenericTests(AVector v) {
 		doNonDegenerateTests(v);
+		testClone(v);
+		testExactClone(v);
 		testAdd(v);
 		testAddToArray(v);
 		testAddMultipleToArray(v);
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
-		testClone(v);
 		testParse(v);
 		testDistances(v);
 		testMagnitudes(v);
