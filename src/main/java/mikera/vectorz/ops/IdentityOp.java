@@ -34,6 +34,16 @@ public final class IdentityOp extends Op {
 	}
 	
 	@Override
+	public double derivative(double x) {
+		return 1.0;
+	}
+	
+	@Override
+	public double derivativeForOutput(double y) {
+		return 1.0;
+	}
+	
+	@Override
 	public ATransform getTransform(int dimensions) {
 		return Transformz.identityTransform(dimensions);
 	}
