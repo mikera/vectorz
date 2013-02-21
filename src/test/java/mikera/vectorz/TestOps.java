@@ -46,6 +46,17 @@ public class TestOps {
 		assertEquals(0.0, op.derivative(1000.0),0.0001);
 	}
 	
+	@Test public void testSoftplus() {
+		Op op=Op.SOFTPLUS;
+		assertEquals(0.0, op.apply(-1000),0.0001);
+		assertEquals(Math.log(2.0), op.apply(0.0),0.0001);
+		assertEquals(1000.0, op.apply(1000.0),0.0001);
+
+		assertEquals(0.0, op.derivative(-1000.0),0.0001);
+		assertEquals(0.5, op.derivative(0.0),0.0001);
+		assertEquals(1.0, op.derivative(1000.0),0.0001);
+	}
+	
 	private void testApply(Op op) {
 		double r=op.apply(Rand.nextGaussian()*1000);
 		assertTrue(r<=op.maxValue());
