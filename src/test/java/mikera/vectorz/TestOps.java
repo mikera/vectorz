@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import mikera.transformz.TestTransformz;
 import mikera.util.Rand;
 import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.IdentityOp;
 
 public class TestOps {
 	
@@ -27,5 +28,6 @@ public class TestOps {
 	
 	@Test public void generticTests() {
 		doOpTest(new ConstantOp(5.0));
+		doOpTest(IdentityOp.INSTANCE);
 	}
 }

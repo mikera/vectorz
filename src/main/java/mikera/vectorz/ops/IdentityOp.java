@@ -7,7 +7,9 @@ import mikera.vectorz.Op;
 
 public class IdentityOp extends Op {
 	
-	public IdentityOp() {
+	public static final IdentityOp INSTANCE = new IdentityOp();
+
+	private IdentityOp() {
 		// no content
 	}
 	
