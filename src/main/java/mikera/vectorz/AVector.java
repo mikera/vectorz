@@ -711,7 +711,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
-			this.set(j,this.get(j)+vector.data[i]*factor);
+			this.set(j,this.get(j)+vector.array[i]*factor);
 		}
 	}
 

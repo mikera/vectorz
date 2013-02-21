@@ -14,14 +14,14 @@ import mikera.indexz.Index;
 public final class Vector extends ArrayVector {
 	private static final long serialVersionUID = 6283741614665875877L;
 
-	public final double[] data;
+	public final double[] array;
 
 	Vector(double... values) {
-		data = values;
+		array = values;
 	}
 
 	Vector(int length) {
-		data = new double[length];
+		array = new double[length];
 	}
 
 	/**
@@ -31,8 +31,8 @@ public final class Vector extends ArrayVector {
 	 */
 	public Vector(AVector source) {
 		int length = source.length();
-		data = new double[length];
-		source.copyTo(this.data, 0);
+		array = new double[length];
+		source.copyTo(this.array, 0);
 	}
 	
 	/**
@@ -68,22 +68,22 @@ public final class Vector extends ArrayVector {
 	
 	@Override
 	public int length() {
-		return data.length;
+		return array.length;
 	}
 
 	@Override
 	public double get(int i) {
-		return data[i];
+		return array[i];
 	}
 
 	@Override
 	public void set(int i, double value) {
-		data[i]=value;
+		array[i]=value;
 	}
 
 	@Override
 	public double[] getArray() {
-		return data;
+		return array;
 	}
 
 	@Override
@@ -93,20 +93,20 @@ public final class Vector extends ArrayVector {
 	
 	@Override
 	public void applyOp(Op op) {
-		op.applyTo(data, 0, data.length);
+		op.applyTo(array, 0, array.length);
 	}
 	
 	@Override
 	public void fill(double value) {
-		Arrays.fill(data, value);
+		Arrays.fill(array, value);
 	}
 	
 	
 	@Override
 	public double elementSum() {
 		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			result+=data[i];
+		for (int i=0; i<array.length; i++) {
+			result+=array[i];
 		}
 		return result;
 	}
@@ -120,7 +120,7 @@ public final class Vector extends ArrayVector {
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset()+offset;
 		for (int i = 0; i < length; i++) {
-			data[i] += vdata[voffset + i];
+			array[i] += vdata[voffset + i];
 		}
 	}
 	
@@ -131,7 +131,7 @@ public final class Vector extends ArrayVector {
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
-			data[i] += vdata[voffset + i]*factor;
+			array[i] += vdata[voffset + i]*factor;
 		}
 	}
 	
@@ -144,7 +144,23 @@ public final class Vector extends ArrayVector {
 		int length=length();
 		assert(length==vlength);
 		for (int i = 0; i < length; i++) {
-			data[i] += v.get(i);
+			array[i] += v.get(i);
+		}
+	}
+	
+	@Override
+	public void scaleAdd(double factor, double constant) {
+		int length=length();
+		for (int i=0; i<length; i++) {
+			array[i]=(factor*array[i])+constant;
+		}
+	}
+
+	@Override
+	public void add(double constant) {
+		int length=length();
+		for (int i=0; i<length; i++) {
+			array[i]=array[i]+constant;
 		}
 	}
 	
@@ -161,7 +177,7 @@ public final class Vector extends ArrayVector {
 		int length=length();
 		assert((a.length()==length)&&(b.length()==length));
 		for (int i = 0; i < length; i++) {
-			data[i]+=(a.data[i]*b.data[i]);
+			array[i]+=(a.array[i]*b.array[i]);
 		}
 	}
 	
@@ -169,7 +185,7 @@ public final class Vector extends ArrayVector {
 		int length=length();
 		assert((a.length()==length)&&(b.length()==length));
 		for (int i = 0; i < length; i++) {
-			data[i]+=(a.data[i]*b.data[i])*factor;
+			array[i]+=(a.array[i]*b.array[i])*factor;
 		}
 	}
 	
@@ -179,7 +195,7 @@ public final class Vector extends ArrayVector {
 		int length=length();
 		assert(length==v.length());
 		for (int i = 0; i < length; i++) {
-			data[i] -= v.get(i);
+			array[i] -= v.get(i);
 		}
 	}
 	
@@ -191,7 +207,7 @@ public final class Vector extends ArrayVector {
 		double result=0.0;
 		int[] idata=ix.getData();
 		for (int i=0; i<vl; i++) {
-			result+=data[idata[i]]*v.get(i);
+			result+=array[idata[i]]*v.get(i);
 		}
 		return result;
 	}
@@ -202,7 +218,7 @@ public final class Vector extends ArrayVector {
 		double result=0.0;
 		int[] idata=ix.getData();
 		for (int i=0; i<vl; i++) {
-			result+=data[idata[i]]*v.data[i];
+			result+=array[idata[i]]*v.array[i];
 		}
 		return result;
 	}
@@ -214,7 +230,7 @@ public final class Vector extends ArrayVector {
 		assert(v.length()==len);
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=data[i]*v.get(i);
+			result+=array[i]*v.get(i);
 		}
 		return result;
 	}
@@ -224,7 +240,7 @@ public final class Vector extends ArrayVector {
 		assert(v.length()==len);
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=data[i]*v.data[i];
+			result+=array[i]*v.array[i];
 		}
 		return result;
 	}
@@ -239,7 +255,7 @@ public final class Vector extends ArrayVector {
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset()+offset;
 		for (int i = 0; i < length; i++) {
-			data[i] -= vdata[voffset + i];
+			array[i] -= vdata[voffset + i];
 		}
 	}
 	
@@ -249,7 +265,7 @@ public final class Vector extends ArrayVector {
 		int length=length();
 		assert(length==v.length());
 		for (int i = 0; i < length; i++) {
-			data[i] += v.get(i)*factor;
+			array[i] += v.get(i)*factor;
 		}
 	}
 	
@@ -259,7 +275,7 @@ public final class Vector extends ArrayVector {
 		int length=length();
 		assert(length==v.length());
 		for (int i = 0; i < length; i++) {
-			data[i] = (data[i]*(1.0-factor)) + (v.get(i)*factor);
+			array[i] = (array[i]*(1.0-factor)) + (v.get(i)*factor);
 		}
 	}
 	
@@ -269,7 +285,7 @@ public final class Vector extends ArrayVector {
 		double[] arr=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
-			data[i] = (data[i]*(1.0-factor)) + (arr[i+offset]*factor);
+			array[i] = (array[i]*(1.0-factor)) + (arr[i+offset]*factor);
 		}
 	}
 	
@@ -279,7 +295,7 @@ public final class Vector extends ArrayVector {
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
-			this.data[j]+=vector.data[i]*factor;
+			this.array[j]+=vector.array[i]*factor;
 		}
 	}
 	
@@ -287,7 +303,7 @@ public final class Vector extends ArrayVector {
 	public void multiply(double factor) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			data[i]*=factor;
+			array[i]*=factor;
 		}	
 	}
 	
@@ -305,7 +321,7 @@ public final class Vector extends ArrayVector {
 		int len=length();
 		assert(len==v.length());
 		for (int i = 0; i < len; i++) {
-			set(i,data[i]*v.data[i]);
+			set(i,array[i]*v.array[i]);
 		}	
 	}
 	

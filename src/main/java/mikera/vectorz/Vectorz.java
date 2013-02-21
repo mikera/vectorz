@@ -300,8 +300,8 @@ public class Vectorz {
 	public static void invSqrt(Vector v) {
 		int len=v.length();
 		for (int i=0; i<len; i++) {
-			double d=1.0/Math.sqrt(v.data[i]);
-			v.data[i]=d;
+			double d=1.0/Math.sqrt(v.array[i]);
+			v.array[i]=d;
 		}		
 	}
 	
