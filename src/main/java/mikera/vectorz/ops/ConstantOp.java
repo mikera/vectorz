@@ -41,5 +41,20 @@ public final class ConstantOp extends ABoundedOp {
 	public double maxValue() {
 		return value;
 	}
+	
+	@Override
+	public boolean hasDerivative() {
+		return true;
+	}
+	
+	@Override
+	public double derivative(double x) {
+		return 0.0;
+	}
+	
+	@Override
+	public double derivativeForOutput(double y) {
+		return 0.0;
+	}
 
 }
