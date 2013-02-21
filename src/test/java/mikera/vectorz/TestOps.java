@@ -98,6 +98,26 @@ public class TestOps {
 		TestTransformz.doITransformTests(op);
 	}
 	
+	public void doComposeTest(Op op1, Op op2) {
+		Op cop=op1.compose(op2);
+		doOpTest(cop);
+		
+		Op compop=new ComposedOp(op1,op2);
+		doOpTest(compop);
+		
+		AVector v=Vectorz.createUniformRandomVector(10);
+		AVector v2=v.clone();
+		AVector v3=v.clone();
+		
+		v.applyOp(op2);
+		v.applyOp(op1);
+		v2.applyOp(cop);
+		v3.applyOp(compop);
+	
+		assertTrue(v.epsilonEquals(v2, 0.00001));
+		assertTrue(v.epsilonEquals(v3, 0.00001));
+	}
+	
 	@Test public void genericTests() {
 		doOpTest(ConstantOp.create(5.0));
 		doOpTest(LinearOp.create(0.5, 3.0));
@@ -106,6 +126,7 @@ public class TestOps {
 		
 		doOpTest(ClampOp.ZERO_TO_ONE);
 		
-		doOpTest(new ComposedOp(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0)));
+		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
+		doComposeTest(ConstantOp.create(1.0),LinearOp.create(Double.NaN, 11.0));
 	}
 }
