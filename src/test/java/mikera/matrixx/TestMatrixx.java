@@ -216,8 +216,9 @@ public class TestMatrixx {
 	}
 	
 	void doMutationTest(AMatrix m) {
-		m=m.clone();
-		AMatrix m2=m.clone();
+		if (!m.isFullyMutable()) return;
+		m=m.exactClone();
+		AMatrix m2=m.exactClone();
 		assertEquals(m,m2);
 		int rc=m.rowCount();
 		int cc=m.columnCount();
@@ -231,8 +232,9 @@ public class TestMatrixx {
 	}
 	
 	private void doTransposeTest(AMatrix m) {
-		AMatrix m2=m.clone();
+		AMatrix m2=m.exactClone();
 		m2=m2.getTranspose();
+		assertEquals(m.getTranspose(),m2);
 		m2=m2.getTranspose();
 		assertEquals(m,m2);
 	}
