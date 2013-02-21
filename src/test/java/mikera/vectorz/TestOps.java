@@ -60,9 +60,28 @@ public class TestOps {
 			}
 		}
 	}
+	
+	private void testInverse(Op op) {
+		if (op.hasInverse()) {
+			Op inv=op.getInverse();
+			double x=Rand.nextGaussian();
+			double x2=inv.apply(op.apply(x));
+			assertEquals(x2,inv.apply(op.apply(x2)),0.0001);
+		} else {
+			try {
+				op.getInverse();
+				fail("getInverse did not throw exception!");
+			} catch (Throwable t) {
+				// OK
+			}
+		}
+	}
+	
+	
 
 	private void doOpTest(Op op) {
 		testApply(op);
+		testInverse(op);
 		testVectorApply(op);
 		testTransforms(op);
 		testDerivative(op);
