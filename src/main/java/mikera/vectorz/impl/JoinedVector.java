@@ -31,7 +31,6 @@ public final class JoinedVector extends AVector {
 	 * @param right
 	 * @return
 	 */
-	
 	public static AVector join(AVector left, AVector right) {
 		// balancing in case of nested joined vectors
 		while ((left.length()>right.length()*2)&&(left instanceof JoinedVector)) {
@@ -56,7 +55,6 @@ public final class JoinedVector extends AVector {
 	public boolean isView() {
 		return true;
 	}
-	
 
 	@Override
 	public boolean isFullyMutable() {
