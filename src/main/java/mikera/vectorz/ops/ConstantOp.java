@@ -66,6 +66,11 @@ public final class ConstantOp extends ALinearOp {
 	}
 	
 	@Override
+	public double averageValue() {
+		return value;
+	}
+	
+	@Override
 	public double derivative(double x) {
 		return 0.0;
 	}

@@ -10,4 +10,9 @@ public abstract class ABoundedOp extends Op {
 	public abstract double minValue();
 	
 	public abstract double maxValue();
+	
+	@Override
+	public double averageValue() {
+		return (minValue()+maxValue())*0.5;
+	}
 }

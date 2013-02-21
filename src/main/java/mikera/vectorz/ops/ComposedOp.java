@@ -66,4 +66,9 @@ public class ComposedOp extends Op {
 		return inner.getInverse().compose(outer.getInverse());
 	}
 	
+	@Override
+	public double averageValue() {
+		return outer.averageValue();
+	}
+	
 }

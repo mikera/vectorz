@@ -64,6 +64,11 @@ public final class LinearOp extends ALinearOp {
 	}
 	
 	@Override
+	public double averageValue() {
+		return constant;
+	}
+	
+	@Override
 	public boolean hasDerivative() {
 		return true;
 	}

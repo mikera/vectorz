@@ -59,6 +59,11 @@ public final class IdentityOp extends ALinearOp {
 	}
 	
 	@Override
+	public double averageValue() {
+		return 0.0;
+	}
+	
+	@Override
 	public double derivative(double x) {
 		return 1.0;
 	}

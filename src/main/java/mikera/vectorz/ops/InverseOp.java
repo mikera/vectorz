@@ -25,6 +25,11 @@ public class InverseOp extends Op {
 	}
 	
 	@Override
+	public double averageValue() {
+		return op.applyInverse(op.averageValue());
+	}
+	
+	@Override
 	public boolean hasInverse() {
 		return true;
 	}

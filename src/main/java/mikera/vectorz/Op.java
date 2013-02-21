@@ -134,6 +134,8 @@ public abstract class Op implements IOp, ITransform {
 		return -Double.MAX_VALUE;
 	}
 	
+	public abstract double averageValue();
+	
 	public double maxValue() {
 		return Double.MAX_VALUE;
 	}

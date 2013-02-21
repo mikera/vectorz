@@ -55,6 +55,11 @@ public final class OffsetOp extends ALinearOp {
 	}
 	
 	@Override
+	public double averageValue() {
+		return constant;
+	}
+	
+	@Override
 	public boolean hasDerivative() {
 		return true;
 	}
