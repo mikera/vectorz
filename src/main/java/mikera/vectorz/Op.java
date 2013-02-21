@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import mikera.transformz.ATransform;
 import mikera.transformz.impl.AOpTransform;
+import mikera.vectorz.ops.InverseOp;
 
 /**
  * Abstract class for representing a unary operation
@@ -46,7 +47,11 @@ public abstract class Op implements IOp {
 	
 	@Override 
 	public Op getInverse() {
-		throw new UnsupportedOperationException();
+		if (hasInverse()) {
+			return new InverseOp(this);
+		} else {
+			throw new UnsupportedOperationException("No inverse available: "+this.getClass());
+		}
 	}
 	
 	public boolean hasDerivative() {
