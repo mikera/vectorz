@@ -17,6 +17,28 @@ public class TestOps {
 		assertTrue(r>=op.minValue());
 	}
 	
+	private void testVectorApply(Op op) {
+		Vector sv=Vector.createLength(10);
+		Vectorz.fillGaussian(sv);
+		
+		AVector v1=sv.clone();
+		AVector v2=sv.clone();
+		double[] d1=new double[10];
+		double[] d2=new double[10];
+		sv.copyTo(d1, 0);
+		sv.copyTo(d2, 0);
+		
+		op.applyTo(v1);
+		v2.applyOp(op);
+		op.applyTo(d1);
+		op.applyTo(d2,0,d2.length);
+		
+		assertEquals(v1,v2);
+		assertTrue(v1.equalsArray(d1));
+		assertTrue(v2.equalsArray(d2));
+		
+	}
+	
 	private void testTransforms(Op op) {
 		TestTransformz.doTransformTests(op.getTransform(1));
 		TestTransformz.doTransformTests(op.getTransform(10));		
@@ -41,6 +63,7 @@ public class TestOps {
 
 	private void doOpTest(Op op) {
 		testApply(op);
+		testVectorApply(op);
 		testTransforms(op);
 		testDerivative(op);
 	}

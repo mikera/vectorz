@@ -784,4 +784,13 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 * @return
 	 */
 	public abstract AVector exactClone();
+
+	public boolean equalsArray(double[] data) {
+		int len=length();
+		if (len!=data.length) return false;
+		for (int i=0; i<len; i++) {
+			if (get(i)!=data[i]) return false;
+		}
+		return true;
+	}
 }
