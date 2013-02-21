@@ -37,4 +37,9 @@ public final class IdentityOp extends Op {
 	public ATransform getTransform(int dimensions) {
 		return Transformz.identityTransform(dimensions);
 	}
+	
+	@Override
+	public IdentityOp getInverse() {
+		return this;
+	}
 }
