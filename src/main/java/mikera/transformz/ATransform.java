@@ -16,7 +16,7 @@ import mikera.vectorz.impl.SingleElementVector;
  * 
  * @author Mike
  */
-public abstract class ATransform implements Cloneable {
+public abstract class ATransform implements Cloneable, ITransform {
 	// =====================================
 	// Abstract interface
 	
