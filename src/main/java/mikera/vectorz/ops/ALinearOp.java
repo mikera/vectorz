@@ -9,6 +9,11 @@ public abstract class ALinearOp extends Op {
 	public abstract double getConstant();
 	
 	@Override
+	public boolean hasDerivative() {
+		return true;
+	}
+	
+	@Override
 	public double derivative(double x) {
 		return getFactor();
 	}
@@ -16,5 +21,10 @@ public abstract class ALinearOp extends Op {
 	@Override
 	public double derivativeForOutput(double y) {
 		return getFactor();
+	}
+	
+	@Override
+	public boolean hasInverse() {
+		return true;
 	}
 }

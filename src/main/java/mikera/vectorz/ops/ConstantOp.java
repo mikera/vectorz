@@ -19,6 +19,11 @@ public final class ConstantOp extends ALinearOp {
 	}
 	
 	@Override
+	public double applyInverse(double x) {
+		return Double.NaN;
+	}
+	
+	@Override
 	public void applyTo(AVector v) {
 		v.fill(value);
 	}
@@ -51,11 +56,6 @@ public final class ConstantOp extends ALinearOp {
 	@Override
 	public double maxValue() {
 		return value;
-	}
-	
-	@Override
-	public boolean hasDerivative() {
-		return true;
 	}
 	
 	@Override
