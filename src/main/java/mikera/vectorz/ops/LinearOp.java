@@ -77,4 +77,16 @@ public final class LinearOp extends Op {
 	public LinearOp getInverse() {
 		return LinearOp.create(1.0/factor, -constant/factor);
 	}
+	
+	public Op compose(LinearOp op) {
+		return new LinearOp(factor*op.factor,factor*op.constant+constant);
+	}
+	
+	@Override
+	public Op compose(Op op) {
+		if (op instanceof LinearOp) {
+			return compose((LinearOp) op);
+		}
+		return super.compose(op);
+	}
 }

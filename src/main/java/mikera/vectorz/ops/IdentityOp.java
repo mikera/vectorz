@@ -63,6 +63,7 @@ public final class IdentityOp extends Op {
 		return this;
 	}
 	
+	@Override
 	public Op compose(Op op) {
 		return op;
 	}
