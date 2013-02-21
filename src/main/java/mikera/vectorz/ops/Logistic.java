@@ -4,16 +4,28 @@ public final class Logistic extends ABoundedOp {
 	
 	public static final Logistic INSTANCE=new Logistic();
 	
-	public static double logisticFunction(double a) {
+	private static double logisticFunction(double a) {
 		double ea=Math.exp(-a);
 		double df=(1/(1.0f+ea));
 		if (Double.isNaN(df)) return (a>0)?1:0;
 		return df;
 	}
 	
+	private static double inverseLogistic (double a) {
+		if (a>=1) return 800;
+		if (a<=0) return -800;
+		double ea=a/(1.0-a);
+		return Math.log(ea);
+	}
+	
 	@Override
 	public double apply(double x) {
 		return logisticFunction(x);
+	}
+	
+	@Override
+	public double applyInverse(double y) {
+		return inverseLogistic(y);
 	}
 	
 	@Override
