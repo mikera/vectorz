@@ -34,16 +34,17 @@ public class TestOps {
 		op.applyTo(v1);
 		v2.applyOp(op);
 		assertEquals(v1,v2);
+		
+		AVector v3=Vector.createLength(10);
+		op.getTransform(10).transform(sv, v3);
+		assertEquals(v1,v3);
 
 		double[] d1=new double[10];
 		double[] d2=new double[10];
 		sv.copyTo(d1, 0);
 		sv.copyTo(d2, 0);
-		
-
 		op.applyTo(d1);
 		op.applyTo(d2,0,d2.length);
-		
 		assertTrue(v2.equalsArray(d2));
 		assertTrue(v1.equalsArray(d1));	
 	}
