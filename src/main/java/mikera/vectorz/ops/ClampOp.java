@@ -26,6 +26,14 @@ public final class ClampOp extends Op {
 	}
 	
 	@Override
+	public void applyTo(double[] data, int start,int length) {
+		for (int i=0; i<length; i++) {
+			double x=data[start+i];
+			data[start+i]=(x<min) ? min : ((x>max)?max:x);
+		}
+	}
+	
+	@Override
 	public boolean isBounded() {
 		return true;
 	}
