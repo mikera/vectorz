@@ -43,5 +43,8 @@ public class ScalarMatrix extends ADiagonalMatrix {
 		}
 	}
 
-
+	@Override
+	public ScalarMatrix exactClone() {
+		return new ScalarMatrix(dimensions,scale);
+	}
 }

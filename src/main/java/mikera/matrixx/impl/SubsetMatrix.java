@@ -63,4 +63,8 @@ public final class SubsetMatrix extends AMatrix {
 		throw new UnsupportedOperationException("Can't set matrix values on: "+this.getClass().getName());
 	}
 
+	@Override
+	public SubsetMatrix exactClone() {
+		return SubsetMatrix.create(components.clone(),dims);
+	}
 }

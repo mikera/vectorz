@@ -106,5 +106,10 @@ public final class VectorMatrixM3 extends AVectorMatrix  implements ISpecialised
 		}
 		return m;
 	}
+	
+	@Override
+	public VectorMatrixM3 exactClone() {
+		return clone();
+	}
 
 }

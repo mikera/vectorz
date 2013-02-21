@@ -24,6 +24,12 @@ public final class VectorMatrixMN extends AVectorMatrix {
 		}
 	}
 	
+	private VectorMatrixMN(AVector[] rows, int rowCount, int columnCount) {
+		this.rows=rows;
+		this.rowCount=rows.length;
+		this.columnCount=columnCount;
+	}
+	
 	@Override
 	public void scale(double factor) {
 		for (AVector vector:rows) {
@@ -108,5 +114,14 @@ public final class VectorMatrixMN extends AVectorMatrix {
 			m.rows[i].set(rows[i]);
 		}
 		return m;
+	}
+	
+	@Override
+	public VectorMatrixMN exactClone() {
+		AVector[] newRows=rows.clone();
+		for (int i=0; i<rowCount; i++) {
+			newRows[i]=newRows[i].exactClone();
+		}
+		return new VectorMatrixMN(rows,rowCount,columnCount);
 	}
 }

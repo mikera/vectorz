@@ -142,4 +142,9 @@ public final class ZeroMatrix extends AMatrix {
 	public static ZeroMatrix create(int rows, int columns) {
 		return new ZeroMatrix(rows,columns);
 	}
+	
+	@Override
+	public ZeroMatrix exactClone() {
+		return new ZeroMatrix(outputDimensions,inputDimensions);
+	}
 }

@@ -283,6 +283,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public Matrix33 exactClone() {
+		return new Matrix33(this);
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Matrix33) {
 			return equals((Matrix33)o);

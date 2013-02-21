@@ -708,4 +708,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		return true;
 	}
+
+	public abstract AMatrix exactClone();
 }

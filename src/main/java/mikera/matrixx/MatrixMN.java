@@ -146,4 +146,9 @@ public final class MatrixMN extends AMatrix {
 			}
 		}
 	}
+	
+	@Override
+	public MatrixMN exactClone() {
+		return new MatrixMN(this);
+	}
 }

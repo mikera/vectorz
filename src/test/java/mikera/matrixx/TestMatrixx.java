@@ -19,6 +19,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.ops.ConstantOp;
 
 import org.junit.Test;
 
@@ -372,6 +373,16 @@ public class TestMatrixx {
 		
 		AVector ambv=a.transform(m.transform(b.transform(v)));
 		assertTrue(amb.transform(v).epsilonEquals(ambv));
+	}
+	
+	private void testApplyOp(AMatrix m) {
+		if (!m.isFullyMutable()) return;
+		AMatrix c=m.exactClone();
+		AMatrix d=m.exactClone();
+		
+		c.asVector().fill(5.0);
+		d.applyOp(ConstantOp.create(5.0));
+		assertTrue(c.equals(d));
 	}
 	
 	void doScaleTest(AMatrix m) {

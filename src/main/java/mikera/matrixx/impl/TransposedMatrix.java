@@ -71,4 +71,9 @@ public class TransposedMatrix extends AMatrix {
 		// Transposing again just gets us back to the original source matrix
 		return source;
 	}
+	
+	@Override
+	public TransposedMatrix exactClone() {
+		return new TransposedMatrix(source.exactClone());
+	}
 }

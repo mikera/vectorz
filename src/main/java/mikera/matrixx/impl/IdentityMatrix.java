@@ -95,4 +95,8 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	public AMatrix getTranspose() {
 		return this;
 	}
+	
+	public IdentityMatrix exactClone() {
+		return new IdentityMatrix(dimensions);
+	}
 }

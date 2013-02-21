@@ -131,4 +131,9 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		}
 		return result;
 	}
+	
+	@Override
+	public DiagonalMatrix exactClone() {
+		return DiagonalMatrix.create(data);
+	}
 }

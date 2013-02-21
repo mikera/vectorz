@@ -81,4 +81,9 @@ public class PermutedMatrix extends AMatrix {
 		return source.getColumn(columnPermutations.get(column));
 	}
 	
+	@Override
+	public PermutedMatrix exactClone() {
+		return new PermutedMatrix(source.exactClone(),rowPermutations.clone(),columnPermutations.clone());
+	}
+	
 }

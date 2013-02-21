@@ -72,5 +72,9 @@ public class ColumnMatrix extends AMatrix {
 		return vector;
 	}
 
+	@Override
+	public ColumnMatrix exactClone() {
+		return new ColumnMatrix(vector.exactClone());
+	}
 
 }

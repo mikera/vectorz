@@ -187,4 +187,9 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	public Matrix22 clone() {
 		return new Matrix22(this);
 	}
+	
+	@Override
+	public Matrix22 exactClone() {
+		return new Matrix22(this);
+	}
 }
