@@ -403,12 +403,6 @@ public class TestMatrixx {
 		m1.scale(2.0);
 		m2.add(m);
 		
-		if (!m1.epsilonEquals(m2)) {
-			System.out.println("Problem with doScaleTest on: "+m.getClass());
-			System.out.println(m);
-			System.out.println(m1);
-			System.out.println(m2);
-		}
 		assertTrue(m1.epsilonEquals(m2));
 		
 		m1.scale(0.0);

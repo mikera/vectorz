@@ -6,6 +6,7 @@ import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -244,8 +245,16 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector clone() {
+		AVector v=Vectorz.newVector(length);
+		for (int i=0; i<data.length; i++) {
+			v.set(index.data[i],data[i]);
+		}	
+		return v;
+	}
+	
+	@Override
 	public SparseIndexedVector exactClone() {
 		return new SparseIndexedVector(length,index.clone(),data.clone());
 	}
-
 }

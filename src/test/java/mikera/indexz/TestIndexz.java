@@ -20,7 +20,6 @@ public class TestIndexz {
 		
 	}
 	
-
 	@Test public void testPermutations() {
 		HashSet<Index> hs=new HashSet<Index>();
 		

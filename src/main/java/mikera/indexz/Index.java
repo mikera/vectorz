@@ -3,8 +3,10 @@ package mikera.indexz;
 import java.util.Arrays;
 
 /**
- * Class to represent a mutable list of integer indexes
- * Backed by an array
+ * Class to represent a mutable list of integer indexes, typically used for indexing into
+ * vectors or matrices.
+ * 
+ * Backed by an int[] array.
  * 
  * @author Mike
  *
@@ -180,7 +182,7 @@ public final class Index extends AIndex {
 	}
 
 	/**
-	 * Finds the position a value would take in a sorted index.
+	 * Finds the position a value would take assuming a sorted index. Uses a binary search.
 	 * @param i The position of the value - will point to either the value or the next higher value present 
 	 * @return
 	 */
