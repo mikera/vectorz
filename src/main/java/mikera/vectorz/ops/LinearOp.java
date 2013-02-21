@@ -5,7 +5,7 @@ import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public final class LinearOp extends Op {
+public final class LinearOp extends ALinearOp {
 	private final double factor;
 	private final double constant;
 	
@@ -49,6 +49,16 @@ public final class LinearOp extends Op {
 	}
 	
 	@Override
+	public double getFactor() {
+		return factor;
+	}
+	
+	@Override
+	public double getConstant() {
+		return constant;
+	}
+	
+	@Override
 	public boolean hasDerivative() {
 		return true;
 	}
@@ -78,14 +88,14 @@ public final class LinearOp extends Op {
 		return LinearOp.create(1.0/factor, -constant/factor);
 	}
 	
-	public Op compose(LinearOp op) {
-		return new LinearOp(factor*op.factor,factor*op.constant+constant);
+	public Op compose(ALinearOp op) {
+		return new LinearOp(factor*op.getFactor(),factor*op.getConstant()+constant);
 	}
 	
 	@Override
 	public Op compose(Op op) {
-		if (op instanceof LinearOp) {
-			return compose((LinearOp) op);
+		if (op instanceof ALinearOp) {
+			return compose((ALinearOp) op);
 		}
 		return super.compose(op);
 	}
