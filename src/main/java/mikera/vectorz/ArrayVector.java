@@ -113,6 +113,26 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void scaleAdd(double factor, double constant) {
+		int length=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			array[i+offset]=(factor*array[i+offset])+constant;
+		}
+	}
+
+	@Override
+	public void add(double constant) {
+		int length=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			array[i+offset]=array[i+offset]+constant;
+		}
+	}
+	
+	@Override
 	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
 		int length=length();
 		double[] array=getArray();

@@ -766,4 +766,16 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 			set(i,op.apply(get(i)));
 		}
 	}
+
+	public void scaleAdd(double factor, double constant) {
+		scale(factor);
+		add(constant);
+	}
+
+	public void add(double constant) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			set(i,get(i)+constant);
+		}
+	}
 }
