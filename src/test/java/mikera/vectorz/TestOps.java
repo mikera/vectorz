@@ -11,6 +11,7 @@ import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.GaussianNoise;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.LinearOp;
+import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.OffsetOp;
 import mikera.vectorz.ops.StochasticBinary;
 
@@ -184,8 +185,11 @@ public class TestOps {
 		
 		doOpTest(ClampOp.ZERO_TO_ONE);
 		
+		doOpTest(Logistic.INSTANCE);
+		
 		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
 		doComposeTest(ConstantOp.create(1.0),LinearOp.create(Double.NaN, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));
+		doComposeTest(Logistic.INSTANCE,LinearOp.create(10.0, -0.2));
 	}
 }

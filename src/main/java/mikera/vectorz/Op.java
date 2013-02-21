@@ -7,6 +7,7 @@ import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.InverseOp;
+import mikera.vectorz.ops.StochasticBinary;
 
 /**
  * Abstract class for representing a unary operation
@@ -14,6 +15,10 @@ import mikera.vectorz.ops.InverseOp;
  * @author Mike
  */
 public abstract class Op implements IOp, ITransform {
+	
+	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
+	public static final Op LINEAR=IdentityOp.INSTANCE;
+	public static final Op LOGISTIC=null;
 
 	public abstract double apply(double x);
 	
@@ -190,6 +195,4 @@ public abstract class Op implements IOp, ITransform {
 		if (op instanceof ConstantOp) return ConstantOp.create(apply(((ConstantOp)op).value));
 		return new ComposedOp(this,op);
 	}
-
-
 }
