@@ -40,4 +40,21 @@ public final class ClampOp extends ABoundedOp {
 	public double maxValue() {
 		return max;
 	}
+	
+	@Override
+	public boolean hasDerivative() {
+		return true;
+	}
+	
+	@Override
+	public double derivative(double x) {
+		if ((x<=min)||(x>=max)) return 0.0;
+		return 1.0;
+	}
+	
+	@Override
+	public double derivativeForOutput(double y) {
+		if ((y<=min)||(y>=max)) return 0.0;
+		return 1.0;
+	}
 }
