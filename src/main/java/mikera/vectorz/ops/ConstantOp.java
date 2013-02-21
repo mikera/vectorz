@@ -5,7 +5,7 @@ import java.util.Arrays;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public class ConstantOp extends Op {
+public class ConstantOp extends ABoundedOp {
 	
 	private final double value;
 	
@@ -31,6 +31,16 @@ public class ConstantOp extends Op {
 	@Override
 	public void applyTo(double[] data, int start,int length) {
 		Arrays.fill(data,start,start+length,value);
+	}
+
+	@Override
+	public double minValue() {
+		return value;
+	}
+
+	@Override
+	public double maxValue() {
+		return value;
 	}
 
 }
