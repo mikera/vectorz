@@ -1,7 +1,6 @@
 package mikera.vectorz;
 
-import mikera.transformz.impl.AOpTransform;
-
+import mikera.transformz.ATransform;
 
 public interface IOp {
 	/**
@@ -21,6 +20,6 @@ public interface IOp {
 	 * @param dims
 	 * @return
 	 */
-	public AOpTransform getTransform(int dims);
+	public ATransform getTransform(int dims);
 
 }

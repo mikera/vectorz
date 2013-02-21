@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import mikera.transformz.ATransform;
 import mikera.transformz.impl.AOpTransform;
 
 /**
@@ -39,7 +40,7 @@ public abstract class Op implements IOp {
 	}
 	
 	@Override
-	public AOpTransform getTransform(int dims) {
+	public ATransform getTransform(int dims) {
 		return new AOpTransform(this,dims);
 	}
 	
