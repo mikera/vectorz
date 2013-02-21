@@ -3,6 +3,7 @@ package mikera.vectorz;
 import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
+import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.InverseOp;
 
 /**
@@ -14,6 +15,13 @@ public abstract class Op implements IOp, ITransform {
 
 	public abstract double apply(double x);
 	
+	/**
+	 * Applies the inverse of this Op. Throws an error if the inverse function does not exist.
+	 * Returns Double.NaN if no inverse exists for the specific value of y.
+	 * 
+	 * @param y
+	 * @return
+	 */
 	public double applyInverse(double y) {
 		throw new UnsupportedOperationException("Inverse not defined for operator: "+this.toString());
 	}
@@ -161,6 +169,10 @@ public abstract class Op implements IOp, ITransform {
 	
 	public boolean isBounded() {
 		return (minValue()>-Double.MAX_VALUE)||(maxValue()<Double.MAX_VALUE);
+	}
+
+	public Op compose(Op op) {
+		return new ComposedOp(this,op);
 	}
 
 

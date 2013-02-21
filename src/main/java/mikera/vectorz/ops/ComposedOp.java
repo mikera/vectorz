@@ -41,6 +41,14 @@ public class ComposedOp extends Op {
 		return outer.maxValue();
 	}
 	
+	@Override
+	public boolean hasInverse() {
+		return (outer.hasInverse())&&(inner.hasInverse());
+	}
 	
+	@Override
+	public Op getInverse() {
+		return inner.getInverse().compose(outer.getInverse());
+	}
 	
 }

@@ -35,7 +35,6 @@ public class TestTransformz {
 		}
 	}
 	
-
 	public static void doApplyTest(ITransform t) {
 		AVector x=Vectorz.createUniformRandomVector(t.inputDimensions());
 		AVector y=Vectorz.newVector(t.outputDimensions());
