@@ -56,6 +56,24 @@ public class TestOps {
 		TestTransformz.doTransformTests(op.getTransform(10));		
 	}
 	
+	private void testBounds(Op op) {
+		if (!op.isBounded()) return;
+		
+		double min=op.minValue();
+		double max=op.maxValue();
+		double avg=op.averageValue();
+		
+		assertTrue(min<=avg);
+		assertTrue(avg<=max);
+		
+		for (int i=0; i<100; i++) {
+			double x=Rand.nextGaussian()*1000;
+			double y=op.apply(x);
+			assertTrue(y<=max);
+			assertTrue(y>=min);
+		}
+	}
+	
 	private void testDerivative(Op op) {
 		double x=Rand.nextGaussian()*100;
 		double y=op.apply(x);
@@ -108,6 +126,7 @@ public class TestOps {
 		testInverse(op);
 		testVectorApply(op);
 		testTransforms(op);
+		testBounds(op);
 		testDerivative(op);
 		TestTransformz.doITransformTests(op);
 	}
