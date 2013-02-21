@@ -1,25 +1,18 @@
 package mikera.vectorz.ops;
 
-public final class Logistic extends ABoundedOp {
+public final class Tanh extends ABoundedOp {
 	
-	public static final Logistic INSTANCE=new Logistic();
-	
-	public static double logisticFunction(double a) {
-		double ea=Math.exp(-a);
-		double df=(1/(1.0f+ea));
-		if (Double.isNaN(df)) return (a>0)?1:0;
-		return df;
-	}
+	public static final Tanh INSTANCE=new Tanh();
 	
 	@Override
 	public double apply(double x) {
-		return logisticFunction(x);
+		return Math.tanh(x);
 	}
 	
 	@Override
 	public void applyTo(double[] data, int start,int length) {
 		for (int i=0; i<length; i++) {
-			data[i+start]=logisticFunction(data[i+start]);
+			data[i+start]=Math.tanh(data[i+start]);
 		}	
 	}
 	
@@ -30,28 +23,28 @@ public final class Logistic extends ABoundedOp {
 	
 	@Override
 	public double derivativeForOutput(double y) {
-		return y*(1-y);
+		return 1.0-y*y;
 	}
 	
 	@Override
 	public double derivative(double x) {
-		double y=logisticFunction(x);
-		return y*(1-y);
+		double y=Math.tanh(x);
+		return 1.0-y*y;
 	}
 
 	@Override
 	public double minValue() {
+		return -1.0;
+	}
+	
+	@Override
+	public double averageValue() {
 		return 0.0;
 	}
 
 	@Override
 	public double maxValue() {
 		return 1.0;
-	}
-	
-	@Override
-	public double averageValue() {
-		return 0.5;
 	}
 
 }
