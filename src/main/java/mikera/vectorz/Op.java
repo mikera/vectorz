@@ -37,6 +37,10 @@ public abstract class Op implements IOp, ITransform {
 		}
 	}
 	
+	public void applyTo(AScalar s) {
+		s.set(apply(s.get()));
+	}
+	
 	public void applyTo(ArrayVector v) {
 		applyTo(v.getArray(), v.getArrayOffset(),v.length());
 	}
