@@ -224,7 +224,7 @@ public class TestOps {
 		doOpTest(Op.STOCHASTIC_LOGISTIC);
 		doOpTest(Op.TANH);
 		doOpTest(Op.SOFTPLUS);
-		doOpTest(Op.RELU);
+		doOpTest(Op.RECTIFIER);
 		
 		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
 		doComposeTest(ConstantOp.create(1.0),LinearOp.create(Double.NaN, 11.0));

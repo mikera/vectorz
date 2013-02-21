@@ -23,7 +23,7 @@ public abstract class Op implements IOp, ITransform {
 	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
 	public static final Op LINEAR=IdentityOp.INSTANCE;
 	public static final Op LOGISTIC=Logistic.INSTANCE;
-	public static final Op RELU=new ClampOp(0.0,Double.MAX_VALUE);
+	public static final Op RECTIFIER=new ClampOp(0.0,Double.MAX_VALUE);
 	public static final Op STOCHASTIC_LOGISTIC=compose(STOCHASTIC_BINARY,Logistic.INSTANCE);
 	public static final Op TANH=Tanh.INSTANCE;
 	public static final Op SOFTPLUS=SoftPlus.INSTANCE;
