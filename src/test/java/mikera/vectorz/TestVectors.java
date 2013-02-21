@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
