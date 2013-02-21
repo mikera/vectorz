@@ -104,6 +104,13 @@ public final class VectorMatrixMN extends AVectorMatrix {
 	}
 	
 	@Override
+	public double calculateElement(int i, AVector inputVector) {
+		assert(i<rowCount);
+		AVector row=rows[i];
+		return row.dotProduct(inputVector);
+	}
+	
+	@Override
 	public boolean isSquare() {
 		return rowCount==columnCount;
 	}

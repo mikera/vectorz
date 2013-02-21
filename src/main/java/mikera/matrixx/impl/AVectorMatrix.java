@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.impl.SingleElementVector;
 
 /**
  * Abstract base class for matrices that use a collection of Vectors 
@@ -38,11 +39,18 @@ public abstract class AVectorMatrix extends AMatrix {
 		getRow(row).set(column,value);
 	}
 	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			dest.set(i,getRow(i).dotProduct(source));
 		}
+	}
+	
+	@Override
+	public double calculateElement(int i, AVector inputVector) {
+		AVector row=getRow(i);
+		return row.dotProduct(inputVector);
 	}
 	
 	@Override

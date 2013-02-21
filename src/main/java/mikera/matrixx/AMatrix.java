@@ -137,6 +137,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public int outputDimensions() {
 		return rowCount();
 	}
+	
+	@Override
+	public INDArray reshape(int... dimensions) {
+		int ndims=dimensions.length;
+		if (ndims==1) {
+			return toVector();
+		} else if (ndims==2) {
+			return Matrixx.createFromVector(asVector(), dimensions[0], dimensions[1]);
+		} else {
+			throw new UnsupportedOperationException("Can't reshape to dimensionality: "+ndims);
+		}
+	}
 
 	@Override
 	public void transform(AVector source, AVector dest) {
@@ -150,8 +162,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			dest.set(row, total);
 		}
 	}
-	
-	
 
 	@Override
 	public void transformInPlace(AVector v) {
@@ -197,18 +207,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		@Override
 		public MatrixRow exactClone() {
 			return AMatrix.this.exactClone().new MatrixRow(row);
-		}
-	}
-	
-	@Override
-	public INDArray reshape(int... dimensions) {
-		int ndims=dimensions.length;
-		if (ndims==1) {
-			return toVector();
-		} else if (ndims==2) {
-			return Matrixx.createFromVector(asVector(), dimensions[0], dimensions[1]);
-		} else {
-			throw new UnsupportedOperationException("Can't reshape to dimensionality: "+ndims);
 		}
 	}
 

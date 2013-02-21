@@ -94,6 +94,13 @@ public final class VectorMatrixM3 extends AVectorMatrix  implements ISpecialised
 	}
 	
 	@Override
+	public double calculateElement(int i, AVector inputVector) {
+		assert(i<rowCount);
+		Vector3 row=rows[i];
+		return row.dotProduct(inputVector);
+	}
+	
+	@Override
 	public boolean isSquare() {
 		return rowCount==3;
 	}
