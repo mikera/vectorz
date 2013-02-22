@@ -3,7 +3,6 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
-import mikera.vectorz.impl.SingleElementVector;
 
 /**
  * Abstract base class for matrices that use a collection of Vectors 
