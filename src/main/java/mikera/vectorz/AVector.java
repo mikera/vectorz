@@ -506,6 +506,15 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		}		
 	}
 	
+	public int countZeros() {
+		int z=0;
+		int len=length();
+		for (int i=0; i<len; i++) {
+			if (get(i)==0.0) z++;
+		}
+		return z;
+	}
+	
 	/**
 	 * Clones the vector, creating a new copy of all data. 
 	 * 
