@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import mikera.randomz.Hash;
 import mikera.vectorz.APrimitiveVector;
-import mikera.vectorz.Tools;
 
 /**
  * Specialised vector containing nothing but zeros.
