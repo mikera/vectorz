@@ -1,7 +1,5 @@
 package mikera.matrixx;
 
-import java.util.List;
-
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
