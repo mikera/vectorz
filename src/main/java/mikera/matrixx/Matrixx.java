@@ -6,6 +6,7 @@ import java.util.List;
 
 import bpsm.edn.parser.Parser;
 import bpsm.edn.parser.Parsers;
+import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
@@ -427,6 +428,16 @@ public class Matrixx {
 
 	public static AMatrix deepCopy(AMatrix m) {
 		return create(m);
+	}
+
+	public static AMatrix createSparse(int inputDims, Index[] indexes, AVector[] weights) {
+		int len=indexes.length;
+		if (len!=weights.length) throw new VectorzException("Length mismatch!" + len+ " vs. "+weights.length);
+		AVector[] svs=new AVector[len];
+		for (int i=0; i<len; i++) {
+			svs[i]=SparseIndexedVector.create(inputDims, indexes[i], weights[i]);
+		}
+		return VectorMatrixMN.wrap(svs);
 	}
 
 
