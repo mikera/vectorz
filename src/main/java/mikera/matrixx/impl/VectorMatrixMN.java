@@ -31,6 +31,12 @@ public final class VectorMatrixMN extends AVectorMatrix {
 		this.columnCount=columnCount;
 	}
 	
+	public static VectorMatrixMN wrap(AVector[] rows) {
+		int rc=rows.length;
+		int cc=rows[0].length();
+		return new VectorMatrixMN(rows,rc,cc);
+	}
+	
 	@Override
 	public void scale(double factor) {
 		for (int i=0; i<rowCount; i++) {

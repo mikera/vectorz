@@ -11,12 +11,14 @@ import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.util.Rand;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -60,6 +62,20 @@ public class Matrixx {
 			return createFromVectors(al);
 		}
 		throw new UnsupportedOperationException("Can't convert to matrix: "+o.getClass());
+	}
+	
+	/**
+	 * Creates a sparse matrix from the given matrix, ignoring zeros
+	 */
+	public static AMatrix createSparse(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		VectorMatrixMN result=new VectorMatrixMN(0,cc);
+		AVector[] rows=new AVector[rc];
+		for (int i=0; i<rc; i++) {
+			rows[i]=SparseIndexedVector.createFromRow(m,i);
+		}
+		return result;
 	}
 	
 	/**

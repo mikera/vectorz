@@ -3,6 +3,8 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
@@ -66,6 +68,24 @@ public class SparseIndexedVector extends ASparseVector {
 		SparseIndexedVector sv= create(length, index, new double[index.length()]);
 		data.copyTo(sv.data, 0);
 		return sv;
+	}
+	
+	/** Creates a SparseIndexedVector from the given vector, ignoring the zeros */
+	public static SparseIndexedVector create(AVector source) {
+		int vlen = source.length();
+		int len=0;
+		for (int i=0; i<vlen; i++) {
+			if (source.get(i)!=0) len++;
+		}
+		int[] indexes=new int[len];
+		double[] vals=new double[len];
+		return wrap(vlen,Index.wrap(indexes),vals);
+	}
+	
+	/** Creates a SparseIndexedVector from a row of an existing matrix */
+	public static AVector createFromRow(AMatrix m, int row) {
+		if (m instanceof AVectorMatrix) return create(m.getRow(row));
+		return create(m.getRow(row));
 	}
 	
 	@Override
@@ -257,4 +277,5 @@ public class SparseIndexedVector extends ASparseVector {
 	public SparseIndexedVector exactClone() {
 		return new SparseIndexedVector(length,index.clone(),data.clone());
 	}
+
 }
