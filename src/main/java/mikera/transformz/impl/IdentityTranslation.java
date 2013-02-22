@@ -5,7 +5,6 @@ import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.transformz.ATranslation;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
 
 /**

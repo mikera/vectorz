@@ -5,7 +5,6 @@ import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Tools;
 
 /**
  * Lightweight immutable zero matrix class
