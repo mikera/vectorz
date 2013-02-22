@@ -2,9 +2,9 @@ package mikera.vectorz.impl;
 
 import java.util.Arrays;
 
+import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
-import mikera.vectorz.Tools;
 import mikera.vectorz.Vectorz;
 
 /**
@@ -139,7 +139,7 @@ public final class ArraySubVector extends ArrayVector {
 	public int hashCode() {
 		int hashCode = 1;
 		for (int i = 0; i < length; i++) {
-			hashCode = 31 * hashCode + (Tools.hashCode(data[offset+i]));
+			hashCode = 31 * hashCode + (Hash.hashCode(data[offset+i]));
 		}
 		return hashCode;
 	}

@@ -8,6 +8,7 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.Matrixx;
+import mikera.randomz.Hash;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
@@ -143,7 +144,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		int hashCode = 1;
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			hashCode = 31 * hashCode + (Tools.hashCode(get(i)));
+			hashCode = 31 * hashCode + (Hash.hashCode(get(i)));
 		}
 		return hashCode;
 	}

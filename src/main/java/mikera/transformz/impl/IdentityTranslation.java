@@ -2,6 +2,7 @@ package mikera.transformz.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.randomz.Hash;
 import mikera.transformz.ATranslation;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
@@ -86,6 +87,6 @@ public final class IdentityTranslation extends ATranslation {
 	
 	@Override 
 	public int hashCode() {
-		return Tools.zeroVectorHash(dimensions);
+		return Hash.zeroVectorHash(dimensions);
 	}
 }

@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.randomz.Hash;
 import mikera.vectorz.APrimitiveVector;
 import mikera.vectorz.Tools;
 
@@ -64,7 +65,7 @@ public final class ZeroVector extends APrimitiveVector {
 	
 	@Override
 	public int hashCode() {
-		return Tools.zeroVectorHash(length);
+		return Hash.zeroVectorHash(length);
 	}
 	
 	@Override

@@ -82,31 +82,5 @@ public final class Tools {
 		return true;
 	}
 
-	private static final int[] ZERO_HASHES=new int[20];
-	static {
-		int hashCode=1;
-		for (int i=0; i<ZERO_HASHES.length; i++) {
-			ZERO_HASHES[i]=hashCode;
-			hashCode = 31 * hashCode;
-		}
-	}
-	/**
-	 * Return the hashCode for a vector of zeros
-	 * @param length
-	 * @return
-	 */
-	public static int zeroVectorHash(int length) {
-		// TODO: when updating to latest mathz version use 
-		// Maths.modPower32Bit(31,length); 
-		
-		if (length<ZERO_HASHES.length) return ZERO_HASHES[length];
-		
-		int hashCode=ZERO_HASHES[ZERO_HASHES.length-1];
-		for (int i=0; i<=(length-ZERO_HASHES.length); i++) {
-			hashCode = 31 * hashCode;
-		}
-		return hashCode;
-	}
 
-	
 }

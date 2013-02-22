@@ -7,6 +7,7 @@ import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
+import mikera.randomz.Hash;
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.ALinearTransform;
 import mikera.transformz.ATransform;
@@ -558,7 +559,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				hashCode = 31 * hashCode + (Tools.hashCode(get(i, j)));
+				hashCode = 31 * hashCode + (Hash.hashCode(get(i, j)));
 			}
 		}
 		return hashCode;

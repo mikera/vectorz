@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
+import mikera.randomz.Hash;
 import mikera.vectorz.impl.ScalarVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -107,6 +108,6 @@ public abstract class AScalar implements INDArray, Cloneable {
 
 	@Override
 	public int hashCode() {
-		return Tools.hashCode(get());
+		return Hash.hashCode(get());
 	}
 }

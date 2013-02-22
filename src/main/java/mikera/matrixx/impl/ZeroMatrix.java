@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.randomz.Hash;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
@@ -88,7 +89,7 @@ public final class ZeroMatrix extends AMatrix {
 	
 	@Override 
 	public int hashCode() {
-		return Tools.zeroVectorHash(inputDimensions*outputDimensions);
+		return Hash.zeroVectorHash(inputDimensions*outputDimensions);
 	}
 	
 	@Override
