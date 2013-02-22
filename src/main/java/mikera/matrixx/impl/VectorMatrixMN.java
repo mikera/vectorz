@@ -33,7 +33,7 @@ public final class VectorMatrixMN extends AVectorMatrix {
 	
 	public static VectorMatrixMN wrap(AVector[] rows) {
 		int rc=rows.length;
-		int cc=rows[0].length();
+		int cc=(rc==0)?0:rows[0].length();
 		return new VectorMatrixMN(rows,rc,cc);
 	}
 	

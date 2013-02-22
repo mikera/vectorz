@@ -69,13 +69,11 @@ public class Matrixx {
 	 */
 	public static AMatrix createSparse(AMatrix m) {
 		int rc=m.rowCount();
-		int cc=m.columnCount();
-		VectorMatrixMN result=new VectorMatrixMN(0,cc);
 		AVector[] rows=new AVector[rc];
 		for (int i=0; i<rc; i++) {
 			rows[i]=SparseIndexedVector.createFromRow(m,i);
 		}
-		return result;
+		return VectorMatrixMN.wrap(rows);
 	}
 	
 	/**

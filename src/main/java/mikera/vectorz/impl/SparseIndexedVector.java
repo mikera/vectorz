@@ -75,10 +75,19 @@ public class SparseIndexedVector extends ASparseVector {
 		int vlen = source.length();
 		int len=0;
 		for (int i=0; i<vlen; i++) {
-			if (source.get(i)!=0) len++;
+			if (source.get(i)!=0.0) len++;
 		}
 		int[] indexes=new int[len];
 		double[] vals=new double[len];
+		int pos=0;
+		for (int i=0; i<vlen; i++) {
+			double v=source.get(i);
+			if (v!=0.0) {
+				indexes[pos]=i;
+				vals[pos]=v;
+				pos++;
+			}
+		}
 		return wrap(vlen,Index.wrap(indexes),vals);
 	}
 	

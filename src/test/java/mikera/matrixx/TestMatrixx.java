@@ -395,6 +395,11 @@ public class TestMatrixx {
 		assertEquals(m,d);
 	}
 	
+	private void testSparseClone(AMatrix m) {
+		AMatrix s=Matrixx.createSparse(m);
+		assertEquals(m,s);
+	}
+	
 	void doScaleTest(AMatrix m) {
 		if(!m.isMutable()) return;
 		AMatrix m1=m.exactClone();
@@ -412,6 +417,7 @@ public class TestMatrixx {
 	void doGenericTests(AMatrix m) {
 		testApplyOp(m);
 		testExactClone(m);
+		testSparseClone(m);
 		
 		doTransposeTest(m);
 		doVectorTest(m);
