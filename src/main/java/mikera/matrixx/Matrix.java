@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import java.util.List;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
@@ -10,17 +12,25 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class MatrixMN extends AMatrix {
+public final class Matrix extends AMatrix {
 	private final int rows;
 	private final int columns;
 	public final double[] data;
 	
-	public MatrixMN(int rowCount, int columnCount) {
+	public Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
 	}
 	
-	public MatrixMN(AMatrix m) {
+	public Matrix(AMatrix m) {
 		this(m.rowCount(),m.columnCount());
+		set(m);
+	}
+	
+	public Matrix(Object... vs) {
+		AMatrix m=Matrixx.create(vs);
+		rows=m.rowCount();
+		columns=m.columnCount();
+		data=new double[rows*columns];
 		set(m);
 	}
 	
@@ -29,15 +39,15 @@ public final class MatrixMN extends AMatrix {
 		return false;
 	}
 	
-	private MatrixMN(int rowCount, int columnCount, double[] data) {
+	private Matrix(int rowCount, int columnCount, double[] data) {
 		this.rows=rowCount;
 		this.columns=columnCount;
 		this.data=data;
 	}
 	
-	public static MatrixMN wrap(int rowCount, int columnCount, double[] data) {
+	public static Matrix wrap(int rowCount, int columnCount, double[] data) {
 		if (data.length!=rowCount*columnCount) throw new VectorzException("data array is of wrong size: "+data.length);
-		return new MatrixMN(rowCount,columnCount,data);
+		return new Matrix(rowCount,columnCount,data);
 	}
 	
 	@Override
@@ -148,7 +158,7 @@ public final class MatrixMN extends AMatrix {
 	}
 	
 	@Override
-	public MatrixMN exactClone() {
-		return new MatrixMN(this);
+	public Matrix exactClone() {
+		return new Matrix(this);
 	}
 }

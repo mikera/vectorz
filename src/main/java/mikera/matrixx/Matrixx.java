@@ -2,6 +2,7 @@ package mikera.matrixx;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import bpsm.edn.parser.Parser;
@@ -160,14 +161,14 @@ public class Matrixx {
 		return m;
 	}
 
-	static MatrixMN createInverse(AMatrix m) {
+	static Matrix createInverse(AMatrix m) {
 		if (!m.isSquare()) {
 			throw new IllegalArgumentException("Matrix must be square for inverse!");
 		}
 
 		int dims = m.rowCount();
 
-		MatrixMN am = new MatrixMN(m);
+		Matrix am = new Matrix(m);
 		int[] rowPermutations = new int[dims];
 
 		// perform LU-based inverse on matrix
@@ -179,7 +180,7 @@ public class Matrixx {
 	 * Computes LU decomposition of a matrix, returns true if
 	 * successful (i.e. if matrix is non-singular)
 	 */
-	private static void decomposeLU(MatrixMN am, int[] permutations) {
+	private static void decomposeLU(Matrix am, int[] permutations) {
 		int dims = permutations.length;
 		double[] data=am.data;
 
@@ -259,12 +260,12 @@ public class Matrixx {
 		}
 	}
 
-	private static MatrixMN backSubstituteLU(MatrixMN am, int[] permutations) {
+	private static Matrix backSubstituteLU(Matrix am, int[] permutations) {
 		int dims = permutations.length;
 		double[] dataIn=am.data;
 		
 		// create identity matrix in output
-		MatrixMN result=new MatrixMN(Matrixx.createImmutableIdentityMatrix(dims));
+		Matrix result=new Matrix(Matrixx.createImmutableIdentityMatrix(dims));
 		double[] dataOut = result.data;
 
 		for (int col = 0; col < dims; col++) {
@@ -317,7 +318,7 @@ public class Matrixx {
 			if (rows==3) return new Matrix33();
 			if (rows==2) return new Matrix22();
 		}
-		return new MatrixMN(rows,columns);
+		return new Matrix(rows,columns);
 	}
 	
 	public static AMatrix createFromVector(AVector data, int rows, int columns) {
@@ -352,7 +353,7 @@ public class Matrixx {
 				return new Matrix22(m);
 			}				
 		}
-		return new MatrixMN(m);
+		return new Matrix(m);
 	}
 	
 	/**
@@ -452,6 +453,10 @@ public class Matrixx {
 			svs[i]=SparseIndexedVector.create(inputDims, indexes[i], weights[i]);
 		}
 		return VectorMatrixMN.wrap(svs);
+	}
+
+	public static AMatrix create(Object[] vs) {
+		return create(Arrays.asList(vs));
 	}
 
 

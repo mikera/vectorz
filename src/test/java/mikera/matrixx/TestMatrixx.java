@@ -475,10 +475,10 @@ public class TestMatrixx {
 		mmn=new VectorMatrixMN(6 ,6);
 		doGenericTests(mmn);
 
-		MatrixMN am1=new MatrixMN(m33);
+		Matrix am1=new Matrix(m33);
 		doGenericTests(am1);
 		
-		MatrixMN am2=new MatrixMN(mmn);
+		Matrix am2=new Matrix(mmn);
 		doGenericTests(am2);
 		
 		doGenericTests(SubsetMatrix.create(Index.of(0,1,2),3));

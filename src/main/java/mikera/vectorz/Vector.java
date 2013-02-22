@@ -19,6 +19,14 @@ public final class Vector extends ArrayVector {
 	Vector(double... values) {
 		array = values;
 	}
+	
+	Vector(Object... values) {
+		int len=values.length;
+		array=new double[len];
+		for (int i=0; i<len; i++) {
+			array[i]=Tools.toDouble(values[i]);
+		}
+	}
 
 	Vector(int length) {
 		array = new double[length];
