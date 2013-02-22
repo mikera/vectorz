@@ -356,6 +356,20 @@ public class Matrixx {
 	}
 	
 	/**
+	 * Create a matrix from a list of rows
+	 * @param rows
+	 * @return
+	 */
+	public static AMatrix create(List<Object> rows) {
+		int rc=rows.size();
+		AVector[] vs=new AVector[rc];
+		for (int i=0; i<rc; i++) {
+			vs[i]=Vectorz.create(rows.get(i));
+		}
+		return VectorMatrixMN.wrap(vs);
+	}
+	
+	/**
 	 * Creates a mutable copy of a matrix
 	 */
 	public static AMatrix create(IMatrix m) {

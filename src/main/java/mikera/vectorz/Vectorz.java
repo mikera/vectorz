@@ -392,6 +392,11 @@ public class Vectorz {
 		}
 		throw new UnsupportedOperationException("Cannot coerce to AVector: "+o.getClass());
 	}
+
+	public static AVector create(Object o) {
+		if (o instanceof Double) return Vector1.of(Tools.toDouble(o));
+		return toVector(o);
+	}
 	
 	
 }
