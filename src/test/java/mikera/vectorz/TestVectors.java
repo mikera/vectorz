@@ -162,6 +162,21 @@ public class TestVectors {
 		}
 	}
 	
+	private void testAddProduct(AVector v) {
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
+		int len=v.length();
+		AVector vc=new Vector(v);
+		
+		AVector p1=Vectorz.createUniformRandomVector(len);
+		AVector p2=Vectorz.createUniformRandomVector(len);
+		
+		v.addProduct(p1, p2,3.0);
+		vc.addProduct(p1, p2, 3.0);
+		
+		assertEquals(vc,v);
+	}
+	
 	private void testAddMultipleToArray(AVector v) {
 		int len=v.length();
 		double[] ds=new double[len+10];
@@ -439,6 +454,7 @@ public class TestVectors {
 		testAdd(v);
 		testAddToArray(v);
 		testAddAt(v);
+		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
 		testMultiply(v);
