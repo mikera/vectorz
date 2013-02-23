@@ -195,9 +195,10 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
+		if (v instanceof ArrayVector) return dotProduct((ArrayVector)v);
 		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			result+=data[i]*v.get(index.data[i]);
+		for (int j=0; j<data.length; j++) {
+			result+=data[j]*v.get(index.data[j]);
 		}
 		return result;
 	}
@@ -206,8 +207,9 @@ public class SparseIndexedVector extends ASparseVector {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
 		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			result+=data[i]*array[offset+index.data[i]];
+		for (int j=0; j<data.length; j++) {
+			int i= index.data[j];
+			result+=data[j]*array[offset+i];
 		}
 		return result;
 	}
@@ -228,9 +230,9 @@ public class SparseIndexedVector extends ASparseVector {
 		
 		int start=index.seekPosition(offset);
 		for (int j=start; j<data.length; j++) {
-			int di=index.data[j];
-			if (di>=(offset+length)) return;
-			array[arrayOffset+di-offset]+=data[j];
+			int di=index.data[j]-offset; // index relative to offset
+			if (di>=length) return;
+			array[arrayOffset+di]+=data[j];
 		}
 	}
 	
