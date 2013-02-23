@@ -162,6 +162,34 @@ public abstract class ArrayVector extends AVector {
 		}
 	}
 	
+	@Override
+	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+		if (other instanceof ArrayVector) {
+			addProductToArray(factor,offset,(ArrayVector)other,otherOffset,array,arrayOffset,length);
+			return;
+		}
+		assert(offset>=0);
+		assert(offset+length<=length());
+		double[] thisArray=getArray();
+		offset+=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			array[i+arrayOffset]+=factor*thisArray[i+offset]*other.get(i+otherOffset);
+		}		
+	}
+	
+	@Override
+	public void addProductToArray(double factor, int offset, ArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+		assert(offset>=0);
+		assert(offset+length<=length());
+		double[] otherArray=other.getArray();
+		otherOffset+=other.getArrayOffset();
+		double[] thisArray=getArray();
+		offset+=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			array[i+arrayOffset]+=factor*thisArray[i+offset]*otherArray[i+otherOffset];
+		}		
+	}
+	
 	public void add(ArrayVector src, int srcOffset) {
 		int length=length();
 		double[] vdata=src.getArray();
