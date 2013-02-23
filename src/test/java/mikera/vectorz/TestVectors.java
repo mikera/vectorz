@@ -163,9 +163,10 @@ public class TestVectors {
 	}
 	
 	private void testAddProduct(AVector v) {
-		if (!v.isFullyMutable()) return;
-		v=v.exactClone();
 		int len=v.length();
+		if (!v.isFullyMutable()) return;
+		
+		v=v.exactClone();
 		AVector v2=v.exactClone();
 		AVector vc=new Vector(v);
 		

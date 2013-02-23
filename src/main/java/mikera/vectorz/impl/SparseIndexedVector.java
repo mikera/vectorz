@@ -232,6 +232,32 @@ public class SparseIndexedVector extends ASparseVector {
 		}
 	}
 	
+	@Override
+	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+		if (other instanceof ArrayVector) {
+			addProductToArray(factor,offset,(ArrayVector)other,otherOffset,array,arrayOffset,length);
+			return;
+		}
+		assert(offset>=0);
+		assert(offset+length<=length());
+		for (int j=0; j<data.length; j++) {
+			int i =index.data[j];
+			array[i+arrayOffset]+=factor*data[j]*other.get(i+otherOffset);
+		}		
+	}
+	
+	@Override
+	public void addProductToArray(double factor, int offset, ArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+		assert(offset>=0);
+		assert(offset+length<=length());
+		double[] otherArray=other.getArray();
+		otherOffset+=other.getArrayOffset();
+		for (int j=0; j<data.length; j++) {
+			int i =index.data[j];
+			array[i+arrayOffset]+=factor*data[j]*otherArray[i+otherOffset];
+		}		
+	}
+	
 	@Override public void copyTo(double[] array, int offset) {
 		Arrays.fill(array,offset,offset+length,0.0);
 		copySparseValuesTo(array,offset);
