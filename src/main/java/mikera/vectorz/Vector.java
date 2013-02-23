@@ -198,6 +198,11 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void addAt(int i, double v) {
+		array[i]+=v;
+	}
+	
+	@Override
 	public void sub(AVector v) {
 		if (v instanceof ArrayVector) {sub(((ArrayVector)v)); return;}
 		int length=length();

@@ -116,6 +116,12 @@ public final class ArraySubVector extends ArrayVector {
 			data[offset + i] += vdata[voffset + i]*factor;
 		}
 	}
+	
+	@Override
+	public void addAt(int i, double v) {
+		assert((i>=0)&&(i<length));
+		data[i+offset]+=v;
+	}
 	 
 	@Override
 	public void fill(double value) {

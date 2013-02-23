@@ -174,6 +174,14 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void addAt(int i, double v) {
+		assert((i>=0)&&(i<length()));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		data[i+offset]+=v;
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		op.applyTo(getArray(), getArrayOffset(), length());
 	}
