@@ -246,6 +246,20 @@ public class TestVectors {
 		assertEquals(t,v.subVector(split, slen));
 	}
 	
+	private void testAddAt(AVector v) {
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
+		int len=v.length();
+		AVector c=v.clone();
+		
+		for (int i=0; i<len; i++) {
+			v.addAt(i, c.get(i));
+		}
+		c.scale(2.0);
+		
+		assertEquals(c,v);
+	}
+	
 	public void testOutOfBounds(AVector v) {
 		if (!v.isFullyMutable()) return;
 		try {
@@ -424,6 +438,7 @@ public class TestVectors {
 		testExactClone(v);
 		testAdd(v);
 		testAddToArray(v);
+		testAddAt(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
 		testMultiply(v);
