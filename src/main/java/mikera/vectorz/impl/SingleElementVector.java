@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.vectorz.AVector;
 
 /**
@@ -9,7 +10,7 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public final class SingleElementVector extends AVector {
+public final class SingleElementVector extends AVector implements ISparse {
 	private final int dimensions;
 	private final int index;
 	private double value;
@@ -64,6 +65,11 @@ public final class SingleElementVector extends AVector {
 	@Override
 	public void scale(double factor) {
 		value*=factor;
+	}
+	
+	@Override
+	public double density() {
+		return 1.0/length();
 	}
 
 	@Override

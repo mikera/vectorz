@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
@@ -9,7 +10,7 @@ import mikera.vectorz.Vector3;
  * 
  * @author Mike
  */
-public class AxisVector extends ComputedVector {
+public class AxisVector extends ComputedVector implements ISparse {
 	private static final long serialVersionUID = 6767495113060894804L;
 	
 	private final int axis;
@@ -99,5 +100,10 @@ public class AxisVector extends ComputedVector {
 	public AxisVector exactClone() {
 		// immutable, so return self
 		return this;
+	}
+	
+	@Override
+	public double density() {
+		return 1.0/length;
 	}
 }

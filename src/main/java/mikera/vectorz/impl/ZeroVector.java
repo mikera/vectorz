@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.randomz.Hash;
 import mikera.vectorz.APrimitiveVector;
 
@@ -8,7 +9,7 @@ import mikera.vectorz.APrimitiveVector;
  * 
  * @author Mike
  */
-public final class ZeroVector extends APrimitiveVector {
+public final class ZeroVector extends APrimitiveVector implements ISparse {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
 	private int length;
@@ -70,5 +71,10 @@ public final class ZeroVector extends APrimitiveVector {
 	@Override
 	public ZeroVector exactClone() {
 		return new ZeroVector(length);
+	}
+	
+	@Override
+	public double density() {
+		return 0.0;
 	}
 }

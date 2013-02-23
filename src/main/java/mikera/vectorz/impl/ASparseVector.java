@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.vectorz.AVector;
 
 /**
@@ -7,7 +8,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public abstract class ASparseVector extends AVector {
+public abstract class ASparseVector extends AVector implements ISparse {
 	private static final long serialVersionUID = -6043956533730989975L;
 
 	/**
@@ -17,7 +18,7 @@ public abstract class ASparseVector extends AVector {
 	public abstract int nonSparseElementCount();
 	
 	/**
-	 * Returns the non-sparse values as a vector view
+	 * Returns the non-sparse values as a compacted vector view
 	 * @return
 	 */
 	public abstract AVector nonSparseValues();
@@ -28,4 +29,12 @@ public abstract class ASparseVector extends AVector {
 	 * @return
 	 */
 	public abstract boolean includesIndex(int i);
+	
+	// ========================================
+	// standard implementations
+	
+	@Override
+	public double density() {
+		return ((double)(nonSparseValues().length()))/length();
+	}
 }
