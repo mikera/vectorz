@@ -137,9 +137,7 @@ public abstract class ArrayVector extends AVector {
 		int length=length();
 		double[] array=getArray();
 		int offset=getArrayOffset();
-		for (int i=0; i<length; i++) {
-			array[i+offset]+=(a.get(i+aOffset)* b.get(i+bOffset)*factor);
-		}
+		a.addProductToArray(factor, aOffset, b, bOffset, array, offset, length);
 	}
 	
 	@Override

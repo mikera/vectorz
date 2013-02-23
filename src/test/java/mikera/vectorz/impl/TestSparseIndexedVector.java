@@ -49,5 +49,13 @@ public class TestSparseIndexedVector {
 		v2.addProduct(sv, vs,2.0);
 		assertEquals(Vector.of(0,3,0,18,0,0,54,0,0,0),v2);
 
+		AVector v3=Vectorz.newVector(20).subVector(5, 10);
+		
+		v3.subVector(5,5).addProduct(sv,1, vs,1,1.0);
+		assertEquals(Vector.of(0,0,0,0,0,1,0,6,0,0),v3);
+		
+		v3.subVector(5,5).addProduct(sv,1, vs,1,2.0);
+		assertEquals(Vector.of(0,0,0,0,0,3,0,18,0,0),v3);
+
 	}
 }
