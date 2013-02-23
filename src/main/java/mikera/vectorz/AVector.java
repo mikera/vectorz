@@ -744,10 +744,19 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
+		assert(offset>=0);
 		assert(offset+length<=length());
 		for (int i=0; i<length; i++) {
 			array[i+arrayOffset]+=factor*get(i+offset);
 		}
+	}
+	
+	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+		assert(offset>=0);
+		assert(offset+length<=length());
+		for (int i=0; i<length; i++) {
+			array[i+arrayOffset]+=factor*get(i+offset)*other.get(i+otherOffset);
+		}		
 	}
 
 	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
