@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
@@ -10,12 +11,12 @@ import mikera.vectorz.AVector;
  * 
  * @author Mike
  */
-public final class SubsetMatrix extends AMatrix {
-	private int dims;
+public final class SubsetMatrix extends AMatrix implements ISparse {
+	private int inputDims;
 	private Index components;
 
 	private SubsetMatrix(int inputDimensions, Index components) {
-		dims=inputDimensions;
+		inputDims=inputDimensions;
 		this.components=components;
 	}
 	
@@ -35,7 +36,7 @@ public final class SubsetMatrix extends AMatrix {
 
 	@Override
 	public int inputDimensions() {
-		return dims;
+		return inputDims;
 	}
 
 	@Override
@@ -57,6 +58,11 @@ public final class SubsetMatrix extends AMatrix {
 	public int columnCount() {
 		return inputDimensions();
 	}
+	
+	@Override
+	public double density() {
+		return 1.0/inputDims;
+	}
 
 	@Override
 	public double get(int row, int column) {
@@ -70,6 +76,6 @@ public final class SubsetMatrix extends AMatrix {
 
 	@Override
 	public SubsetMatrix exactClone() {
-		return SubsetMatrix.create(components.clone(),dims);
+		return SubsetMatrix.create(components.clone(),inputDims);
 	}
 }

@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
@@ -8,7 +9,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public abstract class ADiagonalMatrix extends AMatrix {
+public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	protected final int dimensions;
 	
 	public ADiagonalMatrix(int dimensions) {
@@ -92,6 +93,11 @@ public abstract class ADiagonalMatrix extends AMatrix {
 
 	public double getDiagonalValue(int i) {
 		return get(i,i);
+	}
+	
+	@Override
+	public double density() {
+		return 1.0/dimensions;
 	}
 
 }
