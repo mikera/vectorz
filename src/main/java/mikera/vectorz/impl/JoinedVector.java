@@ -96,6 +96,15 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void addAt(int i, double v) {
+		if (i<split) {
+			left.addAt(i,v);
+		} else {
+			right.addAt(i-split,v);
+		}
+	}
+	
+	@Override
 	public void copyTo(double[] data, int offset) {
 		left.copyTo(data, offset);
 		right.copyTo(data, offset+split);
