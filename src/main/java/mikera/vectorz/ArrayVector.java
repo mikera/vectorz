@@ -152,6 +152,15 @@ public abstract class ArrayVector extends AVector {
 		}
 	}
 	
+	@Override public void addProduct(AVector a, AVector b, double factor) {
+		int len=length();
+		assert(len==a.length());
+		assert(len==b.length());
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		a.addProductToArray(factor,0,b,0,array,offset,len);
+	}
+	
 	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		double[] data=getArray();

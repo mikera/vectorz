@@ -174,7 +174,7 @@ public class TestVectors {
 		v.addProduct(p1, p2,3.0);
 		vc.addProduct(p1, p2, 3.0);
 		
-		assertEquals(vc,v);
+		assertTrue(vc.epsilonEquals(vc));
 	}
 	
 	private void testAddMultipleToArray(AVector v) {
