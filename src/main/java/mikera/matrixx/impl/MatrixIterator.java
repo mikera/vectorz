@@ -5,6 +5,11 @@ import java.util.Iterator;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
+/**
+ * Iterator over matrix rows
+ * 
+ * @author Mike
+ */
 public class MatrixIterator implements Iterator<AVector> {
 	private final AMatrix source;
 	private final int maxPos;

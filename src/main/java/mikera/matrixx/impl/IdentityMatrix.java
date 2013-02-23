@@ -96,6 +96,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 		return this;
 	}
 	
+	@Override
 	public IdentityMatrix exactClone() {
 		return new IdentityMatrix(dimensions);
 	}
