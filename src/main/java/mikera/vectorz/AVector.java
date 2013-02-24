@@ -374,6 +374,22 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		return result;
 	}
 	
+	public void crossProduct(AVector a) {
+		assert((length()==3)&&(a.length()==3));
+		double x=get(0);
+		double y=get(1);
+		double z=get(2);
+		double x2=a.get(0);
+		double y2=a.get(1);
+		double z2=a.get(2);
+		double tx=y*z2-z*y2;
+		double ty=z*x2-x*z2;
+		double tz=x*y2-y*x2;			
+		set(0,tx);
+		set(1,ty);
+		set(2,tz);		
+	}
+	
 	/**
 	 * Returns the magnitude (Euclidean length) of the vector
 	 * @return
@@ -830,4 +846,5 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		}
 		return true;
 	}
+
 }

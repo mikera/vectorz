@@ -159,6 +159,23 @@ public final class Vector3 extends APrimitiveVector {
 		return (x*a.x) + (y*a.y) + (z*a.z);
 	} 
 	
+	@Override
+	public void crossProduct(AVector a) {
+		if (a instanceof Vector3) {
+			crossProduct((Vector3) a);
+			return;
+		}
+		double x2=a.get(0);
+		double y2=a.get(1);
+		double z2=a.get(2);
+		double tx=y*z2-z*y2;
+		double ty=z*x2-x*z2;
+		double tz=x*y2-y*x2;			
+		x=tx;
+		y=ty;
+		z=tz;		
+	}
+	
 	public void crossProduct(Vector3 a) {
 		double tx=y*a.z-z*a.y;
 		double ty=z*a.x-x*a.z;
