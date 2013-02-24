@@ -52,6 +52,12 @@ public class TestVectors {
 		assertTrue(d<=(v.maxAbsElement()*v.length()));
 	}
 	
+	@Test public void testCross() {
+		Vector3 v=Vector3.of(1,2,3);
+		v.crossProduct(Vector.of(1,1,1));
+		assertEquals(Vector3.of(-1,2,-1),v);
+	}
+	
 	@Test public void testClamping() {
 		Vector3 v=Vector3.of(1,2,3);
 		v.clamp(1.5, 2.5);
