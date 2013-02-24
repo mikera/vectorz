@@ -1,12 +1,12 @@
 package mikera.matrixx;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import bpsm.edn.parser.Parser;
-import bpsm.edn.parser.Parsers;
+import us.bpsm.edn.parser.Parseable;
+import us.bpsm.edn.parser.Parser;
+import us.bpsm.edn.parser.Parsers;
 import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
@@ -428,8 +428,9 @@ public class Matrixx {
 	 * @return
 	 */
 	public static AMatrix parse(String ednString) {
-		Parser p=Parsers.newParser(getMatrixParserConfig(),new StringReader(ednString));
-		List<List<Object>> data=(List<List<Object>>) p.nextValue();
+		Parser p=Parsers.newParser(getMatrixParserConfig());
+		Parseable ps=Parsers.newParseable(ednString);
+		List<List<Object>> data=(List<List<Object>>) p.nextValue(ps);
 		int rc=data.size();
 		int cc=(rc==0)?0:data.get(0).size();
 		AMatrix m=newMatrix(rc,cc);

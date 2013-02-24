@@ -1,18 +1,16 @@
 package mikera.vectorz;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import bpsm.edn.parser.CollectionBuilder;
-import bpsm.edn.parser.CollectionBuilder.Factory;
-import bpsm.edn.parser.Parser;
-import bpsm.edn.parser.Parsers;
 import mikera.util.Rand;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.VectorBuilder;
 import mikera.vectorz.util.VectorzException;
+import us.bpsm.edn.parser.CollectionBuilder;
+import us.bpsm.edn.parser.Parser;
+import us.bpsm.edn.parser.Parsers;
 
 public class Vectorz {
 	/**
@@ -161,10 +159,10 @@ public class Vectorz {
 	private static class ParserConfigHolder {
 		static final Parser.Config parserConfig;
 		static {
-			Parser.Config.Builder b= Parsers.newParserConfigBuilder();
-			b.setVectorFactory(new Factory() {
+			us.bpsm.edn.parser.Parser.Config.Builder b= us.bpsm.edn.parser.Parsers.newParserConfigBuilder();
+			b.setVectorFactory(new us.bpsm.edn.parser.CollectionBuilder.Factory() {
 				@Override
-				public CollectionBuilder builder() {
+				public us.bpsm.edn.parser.CollectionBuilder builder() {
 					return new CollectionBuilder() {
 						VectorBuilder b=new VectorBuilder();
 						@Override
@@ -201,8 +199,8 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector parse(String ednString) {
-		Parser p=Parsers.newParser(getVectorParserConfig(),new StringReader(ednString));
-		return (AVector)p.nextValue();
+		Parser p=Parsers.newParser(getVectorParserConfig());
+		return (AVector)p.nextValue(Parsers.newParseable(ednString));
 	}
 
 	/**
