@@ -516,7 +516,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return true;
 	}
 	
+	@Override
 	public boolean equals(INDArray v) {
+		if (v instanceof AMatrix) return equals((AMatrix) v);
 		if (v.dimensionality()!=2) return false;
 		int[] vs=v.getShape();
 		int rc=rowCount();
