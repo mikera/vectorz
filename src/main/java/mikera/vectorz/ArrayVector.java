@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.JoinedArrayVector;
 
 /**
  * Base class for vectors backed by a double[] array.
@@ -336,5 +337,20 @@ public abstract class ArrayVector extends AVector {
 	@Override 
 	public double magnitude() {
 		return Math.sqrt(magnitudeSquared());
+	}
+	
+	@Override
+	public AVector join(AVector v) {
+		if (v instanceof ArrayVector) return join((ArrayVector)v);
+		if (v instanceof JoinedArrayVector) return join((JoinedArrayVector)v);
+		return super.join(v);
+	}
+	
+	public AVector join(ArrayVector v) {
+		return JoinedArrayVector.joinVectors(this, v);
+	}
+	
+	public AVector join(JoinedArrayVector v) {
+		return JoinedArrayVector.wrap(this).join(v);
 	}
 }

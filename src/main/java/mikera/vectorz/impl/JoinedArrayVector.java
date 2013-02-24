@@ -28,6 +28,13 @@ public final class JoinedArrayVector extends AVector {
 		JoinedArrayVector jav=new JoinedArrayVector(length,data,new int[1],new int[1]);
 		return jav;
 	}
+	
+	public static JoinedArrayVector wrap(ArrayVector v) {
+		return new JoinedArrayVector(v.length(),
+				new double[][] {v.getArray()},
+				new int[] {v.getArrayOffset()},
+				new int[1]);
+	}
 
 	// finds the number of the array that contains a specific index position
 	private int findArrayNum(int index) {
@@ -77,7 +84,7 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public AVector join(AVector v) {
-		if (v instanceof JoinedArrayVector) return join((JoinedArrayVector) v);
+		if (v instanceof JoinedArrayVector) return joinVectors(this,(JoinedArrayVector) v);
 		if (v instanceof ArrayVector) return join((ArrayVector) v);
 		return super.join(v);
 	}
@@ -101,24 +108,35 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	public JoinedArrayVector join(JoinedArrayVector v) {
-		int newLen=length+v.length();
+		return joinVectors(this,v);
+	}
+	
+	public static JoinedArrayVector joinVectors(JoinedArrayVector a, JoinedArrayVector b) {
+		int newLen=a.length+b.length();
 		
-		int[] newOffsets=new int[numArrays+v.numArrays];
-		System.arraycopy(offsets, 0, newOffsets, 0, numArrays);
-		System.arraycopy(v.offsets, 0, newOffsets, numArrays, v.numArrays);
+		int[] newOffsets=new int[a.numArrays+b.numArrays];
+		System.arraycopy(a.offsets, 0, newOffsets, 0, a.numArrays);
+		System.arraycopy(b.offsets, 0, newOffsets, a.numArrays, b.numArrays);
 		
-		int[] newPos=new int[numArrays+v.numArrays];
-		System.arraycopy(pos, 0, newPos, 0, numArrays);
-		System.arraycopy(v.pos, 0, newPos, numArrays, v.numArrays);
-		for (int i=numArrays; i<newPos.length; i++) {
-			newPos[i]+=length;
+		int[] newPos=new int[a.numArrays+b.numArrays];
+		System.arraycopy(a.pos, 0, newPos, 0, a.numArrays);
+		System.arraycopy(b.pos, 0, newPos, a.numArrays, b.numArrays);
+		for (int i=a.numArrays; i<newPos.length; i++) {
+			newPos[i]+=a.length;
 		}
 
-		double[][] newData=new double[numArrays+v.numArrays][];
-		System.arraycopy(data, 0, newData, 0, numArrays);
-		System.arraycopy(v.data, 0, newData, numArrays, v.numArrays);
+		double[][] newData=new double[a.numArrays+b.numArrays][];
+		System.arraycopy(a.data, 0, newData, 0, a.numArrays);
+		System.arraycopy(b.data, 0, newData, a.numArrays, b.numArrays);
 		
 		return new JoinedArrayVector(newLen,newData,newOffsets,newPos);
 	}
 
+	public static AVector joinVectors(ArrayVector a, ArrayVector b) {
+		return new JoinedArrayVector(
+				a.length()+b.length(),
+				new double[][] {a.getArray(),b.getArray()},
+				new int[] {a.getArrayOffset(),b.getArrayOffset()},
+				new int[] {0,a.length()});
+	}
 }
