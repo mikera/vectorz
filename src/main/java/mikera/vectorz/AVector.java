@@ -864,4 +864,12 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		return true;
 	}
 
+	/**
+	 * Set part of this vector from a double array
+	 */
+	public void set(int offset, double[] data, int dataOffset, int length) {
+		for (int i=0; i<length; i++) {
+			set(offset+i,data[dataOffset+i]);
+		}
+	}
 }

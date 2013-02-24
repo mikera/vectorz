@@ -56,6 +56,16 @@ public final class JoinedArrayVector extends AVector {
 	public int length() {
 		return length;
 	}
+	
+	@Override
+	public boolean isView() {
+		return true;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return true;
+	}
 
 	@Override
 	public double get(int i) {
@@ -67,6 +77,14 @@ public final class JoinedArrayVector extends AVector {
 	public void set(int i, double value) {
 		int ai=findArrayNum(i);
 		data[ai][i-pos[ai]+offsets[ai]]=value;
+	}
+	
+	
+	@Override
+	public void copyTo(AVector dest, int offset) {
+		for (int j=0; j<numArrays; j++) {
+			dest.set(pos[j]+offset,data[j],offsets[j],(((j+1<numArrays)?pos[j+1]:length)-pos[j]));
+		}
 	}
 
 	@Override

@@ -78,6 +78,11 @@ public abstract class ArrayVector extends AVector {
 		a.copy(offset, length(), this, 0);
 	}
 	
+	@Override
+	public void set(int offset, double[] data, int dataOffset, int length) {
+		System.arraycopy(data, dataOffset, getArray(), getArrayOffset()+offset, length);
+	}
+	
 	@Override 
 	public void add(AVector src) {
 		if (src instanceof ArrayVector) {

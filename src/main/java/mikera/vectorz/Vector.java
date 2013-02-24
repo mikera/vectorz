@@ -88,6 +88,11 @@ public final class Vector extends ArrayVector {
 	public void set(int i, double value) {
 		array[i]=value;
 	}
+	
+	@Override
+	public void set(int offset, double[] data, int dataOffset, int length) {
+		System.arraycopy(data, dataOffset, array, offset, length);
+	}
 
 	@Override
 	public double[] getArray() {
