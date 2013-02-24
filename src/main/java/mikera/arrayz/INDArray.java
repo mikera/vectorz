@@ -31,7 +31,8 @@ public interface INDArray {
 	public boolean isMutable();
 	
 	/**
-	 * Returns true if the INDArray is mutable in all positions
+	 * Returns true if the INDArray is fully mutable in all positions
+	 * i.e. every position can store any valid double value
 	 * @return
 	 */
 	public boolean isFullyMutable();
@@ -55,5 +56,8 @@ public interface INDArray {
 	 * @param op
 	 */
 	void applyOp(IOp op);
+	
+	public boolean equals(INDArray a);
+	
 
 }

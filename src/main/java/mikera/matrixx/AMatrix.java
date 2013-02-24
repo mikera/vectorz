@@ -494,9 +494,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof AMatrix))
-			return false;
-		return equals((AMatrix) o);
+		if (o instanceof AMatrix) return equals((AMatrix) o);
+		if (o instanceof INDArray) return equals((INDArray) o);
+		return false;
+		
 	}
 
 	public boolean equals(AMatrix a) {
@@ -510,6 +511,25 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			for (int j = 0; j < cc; j++) {
 				if (get(i, j) != a.get(i, j))
 					return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean equals(INDArray v) {
+		if (v.dimensionality()!=2) return false;
+		int[] vs=v.getShape();
+		int rc=rowCount();
+		if (rc != vs[0]) return false;
+		int cc=columnCount();
+		if (cc != vs[1]) return false;
+		
+		int[] ind = new int[2];
+		for (int i = 0; i < rc; i++) {
+			ind[0]=i;
+			for (int j=0; j<cc; j++) {
+				ind[1]=j;
+				if (get(i,j) != v.get(ind)) return false;
 			}
 		}
 		return true;

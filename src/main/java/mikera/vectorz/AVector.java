@@ -102,14 +102,31 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof AVector)) return false;
-		
-		AVector v = (AVector) o;
+		if (o instanceof AVector) return equals((AVector)o);
+		if (o instanceof INDArray) return equals((INDArray)o);
+		return false;
+	}
+	
+	public boolean equals(AVector v) {
 		int len=length();
 		if (len != v.length())
 			return false;
 		for (int i = 0; i < len; i++) {
 			if (get(i) != v.get(i))
+				return false;
+		}
+		return true;
+	}
+	
+	public boolean equals(INDArray v) {
+		if (v.dimensionality()!=1) return false;
+		int len=length();
+		if (len != v.getShape()[0]) return false;
+		
+		int[] ind = new int[1];
+		for (int i = 0; i < len; i++) {
+			ind[0]=i;
+			if (get(i) != v.get(ind))
 				return false;
 		}
 		return true;
