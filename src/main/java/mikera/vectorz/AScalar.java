@@ -43,6 +43,14 @@ public abstract class AScalar implements INDArray, Cloneable {
 		return isMutable();
 	}
 	
+	public void add(AScalar s) {
+		set(get()+s.get());
+	}
+	
+	public void sub(AScalar s) {
+		set(get()-s.get());
+	}
+	
 	@Override 
 	public double get(int... indexes) {
 		assert(indexes.length==0);
