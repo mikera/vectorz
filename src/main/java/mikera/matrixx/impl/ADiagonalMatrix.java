@@ -33,7 +33,6 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public double determinant() {
-		int dimensions=rowCount();
 		double det=1.0;
 		for (int i=0; i<dimensions; i++) {
 			det*=get(i,i);

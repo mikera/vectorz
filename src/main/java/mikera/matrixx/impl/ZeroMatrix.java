@@ -60,6 +60,11 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double trace() {
+		return 0.0;
+	}
+	
+	@Override
 	public double calculateElement(int i, AVector v) {
 		assert(i>=0);
 		assert(i<outputDimensions);
