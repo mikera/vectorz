@@ -213,6 +213,17 @@ public class TestVectors {
 		assertEquals(0.0,tv.get(5+len),0.0);
 	}
 	
+
+	private void testSubvectors(AVector v) {
+		int len=v.length();
+		assertEquals(v,v.subVector(0, len));
+		assertEquals(0,v.subVector(0, 0).length());
+		int m=len/2;
+		
+		AVector v2=v.subVector(0, m).join(v.subVector(m, len-m));
+		assertEquals(v,v2);
+	}
+	
 	private void testClone(AVector v) {
 		AVector cv=v.clone();
 		int len=cv.length();
@@ -482,6 +493,7 @@ public class TestVectors {
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
+		testSubvectors(v);
 		testParse(v);
 		testDistances(v);
 		testMagnitudes(v);
@@ -493,6 +505,7 @@ public class TestVectors {
 		
 		new TestArrays().testArray(v);
 	}
+
 
 	@Test public void genericTests() {
 		doGenericTests(Vector0.of());
