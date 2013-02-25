@@ -153,6 +153,30 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public AVector subVector(int start, int length) {
+		assert(start>=0);
+		assert((start+length)<=this.length);
+		
+		int a=findArrayNum(start);
+		int b=findArrayNum(start+length-1);
+		int n=b-a+1;
+		
+		if (n==1) return ArraySubVector.wrap(data[a], start-pos[a], length);
+		
+		double[][] newData=Arrays.copyOfRange(data, a, b+1);
+		int[] offs=new int[n];
+		offs[0]=offsets[a]+(start-pos[a]);
+		for (int j=1; j<offs.length; j++) offs[j]=offsets[j-a];
+		
+		int[] poses=new int[n+1];
+		poses[0]=0;
+		for (int j=1; j<offs.length; j++) offs[j]=pos[a+j]-start;
+		poses[n]=length;
+		
+		return new JoinedArrayVector(length,newData,offs,poses);
+	}
+	
+	@Override
 	public AVector join(AVector v) {
 		if (v instanceof JoinedArrayVector) return joinVectors(this,(JoinedArrayVector) v);
 		if (v instanceof ArrayVector) return join((ArrayVector) v);
