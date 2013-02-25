@@ -335,6 +335,17 @@ public class TestVectors {
 		assertEquals(v.get(len-1)+5.0+len-1,tv.get(len-1),0.0001);
 	}
 	
+	private void testAddToPosition(AVector v) {
+		int len=v.length();
+		
+		AVector tv=Vectorz.createRange(len+10);
+
+		tv.add(5,v,0,len);
+		
+		assertEquals(5.0+v.get(0),tv.get(5),0.0001);
+		assertEquals(5.0+len,tv.get(5+len),0.0001);
+	}
+	
 	private void testAddAt(AVector v) {
 		if (!v.isFullyMutable()) return;
 		v=v.exactClone();
@@ -517,6 +528,7 @@ public class TestVectors {
 		testSubVectorMutability(v);
 		testAddMultiple(v);
 		testAddFromPosition(v);
+		testAddToPosition(v);
 		testVectorMutability(v);
 		testCopyTo(v);
 		testNormalise(v);

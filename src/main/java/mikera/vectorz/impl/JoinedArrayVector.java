@@ -172,7 +172,7 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public void addMultiple(AVector a, double factor) {
-		addMultiple(a,factor,0);
+		addMultiple(a,0,factor);
 	}
 	
 	@Override

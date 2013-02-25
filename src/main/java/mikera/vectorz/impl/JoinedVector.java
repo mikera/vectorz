@@ -203,7 +203,7 @@ public final class JoinedVector extends AVector {
 			int alen=a.length();
 			if (offset+alen<=split) {
 				left.add(offset,a);
-			} else {
+			} else {		
 				left.add(offset,a,0,split-offset);
 				right.add(0,a,split-offset,alen-(split-offset));
 			}
@@ -215,8 +215,8 @@ public final class JoinedVector extends AVector {
 		if (a instanceof JoinedVector) {
 			addMultiple((JoinedVector)a,factor);	
 		} else {
-			left.addMultiple(a, factor, 0);
-			right.addMultiple(a, factor, split);
+			left.addMultiple(a, 0, factor);
+			right.addMultiple(a, split, factor);
 		}
 	}
 	
@@ -225,15 +225,15 @@ public final class JoinedVector extends AVector {
 			left.addMultiple(a.left,factor);	
 			right.addMultiple(a.right,factor);	
 		} else {
-			left.addMultiple(a, factor, 0);
-			right.addMultiple(a, factor, split);
+			left.addMultiple(a, 0, factor);
+			right.addMultiple(a, split, factor);
 		}
 	}
 	
 	@Override
-	public void addMultiple(AVector a, double factor, int offset) {
-		left.addMultiple(a, factor, offset);
-		right.addMultiple(a, factor, offset+split);
+	public void addMultiple(AVector a, int offset, double factor) {
+		left.addMultiple(a, offset, factor);
+		right.addMultiple(a, offset+split, factor);
 	}
 	
 	@Override
