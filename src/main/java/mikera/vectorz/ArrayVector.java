@@ -5,6 +5,7 @@ import java.util.Arrays;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Base class for vectors backed by a double[] array.
@@ -256,12 +257,7 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void multiplyTo(double[] data, int offset) {
-		int len=length();
-		double[] cdata=getArray();
-		int coffset=getArrayOffset();
-		for (int i = 0; i < len; i++) {
-			data[i+offset]*=cdata[i+coffset];
-		}	
+		DoubleArrays.multiply(getArray(), getArrayOffset(), data,offset,length());
 	}
 	
 	@Override
@@ -281,12 +277,7 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void divideTo(double[] data, int offset) {
-		int len=length();
-		double[] cdata=getArray();
-		int coffset=getArrayOffset();
-		for (int i = 0; i < len; i++) {
-			data[i+offset]/=cdata[i+coffset];
-		}	
+		DoubleArrays.divide(getArray(), getArrayOffset(), data,offset,length());	
 	}
 	
 	

@@ -125,6 +125,20 @@ public final class JoinedArrayVector extends AVector {
 		}
 	}
 	
+	@Override
+	public void multiplyTo(double[] target, int offset) {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.multiply(this.data[j],offsets[j],target,offset+pos[j],subLength(j));
+		}
+	}
+	
+	@Override
+	public void divideTo(double[] target, int offset) {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.divide(this.data[j],offsets[j],target,offset+pos[j],subLength(j));
+		}
+	}
+	
 	@Override 
 	public void fill(double value) {
 		for (int j=0; j<numArrays; j++) {
