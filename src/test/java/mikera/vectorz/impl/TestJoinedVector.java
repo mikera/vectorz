@@ -58,4 +58,16 @@ public class TestJoinedVector {
 		v.set(0,2.0);
 		assertEquals(2.0, j.get(10),0.0);	
 	}
+	
+	@Test public void testJoinedVectorAdd() {
+		Vector v=Vector.of(0,1,2,3,4,5,6,7,8,9);
+		AVector j=v.clone().join(v.exactClone());
+		
+		j.add(v, 5);
+		
+		assertEquals(4.0,j.get(4),0.0);
+		assertEquals(13.0,j.get(9),0.0);
+		assertEquals(5.0,j.get(10),0.0);
+		assertEquals(5.0,j.get(15),0.0);
+	}
 }
