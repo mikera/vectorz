@@ -9,7 +9,7 @@ import mikera.vectorz.AVector;
 public abstract class ADerivedVector extends AVector {
 	private static final long serialVersionUID = -9039112666567131812L;
 
-	protected AVector source;
+	protected final AVector source;
 	
 	protected ADerivedVector(AVector source) {
 		this.source=source;

@@ -3,8 +3,8 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 
 /**
- * A mutable vector that always has a single repeated components.
- * Setting one component will set all components.
+ * A mutable vector that always has a single repeated component.
+ * Setting any component will therefore set all components.
  * @author Mike
  *
  */
@@ -35,6 +35,7 @@ public final class RepeatedElementVector extends AVector {
 
 	@Override
 	public boolean isFullyMutable() {
+		// not fully mutable, since elements are tied to each other
 		return false;
 	}
 	

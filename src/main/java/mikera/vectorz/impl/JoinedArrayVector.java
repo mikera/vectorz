@@ -97,6 +97,7 @@ public final class JoinedArrayVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
 		int ai=findArrayNum(i);
 		data[ai][i-pos[ai]+offsets[ai]]=value;
 	}
@@ -252,6 +253,7 @@ public final class JoinedArrayVector extends AVector {
 	public AVector subVector(int start, int length) {
 		assert(start>=0);
 		assert((start+length)<=this.length);
+		if (length==0) return Vector0.INSTANCE;
 		
 		int a=findArrayNum(start);
 		int b=findArrayNum(start+length-1);
