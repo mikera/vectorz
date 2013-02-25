@@ -7,6 +7,7 @@ import org.junit.Test;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector1;
+import mikera.vectorz.Vector3;
 
 public class TestJoinedVector {
 	@Test public void testDepth() {
@@ -69,5 +70,18 @@ public class TestJoinedVector {
 		assertEquals(13.0,j.get(9),0.0);
 		assertEquals(5.0,j.get(10),0.0);
 		assertEquals(5.0,j.get(15),0.0);
+	}
+	
+	@Test public void testJoinedVector3Add() {
+		Vector v=Vector.of(0,1,2,3,4);
+		AVector j=v.clone().join(v.exactClone());
+		
+		j.add(Vector3.of(10,20,30), 4);
+		
+		assertEquals(3.0,j.get(3),0.0);
+		assertEquals(14.0,j.get(4),0.0);
+		assertEquals(20.0,j.get(5),0.0);
+		assertEquals(31.0,j.get(6),0.0);
+		assertEquals(2.0,j.get(7),0.0);
 	}
 }
