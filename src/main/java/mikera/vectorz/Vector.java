@@ -125,13 +125,13 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
-	public void add(ArrayVector v, int offset) {
-		int vlength=v.length();
+	public void add(ArrayVector src, int srcOffset) {
+		int vlength=src.length();
 		int length=length();
-		assert(offset>=0);
-		assert(offset+length<=vlength);
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset()+offset;
+		assert(srcOffset>=0);
+		assert(srcOffset+length<=vlength);
+		double[] vdata=src.getArray();
+		int voffset=src.getArrayOffset()+srcOffset;
 		for (int i = 0; i < length; i++) {
 			array[i] += vdata[voffset + i];
 		}
@@ -267,13 +267,13 @@ public final class Vector extends ArrayVector {
 		sub(v,0);
 	}
 	
-	public void sub(ArrayVector v,int offset) {
+	public void sub(ArrayVector src,int srcOffset) {
 		int length=length();
-		assert(length==v.length());
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset()+offset;
+		assert(length==src.length());
+		double[] srcData=src.getArray();
+		int voffset=src.getArrayOffset()+srcOffset;
 		for (int i = 0; i < length; i++) {
-			array[i] -= vdata[voffset + i];
+			array[i] -= srcData[voffset + i];
 		}
 	}
 	

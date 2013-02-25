@@ -206,7 +206,7 @@ public class TestVectors {
 	private void testAddMultiple(AVector v) {
 		int len=v.length();
 		Vector tv=Vector.createLength(len+10);
-		tv.addMultiple(v,10.0,5);
+		tv.addMultiple(5,v,10.0);
 		assertEquals(0.0,tv.get(4),0.0);
 		assertEquals(10.0*v.get(0),tv.get(5),0.0);
 		assertEquals(10.0*v.get(len-1),tv.get(5+len-1),0.0);
@@ -218,6 +218,7 @@ public class TestVectors {
 		int len=v.length();
 		assertEquals(v,v.subVector(0, len));
 		assertEquals(0,v.subVector(0, 0).length());
+		assertEquals(0,v.subVector(len, 0).length());
 		int m=len/2;
 		
 		AVector v2=v.subVector(0, m).join(v.subVector(m, len-m));
@@ -291,6 +292,18 @@ public class TestVectors {
 		assertEquals(t,v.subVector(split, slen));
 		t.addProduct(t, Vectorz.createZeroVector(slen));
 		assertEquals(t,v.subVector(split, slen));
+	}
+	
+	private void testAddFromPosition(AVector v) {
+		if (!v.isFullyMutable()) return;
+		AVector tv=v.exactClone();
+		int len=tv.length();
+		
+		AVector sv=Vectorz.createRange(len+10);
+
+		tv.add(sv,5);
+		assertEquals(v.get(0)+5.0,tv.get(0),0.0001);
+		assertEquals(v.get(len-1)+5.0+len-1,tv.get(len-1),0.0001);
 	}
 	
 	private void testAddAt(AVector v) {
@@ -474,6 +487,7 @@ public class TestVectors {
 		if (v.length()==0) return;
 		testSubVectorMutability(v);
 		testAddMultiple(v);
+		testAddFromPosition(v);
 		testVectorMutability(v);
 		testCopyTo(v);
 		testNormalise(v);

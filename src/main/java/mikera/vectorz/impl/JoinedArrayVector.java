@@ -148,7 +148,7 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
-	public void add(AVector a,int offset) {
+	public void add(int offset, AVector a) {
 		int alen=a.length();
 		for (int j=0; j<numArrays; j++) {
 			if (offset>=pos[j+1]) continue; // skip until adding at right place
@@ -158,6 +158,11 @@ public final class JoinedArrayVector extends AVector {
 				a.addToArray(pos[j]+segmentOffset-offset, data[j], offsets[j]+segmentOffset, len);
 			}
 		}
+	}
+	
+	@Override
+	public void addProduct(AVector a, AVector b, double factor) {
+		addProduct(a,0,b,0,factor);
 	}
 	
 	@Override

@@ -511,24 +511,24 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	/**
 	 * Sets the vector to equal the value of another vector
 	 */
-	public void set(AVector a) {
+	public void set(AVector src) {
 		int len=length();
-		if (a.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+a.length());
+		if (src.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+src.length());
 		for (int i=0; i<len; i++) {
-			set(i,a.get(i));
+			set(i,src.get(i));
 		}
 	}
 	
 	/**
 	 * Set the vector equal to an offset into another vector
-	 * @param a
-	 * @param offset
+	 * @param src
+	 * @param srcOffset
 	 */
-	public void set(AVector a, int offset) {
+	public void set(AVector src, int srcOffset) {
 		int len=length();
-		assert(len+offset<=a.length());
+		assert(len+srcOffset<=src.length());
 		for (int i=0; i<len; i++) {
-			set(i,a.get(offset+i));
+			set(i,src.get(srcOffset+i));
 		}
 	}
 	
@@ -622,17 +622,30 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
-	 * Adds another vector to this one
-	 * @param v
+	 * Adds part another vector to this one, starting at the specified offset in the source vector
+	 * @param src
 	 */
-	public void add(AVector v, int offset) {
+	public void add(AVector src, int srcOffset) {
 		int length=length();
-		assert(offset>=0);
-		assert(offset+length<=v.length());
+		assert(srcOffset>=0);
+		assert(srcOffset+length<=src.length());
 		for (int i = 0; i < length; i++) {
-			double x=get(i)+v.get(offset+i);
+			double x=get(i)+src.get(srcOffset+i);
 			set(i,x);
 		}
+	}
+	
+	/**
+	 * Adds another vector into this one, at the specified offset
+	 * @param offset
+	 * @param a
+	 */
+	public void add(int offset, AVector a) {
+		int length=a.length();
+		for (int i = 0; i < length; i++) {
+			double x=get(i+offset)+a.get(i);
+			set(i+offset,x);
+		}		
 	}
 	
 	public void addProduct(AVector a, AVector b) {
@@ -658,6 +671,15 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	public void addMultiple(AVector v, double factor, int offset) {
+		int length=length();
+		assert(offset+length<=v.length());
+		for (int i = 0; i < length; i++) {
+			double x=get(i)+v.get(i+offset)*factor;
+			set(i,x);
+		}
+	}
+	
+	public void addMultiple(int offset, AVector v, double factor) {
 		int length=v.length();
 		assert(offset+length<=length());
 		for (int i = 0; i < length; i++) {
@@ -873,4 +895,6 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 			set(offset+i,data[dataOffset+i]);
 		}
 	}
+
+
 }

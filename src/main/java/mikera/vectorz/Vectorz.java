@@ -395,6 +395,14 @@ public class Vectorz {
 		if (o instanceof Double) return Vector1.of(Tools.toDouble(o));
 		return toVector(o);
 	}
+
+	public static AVector createRange(int length) {
+		AVector v=Vectorz.newVector(length);
+		for (int i=0; i<length; i++) {
+			v.set(i,i);
+		}
+		return v;
+	}
 	
 	
 }
