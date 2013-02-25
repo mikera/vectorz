@@ -294,6 +294,35 @@ public class TestVectors {
 		assertEquals(t,v.subVector(split, slen));
 	}
 	
+	
+	private void testAddEquivalents(AVector v) {
+		v=v.exactClone();
+		int len=v.length();
+		
+		AVector c=Vectorz.newVector(len);
+		c.add(v);
+		assertEquals(v,c);
+		
+		c.fill(0.0);
+		c.add(0,v);
+		assertEquals(v,c);
+		
+		c.fill(0.0);
+		c.add(v,0);
+		assertEquals(v,c);
+		
+		c.fill(0.0);
+		c.addMultiple(0,v,1.0);
+		assertEquals(v,c);
+		
+		c.fill(0.0);
+		c.addMultiple(v,1.0);
+		assertEquals(v,c);
+				
+		if (!v.isFullyMutable()) return;
+	}
+
+	
 	private void testAddFromPosition(AVector v) {
 		if (!v.isFullyMutable()) return;
 		AVector tv=v.exactClone();
@@ -499,6 +528,7 @@ public class TestVectors {
 		testClone(v);
 		testExactClone(v);
 		testAdd(v);
+		testAddEquivalents(v);
 		testAddToArray(v);
 		testAddAt(v);
 		testAddProduct(v);

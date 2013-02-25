@@ -64,4 +64,10 @@ public final class DoubleArrays {
 		}
 		return result;
 	}
+
+	public static void add(double[] src, int srcOffset, double[] dest, int destOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]+=src[srcOffset+i];
+		}
+	}
 }

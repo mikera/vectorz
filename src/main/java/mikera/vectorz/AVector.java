@@ -641,10 +641,17 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 * @param a
 	 */
 	public void add(int offset, AVector a) {
-		int length=a.length();
+		add(offset,a,0,a.length());
+	}
+	
+	/**
+	 * Adds another vector into this one, at the specified offset
+	 * @param offset
+	 * @param a
+	 */
+	public void add(int offset, AVector a, int aOffset, int length) {
 		for (int i = 0; i < length; i++) {
-			double x=get(i+offset)+a.get(i);
-			set(i+offset,x);
+			addAt(offset+i,a.get(i+aOffset));
 		}		
 	}
 	

@@ -196,6 +196,21 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void add(int offset, AVector a) {
+		if (offset>=split) {
+			right.add(offset-split,a);
+		} else {
+			int alen=a.length();
+			if (offset+alen<=split) {
+				left.add(offset,a);
+			} else {
+				left.add(offset,a,0,split-offset);
+				right.add(0,a,split-offset,alen-(split-offset));
+			}
+		}
+	}
+	
+	@Override
 	public void addMultiple(AVector a, double factor) {
 		if (a instanceof JoinedVector) {
 			addMultiple((JoinedVector)a,factor);	

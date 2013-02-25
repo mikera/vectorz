@@ -110,6 +110,25 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void add(int offset, AVector src) {
+		if (src instanceof ArrayVector) {
+			add (offset, (ArrayVector)src);
+			return;
+		}
+		int length=src.length();
+		src.addToArray(0,getArray(),getArrayOffset()+offset,length);
+	}
+	
+	public void add(int offset, ArrayVector src) {
+		int length=src.length();
+		DoubleArrays.add(src.getArray(), src.getArrayOffset(), getArray(), offset+getArrayOffset(), length);
+	}
+	
+	public void add(int offset, ArrayVector src, int srcOffset, int length) {
+		DoubleArrays.add(src.getArray(), src.getArrayOffset()+srcOffset, getArray(), offset+getArrayOffset(), length);
+	}
+	
+	@Override
 	public void addMultiple(AVector v, double factor) {
 		if (v instanceof ArrayVector) {
 			addMultiple ((ArrayVector)v,factor);
