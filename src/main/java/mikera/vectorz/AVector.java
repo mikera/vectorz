@@ -170,9 +170,12 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 * Copies a the contents of a vector to a double array at the specified offset
 	 */
 	public void copyTo(double[] data, int offset) {
-		int len = length();
-		for (int i=0; i<len; i++) {
-			data[i+offset]=get(i);
+		copyTo(0,data,offset,length());
+	}
+
+	public void copyTo(int offset, double[] dest, int destOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dest[i+destOffset]=get(i+offset);
 		}
 	}
 	
@@ -206,9 +209,9 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	/**
 	 * Copies a subset of this vector to a vector at the specified offset
 	 */
-	public void copy(int start, int length, AVector dest, int destOffset) {
+	public void copyTo(int offset, AVector dest, int destOffset, int length) {
 		for (int i=0; i<length; i++) {
-			dest.set(destOffset+i,get(start+i));
+			dest.set(destOffset+i,get(offset+i));
 		}
 	}
 
@@ -217,14 +220,13 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	 * @param value
 	 */
 	public void fill(double value) {
-		int len=length();
-		for (int i = 0; i < len; i++) {
-			set(i,value);
-		}
+		fillRange(0,length(),value);
 	}
 	
 	public void fillRange(int offset, int length, double value) {
-		subVector(offset,length).fill(value);
+		for (int i = 0; i < length; i++) {
+			set(i+offset,value);
+		}
 	}
 	
 	/**

@@ -123,7 +123,7 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
-	public void copy(int start, int length, AVector dest, int destOffset) {
+	public void copyTo(int start, AVector dest, int destOffset, int length) {
 		subVector(start,length).copyTo(dest, destOffset);
 	}
 

@@ -58,9 +58,7 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void fillRange(int offset, int length, double value) {
-		if ((offset<0)||((offset+length)>length())) {
-			throw new IndexOutOfBoundsException("Filling range offset="+offset+" length="+length);
-		}
+		assert ((offset>=0)||((offset+length)<=length()));
 		double[] arr=getArray();
 		int off=getArrayOffset();
 		Arrays.fill(arr, off+offset, off+offset+length, value);
@@ -76,7 +74,7 @@ public abstract class ArrayVector extends AVector {
 	public void set(AVector a, int offset) {
 		assert(offset>=0);
 		assert(offset+length()<=a.length());
-		a.copy(offset, length(), this, 0);
+		a.copyTo(offset, this, 0, length());
 	}
 	
 	@Override
@@ -301,9 +299,9 @@ public abstract class ArrayVector extends AVector {
 	
 	
 	@Override
-	public void copy(int start, int length, AVector dest, int destOffset) {
+	public void copyTo(int start, AVector dest, int destOffset, int length) {
 		if (dest instanceof ArrayVector) {
-			copy(start,length,(ArrayVector)dest,destOffset);
+			copyTo(start,(ArrayVector)dest,destOffset,length);
 			return;
 		}
 		double[] src=getArray();
@@ -313,11 +311,18 @@ public abstract class ArrayVector extends AVector {
 		}
 	}
 	
-	public void copy(int start, int length, ArrayVector dest, int destOffset) {
+	public void copyTo(int offset, ArrayVector dest, int destOffset, int length) {
 		double[] src=getArray();
 		int off=getArrayOffset();
 		double[] dst=dest.getArray();
-		System.arraycopy(src, off+start, dst, destOffset, length);
+		System.arraycopy(src, off+offset, dst, dest.getArrayOffset()+destOffset, length);
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length) {
+		double[] src=getArray();
+		int off=getArrayOffset();
+		System.arraycopy(src, off+offset, dest, destOffset, length);
 	}
 	
 	public void addMultiple(ArrayVector v, double factor) {

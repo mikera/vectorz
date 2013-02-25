@@ -117,7 +117,7 @@ public class Vectorz {
 	}	
 	
 	public static void copy(AVector source, int srcOffset, AVector dest, int destOffset, int length) {
-		source.copy(srcOffset, length, dest, destOffset);
+		source.copyTo(srcOffset, dest, destOffset, length);
 	}
 
 	public static AVector createUniformRandomVector(int dimensions) {

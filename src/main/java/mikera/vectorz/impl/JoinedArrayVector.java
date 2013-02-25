@@ -195,6 +195,13 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
+		for (int j=0; j<numArrays; j++) {
+			a.addProductToArray(factor, aOffset+pos[j], b, bOffset+pos[j], data[j], offsets[j], subLength(j));
+		}
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		for (int j=0; j<numArrays; j++) {
 			op.applyTo(data[j], offsets[j], subLength(j));
@@ -226,6 +233,13 @@ public final class JoinedArrayVector extends AVector {
 	public void fill(double value) {
 		for (int j=0; j<numArrays; j++) {
 			Arrays.fill(this.data[j],offsets[j],offsets[j]+subLength(j),value);
+		}
+	}
+	
+	@Override 
+	public void set(AVector v) {
+		for (int j=0; j<numArrays; j++) {
+			v.copyTo(pos[j],data[j], offsets[j],subLength(j));
 		}
 	}
 	
