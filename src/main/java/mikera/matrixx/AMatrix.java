@@ -638,6 +638,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;
 	}
 	
+	public double trace() {
+		int rc=rowCount();
+		assert(rc==columnCount());
+		double result=0.0;
+		for (int i=0; i<rc; i++) {
+			result+=get(i,i);
+		}
+		return result;
+	}
+	
 	@Override
 	public boolean isInvertible() {
 		return isSquare()&&(determinant()!=0.0);

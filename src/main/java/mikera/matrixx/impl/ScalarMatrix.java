@@ -37,6 +37,11 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public double trace() {
+		return scale*dimensions;
+	}
+	
+	@Override
 	public void transformInPlace(AVector v) {
 		for (int i=0; i<dimensions; i++) {
 			v.scale(scale);

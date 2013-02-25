@@ -85,6 +85,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 		return 1.0;
 	}
 	
+	@Override
+	public double trace() {
+		return dimensions;
+	}
+	
 	@Override 
 	public AMatrix compose(AMatrix a) {
 		assert(a.rowCount()==this.dimensions);

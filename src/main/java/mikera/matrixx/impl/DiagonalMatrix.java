@@ -33,6 +33,15 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	public static DiagonalMatrix wrap(double[] data) {
 		return new DiagonalMatrix(data);
 	}
+	
+	@Override
+	public double trace() {
+		double result=0.0;
+		for (int i=0; i<dimensions; i++) {
+			result+=data[i];
+		}
+		return result;
+	}
 
 	@Override
 	public double get(int row, int column) {

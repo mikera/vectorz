@@ -271,6 +271,10 @@ public class TestMatrixx {
 		}
 	}
 	
+	private void doTraceTests(AMatrix m) {
+		assertEquals(m.clone().trace(), m.trace(),0.00001);
+	}
+	
 	private void doMaybeSquareTests(AMatrix m) {
 		if (!m.isSquare()) {
 			assertNotEquals(m.rowCount(),m.columnCount());
@@ -278,6 +282,7 @@ public class TestMatrixx {
 		} else {
 			assertEquals(m.rowCount(),m.columnCount());
 			doSquareTransposeTest(m);
+			doTraceTests(m);
 			doLeadingDiagonalTests(m);
 		}
 	}
