@@ -75,6 +75,7 @@ public class TestJoinedVector {
 	@Test public void testJoinedVector3Add() {
 		Vector v=Vector.of(0,1,2,3,4);
 		AVector j=v.clone().join(v.exactClone());
+		assertEquals(JoinedArrayVector.class,j.getClass());
 		
 		j.add(Vector3.of(10,20,30), 4);
 		
@@ -82,6 +83,14 @@ public class TestJoinedVector {
 		assertEquals(14.0,j.get(4),0.0);
 		assertEquals(20.0,j.get(5),0.0);
 		assertEquals(31.0,j.get(6),0.0);
+		assertEquals(2.0,j.get(7),0.0);
+		
+		j.addMultiple(Vector3.of(10,20,30), 10.0, 4);
+		assertEquals(2.0,j.get(2),0.0);
+		assertEquals(3.0,j.get(3),0.0);
+		assertEquals(114.0,j.get(4),0.0);
+		assertEquals(220.0,j.get(5),0.0);
+		assertEquals(331.0,j.get(6),0.0);
 		assertEquals(2.0,j.get(7),0.0);
 	}
 }

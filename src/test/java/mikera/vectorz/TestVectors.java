@@ -203,6 +203,16 @@ public class TestVectors {
 		}
 	}
 	
+	private void testAddMultiple(AVector v) {
+		int len=v.length();
+		Vector tv=Vector.createLength(len+10);
+		tv.addMultiple(v,10.0,5);
+		assertEquals(0.0,tv.get(4),0.0);
+		assertEquals(10.0*v.get(0),tv.get(5),0.0);
+		assertEquals(10.0*v.get(len-1),tv.get(5+len-1),0.0);
+		assertEquals(0.0,tv.get(5+len),0.0);
+	}
+	
 	private void testClone(AVector v) {
 		AVector cv=v.clone();
 		int len=cv.length();
@@ -452,6 +462,7 @@ public class TestVectors {
 	private void doNonDegenerateTests(AVector v) {
 		if (v.length()==0) return;
 		testSubVectorMutability(v);
+		testAddMultiple(v);
 		testVectorMutability(v);
 		testCopyTo(v);
 		testNormalise(v);

@@ -657,11 +657,12 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		addMultiple(v,factor,0);
 	}
 	
-	public void addMultiple(AVector v, double factor, int srcOffset) {
-		int length=length();
+	public void addMultiple(AVector v, double factor, int offset) {
+		int length=v.length();
+		assert(offset+length<=length());
 		for (int i = 0; i < length; i++) {
-			double x=get(i)+v.get(i+srcOffset)*factor;
-			set(i,x);
+			double x=get(i+offset)+v.get(i)*factor;
+			set(i+offset,x);
 		}
 	}
 	
