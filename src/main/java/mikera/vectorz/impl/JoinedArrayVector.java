@@ -144,7 +144,7 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public void add(AVector a) {
-		add(a,0);
+		add(0,a,0,length);
 	}
 	
 	@Override
@@ -172,18 +172,23 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public void addMultiple(AVector a, double factor) {
-		addMultiple(a,0,factor);
+		addMultiple(0,a,0,length(),factor);
 	}
 	
 	@Override
 	public void addMultiple(int offset, AVector a,double factor) {
-		int alen=a.length();
+		addMultiple(offset,a,0,a.length(),factor);
+	}
+	
+	@Override
+	public void addMultiple(int offset, AVector a, int aOffset, int length, double factor) {
+		int alen=length;
 		for (int j=0; j<numArrays; j++) {
 			if (offset>=pos[j+1]) continue; // skip until adding at right place
 			int segmentOffset=Math.max(0,offset-pos[j]);
 			int len=Math.min(subLength(j)-segmentOffset, offset+alen-pos[j]);
 			if (len>0) {
-				a.addMultipleToArray(factor,pos[j]+segmentOffset-offset, data[j], offsets[j]+segmentOffset, len);
+				a.addMultipleToArray(factor,aOffset+pos[j]+segmentOffset-offset, data[j], offsets[j]+segmentOffset, len);
 			}
 		}
 	}
@@ -231,7 +236,7 @@ public final class JoinedArrayVector extends AVector {
 	}
 
 	@Override
-	public AVector exactClone() {
+	public JoinedArrayVector exactClone() {
 		double[][] newData=new double[numArrays][];
 		int[] zeroOffsets=new int[numArrays];
 		for (int i=0; i<numArrays; i++) {

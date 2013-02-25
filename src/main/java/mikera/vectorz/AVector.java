@@ -185,11 +185,22 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	/**
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
-	public void copyTo(AVector dest, int offset) {
+	public void copyTo(AVector dest, int destOffset) {
+		if (dest instanceof ArrayVector) {
+			copyTo((ArrayVector) dest,destOffset);
+			return;
+		}
 		int len = length();
 		for (int i=0; i<len; i++) {
-			dest.set(offset+i,get(i));
+			dest.set(destOffset+i,get(i));
 		}
+	}
+	
+	/**
+	 * Copies a the contents of a vector to a vector at the specified offset
+	 */
+	public void copyTo(ArrayVector dest, int destOffset) {
+		copyTo(dest.getArray(),dest.getArrayOffset()+destOffset);
 	}
 	
 	/**

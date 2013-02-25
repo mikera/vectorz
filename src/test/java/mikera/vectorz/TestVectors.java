@@ -655,5 +655,6 @@ public class TestVectors {
 		
 		doGenericTests(JoinedArrayVector.create(v4));
 		doGenericTests(JoinedArrayVector.create(j5));
+		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
 	}
 }
