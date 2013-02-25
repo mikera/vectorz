@@ -1,7 +1,11 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
+import mikera.vectorz.Op;
+import mikera.vectorz.util.DoubleArray;
 
 public final class JoinedArrayVector extends AVector {
 	private static final long serialVersionUID = -8470277860344236392L;
@@ -10,7 +14,7 @@ public final class JoinedArrayVector extends AVector {
 	private final int numArrays;
 	private final double[][] data;
 	private final int[] offsets;
-	private final int[] pos;
+	private final int[] pos; // contains one extra element
 	
 	private JoinedArrayVector(int length, double[][] newData,int[] offsets, int[] pos) {
 		this.length=length;
@@ -25,7 +29,7 @@ public final class JoinedArrayVector extends AVector {
 		double[][] data=new double[1][];
 		data[0]=new double[length];
 		v.copyTo(data[0], 0);
-		JoinedArrayVector jav=new JoinedArrayVector(length,data,new int[1],new int[1]);
+		JoinedArrayVector jav=new JoinedArrayVector(length,data,new int[1],new int[] {0,length});
 		return jav;
 	}
 	
@@ -33,7 +37,7 @@ public final class JoinedArrayVector extends AVector {
 		return new JoinedArrayVector(v.length(),
 				new double[][] {v.getArray()},
 				new int[] {v.getArrayOffset()},
-				new int[1]);
+				new int[] {0,v.length()});
 	}
 
 	// finds the number of the array that contains a specific index position
@@ -51,6 +55,11 @@ public final class JoinedArrayVector extends AVector {
 		}
 		return i;
 	}
+	
+	private int subLength(int i) {
+		return pos[i+1]-pos[i];
+	}
+	
 	
 	@Override
 	public int length() {
@@ -88,7 +97,38 @@ public final class JoinedArrayVector extends AVector {
 	@Override
 	public void copyTo(AVector dest, int offset) {
 		for (int j=0; j<numArrays; j++) {
-			dest.set(pos[j]+offset,data[j],offsets[j],(((j+1<numArrays)?pos[j+1]:length)-pos[j]));
+			dest.set(pos[j]+offset,data[j],offsets[j],subLength(j));
+		}
+	}
+
+	@Override
+	public double elementSum() {
+		double result=0.0;
+		for (int j=0; j<numArrays; j++) {
+			result+=DoubleArray.elementSum(data[j], offsets[j], subLength(j));
+		}
+		return result;
+	}
+	
+	
+	@Override
+	public void applyOp(Op op) {
+		for (int j=0; j<numArrays; j++) {
+			op.applyTo(data[j], offsets[j], subLength(j));
+		}
+	}
+	
+	@Override
+	public void copyTo(double[] destArray, int offset) {
+		for (int j=0; j<numArrays; j++) {
+			System.arraycopy(this.data[j],offsets[j],destArray,offset+pos[j],subLength(j));
+		}
+	}
+	
+	@Override 
+	public void fill(double value) {
+		for (int j=0; j<numArrays; j++) {
+			Arrays.fill(this.data[j],offsets[j],offsets[j]+subLength(j),value);
 		}
 	}
 
@@ -97,7 +137,7 @@ public final class JoinedArrayVector extends AVector {
 		double[][] newData=new double[numArrays][];
 		int[] zeroOffsets=new int[numArrays];
 		for (int i=0; i<numArrays; i++) {
-			int alen=((i+1<numArrays)?pos[i+1]:length)-pos[i];
+			int alen=subLength(i);
 			double[] arr=new double[alen];
 			newData[i]=arr;
 			System.arraycopy(data[i], offsets[i], arr, 0, alen);
@@ -119,9 +159,9 @@ public final class JoinedArrayVector extends AVector {
 		System.arraycopy(offsets, 0, newOffsets, 0, numArrays);
 		newOffsets[numArrays]=v.getArrayOffset();
 		
-		int[] newPos=new int[numArrays+1];
-		System.arraycopy(pos, 0, newPos, 0, numArrays);
-		newPos[numArrays]=length;
+		int[] newPos=new int[numArrays+2];
+		System.arraycopy(pos, 0, newPos, 0, numArrays+1);
+		newPos[numArrays+1]=newLen;
 
 		double[][] newData=new double[numArrays+1][];
 		System.arraycopy(data, 0, newData, 0, numArrays);
@@ -141,9 +181,9 @@ public final class JoinedArrayVector extends AVector {
 		System.arraycopy(a.offsets, 0, newOffsets, 0, a.numArrays);
 		System.arraycopy(b.offsets, 0, newOffsets, a.numArrays, b.numArrays);
 		
-		int[] newPos=new int[a.numArrays+b.numArrays];
+		int[] newPos=new int[a.numArrays+b.numArrays+1];
 		System.arraycopy(a.pos, 0, newPos, 0, a.numArrays);
-		System.arraycopy(b.pos, 0, newPos, a.numArrays, b.numArrays);
+		System.arraycopy(b.pos, 0, newPos, a.numArrays, b.numArrays+1);
 		for (int i=a.numArrays; i<newPos.length; i++) {
 			newPos[i]+=a.length;
 		}
@@ -156,10 +196,12 @@ public final class JoinedArrayVector extends AVector {
 	}
 
 	public static AVector joinVectors(ArrayVector a, ArrayVector b) {
+		int alen=a.length();
+		int blen=b.length();
 		return new JoinedArrayVector(
-				a.length()+b.length(),
+				alen+blen,
 				new double[][] {a.getArray(),b.getArray()},
 				new int[] {a.getArrayOffset(),b.getArrayOffset()},
-				new int[] {0,a.length()});
+				new int[] {0,alen,alen+blen});
 	}
 }
