@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.io.ObjectStreamException;
 
 import mikera.vectorz.APrimitiveVector;
+import mikera.vectorz.AVector;
 
 /**
  * Special singleton zero length vector class.
@@ -78,6 +79,11 @@ public final class Vector0 extends APrimitiveVector {
 	@Override
 	public double magnitude() {
 		return 0.0;
+	}
+	
+	@Override
+	public AVector join(AVector v) {
+		return v;
 	}
 	
 	/**
