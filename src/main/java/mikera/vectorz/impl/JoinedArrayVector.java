@@ -1,6 +1,8 @@
 package mikera.vectorz.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
@@ -56,10 +58,21 @@ public final class JoinedArrayVector extends AVector {
 		return i;
 	}
 	
-	private int subLength(int i) {
-		return pos[i+1]-pos[i];
+	private int subLength(int j) {
+		return pos[j+1]-pos[j];
 	}
 	
+	private ArraySubVector subArrayVector(int j) {
+		return ArraySubVector.wrap(data[j], offsets[j], subLength(j));
+	}
+	
+	public List<ArrayVector> toSubArrays() {
+		ArrayList<ArrayVector> al=new ArrayList<ArrayVector>();
+		for (int i=0; i<numArrays; i++) {
+			al.add(subArrayVector(i));
+		}
+		return al;
+	}
 	
 	@Override
 	public int length() {
@@ -128,14 +141,14 @@ public final class JoinedArrayVector extends AVector {
 	@Override
 	public void multiplyTo(double[] target, int offset) {
 		for (int j=0; j<numArrays; j++) {
-			DoubleArrays.multiply(this.data[j],offsets[j],target,offset+pos[j],subLength(j));
+			DoubleArrays.arraymultiply(this.data[j],offsets[j],target,offset+pos[j],subLength(j));
 		}
 	}
 	
 	@Override
 	public void divideTo(double[] target, int offset) {
 		for (int j=0; j<numArrays; j++) {
-			DoubleArrays.divide(this.data[j],offsets[j],target,offset+pos[j],subLength(j));
+			DoubleArrays.arraydivide(this.data[j],offsets[j],target,offset+pos[j],subLength(j));
 		}
 	}
 	

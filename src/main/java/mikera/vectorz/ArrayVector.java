@@ -257,7 +257,7 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void multiplyTo(double[] data, int offset) {
-		DoubleArrays.multiply(getArray(), getArrayOffset(), data,offset,length());
+		DoubleArrays.arraymultiply(getArray(), getArrayOffset(), data,offset,length());
 	}
 	
 	@Override
@@ -277,7 +277,7 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void divideTo(double[] data, int offset) {
-		DoubleArrays.divide(getArray(), getArrayOffset(), data,offset,length());	
+		DoubleArrays.arraydivide(getArray(), getArrayOffset(), data,offset,length());	
 	}
 	
 	
