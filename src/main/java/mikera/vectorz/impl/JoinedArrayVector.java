@@ -166,11 +166,11 @@ public final class JoinedArrayVector extends AVector {
 		double[][] newData=Arrays.copyOfRange(data, a, b+1);
 		int[] offs=new int[n];
 		offs[0]=offsets[a]+(start-pos[a]);
-		for (int j=1; j<offs.length; j++) offs[j]=offsets[j-a];
+		for (int j=1; j<n; j++) offs[j]=offsets[a+j];
 		
 		int[] poses=new int[n+1];
 		poses[0]=0;
-		for (int j=1; j<offs.length; j++) offs[j]=pos[a+j]-start;
+		for (int j=1; j<n; j++) poses[j]=pos[a+j]-start;
 		poses[n]=length;
 		
 		return new JoinedArrayVector(length,newData,offs,poses);

@@ -42,4 +42,20 @@ public class TestJoinedVector {
 		v.set(0,2.0);
 		assertEquals(2.0, j.get(10),0.0);	
 	}
+	
+	@Test public void testJoinedArraySubs() {
+		Vector v=Vector.of(0,1,2,3,4,5,6,7,8,9);
+		
+		AVector j=v;
+		
+		for (int i=0; i<10; i++) {
+			j=j.join(v.subVector(i, 1));
+		}
+		assertEquals(20,j.length());
+		assertEquals(JoinedArrayVector.class,j.getClass());
+		
+		assertEquals(v,j.subVector(10, 10));
+		v.set(0,2.0);
+		assertEquals(2.0, j.get(10),0.0);	
+	}
 }
