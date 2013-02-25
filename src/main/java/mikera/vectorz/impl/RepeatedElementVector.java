@@ -10,17 +10,17 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public final class SingleElementVector extends AVector implements ISparse {
+public final class RepeatedElementVector extends AVector implements ISparse {
 	private final int dimensions;
 	private final int index;
 	private double value;
 	
-	public SingleElementVector(int componentIndex, int dimensions) {
+	public RepeatedElementVector(int componentIndex, int dimensions) {
 		this.dimensions=dimensions;
 		this.index=componentIndex;
 	}
 	
-	public SingleElementVector(int componentIndex, int dimensions, double value) {
+	public RepeatedElementVector(int componentIndex, int dimensions, double value) {
 		this.dimensions=dimensions;
 		this.index=componentIndex;
 		this.value=value;
@@ -85,8 +85,8 @@ public final class SingleElementVector extends AVector implements ISparse {
 	}
 	
 	@Override
-	public SingleElementVector exactClone() {
-		return new SingleElementVector(index,dimensions,value);
+	public RepeatedElementVector exactClone() {
+		return new RepeatedElementVector(index,dimensions,value);
 	}
 
 }
