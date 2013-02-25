@@ -5,7 +5,7 @@ import java.util.Arrays;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Op;
-import mikera.vectorz.util.DoubleArray;
+import mikera.vectorz.util.DoubleArrays;
 
 public final class JoinedArrayVector extends AVector {
 	private static final long serialVersionUID = -8470277860344236392L;
@@ -105,7 +105,7 @@ public final class JoinedArrayVector extends AVector {
 	public double elementSum() {
 		double result=0.0;
 		for (int j=0; j<numArrays; j++) {
-			result+=DoubleArray.elementSum(data[j], offsets[j], subLength(j));
+			result+=DoubleArrays.elementSum(data[j], offsets[j], subLength(j));
 		}
 		return result;
 	}
@@ -135,7 +135,7 @@ public final class JoinedArrayVector extends AVector {
 	@Override 
 	public void multiply(double value) {
 		for (int j=0; j<numArrays; j++) {
-			DoubleArray.multiply(this.data[j],offsets[j],subLength(j),value);
+			DoubleArrays.multiply(this.data[j],offsets[j],subLength(j),value);
 		}
 	}
 
