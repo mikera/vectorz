@@ -123,6 +123,24 @@ public final class JoinedArrayVector extends AVector {
 		return result;
 	}
 	
+	@Override
+	public double dotProduct (AVector v) {
+		if (v instanceof ArrayVector) {
+			ArrayVector av=(ArrayVector)v;
+			return dotProduct(av);
+		}
+		return super.dotProduct(v);
+	}
+	
+	public double dotProduct (ArrayVector v) {
+		double result=0.0;
+		double[] arr=v.getArray();
+		int ao=v.getArrayOffset();
+		for (int j=0; j<numArrays; j++) {
+			result+=DoubleArrays.dotProduct(data[j], offsets[j], arr,ao+pos[j],subLength(j));
+		}
+		return result;
+	}
 	
 	@Override
 	public void applyOp(Op op) {

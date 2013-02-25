@@ -56,4 +56,12 @@ public final class DoubleArrays {
 			dest[destOffset+i]/=src[srcOffset+i];
 		}
 	}
+
+	public static double dotProduct(double[] a, int aOffset, double[] b, int bOffset, int length) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=a[aOffset+i]*b[bOffset+i];
+		}
+		return result;
+	}
 }
