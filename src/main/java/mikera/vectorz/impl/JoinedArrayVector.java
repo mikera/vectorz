@@ -161,6 +161,24 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void addMultiple(AVector a, double factor) {
+		addMultiple(a,factor,0);
+	}
+	
+	@Override
+	public void addMultiple(AVector a,double factor,int offset) {
+		int alen=a.length();
+		for (int j=0; j<numArrays; j++) {
+			if (offset>=pos[j+1]) continue; // skip until adding at right place
+			int segmentOffset=Math.max(0,offset-pos[j]);
+			int len=Math.min(subLength(j)-segmentOffset, offset+alen-pos[j]);
+			if (len>0) {
+				a.addMultipleToArray(factor,pos[j]+segmentOffset-offset, data[j], offsets[j]+segmentOffset, len);
+			}
+		}
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		for (int j=0; j<numArrays; j++) {
 			op.applyTo(data[j], offsets[j], subLength(j));
