@@ -52,6 +52,11 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public double trace() {
+		return m00+m11;
+	}
+	
+	@Override
 	public Matrix22 inverse() {
 		double det=determinant();
 		if (det==0.0) throw new IllegalArgumentException("Matrix has zero determinant: not invertible");

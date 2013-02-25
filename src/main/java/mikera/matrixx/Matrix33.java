@@ -278,6 +278,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public double trace() {
+		return m00+m11+m22;
+	}
+	
+	@Override
 	public Matrix33 clone() {
 		return new Matrix33(this);
 	}
