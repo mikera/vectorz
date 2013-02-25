@@ -8,4 +8,28 @@ public final class DoubleArray {
 		}
 		return result;
 	}
+
+	public static void multiply(double[] data, int offset, int length, double value) {
+		for (int i=0; i<length; i++) {
+			data[offset+i]*=value;
+		}
+	}
+	
+	public static void divide(double[] data, int offset, int length, double value) {
+		for (int i=0; i<length; i++) {
+			data[offset+i]/=value;
+		}
+	}
+	
+	public static void add(double[] data, int offset, int length, double value) {
+		for (int i=0; i<length; i++) {
+			data[offset+i]+=value;
+		}
+	}
+	
+	public static void sub(double[] data, int offset, int length, double value) {
+		for (int i=0; i<length; i++) {
+			data[offset+i]-=value;
+		}
+	}
 }

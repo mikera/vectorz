@@ -131,6 +131,13 @@ public final class JoinedArrayVector extends AVector {
 			Arrays.fill(this.data[j],offsets[j],offsets[j]+subLength(j),value);
 		}
 	}
+	
+	@Override 
+	public void multiply(double value) {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArray.multiply(this.data[j],offsets[j],subLength(j),value);
+		}
+	}
 
 	@Override
 	public AVector exactClone() {
