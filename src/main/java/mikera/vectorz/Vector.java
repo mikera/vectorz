@@ -263,6 +263,27 @@ public final class Vector extends ArrayVector {
 		return result;
 	}
 	
+	public double distanceSquared(Vector v) {
+		int len=length();
+		double total=0.0;
+		for (int i=0; i<len; i++) {
+			double d=array[i]-v.array[i];
+			total+=d*d;
+		}
+		return total;
+	}
+	
+	public double distance(Vector v) {
+		return Math.sqrt(distanceSquared(v));
+	}
+	
+	public double distance(AVector v) {
+		if (v instanceof Vector) {
+			return distance((Vector)v);
+		}
+		return super.distance(v);
+	}
+	
 	public void sub(ArrayVector v) {
 		sub(v,0);
 	}
