@@ -629,8 +629,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 			throw new IllegalArgumentException("Source vector has different size: " + vlength);
 		}
 		for (int i = 0; i < length; i++) {
-			double x=get(i)+v.get(i);
-			set(i,x);
+			addAt(i,v.get(i));
 		}
 	}
 	
@@ -643,8 +642,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		assert(srcOffset>=0);
 		assert(srcOffset+length<=src.length());
 		for (int i = 0; i < length; i++) {
-			double x=get(i)+src.get(srcOffset+i);
-			set(i,x);
+			addAt(i,src.get(srcOffset+i));
 		}
 	}
 	
@@ -676,8 +674,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		int length=length();
 		assert((a.length()==length)&&(b.length()==length));
 		for (int i = 0; i < length; i++) {
-			double x=get(i)+(a.get(i)*b.get(i)*factor);
-			set(i,x);
+			addAt(i,(a.get(i)*b.get(i)*factor));
 		}
 	}
 	
@@ -794,7 +791,16 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
-			this.set(j,this.get(j)+vector.array[i]*factor);
+			this.addAt(j,vector.array[i]*factor);
+		}
+	}
+	
+	public void addMultiple(AVector vector, Index index, double factor) {
+		int len=vector.length();
+		assert(len==index.length());
+		for (int i=0; i<len; i++) {
+			int j=index.data[i];
+			this.addAt(j,vector.get(i)*factor);
 		}
 	}
 
@@ -849,7 +855,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
 		int length=length();
 		for (int i=0; i<length; i++) {
-			set(i, get(i)+ (a.get(i+aOffset)* b.get(i+bOffset)*factor));
+			addAt(i, (a.get(i+aOffset)* b.get(i+bOffset)*factor));
 		}
 	}
 	
@@ -885,7 +891,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	public void add(double constant) {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			set(i,get(i)+constant);
+			addAt(i,constant);
 		}
 	}
 	

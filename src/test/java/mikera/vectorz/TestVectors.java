@@ -365,7 +365,7 @@ public class TestVectors {
 		try {
 			v.set(-1, 0.0);
 			fail("Should be out of bounds!");
-		} catch (IndexOutOfBoundsException x) {
+		} catch (Throwable x) {
 			// OK!
 		}
 		
@@ -373,7 +373,7 @@ public class TestVectors {
 			if (v instanceof GrowableVector) return;
 			v.set(v.length(), 0.0);
 			fail("Should be out of bounds!");
-		} catch (IndexOutOfBoundsException x) {
+		} catch (Throwable x) {
 			// OK!
 		}
 	}
@@ -643,7 +643,7 @@ public class TestVectors {
 		doGenericTests(new AxisVector(5,10));
 		
 		doGenericTests(new SingleElementVector(1,3));
-		doGenericTests(new SingleElementVector(1,1));
+		doGenericTests(new SingleElementVector(0,1));
 
 		doGenericTests(new RepeatedElementVector(1,1.0));
 		doGenericTests(new RepeatedElementVector(10,1.0));

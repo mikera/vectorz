@@ -88,6 +88,22 @@ public final class Vector3 extends APrimitiveVector {
 		return (x*x)+(y*y)+(z*z);
 	}
 	
+	public double distanceSquared(Vector3 v) {
+		double dx=x-v.x, dy=y-v.y, dz=z-v.z;
+		return (dx*dx)+(dy*dy)+(dz*dz);
+	}
+	
+	public double distance(Vector3 v) {
+		return Math.sqrt(distanceSquared(v));
+	}
+	
+	public double distance(AVector v) {
+		if (v instanceof Vector3) {
+			return distance((Vector3)v);
+		}
+		return super.distance(v);
+	}
+	
 	@Override 
 	public double magnitude() {
 		return Math.sqrt(magnitudeSquared());
