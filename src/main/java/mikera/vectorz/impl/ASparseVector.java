@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
+import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 
 /**
@@ -22,6 +23,11 @@ public abstract class ASparseVector extends AVector implements ISparse {
 	 * @return
 	 */
 	public abstract AVector nonSparseValues();
+	
+	/**
+	 * Returns the non-sparse indexes
+	 */
+	public abstract Index nonSparseIndexes();
 	
 	/**
 	 * Returns true iff the sparse vector contains the index i 

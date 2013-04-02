@@ -295,10 +295,24 @@ public class SparseIndexedVector extends ASparseVector {
 		}
 		data[ip]=value;
 	}
+	
+	@Override
+	public void addAt(int i, double value) {
+		int ip=index.indexPosition(i);
+		if (ip<0) {
+			throw new VectorzException("Can't set SparseIndexedVector at non-indexed position: "+i);
+		}
+		data[ip]+=value;
+	}
 
 	@Override
 	public Vector nonSparseValues() {
 		return Vector.wrap(data);
+	}
+	
+	@Override
+	public Index nonSparseIndexes() {
+		return index;
 	}
 
 	@Override
@@ -319,5 +333,6 @@ public class SparseIndexedVector extends ASparseVector {
 	public SparseIndexedVector exactClone() {
 		return new SparseIndexedVector(length,index.clone(),data.clone());
 	}
+
 
 }
