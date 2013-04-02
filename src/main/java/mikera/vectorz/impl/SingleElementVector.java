@@ -2,9 +2,10 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
 
 /**
- * A mutable vector that has one non-zero element.
+ * A sparse mutable vector that has one non-zero element.
  * All other components are forced to remain at zero, setting them is ignored.
  * @author Mike
  *
@@ -59,7 +60,7 @@ public final class SingleElementVector extends AVector implements ISparse {
 	
 	@Override
 	public boolean isFullyMutable() {
-		return false;
+		return (dimensions==1);
 	}
 	
 	@Override
@@ -81,7 +82,11 @@ public final class SingleElementVector extends AVector implements ISparse {
 	@Override
 	public void set(int i, double value) {
 		assert((i>=0)&&(i<dimensions));
-		if (i==index) this.value=value;
+		if (i==index) {
+			this.value=value;
+		} else { 
+			throw new VectorzException("SingleElementVector not mutable at position: "+i);
+		}
 	}
 	
 	@Override
