@@ -123,7 +123,7 @@ public final class GrowableVector extends ArrayVector {
 	
 	@Override 
 	public GrowableVector exactClone() {
-		GrowableVector g=new GrowableVector();
+		GrowableVector g=new GrowableVector(data.length);
 		g.append(this);
 		return g;
 	}
