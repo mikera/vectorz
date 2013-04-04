@@ -57,6 +57,11 @@ public class TestOps {
 		assertEquals(1.0, op.derivative(1000.0),0.0001);
 	}
 	
+	@Test public void testLinear() {
+		Op op=Op.LINEAR;
+		assertNotNull(op);
+	}
+	
 	private void testApply(Op op) {
 		double r=op.apply(Rand.nextGaussian()*1000);
 		assertTrue(r<=op.maxValue());
