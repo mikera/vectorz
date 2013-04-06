@@ -46,6 +46,14 @@ public class TestVectorz {
 	}
 	
 	@Test
+	public void testVector0() {
+		Vector0 v0=Vector0.INSTANCE;
+		Vector v=Vector.of(1,2,3);
+		assertEquals(v,v0.join(v));
+		assertEquals(v,v.join(v0));
+	}
+	
+	@Test
 	public void testAxisVector() {
 		AVector v = Vectorz.axisVector(1, 3);
 		assertEquals(Vector.of(0,1,0),v);
