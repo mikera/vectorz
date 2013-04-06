@@ -125,6 +125,20 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void signum() {
+		for (int i=0; i<array.length; i++) {
+			array[i]=Math.signum(array[i]);
+		}
+	}
+	
+	@Override
+	public void absolute() {
+		for (int i=0; i<array.length; i++) {
+			array[i]=Math.abs(array[i]);
+		}
+	}
+	
+	@Override
 	public void add(ArrayVector src, int srcOffset) {
 		int vlength=src.length();
 		int length=length();

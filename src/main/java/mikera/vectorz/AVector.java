@@ -335,6 +335,16 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	}
 	
 	/**
+	 * Sets each component of the vector to its sign value (-1, 0 or 1)
+	 */
+	public void signum() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			set(i,Math.signum(get(i)));
+		}
+	}
+	
+	/**
 	 * Scales the vector by a scalar factor
 	 * @param factor
 	 */

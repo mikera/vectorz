@@ -256,6 +256,7 @@ public abstract class ArrayVector extends AVector {
 		}
 		return result;
 	}
+
 	
 	@Override
 	public void multiply(AVector v) {
