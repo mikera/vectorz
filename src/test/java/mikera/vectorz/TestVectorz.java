@@ -51,6 +51,8 @@ public class TestVectorz {
 		Vector v=Vector.of(1,2,3);
 		assertEquals(v,v0.join(v));
 		assertEquals(v,v.join(v0));
+		assertTrue(v0==Vectorz.newVector(0));
+		assertEquals(0,v0.length());
 	}
 	
 	@Test
