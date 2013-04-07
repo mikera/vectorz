@@ -8,7 +8,7 @@ import mikera.vectorz.Op;
  * Interface for general multi-dimensional arrays of doubles
  * @author Mike
  */
-public interface INDArray {
+public interface INDArray extends Cloneable {
 	
 	public int dimensionality();
 	

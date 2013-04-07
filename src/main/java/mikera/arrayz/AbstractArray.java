@@ -1,5 +1,7 @@
 package mikera.arrayz;
 
+import mikera.vectorz.util.VectorzException;
+
 /**
  * Base class for INDArray implementations
  * @author Mike
@@ -17,5 +19,11 @@ public abstract class AbstractArray implements INDArray {
 		return asVector().hashCode();
 	}
 	
-	public abstract AbstractArray clone();
+	public AbstractArray clone() {
+		try {
+			return (AbstractArray)super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new VectorzException("AbstractArray clone failed");
+		}
+	}
 }

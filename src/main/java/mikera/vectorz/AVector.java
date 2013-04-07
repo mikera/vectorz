@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.Matrixx;
@@ -25,7 +26,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AVector implements IVector, Cloneable, Comparable<AVector>, Serializable, Iterable<Double> {
+public abstract class AVector extends AbstractArray implements IVector, Comparable<AVector>, Serializable, Iterable<Double> {
 	
 	// ================================================
 	// Abstract interface

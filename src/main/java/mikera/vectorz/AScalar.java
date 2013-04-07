@@ -1,9 +1,9 @@
 package mikera.vectorz;
 
+import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ScalarVector;
-import mikera.vectorz.util.VectorzException;
 
 /**
  * Class to represent a wrapped 0-d scalar value.
@@ -12,7 +12,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar implements INDArray, Cloneable {
+public abstract class AScalar extends AbstractArray {
 	
 	private static final int[] SCALAR_SHAPE=new int[0];
 
@@ -94,11 +94,7 @@ public abstract class AScalar implements INDArray, Cloneable {
 	
 	@Override
 	public AScalar clone() {
-		try {
-			return (AScalar) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new VectorzException("AScalar clone failed");
-		}
+		return (AScalar) super.clone();
 	}
 	
 	@Override
