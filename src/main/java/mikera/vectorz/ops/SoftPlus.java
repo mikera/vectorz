@@ -1,5 +1,7 @@
 package mikera.vectorz.ops;
 
+import mikera.vectorz.Op;
+
 
 public final class SoftPlus extends ABoundedOp {
 	
@@ -46,6 +48,11 @@ public final class SoftPlus extends ABoundedOp {
 	public double derivative(double x) {
 		return Logistic.logisticFunction(x);
 	}
+	
+	@Override
+	public Op getDerivativeOp() {
+		return Logistic.INSTANCE;
+	}
 
 	@Override
 	public double minValue() {
@@ -54,7 +61,7 @@ public final class SoftPlus extends ABoundedOp {
 
 	@Override
 	public double maxValue() {
-		return Double.MAX_VALUE;
+		return Double.POSITIVE_INFINITY;
 	}
 	
 	@Override

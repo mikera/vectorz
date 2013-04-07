@@ -40,6 +40,28 @@ public final class Ops {
 		@Override public Op getDerivativeOp() {return EXP;}
 	};
 	
+	public static final Op RECIPROCAL = new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return 1.0/x;
+		}
+		
+		@Override
+		public double derivative(double x) {
+			return -1.0/(x*x);
+		}
+		
+		@Override
+		public double derivativeForOutput(double y) {
+			return -y*y;
+		}
+		
+		@Override public double averageValue() {return 1.0;}
+		@Override public boolean hasInverse() {return true;}
+		@Override public Op getInverse() {return this;}
+		@Override public boolean hasDerivative() {return true;}
+	};
+	
 	public static final Op SIN = new AFunctionOp() {
 		@Override
 		public double apply(double x) {
