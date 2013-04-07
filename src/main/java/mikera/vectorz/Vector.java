@@ -132,7 +132,7 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
-	public void absolute() {
+	public void abs() {
 		for (int i=0; i<array.length; i++) {
 			array[i]=Math.abs(array[i]);
 		}

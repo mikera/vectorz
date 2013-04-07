@@ -260,9 +260,9 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
-	public void absolute() {
-		left.absolute();
-		right.absolute();
+	public void abs() {
+		left.abs();
+		right.abs();
 	}
 	
 	@Override

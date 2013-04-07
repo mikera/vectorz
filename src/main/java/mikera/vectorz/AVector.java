@@ -327,7 +327,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	/**
 	 * Sets each component of the vector to its absolute value
 	 */
-	public void absolute() {
+	public void abs() {
 		int len=length();
 		for (int i=0; i<len; i++) {
 			set(i,Math.abs(get(i)));

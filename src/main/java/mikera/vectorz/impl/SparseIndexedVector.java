@@ -165,7 +165,7 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public void absolute() {
+	public void abs() {
 		for (int i=0; i<data.length; i++) {
 			data[i]=Math.abs(data[i]); 
 		}
