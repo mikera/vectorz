@@ -26,7 +26,7 @@ public class TestOps {
 	}
 	
 	@Test public void testLogistic() {
-		Op op=Op.LOGISTIC;
+		Op op=Ops.LOGISTIC;
 		assertEquals(0.0, op.apply(-1000),0.0001);
 		assertEquals(0.5, op.apply(0.0),0.0001);
 		assertEquals(1.0, op.apply(1000.0),0.0001);
@@ -37,7 +37,7 @@ public class TestOps {
 	}
 	
 	@Test public void testTanh() {
-		Op op=Op.TANH;
+		Op op=Ops.TANH;
 		assertEquals(-1.0, op.apply(-1000),0.0001);
 		assertEquals(0.0, op.apply(0.0),0.0001);
 		assertEquals(1.0, op.apply(1000.0),0.0001);
@@ -48,7 +48,7 @@ public class TestOps {
 	}
 	
 	@Test public void testSoftplus() {
-		Op op=Op.SOFTPLUS;
+		Op op=Ops.SOFTPLUS;
 		assertEquals(0.0, op.apply(-1000),0.0001);
 		assertEquals(Math.log(2.0), op.apply(0.0),0.0001);
 		assertEquals(1000.0, op.apply(1000.0),0.0001);
@@ -59,7 +59,7 @@ public class TestOps {
 	}
 	
 	@Test public void testLinear() {
-		Op op=Op.LINEAR;
+		Op op=Ops.LINEAR;
 		assertNotNull(op);
 	}
 	
@@ -224,13 +224,13 @@ public class TestOps {
 		
 		doOpTest(ClampOp.ZERO_TO_ONE);
 		
-		doOpTest(Op.LINEAR);
-		doOpTest(Op.LOGISTIC);
-		doOpTest(Op.STOCHASTIC_BINARY);
-		doOpTest(Op.STOCHASTIC_LOGISTIC);
-		doOpTest(Op.TANH);
-		doOpTest(Op.SOFTPLUS);
-		doOpTest(Op.RECTIFIER);
+		doOpTest(Ops.LINEAR);
+		doOpTest(Ops.LOGISTIC);
+		doOpTest(Ops.STOCHASTIC_BINARY);
+		doOpTest(Ops.STOCHASTIC_LOGISTIC);
+		doOpTest(Ops.TANH);
+		doOpTest(Ops.SOFTPLUS);
+		doOpTest(Ops.RECTIFIER);
 		
 		doOpTest(QuadraticOp.create(2, 3, 4));
 		doOpTest(QuadraticOp.create(0, 3, 4));

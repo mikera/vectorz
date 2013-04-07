@@ -12,46 +12,46 @@ public class TestOpsExtra {
 		double[] fs=new double[10];
 		fs[0]=1000;
 		
-		Op.LOGISTIC.applyTo(fs);
+		Ops.LOGISTIC.applyTo(fs);
 		assertEquals(1,fs[0],0.001f);
 		
 		Op[] os=new Op[1];
-		os[0]=Op.LINEAR;
+		os[0]=Ops.LINEAR;
 		os[0].applyTo(fs);
 		assertEquals(1,fs[0],0.001f);
 	}
 	
 	@Test public void testDerivatives() {
-		assertEquals(0,Op.LOGISTIC.derivativeForOutput(1),0.0001);
-		assertEquals(0,Op.LOGISTIC.derivativeForOutput(0),0.0001);
+		assertEquals(0,Ops.LOGISTIC.derivativeForOutput(1),0.0001);
+		assertEquals(0,Ops.LOGISTIC.derivativeForOutput(0),0.0001);
 
-		assertEquals(1.0,Op.SOFTPLUS.derivativeForOutput(100),0.0001);
-		assertEquals(0.0,Op.SOFTPLUS.derivativeForOutput(0),0.0001);
+		assertEquals(1.0,Ops.SOFTPLUS.derivativeForOutput(100),0.0001);
+		assertEquals(0.0,Ops.SOFTPLUS.derivativeForOutput(0),0.0001);
 
 		for (int i=0; i<10 ; i++) {
 			double v=Rand.nextDouble();
 			
-			assertEquals(1,Op.LINEAR.derivativeForOutput(v),0.0001);
-			assertEquals(Op.STOCHASTIC_LOGISTIC.derivativeForOutput(v),Op.LOGISTIC.derivativeForOutput(v),0.0001);
+			assertEquals(1,Ops.LINEAR.derivativeForOutput(v),0.0001);
+			assertEquals(Ops.STOCHASTIC_LOGISTIC.derivativeForOutput(v),Ops.LOGISTIC.derivativeForOutput(v),0.0001);
 		}
 		
 		
 	}
 	
 	@Test public void testRange() {
-		assertEquals(0,Op.LOGISTIC.minValue(),0.0001);
-		assertEquals(1,Op.LOGISTIC.maxValue(),0.0001);
+		assertEquals(0,Ops.LOGISTIC.minValue(),0.0001);
+		assertEquals(1,Ops.LOGISTIC.maxValue(),0.0001);
 
-		assertEquals(-1.0,Op.TANH.minValue(),0.0001);
-		assertEquals(1.0,Op.TANH.maxValue(),0.0001);
+		assertEquals(-1.0,Ops.TANH.minValue(),0.0001);
+		assertEquals(1.0,Ops.TANH.maxValue(),0.0001);
 	}
 	
 	@Test public void testAllOps() {
-		testOp(Op.LOGISTIC);
-		testOp(Op.LINEAR);
-		testOp(Op.STOCHASTIC_BINARY);
-		testOp(Op.STOCHASTIC_LOGISTIC);
-		testOp(Op.TANH);
+		testOp(Ops.LOGISTIC);
+		testOp(Ops.LINEAR);
+		testOp(Ops.STOCHASTIC_BINARY);
+		testOp(Ops.STOCHASTIC_LOGISTIC);
+		testOp(Ops.TANH);
 	}
 	
 	public void testOp(Op op) {
