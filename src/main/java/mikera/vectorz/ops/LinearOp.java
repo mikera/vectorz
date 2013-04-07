@@ -83,6 +83,11 @@ public final class LinearOp extends ALinearOp {
 	}
 	
 	@Override
+	public Op getDerivativeOp() {
+		return ConstantOp.create(getFactor());
+	}
+	
+	@Override
 	public boolean hasInverse() {
 		return true;
 	}
