@@ -57,6 +57,7 @@ public final class Vector0 extends APrimitiveVector {
 	
 	@Override
 	public boolean isMutable() {
+		// i.e is immutable
 		return false;
 	}
 	

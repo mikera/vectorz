@@ -73,12 +73,23 @@ public class TestArrays {
 		assertTrue(c.equals(d));
 	}
 	
+	private void testMutability(INDArray a) {
+		if (a.isFullyMutable()&&(a.elementCount()>0)) {
+			assertTrue(a.isMutable());
+		}
+		
+		if (a.isElementConstrained()) {
+			assertFalse(a.isFullyMutable());
+		}
+	}
+	
 	public void testArray(INDArray a) {
 		testAsVector(a);
 		testApplyOp(a);
 		testSlices(a);
 		testShape(a);
 		testClone(a);
+		testMutability(a);
 	}
 
 	@Test
