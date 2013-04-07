@@ -2,12 +2,9 @@ package mikera.vectorz;
 
 import mikera.vectorz.ops.AFunctionOp;
 import mikera.vectorz.ops.ClampOp;
-import mikera.vectorz.ops.ComposedOp;
-import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.LinearOp;
 import mikera.vectorz.ops.Logistic;
-import mikera.vectorz.ops.ProductOp;
 import mikera.vectorz.ops.SoftPlus;
 import mikera.vectorz.ops.StochasticBinary;
 import mikera.vectorz.ops.Tanh;
