@@ -133,13 +133,13 @@ public abstract class Op implements IOp, ITransform {
 	}
 	
 	public double minValue() {
-		return -Double.MAX_VALUE;
+		return Double.NEGATIVE_INFINITY;
 	}
 	
 	public abstract double averageValue();
 	
 	public double maxValue() {
-		return Double.MAX_VALUE;
+		return Double.POSITIVE_INFINITY;
 	}
 	
 	/**
@@ -184,7 +184,7 @@ public abstract class Op implements IOp, ITransform {
 	}
 	
 	public boolean isBounded() {
-		return (minValue()>-Double.MAX_VALUE)||(maxValue()<Double.MAX_VALUE);
+		return (minValue()>=-Double.MAX_VALUE)||(maxValue()<=Double.MAX_VALUE);
 	}
 	
 	public static Op compose(Op op1, Op op2) {

@@ -231,7 +231,9 @@ public class TestOps {
 		doOpTest(Ops.TANH);
 		doOpTest(Ops.SOFTPLUS);
 		doOpTest(Ops.RECTIFIER);
-		
+
+		doOpTest(Ops.EXP);
+
 		doOpTest(QuadraticOp.create(2, 3, 4));
 		doOpTest(QuadraticOp.create(0, 3, 4));
 		
