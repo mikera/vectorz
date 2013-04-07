@@ -38,6 +38,11 @@ public interface INDArray {
 	public boolean isFullyMutable();
 	
 	/**
+	 * Returns true if the IND has additional constraints on element values
+	 */
+	public boolean isElementConstrained();
+	
+	/**
 	 * Return true if this is a view
 	 * @return
 	 */

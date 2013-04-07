@@ -88,6 +88,12 @@ public final class BitVector extends AVector {
 		return false;
 	}
 	
+	@Override
+	public boolean isElementConstrained() {
+		// elements are constrained to 0.0 or 1.0
+		return true;
+	}
+	
 	
 	@Override
 	public boolean isView() {

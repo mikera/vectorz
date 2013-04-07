@@ -620,6 +620,12 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		return true;
 	}
 	
+	@Override
+	public boolean isElementConstrained() {
+		return false;
+	}
+	
+	
 	/**
 	 * Returns true if this vector is fully mutable, i.e. can contain any unconstrained double values
 	 * @return

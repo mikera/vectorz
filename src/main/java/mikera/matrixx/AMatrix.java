@@ -288,6 +288,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public boolean isMutable() {
 		return isFullyMutable();
 	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return false;
+	}
 
 	@Override
 	public AMatrix clone() {
