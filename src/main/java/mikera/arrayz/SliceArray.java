@@ -10,7 +10,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.impl.Vector0;
 
-public class SliceArray<T extends INDArray> implements INDArray {
+public class SliceArray<T extends INDArray> extends AbstractArray {
 	private final int[] shape;
 	private final T[] slices;
 	
@@ -131,7 +131,7 @@ public class SliceArray<T extends INDArray> implements INDArray {
 	}
 
 	@Override
-	public INDArray clone() {
+	public SliceArray<T> clone() {
 		return exactClone();
 	}
 
@@ -144,14 +144,5 @@ public class SliceArray<T extends INDArray> implements INDArray {
 		return new SliceArray<T>(shape,newSlices);
 	}
 
-	public boolean equals(Object o) {
-		if (!(o instanceof INDArray)) return false;
-		return equals((INDArray)o);
-	}
-
-	@Override
-	public int hashCode() {
-		return asVector().hashCode();
-	}
 
 }
