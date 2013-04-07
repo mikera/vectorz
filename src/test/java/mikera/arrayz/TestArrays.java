@@ -69,6 +69,7 @@ public class TestArrays {
 		}
 		
 		INDArray ec=a.exactClone();
+		if (a.isMutable()) assertTrue(ec!=a);
 		assertEquals(a,ec);
 		assertEquals(c,ec);
 		assertEquals(a.getClass(),ec.getClass());
