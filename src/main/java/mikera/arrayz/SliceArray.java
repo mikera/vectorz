@@ -42,24 +42,27 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 
 	@Override
 	public double get(int... indexes) {
-		int d=dimensionality();
+		int d=indexes.length;
+		T slice=slices[indexes[0]];
 		switch (d) {
-			case 1: return slices[indexes[0]].get();
-			case 2: return slices[indexes[0]].get(indexes[1]);
-			case 3: return slices[indexes[0]].get(indexes[1],indexes[2]);
-			default: return slices[indexes[0]].get(Arrays.copyOfRange(shape,1,d));
+			case 0: throw new VectorzException("Can't do 0D get on SliceArray!");
+			case 1: return slice.get();
+			case 2: return slice.get(indexes[1]);
+			case 3: return slice.get(indexes[1],indexes[2]);
+			default: return slice.get(Arrays.copyOfRange(shape,1,d));
 		}
 	}
 	
 	@Override
 	public void set(int[] indexes, double value) {
 		int d=indexes.length;
+		T slice=slices[indexes[0]];
 		switch (d) {
 			case 0: throw new VectorzException("Can't do 0D set on SliceArray!");
-			case 1: slices[indexes[0]].set(value); return;
-			case 2: slices[indexes[0]].set(indexes[1],value); return;
-			case 3: slices[indexes[0]].set(indexes[1],indexes[2],value); return;
-			default: slices[indexes[0]].set(Arrays.copyOfRange(shape,1,d),value); return;
+			case 1: slice.set(value); return;
+			case 2: slice.set(indexes[1],value); return;
+			case 3: slice.set(indexes[1],indexes[2],value); return;
+			default: slice.set(Arrays.copyOfRange(shape,1,d),value); return;
 		}
 	}
 
