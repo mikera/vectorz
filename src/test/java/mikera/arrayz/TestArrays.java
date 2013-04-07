@@ -67,6 +67,11 @@ public class TestArrays {
 			// can only return same object if immutable
 			assert(!a.isMutable());
 		}
+		
+		INDArray ec=a.exactClone();
+		assertEquals(a,ec);
+		assertEquals(c,ec);
+		assertEquals(a.getClass(),ec.getClass());
 	}
 	
 	private void testApplyOp(INDArray a) {
