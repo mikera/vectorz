@@ -16,6 +16,10 @@ public interface INDArray {
 	
 	public double get(int... indexes);
 	
+	/**
+	 * Creates a view of the array as a single vector in row-major order.
+	 * @return
+	 */
 	public AVector asVector();
 	
 	public INDArray reshape(int... dimensions);
@@ -63,6 +67,8 @@ public interface INDArray {
 	void applyOp(IOp op);
 	
 	public boolean equals(INDArray a);
+
+	public INDArray exactClone();
 	
 
 }

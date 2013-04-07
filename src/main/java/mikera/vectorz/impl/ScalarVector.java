@@ -34,5 +34,4 @@ public class ScalarVector extends AVector {
 		// TODO: scalar.exactClone()
 		return new ScalarVector(scalar.clone());
 	}
-
 }

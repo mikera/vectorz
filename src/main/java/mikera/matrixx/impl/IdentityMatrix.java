@@ -103,6 +103,6 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public IdentityMatrix exactClone() {
-		return new IdentityMatrix(dimensions);
+		return create(dimensions);
 	}
 }

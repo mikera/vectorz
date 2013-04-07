@@ -42,5 +42,9 @@ public class VectorIndexScalar extends AScalar {
 	public DoubleScalar clone() {
 		return new DoubleScalar(get());
 	}
-
+	
+	@Override
+	public VectorIndexScalar exactClone() {
+		return new VectorIndexScalar(vector.clone(),index);
+	}
 }

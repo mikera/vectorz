@@ -123,4 +123,7 @@ public abstract class AScalar implements INDArray, Cloneable {
 	public int hashCode() {
 		return Hash.hashCode(get());
 	}
+	
+	@Override
+	public abstract AScalar exactClone();
 }
