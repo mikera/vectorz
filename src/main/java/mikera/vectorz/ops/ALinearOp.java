@@ -40,4 +40,16 @@ public abstract class ALinearOp extends APolynomialOp {
 		}
 		return super.compose(op);
 	}
+	
+	public Op sum(ALinearOp op) {
+		return LinearOp.create(getFactor()+op.getFactor(), getConstant()+op.getConstant());
+	}
+	
+	@Override
+	public Op sum(Op op) {
+		if ((getFactor()==0.0)&&(getConstant()==0.0)) {
+			return op;
+		}
+		return super.compose(op);
+	}
 }

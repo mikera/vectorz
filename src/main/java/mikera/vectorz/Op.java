@@ -7,6 +7,7 @@ import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.DerivativeOp;
 import mikera.vectorz.ops.InverseOp;
 import mikera.vectorz.ops.ProductOp;
+import mikera.vectorz.ops.SumOp;
 
 /**
  * Abstract class for representing a unary operation
@@ -201,5 +202,9 @@ public abstract class Op implements IOp, ITransform {
 	
 	public Op product(Op op) {
 		return ProductOp.create(this, op);
+	}
+	
+	public Op sum(Op op) {
+		return SumOp.create(this, op);
 	}
 }
