@@ -4,6 +4,7 @@ import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ScalarVector;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Class to represent a wrapped 0-d scalar value.
@@ -60,6 +61,15 @@ public abstract class AScalar extends AbstractArray {
 	public double get(int... indexes) {
 		assert(indexes.length==0);
 		return get();
+	}
+	
+	@Override 
+	public void set(int[] indexes, double value) {
+		if (indexes.length==0) {
+			set(value);
+		} else {
+			throw new VectorzException(""+indexes.length+"D set not supported on AScalar");
+		}
 	}
 	
 	@Override

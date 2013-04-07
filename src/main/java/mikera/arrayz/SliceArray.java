@@ -49,6 +49,17 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 			default: return slices[indexes[0]].get(Arrays.copyOfRange(shape,1,d));
 		}
 	}
+	
+	@Override
+	public void set(int[] indexes, double value) {
+		int d=dimensionality();
+		switch (d) {
+			case 1: slices[indexes[0]].set(value); return;
+			case 2: slices[indexes[0]].set(indexes[1],value); return;
+			case 3: slices[indexes[0]].set(indexes[1],indexes[2],value); return;
+			default: slices[indexes[0]].set(Arrays.copyOfRange(shape,1,d),value); return;
+		}
+	}
 
 	@Override
 	public AVector asVector() {

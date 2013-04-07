@@ -39,7 +39,15 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 	
 	// ================================================
 	// Standard implementations
-	
+
+	@Override
+	public void set(int[] indexes, double value) {
+		if (indexes.length==1) {
+			set(indexes[0],value);
+		} else {
+			throw new VectorzException(""+indexes.length+"D set not supported on AVector");
+		}
+	}
 	
 	@Override
 	public int dimensionality() {

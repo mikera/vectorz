@@ -14,7 +14,16 @@ public interface INDArray extends Cloneable {
 	
 	public int[] getShape();
 	
+	public double get();
+	public double get(int x);
+	public double get(int x, int y);
 	public double get(int... indexes);
+
+	public void set(double value);
+	public void set(int x, double value);
+	public void set(int x, int y, double value);
+	public void set(int[] indexes, double value);
+
 	
 	/**
 	 * Creates a view of the array as a single vector in row-major order.

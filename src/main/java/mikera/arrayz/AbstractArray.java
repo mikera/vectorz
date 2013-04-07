@@ -9,6 +9,26 @@ import mikera.vectorz.util.VectorzException;
  */
 public abstract class AbstractArray implements INDArray {
 
+	public double get() {
+		return get(new int[0]);
+	}
+	public double get(int x) {
+		return get(new int[] {x});
+	}
+	public double get(int x, int y) {
+		return get(new int[] {x,y});
+	}
+
+	public void set(double value) {
+		set(new int[0],value);
+	}
+	public void set(int x, double value) {
+		set(new int[] {x},value);
+	}
+	public void set(int x, int y, double value) {
+		set(new int[] {x,y},value);	
+	}
+	
 	public boolean equals(Object o) {
 		if (!(o instanceof INDArray)) return false;
 		return equals((INDArray)o);
