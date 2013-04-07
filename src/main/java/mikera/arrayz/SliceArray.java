@@ -137,7 +137,21 @@ public class SliceArray<T extends INDArray> implements INDArray {
 
 	@Override
 	public SliceArray<T> exactClone() {
-		return null;
+		T[] newSlices=slices.clone();
+		for (int i=0; i<slices.length; i++) {
+			newSlices[i]=(T) newSlices[i].exactClone();
+		}
+		return new SliceArray<T>(shape,newSlices);
+	}
+
+	public boolean equals(Object o) {
+		if (!(o instanceof INDArray)) return false;
+		return equals((INDArray)o);
+	}
+
+	@Override
+	public int hashCode() {
+		return asVector().hashCode();
 	}
 
 }
