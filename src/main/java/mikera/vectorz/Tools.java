@@ -82,5 +82,13 @@ public final class Tools {
 		return true;
 	}
 
+	public static int[] consArray(int a, int[] as) {
+		int len=as.length;
+		int[] nas=new int[len+1];
+		nas[0]=a;
+		System.arraycopy(as, 0, nas, 1, len);
+		return nas;
+	}
+
 
 }
