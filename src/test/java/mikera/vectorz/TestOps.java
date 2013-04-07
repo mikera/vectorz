@@ -19,7 +19,7 @@ import mikera.vectorz.ops.StochasticBinary;
 public class TestOps {
 	
 	@Test public void testComposedOp() {
-		ComposedOp op=new ComposedOp(LinearOp.create(2.0,1.0),LinearOp.create(100.0,10.0));
+		ComposedOp op=ComposedOp.compose(LinearOp.create(2.0,1.0),LinearOp.create(100.0,10.0));
 		AVector v=Vector.of(1.0,2.0);
 		v.applyOp(op);
 		assertEquals(221.0,v.get(0),0.0);
@@ -204,7 +204,7 @@ public class TestOps {
 		Op cop=op1.compose(op2);
 		doOpTest(cop);
 		
-		Op compop=new ComposedOp(op1,op2);
+		Op compop=ComposedOp.compose(op1,op2);
 		doOpTest(compop);
 		
 		if (compop.isStochastic()) return;
@@ -241,6 +241,8 @@ public class TestOps {
 		doOpTest(Ops.RECTIFIER);
 
 		doOpTest(Ops.EXP);
+		doOpTest(Ops.SIN);
+		doOpTest(Ops.COS);
 
 		doOpTest(QuadraticOp.create(2, 3, 4));
 		doOpTest(QuadraticOp.create(0, 3, 4));

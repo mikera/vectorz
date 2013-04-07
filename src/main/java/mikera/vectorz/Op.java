@@ -199,6 +199,6 @@ public abstract class Op implements IOp, ITransform {
 	public Op compose(Op op) {
 		if (op instanceof IdentityOp) return this;
 		if (op instanceof ConstantOp) return ConstantOp.create(apply(((ConstantOp)op).value));
-		return new ComposedOp(this,op);
+		return ComposedOp.compose(this,op);
 	}
 }
