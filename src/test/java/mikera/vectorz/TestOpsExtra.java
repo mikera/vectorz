@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import mikera.util.Rand;
 import mikera.vectorz.Op;
+import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.LinearOp;
+import mikera.vectorz.ops.QuadraticOp;
 
 import org.junit.Test;
 
@@ -53,6 +55,15 @@ public class TestOpsExtra {
 		assertTrue(cos.getDerivativeOp().getDerivativeOp().getDerivativeOp().getDerivativeOp()==cos);
 		
 		assertTrue(Ops.EXP.getDerivativeOp()==Ops.EXP);
+		
+		Op quad=QuadraticOp.create(Math.random(), Math.random(), Math.random());
+		Op ddquad=quad.getDerivativeOp().getDerivativeOp();
+		Op dddquad=ddquad.getDerivativeOp();
+		assertEquals(ConstantOp.class,ddquad.getClass());
+		assertEquals(0.0,dddquad.apply(Math.random()),0.00001);
+		
+		Op sum=ConstantOp.create(10).sum(sin);
+		assertTrue(cos==sum.getDerivativeOp());
 	}
 	
 	@Test public void testRange() {

@@ -50,6 +50,6 @@ public abstract class ALinearOp extends APolynomialOp {
 		if ((getFactor()==0.0)&&(getConstant()==0.0)) {
 			return op;
 		}
-		return super.compose(op);
+		return super.sum(op);
 	}
 }
