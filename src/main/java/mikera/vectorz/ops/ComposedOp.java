@@ -3,8 +3,8 @@ package mikera.vectorz.ops;
 import mikera.vectorz.Op;
 
 public class ComposedOp extends Op {
-	private final Op inner;
-	private final Op outer;
+	public final Op inner;
+	public final Op outer;
 	
 	private ComposedOp(Op outer, Op inner) {
 		this.outer=outer;

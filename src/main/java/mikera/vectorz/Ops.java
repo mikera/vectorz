@@ -2,6 +2,8 @@ package mikera.vectorz;
 
 import mikera.vectorz.ops.AFunctionOp;
 import mikera.vectorz.ops.ClampOp;
+import mikera.vectorz.ops.ComposedOp;
+import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.LinearOp;
 import mikera.vectorz.ops.Logistic;
@@ -86,5 +88,15 @@ public final class Ops {
 	
 	public static Op negatedOp(Op op) {
 		return NEGATE.compose(op);
+	}
+
+	public static final Op compose(Op a, Op b) {
+		if (a instanceof IdentityOp) return b;
+		if (a instanceof ConstantOp) return ConstantOp.create(((ConstantOp)a).value);
+		if (a instanceof ComposedOp) {
+			ComposedOp cb=(ComposedOp)b;
+			return compose(a,cb.outer).compose(cb.inner);
+		}
+		return ComposedOp.compose(a,b);	
 	}
 }
