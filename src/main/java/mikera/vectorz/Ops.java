@@ -83,10 +83,10 @@ public final class Ops {
 		@Override public boolean hasDerivative() {return true;}
 		@Override public double minValue() {return -1.0;}
 		@Override public double maxValue() {return 1.0;}
-		@Override public Op getDerivativeOp() {return Ops.negatedOp(SIN);}
+		@Override public Op getDerivativeOp() {return Ops.negate(SIN);}
 	};
 	
-	public static Op negatedOp(Op op) {
+	public static Op negate(Op op) {
 		return NEGATE.compose(op);
 	}
 

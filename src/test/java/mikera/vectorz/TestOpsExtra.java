@@ -34,8 +34,11 @@ public class TestOpsExtra {
 			assertEquals(1,Ops.LINEAR.derivativeForOutput(v),0.0001);
 			assertEquals(Ops.STOCHASTIC_LOGISTIC.derivativeForOutput(v),Ops.LOGISTIC.derivativeForOutput(v),0.0001);
 		}
-		
-		
+	}
+	
+	@Test public void testDerivativeChains() {
+		Op sin=Ops.SIN;
+		assert(sin.getDerivativeOp().getDerivativeOp().getDerivativeOp().getDerivativeOp()==sin);
 	}
 	
 	@Test public void testRange() {
