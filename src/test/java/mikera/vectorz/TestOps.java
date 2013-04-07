@@ -13,6 +13,7 @@ import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.LinearOp;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.OffsetOp;
+import mikera.vectorz.ops.QuadraticOp;
 import mikera.vectorz.ops.StochasticBinary;
 
 public class TestOps {
@@ -230,6 +231,9 @@ public class TestOps {
 		doOpTest(Op.TANH);
 		doOpTest(Op.SOFTPLUS);
 		doOpTest(Op.RECTIFIER);
+		
+		doOpTest(QuadraticOp.create(2, 3, 4));
+		doOpTest(QuadraticOp.create(0, 3, 4));
 		
 		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
 		doComposeTest(ConstantOp.create(1.0),LinearOp.create(Double.NaN, 11.0));
