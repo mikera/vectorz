@@ -126,7 +126,8 @@ public class TestOps {
 			op.derivative(x);
 			op.derivativeForOutput(y);
 			
-			op.getDerivativeOp();
+			Op d=op.getDerivativeOp();
+			assertEquals(op.derivative(x),d.apply(x),0.00001);
 		} else {
 			try {
 				op.derivative(x);
