@@ -63,7 +63,7 @@ public class ComposedOp extends Op {
 	
 	@Override
 	public Op getDerivativeOp() {
-		return outer.getDerivativeOp().product(inner.getDerivativeOp());
+		return (outer.getDerivativeOp().compose(inner)).product(inner.getDerivativeOp());
 	}
 	
 	@Override
