@@ -13,19 +13,20 @@ import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.LinearOp;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.OffsetOp;
+import mikera.vectorz.ops.QuadraticOp;
 import mikera.vectorz.ops.StochasticBinary;
 
 public class TestOps {
 	
 	@Test public void testComposedOp() {
-		ComposedOp op=new ComposedOp(LinearOp.create(2.0,1.0),LinearOp.create(100.0,10.0));
+		Op op=ComposedOp.compose(LinearOp.create(2.0,1.0),LinearOp.create(100.0,10.0));
 		AVector v=Vector.of(1.0,2.0);
 		v.applyOp(op);
 		assertEquals(221.0,v.get(0),0.0);
 	}
 	
 	@Test public void testLogistic() {
-		Op op=Op.LOGISTIC;
+		Op op=Ops.LOGISTIC;
 		assertEquals(0.0, op.apply(-1000),0.0001);
 		assertEquals(0.5, op.apply(0.0),0.0001);
 		assertEquals(1.0, op.apply(1000.0),0.0001);
@@ -36,7 +37,7 @@ public class TestOps {
 	}
 	
 	@Test public void testTanh() {
-		Op op=Op.TANH;
+		Op op=Ops.TANH;
 		assertEquals(-1.0, op.apply(-1000),0.0001);
 		assertEquals(0.0, op.apply(0.0),0.0001);
 		assertEquals(1.0, op.apply(1000.0),0.0001);
@@ -47,7 +48,7 @@ public class TestOps {
 	}
 	
 	@Test public void testSoftplus() {
-		Op op=Op.SOFTPLUS;
+		Op op=Ops.SOFTPLUS;
 		assertEquals(0.0, op.apply(-1000),0.0001);
 		assertEquals(Math.log(2.0), op.apply(0.0),0.0001);
 		assertEquals(1000.0, op.apply(1000.0),0.0001);
@@ -55,6 +56,11 @@ public class TestOps {
 		assertEquals(0.0, op.derivative(-1000.0),0.0001);
 		assertEquals(0.5, op.derivative(0.0),0.0001);
 		assertEquals(1.0, op.derivative(1000.0),0.0001);
+	}
+	
+	@Test public void testLinear() {
+		Op op=Ops.LINEAR;
+		assertNotNull(op);
 	}
 	
 	private void testApply(Op op) {
@@ -119,11 +125,21 @@ public class TestOps {
 		if (op.hasDerivative()) {
 			op.derivative(x);
 			op.derivativeForOutput(y);
+			
+			Op d=op.getDerivativeOp();
+			if ((!Double.isNaN(x))&&(!Double.isNaN(y))&&(!op.isStochastic())) {
+				assertEquals(op.derivative(x),d.apply(x),0.00001);
+			}
 		} else {
 			try {
 				op.derivative(x);
-				op.derivativeForOutput(y);
 				fail("Derivative did not throw exception!");
+			} catch (Throwable t) {
+				// OK
+			}
+			try {
+				op.derivativeForOutput(x);
+				fail("Derivative for output did not throw exception!");
 			} catch (Throwable t) {
 				// OK
 			}
@@ -190,7 +206,7 @@ public class TestOps {
 		Op cop=op1.compose(op2);
 		doOpTest(cop);
 		
-		Op compop=new ComposedOp(op1,op2);
+		Op compop=ComposedOp.compose(op1,op2);
 		doOpTest(compop);
 		
 		if (compop.isStochastic()) return;
@@ -218,16 +234,22 @@ public class TestOps {
 		
 		doOpTest(ClampOp.ZERO_TO_ONE);
 		
-		doOpTest(Op.LINEAR);
-		doOpTest(Op.LOGISTIC);
-		doOpTest(Op.STOCHASTIC_BINARY);
-		doOpTest(Op.STOCHASTIC_LOGISTIC);
-		doOpTest(Op.TANH);
-		doOpTest(Op.SOFTPLUS);
-		doOpTest(Op.RECTIFIER);
+		doOpTest(Ops.LINEAR);
+		doOpTest(Ops.LOGISTIC);
+		doOpTest(Ops.STOCHASTIC_BINARY);
+		doOpTest(Ops.STOCHASTIC_LOGISTIC);
+		doOpTest(Ops.TANH);
+		doOpTest(Ops.SOFTPLUS);
+		doOpTest(Ops.RECTIFIER);
+
+		doOpTest(Ops.EXP);
+		doOpTest(Ops.SIN);
+		doOpTest(Ops.COS);
+
+		doOpTest(QuadraticOp.create(2, 3, 4));
+		doOpTest(QuadraticOp.create(0, 3, 4));
 		
 		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
-		doComposeTest(ConstantOp.create(1.0),LinearOp.create(Double.NaN, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));
 		doComposeTest(Logistic.INSTANCE,LinearOp.create(10.0, -0.2));
 	}

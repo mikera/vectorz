@@ -17,6 +17,10 @@ public final class ZeroVector extends APrimitiveVector implements ISparse {
 	public ZeroVector(int dimensions) {
 		length=dimensions;
 	}
+	
+	public static ZeroVector create(int dimensions) {
+		return new ZeroVector(dimensions);
+	}
 
 	@Override
 	public int length() {
@@ -25,7 +29,7 @@ public final class ZeroVector extends APrimitiveVector implements ISparse {
 
 	@Override
 	public double get(int i) {
-		return 0;
+		return 0.0;
 	}
 
 	@Override
@@ -77,4 +81,5 @@ public final class ZeroVector extends APrimitiveVector implements ISparse {
 	public double density() {
 		return 0.0;
 	}
+
 }

@@ -3,12 +3,25 @@ package mikera.vectorz.ops;
 import mikera.vectorz.Op;
 
 public class ComposedOp extends Op {
-	private final Op inner;
-	private final Op outer;
+	public final Op inner;
+	public final Op outer;
 	
-	public ComposedOp(Op outer, Op inner) {
+	private ComposedOp(Op outer, Op inner) {
 		this.outer=outer;
 		this.inner=inner;
+	}
+	
+	public static Op compose(Op outer, Op inner) {
+		if (inner instanceof ComposedOp) {
+			ComposedOp ci=(ComposedOp)inner;
+			return outer.compose(ci.outer).compose(ci.inner);
+		}
+		
+		return new ComposedOp(outer,inner);
+	}
+	
+	public static Op create(Op a, Op b) {
+		return compose(a,b);
 	}
 
 	@Override
@@ -46,6 +59,11 @@ public class ComposedOp extends Op {
 	public double derivative(double x) {
 		double y=inner.apply(x);
 		return outer.derivative(y)*inner.derivativeForOutput(y);
+	}
+	
+	@Override
+	public Op getDerivativeOp() {
+		return (outer.getDerivativeOp().compose(inner)).product(inner.getDerivativeOp());
 	}
 	
 	@Override

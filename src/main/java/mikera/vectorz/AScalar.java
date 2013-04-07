@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ScalarVector;
@@ -12,7 +13,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar implements INDArray, Cloneable {
+public abstract class AScalar extends AbstractArray {
 	
 	private static final int[] SCALAR_SHAPE=new int[0];
 
@@ -43,6 +44,11 @@ public abstract class AScalar implements INDArray, Cloneable {
 		return isMutable();
 	}
 	
+	@Override
+	public boolean isElementConstrained() {
+		return false;
+	}
+	
 	public void add(AScalar s) {
 		set(get()+s.get());
 	}
@@ -55,6 +61,15 @@ public abstract class AScalar implements INDArray, Cloneable {
 	public double get(int... indexes) {
 		assert(indexes.length==0);
 		return get();
+	}
+	
+	@Override 
+	public void set(int[] indexes, double value) {
+		if (indexes.length==0) {
+			set(value);
+		} else {
+			throw new VectorzException(""+indexes.length+"D set not supported on AScalar");
+		}
 	}
 	
 	@Override
@@ -89,11 +104,7 @@ public abstract class AScalar implements INDArray, Cloneable {
 	
 	@Override
 	public AScalar clone() {
-		try {
-			return (AScalar) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new VectorzException("AScalar clone failed");
-		}
+		return (AScalar) super.clone();
 	}
 	
 	@Override
@@ -116,6 +127,9 @@ public abstract class AScalar implements INDArray, Cloneable {
 
 	@Override
 	public int hashCode() {
-		return Hash.hashCode(get());
+		return 31+Hash.hashCode(get());
 	}
+	
+	@Override
+	public abstract AScalar exactClone();
 }

@@ -54,6 +54,35 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	// =============================================
 	// Standard implementations
 
+	@Override 
+	public double get(int row) {
+		throw new VectorzException("1D get not supported on matrix!");
+	}
+	
+	@Override 
+	public double get() {
+		throw new VectorzException("0D get not supported on matrix!");
+	}
+	
+	@Override 
+	public void set(int row, double value) {
+		throw new VectorzException("1D get not supported on matrix!");
+	}
+	
+	@Override 
+	public void set(double value) {
+		throw new VectorzException("0D get not supported on matrix!");
+	}
+	
+	@Override 
+	public void set(int[] indexes, double value) {
+		if (indexes.length==2) {
+			set(indexes[0],indexes[1],value);
+		} else {
+			throw new VectorzException(""+indexes.length+"D set not supported on AMatrix");
+		}
+	}
+	
 	@Override
 	public int dimensionality() {
 		return 2;
@@ -287,6 +316,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public boolean isMutable() {
 		return isFullyMutable();
+	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return false;
 	}
 
 	@Override

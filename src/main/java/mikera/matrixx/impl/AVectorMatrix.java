@@ -14,7 +14,7 @@ import mikera.vectorz.Op;
  * @author Mike
  *
  */
-public abstract class AVectorMatrix extends AMatrix {
+public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	/* ================================
 	 * Abstract interface
 	 */
@@ -26,7 +26,7 @@ public abstract class AVectorMatrix extends AMatrix {
 	 * descendents of VectorMatrix.
 	 */
 	@Override
-	public abstract AVector getRow(int row);
+	public abstract T getRow(int row);
 
 	@Override
 	public double get(int row, int column) {
@@ -48,7 +48,7 @@ public abstract class AVectorMatrix extends AMatrix {
 	
 	@Override
 	public double calculateElement(int i, AVector inputVector) {
-		AVector row=getRow(i);
+		T row=getRow(i);
 		return row.dotProduct(inputVector);
 	}
 	
@@ -76,8 +76,8 @@ public abstract class AVectorMatrix extends AMatrix {
 	}
 	
 	@Override
-	public AVectorMatrix clone() {
-		AVectorMatrix avm=(AVectorMatrix) super.clone();
+	public AVectorMatrix<?> clone() {
+		AVectorMatrix<?> avm=(AVectorMatrix<?>) super.clone();
 		return avm;
 	}
 }

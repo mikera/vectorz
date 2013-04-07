@@ -32,4 +32,8 @@ public class ArrayIndexScalar extends AScalar {
 		return new DoubleScalar(array[index]);
 	}
 
+	@Override
+	public ArrayIndexScalar exactClone() {
+		return new ArrayIndexScalar(array.clone(),index);
+	}
 }

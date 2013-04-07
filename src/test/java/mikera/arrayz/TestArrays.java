@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.ConstantOp;
 import static org.junit.Assert.*;
 
@@ -62,6 +63,17 @@ public class TestArrays {
 		INDArray c=a.clone();
 		assertTrue(c.equals(a));
 		assertTrue(a.equals(c));
+		
+		if (c==a) {
+			// can only return same object if immutable
+			assert(!a.isMutable());
+		}
+		
+		INDArray ec=a.exactClone();
+		if (a.isMutable()) assertTrue(ec!=a);
+		assertEquals(a,ec);
+		assertEquals(c,ec);
+		assertEquals(a.getClass(),ec.getClass());
 	}
 	
 	private void testApplyOp(INDArray a) {
@@ -73,17 +85,33 @@ public class TestArrays {
 		assertTrue(c.equals(d));
 	}
 	
+	private void testMutability(INDArray a) {
+		if (a.isFullyMutable()&&(a.elementCount()>0)) {
+			assertTrue(a.isMutable());
+		}
+		
+		if (a.isElementConstrained()) {
+			assertFalse(a.isFullyMutable());
+		}
+	}
+
+	private void testHash(INDArray a) {
+		assertEquals(a.asVector().hashCode(),a.hashCode());
+	}
+	
 	public void testArray(INDArray a) {
 		testAsVector(a);
 		testApplyOp(a);
 		testSlices(a);
 		testShape(a);
+		testHash(a);
 		testClone(a);
+		testMutability(a);
 	}
 
 	@Test
 	public void genericTests() {
-		// TODO
-		// note that vectors, matrices and scalars get passed to testArray directly
+		SliceArray<AVector> sa=SliceArray.create(Vectorz.createUniformRandomVector(10),Vectorz.createUniformRandomVector(10));
+		testArray(sa);
 	}
 }

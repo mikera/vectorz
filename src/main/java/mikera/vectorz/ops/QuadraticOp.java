@@ -3,60 +3,62 @@ package mikera.vectorz.ops;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public final class OffsetOp extends ALinearOp {
-	private final double constant;
+public final class QuadraticOp extends APolynomialOp {
+	private final double a;
+	private final double b;
+	private final double c;
 	
-	private OffsetOp(double constant) {
-		this.constant=constant;
+	private QuadraticOp(double a,double b, double c) {
+		this.a=a;
+		this.b=b;
+		this.c=c;
 	}
 	
-	public static OffsetOp create(double offset) {
-		return new OffsetOp(offset);
+	public static Op create(double a,double b, double c) {
+		if (a==0.0) {
+			return LinearOp.create(b,c);
+		}
+		return new QuadraticOp(a,b,c);
 	}
 	
 	@Override
-	public double apply(double x) {
-		return x+constant;
+	public final double apply(double x) {
+		return (a*x*x)+(b*x)+c;
 	}
 	
 	@Override
 	public double applyInverse(double y) {
-		return y-constant;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override
 	public void applyTo(AVector v) {
-		v.add(constant);
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			double x=v.get(i);
+			v.set(i,apply(x));
+		}	
 	}
 	
 	@Override
 	public void applyTo(double[] data) {
 		for (int i=0; i<data.length; i++) {
-			data[i]+=constant;
+			double x=data[i];
+			data[i]=apply(x);
 		}
 	}
 	
 	@Override
 	public void applyTo(double[] data, int start,int length) {
 		for (int i=0; i<length; i++) {
-			data[i+start]+=constant;
+			double x=data[i+start];
+			data[i+start]=apply(x);
 		}	
-		
-	}
-	
-	@Override
-	public double getFactor() {
-		return 1.0;
-	}
-	
-	@Override
-	public double getConstant() {
-		return constant;
 	}
 	
 	@Override
 	public double averageValue() {
-		return constant;
+		return apply(-2.0*b/a)+a;
 	}
 	
 	@Override
@@ -66,31 +68,29 @@ public final class OffsetOp extends ALinearOp {
 	
 	@Override
 	public double derivative(double x) {
-		return 1.0;
+		return 2.0*a*x+b;
 	}
 	
 	@Override
 	public double derivativeForOutput(double y) {
-		return 1.0;
+		return b;
 	}
 	
 	@Override
 	public Op getDerivativeOp() {
-		return ConstantOp.create(1.0);
+		return LinearOp.create(2*a,b);
 	}
 	
 	@Override
 	public boolean hasInverse() {
-		return true;
+		return false;
 	}
 	
-	@Override
-	public OffsetOp getInverse() {
-		return OffsetOp.create(-constant);
-	}
-
 	public Op compose(ALinearOp op) {
-		return LinearOp.create(op.getFactor(), constant+op.getConstant());
+		double f=op.getFactor();
+		double g=op.getConstant();
+		
+		return QuadraticOp.create(a*f*f,(2*a*f*g+f*b),a*g*g+b*g+c);
 	}
 	
 	@Override

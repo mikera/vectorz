@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.Matrixx;
@@ -25,7 +26,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AVector implements IVector, Cloneable, Comparable<AVector>, Serializable, Iterable<Double> {
+public abstract class AVector extends AbstractArray implements IVector, Comparable<AVector>, Serializable, Iterable<Double> {
 	
 	// ================================================
 	// Abstract interface
@@ -38,7 +39,15 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	
 	// ================================================
 	// Standard implementations
-	
+
+	@Override
+	public void set(int[] indexes, double value) {
+		if (indexes.length==1) {
+			set(indexes[0],value);
+		} else {
+			throw new VectorzException(""+indexes.length+"D set not supported on AVector");
+		}
+	}
 	
 	@Override
 	public int dimensionality() {
@@ -327,10 +336,20 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 	/**
 	 * Sets each component of the vector to its absolute value
 	 */
-	public void absolute() {
+	public void abs() {
 		int len=length();
 		for (int i=0; i<len; i++) {
 			set(i,Math.abs(get(i)));
+		}
+	}
+	
+	/**
+	 * Sets each component of the vector to its sign value (-1, 0 or 1)
+	 */
+	public void signum() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			set(i,Math.signum(get(i)));
 		}
 	}
 	
@@ -610,6 +629,12 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		return true;
 	}
 	
+	@Override
+	public boolean isElementConstrained() {
+		return false;
+	}
+	
+	
 	/**
 	 * Returns true if this vector is fully mutable, i.e. can contain any unconstrained double values
 	 * @return
@@ -791,7 +816,7 @@ public abstract class AVector implements IVector, Cloneable, Comparable<AVector>
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
-			this.addAt(j,vector.array[i]*factor);
+			this.addAt(j,vector.data[i]*factor);
 		}
 	}
 	

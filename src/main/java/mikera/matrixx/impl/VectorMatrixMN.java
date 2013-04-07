@@ -10,7 +10,7 @@ import mikera.vectorz.Vectorz;
  * @author Mike
  *
  */
-public final class VectorMatrixMN extends AVectorMatrix {
+public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 	private int rowCount;	
 	private final int columnCount;	
 	private AVector[] rows;

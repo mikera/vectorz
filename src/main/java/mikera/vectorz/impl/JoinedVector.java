@@ -252,6 +252,19 @@ public final class JoinedVector extends AVector {
 		right.addProduct(a, aOffset+split,b,bOffset+split, factor);
 	}
 	
+	
+	@Override
+	public void signum() {
+		left.signum();
+		right.signum();
+	}
+	
+	@Override
+	public void abs() {
+		left.abs();
+		right.abs();
+	}
+	
 	@Override
 	public void applyOp(Op op) {
 		left.applyOp(op);

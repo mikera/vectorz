@@ -3,15 +3,11 @@ package mikera.vectorz;
 import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
-import mikera.vectorz.ops.ClampOp;
 import mikera.vectorz.ops.ComposedOp;
-import mikera.vectorz.ops.ConstantOp;
-import mikera.vectorz.ops.IdentityOp;
+import mikera.vectorz.ops.DerivativeOp;
 import mikera.vectorz.ops.InverseOp;
-import mikera.vectorz.ops.Logistic;
-import mikera.vectorz.ops.SoftPlus;
-import mikera.vectorz.ops.StochasticBinary;
-import mikera.vectorz.ops.Tanh;
+import mikera.vectorz.ops.ProductOp;
+import mikera.vectorz.ops.SumOp;
 
 /**
  * Abstract class for representing a unary operation
@@ -20,13 +16,7 @@ import mikera.vectorz.ops.Tanh;
  */
 public abstract class Op implements IOp, ITransform {
 	
-	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
-	public static final Op LINEAR=IdentityOp.INSTANCE;
-	public static final Op LOGISTIC=Logistic.INSTANCE;
-	public static final Op RECTIFIER=new ClampOp(0.0,Double.MAX_VALUE);
-	public static final Op STOCHASTIC_LOGISTIC=compose(STOCHASTIC_BINARY,Logistic.INSTANCE);
-	public static final Op TANH=Tanh.INSTANCE;
-	public static final Op SOFTPLUS=SoftPlus.INSTANCE;
+	
 
 	public abstract double apply(double x);
 	
@@ -144,13 +134,13 @@ public abstract class Op implements IOp, ITransform {
 	}
 	
 	public double minValue() {
-		return -Double.MAX_VALUE;
+		return Double.NEGATIVE_INFINITY;
 	}
 	
 	public abstract double averageValue();
 	
 	public double maxValue() {
-		return Double.MAX_VALUE;
+		return Double.POSITIVE_INFINITY;
 	}
 	
 	/**
@@ -195,16 +185,26 @@ public abstract class Op implements IOp, ITransform {
 	}
 	
 	public boolean isBounded() {
-		return (minValue()>-Double.MAX_VALUE)||(maxValue()<Double.MAX_VALUE);
+		return (minValue()>=-Double.MAX_VALUE)||(maxValue()<=Double.MAX_VALUE);
+	}
+	
+	public Op getDerivativeOp() {
+		return new DerivativeOp(this);
 	}
 	
 	public static Op compose(Op op1, Op op2) {
-		return op1.compose(op2);
+		return Ops.compose(op1,op2);
 	}
  
 	public Op compose(Op op) {
-		if (op instanceof IdentityOp) return this;
-		if (op instanceof ConstantOp) return ConstantOp.create(apply(((ConstantOp)op).value));
-		return new ComposedOp(this,op);
+		return ComposedOp.create(this, op);
+	}
+	
+	public Op product(Op op) {
+		return ProductOp.create(this, op);
+	}
+	
+	public Op sum(Op op) {
+		return SumOp.create(this, op);
 	}
 }

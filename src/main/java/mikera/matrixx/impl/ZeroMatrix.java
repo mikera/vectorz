@@ -5,6 +5,7 @@ import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.ZeroVector;
 
 /**
  * Lightweight immutable zero matrix class
@@ -105,6 +106,11 @@ public final class ZeroMatrix extends AMatrix {
 	@Override
 	public boolean isInvertible() {
 		return false;
+	}
+	
+	@Override
+	public AVector asVector() {
+		return ZeroVector.create(inputDimensions*outputDimensions);
 	}
 	
 	@Override
