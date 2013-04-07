@@ -49,7 +49,7 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 			case 1: return slice.get();
 			case 2: return slice.get(indexes[1]);
 			case 3: return slice.get(indexes[1],indexes[2]);
-			default: return slice.get(Arrays.copyOfRange(shape,1,d));
+			default: return slice.get(Arrays.copyOfRange(indexes,1,d));
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 			case 1: slice.set(value); return;
 			case 2: slice.set(indexes[1],value); return;
 			case 3: slice.set(indexes[1],indexes[2],value); return;
-			default: slice.set(Arrays.copyOfRange(shape,1,d),value); return;
+			default: slice.set(Arrays.copyOfRange(indexes,1,d),value); return;
 		}
 	}
 
