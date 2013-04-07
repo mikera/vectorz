@@ -9,6 +9,7 @@ import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.VectorzException;
 
 public class SliceArray<T extends INDArray> extends AbstractArray {
 	private final int[] shape;
@@ -52,8 +53,9 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 	
 	@Override
 	public void set(int[] indexes, double value) {
-		int d=dimensionality();
+		int d=indexes.length;
 		switch (d) {
+			case 0: throw new VectorzException("Can't do 0D set on SliceArray!");
 			case 1: slices[indexes[0]].set(value); return;
 			case 2: slices[indexes[0]].set(indexes[1],value); return;
 			case 3: slices[indexes[0]].set(indexes[1],indexes[2],value); return;
