@@ -3,10 +3,7 @@ package mikera.vectorz;
 import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
-import mikera.vectorz.ops.ComposedOp;
-import mikera.vectorz.ops.ConstantOp;
 import mikera.vectorz.ops.DerivativeOp;
-import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.InverseOp;
 
 /**
