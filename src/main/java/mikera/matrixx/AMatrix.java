@@ -98,12 +98,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return getRow(rowNumber);
 	}
 	
-	
 	@Override
 	public int[] getShape() {
 		return new int[] {rowCount(),columnCount()};
 	}
-
 	
 	@Override
 	public double get(int... indexes) {
