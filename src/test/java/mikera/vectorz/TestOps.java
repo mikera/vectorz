@@ -19,7 +19,7 @@ import mikera.vectorz.ops.StochasticBinary;
 public class TestOps {
 	
 	@Test public void testComposedOp() {
-		ComposedOp op=ComposedOp.compose(LinearOp.create(2.0,1.0),LinearOp.create(100.0,10.0));
+		Op op=ComposedOp.compose(LinearOp.create(2.0,1.0),LinearOp.create(100.0,10.0));
 		AVector v=Vector.of(1.0,2.0);
 		v.applyOp(op);
 		assertEquals(221.0,v.get(0),0.0);
@@ -127,7 +127,9 @@ public class TestOps {
 			op.derivativeForOutput(y);
 			
 			Op d=op.getDerivativeOp();
-			assertEquals(op.derivative(x),d.apply(x),0.00001);
+			if ((!Double.isNaN(x))&&(!Double.isNaN(y))&&(!op.isStochastic())) {
+				assertEquals(op.derivative(x),d.apply(x),0.00001);
+			}
 		} else {
 			try {
 				op.derivative(x);
@@ -248,7 +250,6 @@ public class TestOps {
 		doOpTest(QuadraticOp.create(0, 3, 4));
 		
 		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
-		doComposeTest(ConstantOp.create(1.0),LinearOp.create(Double.NaN, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));
 		doComposeTest(Logistic.INSTANCE,LinearOp.create(10.0, -0.2));
 	}

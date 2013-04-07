@@ -3,8 +3,10 @@ package mikera.vectorz;
 import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
+import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.DerivativeOp;
 import mikera.vectorz.ops.InverseOp;
+import mikera.vectorz.ops.ProductOp;
 
 /**
  * Abstract class for representing a unary operation
@@ -194,6 +196,10 @@ public abstract class Op implements IOp, ITransform {
 	}
  
 	public Op compose(Op op) {
-		return Ops.compose(this, op);
+		return ComposedOp.create(this, op);
+	}
+	
+	public Op product(Op op) {
+		return ProductOp.create(this, op);
 	}
 }

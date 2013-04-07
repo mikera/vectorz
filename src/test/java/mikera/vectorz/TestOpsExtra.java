@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import mikera.util.Rand;
 import mikera.vectorz.Op;
+import mikera.vectorz.ops.LinearOp;
 
 import org.junit.Test;
 
@@ -36,9 +37,22 @@ public class TestOpsExtra {
 		}
 	}
 	
+	@Test public void testCompositions() {
+		assertEquals(Ops.SIN, Ops.compose(LinearOp.create(1.0,0.0), Ops.SIN));
+		
+		assertEquals(Ops.SIN, Ops.compose(LinearOp.create(0.5,0.0),Ops.compose(LinearOp.create(2.0,0.0), Ops.SIN)));
+	}
+	
 	@Test public void testDerivativeChains() {
 		Op sin=Ops.SIN;
-		assert(sin.getDerivativeOp().getDerivativeOp().getDerivativeOp().getDerivativeOp()==sin);
+		Op ddddsin=sin.getDerivativeOp().getDerivativeOp().getDerivativeOp().getDerivativeOp();
+		//System.out.println(ddddsin);
+		assertTrue(ddddsin==sin);
+
+		Op cos=Ops.COS;
+		assertTrue(cos.getDerivativeOp().getDerivativeOp().getDerivativeOp().getDerivativeOp()==cos);
+		
+		assertTrue(Ops.EXP.getDerivativeOp()==Ops.EXP);
 	}
 	
 	@Test public void testRange() {

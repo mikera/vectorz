@@ -11,8 +11,17 @@ public class ComposedOp extends Op {
 		this.inner=inner;
 	}
 	
-	public static ComposedOp compose(Op outer, Op inner) {
+	public static Op compose(Op outer, Op inner) {
+		if (inner instanceof ComposedOp) {
+			ComposedOp ci=(ComposedOp)inner;
+			return outer.compose(ci.outer).compose(ci.inner);
+		}
+		
 		return new ComposedOp(outer,inner);
+	}
+	
+	public static Op create(Op a, Op b) {
+		return compose(a,b);
 	}
 
 	@Override
@@ -50,6 +59,11 @@ public class ComposedOp extends Op {
 	public double derivative(double x) {
 		double y=inner.apply(x);
 		return outer.derivative(y)*inner.derivativeForOutput(y);
+	}
+	
+	@Override
+	public Op getDerivativeOp() {
+		return outer.getDerivativeOp().product(inner.getDerivativeOp());
 	}
 	
 	@Override

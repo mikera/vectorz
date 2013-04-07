@@ -77,6 +77,11 @@ public final class QuadraticOp extends APolynomialOp {
 	}
 	
 	@Override
+	public Op getDerivativeOp() {
+		return LinearOp.create(2*a,b);
+	}
+	
+	@Override
 	public boolean hasInverse() {
 		return false;
 	}
