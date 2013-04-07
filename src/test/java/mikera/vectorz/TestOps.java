@@ -125,11 +125,18 @@ public class TestOps {
 		if (op.hasDerivative()) {
 			op.derivative(x);
 			op.derivativeForOutput(y);
+			
+			op.getDerivativeOp();
 		} else {
 			try {
 				op.derivative(x);
-				op.derivativeForOutput(y);
 				fail("Derivative did not throw exception!");
+			} catch (Throwable t) {
+				// OK
+			}
+			try {
+				op.derivativeForOutput(x);
+				fail("Derivative for output did not throw exception!");
 			} catch (Throwable t) {
 				// OK
 			}

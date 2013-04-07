@@ -5,6 +5,7 @@ import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
 import mikera.vectorz.ops.ComposedOp;
 import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.DerivativeOp;
 import mikera.vectorz.ops.IdentityOp;
 import mikera.vectorz.ops.InverseOp;
 
@@ -185,6 +186,10 @@ public abstract class Op implements IOp, ITransform {
 	
 	public boolean isBounded() {
 		return (minValue()>=-Double.MAX_VALUE)||(maxValue()<=Double.MAX_VALUE);
+	}
+	
+	public Op getDerivativeOp() {
+		return new DerivativeOp(this);
 	}
 	
 	public static Op compose(Op op1, Op op2) {
