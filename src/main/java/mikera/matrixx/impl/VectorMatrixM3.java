@@ -10,7 +10,7 @@ import mikera.vectorz.Vector3;
  * @author Mike
  *
  */
-public final class VectorMatrixM3 extends AVectorMatrix  implements ISpecialisedTransform  {
+public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISpecialisedTransform  {
 	private int rowCount;	
 	private Vector3[] rows;
 	
