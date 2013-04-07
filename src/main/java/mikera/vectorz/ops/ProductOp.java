@@ -58,4 +58,11 @@ public class ProductOp extends Op {
 		double by=b.apply(x);
 		return a.derivative(x)*by+b.derivative(x)*ay;
 	}
+	
+	@Override
+	public Op getDerivativeOp() {
+		Op da=a.getDerivativeOp();
+		Op db=b.getDerivativeOp();
+		return (da.product(b)).sum(db.product(a));
+	}
 }
