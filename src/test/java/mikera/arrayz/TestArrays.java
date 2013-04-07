@@ -62,6 +62,11 @@ public class TestArrays {
 		INDArray c=a.clone();
 		assertTrue(c.equals(a));
 		assertTrue(a.equals(c));
+		
+		if (c==a) {
+			// can only return same object if immutable
+			assert(!a.isMutable());
+		}
 	}
 	
 	private void testApplyOp(INDArray a) {
