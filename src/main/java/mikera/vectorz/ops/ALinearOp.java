@@ -1,8 +1,6 @@
 package mikera.vectorz.ops;
 
-import mikera.vectorz.Op;
-
-public abstract class ALinearOp extends Op {
+public abstract class ALinearOp extends APolynomialOp {
 
 	public abstract double getFactor();
 	

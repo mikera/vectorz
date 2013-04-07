@@ -3,7 +3,7 @@ package mikera.vectorz.ops;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public final class QuadraticOp extends Op {
+public final class QuadraticOp extends APolynomialOp {
 	private final double a;
 	private final double b;
 	private final double c;
