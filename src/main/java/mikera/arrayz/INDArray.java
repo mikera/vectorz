@@ -12,6 +12,10 @@ public interface INDArray extends Cloneable {
 	
 	public int dimensionality();
 	
+	/**
+	 * Returns the shape of the array as an array of ints.
+	 * @return
+	 */
 	public int[] getShape();
 	
 	public double get();
@@ -61,6 +65,11 @@ public interface INDArray extends Cloneable {
 	 */
 	public boolean isView();
 
+	/**
+	 * Returns a clone of the array, as a new array which will be fully mutable
+	 * and may be of a different class to the original.
+	 * @return
+	 */
 	public INDArray clone();
 
 	/**
@@ -75,9 +84,16 @@ public interface INDArray extends Cloneable {
 	 */
 	void applyOp(IOp op);
 	
+	/**
+	 * Returns true if the two arrays are exactly equal in value and shape
+	 * @param a
+	 * @return
+	 */
 	public boolean equals(INDArray a);
 
+	/**
+	 * Returns an exact deep clone of an array (i.e. of the same class as the original).
+	 * @return
+	 */
 	public INDArray exactClone();
-	
-
 }

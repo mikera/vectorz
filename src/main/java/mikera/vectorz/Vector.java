@@ -124,7 +124,6 @@ public final class Vector extends ArrayVector {
 		Arrays.fill(data, value);
 	}
 	
-	
 	@Override
 	public double elementSum() {
 		double result=0.0;
