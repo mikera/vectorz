@@ -644,6 +644,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return compose((AMatrix)a);
 	}
 	
+	/**
+	 * Composes this matrix with another matrix (matrix multiplication)
+	 * Returns a new matrix that represents the compose transformation.
+	 * @param a
+	 * @return
+	 */
 	public AMatrix compose(AMatrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
