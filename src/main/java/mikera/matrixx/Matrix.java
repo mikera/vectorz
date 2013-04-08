@@ -19,6 +19,10 @@ public final class Matrix extends AMatrix {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
 	}
 	
+	public static Matrix create(int rowCount, int columnCount) {
+		return new Matrix(rowCount,columnCount);
+	}
+	
 	public Matrix(AMatrix m) {
 		this(m.rowCount(),m.columnCount());
 		set(m);
@@ -48,15 +52,38 @@ public final class Matrix extends AMatrix {
 		return new Matrix(rowCount,columnCount,data);
 	}
 	
-	@Override
-	public AMatrix compose(AMatrix a) {
+	public Matrix compose(Matrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
 		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
 		int ic=this.columnCount();
-		AMatrix result=Matrixx.newMatrix(rc,cc);
+		Matrix result=Matrix.create(rc,cc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				double acc=0.0;
+				for (int k=0; k<ic; k++) {
+					acc+=this.get(i, k)*a.get(k, j);
+				}
+				result.set(i,j,acc);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public Matrix compose(AMatrix a) {
+		if (a instanceof Matrix) {
+			return compose((Matrix)a);
+		}
+		if ((this.columnCount()!=a.rowCount())) {
+			throw new VectorzException("Matrix sizes not compatible!");
+		}
+		int rc=this.rowCount();
+		int cc=a.columnCount();
+		int ic=this.columnCount();
+		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
