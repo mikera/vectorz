@@ -551,6 +551,18 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		}
 	}
 	
+	public void set(INDArray a) {
+		if (a instanceof AVector) {set((AVector)a); return;}
+		if (a.dimensionality()==1) {
+			int len=length();
+			for (int i=0; i<len; i++) {
+				set(i,a.get(i));
+			}		
+		} else {
+			throw new IllegalArgumentException("Cannot set vector using array of dimensonality: "+a.dimensionality());
+		}
+	}
+	
 	/**
 	 * Set the vector equal to an offset into another vector
 	 * @param src
