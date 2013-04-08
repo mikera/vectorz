@@ -6,6 +6,11 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.util.VectorzException;
 
 public class Arrayz {
+	/**
+	 * Creates an array from the given data
+	 * @param object
+	 * @return
+	 */
 	public static INDArray create(Object object) {
 		if (object instanceof INDArray) return ((INDArray)object).clone();
 		
