@@ -162,6 +162,14 @@ public final class Matrix extends AMatrix {
 		data[(row*columns)+column]=value;
 	}
 	
+	public void addMultiple(Matrix m,double factor) {
+		assert(rowCount()==m.rowCount());
+		assert(columnCount()==m.columnCount());
+		for (int i=0; i<data.length; i++) {
+			data[i]+=m.data[i]*factor;
+		}
+	}
+	
 	public void add(Matrix m) {
 		assert(rowCount()==m.rowCount());
 		assert(columnCount()==m.columnCount());
@@ -170,6 +178,22 @@ public final class Matrix extends AMatrix {
 		}
 	}
 
+	@Override
+	public void addMultiple(AMatrix m,double factor) {
+		if (m instanceof Matrix) {addMultiple((Matrix)m,factor); return;}
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(rc==m.rowCount());
+		assert(cc==m.columnCount());
+
+		int di=0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				data[di++]+=m.get(i, j)*factor;
+			}
+		}
+	}
+	
 	@Override
 	public void add(AMatrix m) {
 		if (m instanceof Matrix) {add((Matrix)m); return;}

@@ -307,6 +307,16 @@ public class TestMatrixx {
 		doSwapTest(m);
 		doMutationTest(m);
 	}
+	
+	private void doAddTest(AMatrix m) {
+		if (!m.isFullyMutable()) return;
+		AMatrix m2=m.exactClone();
+		AMatrix m3=m.exactClone();
+		m2.add(m);
+		m2.add(m);
+		m3.addMultiple(m, 2.0);
+		assertTrue(m2.epsilonEquals(m3));
+	}
 
 	private void doCloneSafeTest(AMatrix m) {
 		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
@@ -429,6 +439,7 @@ public class TestMatrixx {
 		doParseTest(m);
 		doHashTest(m);
 		doScaleTest(m);
+		doAddTest(m);
 		doRowColumnTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);
