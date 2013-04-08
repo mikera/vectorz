@@ -11,6 +11,18 @@ import mikera.vectorz.ops.QuadraticOp;
 import org.junit.Test;
 
 public class TestOpsExtra {
+	private void testDerivativesAt(Op op, double... xs) {
+		for (double x:xs) {
+			testDerivativeAt(op,x);
+		}
+	}
+	
+	private void testDerivativeAt(Op op, double x) {
+		double dx=op.derivative(x);
+		double edx=(op.apply(x+0.000001)-op.apply(x-0.000001))/(2*0.000001);
+		assertEquals(1.0,(dx==0)?(edx+1.0):(edx/dx),0.0001);
+	}
+	
 	@Test public void testOp() {
 		double[] fs=new double[10];
 		fs[0]=1000;
@@ -27,6 +39,8 @@ public class TestOpsExtra {
 	@Test public void testDerivatives() {
 		assertEquals(0,Ops.LOGISTIC.derivativeForOutput(1),0.0001);
 		assertEquals(0,Ops.LOGISTIC.derivativeForOutput(0),0.0001);
+		assertEquals(0,Ops.LOGISTIC.derivative(-100),0.0001);
+		assertEquals(0,Ops.LOGISTIC.derivative(100),0.0001);
 
 		assertEquals(1.0,Ops.SOFTPLUS.derivativeForOutput(100),0.0001);
 		assertEquals(0.0,Ops.SOFTPLUS.derivativeForOutput(0),0.0001);
@@ -37,6 +51,10 @@ public class TestOpsExtra {
 			assertEquals(1,Ops.LINEAR.derivativeForOutput(v),0.0001);
 			assertEquals(Ops.STOCHASTIC_LOGISTIC.derivativeForOutput(v),Ops.LOGISTIC.derivativeForOutput(v),0.0001);
 		}
+		
+		testDerivativesAt(Ops.LINEAR,0,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.LOGISTIC,0,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.EXP,0,1,-1,10,-10,100,-100);
 	}
 	
 	@Test public void testCompositions() {
