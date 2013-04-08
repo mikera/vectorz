@@ -83,7 +83,7 @@ public final class ConstantOp extends ALinearOp {
 	
 	@Override
 	public Op getDerivativeOp() {
-		return ConstantOp.create(0.0);
+		return ConstantOp.ZERO;
 	}
 	
 	public Op compose(Op op) {
@@ -91,7 +91,7 @@ public final class ConstantOp extends ALinearOp {
 	}
 	
 	public Op product(Op op) {
-		if (value==0) return ConstantOp.create(0.0);
+		if (value==0) return ConstantOp.ZERO;
 		return LinearOp.create(value, 0.0).compose(op);
 	}
 }
