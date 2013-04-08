@@ -98,9 +98,7 @@ public final class Vector extends ArrayVector {
 	public void set(AVector a) {
 		if (a instanceof Vector) {
 			Vector v=(Vector)a;
-			for (int i=0; i<data.length; i++) {
-				data[i]=v.data[i];
-			}
+			System.arraycopy(v.data, 0, data, 0, data.length);
 		} else {
 			super.set(a);
 		}
