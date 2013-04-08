@@ -8,7 +8,6 @@ import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -321,8 +320,8 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public AVector clone() {
-		AVector v=Vectorz.newVector(length);
+	public Vector clone() {
+		Vector v=Vector.createLength(length);
 		for (int i=0; i<data.length; i++) {
 			v.set(index.data[i],data[i]);
 		}	
