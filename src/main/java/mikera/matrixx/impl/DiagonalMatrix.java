@@ -11,7 +11,7 @@ import mikera.vectorz.Vectorz;
  * @author Mike
  */
 public final class DiagonalMatrix extends ADiagonalMatrix {
-	private final double[] data;
+	final double[] data;
 	
 	public DiagonalMatrix(int dimensions) {
 		super(dimensions);

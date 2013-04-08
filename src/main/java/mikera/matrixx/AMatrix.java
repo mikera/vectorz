@@ -386,7 +386,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	/**
-	 * Returns a transposed version of this matrix. May or may not be a reference.
+	 * Returns a transposed version of this matrix. May or may not be a view.
 	 * @return
 	 */
 	public AMatrix getTranspose() {
