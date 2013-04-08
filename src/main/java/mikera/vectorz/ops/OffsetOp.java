@@ -76,7 +76,7 @@ public final class OffsetOp extends ALinearOp {
 	
 	@Override
 	public Op getDerivativeOp() {
-		return ConstantOp.create(1.0);
+		return ConstantOp.ONE;
 	}
 	
 	@Override

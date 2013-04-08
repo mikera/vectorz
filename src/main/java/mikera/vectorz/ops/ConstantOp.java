@@ -10,6 +10,7 @@ public final class ConstantOp extends ALinearOp {
 	public final double value;
 	
 	public static final ConstantOp ZERO=new ConstantOp(0.0);
+	public static final ConstantOp ONE=new ConstantOp(1.0);
 	
 	private ConstantOp(double value) {
 		this.value=value;
