@@ -162,6 +162,30 @@ public final class Matrix extends AMatrix {
 		data[(row*columns)+column]=value;
 	}
 	
+	public void add(Matrix m) {
+		assert(rowCount()==m.rowCount());
+		assert(columnCount()==m.columnCount());
+		for (int i=0; i<data.length; i++) {
+			data[i]+=m.data[i];
+		}
+	}
+
+	@Override
+	public void add(AMatrix m) {
+		if (m instanceof Matrix) {add((Matrix)m); return;}
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(rc==m.rowCount());
+		assert(cc==m.columnCount());
+
+		int di=0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				data[di++]+=m.get(i, j);
+			}
+		}
+	}
+	
 	@Override
 	public void scale(double factor) {
 		for (int i=0; i<data.length; i++) {
@@ -175,9 +199,10 @@ public final class Matrix extends AMatrix {
 		assert(rc==a.rowCount());
 		int cc = columnCount();
 		assert(cc==a.columnCount());
+		int di=0;
 		for (int row = 0; row < rc; row++) {
 			for (int column = 0; column < cc; column++) {
-				set(row, column, a.get(row, column));
+				data[di++]=a.get(row, column);
 			}
 		}
 	}
