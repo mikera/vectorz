@@ -93,6 +93,18 @@ public final class Vector extends ArrayVector {
 	public void set(int offset, double[] data, int dataOffset, int length) {
 		System.arraycopy(data, dataOffset, this.data, offset, length);
 	}
+	
+	@Override
+	public void set(AVector a) {
+		if (a instanceof Vector) {
+			Vector v=(Vector)a;
+			for (int i=0; i<data.length; i++) {
+				data[i]=v.data[i];
+			}
+		} else {
+			super.set(a);
+		}
+	}
 
 	@Override
 	public double[] getArray() {
