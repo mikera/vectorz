@@ -19,8 +19,9 @@ public class TestOpsExtra {
 	
 	private void testDerivativeAt(Op op, double x) {
 		double dx=op.derivative(x);
-		double edx=(op.apply(x+0.000001)-op.apply(x-0.000001))/(2*0.000001);
-		assertEquals(1.0,(dx==0)?(edx+1.0):(edx/dx),0.0001);
+		double epsilon=0.001;
+		double edx=(op.apply(x+epsilon)-op.apply(x-epsilon))/(2*epsilon);
+		assertEquals(1.0,(dx==0)?(edx+1.0):(edx/dx),0.01);
 	}
 	
 	@Test public void testOp() {
@@ -44,6 +45,8 @@ public class TestOpsExtra {
 
 		assertEquals(1.0,Ops.SOFTPLUS.derivativeForOutput(100),0.0001);
 		assertEquals(0.0,Ops.SOFTPLUS.derivativeForOutput(0),0.0001);
+		assertEquals(1.0,Ops.SOFTPLUS.derivative(100),0.0001);
+		assertEquals(0.0,Ops.SOFTPLUS.derivative(-100),0.0001);
 
 		for (int i=0; i<10 ; i++) {
 			double v=Rand.nextDouble();
@@ -52,9 +55,17 @@ public class TestOpsExtra {
 			assertEquals(Ops.STOCHASTIC_LOGISTIC.derivativeForOutput(v),Ops.LOGISTIC.derivativeForOutput(v),0.0001);
 		}
 		
-		testDerivativesAt(Ops.LINEAR,0,1,-1,10,-10,100,-100);
-		testDerivativesAt(Ops.LOGISTIC,0,1,-1,10,-10,100,-100);
-		testDerivativesAt(Ops.EXP,0,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.LINEAR,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.LOGISTIC,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.EXP,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.TANH,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.SOFTPLUS,0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(QuadraticOp.create(1, 2, 3),0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(LinearOp.create(-11, 2),0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.RECIPROCAL,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.SIN,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.COS,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.NEGATE,0,0.1,-0.1,1,-1,10,-10);
 	}
 	
 	@Test public void testCompositions() {
