@@ -2,11 +2,11 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
-public class SumOp extends Op {
+public class Sum extends Op {
 	public final Op a;
 	public final Op b;
 	
-	private SumOp(Op a, Op b) {
+	private Sum(Op a, Op b) {
 		this.a=a;
 		this.b=b;
 	}
@@ -16,7 +16,7 @@ public class SumOp extends Op {
 			return b.sum(a);
 		}
 		
-		return new SumOp(a,b);
+		return new Sum(a,b);
 	}
 
 	@Override

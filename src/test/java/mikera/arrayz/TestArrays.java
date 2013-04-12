@@ -2,7 +2,7 @@ package mikera.arrayz;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.Constant;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -81,7 +81,7 @@ public class TestArrays {
 		INDArray d=a.clone();
 		
 		c.asVector().fill(5.0);
-		d.applyOp(ConstantOp.create(5.0));
+		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
 	}
 	

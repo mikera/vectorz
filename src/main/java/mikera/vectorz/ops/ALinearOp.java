@@ -25,7 +25,7 @@ public abstract class ALinearOp extends APolynomialOp {
 	
 	@Override
 	public Op getDerivativeOp() {
-		return ConstantOp.create(getFactor());
+		return Constant.create(getFactor());
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public abstract class ALinearOp extends APolynomialOp {
 	}
 	
 	public Op sum(ALinearOp op) {
-		return LinearOp.create(getFactor()+op.getFactor(), getConstant()+op.getConstant());
+		return Linear.create(getFactor()+op.getFactor(), getConstant()+op.getConstant());
 	}
 	
 	@Override

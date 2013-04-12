@@ -5,13 +5,13 @@ package mikera.vectorz.ops;
  * @author Mike
  *
  */
-public final class ClampOp extends ABoundedOp {
+public final class Clamp extends ABoundedOp {
 	private final double min;
 	private final double max;
 	
-	public static final ClampOp ZERO_TO_ONE=new ClampOp(0,1);
+	public static final Clamp ZERO_TO_ONE=new Clamp(0,1);
 
-	public ClampOp(double min, double max) {
+	public Clamp(double min, double max) {
 		this.min=min;
 		this.max=max;
 	}

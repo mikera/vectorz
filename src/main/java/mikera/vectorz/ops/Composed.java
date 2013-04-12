@@ -2,22 +2,22 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
-public class ComposedOp extends Op {
+public class Composed extends Op {
 	public final Op inner;
 	public final Op outer;
 	
-	private ComposedOp(Op outer, Op inner) {
+	private Composed(Op outer, Op inner) {
 		this.outer=outer;
 		this.inner=inner;
 	}
 	
 	public static Op compose(Op outer, Op inner) {
-		if (inner instanceof ComposedOp) {
-			ComposedOp ci=(ComposedOp)inner;
+		if (inner instanceof Composed) {
+			Composed ci=(Composed)inner;
 			return outer.compose(ci.outer).compose(ci.inner);
 		}
 		
-		return new ComposedOp(outer,inner);
+		return new Composed(outer,inner);
 	}
 	
 	public static Op create(Op a, Op b) {

@@ -10,11 +10,11 @@ import mikera.vectorz.Op;
  * 
  * @author Mike
  */
-public final class IdentityOp extends ALinearOp {
+public final class Identity extends ALinearOp {
 	
-	public static final IdentityOp INSTANCE = new IdentityOp();
+	public static final Identity INSTANCE = new Identity();
 
-	private IdentityOp() {
+	private Identity() {
 		// no content
 	}
 	
@@ -60,7 +60,7 @@ public final class IdentityOp extends ALinearOp {
 	
 	@Override
 	public Op getDerivativeOp() {
-		return ConstantOp.ONE;
+		return Constant.ONE;
 	}
 	
 	@Override
@@ -84,7 +84,7 @@ public final class IdentityOp extends ALinearOp {
 	}
 	
 	@Override
-	public IdentityOp getInverse() {
+	public Identity getInverse() {
 		return this;
 	}
 	

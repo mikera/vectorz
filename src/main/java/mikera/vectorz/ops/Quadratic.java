@@ -3,12 +3,12 @@ package mikera.vectorz.ops;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public final class QuadraticOp extends APolynomialOp {
+public final class Quadratic extends APolynomialOp {
 	private final double a;
 	private final double b;
 	private final double c;
 	
-	private QuadraticOp(double a,double b, double c) {
+	private Quadratic(double a,double b, double c) {
 		this.a=a;
 		this.b=b;
 		this.c=c;
@@ -16,9 +16,9 @@ public final class QuadraticOp extends APolynomialOp {
 	
 	public static Op create(double a,double b, double c) {
 		if (a==0.0) {
-			return LinearOp.create(b,c);
+			return Linear.create(b,c);
 		}
-		return new QuadraticOp(a,b,c);
+		return new Quadratic(a,b,c);
 	}
 	
 	@Override
@@ -78,7 +78,7 @@ public final class QuadraticOp extends APolynomialOp {
 	
 	@Override
 	public Op getDerivativeOp() {
-		return LinearOp.create(2*a,b);
+		return Linear.create(2*a,b);
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public final class QuadraticOp extends APolynomialOp {
 		double f=op.getFactor();
 		double g=op.getConstant();
 		
-		return QuadraticOp.create(a*f*f,(2*a*f*g+f*b),a*g*g+b*g+c);
+		return Quadratic.create(a*f*f,(2*a*f*g+f*b),a*g*g+b*g+c);
 	}
 	
 	@Override

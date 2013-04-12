@@ -19,7 +19,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.Constant;
 
 import org.junit.Test;
 
@@ -398,7 +398,7 @@ public class TestMatrixx {
 		AMatrix d=m.exactClone();
 		
 		c.asVector().fill(5.0);
-		d.applyOp(ConstantOp.create(5.0));
+		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
 	}
 	

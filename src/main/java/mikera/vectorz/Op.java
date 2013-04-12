@@ -3,11 +3,11 @@ package mikera.vectorz;
 import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
-import mikera.vectorz.ops.ComposedOp;
-import mikera.vectorz.ops.DerivativeOp;
-import mikera.vectorz.ops.InverseOp;
-import mikera.vectorz.ops.ProductOp;
-import mikera.vectorz.ops.SumOp;
+import mikera.vectorz.ops.Composed;
+import mikera.vectorz.ops.Derivative;
+import mikera.vectorz.ops.Inverse;
+import mikera.vectorz.ops.Product;
+import mikera.vectorz.ops.Sum;
 
 /**
  * Abstract class for representing a unary operation
@@ -85,7 +85,7 @@ public abstract class Op implements IOp, ITransform {
 	@Override 
 	public Op getInverse() {
 		if (hasInverse()) {
-			return new InverseOp(this);
+			return new Inverse(this);
 		} else {
 			throw new UnsupportedOperationException("No inverse available: "+this.getClass());
 		}
@@ -189,7 +189,7 @@ public abstract class Op implements IOp, ITransform {
 	}
 	
 	public Op getDerivativeOp() {
-		return new DerivativeOp(this);
+		return new Derivative(this);
 	}
 	
 	public static Op compose(Op op1, Op op2) {
@@ -197,14 +197,14 @@ public abstract class Op implements IOp, ITransform {
 	}
  
 	public Op compose(Op op) {
-		return ComposedOp.create(this, op);
+		return Composed.create(this, op);
 	}
 	
 	public Op product(Op op) {
-		return ProductOp.create(this, op);
+		return Product.create(this, op);
 	}
 	
 	public Op sum(Op op) {
-		return SumOp.create(this, op);
+		return Sum.create(this, op);
 	}
 }

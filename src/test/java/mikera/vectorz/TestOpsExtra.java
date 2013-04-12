@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import mikera.util.Rand;
 import mikera.vectorz.Op;
-import mikera.vectorz.ops.ConstantOp;
-import mikera.vectorz.ops.LinearOp;
-import mikera.vectorz.ops.QuadraticOp;
+import mikera.vectorz.ops.Constant;
+import mikera.vectorz.ops.Linear;
+import mikera.vectorz.ops.Quadratic;
 
 import org.junit.Test;
 
@@ -60,8 +60,8 @@ public class TestOpsExtra {
 		testDerivativesAt(Ops.EXP,0,0.1,-0.1,1,-1,10,-10,100,-100);
 		testDerivativesAt(Ops.TANH,0,0.1,-0.1,1,-1,10,-10,100,-100);
 		testDerivativesAt(Ops.SOFTPLUS,0,0.1,-0.1,1,-1,10,-10);
-		testDerivativesAt(QuadraticOp.create(1, 2, 3),0,0.1,-0.1,1,-1,10,-10);
-		testDerivativesAt(LinearOp.create(-11, 2),0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Quadratic.create(1, 2, 3),0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Linear.create(-11, 2),0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.RECIPROCAL,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.SIN,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.COS,0.1,-0.1,1,-1,10,-10);
@@ -72,9 +72,9 @@ public class TestOpsExtra {
 	}
 	
 	@Test public void testCompositions() {
-		assertEquals(Ops.SIN, Ops.compose(LinearOp.create(1.0,0.0), Ops.SIN));
+		assertEquals(Ops.SIN, Ops.compose(Linear.create(1.0,0.0), Ops.SIN));
 		
-		assertEquals(Ops.SIN, Ops.compose(LinearOp.create(0.5,0.0),Ops.compose(LinearOp.create(2.0,0.0), Ops.SIN)));
+		assertEquals(Ops.SIN, Ops.compose(Linear.create(0.5,0.0),Ops.compose(Linear.create(2.0,0.0), Ops.SIN)));
 	}
 	
 	@Test public void testDerivativeChains() {
@@ -88,13 +88,13 @@ public class TestOpsExtra {
 		
 		assertTrue(Ops.EXP.getDerivativeOp()==Ops.EXP);
 		
-		Op quad=QuadraticOp.create(Math.random(), Math.random(), Math.random());
+		Op quad=Quadratic.create(Math.random(), Math.random(), Math.random());
 		Op ddquad=quad.getDerivativeOp().getDerivativeOp();
 		Op dddquad=ddquad.getDerivativeOp();
-		assertEquals(ConstantOp.class,ddquad.getClass());
+		assertEquals(Constant.class,ddquad.getClass());
 		assertEquals(0.0,dddquad.apply(Math.random()),0.00001);
 		
-		Op sum=ConstantOp.create(10).sum(sin);
+		Op sum=Constant.create(10).sum(sin);
 		assertTrue(cos==sum.getDerivativeOp());
 	}
 	

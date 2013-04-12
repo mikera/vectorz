@@ -5,21 +5,21 @@ import static org.junit.Assert.*;
 
 import mikera.transformz.TestTransformz;
 import mikera.util.Rand;
-import mikera.vectorz.ops.ClampOp;
-import mikera.vectorz.ops.ComposedOp;
-import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.Clamp;
+import mikera.vectorz.ops.Composed;
+import mikera.vectorz.ops.Constant;
 import mikera.vectorz.ops.GaussianNoise;
-import mikera.vectorz.ops.IdentityOp;
-import mikera.vectorz.ops.LinearOp;
+import mikera.vectorz.ops.Identity;
+import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Logistic;
-import mikera.vectorz.ops.OffsetOp;
-import mikera.vectorz.ops.QuadraticOp;
+import mikera.vectorz.ops.Offset;
+import mikera.vectorz.ops.Quadratic;
 import mikera.vectorz.ops.StochasticBinary;
 
 public class TestOps {
 	
 	@Test public void testComposedOp() {
-		Op op=ComposedOp.compose(LinearOp.create(2.0,1.0),LinearOp.create(100.0,10.0));
+		Op op=Composed.compose(Linear.create(2.0,1.0),Linear.create(100.0,10.0));
 		AVector v=Vector.of(1.0,2.0);
 		v.applyOp(op);
 		assertEquals(221.0,v.get(0),0.0);
@@ -206,7 +206,7 @@ public class TestOps {
 		Op cop=op1.compose(op2);
 		doOpTest(cop);
 		
-		Op compop=ComposedOp.compose(op1,op2);
+		Op compop=Composed.compose(op1,op2);
 		doOpTest(compop);
 		
 		if (compop.isStochastic()) return;
@@ -227,12 +227,12 @@ public class TestOps {
 	}
 	
 	@Test public void genericTests() {
-		doOpTest(ConstantOp.create(5.0));
-		doOpTest(LinearOp.create(0.5, 3.0));
-		doOpTest(IdentityOp.INSTANCE);
-		doOpTest(OffsetOp.create(1.3));
+		doOpTest(Constant.create(5.0));
+		doOpTest(Linear.create(0.5, 3.0));
+		doOpTest(Identity.INSTANCE);
+		doOpTest(Offset.create(1.3));
 		
-		doOpTest(ClampOp.ZERO_TO_ONE);
+		doOpTest(Clamp.ZERO_TO_ONE);
 		
 		doOpTest(Ops.LINEAR);
 		doOpTest(Ops.LOGISTIC);
@@ -246,11 +246,11 @@ public class TestOps {
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);
 
-		doOpTest(QuadraticOp.create(2, 3, 4));
-		doOpTest(QuadraticOp.create(0, 3, 4));
+		doOpTest(Quadratic.create(2, 3, 4));
+		doOpTest(Quadratic.create(0, 3, 4));
 		
-		doComposeTest(LinearOp.create(0.31, 0.12),LinearOp.create(-100, 11.0));
+		doComposeTest(Linear.create(0.31, 0.12),Linear.create(-100, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));
-		doComposeTest(Logistic.INSTANCE,LinearOp.create(10.0, -0.2));
+		doComposeTest(Logistic.INSTANCE,Linear.create(10.0, -0.2));
 	}
 }

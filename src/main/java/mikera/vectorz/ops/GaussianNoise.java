@@ -53,7 +53,7 @@ public class GaussianNoise extends Op {
 	
 	@Override
 	public Op getDerivativeOp() {
-		return ConstantOp.ONE;
+		return Constant.ONE;
 	}
 
 	@Override

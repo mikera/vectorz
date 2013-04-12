@@ -21,7 +21,7 @@ import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
-import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.Constant;
 
 import org.junit.Test;
 
@@ -519,7 +519,7 @@ public class TestVectors {
 		AVector d=v.exactClone();
 		
 		c.fill(5.0);
-		d.applyOp(ConstantOp.create(5.0));
+		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
 	}
 	

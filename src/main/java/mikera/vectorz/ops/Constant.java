@@ -5,20 +5,20 @@ import java.util.Arrays;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public final class ConstantOp extends ALinearOp {
+public final class Constant extends ALinearOp {
 	
 	public final double value;
 	
-	public static final ConstantOp ZERO=new ConstantOp(0.0);
-	public static final ConstantOp ONE=new ConstantOp(1.0);
+	public static final Constant ZERO=new Constant(0.0);
+	public static final Constant ONE=new Constant(1.0);
 	
-	private ConstantOp(double value) {
+	private Constant(double value) {
 		this.value=value;
 	}
 	
-	public static final ConstantOp create(double constant) {
+	public static final Constant create(double constant) {
 		if (constant==0) return ZERO;
-		return new ConstantOp(constant);
+		return new Constant(constant);
 	}
 	
 	@Override
@@ -83,7 +83,7 @@ public final class ConstantOp extends ALinearOp {
 	
 	@Override
 	public Op getDerivativeOp() {
-		return ConstantOp.ZERO;
+		return Constant.ZERO;
 	}
 	
 	public Op compose(Op op) {
@@ -91,7 +91,7 @@ public final class ConstantOp extends ALinearOp {
 	}
 	
 	public Op product(Op op) {
-		if (value==0) return ConstantOp.ZERO;
-		return LinearOp.create(value, 0.0).compose(op);
+		if (value==0) return Constant.ZERO;
+		return Linear.create(value, 0.0).compose(op);
 	}
 }
