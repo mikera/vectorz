@@ -12,6 +12,7 @@ import mikera.vectorz.ops.Tanh;
 
 public final class Ops {
 	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
+	public static final Op IDENTITY=Identity.INSTANCE;
 	public static final Op LINEAR=Identity.INSTANCE;
 	public static final Op LOGISTIC=Logistic.INSTANCE;
 	public static final Op RECTIFIER=new Clamp(0.0,Double.MAX_VALUE);
