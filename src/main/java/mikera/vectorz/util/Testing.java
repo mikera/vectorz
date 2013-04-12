@@ -1,5 +1,10 @@
 package mikera.vectorz.util;
 
-public class Testing {
+import mikera.arrayz.INDArray;
 
+public class Testing {
+	
+	public boolean validateFullyMutable(INDArray m) {
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
 }
