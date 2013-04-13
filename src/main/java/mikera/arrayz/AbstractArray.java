@@ -41,6 +41,14 @@ public abstract class AbstractArray implements INDArray {
 		throw new UnsupportedOperationException("Can't set "+this.toString()+" to value "+a.toString());
 	}
 	
+	public void set(Object o) {
+		if (o instanceof INDArray) {set((INDArray)o); return;}
+		if (o instanceof Number) {
+			set(((Number)o).doubleValue()); return;
+		}
+		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
+	}
+	
 	public void square() {
 		applyOp(Ops.SQUARE);
 	}

@@ -315,6 +315,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		
 		throw new UnsupportedOperationException("Can't set matrix to array: "+a.getClass() +" with shape: "+a.getShape());
 	}
+	
+	public void set(Object o) {
+		if (o instanceof INDArray) {set((INDArray)o); return;}
+		if (o instanceof Number) {
+			set(((Number)o).doubleValue()); return;
+		}
+		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
+	}
 
 	public boolean isFullyMutable() {
 		return true;
