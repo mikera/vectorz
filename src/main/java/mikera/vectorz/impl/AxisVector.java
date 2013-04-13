@@ -44,6 +44,11 @@ public class AxisVector extends ComputedVector implements ISparse {
 		return 1.0;
 	}
 	
+	@Override 
+	public void square() {
+		// no effect
+	}
+	
 	@Override
 	public double elementSum() {
 		return 1.0;
