@@ -53,6 +53,14 @@ public class TestVectors {
 		assertTrue(d<=(v.maxAbsElement()*v.length()));
 	}
 	
+	public void testSquare(AVector v) {
+		v=v.exactClone();
+		AVector vc=v.clone();
+		v.square();
+		vc.square();
+		assertEquals(vc,v);
+	}
+	
 	@Test public void testCross() {
 		Vector3 v=Vector3.of(1,2,3);
 		v.crossProduct(Vector.of(1,1,1));
@@ -548,6 +556,7 @@ public class TestVectors {
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
+		testSquare(v);
 		testSubvectors(v);
 		testParse(v);
 		testDistances(v);
