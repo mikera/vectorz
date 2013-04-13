@@ -300,6 +300,7 @@ public class SparseIndexedVector extends ASparseVector {
 	public void set(int i, double value) {
 		int ip=index.indexPosition(i);
 		if (ip<0) {
+			if (value==0.0) return;
 			throw new VectorzException("Can't set SparseIndexedVector at non-indexed position: "+i);
 		}
 		data[ip]=value;
