@@ -136,7 +136,7 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override 
-	public void entrywiseMul(AMatrix m) {
+	public void elementMul(AMatrix m) {
 		// do nothing, already zero!
 	}
 

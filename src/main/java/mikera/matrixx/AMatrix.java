@@ -472,7 +472,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
 	 * @param m
 	 */
-	public void entrywiseMul(AMatrix m) {
+	public void elementMul(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
 		assert(rc==m.rowCount());
