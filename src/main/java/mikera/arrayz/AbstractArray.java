@@ -46,6 +46,12 @@ public abstract class AbstractArray implements INDArray {
 		if (o instanceof Number) {
 			set(((Number)o).doubleValue()); return;
 		}
+		if (o instanceof Iterable<?>) {
+			int i=0;
+			for (Object ob: ((Iterable<?>)o)) {
+				slice(i).set(ob);
+			}
+		}
 		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
 	}
 	
