@@ -65,7 +65,6 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		return new VectorIndexScalar(this,position);
 	}
 	
-	
 	@Override
 	public int[] getShape() {
 		return new int[] {length()};
