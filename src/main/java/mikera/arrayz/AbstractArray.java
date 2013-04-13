@@ -1,5 +1,6 @@
 package mikera.arrayz;
 
+import mikera.vectorz.Ops;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -38,6 +39,10 @@ public abstract class AbstractArray implements INDArray {
 			}
 		}
 		throw new UnsupportedOperationException("Can't set "+this.toString()+" to value "+a.toString());
+	}
+	
+	public void square() {
+		applyOp(Ops.SQUARE);
 	}
 	
 	public boolean equals(Object o) {
