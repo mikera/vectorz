@@ -7,6 +7,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.VectorzException;
 
@@ -161,6 +162,15 @@ public class SparseIndexedVector extends ASparseVector {
 		for (int i=0; i<data.length; i++) {
 			data[i]=-data[i]; 
 		}
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		int dlen=data.length;
+		if ((dlen<length())&&(op.apply(0.0)!=0.0)) {
+			throw new UnsupportedOperationException("Can't change sparse elements of SparseIndexedVector");
+		}
+		op.applyTo(data);
 	}
 	
 	@Override
