@@ -12,6 +12,7 @@ import mikera.transformz.AAffineTransform;
 import mikera.transformz.ALinearTransform;
 import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
@@ -305,6 +306,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 				set(row, column, a.get(row, column));
 			}
 		}
+	}
+	
+	public void set(INDArray a) {
+		if (a instanceof AMatrix) {set((AMatrix) a); return;}	
+		if (a instanceof AVector) {for (AVector r:this) {r.set((AVector) a);} return;}
+		if (a instanceof AScalar) {set(a.get()); return;}
+		
+		throw new UnsupportedOperationException("Can't set matrix to array: "+a.getClass() +" with shape: "+a.getShape());
 	}
 
 	public boolean isFullyMutable() {

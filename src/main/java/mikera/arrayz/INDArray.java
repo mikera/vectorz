@@ -27,6 +27,7 @@ public interface INDArray extends Cloneable {
 	public void set(int x, double value);
 	public void set(int x, int y, double value);
 	public void set(int[] indexes, double value);
+	public void set(INDArray a);
 
 	
 	/**

@@ -28,6 +28,17 @@ public abstract class AbstractArray implements INDArray {
 	public void set(int x, int y, double value) {
 		set(new int[] {x,y},value);	
 	}
+	public void set (INDArray a) {
+		int tdims=this.dimensionality();
+		if (a.dimensionality()<tdims) {
+			int sc=getShape()[0];
+			for (int i=0; i<sc; i++) {
+				INDArray s=slice(i);
+				s.set(a);
+			}
+		}
+		throw new UnsupportedOperationException("Can't set "+this.toString()+" to value "+a.toString());
+	}
 	
 	public boolean equals(Object o) {
 		if (!(o instanceof INDArray)) return false;
