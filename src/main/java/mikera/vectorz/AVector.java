@@ -353,6 +353,14 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		}
 	}
 	
+	public void square() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=get(i);
+			set(i,x*x);
+		}		
+	}
+	
 	/**
 	 * Scales the vector by a scalar factor
 	 * @param factor

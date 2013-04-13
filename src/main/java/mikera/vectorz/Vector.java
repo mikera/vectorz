@@ -125,6 +125,15 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void square() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=data[i];
+			data[i]=x*x;
+		}		
+	}
+	
+	@Override
 	public double elementSum() {
 		double result=0.0;
 		for (int i=0; i<data.length; i++) {
