@@ -207,7 +207,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 			temp[row] = total;
 		}
-		v.setValues(temp);
+		v.set(temp);
 	}
 
 	@SuppressWarnings("serial")

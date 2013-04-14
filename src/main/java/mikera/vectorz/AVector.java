@@ -558,6 +558,10 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		}
 	}
 	
+	public void set(double a) {
+		fill(a);
+	}
+	
 	public void set(INDArray a) {
 		if (a instanceof AVector) {set((AVector)a); return;}
 		if (a.dimensionality()==1) {
@@ -583,8 +587,9 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		}
 	}
 	
-	public void setValues(double... values) {
+	public void set(double... values) {
 		int len=length();
+		if (values.length!=len) throw new VectorzException("Trying to set vectors with incorrect number of doubles: "+values.length);
 		for (int i=0; i<len; i++) {
 			set(i,values[i]);
 		}		
