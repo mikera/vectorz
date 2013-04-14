@@ -91,12 +91,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public Iterator<T> iterator() {
-		ArrayList<T> al=new ArrayList<T>();
-		int sc=getShape()[0];
-		for (int i=0; i<sc; i++) {
-			al.add((T) slice(i));
-		}
-		return al.iterator();
+		return new SliceIterator<T>(this);
 	}
 	
 	public boolean equals(Object o) {
