@@ -137,6 +137,13 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 			a.applyOp(op);
 		}
 	}
+	
+	@Override
+	public void scale(double d) {
+		for (INDArray a:slices) {
+			a.scale(d);
+		}
+	}
 
 	@Override
 	public boolean equals(INDArray a) {

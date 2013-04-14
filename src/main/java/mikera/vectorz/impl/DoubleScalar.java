@@ -24,6 +24,11 @@ public class DoubleScalar extends AScalar {
 		this.value=value;
 	}
 	
+	@Override 
+	public void scale(double factor) {
+		value*=factor;
+	}
+	
 	@Override
 	public boolean isView() {
 		return false;

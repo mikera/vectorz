@@ -57,6 +57,12 @@ public abstract class AScalar extends AbstractArray {
 		set(get()-s.get());
 	}
 	
+	public INDArray innerProduct(INDArray a) {
+		a=a.clone();
+		a.scale(get());
+		return a;
+	}
+	
 	@Override 
 	public double get(int... indexes) {
 		assert(indexes.length==0);
@@ -105,6 +111,11 @@ public abstract class AScalar extends AbstractArray {
 	@Override
 	public AScalar clone() {
 		return (AScalar) super.clone();
+	}
+	
+	@Override 
+	public void scale(double factor) {
+		set(factor*get());
 	}
 	
 	@Override

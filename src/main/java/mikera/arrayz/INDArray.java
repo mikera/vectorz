@@ -99,4 +99,6 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray exactClone();
+
+	public void scale(double d);
 }
