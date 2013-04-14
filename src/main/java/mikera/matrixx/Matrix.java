@@ -52,7 +52,7 @@ public final class Matrix extends AMatrix {
 		return new Matrix(rowCount,columnCount,data);
 	}
 	
-	public Matrix compose(Matrix a) {
+	public Matrix innerProduct(Matrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
 		}
@@ -73,9 +73,9 @@ public final class Matrix extends AMatrix {
 	}
 
 	@Override
-	public Matrix compose(AMatrix a) {
+	public Matrix innerProduct(AMatrix a) {
 		if (a instanceof Matrix) {
-			return compose((Matrix)a);
+			return innerProduct((Matrix)a);
 		}
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");

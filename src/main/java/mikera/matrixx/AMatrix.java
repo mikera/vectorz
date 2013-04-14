@@ -667,7 +667,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * @param a
 	 * @return
 	 */
-	public AMatrix compose(AMatrix a) {
+	public final AMatrix compose(AMatrix a) {
+		return innerProduct(a);
+	}
+	
+	public AMatrix innerProduct(AMatrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
 		}
@@ -684,7 +688,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 				result.set(i,j,acc);
 			}
 		}
-		return result;
+		return result;		
 	}
 	
 	public AVector innerProduct(AVector v) {

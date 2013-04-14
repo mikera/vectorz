@@ -125,14 +125,14 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return Vectorz.create(data);
 	}
 
-	public AMatrix compose(AMatrix a) {
+	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof ADiagonalMatrix) {
-			return compose((ADiagonalMatrix) a);
+			return innerProduct((ADiagonalMatrix) a);
 		}
-		return super.compose(a);
+		return super.innerProduct(a);
 	}
 	
-	public AMatrix compose(ADiagonalMatrix a) {
+	public AMatrix innerProduct(ADiagonalMatrix a) {
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		for (int i=0; i<dimensions; i++) {

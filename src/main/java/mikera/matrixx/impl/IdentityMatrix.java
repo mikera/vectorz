@@ -91,7 +91,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override 
-	public AMatrix compose(AMatrix a) {
+	public AMatrix innerProduct(AMatrix a) {
 		assert(a.rowCount()==this.dimensions);
 		return a.clone();
 	}

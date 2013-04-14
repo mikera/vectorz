@@ -48,7 +48,7 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 		return dimensions;
 	}
 	
-	public AMatrix compose(ADiagonalMatrix a) {
+	public AMatrix innerProduct(ADiagonalMatrix a) {
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
 		DiagonalMatrix result=DiagonalMatrix.create(dimensions);
 		for (int i=0; i<dimensions; i++) {
@@ -58,12 +58,12 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
-	public AMatrix compose(AMatrix a) {
+	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof ADiagonalMatrix) {
-			return compose((ADiagonalMatrix) a);
+			return innerProduct((ADiagonalMatrix) a);
 		}
 		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException("Matrix dimensions not compatible!");
-		return super.compose(a);
+		return super.innerProduct(a);
 	}
 	
 	@Override
