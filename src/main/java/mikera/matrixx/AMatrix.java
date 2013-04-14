@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
@@ -729,6 +730,20 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		throw new UnsupportedOperationException("Can't take inner product with: "+a.getClass());
 	}
 
+	public INDArray outerProduct(INDArray a) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (Object s:this) {
+			if (s instanceof INDArray) {
+				al.add(((INDArray)s).outerProduct(a));
+			} else {
+				double x=Tools.toDouble(s);
+				INDArray sa=a.clone();
+				sa.scale(x);
+				al.add(sa);
+			}
+		}
+		return Arrayz.create(al);
+	}
 
 	@Override
 	public AMatrix inverse() {

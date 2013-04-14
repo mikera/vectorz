@@ -33,6 +33,7 @@ public interface INDArray extends Cloneable {
 	public void set(Object o);
 
 	public INDArray innerProduct(INDArray a);
+	public INDArray outerProduct(INDArray a);
 	
 	/**
 	 * Creates a view of the array as a single vector in row-major order.

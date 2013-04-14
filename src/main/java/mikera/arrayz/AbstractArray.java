@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
+import mikera.vectorz.Tools;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -32,6 +33,21 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			return c;
 		}
 		throw new UnsupportedOperationException();
+	}
+	
+	public INDArray outerProduct(INDArray a) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (Object s:this) {
+			if (s instanceof INDArray) {
+				al.add(((INDArray)s).outerProduct(a));
+			} else {
+				double x=Tools.toDouble(s);
+				INDArray sa=a.clone();
+				sa.scale(x);
+				al.add(sa);
+			}
+		}
+		return Arrayz.create(al);
 	}
 
 	public void set(double value) {

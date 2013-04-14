@@ -105,6 +105,14 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		}
 		return Arrayz.create(al);
 	}
+	
+	public INDArray outerProduct(INDArray a) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (INDArray s:this) {
+			al.add(s.outerProduct(a));
+		}
+		return Arrayz.create(al);
+	}
 
 	@Override
 	public boolean isMutable() {
