@@ -1,5 +1,6 @@
 package mikera.arrayz;
 
+import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
 import mikera.vectorz.util.VectorzException;
 
@@ -21,6 +22,11 @@ public abstract class AbstractArray implements INDArray {
 	}
 	
 	public INDArray innerProduct(INDArray a) {
+		if (a instanceof AScalar) {
+			INDArray c=clone();
+			c.scale(((AScalar)a).get());
+			return c;
+		}
 		throw new UnsupportedOperationException();
 	}
 
