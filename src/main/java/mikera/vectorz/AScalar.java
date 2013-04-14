@@ -36,6 +36,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public int sliceCount() {
+		return 0;
+	}
+	
+	@Override
 	public Iterator<Object> iterator() {
 		throw new UnsupportedOperationException("Can't slice a scalar!");
 	}

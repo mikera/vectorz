@@ -67,6 +67,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public int sliceCount() {
+		return length();
+	}
+	
+	@Override
 	public int[] getShape() {
 		return new int[] {length()};
 	}

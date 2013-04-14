@@ -42,6 +42,8 @@ public interface INDArray extends Cloneable {
 	
 	public INDArray slice(int majorSlice);
 	
+	public int sliceCount();
+	
 	public long elementCount();
 	
 	/**

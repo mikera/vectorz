@@ -100,6 +100,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public int sliceCount() {
+		return rowCount();
+	}
+	
+	@Override
 	public int[] getShape() {
 		return new int[] {rowCount(),columnCount()};
 	}

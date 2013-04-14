@@ -86,6 +86,8 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	public INDArray slice(int majorSlice) {
 		return slices[majorSlice];
 	}
+	
+	
 
 	@Override
 	public long elementCount() {
@@ -175,6 +177,11 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 			newSlices[i]=(T) newSlices[i].exactClone();
 		}
 		return new SliceArray<T>(shape,newSlices);
+	}
+
+	@Override
+	public int sliceCount() {
+		return slices.length;
 	}
 
 
