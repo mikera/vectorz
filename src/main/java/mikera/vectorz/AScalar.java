@@ -81,6 +81,12 @@ public abstract class AScalar extends AbstractArray<Object> {
 		return a;
 	}
 	
+	public INDArray outerProduct(INDArray a) {
+		a=a.clone();
+		a.scale(get());
+		return a;
+	}
+	
 	@Override 
 	public double get(int... indexes) {
 		assert(indexes.length==0);

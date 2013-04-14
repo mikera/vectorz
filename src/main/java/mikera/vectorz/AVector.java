@@ -9,6 +9,7 @@ import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.DoubleScalar;
@@ -426,6 +427,26 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			total+=x*x;
 		}
 		return total;
+	}
+	
+	public AMatrix outerProduct(AVector a) {
+		int rc=length();
+		int cc=a.length();
+		Matrix m=Matrix.create(rc, cc);
+		int di=0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				m.data[di++]=get(i)*a.get(j);
+			}
+		}
+		return m;
+	}
+	
+	public INDArray outerProduct(INDArray a) {
+		if (a instanceof AVector) {
+			return outerProduct((AVector)a);
+		}
+		return super.outerProduct(a);
 	}
 	
 	public AScalar innerProduct(AVector v) {
