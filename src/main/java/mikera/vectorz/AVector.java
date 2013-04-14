@@ -8,6 +8,7 @@ import java.util.List;
 import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.DoubleScalar;
@@ -429,6 +430,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public double innerProduct(AVector v) {
 		return dotProduct(v);
+	}
+	
+	public AVector innerProduct(AMatrix m) {
+		int cc=m.columnCount();
+		int rc=m.rowCount();
+		if (rc!=length()) throw new VectorzException("Incompatible sizes for inner product: ["+length()+ "] x ["+rc+","+cc+"]");
+		AVector r=Vectorz.newVector(cc);
+		for (int i=0; i<cc; i++) {
+			double y=0.0;
+			for (int j=0; j<rc; j++) {
+				y+=get(j)*m.get(j,i);
+			}
+			r.set(i,y);
+		}
+		return r;
 	}
 	
 	public INDArray innerProduct(INDArray a) {
