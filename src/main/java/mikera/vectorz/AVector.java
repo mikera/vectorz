@@ -428,8 +428,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return total;
 	}
 	
-	public double innerProduct(AVector v) {
-		return dotProduct(v);
+	public AScalar innerProduct(AVector v) {
+		return DoubleScalar.create(dotProduct(v));
 	}
 	
 	public AVector innerProduct(AMatrix m) {

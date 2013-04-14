@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -194,6 +195,17 @@ public class TestVectors {
 		
 		assertTrue(v.epsilonEquals(vc));
 		assertTrue(v.epsilonEquals(v2));
+	}
+	
+	private void testInnerProducts(AVector v) {
+		int len=v.length();
+		AVector c=Vectorz.createUniformRandomVector(v.length());
+		assertEquals(v.dotProduct(c),v.innerProduct((INDArray)c).get(),0.00001);
+		
+		if (len>20) return;
+		
+		AMatrix m=Matrixx.createRandomMatrix(len, len);
+		assertEquals(v.innerProduct(m),m.getTranspose().transform(v));
 	}
 	
 	private void testAddMultipleToArray(AVector v) {
@@ -553,6 +565,7 @@ public class TestVectors {
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
+		testInnerProducts(v);
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
@@ -571,7 +584,6 @@ public class TestVectors {
 		
 		new TestArrays().testArray(v);
 	}
-
 
 	@Test public void genericTests() {
 		doGenericTests(Vector0.of());
