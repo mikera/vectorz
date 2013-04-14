@@ -1,6 +1,8 @@
 package mikera.matrixx;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.matrixx.impl.MatrixIterator;
@@ -102,6 +104,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public int sliceCount() {
 		return rowCount();
+	}
+	
+	@Override
+	public List<AVector> getSlices() {
+		ArrayList<AVector> al=new ArrayList<AVector>();
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			al.add(getRow(i));
+		}
+		return al;
 	}
 	
 	@Override

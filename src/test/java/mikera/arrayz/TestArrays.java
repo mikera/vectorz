@@ -1,5 +1,7 @@
 package mikera.arrayz;
 
+import java.util.List;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Constant;
@@ -38,6 +40,9 @@ public class TestArrays {
 		}
 		
 		testArray(sl);
+		
+		List<?> slices=a.getSlices();
+		assertEquals(a,Arrayz.create(slices));
 	}
 	
 	private void testAsVector(INDArray a) {

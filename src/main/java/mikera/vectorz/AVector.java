@@ -72,6 +72,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public List<Double> getSlices() {
+		ArrayList<Double> al=new ArrayList<Double>();
+		int l=length();
+		for (int i=0; i<l; i++) {
+			al.add(get(i));
+		}
+		return al;
+	}
+	
+	@Override
 	public int[] getShape() {
 		return new int[] {length()};
 	}

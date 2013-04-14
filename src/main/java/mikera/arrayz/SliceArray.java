@@ -184,5 +184,12 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return slices.length;
 	}
 
-
+	@Override
+	public List<INDArray> getSlices() {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (INDArray sl:this) {
+			al.add(sl);
+		}
+		return al;
+	}
 }

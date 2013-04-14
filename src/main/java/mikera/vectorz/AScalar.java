@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import java.util.Iterator;
+import java.util.List;
 
 import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
@@ -38,6 +39,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	@Override
 	public int sliceCount() {
 		return 0;
+	}
+	
+	@Override
+	public List<Object> getSlices() {
+		throw new UnsupportedOperationException("Can't slice a scalar!");
 	}
 	
 	@Override

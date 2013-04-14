@@ -1,5 +1,7 @@
 package mikera.arrayz;
 
+import java.util.List;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
@@ -103,4 +105,6 @@ public interface INDArray extends Cloneable {
 	public INDArray exactClone();
 
 	public void scale(double d);
+
+	public List<?> getSlices();
 }
