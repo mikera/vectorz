@@ -411,6 +411,10 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		return total;
 	}
 	
+	public double innerProduct(AVector v) {
+		return dotProduct(v);
+	}
+	
 	public double dotProduct(AVector v) {
 		int len=length();
 		double total=0.0;
