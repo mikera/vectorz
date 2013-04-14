@@ -12,6 +12,11 @@ public class TestMiscArrayOps {
 		AVector v=Vectorz.createUniformRandomVector(5);
 		INDArray a=v.outerProduct(v);
 		assertTrue(a instanceof AMatrix);
+		
+		AMatrix m=(AMatrix)a;
+		AVector v2=v.clone();
+		v2.square();
+		assertEquals(v2,m.getLeadingDiagonal());
 	}
 
 }
