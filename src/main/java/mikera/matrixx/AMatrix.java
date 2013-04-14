@@ -712,11 +712,19 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return transform(v);
 	}
 	
+	public AMatrix innerProduct(AScalar s) {
+		AMatrix r= clone();
+		r.scale(s.get());
+		return r;
+	}
+	
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AVector) {
 			return innerProduct((AVector)a);
 		} else if (a instanceof AMatrix) {
 			return compose((AMatrix) a);
+		} else if (a instanceof AScalar) {
+			return innerProduct((AScalar)a);
 		}
 		throw new UnsupportedOperationException("Can't take inner product with: "+a.getClass());
 	}
