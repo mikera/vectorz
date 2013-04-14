@@ -690,6 +690,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public AVector innerProduct(AVector v) {
 		return transform(v);
 	}
+	
+	public INDArray innerProduct(INDArray a) {
+		if (a instanceof AVector) {
+			return innerProduct((AVector)a);
+		} else if (a instanceof AMatrix) {
+			return compose((AMatrix) a);
+		}
+		throw new UnsupportedOperationException("Can't take inner product with: "+a.getClass());
+	}
+
 
 	@Override
 	public AMatrix inverse() {

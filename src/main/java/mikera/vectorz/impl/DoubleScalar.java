@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AScalar;
 
 public class DoubleScalar extends AScalar {
@@ -8,6 +9,10 @@ public class DoubleScalar extends AScalar {
 	public DoubleScalar(double value) {
 		this.value=value;
 	}
+	
+	public static INDArray create(double value) {
+		return new DoubleScalar(value);
+	}	
 
 	@Override
 	public double get() {
@@ -32,5 +37,7 @@ public class DoubleScalar extends AScalar {
 	@Override
 	public DoubleScalar exactClone() {
 		return clone();
-	}	
+	}
+
+
 }

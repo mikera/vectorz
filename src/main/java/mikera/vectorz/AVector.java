@@ -10,6 +10,7 @@ import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
+import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
@@ -413,6 +414,13 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 	
 	public double innerProduct(AVector v) {
 		return dotProduct(v);
+	}
+	
+	public INDArray innerProduct(INDArray a) {
+		if (a instanceof AVector) {
+			return DoubleScalar.create(dotProduct((AVector)a));
+		}
+		return super.innerProduct(a);
 	}
 	
 	public double dotProduct(AVector v) {

@@ -19,6 +19,10 @@ public abstract class AbstractArray implements INDArray {
 	public double get(int x, int y) {
 		return get(new int[] {x,y});
 	}
+	
+	public INDArray innerProduct(INDArray a) {
+		throw new UnsupportedOperationException();
+	}
 
 	public void set(double value) {
 		set(new int[0],value);
