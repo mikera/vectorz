@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.util.Iterator;
+
 import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
@@ -13,7 +15,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar extends AbstractArray {
+public abstract class AScalar extends AbstractArray<Object> {
 	
 	private static final int[] SCALAR_SHAPE=new int[0];
 
@@ -30,6 +32,11 @@ public abstract class AScalar extends AbstractArray {
 	
 	@Override
 	public INDArray slice(int position) {
+		throw new UnsupportedOperationException("Can't slice a scalar!");
+	}
+	
+	@Override
+	public Iterator<Object> iterator() {
 		throw new UnsupportedOperationException("Can't slice a scalar!");
 	}
 	

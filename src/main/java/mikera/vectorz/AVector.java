@@ -27,7 +27,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AVector extends AbstractArray implements IVector, Comparable<AVector>, Serializable, Iterable<Double> {
+public abstract class AVector extends AbstractArray<Double> implements IVector, Comparable<AVector>, Serializable {
 	
 	// ================================================
 	// Abstract interface

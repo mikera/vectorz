@@ -1,5 +1,8 @@
 package mikera.arrayz;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
 import mikera.vectorz.util.VectorzException;
@@ -7,9 +10,10 @@ import mikera.vectorz.util.VectorzException;
 /**
  * Base class for INDArray implementations
  * @author Mike
+ * @param <T>
  *
  */
-public abstract class AbstractArray implements INDArray {
+public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 	public double get() {
 		return get(new int[0]);
@@ -69,6 +73,16 @@ public abstract class AbstractArray implements INDArray {
 		applyOp(Ops.SQUARE);
 	}
 	
+	@Override
+	public Iterator<T> iterator() {
+		ArrayList<T> al=new ArrayList<T>();
+		int sc=getShape()[0];
+		for (int i=0; i<sc; i++) {
+			al.add((T) slice(i));
+		}
+		return al.iterator();
+	}
+	
 	public boolean equals(Object o) {
 		if (!(o instanceof INDArray)) return false;
 		return equals((INDArray)o);
@@ -79,9 +93,9 @@ public abstract class AbstractArray implements INDArray {
 		return asVector().hashCode();
 	}
 	
-	public AbstractArray clone() {
+	public AbstractArray<?> clone() {
 		try {
-			return (AbstractArray)super.clone();
+			return (AbstractArray<?>)super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new VectorzException("AbstractArray clone failed");
 		}

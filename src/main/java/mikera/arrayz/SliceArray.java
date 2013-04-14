@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
 
-public class SliceArray<T extends INDArray> extends AbstractArray {
+public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	private final int[] shape;
 	private final T[] slices;
 	
@@ -93,6 +94,14 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 			c*=d;
 		}
 		return c;
+	}
+	
+	public INDArray innerProduct(INDArray a) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (INDArray s:this) {
+			al.add(s.innerProduct(a));
+		}
+		return Arrayz.create(al);
 	}
 
 	@Override
