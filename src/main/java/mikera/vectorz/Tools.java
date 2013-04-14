@@ -36,13 +36,16 @@ public final class Tools {
 	}
 
 	/**
-	 * Converts an numerical object (instance of java.lang.Number) to a primitive double
+	 * Converts an numerical object to a primitive double
+	 * Handles numbers and scalars
 	 */
 	public static double toDouble(Object object) {
 		if (object instanceof Double) {
 			return (Double)object;
 		} else if (object instanceof Number) {
 			return ((Number)object).doubleValue();
+		} else if (object instanceof AScalar) {
+			return ((AScalar)object).get();
 		} else {
 			throw new IllegalArgumentException("Cannot convert to double: "+object.toString());
 		}
