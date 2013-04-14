@@ -429,6 +429,17 @@ public class TestMatrixx {
 		assertTrue(m1.isZeroMatrix());
 	}
 	
+	void doMulTest(AMatrix m) {
+		AVector v=Vectorz.newVector(m.columnCount());
+		AVector t=Vectorz.newVector(m.rowCount());
+		
+		m.transform(v, t);
+		AVector t2=m.transform(v);
+		
+		assertEquals(t,t2);
+		assertEquals(t,m.innerProduct(v));
+	}
+	
 	void doGenericTests(AMatrix m) {
 		testApplyOp(m);
 		testExactClone(m);
@@ -439,6 +450,7 @@ public class TestMatrixx {
 		doParseTest(m);
 		doHashTest(m);
 		doScaleTest(m);
+		doMulTest(m);
 		doAddTest(m);
 		doRowColumnTests(m);
 		doCloneSafeTest(m);

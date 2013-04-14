@@ -686,6 +686,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		return result;
 	}
+	
+	public AVector innerProduct(AVector v) {
+		return transform(v);
+	}
 
 	@Override
 	public AMatrix inverse() {
