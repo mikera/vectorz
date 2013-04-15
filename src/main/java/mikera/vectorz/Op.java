@@ -95,6 +95,10 @@ public abstract class Op implements IOp, ITransform {
 		return false;
 	}
 	
+	public boolean hasDerivativeForOutput() {
+		return hasDerivative();
+	}
+	
 	public boolean hasInverse() {
 		return false;
 	}

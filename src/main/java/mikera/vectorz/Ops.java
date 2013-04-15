@@ -5,6 +5,7 @@ import mikera.vectorz.ops.Clamp;
 import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Logistic;
+import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Quadratic;
 import mikera.vectorz.ops.SoftPlus;
 import mikera.vectorz.ops.StochasticBinary;
@@ -21,6 +22,9 @@ public final class Ops {
 	public static final Op SOFTPLUS=SoftPlus.INSTANCE;
 	public static final Op NEGATE=Linear.create(-1.0, 0.0);
 	public static final Op SQUARE = Quadratic.create(1.0, 0.0, 0.0);
+	public static final Op RBF_NORMAL = NormalRBF.INSTANCE;
+
+
 
 	public static final Op EXP = new AFunctionOp() {
 		@Override
@@ -108,7 +112,6 @@ public final class Ops {
 		@Override public double maxValue() {return 1.0;}
 		@Override public Op getDerivativeOp() {return Ops.negate(SIN);}
 	};
-
 	
 	public static Op negate(Op op) {
 		return NEGATE.compose(op);

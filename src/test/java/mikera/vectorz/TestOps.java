@@ -124,7 +124,7 @@ public class TestOps {
 		double y=op.apply(x);
 		if (op.hasDerivative()) {
 			op.derivative(x);
-			op.derivativeForOutput(y);
+			if (op.hasDerivativeForOutput()) op.derivativeForOutput(y);
 			
 			Op d=op.getDerivativeOp();
 			if ((!Double.isNaN(x))&&(!Double.isNaN(y))&&(!op.isStochastic())) {
@@ -241,6 +241,7 @@ public class TestOps {
 		doOpTest(Ops.TANH);
 		doOpTest(Ops.SOFTPLUS);
 		doOpTest(Ops.RECTIFIER);
+		doOpTest(Ops.RBF_NORMAL);
 
 		doOpTest(Ops.EXP);
 		doOpTest(Ops.SIN);
