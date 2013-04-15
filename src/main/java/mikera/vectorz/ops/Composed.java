@@ -51,6 +51,11 @@ public class Composed extends Op {
 	}
 	
 	@Override
+	public boolean hasDerivativeForOutput() {
+		return outer.hasInverse()&&(outer.hasDerivativeForOutput())&&(inner.hasDerivativeForOutput());
+	}
+	
+	@Override
 	public double derivativeForOutput(double y) {
 		return outer.derivativeForOutput(y)*inner.derivativeForOutput(outer.applyInverse(y));
 	}
@@ -58,7 +63,7 @@ public class Composed extends Op {
 	@Override
 	public double derivative(double x) {
 		double y=inner.apply(x);
-		return outer.derivative(y)*inner.derivativeForOutput(y);
+		return outer.derivative(y)*inner.derivative(x);
 	}
 	
 	@Override
