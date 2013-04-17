@@ -67,8 +67,32 @@ public abstract class AScalar extends AbstractArray<Object> {
 		return false;
 	}
 	
+	public void add(double d) {
+		set(get()+d);
+	}
+	
+	public void sub(double d) {
+		set(get()-d);
+	}
+	
 	public void add(AScalar s) {
 		set(get()+s.get());
+	}
+	
+	public void add(INDArray a) {
+		if (a instanceof AScalar) {
+			add(a.get());
+		} else {
+			super.add(a);
+		}
+	}
+	
+	public void sub(INDArray a) {
+		if (a instanceof AScalar) {
+			sub(a.get());
+		} else {
+			super.sub(a);
+		}
 	}
 	
 	public void sub(AScalar s) {

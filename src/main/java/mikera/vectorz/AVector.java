@@ -746,6 +746,26 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	public void add(INDArray a) {
+		if (a instanceof AVector) {
+			add((AVector)a);
+		} else if (a instanceof AScalar) {
+			add(a.get());
+		}else {
+			super.add(a);
+		}
+	}
+	
+	public void sub(INDArray a) {
+		if (a instanceof AVector) {
+			sub((AVector)a);
+		} else if (a instanceof AScalar) {
+			sub(a.get());
+		}else {
+			super.sub(a);
+		}	
+	}
+	
 	/**
 	 * Adds part another vector to this one, starting at the specified offset in the source vector
 	 * @param src
@@ -830,6 +850,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void sub(AVector v) {
 		addMultiple(v,-1.0);
+	}
+	
+	public void sub(double d) {
+		add(-d);
 	}
 	
 	/**

@@ -111,4 +111,44 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			throw new VectorzException("AbstractArray clone failed");
 		}
 	}
+	
+	@Override
+	public void add(INDArray a) {
+		int n=sliceCount();
+		int na=a.sliceCount();
+		int dims=dimensionality();
+		int adims=a.dimensionality();
+		if (dims==adims) {
+			if (n!=na) throw new VectorzException("Non-matching dimensions");
+			for (int i=0; i<n; i++) {
+				slice(i).add(a.slice(i));
+			}
+		} else if (adims<dims) {
+			for (int i=0; i<n; i++) {
+				slice(i).add(a);
+			}	
+		} else {
+			throw new VectorzException("Cannot add array of greater dimensionality");
+		}
+	}
+
+	@Override
+	public void sub(INDArray a) {
+		int n=sliceCount();
+		int na=a.sliceCount();
+		int dims=dimensionality();
+		int adims=a.dimensionality();
+		if (dims==adims) {
+			if (n!=na) throw new VectorzException("Non-matching dimensions");
+			for (int i=0; i<n; i++) {
+				slice(i).sub(a.slice(i));
+			}
+		} else if (adims<dims) {
+			for (int i=0; i<n; i++) {
+				slice(i).sub(a);
+			}	
+		} else {
+			throw new VectorzException("Cannot add array of greater dimensionality");
+		}	
+	}
 }

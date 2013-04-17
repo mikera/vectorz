@@ -445,6 +445,34 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 	}
 	
+	public void add(AVector v) {
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(cc==v.length());
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				set(i,j,get(i,j)+v.get(j));
+			}
+		}		
+	}
+	
+	public void sub(AVector v) {
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(cc==v.length());
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				addAt(i,j,-v.get(j));
+			}
+		}		
+	}
+	
+	public void sub(double d) {
+		add(-d);
+	}
+	
 	/**
 	 * Scales a matrix by a constant scalar factor.
 	 * @param m
@@ -835,6 +863,68 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 				set(i,j,op.apply(get(i,j)));
 			}
 		}
+	}
+	
+	public void add(INDArray a) {
+		if (a instanceof AMatrix) {
+			add((AMatrix)a);
+		} else if (a instanceof AVector) {
+			add((AVector)a);
+		} else if (a instanceof AScalar) {
+			add(a.get());
+		} else {
+			int dims=a.dimensionality();
+			int rc=rowCount();
+			if (dims==0) {
+				add(a.get());
+			} else if (dims==1) {
+				for (int i=0; i<rc; i++) {
+					slice(i).add(a);
+				}
+			} else if (dims==2) {
+				for (int i=0; i<rc; i++) {
+					slice(i).add(a.slice(i));
+				}		
+			}
+		}
+	}
+	
+	public void sub(INDArray a) {
+		if (a instanceof AMatrix) {
+			sub((AMatrix)a);
+		} else if (a instanceof AVector) {
+			sub((AVector)a);
+		} else if (a instanceof AScalar) {
+			sub(a.get());
+		} else {
+			int dims=a.dimensionality();
+			int rc=rowCount();
+			if (dims==0) {
+				sub(a.get());
+			} else if (dims==1) {
+				for (int i=0; i<rc; i++) {
+					slice(i).sub(a);
+				}
+			} else if (dims==2) {
+				for (int i=0; i<rc; i++) {
+					slice(i).sub(a.slice(i));
+				}		
+			}
+		}
+	}
+
+	public void add(double d) {
+		int rc = rowCount();
+		int cc = columnCount();
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				addAt(i,j,d);
+			}
+		}
+	}
+
+	public void addAt(int i, int j, double d) {
+		set(i,j,get(i,j)+d);
 	}
 
 	/**
