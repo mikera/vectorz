@@ -94,8 +94,6 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	public INDArray slice(int majorSlice) {
 		return slices[majorSlice];
 	}
-	
-	
 
 	@Override
 	public long elementCount() {
