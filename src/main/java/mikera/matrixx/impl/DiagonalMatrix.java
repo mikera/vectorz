@@ -30,6 +30,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return new DiagonalMatrix(data);
 	}
 	
+	public static DiagonalMatrix create(AVector v) {
+		return wrap(v.toArray());
+	}
+	
 	public static DiagonalMatrix wrap(double[] data) {
 		return new DiagonalMatrix(data);
 	}
