@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.AbstractArray;
+import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.SliceArray;
 import mikera.indexz.Index;
@@ -699,7 +700,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		} else if (ndims==2) {
 			return Matrixx.createFromVector(this, dimensions[0], dimensions[1]);
 		} else {
-			throw new UnsupportedOperationException("Can't reshape to dimensionality: "+ndims);
+			return Arrayz.createFromVector(this,dimensions);
 		}
 	}
 	

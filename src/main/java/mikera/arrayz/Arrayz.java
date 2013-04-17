@@ -1,5 +1,7 @@
 package mikera.arrayz;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import mikera.matrixx.Matrixx;
@@ -7,6 +9,7 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.util.VectorzException;
 
 public class Arrayz {
@@ -42,5 +45,33 @@ public class Arrayz {
 			as[i]=create((Object)os);
 		}
 		return SliceArray.create(as);
+	}
+
+	public static INDArray createFromVector(AVector a, int[] shape) {
+		int dims=shape.length;
+		if (dims==0) {
+			return DoubleScalar.create(a.get(0));
+		} else if (dims==1) {
+			return a.subVector(0, shape[0]);
+		} else if (dims==2) {
+			return Matrixx.createFromVector(a, shape[0], shape[1]);
+		} else {
+			int n=shape[0];
+			int[] ss=Arrays.copyOfRange(shape, 1, dims);
+			int skip=(int)Arrayz.elementCount(ss);
+			ArrayList<INDArray> al=new ArrayList<INDArray>();
+			for (int i=0; i<n; i++) {
+				al.add(createFromVector(a.subVector(i*skip, skip),ss));
+			}
+			return SliceArray.create(al);
+		}
+	}
+
+	private static long elementCount(int[] ss) {
+		long r=1;
+		for (int x:ss) {
+			r*=x;
+		}
+		return r;
 	}
 }
