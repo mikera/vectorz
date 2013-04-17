@@ -1,6 +1,5 @@
 package mikera.arrayz;
 
-import java.util.Arrays;
 import java.util.List;
 
 import mikera.vectorz.AVector;
