@@ -6,6 +6,7 @@ import java.util.List;
 import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ScalarVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -164,6 +165,18 @@ public abstract class AScalar extends AbstractArray<Object> {
 	@Override 
 	public void scale(double factor) {
 		set(factor*get());
+	}
+	
+	@Override
+	public INDArray broadcast(int... targetShape) {
+		int tdims=targetShape.length;
+		if (tdims==0) {
+			return this;
+		} else {
+			int n=targetShape[tdims-1];
+			AVector v=new RepeatedElementVector(n,get());
+			return v.broadcast(targetShape);
+		}
 	}
 	
 	@Override

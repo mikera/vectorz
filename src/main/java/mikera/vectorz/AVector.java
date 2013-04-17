@@ -2,11 +2,13 @@ package mikera.vectorz;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.SliceArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -1053,6 +1055,26 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void set(int offset, double[] data, int dataOffset, int length) {
 		for (int i=0; i<length; i++) {
 			set(offset+i,data[dataOffset+i]);
+		}
+	}
+	
+	@Override
+	public INDArray broadcast(int... targetShape) {
+		int tdims=targetShape.length;
+		if (tdims<1) {
+			throw new VectorzException("Can't broadcast to a smaller shape!");
+		} else if (tdims==1) {
+			// TODO dim check / 1-replicate
+			return this;
+		} else if (tdims==2) {
+			int n=targetShape[0];
+			AVector[] vs=new AVector[n];
+			for (int i=0; i<n; i++) {vs[i]=this;}
+			return Matrixx.createFromVectors(vs);
+		} else {
+			int n=targetShape[0];
+			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
+			return SliceArray.repeat(s,n);
 		}
 	}
 
