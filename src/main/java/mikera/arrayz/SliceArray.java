@@ -87,7 +87,7 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 
 	@Override
 	public INDArray reshape(int... dimensions) {
-		throw new UnsupportedOperationException();
+		return Arrayz.createFromVector(asVector(), dimensions);
 	}
 
 	@Override

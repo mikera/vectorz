@@ -25,6 +25,8 @@ public class TestArrays {
 			r*=shape[i];
 		}
 		assertEquals(v.length(),r);
+		
+		assertEquals(a,a.reshape(shape));
 	}
 	
 	private void testSlices(INDArray a) {

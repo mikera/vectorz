@@ -144,7 +144,7 @@ public abstract class AScalar extends AbstractArray<Object> {
 	
 	@Override
 	public INDArray reshape(int... dimensions) {
-		throw new UnsupportedOperationException();
+		return asVector().reshape(dimensions);
 	}
 	
 	@Override
