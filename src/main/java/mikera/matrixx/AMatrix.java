@@ -1,11 +1,13 @@
 package mikera.matrixx;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.SliceArray;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
@@ -925,6 +927,19 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	public void addAt(int i, int j, double d) {
 		set(i,j,get(i,j)+d);
+	}
+	
+	public INDArray broadcast(int... targetShape) {
+		int tdims=targetShape.length;
+		if (tdims<2) {
+			throw new VectorzException("Can't broadcast to a smaller shape!");
+		} else if (2==tdims) {
+			return this;
+		} else {
+			int n=targetShape[0];
+			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
+			return SliceArray.repeat(s,n);
+		}
 	}
 
 	/**

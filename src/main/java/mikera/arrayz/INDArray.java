@@ -45,6 +45,9 @@ public interface INDArray extends Cloneable {
 	public AVector asVector();
 	
 	public INDArray reshape(int... dimensions);
+
+	public INDArray broadcast(int... dimensions);
+
 	
 	public INDArray slice(int majorSlice);
 	

@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import mikera.vectorz.AScalar;
@@ -150,5 +151,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		} else {
 			throw new VectorzException("Cannot add array of greater dimensionality");
 		}	
+	}
+	
+	public INDArray broadcast(int... targetShape) {
+		int dims=dimensionality();
+		int tdims=targetShape.length;
+		if (tdims<dims) {
+			throw new VectorzException("Can't broadcast to a smaller shape!");
+		} else if (dims==tdims) {
+			return this;
+		} else {
+			int n=targetShape[0];
+			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
+			return SliceArray.repeat(s,n);
+		}
 	}
 }

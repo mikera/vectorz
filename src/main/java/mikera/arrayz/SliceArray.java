@@ -25,6 +25,14 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return new SliceArray<T>(Tools.consArray(slices.length,slices[0].getShape()),slices.clone());
 	}
 	
+	public static <T extends INDArray> SliceArray<T> repeat (T s, int n) {
+		ArrayList<T> al=new ArrayList<T>();
+		for (int i=0; i<n; i++) {
+			al.add(s);
+		}
+		return SliceArray.create(al);
+	}
+	
 	public static <T extends INDArray>  SliceArray<T> create(List<T> slices) {
 		int slen=slices.size();
 		if (slen==0) throw new VectorzException("Empty list of slices provided to SliceArray");
