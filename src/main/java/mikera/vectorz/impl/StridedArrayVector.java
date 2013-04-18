@@ -17,13 +17,20 @@ public class StridedArrayVector extends AVector {
 		this.stride=stride;
 	}
 
-	private static StridedArrayVector wrap(double[] data, int offset, int length, int stride) {
+	public static StridedArrayVector wrap(double[] data, int offset, int length, int stride) {
 		return new StridedArrayVector(data,offset,length,stride);
 	}
 	
 	@Override
 	public int length() {
 		return length;
+	}
+	
+	@Override
+	public StridedArrayVector subVector(int start, int length) {
+		assert(start>=0);
+		assert((start+length)<=this.length);
+		return wrap(data,offset+start*stride,length,stride);
 	}
 	
 	@Override

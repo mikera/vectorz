@@ -3,6 +3,7 @@ package mikera.matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.StridedArrayVector;
 import mikera.vectorz.util.VectorzException;
 
 /** 
@@ -122,6 +123,11 @@ public final class Matrix extends AMatrix {
 	@Override
 	public ArraySubVector getRow(int row) {
 		return ArraySubVector.wrap(data,row*columns,columns);
+	}
+	
+	@Override
+	public StridedArrayVector getColumn(int row) {
+		return StridedArrayVector.wrap(data,row,rows,columns);
 	}
 
 	@Override
