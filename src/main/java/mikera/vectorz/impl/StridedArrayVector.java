@@ -59,10 +59,24 @@ public class StridedArrayVector extends AVector {
 	}
 	
 	@Override
-	public StridedArrayVector subVector(int start, int length) {
+	public void set(AVector v) {
+		assert(v.length()==length);
+		for (int i=0; i<length; i++) {
+			data[offset+i*stride]=v.get(i);
+		}
+	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
 		assert(start>=0);
 		assert((start+length)<=this.length);
-		return wrapStrided(data,offset+start*stride,length,stride);
+		if (length==1) {
+			return ArraySubVector.wrap(data, start, 1);
+		} else if (length>0) {
+			return wrapStrided(data,offset+start*stride,length,stride);
+		} else {
+			return Vector0.INSTANCE;
+		}
 	}
 	
 	@Override
