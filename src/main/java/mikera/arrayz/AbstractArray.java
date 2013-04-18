@@ -76,7 +76,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				s.set(a.slice(i));
 			}
 		} else {
-			throw new IllegalArgumentException("Can't set array to value to higher dimensionality");
+			throw new IllegalArgumentException("Can't set array to value of higher dimensionality");
 		}
 	}
 	
