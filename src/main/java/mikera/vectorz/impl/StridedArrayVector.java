@@ -16,9 +16,16 @@ public class StridedArrayVector extends AVector {
 		this.length=length;
 		this.stride=stride;
 	}
-
-	public static StridedArrayVector wrap(double[] data, int offset, int length, int stride) {
+	
+	public static StridedArrayVector wrapStrided(double[] data, int offset, int length, int stride) {
 		return new StridedArrayVector(data,offset,length,stride);
+	}
+
+	public static AVector wrap(double[] data, int offset, int length, int stride) {
+		if (stride==1) {
+			return ArraySubVector.wrap(data, offset, length);
+		}
+		return wrapStrided(data,offset,length,stride);
 	}
 	
 	@Override
@@ -27,10 +34,35 @@ public class StridedArrayVector extends AVector {
 	}
 	
 	@Override
+	public boolean isView() {
+		return true;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return true;
+	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		assert(v.length()==length);
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i*stride]*v.get(i);
+		}
+		return result;
+	}
+	
+	@Override
 	public StridedArrayVector subVector(int start, int length) {
 		assert(start>=0);
 		assert((start+length)<=this.length);
-		return wrap(data,offset+start*stride,length,stride);
+		return wrapStrided(data,offset+start*stride,length,stride);
 	}
 	
 	@Override
@@ -49,9 +81,9 @@ public class StridedArrayVector extends AVector {
 	}
 	
 	@Override
-	public AVector exactClone() {
+	public StridedArrayVector exactClone() {
 		double[] data=this.data.clone();
-		return wrap(data,offset,length,stride);
+		return wrapStrided(data,offset,length,stride);
 	}
 
 

@@ -126,7 +126,7 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
-	public StridedArrayVector getColumn(int row) {
+	public AVector getColumn(int row) {
 		return StridedArrayVector.wrap(data,row,rows,columns);
 	}
 
