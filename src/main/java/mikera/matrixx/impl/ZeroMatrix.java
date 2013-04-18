@@ -120,7 +120,7 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
-	public AMatrix compose(AMatrix m) {
+	public AMatrix innerProduct(AMatrix m) {
 		assert(inputDimensions()==m.outputDimensions());
 		return ZeroMatrix.create(outputDimensions, m.inputDimensions());
 	}
@@ -136,7 +136,7 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override 
-	public void entrywiseMul(AMatrix m) {
+	public void elementMul(AMatrix m) {
 		// do nothing, already zero!
 	}
 

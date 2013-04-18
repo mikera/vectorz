@@ -4,13 +4,26 @@ import static org.junit.Assert.*;
 
 import mikera.util.Rand;
 import mikera.vectorz.Op;
-import mikera.vectorz.ops.ConstantOp;
-import mikera.vectorz.ops.LinearOp;
-import mikera.vectorz.ops.QuadraticOp;
+import mikera.vectorz.ops.Constant;
+import mikera.vectorz.ops.Linear;
+import mikera.vectorz.ops.Quadratic;
 
 import org.junit.Test;
 
 public class TestOpsExtra {
+	private void testDerivativesAt(Op op, double... xs) {
+		for (double x:xs) {
+			testDerivativeAt(op,x);
+		}
+	}
+	
+	private void testDerivativeAt(Op op, double x) {
+		double dx=op.derivative(x);
+		double epsilon=0.001;
+		double edx=(op.apply(x+epsilon)-op.apply(x-epsilon))/(2*epsilon);
+		assertEquals(1.0,(dx==0)?(edx+1.0):(edx/dx),0.01);
+	}
+	
 	@Test public void testOp() {
 		double[] fs=new double[10];
 		fs[0]=1000;
@@ -27,9 +40,13 @@ public class TestOpsExtra {
 	@Test public void testDerivatives() {
 		assertEquals(0,Ops.LOGISTIC.derivativeForOutput(1),0.0001);
 		assertEquals(0,Ops.LOGISTIC.derivativeForOutput(0),0.0001);
+		assertEquals(0,Ops.LOGISTIC.derivative(-100),0.0001);
+		assertEquals(0,Ops.LOGISTIC.derivative(100),0.0001);
 
 		assertEquals(1.0,Ops.SOFTPLUS.derivativeForOutput(100),0.0001);
 		assertEquals(0.0,Ops.SOFTPLUS.derivativeForOutput(0),0.0001);
+		assertEquals(1.0,Ops.SOFTPLUS.derivative(100),0.0001);
+		assertEquals(0.0,Ops.SOFTPLUS.derivative(-100),0.0001);
 
 		for (int i=0; i<10 ; i++) {
 			double v=Rand.nextDouble();
@@ -37,12 +54,27 @@ public class TestOpsExtra {
 			assertEquals(1,Ops.LINEAR.derivativeForOutput(v),0.0001);
 			assertEquals(Ops.STOCHASTIC_LOGISTIC.derivativeForOutput(v),Ops.LOGISTIC.derivativeForOutput(v),0.0001);
 		}
+		
+		testDerivativesAt(Ops.LINEAR,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.LOGISTIC,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.EXP,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.TANH,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.SOFTPLUS,0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Quadratic.create(1, 2, 3),0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Linear.create(-11, 2),0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.RECIPROCAL,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.SIN,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.COS,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.NEGATE,0,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.SIN.compose(Ops.EXP),0.1,-0.1,1,-1,2,-2,3,-3);
+		testDerivativesAt(Ops.COS.product(Ops.SOFTPLUS),0.1,-0.1,1,-1,2,-2,3,-3);
+		testDerivativesAt(Ops.TANH.sum(Ops.SQUARE),0.1,-0.1,1,-1,2,-2,3,-3);
 	}
 	
 	@Test public void testCompositions() {
-		assertEquals(Ops.SIN, Ops.compose(LinearOp.create(1.0,0.0), Ops.SIN));
+		assertEquals(Ops.SIN, Ops.compose(Linear.create(1.0,0.0), Ops.SIN));
 		
-		assertEquals(Ops.SIN, Ops.compose(LinearOp.create(0.5,0.0),Ops.compose(LinearOp.create(2.0,0.0), Ops.SIN)));
+		assertEquals(Ops.SIN, Ops.compose(Linear.create(0.5,0.0),Ops.compose(Linear.create(2.0,0.0), Ops.SIN)));
 	}
 	
 	@Test public void testDerivativeChains() {
@@ -56,13 +88,13 @@ public class TestOpsExtra {
 		
 		assertTrue(Ops.EXP.getDerivativeOp()==Ops.EXP);
 		
-		Op quad=QuadraticOp.create(Math.random(), Math.random(), Math.random());
+		Op quad=Quadratic.create(Math.random(), Math.random(), Math.random());
 		Op ddquad=quad.getDerivativeOp().getDerivativeOp();
 		Op dddquad=ddquad.getDerivativeOp();
-		assertEquals(ConstantOp.class,ddquad.getClass());
+		assertEquals(Constant.class,ddquad.getClass());
 		assertEquals(0.0,dddquad.apply(Math.random()),0.00001);
 		
-		Op sum=ConstantOp.create(10).sum(sin);
+		Op sum=Constant.create(10).sum(sin);
 		assertTrue(cos==sum.getDerivativeOp());
 	}
 	

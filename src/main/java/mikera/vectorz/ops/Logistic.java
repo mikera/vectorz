@@ -1,5 +1,7 @@
 package mikera.vectorz.ops;
 
+import java.io.ObjectStreamException;
+
 public final class Logistic extends ABoundedOp {
 	
 	public static final Logistic INSTANCE=new Logistic();
@@ -64,6 +66,10 @@ public final class Logistic extends ABoundedOp {
 	@Override
 	public double averageValue() {
 		return 0.5;
+	}
+	
+	private Object readResolve() throws ObjectStreamException {
+		return INSTANCE; 
 	}
 
 }

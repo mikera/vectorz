@@ -7,8 +7,8 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -165,6 +165,15 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public void applyOp(Op op) {
+		int dlen=data.length;
+		if ((dlen<length())&&(op.apply(0.0)!=0.0)) {
+			throw new UnsupportedOperationException("Can't change sparse elements of SparseIndexedVector");
+		}
+		op.applyTo(data);
+	}
+	
+	@Override
 	public void abs() {
 		for (int i=0; i<data.length; i++) {
 			data[i]=Math.abs(data[i]); 
@@ -291,6 +300,7 @@ public class SparseIndexedVector extends ASparseVector {
 	public void set(int i, double value) {
 		int ip=index.indexPosition(i);
 		if (ip<0) {
+			if (value==0.0) return;
 			throw new VectorzException("Can't set SparseIndexedVector at non-indexed position: "+i);
 		}
 		data[ip]=value;
@@ -321,8 +331,8 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public AVector clone() {
-		AVector v=Vectorz.newVector(length);
+	public Vector clone() {
+		Vector v=Vector.createLength(length);
 		for (int i=0; i<data.length; i++) {
 			v.set(index.data[i],data[i]);
 		}	

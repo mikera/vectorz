@@ -3,6 +3,7 @@ package mikera.matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.StridedArrayVector;
 import mikera.vectorz.util.VectorzException;
 
 /** 
@@ -17,6 +18,10 @@ public final class Matrix extends AMatrix {
 	
 	public Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
+	}
+	
+	public static Matrix create(int rowCount, int columnCount) {
+		return new Matrix(rowCount,columnCount);
 	}
 	
 	public Matrix(AMatrix m) {
@@ -48,15 +53,38 @@ public final class Matrix extends AMatrix {
 		return new Matrix(rowCount,columnCount,data);
 	}
 	
-	@Override
-	public AMatrix compose(AMatrix a) {
+	public Matrix innerProduct(Matrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
 		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
 		int ic=this.columnCount();
-		AMatrix result=Matrixx.newMatrix(rc,cc);
+		Matrix result=Matrix.create(rc,cc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				double acc=0.0;
+				for (int k=0; k<ic; k++) {
+					acc+=this.get(i, k)*a.get(k, j);
+				}
+				result.set(i,j,acc);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public Matrix innerProduct(AMatrix a) {
+		if (a instanceof Matrix) {
+			return innerProduct((Matrix)a);
+		}
+		if ((this.columnCount()!=a.rowCount())) {
+			throw new VectorzException("Matrix sizes not compatible!");
+		}
+		int rc=this.rowCount();
+		int cc=a.columnCount();
+		int ic=this.columnCount();
+		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
@@ -95,6 +123,11 @@ public final class Matrix extends AMatrix {
 	@Override
 	public ArraySubVector getRow(int row) {
 		return ArraySubVector.wrap(data,row*columns,columns);
+	}
+	
+	@Override
+	public AVector getColumn(int row) {
+		return StridedArrayVector.wrap(data,row,rows,columns);
 	}
 
 	@Override
@@ -135,6 +168,54 @@ public final class Matrix extends AMatrix {
 		data[(row*columns)+column]=value;
 	}
 	
+	public void addMultiple(Matrix m,double factor) {
+		assert(rowCount()==m.rowCount());
+		assert(columnCount()==m.columnCount());
+		for (int i=0; i<data.length; i++) {
+			data[i]+=m.data[i]*factor;
+		}
+	}
+	
+	public void add(Matrix m) {
+		assert(rowCount()==m.rowCount());
+		assert(columnCount()==m.columnCount());
+		for (int i=0; i<data.length; i++) {
+			data[i]+=m.data[i];
+		}
+	}
+
+	@Override
+	public void addMultiple(AMatrix m,double factor) {
+		if (m instanceof Matrix) {addMultiple((Matrix)m,factor); return;}
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(rc==m.rowCount());
+		assert(cc==m.columnCount());
+
+		int di=0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				data[di++]+=m.get(i, j)*factor;
+			}
+		}
+	}
+	
+	@Override
+	public void add(AMatrix m) {
+		if (m instanceof Matrix) {add((Matrix)m); return;}
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(rc==m.rowCount());
+		assert(cc==m.columnCount());
+
+		int di=0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				data[di++]+=m.get(i, j);
+			}
+		}
+	}
+	
 	@Override
 	public void scale(double factor) {
 		for (int i=0; i<data.length; i++) {
@@ -148,9 +229,10 @@ public final class Matrix extends AMatrix {
 		assert(rc==a.rowCount());
 		int cc = columnCount();
 		assert(cc==a.columnCount());
+		int di=0;
 		for (int row = 0; row < rc; row++) {
 			for (int column = 0; column < cc; column++) {
-				set(row, column, a.get(row, column));
+				data[di++]=a.get(row, column);
 			}
 		}
 	}

@@ -19,7 +19,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.Constant;
 
 import org.junit.Test;
 
@@ -307,6 +307,16 @@ public class TestMatrixx {
 		doSwapTest(m);
 		doMutationTest(m);
 	}
+	
+	private void doAddTest(AMatrix m) {
+		if (!m.isFullyMutable()) return;
+		AMatrix m2=m.exactClone();
+		AMatrix m3=m.exactClone();
+		m2.add(m);
+		m2.add(m);
+		m3.addMultiple(m, 2.0);
+		assertTrue(m2.epsilonEquals(m3));
+	}
 
 	private void doCloneSafeTest(AMatrix m) {
 		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
@@ -388,7 +398,7 @@ public class TestMatrixx {
 		AMatrix d=m.exactClone();
 		
 		c.asVector().fill(5.0);
-		d.applyOp(ConstantOp.create(5.0));
+		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
 	}
 	
@@ -419,6 +429,17 @@ public class TestMatrixx {
 		assertTrue(m1.isZeroMatrix());
 	}
 	
+	void doMulTest(AMatrix m) {
+		AVector v=Vectorz.newVector(m.columnCount());
+		AVector t=Vectorz.newVector(m.rowCount());
+		
+		m.transform(v, t);
+		AVector t2=m.transform(v);
+		
+		assertEquals(t,t2);
+		assertEquals(t,m.innerProduct(v));
+	}
+	
 	void doGenericTests(AMatrix m) {
 		testApplyOp(m);
 		testExactClone(m);
@@ -429,6 +450,8 @@ public class TestMatrixx {
 		doParseTest(m);
 		doHashTest(m);
 		doScaleTest(m);
+		doMulTest(m);
+		doAddTest(m);
 		doRowColumnTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);

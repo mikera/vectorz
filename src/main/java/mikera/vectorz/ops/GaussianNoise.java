@@ -50,6 +50,11 @@ public class GaussianNoise extends Op {
 	public double derivativeForOutput(double y) {
 		return 1.0;
 	}
+	
+	@Override
+	public Op getDerivativeOp() {
+		return Constant.ONE;
+	}
 
 	@Override
 	public double averageValue() {

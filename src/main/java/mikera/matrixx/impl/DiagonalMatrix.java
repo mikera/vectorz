@@ -11,7 +11,7 @@ import mikera.vectorz.Vectorz;
  * @author Mike
  */
 public final class DiagonalMatrix extends ADiagonalMatrix {
-	private final double[] data;
+	final double[] data;
 	
 	public DiagonalMatrix(int dimensions) {
 		super(dimensions);
@@ -28,6 +28,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		double[] data=new double[dimensions];
 		System.arraycopy(values, 0, data, 0, dimensions);
 		return new DiagonalMatrix(data);
+	}
+	
+	public static DiagonalMatrix create(AVector v) {
+		return wrap(v.toArray());
 	}
 	
 	public static DiagonalMatrix wrap(double[] data) {
@@ -125,14 +129,14 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return Vectorz.create(data);
 	}
 
-	public AMatrix compose(AMatrix a) {
+	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof ADiagonalMatrix) {
-			return compose((ADiagonalMatrix) a);
+			return innerProduct((ADiagonalMatrix) a);
 		}
-		return super.compose(a);
+		return super.innerProduct(a);
 	}
 	
-	public AMatrix compose(ADiagonalMatrix a) {
+	public AMatrix innerProduct(ADiagonalMatrix a) {
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		for (int i=0; i<dimensions; i++) {

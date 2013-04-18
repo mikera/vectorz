@@ -256,6 +256,17 @@ public abstract class ArrayVector extends AVector {
 		}
 		return result;
 	}
+	
+	@Override
+	public void square() {
+		int len=length();
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<len; i++) {
+			double x=data[i+offset];
+			data[i+offset]=x*x;
+		}		
+	}
 
 	
 	@Override

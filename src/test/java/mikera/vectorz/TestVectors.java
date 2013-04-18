@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -19,9 +20,10 @@ import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
+import mikera.vectorz.impl.StridedArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
-import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.Constant;
 
 import org.junit.Test;
 
@@ -51,6 +53,14 @@ public class TestVectors {
 		assertEquals(d*d,d2,0.00001);
 		
 		assertTrue(d<=(v.maxAbsElement()*v.length()));
+	}
+	
+	public void testSquare(AVector v) {
+		v=v.exactClone();
+		AVector vc=v.clone();
+		v.square();
+		vc.square();
+		assertEquals(vc,v);
 	}
 	
 	@Test public void testCross() {
@@ -188,6 +198,17 @@ public class TestVectors {
 		assertTrue(v.epsilonEquals(v2));
 	}
 	
+	private void testInnerProducts(AVector v) {
+		int len=v.length();
+		AVector c=Vectorz.createUniformRandomVector(v.length());
+		assertEquals(v.dotProduct(c),v.innerProduct((INDArray)c).get(),0.00001);
+		
+		if (len>20) return;
+		
+		AMatrix m=Matrixx.createRandomMatrix(len, len);
+		assertEquals(v.innerProduct(m),m.getTranspose().transform(v));
+	}
+	
 	private void testAddMultipleToArray(AVector v) {
 		int len=v.length();
 		double[] ds=new double[len+10];
@@ -273,7 +294,7 @@ public class TestVectors {
 
 		Vectorz.fillRandom(v);
 		double[] data=v.toArray();
-		v2.setValues(data);
+		v2.set(data);
 		assertEquals(v,v2);
 	}
 	
@@ -519,7 +540,7 @@ public class TestVectors {
 		AVector d=v.exactClone();
 		
 		c.fill(5.0);
-		d.applyOp(ConstantOp.create(5.0));
+		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
 	}
 	
@@ -545,9 +566,11 @@ public class TestVectors {
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
+		testInnerProducts(v);
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
+		testSquare(v);
 		testSubvectors(v);
 		testParse(v);
 		testDistances(v);
@@ -562,7 +585,6 @@ public class TestVectors {
 		
 		new TestArrays().testArray(v);
 	}
-
 
 	@Test public void genericTests() {
 		doGenericTests(Vector0.of());
@@ -657,5 +679,8 @@ public class TestVectors {
 		doGenericTests(JoinedArrayVector.create(v4));
 		doGenericTests(JoinedArrayVector.create(j5));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
+		
+		doGenericTests(StridedArrayVector.wrap(new double[]{}, 0, 0, 100));
+		doGenericTests(StridedArrayVector.wrap(new double[]{1,2}, 1, 1, 100));
 	}
 }

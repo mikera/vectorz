@@ -311,6 +311,12 @@ public final class JoinedVector extends AVector {
 		right.fill(value);
 	}
 	
+	@Override
+	public void square() {
+		left.square();
+		right.square();
+	}
+	
 	@Override 
 	public void multiply(double value) {
 		left.multiply(value);

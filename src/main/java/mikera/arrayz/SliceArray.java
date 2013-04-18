@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
 
-public class SliceArray<T extends INDArray> extends AbstractArray {
+public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	private final int[] shape;
 	private final T[] slices;
 	
@@ -24,8 +25,17 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 		return new SliceArray<T>(Tools.consArray(slices.length,slices[0].getShape()),slices.clone());
 	}
 	
+	public static <T extends INDArray> SliceArray<T> repeat (T s, int n) {
+		ArrayList<T> al=new ArrayList<T>();
+		for (int i=0; i<n; i++) {
+			al.add(s);
+		}
+		return SliceArray.create(al);
+	}
+	
 	public static <T extends INDArray>  SliceArray<T> create(List<T> slices) {
 		int slen=slices.size();
+		if (slen==0) throw new VectorzException("Empty list of slices provided to SliceArray");
 		T[] arr=(T[]) Array.newInstance(slices.get(0).getClass(),slen);
 		return new SliceArray<T>(Tools.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
 	}
@@ -77,7 +87,7 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 
 	@Override
 	public INDArray reshape(int... dimensions) {
-		throw new UnsupportedOperationException();
+		return Arrayz.createFromVector(asVector(), dimensions);
 	}
 
 	@Override
@@ -92,6 +102,22 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 			c*=d;
 		}
 		return c;
+	}
+	
+	public INDArray innerProduct(INDArray a) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (INDArray s:this) {
+			al.add(s.innerProduct(a));
+		}
+		return Arrayz.create(al);
+	}
+	
+	public INDArray outerProduct(INDArray a) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (INDArray s:this) {
+			al.add(s.outerProduct(a));
+		}
+		return Arrayz.create(al);
 	}
 
 	@Override
@@ -136,6 +162,13 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 			a.applyOp(op);
 		}
 	}
+	
+	@Override
+	public void scale(double d) {
+		for (INDArray a:slices) {
+			a.scale(d);
+		}
+	}
 
 	@Override
 	public boolean equals(INDArray a) {
@@ -158,6 +191,20 @@ public class SliceArray<T extends INDArray> extends AbstractArray {
 			newSlices[i]=(T) newSlices[i].exactClone();
 		}
 		return new SliceArray<T>(shape,newSlices);
+	}
+
+	@Override
+	public int sliceCount() {
+		return slices.length;
+	}
+
+	@Override
+	public List<INDArray> getSlices() {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (INDArray sl:this) {
+			al.add(sl);
+		}
+		return al;
 	}
 
 

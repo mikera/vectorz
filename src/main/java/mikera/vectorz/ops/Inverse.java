@@ -2,10 +2,10 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
-public class InverseOp extends Op {
+public class Inverse extends Op {
 	private final Op op;
 	
-	public InverseOp(Op op) {
+	public Inverse(Op op) {
 		this.op=op;
 	}
 

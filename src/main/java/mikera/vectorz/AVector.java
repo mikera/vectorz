@@ -2,14 +2,20 @@ package mikera.vectorz;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.AbstractArray;
+import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.SliceArray;
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
+import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
@@ -26,7 +32,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AVector extends AbstractArray implements IVector, Comparable<AVector>, Serializable, Iterable<Double> {
+public abstract class AVector extends AbstractArray<Double> implements IVector, Comparable<AVector>, Serializable {
 	
 	// ================================================
 	// Abstract interface
@@ -65,6 +71,20 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		return new VectorIndexScalar(this,position);
 	}
 	
+	@Override
+	public int sliceCount() {
+		return length();
+	}
+	
+	@Override
+	public List<Double> getSlices() {
+		ArrayList<Double> al=new ArrayList<Double>();
+		int l=length();
+		for (int i=0; i<l; i++) {
+			al.add(get(i));
+		}
+		return al;
+	}
 	
 	@Override
 	public int[] getShape() {
@@ -353,6 +373,14 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		}
 	}
 	
+	public void square() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=get(i);
+			set(i,x*x);
+		}		
+	}
+	
 	/**
 	 * Scales the vector by a scalar factor
 	 * @param factor
@@ -402,6 +430,52 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 			total+=x*x;
 		}
 		return total;
+	}
+	
+	public AMatrix outerProduct(AVector a) {
+		int rc=length();
+		int cc=a.length();
+		Matrix m=Matrix.create(rc, cc);
+		int di=0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				m.data[di++]=get(i)*a.get(j);
+			}
+		}
+		return m;
+	}
+	
+	public INDArray outerProduct(INDArray a) {
+		if (a instanceof AVector) {
+			return outerProduct((AVector)a);
+		}
+		return super.outerProduct(a);
+	}
+	
+	public AScalar innerProduct(AVector v) {
+		return DoubleScalar.create(dotProduct(v));
+	}
+	
+	public AVector innerProduct(AMatrix m) {
+		int cc=m.columnCount();
+		int rc=m.rowCount();
+		if (rc!=length()) throw new VectorzException("Incompatible sizes for inner product: ["+length()+ "] x ["+rc+","+cc+"]");
+		AVector r=Vectorz.newVector(cc);
+		for (int i=0; i<cc; i++) {
+			double y=0.0;
+			for (int j=0; j<rc; j++) {
+				y+=get(j)*m.get(j,i);
+			}
+			r.set(i,y);
+		}
+		return r;
+	}
+	
+	public INDArray innerProduct(INDArray a) {
+		if (a instanceof AVector) {
+			return DoubleScalar.create(dotProduct((AVector)a));
+		}
+		return super.innerProduct(a);
 	}
 	
 	public double dotProduct(AVector v) {
@@ -551,6 +625,22 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		}
 	}
 	
+	public void set(double a) {
+		fill(a);
+	}
+	
+	public void set(INDArray a) {
+		if (a instanceof AVector) {set((AVector)a); return;}
+		if (a.dimensionality()==1) {
+			int len=length();
+			for (int i=0; i<len; i++) {
+				set(i,a.get(i));
+			}		
+		} else {
+			throw new IllegalArgumentException("Cannot set vector using array of dimensonality: "+a.dimensionality());
+		}
+	}
+	
 	/**
 	 * Set the vector equal to an offset into another vector
 	 * @param src
@@ -564,8 +654,9 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		}
 	}
 	
-	public void setValues(double... values) {
+	public void set(double... values) {
 		int len=length();
+		if (values.length!=len) throw new VectorzException("Trying to set vectors with incorrect number of doubles: "+values.length);
 		for (int i=0; i<len; i++) {
 			set(i,values[i]);
 		}		
@@ -609,7 +700,7 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		} else if (ndims==2) {
 			return Matrixx.createFromVector(this, dimensions[0], dimensions[1]);
 		} else {
-			throw new UnsupportedOperationException("Can't reshape to dimensionality: "+ndims);
+			return Arrayz.createFromVector(this,dimensions);
 		}
 	}
 	
@@ -656,6 +747,26 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 		for (int i = 0; i < length; i++) {
 			addAt(i,v.get(i));
 		}
+	}
+	
+	public void add(INDArray a) {
+		if (a instanceof AVector) {
+			add((AVector)a);
+		} else if (a instanceof AScalar) {
+			add(a.get());
+		}else {
+			super.add(a);
+		}
+	}
+	
+	public void sub(INDArray a) {
+		if (a instanceof AVector) {
+			sub((AVector)a);
+		} else if (a instanceof AScalar) {
+			sub(a.get());
+		}else {
+			super.sub(a);
+		}	
 	}
 	
 	/**
@@ -742,6 +853,10 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 	 */
 	public void sub(AVector v) {
 		addMultiple(v,-1.0);
+	}
+	
+	public void sub(double d) {
+		add(-d);
 	}
 	
 	/**
@@ -941,6 +1056,26 @@ public abstract class AVector extends AbstractArray implements IVector, Comparab
 	public void set(int offset, double[] data, int dataOffset, int length) {
 		for (int i=0; i<length; i++) {
 			set(offset+i,data[dataOffset+i]);
+		}
+	}
+	
+	@Override
+	public INDArray broadcast(int... targetShape) {
+		int tdims=targetShape.length;
+		if (tdims<1) {
+			throw new VectorzException("Can't broadcast to a smaller shape!");
+		} else if (tdims==1) {
+			// TODO dim check / 1-replicate
+			return this;
+		} else if (tdims==2) {
+			int n=targetShape[0];
+			AVector[] vs=new AVector[n];
+			for (int i=0; i<n; i++) {vs[i]=this;}
+			return Matrixx.createFromVectors(vs);
+		} else {
+			int n=targetShape[0];
+			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
+			return SliceArray.repeat(s,n);
 		}
 	}
 

@@ -2,18 +2,18 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
-public class ProductOp extends Op {
+public class Product extends Op {
 	public final Op a;
 	public final Op b;
 	
-	private ProductOp(Op a, Op b) {
+	private Product(Op a, Op b) {
 		this.a=a;
 		this.b=b;
 	}
 	
 	private static Op tryOptimisedCreate(Op a, Op b) {
-		if (a instanceof ConstantOp) {
-			return LinearOp.create(((ConstantOp) a).value,0.0).compose(b);
+		if (a instanceof Constant) {
+			return Linear.create(((Constant) a).value,0.0).compose(b);
 		}
 		if ((a instanceof ALinearOp)&&(b instanceof ALinearOp)) {
 			ALinearOp la=(ALinearOp)a;
@@ -22,7 +22,7 @@ public class ProductOp extends Op {
 			double a2=la.getConstant();
 			double b1=lb.getFactor();
 			double b2=lb.getConstant();		
-			return QuadraticOp.create(a1*b1,a1*b2+b1*a2,b2*a2);
+			return Quadratic.create(a1*b1,a1*b2+b1*a2,b2*a2);
 		}
 		return null;
 	}
@@ -34,7 +34,7 @@ public class ProductOp extends Op {
 		Op t2=tryOptimisedCreate(b,a);
 		if (t2!=null) return t2;
 		
-		return new ProductOp(a,b);
+		return new Product(a,b);
 	}
 	
 	@Override

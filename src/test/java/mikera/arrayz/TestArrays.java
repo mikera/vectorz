@@ -1,8 +1,10 @@
 package mikera.arrayz;
 
+import java.util.List;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.ops.ConstantOp;
+import mikera.vectorz.ops.Constant;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -23,6 +25,8 @@ public class TestArrays {
 			r*=shape[i];
 		}
 		assertEquals(v.length(),r);
+		
+		assertEquals(a,a.reshape(shape));
 	}
 	
 	private void testSlices(INDArray a) {
@@ -38,6 +42,9 @@ public class TestArrays {
 		}
 		
 		testArray(sl);
+		
+		List<?> slices=a.getSlices();
+		assertEquals(a,Arrayz.create(slices));
 	}
 	
 	private void testAsVector(INDArray a) {
@@ -81,7 +88,7 @@ public class TestArrays {
 		INDArray d=a.clone();
 		
 		c.asVector().fill(5.0);
-		d.applyOp(ConstantOp.create(5.0));
+		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
 	}
 	
@@ -99,10 +106,28 @@ public class TestArrays {
 		assertEquals(a.asVector().hashCode(),a.hashCode());
 	}
 	
+	private void testBroadcast(INDArray a) {
+		int dims=a.dimensionality();
+		int[] ts=new int[dims+2];
+		ts[0]=1;
+		ts[1]=2;
+		System.arraycopy(a.getShape(), 0, ts, 2, dims);
+		
+		INDArray b=a.broadcast(ts);
+		int[] bs=b.getShape();
+		for (int i=0; i<ts.length; i++) {
+			assertEquals(ts[i],bs[i]);
+		}
+		
+		assertEquals(a,b.slice(0).slice(1));
+	}
+	
+	
 	public void testArray(INDArray a) {
 		testAsVector(a);
 		testApplyOp(a);
 		testSlices(a);
+		testBroadcast(a);
 		testShape(a);
 		testHash(a);
 		testClone(a);

@@ -3,50 +3,58 @@ package mikera.vectorz.ops;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
-public final class OffsetOp extends ALinearOp {
+public final class Linear extends ALinearOp {
+	private final double factor;
 	private final double constant;
 	
-	private OffsetOp(double constant) {
+	private Linear(double factor, double constant) {
+		this.factor=factor;
 		this.constant=constant;
 	}
 	
-	public static OffsetOp create(double offset) {
-		return new OffsetOp(offset);
+	public static ALinearOp create(double factor, double constant) {
+		if (factor==0.0) {
+			return Constant.create(constant);
+		}
+		if (factor==1.0) {
+			if (constant==0.0) return Identity.INSTANCE;
+			return Offset.create(constant);
+		}
+		return new Linear(factor,constant);
 	}
 	
 	@Override
 	public double apply(double x) {
-		return x+constant;
+		return (factor*x)+constant;
 	}
 	
 	@Override
 	public double applyInverse(double y) {
-		return y-constant;
+		return (y-constant)/factor;
 	}
 	
 	@Override
 	public void applyTo(AVector v) {
-		v.add(constant);
+		v.scaleAdd(factor,constant);
 	}
 	
 	@Override
 	public void applyTo(double[] data) {
 		for (int i=0; i<data.length; i++) {
-			data[i]+=constant;
+			data[i]=(data[i]*factor)+constant;
 		}
 	}
 	
 	@Override
 	public void applyTo(double[] data, int start,int length) {
 		for (int i=0; i<length; i++) {
-			data[i+start]+=constant;
+			data[i+start]=(data[i+start]*factor)+constant;
 		}	
-		
 	}
 	
 	@Override
 	public double getFactor() {
-		return 1.0;
+		return factor;
 	}
 	
 	@Override
@@ -66,17 +74,17 @@ public final class OffsetOp extends ALinearOp {
 	
 	@Override
 	public double derivative(double x) {
-		return 1.0;
+		return factor;
 	}
 	
 	@Override
 	public double derivativeForOutput(double y) {
-		return 1.0;
+		return factor;
 	}
 	
 	@Override
 	public Op getDerivativeOp() {
-		return ConstantOp.create(1.0);
+		return Constant.create(getFactor());
 	}
 	
 	@Override
@@ -85,12 +93,12 @@ public final class OffsetOp extends ALinearOp {
 	}
 	
 	@Override
-	public OffsetOp getInverse() {
-		return OffsetOp.create(-constant);
+	public ALinearOp getInverse() {
+		return Linear.create(1.0/factor, -constant/factor);
 	}
-
+	
 	public Op compose(ALinearOp op) {
-		return LinearOp.create(op.getFactor(), constant+op.getConstant());
+		return Linear.create(factor*op.getFactor(),factor*op.getConstant()+constant);
 	}
 	
 	@Override

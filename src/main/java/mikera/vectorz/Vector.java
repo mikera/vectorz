@@ -93,6 +93,16 @@ public final class Vector extends ArrayVector {
 	public void set(int offset, double[] data, int dataOffset, int length) {
 		System.arraycopy(data, dataOffset, this.data, offset, length);
 	}
+	
+	@Override
+	public void set(AVector a) {
+		if (a instanceof Vector) {
+			Vector v=(Vector)a;
+			System.arraycopy(v.data, 0, data, 0, data.length);
+		} else {
+			super.set(a);
+		}
+	}
 
 	@Override
 	public double[] getArray() {
@@ -114,6 +124,14 @@ public final class Vector extends ArrayVector {
 		Arrays.fill(data, value);
 	}
 	
+	@Override
+	public void square() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=data[i];
+			data[i]=x*x;
+		}		
+	}
 	
 	@Override
 	public double elementSum() {

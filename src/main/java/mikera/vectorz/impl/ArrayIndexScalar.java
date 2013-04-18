@@ -36,4 +36,5 @@ public class ArrayIndexScalar extends AScalar {
 	public ArrayIndexScalar exactClone() {
 		return new ArrayIndexScalar(array.clone(),index);
 	}
+
 }

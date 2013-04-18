@@ -47,7 +47,7 @@ public class VectorBuilder {
 	
 	public AVector toVector() {
 		AVector v=Vectorz.newVector(length);
-		v.setValues(data);
+		v.set(0,data,0,length);
 		return v;
 	}
 }

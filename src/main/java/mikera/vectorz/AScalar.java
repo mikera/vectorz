@@ -1,8 +1,12 @@
 package mikera.vectorz;
 
+import java.util.Iterator;
+import java.util.List;
+
 import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ScalarVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -13,7 +17,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar extends AbstractArray {
+public abstract class AScalar extends AbstractArray<Object> {
 	
 	private static final int[] SCALAR_SHAPE=new int[0];
 
@@ -34,6 +38,21 @@ public abstract class AScalar extends AbstractArray {
 	}
 	
 	@Override
+	public int sliceCount() {
+		return 0;
+	}
+	
+	@Override
+	public List<Object> getSlices() {
+		throw new UnsupportedOperationException("Can't slice a scalar!");
+	}
+	
+	@Override
+	public Iterator<Object> iterator() {
+		throw new UnsupportedOperationException("Can't slice a scalar!");
+	}
+	
+	@Override
 	public boolean isMutable() {
 		// scalars are generally going to be mutable, so express this in default
 		return true;
@@ -49,12 +68,48 @@ public abstract class AScalar extends AbstractArray {
 		return false;
 	}
 	
+	public void add(double d) {
+		set(get()+d);
+	}
+	
+	public void sub(double d) {
+		set(get()-d);
+	}
+	
 	public void add(AScalar s) {
 		set(get()+s.get());
 	}
 	
+	public void add(INDArray a) {
+		if (a instanceof AScalar) {
+			add(a.get());
+		} else {
+			super.add(a);
+		}
+	}
+	
+	public void sub(INDArray a) {
+		if (a instanceof AScalar) {
+			sub(a.get());
+		} else {
+			super.sub(a);
+		}
+	}
+	
 	public void sub(AScalar s) {
 		set(get()-s.get());
+	}
+	
+	public INDArray innerProduct(INDArray a) {
+		a=a.clone();
+		a.scale(get());
+		return a;
+	}
+	
+	public INDArray outerProduct(INDArray a) {
+		a=a.clone();
+		a.scale(get());
+		return a;
 	}
 	
 	@Override 
@@ -89,7 +144,7 @@ public abstract class AScalar extends AbstractArray {
 	
 	@Override
 	public INDArray reshape(int... dimensions) {
-		throw new UnsupportedOperationException();
+		return asVector().reshape(dimensions);
 	}
 	
 	@Override
@@ -105,6 +160,23 @@ public abstract class AScalar extends AbstractArray {
 	@Override
 	public AScalar clone() {
 		return (AScalar) super.clone();
+	}
+	
+	@Override 
+	public void scale(double factor) {
+		set(factor*get());
+	}
+	
+	@Override
+	public INDArray broadcast(int... targetShape) {
+		int tdims=targetShape.length;
+		if (tdims==0) {
+			return this;
+		} else {
+			int n=targetShape[tdims-1];
+			AVector v=new RepeatedElementVector(n,get());
+			return v.broadcast(targetShape);
+		}
 	}
 	
 	@Override

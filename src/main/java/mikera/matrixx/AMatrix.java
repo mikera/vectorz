@@ -1,8 +1,13 @@
 package mikera.matrixx;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
+import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.SliceArray;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
@@ -12,6 +17,7 @@ import mikera.transformz.AAffineTransform;
 import mikera.transformz.ALinearTransform;
 import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
@@ -98,12 +104,25 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return getRow(rowNumber);
 	}
 	
+	@Override
+	public int sliceCount() {
+		return rowCount();
+	}
+	
+	@Override
+	public List<AVector> getSlices() {
+		ArrayList<AVector> al=new ArrayList<AVector>();
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			al.add(getRow(i));
+		}
+		return al;
+	}
 	
 	@Override
 	public int[] getShape() {
 		return new int[] {rowCount(),columnCount()};
 	}
-
 	
 	@Override
 	public double get(int... indexes) {
@@ -172,11 +191,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public INDArray reshape(int... dimensions) {
 		int ndims=dimensions.length;
 		if (ndims==1) {
-			return toVector();
+			return toVector().subVector(0, dimensions[0]);
 		} else if (ndims==2) {
 			return Matrixx.createFromVector(asVector(), dimensions[0], dimensions[1]);
 		} else {
-			throw new UnsupportedOperationException("Can't reshape to dimensionality: "+ndims);
+			return Arrayz.createFromVector(toVector(), dimensions);
 		}
 	}
 
@@ -208,7 +227,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 			temp[row] = total;
 		}
-		v.setValues(temp);
+		v.set(temp);
 	}
 
 	@SuppressWarnings("serial")
@@ -308,6 +327,22 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 	}
+	
+	public void set(INDArray a) {
+		if (a instanceof AMatrix) {set((AMatrix) a); return;}	
+		if (a instanceof AVector) {for (AVector r:this) {r.set((AVector) a);} return;}
+		if (a instanceof AScalar) {set(a.get()); return;}
+		
+		throw new UnsupportedOperationException("Can't set matrix to array: "+a.getClass() +" with shape: "+a.getShape());
+	}
+	
+	public void set(Object o) {
+		if (o instanceof INDArray) {set((INDArray)o); return;}
+		if (o instanceof Number) {
+			set(((Number)o).doubleValue()); return;
+		}
+		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
+	}
 
 	public boolean isFullyMutable() {
 		return true;
@@ -388,7 +423,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	/**
-	 * Returns a transposed version of this matrix. May or may not be a reference.
+	 * Returns a transposed version of this matrix. May or may not be a view.
 	 * @return
 	 */
 	public AMatrix getTranspose() {
@@ -410,6 +445,34 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 				set(i,j,get(i,j)+m.get(i, j));
 			}
 		}
+	}
+	
+	public void add(AVector v) {
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(cc==v.length());
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				set(i,j,get(i,j)+v.get(j));
+			}
+		}		
+	}
+	
+	public void sub(AVector v) {
+		int rc=rowCount();
+		int cc=columnCount();
+		assert(cc==v.length());
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				addAt(i,j,-v.get(j));
+			}
+		}		
+	}
+	
+	public void sub(double d) {
+		add(-d);
 	}
 	
 	/**
@@ -457,7 +520,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
 	 * @param m
 	 */
-	public void entrywiseMul(AMatrix m) {
+	public void elementMul(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
 		assert(rc==m.rowCount());
@@ -646,7 +709,17 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return compose((AMatrix)a);
 	}
 	
-	public AMatrix compose(AMatrix a) {
+	/**
+	 * Composes this matrix with another matrix (matrix multiplication)
+	 * Returns a new matrix that represents the compose transformation.
+	 * @param a
+	 * @return
+	 */
+	public final AMatrix compose(AMatrix a) {
+		return innerProduct(a);
+	}
+	
+	public AMatrix innerProduct(AMatrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
 		}
@@ -663,7 +736,43 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 				result.set(i,j,acc);
 			}
 		}
-		return result;
+		return result;		
+	}
+	
+	public AVector innerProduct(AVector v) {
+		return transform(v);
+	}
+	
+	public AMatrix innerProduct(AScalar s) {
+		AMatrix r= clone();
+		r.scale(s.get());
+		return r;
+	}
+	
+	public INDArray innerProduct(INDArray a) {
+		if (a instanceof AVector) {
+			return innerProduct((AVector)a);
+		} else if (a instanceof AMatrix) {
+			return compose((AMatrix) a);
+		} else if (a instanceof AScalar) {
+			return innerProduct((AScalar)a);
+		}
+		throw new UnsupportedOperationException("Can't take inner product with: "+a.getClass());
+	}
+
+	public INDArray outerProduct(INDArray a) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (Object s:this) {
+			if (s instanceof INDArray) {
+				al.add(((INDArray)s).outerProduct(a));
+			} else {
+				double x=Tools.toDouble(s);
+				INDArray sa=a.clone();
+				sa.scale(x);
+				al.add(sa);
+			}
+		}
+		return Arrayz.create(al);
 	}
 
 	@Override
@@ -755,6 +864,81 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			for (int j = 0; j < cc; j++) {
 				set(i,j,op.apply(get(i,j)));
 			}
+		}
+	}
+	
+	public void add(INDArray a) {
+		if (a instanceof AMatrix) {
+			add((AMatrix)a);
+		} else if (a instanceof AVector) {
+			add((AVector)a);
+		} else if (a instanceof AScalar) {
+			add(a.get());
+		} else {
+			int dims=a.dimensionality();
+			int rc=rowCount();
+			if (dims==0) {
+				add(a.get());
+			} else if (dims==1) {
+				for (int i=0; i<rc; i++) {
+					slice(i).add(a);
+				}
+			} else if (dims==2) {
+				for (int i=0; i<rc; i++) {
+					slice(i).add(a.slice(i));
+				}		
+			}
+		}
+	}
+	
+	public void sub(INDArray a) {
+		if (a instanceof AMatrix) {
+			sub((AMatrix)a);
+		} else if (a instanceof AVector) {
+			sub((AVector)a);
+		} else if (a instanceof AScalar) {
+			sub(a.get());
+		} else {
+			int dims=a.dimensionality();
+			int rc=rowCount();
+			if (dims==0) {
+				sub(a.get());
+			} else if (dims==1) {
+				for (int i=0; i<rc; i++) {
+					slice(i).sub(a);
+				}
+			} else if (dims==2) {
+				for (int i=0; i<rc; i++) {
+					slice(i).sub(a.slice(i));
+				}		
+			}
+		}
+	}
+
+	public void add(double d) {
+		int rc = rowCount();
+		int cc = columnCount();
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				addAt(i,j,d);
+			}
+		}
+	}
+
+	public void addAt(int i, int j, double d) {
+		set(i,j,get(i,j)+d);
+	}
+	
+	public INDArray broadcast(int... targetShape) {
+		int tdims=targetShape.length;
+		if (tdims<2) {
+			throw new VectorzException("Can't broadcast to a smaller shape!");
+		} else if (2==tdims) {
+			return this;
+		} else {
+			int n=targetShape[0];
+			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
+			return SliceArray.repeat(s,n);
 		}
 	}
 

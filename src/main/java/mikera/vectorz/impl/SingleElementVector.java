@@ -47,6 +47,11 @@ public final class SingleElementVector extends AVector implements ISparse {
 		return value*value;
 	}
 	
+	@Override 
+	public void square() {
+		value=value*value;
+	}
+	
 	@Override
 	public double normalise() {
 		double ret=value;

@@ -1,5 +1,7 @@
 package mikera.arrayz;
 
+import java.util.List;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
@@ -12,6 +14,10 @@ public interface INDArray extends Cloneable {
 	
 	public int dimensionality();
 	
+	/**
+	 * Returns the shape of the array as an array of ints.
+	 * @return
+	 */
 	public int[] getShape();
 	
 	public double get();
@@ -23,7 +29,14 @@ public interface INDArray extends Cloneable {
 	public void set(int x, double value);
 	public void set(int x, int y, double value);
 	public void set(int[] indexes, double value);
+	public void set(INDArray a);
+	public void set(Object o);
+	
+	public void add(INDArray a);
+	public void sub(INDArray a);
 
+	public INDArray innerProduct(INDArray a);
+	public INDArray outerProduct(INDArray a);
 	
 	/**
 	 * Creates a view of the array as a single vector in row-major order.
@@ -32,8 +45,13 @@ public interface INDArray extends Cloneable {
 	public AVector asVector();
 	
 	public INDArray reshape(int... dimensions);
+
+	public INDArray broadcast(int... dimensions);
+
 	
 	public INDArray slice(int majorSlice);
+	
+	public int sliceCount();
 	
 	public long elementCount();
 	
@@ -61,6 +79,11 @@ public interface INDArray extends Cloneable {
 	 */
 	public boolean isView();
 
+	/**
+	 * Returns a clone of the array, as a new array which will be fully mutable
+	 * and may be of a different class to the original.
+	 * @return
+	 */
 	public INDArray clone();
 
 	/**
@@ -75,9 +98,20 @@ public interface INDArray extends Cloneable {
 	 */
 	void applyOp(IOp op);
 	
+	/**
+	 * Returns true if the two arrays are exactly equal in value and shape
+	 * @param a
+	 * @return
+	 */
 	public boolean equals(INDArray a);
 
+	/**
+	 * Returns an exact deep clone of an array (i.e. of the same class as the original).
+	 * @return
+	 */
 	public INDArray exactClone();
-	
 
+	public void scale(double d);
+
+	public List<?> getSlices();
 }

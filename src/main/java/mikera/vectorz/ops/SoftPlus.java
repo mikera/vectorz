@@ -1,5 +1,7 @@
 package mikera.vectorz.ops;
 
+import java.io.ObjectStreamException;
+
 import mikera.vectorz.Op;
 
 
@@ -67,6 +69,10 @@ public final class SoftPlus extends ABoundedOp {
 	@Override
 	public double averageValue() {
 		return 1.0;
+	}
+	
+	private Object readResolve() throws ObjectStreamException {
+		return INSTANCE; 
 	}
 
 }
