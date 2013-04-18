@@ -62,11 +62,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	public void set (INDArray a) {
 		int tdims=this.dimensionality();
-		if (a.dimensionality()<tdims) {
+		int adims=a.dimensionality();
+		if (adims<tdims) {
 			int sc=getShape()[0];
 			for (int i=0; i<sc; i++) {
 				INDArray s=slice(i);
 				s.set(a);
+			}
+		} else if (adims==tdims) {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				INDArray s=slice(i);
+				s.set(a.slice(i));
 			}
 		}
 		throw new UnsupportedOperationException("Can't set "+this.toString()+" to value "+a.toString());
