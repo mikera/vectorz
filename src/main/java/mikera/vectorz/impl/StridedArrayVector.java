@@ -71,7 +71,7 @@ public class StridedArrayVector extends AVector {
 		assert(start>=0);
 		assert((start+length)<=this.length);
 		if (length==1) {
-			return ArraySubVector.wrap(data, start, 1);
+			return ArraySubVector.wrap(data, offset+start*stride, 1);
 		} else if (length>0) {
 			return wrapStrided(data,offset+start*stride,length,stride);
 		} else {
