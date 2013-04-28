@@ -211,4 +211,8 @@ public abstract class Op implements IOp, ITransform {
 	public Op sum(Op op) {
 		return Sum.create(this, op);
 	}
+	
+	@Override public String toString() {
+		return getClass().toString();
+	}
 }

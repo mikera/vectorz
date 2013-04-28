@@ -95,4 +95,9 @@ public class Composed extends Op {
 		return outer.averageValue();
 	}
 	
+	
+	@Override public String toString() {
+		return "Composed("+outer+","+inner+")";
+	}
+	
 }
