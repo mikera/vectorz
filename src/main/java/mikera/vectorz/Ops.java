@@ -7,6 +7,7 @@ import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Quadratic;
+import mikera.vectorz.ops.ScaledLogistic;
 import mikera.vectorz.ops.SoftPlus;
 import mikera.vectorz.ops.StochasticBinary;
 import mikera.vectorz.ops.Tanh;
@@ -16,6 +17,7 @@ public final class Ops {
 	public static final Op IDENTITY=Identity.INSTANCE;
 	public static final Op LINEAR=Identity.INSTANCE;
 	public static final Op LOGISTIC=Logistic.INSTANCE;
+	public static final Op SCALED_LOGISTIC=ScaledLogistic.INSTANCE;
 	public static final Op RECTIFIER=new Clamp(0.0,Double.MAX_VALUE);
 	public static final Op STOCHASTIC_LOGISTIC=Op.compose(STOCHASTIC_BINARY,Logistic.INSTANCE);
 	public static final Op TANH=Tanh.INSTANCE;
