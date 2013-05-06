@@ -927,7 +927,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	/**
-	 * Adds source vector to this vector at the specified indexes
+	 * Adds source vector to this vector at the specified indexes which should map from source->this
 	 * @param source
 	 * @param index
 	 * @param factor
@@ -942,6 +942,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Adds source vector to this vector at the specified indexes which should map from source->this
+	 * @param source
+	 * @param index
+	 * @param factor
+	 */
 	public void addMultiple(AVector source, Index index, double factor) {
 		if (index.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
