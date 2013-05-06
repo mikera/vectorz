@@ -373,6 +373,17 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void addMultiple(Index destToSource, Vector source, double factor) {
+		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
+		int len=this.length();
+		assert(len==destToSource.length());
+		for (int i=0; i<len; i++) {
+			int j=destToSource.data[i];
+			this.data[i]+=source.data[j]*factor;
+		}
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		int len=length();
 		for (int i = 0; i < len; i++) {

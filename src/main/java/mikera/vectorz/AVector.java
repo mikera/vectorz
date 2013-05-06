@@ -965,7 +965,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param factor
 	 */
 	public void addMultiple(Index destToSource, Vector source, double factor) {
-		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match source vector");
+		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
 		int len=this.length();
 		assert(len==destToSource.length());
 		for (int i=0; i<len; i++) {
@@ -981,7 +981,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param factor
 	 */
 	public void addMultiple(Index destToSource, AVector source, double factor) {
-		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match source vector");
+		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
 		int len=this.length();
 		assert(len==destToSource.length());
 		for (int i=0; i<len; i++) {
