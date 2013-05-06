@@ -22,6 +22,18 @@ public class BitVectorTest {
 		BitVector b=new BitVector(3);
 		assertEquals(BitVector.of(0,0,0),b);
 		assertEquals(Vector.of(0,0,0),b);
+	
+		assertEquals(Vector.of(1,0,1,0,1,0),BitVector.of(1,0,2,-3,0.51,0.49));
+	}
+	
+	@Test
+	public void testElementSum() {
+		assertEquals(3,Long.bitCount(7));
+		
+		assertEquals(1.0,BitVector.of(1).elementSum(),0.00001);
+		assertEquals(2.0,BitVector.of(0,1,0,1).elementSum(),0.00001);
+		assertEquals(0.0,BitVector.of(0,0,0).elementSum(),0.00001);
+		assertEquals(1.0,BitVector.of(0,1,0).elementSum(),0.00001);
 	}
 	
 	@Test 

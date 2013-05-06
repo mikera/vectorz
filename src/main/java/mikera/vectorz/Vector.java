@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.util.Arrays;
 
 import mikera.indexz.Index;
+import mikera.vectorz.util.VectorzException;
 
 
 /**
@@ -361,12 +362,24 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
-	public void addMultiple(Vector vector, Index index, double factor) {
-		int len=vector.length();
+	public void addMultiple(Vector source, Index index, double factor) {
+		if (index.length()!=source.length()) throw new VectorzException("Index must match source vector");
+		int len=source.length();
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
-			this.data[j]+=vector.data[i]*factor;
+			this.data[j]+=source.data[i]*factor;
+		}
+	}
+	
+	@Override
+	public void addMultiple(Index destToSource, Vector source, double factor) {
+		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
+		int len=this.length();
+		assert(len==destToSource.length());
+		for (int i=0; i<len; i++) {
+			int j=destToSource.data[i];
+			this.data[i]+=source.data[j]*factor;
 		}
 	}
 	

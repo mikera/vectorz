@@ -9,8 +9,10 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
+import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.DoubleScalar;
@@ -232,6 +234,51 @@ public class TestVectors {
 		assertEquals(10.0*v.get(0),tv.get(5),0.0);
 		assertEquals(10.0*v.get(len-1),tv.get(5+len-1),0.0);
 		assertEquals(0.0,tv.get(5+len),0.0);
+	}
+	
+	private void testElementSum(AVector v) {
+		AVector cv=v.clone();
+		assertEquals(v.elementSum(),cv.elementSum(),0.00001);
+		
+		double res=0.0;
+		for (int i=0; i<v.length(); i++) {
+			res+=v.get(i);
+		}
+		
+		assertEquals(res,v.elementSum(),0.00001);
+	}
+	
+	private void testAddMultipleIndexed(AVector v) {
+		v=v.exactClone();
+		if (v.isFullyMutable()) {
+			Vectorz.fillGaussian(v);
+		}
+		int len=v.length();
+		int tlen=len+10;
+		
+		Index ix=Indexz.createRandomChoice(len, tlen);
+		Vector tv=Vector.createLength(tlen);
+		
+		tv.addMultiple(v, ix, 2.0);
+		assertEquals(v.elementSum()*2.0,tv.elementSum(),0.0001);
+	}
+	
+	private void testAddMultipleIndexed2(AVector v) {
+		if (v.length()<1) return;
+		if (!v.isFullyMutable()) return;
+		v.fill(1.0);
+		v=v.exactClone();
+		int len=v.length();
+		
+		Vector tv=Vector.createLength(len);
+		Vectorz.fillGaussian(tv);
+		Index ix=Indexz.createLength(len);
+		for (int i=0; i<len; i++) {
+			ix.set(i, Rand.r(len));
+		}
+		
+		v.addMultiple(tv, ix, 2.0);
+		assertEquals(len+tv.elementSum()*2.0,v.elementSum(),0.0001);
 	}
 	
 
@@ -548,6 +595,8 @@ public class TestVectors {
 		if (v.length()==0) return;
 		testSubVectorMutability(v);
 		testAddMultiple(v);
+		testAddMultipleIndexed(v);
+		testAddMultipleIndexed2(v);
 		testAddFromPosition(v);
 		testAddToPosition(v);
 		testVectorMutability(v);
@@ -562,6 +611,7 @@ public class TestVectors {
 		testAdd(v);
 		testAddEquivalents(v);
 		testAddToArray(v);
+		testElementSum(v);
 		testAddAt(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);

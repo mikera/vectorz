@@ -65,4 +65,8 @@ public class Product extends Op {
 		Op db=b.getDerivativeOp();
 		return (da.product(b)).sum(db.product(a));
 	}
+	
+	@Override public String toString() {
+		return "Product("+a+","+b+")";
+	}
 }

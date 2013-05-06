@@ -236,6 +236,7 @@ public class TestOps {
 		
 		doOpTest(Ops.LINEAR);
 		doOpTest(Ops.LOGISTIC);
+		doOpTest(Ops.SCALED_LOGISTIC);
 		doOpTest(Ops.STOCHASTIC_BINARY);
 		doOpTest(Ops.STOCHASTIC_LOGISTIC);
 		doOpTest(Ops.TANH);

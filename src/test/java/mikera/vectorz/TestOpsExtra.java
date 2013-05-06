@@ -42,6 +42,12 @@ public class TestOpsExtra {
 		assertEquals(0,Ops.LOGISTIC.derivativeForOutput(0),0.0001);
 		assertEquals(0,Ops.LOGISTIC.derivative(-100),0.0001);
 		assertEquals(0,Ops.LOGISTIC.derivative(100),0.0001);
+		
+		assertEquals(0,Ops.SCALED_LOGISTIC.derivativeForOutput(1),0.0001);
+		assertEquals(0,Ops.SCALED_LOGISTIC.derivativeForOutput(0),0.0001);
+		assertEquals(0,Ops.SCALED_LOGISTIC.derivative(-100),0.0001);
+		assertEquals(0,Ops.SCALED_LOGISTIC.derivative(100),0.0001);
+
 
 		assertEquals(1.0,Ops.SOFTPLUS.derivativeForOutput(100),0.0001);
 		assertEquals(0.0,Ops.SOFTPLUS.derivativeForOutput(0),0.0001);

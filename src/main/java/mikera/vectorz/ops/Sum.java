@@ -43,4 +43,8 @@ public class Sum extends Op {
 	public Op getDerivativeOp() {
 		return a.getDerivativeOp().sum(b.getDerivativeOp());
 	}
+	
+	@Override public String toString() {
+		return "Sum("+a+","+b+")";
+	}
 }
