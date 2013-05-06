@@ -12,6 +12,7 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.DoubleScalar;
@@ -260,6 +261,24 @@ public class TestVectors {
 		
 		tv.addMultiple(v, ix, 2.0);
 		assertEquals(v.elementSum()*2.0,tv.elementSum(),0.0001);
+	}
+	
+	private void testAddMultipleIndexed2(AVector v) {
+		if (v.length()<1) return;
+		if (!v.isFullyMutable()) return;
+		v.fill(1.0);
+		v=v.exactClone();
+		int len=v.length();
+		
+		Vector tv=Vector.createLength(len);
+		Vectorz.fillGaussian(tv);
+		Index ix=Indexz.createLength(len);
+		for (int i=0; i<len; i++) {
+			ix.set(i, Rand.r(len));
+		}
+		
+		v.addMultiple(tv, ix, 2.0);
+		assertEquals(len+tv.elementSum()*2.0,v.elementSum(),0.0001);
 	}
 	
 
@@ -577,6 +596,7 @@ public class TestVectors {
 		testSubVectorMutability(v);
 		testAddMultiple(v);
 		testAddMultipleIndexed(v);
+		testAddMultipleIndexed2(v);
 		testAddFromPosition(v);
 		testAddToPosition(v);
 		testVectorMutability(v);
