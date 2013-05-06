@@ -926,21 +926,29 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 
-	public void addMultiple(Vector vector, Index index, double factor) {
-		int len=vector.length();
+	/**
+	 * Adds source vector to this vector at the specified indexes
+	 * @param source
+	 * @param index
+	 * @param factor
+	 */
+	public void addMultiple(Vector source, Index index, double factor) {
+		if (index.length()!=source.length()) throw new VectorzException("Index must match source vector");
+		int len=source.length();
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
-			this.addAt(j,vector.data[i]*factor);
+			this.addAt(j,source.data[i]*factor);
 		}
 	}
 	
-	public void addMultiple(AVector vector, Index index, double factor) {
-		int len=vector.length();
+	public void addMultiple(AVector source, Index index, double factor) {
+		if (index.length()!=source.length()) throw new VectorzException("Index must match source vector");
+		int len=source.length();
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
-			this.addAt(j,vector.get(i)*factor);
+			this.addAt(j,source.get(i)*factor);
 		}
 	}
 
