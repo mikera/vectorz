@@ -929,15 +929,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Adds source vector to this vector at the specified indexes which should map from source->this
 	 * @param source
-	 * @param index
+	 * @param sourceToDest
 	 * @param factor
 	 */
-	public void addMultiple(Vector source, Index index, double factor) {
-		if (index.length()!=source.length()) throw new VectorzException("Index must match source vector");
+	public void addMultiple(Vector source, Index sourceToDest, double factor) {
+		if (sourceToDest.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
-		assert(len==index.length());
+		assert(len==sourceToDest.length());
 		for (int i=0; i<len; i++) {
-			int j=index.data[i];
+			int j=sourceToDest.data[i];
 			this.addAt(j,source.data[i]*factor);
 		}
 	}
@@ -945,16 +945,48 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Adds source vector to this vector at the specified indexes which should map from source->this
 	 * @param source
-	 * @param index
+	 * @param sourceToDest
 	 * @param factor
 	 */
-	public void addMultiple(AVector source, Index index, double factor) {
-		if (index.length()!=source.length()) throw new VectorzException("Index must match source vector");
+	public void addMultiple(AVector source, Index sourceToDest, double factor) {
+		if (sourceToDest.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
-		assert(len==index.length());
+		assert(len==sourceToDest.length());
 		for (int i=0; i<len; i++) {
-			int j=index.data[i];
+			int j=sourceToDest.data[i];
 			this.addAt(j,source.get(i)*factor);
+		}
+	}
+	
+	/**
+	 * Adds to this vector at taking values from source at the specified indexes which should map from this->source
+	 * @param source
+	 * @param destToSource
+	 * @param factor
+	 */
+	public void addMultiple(Index destToSource, Vector source, double factor) {
+		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match source vector");
+		int len=this.length();
+		assert(len==destToSource.length());
+		for (int i=0; i<len; i++) {
+			int j=destToSource.data[i];
+			this.addAt(i,source.data[j]*factor);
+		}
+	}
+	
+	/**
+	 * Adds to this vector at taking values from source at the specified indexes which should map from this->source
+	 * @param source
+	 * @param destToSource
+	 * @param factor
+	 */
+	public void addMultiple(Index destToSource, AVector source, double factor) {
+		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match source vector");
+		int len=this.length();
+		assert(len==destToSource.length());
+		for (int i=0; i<len; i++) {
+			int j=destToSource.data[i];
+			this.addAt(i,source.get(j)*factor);
 		}
 	}
 
