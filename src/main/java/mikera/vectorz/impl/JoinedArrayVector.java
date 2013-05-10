@@ -274,7 +274,7 @@ public final class JoinedArrayVector extends AVector {
 		int b=findArrayNum(start+length-1);
 		int n=b-a+1;
 		
-		if (n==1) return ArraySubVector.wrap(data[a], start-pos[a], length);
+		if (n==1) return Vectorz.wrap(data[a], start-pos[a], length);
 		
 		double[][] newData=Arrays.copyOfRange(data, a, b+1);
 		int[] offs=new int[n];
