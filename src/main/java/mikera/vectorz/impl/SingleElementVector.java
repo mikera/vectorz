@@ -69,7 +69,7 @@ public final class SingleElementVector extends AVector implements ISparse {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		value*=factor;
 	}
 	

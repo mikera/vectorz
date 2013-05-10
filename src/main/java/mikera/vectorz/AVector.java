@@ -387,7 +387,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Scales the vector by a scalar factor
 	 * @param factor
 	 */
-	public void scale(double factor) {
+	public final void scale(double factor) {
 		multiply(factor);
 	}
 	
