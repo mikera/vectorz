@@ -414,6 +414,7 @@ public final class Vector extends ArrayVector {
 		}	
 	}
 	
+	@Override
 	public boolean isView() {
 		return false;
 	}
