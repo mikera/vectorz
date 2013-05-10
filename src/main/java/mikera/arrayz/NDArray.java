@@ -9,6 +9,8 @@ import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedArrayVector;
 import mikera.vectorz.impl.Vector0;
@@ -204,11 +206,22 @@ public class NDArray extends AbstractArray<Double> {
 	public INDArray slice(int majorSlice) {
 		if (dimensions==0) {
 			throw new IllegalArgumentException("Can't slice a 0-d NDArray");
+		} else if (dimensions==1) {
+			return new ArrayIndexScalar(data,offset+majorSlice*stride[0]);
+		} else if (dimensions==2) {
+			if ((majorSlice<0)||(majorSlice>shape[0])) throw new IllegalArgumentException("Slice out of range: "+majorSlice);
+			int st=stride[1];
+			if (st==1) {
+				return Vectorz.wrap(data, offset+majorSlice*stride[0], shape[1]);
+			} else {
+				return StridedArrayVector.wrapStrided(data, offset+majorSlice*stride[0], shape[1], st);
+			}
+		} else {
+			return new NDArray(data,
+					offset+majorSlice*stride[0],
+					Arrays.copyOfRange(shape, 1,dimensions),
+					Arrays.copyOfRange(stride, 1,dimensions));
 		}
-		return new NDArray(data,
-				offset+majorSlice*stride[0],
-				Arrays.copyOfRange(shape, 1,dimensions),
-				Arrays.copyOfRange(stride, 1,dimensions));
 	}
 
 	@Override
@@ -292,6 +305,12 @@ public class NDArray extends AbstractArray<Double> {
 		NDArray c=new NDArray(data.clone(),offset,shape.clone(),stride.clone());
 		return c;
 	}
+	
+	@Override
+	public NDArray clone() {
+		NDArray c=new NDArray(data.clone(),offset,shape.clone(),stride.clone());
+		return c;
+	}
 
 	@Override
 	public void scale(double d) {
@@ -313,8 +332,10 @@ public class NDArray extends AbstractArray<Double> {
 		if (dimensions==0) {
 			data[this.offset]=values[offset];
 		} else if (dimensions==1) {
-			for (int i=0; i<shape[0]; i++) {
-				data[this.offset+i*stride[0]]=values[offset+i];
+			if (length>shape[0]) throw new IllegalArgumentException("Too many values for NDArray: "+length);
+			int st0=stride[0];
+			for (int i=0; i<length; i++) {
+				data[this.offset+i*st0]=values[offset+i];
 			}
 		} else {
 			int sc=shape[0];

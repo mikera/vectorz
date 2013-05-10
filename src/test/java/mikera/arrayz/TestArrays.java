@@ -95,7 +95,10 @@ public class TestArrays {
 		INDArray c=a.clone();
 		a.set(Double.NaN);
 		
-		a.setElements(c.asVector().toArray());
+		double[] arr=c.asVector().toArray();
+		assertEquals(a.elementCount(),arr.length);
+		a.setElements(arr);
+		assertEquals(c.asVector(),a.asVector());
 		assertEquals(c,a);
 	}
 	
@@ -142,13 +145,13 @@ public class TestArrays {
 	public void testArray(INDArray a) {
 		testAsVector(a);
 		testApplyOp(a);
-		testSlices(a);
 		testSetElements(a);
 		testBroadcast(a);
 		testShape(a);
 		testHash(a);
 		testClone(a);
 		testMutability(a);
+		testSlices(a);
 	}
 
 	@Test
