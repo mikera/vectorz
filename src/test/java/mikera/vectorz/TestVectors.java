@@ -558,8 +558,10 @@ public class TestVectors {
 	}
 	
 	private void testMultiply(AVector v) {
+		if (!v.isFullyMutable()) return;
+		
 		int len=v.length();
-		v=v.clone();
+		v=v.exactClone();
 		
 		AVector m=Vectorz.newVector(len);
 		m.fill(2);
@@ -572,7 +574,9 @@ public class TestVectors {
 
 	
 	private void testDivide(AVector v) {
-		v=v.clone();
+		if (!v.isFullyMutable()) return;
+
+		v=v.exactClone();
 		
 		Vectorz.fillGaussian(v);
 		
