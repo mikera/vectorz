@@ -12,6 +12,13 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * A general n-dimensional double array implemented as a collection of (n-1) dimensional slices
+ * 
+ * @author Mike
+ *
+ * @param <T>
+ */
 public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	private final int[] shape;
 	private final T[] slices;

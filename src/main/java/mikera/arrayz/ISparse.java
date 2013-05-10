@@ -9,7 +9,7 @@ package mikera.arrayz;
  */
 public interface ISparse {
 	/**
-	 * Computes the density ratio of this sparse array
+	 * Computes the density ratio of this sparse array (proportion of non-zero elements)
 	 * @return
 	 */
 	public double density();

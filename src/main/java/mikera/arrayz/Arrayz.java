@@ -12,6 +12,11 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * Static function class for array operations
+ * 
+ * @author Mike
+ */
 public class Arrayz {
 	/**
 	 * Creates an array from the given data

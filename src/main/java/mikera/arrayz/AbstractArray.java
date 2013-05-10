@@ -10,10 +10,9 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Base class for INDArray implementations
+ * Abstract base class for INDArray implementations
  * @author Mike
  * @param <T>
- *
  */
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
