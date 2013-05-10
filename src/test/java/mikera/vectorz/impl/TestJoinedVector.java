@@ -116,5 +116,7 @@ public class TestJoinedVector {
 		assertEquals(220.0,j.get(5),0.0);
 		assertEquals(331.0,j.get(6),0.0);
 		assertEquals(2.0,j.get(7),0.0);
+		
+		assertTrue(j.isFullyMutable());
 	}
 }
