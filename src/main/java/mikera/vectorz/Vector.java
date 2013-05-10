@@ -104,6 +104,11 @@ public final class Vector extends ArrayVector {
 			super.set(a);
 		}
 	}
+	
+	@Override 
+	public void set(double value) {
+		Arrays.fill(data,value);
+	}
 
 	@Override
 	public double[] getArray() {

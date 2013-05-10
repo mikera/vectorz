@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import java.util.Arrays;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
@@ -235,6 +237,11 @@ public final class Matrix extends AMatrix {
 				data[di++]=a.get(row, column);
 			}
 		}
+	}
+	
+	@Override 
+	public void set(double value) {
+		Arrays.fill(data,value);
 	}
 	
 	@Override
