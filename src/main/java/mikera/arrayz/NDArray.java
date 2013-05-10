@@ -9,6 +9,7 @@ import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedArrayVector;
 import mikera.vectorz.impl.Vector0;
 
@@ -24,6 +25,7 @@ public class NDArray extends AbstractArray<Double> {
 		this.shape=shape.clone();
 		dimensions=shape.length;
 		data=new double[(int)elementCount()];
+		stride=new int[dimensions];
 		offset=0;
 		
 		int st=1;
@@ -99,7 +101,9 @@ public class NDArray extends AbstractArray<Double> {
 		if (dimensions==0) {
 			data[offset]=value;
 		} else {
-			throw new UnsupportedOperationException("0-d set not possible on NDArray with dimensionality="+dimensions);
+			for (INDArray s:getSlices()) {
+				s.set(value);
+			}
 		}
 	}
 
@@ -154,6 +158,8 @@ public class NDArray extends AbstractArray<Double> {
 	public AVector asVector() {
 		if (fittedDataArray()) {
 			return Vector.wrap(data);
+		} else if (dimensions==0) {
+			return ArraySubVector.wrap(data,offset,1);
 		} else if (dimensions==1) {
 			return StridedArrayVector.wrap(data, offset, shape[0], stride[0]);
 		} else {
@@ -175,7 +181,7 @@ public class NDArray extends AbstractArray<Double> {
 			st*=d;
 		}
 			
-		return true;
+		return st==data.length;
 	}
 
 	@Override
@@ -302,7 +308,7 @@ public class NDArray extends AbstractArray<Double> {
 			data[this.offset]=values[offset];
 		} else if (dimensions==1) {
 			for (int i=0; i<shape[0]; i++) {
-				data[this.offset+i*stride[0]]=values[offset+length];
+				data[this.offset+i*stride[0]]=values[offset+i];
 			}
 		} else {
 			int sc=shape[0];
