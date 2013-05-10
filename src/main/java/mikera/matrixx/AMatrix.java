@@ -343,6 +343,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
 	}
+	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		if (length!=elementCount()) {
+			throw new IllegalArgumentException("Incorrect element count: "+length);
+		}
+		int rc = rowCount();
+		int cc = columnCount();
+		int di=offset;
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				set(i,j,values[di++]);
+			}
+		}	
+	} 
+	
+	@Override
+	public void setElements(double[] values) {
+		setElements(values,0,values.length);
+	}
 
 	public boolean isFullyMutable() {
 		return true;

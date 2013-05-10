@@ -28,6 +28,14 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public void setElements(double[] values, int offset, int length) {
+		if (length!=1) {
+			throw new IllegalArgumentException("length must be 1");
+		}
+		set(values[offset]);
+	}
+	
+	@Override
 	public int dimensionality() {
 		return 0;
 	}

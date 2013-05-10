@@ -89,8 +89,17 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			for (Object ob: ((Iterable<?>)o)) {
 				slice(i).set(ob);
 			}
+			return;
+		}
+		if (o instanceof double[]) {
+			setElements((double[])o);
+			return;
 		}
 		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
+	}
+	
+	public void setElements(double[] values) {
+		setElements(values,0,values.length);
 	}
 	
 	public void square() {
