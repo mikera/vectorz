@@ -122,11 +122,7 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 
 	@Override
 	public long elementCount() {
-		long c=1;
-		for (int d:shape) {
-			c*=d;
-		}
-		return c;
+		return Tools.arrayProduct(shape);
 	}
 	
 	public INDArray innerProduct(INDArray a) {

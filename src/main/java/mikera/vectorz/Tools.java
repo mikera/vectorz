@@ -93,5 +93,27 @@ public final class Tools {
 		return nas;
 	}
 
+	public static void copyIntsToLongs(int[] src, long[] dst) {
+		for (int i=0; i<src.length; i++) {
+			dst[i]=src[i];
+		}
+	}
+
+	public static long arrayProduct(int[] shape) {
+		long r=1;
+		for (int x:shape) {
+			r*=x;
+		}
+		return r;
+	}
+
+	public static long arrayProduct(int[] shape, int from, int to) {
+		long r=1;
+		for (int i=from; i<to; i++) {
+			r*=shape[i];
+		}
+		return r;
+	}
+
 
 }
