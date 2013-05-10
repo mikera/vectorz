@@ -244,6 +244,17 @@ public final class JoinedArrayVector extends AVector {
 		}
 	}
 	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		assert(length==this.length());
+		int srcPos=offset;
+		for (int j=0; j<numArrays; j++) {
+			int sl=subLength(j);
+			System.arraycopy(values,srcPos, data[j],offsets[j],sl);
+			srcPos+=sl;
+		}
+	} 
+	
 	@Override 
 	public void multiply(double value) {
 		for (int j=0; j<numArrays; j++) {
