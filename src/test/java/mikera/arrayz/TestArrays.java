@@ -83,6 +83,16 @@ public class TestArrays {
 		assertEquals(a.getClass(),ec.getClass());
 	}
 	
+	private void testSetElements(INDArray a) {
+		if (!a.isFullyMutable()) return;
+		
+		INDArray c=a.clone();
+		a.set(Double.NaN);
+		
+		a.setElements(c.asVector().toArray());
+		assertEquals(c,a);
+	}
+	
 	private void testApplyOp(INDArray a) {
 		INDArray c=a.clone();
 		INDArray d=a.clone();
@@ -127,6 +137,7 @@ public class TestArrays {
 		testAsVector(a);
 		testApplyOp(a);
 		testSlices(a);
+		testSetElements(a);
 		testBroadcast(a);
 		testShape(a);
 		testHash(a);

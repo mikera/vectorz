@@ -77,7 +77,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override 
 	public void set(double value) {
-		throw new VectorzException("0D get not supported on matrix!");
+		asVector().fill(value);
 	}
 	
 	@Override 
@@ -253,6 +253,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			AMatrix.this.set(row, i, value);
 		}
 		
+		@Override 
+		public boolean isFullyMutable() {
+			return AMatrix.this.isFullyMutable();
+		}
+
+		
 		@Override
 		public MatrixRow exactClone() {
 			return AMatrix.this.exactClone().new MatrixRow(row);
@@ -275,6 +281,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		@Override
 		public double get(int i) {
 			return AMatrix.this.get(i, column);
+		}
+		
+		@Override 
+		public boolean isFullyMutable() {
+			return AMatrix.this.isFullyMutable();
 		}
 
 		@Override

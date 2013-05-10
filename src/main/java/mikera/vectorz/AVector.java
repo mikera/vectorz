@@ -50,6 +50,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void set(int[] indexes, double value) {
 		if (indexes.length==1) {
 			set(indexes[0],value);
+		} if (indexes.length==0) {
+			fill(value);
 		} else {
 			throw new VectorzException(""+indexes.length+"D set not supported on AVector");
 		}

@@ -12,9 +12,4 @@ public abstract class MatrixSubVector extends AVector {
 	public boolean isView() {
 		return true;
 	}
-	
-	@Override
-	public boolean isMutable() {
-		return true;
-	}
 }

@@ -73,6 +73,13 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	@Override
 	public void set(int[] indexes, double value) {
 		int d=indexes.length;
+		if (d==0) {
+			for (int i=0; i<slices.length; i++) {
+				slices[i].set(indexes,value);
+			}
+			return;
+		}
+		
 		T slice=slices[indexes[0]];
 		switch (d) {
 			case 0: throw new VectorzException("Can't do 0D set on SliceArray!");
