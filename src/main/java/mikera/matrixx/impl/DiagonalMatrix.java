@@ -126,7 +126,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		return Vectorz.create(data);
+		return Vectorz.wrap(data);
 	}
 
 	public AMatrix innerProduct(AMatrix a) {
