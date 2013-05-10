@@ -345,6 +345,20 @@ public class TestVectors {
 		assertEquals(v,v2);
 	}
 	
+	private void testSetElements(AVector v) {
+		if (!v.isFullyMutable()) return;
+		
+		v=v.exactClone();
+		Vectorz.fillGaussian(v);
+		AVector vc=v.clone();
+		
+		double[] data=v.toArray();
+		v.fill(0.0);
+		v.setElements(data);
+		
+		assertEquals(vc,v);
+	}
+	
 	private void testAdd(AVector v) {
 		v=v.exactClone();
 		int len=v.length();
@@ -594,6 +608,7 @@ public class TestVectors {
 	private void doNonDegenerateTests(AVector v) {
 		if (v.length()==0) return;
 		testSubVectorMutability(v);
+		testSetElements(v);
 		testAddMultiple(v);
 		testAddMultipleIndexed(v);
 		testAddMultipleIndexed2(v);
