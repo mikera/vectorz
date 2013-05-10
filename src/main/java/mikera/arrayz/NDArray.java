@@ -308,7 +308,8 @@ public class NDArray extends AbstractArray<Double> {
 	
 	@Override
 	public NDArray clone() {
-		NDArray c=new NDArray(data.clone(),offset,shape.clone(),stride.clone());
+		NDArray c=new NDArray(shape.clone());
+		c.set(this);
 		return c;
 	}
 
