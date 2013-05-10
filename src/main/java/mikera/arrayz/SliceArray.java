@@ -21,11 +21,17 @@ import mikera.vectorz.util.VectorzException;
  */
 public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	private final int[] shape;
+	private final long[] longShape;
 	private final T[] slices;
 	
 	private SliceArray(int[] shape, T[] slices) {
 		this.shape=shape;
 		this.slices=slices;
+		int dims=shape.length;
+		this.longShape=new long[dims];
+		for (int i=0; i<dims; i++) {
+			longShape[i]=shape[i];
+		}
 	}
 	
 	public static <T extends INDArray>  SliceArray<T> create(T... slices) {
@@ -55,6 +61,11 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	@Override
 	public int[] getShape() {
 		return shape;
+	}
+	
+	@Override
+	public long[] getLongShape() {
+	 	return longShape;
 	}
 
 	@Override

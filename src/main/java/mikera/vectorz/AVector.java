@@ -94,6 +94,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public long[] getLongShape() {
+		return new long[] {length()};
+	}
+	
+	@Override
 	public long elementCount() {
 		return length();
 	}
