@@ -295,6 +295,15 @@ public final class JoinedVector extends AVector {
 		left.set(src,srcOffset);
 		right.set(src,srcOffset+split);
 	}
+	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		if (length!=length()) {
+			throw new IllegalArgumentException("Incorrect length: "+length);
+		}
+		left.setElements(values,offset,split);
+		right.setElements(values,offset+split,length-split);
+	}
 
 	@Override
 	public void set(int i, double value) {
