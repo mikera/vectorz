@@ -379,6 +379,9 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	public AVector join(ArrayVector v) {
+		if ((v.getArray()==getArray())&&((getArrayOffset()+length())==v.getArrayOffset())) {
+			return Vectorz.wrap(getArray(),getArrayOffset(),length()+v.length());
+		}
 		return JoinedArrayVector.joinVectors(this, v);
 	}
 	

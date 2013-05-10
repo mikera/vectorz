@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mikera.util.Rand;
+import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.VectorBuilder;
@@ -79,6 +80,11 @@ public class Vectorz {
 			v=join(v,wrap(data[i]));
 		}
 		return v;
+	}
+	
+	public static AVector wrap(double[] data, int offset, int length) {
+		if ((offset==0)&&(length==data.length)) return wrap(data);
+		return ArraySubVector.wrap(data, offset, length);
 	}
 
 	/**
@@ -414,6 +420,6 @@ public class Vectorz {
 		}
 		return v;
 	}
-	
+
 	
 }
