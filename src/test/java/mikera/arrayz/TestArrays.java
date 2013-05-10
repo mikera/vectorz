@@ -19,6 +19,12 @@ public class TestArrays {
 	private void testShape(INDArray a) {
 		AVector v=a.asVector();
 		int[] shape=a.getShape();
+		
+		long[] longShape=a.getLongShape();
+		for (int i=0; i<shape.length; i++) {
+			assertEquals(longShape[i],shape[i]);
+		}
+		
 		assertEquals(a.dimensionality(),shape.length);
 		long r=1;
 		for (int i=0; i<shape.length; i++) {
