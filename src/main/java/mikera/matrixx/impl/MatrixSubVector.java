@@ -3,7 +3,7 @@ package mikera.matrixx.impl;
 import mikera.vectorz.AVector;
 
 /**
- * Abstract class for matrix sub vector views (rows and columns)
+ * Abstract class for matrix sub vector views (rows and columns etc.)
  * @author Mike
  */
 @SuppressWarnings("serial")

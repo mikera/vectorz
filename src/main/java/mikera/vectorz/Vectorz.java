@@ -68,7 +68,7 @@ public class Vectorz {
 		return newVector(length);
 	}
 	
-	public static AVector wrap(double[] data) {
+	public static Vector wrap(double[] data) {
 		return Vector.wrap(data);
 	}
 	

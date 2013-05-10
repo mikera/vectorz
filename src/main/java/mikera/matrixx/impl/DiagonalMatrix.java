@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
 /**
@@ -125,7 +126,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public AVector getLeadingDiagonal() {
+	public Vector getLeadingDiagonal() {
 		return Vectorz.wrap(data);
 	}
 
