@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 
 public final class JoinedArrayVector extends AVector {
@@ -339,6 +340,12 @@ public final class JoinedArrayVector extends AVector {
 	}
 
 	public static AVector joinVectors(ArrayVector a, ArrayVector b) {
+		if (a.getArray()==b.getArray()) {
+			if ((a.getArrayOffset()+a.length())==b.getArrayOffset()) {
+				return Vectorz.wrap(a.getArray(),a.getArrayOffset(),a.length()+b.length());
+			}
+		}
+		
 		int alen=a.length();
 		int blen=b.length();
 		return new JoinedArrayVector(
