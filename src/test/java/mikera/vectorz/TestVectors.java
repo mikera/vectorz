@@ -745,8 +745,11 @@ public class TestVectors {
 		
 		doGenericTests(new DoubleScalar(1.0).asVector());
 		
-		doGenericTests(JoinedArrayVector.create(v4));
-		doGenericTests(JoinedArrayVector.create(j5));
+		AVector jav1=JoinedArrayVector.create(v4);
+		AVector jav2=JoinedArrayVector.create(j5);
+		doGenericTests(jav1);
+		doGenericTests(jav2);
+		doGenericTests(jav2.join(jav1));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
 		
 		doGenericTests(StridedArrayVector.wrap(new double[]{}, 0, 0, 100));
