@@ -80,7 +80,7 @@ public class NDArray extends AbstractArray<Double> {
 
 	@Override
 	public double get(int x, int y) {
-		if (dimensions==1) {
+		if (dimensions==2) {
 			return data[offset+x*stride[0]+y*stride[1]];
 		} else {
 			throw new UnsupportedOperationException("2-d get not possible on NDArray with dimensionality="+dimensions);
@@ -100,6 +100,12 @@ public class NDArray extends AbstractArray<Double> {
 	public void set(double value) {
 		if (dimensions==0) {
 			data[offset]=value;
+		} else if (dimensions==1) {
+			int n=shape[0];
+			int st=stride[0];
+			for (int i=0; i<n; i++) {
+				data[offset+i*st]=value;
+			}
 		} else {
 			for (INDArray s:getSlices()) {
 				s.set(value);
