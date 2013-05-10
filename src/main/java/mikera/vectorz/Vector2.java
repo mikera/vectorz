@@ -112,11 +112,6 @@ public final class Vector2 extends APrimitiveVector {
 		}
 	}
 	
-	public void setValues(double x, double y) {
-		this.x=x;
-		this.y=y;
-	}
-	
 	@Override
 	public Vector2 clone() {
 		return new Vector2(x,y);	
