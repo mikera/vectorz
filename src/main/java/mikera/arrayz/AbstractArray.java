@@ -91,7 +91,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			}
 			return;
 		}
-		if (o instanceof double[]) {
+		if (o instanceof double[]) { 
 			setElements((double[])o);
 			return;
 		}
