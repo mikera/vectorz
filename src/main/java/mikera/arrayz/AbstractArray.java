@@ -12,7 +12,7 @@ import mikera.vectorz.util.VectorzException;
 /**
  * Abstract base class for INDArray implementations
  * @author Mike
- * @param <T>
+ * @param <T> The type of array slices
  */
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
