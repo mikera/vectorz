@@ -21,7 +21,7 @@ import mikera.vectorz.impl.Vector0;
  * @author Mike
  *
  */
-public final class NDArray<T  extends INDArray> extends AbstractArray<T> {
+public final class NDArray extends AbstractArray<INDArray> {
 
 	private final int dimensions;
 	private final int[] shape;
@@ -223,7 +223,7 @@ public final class NDArray<T  extends INDArray> extends AbstractArray<T> {
 				return StridedArrayVector.wrapStrided(data, offset+majorSlice*stride[0], shape[1], st);
 			}
 		} else {
-			return new NDArray<T>(data,
+			return new NDArray(data,
 					offset+majorSlice*stride[0],
 					Arrays.copyOfRange(shape, 1,dimensions),
 					Arrays.copyOfRange(stride, 1,dimensions));
@@ -287,7 +287,7 @@ public final class NDArray<T  extends INDArray> extends AbstractArray<T> {
 		applyOp((Op)op);
 	}
 	
-	public boolean equals(NDArray<?> a) {
+	public boolean equals(NDArray a) {
 		if (dimensions!=a.dimensions) return false;
 		for (int i=0; i<dimensions; i++) {
 			if (!(slice(i).equals(a.slice(i)))) return false;
@@ -298,7 +298,7 @@ public final class NDArray<T  extends INDArray> extends AbstractArray<T> {
 	@Override
 	public boolean equals(INDArray a) {
 		if (a instanceof NDArray) {
-			return equals((NDArray<?>)a);
+			return equals((NDArray)a);
 		}
 		for (int i=0; i<dimensions; i++) {
 			if (!(slice(i).equals(a.slice(i)))) return false;
@@ -307,14 +307,14 @@ public final class NDArray<T  extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public NDArray<T> exactClone() {
-		NDArray<T> c=new NDArray<T>(data.clone(),offset,shape.clone(),stride.clone());
+	public NDArray exactClone() {
+		NDArray c=new NDArray(data.clone(),offset,shape.clone(),stride.clone());
 		return c;
 	}
 	
 	@Override
-	public NDArray<T> clone() {
-		NDArray<T> c=new NDArray<T>(shape.clone());
+	public NDArray clone() {
+		NDArray c=new NDArray(shape.clone());
 		c.set(this);
 		return c;
 	}
