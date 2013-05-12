@@ -164,6 +164,15 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
+	public void addRowMultiple(int src, int dst, double factor) {
+		int soffset=src*columns;
+		int doffset=dst*columns;
+		for (int j=0; j<columns; j++) {
+			data[doffset+j]+=factor*data[soffset+j];
+		}
+	}
+	
+	@Override
 	public Vector asVector() {
 		return Vector.wrap(data);
 	}

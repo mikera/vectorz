@@ -581,6 +581,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		getRow(i).multiply(factor);
 	}
 	
+	public void addRowMultiple(int src, int dst, double factor) {
+		getRow(dst).addMultiple(getRow(src), factor);
+	}
+	
 	@Override
 	public void composeWith(ATransform a) {
 		if (a instanceof AMatrix) {
