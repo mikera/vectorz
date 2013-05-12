@@ -307,14 +307,14 @@ public final class NDArray<T  extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public NDArray<?> exactClone() {
-		NDArray<?> c=new NDArray<T>(data.clone(),offset,shape.clone(),stride.clone());
+	public NDArray<T> exactClone() {
+		NDArray<T> c=new NDArray<T>(data.clone(),offset,shape.clone(),stride.clone());
 		return c;
 	}
 	
 	@Override
-	public NDArray<?> clone() {
-		NDArray<?> c=new NDArray<T>(shape.clone());
+	public NDArray<T> clone() {
+		NDArray<T> c=new NDArray<T>(shape.clone());
 		c.set(this);
 		return c;
 	}
