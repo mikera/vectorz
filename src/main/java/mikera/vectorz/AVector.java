@@ -1128,7 +1128,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (tdims<1) {
 			throw new VectorzException("Can't broadcast to a smaller shape!");
 		} else if (tdims==1) {
-			// TODO dim check / 1-replicate
+			if (targetShape[0]!=this.length()) {
+				throw new VectorzException("Can't broadcast to different length: "+targetShape[0]);
+			}
 			return this;
 		} else if (tdims==2) {
 			int n=targetShape[0];
