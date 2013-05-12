@@ -700,6 +700,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int rc = rowCount();
 		sb.append("[");
 		for (int i = 0; i < rc; i++) {
+			if (i>0) sb.append(',');
 			sb.append(getRow(i).toString());
 		}
 		sb.append("]");
