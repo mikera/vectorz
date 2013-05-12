@@ -71,6 +71,11 @@ public class TestVectors {
 		assertEquals(Vector3.of(-1,2,-1),v);
 	}
 	
+	@Test public void testToString() {
+		Vector3 v=Vector3.of(1,2,3);
+		assertEquals("[1.0,2.0,3.0]",v.toString());
+	}
+	
 	@Test public void testClamping() {
 		Vector3 v=Vector3.of(1,2,3);
 		v.clamp(1.5, 2.5);

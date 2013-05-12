@@ -217,5 +217,10 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public String toString() {
+		return Double.toString(get());
+	}
+	
+	@Override
 	public abstract AScalar exactClone();
 }

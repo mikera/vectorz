@@ -121,6 +121,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return asVector().hashCode();
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb=new StringBuilder();
+		int length=sliceCount();
+		sb.append('[');
+		if (length>0) {
+			sb.append(get(0));
+			for (int i = 1; i < length; i++) {
+				sb.append(',');
+				sb.append(slice(i).toString());
+			}
+		}
+		sb.append(']');
+		return sb.toString();
+	}
+	
 	public AbstractArray<?> clone() {
 		try {
 			return (AbstractArray<?>)super.clone();
