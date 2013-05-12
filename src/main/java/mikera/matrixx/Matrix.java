@@ -156,6 +156,14 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
+	public void multiplyRow(int i, double factor) {
+		int offset=i*columns;
+		for (int j=0; j<columns; j++) {
+			data[offset+j]*=factor;
+		}
+	}
+	
+	@Override
 	public Vector asVector() {
 		return Vector.wrap(data);
 	}
