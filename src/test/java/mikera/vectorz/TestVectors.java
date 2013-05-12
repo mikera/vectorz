@@ -548,7 +548,7 @@ public class TestVectors {
 
 	
 	private void testAsList(AVector v) {
-		List<Double> al=v.asList();
+		List<Double> al=v.asElementList();
 		List<Double> tl=v.toList();
 		assertEquals(al,tl);
 		

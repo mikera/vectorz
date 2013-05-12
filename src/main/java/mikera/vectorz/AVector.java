@@ -927,7 +927,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return sb.toString();
 	}
 	
-	public List<Double> asList() {
+	public List<Double> asElementList() {
 		return new ListWrapper(this);
 	}
 	
