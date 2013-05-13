@@ -45,6 +45,28 @@ public class TestJoinedVector {
 		assertEquals(2.0, j.get(10),0.0);	
 	}
 	
+	@Test public void testJoinedArrayVectors() {
+		AVector v=Vector.of(0);
+		AVector w=Vector.of(0);
+		
+		for (int i=1; i<100; i++) {
+			v=v.join(Vector.of(i));
+			w=w.join(Vector.of(i));
+		}
+		
+		v.add(w);
+		v.multiply(0.5);
+		assertEquals(w,v);
+
+		w.addMultiple(v,3);
+		w.multiply(0.25);
+		assertEquals(w,v);
+		
+		w.addProduct(v,w,2);
+		assertEquals(210,w.get(10),0.000);
+
+	}
+	
 	@Test public void testJoinedViews() {
 		Vector v=Vector.createLength(1000);
 		Vectorz.fillIndexes(v);
