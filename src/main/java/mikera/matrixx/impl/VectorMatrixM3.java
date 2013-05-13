@@ -31,7 +31,7 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		for (Vector3 vector:rows) {
 			vector.scale(factor);
 		}

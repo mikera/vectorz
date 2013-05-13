@@ -10,10 +10,9 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Base class for INDArray implementations
+ * Abstract base class for INDArray implementations
  * @author Mike
- * @param <T>
- *
+ * @param <T> The type of array slices
  */
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
@@ -49,6 +48,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			}
 		}
 		return Arrayz.create(al);
+	}
+	
+	public final void scale(double d) {
+		multiply(d);
 	}
 
 	public void set(double value) {
@@ -90,8 +93,17 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			for (Object ob: ((Iterable<?>)o)) {
 				slice(i).set(ob);
 			}
+			return;
+		}
+		if (o instanceof double[]) { 
+			setElements((double[])o);
+			return;
 		}
 		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
+	}
+	
+	public void setElements(double[] values) {
+		setElements(values,0,values.length);
 	}
 	
 	public void square() {
@@ -111,6 +123,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public int hashCode() {
 		return asVector().hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb=new StringBuilder();
+		int length=sliceCount();
+		sb.append('[');
+		if (length>0) {
+			sb.append(get(0));
+			for (int i = 1; i < length; i++) {
+				sb.append(',');
+				sb.append(slice(i).toString());
+			}
+		}
+		sb.append(']');
+		return sb.toString();
 	}
 	
 	public AbstractArray<?> clone() {

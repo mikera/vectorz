@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 
 public final class JoinedArrayVector extends AVector {
@@ -243,6 +244,17 @@ public final class JoinedArrayVector extends AVector {
 		}
 	}
 	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		assert(length==this.length());
+		int srcPos=offset;
+		for (int j=0; j<numArrays; j++) {
+			int sl=subLength(j);
+			System.arraycopy(values,srcPos, data[j],offsets[j],sl);
+			srcPos+=sl;
+		}
+	} 
+	
 	@Override 
 	public void multiply(double value) {
 		for (int j=0; j<numArrays; j++) {
@@ -273,7 +285,7 @@ public final class JoinedArrayVector extends AVector {
 		int b=findArrayNum(start+length-1);
 		int n=b-a+1;
 		
-		if (n==1) return ArraySubVector.wrap(data[a], start-pos[a], length);
+		if (n==1) return Vectorz.wrap(data[a], start-pos[a], length);
 		
 		double[][] newData=Arrays.copyOfRange(data, a, b+1);
 		int[] offs=new int[n];
@@ -339,6 +351,12 @@ public final class JoinedArrayVector extends AVector {
 	}
 
 	public static AVector joinVectors(ArrayVector a, ArrayVector b) {
+		if (a.getArray()==b.getArray()) {
+			if ((a.getArrayOffset()+a.length())==b.getArrayOffset()) {
+				return Vectorz.wrap(a.getArray(),a.getArrayOffset(),a.length()+b.length());
+			}
+		}
+		
 		int alen=a.length();
 		int blen=b.length();
 		return new JoinedArrayVector(

@@ -62,6 +62,18 @@ public final class Vector2 extends APrimitiveVector {
 		y=y+constant;
 	}
 	
+	public void add(double dx, double dy) {
+		x=x+dx;
+		y=y+dy;
+	}
+	
+	@Override
+	public void add(AVector v) {
+		assert(v.length()==2);
+		x+=v.get(0);
+		y+=v.get(1);
+	}
+	
 	@Override
 	public int length() {
 		return 2;

@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import java.util.Arrays;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
@@ -154,6 +156,23 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
+	public void multiplyRow(int i, double factor) {
+		int offset=i*columns;
+		for (int j=0; j<columns; j++) {
+			data[offset+j]*=factor;
+		}
+	}
+	
+	@Override
+	public void addRowMultiple(int src, int dst, double factor) {
+		int soffset=src*columns;
+		int doffset=dst*columns;
+		for (int j=0; j<columns; j++) {
+			data[doffset+j]+=factor*data[soffset+j];
+		}
+	}
+	
+	@Override
 	public Vector asVector() {
 		return Vector.wrap(data);
 	}
@@ -217,7 +236,7 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		for (int i=0; i<data.length; i++) {
 			data[i]*=factor;
 		}
@@ -235,6 +254,11 @@ public final class Matrix extends AMatrix {
 				data[di++]=a.get(row, column);
 			}
 		}
+	}
+	
+	@Override 
+	public void set(double value) {
+		Arrays.fill(data,value);
 	}
 	
 	@Override

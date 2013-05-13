@@ -3,6 +3,11 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 
+/**
+ * A length 1 vector, as a view wrapping a single AScalar
+ * @author Mike
+ *
+ */
 public class ScalarVector extends AVector {
 	private static final long serialVersionUID = 1912695454407729415L;
 	
@@ -31,7 +36,6 @@ public class ScalarVector extends AVector {
 	
 	@Override
 	public ScalarVector exactClone() {
-		// TODO: scalar.exactClone()
-		return new ScalarVector(scalar.clone());
+		return new ScalarVector(scalar.exactClone());
 	}
 }

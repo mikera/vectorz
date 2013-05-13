@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.RepeatedElementVector;
 
 /**
  * Scalar matrix class - i.e. multiplies every component by a constant factor
@@ -26,13 +27,18 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	public double get(int row, int column) {
 		return (row==column)?scale:0;
 	}
+	
+	@Override
+	public AVector getLeadingDiagonal() {
+		return RepeatedElementVector.create(dimensions, scale);
+	}
 
 	public static AMatrix create(int dimensions, double scale) {
 		return new ScalarMatrix(dimensions, scale);
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		scale*=factor;
 	}
 	

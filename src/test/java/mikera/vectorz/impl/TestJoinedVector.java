@@ -8,6 +8,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.Vectorz;
 
 public class TestJoinedVector {
 	@Test public void testDepth() {
@@ -42,6 +43,29 @@ public class TestJoinedVector {
 		assertTrue(j instanceof JoinedArrayVector);
 		v.set(0,2.0);
 		assertEquals(2.0, j.get(10),0.0);	
+	}
+	
+	@Test public void testJoinedViews() {
+		Vector v=Vector.createLength(1000);
+		Vectorz.fillIndexes(v);
+		Vector is=v.clone();
+		
+		AVector jv=Vector0.INSTANCE;
+		for (int i=0; i<1000; i+=10) {
+			jv=jv.join(v.subVector(i, 10));
+		}
+		
+		assertEquals(jv,v);
+		
+		jv.add(v);
+		assertEquals(100,v.get(50),0.000001);
+		
+		jv.addMultiple(is,-1.0);
+		assertEquals(v,is);
+		
+		jv.addProduct(is,is,2.0);
+		assertEquals(3,v.get(1),0.000001);
+		assertEquals(20100,v.get(100),0.000001);
 	}
 	
 	@Test public void testJoinedArraySubs() {
@@ -92,5 +116,7 @@ public class TestJoinedVector {
 		assertEquals(220.0,j.get(5),0.0);
 		assertEquals(331.0,j.get(6),0.0);
 		assertEquals(2.0,j.get(7),0.0);
+		
+		assertTrue(j.isFullyMutable());
 	}
 }

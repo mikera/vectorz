@@ -36,7 +36,7 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		vector.scale(factor);
 	}
 	

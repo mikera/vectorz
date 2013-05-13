@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
 /**
@@ -68,7 +69,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		for (int i=0; i<data.length; i++) {
 			data[i]*=factor;
 		}
@@ -125,8 +126,8 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public AVector getLeadingDiagonal() {
-		return Vectorz.create(data);
+	public Vector getLeadingDiagonal() {
+		return Vectorz.wrap(data);
 	}
 
 	public AMatrix innerProduct(AMatrix a) {

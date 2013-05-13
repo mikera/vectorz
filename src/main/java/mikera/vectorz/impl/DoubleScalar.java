@@ -24,7 +24,7 @@ public class DoubleScalar extends AScalar {
 	}
 	
 	@Override 
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		value*=factor;
 	}
 	

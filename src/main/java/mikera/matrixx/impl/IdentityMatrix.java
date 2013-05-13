@@ -2,7 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.RepeatedElementVector;
 
 /**
  * Specialised identity matrix class. Immutable.
@@ -65,9 +65,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		AVector v= Vectorz.newVector(dimensions);
-		v.fill(1.0);
-		return v;
+		return RepeatedElementVector.create(dimensions, 1.0);
 	}
 	
 	@Override 

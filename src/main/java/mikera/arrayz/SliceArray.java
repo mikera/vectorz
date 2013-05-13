@@ -12,13 +12,26 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * A general n-dimensional double array implemented as a collection of (n-1) dimensional slices
+ * 
+ * @author Mike
+ *
+ * @param <T>
+ */
 public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	private final int[] shape;
+	private final long[] longShape;
 	private final T[] slices;
 	
 	private SliceArray(int[] shape, T[] slices) {
 		this.shape=shape;
 		this.slices=slices;
+		int dims=shape.length;
+		this.longShape=new long[dims];
+		for (int i=0; i<dims; i++) {
+			longShape[i]=shape[i];
+		}
 	}
 	
 	public static <T extends INDArray>  SliceArray<T> create(T... slices) {
@@ -49,6 +62,11 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	public int[] getShape() {
 		return shape;
 	}
+	
+	@Override
+	public long[] getLongShape() {
+	 	return longShape;
+	}
 
 	@Override
 	public double get(int... indexes) {
@@ -66,6 +84,13 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	@Override
 	public void set(int[] indexes, double value) {
 		int d=indexes.length;
+		if (d==0) {
+			for (int i=0; i<slices.length; i++) {
+				slices[i].set(indexes,value);
+			}
+			return;
+		}
+		
 		T slice=slices[indexes[0]];
 		switch (d) {
 			case 0: throw new VectorzException("Can't do 0D set on SliceArray!");
@@ -97,11 +122,7 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 
 	@Override
 	public long elementCount() {
-		long c=1;
-		for (int d:shape) {
-			c*=d;
-		}
-		return c;
+		return Tools.arrayProduct(shape);
 	}
 	
 	public INDArray innerProduct(INDArray a) {
@@ -164,7 +185,7 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	@Override
-	public void scale(double d) {
+	public void multiply(double d) {
 		for (INDArray a:slices) {
 			a.scale(d);
 		}
@@ -205,6 +226,14 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 			al.add(sl);
 		}
 		return al;
+	}
+
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		int skip=(int)slice(0).elementCount();
+		for (int i=0; i<slices.length; i++) {
+			slices[i].setElements(values,offset+skip*i,skip);
+		}
 	}
 
 

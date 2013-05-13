@@ -11,8 +11,10 @@ public final class ScaledLogistic extends Op {
 	
 	private final double factor;
 	private final double inverseFactor;
+	
+	private static final double DEFAULT_SCALE_FACTOR=8.0;
 
-	public static final ScaledLogistic INSTANCE=new ScaledLogistic(6.0);
+	public static final ScaledLogistic INSTANCE=new ScaledLogistic(DEFAULT_SCALE_FACTOR);
 	
 	public ScaledLogistic(double d) {
 		factor=d;

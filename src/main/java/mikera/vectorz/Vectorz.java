@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mikera.util.Rand;
+import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.VectorBuilder;
@@ -67,7 +68,7 @@ public class Vectorz {
 		return newVector(length);
 	}
 	
-	public static AVector wrap(double[] data) {
+	public static Vector wrap(double[] data) {
 		return Vector.wrap(data);
 	}
 	
@@ -79,6 +80,11 @@ public class Vectorz {
 			v=join(v,wrap(data[i]));
 		}
 		return v;
+	}
+	
+	public static AVector wrap(double[] data, int offset, int length) {
+		if ((offset==0)&&(length==data.length)) return wrap(data);
+		return ArraySubVector.wrap(data, offset, length);
 	}
 
 	/**
@@ -348,6 +354,17 @@ public class Vectorz {
 		fillGaussian(v,0.0,1.0);
 	}
 	
+	/**
+	 * Fills a vector with index values
+	 * @param v
+	 */
+	public static void fillIndexes(AVector v) {
+		int n=v.length();
+		for (int i=0; i<n; i++) {
+			v.set(i,i);
+		}
+	}
+	
 	public static void fillGaussian(AVector v, double mean, double sd) {
 		int len=v.length();
 		for (int i=0; i<len; i++) {
@@ -403,6 +420,6 @@ public class Vectorz {
 		}
 		return v;
 	}
-	
+
 	
 }

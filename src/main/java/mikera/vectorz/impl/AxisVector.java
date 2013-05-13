@@ -56,15 +56,9 @@ public class AxisVector extends ComputedVector implements ISparse {
 	
 	@Override
 	public boolean isMutable() {
-		return false;
+		return false; // i.e. immutable
 	}
-	
-	@Override 
-	public double dotProduct(AVector v) {
-		assert(length==v.length());
-		return v.get(axis);
-	}
-	
+
 	@Override
 	public boolean isZeroVector() {
 		return false;
@@ -74,6 +68,12 @@ public class AxisVector extends ComputedVector implements ISparse {
 	@Override
 	public boolean isUnitLengthVector() {
 		return true;
+	}
+	
+	@Override 
+	public double dotProduct(AVector v) {
+		assert(length==v.length());
+		return v.get(axis);
 	}
 	
 	public double dotProduct(Vector3 v) {

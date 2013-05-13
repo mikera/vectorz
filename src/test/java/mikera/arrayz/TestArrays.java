@@ -19,6 +19,12 @@ public class TestArrays {
 	private void testShape(INDArray a) {
 		AVector v=a.asVector();
 		int[] shape=a.getShape();
+		
+		long[] longShape=a.getLongShape();
+		for (int i=0; i<shape.length; i++) {
+			assertEquals(longShape[i],shape[i]);
+		}
+		
 		assertEquals(a.dimensionality(),shape.length);
 		long r=1;
 		for (int i=0; i<shape.length; i++) {
@@ -83,6 +89,19 @@ public class TestArrays {
 		assertEquals(a.getClass(),ec.getClass());
 	}
 	
+	private void testSetElements(INDArray a) {
+		if (!a.isFullyMutable()) return;
+		
+		INDArray c=a.clone();
+		a.set(Double.NaN);
+		
+		double[] arr=c.asVector().toArray();
+		assertEquals(a.elementCount(),arr.length);
+		a.setElements(arr);
+		assertEquals(c.asVector(),a.asVector());
+		assertEquals(c,a);
+	}
+	
 	private void testApplyOp(INDArray a) {
 		INDArray c=a.clone();
 		INDArray d=a.clone();
@@ -126,17 +145,22 @@ public class TestArrays {
 	public void testArray(INDArray a) {
 		testAsVector(a);
 		testApplyOp(a);
-		testSlices(a);
+		testSetElements(a);
 		testBroadcast(a);
 		testShape(a);
 		testHash(a);
 		testClone(a);
 		testMutability(a);
+		testSlices(a);
 	}
 
 	@Test
 	public void genericTests() {
 		SliceArray<AVector> sa=SliceArray.create(Vectorz.createUniformRandomVector(10),Vectorz.createUniformRandomVector(10));
 		testArray(sa);
+		
+		NDArray nd1=new NDArray(3,3,3);
+		testArray(nd1);
+		
 	}
 }

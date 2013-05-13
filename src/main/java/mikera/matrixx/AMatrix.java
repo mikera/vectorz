@@ -77,7 +77,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override 
 	public void set(double value) {
-		throw new VectorzException("0D get not supported on matrix!");
+		asVector().fill(value);
 	}
 	
 	@Override 
@@ -122,6 +122,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public int[] getShape() {
 		return new int[] {rowCount(),columnCount()};
+	}
+	
+	@Override
+	public long[] getLongShape() {
+		return new long[] {rowCount(),columnCount()};
 	}
 	
 	@Override
@@ -253,6 +258,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			AMatrix.this.set(row, i, value);
 		}
 		
+		@Override 
+		public boolean isFullyMutable() {
+			return AMatrix.this.isFullyMutable();
+		}
+
+		
 		@Override
 		public MatrixRow exactClone() {
 			return AMatrix.this.exactClone().new MatrixRow(row);
@@ -275,6 +286,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		@Override
 		public double get(int i) {
 			return AMatrix.this.get(i, column);
+		}
+		
+		@Override 
+		public boolean isFullyMutable() {
+			return AMatrix.this.isFullyMutable();
 		}
 
 		@Override
@@ -342,6 +358,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			set(((Number)o).doubleValue()); return;
 		}
 		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
+	}
+	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		if (length!=elementCount()) {
+			throw new IllegalArgumentException("Incorrect element count: "+length);
+		}
+		int rc = rowCount();
+		int cc = columnCount();
+		int di=offset;
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				set(i,j,values[di++]);
+			}
+		}	
+	} 
+	
+	@Override
+	public void setElements(double[] values) {
+		setElements(values,0,values.length);
 	}
 
 	public boolean isFullyMutable() {
@@ -479,7 +515,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Scales a matrix by a constant scalar factor.
 	 * @param m
 	 */
-	public void scale(double factor) {
+	public final void scale(double factor) {
+		multiply(factor);
+	}
+	
+	public void multiply(double factor) {
 		int rc=rowCount();
 		int cc=columnCount();
 
@@ -488,7 +528,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 				set(i,j,get(i,j)*factor);
 			}
 		}
-	}
+	}	
 
 	/**
 	 * Returns the sum of all elements in the matrix
@@ -539,6 +579,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 */
 	public void mul(AMatrix a) {
 		this.composeWith(a);
+	}
+	
+	public void multiplyRow(int i, double factor) {
+		getRow(i).multiply(factor);
+	}
+	
+	public void addRowMultiple(int src, int dst, double factor) {
+		getRow(dst).addMultiple(getRow(src), factor);
 	}
 	
 	@Override
@@ -664,6 +712,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int rc = rowCount();
 		sb.append("[");
 		for (int i = 0; i < rc; i++) {
+			if (i>0) sb.append(',');
 			sb.append(getRow(i).toString());
 		}
 		sb.append("]");

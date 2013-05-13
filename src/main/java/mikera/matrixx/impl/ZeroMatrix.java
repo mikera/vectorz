@@ -5,6 +5,7 @@ import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
 
 /**
@@ -35,7 +36,7 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		// no change
 	}
 
@@ -152,6 +153,12 @@ public final class ZeroMatrix extends AMatrix {
 
 	public static ZeroMatrix create(int rows, int columns) {
 		return new ZeroMatrix(rows,columns);
+	}
+	
+	@Override
+	public AVector getLeadingDiagonal() {
+		assert(inputDimensions==outputDimensions);
+		return RepeatedElementVector.create(inputDimensions, 0.0);
 	}
 	
 	@Override

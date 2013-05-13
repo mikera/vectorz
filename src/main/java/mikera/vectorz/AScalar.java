@@ -20,11 +20,20 @@ import mikera.vectorz.util.VectorzException;
 public abstract class AScalar extends AbstractArray<Object> {
 	
 	private static final int[] SCALAR_SHAPE=new int[0];
+	private static final long[] SCALAR_LONG_SHAPE=new long[0];
 
 	public abstract double get();
 	
 	public void set(double value) {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		if (length!=1) {
+			throw new IllegalArgumentException("length must be 1");
+		}
+		set(values[offset]);
 	}
 	
 	@Override
@@ -133,6 +142,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public long[] getLongShape() {
+	 	return SCALAR_LONG_SHAPE;
+	}
+	
+	@Override
 	public long elementCount() {
 		return 1;
 	}
@@ -163,7 +177,7 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override 
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		set(factor*get());
 	}
 	
@@ -200,6 +214,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	@Override
 	public int hashCode() {
 		return 31+Hash.hashCode(get());
+	}
+	
+	@Override
+	public String toString() {
+		return Double.toString(get());
 	}
 	
 	@Override

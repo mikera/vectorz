@@ -50,6 +50,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void set(int[] indexes, double value) {
 		if (indexes.length==1) {
 			set(indexes[0],value);
+		} if (indexes.length==0) {
+			fill(value);
 		} else {
 			throw new VectorzException(""+indexes.length+"D set not supported on AVector");
 		}
@@ -89,6 +91,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public int[] getShape() {
 		return new int[] {length()};
+	}
+	
+	@Override
+	public long[] getLongShape() {
+		return new long[] {length()};
 	}
 	
 	@Override
@@ -382,18 +389,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Scales the vector by a scalar factor
-	 * @param factor
-	 */
-	public void scale(double factor) {
-		multiply(factor);
-	}
-	
-	/**
 	 * Scales the vector by another vector of the same size
 	 * @param v
 	 */
-	public void scale(AVector v) {
+	public final void scale(AVector v) {
 		multiply(v);
 	}
 	
@@ -641,6 +640,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		if (length!=length()) {
+			throw new IllegalArgumentException("Incorrect length: "+length);
+		}
+		for (int i=0; i<length; i++) {
+			set(i,values[offset+i]);
+		}
+	}
+	
 	/**
 	 * Set the vector equal to an offset into another vector
 	 * @param src
@@ -654,7 +663,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public void set(double... values) {
+	public void setValues(double... values) {
 		int len=length();
 		if (values.length!=len) throw new VectorzException("Trying to set vectors with incorrect number of doubles: "+values.length);
 		for (int i=0; i<len; i++) {
@@ -910,7 +919,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return sb.toString();
 	}
 	
-	public List<Double> asList() {
+	public List<Double> asElementList() {
 		return new ListWrapper(this);
 	}
 	
@@ -1111,7 +1120,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (tdims<1) {
 			throw new VectorzException("Can't broadcast to a smaller shape!");
 		} else if (tdims==1) {
-			// TODO dim check / 1-replicate
+			if (targetShape[0]!=this.length()) {
+				throw new VectorzException("Can't broadcast to different length: "+targetShape[0]);
+			}
 			return this;
 		} else if (tdims==2) {
 			int n=targetShape[0];

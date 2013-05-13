@@ -88,7 +88,7 @@ public final class Vector0 extends APrimitiveVector {
 	}
 	
 	/**
-	 * Readresolve method to ensure we always use the singleton
+	 * readResolve method to ensure we always use the singleton
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		return INSTANCE; 

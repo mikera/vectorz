@@ -46,7 +46,7 @@ public final class RepeatedElementVector extends AVector {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		value*=factor;
 	}
 

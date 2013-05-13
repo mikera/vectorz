@@ -71,6 +71,11 @@ public class TestVectors {
 		assertEquals(Vector3.of(-1,2,-1),v);
 	}
 	
+	@Test public void testToString() {
+		Vector3 v=Vector3.of(1,2,3);
+		assertEquals("[1.0,2.0,3.0]",v.toString());
+	}
+	
 	@Test public void testClamping() {
 		Vector3 v=Vector3.of(1,2,3);
 		v.clamp(1.5, 2.5);
@@ -345,6 +350,20 @@ public class TestVectors {
 		assertEquals(v,v2);
 	}
 	
+	private void testSetElements(AVector v) {
+		if (!v.isFullyMutable()) return;
+		
+		v=v.exactClone();
+		Vectorz.fillGaussian(v);
+		AVector vc=v.clone();
+		
+		double[] data=v.toArray();
+		v.fill(0.0);
+		v.setElements(data);
+		
+		assertEquals(vc,v);
+	}
+	
 	private void testAdd(AVector v) {
 		v=v.exactClone();
 		int len=v.length();
@@ -534,7 +553,7 @@ public class TestVectors {
 
 	
 	private void testAsList(AVector v) {
-		List<Double> al=v.asList();
+		List<Double> al=v.asElementList();
 		List<Double> tl=v.toList();
 		assertEquals(al,tl);
 		
@@ -544,8 +563,10 @@ public class TestVectors {
 	}
 	
 	private void testMultiply(AVector v) {
+		if (!v.isFullyMutable()) return;
+		
 		int len=v.length();
-		v=v.clone();
+		v=v.exactClone();
 		
 		AVector m=Vectorz.newVector(len);
 		m.fill(2);
@@ -558,7 +579,9 @@ public class TestVectors {
 
 	
 	private void testDivide(AVector v) {
-		v=v.clone();
+		if (!v.isFullyMutable()) return;
+
+		v=v.exactClone();
 		
 		Vectorz.fillGaussian(v);
 		
@@ -594,6 +617,7 @@ public class TestVectors {
 	private void doNonDegenerateTests(AVector v) {
 		if (v.length()==0) return;
 		testSubVectorMutability(v);
+		testSetElements(v);
 		testAddMultiple(v);
 		testAddMultipleIndexed(v);
 		testAddMultipleIndexed2(v);
@@ -726,8 +750,11 @@ public class TestVectors {
 		
 		doGenericTests(new DoubleScalar(1.0).asVector());
 		
-		doGenericTests(JoinedArrayVector.create(v4));
-		doGenericTests(JoinedArrayVector.create(j5));
+		AVector jav1=JoinedArrayVector.create(v4);
+		AVector jav2=JoinedArrayVector.create(j5);
+		doGenericTests(jav1);
+		doGenericTests(jav2);
+		doGenericTests(jav2.join(jav1));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
 		
 		doGenericTests(StridedArrayVector.wrap(new double[]{}, 0, 0, 100));

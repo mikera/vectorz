@@ -20,6 +20,12 @@ public interface INDArray extends Cloneable {
 	 */
 	public int[] getShape();
 	
+	/**
+	 * Returns the shape of the array as an array of longs.
+	 * @return
+	 */
+	public long[] getLongShape();
+	
 	public double get();
 	public double get(int x);
 	public double get(int x, int y);
@@ -110,8 +116,15 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray exactClone();
+	
+	/**
+	 * Sets all elements in an array using the given double values
+	 */
+	public void setElements(double[] values);
+	public void setElements(double[] values, int offset, int length);
 
 	public void scale(double d);
+	public void multiply(double d);
 
 	public List<?> getSlices();
 }

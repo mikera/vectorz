@@ -82,6 +82,12 @@ public abstract class ArrayVector extends AVector {
 		System.arraycopy(data, dataOffset, getArray(), getArrayOffset()+offset, length);
 	}
 	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		assert(length==this.length());
+		System.arraycopy(values, offset, getArray(), getArrayOffset(), length);
+	} 
+	
 	@Override 
 	public void add(AVector src) {
 		if (src instanceof ArrayVector) {
@@ -379,6 +385,9 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	public AVector join(ArrayVector v) {
+		if ((v.getArray()==getArray())&&((getArrayOffset()+length())==v.getArrayOffset())) {
+			return Vectorz.wrap(getArray(),getArrayOffset(),length()+v.length());
+		}
 		return JoinedArrayVector.joinVectors(this, v);
 	}
 	
