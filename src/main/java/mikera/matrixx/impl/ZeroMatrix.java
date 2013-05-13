@@ -36,7 +36,7 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		// no change
 	}
 

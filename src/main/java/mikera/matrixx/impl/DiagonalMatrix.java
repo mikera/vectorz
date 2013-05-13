@@ -69,7 +69,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		for (int i=0; i<data.length; i++) {
 			data[i]*=factor;
 		}

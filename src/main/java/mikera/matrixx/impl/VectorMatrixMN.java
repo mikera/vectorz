@@ -38,7 +38,7 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		for (int i=0; i<rowCount; i++) {
 			rows[i].scale(factor);
 		}

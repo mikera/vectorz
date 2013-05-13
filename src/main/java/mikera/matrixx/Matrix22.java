@@ -41,7 +41,7 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		m00*=factor; m01*=factor;
 		m10*=factor; m11*=factor;
 	}

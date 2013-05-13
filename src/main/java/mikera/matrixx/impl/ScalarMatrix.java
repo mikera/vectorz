@@ -38,7 +38,7 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		scale*=factor;
 	}
 	
