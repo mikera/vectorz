@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>vectorz</artifactId>
-	<version>0.13.0</version>
+	<version>0.13.1-SNAPSHOT</version>
 
 	<name>vectorz</name>
 	<description>Fast double-precision vector and matrix maths library for Java</description>
@@ -22,7 +22,7 @@
 		<connection>scm:git:git@github.com:mikera/${project.artifactId}.git</connection>
 		<url>scm:git:git@github.com:mikera/${project.artifactId}.git</url>
 		<developerConnection>scm:git:git@github.com:mikera/${project.artifactId}.git</developerConnection>
-		<tag>vectorz-0.13.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 	
 	<repositories>
