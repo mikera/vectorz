@@ -29,8 +29,8 @@ public final class ScaledLogistic extends Op {
 	}
 	
 	private double inverseLogistic (double a) {
-		if (a>=1) return 200;
-		if (a<=0) return -200;
+		if (a>=1) return 800*inverseFactor;
+		if (a<=0) return -800*inverseFactor;
 		double ea=a/(1.0-a);
 		return inverseFactor*Math.log(ea);
 	}
