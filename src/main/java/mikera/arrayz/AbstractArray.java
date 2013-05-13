@@ -49,6 +49,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		return Arrayz.create(al);
 	}
+	
+	public final void scale(double d) {
+		multiply(d);
+	}
 
 	public void set(double value) {
 		set(new int[0],value);

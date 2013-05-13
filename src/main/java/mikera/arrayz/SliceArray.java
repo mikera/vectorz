@@ -185,7 +185,7 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	@Override
-	public void scale(double d) {
+	public void multiply(double d) {
 		for (INDArray a:slices) {
 			a.scale(d);
 		}

@@ -177,7 +177,7 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override 
-	public void scale(double factor) {
+	public void multiply(double factor) {
 		set(factor*get());
 	}
 	

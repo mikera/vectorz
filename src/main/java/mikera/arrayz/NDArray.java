@@ -320,7 +320,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	}
 
 	@Override
-	public void scale(double d) {
+	public void multiply(double d) {
 		if (dimensions==0) {
 			data[offset]*=d;
 		} else if (dimensions==1) {
