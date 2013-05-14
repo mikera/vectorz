@@ -29,8 +29,23 @@ public class Power extends Op {
 	}
 	
 	@Override
+	public boolean hasDerivative() {
+		return true;
+	}
+	
+	@Override
 	public double derivative(double x) {
 		return exponent*Math.pow(x, exponent-1);
+	}
+	
+	@Override
+	public double derivativeForOutput(double y) {
+		return y*Math.pow(y, 1.0/exponent)/exponent;
+	}
+	
+	@Override
+	public Op getDerivativeOp() {
+		return Ops.product(Constant.create(exponent), Power.create(exponent-1.0));
 	}
 
 	@Override
