@@ -4,6 +4,7 @@ import mikera.transformz.ATransform;
 import mikera.transformz.Transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Ops;
 
 /**
  * Singleton identity operator
@@ -91,5 +92,16 @@ public final class Identity extends ALinearOp {
 	@Override
 	public Op compose(Op op) {
 		return op;
+	}
+	
+	@Override
+	public Op product(Op op) {
+		if (op instanceof Identity) return Ops.SQUARE;
+		if (op instanceof Linear) {
+			Linear o=(Linear)op;
+			return Quadratic.create(o.getFactor(), o.getConstant(), 0.0);
+		}
+		if (op instanceof Power) return Power.create(((Power)op).getExponent());
+		return super.compose(op);
 	}
 }

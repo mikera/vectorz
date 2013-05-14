@@ -77,4 +77,8 @@ public final class Power extends Op {
 		return 1;
 	}
 
+	public double getExponent() {
+		return exponent;
+	}
+
 }
