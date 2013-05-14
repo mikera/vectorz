@@ -250,12 +250,15 @@ public class TestOps {
 		doOpTest(Ops.SOFTPLUS);
 		doOpTest(Ops.RECTIFIER);
 		doOpTest(Ops.RBF_NORMAL);
+		doOpTest(Ops.SQRT);
+		doOpTest(Ops.CBRT);
 
 		doOpTest(Ops.EXP);
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);
 
 		doOpTest(Ops.ACOS);
+		doOpTest(Ops.ASIN);
 
 		doOpTest(Power.create(0.5));
 		doOpTest(Power.create(1));
