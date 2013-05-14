@@ -45,6 +45,24 @@ public class TestJoinedVector {
 		assertEquals(2.0, j.get(10),0.0);	
 	}
 	
+	@Test public void testJoinedArrayAdd() {
+		Vector v=Vector.of(0,0);
+		
+		AVector j=v;
+		
+		for (int i=0; i<10; i++) {
+			j=j.join(Vector.of(0,0));
+		}
+		assertEquals(22,j.length());
+		assertTrue(j.isZeroVector());
+		
+		Vector d=Vector.createLength(j.length());
+		Vectorz.fillIndexes(d);
+		
+		j.add(d);
+		assertEquals(d,j);
+	}
+	
 	@Test public void testJoinedArrayVectors() {
 		AVector v=Vector.of(0);
 		AVector w=Vector.of(0);
