@@ -14,6 +14,7 @@ import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.Offset;
+import mikera.vectorz.ops.Power;
 import mikera.vectorz.ops.Quadratic;
 import mikera.vectorz.ops.StochasticBinary;
 
@@ -256,6 +257,13 @@ public class TestOps {
 
 		doOpTest(Ops.ACOS);
 
+		doOpTest(Power.create(0.5));
+		doOpTest(Power.create(1));
+		doOpTest(Power.create(2));
+		doOpTest(Power.create(3.2));
+		doOpTest(Power.create(-0.5));
+		doOpTest(Power.create(0));
+		
 		doOpTest(Quadratic.create(2, 3, 4));
 		doOpTest(Quadratic.create(0, 3, 4));
 		

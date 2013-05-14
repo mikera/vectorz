@@ -6,6 +6,7 @@ import mikera.util.Rand;
 import mikera.vectorz.Op;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.ops.Linear;
+import mikera.vectorz.ops.Power;
 import mikera.vectorz.ops.Quadratic;
 
 import org.junit.Test;
@@ -114,6 +115,8 @@ public class TestOpsExtra {
 
 		assertEquals(-1.0,Ops.TANH.minValue(),0.0001);
 		assertEquals(1.0,Ops.TANH.maxValue(),0.0001);
+		
+		assertEquals(0.0,Power.create(0.3).minDomain(),0.00);
 	}
 	
 	@Test public void testAllOps() {
