@@ -115,6 +115,29 @@ public final class Ops {
 		@Override public Op getDerivativeOp() {return Ops.negate(SIN);}
 	};
 	
+	public static final Op ACOS = new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return Math.acos(x);
+		}
+		
+		@Override
+		public double derivative(double x) {
+			return 1.0/Math.sqrt(1.0-x*x);
+		}
+		
+		@Override
+		public double derivativeForOutput(double y) {
+			return derivative(Math.cos(y));
+		}
+		
+		@Override public boolean hasDerivative() {return true;}
+		@Override public double minValue() {return -Math.PI;}
+		@Override public double maxValue() {return Math.PI;}
+		@Override public double minDomain() {return -1.0;}
+		@Override public double maxDomain() {return 1.0;}
+	};
+	
 	public static Op negate(Op op) {
 		return NEGATE.compose(op);
 	}

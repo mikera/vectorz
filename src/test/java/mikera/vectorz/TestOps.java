@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import mikera.transformz.TestTransformz;
+import mikera.util.Maths;
 import mikera.util.Rand;
 import mikera.vectorz.ops.Clamp;
 import mikera.vectorz.ops.Composed;
@@ -65,12 +66,14 @@ public class TestOps {
 	
 	private void testApply(Op op) {
 		double r=op.apply(Rand.nextGaussian()*1000);
+		if (Double.isNaN(r)) return;
 		assertTrue(r<=op.maxValue());
 		assertTrue(r>=op.minValue());
 	}
 	
 	private void testVectorApply(Op op) {
 		if (op.isStochastic()) return;
+		if (op.isDomainBounded()) return;
 		
 		Vector sv=Vector.createLength(10);
 		Vectorz.fillGaussian(sv);
@@ -113,6 +116,9 @@ public class TestOps {
 		
 		for (int i=0; i<100; i++) {
 			double x=Rand.nextGaussian()*1000;
+			if (op.isDomainBounded()) {
+				x=Maths.bound(x, op.minDomain(), op.maxDomain());
+			}
 			double y=op.apply(x);
 			assertTrue(y<=max);
 			assertTrue(y>=min);
@@ -247,6 +253,8 @@ public class TestOps {
 		doOpTest(Ops.EXP);
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);
+
+		doOpTest(Ops.ACOS);
 
 		doOpTest(Quadratic.create(2, 3, 4));
 		doOpTest(Quadratic.create(0, 3, 4));

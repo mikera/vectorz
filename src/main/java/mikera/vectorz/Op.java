@@ -137,14 +137,27 @@ public abstract class Op implements IOp, ITransform {
 		return false;
 	}
 	
+	public abstract double averageValue();
+	
 	public double minValue() {
 		return Double.NEGATIVE_INFINITY;
 	}
 	
-	public abstract double averageValue();
-	
 	public double maxValue() {
 		return Double.POSITIVE_INFINITY;
+	}
+	
+	public double minDomain() {
+		return Double.NEGATIVE_INFINITY;
+	}
+	
+	public double maxDomain() {
+		return Double.POSITIVE_INFINITY;
+	}
+	
+	public boolean isDomainBounded() {
+		return (minDomain()>=-Double.MAX_VALUE)||(maxDomain()<=Double.MAX_VALUE);
+		
 	}
 	
 	/**
