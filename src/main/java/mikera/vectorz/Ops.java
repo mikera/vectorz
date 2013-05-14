@@ -28,6 +28,8 @@ public final class Ops {
 	public static final Op SQRT = Power.create(0.5);
 	public static final Op CBRT = Power.create(1.0/3.0);
 	public static final Op RBF_NORMAL = NormalRBF.INSTANCE;
+	public static final Op TO_DEGREES = Linear.create(180.0/Math.PI, 0.0);
+	public static final Op TO_RADIANS = Linear.create(Math.PI/180.0, 0.0);
 
 
 

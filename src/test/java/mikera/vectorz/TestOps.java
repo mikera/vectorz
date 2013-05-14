@@ -252,6 +252,10 @@ public class TestOps {
 		doOpTest(Ops.RBF_NORMAL);
 		doOpTest(Ops.SQRT);
 		doOpTest(Ops.CBRT);
+		doOpTest(Ops.SQUARE);
+
+		doOpTest(Ops.TO_DEGREES);
+		doOpTest(Ops.TO_RADIANS);
 
 		doOpTest(Ops.EXP);
 		doOpTest(Ops.SIN);
