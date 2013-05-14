@@ -3,9 +3,9 @@ package mikera.vectorz.ops;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 
-public class Power extends Op {
-	private double exponent;
-	private Op inverse;
+public final class Power extends Op {
+	private final double exponent;
+	private final Op inverse;
 	
 	private Power(double d) {
 		exponent=d;
@@ -33,6 +33,11 @@ public class Power extends Op {
 	@Override
 	public double apply(double x) {
 		return Math.pow(x, exponent);
+	}
+	
+	@Override
+	public double applyInverse(double x) {
+		return Math.pow(x, 1.0/exponent);
 	}
 	
 	@Override
