@@ -75,6 +75,10 @@ public class TestOpsExtra {
 		testDerivativesAt(Ops.SIN.compose(Ops.EXP),0.1,-0.1,1,-1,2,-2,3,-3);
 		testDerivativesAt(Ops.COS.product(Ops.SOFTPLUS),0.1,-0.1,1,-1,2,-2,3,-3);
 		testDerivativesAt(Ops.TANH.sum(Ops.SQUARE),0.1,-0.1,1,-1,2,-2,3,-3);
+
+		testDerivativesAt(Ops.ACOS,0.0,0.1,-0.1,0.99,-0.99);
+		testDerivativesAt(Ops.ASIN,0.0,0.1,-0.1,0.99,-0.99);
+
 	}
 	
 	@Test public void testCompositions() {
