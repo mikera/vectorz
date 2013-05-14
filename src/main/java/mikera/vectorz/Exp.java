@@ -2,7 +2,7 @@ package mikera.vectorz;
 
 import mikera.vectorz.ops.AFunctionOp;
 
-final class Exp extends AFunctionOp {
+public final class Exp extends AFunctionOp {
 	@Override
 	public double apply(double x) {
 		return Math.exp(x);
