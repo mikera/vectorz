@@ -5,9 +5,16 @@ import mikera.vectorz.Ops;
 
 public class Power extends Op {
 	private double exponent;
+	private Op inverse;
 	
 	private Power(double d) {
 		exponent=d;
+		inverse=new Power(1.0/d,this);
+	}
+	
+	private Power(double d, Op inv) {
+		exponent=d;
+		inverse=inv;
 	}
 	
 	public static Op create(double exponent) {
@@ -33,6 +40,8 @@ public class Power extends Op {
 		return true;
 	}
 	
+	
+	
 	@Override
 	public double derivative(double x) {
 		return exponent*Math.pow(x, exponent-1);
@@ -46,6 +55,16 @@ public class Power extends Op {
 	@Override
 	public Op getDerivativeOp() {
 		return Ops.product(Constant.create(exponent), Power.create(exponent-1.0));
+	}
+	
+	@Override
+	public boolean hasInverse() {
+		return true;
+	}
+	
+	@Override
+	public Op getInverse() {
+		return inverse;
 	}
 
 	@Override
