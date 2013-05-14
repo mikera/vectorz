@@ -33,26 +33,7 @@ public final class Ops {
 
 
 
-	public static final Op EXP = new AFunctionOp() {
-		@Override
-		public double apply(double x) {
-			return Math.exp(x);
-		}
-		
-		@Override
-		public double derivative(double x) {
-			return Math.exp(x);
-		}
-		
-		@Override
-		public double derivativeForOutput(double y) {
-			return y;
-		}
-		
-		@Override public boolean hasDerivative() {return true;}
-		@Override public double minValue() {return 0.0;}
-		@Override public Op getDerivativeOp() {return EXP;}
-	};
+	public static final Op EXP = new Exp();
 	
 	public static final Op RECIPROCAL = new AFunctionOp() {
 		@Override
