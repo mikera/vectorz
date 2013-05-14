@@ -20,7 +20,7 @@ public class TestOpsExtra {
 	
 	private void testDerivativeAt(Op op, double x) {
 		double dx=op.derivative(x);
-		double epsilon=0.001;
+		double epsilon=0.00001;
 		double edx=(op.apply(x+epsilon)-op.apply(x-epsilon))/(2*epsilon);
 		assertEquals(1.0,(dx==0)?(edx+1.0):(edx/dx),0.01);
 	}
