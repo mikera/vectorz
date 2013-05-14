@@ -13,6 +13,12 @@ import mikera.vectorz.ops.SoftPlus;
 import mikera.vectorz.ops.StochasticBinary;
 import mikera.vectorz.ops.Tanh;
 
+/**
+ * Static unary operator instances and constructor functions.
+ * 
+ * @author Mike
+ *
+ */
 public final class Ops {
 	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
 	public static final Op IDENTITY=Identity.INSTANCE;
@@ -30,9 +36,6 @@ public final class Ops {
 	public static final Op RBF_NORMAL = NormalRBF.INSTANCE;
 	public static final Op TO_DEGREES = Linear.create(180.0/Math.PI, 0.0);
 	public static final Op TO_RADIANS = Linear.create(Math.PI/180.0, 0.0);
-
-
-
 	public static final Op EXP = new Exp();
 	
 	public static final Op RECIPROCAL = new AFunctionOp() {
