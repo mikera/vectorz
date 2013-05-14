@@ -27,6 +27,11 @@ public class Power extends Op {
 	public double apply(double x) {
 		return Math.pow(x, exponent);
 	}
+	
+	@Override
+	public double derivative(double x) {
+		return exponent*Math.pow(x, exponent-1);
+	}
 
 	@Override
 	public double averageValue() {

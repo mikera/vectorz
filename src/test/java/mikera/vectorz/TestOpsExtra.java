@@ -80,6 +80,9 @@ public class TestOpsExtra {
 		testDerivativesAt(Ops.ACOS,0.0,0.1,-0.1,0.99,-0.99);
 		testDerivativesAt(Ops.ASIN,0.0,0.1,-0.1,0.99,-0.99);
 
+		testDerivativesAt(Power.create(0.2),0.1,1,2,3,10);
+		testDerivativesAt(Power.create(1.4),0.1,1,2,3,10);
+		testDerivativesAt(Power.create(-1.4),0.1,1,2,3,10);
 	}
 	
 	@Test public void testCompositions() {
