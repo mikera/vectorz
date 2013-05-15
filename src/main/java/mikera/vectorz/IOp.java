@@ -12,6 +12,7 @@ public interface IOp {
 
 	public void applyTo(AVector v);
 
+	public void applyTo(AVector v, int start, int length);
 	
 	public void applyTo(double[] data, int start, int length);
 
@@ -23,5 +24,4 @@ public interface IOp {
 	public ATransform getTransform(int dims);
 
 	public Op getInverse();
-
 }

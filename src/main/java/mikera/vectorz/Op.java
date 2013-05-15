@@ -40,6 +40,16 @@ public abstract class Op implements IOp, ITransform {
 		}
 	}
 	
+	@Override
+	public void applyTo(AVector v, int start, int length) {
+		if (start<0) throw new IllegalArgumentException("Negative start position: "+start);
+		if ((start==0)&&(length==v.length())) {
+			v.applyOp(this);
+		} else {
+			v.subVector(start, length).applyOp(this);
+		}
+	}
+	
 	public void applyTo(AScalar s) {
 		s.set(apply(s.get()));
 	}
