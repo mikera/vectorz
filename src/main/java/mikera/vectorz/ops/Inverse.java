@@ -19,6 +19,27 @@ public class Inverse extends Op {
 		return op.apply(y);
 	}
 	
+	@Override public double minValue() {
+		return op.minDomain();
+	}
+	
+	@Override public double maxValue() {
+		return op.maxDomain();
+	}
+	
+	@Override public double minDomain() {
+		return op.minValue();
+	}
+	
+	@Override public double maxDomain() {
+		return op.maxValue();
+	}
+	
+	@Override
+	public double derivative(double y) {
+		return 1.0/op.derivative(op.applyInverse(y));
+	}
+	
 	@Override 
 	public Op getInverse() {
 		return op;
@@ -32,6 +53,11 @@ public class Inverse extends Op {
 	@Override
 	public boolean hasInverse() {
 		return true;
+	}
+	
+	@Override
+	public boolean hasDerivative() {
+		return op.hasDerivative();
 	}
 
 }

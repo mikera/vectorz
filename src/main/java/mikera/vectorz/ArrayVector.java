@@ -6,6 +6,7 @@ import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Base class for vectors backed by a double[] array.
@@ -87,6 +88,11 @@ public abstract class ArrayVector extends AVector {
 		assert(length==this.length());
 		System.arraycopy(values, offset, getArray(), getArrayOffset(), length);
 	} 
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		System.arraycopy(getArray(), getArrayOffset(), dest, offset, length());
+	}
 	
 	@Override 
 	public void add(AVector src) {
@@ -268,10 +274,7 @@ public abstract class ArrayVector extends AVector {
 		int len=length();
 		double[] data=getArray();
 		int offset=getArrayOffset();
-		for (int i=0; i<len; i++) {
-			double x=data[i+offset];
-			data[i+offset]=x*x;
-		}		
+		DoubleArrays.square(data, offset, len);	
 	}
 
 	
@@ -391,7 +394,16 @@ public abstract class ArrayVector extends AVector {
 		return JoinedArrayVector.joinVectors(this, v);
 	}
 	
-	public AVector join(JoinedArrayVector v) {
+	public JoinedArrayVector join(JoinedArrayVector v) {
 		return JoinedArrayVector.wrap(this).join(v);
+	}
+	
+	@Override
+	public void validate() {
+		int length=length();
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		if ((offset<0)||(offset+length>data.length)) throw new VectorzException("ArrayVector out of bounds");
+		super.validate();
 	}
 }

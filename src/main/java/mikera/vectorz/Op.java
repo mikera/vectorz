@@ -40,6 +40,16 @@ public abstract class Op implements IOp, ITransform {
 		}
 	}
 	
+	@Override
+	public void applyTo(AVector v, int start, int length) {
+		if (start<0) throw new IllegalArgumentException("Negative start position: "+start);
+		if ((start==0)&&(length==v.length())) {
+			v.applyOp(this);
+		} else {
+			v.subVector(start, length).applyOp(this);
+		}
+	}
+	
 	public void applyTo(AScalar s) {
 		s.set(apply(s.get()));
 	}
@@ -137,14 +147,27 @@ public abstract class Op implements IOp, ITransform {
 		return false;
 	}
 	
+	public abstract double averageValue();
+	
 	public double minValue() {
 		return Double.NEGATIVE_INFINITY;
 	}
 	
-	public abstract double averageValue();
-	
 	public double maxValue() {
 		return Double.POSITIVE_INFINITY;
+	}
+	
+	public double minDomain() {
+		return Double.NEGATIVE_INFINITY;
+	}
+	
+	public double maxDomain() {
+		return Double.POSITIVE_INFINITY;
+	}
+	
+	public boolean isDomainBounded() {
+		return (minDomain()>=-Double.MAX_VALUE)||(maxDomain()<=Double.MAX_VALUE);
+		
 	}
 	
 	/**

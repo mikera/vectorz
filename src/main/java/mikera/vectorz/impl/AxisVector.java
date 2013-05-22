@@ -4,6 +4,7 @@ import mikera.arrayz.ISparse;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Specialized unit axis vector. Has a 1.0 in one element, 0.0 everywhere else.
@@ -110,5 +111,11 @@ public class AxisVector extends ComputedVector implements ISparse {
 	@Override
 	public double density() {
 		return 1.0/length;
+	}
+	
+	@Override
+	public void validate() {
+		if ((axis<0)||(axis>length)) throw new VectorzException("Axis index out of bounds");
+		super.validate();
 	}
 }

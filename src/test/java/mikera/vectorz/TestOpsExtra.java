@@ -6,6 +6,7 @@ import mikera.util.Rand;
 import mikera.vectorz.Op;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.ops.Linear;
+import mikera.vectorz.ops.Power;
 import mikera.vectorz.ops.Quadratic;
 
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class TestOpsExtra {
 	
 	private void testDerivativeAt(Op op, double x) {
 		double dx=op.derivative(x);
-		double epsilon=0.001;
+		double epsilon=0.00001;
 		double edx=(op.apply(x+epsilon)-op.apply(x-epsilon))/(2*epsilon);
 		assertEquals(1.0,(dx==0)?(edx+1.0):(edx/dx),0.01);
 	}
@@ -75,6 +76,13 @@ public class TestOpsExtra {
 		testDerivativesAt(Ops.SIN.compose(Ops.EXP),0.1,-0.1,1,-1,2,-2,3,-3);
 		testDerivativesAt(Ops.COS.product(Ops.SOFTPLUS),0.1,-0.1,1,-1,2,-2,3,-3);
 		testDerivativesAt(Ops.TANH.sum(Ops.SQUARE),0.1,-0.1,1,-1,2,-2,3,-3);
+
+		testDerivativesAt(Ops.ACOS,0.0,0.1,-0.1,0.99,-0.99);
+		testDerivativesAt(Ops.ASIN,0.0,0.1,-0.1,0.99,-0.99);
+
+		testDerivativesAt(Power.create(0.2),0.1,1,2,3,10);
+		testDerivativesAt(Power.create(1.4),0.1,1,2,3,10);
+		testDerivativesAt(Power.create(-1.4),0.1,1,2,3,10);
 	}
 	
 	@Test public void testCompositions() {
@@ -110,6 +118,8 @@ public class TestOpsExtra {
 
 		assertEquals(-1.0,Ops.TANH.minValue(),0.0001);
 		assertEquals(1.0,Ops.TANH.maxValue(),0.0001);
+		
+		assertEquals(0.0,Power.create(0.3).minDomain(),0.00);
 	}
 	
 	@Test public void testAllOps() {

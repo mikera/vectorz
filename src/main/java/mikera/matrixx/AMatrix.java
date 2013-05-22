@@ -376,6 +376,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	} 
 	
 	@Override
+	public void getElements(double[] dest, int offset) {
+		asVector().getElements(dest, offset);
+	}
+	
+	@Override
 	public void setElements(double[] values) {
 		setElements(values,0,values.length);
 	}
@@ -1006,4 +1011,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	public abstract AMatrix exactClone();
+	
+	@Override 
+	public void validate() {
+		// TODO: any generic validation?
+	}
 }

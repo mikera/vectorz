@@ -45,6 +45,46 @@ public class TestJoinedVector {
 		assertEquals(2.0, j.get(10),0.0);	
 	}
 	
+	@Test public void testJoinedArrayAdd() {
+		Vector v=Vector.of(0,0);
+		
+		AVector j=v;
+		
+		for (int i=0; i<10; i++) {
+			j=j.join(Vector.of(0,0));
+		}
+		assertEquals(22,j.length());
+		assertTrue(j.isZeroVector());
+		
+		Vector d=Vector.createLength(j.length());
+		Vectorz.fillIndexes(d);
+		
+		j.add(d);
+		assertEquals(d,j);
+	}
+	
+	@Test public void testJoinedArrayVectors() {
+		AVector v=Vector.of(0);
+		AVector w=Vector.of(0);
+		
+		for (int i=1; i<100; i++) {
+			v=v.join(Vector.of(i));
+			w=w.join(Vector.of(i));
+		}
+		
+		v.add(w);
+		v.multiply(0.5);
+		assertEquals(w,v);
+
+		w.addMultiple(v,3);
+		w.multiply(0.25);
+		assertEquals(w,v);
+		
+		w.addProduct(v,w,2);
+		assertEquals(210,w.get(10),0.000);
+
+	}
+	
 	@Test public void testJoinedViews() {
 		Vector v=Vector.createLength(1000);
 		Vectorz.fillIndexes(v);
@@ -94,6 +134,25 @@ public class TestJoinedVector {
 		assertEquals(13.0,j.get(9),0.0);
 		assertEquals(5.0,j.get(10),0.0);
 		assertEquals(5.0,j.get(15),0.0);
+	}
+	
+	@Test public void testJoinedCoalesce() {
+		Vector a=Vector.of(0,1);
+		Vector b=Vector.of(2,3);
+		Vector c=Vector.of(4,5);
+		
+		JoinedArrayVector ja=(JoinedArrayVector)a.join(b.subVector(0, 1));
+		JoinedArrayVector jb=(JoinedArrayVector)b.subVector(1, 1).join(c);
+		
+		assertEquals(ja,Vector.of(0,1,2));
+		assertEquals(jb,Vector.of(3,4,5));
+		assertEquals(2,ja.numArrays());
+		assertEquals(2,jb.numArrays());
+		
+		JoinedArrayVector jabc=ja.join(jb);
+		jabc.validate();
+		assertEquals(Vector.of(0,1,2,3,4,5),jabc);
+		assertEquals(3,jabc.numArrays());
 	}
 	
 	@Test public void testJoinedVector3Add() {

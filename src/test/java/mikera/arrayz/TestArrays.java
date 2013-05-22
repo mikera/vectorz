@@ -1,5 +1,6 @@
 package mikera.arrayz;
 
+import java.util.Arrays;
 import java.util.List;
 
 import mikera.vectorz.AVector;
@@ -102,6 +103,25 @@ public class TestArrays {
 		assertEquals(c,a);
 	}
 	
+	private void testGetElements(INDArray a) {
+		if (!a.isFullyMutable()) return;
+		
+		int ecount=(int)a.elementCount();
+		double[] data=new double[ecount+1];
+		Arrays.fill(data, Double.NaN);
+		
+		a.getElements(data, 1);
+		assertTrue(Double.isNaN(data[0]));
+		for (int i=1; i<data.length; i++) {
+			assertFalse(Double.isNaN(data[i]));
+		}
+		
+		INDArray b=a.exactClone();
+		b.set(Double.NaN);
+		b.setElements(data, 1, ecount);
+		assertEquals(a,b);
+	}
+	
 	private void testApplyOp(INDArray a) {
 		INDArray c=a.clone();
 		INDArray d=a.clone();
@@ -143,9 +163,11 @@ public class TestArrays {
 	
 	
 	public void testArray(INDArray a) {
+		a.validate();
 		testAsVector(a);
 		testApplyOp(a);
 		testSetElements(a);
+		testGetElements(a);
 		testBroadcast(a);
 		testShape(a);
 		testHash(a);

@@ -650,6 +650,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		copyTo(dest,offset);
+	}
+	
 	/**
 	 * Set the vector equal to an offset into another vector
 	 * @param src
@@ -1136,5 +1141,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 
-
+	@Override
+	public void validate() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			get(i);
+		}
+		super.validate();
+	}
 }

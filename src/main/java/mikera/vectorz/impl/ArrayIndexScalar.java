@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
+import mikera.vectorz.util.VectorzException;
 
 public class ArrayIndexScalar extends AScalar {
 	final double[] array;
@@ -37,4 +38,9 @@ public class ArrayIndexScalar extends AScalar {
 		return new ArrayIndexScalar(array.clone(),index);
 	}
 
+	@Override
+	public void validate() {
+		if ((index<0)||(index>=array.length)) throw new VectorzException("Index out of bounds");
+		super.validate();
+	}
 }

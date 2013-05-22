@@ -44,13 +44,13 @@ public final class Logistic extends ABoundedOp {
 	
 	@Override
 	public double derivativeForOutput(double y) {
-		return y*(1-y);
+		return y*(1.0-y);
 	}
 	
 	@Override
 	public double derivative(double x) {
 		double y=logisticFunction(x);
-		return y*(1-y);
+		return y*(1.0-y);
 	}
 
 	@Override

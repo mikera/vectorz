@@ -9,15 +9,21 @@ import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.VectorzException;
 
+/**
+ * Class representing a join of one or more array subvectors
+ * @author Mike
+ *
+ */
 public final class JoinedArrayVector extends AVector {
 	private static final long serialVersionUID = -8470277860344236392L;
 
-	private final int length;
-	private final int numArrays;
-	private final double[][] data;
-	private final int[] offsets;
-	private final int[] pos; // contains one extra element
+	private final int length; // total length
+	private final int numArrays; // number of joined arrays
+	private final double[][] data; // source arrays
+	private final int[] offsets; // offsets into source arrays
+	private final int[] pos; // position of each array within vector. contains one extra element
 	
 	private JoinedArrayVector(int length, double[][] newData,int[] offsets, int[] pos) {
 		this.length=length;
@@ -41,6 +47,10 @@ public final class JoinedArrayVector extends AVector {
 				new double[][] {v.getArray()},
 				new int[] {v.getArrayOffset()},
 				new int[] {0,v.length()});
+	}
+	
+	public int numArrays() {
+		return this.numArrays;
 	}
 
 	// finds the number of the array that contains a specific index position
@@ -261,6 +271,13 @@ public final class JoinedArrayVector extends AVector {
 			DoubleArrays.multiply(this.data[j],offsets[j],subLength(j),value);
 		}
 	}
+	
+	@Override
+	public void square() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.square(this.data[j],offsets[j],subLength(j));
+		}		
+	}
 
 	@Override
 	public JoinedArrayVector exactClone() {
@@ -332,22 +349,45 @@ public final class JoinedArrayVector extends AVector {
 	public static JoinedArrayVector joinVectors(JoinedArrayVector a, JoinedArrayVector b) {
 		int newLen=a.length+b.length();
 		
-		int[] newOffsets=new int[a.numArrays+b.numArrays];
-		System.arraycopy(a.offsets, 0, newOffsets, 0, a.numArrays);
-		System.arraycopy(b.offsets, 0, newOffsets, a.numArrays, b.numArrays);
+		int naa=a.numArrays; int nab=b.numArrays;
 		
-		int[] newPos=new int[a.numArrays+b.numArrays+1];
-		System.arraycopy(a.pos, 0, newPos, 0, a.numArrays);
-		System.arraycopy(b.pos, 0, newPos, a.numArrays, b.numArrays+1);
-		for (int i=a.numArrays; i<newPos.length; i++) {
-			newPos[i]+=a.length;
-		}
+		if ((a.data[naa-1]==b.data[0])&&(a.offsets[naa-1]+(a.pos[naa]-a.pos[naa-1])==b.offsets[0])) {
+			// need to join array at end of a with start of b
+			
+			int[] newOffsets=new int[naa+nab-1];
+			System.arraycopy(a.offsets, 0, newOffsets, 0, naa);
+			System.arraycopy(b.offsets, 1, newOffsets, naa, nab-1);
+			
+			int[] newPos=new int[naa+nab-1+1];
+			System.arraycopy(a.pos, 0, newPos, 0, naa);
+			System.arraycopy(b.pos, 1, newPos, naa, nab);
+			for (int i=naa; i<newPos.length; i++) {
+				newPos[i]+=a.length;
+			}
+			
+			double[][] newData=new double[naa+nab-1][];
+			System.arraycopy(a.data, 0, newData, 0, naa);
+			System.arraycopy(b.data, 1, newData, naa, nab-1);
 
-		double[][] newData=new double[a.numArrays+b.numArrays][];
-		System.arraycopy(a.data, 0, newData, 0, a.numArrays);
-		System.arraycopy(b.data, 0, newData, a.numArrays, b.numArrays);
-		
-		return new JoinedArrayVector(newLen,newData,newOffsets,newPos);
+			return new JoinedArrayVector(newLen,newData,newOffsets,newPos);
+		} else {
+			int[] newOffsets=new int[naa+nab];
+			System.arraycopy(a.offsets, 0, newOffsets, 0, naa);
+			System.arraycopy(b.offsets, 0, newOffsets, naa, nab);
+			
+			int[] newPos=new int[naa+nab+1];
+			System.arraycopy(a.pos, 0, newPos, 0, naa);
+			System.arraycopy(b.pos, 0, newPos, naa, nab+1);
+			for (int i=naa; i<newPos.length; i++) {
+				newPos[i]+=a.length;
+			}
+	
+			double[][] newData=new double[naa+nab][];
+			System.arraycopy(a.data, 0, newData, 0, naa);
+			System.arraycopy(b.data, 0, newData, naa, nab);
+			
+			return new JoinedArrayVector(newLen,newData,newOffsets,newPos);
+		}
 	}
 
 	public static AVector joinVectors(ArrayVector a, ArrayVector b) {
@@ -364,5 +404,11 @@ public final class JoinedArrayVector extends AVector {
 				new double[][] {a.getArray(),b.getArray()},
 				new int[] {a.getArrayOffset(),b.getArrayOffset()},
 				new int[] {0,alen,alen+blen});
+	}
+	
+	@Override
+	public void validate() {
+		if (length!=pos[numArrays]) throw new VectorzException("Validation problem");
+		super.validate();
 	}
 }

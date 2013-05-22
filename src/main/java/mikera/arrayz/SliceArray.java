@@ -220,9 +220,9 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public List<INDArray> getSlices() {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
-		for (INDArray sl:this) {
+	public List<T> getSlices() {
+		ArrayList<T> al=new ArrayList<T>();
+		for (T sl:this) {
 			al.add(sl);
 		}
 		return al;
@@ -236,5 +236,17 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		}
 	}
 
-
+	@Override
+	public void validate() {
+		if (shape.length!=longShape.length) throw new VectorzException("Shape mismatch");
+		for (int i=0; i<slices.length; i++) {
+			T s=slices[i];
+			slices[i].validate();
+			int[] ss=s.getShape();
+			for (int j=0; j<ss.length; j++) {
+				if(shape[j+1]!=ss[j]) throw new VectorzException("Slice shape mismatch");
+			}
+		}
+		super.validate();
+	}
 }

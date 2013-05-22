@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import mikera.transformz.TestTransformz;
+import mikera.util.Maths;
 import mikera.util.Rand;
 import mikera.vectorz.ops.Clamp;
 import mikera.vectorz.ops.Composed;
@@ -13,6 +14,7 @@ import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.Offset;
+import mikera.vectorz.ops.Power;
 import mikera.vectorz.ops.Quadratic;
 import mikera.vectorz.ops.StochasticBinary;
 
@@ -65,12 +67,14 @@ public class TestOps {
 	
 	private void testApply(Op op) {
 		double r=op.apply(Rand.nextGaussian()*1000);
+		if (Double.isNaN(r)) return;
 		assertTrue(r<=op.maxValue());
 		assertTrue(r>=op.minValue());
 	}
 	
 	private void testVectorApply(Op op) {
 		if (op.isStochastic()) return;
+		if (op.isDomainBounded()) return;
 		
 		Vector sv=Vector.createLength(10);
 		Vectorz.fillGaussian(sv);
@@ -113,6 +117,9 @@ public class TestOps {
 		
 		for (int i=0; i<100; i++) {
 			double x=Rand.nextGaussian()*1000;
+			if (op.isDomainBounded()) {
+				x=Maths.bound(x, op.minDomain(), op.maxDomain());
+			}
 			double y=op.apply(x);
 			assertTrue(y<=max);
 			assertTrue(y>=min);
@@ -243,13 +250,32 @@ public class TestOps {
 		doOpTest(Ops.SOFTPLUS);
 		doOpTest(Ops.RECTIFIER);
 		doOpTest(Ops.RBF_NORMAL);
+		doOpTest(Ops.SQRT);
+		doOpTest(Ops.CBRT);
+		doOpTest(Ops.SQUARE);
+
+		doOpTest(Ops.TO_DEGREES);
+		doOpTest(Ops.TO_RADIANS);
 
 		doOpTest(Ops.EXP);
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);
 
+		doOpTest(Ops.ACOS);
+		doOpTest(Ops.ASIN);
+
+		doOpTest(Power.create(0.5));
+		doOpTest(Power.create(1));
+		doOpTest(Power.create(2));
+		doOpTest(Power.create(3.2));
+		doOpTest(Power.create(-0.5));
+		doOpTest(Power.create(0));
+		
 		doOpTest(Quadratic.create(2, 3, 4));
 		doOpTest(Quadratic.create(0, 3, 4));
+		
+		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));
+		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));
 		
 		doComposeTest(Linear.create(0.31, 0.12),Linear.create(-100, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));

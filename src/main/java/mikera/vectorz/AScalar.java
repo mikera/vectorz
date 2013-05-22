@@ -37,6 +37,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public void getElements(double[] dest, int offset) {
+		dest[offset]=get();
+	}
+	
+	@Override
 	public int dimensionality() {
 		return 0;
 	}
@@ -223,4 +228,10 @@ public abstract class AScalar extends AbstractArray<Object> {
 	
 	@Override
 	public abstract AScalar exactClone();
+	
+	@Override
+	public void validate() {
+		get();
+		super.validate();
+	}
 }

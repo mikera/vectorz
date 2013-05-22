@@ -123,8 +123,21 @@ public interface INDArray extends Cloneable {
 	public void setElements(double[] values);
 	public void setElements(double[] values, int offset, int length);
 
+	/**
+	 * Gets all elements of the array, copying them into a double array
+	 * @param d
+	 */
+	public void getElements(double[] dest, int offset);
+	
 	public void scale(double d);
 	public void multiply(double d);
 
 	public List<?> getSlices();
+	
+	/**
+	 * Validates the internal data structure of the INDArray. Throws an exception on failure.
+	 * 
+	 * Failure indicates a serious bug and/or data corruption.
+	 */
+	public void validate();
 }
