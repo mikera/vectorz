@@ -136,6 +136,25 @@ public class TestJoinedVector {
 		assertEquals(5.0,j.get(15),0.0);
 	}
 	
+	@Test public void testJoinedCoalesce() {
+		Vector a=Vector.of(0,1);
+		Vector b=Vector.of(2,3);
+		Vector c=Vector.of(4,5);
+		
+		JoinedArrayVector ja=(JoinedArrayVector)a.join(b.subVector(0, 1));
+		JoinedArrayVector jb=(JoinedArrayVector)b.subVector(1, 1).join(c);
+		
+		assertEquals(ja,Vector.of(0,1,2));
+		assertEquals(jb,Vector.of(3,4,5));
+		assertEquals(2,ja.numArrays());
+		assertEquals(2,jb.numArrays());
+		
+		JoinedArrayVector jabc=ja.join(jb);
+		jabc.validate();
+		assertEquals(Vector.of(0,1,2,3,4,5),jabc);
+		assertEquals(3,jabc.numArrays());
+	}
+	
 	@Test public void testJoinedVector3Add() {
 		Vector v=Vector.of(0,1,2,3,4);
 		AVector j=v.clone().join(v.exactClone());

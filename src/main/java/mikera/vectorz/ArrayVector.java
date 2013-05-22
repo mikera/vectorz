@@ -388,7 +388,7 @@ public abstract class ArrayVector extends AVector {
 		return JoinedArrayVector.joinVectors(this, v);
 	}
 	
-	public AVector join(JoinedArrayVector v) {
+	public JoinedArrayVector join(JoinedArrayVector v) {
 		return JoinedArrayVector.wrap(this).join(v);
 	}
 }
