@@ -14,6 +14,7 @@ import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedArrayVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * General purpose NDArray class
@@ -364,5 +365,10 @@ public final class NDArray extends AbstractArray<INDArray> {
 			}
 			return al;
 		}
+	}
+	
+	@Override public void validate() {
+		if ((offset<0)||(offset>=data.length)) throw new VectorzException("Offset out of bounds");
+		super.validate();
 	}
 }

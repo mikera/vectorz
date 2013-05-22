@@ -223,4 +223,10 @@ public abstract class AScalar extends AbstractArray<Object> {
 	
 	@Override
 	public abstract AScalar exactClone();
+	
+	@Override
+	public void validate() {
+		get();
+		super.validate();
+	}
 }

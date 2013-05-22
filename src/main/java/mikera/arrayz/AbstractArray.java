@@ -208,4 +208,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			return SliceArray.repeat(s,n);
 		}
 	}
+	
+	@Override
+	public void validate() {
+		// TODO: any generic validation?
+	}
 }

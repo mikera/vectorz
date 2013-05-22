@@ -236,5 +236,9 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		}
 	}
 
-
+	@Override
+	public void validate() {
+		if (shape.length!=longShape.length) throw new VectorzException("Shape mismatch");
+		super.validate();
+	}
 }

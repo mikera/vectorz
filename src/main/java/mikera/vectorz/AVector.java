@@ -1136,5 +1136,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 
-
+	@Override
+	public void validate() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			get(i);
+		}
+		super.validate();
+	}
 }

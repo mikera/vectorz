@@ -143,6 +143,7 @@ public class TestArrays {
 	
 	
 	public void testArray(INDArray a) {
+		a.validate();
 		testAsVector(a);
 		testApplyOp(a);
 		testSetElements(a);

@@ -1006,4 +1006,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	public abstract AMatrix exactClone();
+	
+	@Override 
+	public void validate() {
+		// TODO: any generic validation?
+	}
 }
