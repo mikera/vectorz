@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import mikera.vectorz.ops.AFunctionOp;
 import mikera.vectorz.ops.Clamp;
+import mikera.vectorz.ops.Exp;
 import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Logistic;

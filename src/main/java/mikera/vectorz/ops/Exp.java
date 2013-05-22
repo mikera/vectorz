@@ -1,6 +1,6 @@
-package mikera.vectorz;
+package mikera.vectorz.ops;
 
-import mikera.vectorz.ops.AFunctionOp;
+import mikera.vectorz.Op;
 
 /**
  * The renowned exponential function
