@@ -406,8 +406,9 @@ public final class JoinedArrayVector extends AVector {
 				new int[] {0,alen,alen+blen});
 	}
 	
-	
+	@Override
 	public void validate() {
 		if (length!=pos[numArrays]) throw new VectorzException("Validation problem");
+		super.validate();
 	}
 }
