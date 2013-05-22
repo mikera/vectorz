@@ -268,10 +268,7 @@ public abstract class ArrayVector extends AVector {
 		int len=length();
 		double[] data=getArray();
 		int offset=getArrayOffset();
-		for (int i=0; i<len; i++) {
-			double x=data[i+offset];
-			data[i+offset]=x*x;
-		}		
+		DoubleArrays.square(data, offset, len);	
 	}
 
 	
