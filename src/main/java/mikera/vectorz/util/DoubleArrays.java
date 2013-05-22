@@ -15,6 +15,12 @@ public final class DoubleArrays {
 		}
 	}
 	
+	public static void square(double[] ds, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			ds[offset+i]*=ds[offset+i];
+		}
+	}
+	
 	public static void divide(double[] data, int offset, int length, double value) {
 		for (int i=0; i<length; i++) {
 			data[offset+i]/=value;
@@ -70,4 +76,5 @@ public final class DoubleArrays {
 			dest[destOffset+i]+=src[srcOffset+i];
 		}
 	}
+
 }

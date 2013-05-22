@@ -261,6 +261,13 @@ public final class JoinedArrayVector extends AVector {
 			DoubleArrays.multiply(this.data[j],offsets[j],subLength(j),value);
 		}
 	}
+	
+	@Override
+	public void square() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.square(this.data[j],offsets[j],subLength(j));
+		}		
+	}
 
 	@Override
 	public JoinedArrayVector exactClone() {
