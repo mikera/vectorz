@@ -368,6 +368,9 @@ public final class NDArray extends AbstractArray<INDArray> {
 	}
 	
 	@Override public void validate() {
+		if (dimensions>shape.length) throw new VectorzException("Insufficient shape data");
+		if (dimensions>stride.length) throw new VectorzException("Insufficient stride data");
+		
 		if ((offset<0)||(offset>=data.length)) throw new VectorzException("Offset out of bounds");
 		super.validate();
 	}
