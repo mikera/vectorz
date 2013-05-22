@@ -129,7 +129,9 @@ public interface INDArray extends Cloneable {
 	public List<?> getSlices();
 	
 	/**
-	 * Validates the internal structure of the INDArray. Throws an exception on failure.
+	 * Validates the internal data structure of the INDArray. Throws an exception on failure.
+	 * 
+	 * Failure indicates a serious bug and/or data corruption.
 	 */
 	public void validate();
 }

@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Abstract base class for vectors that index into other sources
@@ -29,5 +30,11 @@ abstract class AIndexedVector extends AVector {
 	@Override
 	public int length() {
 		return length;
+	}
+	
+	@Override
+	public void validate() {
+		if (length!=indexes.length) throw new VectorzException("Wrong index length");
+		super.validate();
 	}
 }

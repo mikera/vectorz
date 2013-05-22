@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.vectorz.util.VectorzException;
+
 /**
  * Implements a growable vector, intended for incrementally building vectors
  * 
@@ -126,5 +128,11 @@ public final class GrowableVector extends ArrayVector {
 		GrowableVector g=new GrowableVector(data.length);
 		g.append(this);
 		return g;
+	}
+	
+	@Override
+	public void validate() {
+		if (length>data.length) throw new VectorzException("Array problem");
+		super.validate();
 	}
 }
