@@ -650,6 +650,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		copyTo(dest,offset);
+	}
+	
 	/**
 	 * Set the vector equal to an offset into another vector
 	 * @param src

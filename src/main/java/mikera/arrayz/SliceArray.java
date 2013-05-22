@@ -220,9 +220,9 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public List<INDArray> getSlices() {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
-		for (INDArray sl:this) {
+	public List<T> getSlices() {
+		ArrayList<T> al=new ArrayList<T>();
+		for (T sl:this) {
 			al.add(sl);
 		}
 		return al;

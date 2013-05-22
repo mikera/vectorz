@@ -114,6 +114,11 @@ public final class Vector extends ArrayVector {
 	public double[] getArray() {
 		return data;
 	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		System.arraycopy(data, 0, dest, offset, data.length);
+	}
 
 	@Override
 	public int getArrayOffset() {

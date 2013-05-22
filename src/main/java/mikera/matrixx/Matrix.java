@@ -256,6 +256,11 @@ public final class Matrix extends AMatrix {
 		}
 	}
 	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		System.arraycopy(data, 0, dest, offset, data.length);
+	}
+	
 	@Override 
 	public void set(double value) {
 		Arrays.fill(data,value);

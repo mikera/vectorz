@@ -3,6 +3,7 @@ package mikera.arrayz;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
@@ -193,6 +194,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public INDArray reshape(int... targetShape) {
 		return Arrayz.createFromVector(asVector(), targetShape);
 	}
+	
+	@Override
+	public abstract List<T> getSlices();
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			INDArray s=slice(i);
+			s.getElements(dest,offset);
+			offset+=s.elementCount();
+		}
+	}
+
 	
 	@Override
 	public INDArray broadcast(int... targetShape) {
