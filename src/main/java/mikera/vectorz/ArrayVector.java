@@ -253,6 +253,16 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void abs() {
+		int len=length();
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<len; i++) {
+			data[i+offset]=Math.abs(data[i+offset]);
+		}
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		op.applyTo(getArray(), getArrayOffset(), length());
 	}
