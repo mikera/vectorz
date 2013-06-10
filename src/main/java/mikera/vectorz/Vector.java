@@ -344,11 +344,7 @@ public final class Vector extends ArrayVector {
 	@Override
 	public void addMultiple(AVector v, double factor) {
 		if (v instanceof ArrayVector) {addMultiple(((ArrayVector)v),factor); return;}
-		int length=length();
-		assert(length==v.length());
-		for (int i = 0; i < length; i++) {
-			data[i] += v.get(i)*factor;
-		}
+		v.addMultipleToArray(factor, 0, data, 0, length());
 	}
 	
 	@Override
