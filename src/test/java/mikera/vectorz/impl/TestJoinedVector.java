@@ -94,6 +94,15 @@ public class TestJoinedVector {
 		t.addMultiple(5, v, 2);
 		assertEquals(Vector.of(1,2,3,0,0,2,4,6,0,0),t);
 	}
+	
+	@Test public void testJoinedArrayVectorAddMultiple2() {
+		AVector v=Vector.of(1).join(Vector.of(2,3));
+		AVector t=Vector.of(0,0,0,0).join(Vector.of(0,0)).join(Vector.of(0,0,0,0));
+		t.addMultiple(0, v, 1);
+		assertEquals(Vector.of(1,2,3,0,0,0,0,0,0,0),t);
+		t.addMultiple(5, v, 2);
+		assertEquals(Vector.of(1,2,3,0,0,2,4,6,0,0),t);
+	}
 
 	
 	@Test public void testJoinedViews() {

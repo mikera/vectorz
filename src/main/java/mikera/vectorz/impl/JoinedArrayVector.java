@@ -215,6 +215,7 @@ public final class JoinedArrayVector extends AVector {
 			double[] sa=data[j];
 			int soffset=offsets[j];
 			if (offset<=sp) {
+				// chunk start aligned with current array, so just use clen elements
 				for (int i=0; i<clen; i++) {
 					array[arrayOffset+i]+=factor*sa[soffset+i];
 				}
@@ -229,7 +230,6 @@ public final class JoinedArrayVector extends AVector {
 			}
 			arrayOffset+=clen;
 		}
-		
 	}
 	
 	@Override
