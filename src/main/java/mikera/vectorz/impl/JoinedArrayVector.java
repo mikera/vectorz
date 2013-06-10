@@ -209,8 +209,8 @@ public final class JoinedArrayVector extends AVector {
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		int startArray=findArrayNum(offset);
 		int endPos=offset+length; // end poition in this vector
-		for (int j=startArray, sp=pos[j], ep=pos[j+1]; sp<endPos; j++, sp=pos[j]) {
-			ep=pos[j+1];
+		for (int j=startArray, sp=pos[j]; sp<endPos; j++, sp=pos[j]) {
+			int ep=pos[j+1];
 			int clen=Math.min(ep-sp, endPos-sp);
 			double[] sa=data[j];
 			int soffset=offsets[j];
