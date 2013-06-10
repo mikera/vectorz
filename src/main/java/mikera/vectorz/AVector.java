@@ -830,21 +830,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Adds a scaled multiple of another vector to this one
-	 * @param v
+	 * @param src
 	 */
-	public void addMultiple(AVector v, double factor) {
-		if (v.length()!=length()) throw new RuntimeException("Source vector has different size!" + v.length());
-		addMultiple(v,0,factor);
+	public void addMultiple(AVector src, double factor) {
+		if (src.length()!=length()) throw new RuntimeException("Source vector has different size!" + src.length());
+		addMultiple(src,0,factor);
 	}
 	
-	public void addMultiple(AVector v, int vOffset, double factor) {
-		addMultiple(0,v,vOffset,length(),factor);
+	public void addMultiple(AVector src, int srcOffset, double factor) {
+		addMultiple(0,src,srcOffset,length(),factor);
 	}
 	
-	public void addMultiple(int offset, AVector v, int vOffset, int length, double factor) {
+	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
 		assert(offset+length<=length());
 		for (int i = 0; i < length; i++) {
-			addAt(i+offset,v.get(i+vOffset)*factor);
+			addAt(i+offset,src.get(i+srcOffset)*factor);
 		}
 	}
 	

@@ -206,6 +206,33 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
+		int startArray=findArrayNum(offset);
+		int endPos=offset+length; // end poition in this vector
+		for (int j=startArray, sp=pos[j]; sp<endPos; j++, sp=pos[j]) {
+			int ep=pos[j+1];
+			int clen=Math.min(ep-sp, endPos-sp);
+			double[] sa=data[j];
+			int soffset=offsets[j];
+			if (offset<=sp) {
+				// chunk start aligned with current array, so just use clen elements
+				for (int i=0; i<clen; i++) {
+					array[arrayOffset+i]+=factor*sa[soffset+i];
+				}
+			} else {
+				// first chunk not starting at sp, need to skip some elements
+				int skip=offset-sp;
+				assert(skip>0);
+				clen-=skip;
+				for (int i=0; i<clen; i++) {
+					array[arrayOffset+i]+=factor*sa[skip+soffset+i];
+				}
+			}
+			arrayOffset+=clen;
+		}
+	}
+	
+	@Override
 	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
 		for (int j=0; j<numArrays; j++) {
 			a.addProductToArray(factor, aOffset+pos[j], b, bOffset+pos[j], data[j], offsets[j], subLength(j));

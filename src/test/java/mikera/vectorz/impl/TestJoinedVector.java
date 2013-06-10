@@ -78,12 +78,32 @@ public class TestJoinedVector {
 
 		w.addMultiple(v,3);
 		w.multiply(0.25);
-		assertEquals(w,v);
+		assertEquals(v,w);
 		
 		w.addProduct(v,w,2);
 		assertEquals(210,w.get(10),0.000);
 
 	}
+	
+	@Test public void testJoinedArrayVectorAddMultiple() {
+		double[] d=new double[10];
+		AVector v=Vector.of(1).join(Vector.of(2,3));
+		AVector t=Vector.wrap(d);
+		t.addMultiple(0, v, 1);
+		assertEquals(Vector.of(1,2,3,0,0,0,0,0,0,0),t);
+		t.addMultiple(5, v, 2);
+		assertEquals(Vector.of(1,2,3,0,0,2,4,6,0,0),t);
+	}
+	
+	@Test public void testJoinedArrayVectorAddMultiple2() {
+		AVector v=Vector.of(1).join(Vector.of(2,3));
+		AVector t=Vector.of(0,0,0,0).join(Vector.of(0,0)).join(Vector.of(0,0,0,0));
+		t.addMultiple(0, v, 1);
+		assertEquals(Vector.of(1,2,3,0,0,0,0,0,0,0),t);
+		t.addMultiple(5, v, 2);
+		assertEquals(Vector.of(1,2,3,0,0,2,4,6,0,0),t);
+	}
+
 	
 	@Test public void testJoinedViews() {
 		Vector v=Vector.createLength(1000);
