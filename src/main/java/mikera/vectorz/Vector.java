@@ -98,6 +98,7 @@ public final class Vector extends ArrayVector {
 	@Override
 	public void set(AVector a) {
 		if (a instanceof Vector) {
+			if (a==this) return;
 			Vector v=(Vector)a;
 			System.arraycopy(v.data, 0, data, 0, data.length);
 		} else {
