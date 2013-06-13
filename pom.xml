@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>us.bpsm</groupId>
 			<artifactId>edn-java</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.caliper</groupId>
