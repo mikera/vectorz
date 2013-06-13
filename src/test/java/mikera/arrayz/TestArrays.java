@@ -1,5 +1,6 @@
 package mikera.arrayz;
 
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
 
@@ -145,6 +146,11 @@ public class TestArrays {
 		assertEquals(a.asVector().hashCode(),a.hashCode());
 	}
 	
+	private void testParserRoundTrip(INDArray a) {
+		String s=a.toString();
+		assertEquals(a,Arrayz.load(new StringReader(s)));
+	}
+	
 	private void testBroadcast(INDArray a) {
 		int dims=a.dimensionality();
 		int[] ts=new int[dims+2];
@@ -174,6 +180,7 @@ public class TestArrays {
 		testClone(a);
 		testMutability(a);
 		testSlices(a);
+		testParserRoundTrip(a);
 	}
 
 	@Test
