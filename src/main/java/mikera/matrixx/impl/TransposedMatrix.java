@@ -56,26 +56,6 @@ public class TransposedMatrix extends DelegatedMatrix {
 	}
 	
 	@Override
-	public void multiply(double factor) {
-		source.multiply(factor);
-	}
-	
-	@Override
-	public void set(double value) {
-		source.set(value);
-	}
-	
-	@Override
-	public boolean isView() {
-		return true;
-	}
-	
-	@Override
-	public AVector getLeadingDiagonal() {
-		return source.getLeadingDiagonal();
-	}
-	
-	@Override
 	public AVector getColumn(int column) {
 		return source.getRow(column);
 	}
