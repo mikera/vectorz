@@ -69,6 +69,14 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public int[] getShape() {
 		return shape;
 	}
+	
+	public int getStride(int dim) {
+		return stride[dim];
+	}
+	
+	public int getShape(int dim) {
+		return shape[dim];
+	}
 
 	@Override
 	public long[] getLongShape() {
@@ -89,7 +97,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	@Override
 	public double get(int x) {
 		if (dimensions==1) {
-			return data[offset+x*stride[0]];
+			return data[offset+x*getStride(0)];
 		} else {
 			throw new UnsupportedOperationException("1-d get not possible on NDArray with dimensionality="+dimensions);
 		}
@@ -98,7 +106,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	@Override
 	public double get(int x, int y) {
 		if (dimensions==2) {
-			return data[offset+x*stride[0]+y*stride[1]];
+			return data[offset+x*getStride(0)+y*getStride(1)];
 		} else {
 			throw new UnsupportedOperationException("2-d get not possible on NDArray with dimensionality="+dimensions);
 		}
@@ -108,7 +116,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public double get(int... indexes) {
 		int ix=offset;
 		for (int i=0; i<dimensions; i++) {
-			ix+=indexes[i]*stride[i];
+			ix+=indexes[i]*getStride(i);
 		}
 		return data[ix];
 	}
@@ -118,8 +126,8 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==0) {
 			data[offset]=value;
 		} else if (dimensions==1) {
-			int n=shape[0];
-			int st=stride[0];
+			int n=getShape(0);
+			int st=getStride(0);
 			for (int i=0; i<n; i++) {
 				data[offset+i*st]=value;
 			}
@@ -133,7 +141,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	@Override
 	public void set(int x, double value) {
 		if (dimensions==1) {
-			data[offset+x*stride[0]]=value;
+			data[offset+x*getStride(0)]=value;
 		} else {
 			throw new UnsupportedOperationException("1-d set not possible on NDArray with dimensionality="+dimensions);
 		}
@@ -142,7 +150,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	@Override
 	public void set(int x, int y, double value) {
 		if (dimensions==2) {
-			data[offset+x*stride[0]+y*stride[1]]=value;
+			data[offset+x*getStride(0)+y*getStride(1)]=value;
 		} else {
 			throw new UnsupportedOperationException("2-d set not possible on NDArray with dimensionality="+dimensions);
 		}
@@ -152,7 +160,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public void set(int[] indexes, double value) {
 		int ix=offset;
 		for (int i=0; i<dimensions; i++) {
-			ix+=indexes[i]*stride[i];
+			ix+=indexes[i]*getStride(i);
 		}
 		data[ix]=value;
 	}
@@ -184,10 +192,11 @@ public final class NDArray extends AbstractArray<INDArray> {
 		} else if (dimensions==0) {
 			return ArraySubVector.wrap(data,offset,1);
 		} else if (dimensions==1) {
-			return StridedArrayVector.wrap(data, offset, shape[0], stride[0]);
+			return StridedArrayVector.wrap(data, offset, getShape(0), getStride(0));
 		} else {
 			AVector v=Vector0.INSTANCE;
-			for (int i=0; i<shape[0]; i++) {
+			int n=getShape(0);
+			for (int i=0; i<n; i++) {
 				v=v.join(slice(i).asVector());
 			}
 			return v;
@@ -199,7 +208,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		
 		int st=1;
 		for (int i=dimensions-1; i>=0; i--) {
-			if (stride[i]!=st) return false;
+			if (getStride(i)!=st) return false;
 			int d=shape[i];
 			st*=d;
 		}
@@ -222,18 +231,18 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==0) {
 			throw new IllegalArgumentException("Can't slice a 0-d NDArray");
 		} else if (dimensions==1) {
-			return new ArrayIndexScalar(data,offset+majorSlice*stride[0]);
+			return new ArrayIndexScalar(data,offset+majorSlice*getStride(0));
 		} else if (dimensions==2) {
 			if ((majorSlice<0)||(majorSlice>shape[0])) throw new IllegalArgumentException("Slice out of range: "+majorSlice);
 			int st=stride[1];
 			if (st==1) {
-				return Vectorz.wrap(data, offset+majorSlice*stride[0], shape[1]);
+				return Vectorz.wrap(data, offset+majorSlice*getStride(0), getShape(1));
 			} else {
-				return StridedArrayVector.wrapStrided(data, offset+majorSlice*stride[0], shape[1], st);
+				return StridedArrayVector.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
 			}
 		} else {
 			return new NDArray(data,
-					offset+majorSlice*stride[0],
+					offset+majorSlice*getStride(0),
 					Arrays.copyOfRange(shape, 1,dimensions),
 					Arrays.copyOfRange(stride, 1,dimensions));
 		}
@@ -241,7 +250,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	@Override
 	public int sliceCount() {
-		return shape[0];
+		return getShape(0);
 	}
 
 	@Override
@@ -274,8 +283,8 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==0) {
 			data[offset]=op.apply(data[offset]);
 		} else if (dimensions==1) {
-			int st=stride[0];
-			int len=shape[0];
+			int st=getStride(0);
+			int len=getShape(0);
 			if (st==1) {
 				op.applyTo(data, offset, len);
 			} else {
@@ -333,11 +342,13 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==0) {
 			data[offset]*=d;
 		} else if (dimensions==1) {
-			for (int i=0; i<shape[0]; i++) {
-				data[offset+i*stride[0]]*=d;
+			int n=getShape(0);
+			for (int i=0; i<n; i++) {
+				data[offset+i*getStride(0)]*=d;
 			}
 		} else {
-			for (int i=0; i<shape[0]; i++) {
+			int n=getShape(0);
+			for (int i=0; i<n; i++) {
 				slice(i).scale(d);
 			}
 		}
@@ -348,13 +359,13 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==0) {
 			data[this.offset]=values[offset];
 		} else if (dimensions==1) {
-			if (length>shape[0]) throw new IllegalArgumentException("Too many values for NDArray: "+length);
-			int st0=stride[0];
+			if (length>getShape(0)) throw new IllegalArgumentException("Too many values for NDArray: "+length);
+			int st0=getStride(0);
 			for (int i=0; i<length; i++) {
 				data[this.offset+i*st0]=values[offset+i];
 			}
 		} else {
-			int sc=shape[0];
+			int sc=getShape(0);
 			int ssize=(int) Tools.arrayProduct(shape,1,dimensions);
 			for (int i=0; i<sc; i++) {
 				slice(i).setElements(values,offset+ssize*i,ssize);
@@ -368,7 +379,8 @@ public final class NDArray extends AbstractArray<INDArray> {
 			throw new IllegalArgumentException("Can't get slices of 0-d NDArray");
 		} else {
 			ArrayList<INDArray> al=new ArrayList<INDArray>();
-			for (int i=0; i<shape[0]; i++) {
+			int n=getShape(0);
+			for (int i=0; i<n; i++) {
 				al.add(slice(i));
 			}
 			return al;
