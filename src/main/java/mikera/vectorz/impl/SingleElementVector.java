@@ -5,8 +5,8 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * A sparse mutable vector that has one non-zero element.
- * All other components are forced to remain at zero, setting them is ignored.
+ * A sparse mutable vector that has a only one element that can be non-zero.
+ * All other components are forced to remain at zero, setting them to a non-zero value results in an exception.
  * @author Mike
  *
  */
@@ -90,7 +90,7 @@ public final class SingleElementVector extends AVector implements ISparse {
 		if (i==index) {
 			this.value=value;
 		} else { 
-			throw new VectorzException("SingleElementVector not mutable at position: "+i);
+			if (value!=0.0) throw new VectorzException("SingleElementVector not mutable at position: "+i);
 		}
 	}
 	
