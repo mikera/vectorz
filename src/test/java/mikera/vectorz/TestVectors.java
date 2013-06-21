@@ -113,7 +113,7 @@ public class TestVectors {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
 		
-		ArraySubVector v=new ArraySubVector(data);
+		ArraySubVector v=ArraySubVector.wrap(data);
 		assertEquals(10,v.get(10),0.0);
 		assertTrue(v.isView());
 		
@@ -141,7 +141,7 @@ public class TestVectors {
 	@Test public void testSubVectorCopy() {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
-		ArraySubVector v=new ArraySubVector(data);	
+		ArraySubVector v=ArraySubVector.wrap(data);	
 		
 		assertEquals(Arrays.hashCode(data),v.hashCode());
 		
@@ -698,12 +698,12 @@ public class TestVectors {
 			indexes[i]=i;
 		}
 
-		doGenericTests(new ArraySubVector(data));
+		doGenericTests(ArraySubVector.wrap(data));
 		doGenericTests(IndexedArrayVector.wrap(data,indexes));
 		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
 		
 		doGenericTests(new Vector(data).subVector(25, 50));
-		doGenericTests(new ArraySubVector(data).subVector(25, 50));
+		doGenericTests(ArraySubVector.wrap(data).subVector(25, 50));
 		
 		AVector v3 = new Vector3(1.0,2.0,3.0);
 		doGenericTests(v3.subVector(1, 2));

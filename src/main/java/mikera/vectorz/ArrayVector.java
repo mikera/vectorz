@@ -385,6 +385,17 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void fill(double value) {
+		int offset=getArrayOffset();
+		Arrays.fill(getArray(), offset, offset+length(),value);
+	}
+	
+	@Override
+	public void multiply(double factor) {
+		DoubleArrays.multiply(getArray(), getArrayOffset(),length(),factor);
+	}
+	
+	@Override
 	public AVector join(AVector v) {
 		if (v instanceof ArrayVector) return join((ArrayVector)v);
 		if (v instanceof JoinedArrayVector) return join((JoinedArrayVector)v);
