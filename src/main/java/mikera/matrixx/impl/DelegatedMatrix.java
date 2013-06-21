@@ -2,6 +2,8 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.IOp;
+import mikera.vectorz.Op;
 
 /**
  * Abstract base class that delegates certain methods to a source matrix
@@ -39,6 +41,16 @@ abstract class DelegatedMatrix extends AMatrix {
 	@Override
 	public void set(int row, int column, double value) {
 		source.set(row,column,value);
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		source.applyOp(op);
+	}
+	
+	@Override
+	public void applyOp(IOp op) {
+		source.applyOp(op);
 	}
 	
 
