@@ -184,6 +184,11 @@ public class TestVectors {
 		if (len>0) {
 			assertEquals(ds[0],v.get(0),0.0);
 		}
+		
+		double[] ds2=new double[len];
+		v.addToArray(ds2, 0);
+		assertEquals(v,Vector.wrap(ds2));
+
 	}
 	
 	private void testAddProduct(AVector v) {

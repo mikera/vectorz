@@ -1014,6 +1014,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			set(i, v.get(indexes.get(i)));
 		}
 	}
+	
+	public void addToArray(double[] array, int offset) {
+		addToArray(0,array,offset,length());
+	}
 
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		assert(offset+length<=length());
