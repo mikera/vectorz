@@ -17,7 +17,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar extends AbstractArray<Object> {
+public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	private static final int[] SCALAR_SHAPE=new int[0];
 	private static final long[] SCALAR_LONG_SHAPE=new long[0];
