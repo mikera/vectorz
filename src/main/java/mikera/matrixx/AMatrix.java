@@ -125,6 +125,17 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public int getShape(int dim) {
+		if (dim==0) {
+			return rowCount();
+		} else if (dim==1) {
+			return columnCount();
+		} else {
+			throw new IndexOutOfBoundsException("Matrix does not have dimension: "+dim);
+		}
+	}	
+	
+	@Override
 	public long[] getLongShape() {
 		return new long[] {rowCount(),columnCount()};
 	}

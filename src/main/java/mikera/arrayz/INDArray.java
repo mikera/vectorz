@@ -19,6 +19,7 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public int[] getShape();
+	public int getShape(int dim);
 	
 	/**
 	 * Returns the shape of the array as an array of longs.

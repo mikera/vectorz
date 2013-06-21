@@ -27,6 +27,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return get(new int[] {x,y});
 	}
 	
+	@Override
+	public int getShape(int dim) {
+		return getShape()[dim];
+	}
+	
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AScalar) {
 			INDArray c=clone();

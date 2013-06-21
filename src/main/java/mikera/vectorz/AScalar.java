@@ -147,6 +147,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public int getShape(int dim) {
+		throw new IndexOutOfBoundsException("Scalar does not have dimension: "+dim);
+	}
+	
+	@Override
 	public long[] getLongShape() {
 	 	return SCALAR_LONG_SHAPE;
 	}

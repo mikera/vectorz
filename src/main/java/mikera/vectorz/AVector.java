@@ -94,6 +94,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public int getShape(int dim) {
+		if (dim==0) {
+			return length();
+		} else {
+			throw new IndexOutOfBoundsException("Vector does not have dimension: "+dim);
+		}
+	}
+
+	
+	@Override
 	public long[] getLongShape() {
 		return new long[] {length()};
 	}
