@@ -392,6 +392,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public void copyTo(double[] arr) {
+		getElements(arr,0);
+	}
+	
+	@Override
 	public void setElements(double[] values) {
 		setElements(values,0,values.length);
 	}

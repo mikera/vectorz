@@ -142,4 +142,10 @@ public interface INDArray extends Cloneable {
 	 * Failure indicates a serious bug and/or data corruption.
 	 */
 	public void validate();
+
+	/**
+	 * Copies the elements of this INDArray to the specified double array
+	 * @param arr
+	 */
+	public void copyTo(double[] arr);
 }

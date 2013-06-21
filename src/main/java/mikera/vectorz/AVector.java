@@ -222,6 +222,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return hashCode;
 	}
 
+	public void copyTo(double[] arr) {
+		copyTo(arr,0);
+	}
+	
 	/**
 	 * Copies a the contents of a vector to a double array at the specified offset
 	 */

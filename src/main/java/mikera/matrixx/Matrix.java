@@ -6,6 +6,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedArrayVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /** 
@@ -101,11 +102,12 @@ public final class Matrix extends AMatrix {
 	
 	@Override
 	public double elementSum() {
-		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			result+=data[i];
-		}
-		return result;
+		return DoubleArrays.elementSum(data, 0, data.length);
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		return DoubleArrays.nonZeroCount(data, 0, data.length);
 	}
 	
 	@Override

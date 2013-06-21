@@ -167,6 +167,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public void copyTo(double[] arr) {
+		arr[0]=get();
+	}
+	
+	@Override
 	public AVector asVector() {
 		return new ScalarVector(this);
 	}

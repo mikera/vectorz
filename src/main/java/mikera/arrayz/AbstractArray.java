@@ -223,7 +223,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			offset+=s.elementCount();
 		}
 	}
-
+	
+	@Override
+	public void copyTo(double[] arr) {
+		getElements(arr,0);
+	}
 	
 	@Override
 	public INDArray broadcast(int... targetShape) {

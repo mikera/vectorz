@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Constant;
+import mikera.vectorz.util.DoubleArrays;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -76,6 +77,12 @@ public class TestArrays {
 				}
 			}
 		}
+	}
+	
+	private void testToArray(INDArray a) {
+		double[] arr=new double[(int)a.elementCount()];
+		a.copyTo(arr);
+		assertEquals(a.nonZeroCount(),DoubleArrays.nonZeroCount(arr, 0, arr.length));
 	}
 	
 	private void testClone(INDArray a) {
