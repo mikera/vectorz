@@ -22,6 +22,10 @@ public class TestArrays {
 		AVector v=a.asVector();
 		int[] shape=a.getShape();
 		
+		for (int i=0; i<a.dimensionality(); i++) {
+			assertEquals(shape[i],a.getShape(i));
+		}
+		
 		long[] longShape=a.getLongShape();
 		for (int i=0; i<shape.length; i++) {
 			assertEquals(longShape[i],shape[i]);
