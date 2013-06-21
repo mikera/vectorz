@@ -294,6 +294,13 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void copyTo(double[] data, int offset) {
+		data[offset]=x;
+		data[offset+1]=y;
+		data[offset+2]=z;
+	}
+	
+	@Override
 	public Vector3 clone() {
 		return new Vector3(x,y,z);	
 	}

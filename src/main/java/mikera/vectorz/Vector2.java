@@ -112,6 +112,12 @@ public final class Vector2 extends APrimitiveVector {
 			default: throw new IndexOutOfBoundsException("Index: i");
 		}
 	}
+	
+	@Override
+	public void copyTo(double[] data, int offset) {
+		data[offset]=x;
+		data[offset+1]=y;
+	}
 
 	@Override
 	public void set(int i, double value) {

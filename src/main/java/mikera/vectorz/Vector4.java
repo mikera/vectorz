@@ -166,6 +166,14 @@ public final class Vector4 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void copyTo(double[] data, int offset) {
+		data[offset]=x;
+		data[offset+1]=y;
+		data[offset+2]=z;
+		data[offset+3]=t;
+	}
+	
+	@Override
 	public Vector4 clone() {
 		return new Vector4(x,y,z,t);	
 	}
