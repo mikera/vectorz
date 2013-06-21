@@ -183,6 +183,7 @@ public class TestArrays {
 	public void testArray(INDArray a) {
 		a.validate();
 		testAsVector(a);
+		testToArray(a);
 		testApplyOp(a);
 		testSetElements(a);
 		testGetElements(a);
