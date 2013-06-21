@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.ArrayVector;
 
 /**
  * Abstract base class for diagonal matrices
@@ -68,8 +69,21 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public void transformInPlace(AVector v) {
+		if (v instanceof ArrayVector) {
+			transformInPlace((ArrayVector) v);
+			return;
+		}
 		for (int i=0; i<dimensions; i++) {
 			v.set(i,v.get(i)*getDiagonalValue(i));
+		}
+	}
+	
+	@Override
+	public void transformInPlace(ArrayVector v) {
+		double[] data=v.getArray();
+		int offset=v.getArrayOffset();
+		for (int i=0; i<dimensions; i++) {
+			data[i+offset]*=getDiagonalValue(i);
 		}
 	}
 	
