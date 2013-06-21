@@ -60,6 +60,10 @@ public final class NDArray extends AbstractArray<INDArray> {
 		this.dimensions=dimensions;
 	}
 	
+	public static NDArray newArray(int... shape) {
+		return new NDArray(shape);
+	}
+	
 	@Override
 	public int dimensionality() {
 		return dimensions;

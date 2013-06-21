@@ -9,6 +9,7 @@ import us.bpsm.edn.parser.Parseable;
 import us.bpsm.edn.parser.Parser;
 import us.bpsm.edn.parser.Parsers;
 
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
@@ -58,11 +59,22 @@ public class Arrayz {
 		throw new VectorzException("Don't know how to create array from: "+object.getClass());
 	}
 	
-	public static INDArray create(Object... os) {
-		int n=os.length;
+	public static INDArray newArray(int... shape) {
+		int dims=shape.length;
+		
+		switch (dims) {
+			case 0: return DoubleScalar.create(0.0);
+			case 1: return Vector.createLength(shape[0]);
+			case 2: return Matrix.create(shape[0], shape[1]);
+			default: return NDArray.newArray(shape);
+		}
+	}
+	
+	public static INDArray create(Object... data) {
+		int n=data.length;
 		INDArray[] as=new INDArray[n];
 		for (int i=0; i<n; i++) {
-			as[i]=create((Object)os);
+			as[i]=create((Object)data);
 		}
 		return SliceArray.create(as);
 	}
