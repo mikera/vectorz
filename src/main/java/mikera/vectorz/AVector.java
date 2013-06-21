@@ -663,6 +663,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		fill(a);
 	}
 	
+	public void set(double[] data) {
+		setElements(data,0,length());
+	}
+	
 	public void set(INDArray a) {
 		if (a instanceof AVector) {set((AVector)a); return;}
 		if (a.dimensionality()==1) {

@@ -19,6 +19,7 @@ import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.ArrayVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
@@ -230,6 +231,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	@Override
 	public void transformInPlace(AVector v) {
+		if (v instanceof ArrayVector) {
+			transformInPlace((ArrayVector)v);
+			return;
+		}
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();
@@ -245,6 +250,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		v.set(temp);
 	}
+	
+	public void transformInPlace(ArrayVector v) {
+		double[] temp = new double[v.length()];
+		int rc = rowCount();
+		int cc = columnCount();
+		if (rc != cc)
+			throw new UnsupportedOperationException(
+					"Cannot transform in place with a non-square transformation");
+		double[] data=v.getArray();
+		int offset=v.getArrayOffset();
+		for (int row = 0; row < rc; row++) {
+			double total = 0.0;
+			for (int column = 0; column < cc; column++) {
+				total += get(row, column) * data[offset+column];
+			}
+			temp[row] = total;
+		}
+		v.set(temp);
+	}
+
 
 	@SuppressWarnings("serial")
 	private class MatrixRow extends MatrixSubVector {
