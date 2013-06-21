@@ -34,7 +34,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AMatrix extends ALinearTransform implements IMatrix, Iterable<AVector>, INDArray {
+public abstract class AMatrix extends ALinearTransform implements IMatrix, Iterable<AVector> {
 	// ==============================================
 	// Abstract interface
 
