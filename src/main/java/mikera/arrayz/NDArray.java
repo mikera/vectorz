@@ -74,6 +74,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		return stride[dim];
 	}
 	
+	@Override
 	public int getShape(int dim) {
 		return shape[dim];
 	}
