@@ -69,6 +69,15 @@ public final class BitVector extends AVector {
 		}
 		return result;
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		long result=0;
+		for (int i=0; i<data.length; i++) {
+			result+=Long.bitCount(data[i]);
+		}
+		return result;
+	}
 
 	@Override
 	public boolean isMutable() {

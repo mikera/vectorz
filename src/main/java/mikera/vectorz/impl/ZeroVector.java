@@ -2,14 +2,14 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.randomz.Hash;
-import mikera.vectorz.APrimitiveVector;
+import mikera.vectorz.AVector;
 
 /**
  * Specialised vector containing nothing but zeros.
  * 
  * @author Mike
  */
-public final class ZeroVector extends APrimitiveVector implements ISparse {
+public final class ZeroVector extends AVector implements ISparse {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
 	private int length;
