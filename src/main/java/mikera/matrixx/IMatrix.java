@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import mikera.arrayz.INDArray;
+
 /**
  * Interface for fundamental matrix access operations.
  * 
@@ -9,7 +11,7 @@ package mikera.matrixx;
  * @author Mike
  *
  */
-public interface IMatrix {
+public interface IMatrix extends INDArray {
 	
 	public abstract int rowCount();
 

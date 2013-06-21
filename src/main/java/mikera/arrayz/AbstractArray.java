@@ -27,6 +27,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return get(new int[] {x,y});
 	}
 	
+	@Override
+	public int getShape(int dim) {
+		return getShape()[dim];
+	}
+	
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AScalar) {
 			INDArray c=clone();
@@ -132,7 +137,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int length=sliceCount();
 		sb.append('[');
 		if (length>0) {
-			sb.append(get(0));
+			sb.append(slice(0).toString());
 			for (int i = 1; i < length; i++) {
 				sb.append(',');
 				sb.append(slice(i).toString());
@@ -169,6 +174,17 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			throw new VectorzException("Cannot add array of greater dimensionality");
 		}
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		long result=0;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			result+=slice(i).nonZeroCount();
+		}
+		return result;
+	}
+
 
 	@Override
 	public void sub(INDArray a) {
@@ -207,7 +223,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			offset+=s.elementCount();
 		}
 	}
-
+	
+	@Override
+	public void copyTo(double[] arr) {
+		getElements(arr,0);
+	}
 	
 	@Override
 	public INDArray broadcast(int... targetShape) {

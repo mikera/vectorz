@@ -10,11 +10,10 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public class TransposedMatrix extends AMatrix {
-	private final AMatrix source;
+public class TransposedMatrix extends DelegatedMatrix {
 	
 	private TransposedMatrix(AMatrix source) {
-		this.source=source;
+		super(source);
 	}
 	
 	public static AMatrix wrap(AMatrix m) {
@@ -47,13 +46,13 @@ public class TransposedMatrix extends AMatrix {
 	}
 	
 	@Override
-	public boolean isView() {
-		return true;
+	public AVector slice (int rowNumber) {
+		return source.getColumn(rowNumber);
 	}
 	
 	@Override
-	public AVector getLeadingDiagonal() {
-		return source.getLeadingDiagonal();
+	public int sliceCount() {
+		return source.columnCount();
 	}
 	
 	@Override

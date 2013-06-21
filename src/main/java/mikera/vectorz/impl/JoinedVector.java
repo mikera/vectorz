@@ -278,6 +278,11 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return left.nonZeroCount()+right.nonZeroCount();
+	}
+	
+	@Override
 	public double get(int i) {
 		if (i<split) {
 			return left.get(i);

@@ -64,6 +64,11 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	@Override
+	public int getShape(int dim) {
+		return shape[dim];
+	}	
+	
+	@Override
 	public long[] getLongShape() {
 	 	return longShape;
 	}

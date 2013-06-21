@@ -8,12 +8,12 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public class ScalarVector extends AVector {
+public class WrappedScalarVector extends AVector {
 	private static final long serialVersionUID = 1912695454407729415L;
 	
 	public final AScalar scalar;
 	
-	public ScalarVector(AScalar s) {
+	public WrappedScalarVector(AScalar s) {
 		this.scalar=s;
 	}
 
@@ -35,7 +35,7 @@ public class ScalarVector extends AVector {
 	}
 	
 	@Override
-	public ScalarVector exactClone() {
-		return new ScalarVector(scalar.exactClone());
+	public WrappedScalarVector exactClone() {
+		return new WrappedScalarVector(scalar.exactClone());
 	}
 }

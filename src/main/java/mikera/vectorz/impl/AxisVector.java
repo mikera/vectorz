@@ -56,6 +56,11 @@ public class AxisVector extends ComputedVector implements ISparse {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return 1;
+	}
+	
+	@Override
 	public boolean isMutable() {
 		return false; // i.e. immutable
 	}
@@ -64,7 +69,6 @@ public class AxisVector extends ComputedVector implements ISparse {
 	public boolean isZeroVector() {
 		return false;
 	}
-
 	
 	@Override
 	public boolean isUnitLengthVector() {

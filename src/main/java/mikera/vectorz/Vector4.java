@@ -70,11 +70,52 @@ public final class Vector4 extends APrimitiveVector {
 		this.t=a.t;
 	}
 	
+	@Override
+	public void negate() {
+		x=-x;
+		y=-y;
+		z=-z;
+		t=-t;
+	}
+	
 	public void addMultiple(double dx, double dy, double dz, double dt, double factor) {
 		x+=dx*factor;
 		y+=dy*factor;
 		z+=dz*factor;
 		t+=dt*factor;
+	}
+	
+	@Override
+	public void addMultiple(AVector v, double factor) {
+		if (v instanceof Vector4) {
+			addMultiple((Vector4)v,factor);
+		} else {
+			x+=v.get(0)*factor;
+			y+=v.get(1)*factor;
+			z+=v.get(2)*factor;
+			t+=v.get(3)*factor;
+		}
+	}
+	
+	public void addMultiple(Vector4 v, double factor) {
+		x+=v.x*factor;
+		y+=v.y*factor;
+		z+=v.z*factor;
+		t+=v.t*factor;
+	}
+	
+	public void addProduct(Vector4 a, Vector4 b) {
+		x+=a.x*b.x;
+		y+=a.y*b.y;
+		z+=a.z*b.z;
+		t+=a.t*b.t;
+	}
+	
+	public void addProduct(Vector4 a, Vector4 b, double factor) {
+		x+=a.x*b.x*factor;
+		y+=a.y*b.y*factor;
+		z+=a.z*b.z*factor;
+		t+=a.t*b.t*factor;
 	}
 	
 	public double dotProduct(Vector4 a) {
@@ -114,11 +155,30 @@ public final class Vector4 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public void addAt(int i, double value) {
+		switch (i) {
+		case 0: x+=value; return;
+		case 1: y+=value; return;
+		case 2: z+=value; return;
+		case 3: t+=value; return;
+		default: throw new IndexOutOfBoundsException("Index: i");
+		}
+	}
+	
 	public void setValues(double x, double y, double z, double t) {
 		this.x=x;
 		this.y=y;
 		this.z=z;
 		this.t=t;
+	}
+	
+	@Override
+	public void copyTo(double[] data, int offset) {
+		data[offset]=x;
+		data[offset+1]=y;
+		data[offset+2]=z;
+		data[offset+3]=t;
 	}
 	
 	@Override

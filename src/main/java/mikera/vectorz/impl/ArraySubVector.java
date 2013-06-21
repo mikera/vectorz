@@ -21,8 +21,12 @@ public final class ArraySubVector extends ArrayVector {
 	private final int offset;
 	private final int length;
 
-	public ArraySubVector(double[] values) {
-		this(values.clone(),0,values.length);
+	public static ArraySubVector wrap(double[] values) {
+		return new ArraySubVector(values);
+	}
+	
+	private ArraySubVector(double[] values) {
+		this(values,0,values.length);
 	}
 	
 	private ArraySubVector(double[] data, int offset, int length) {
@@ -95,6 +99,7 @@ public final class ArraySubVector extends ArrayVector {
 		data[offset + i] = value;
 	}
 
+	@Override
 	public void add(ArrayVector v) {
 		int vlength=v.length();
 		if (vlength != length) {
@@ -121,21 +126,6 @@ public final class ArraySubVector extends ArrayVector {
 	public void addAt(int i, double v) {
 		assert((i>=0)&&(i<length));
 		data[i+offset]+=v;
-	}
-	 
-	@Override
-	public void fill(double value) {
-		for (int i = 0; i < length; i++) {
-			data[offset + i] = value;
-		}
-	}
-	
-	@Override
-	public void multiply(double factor) {
-		int len=length();
-		for (int i = 0; i < len; i++) {
-			data[i+offset]*=factor;
-		}	
 	}
 
 	/**

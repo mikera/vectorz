@@ -50,10 +50,26 @@ public final class Vector2 extends APrimitiveVector {
 		y+=v.y*factor;
 	}
 	
+	public void addProduct(Vector2 a, Vector2 b) {
+		x+=a.x*b.x;
+		y+=a.y*b.y;
+	}
+	
+	public void addProduct(Vector2 a, Vector2 b, double factor) {
+		x+=a.x*b.x*factor;
+		y+=a.y*b.y*factor;
+	}
+	
 	@Override
 	public void scaleAdd(double factor, double constant) {
 		x=(x*factor)+constant;
 		y=(y*factor)+constant;
+	}
+	
+	@Override
+	public void negate() {
+		x=-x;
+		y=-y;
 	}
 
 	@Override
@@ -102,6 +118,12 @@ public final class Vector2 extends APrimitiveVector {
 			default: throw new IndexOutOfBoundsException("Index: i");
 		}
 	}
+	
+	@Override
+	public void copyTo(double[] data, int offset) {
+		data[offset]=x;
+		data[offset+1]=y;
+	}
 
 	@Override
 	public void set(int i, double value) {
@@ -109,6 +131,15 @@ public final class Vector2 extends APrimitiveVector {
 			case 0: x=value; return;
 			case 1: y=value; return;
 			default: throw new IndexOutOfBoundsException("Index: i");
+		}
+	}
+	
+	@Override
+	public void addAt(int i, double value) {
+		switch (i) {
+		case 0: x+=value; return;
+		case 1: y+=value; return;
+		default: throw new IndexOutOfBoundsException("Index: i");
 		}
 	}
 	

@@ -495,8 +495,8 @@ public class TestMatrixx {
 		mmn=new VectorMatrixMN(2,2);
 		doGenericTests(mmn);
 		
-		// 0x0 matrix should work
-		mmn=new VectorMatrixMN(0 ,0);
+		// 1x0 matrix should work
+		mmn=new VectorMatrixMN(1 ,0);
 		doGenericTests(mmn);
 
 		// square M*M matrix
@@ -513,7 +513,7 @@ public class TestMatrixx {
 		doGenericTests(SubsetMatrix.create(Index.of(0,1,3,10),12));
 		doGenericTests(SubsetMatrix.create(Index.of(0,3,2,1),4));
 		
-		doGenericTests(ScalarMatrix.create(0,3.0));
+		doGenericTests(ScalarMatrix.create(1,3.0));
 		doGenericTests(ScalarMatrix.create(3,3.0));
 		doGenericTests(ScalarMatrix.create(5,0));
 		

@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.ArrayVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 
 /**
@@ -16,6 +17,16 @@ public class ScalarMatrix extends ADiagonalMatrix {
 		super(dimensions);
 		this.scale=scale;
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		return (scale==0.0)?0:dimensions;
+	}	
+
+	@Override
+	public double elementSum() {
+		return scale*dimensions;
+	}	
 	
 	
 	@Override
@@ -49,9 +60,12 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public void transformInPlace(AVector v) {
-		for (int i=0; i<dimensions; i++) {
-			v.scale(scale);
-		}
+		v.multiply(scale);
+	}
+	
+	@Override
+	public void transformInPlace(ArrayVector v) {
+		v.multiply(scale);
 	}
 
 	@Override

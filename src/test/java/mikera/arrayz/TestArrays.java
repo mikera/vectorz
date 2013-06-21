@@ -1,11 +1,13 @@
 package mikera.arrayz;
 
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Constant;
+import mikera.vectorz.util.DoubleArrays;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -20,6 +22,10 @@ public class TestArrays {
 	private void testShape(INDArray a) {
 		AVector v=a.asVector();
 		int[] shape=a.getShape();
+		
+		for (int i=0; i<a.dimensionality(); i++) {
+			assertEquals(shape[i],a.getShape(i));
+		}
 		
 		long[] longShape=a.getLongShape();
 		for (int i=0; i<shape.length; i++) {
@@ -73,10 +79,17 @@ public class TestArrays {
 		}
 	}
 	
+	private void testToArray(INDArray a) {
+		double[] arr=new double[(int)a.elementCount()];
+		a.copyTo(arr);
+		assertEquals(a.nonZeroCount(),DoubleArrays.nonZeroCount(arr, 0, arr.length));
+	}
+	
 	private void testClone(INDArray a) {
 		INDArray c=a.clone();
 		assertTrue(c.equals(a));
 		assertTrue(a.equals(c));
+		assertEquals(a.hashCode(), c.hashCode());
 		
 		if (c==a) {
 			// can only return same object if immutable
@@ -145,6 +158,11 @@ public class TestArrays {
 		assertEquals(a.asVector().hashCode(),a.hashCode());
 	}
 	
+	private void testParserRoundTrip(INDArray a) {
+		String s=a.toString();
+		assertEquals(a,Arrayz.load(new StringReader(s)));
+	}
+	
 	private void testBroadcast(INDArray a) {
 		int dims=a.dimensionality();
 		int[] ts=new int[dims+2];
@@ -165,6 +183,7 @@ public class TestArrays {
 	public void testArray(INDArray a) {
 		a.validate();
 		testAsVector(a);
+		testToArray(a);
 		testApplyOp(a);
 		testSetElements(a);
 		testGetElements(a);
@@ -174,6 +193,7 @@ public class TestArrays {
 		testClone(a);
 		testMutability(a);
 		testSlices(a);
+		testParserRoundTrip(a);
 	}
 
 	@Test

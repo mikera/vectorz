@@ -94,6 +94,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public int getShape(int dim) {
+		if (dim==0) {
+			return length();
+		} else {
+			throw new IndexOutOfBoundsException("Vector does not have dimension: "+dim);
+		}
+	}
+
+	
+	@Override
 	public long[] getLongShape() {
 		return new long[] {length()};
 	}
@@ -101,6 +111,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public long elementCount() {
 		return length();
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		int n=length();
+		long result=0;
+		for (int i=0; i<n; i++) {
+			if (get(i)!=0.0) result++;
+		}
+		return result;
 	}
 	
 	/**
@@ -202,6 +222,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return hashCode;
 	}
 
+	@Override
+	public void copyTo(double[] arr) {
+		copyTo(arr,0);
+	}
+	
 	/**
 	 * Copies a the contents of a vector to a double array at the specified offset
 	 */
@@ -380,6 +405,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Squares all elements of the vector
+	 */
 	public void square() {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -603,6 +631,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Math.acos(dotProduct(v)/(v.magnitude()*this.magnitude()));
 	}
 	
+	/**
+	 * Normalises this vector to a magnitude of 1.0
+	 * 
+	 * Has no effect on a zero-length vector (i.e. it will remain zero)
+	 * 
+	 * @return
+	 */
 	public double normalise() {
 		double d=magnitude();
 		if (d>0) multiply(1.0/d);
@@ -626,6 +661,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void set(double a) {
 		fill(a);
+	}
+	
+	public void set(double[] data) {
+		setElements(data,0,length());
 	}
 	
 	public void set(INDArray a) {
@@ -1013,6 +1052,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		for (int i=0; i<len ; i++) {
 			set(i, v.get(indexes.get(i)));
 		}
+	}
+	
+	public void addToArray(double[] array, int offset) {
+		addToArray(0,array,offset,length());
 	}
 
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {

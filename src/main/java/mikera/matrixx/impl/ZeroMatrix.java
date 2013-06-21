@@ -93,6 +93,17 @@ public final class ZeroMatrix extends AMatrix {
 		return true;
 	}
 	
+
+	@Override
+	public double elementSum() {
+		return 0.0;
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		return 0;
+	}
+	
 	@Override 
 	public int hashCode() {
 		return Hash.zeroVectorHash(inputDimensions*outputDimensions);

@@ -2,13 +2,13 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 
-public class StridedArrayVector extends AVector {
+public final class StridedArrayVector extends AVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
-	private double[] data;
-	private int length;
-	private int offset;
-	private int stride;
+	private final double[] data;
+	private final int length;
+	private final int offset;
+	private final int stride;
 	
 	private StridedArrayVector(double[] data, int offset, int length, int stride) {
 		this.data=data;

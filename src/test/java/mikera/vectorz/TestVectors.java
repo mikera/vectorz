@@ -113,7 +113,7 @@ public class TestVectors {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
 		
-		ArraySubVector v=new ArraySubVector(data);
+		ArraySubVector v=ArraySubVector.wrap(data);
 		assertEquals(10,v.get(10),0.0);
 		assertTrue(v.isView());
 		
@@ -141,7 +141,7 @@ public class TestVectors {
 	@Test public void testSubVectorCopy() {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) data[i]=i;
-		ArraySubVector v=new ArraySubVector(data);	
+		ArraySubVector v=ArraySubVector.wrap(data);	
 		
 		assertEquals(Arrays.hashCode(data),v.hashCode());
 		
@@ -184,6 +184,11 @@ public class TestVectors {
 		if (len>0) {
 			assertEquals(ds[0],v.get(0),0.0);
 		}
+		
+		double[] ds2=new double[len];
+		v.addToArray(ds2, 0);
+		assertEquals(v,Vector.wrap(ds2));
+
 	}
 	
 	private void testAddProduct(AVector v) {
@@ -693,12 +698,12 @@ public class TestVectors {
 			indexes[i]=i;
 		}
 
-		doGenericTests(new ArraySubVector(data));
+		doGenericTests(ArraySubVector.wrap(data));
 		doGenericTests(IndexedArrayVector.wrap(data,indexes));
 		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
 		
 		doGenericTests(new Vector(data).subVector(25, 50));
-		doGenericTests(new ArraySubVector(data).subVector(25, 50));
+		doGenericTests(ArraySubVector.wrap(data).subVector(25, 50));
 		
 		AVector v3 = new Vector3(1.0,2.0,3.0);
 		doGenericTests(v3.subVector(1, 2));
@@ -709,6 +714,7 @@ public class TestVectors {
 		
 		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
 		doGenericTests(v4);
+		doGenericTests(v4.subVector(1, 2));
 		
 		AVector g0=new GrowableVector();
 		doGenericTests(g0);
@@ -723,11 +729,13 @@ public class TestVectors {
 		doGenericTests(m1.asVector());
 		doGenericTests(m1.getRow(4));
 		doGenericTests(m1.getColumn(1));
+		doGenericTests(m1.getLeadingDiagonal());
 		
 		AMatrix m2=Matrixx.createRandomSquareMatrix(3);
 		doGenericTests(m2.asVector());
 		doGenericTests(m2.getRow(1));
 		doGenericTests(m2.getColumn(1));
+		doGenericTests(m2.getLeadingDiagonal());
 
 		AMatrix m3=Matrixx.createRandomMatrix(4,5);
 		doGenericTests(m3.asVector());
@@ -743,6 +751,7 @@ public class TestVectors {
 
 		doGenericTests(new RepeatedElementVector(1,1.0));
 		doGenericTests(new RepeatedElementVector(10,1.0));
+		doGenericTests(new RepeatedElementVector(4,0.0));
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
@@ -755,6 +764,7 @@ public class TestVectors {
 		doGenericTests(jav1);
 		doGenericTests(jav2);
 		doGenericTests(jav2.join(jav1));
+		doGenericTests(jav2.join(jav1).subVector(2, 5));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
 		
 		doGenericTests(StridedArrayVector.wrap(new double[]{}, 0, 0, 100));

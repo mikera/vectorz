@@ -19,6 +19,7 @@ import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.ArrayVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
@@ -33,7 +34,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AMatrix extends ALinearTransform implements IMatrix, Iterable<AVector>, INDArray {
+public abstract class AMatrix extends ALinearTransform implements IMatrix, Iterable<AVector> {
 	// ==============================================
 	// Abstract interface
 
@@ -123,6 +124,17 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public int[] getShape() {
 		return new int[] {rowCount(),columnCount()};
 	}
+	
+	@Override
+	public int getShape(int dim) {
+		if (dim==0) {
+			return rowCount();
+		} else if (dim==1) {
+			return columnCount();
+		} else {
+			throw new IndexOutOfBoundsException("Matrix does not have dimension: "+dim);
+		}
+	}	
 	
 	@Override
 	public long[] getLongShape() {
@@ -219,6 +231,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	@Override
 	public void transformInPlace(AVector v) {
+		if (v instanceof ArrayVector) {
+			transformInPlace((ArrayVector)v);
+			return;
+		}
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();
@@ -234,6 +250,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		v.set(temp);
 	}
+	
+	public void transformInPlace(ArrayVector v) {
+		double[] temp = new double[v.length()];
+		int rc = rowCount();
+		int cc = columnCount();
+		if (rc != cc)
+			throw new UnsupportedOperationException(
+					"Cannot transform in place with a non-square transformation");
+		double[] data=v.getArray();
+		int offset=v.getArrayOffset();
+		for (int row = 0; row < rc; row++) {
+			double total = 0.0;
+			for (int column = 0; column < cc; column++) {
+				total += get(row, column) * data[offset+column];
+			}
+			temp[row] = total;
+		}
+		v.set(temp);
+	}
+
 
 	@SuppressWarnings("serial")
 	private class MatrixRow extends MatrixSubVector {
@@ -378,6 +414,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public void getElements(double[] dest, int offset) {
 		asVector().getElements(dest, offset);
+	}
+	
+	@Override
+	public void copyTo(double[] arr) {
+		getElements(arr,0);
 	}
 	
 	@Override
@@ -551,6 +592,20 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 		return result;
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		long result=0;
+		int rc=rowCount();
+		int cc=columnCount();
+		
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				if (get(i,j)!=0.0) result++;
+			}
+		}
+		return result;	
 	}
 	
 	/**

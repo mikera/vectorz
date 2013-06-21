@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.ArrayVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 
 /**
@@ -64,6 +65,16 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public void transformInPlace(AVector v) {
+		// nothing to do
+	}
+	
+	@Override
+	public void transformInPlace(ArrayVector v) {
+		// nothing to do
+	}
+	
+	@Override
 	public AVector getLeadingDiagonal() {
 		return RepeatedElementVector.create(dimensions, 1.0);
 	}
@@ -82,6 +93,16 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	public double determinant() {
 		return 1.0;
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		return dimensions;
+	}	
+
+	@Override
+	public double elementSum() {
+		return dimensions;
+	}	
 	
 	@Override
 	public double trace() {

@@ -46,6 +46,16 @@ public final class RepeatedElementVector extends AVector {
 	}
 	
 	@Override
+	public double elementSum() {
+		return dimensions*value;
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		return (value==0)?0:dimensions;
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		value*=factor;
 	}

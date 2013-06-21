@@ -138,6 +138,18 @@ public final class Vector3 extends APrimitiveVector {
 		z+=v.z*factor;
 	}
 	
+	public void addProduct(Vector3 a, Vector3 b) {
+		x+=a.x*b.x;
+		y+=a.y*b.y;
+		z+=a.z*b.z;
+	}
+	
+	public void addProduct(Vector3 a, Vector3 b, double factor) {
+		x+=a.x*b.x*factor;
+		y+=a.y*b.y*factor;
+		z+=a.z*b.z*factor;
+	}
+	
 	public void subtractMultiple(Vector3 v, double factor) {
 		x-=v.x*factor;
 		y-=v.y*factor;
@@ -265,10 +277,34 @@ public final class Vector3 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public void addAt(int i, double value) {
+		switch (i) {
+		case 0: x+=value; return;
+		case 1: y+=value; return;
+		case 2: z+=value; return;
+		default: throw new IndexOutOfBoundsException("Index: i");
+		}
+	}
+	
 	public void setValues(double x, double y, double z) {
 		this.x=x;
 		this.y=y;
 		this.z=z;
+	}
+	
+	@Override
+	public void negate() {
+		x=-x;
+		y=-y;
+		z=-z;
+	}
+	
+	@Override
+	public void copyTo(double[] data, int offset) {
+		data[offset]=x;
+		data[offset+1]=y;
+		data[offset+2]=z;
 	}
 	
 	@Override

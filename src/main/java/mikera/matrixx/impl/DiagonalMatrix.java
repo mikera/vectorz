@@ -2,8 +2,10 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Specialised diagonal matrix class
@@ -47,6 +49,16 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		}
 		return result;
 	}
+	
+	@Override
+	public double elementSum() {
+		return DoubleArrays.elementSum(data, 0, dimensions);
+	}	
+	
+	@Override
+	public long nonZeroCount() {
+		return DoubleArrays.nonZeroCount(data, 0, dimensions);
+	}	
 
 	@Override
 	public double get(int row, int column) {
@@ -82,10 +94,21 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 
 	@Override
 	public void transformInPlace(AVector v) {
+		if (v instanceof ArrayVector) {
+			transformInPlace((ArrayVector) v);
+			return;
+		}
 		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong length vector: "+v.length());
 		for (int i=0; i<dimensions; i++) {
 			v.set(i,v.get(i)*data[i]);
 		}
+	}
+	
+	@Override
+	public void transformInPlace(ArrayVector v) {
+		double[] dest=v.getArray();
+		int offset=v.getArrayOffset();
+		DoubleArrays.arraymultiply(data, 0, dest, offset, dimensions);
 	}
 	
 	@Override 

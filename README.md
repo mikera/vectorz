@@ -7,6 +7,8 @@ where fast vector maths is important.
 
 Vectorz can do over *1 billion* 3D vector operations per second on a single thread.
 
+Vectorz is reasonably mature and suitable for use in production applications.
+
 [![Build Status](https://secure.travis-ci.org/mikera/vectorz.png)](http://travis-ci.org/mikera/vectorz)
 
 ### Example usage
@@ -26,12 +28,13 @@ Vectorz can do over *1 billion* 3D vector operations per second on a single thre
 
  - Supports double vectors of arbitrary size
  - Vector values are mutable
- - Support for any size matrices
+ - Support for any size matrices, including higher dimensional (NDArray) matrices
  - Support for affine transformations
  - Ability to create lightweight "reference" vectors (e.g. to access subranges of other vectors)
  - Library of useful mathematical functions on vectors
  - Vectors have lots of utility functionality implemented - Cloneable, Serializable, Comparable etc.
- - Input / output of vectors and matrices in edn format
+ - Composable custom operators that can be applied to array elements
+ - Input / output of vectors and matrices in readable edn format
 
 Vectorz is deigned to allow the maximum performance possible for vector / matrix maths on the JVM.
 

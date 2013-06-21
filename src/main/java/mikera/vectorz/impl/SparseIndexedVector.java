@@ -201,6 +201,14 @@ public class SparseIndexedVector extends ASparseVector {
 		return result;
 	}
 	
+	@Override
+	public long nonZeroCount() {
+		long result=0;
+		for (int i=0; i<data.length; i++) {
+			if (data[i]!=0.0) result++;
+		}
+		return result;
+	}
 	
 	@Override
 	public double dotProduct(AVector v) {

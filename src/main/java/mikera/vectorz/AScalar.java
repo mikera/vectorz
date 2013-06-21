@@ -7,7 +7,7 @@ import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.RepeatedElementVector;
-import mikera.vectorz.impl.ScalarVector;
+import mikera.vectorz.impl.WrappedScalarVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -17,7 +17,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar extends AbstractArray<Object> {
+public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	private static final int[] SCALAR_SHAPE=new int[0];
 	private static final long[] SCALAR_LONG_SHAPE=new long[0];
@@ -147,6 +147,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public int getShape(int dim) {
+		throw new IndexOutOfBoundsException("Scalar does not have dimension: "+dim);
+	}
+	
+	@Override
 	public long[] getLongShape() {
 	 	return SCALAR_LONG_SHAPE;
 	}
@@ -157,8 +162,18 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return (get()==0)?0:1;
+	}
+	
+	@Override
+	public void copyTo(double[] arr) {
+		arr[0]=get();
+	}
+	
+	@Override
 	public AVector asVector() {
-		return new ScalarVector(this);
+		return new WrappedScalarVector(this);
 	}
 	
 	@Override
