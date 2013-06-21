@@ -48,6 +48,11 @@ public final class SubsetMatrix extends AMatrix implements ISparse {
 	public double elementSum() {
 		return rowCount();
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		return rowCount();
+	}
 
 	@Override
 	public int rowCount() {
