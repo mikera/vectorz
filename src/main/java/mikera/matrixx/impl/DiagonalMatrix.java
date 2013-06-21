@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Specialised diagonal matrix class
@@ -47,6 +48,16 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		}
 		return result;
 	}
+	
+	@Override
+	public double elementSum() {
+		return DoubleArrays.elementSum(data, 0, dimensions);
+	}	
+	
+	@Override
+	public long nonZeroCount() {
+		return DoubleArrays.nonZeroCount(data, 0, dimensions);
+	}	
 
 	@Override
 	public double get(int row, int column) {

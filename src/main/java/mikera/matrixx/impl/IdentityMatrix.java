@@ -84,6 +84,16 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return dimensions;
+	}	
+
+	@Override
+	public double elementSum() {
+		return dimensions;
+	}	
+	
+	@Override
 	public double trace() {
 		return dimensions;
 	}

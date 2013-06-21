@@ -76,6 +76,16 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		int rc=rowCount();
+		long result=0;
+		for (int i=0; i<rc; i++) {
+			result+=getRow(i).nonZeroCount();
+		}
+		return result;
+	}	
+	
+	@Override
 	public AVectorMatrix<?> clone() {
 		AVectorMatrix<?> avm=(AVectorMatrix<?>) super.clone();
 		return avm;

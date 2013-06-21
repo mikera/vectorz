@@ -17,6 +17,16 @@ public class ScalarMatrix extends ADiagonalMatrix {
 		this.scale=scale;
 	}
 	
+	@Override
+	public long nonZeroCount() {
+		return (scale==0.0)?0:dimensions;
+	}	
+
+	@Override
+	public double elementSum() {
+		return scale*dimensions;
+	}	
+	
 	
 	@Override
 	public boolean isMutable() {
