@@ -7,7 +7,7 @@ import java.util.Iterator;
  * 
  * @author Mike
  */
-public class VectorIterator implements Iterator<Double> {
+public final class VectorIterator implements Iterator<Double> {
 	private final AVector source;
 	private final int maxPos;
 	private int pos;
