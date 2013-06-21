@@ -7,7 +7,7 @@ import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.RepeatedElementVector;
-import mikera.vectorz.impl.ScalarVector;
+import mikera.vectorz.impl.WrappedScalarVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -173,7 +173,7 @@ public abstract class AScalar extends AbstractArray<Object> {
 	
 	@Override
 	public AVector asVector() {
-		return new ScalarVector(this);
+		return new WrappedScalarVector(this);
 	}
 	
 	@Override
