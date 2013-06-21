@@ -65,6 +65,12 @@ public final class Vector2 extends APrimitiveVector {
 		x=(x*factor)+constant;
 		y=(y*factor)+constant;
 	}
+	
+	@Override
+	public void negate() {
+		x=-x;
+		y=-y;
+	}
 
 	@Override
 	public void add(double constant) {

@@ -294,6 +294,13 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void negate() {
+		x=-x;
+		y=-y;
+		z=-z;
+	}
+	
+	@Override
 	public void copyTo(double[] data, int offset) {
 		data[offset]=x;
 		data[offset+1]=y;

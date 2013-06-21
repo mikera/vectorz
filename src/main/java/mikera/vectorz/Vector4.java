@@ -70,6 +70,14 @@ public final class Vector4 extends APrimitiveVector {
 		this.t=a.t;
 	}
 	
+	@Override
+	public void negate() {
+		x=-x;
+		y=-y;
+		z=-z;
+		t=-t;
+	}
+	
 	public void addMultiple(double dx, double dy, double dz, double dt, double factor) {
 		x+=dx*factor;
 		y+=dy*factor;

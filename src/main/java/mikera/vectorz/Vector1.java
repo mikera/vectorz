@@ -81,6 +81,11 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void negate() {
+		x=-x;
+	}
+	
+	@Override
 	public Vector1 clone() {
 		return new Vector1(x);	
 	}
