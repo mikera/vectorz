@@ -52,6 +52,14 @@ public final class NDArray extends AbstractArray<INDArray> {
 		this.dimensions=shape.length;
 	}
 	
+	public NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
+		this.data=data;
+		this.offset=offset;
+		this.shape=shape;
+		this.stride=stride;
+		this.dimensions=dimensions;
+	}
+	
 	@Override
 	public int dimensionality() {
 		return dimensions;
