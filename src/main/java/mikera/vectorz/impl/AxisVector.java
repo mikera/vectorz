@@ -69,7 +69,6 @@ public class AxisVector extends ComputedVector implements ISparse {
 	public boolean isZeroVector() {
 		return false;
 	}
-
 	
 	@Override
 	public boolean isUnitLengthVector() {
