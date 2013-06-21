@@ -77,6 +77,25 @@ public final class Vector4 extends APrimitiveVector {
 		t+=dt*factor;
 	}
 	
+	@Override
+	public void addMultiple(AVector v, double factor) {
+		if (v instanceof Vector4) {
+			addMultiple((Vector4)v,factor);
+		} else {
+			x+=v.get(0)*factor;
+			y+=v.get(1)*factor;
+			z+=v.get(2)*factor;
+			t+=v.get(3)*factor;
+		}
+	}
+	
+	public void addMultiple(Vector4 v, double factor) {
+		x+=v.x*factor;
+		y+=v.y*factor;
+		z+=v.z*factor;
+		t+=v.t*factor;
+	}
+	
 	public double dotProduct(Vector4 a) {
 		return (x*a.x)+(y*a.y)+(z*a.z)+(t*a.t);
 	}
