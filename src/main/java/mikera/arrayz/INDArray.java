@@ -12,6 +12,11 @@ import mikera.vectorz.Op;
  */
 public interface INDArray extends Cloneable {
 	
+	/**
+	 * Returns the dimensionality of the array (number of dimensions in the array shape)
+	 * e.g. 0 for a scalar, 1 for a vector, 2 for a matrix etc.
+	 * @return
+	 */
 	public int dimensionality();
 	
 	/**
@@ -19,6 +24,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public int[] getShape();
+	
+	/**
+	 * Returns the dimension size for a specific dimension in the array's shape
+	 * @param dim
+	 * @return
+	 */
 	public int getShape(int dim);
 	
 	/**
@@ -27,9 +38,28 @@ public interface INDArray extends Cloneable {
 	 */
 	public long[] getLongShape();
 	
+	/**
+	 * Returns the double value of a scalar array
+	 * @return
+	 */
 	public double get();
+	
+	/**
+	 * Returns the double value at the specified position in a 1D vector
+	 * @return
+	 */
 	public double get(int x);
+	
+	/**
+	 * Returns the double value at the specified position in a 2D matrix
+	 * @return
+	 */
 	public double get(int x, int y);
+	
+	/**
+	 * Returns the double value at the specified index position in an array
+	 * @return
+	 */
 	public double get(int... indexes);
 
 	public void set(double value);
@@ -43,6 +73,7 @@ public interface INDArray extends Cloneable {
 	public void sub(INDArray a);
 
 	public INDArray innerProduct(INDArray a);
+	
 	public INDArray outerProduct(INDArray a);
 	
 	/**
@@ -60,7 +91,16 @@ public interface INDArray extends Cloneable {
 	
 	public int sliceCount();
 	
+	/**
+	 * Returns the total number of elements in this array. Equivalent to the product all dimension sizes.
+	 * @return
+	 */
 	public long elementCount();
+	
+	/**
+	 * Returns the number of non-zero elements in the array.
+	 * @return
+	 */
 	public long nonZeroCount();
 	
 	/**
@@ -123,6 +163,10 @@ public interface INDArray extends Cloneable {
 	 * Sets all elements in an array using the given double values
 	 */
 	public void setElements(double[] values);
+	
+	/**
+	 * Sets all elements in an array using the given double values
+	 */
 	public void setElements(double[] values, int offset, int length);
 
 	/**
@@ -131,9 +175,22 @@ public interface INDArray extends Cloneable {
 	 */
 	public void getElements(double[] dest, int offset);
 	
+	/**
+	 * Scales all elements of the array by a given double value
+	 * @param d
+	 */
 	public void scale(double d);
+	
+	/**
+	 * Multiplies all elements of the array by a given double value
+	 * @param d
+	 */
 	public void multiply(double d);
 
+	/**
+	 * Returns a list of all major slices of this array.
+	 * @return
+	 */
 	public List<?> getSlices();
 	
 	/**
