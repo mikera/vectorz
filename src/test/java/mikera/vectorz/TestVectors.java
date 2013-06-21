@@ -748,6 +748,7 @@ public class TestVectors {
 
 		doGenericTests(new RepeatedElementVector(1,1.0));
 		doGenericTests(new RepeatedElementVector(10,1.0));
+		doGenericTests(new RepeatedElementVector(4,0.0));
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
