@@ -133,6 +133,17 @@ public final class Vector4 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public void addAt(int i, double value) {
+		switch (i) {
+		case 0: x+=value; return;
+		case 1: y+=value; return;
+		case 2: z+=value; return;
+		case 3: t+=value; return;
+		default: throw new IndexOutOfBoundsException("Index: i");
+		}
+	}
+	
 	public void setValues(double x, double y, double z, double t) {
 		this.x=x;
 		this.y=y;
