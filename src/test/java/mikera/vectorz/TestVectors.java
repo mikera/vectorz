@@ -714,6 +714,7 @@ public class TestVectors {
 		
 		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
 		doGenericTests(v4);
+		doGenericTests(v4.subVector(1, 2));
 		
 		AVector g0=new GrowableVector();
 		doGenericTests(g0);
@@ -728,11 +729,13 @@ public class TestVectors {
 		doGenericTests(m1.asVector());
 		doGenericTests(m1.getRow(4));
 		doGenericTests(m1.getColumn(1));
+		doGenericTests(m1.getLeadingDiagonal());
 		
 		AMatrix m2=Matrixx.createRandomSquareMatrix(3);
 		doGenericTests(m2.asVector());
 		doGenericTests(m2.getRow(1));
 		doGenericTests(m2.getColumn(1));
+		doGenericTests(m2.getLeadingDiagonal());
 
 		AMatrix m3=Matrixx.createRandomMatrix(4,5);
 		doGenericTests(m3.asVector());
@@ -761,6 +764,7 @@ public class TestVectors {
 		doGenericTests(jav1);
 		doGenericTests(jav2);
 		doGenericTests(jav2.join(jav1));
+		doGenericTests(jav2.join(jav1).subVector(2, 5));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
 		
 		doGenericTests(StridedArrayVector.wrap(new double[]{}, 0, 0, 100));
