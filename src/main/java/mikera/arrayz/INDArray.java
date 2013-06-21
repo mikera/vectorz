@@ -61,6 +61,7 @@ public interface INDArray extends Cloneable {
 	public int sliceCount();
 	
 	public long elementCount();
+	public long nonZeroCount();
 	
 	/**
 	 * Returns true if the INDArray is mutable (at least partially)

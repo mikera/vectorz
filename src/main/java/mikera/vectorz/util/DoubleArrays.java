@@ -8,6 +8,14 @@ public final class DoubleArrays {
 		}
 		return result;
 	}
+	
+	public static int nonZeroCount(double[] data, int offset, int length) {
+		int result = 0;
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=0.0) result++;
+		}
+		return result;
+	}
 
 	public static void multiply(double[] data, int offset, int length, double value) {
 		for (int i=0; i<length; i++) {
@@ -76,5 +84,7 @@ public final class DoubleArrays {
 			dest[destOffset+i]+=src[srcOffset+i];
 		}
 	}
+
+
 
 }

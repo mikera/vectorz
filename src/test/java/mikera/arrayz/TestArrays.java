@@ -82,6 +82,7 @@ public class TestArrays {
 		INDArray c=a.clone();
 		assertTrue(c.equals(a));
 		assertTrue(a.equals(c));
+		assertEquals(a.hashCode(), c.hashCode());
 		
 		if (c==a) {
 			// can only return same object if immutable

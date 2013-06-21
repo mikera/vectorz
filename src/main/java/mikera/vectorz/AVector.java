@@ -113,6 +113,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return length();
 	}
 	
+	@Override
+	public long nonZeroCount() {
+		int n=length();
+		long result=0;
+		for (int i=0; i<n; i++) {
+			if (get(i)!=0.0) result++;
+		}
+		return result;
+	}
+	
 	/**
 	 * Obtains a sub-vector that refers to this vector.
 	 * Changes to the sub-vector will be reflected in this vector

@@ -564,6 +564,20 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;
 	}
 	
+	@Override
+	public long nonZeroCount() {
+		long result=0;
+		int rc=rowCount();
+		int cc=columnCount();
+		
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				if (get(i,j)!=0.0) result++;
+			}
+		}
+		return result;	
+	}
+	
 	/**
 	 * Subtracts another matrix from this one
 	 * @param m

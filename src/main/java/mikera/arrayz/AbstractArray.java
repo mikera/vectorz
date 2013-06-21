@@ -174,6 +174,17 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			throw new VectorzException("Cannot add array of greater dimensionality");
 		}
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		long result=0;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			result+=slice(i).nonZeroCount();
+		}
+		return result;
+	}
+
 
 	@Override
 	public void sub(INDArray a) {

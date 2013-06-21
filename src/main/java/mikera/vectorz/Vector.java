@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.util.Arrays;
 
 import mikera.indexz.Index;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 
@@ -153,6 +154,11 @@ public final class Vector extends ArrayVector {
 		}
 		return result;
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		return DoubleArrays.nonZeroCount(data, 0, data.length);
+	}	
 	
 	@Override
 	public void signum() {

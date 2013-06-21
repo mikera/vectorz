@@ -51,6 +51,11 @@ public final class ZeroVector extends APrimitiveVector implements ISparse {
 	public double elementSum() {
 		return 0.0;
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		return 0;
+	}
 
 	@Override
 	public boolean isZeroVector() {

@@ -162,6 +162,11 @@ public abstract class AScalar extends AbstractArray<Object> {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return (get()==0)?0:1;
+	}
+	
+	@Override
 	public AVector asVector() {
 		return new ScalarVector(this);
 	}

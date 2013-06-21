@@ -269,24 +269,18 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public double elementSum() {
-		double result=0.0;
-		int offset=getArrayOffset();
-		int length=length();
-		double[] array=getArray();
-		for (int i=0; i<length; i++) {
-			result+=array[offset+i];
-		}
-		return result;
+		return DoubleArrays.elementSum(getArray(), getArrayOffset(), length());
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return DoubleArrays.nonZeroCount(getArray(), getArrayOffset(), length());
+	}	
+	
+	@Override
 	public void square() {
-		int len=length();
-		double[] data=getArray();
-		int offset=getArrayOffset();
-		DoubleArrays.square(data, offset, len);	
+		DoubleArrays.square(getArray(), getArrayOffset(), length());	
 	}
-
 	
 	@Override
 	public void multiply(AVector v) {

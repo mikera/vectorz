@@ -136,6 +136,15 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		long result=0;
+		for (int j=0; j<numArrays; j++) {
+			result+=DoubleArrays.nonZeroCount(data[j], offsets[j], subLength(j));
+		}
+		return result;
+	}
+	
+	@Override
 	public double dotProduct (AVector v) {
 		if (v instanceof ArrayVector) {
 			ArrayVector av=(ArrayVector)v;
