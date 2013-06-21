@@ -50,6 +50,16 @@ public final class Vector2 extends APrimitiveVector {
 		y+=v.y*factor;
 	}
 	
+	public void addProduct(Vector2 a, Vector2 b) {
+		x+=a.x*b.x;
+		y+=a.y*b.y;
+	}
+	
+	public void addProduct(Vector2 a, Vector2 b, double factor) {
+		x+=a.x*b.x*factor;
+		y+=a.y*b.y*factor;
+	}
+	
 	@Override
 	public void scaleAdd(double factor, double constant) {
 		x=(x*factor)+constant;

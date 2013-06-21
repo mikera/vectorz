@@ -138,6 +138,18 @@ public final class Vector3 extends APrimitiveVector {
 		z+=v.z*factor;
 	}
 	
+	public void addProduct(Vector3 a, Vector3 b) {
+		x+=a.x*b.x;
+		y+=a.y*b.y;
+		z+=a.z*b.z;
+	}
+	
+	public void addProduct(Vector3 a, Vector3 b, double factor) {
+		x+=a.x*b.x*factor;
+		y+=a.y*b.y*factor;
+		z+=a.z*b.z*factor;
+	}
+	
 	public void subtractMultiple(Vector3 v, double factor) {
 		x-=v.x*factor;
 		y-=v.y*factor;

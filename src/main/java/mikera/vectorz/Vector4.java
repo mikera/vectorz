@@ -96,6 +96,20 @@ public final class Vector4 extends APrimitiveVector {
 		t+=v.t*factor;
 	}
 	
+	public void addProduct(Vector4 a, Vector4 b) {
+		x+=a.x*b.x;
+		y+=a.y*b.y;
+		z+=a.z*b.z;
+		t+=a.t*b.t;
+	}
+	
+	public void addProduct(Vector4 a, Vector4 b, double factor) {
+		x+=a.x*b.x*factor;
+		y+=a.y*b.y*factor;
+		z+=a.z*b.z*factor;
+		t+=a.t*b.t*factor;
+	}
+	
 	public double dotProduct(Vector4 a) {
 		return (x*a.x)+(y*a.y)+(z*a.z)+(t*a.t);
 	}
