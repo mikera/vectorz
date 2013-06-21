@@ -405,6 +405,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Squares all elements of the vector
+	 */
 	public void square() {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -628,6 +631,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Math.acos(dotProduct(v)/(v.magnitude()*this.magnitude()));
 	}
 	
+	/**
+	 * Normalises this vector to a magnitude of 1.0
+	 * 
+	 * Has no effect on a zero-length vector (i.e. it will remain zero)
+	 * 
+	 * @return
+	 */
 	public double normalise() {
 		double d=magnitude();
 		if (d>0) multiply(1.0/d);

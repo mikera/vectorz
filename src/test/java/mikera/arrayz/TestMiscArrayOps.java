@@ -18,5 +18,15 @@ public class TestMiscArrayOps {
 		v2.square();
 		assertEquals(v2,m.getLeadingDiagonal());
 	}
+	
+	@Test public void testNonZeroCount() {
+		AVector v=Vectorz.createUniformRandomVector(5);
+		v.add(1);
+		assertEquals(v.length(),v.nonZeroCount());
+		
+		v.scale(0.0);
+		assertEquals(0,v.nonZeroCount());
+	}
+
 
 }

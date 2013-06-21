@@ -176,10 +176,9 @@ public final class Vector extends ArrayVector {
 	
 	@Override
 	public void add(ArrayVector src, int srcOffset) {
-		int vlength=src.length();
 		int length=length();
 		assert(srcOffset>=0);
-		assert(srcOffset+length<=vlength);
+		assert(srcOffset+length<=src.length());
 		double[] vdata=src.getArray();
 		int voffset=src.getArrayOffset()+srcOffset;
 		for (int i = 0; i < length; i++) {
@@ -203,9 +202,8 @@ public final class Vector extends ArrayVector {
 		if (v instanceof ArrayVector) {
 			add(((ArrayVector)v),0); return;
 		}
-		int vlength=v.length();
 		int length=length();
-		assert(length==vlength);
+		assert(length==v.length());
 		for (int i = 0; i < length; i++) {
 			data[i] += v.get(i);
 		}
@@ -221,10 +219,7 @@ public final class Vector extends ArrayVector {
 
 	@Override
 	public void add(double constant) {
-		int length=length();
-		for (int i=0; i<length; i++) {
-			data[i]=data[i]+constant;
-		}
+		DoubleArrays.add(data, 0, data.length, constant);
 	}
 	
 	@Override
