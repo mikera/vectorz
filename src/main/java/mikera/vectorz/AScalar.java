@@ -52,6 +52,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public INDArray slice(int dimension, int index) {
+		throw new UnsupportedOperationException("Can't slice a scalar!");
+	}	
+	
+	@Override
 	public int sliceCount() {
 		return 0;
 	}

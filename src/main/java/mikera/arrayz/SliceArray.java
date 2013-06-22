@@ -124,6 +124,18 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	public INDArray slice(int majorSlice) {
 		return slices[majorSlice];
 	}
+	
+
+	@Override
+	public INDArray slice(int dimension, int index) {
+		if (dimension<0) throw new IllegalArgumentException("Dimension out of range!");
+		if (dimension==0) return slice(index);
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (INDArray s:this) {
+			al.add(s.slice(dimension-1,index));
+		}
+		return SliceArray.create(al);	
+	}	
 
 	@Override
 	public long elementCount() {

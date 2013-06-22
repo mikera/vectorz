@@ -74,6 +74,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public INDArray slice(int dimension, int index) {
+		if (dimension!=0) throw new IllegalArgumentException("Dimension out of range!");
+		return slice(index);	
+	}	
+	
+	@Override
 	public int sliceCount() {
 		return length();
 	}

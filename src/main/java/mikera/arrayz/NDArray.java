@@ -14,6 +14,7 @@ import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedArrayVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -252,6 +253,20 @@ public final class NDArray extends AbstractArray<INDArray> {
 					Arrays.copyOfRange(stride, 1,dimensions));
 		}
 	}
+	
+	@Override
+	public INDArray slice(int dimension, int index) {
+		if ((dimension<0)||(dimension>=dimensions)) throw new IllegalArgumentException("Dimension out of range!");
+		if (dimension==0) return slice(index);
+		if (dimensions==2) {
+			if (dimension!=1) throw new IllegalArgumentException("Dimension out of range!");
+			return StridedArrayVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
+		}
+		return new NDArray(data,
+				offset,
+				IntArrays.removeIndex(shape,index),
+				IntArrays.removeIndex(stride,index));	
+	}	
 
 	@Override
 	public int sliceCount() {

@@ -106,6 +106,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public INDArray slice(int dimension, int index) {
+		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException("Dimension out of range!");
+		return (dimension==0)?getRow(index):getColumn(index);	
+	}	
+	
+	@Override
 	public int sliceCount() {
 		return rowCount();
 	}

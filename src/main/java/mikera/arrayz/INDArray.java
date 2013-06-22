@@ -86,8 +86,10 @@ public interface INDArray extends Cloneable {
 
 	public INDArray broadcast(int... dimensions);
 
-	
 	public INDArray slice(int majorSlice);
+
+	public INDArray slice(int dimension, int index);
+
 	
 	public int sliceCount();
 	
