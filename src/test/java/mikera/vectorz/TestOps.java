@@ -128,6 +128,7 @@ public class TestOps {
 	
 	private void testDerivative(Op op) {
 		double x=Rand.nextGaussian()*100;
+		if (x<op.minDomain()) x=-x;
 		double y=op.apply(x);
 		if (op.hasDerivative()) {
 			op.derivative(x);

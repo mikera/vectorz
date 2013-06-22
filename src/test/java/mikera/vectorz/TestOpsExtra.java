@@ -71,6 +71,8 @@ public class TestOpsExtra {
 		testDerivativesAt(Linear.create(-11, 2),0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.RECIPROCAL,0.1,-0.1,1,-1,10,-10);
 		
+		testDerivativesAt(Ops.SQRT,0.001,0.1,1,10,100,45654);
+		
 		testDerivativesAt(Ops.SIN,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.COS,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.TAN,0.1,-0.1,1,-1,10,-10);
