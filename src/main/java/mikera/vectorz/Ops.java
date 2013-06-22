@@ -8,6 +8,7 @@ import mikera.vectorz.ops.Clamp;
 import mikera.vectorz.ops.Exp;
 import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
+import mikera.vectorz.ops.Log;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Power;
@@ -44,7 +45,9 @@ public final class Ops {
 	public static final Op RBF_NORMAL = NormalRBF.INSTANCE;
 	public static final Op TO_DEGREES = Linear.create(360.0/Maths.TAU, 0.0);
 	public static final Op TO_RADIANS = Linear.create(Maths.TAU/360.0, 0.0);
-	public static final Op EXP = new Exp();
+	
+	public static final Op EXP = Exp.INSTANCE;
+	public static final Op LOG = Log.INSTANCE;
 	
 	public static final Op RECIPROCAL = new AFunctionOp() {
 		@Override

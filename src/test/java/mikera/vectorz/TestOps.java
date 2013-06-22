@@ -265,6 +265,7 @@ public class TestOps {
 		doOpTest(Ops.TO_RADIANS);
 
 		doOpTest(Ops.EXP);
+		doOpTest(Ops.LOG);
 		
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);
