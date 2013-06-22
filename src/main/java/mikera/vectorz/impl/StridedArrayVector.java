@@ -96,6 +96,13 @@ public final class StridedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void copyTo(double[] dest, int destOffset) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]=data[offset+(i*stride)];
+		}
+	}
+	
+	@Override
 	public StridedArrayVector exactClone() {
 		double[] data=this.data.clone();
 		return wrapStrided(data,offset,length,stride);

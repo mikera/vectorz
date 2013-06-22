@@ -1,6 +1,8 @@
 package mikera.vectorz.impl;
 
 import java.util.AbstractList;
+import java.util.Iterator;
+
 import mikera.vectorz.AVector;
 
 /**
@@ -29,5 +31,10 @@ public final class ListWrapper extends AbstractList<Double> {
 	@Override
 	public int size() {
 		return wrappedVector.length();
+	}
+	
+	@Override
+	public Iterator<Double> iterator() {
+		return wrappedVector.iterator();
 	}
 }
