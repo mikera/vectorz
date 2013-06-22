@@ -71,6 +71,7 @@ public interface INDArray extends Cloneable {
 	
 	public void add(INDArray a);
 	public void sub(INDArray a);
+	public void negate();
 
 	public INDArray innerProduct(INDArray a);
 	

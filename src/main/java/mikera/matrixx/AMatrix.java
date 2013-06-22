@@ -632,6 +632,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		addMultiple(m,-1.0);
 	}
 	
+	@Override
+	public void negate() {
+		multiply(-1.0);
+	}
+	
 	/**
 	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
 	 * @param m

@@ -231,6 +231,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void negate() {
+		multiply(-1.0);
+	}
+	
+	@Override
 	public INDArray reshape(int... targetShape) {
 		return Arrayz.createFromVector(asVector(), targetShape);
 	}
