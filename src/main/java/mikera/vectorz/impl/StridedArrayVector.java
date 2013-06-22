@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
 
 public final class StridedArrayVector extends AVector {
 	private static final long serialVersionUID = 5807998427323932401L;
@@ -100,5 +101,14 @@ public final class StridedArrayVector extends AVector {
 		return wrapStrided(data,offset,length,stride);
 	}
 
-
+	@Override
+	public void validate() {
+		if (length>0) {
+			if ((offset<0)||(offset>=data.length)) throw new VectorzException("offset out of bounds: "+offset);
+			int lastIndex=offset+(stride*(length-1));
+			if ((lastIndex<0)||(lastIndex>=data.length)) throw new VectorzException("lastIndex out of bounds: "+lastIndex);
+		}
+		
+		super.validate();
+	}
 }
