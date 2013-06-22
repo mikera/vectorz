@@ -49,6 +49,18 @@ public class TestOps {
 		assertEquals(0.0, op.derivative(1000.0),0.0001);
 	}
 	
+	@Test public void testLog10() {
+		Op op=Ops.LOG10;
+		assertEquals(1.0, op.apply(10),0.0001);
+		assertEquals(0.0, op.apply(1),0.0001);
+		assertEquals(-1.0, op.apply(0.1),0.0001);
+		
+		assertEquals(10.0, op.applyInverse(1),0.0001);
+		assertEquals(1.0, op.applyInverse(0),0.0001);
+		assertEquals(0.1, op.applyInverse(-1),0.0001);
+
+	}
+	
 	@Test public void testSoftplus() {
 		Op op=Ops.SOFTPLUS;
 		assertEquals(0.0, op.apply(-1000),0.0001);
