@@ -209,6 +209,10 @@ public final class Ops {
 		return a.product(b);
 	}
 	
+	public static Op sum(Op a, Op b) {
+		return a.sum(b);
+	}
+	
 	public static Op divide(Op a, Op b) {
 		return a.divide(b);
 	}

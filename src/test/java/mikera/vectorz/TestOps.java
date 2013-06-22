@@ -278,8 +278,9 @@ public class TestOps {
 		doOpTest(Quadratic.create(2, 3, 4));
 		doOpTest(Quadratic.create(0, 3, 4));
 		
-		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));
-		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));
+		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));	
+		doOpTest(Ops.LINEAR.divide(Quadratic.create(0, 3, 4)));
+
 		
 		doComposeTest(Linear.create(0.31, 0.12),Linear.create(-100, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));

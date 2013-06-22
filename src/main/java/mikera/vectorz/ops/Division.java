@@ -1,6 +1,7 @@
 package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
+import mikera.vectorz.Ops;
 
 public class Division extends Op {
 	public final Op a;
@@ -27,6 +28,11 @@ public class Division extends Op {
 	}
 	
 	@Override
+	public boolean isStochastic() {
+		return a.isStochastic()||b.isStochastic();
+	}
+	
+	@Override
 	public double apply(double x) {
 		return a.apply(x)/b.apply(x);
 	}
@@ -42,10 +48,20 @@ public class Division extends Op {
 	}
 	
 	@Override
+	public boolean hasDerivativeForOutput() {
+		return false;
+	}
+	
+	@Override
 	public double derivative(double x) {
 		double ay=a.apply(x);
 		double by=b.apply(x);
 		return a.derivative(x)*by-ay/b.derivative(x);
+	}
+	
+	@Override
+	public Op getDerivativeOp() {
+		return Ops.sum(a.getDerivativeOp().product(b),Ops.divide(Ops.NEGATE.compose(a), b.getDerivativeOp()));
 	}
 	
 	@Override public String toString() {
