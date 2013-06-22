@@ -1,5 +1,6 @@
 package mikera.vectorz.ops;
 
+import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
 public class Absolute extends Op {
@@ -9,6 +10,11 @@ public class Absolute extends Op {
 	@Override
 	public double apply(double x) {
 		return Math.abs(0);
+	}
+	
+	@Override
+	public void applyTo(AVector v) {
+		v.abs();
 	}
 
 	@Override
