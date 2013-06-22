@@ -221,5 +221,12 @@ public interface INDArray extends Cloneable {
 	 */
 	public void copyTo(double[] arr);
 
-	List<INDArray> getSliceViews();
+	/**
+	 * Returns a list of slices as mutable INDArray views.
+	 * 
+	 * Note: will return a list of AScalar values when this array is a 1D vector
+	 * 
+	 * @return
+	 */
+	public List<INDArray> getSliceViews();
 }
