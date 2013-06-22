@@ -5,6 +5,7 @@ import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
 import mikera.vectorz.ops.Composed;
 import mikera.vectorz.ops.Derivative;
+import mikera.vectorz.ops.Division;
 import mikera.vectorz.ops.Inverse;
 import mikera.vectorz.ops.Product;
 import mikera.vectorz.ops.Sum;
@@ -229,6 +230,10 @@ public abstract class Op implements IOp, ITransform {
 	
 	public Op product(Op op) {
 		return Product.create(this, op);
+	}
+	
+	public Op divide(Op op) {
+		return Division.create(this, op);
 	}
 	
 	public Op sum(Op op) {

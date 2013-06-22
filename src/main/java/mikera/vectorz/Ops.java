@@ -208,4 +208,8 @@ public final class Ops {
 	public static Op product(Op a, Op b) {
 		return a.product(b);
 	}
+	
+	public static Op divide(Op a, Op b) {
+		return a.divide(b);
+	}
 }
