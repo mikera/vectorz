@@ -7,6 +7,12 @@ import mikera.arrayz.TestArrays;
 import mikera.vectorz.impl.DoubleScalar;
 
 public class TestScalars {
+	
+	@Test public void miscTests() {
+		AScalar s=new DoubleScalar(2.0);
+		assertEquals(2.0,s.elementSum(),0.0);
+		assertEquals(1,s.nonZeroCount(),0.0);
+	}
 
 	private void testAsVector(AScalar s) {
 		AVector v=s.asVector();
