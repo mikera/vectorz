@@ -105,6 +105,24 @@ public final class Ops {
 		@Override public Op getDerivativeOp() {return Ops.negate(SIN);}
 	};
 	
+	public static final Op TAN = new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return Math.tan(x);
+		}
+		
+		@Override
+		public double derivative(double x) {
+			double sec=1.0/Math.cos(x);
+			return sec*sec;
+		}
+		
+		@Override
+		public double derivativeForOutput(double y) {
+			return derivative(Math.atan(y));
+		}
+	};
+	
 	public static final Op ACOS = new AFunctionOp() {
 		@Override
 		public double apply(double x) {
@@ -122,6 +140,8 @@ public final class Ops {
 		}
 		
 		@Override public boolean hasDerivative() {return true;}
+		@Override public boolean hasInverse() {return true;}
+		@Override public Op getInverse() {return COS;}
 		@Override public double minValue() {return -Math.PI;}
 		@Override public double maxValue() {return Math.PI;}
 		@Override public double minDomain() {return -1.0;}
@@ -145,6 +165,8 @@ public final class Ops {
 		}
 		
 		@Override public boolean hasDerivative() {return true;}
+		@Override public boolean hasInverse() {return true;}
+		@Override public Op getInverse() {return SIN;}
 		@Override public double minValue() {return -Math.PI;}
 		@Override public double maxValue() {return Math.PI;}
 		@Override public double minDomain() {return -1.0;}
@@ -168,6 +190,8 @@ public final class Ops {
 		}
 		
 		@Override public boolean hasDerivative() {return true;}
+		@Override public boolean hasInverse() {return true;}
+		@Override public Op getInverse() {return TAN;}
 		@Override public double minValue() {return -Math.PI;}
 		@Override public double maxValue() {return Math.PI;}
 	};
