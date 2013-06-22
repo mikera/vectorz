@@ -61,6 +61,13 @@ public class TestOps {
 
 	}
 	
+	@Test public void testAbs() {
+		Op op=Ops.ABS;
+		Vector v=Vector.of(-1,2,-3);
+		op.applyTo(v);
+		assertEquals(Vector.of(1,2,3),v);
+	}
+	
 	@Test public void testSoftplus() {
 		Op op=Ops.SOFTPLUS;
 		assertEquals(0.0, op.apply(-1000),0.0001);
