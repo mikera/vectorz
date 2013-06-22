@@ -184,6 +184,26 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void multiply(INDArray a) {
+		int n=sliceCount();
+		int na=a.sliceCount();
+		int dims=dimensionality();
+		int adims=a.dimensionality();
+		if (dims==adims) {
+			if (n!=na) throw new VectorzException("Non-matching dimensions");
+			for (int i=0; i<n; i++) {
+				slice(i).multiply(a.slice(i));
+			}
+		} else if (adims<dims) {
+			for (int i=0; i<n; i++) {
+				slice(i).multiply(a);
+			}	
+		} else {
+			throw new VectorzException("Cannot multiply array of greater dimensionality");
+		}
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		if (dimensionality()==0) {
 			return (get()==0.0)?0:1;

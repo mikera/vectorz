@@ -210,6 +210,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(factor*get());
 	}
 	
+	
+	@Override 
+	public void multiply(INDArray a) {
+		multiply(a.get());
+	}
+	
 	@Override
 	public double elementSum() {
 		return get();

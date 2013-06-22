@@ -107,6 +107,12 @@ public interface INDArray extends Cloneable {
 	public double elementSum();
 	
 	/**
+	 * Multiplies all elements by the equivalent elements in a second array
+	 * @return
+	 */
+	public void multiply(INDArray a);
+	
+	/**
 	 * Returns the number of non-zero elements in the array.
 	 * @return
 	 */

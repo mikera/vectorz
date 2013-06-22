@@ -1021,6 +1021,31 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 	}
 	
+	@Override
+	public void multiply(INDArray a) {
+		if (a instanceof AMatrix) {
+			elementMul((AMatrix)a);
+		} else if (a instanceof AScalar) {
+			multiply(a.get());
+		} else {
+			int dims=a.dimensionality();
+			int rc=rowCount();
+			if (dims==0) {
+				multiply(a.get());
+			} else if (dims==1) {
+				for (int i=0; i<rc; i++) {
+					slice(i).multiply(a);
+				}
+			} else if (dims==2) {
+				for (int i=0; i<rc; i++) {
+					slice(i).multiply(a.slice(i));
+				}		
+			} else {
+				throw new VectorzException("Can't multiply matrix with array of dimensionality: "+dims);
+			}
+		}
+	}
+	
 	public void sub(INDArray a) {
 		if (a instanceof AMatrix) {
 			sub((AMatrix)a);

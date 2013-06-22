@@ -343,6 +343,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
+	public void multiply(INDArray a) {
+		if (a instanceof AVector) {
+			multiply((AVector)a);
+		} else if (a instanceof AScalar) {
+			multiply(((AScalar)a).get());
+		} else {
+			int dims=a.dimensionality();
+			switch (dims) {
+				case 0: multiply(a.get()); return;
+				case 1: multiply(a.asVector()); return;
+				default: throw new VectorzException("Can't multiply vector with array of dimensionality: "+dims);
+			}
+		}
+	}
+	
 	public void multiply(AVector v) {
 		int len=length();
 		assert(len==v.length());
