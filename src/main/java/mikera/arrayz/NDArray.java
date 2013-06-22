@@ -30,7 +30,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	private final double[] data;
 	private int[] stride;
 	
-	public NDArray(int... shape) {
+	private NDArray(int... shape) {
 		this.shape=shape.clone();
 		dimensions=shape.length;
 		data=new double[(int)elementCount()];

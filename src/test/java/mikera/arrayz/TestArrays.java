@@ -201,7 +201,7 @@ public class TestArrays {
 		SliceArray<AVector> sa=SliceArray.create(Vectorz.createUniformRandomVector(10),Vectorz.createUniformRandomVector(10));
 		testArray(sa);
 		
-		NDArray nd1=new NDArray(3,3,3);
+		NDArray nd1=NDArray.newArray(3,3,3);
 		testArray(nd1);
 		
 		NDArray ndscalar=NDArray.newArray();

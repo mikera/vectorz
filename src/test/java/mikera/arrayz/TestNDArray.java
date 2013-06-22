@@ -27,7 +27,7 @@ public class TestNDArray {
 	}
 	
 	@Test public void testOuterProduct() {
-		NDArray a=new NDArray(1,2,3);
+		NDArray a=NDArray.newArray(1,2,3);
 		
 		assertTrue(Arrays.equals(new int[] {1,2,3,1,2,3},a.outerProduct(a).getShape()));
 	}
