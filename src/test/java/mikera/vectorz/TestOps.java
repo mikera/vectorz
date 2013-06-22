@@ -265,7 +265,7 @@ public class TestOps {
 		doOpTest(Ops.SCALED_LOGISTIC);
 		doOpTest(Ops.STOCHASTIC_BINARY);
 		doOpTest(Ops.STOCHASTIC_LOGISTIC);
-		doOpTest(Ops.TANH);
+		
 		doOpTest(Ops.SOFTPLUS);
 		doOpTest(Ops.RECTIFIER);
 		doOpTest(Ops.RBF_NORMAL);
@@ -279,6 +279,10 @@ public class TestOps {
 		doOpTest(Ops.EXP);
 		doOpTest(Ops.LOG);
 		doOpTest(Ops.LOG10);
+
+		doOpTest(Ops.TANH);
+		doOpTest(Ops.COSH);
+		doOpTest(Ops.SINH);
 		
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);

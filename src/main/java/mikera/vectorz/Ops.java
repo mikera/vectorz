@@ -94,6 +94,20 @@ public final class Ops {
 		}		
 	};
 	
+	public static final AFunctionOp COSH=new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return Math.cosh(x);
+		}		
+	};
+	
+	public static final AFunctionOp SINH=new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return Math.cosh(x);
+		}		
+	};
+	
 	public static final Op SIN = new AFunctionOp() {
 		@Override
 		public double apply(double x) {
