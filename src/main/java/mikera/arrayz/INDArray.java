@@ -98,6 +98,12 @@ public interface INDArray extends Cloneable {
 	public long elementCount();
 	
 	/**
+	 * Returns the total sum of elements in this array.
+	 * @return
+	 */
+	public double elementSum();
+	
+	/**
 	 * Returns the number of non-zero elements in the array.
 	 * @return
 	 */
