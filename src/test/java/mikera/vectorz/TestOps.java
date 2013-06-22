@@ -68,6 +68,19 @@ public class TestOps {
 		assertEquals(Vector.of(1,2,3),v);
 	}
 	
+	@Test public void testFunctions() {
+		assertEquals(1.0,Ops.ABS.apply(-1),0.0001);
+		assertEquals(1.0,Ops.SIN.apply(Math.PI*0.5),0.0001);
+		assertEquals(1.0,Ops.COS.apply(0),0.0001);
+		assertEquals(1.0,Ops.TAN.apply(Math.PI*0.25),0.0001);
+		assertEquals(9.0,Ops.SQUARE.apply(3.0),0.0001);
+		assertEquals(3.0,Ops.SQRT.apply(9.0),0.0001);
+		assertEquals(3.0,Ops.CEIL.apply(2.1),0.0001);
+		assertEquals(-3.0,Ops.FLOOR.apply(-2.1),0.0001);
+		assertEquals(-3.0,Ops.RINT.apply(-3.4),0.0001);
+
+	}
+	
 	@Test public void testSoftplus() {
 		Op op=Ops.SOFTPLUS;
 		assertEquals(0.0, op.apply(-1000),0.0001);
