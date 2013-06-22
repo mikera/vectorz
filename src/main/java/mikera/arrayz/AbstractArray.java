@@ -79,6 +79,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				s.set(a);
 			}
 		} else if (adims==tdims) {
+			if (tdims==0) {
+				set(a.get());
+				return;
+			}
 			int sc=sliceCount();
 			for (int i=0; i<sc; i++) {
 				INDArray s=slice(i);
@@ -133,6 +137,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public String toString() {
+		if (dimensionality()==0) {
+			return Double.toString(get());
+		}
+		
 		StringBuilder sb=new StringBuilder();
 		int length=sliceCount();
 		sb.append('[');
@@ -177,6 +185,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public long nonZeroCount() {
+		if (dimensionality()==0) {
+			return (get()==0.0)?0:1;
+		}
 		long result=0;
 		int n=sliceCount();
 		for (int i=0; i<n; i++) {
@@ -187,6 +198,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public double elementSum() {
+		if (dimensionality()==0) {
+			return get();
+		}
 		double result=0;
 		int n=sliceCount();
 		for (int i=0; i<n; i++) {
@@ -226,6 +240,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
+		if (dimensionality()==0) {
+			dest[offset]=get();
+			return;
+		}
 		int sc=sliceCount();
 		for (int i=0; i<sc; i++) {
 			INDArray s=slice(i);

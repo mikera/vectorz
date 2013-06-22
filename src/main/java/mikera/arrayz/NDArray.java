@@ -255,7 +255,11 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	@Override
 	public int sliceCount() {
-		return getShape(0);
+		if (dimensions==0) {
+			throw new IllegalArgumentException("Can't count slices o 0-d array");
+		} else {
+			return getShape(0);
+		}
 	}
 
 	@Override

@@ -204,5 +204,8 @@ public class TestArrays {
 		NDArray nd1=new NDArray(3,3,3);
 		testArray(nd1);
 		
+		NDArray ndscalar=NDArray.newArray();
+		testArray(ndscalar);
+
 	}
 }
