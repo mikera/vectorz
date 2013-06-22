@@ -213,4 +213,6 @@ public interface INDArray extends Cloneable {
 	 * @param arr
 	 */
 	public void copyTo(double[] arr);
+
+	List<INDArray> getSliceViews();
 }

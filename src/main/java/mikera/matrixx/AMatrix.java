@@ -127,6 +127,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public List<INDArray> getSliceViews() {	
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			al.add(getRow(i));
+		}
+		return al;
+	}
+	
+	@Override
 	public int[] getShape() {
 		return new int[] {rowCount(),columnCount()};
 	}

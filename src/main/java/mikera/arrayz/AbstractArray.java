@@ -239,6 +239,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public abstract List<T> getSlices();
 	
 	@Override
+	public List<INDArray> getSliceViews() {
+		int l=sliceCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
+		for (int i=0; i<l; i++) {
+			al.add(slice(i));
+		}
+		return al;
+	}
+	
+	@Override
 	public void getElements(double[] dest, int offset) {
 		if (dimensionality()==0) {
 			dest[offset]=get();

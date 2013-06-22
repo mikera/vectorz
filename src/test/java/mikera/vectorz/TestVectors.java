@@ -634,6 +634,16 @@ public class TestVectors {
 		testFilling(v);
 	}
 	
+	private void testSlicing(AVector v) {
+		for (int i=0; i<v.length(); i++) {
+			AScalar ss=v.slice(0, i);
+			assertTrue(ss.isView());
+			if (v.isFullyMutable()) {
+				assertTrue(ss.isFullyMutable());
+			}
+		}	
+	}
+	
 	private void doGenericTests(AVector v) {
 		testClone(v);
 		testExactClone(v);
@@ -642,6 +652,7 @@ public class TestVectors {
 		testAddToArray(v);
 		testElementSum(v);
 		testAddAt(v);
+		testSlicing(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
