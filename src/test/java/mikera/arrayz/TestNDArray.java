@@ -11,6 +11,9 @@ public class TestNDArray {
 		NDArray a=NDArray.newArray();
 		a.set(3.0);
 		assertEquals(3.0,a.get(),0.0);
+		assertEquals(1,a.elementCount());
+		assertEquals(1,a.nonZeroCount());
+		assertEquals(3.0,a.elementSum(),0.0);
 		
 	}
 	
