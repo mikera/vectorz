@@ -6,6 +6,7 @@ import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Specialised diagonal matrix class
@@ -172,5 +173,12 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	@Override
 	public DiagonalMatrix exactClone() {
 		return DiagonalMatrix.create(data);
+	}
+	
+	@Override
+	public void validate() {
+		if (dimensions!=data.length) throw new VectorzException("dimension mismatch: "+dimensions);
+		
+		super.validate();
 	}
 }
