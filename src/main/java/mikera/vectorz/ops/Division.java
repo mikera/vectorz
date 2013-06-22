@@ -3,7 +3,7 @@ package mikera.vectorz.ops;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 
-public class Division extends Op {
+public final class Division extends Op {
 	public final Op a;
 	public final Op b;
 	

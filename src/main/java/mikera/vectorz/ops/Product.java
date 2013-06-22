@@ -2,7 +2,7 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
-public class Product extends Op {
+public final class Product extends Op {
 	public final Op a;
 	public final Op b;
 	
