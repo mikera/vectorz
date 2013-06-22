@@ -87,7 +87,6 @@ public class TestOps {
 		assertEquals(2.0,Ops.LOG.apply(Math.E*Math.E),0.0001);
 		assertEquals(3.0,Ops.LOG10.apply(1000),0.0001);
 		assertEquals(0.5,Ops.LOGISTIC.apply(0.0),0.0001);
-
 	}
 	
 	@Test public void testSoftplus() {
