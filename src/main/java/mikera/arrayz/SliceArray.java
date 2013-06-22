@@ -244,14 +244,19 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	@Override
 	public void validate() {
 		if (shape.length!=longShape.length) throw new VectorzException("Shape mismatch");
+		
+		long ec=0;
 		for (int i=0; i<slices.length; i++) {
 			T s=slices[i];
+			ec+=s.elementCount();
 			slices[i].validate();
 			int[] ss=s.getShape();
 			for (int j=0; j<ss.length; j++) {
-				if(shape[j+1]!=ss[j]) throw new VectorzException("Slice shape mismatch");
+				if(getShape(j+1)!=ss[j]) throw new VectorzException("Slice shape mismatch");
 			}
 		}
+		if (ec!=elementCount()) throw new VectorzException("Element count mismatch");
+		
 		super.validate();
 	}
 }
