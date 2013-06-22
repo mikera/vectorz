@@ -263,6 +263,7 @@ public class TestOps {
 
 		doOpTest(Ops.ACOS);
 		doOpTest(Ops.ASIN);
+		doOpTest(Ops.ATAN);
 
 		doOpTest(Power.create(0.5));
 		doOpTest(Power.create(1));
