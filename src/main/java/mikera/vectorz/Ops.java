@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import mikera.util.Maths;
 import mikera.vectorz.ops.AFunctionOp;
 import mikera.vectorz.ops.Absolute;
 import mikera.vectorz.ops.Clamp;
@@ -10,6 +11,7 @@ import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Power;
 import mikera.vectorz.ops.ScaledLogistic;
+import mikera.vectorz.ops.Signum;
 import mikera.vectorz.ops.SoftPlus;
 import mikera.vectorz.ops.Sqrt;
 import mikera.vectorz.ops.Square;
@@ -24,6 +26,7 @@ import mikera.vectorz.ops.Tanh;
  */
 public final class Ops {
 	public static final Op ABS=Absolute.INSTANCE;
+	public static final Op SIGNUM=Signum.INSTANCE;
 	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
 	public static final Op IDENTITY=Identity.INSTANCE;
 	public static final Op LINEAR=Identity.INSTANCE;
@@ -38,8 +41,8 @@ public final class Ops {
 	public static final Op SQRT = Sqrt.INSTANCE;
 	public static final Op CBRT = Power.create(1.0/3.0);
 	public static final Op RBF_NORMAL = NormalRBF.INSTANCE;
-	public static final Op TO_DEGREES = Linear.create(180.0/Math.PI, 0.0);
-	public static final Op TO_RADIANS = Linear.create(Math.PI/180.0, 0.0);
+	public static final Op TO_DEGREES = Linear.create(360.0/Maths.TAU, 0.0);
+	public static final Op TO_RADIANS = Linear.create(Maths.TAU/360.0, 0.0);
 	public static final Op EXP = new Exp();
 	
 	public static final Op RECIPROCAL = new AFunctionOp() {

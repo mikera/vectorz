@@ -20,6 +20,9 @@ public final class Linear extends ALinearOp {
 			if (constant==0.0) return Identity.INSTANCE;
 			return Offset.create(constant);
 		}
+		if ((factor==-1.0)&& (constant==0.0)) {
+			// TODO: special negate class?
+		}
 		return new Linear(factor,constant);
 	}
 	

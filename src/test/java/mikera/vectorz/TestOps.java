@@ -243,6 +243,7 @@ public class TestOps {
 		doOpTest(Clamp.ZERO_TO_ONE);
 		
 		doOpTest(Ops.ABS);
+		doOpTest(Ops.SIGNUM);
 		
 		doOpTest(Ops.LINEAR);
 		doOpTest(Ops.LOGISTIC);
