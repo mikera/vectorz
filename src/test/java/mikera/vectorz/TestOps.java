@@ -78,6 +78,15 @@ public class TestOps {
 		assertEquals(3.0,Ops.CEIL.apply(2.1),0.0001);
 		assertEquals(-3.0,Ops.FLOOR.apply(-2.1),0.0001);
 		assertEquals(-3.0,Ops.RINT.apply(-3.4),0.0001);
+		assertEquals(2.0,Ops.CBRT.apply(8.0),0.0001);
+		assertEquals(1.0,Ops.SIGNUM.apply(801.0),0.0001);
+		assertEquals(0.25,Ops.RECIPROCAL.apply(4.0),0.0001);
+		assertEquals(1.25,Ops.LINEAR.apply(1.25),0.0001);
+		assertEquals(1.25,Ops.IDENTITY.apply(1.25),0.0001);
+		assertEquals(Math.E,Ops.EXP.apply(1.0),0.0001);
+		assertEquals(2.0,Ops.LOG.apply(Math.E*Math.E),0.0001);
+		assertEquals(3.0,Ops.LOG10.apply(1000),0.0001);
+		assertEquals(0.5,Ops.LOGISTIC.apply(0.0),0.0001);
 
 	}
 	
