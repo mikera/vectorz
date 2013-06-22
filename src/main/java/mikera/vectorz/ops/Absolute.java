@@ -9,7 +9,7 @@ public class Absolute extends Op {
 	
 	@Override
 	public double apply(double x) {
-		return Math.abs(0);
+		return Math.abs(x);
 	}
 	
 	@Override

@@ -18,6 +18,9 @@ public final class Quadratic extends APolynomialOp {
 		if (a==0.0) {
 			return Linear.create(b,c);
 		}
+		if ((a==1.0)&&(b==0.0)&&(c==0.0)) {
+			return Square.INSTANCE;
+		}
 		return new Quadratic(a,b,c);
 	}
 	

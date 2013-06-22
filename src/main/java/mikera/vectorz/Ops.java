@@ -9,10 +9,10 @@ import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Power;
-import mikera.vectorz.ops.Quadratic;
 import mikera.vectorz.ops.ScaledLogistic;
 import mikera.vectorz.ops.SoftPlus;
 import mikera.vectorz.ops.Sqrt;
+import mikera.vectorz.ops.Square;
 import mikera.vectorz.ops.StochasticBinary;
 import mikera.vectorz.ops.Tanh;
 
@@ -34,7 +34,7 @@ public final class Ops {
 	public static final Op TANH=Tanh.INSTANCE;
 	public static final Op SOFTPLUS=SoftPlus.INSTANCE;
 	public static final Op NEGATE=Linear.create(-1.0, 0.0);
-	public static final Op SQUARE = Quadratic.create(1.0, 0.0, 0.0);
+	public static final Op SQUARE = Square.INSTANCE;
 	public static final Op SQRT = Sqrt.INSTANCE;
 	public static final Op CBRT = Power.create(1.0/3.0);
 	public static final Op RBF_NORMAL = NormalRBF.INSTANCE;
