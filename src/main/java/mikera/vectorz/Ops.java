@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import mikera.util.Maths;
 import mikera.vectorz.ops.AFunctionOp;
+import mikera.vectorz.ops.ARoundingOp;
 import mikera.vectorz.ops.Absolute;
 import mikera.vectorz.ops.Clamp;
 import mikera.vectorz.ops.Exp;
@@ -65,6 +66,27 @@ public final class Ops {
 		@Override public boolean hasInverse() {return true;}
 		@Override public Op getInverse() {return this;}
 		@Override public boolean hasDerivative() {return true;}
+	};
+	
+	public static final ARoundingOp CEIL=new ARoundingOp() {
+		@Override
+		public double apply(double x) {
+			return Math.ceil(x);
+		}		
+	};
+	
+	public static final ARoundingOp FLOOR=new ARoundingOp() {
+		@Override
+		public double apply(double x) {
+			return Math.floor(x);
+		}		
+	};
+	
+	public static final ARoundingOp RINT=new ARoundingOp() {
+		@Override
+		public double apply(double x) {
+			return Math.rint(x);
+		}		
 	};
 	
 	public static final Op SIN = new AFunctionOp() {

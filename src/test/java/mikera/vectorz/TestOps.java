@@ -244,6 +244,9 @@ public class TestOps {
 		
 		doOpTest(Ops.ABS);
 		doOpTest(Ops.SIGNUM);
+		doOpTest(Ops.CEIL);
+		doOpTest(Ops.FLOOR);
+		doOpTest(Ops.RINT);
 		
 		doOpTest(Ops.LINEAR);
 		doOpTest(Ops.LOGISTIC);
