@@ -2,7 +2,7 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
-public class Product extends Op {
+public final class Product extends Op {
 	public final Op a;
 	public final Op b;
 	
@@ -53,6 +53,11 @@ public class Product extends Op {
 	}
 	
 	@Override
+	public boolean hasDerivativeForOutput() {
+		return false;
+	}
+	
+	@Override
 	public double derivative(double x) {
 		double ay=a.apply(x);
 		double by=b.apply(x);
@@ -64,6 +69,11 @@ public class Product extends Op {
 		Op da=a.getDerivativeOp();
 		Op db=b.getDerivativeOp();
 		return (da.product(b)).sum(db.product(a));
+	}
+	
+	@Override
+	public boolean isStochastic() {
+		return a.isStochastic()||b.isStochastic();
 	}
 	
 	@Override public String toString() {

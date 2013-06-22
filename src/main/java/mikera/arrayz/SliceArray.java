@@ -124,6 +124,18 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	public INDArray slice(int majorSlice) {
 		return slices[majorSlice];
 	}
+	
+
+	@Override
+	public INDArray slice(int dimension, int index) {
+		if (dimension<0) throw new IllegalArgumentException("Dimension out of range!");
+		if (dimension==0) return slice(index);
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (INDArray s:this) {
+			al.add(s.slice(dimension-1,index));
+		}
+		return SliceArray.create(al);	
+	}	
 
 	@Override
 	public long elementCount() {
@@ -244,14 +256,19 @@ public class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	@Override
 	public void validate() {
 		if (shape.length!=longShape.length) throw new VectorzException("Shape mismatch");
+		
+		long ec=0;
 		for (int i=0; i<slices.length; i++) {
 			T s=slices[i];
+			ec+=s.elementCount();
 			slices[i].validate();
 			int[] ss=s.getShape();
 			for (int j=0; j<ss.length; j++) {
-				if(shape[j+1]!=ss[j]) throw new VectorzException("Slice shape mismatch");
+				if(getShape(j+1)!=ss[j]) throw new VectorzException("Slice shape mismatch");
 			}
 		}
+		if (ec!=elementCount()) throw new VectorzException("Element count mismatch");
+		
 		super.validate();
 	}
 }

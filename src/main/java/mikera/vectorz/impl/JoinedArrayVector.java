@@ -445,6 +445,11 @@ public final class JoinedArrayVector extends AVector {
 	@Override
 	public void validate() {
 		if (length!=pos[numArrays]) throw new VectorzException("Validation problem");
+		
+		for (int i=0; i<numArrays; i++) {
+			subArrayVector(i).validate();
+		}
+		
 		super.validate();
 	}
 }

@@ -1,10 +1,13 @@
 package mikera.vectorz;
 
+import mikera.arrayz.INDArray;
+import mikera.matrixx.AMatrix;
 import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
 import mikera.vectorz.ops.Composed;
 import mikera.vectorz.ops.Derivative;
+import mikera.vectorz.ops.Division;
 import mikera.vectorz.ops.Inverse;
 import mikera.vectorz.ops.Product;
 import mikera.vectorz.ops.Sum;
@@ -40,6 +43,10 @@ public abstract class Op implements IOp, ITransform {
 		}
 	}
 	
+	public void applyTo(AMatrix m) {
+		m.applyOp(this);
+	}
+	
 	@Override
 	public void applyTo(AVector v, int start, int length) {
 		if (start<0) throw new IllegalArgumentException("Negative start position: "+start);
@@ -56,6 +63,19 @@ public abstract class Op implements IOp, ITransform {
 	
 	public void applyTo(ArrayVector v) {
 		applyTo(v.getArray(), v.getArrayOffset(),v.length());
+	}
+	
+	
+	public void applyTo(INDArray a) {
+		if (a instanceof AVector) {
+			applyTo((AVector)a);
+		} else if (a instanceof AMatrix) {
+			applyTo((AMatrix)a);
+		} else if (a instanceof AScalar) {
+			applyTo((AScalar)a);
+		} else {
+			a.applyOp(this);
+		}
 	}
 
 	@Override
@@ -229,6 +249,10 @@ public abstract class Op implements IOp, ITransform {
 	
 	public Op product(Op op) {
 		return Product.create(this, op);
+	}
+	
+	public Op divide(Op op) {
+		return Division.create(this, op);
 	}
 	
 	public Op sum(Op op) {

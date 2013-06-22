@@ -3,6 +3,7 @@ package mikera.matrixx;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedArrayVector;
@@ -187,6 +188,11 @@ public final class Matrix extends AMatrix {
 	@Override
 	public void set(int row, int column, double value) {
 		data[(row*columns)+column]=value;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		op.applyTo(data);
 	}
 	
 	public void addMultiple(Matrix m,double factor) {

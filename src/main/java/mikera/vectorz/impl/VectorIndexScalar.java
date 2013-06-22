@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
 
 public class VectorIndexScalar extends AScalar {
 	final AVector vector;
@@ -46,5 +47,11 @@ public class VectorIndexScalar extends AScalar {
 	@Override
 	public VectorIndexScalar exactClone() {
 		return new VectorIndexScalar(vector.clone(),index);
+	}
+	
+	@Override
+	public void validate() {
+		if ((index<0)||(index>=vector.length())) throw new VectorzException("Index out of bounds");
+		super.validate();
 	}
 }

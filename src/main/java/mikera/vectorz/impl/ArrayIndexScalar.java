@@ -27,6 +27,11 @@ public class ArrayIndexScalar extends AScalar {
 		return true;
 	}
 	
+	@Override
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
 	
 	@Override
 	public DoubleScalar clone() {

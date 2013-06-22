@@ -79,6 +79,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				s.set(a);
 			}
 		} else if (adims==tdims) {
+			if (tdims==0) {
+				set(a.get());
+				return;
+			}
 			int sc=sliceCount();
 			for (int i=0; i<sc; i++) {
 				INDArray s=slice(i);
@@ -133,6 +137,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public String toString() {
+		if (dimensionality()==0) {
+			return Double.toString(get());
+		}
+		
 		StringBuilder sb=new StringBuilder();
 		int length=sliceCount();
 		sb.append('[');
@@ -176,11 +184,50 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void multiply(INDArray a) {
+		int dims=dimensionality();
+		if (dims==0) {set(get()*a.get()); return;}
+		int adims=a.dimensionality();
+		if (adims==0) {multiply(a.get()); return;}
+		
+		int n=sliceCount();
+		int na=a.sliceCount();
+		if (dims==adims) {
+			if (n!=na) throw new VectorzException("Non-matching dimensions");
+			for (int i=0; i<n; i++) {
+				slice(i).multiply(a.slice(i));
+			}
+		} else if (adims<dims) {
+			for (int i=0; i<n; i++) {
+				slice(i).multiply(a);
+			}	
+		} else {
+			throw new VectorzException("Cannot multiply array of greater dimensionality");
+		}
+	}
+	
+	@Override
 	public long nonZeroCount() {
+		if (dimensionality()==0) {
+			return (get()==0.0)?0:1;
+		}
 		long result=0;
 		int n=sliceCount();
 		for (int i=0; i<n; i++) {
 			result+=slice(i).nonZeroCount();
+		}
+		return result;
+	}
+	
+	@Override
+	public double elementSum() {
+		if (dimensionality()==0) {
+			return get();
+		}
+		double result=0;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			result+=slice(i).elementSum();
 		}
 		return result;
 	}
@@ -207,6 +254,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void negate() {
+		multiply(-1.0);
+	}
+	
+	@Override
 	public INDArray reshape(int... targetShape) {
 		return Arrayz.createFromVector(asVector(), targetShape);
 	}
@@ -215,7 +267,21 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public abstract List<T> getSlices();
 	
 	@Override
+	public List<INDArray> getSliceViews() {
+		int l=sliceCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
+		for (int i=0; i<l; i++) {
+			al.add(slice(i));
+		}
+		return al;
+	}
+	
+	@Override
 	public void getElements(double[] dest, int offset) {
+		if (dimensionality()==0) {
+			dest[offset]=get();
+			return;
+		}
 		int sc=sliceCount();
 		for (int i=0; i<sc; i++) {
 			INDArray s=slice(i);

@@ -119,6 +119,7 @@ public class AxisVector extends ComputedVector implements ISparse {
 	
 	@Override
 	public void validate() {
+		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
 		if ((axis<0)||(axis>length)) throw new VectorzException("Axis index out of bounds");
 		super.validate();
 	}

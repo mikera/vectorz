@@ -2,6 +2,7 @@ package mikera.matrixx;
 
 import static org.junit.Assert.*;
 
+import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
@@ -429,7 +430,7 @@ public class TestMatrixx {
 		assertTrue(m1.isZeroMatrix());
 	}
 	
-	void doMulTest(AMatrix m) {
+	private void doMulTest(AMatrix m) {
 		AVector v=Vectorz.newVector(m.columnCount());
 		AVector t=Vectorz.newVector(m.rowCount());
 		
@@ -438,6 +439,20 @@ public class TestMatrixx {
 		
 		assertEquals(t,t2);
 		assertEquals(t,m.innerProduct(v));
+	}
+	
+	private void doNDArrayTest(AMatrix m) {
+		NDArray a=NDArray.newArray(m.getShape());
+		a.set(m);
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		for (int i=0; i<rc; i++) {
+			assertEquals(m.getRow(i),a.slice(i));
+		}
+		for (int i=0; i<cc; i++) {
+			assertEquals(m.getColumn(i),a.slice(1,i));
+		}
+
 	}
 	
 	void doGenericTests(AMatrix m) {
@@ -449,6 +464,7 @@ public class TestMatrixx {
 		doVectorTest(m);
 		doParseTest(m);
 		doHashTest(m);
+		doNDArrayTest(m);
 		doScaleTest(m);
 		doMulTest(m);
 		doAddTest(m);

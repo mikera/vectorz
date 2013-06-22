@@ -65,13 +65,20 @@ public class TestOpsExtra {
 		testDerivativesAt(Ops.LINEAR,0,0.1,-0.1,1,-1,10,-10,100,-100);
 		testDerivativesAt(Ops.LOGISTIC,0,0.1,-0.1,1,-1,10,-10,100,-100);
 		testDerivativesAt(Ops.EXP,0,0.1,-0.1,1,-1,10,-10,100,-100);
+		testDerivativesAt(Ops.LOG,0.1,1,10,100,1000);
+		
 		testDerivativesAt(Ops.TANH,0,0.1,-0.1,1,-1,10,-10,100,-100);
 		testDerivativesAt(Ops.SOFTPLUS,0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Quadratic.create(1, 2, 3),0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Linear.create(-11, 2),0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.RECIPROCAL,0.1,-0.1,1,-1,10,-10);
+		
+		testDerivativesAt(Ops.SQRT,0.001,0.1,1,10,100,45654);
+		
 		testDerivativesAt(Ops.SIN,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.COS,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.TAN,0.1,-0.1,1,-1,10,-10);
+		
 		testDerivativesAt(Ops.NEGATE,0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.SIN.compose(Ops.EXP),0.1,-0.1,1,-1,2,-2,3,-3);
 		testDerivativesAt(Ops.COS.product(Ops.SOFTPLUS),0.1,-0.1,1,-1,2,-2,3,-3);
@@ -79,6 +86,7 @@ public class TestOpsExtra {
 
 		testDerivativesAt(Ops.ACOS,0.0,0.1,-0.1,0.99,-0.99);
 		testDerivativesAt(Ops.ASIN,0.0,0.1,-0.1,0.99,-0.99);
+		testDerivativesAt(Ops.ATAN,0.0,0.1,-0.1,0.99,-0.99);
 
 		testDerivativesAt(Power.create(0.2),0.1,1,2,3,10);
 		testDerivativesAt(Power.create(1.4),0.1,1,2,3,10);

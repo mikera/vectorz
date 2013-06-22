@@ -10,7 +10,9 @@ public final class Constant extends ALinearOp {
 	public final double value;
 	
 	public static final Constant ZERO=new Constant(0.0);
+	public static final Constant HALF=new Constant(0.5);
 	public static final Constant ONE=new Constant(1.0);
+	public static final Constant TWO=new Constant(2.0);
 	
 	private Constant(double value) {
 		this.value=value;

@@ -1,16 +1,23 @@
 package mikera.vectorz;
 
+import mikera.util.Maths;
 import mikera.vectorz.ops.AFunctionOp;
+import mikera.vectorz.ops.ARoundingOp;
+import mikera.vectorz.ops.Absolute;
 import mikera.vectorz.ops.Clamp;
 import mikera.vectorz.ops.Exp;
 import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
+import mikera.vectorz.ops.Log;
+import mikera.vectorz.ops.LogN;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Power;
-import mikera.vectorz.ops.Quadratic;
 import mikera.vectorz.ops.ScaledLogistic;
+import mikera.vectorz.ops.Signum;
 import mikera.vectorz.ops.SoftPlus;
+import mikera.vectorz.ops.Sqrt;
+import mikera.vectorz.ops.Square;
 import mikera.vectorz.ops.StochasticBinary;
 import mikera.vectorz.ops.Tanh;
 
@@ -21,6 +28,8 @@ import mikera.vectorz.ops.Tanh;
  *
  */
 public final class Ops {
+	public static final Op ABS=Absolute.INSTANCE;
+	public static final Op SIGNUM=Signum.INSTANCE;
 	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
 	public static final Op IDENTITY=Identity.INSTANCE;
 	public static final Op LINEAR=Identity.INSTANCE;
@@ -31,13 +40,16 @@ public final class Ops {
 	public static final Op TANH=Tanh.INSTANCE;
 	public static final Op SOFTPLUS=SoftPlus.INSTANCE;
 	public static final Op NEGATE=Linear.create(-1.0, 0.0);
-	public static final Op SQUARE = Quadratic.create(1.0, 0.0, 0.0);
-	public static final Op SQRT = Power.create(0.5);
+	public static final Op SQUARE = Square.INSTANCE;
+	public static final Op SQRT = Sqrt.INSTANCE;
 	public static final Op CBRT = Power.create(1.0/3.0);
 	public static final Op RBF_NORMAL = NormalRBF.INSTANCE;
-	public static final Op TO_DEGREES = Linear.create(180.0/Math.PI, 0.0);
-	public static final Op TO_RADIANS = Linear.create(Math.PI/180.0, 0.0);
-	public static final Op EXP = new Exp();
+	public static final Op TO_DEGREES = Linear.create(360.0/Maths.TAU, 0.0);
+	public static final Op TO_RADIANS = Linear.create(Maths.TAU/360.0, 0.0);
+	
+	public static final Op EXP = Exp.INSTANCE;
+	public static final Op LOG = Log.INSTANCE;
+	public static final Op LOG10 = LogN.LOG10;
 	
 	public static final Op RECIPROCAL = new AFunctionOp() {
 		@Override
@@ -59,6 +71,41 @@ public final class Ops {
 		@Override public boolean hasInverse() {return true;}
 		@Override public Op getInverse() {return this;}
 		@Override public boolean hasDerivative() {return true;}
+	};
+	
+	public static final ARoundingOp CEIL=new ARoundingOp() {
+		@Override
+		public double apply(double x) {
+			return Math.ceil(x);
+		}		
+	};
+	
+	public static final ARoundingOp FLOOR=new ARoundingOp() {
+		@Override
+		public double apply(double x) {
+			return Math.floor(x);
+		}		
+	};
+	
+	public static final ARoundingOp RINT=new ARoundingOp() {
+		@Override
+		public double apply(double x) {
+			return Math.rint(x);
+		}		
+	};
+	
+	public static final AFunctionOp COSH=new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return Math.cosh(x);
+		}		
+	};
+	
+	public static final AFunctionOp SINH=new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return Math.cosh(x);
+		}		
 	};
 	
 	public static final Op SIN = new AFunctionOp() {
@@ -105,6 +152,24 @@ public final class Ops {
 		@Override public Op getDerivativeOp() {return Ops.negate(SIN);}
 	};
 	
+	public static final Op TAN = new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return Math.tan(x);
+		}
+		
+		@Override
+		public double derivative(double x) {
+			double sec=1.0/Math.cos(x);
+			return sec*sec;
+		}
+		
+		@Override
+		public double derivativeForOutput(double y) {
+			return derivative(Math.atan(y));
+		}
+	};
+	
 	public static final Op ACOS = new AFunctionOp() {
 		@Override
 		public double apply(double x) {
@@ -122,6 +187,8 @@ public final class Ops {
 		}
 		
 		@Override public boolean hasDerivative() {return true;}
+		@Override public boolean hasInverse() {return true;}
+		@Override public Op getInverse() {return COS;}
 		@Override public double minValue() {return -Math.PI;}
 		@Override public double maxValue() {return Math.PI;}
 		@Override public double minDomain() {return -1.0;}
@@ -145,10 +212,35 @@ public final class Ops {
 		}
 		
 		@Override public boolean hasDerivative() {return true;}
+		@Override public boolean hasInverse() {return true;}
+		@Override public Op getInverse() {return SIN;}
 		@Override public double minValue() {return -Math.PI;}
 		@Override public double maxValue() {return Math.PI;}
 		@Override public double minDomain() {return -1.0;}
 		@Override public double maxDomain() {return 1.0;}
+	};
+	
+	public static final Op ATAN = new AFunctionOp() {
+		@Override
+		public double apply(double x) {
+			return Math.atan(x);
+		}
+		
+		@Override
+		public double derivative(double x) {
+			return 1.0/(1.0+x*x);
+		}
+		
+		@Override
+		public double derivativeForOutput(double y) {
+			return derivative(Math.tan(y));
+		}
+		
+		@Override public boolean hasDerivative() {return true;}
+		@Override public boolean hasInverse() {return true;}
+		@Override public Op getInverse() {return TAN;}
+		@Override public double minValue() {return -Math.PI;}
+		@Override public double maxValue() {return Math.PI;}
 	};
 	
 	public static Op negate(Op op) {
@@ -161,5 +253,13 @@ public final class Ops {
 
 	public static Op product(Op a, Op b) {
 		return a.product(b);
+	}
+	
+	public static Op sum(Op a, Op b) {
+		return a.sum(b);
+	}
+	
+	public static Op divide(Op a, Op b) {
+		return a.divide(b);
 	}
 }

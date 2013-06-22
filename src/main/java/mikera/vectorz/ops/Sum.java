@@ -2,7 +2,7 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
-public class Sum extends Op {
+public final class Sum extends Op {
 	public final Op a;
 	public final Op b;
 	
@@ -42,6 +42,11 @@ public class Sum extends Op {
 	@Override
 	public Op getDerivativeOp() {
 		return a.getDerivativeOp().sum(b.getDerivativeOp());
+	}
+	
+	@Override
+	public boolean isStochastic() {
+		return a.isStochastic()||b.isStochastic();
 	}
 	
 	@Override public String toString() {

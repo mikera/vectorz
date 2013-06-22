@@ -2,6 +2,11 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
+/**
+ * Operator representing the inverse of another operator
+ * 
+ * @author Mike
+ */
 public class Inverse extends Op {
 	private final Op op;
 	

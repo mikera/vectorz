@@ -4,6 +4,7 @@ import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Abstract base class for diagonal matrices
@@ -130,5 +131,11 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	public double density() {
 		return 1.0/dimensions;
 	}
-
+	
+	@Override
+	public void validate() {
+		if (dimensions!=getLeadingDiagonal().length()) throw new VectorzException("dimension mismatch: "+dimensions);
+		
+		super.validate();
+	}
 }

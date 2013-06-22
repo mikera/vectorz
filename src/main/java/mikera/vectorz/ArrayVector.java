@@ -282,6 +282,13 @@ public abstract class ArrayVector extends AVector {
 		DoubleArrays.square(getArray(), getArrayOffset(), length());	
 	}
 	
+	/**
+	 * Sets each component of the vector to its sign value (-1, 0 or 1)
+	 */
+	public void signum() {
+		DoubleArrays.signum(getArray(), getArrayOffset(), length());	
+	}
+	
 	@Override
 	public void multiply(AVector v) {
 		v.multiplyTo(getArray(), getArrayOffset());

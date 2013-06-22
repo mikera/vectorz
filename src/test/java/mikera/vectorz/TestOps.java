@@ -49,6 +49,46 @@ public class TestOps {
 		assertEquals(0.0, op.derivative(1000.0),0.0001);
 	}
 	
+	@Test public void testLog10() {
+		Op op=Ops.LOG10;
+		assertEquals(1.0, op.apply(10),0.0001);
+		assertEquals(0.0, op.apply(1),0.0001);
+		assertEquals(-1.0, op.apply(0.1),0.0001);
+		
+		assertEquals(10.0, op.applyInverse(1),0.0001);
+		assertEquals(1.0, op.applyInverse(0),0.0001);
+		assertEquals(0.1, op.applyInverse(-1),0.0001);
+
+	}
+	
+	@Test public void testAbs() {
+		Op op=Ops.ABS;
+		Vector v=Vector.of(-1,2,-3);
+		op.applyTo(v);
+		assertEquals(Vector.of(1,2,3),v);
+	}
+	
+	@Test public void testFunctions() {
+		assertEquals(1.0,Ops.ABS.apply(-1),0.0001);
+		assertEquals(1.0,Ops.SIN.apply(Math.PI*0.5),0.0001);
+		assertEquals(1.0,Ops.COS.apply(0),0.0001);
+		assertEquals(1.0,Ops.TAN.apply(Math.PI*0.25),0.0001);
+		assertEquals(9.0,Ops.SQUARE.apply(3.0),0.0001);
+		assertEquals(3.0,Ops.SQRT.apply(9.0),0.0001);
+		assertEquals(3.0,Ops.CEIL.apply(2.1),0.0001);
+		assertEquals(-3.0,Ops.FLOOR.apply(-2.1),0.0001);
+		assertEquals(-3.0,Ops.RINT.apply(-3.4),0.0001);
+		assertEquals(2.0,Ops.CBRT.apply(8.0),0.0001);
+		assertEquals(1.0,Ops.SIGNUM.apply(801.0),0.0001);
+		assertEquals(0.25,Ops.RECIPROCAL.apply(4.0),0.0001);
+		assertEquals(1.25,Ops.LINEAR.apply(1.25),0.0001);
+		assertEquals(1.25,Ops.IDENTITY.apply(1.25),0.0001);
+		assertEquals(Math.E,Ops.EXP.apply(1.0),0.0001);
+		assertEquals(2.0,Ops.LOG.apply(Math.E*Math.E),0.0001);
+		assertEquals(3.0,Ops.LOG10.apply(1000),0.0001);
+		assertEquals(0.5,Ops.LOGISTIC.apply(0.0),0.0001);
+	}
+	
 	@Test public void testSoftplus() {
 		Op op=Ops.SOFTPLUS;
 		assertEquals(0.0, op.apply(-1000),0.0001);
@@ -128,6 +168,7 @@ public class TestOps {
 	
 	private void testDerivative(Op op) {
 		double x=Rand.nextGaussian()*100;
+		if (x<op.minDomain()) x=-x;
 		double y=op.apply(x);
 		if (op.hasDerivative()) {
 			op.derivative(x);
@@ -241,12 +282,18 @@ public class TestOps {
 		
 		doOpTest(Clamp.ZERO_TO_ONE);
 		
+		doOpTest(Ops.ABS);
+		doOpTest(Ops.SIGNUM);
+		doOpTest(Ops.CEIL);
+		doOpTest(Ops.FLOOR);
+		doOpTest(Ops.RINT);
+		
 		doOpTest(Ops.LINEAR);
 		doOpTest(Ops.LOGISTIC);
 		doOpTest(Ops.SCALED_LOGISTIC);
 		doOpTest(Ops.STOCHASTIC_BINARY);
 		doOpTest(Ops.STOCHASTIC_LOGISTIC);
-		doOpTest(Ops.TANH);
+		
 		doOpTest(Ops.SOFTPLUS);
 		doOpTest(Ops.RECTIFIER);
 		doOpTest(Ops.RBF_NORMAL);
@@ -258,11 +305,20 @@ public class TestOps {
 		doOpTest(Ops.TO_RADIANS);
 
 		doOpTest(Ops.EXP);
+		doOpTest(Ops.LOG);
+		doOpTest(Ops.LOG10);
+
+		doOpTest(Ops.TANH);
+		doOpTest(Ops.COSH);
+		doOpTest(Ops.SINH);
+		
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);
+		doOpTest(Ops.TAN);
 
 		doOpTest(Ops.ACOS);
 		doOpTest(Ops.ASIN);
+		doOpTest(Ops.ATAN);
 
 		doOpTest(Power.create(0.5));
 		doOpTest(Power.create(1));
@@ -274,8 +330,9 @@ public class TestOps {
 		doOpTest(Quadratic.create(2, 3, 4));
 		doOpTest(Quadratic.create(0, 3, 4));
 		
-		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));
-		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));
+		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));	
+		doOpTest(Ops.LINEAR.divide(Quadratic.create(0, 3, 4)));
+
 		
 		doComposeTest(Linear.create(0.31, 0.12),Linear.create(-100, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));

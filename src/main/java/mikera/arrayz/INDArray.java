@@ -71,6 +71,7 @@ public interface INDArray extends Cloneable {
 	
 	public void add(INDArray a);
 	public void sub(INDArray a);
+	public void negate();
 
 	public INDArray innerProduct(INDArray a);
 	
@@ -86,8 +87,10 @@ public interface INDArray extends Cloneable {
 
 	public INDArray broadcast(int... dimensions);
 
-	
 	public INDArray slice(int majorSlice);
+
+	public INDArray slice(int dimension, int index);
+
 	
 	public int sliceCount();
 	
@@ -96,6 +99,18 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public long elementCount();
+	
+	/**
+	 * Returns the total sum of elements in this array.
+	 * @return
+	 */
+	public double elementSum();
+	
+	/**
+	 * Multiplies all elements by the equivalent elements in a second array
+	 * @return
+	 */
+	public void multiply(INDArray a);
 	
 	/**
 	 * Returns the number of non-zero elements in the array.
@@ -205,4 +220,13 @@ public interface INDArray extends Cloneable {
 	 * @param arr
 	 */
 	public void copyTo(double[] arr);
+
+	/**
+	 * Returns a list of slices as mutable INDArray views.
+	 * 
+	 * Note: will return a list of AScalar values when this array is a 1D vector
+	 * 
+	 * @return
+	 */
+	public List<INDArray> getSliceViews();
 }

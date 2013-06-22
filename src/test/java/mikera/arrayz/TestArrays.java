@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
 import static org.junit.Assert.*;
@@ -163,6 +164,15 @@ public class TestArrays {
 		assertEquals(a,Arrayz.load(new StringReader(s)));
 	}
 	
+	private void testMultiply(INDArray a) {
+		if (!a.isFullyMutable()) return;
+		INDArray m=a.exactClone();
+		
+		m.multiply(2.0);
+		m.multiply(DoubleScalar.create(0.5));
+		assertEquals(a,m);
+	}
+	
 	private void testBroadcast(INDArray a) {
 		int dims=a.dimensionality();
 		int[] ts=new int[dims+2];
@@ -184,6 +194,7 @@ public class TestArrays {
 		a.validate();
 		testAsVector(a);
 		testToArray(a);
+		testMultiply(a);
 		testApplyOp(a);
 		testSetElements(a);
 		testGetElements(a);
@@ -201,8 +212,11 @@ public class TestArrays {
 		SliceArray<AVector> sa=SliceArray.create(Vectorz.createUniformRandomVector(10),Vectorz.createUniformRandomVector(10));
 		testArray(sa);
 		
-		NDArray nd1=new NDArray(3,3,3);
+		NDArray nd1=NDArray.newArray(3,3,3);
 		testArray(nd1);
 		
+		NDArray ndscalar=NDArray.newArray();
+		testArray(ndscalar);
+
 	}
 }

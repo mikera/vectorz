@@ -52,6 +52,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public INDArray slice(int dimension, int index) {
+		throw new UnsupportedOperationException("Can't slice a scalar!");
+	}	
+	
+	@Override
 	public int sliceCount() {
 		return 0;
 	}
@@ -112,6 +117,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	public void sub(AScalar s) {
 		set(get()-s.get());
+	}
+	
+	public void netage() {
+		set(-get());
 	}
 	
 	public INDArray innerProduct(INDArray a) {
@@ -199,6 +208,17 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	@Override 
 	public void multiply(double factor) {
 		set(factor*get());
+	}
+	
+	
+	@Override 
+	public void multiply(INDArray a) {
+		multiply(a.get());
+	}
+	
+	@Override
+	public double elementSum() {
+		return get();
 	}
 	
 	@Override

@@ -106,6 +106,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public INDArray slice(int dimension, int index) {
+		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException("Dimension out of range!");
+		return (dimension==0)?getRow(index):getColumn(index);	
+	}	
+	
+	@Override
 	public int sliceCount() {
 		return rowCount();
 	}
@@ -113,6 +119,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public List<AVector> getSlices() {
 		ArrayList<AVector> al=new ArrayList<AVector>();
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			al.add(getRow(i));
+		}
+		return al;
+	}
+	
+	@Override
+	public List<INDArray> getSliceViews() {	
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			al.add(getRow(i));
@@ -616,6 +632,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		addMultiple(m,-1.0);
 	}
 	
+	@Override
+	public void negate() {
+		multiply(-1.0);
+	}
+	
 	/**
 	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
 	 * @param m
@@ -996,6 +1017,31 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 				for (int i=0; i<rc; i++) {
 					slice(i).add(a.slice(i));
 				}		
+			}
+		}
+	}
+	
+	@Override
+	public void multiply(INDArray a) {
+		if (a instanceof AMatrix) {
+			elementMul((AMatrix)a);
+		} else if (a instanceof AScalar) {
+			multiply(a.get());
+		} else {
+			int dims=a.dimensionality();
+			int rc=rowCount();
+			if (dims==0) {
+				multiply(a.get());
+			} else if (dims==1) {
+				for (int i=0; i<rc; i++) {
+					slice(i).multiply(a);
+				}
+			} else if (dims==2) {
+				for (int i=0; i<rc; i++) {
+					slice(i).multiply(a.slice(i));
+				}		
+			} else {
+				throw new VectorzException("Can't multiply matrix with array of dimensionality: "+dims);
 			}
 		}
 	}
