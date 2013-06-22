@@ -185,10 +185,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void multiply(INDArray a) {
-		int n=sliceCount();
-		int na=a.sliceCount();
 		int dims=dimensionality();
 		int adims=a.dimensionality();
+		if (dims==0) {
+			set(get()*a.get());
+			return;
+		}
+		
+		int n=sliceCount();
+		int na=a.sliceCount();
 		if (dims==adims) {
 			if (n!=na) throw new VectorzException("Non-matching dimensions");
 			for (int i=0; i<n; i++) {
