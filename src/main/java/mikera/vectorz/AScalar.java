@@ -119,6 +119,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(get()-s.get());
 	}
 	
+	public void netage() {
+		set(-get());
+	}
+	
 	public INDArray innerProduct(INDArray a) {
 		a=a.clone();
 		a.scale(get());
