@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import mikera.vectorz.ops.AFunctionOp;
+import mikera.vectorz.ops.Absolute;
 import mikera.vectorz.ops.Clamp;
 import mikera.vectorz.ops.Exp;
 import mikera.vectorz.ops.Identity;
@@ -22,6 +23,7 @@ import mikera.vectorz.ops.Tanh;
  *
  */
 public final class Ops {
+	public static final Op ABS=Absolute.INSTANCE;
 	public static final Op STOCHASTIC_BINARY=StochasticBinary.INSTANCE;
 	public static final Op IDENTITY=Identity.INSTANCE;
 	public static final Op LINEAR=Identity.INSTANCE;
