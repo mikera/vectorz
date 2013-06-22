@@ -70,8 +70,11 @@ public class TestOpsExtra {
 		testDerivativesAt(Quadratic.create(1, 2, 3),0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Linear.create(-11, 2),0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.RECIPROCAL,0.1,-0.1,1,-1,10,-10);
+		
 		testDerivativesAt(Ops.SIN,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.COS,0.1,-0.1,1,-1,10,-10);
+		testDerivativesAt(Ops.TAN,0.1,-0.1,1,-1,10,-10);
+		
 		testDerivativesAt(Ops.NEGATE,0,0.1,-0.1,1,-1,10,-10);
 		testDerivativesAt(Ops.SIN.compose(Ops.EXP),0.1,-0.1,1,-1,2,-2,3,-3);
 		testDerivativesAt(Ops.COS.product(Ops.SOFTPLUS),0.1,-0.1,1,-1,2,-2,3,-3);

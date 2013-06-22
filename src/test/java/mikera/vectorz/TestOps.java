@@ -258,8 +258,10 @@ public class TestOps {
 		doOpTest(Ops.TO_RADIANS);
 
 		doOpTest(Ops.EXP);
+		
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);
+		doOpTest(Ops.TAN);
 
 		doOpTest(Ops.ACOS);
 		doOpTest(Ops.ASIN);
