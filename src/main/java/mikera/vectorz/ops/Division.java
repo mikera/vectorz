@@ -13,9 +13,13 @@ public class Division extends Op {
 	}
 	
 	private static Op tryOptimisedCreate(Op a, Op b) {
+		if (a instanceof Division) {
+			Division d=(Division)a;
+			return Division.create(d.a,Product.create(a, b));
+		}
 		if (b instanceof Division) {
 			Division d=(Division)b;
-			return new Division(Product.create(a,d.b),d.a);
+			return Division.create(Product.create(a,d.b),d.a);
 		}
 		return null;
 	}
