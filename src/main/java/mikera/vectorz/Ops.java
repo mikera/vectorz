@@ -9,6 +9,7 @@ import mikera.vectorz.ops.Exp;
 import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Log;
+import mikera.vectorz.ops.LogN;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Power;
@@ -48,6 +49,7 @@ public final class Ops {
 	
 	public static final Op EXP = Exp.INSTANCE;
 	public static final Op LOG = Log.INSTANCE;
+	public static final Op LOG10 = LogN.LOG10;
 	
 	public static final Op RECIPROCAL = new AFunctionOp() {
 		@Override

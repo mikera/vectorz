@@ -266,6 +266,7 @@ public class TestOps {
 
 		doOpTest(Ops.EXP);
 		doOpTest(Ops.LOG);
+		doOpTest(Ops.LOG10);
 		
 		doOpTest(Ops.SIN);
 		doOpTest(Ops.COS);
