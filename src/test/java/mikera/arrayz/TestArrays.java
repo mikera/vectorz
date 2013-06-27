@@ -172,7 +172,9 @@ public class TestArrays {
 		a.toDoubleBuffer(buf);
 		assertEquals(0,buf.remaining());
 		buf.flip();
-		assertEquals(a.asVector(),Vectorz.create(buf));
+		AVector vv=Vectorz.create(buf);
+		assertEquals(a.asVector(),vv);
+		assertEquals(a,vv.reshape(a.getShape()));
 	}
 	
 	private void testMultiply(INDArray a) {
