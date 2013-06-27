@@ -19,7 +19,7 @@ import mikera.vectorz.util.VectorzException;
  *
  * @param <T>
  */
-public class SliceArray<T extends INDArray> extends AbstractArray<T> {
+public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	private final int[] shape;
 	private final long[] longShape;
 	private final T[] slices;
