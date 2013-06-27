@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
@@ -259,6 +260,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	@Override
 	public String toString() {
 		return Double.toString(get());
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(get());
 	}
 	
 	@Override

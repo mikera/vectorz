@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -972,6 +973,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 		return v;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		int n=rowCount();
+		for (int i=0; i<n; i++) {
+			getRow(i).toDoubleBuffer(dest);
+		}
 	}
 	
 	@Override

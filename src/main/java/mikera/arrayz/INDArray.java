@@ -1,5 +1,6 @@
 package mikera.arrayz;
 
+import java.nio.DoubleBuffer;
 import java.util.List;
 
 import mikera.vectorz.AVector;
@@ -220,6 +221,12 @@ public interface INDArray extends Cloneable {
 	 * @param arr
 	 */
 	public void copyTo(double[] arr);
+	
+	/**
+	 * Copies the elements of this INDArray to the specified double buffer
+	 * @param arr
+	 */
+	public void toDoubleBuffer(DoubleBuffer dest);
 
 	/**
 	 * Returns a list of slices as mutable INDArray views.

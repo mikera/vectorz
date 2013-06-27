@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
@@ -178,6 +179,11 @@ public final class Matrix extends AMatrix {
 	@Override
 	public Vector asVector() {
 		return Vector.wrap(data);
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(data,0,data.length);
 	}
 
 	@Override
