@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
+
 /**
  * Specialised 2D vector
  * 
@@ -123,6 +125,12 @@ public final class Vector2 extends APrimitiveVector {
 	public void copyTo(double[] data, int offset) {
 		data[offset]=x;
 		data[offset+1]=y;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(x);
+		dest.put(y);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
+
 /**
  * Specialised 3D vector
  * 
@@ -305,6 +307,13 @@ public final class Vector3 extends APrimitiveVector {
 		data[offset]=x;
 		data[offset+1]=y;
 		data[offset+2]=z;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(x);
+		dest.put(y);
+		dest.put(z);
 	}
 	
 	@Override

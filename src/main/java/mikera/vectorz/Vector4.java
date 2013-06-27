@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
+
 /**
  * Specialised 4D vector
  * 
@@ -179,6 +181,14 @@ public final class Vector4 extends APrimitiveVector {
 		data[offset+1]=y;
 		data[offset+2]=z;
 		data[offset+3]=t;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(x);
+		dest.put(y);
+		dest.put(z);
+		dest.put(t);
 	}
 	
 	@Override
