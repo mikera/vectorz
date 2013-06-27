@@ -16,9 +16,13 @@ import com.google.caliper.SimpleBenchmark;
 public class ListBenchmark extends SimpleBenchmark {
 	int result;
 	
+	int LIST_SIZE=8;
+	//int LIST_SIZE=320;
+	
+	// about 13ns per iteration
 	public void timeIndexed(int runs) {
 		ArrayList<Integer> calc = new ArrayList<Integer>();
-		for (int i=0; i<8; i++) calc.add(i);
+		for (int i=0; i<LIST_SIZE; i++) calc.add(i);
 		
 		for (int i=0; i<runs; i++) {
 			int n=calc.size(); 
@@ -28,9 +32,21 @@ public class ListBenchmark extends SimpleBenchmark {
 		}
 	}
 	
+	public void timeIndexedWithSize(int runs) {
+		ArrayList<Integer> calc = new ArrayList<Integer>();
+		for (int i=0; i<LIST_SIZE; i++) calc.add(i);
+		
+		for (int i=0; i<runs; i++) {
+			for (int j=2; j<calc.size(); j++) {
+				result+=calc.get(j);
+			}
+		}
+	}
+	
+	// about 33 ns per iteration
 	public void timeIterator(int runs) {
 		ArrayList<Integer> calc = new ArrayList<Integer>();
-		for (int i=0; i<8; i++) calc.add(i);
+		for (int i=0; i<LIST_SIZE; i++) calc.add(i);
 		
 		for (int i=0; i<runs; i++) {
 			int n=calc.size(); 
