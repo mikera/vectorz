@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.io.StringReader;
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -164,6 +165,16 @@ public class TestArrays {
 		assertEquals(a,Arrayz.load(new StringReader(s)));
 	}
 	
+	private void testBufferRoundTrip(INDArray a) {
+		int len=(int) a.elementCount();
+		DoubleBuffer buf=DoubleBuffer.allocate(len);
+		assertEquals(len,buf.remaining());
+		a.toDoubleBuffer(buf);
+		assertEquals(0,buf.remaining());
+		buf.flip();
+		assertEquals(a.asVector(),Vectorz.create(buf));
+	}
+	
 	private void testMultiply(INDArray a) {
 		if (!a.isFullyMutable()) return;
 		INDArray m=a.exactClone();
@@ -205,6 +216,7 @@ public class TestArrays {
 		testMutability(a);
 		testSlices(a);
 		testParserRoundTrip(a);
+		testBufferRoundTrip(a);
 	}
 
 	@Test

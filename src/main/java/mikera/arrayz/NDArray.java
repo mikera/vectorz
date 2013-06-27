@@ -1,5 +1,6 @@
 package mikera.arrayz;
 
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -396,6 +397,20 @@ public final class NDArray extends AbstractArray<INDArray> {
 			}
 		}
 	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		if (dimensions==0) {
+			dest.put(data[offset]);
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				INDArray s=slice(i);
+				s.toDoubleBuffer(dest);
+			}
+		}
+	}
+
 
 	@Override
 	public List<INDArray> getSlices() {
