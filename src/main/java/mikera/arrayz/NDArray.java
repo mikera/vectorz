@@ -220,7 +220,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 			st*=d;
 		}
 			
-		return st==data.length;
+		return (st==data.length);
 	}
 
 	@Override
@@ -402,6 +402,8 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		if (dimensions==0) {
 			dest.put(data[offset]);
+		} else if (fittedDataArray()) {
+			dest.put(data,0,data.length);
 		} else {
 			int sc=sliceCount();
 			for (int i=0; i<sc; i++) {
