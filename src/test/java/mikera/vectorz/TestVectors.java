@@ -515,6 +515,7 @@ public class TestVectors {
 	}
 	
 	public void testVectorMutability(AVector v) {
+		v=v.exactClone();
 		if (v.isFullyMutable()) {
 			assertTrue(v.isMutable());
 			for (int i=0; i<v.length(); i++) {
