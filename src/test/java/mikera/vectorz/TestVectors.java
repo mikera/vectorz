@@ -452,7 +452,7 @@ public class TestVectors {
 		assertEquals(c,v);
 	}
 	
-	public void testOutOfBounds(AVector v) {
+	private void testOutOfBoundsSet(AVector v) {
 		if (!v.isFullyMutable()) return;
 		try {
 			v.set(-1, 0.0);
@@ -470,6 +470,23 @@ public class TestVectors {
 		}
 	}
 	
+	
+	private void testOutOfBoundsGet(AVector v) {
+		try {
+			v.get(-1);
+			fail("Should be out of bounds!");
+		} catch (Throwable x) {
+			// OK!
+		}
+		
+		try {
+			if (v instanceof GrowableVector) return;
+			v.get(v.length());
+			fail("Should be out of bounds!");
+		} catch (Throwable x) {
+			// OK!
+		}
+	}
 	public void testSubVectorMutability(AVector v) {
 		// defensive copy
 		v=v.clone();
@@ -669,7 +686,8 @@ public class TestVectors {
 		testHashCode(v);
 		testAsList(v);
 		testIterator(v);
-		testOutOfBounds(v);
+		testOutOfBoundsSet(v);
+		testOutOfBoundsGet(v);
 		
 		doNonDegenerateTests(v);
 		
