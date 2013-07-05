@@ -48,6 +48,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 		assert(column<dimensions);
 		return (row==column)?1.0:0.0;
 	}
+	
+	public double getDiagonalValue(int i) {
+		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException("Getting diagonal value out of bounds: "+i);
+		return 1.0;
+	}
 
 	@Override
 	public void set(int row, int column, double value) {
