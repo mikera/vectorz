@@ -185,6 +185,32 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void add(double a) {
+		int dims=dimensionality();
+		if (dims ==0) {
+			set(a+get());
+		} else {
+			int n=sliceCount();
+			for (int i=0; i<n; i++) {
+				slice(i).add(a);
+			}	
+		}
+	}
+	
+	@Override
+	public void sub(double a) {
+		int dims=dimensionality();
+		if (dims ==0) {
+			set(get()-a);
+		} else {
+			int n=sliceCount();
+			for (int i=0; i<n; i++) {
+				slice(i).sub(a);
+			}	
+		}
+	}
+	
+	@Override
 	public void multiply(INDArray a) {
 		int dims=dimensionality();
 		if (dims==0) {set(get()*a.get()); return;}

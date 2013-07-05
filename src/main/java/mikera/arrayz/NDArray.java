@@ -173,6 +173,11 @@ public final class NDArray extends AbstractArray<INDArray> {
 	}
 
 	@Override
+	public void add(double a) {
+		super.add(a);
+	}
+	
+	@Override
 	public void add(INDArray a) {
 		super.add(a);
 	}

@@ -70,6 +70,8 @@ public interface INDArray extends Cloneable {
 	public void set(INDArray a);
 	public void set(Object o);
 	
+	public void add(double a);
+	public void sub(double a);
 	public void add(INDArray a);
 	public void sub(INDArray a);
 	public void negate();
