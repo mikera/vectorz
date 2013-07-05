@@ -108,6 +108,7 @@ public class TestArrays {
 	private void testSetElements(INDArray a) {
 		if (!a.isFullyMutable()) return;
 		
+		a=a.exactClone();
 		INDArray c=a.clone();
 		a.set(Double.NaN);
 		
@@ -138,8 +139,9 @@ public class TestArrays {
 	}
 	
 	private void testApplyOp(INDArray a) {
-		INDArray c=a.clone();
-		INDArray d=a.clone();
+		if (!a.isFullyMutable()) return;
+		INDArray c=a.exactClone();
+		INDArray d=a.exactClone();
 		
 		c.asVector().fill(5.0);
 		d.applyOp(Constant.create(5.0));
