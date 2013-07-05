@@ -234,7 +234,7 @@ public interface INDArray extends Cloneable {
 	public void validate();
 
 	/**
-	 * Copies the elements of this INDArray to the specified double array
+	 * Copies all the elements of this INDArray to the specified double array
 	 * @param arr
 	 */
 	public void copyTo(double[] arr);
