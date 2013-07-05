@@ -100,6 +100,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(get()+s.get());
 	}
 	
+	@Override
 	public void add(INDArray a) {
 		if (a instanceof AScalar) {
 			add(a.get());
@@ -108,6 +109,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		}
 	}
 	
+	@Override
 	public void sub(INDArray a) {
 		if (a instanceof AScalar) {
 			sub(a.get());
