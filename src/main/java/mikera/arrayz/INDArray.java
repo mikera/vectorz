@@ -63,9 +63,14 @@ public interface INDArray extends Cloneable {
 	 */
 	public double get(int... indexes);
 
+	/**
+	 * Sets all elements of an array to a specific double value
+	 * @param value
+	 */
 	public void set(double value);
-	public void set(int x, double value);
-	public void set(int x, int y, double value);
+	
+	public void set(int i, double value);
+	public void set(int i, int j, double value);
 	public void set(int[] indexes, double value);
 	public void set(INDArray a);
 	public void set(Object o);
@@ -76,8 +81,18 @@ public interface INDArray extends Cloneable {
 	public void sub(INDArray a);
 	public void negate();
 
+	/**
+	 * Calculates the inner product of this array with another array.
+	 * @param a
+	 * @return
+	 */
 	public INDArray innerProduct(INDArray a);
 	
+	/**
+	 * Calculates the outer product of this array with another array.
+	 * @param a
+	 * @return
+	 */
 	public INDArray outerProduct(INDArray a);
 	
 	/**
