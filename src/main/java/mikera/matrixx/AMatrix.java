@@ -570,6 +570,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}		
 	}
 	
+	@Override
 	public void sub(double d) {
 		add(-d);
 	}
@@ -1079,6 +1080,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 	}
 
+	@Override
 	public void add(double d) {
 		int rc = rowCount();
 		int cc = columnCount();

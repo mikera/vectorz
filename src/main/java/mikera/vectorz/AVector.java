@@ -938,6 +938,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addMultiple(v,-1.0);
 	}
 	
+	@Override
 	public void sub(double d) {
 		add(-d);
 	}
@@ -1161,6 +1162,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		add(constant);
 	}
 
+	@Override
 	public void add(double constant) {
 		int len=length();
 		for (int i=0; i<len; i++) {
