@@ -531,14 +531,16 @@ public class TestVectors {
 	
 	
 	private void testZero(AVector v) {
-		v=v.clone();
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
 		v.multiply(0.0);
 		assertTrue(v.isZeroVector());
 	}
 	
 
 	private void testNormalise(AVector v) {
-		v=v.clone();
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
 		
 		v.set(0,v.get(0)+Math.random());
  
@@ -551,7 +553,8 @@ public class TestVectors {
 	}
 	
 	private void testFilling(AVector v) {
-		v=v.clone();
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
 		v.fill(1.23);
 		assertEquals(1.23,Vectorz.minValue(v),0.0);
 		assertEquals(1.23,Vectorz.maxValue(v),0.0);
