@@ -142,6 +142,12 @@ public final class Vector2 extends APrimitiveVector {
 		}
 	}
 	
+	@Override 
+	public void set(double v) {
+		x=v;
+		y=v;
+	}
+	
 	@Override
 	public void addAt(int i, double value) {
 		switch (i) {

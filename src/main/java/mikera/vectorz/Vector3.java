@@ -268,6 +268,13 @@ public final class Vector3 extends APrimitiveVector {
 		y=v.get(1);
 		z=v.get(2);
 	}
+	
+	@Override 
+	public void set(double v) {
+		x=v;
+		y=v;
+		z=v;
+	}
 
 	@Override
 	public void set(int i, double value) {

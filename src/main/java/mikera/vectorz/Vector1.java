@@ -63,6 +63,11 @@ public final class Vector1 extends APrimitiveVector {
 		}
 	}
 	
+	@Override 
+	public void set(double v) {
+		x=v;
+	}
+	
 	@Override
 	public void copyTo(double[] data, int offset) {
 		data[offset]=x;
