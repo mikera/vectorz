@@ -164,7 +164,7 @@ public final class Vector4 extends APrimitiveVector {
 		case 1: y+=value; return;
 		case 2: z+=value; return;
 		case 3: t+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: i");
+		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	

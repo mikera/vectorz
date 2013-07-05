@@ -153,7 +153,7 @@ public final class Vector2 extends APrimitiveVector {
 		switch (i) {
 		case 0: x+=value; return;
 		case 1: y+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: i");
+		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	

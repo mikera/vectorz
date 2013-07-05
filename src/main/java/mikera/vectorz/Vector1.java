@@ -77,7 +77,7 @@ public final class Vector1 extends APrimitiveVector {
 	public void addAt(int i, double value) {
 		switch (i) {
 		case 0: x+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: i");
+		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	

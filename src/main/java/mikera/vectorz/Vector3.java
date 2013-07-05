@@ -292,7 +292,7 @@ public final class Vector3 extends APrimitiveVector {
 		case 0: x+=value; return;
 		case 1: y+=value; return;
 		case 2: z+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: i");
+		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	
