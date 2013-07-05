@@ -24,6 +24,10 @@ public class AxisVector extends ComputedVector implements ISparse {
 		this.length=length;
 	}
 	
+	public static AxisVector create(int axisIndex, int dimensions) {
+		return new AxisVector(axisIndex,dimensions);
+	}
+	
 	@Override
 	public int length() {
 		return length;
@@ -123,4 +127,6 @@ public class AxisVector extends ComputedVector implements ISparse {
 		if ((axis<0)||(axis>length)) throw new VectorzException("Axis index out of bounds");
 		super.validate();
 	}
+
+
 }
