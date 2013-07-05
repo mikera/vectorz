@@ -120,7 +120,8 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(get()-s.get());
 	}
 	
-	public void netage() {
+	@Override
+	public void negate() {
 		set(-get());
 	}
 	
