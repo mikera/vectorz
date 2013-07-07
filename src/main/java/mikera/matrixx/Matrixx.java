@@ -459,6 +459,16 @@ public class Matrixx {
 	public static AMatrix create(Object[] vs) {
 		return create(Arrays.asList(vs));
 	}
+	
+	public static Matrix create(double[][] data) {
+		int rows=data.length;
+		int cols=data[0].length;
+		Matrix m=Matrix.create(rows,cols);
+		for (int i=0; i<rows; i++) {
+			System.arraycopy(data[i], 0, m.data, i*cols, cols);
+		}
+		return m;
+	}
 
 
 }

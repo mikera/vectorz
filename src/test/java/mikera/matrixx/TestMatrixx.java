@@ -150,6 +150,13 @@ public class TestMatrixx {
 		}
 	}
 	
+	@Test
+	public void testFromDoubleArrays() {
+		double[][] dat=new double[][] {{1,2},{3,4}};
+		Matrix m=Matrixx.create(dat);
+		assertEquals(2,m.rowCount());
+		assertEquals(Vector.of(1,2,3,4),m.toVector());
+	}
 
 	@Test
 	public void testScale() {
