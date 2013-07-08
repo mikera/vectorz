@@ -58,6 +58,7 @@ public class TestVectors {
 	}
 	
 	public void testSquare(AVector v) {
+		if (!v.isMutable()) return;
 		v=v.exactClone();
 		AVector vc=v.clone();
 		v.square();
