@@ -471,7 +471,7 @@ public class Matrixx {
 		return VectorMatrixMN.wrap(svs);
 	}
 
-	public static AMatrix create(Object[] vs) {
+	public static AMatrix create(Object... vs) {
 		return create(Arrays.asList(vs));
 	}
 

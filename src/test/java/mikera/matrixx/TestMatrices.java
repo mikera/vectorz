@@ -39,6 +39,14 @@ public class TestMatrices {
 		AMatrix m2=DiagonalMatrix.create(Vector.of (1,2,3));
 		assertTrue(m2.isUpperTriangular());
 		assertTrue(m2.isLowerTriangular());
+		
+		AMatrix mut=Matrixx.create(Vector.of (1,2),Vector.of (0,4));
+		assertTrue(mut.isUpperTriangular());
+		assertTrue(!mut.isLowerTriangular());
+
+		AMatrix mlt=Matrixx.create(Vector.of (1,0),Vector.of (3,4));
+		assertTrue(!mlt.isUpperTriangular());
+		assertTrue(mlt.isLowerTriangular());
 	}
 	
 	@Test public void testDiagonalMatrix() {
