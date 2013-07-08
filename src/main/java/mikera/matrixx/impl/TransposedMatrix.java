@@ -65,6 +65,21 @@ public class TransposedMatrix extends DelegatedMatrix {
 		return source.determinant();
 	}
 	
+	@Override
+	public boolean isSymmetric() {
+		return source.isSymmetric();
+	}
+	
+	@Override
+	public boolean isUpperTriangular() {
+		return source.isLowerTriangular();
+	}
+	
+	@Override
+	public boolean isLowerTriangular() {
+		return source.isUpperTriangular();
+	}
+	
 	@Override 
 	public AMatrix getTranspose() {
 		// Transposing again just gets us back to the original source matrix
