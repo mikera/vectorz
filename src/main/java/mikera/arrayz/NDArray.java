@@ -46,7 +46,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		}
 	}
 	
-	public NDArray(double[] data, int offset, int[] shape, int[] stride) {
+	private NDArray(double[] data, int offset, int[] shape, int[] stride) {
 		this.data=data;
 		this.offset=offset;
 		this.shape=shape;
@@ -54,7 +54,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		this.dimensions=shape.length;
 	}
 	
-	public NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
+	private NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
 		this.data=data;
 		this.offset=offset;
 		this.shape=shape;
