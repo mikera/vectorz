@@ -464,8 +464,15 @@ public class TestMatrixx {
 	
 	private void doTriangularTests(AMatrix m) {
 		boolean sym=m.isSymmetric();
+		boolean diag=m.isDiagonal();
 		boolean uppt=m.isUpperTriangular();
 		boolean lowt=m.isLowerTriangular();
+		
+		if (diag) {
+			assertTrue(sym);
+			assertTrue(uppt);
+			assertTrue(lowt);
+		}
 		
 		if (sym) {
 			assertTrue(m.isSquare());
@@ -473,7 +480,7 @@ public class TestMatrixx {
 		} 
 		
 		if (sym&uppt&lowt) {
-			assertTrue(m.isDiagonal());
+			assertTrue(diag);
 		}
 		
 		if (uppt) {
