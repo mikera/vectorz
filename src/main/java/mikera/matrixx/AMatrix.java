@@ -1143,6 +1143,32 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		return true;
 	}
+	
+	/**
+	 * Returns true if a matrix is upper triangular
+	 */
+	public boolean isUpperTriangular() {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			for (int j=i+1; j<rc; j++) {
+				if (get(j,i)!=0.0) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true if a matrix is lower triangular
+	 */
+	public boolean isLowerTriangular() {
+		int cc=columnCount();
+		for (int i=0; i<cc; i++) {
+			for (int j=i+1; j<cc; j++) {
+				if (get(i,j)!=0.0) return false;
+			}
+		}
+		return true;
+	}
 
 	public abstract AMatrix exactClone();
 	

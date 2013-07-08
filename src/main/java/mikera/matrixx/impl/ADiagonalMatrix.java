@@ -34,6 +34,16 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public boolean isUpperTriangular() {
+		return true;
+	}
+	
+	@Override
+	public boolean isLowerTriangular() {
+		return true;
+	}
+	
+	@Override
 	public abstract boolean isMutable();
 	
 	@Override
