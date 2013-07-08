@@ -1130,7 +1130,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
-	 * Returns true if a matrix is positive definite
+	 * Returns true if a matrix is symmetric
 	 */
 	public boolean isSymmetric() {
 		int rc=rowCount();
