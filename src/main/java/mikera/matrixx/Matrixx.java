@@ -34,20 +34,20 @@ public class Matrixx {
 	 * Creates an mutable identity matrix
 	 */
 	public static AMatrix createIdentityMatrix(int dimensions) {
-		AMatrix m= newMatrix(dimensions,dimensions);
-		for (int i=0; i<dimensions; i++) {
-			m.set(i,i,1.0);
+		AMatrix m = newMatrix(dimensions, dimensions);
+		for (int i = 0; i < dimensions; i++) {
+			m.set(i, i, 1.0);
 		}
-		return m;	
+		return m;
 	}
-	
+
 	/**
 	 * Creates an immutable identity matrix
 	 */
 	public static IdentityMatrix createImmutableIdentityMatrix(int dimensions) {
 		return IdentityMatrix.create(dimensions);
 	}
-	
+
 	/**
 	 * Coerces to a matrix
 	 */
@@ -55,115 +55,120 @@ public class Matrixx {
 		if (o instanceof AMatrix) {
 			return (AMatrix) o;
 		} else if (o instanceof AVector) {
-			return ColumnMatrix.wrap((AVector)o);
-	    } else if (o instanceof Iterable<?>) {
-			ArrayList<AVector> al=new ArrayList<AVector>();
-			for (Object obj: (Iterable<?>)o) {
+			return ColumnMatrix.wrap((AVector) o);
+		} else if (o instanceof Iterable<?>) {
+			ArrayList<AVector> al = new ArrayList<AVector>();
+			for (Object obj : (Iterable<?>) o) {
 				al.add(Vectorz.toVector(obj));
 			}
 			return createFromVectors(al);
 		}
-		throw new UnsupportedOperationException("Can't convert to matrix: "+o.getClass());
+		throw new UnsupportedOperationException("Can't convert to matrix: "
+				+ o.getClass());
 	}
-	
+
 	/**
 	 * Creates a sparse matrix from the given matrix, ignoring zeros
 	 */
 	public static AMatrix createSparse(AMatrix m) {
-		int rc=m.rowCount();
-		AVector[] rows=new AVector[rc];
-		for (int i=0; i<rc; i++) {
-			rows[i]=SparseIndexedVector.createFromRow(m,i);
+		int rc = m.rowCount();
+		AVector[] rows = new AVector[rc];
+		for (int i = 0; i < rc; i++) {
+			rows[i] = SparseIndexedVector.createFromRow(m, i);
 		}
 		return VectorMatrixMN.wrap(rows);
 	}
-	
+
 	/**
 	 * Creates an immutable zero-filled matrix
 	 */
 	public static ZeroMatrix createImmutableZeroMatrix(int rows, int columns) {
-		return ZeroMatrix.create(rows,columns);
+		return ZeroMatrix.create(rows, columns);
 	}
-	
-	public static ADiagonalMatrix createScaleMatrix(int dimensions, double factor) {
-		DiagonalMatrix im=new DiagonalMatrix(dimensions);
-		for (int i=0; i<dimensions; i++) {
-			im.set(i,i,factor);
+
+	public static ADiagonalMatrix createScaleMatrix(int dimensions,
+			double factor) {
+		DiagonalMatrix im = new DiagonalMatrix(dimensions);
+		for (int i = 0; i < dimensions; i++) {
+			im.set(i, i, factor);
 		}
 		return im;
 	}
-	
-	public static ADiagonalMatrix createScalarMatrix(int dimensions, double factor) {
+
+	public static ADiagonalMatrix createScalarMatrix(int dimensions,
+			double factor) {
 		return (ADiagonalMatrix) ScalarMatrix.create(dimensions, factor);
 	}
-	
+
 	public static DiagonalMatrix createScaleMatrix(double... scalingFactors) {
-		int dimensions=scalingFactors.length;
-		DiagonalMatrix im=new DiagonalMatrix(dimensions);
-		for (int i=0; i<dimensions; i++) {
-			im.set(i,i,scalingFactors[i]);
+		int dimensions = scalingFactors.length;
+		DiagonalMatrix im = new DiagonalMatrix(dimensions);
+		for (int i = 0; i < dimensions; i++) {
+			im.set(i, i, scalingFactors[i]);
 		}
 		return im;
 	}
-	
+
 	public static Matrix22 create2DRotationMatrix(double angle) {
-		double sa=Math.sin(angle);
-		double ca=Math.cos(angle);
-		return new Matrix22(
-				ca,-sa,
-				sa, ca);
+		double sa = Math.sin(angle);
+		double ca = Math.cos(angle);
+		return new Matrix22(ca, -sa, sa, ca);
 	}
-	
+
 	public static Matrix33 createRotationMatrix(Vector3 axis, double angle) {
-		return createRotationMatrix(axis.x,axis.y,axis.z,angle);
+		return createRotationMatrix(axis.x, axis.y, axis.z, angle);
 	}
-	
-	public static Matrix33 createRotationMatrix(double x, double y, double z, double angle) {
-		double d=Math.sqrt(x*x+y*y+z*z);
-		double u=x/d;
-		double v=y/d;
-		double w=z/d;
-		double ca=Math.cos(angle);
-		double sa=Math.sin(angle);
-		return new Matrix33(
-				u*u+(1-u*u)*ca , u*v*(1-ca)-w*sa , u*w*(1-ca) + v*sa,
-				u*v*(1-ca)+w*sa, v*v+(1-v*v)*ca  , v*w*(1-ca) - u*sa,
-				u*w*(1-ca)-v*sa, v*w*(1-ca)+u*sa , w*w+(1-w*w)*ca);
+
+	public static Matrix33 createRotationMatrix(double x, double y, double z,
+			double angle) {
+		double d = Math.sqrt(x * x + y * y + z * z);
+		double u = x / d;
+		double v = y / d;
+		double w = z / d;
+		double ca = Math.cos(angle);
+		double sa = Math.sin(angle);
+		return new Matrix33(u * u + (1 - u * u) * ca,
+				u * v * (1 - ca) - w * sa, u * w * (1 - ca) + v * sa, u * v
+						* (1 - ca) + w * sa, v * v + (1 - v * v) * ca, v * w
+						* (1 - ca) - u * sa, u * w * (1 - ca) - v * sa, v * w
+						* (1 - ca) + u * sa, w * w + (1 - w * w) * ca);
 	}
-	
+
 	public static Matrix33 createRotationMatrix(AVector v, double angle) {
-		if (!(v.length()==3)) throw new VectorzException("Rotation matrix requires a 3d axis vector");
-		return createRotationMatrix(v.get(0),v.get(1),v.get(2),angle);
+		if (!(v.length() == 3))
+			throw new VectorzException(
+					"Rotation matrix requires a 3d axis vector");
+		return createRotationMatrix(v.get(0), v.get(1), v.get(2), angle);
 	}
-	
+
 	public static Matrix33 createXAxisRotationMatrix(double angle) {
-		return createRotationMatrix(1,0,0,angle);
+		return createRotationMatrix(1, 0, 0, angle);
 	}
-	
+
 	public static Matrix33 createYAxisRotationMatrix(double angle) {
-		return createRotationMatrix(0,1,0,angle);
+		return createRotationMatrix(0, 1, 0, angle);
 	}
 
 	public static Matrix33 createZAxisRotationMatrix(double angle) {
-		return createRotationMatrix(0,0,1,angle);
+		return createRotationMatrix(0, 0, 1, angle);
 	}
 
-	
 	public static AMatrix createRandomSquareMatrix(int dimensions) {
-		AMatrix m=createSquareMatrix(dimensions);
+		AMatrix m = createSquareMatrix(dimensions);
 		fillRandomValues(m);
 		return m;
 	}
-	
+
 	public static AMatrix createRandomMatrix(int rows, int columns) {
-		AMatrix m=newMatrix(rows,columns);
+		AMatrix m = newMatrix(rows, columns);
 		fillRandomValues(m);
 		return m;
 	}
 
 	static Matrix createInverse(AMatrix m) {
 		if (!m.isSquare()) {
-			throw new IllegalArgumentException("Matrix must be square for inverse!");
+			throw new IllegalArgumentException(
+					"Matrix must be square for inverse!");
 		}
 
 		int dims = m.rowCount();
@@ -175,14 +180,14 @@ public class Matrixx {
 		decomposeLU(am, rowPermutations);
 		return backSubstituteLU(am, rowPermutations);
 	}
-	
+
 	/**
-	 * Computes LU decomposition of a matrix, returns true if
-	 * successful (i.e. if matrix is non-singular)
+	 * Computes LU decomposition of a matrix, returns true if successful (i.e.
+	 * if matrix is non-singular)
 	 */
 	private static void decomposeLU(Matrix am, int[] permutations) {
 		int dims = permutations.length;
-		double[] data=am.data;
+		double[] data = am.data;
 
 		double rowFactors[] = new double[dims];
 		calcRowFactors(data, rowFactors);
@@ -217,7 +222,7 @@ public class Matrixx {
 			}
 
 			if (col != maxIndex) {
-				am.swapRows(col,maxIndex);
+				am.swapRows(col, maxIndex);
 				rowFactors[maxIndex] = rowFactors[col];
 			}
 
@@ -262,10 +267,10 @@ public class Matrixx {
 
 	private static Matrix backSubstituteLU(Matrix am, int[] permutations) {
 		int dims = permutations.length;
-		double[] dataIn=am.data;
-		
+		double[] dataIn = am.data;
+
 		// create identity matrix in output
-		Matrix result=new Matrix(Matrixx.createImmutableIdentityMatrix(dims));
+		Matrix result = new Matrix(Matrixx.createImmutableIdentityMatrix(dims));
 		double[] dataOut = result.data;
 
 		for (int col = 0; col < dims; col++) {
@@ -301,11 +306,10 @@ public class Matrixx {
 						/ diagonalValue;
 			}
 		}
-		
+
 		return result;
 	}
 
-	
 	/**
 	 * Creates an empty (zero-filled) mutable matrix of the specified size
 	 * 
@@ -314,19 +318,21 @@ public class Matrixx {
 	 * @return
 	 */
 	public static AMatrix newMatrix(int rows, int columns) {
-		if ((rows==columns)) {
-			if (rows==3) return new Matrix33();
-			if (rows==2) return new Matrix22();
+		if ((rows == columns)) {
+			if (rows == 3)
+				return new Matrix33();
+			if (rows == 2)
+				return new Matrix22();
 		}
-		return new Matrix(rows,columns);
+		return new Matrix(rows, columns);
 	}
-	
+
 	public static AMatrix createFromVector(AVector data, int rows, int columns) {
-		assert(data.length()==rows*columns);
-		AMatrix m=newMatrix(rows, columns);
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<columns; j++) {
-				m.set(i,j,data.get(i*columns+j));
+		assert (data.length() == rows * columns);
+		AMatrix m = newMatrix(rows, columns);
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				m.set(i, j, data.get(i * columns + j));
 			}
 		}
 		return m;
@@ -334,9 +340,12 @@ public class Matrixx {
 
 	private static AMatrix createSquareMatrix(int dimensions) {
 		switch (dimensions) {
-		case 2: return new Matrix22();
-		case 3: return new Matrix33();
-		default: return newMatrix(dimensions,dimensions);
+		case 2:
+			return new Matrix22();
+		case 3:
+			return new Matrix33();
+		default:
+			return newMatrix(dimensions, dimensions);
 		}
 	}
 
@@ -344,99 +353,101 @@ public class Matrixx {
 	 * Creates a mutable deep copy of a matrix
 	 */
 	public static AMatrix create(AMatrix m) {
-		int rows=m.rowCount();
-		int columns=m.columnCount();
-		if (rows==columns) {
-			if (rows==3) {
+		int rows = m.rowCount();
+		int columns = m.columnCount();
+		if (rows == columns) {
+			if (rows == 3) {
 				return new Matrix33(m);
-			} else if (rows==2) {
+			} else if (rows == 2) {
 				return new Matrix22(m);
-			}				
+			}
 		}
 		return new Matrix(m);
 	}
-	
+
 	/**
 	 * Create a matrix from a list of rows
+	 * 
 	 * @param rows
 	 * @return
 	 */
 	public static AMatrix create(List<Object> rows) {
-		int rc=rows.size();
-		AVector[] vs=new AVector[rc];
-		for (int i=0; i<rc; i++) {
-			vs[i]=Vectorz.create(rows.get(i));
+		int rc = rows.size();
+		AVector[] vs = new AVector[rc];
+		for (int i = 0; i < rc; i++) {
+			vs[i] = Vectorz.create(rows.get(i));
 		}
 		return VectorMatrixMN.wrap(vs);
 	}
-	
+
 	/**
 	 * Creates a mutable copy of a matrix
 	 */
 	public static AMatrix create(IMatrix m) {
-		int rows=m.rowCount();
-		int columns=m.columnCount();
-		AMatrix result=newMatrix(rows,columns);
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<columns; j++) {
-				result.set(i,j,m.get(i, j));
+		int rows = m.rowCount();
+		int columns = m.columnCount();
+		AMatrix result = newMatrix(rows, columns);
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				result.set(i, j, m.get(i, j));
 			}
 		}
 		return result;
 	}
 
 	public static void fillRandomValues(AMatrix m) {
-		int rows=m.rowCount();
-		int columns=m.columnCount();
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<columns; j++) {
-				m.set(i,j,Rand.nextDouble());
+		int rows = m.rowCount();
+		int columns = m.columnCount();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				m.set(i, j, Rand.nextDouble());
 			}
 		}
 	}
 
 	public static AMatrix createFromVectors(AVector... data) {
-		int rc=data.length;
-		int cc=(rc==0)?0:data[0].length();
-		AMatrix m=newMatrix(rc,cc);
-		for (int i=0; i<rc; i++) {
+		int rc = data.length;
+		int cc = (rc == 0) ? 0 : data[0].length();
+		AMatrix m = newMatrix(rc, cc);
+		for (int i = 0; i < rc; i++) {
 			m.getRow(i).set(data[i]);
 		}
 		return m;
 	}
-	
+
 	public static AMatrix createFromVectors(List<AVector> data) {
-		int rc=data.size();
-		int cc=(rc==0)?0:data.get(0).length();
-		AMatrix m=newMatrix(rc,cc);
-		for (int i=0; i<rc; i++) {
+		int rc = data.size();
+		int cc = (rc == 0) ? 0 : data.get(0).length();
+		AMatrix m = newMatrix(rc, cc);
+		for (int i = 0; i < rc; i++) {
 			m.getRow(i).set(data.get(i));
 		}
 		return m;
 	}
-	
+
 	// ====================================
 	// Edn formatting and parsing functions
 
 	private static Parser.Config getMatrixParserConfig() {
 		return Parsers.defaultConfiguration();
 	}
-	
+
 	/**
 	 * Parse a matrix in edn format
+	 * 
 	 * @param ednString
 	 * @return
 	 */
 	public static AMatrix parse(String ednString) {
-		Parser p=Parsers.newParser(getMatrixParserConfig());
-		Parseable ps=Parsers.newParseable(ednString);
-		List<List<Object>> data=(List<List<Object>>) p.nextValue(ps);
-		int rc=data.size();
-		int cc=(rc==0)?0:data.get(0).size();
-		AMatrix m=newMatrix(rc,cc);
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				m.set(i,j,Tools.toDouble(data.get(i).get(j)));
+		Parser p = Parsers.newParser(getMatrixParserConfig());
+		Parseable ps = Parsers.newParseable(ednString);
+		List<List<Object>> data = (List<List<Object>>) p.nextValue(ps);
+		int rc = data.size();
+		int cc = (rc == 0) ? 0 : data.get(0).size();
+		AMatrix m = newMatrix(rc, cc);
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				m.set(i, j, Tools.toDouble(data.get(i).get(j)));
 			}
 		}
 		return m;
@@ -446,12 +457,16 @@ public class Matrixx {
 		return create(m);
 	}
 
-	public static AMatrix createSparse(int inputDims, Index[] indexes, AVector[] weights) {
-		int len=indexes.length;
-		if (len!=weights.length) throw new VectorzException("Length mismatch!" + len+ " vs. "+weights.length);
-		AVector[] svs=new AVector[len];
-		for (int i=0; i<len; i++) {
-			svs[i]=SparseIndexedVector.create(inputDims, indexes[i], weights[i]);
+	public static AMatrix createSparse(int inputDims, Index[] indexes,
+			AVector[] weights) {
+		int len = indexes.length;
+		if (len != weights.length)
+			throw new VectorzException("Length mismatch!" + len + " vs. "
+					+ weights.length);
+		AVector[] svs = new AVector[len];
+		for (int i = 0; i < len; i++) {
+			svs[i] = SparseIndexedVector.create(inputDims, indexes[i],
+					weights[i]);
 		}
 		return VectorMatrixMN.wrap(svs);
 	}
@@ -459,16 +474,15 @@ public class Matrixx {
 	public static AMatrix create(Object[] vs) {
 		return create(Arrays.asList(vs));
 	}
-	
+
 	public static Matrix create(double[][] data) {
-		int rows=data.length;
-		int cols=data[0].length;
-		Matrix m=Matrix.create(rows,cols);
-		for (int i=0; i<rows; i++) {
-			System.arraycopy(data[i], 0, m.data, i*cols, cols);
+		int rows = data.length;
+		int cols = data[0].length;
+		Matrix m = Matrix.create(rows, cols);
+		for (int i = 0; i < rows; i++) {
+			System.arraycopy(data[i], 0, m.data, i * cols, cols);
 		}
 		return m;
 	}
-
 
 }

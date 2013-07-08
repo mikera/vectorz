@@ -1121,6 +1121,28 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		return true;
 	}
+	
+	/**
+	 * Returns true if a matrix is positive definite
+	 */
+	public void isPositiveDefinite() {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * Returns true if a matrix is positive definite
+	 */
+	public boolean isSymmetric() {
+		int rc=rowCount();
+		int cc=columnCount();
+		if (rc!=cc) return false;
+		for (int i=0; i<rc; i++) {
+			for (int j=i+1; j<cc; j++) {
+				if (get(i,j)!=get(j,i)) return false;
+			}
+		}
+		return true;
+	}
 
 	public abstract AMatrix exactClone();
 	

@@ -26,6 +26,11 @@ public class TestMatrices {
 		assertEquals("[[0.0]]",ZeroMatrix.create(1, 1).toString());
 	}
 	
+	@Test public void testSymmetric() {
+		assertTrue(Matrixx.createIdentityMatrix(5).isSymmetric());
+		assertFalse(Matrixx.createRandomSquareMatrix(3).isSymmetric());
+	}
+	
 	@Test public void testDiagonalMatrix() {
 		DiagonalMatrix d=DiagonalMatrix.create(1,2);
 		Matrix22 m=new Matrix22(1,2,3,4);
