@@ -1159,6 +1159,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return true;
 	}
 	
+	/**
+	 * Returns true if a matrix is Hermitian
+	 * 
+	 * This is equivalent to isSymmetric(), since all Vectorz matrices have real values.
+	 */
+	public final boolean isHermitian() {
+		return isSymmetric();
+	}
 	
 	/**
 	 * Returns true if a matrix is upper triangular
