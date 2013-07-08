@@ -1149,9 +1149,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 */
 	public boolean isUpperTriangular() {
 		int rc=rowCount();
-		for (int i=0; i<rc; i++) {
-			for (int j=i+1; j<rc; j++) {
-				if (get(j,i)!=0.0) return false;
+		int cc=columnCount();
+		for (int j=0; j<cc; j++) {
+			for (int i=j+1; i<rc; i++) {
+				if (get(i,j)!=0.0) return false;
 			}
 		}
 		return true;
@@ -1161,8 +1162,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Returns true if a matrix is lower triangular
 	 */
 	public boolean isLowerTriangular() {
+		int rc=rowCount();
 		int cc=columnCount();
-		for (int i=0; i<cc; i++) {
+		for (int i=0; i<rc; i++) {
 			for (int j=i+1; j<cc; j++) {
 				if (get(i,j)!=0.0) return false;
 			}

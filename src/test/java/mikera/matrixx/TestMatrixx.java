@@ -462,12 +462,32 @@ public class TestMatrixx {
 
 	}
 	
+	private void doTriangularTests(AMatrix m) {
+		boolean sym=m.isSymmetric();
+		boolean uppt=m.isUpperTriangular();
+		boolean lowt=m.isLowerTriangular();
+		
+		if (sym) {
+			assertTrue(m.isSquare());
+			assertEquals(m,m.getTranspose());
+		} 
+		
+		if (uppt) {
+			assertTrue(m.getTranspose().isLowerTriangular());
+		}
+		
+		if (lowt) {
+			assertTrue(m.getTranspose().isUpperTriangular());
+		}
+	}
+	
 	void doGenericTests(AMatrix m) {
 		testApplyOp(m);
 		testExactClone(m);
 		testSparseClone(m);
 		
 		doTransposeTest(m);
+		doTriangularTests(m);
 		doVectorTest(m);
 		doParseTest(m);
 		doHashTest(m);
