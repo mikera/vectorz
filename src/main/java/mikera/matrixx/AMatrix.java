@@ -1130,6 +1130,21 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
+	 * Returns true if a matrix is diagonal
+	 */
+	public boolean isDiagonal() {
+		int rc=rowCount();
+		int cc=columnCount();
+		if (rc!=cc) return false;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				if ((i!=j)&&(get(i,j)!=0.0)) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Returns true if a matrix is symmetric
 	 */
 	public boolean isSymmetric() {
@@ -1143,6 +1158,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		return true;
 	}
+	
 	
 	/**
 	 * Returns true if a matrix is upper triangular

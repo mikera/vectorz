@@ -472,6 +472,10 @@ public class TestMatrixx {
 			assertEquals(m,m.getTranspose());
 		} 
 		
+		if (sym&uppt&lowt) {
+			assertTrue(m.isDiagonal());
+		}
+		
 		if (uppt) {
 			assertTrue(m.getTranspose().isLowerTriangular());
 		}
