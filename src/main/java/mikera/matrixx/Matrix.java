@@ -29,6 +29,12 @@ public final class Matrix extends AMatrix {
 		return new Matrix(rowCount,columnCount);
 	}
 	
+	public static Matrix create(AMatrix m) {
+		Matrix nm=new Matrix(m.rowCount(),m.columnCount());
+		nm.set(m);
+		return nm;
+	}
+	
 	public Matrix(AMatrix m) {
 		this(m.rowCount(),m.columnCount());
 		set(m);
@@ -284,4 +290,5 @@ public final class Matrix extends AMatrix {
 	public Matrix exactClone() {
 		return new Matrix(this);
 	}
+
 }

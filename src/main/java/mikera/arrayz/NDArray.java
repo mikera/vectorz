@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
@@ -32,18 +33,23 @@ public final class NDArray extends AbstractArray<INDArray> {
 	private final double[] data;
 	private int[] stride;
 	
-	private NDArray(int... shape) {
-		this.shape=shape.clone();
-		dimensions=shape.length;
-		data=new double[(int)elementCount()];
-		stride=new int[dimensions];
-		offset=0;
-		
+	private static final int[] defaultStride(int[] shape) {
+		int dimensions=shape.length;
+		int[] stride=new int[dimensions];
 		int st=1;
 		for (int j=dimensions-1; j>=0; j--) {
 			stride[j]=st;
 			st*=shape[j];
 		}
+		return stride;
+	}
+	
+	private NDArray(int... shape) {
+		this.shape=shape.clone();
+		dimensions=shape.length;
+		data=new double[(int)elementCount()];
+		stride=defaultStride(shape);
+		offset=0;
 	}
 	
 	private NDArray(double[] data, int offset, int[] shape, int[] stride) {
@@ -60,6 +66,19 @@ public final class NDArray extends AbstractArray<INDArray> {
 		this.shape=shape;
 		this.stride=stride;
 		this.dimensions=dimensions;
+	}
+	
+	public static NDArray wrap(double[] data, int[] shape) {
+		int dims=shape.length;
+		return new NDArray(data,dims,0,shape,defaultStride(shape));
+	}
+	
+	public static NDArray wrap(Vector v) {
+		return wrap(v.data,v.getShape());
+	}
+
+	public static NDArray wrap(Matrix m) {
+		return wrap(m.data,m.getShape());
 	}
 	
 	public static NDArray newArray(int... shape) {
