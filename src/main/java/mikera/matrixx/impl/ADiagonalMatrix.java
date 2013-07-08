@@ -29,6 +29,11 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public boolean isSymmetric() {
+		return true;
+	}
+	
+	@Override
 	public abstract boolean isMutable();
 	
 	@Override
