@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.ops.Constant;
@@ -85,6 +86,8 @@ public class TestArrays {
 		double[] arr=new double[(int)a.elementCount()];
 		a.copyTo(arr);
 		assertEquals(a.nonZeroCount(),DoubleArrays.nonZeroCount(arr, 0, arr.length));
+		
+		assertEquals(a,Vector.wrap(arr).reshape(a.getShape()));
 	}
 	
 	private void testClone(INDArray a) {
