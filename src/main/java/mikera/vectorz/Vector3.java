@@ -243,6 +243,19 @@ public final class Vector3 extends APrimitiveVector {
 		y=(y*factor)+constant;
 		z=(z*factor)+constant;
 	}
+	
+	public void scaleAdd(double factor, AVector constant) {
+		if (constant instanceof Vector3) {scaleAdd(factor,(Vector3)constant); return; }
+		x=(x*factor)+constant.get(0);
+		y=(y*factor)+constant.get(1);
+		z=(z*factor)+constant.get(2);
+	}
+	
+	public void scaleAdd(double factor, Vector3 constant) {
+		x=(x*factor)+constant.x;
+		y=(y*factor)+constant.y;
+		z=(z*factor)+constant.z;
+	}
 
 	@Override
 	public void add(double constant) {
