@@ -63,12 +63,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	// Standard implementations
 
 	@Override 
-	public double get(int row) {
+	public final double get(int row) {
 		throw new VectorzException("1D get not supported on matrix!");
 	}
 	
 	@Override 
-	public double get() {
+	public final double get() {
 		throw new VectorzException("0D get not supported on matrix!");
 	}
 	
