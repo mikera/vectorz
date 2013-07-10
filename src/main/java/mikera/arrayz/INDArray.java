@@ -123,6 +123,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public double elementSum();
+
+	/**
+	 * Returns the total sum of elements in this array.
+	 * @return
+	 */
+	public double elementSquaredSum();
 	
 	/**
 	 * Multiplies all elements by the equivalent elements in a second array

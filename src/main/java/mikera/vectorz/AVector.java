@@ -654,6 +654,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	@Override public final double elementSquaredSum() {
+		return magnitudeSquared();
+	}
+	
 	/**
 	 * Returns the Euclidean angle between this vector and another vector
 	 * @return angle in radians

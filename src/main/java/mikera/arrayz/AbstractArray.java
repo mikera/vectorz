@@ -264,6 +264,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		return result;
 	}
+	
+	@Override
+	public double elementSquaredSum() {
+		if (dimensionality()==0) {
+			double value=get();
+			return value*value;
+		}
+		double result=0;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			result+=slice(i).elementSquaredSum();
+		}
+		return result;
+	}
 
 
 	@Override

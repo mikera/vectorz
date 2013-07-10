@@ -618,6 +618,25 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;
 	}
 	
+	/**
+	 * Returns the squared sum of all elements in the matrix
+	 * @param m
+	 * @return 
+	 */
+	public double elementSquaredSum() {
+		int rc=rowCount();
+		int cc=columnCount();
+		
+		double result=0.0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				double value=get(i,j);
+				result+=value*value;
+			}
+		}
+		return result;
+	}
+	
 	@Override
 	public long nonZeroCount() {
 		long result=0;
