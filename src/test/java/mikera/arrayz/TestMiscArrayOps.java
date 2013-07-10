@@ -3,6 +3,7 @@ package mikera.arrayz;
 import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
 import org.junit.Test;
@@ -17,6 +18,10 @@ public class TestMiscArrayOps {
 		AVector v2=v.clone();
 		v2.square();
 		assertEquals(v2,m.getLeadingDiagonal());
+	}
+	
+	@Test public void testParse() {
+		assertEquals(Vector.of(4,5),Arrayz.parse("[[1, 2], [4, 5], [7, 8]]").slice(1));
 	}
 	
 	@Test public void testNonZeroCount() {
