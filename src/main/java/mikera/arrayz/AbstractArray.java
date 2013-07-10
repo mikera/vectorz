@@ -7,8 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.vectorz.AScalar;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
+import mikera.vectorz.Vector;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -321,6 +323,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			al.add(slice(i));
 		}
 		return al;
+	}
+	
+	@Override
+	public AVector toVector() {
+		int n=(int)elementCount();
+		double[] data=new double[n];
+		this.getElements(data, 0);
+		return Vector.wrap(data);
 	}
 	
 	@Override

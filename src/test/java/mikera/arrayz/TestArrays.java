@@ -210,11 +210,13 @@ public class TestArrays {
 	
 	private void testSums(INDArray a) {
 		INDArray b=a.clone();
-		assertEquals(a.elementSum(),b.elementSum(),0.0);
-		assertEquals(a.elementSquaredSum(),b.elementSquaredSum(),0.0);
+		assertEquals(a.elementSum(),b.elementSum(),0.000001);
+		assertEquals(a.elementSquaredSum(),b.elementSquaredSum(),0.000001);
+		assertEquals(a.elementSum(),a.toVector().elementSum(),0.000001);
+		assertEquals(a.elementSquaredSum(),a.toVector().elementSquaredSum(),0.000001);
 		
 		b.multiply(a);
-		assertEquals(a.elementSquaredSum(),b.elementSum(),0.0);
+		assertEquals(a.elementSquaredSum(),b.elementSum(),0.000001);
 	}
 	
 	

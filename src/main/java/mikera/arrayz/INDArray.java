@@ -265,4 +265,10 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public List<INDArray> getSliceViews();
+
+	/**
+	 * Converts the array into a flattened vector
+	 * @return
+	 */
+	public AVector toVector();
 }
