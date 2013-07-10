@@ -421,7 +421,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void abs() {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			set(i,Math.abs(get(i)));
+			double val=get(i);
+			if (val<0) set(i,-val);
 		}
 	}
 	
