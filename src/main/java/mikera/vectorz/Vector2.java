@@ -68,6 +68,13 @@ public final class Vector2 extends APrimitiveVector {
 		y=(y*factor)+constant;
 	}
 	
+	public void multiplyComplex(Vector2 a) {
+		double nx=x*a.x-y*a.y;
+		double ny=x*a.y+y*a.x;
+		this.x=nx;
+		this.y=ny;	
+	}
+	
 	@Override
 	public void negate() {
 		x=-x;
