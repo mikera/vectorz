@@ -9,6 +9,7 @@ import java.util.List;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -17,9 +18,8 @@ import mikera.vectorz.util.VectorzException;
  * @param <T> The type of array slices
  */
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
-
 	public double get() {
-		return get(new int[0]);
+		return get(IntArrays.EMPTY_INT_ARRAY);
 	}
 	public double get(int x) {
 		return get(new int[] {x});
