@@ -215,6 +215,12 @@ public interface INDArray extends Cloneable {
 	public void scale(double d);
 	
 	/**
+	 * Scales all elements of the array by a given double value and adds a constant vale
+	 * @param d
+	 */
+	public void scaleAdd(double factor, double constant);
+	
+	/**
 	 * Multiplies all elements of the array by a given double value
 	 * @param d
 	 */

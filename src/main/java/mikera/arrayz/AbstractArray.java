@@ -60,6 +60,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public final void scale(double d) {
 		multiply(d);
 	}
+	
+	@Override
+	public void scaleAdd(double factor, double constant) {
+		multiply(factor);
+		add(constant);
+	}
 
 	public void set(double value) {
 		set(new int[0],value);

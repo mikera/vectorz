@@ -583,6 +583,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		multiply(factor);
 	}
 	
+	@Override
+	public final void scaleAdd(double factor, double constant) {
+		multiply(factor);
+		add(constant);
+	}
+	
 	public void multiply(double factor) {
 		int rc=rowCount();
 		int cc=columnCount();
