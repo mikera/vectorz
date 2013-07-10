@@ -2,6 +2,7 @@ package mikera.vectorz.ops;
 
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
@@ -31,6 +32,11 @@ public final class Constant extends ALinearOp {
 	@Override
 	public double applyInverse(double x) {
 		return Double.NaN;
+	}
+	
+	@Override
+	public void applyTo(INDArray v) {
+		v.set(value);
 	}
 	
 	@Override
