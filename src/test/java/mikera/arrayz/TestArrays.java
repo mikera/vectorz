@@ -165,6 +165,7 @@ public class TestArrays {
 	private void testParserRoundTrip(INDArray a) {
 		String s=a.toString();
 		assertEquals(a,Arrayz.load(new StringReader(s)));
+		assertEquals(a,Arrayz.parse(s));
 	}
 	
 	private void testBufferRoundTrip(INDArray a) {
