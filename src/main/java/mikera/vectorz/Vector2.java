@@ -68,6 +68,18 @@ public final class Vector2 extends APrimitiveVector {
 		y=(y*factor)+constant;
 	}
 	
+	@Override
+	public void scaleAdd(double factor, AVector constant) {
+		if (constant instanceof Vector2) {scaleAdd(factor,(Vector2)constant); return; }
+		x=(x*factor)+constant.get(0);
+		y=(y*factor)+constant.get(1);
+	}
+	
+	public void scaleAdd(double factor, Vector2 constant) {
+		x=(x*factor)+constant.x;
+		y=(y*factor)+constant.y;
+	}
+	
 	public void multiplyComplex(Vector2 a) {
 		double nx=x*a.x-y*a.y;
 		double ny=x*a.y+y*a.x;

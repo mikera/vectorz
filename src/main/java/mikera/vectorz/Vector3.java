@@ -244,6 +244,7 @@ public final class Vector3 extends APrimitiveVector {
 		z=(z*factor)+constant;
 	}
 	
+	@Override
 	public void scaleAdd(double factor, AVector constant) {
 		if (constant instanceof Vector3) {scaleAdd(factor,(Vector3)constant); return; }
 		x=(x*factor)+constant.get(0);
