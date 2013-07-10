@@ -208,6 +208,15 @@ public class TestArrays {
 		assertEquals(a,b.slice(0).slice(1));
 	}
 	
+	private void testSums(INDArray a) {
+		INDArray b=a.clone();
+		assertEquals(a.elementSum(),b.elementSum(),0.0);
+		assertEquals(a.elementSquaredSum(),b.elementSquaredSum(),0.0);
+		
+		b.multiply(a);
+		assertEquals(a.elementSquaredSum(),b.elementSum(),0.0);
+	}
+	
 	
 	public void testArray(INDArray a) {
 		a.validate();
@@ -215,6 +224,7 @@ public class TestArrays {
 		testToArray(a);
 		testMultiply(a);
 		testApplyOp(a);
+		testSums(a);
 		testSetElements(a);
 		testGetElements(a);
 		testBroadcast(a);
