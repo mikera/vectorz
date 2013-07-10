@@ -11,11 +11,7 @@ import mikera.vectorz.AVector;
 @SuppressWarnings("serial")
 public final class RepeatedElementVector extends AVector {
 	private final int dimensions;
-	private double value;
-	
-	public RepeatedElementVector(int dims) {
-		this.dimensions=dims;
-	}
+	private final double value;
 	
 	public RepeatedElementVector(int dims, double value) {
 		this.dimensions=dims;
@@ -23,8 +19,7 @@ public final class RepeatedElementVector extends AVector {
 	}
 	
 	public static RepeatedElementVector create(int dims, double value) {
-		RepeatedElementVector r=new RepeatedElementVector(dims);
-		r.value=value;
+		RepeatedElementVector r=new RepeatedElementVector(dims,value);
 		return r;
 	}
 
@@ -35,7 +30,11 @@ public final class RepeatedElementVector extends AVector {
 
 	@Override
 	public boolean isFullyMutable() {
-		// not fully mutable, since elements are tied to each other
+		return false;
+	}
+	
+	@Override
+	public boolean isMutable() {
 		return false;
 	}
 	
@@ -54,16 +53,10 @@ public final class RepeatedElementVector extends AVector {
 	public long nonZeroCount() {
 		return (value==0)?0:dimensions;
 	}
-	
-	@Override
-	public void multiply(double factor) {
-		value*=factor;
-	}
 
 	@Override
 	public void set(int i, double value) {
-		assert((i>=0)&&(i<dimensions));
-		this.value=value;
+		throw new UnsupportedOperationException(this.getClass().toString()+" is not mutable");
 	}
 
 	@Override 

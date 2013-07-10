@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
+import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.DoubleScalar;
 
 import org.junit.Test;
@@ -24,6 +27,15 @@ public class TestNDArray {
 		a.set(s);
 		assertEquals(2.0,a.get(),0.0);
 		
+	}
+	
+	@Test public void testWrap() {
+		Vector v=Vector.of(0,1,2,3);
+		assertEquals(v,NDArray.wrap(v));
+		
+		Matrix m=Matrix.create(Matrixx.createRandomSquareMatrix(3));
+		assertEquals(m,NDArray.wrap(m));
+
 	}
 	
 	@Test public void testOuterProduct() {

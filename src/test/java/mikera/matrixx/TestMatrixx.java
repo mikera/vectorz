@@ -150,6 +150,13 @@ public class TestMatrixx {
 		}
 	}
 	
+	@Test
+	public void testFromDoubleArrays() {
+		double[][] dat=new double[][] {{1,2},{3,4}};
+		Matrix m=Matrixx.create(dat);
+		assertEquals(2,m.rowCount());
+		assertEquals(Vector.of(1,2,3,4),m.toVector());
+	}
 
 	@Test
 	public void testScale() {
@@ -455,12 +462,43 @@ public class TestMatrixx {
 
 	}
 	
+	private void doTriangularTests(AMatrix m) {
+		boolean sym=m.isSymmetric();
+		boolean diag=m.isDiagonal();
+		boolean uppt=m.isUpperTriangular();
+		boolean lowt=m.isLowerTriangular();
+		
+		if (diag) {
+			assertTrue(sym);
+			assertTrue(uppt);
+			assertTrue(lowt);
+		}
+		
+		if (sym) {
+			assertTrue(m.isSquare());
+			assertEquals(m,m.getTranspose());
+		} 
+		
+		if (sym&uppt&lowt) {
+			assertTrue(diag);
+		}
+		
+		if (uppt) {
+			assertTrue(m.getTranspose().isLowerTriangular());
+		}
+		
+		if (lowt) {
+			assertTrue(m.getTranspose().isUpperTriangular());
+		}
+	}
+	
 	void doGenericTests(AMatrix m) {
 		testApplyOp(m);
 		testExactClone(m);
 		testSparseClone(m);
 		
 		doTransposeTest(m);
+		doTriangularTests(m);
 		doVectorTest(m);
 		doParseTest(m);
 		doHashTest(m);

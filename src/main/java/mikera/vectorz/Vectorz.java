@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -218,6 +219,17 @@ public class Vectorz {
 		for (int i=0; i<length; i++) {
 			v.set(i,Tools.toDouble(d.get(i)));
 		}
+		return v;
+	}
+	
+	/**
+	 * Create a vector from a DoubleBuffer
+	 * Note: consumes all doubles from the buffer
+	 */
+	public static AVector create(DoubleBuffer d) {
+		int length=d.remaining();
+		Vector v=Vector.createLength(length);
+		d.get(v.data, 0, length);
 		return v;
 	}
 	

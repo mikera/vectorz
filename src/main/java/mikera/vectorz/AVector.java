@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import java.io.Serializable;
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -250,6 +251,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		double[] result=new double[length()];
 		copyTo(result,0);
 		return result;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			dest.put(get(i));
+		}
 	}
 	
 	/**
@@ -929,6 +938,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addMultiple(v,-1.0);
 	}
 	
+	@Override
 	public void sub(double d) {
 		add(-d);
 	}
@@ -1152,6 +1162,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		add(constant);
 	}
 
+	@Override
 	public void add(double constant) {
 		int len=length();
 		for (int i=0; i<len; i++) {

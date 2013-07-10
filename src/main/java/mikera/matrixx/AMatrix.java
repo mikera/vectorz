@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -569,6 +570,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}		
 	}
 	
+	@Override
 	public void sub(double d) {
 		add(-d);
 	}
@@ -975,6 +977,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		int n=rowCount();
+		for (int i=0; i<n; i++) {
+			getRow(i).toDoubleBuffer(dest);
+		}
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		int rc = rowCount();
 		int cc = columnCount();
@@ -1070,6 +1080,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 	}
 
+	@Override
 	public void add(double d) {
 		int rc = rowCount();
 		int cc = columnCount();
@@ -1105,6 +1116,80 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
+				if (get(i,j)!=0.0) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true if a matrix is positive definite
+	 */
+	public void isPositiveDefinite() {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * Returns true if a matrix is diagonal
+	 */
+	public boolean isDiagonal() {
+		int rc=rowCount();
+		int cc=columnCount();
+		if (rc!=cc) return false;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				if ((i!=j)&&(get(i,j)!=0.0)) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true if a matrix is symmetric
+	 */
+	public boolean isSymmetric() {
+		int rc=rowCount();
+		int cc=columnCount();
+		if (rc!=cc) return false;
+		for (int i=0; i<rc; i++) {
+			for (int j=i+1; j<cc; j++) {
+				if (get(i,j)!=get(j,i)) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true if a matrix is Hermitian
+	 * 
+	 * This is equivalent to isSymmetric(), since all Vectorz matrices have real values.
+	 */
+	public final boolean isHermitian() {
+		return isSymmetric();
+	}
+	
+	/**
+	 * Returns true if a matrix is upper triangular
+	 */
+	public boolean isUpperTriangular() {
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int j=0; j<cc; j++) {
+			for (int i=j+1; i<rc; i++) {
+				if (get(i,j)!=0.0) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true if a matrix is lower triangular
+	 */
+	public boolean isLowerTriangular() {
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int i=0; i<rc; i++) {
+			for (int j=i+1; j<cc; j++) {
 				if (get(i,j)!=0.0) return false;
 			}
 		}

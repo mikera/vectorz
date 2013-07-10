@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
+
 /**
  * Specialised 2D vector
  * 
@@ -124,6 +126,12 @@ public final class Vector2 extends APrimitiveVector {
 		data[offset]=x;
 		data[offset+1]=y;
 	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(x);
+		dest.put(y);
+	}
 
 	@Override
 	public void set(int i, double value) {
@@ -134,12 +142,18 @@ public final class Vector2 extends APrimitiveVector {
 		}
 	}
 	
+	@Override 
+	public void set(double v) {
+		x=v;
+		y=v;
+	}
+	
 	@Override
 	public void addAt(int i, double value) {
 		switch (i) {
 		case 0: x+=value; return;
 		case 1: y+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: i");
+		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	

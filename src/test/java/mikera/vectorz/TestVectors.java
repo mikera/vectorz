@@ -58,6 +58,7 @@ public class TestVectors {
 	}
 	
 	public void testSquare(AVector v) {
+		if (!v.isMutable()) return;
 		v=v.exactClone();
 		AVector vc=v.clone();
 		v.square();
@@ -452,7 +453,7 @@ public class TestVectors {
 		assertEquals(c,v);
 	}
 	
-	public void testOutOfBounds(AVector v) {
+	private void testOutOfBoundsSet(AVector v) {
 		if (!v.isFullyMutable()) return;
 		try {
 			v.set(-1, 0.0);
@@ -470,6 +471,23 @@ public class TestVectors {
 		}
 	}
 	
+	
+	private void testOutOfBoundsGet(AVector v) {
+		try {
+			v.get(-1);
+			fail("Should be out of bounds!");
+		} catch (Throwable x) {
+			// OK!
+		}
+		
+		try {
+			if (v instanceof GrowableVector) return;
+			v.get(v.length());
+			fail("Should be out of bounds!");
+		} catch (Throwable x) {
+			// OK!
+		}
+	}
 	public void testSubVectorMutability(AVector v) {
 		// defensive copy
 		v=v.clone();
@@ -498,6 +516,7 @@ public class TestVectors {
 	}
 	
 	public void testVectorMutability(AVector v) {
+		v=v.exactClone();
 		if (v.isFullyMutable()) {
 			assertTrue(v.isMutable());
 			for (int i=0; i<v.length(); i++) {
@@ -513,14 +532,16 @@ public class TestVectors {
 	
 	
 	private void testZero(AVector v) {
-		v=v.clone();
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
 		v.multiply(0.0);
 		assertTrue(v.isZeroVector());
 	}
 	
 
 	private void testNormalise(AVector v) {
-		v=v.clone();
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
 		
 		v.set(0,v.get(0)+Math.random());
  
@@ -533,7 +554,8 @@ public class TestVectors {
 	}
 	
 	private void testFilling(AVector v) {
-		v=v.clone();
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
 		v.fill(1.23);
 		assertEquals(1.23,Vectorz.minValue(v),0.0);
 		assertEquals(1.23,Vectorz.maxValue(v),0.0);
@@ -669,7 +691,8 @@ public class TestVectors {
 		testHashCode(v);
 		testAsList(v);
 		testIterator(v);
-		testOutOfBounds(v);
+		testOutOfBoundsSet(v);
+		testOutOfBoundsGet(v);
 		
 		doNonDegenerateTests(v);
 		

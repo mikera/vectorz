@@ -29,15 +29,33 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
-	public boolean isMutable() {
-		return false;
+	public boolean isSymmetric() {
+		return true;
 	}
+	
+	@Override
+	public boolean isDiagonal() {
+		return true;
+	}
+	
+	@Override
+	public boolean isUpperTriangular() {
+		return true;
+	}
+	
+	@Override
+	public boolean isLowerTriangular() {
+		return true;
+	}
+	
+	@Override
+	public abstract boolean isMutable();
 	
 	@Override
 	public double determinant() {
 		double det=1.0;
 		for (int i=0; i<dimensions; i++) {
-			det*=get(i,i);
+			det*=getDiagonalValue(i);
 		}
 		return det;
 	}

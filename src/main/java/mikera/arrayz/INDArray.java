@@ -1,5 +1,6 @@
 package mikera.arrayz;
 
+import java.nio.DoubleBuffer;
 import java.util.List;
 
 import mikera.vectorz.AVector;
@@ -62,19 +63,36 @@ public interface INDArray extends Cloneable {
 	 */
 	public double get(int... indexes);
 
+	/**
+	 * Sets all elements of an array to a specific double value
+	 * @param value
+	 */
 	public void set(double value);
-	public void set(int x, double value);
-	public void set(int x, int y, double value);
+	
+	public void set(int i, double value);
+	public void set(int i, int j, double value);
 	public void set(int[] indexes, double value);
 	public void set(INDArray a);
 	public void set(Object o);
 	
+	public void add(double a);
+	public void sub(double a);
 	public void add(INDArray a);
 	public void sub(INDArray a);
 	public void negate();
 
+	/**
+	 * Calculates the inner product of this array with another array.
+	 * @param a
+	 * @return
+	 */
 	public INDArray innerProduct(INDArray a);
 	
+	/**
+	 * Calculates the outer product of this array with another array.
+	 * @param a
+	 * @return
+	 */
 	public INDArray outerProduct(INDArray a);
 	
 	/**
@@ -216,10 +234,16 @@ public interface INDArray extends Cloneable {
 	public void validate();
 
 	/**
-	 * Copies the elements of this INDArray to the specified double array
+	 * Copies all the elements of this INDArray to the specified double array
 	 * @param arr
 	 */
 	public void copyTo(double[] arr);
+	
+	/**
+	 * Copies the elements of this INDArray to the specified double buffer
+	 * @param arr
+	 */
+	public void toDoubleBuffer(DoubleBuffer dest);
 
 	/**
 	 * Returns a list of slices as mutable INDArray views.

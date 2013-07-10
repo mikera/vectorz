@@ -63,6 +63,11 @@ public final class Vector1 extends APrimitiveVector {
 		}
 	}
 	
+	@Override 
+	public void set(double v) {
+		x=v;
+	}
+	
 	@Override
 	public void copyTo(double[] data, int offset) {
 		data[offset]=x;
@@ -72,7 +77,7 @@ public final class Vector1 extends APrimitiveVector {
 	public void addAt(int i, double value) {
 		switch (i) {
 		case 0: x+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: i");
+		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	

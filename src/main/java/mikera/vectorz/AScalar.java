@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
@@ -99,6 +100,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(get()+s.get());
 	}
 	
+	@Override
 	public void add(INDArray a) {
 		if (a instanceof AScalar) {
 			add(a.get());
@@ -107,6 +109,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		}
 	}
 	
+	@Override
 	public void sub(INDArray a) {
 		if (a instanceof AScalar) {
 			sub(a.get());
@@ -119,16 +122,19 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(get()-s.get());
 	}
 	
-	public void netage() {
+	@Override
+	public void negate() {
 		set(-get());
 	}
 	
+	@Override
 	public INDArray innerProduct(INDArray a) {
 		a=a.clone();
 		a.scale(get());
 		return a;
 	}
 	
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		a=a.clone();
 		a.scale(get());
@@ -243,6 +249,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		return false;
 	}
 	
+	@Override
 	public boolean equals(INDArray o) {
 		return (o.dimensionality()==0)&&(o.get(SCALAR_SHAPE)==get());
 	}
@@ -259,6 +266,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	@Override
 	public String toString() {
 		return Double.toString(get());
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(get());
 	}
 	
 	@Override

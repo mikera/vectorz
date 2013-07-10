@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -103,6 +104,10 @@ public class Arrayz {
 		Parseable pbr=Parsers.newParseable(reader);
 		Parser p = Parsers.newParser(Parsers.defaultConfiguration());
 		return Arrayz.create(p.nextValue(pbr));
+	}
+	
+	public static INDArray parse(String ednString) {
+		return load(new StringReader(ednString));	
 	}
 
 	private static long elementCount(int[] ss) {

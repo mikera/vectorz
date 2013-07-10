@@ -26,6 +26,29 @@ public class TestMatrices {
 		assertEquals("[[0.0]]",ZeroMatrix.create(1, 1).toString());
 	}
 	
+	@Test public void testSymmetric() {
+		assertTrue(Matrixx.createIdentityMatrix(5).isSymmetric());
+		assertFalse(Matrixx.createRandomSquareMatrix(3).isSymmetric());
+	}
+	
+	@Test public void testTriangular() {
+		AMatrix m1=Matrixx.createRandomSquareMatrix(3);
+		assertTrue(!m1.isUpperTriangular());
+		assertTrue(!m1.isLowerTriangular());
+		
+		AMatrix m2=DiagonalMatrix.create(Vector.of (1,2,3));
+		assertTrue(m2.isUpperTriangular());
+		assertTrue(m2.isLowerTriangular());
+		
+		AMatrix mut=Matrixx.create(Vector.of (1,2),Vector.of (0,4));
+		assertTrue(mut.isUpperTriangular());
+		assertTrue(!mut.isLowerTriangular());
+
+		AMatrix mlt=Matrixx.create(Vector.of (1,0),Vector.of (3,4));
+		assertTrue(!mlt.isUpperTriangular());
+		assertTrue(mlt.isLowerTriangular());
+	}
+	
 	@Test public void testDiagonalMatrix() {
 		DiagonalMatrix d=DiagonalMatrix.create(1,2);
 		Matrix22 m=new Matrix22(1,2,3,4);

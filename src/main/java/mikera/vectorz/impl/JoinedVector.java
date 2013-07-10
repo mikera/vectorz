@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.nio.DoubleBuffer;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
@@ -65,6 +67,12 @@ public final class JoinedVector extends AVector {
 	public void copyTo(AVector dest, int offset) {
 		left.copyTo(dest, offset);
 		right.copyTo(dest, offset+split);
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		left.toDoubleBuffer(dest);
+		right.toDoubleBuffer(dest);
 	}
 	
 	@Override

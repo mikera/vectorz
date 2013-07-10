@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.io.StringReader;
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -107,6 +108,7 @@ public class TestArrays {
 	private void testSetElements(INDArray a) {
 		if (!a.isFullyMutable()) return;
 		
+		a=a.exactClone();
 		INDArray c=a.clone();
 		a.set(Double.NaN);
 		
@@ -137,8 +139,9 @@ public class TestArrays {
 	}
 	
 	private void testApplyOp(INDArray a) {
-		INDArray c=a.clone();
-		INDArray d=a.clone();
+		if (!a.isFullyMutable()) return;
+		INDArray c=a.exactClone();
+		INDArray d=a.exactClone();
 		
 		c.asVector().fill(5.0);
 		d.applyOp(Constant.create(5.0));
@@ -162,6 +165,19 @@ public class TestArrays {
 	private void testParserRoundTrip(INDArray a) {
 		String s=a.toString();
 		assertEquals(a,Arrayz.load(new StringReader(s)));
+		assertEquals(a,Arrayz.parse(s));
+	}
+	
+	private void testBufferRoundTrip(INDArray a) {
+		int len=(int) a.elementCount();
+		DoubleBuffer buf=DoubleBuffer.allocate(len);
+		assertEquals(len,buf.remaining());
+		a.toDoubleBuffer(buf);
+		assertEquals(0,buf.remaining());
+		buf.flip();
+		AVector vv=Vectorz.create(buf);
+		assertEquals(a.asVector(),vv);
+		assertEquals(a,vv.reshape(a.getShape()));
 	}
 	
 	private void testMultiply(INDArray a) {
@@ -205,6 +221,7 @@ public class TestArrays {
 		testMutability(a);
 		testSlices(a);
 		testParserRoundTrip(a);
+		testBufferRoundTrip(a);
 	}
 
 	@Test

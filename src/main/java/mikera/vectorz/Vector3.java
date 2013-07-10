@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
+
 /**
  * Specialised 3D vector
  * 
@@ -266,6 +268,13 @@ public final class Vector3 extends APrimitiveVector {
 		y=v.get(1);
 		z=v.get(2);
 	}
+	
+	@Override 
+	public void set(double v) {
+		x=v;
+		y=v;
+		z=v;
+	}
 
 	@Override
 	public void set(int i, double value) {
@@ -283,7 +292,7 @@ public final class Vector3 extends APrimitiveVector {
 		case 0: x+=value; return;
 		case 1: y+=value; return;
 		case 2: z+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: i");
+		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	
@@ -305,6 +314,13 @@ public final class Vector3 extends APrimitiveVector {
 		data[offset]=x;
 		data[offset+1]=y;
 		data[offset+2]=z;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(x);
+		dest.put(y);
+		dest.put(z);
 	}
 	
 	@Override

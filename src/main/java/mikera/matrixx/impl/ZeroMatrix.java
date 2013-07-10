@@ -36,6 +36,26 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isSymmetric() {
+		return isSquare();
+	}
+	
+	@Override
+	public boolean isDiagonal() {
+		return isSquare();
+	}
+	
+	@Override
+	public boolean isUpperTriangular() {
+		return true;
+	}
+	
+	@Override
+	public boolean isLowerTriangular() {
+		return true;
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		// no change
 	}

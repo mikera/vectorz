@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
+import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 
 /**
@@ -47,6 +48,21 @@ public class IdentityMatrix extends ADiagonalMatrix {
 		assert(row<dimensions);
 		assert(column<dimensions);
 		return (row==column)?1.0:0.0;
+	}
+	
+	@Override
+	public AxisVector getRow(int row) {
+		return AxisVector.create(row,dimensions);
+	}
+	
+	@Override
+	public AxisVector getColumn(int column) {
+		return AxisVector.create(column,dimensions);
+	}
+	
+	public double getDiagonalValue(int i) {
+		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException("Getting diagonal value out of bounds: "+i);
+		return 1.0;
 	}
 
 	@Override

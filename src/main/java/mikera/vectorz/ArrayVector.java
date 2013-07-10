@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 import mikera.vectorz.impl.ArrayIndexScalar;
@@ -50,6 +51,11 @@ public abstract class ArrayVector extends AVector {
 	public boolean isView() {
 		// ArrayVector is usually a view
 		return true;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(getArray(),getArrayOffset(),length());
 	}
 	
 	@Override

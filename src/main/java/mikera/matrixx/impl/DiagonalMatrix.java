@@ -4,7 +4,6 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -151,7 +150,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public Vector getLeadingDiagonal() {
-		return Vectorz.wrap(data);
+		return Vector.wrap(data);
 	}
 
 	public AMatrix innerProduct(AMatrix a) {

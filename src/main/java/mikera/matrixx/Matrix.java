@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
@@ -26,6 +27,12 @@ public final class Matrix extends AMatrix {
 	
 	public static Matrix create(int rowCount, int columnCount) {
 		return new Matrix(rowCount,columnCount);
+	}
+	
+	public static Matrix create(AMatrix m) {
+		Matrix nm=new Matrix(m.rowCount(),m.columnCount());
+		nm.set(m);
+		return nm;
 	}
 	
 	public Matrix(AMatrix m) {
@@ -179,6 +186,11 @@ public final class Matrix extends AMatrix {
 	public Vector asVector() {
 		return Vector.wrap(data);
 	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(data,0,data.length);
+	}
 
 	@Override
 	public double get(int row, int column) {
@@ -278,4 +290,5 @@ public final class Matrix extends AMatrix {
 	public Matrix exactClone() {
 		return new Matrix(this);
 	}
+
 }
