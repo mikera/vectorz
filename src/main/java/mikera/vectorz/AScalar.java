@@ -229,6 +229,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		return get();
 	}
 	
+	@Override public final double elementSquaredSum() {
+		double value=get();
+		return value*value;
+	}
+	
 	@Override
 	public INDArray broadcast(int... targetShape) {
 		int tdims=targetShape.length;

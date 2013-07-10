@@ -84,6 +84,16 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}
 	
 	@Override
+	public double elementSquaredSum() {
+		int rc=rowCount();
+		double result=0.0;
+		for (int i=0; i<rc; i++) {
+			result+=getRow(i).elementSquaredSum();
+		}
+		return result;
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		int rc=rowCount();
 		long result=0;
