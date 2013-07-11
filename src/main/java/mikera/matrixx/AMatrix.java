@@ -63,12 +63,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	// Standard implementations
 
 	@Override 
-	public double get(int row) {
+	public final double get(int row) {
 		throw new VectorzException("1D get not supported on matrix!");
 	}
 	
 	@Override 
-	public double get() {
+	public final double get() {
 		throw new VectorzException("0D get not supported on matrix!");
 	}
 	
@@ -583,6 +583,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		multiply(factor);
 	}
 	
+	@Override
+	public final void scaleAdd(double factor, double constant) {
+		multiply(factor);
+		add(constant);
+	}
+	
 	public void multiply(double factor) {
 		int rc=rowCount();
 		int cc=columnCount();
@@ -607,6 +613,25 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				result+=get(i,j);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns the squared sum of all elements in the matrix
+	 * @param m
+	 * @return 
+	 */
+	public double elementSquaredSum() {
+		int rc=rowCount();
+		int cc=columnCount();
+		
+		double result=0.0;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				double value=get(i,j);
+				result+=value*value;
 			}
 		}
 		return result;

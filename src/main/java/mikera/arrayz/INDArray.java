@@ -123,6 +123,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public double elementSum();
+
+	/**
+	 * Returns the total sum of elements in this array.
+	 * @return
+	 */
+	public double elementSquaredSum();
 	
 	/**
 	 * Multiplies all elements by the equivalent elements in a second array
@@ -215,6 +221,12 @@ public interface INDArray extends Cloneable {
 	public void scale(double d);
 	
 	/**
+	 * Scales all elements of the array by a given double value and adds a constant vale
+	 * @param d
+	 */
+	public void scaleAdd(double factor, double constant);
+	
+	/**
 	 * Multiplies all elements of the array by a given double value
 	 * @param d
 	 */
@@ -253,4 +265,10 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public List<INDArray> getSliceViews();
+
+	/**
+	 * Converts the array into a flattened vector
+	 * @return
+	 */
+	public AVector toVector();
 }

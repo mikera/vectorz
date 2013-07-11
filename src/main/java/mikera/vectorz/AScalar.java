@@ -9,6 +9,8 @@ import mikera.arrayz.INDArray;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.WrappedScalarVector;
+import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.LongArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -20,8 +22,8 @@ import mikera.vectorz.util.VectorzException;
  */
 public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
-	private static final int[] SCALAR_SHAPE=new int[0];
-	private static final long[] SCALAR_LONG_SHAPE=new long[0];
+	private static final int[] SCALAR_SHAPE=IntArrays.EMPTY_INT_ARRAY;
+	private static final long[] SCALAR_LONG_SHAPE=LongArrays.EMPTY_LONG_ARRAY;
 
 	public abstract double get();
 	
@@ -225,6 +227,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	@Override
 	public double elementSum() {
 		return get();
+	}
+	
+	@Override public final double elementSquaredSum() {
+		double value=get();
+		return value*value;
 	}
 	
 	@Override

@@ -51,7 +51,7 @@ public final class Vector1 extends APrimitiveVector {
 		if (i==0) {
 			return x;
 		}
-		throw new IndexOutOfBoundsException("Index: i");
+		throw new IndexOutOfBoundsException("Index: "+i);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public final class Vector1 extends APrimitiveVector {
 		if (i==0) {
 			x=value;
 		} else {
-			throw new IndexOutOfBoundsException("Index: i");
+			throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	

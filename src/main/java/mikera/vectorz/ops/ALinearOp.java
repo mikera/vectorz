@@ -1,5 +1,7 @@
 package mikera.vectorz.ops;
 
+import mikera.arrayz.INDArray;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
 public abstract class ALinearOp extends APolynomialOp {
@@ -11,6 +13,16 @@ public abstract class ALinearOp extends APolynomialOp {
 	@Override
 	public boolean hasDerivative() {
 		return true;
+	}
+	
+	@Override
+	public void applyTo(INDArray a) {
+		a.scaleAdd(getFactor(), getConstant());
+	}
+	
+	@Override
+	public void applyTo(AVector v) {
+		v.scaleAdd(getFactor(), getConstant());
 	}
 	
 	@Override

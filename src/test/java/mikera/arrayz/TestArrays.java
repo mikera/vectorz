@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.ops.Constant;
@@ -85,6 +86,8 @@ public class TestArrays {
 		double[] arr=new double[(int)a.elementCount()];
 		a.copyTo(arr);
 		assertEquals(a.nonZeroCount(),DoubleArrays.nonZeroCount(arr, 0, arr.length));
+		
+		assertEquals(a,Vector.wrap(arr).reshape(a.getShape()));
 	}
 	
 	private void testClone(INDArray a) {
@@ -205,6 +208,17 @@ public class TestArrays {
 		assertEquals(a,b.slice(0).slice(1));
 	}
 	
+	private void testSums(INDArray a) {
+		INDArray b=a.clone();
+		assertEquals(a.elementSum(),b.elementSum(),0.000001);
+		assertEquals(a.elementSquaredSum(),b.elementSquaredSum(),0.000001);
+		assertEquals(a.elementSum(),a.toVector().elementSum(),0.000001);
+		assertEquals(a.elementSquaredSum(),a.toVector().elementSquaredSum(),0.000001);
+		
+		b.multiply(a);
+		assertEquals(a.elementSquaredSum(),b.elementSum(),0.000001);
+	}
+	
 	
 	public void testArray(INDArray a) {
 		a.validate();
@@ -212,6 +226,7 @@ public class TestArrays {
 		testToArray(a);
 		testMultiply(a);
 		testApplyOp(a);
+		testSums(a);
 		testSetElements(a);
 		testGetElements(a);
 		testBroadcast(a);

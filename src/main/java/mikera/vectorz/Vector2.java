@@ -69,6 +69,25 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void scaleAdd(double factor, AVector constant) {
+		if (constant instanceof Vector2) {scaleAdd(factor,(Vector2)constant); return; }
+		x=(x*factor)+constant.get(0);
+		y=(y*factor)+constant.get(1);
+	}
+	
+	public void scaleAdd(double factor, Vector2 constant) {
+		x=(x*factor)+constant.x;
+		y=(y*factor)+constant.y;
+	}
+	
+	public void multiplyComplex(Vector2 a) {
+		double nx=x*a.x-y*a.y;
+		double ny=x*a.y+y*a.x;
+		this.x=nx;
+		this.y=ny;	
+	}
+	
+	@Override
 	public void negate() {
 		x=-x;
 		y=-y;
@@ -117,7 +136,7 @@ public final class Vector2 extends APrimitiveVector {
 		switch (i) {
 			case 0: return x;
 			case 1: return y;
-			default: throw new IndexOutOfBoundsException("Index: i");
+			default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	
@@ -138,7 +157,7 @@ public final class Vector2 extends APrimitiveVector {
 		switch (i) {
 			case 0: x=value; return;
 			case 1: y=value; return;
-			default: throw new IndexOutOfBoundsException("Index: i");
+			default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
 	}
 	

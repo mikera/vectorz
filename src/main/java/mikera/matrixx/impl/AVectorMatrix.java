@@ -32,6 +32,14 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	public double get(int row, int column) {
 		return getRow(row).get(column);
 	}
+	
+	@Override 
+	public void set(double value) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRow(i).set(value);
+		}
+	}
 
 	@Override
 	public void set(int row, int column, double value) {
@@ -71,6 +79,16 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
 			result+=getRow(i).elementSum();
+		}
+		return result;
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		int rc=rowCount();
+		double result=0.0;
+		for (int i=0; i<rc; i++) {
+			result+=getRow(i).elementSquaredSum();
 		}
 		return result;
 	}

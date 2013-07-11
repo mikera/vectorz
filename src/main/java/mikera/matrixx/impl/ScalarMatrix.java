@@ -28,7 +28,6 @@ public class ScalarMatrix extends ADiagonalMatrix {
 		return scale*dimensions;
 	}	
 	
-	
 	@Override
 	public boolean isMutable() {
 		return true;

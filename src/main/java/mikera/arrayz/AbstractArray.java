@@ -7,8 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.vectorz.AScalar;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
+import mikera.vectorz.Vector;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -17,9 +20,8 @@ import mikera.vectorz.util.VectorzException;
  * @param <T> The type of array slices
  */
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
-
 	public double get() {
-		return get(new int[0]);
+		return get(IntArrays.EMPTY_INT_ARRAY);
 	}
 	public double get(int x) {
 		return get(new int[] {x});
@@ -59,6 +61,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	public final void scale(double d) {
 		multiply(d);
+	}
+	
+	@Override
+	public void scaleAdd(double factor, double constant) {
+		multiply(factor);
+		add(constant);
 	}
 
 	public void set(double value) {
@@ -258,6 +266,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		return result;
 	}
+	
+	@Override
+	public double elementSquaredSum() {
+		if (dimensionality()==0) {
+			double value=get();
+			return value*value;
+		}
+		double result=0;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			result+=slice(i).elementSquaredSum();
+		}
+		return result;
+	}
 
 
 	@Override
@@ -301,6 +323,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			al.add(slice(i));
 		}
 		return al;
+	}
+	
+	@Override
+	public AVector toVector() {
+		int n=(int)elementCount();
+		double[] data=new double[n];
+		this.getElements(data, 0);
+		return Vector.wrap(data);
 	}
 	
 	@Override

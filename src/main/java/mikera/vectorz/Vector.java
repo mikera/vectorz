@@ -170,7 +170,8 @@ public final class Vector extends ArrayVector {
 	@Override
 	public void abs() {
 		for (int i=0; i<data.length; i++) {
-			data[i]=Math.abs(data[i]);
+			double val=data[i];
+			if (val<0) data[i]=-val;
 		}
 	}
 	

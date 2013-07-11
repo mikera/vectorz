@@ -264,7 +264,8 @@ public abstract class ArrayVector extends AVector {
 		double[] data=getArray();
 		int offset=getArrayOffset();
 		for (int i=0; i<len; i++) {
-			data[i+offset]=Math.abs(data[i+offset]);
+			double val=data[i+offset];
+			if (val<0) data[i+offset]=-val;
 		}
 	}
 	
