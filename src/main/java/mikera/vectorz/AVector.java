@@ -710,10 +710,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void set(double a) {
-		fill(a);
+		throw new UnsupportedOperationException("0d set not supported for vectors - use fill instead?");
 	}
 	
+	@Deprecated
 	public void set(double[] data) {
+		setElements(data,0,length());
+	}
+	
+	@Override
+	public void setElements(double[] data) {
 		setElements(data,0,length());
 	}
 	

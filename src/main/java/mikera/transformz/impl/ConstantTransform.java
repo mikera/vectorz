@@ -40,7 +40,7 @@ public final class ConstantTransform extends AConstantTransform {
 	@Override
 	public void transform(AVector source, AVector dest) {
 		assert(source.length()==inputDimensions());
-		dest.set(constant);
+		dest.setElements(constant);
 	}
 
 

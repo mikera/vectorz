@@ -352,7 +352,7 @@ public class TestVectors {
 
 		Vectorz.fillRandom(v);
 		double[] data=v.toArray();
-		v2.set(data);
+		v2.setElements(data);
 		assertEquals(v,v2);
 	}
 	

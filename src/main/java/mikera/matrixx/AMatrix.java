@@ -294,7 +294,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 			temp[row] = total;
 		}
-		v.set(temp);
+		v.setElements(temp);
 	}
 	
 	public void transformInPlace(ArrayVector v) {
@@ -313,7 +313,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 			temp[row] = total;
 		}
-		v.set(temp);
+		v.setElements(temp);
 	}
 
 

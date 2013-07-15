@@ -128,7 +128,7 @@ public final class BitVector extends AVector {
 	public static BitVector of(double... values) {
 		int len=values.length;
 		BitVector b=new BitVector(len);
-		b.set(values);
+		b.setElements(values);
 		return b;
 	}
 	
