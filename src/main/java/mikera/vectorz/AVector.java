@@ -690,6 +690,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		multiply(-1.0);
 	}
 	
+	public void pow(double exponent) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			set(i,Math.pow(get(i),exponent));
+		}				
+	}
+	
 	/**
 	 * Sets the vector to equal the value of another vector
 	 */

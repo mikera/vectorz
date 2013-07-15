@@ -103,6 +103,12 @@ public final class DoubleArrays {
 		}
 	}
 
+	public static void pow(double[] data, int offset, int length, double exponent) {
+		for (int i=0; i<length; i++) {
+			data[i+offset]=Math.pow(data[i+offset],exponent);
+		}
+	}
+
 
 
 
