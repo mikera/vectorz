@@ -47,6 +47,10 @@ public abstract class ArrayVector extends AVector {
 		return new ArrayIndexScalar(getArray(),getArrayOffset()+position);
 	}
 	
+	public boolean isPackedArray() {
+		return (getArrayOffset()==0)&&(length()==getArray().length);
+	}
+	
 	@Override
 	public boolean isView() {
 		// ArrayVector is usually a view

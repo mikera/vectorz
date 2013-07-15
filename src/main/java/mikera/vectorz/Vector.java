@@ -433,6 +433,11 @@ public final class Vector extends ArrayVector {
 	public Vector exactClone() {
 		return clone();
 	}
+	
+	@Override
+	public boolean isPackedArray() {
+		return true;
+	}
 
 	public static INDArray wrap(double[] data, int length) {
 		// TODO Auto-generated method stub
