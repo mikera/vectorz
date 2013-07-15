@@ -314,6 +314,21 @@ public class TestArrays {
 		v.square();
 		assertEquals(v, b.toVector());
 	}
+	
+	private void testIndexedAccess(INDArray a) {
+		if ((a.elementCount() <= 1)) return;
+
+		try {
+			a.get();
+			fail("0d get should fail for array with shape: "+a.getShape());
+		} catch (Throwable t) { /* OK */ }
+		
+		try {
+			a.set(1.0);
+			fail("0d set should fail for array with shape: "+a.getShape());
+		} catch (Throwable t) { /* OK */ }
+
+	}
 
 	public void testArray(INDArray a) {
 		a.validate();
@@ -324,6 +339,7 @@ public class TestArrays {
 		testApplyAllOps(a);
 		testSums(a);
 		testEquals(a);
+		testIndexedAccess(a);
 		testMathsFunctions(a);
 		testTranspose(a);
 		testSetElements(a);
