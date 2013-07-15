@@ -12,6 +12,10 @@ public class ArrayIndexScalar extends AScalar {
 		this.index=index;
 	}
 	
+	public static ArrayIndexScalar wrap(double[] array, int index) {
+		return new ArrayIndexScalar(array,index);
+	}
+	
 	@Override
 	public double get() {
 		return array[index];

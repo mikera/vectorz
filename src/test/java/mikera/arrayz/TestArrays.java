@@ -88,6 +88,8 @@ public class TestArrays {
 		assertEquals(a.nonZeroCount(),DoubleArrays.nonZeroCount(arr, 0, arr.length));
 		
 		assertEquals(a,Vector.wrap(arr).reshape(a.getShape()));
+		assertEquals(a,Arrayz.wrap(arr,a.getShape()));
+		
 	}
 	
 	private void testClone(INDArray a) {

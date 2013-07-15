@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
@@ -431,5 +432,10 @@ public final class Vector extends ArrayVector {
 	@Override 
 	public Vector exactClone() {
 		return clone();
+	}
+
+	public static INDArray wrap(double[] data, int length) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
