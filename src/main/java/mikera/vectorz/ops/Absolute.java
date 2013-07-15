@@ -1,5 +1,6 @@
 package mikera.vectorz.ops;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
@@ -16,6 +17,12 @@ public class Absolute extends Op {
 	public void applyTo(AVector v) {
 		v.abs();
 	}
+	
+	@Override
+	public void applyTo(INDArray v) {
+		v.abs();
+	}
+
 
 	@Override
 	public double averageValue() {
