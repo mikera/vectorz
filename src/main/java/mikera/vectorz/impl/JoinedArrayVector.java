@@ -323,6 +323,20 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void reciprocal() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.reciprocal(this.data[j],offsets[j],subLength(j));
+		}
+	}
+	
+	@Override
+	public void add(double value) {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.add(this.data[j],offsets[j],subLength(j),value);
+		}
+	}
+	
+	@Override
 	public void square() {
 		for (int j=0; j<numArrays; j++) {
 			DoubleArrays.square(this.data[j],offsets[j],subLength(j));
