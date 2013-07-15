@@ -359,7 +359,9 @@ public class TestMatrixx {
 		assertEquals(0.78,row.get(0),0.0);
 		assertEquals(0.78,col.get(0),0.0);
 		
-
+		new TestArrays().testArray(row);
+		new TestArrays().testArray(col);
+		new TestArrays().testArray(all);
 	}
 	
 	void doVectorTest(AMatrix m) {
