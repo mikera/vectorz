@@ -29,6 +29,15 @@ public class TestNDArray {
 		
 	}
 	
+	@Test public void testScalarAdd() {
+		NDArray a=NDArray.newArray();
+		assertEquals(a,new DoubleScalar(0.0));
+		
+		a.add(1.0);
+		assertEquals(a,new DoubleScalar(1.0));
+		assertFalse(a.equals(new DoubleScalar(0.0)));
+	}
+	
 	@Test public void testWrap() {
 		Vector v=Vector.of(0,1,2,3);
 		assertEquals(v,NDArray.wrap(v));
@@ -36,6 +45,13 @@ public class TestNDArray {
 		Matrix m=Matrix.create(Matrixx.createRandomSquareMatrix(3));
 		assertEquals(m,NDArray.wrap(m));
 
+	}
+	
+	@Test public void testVectorEquals() {
+		NDArray a=NDArray.wrap(Vector.of(1,2));
+		
+		assertTrue(a.equals(Vector.of(1,2)));
+		assertTrue(!a.equals(Vector.of(1,2,3)));
 	}
 	
 	@Test public void testOuterProduct() {

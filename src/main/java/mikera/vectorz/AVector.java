@@ -116,7 +116,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public long elementCount() {
+	public final long elementCount() {
 		return length();
 	}
 	
@@ -309,6 +309,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Clamps all values in the vector to a given range
 	 * @param value
 	 */
+	@Override
 	public void clamp(double min, double max) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
@@ -489,6 +490,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		return total;
 	}
+	
+	@Override
+	public AVector getTranspose() {return this;}
+	
+	@Override
+	public final AVector getTransposeView() {return this;}
 	
 	public AMatrix outerProduct(AVector a) {
 		int rc=length();
@@ -681,6 +688,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void negate() {
 		multiply(-1.0);
+	}
+	
+	@Override
+	public void pow(double exponent) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			set(i,Math.pow(get(i),exponent));
+		}				
 	}
 	
 	/**

@@ -92,7 +92,33 @@ public final class DoubleArrays {
 		}
 	}
 
+	public static void clamp(double[] data, int offset, int length, double min,double max) {
+		for (int i=0; i<length; i++) {
+			double v=data[offset+i];
+			if (v<min) {
+				data[offset+i]=min;
+			} else if (v>max) {
+				data[offset+i]=max;
+			}
+		}
+	}
 
+	public static void pow(double[] data, int offset, int length, double exponent) {
+		for (int i=0; i<length; i++) {
+			data[i+offset]=Math.pow(data[i+offset],exponent);
+		}
+	}
 
+	public static void reciprocal(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			data[i+offset]=1.0/data[i+offset];
+		}
+	}
 
+	public static void scaleAdd(double[] data, int offset, int length,
+			double factor, double constant) {
+		for (int i=0; i<length; i++) {
+			data[i+offset]=(factor*data[i+offset])+constant;
+		}
+	}
 }

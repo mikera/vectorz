@@ -47,6 +47,10 @@ public abstract class ArrayVector extends AVector {
 		return new ArrayIndexScalar(getArray(),getArrayOffset()+position);
 	}
 	
+	public boolean isPackedArray() {
+		return (getArrayOffset()==0)&&(length()==getArray().length);
+	}
+	
 	@Override
 	public boolean isView() {
 		// ArrayVector is usually a view
@@ -156,22 +160,12 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void scaleAdd(double factor, double constant) {
-		int length=length();
-		double[] array=getArray();
-		int offset=getArrayOffset();
-		for (int i=0; i<length; i++) {
-			array[i+offset]=(factor*array[i+offset])+constant;
-		}
+		DoubleArrays.scaleAdd(getArray(), getArrayOffset(), length(), factor, constant);
 	}
 
 	@Override
 	public void add(double constant) {
-		int length=length();
-		double[] array=getArray();
-		int offset=getArrayOffset();
-		for (int i=0; i<length; i++) {
-			array[i+offset]=array[i+offset]+constant;
-		}
+		DoubleArrays.add(getArray(), getArrayOffset(), length(), constant);
 	}
 	
 	@Override
@@ -307,7 +301,7 @@ public abstract class ArrayVector extends AVector {
 		double[] cdata=getArray();
 		int coffset=getArrayOffset();
 		for (int i = 0; i < len; i++) {
-			set(i,cdata[i+coffset]*data[i+offset]);
+			data[i+offset]=cdata[i+coffset]*data[i+offset];
 		}	
 	}
 	
@@ -402,6 +396,24 @@ public abstract class ArrayVector extends AVector {
 	public void fill(double value) {
 		int offset=getArrayOffset();
 		Arrays.fill(getArray(), offset, offset+length(),value);
+	}
+	
+	@Override
+	public void pow(double exponent) {
+		int len=length();
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		DoubleArrays.pow(data,offset,len,exponent);			
+	}
+	
+	@Override
+	public void reciprocal() {
+		DoubleArrays.reciprocal(getArray(),getArrayOffset(),length());			
+	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		DoubleArrays.clamp(getArray(),getArrayOffset(),length(),min,max);
 	}
 	
 	@Override

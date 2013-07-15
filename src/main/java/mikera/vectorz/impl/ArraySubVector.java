@@ -5,7 +5,7 @@ import java.util.Arrays;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
-import mikera.vectorz.Vectorz;
+import mikera.vectorz.Vector;
 
 /**
  * Vector referring to an offset into a double[] array
@@ -157,7 +157,7 @@ public final class ArraySubVector extends ArrayVector {
 	
 	@Override
 	public AVector clone() {
-		return Vectorz.create(this);
+		return Vector.create(this);
 	}
 
 	@Override 

@@ -215,10 +215,20 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public INDArray outerProduct(INDArray a) {
 		return super.outerProduct(a);
 	}
+	
+	@Override
+	public INDArray getTranspose() {
+		return new NDArray(data,dimensions,offset,IntArrays.reverse(shape),IntArrays.reverse(stride));
+	}
+	
+	@Override
+	public INDArray getTransposeView() {
+		return getTranspose();
+	}
 
 	@Override
 	public AVector asVector() {
-		if (fittedDataArray()) {
+		if (isPackedArray()) {
 			return Vector.wrap(data);
 		} else if (dimensions==0) {
 			return ArraySubVector.wrap(data,offset,1);
@@ -234,7 +244,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		}
 	}
 
-	private boolean fittedDataArray() {
+	private boolean isPackedArray() {
 		if (offset!=0) return false;
 		
 		int st=1;
@@ -356,7 +366,12 @@ public final class NDArray extends AbstractArray<INDArray> {
 	
 	public boolean equals(NDArray a) {
 		if (dimensions!=a.dimensions) return false;
-		for (int i=0; i<dimensions; i++) {
+		if (dimensions==0) return get()==a.get();
+		
+		int sc=sliceCount();
+		if (a.sliceCount()!=sc) return false;
+		
+		for (int i=0; i<sc; i++) {
 			if (!(slice(i).equals(a.slice(i)))) return false;
 		}
 		return true;
@@ -367,7 +382,13 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (a instanceof NDArray) {
 			return equals((NDArray)a);
 		}
-		for (int i=0; i<dimensions; i++) {
+		if (dimensions!=a.dimensionality()) return false;
+		if (dimensions==0) return (get()==a.get());
+
+		int sc=sliceCount();
+		if (a.sliceCount()!=sc) return false;
+		
+		for (int i=0; i<sc; i++) {
 			if (!(slice(i).equals(a.slice(i)))) return false;
 		}
 		return true;
@@ -426,7 +447,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		if (dimensions==0) {
 			dest.put(data[offset]);
-		} else if (fittedDataArray()) {
+		} else if (isPackedArray()) {
 			dest.put(data,0,data.length);
 		} else {
 			int sc=sliceCount();

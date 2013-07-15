@@ -1,7 +1,9 @@
 package mikera.vectorz.ops;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.util.DoubleArrays;
 
 public final class Linear extends ALinearOp {
 	private final double factor;
@@ -37,6 +39,11 @@ public final class Linear extends ALinearOp {
 	}
 	
 	@Override
+	public void applyTo(INDArray v) {
+		v.scaleAdd(factor,constant);
+	}
+	
+	@Override
 	public void applyTo(AVector v) {
 		v.scaleAdd(factor,constant);
 	}
@@ -50,9 +57,7 @@ public final class Linear extends ALinearOp {
 	
 	@Override
 	public void applyTo(double[] data, int start,int length) {
-		for (int i=0; i<length; i++) {
-			data[i+start]=(data[i+start]*factor)+constant;
-		}	
+		DoubleArrays.scaleAdd(data, start, length, factor,constant);
 	}
 	
 	@Override

@@ -79,7 +79,11 @@ public interface INDArray extends Cloneable {
 	public void sub(double a);
 	public void add(INDArray a);
 	public void sub(INDArray a);
+	
 	public void negate();
+	public void reciprocal();
+	
+	public void clamp(double min, double max);
 
 	/**
 	 * Calculates the inner product of this array with another array.
@@ -108,6 +112,15 @@ public interface INDArray extends Cloneable {
 	public INDArray slice(int majorSlice);
 
 	public INDArray slice(int dimension, int index);
+	
+	public INDArray getTranspose();
+	
+	/**
+	 * Returns a transposed view of the array. May throw UnsupportedOperationException 
+	 * if the array does not support this capability
+	 * @return
+	 */
+	public INDArray getTransposeView();
 
 	
 	public int sliceCount();
@@ -231,6 +244,18 @@ public interface INDArray extends Cloneable {
 	 * @param d
 	 */
 	public void multiply(double d);
+	
+	/**
+	 * Raises all elements of the array to a specified power
+	 * 
+	 * @param exponent
+	 */
+	public void pow(double exponent);
+	
+	/**
+	 * Squares all elements of the array
+	 */
+	public void square();
 
 	/**
 	 * Returns a list of all major slices of this array.
@@ -271,4 +296,11 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public AVector toVector();
+
+	public boolean epsilonEquals(INDArray a);
+	public boolean epsilonEquals(INDArray a, double epsilon);
+
+	public void abs();
+
+
 }

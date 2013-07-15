@@ -82,6 +82,30 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		asVector().fill(value);
 	}
 	
+	@Override
+	public void clamp(double min, double max) {
+		int len=rowCount();
+		for (int i = 0; i < len; i++) {
+			getRow(i).clamp(min, max);
+		}
+	}
+	
+	@Override
+	public void pow(double exponent) {
+		int len=rowCount();
+		for (int i = 0; i < len; i++) {
+			getRow(i).pow(exponent);
+		}
+	}
+	
+	@Override
+	public void square() {
+		int len=rowCount();
+		for (int i = 0; i < len; i++) {
+			getRow(i).square();
+		}
+	}
+	
 	@Override 
 	public void set(int[] indexes, double value) {
 		if (indexes.length==2) {
@@ -525,7 +549,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Returns a transposed version of this matrix. May or may not be a view.
 	 * @return
 	 */
+	@Override
 	public AMatrix getTranspose() {
+		return TransposedMatrix.wrap(this);
+	}
+	
+	@Override
+	public AMatrix getTransposeView() {
 		return TransposedMatrix.wrap(this);
 	}
 	
@@ -664,6 +694,22 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		multiply(-1.0);
 	}
 	
+	@Override
+	public void reciprocal() {
+		int sc=rowCount();
+		for (int i=0; i<sc; i++) {
+			getRow(i).reciprocal();
+		}
+	}
+	
+	@Override
+	public void abs() {
+		int sc=rowCount();
+		for (int i=0; i<sc; i++) {
+			getRow(i).abs();
+		}
+	}
+	
 	/**
 	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
 	 * @param m
@@ -743,6 +789,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 */
 	public Iterator<AVector> iterator() {
 		return new MatrixIterator(this);
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a) {
+		return epsilonEquals(a,Vectorz.TEST_EPSILON);
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a, double epsilon) {
+		if (a.dimensionality()!=2) {
+			return false;
+		} else {
+			int sc=rowCount();
+			if (a.sliceCount()!=sc) return false;
+			for (int i=0; i<sc; i++) {
+				INDArray s=getRow(i);
+				if (!s.epsilonEquals(a.slice(i),epsilon)) return false;
+			}			
+			return true;
+		}
 	}
 
 	@Override

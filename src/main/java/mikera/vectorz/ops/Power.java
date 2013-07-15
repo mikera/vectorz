@@ -1,7 +1,10 @@
 package mikera.vectorz.ops;
 
+import mikera.arrayz.INDArray;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
+import mikera.vectorz.util.DoubleArrays;
 
 public final class Power extends Op {
 	private final double exponent;
@@ -33,6 +36,21 @@ public final class Power extends Op {
 	@Override
 	public double apply(double x) {
 		return Math.pow(x, exponent);
+	}
+	
+	@Override
+	public void applyTo(INDArray a) {
+		a.pow(exponent);
+	}
+	
+	@Override
+	public void applyTo(AVector a) {
+		a.pow(exponent);
+	}
+	
+	@Override
+	public void applyTo(double[] data, int start,int length) {
+		DoubleArrays.pow(data, start, length,exponent);
 	}
 	
 	@Override

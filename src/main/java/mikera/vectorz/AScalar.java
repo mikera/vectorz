@@ -18,6 +18,8 @@ import mikera.vectorz.util.VectorzException;
  * 
  * Can be a view into another vector/matrix/array
  * 
+ * TODO: override methods in AScalar
+ * 
  * @author Mike
  */
 public abstract class AScalar extends AbstractArray<Object> implements IScalar {
@@ -43,6 +45,13 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	public void getElements(double[] dest, int offset) {
 		dest[offset]=get();
 	}
+	
+	@Override
+	public AScalar getTranspose() {return this;}
+	
+	@Override
+	public final AScalar getTransposeView() {return this;}
+
 	
 	@Override
 	public int dimensionality() {
@@ -127,6 +136,28 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	@Override
 	public void negate() {
 		set(-get());
+	}
+	
+	@Override
+	public void square() {
+		double v=get();
+		set(v*v);
+	}
+	
+	@Override
+	public void pow(double exponent) {
+		double v=get();
+		set(Math.pow(v,exponent));
+	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		double v=get();
+		if (v<min) {
+			set(min);
+		} else if (v>max) {
+			set(max);
+		}
 	}
 	
 	@Override
@@ -257,6 +288,21 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public boolean epsilonEquals(INDArray a) {
+		return epsilonEquals(a,Vectorz.TEST_EPSILON);
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a, double epsilon) {
+		if (a.dimensionality()!=0) {
+			return false;
+		} else {
+			double d=get()-a.get();
+			return (Math.abs(d)<=epsilon);
+		}
+	}
+	
+	@Override
 	public boolean equals(INDArray o) {
 		return (o.dimensionality()==0)&&(o.get(SCALAR_SHAPE)==get());
 	}
@@ -287,5 +333,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	public void validate() {
 		get();
 		super.validate();
+	}
+
+	public void abs() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -6,11 +6,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -33,6 +35,27 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public int getShape(int dim) {
 		return getShape()[dim];
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a) {
+		return epsilonEquals(a,Vectorz.TEST_EPSILON);
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a, double epsilon) {
+		if (dimensionality()==0) {
+			double d=get()-a.get();
+			return (Math.abs(d)<=epsilon);
+		} else {
+			int sc=sliceCount();
+			if (a.sliceCount()!=sc) return false;
+			for (int i=0; i<sc; i++) {
+				INDArray s=slice(i);
+				if (!s.epsilonEquals(a.slice(i),epsilon)) return false;
+			}			
+			return true;
+		}
 	}
 	
 	public INDArray innerProduct(INDArray a) {
@@ -59,6 +82,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return Arrayz.create(al);
 	}
 	
+	@Override
+	public INDArray getTranspose() {
+		NDArray nd=NDArray.newArray(this.getShape());
+		nd.set(this);
+		return nd.getTransposeView();
+	}
+	
+	@Override
+	public INDArray getTransposeView() {
+		throw new UnsupportedOperationException();
+	}
+	
 	public final void scale(double d) {
 		multiply(d);
 	}
@@ -82,7 +117,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int tdims=this.dimensionality();
 		int adims=a.dimensionality();
 		if (adims<tdims) {
-			int sc=getShape()[0];
+			int sc=sliceCount();
 			for (int i=0; i<sc; i++) {
 				INDArray s=slice(i);
 				s.set(a);
@@ -99,6 +134,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			}
 		} else {
 			throw new IllegalArgumentException("Can't set array to value of higher dimensionality");
+		}
+	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		if (dimensionality()==0) {
+			set(Maths.bound(get(), min, max));
+			return;
+		}
+		
+		int len=sliceCount();
+		for (int i = 0; i < len; i++) {
+			slice(i).clamp(min, max);
 		}
 	}
 	
@@ -205,17 +253,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
-	@Override
-	public void sub(double a) {
+	@Override 
+	public void pow(double exponent) {
 		int dims=dimensionality();
 		if (dims ==0) {
-			set(get()-a);
+			set(Math.pow(get(), exponent));
 		} else {
 			int n=sliceCount();
 			for (int i=0; i<n; i++) {
-				slice(i).sub(a);
+				slice(i).pow(exponent);
 			}	
 		}
+	}
+	
+	@Override
+	public void sub(double a) {
+		add(-a);
 	}
 	
 	@Override
@@ -306,6 +359,31 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void negate() {
 		multiply(-1.0);
 	}
+	
+	@Override
+	public void reciprocal() {
+		if (dimensionality()==0) {
+			set(1.0/get());
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).reciprocal();
+			}
+		}
+	}
+	
+	@Override
+	public void abs() {
+		if (dimensionality()==0) {
+			set(Math.abs(get()));
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).abs();
+			}
+		}
+	}
+	
 	
 	@Override
 	public INDArray reshape(int... targetShape) {

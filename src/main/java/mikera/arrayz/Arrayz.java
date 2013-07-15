@@ -16,6 +16,8 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.ArrayIndexScalar;
+import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
@@ -78,6 +80,32 @@ public class Arrayz {
 			as[i]=create((Object)data);
 		}
 		return SliceArray.create(as);
+	}
+	
+	public static INDArray wrap(double[] data, int[] shape) {
+		switch (shape.length) {
+			case 0:
+				return ArrayIndexScalar.wrap(data,0);
+				
+			case 1:
+				int n=shape[0];
+				if (n==data.length) {
+					return Vector.wrap(data); 
+				} else {
+					return ArraySubVector.wrap(data, 0, n);
+				}
+				
+			case 2:
+				int rc=shape[0], cc=shape[1];
+				if (rc*cc==data.length) {
+					return Matrix.wrap(rc,cc, data);
+				} else {
+					return NDArray.wrap(data, shape);
+				}
+		
+			default:
+				return NDArray.wrap(data, shape);
+		}
 	}
 
 	public static INDArray createFromVector(AVector a, int[] shape) {

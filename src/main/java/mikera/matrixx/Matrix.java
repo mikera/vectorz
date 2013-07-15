@@ -53,6 +53,10 @@ public final class Matrix extends AMatrix {
 		return false;
 	}
 	
+	public boolean isPackedArray() {
+		return true;
+	}
+	
 	private Matrix(int rowCount, int columnCount, double[] data) {
 		this.rows=rowCount;
 		this.columns=columnCount;
@@ -284,6 +288,16 @@ public final class Matrix extends AMatrix {
 	@Override 
 	public void set(double value) {
 		Arrays.fill(data,value);
+	}
+	
+	@Override
+	public void reciprocal() {
+		DoubleArrays.reciprocal(data,0,data.length);
+	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		DoubleArrays.clamp(data,0,data.length,min,max);
 	}
 	
 	@Override

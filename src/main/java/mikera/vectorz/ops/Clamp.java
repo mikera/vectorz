@@ -1,5 +1,8 @@
 package mikera.vectorz.ops;
 
+import mikera.arrayz.INDArray;
+import mikera.vectorz.AVector;
+
 /**
  * Operator for clamping values within a given range
  * @author Mike
@@ -21,6 +24,16 @@ public final class Clamp extends ABoundedOp {
 		if (x<=min) return min;
 		if (x>=max) return max;
 		return x;
+	}
+	
+	@Override
+	public void applyTo(INDArray v) {
+		v.clamp(min, max);
+	}
+	
+	@Override
+	public void applyTo(AVector v) {
+		v.clamp(min, max);
 	}
 	
 	@Override

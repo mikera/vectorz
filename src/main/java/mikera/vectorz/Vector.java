@@ -75,6 +75,13 @@ public final class Vector extends ArrayVector {
 	public static Vector createLength(int length) {
 		return new Vector(length);
 	}
+
+	public static Vector create(AVector a) {
+		int n=a.length();
+		Vector v=createLength(n);
+		a.copyTo(v.data);
+		return v;
+	}
 	
 	@Override
 	public int length() {
@@ -135,6 +142,11 @@ public final class Vector extends ArrayVector {
 	@Override
 	public void fill(double value) {
 		Arrays.fill(data, value);
+	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		DoubleArrays.clamp(data,0,data.length,min,max);
 	}
 	
 	@Override
@@ -432,4 +444,10 @@ public final class Vector extends ArrayVector {
 	public Vector exactClone() {
 		return clone();
 	}
+	
+	@Override
+	public boolean isPackedArray() {
+		return true;
+	}
+
 }
