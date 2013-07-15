@@ -13,6 +13,7 @@ import mikera.vectorz.ops.LogN;
 import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Power;
+import mikera.vectorz.ops.Reciprocal;
 import mikera.vectorz.ops.ScaledLogistic;
 import mikera.vectorz.ops.Signum;
 import mikera.vectorz.ops.SoftPlus;
@@ -51,27 +52,7 @@ public final class Ops {
 	public static final Op LOG = Log.INSTANCE;
 	public static final Op LOG10 = LogN.LOG10;
 	
-	public static final Op RECIPROCAL = new AFunctionOp() {
-		@Override
-		public double apply(double x) {
-			return 1.0/x;
-		}
-		
-		@Override
-		public double derivative(double x) {
-			return -1.0/(x*x);
-		}
-		
-		@Override
-		public double derivativeForOutput(double y) {
-			return -y*y;
-		}
-		
-		@Override public double averageValue() {return 1.0;}
-		@Override public boolean hasInverse() {return true;}
-		@Override public Op getInverse() {return this;}
-		@Override public boolean hasDerivative() {return true;}
-	};
+	public static final Op RECIPROCAL = new Reciprocal();
 	
 	public static final ARoundingOp CEIL=new ARoundingOp() {
 		@Override
