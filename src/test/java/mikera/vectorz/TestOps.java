@@ -1,5 +1,10 @@
 package mikera.vectorz;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,8 +22,23 @@ import mikera.vectorz.ops.Offset;
 import mikera.vectorz.ops.Power;
 import mikera.vectorz.ops.Quadratic;
 import mikera.vectorz.ops.StochasticBinary;
+import mikera.vectorz.util.VectorzException;
 
 public class TestOps {
+	public static final List<Op> ALL_OPS=new ArrayList<Op>();
+	
+	static {
+		Field[] declaredFields = String.class.getDeclaredFields();
+		for (Field field : declaredFields) {
+		    if (Modifier.isStatic(field.getModifiers())&&(Op.class.isAssignableFrom(field.getType()))) {
+		    	try {
+					ALL_OPS.add((Op) field.get(null));
+				} catch (Throwable e) {
+					throw new VectorzException("Problem analysing Ops",e);
+				}
+		    }
+		}
+	}
 	
 	@Test public void testComposedOp() {
 		Op op=Composed.compose(Linear.create(2.0,1.0),Linear.create(100.0,10.0));

@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
+import mikera.vectorz.TestOps;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.DoubleScalar;
@@ -154,6 +156,27 @@ public class TestArrays {
 		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
 	}
+	
+	private void testApplyAllOps(INDArray a) {
+		for (Op op:TestOps.ALL_OPS) {
+			int n=(int) a.elementCount();
+			
+			INDArray b=a.exactClone();
+			AVector v=b.toVector();
+			double[] ds=new double[n];
+			double[] tmp=new double[n];
+			a.getElements(ds, 0);
+			
+			for (int i=0; i<n; i++) tmp[i]=op.apply(b.get(i));
+			op.applyTo(b);
+			op.applyTo(v);
+			op.applyTo(ds);
+			
+			assertEquals(v,b.toVector());
+			assertEquals(v,Vector.wrap(ds));
+			assertEquals(v,Vector.wrap(tmp));
+		}
+	}
 
 	private void testMutability(INDArray a) {
 		if (a.isFullyMutable() && (a.elementCount() > 0)) {
@@ -297,6 +320,7 @@ public class TestArrays {
 		testToArray(a);
 		testMultiply(a);
 		testApplyOp(a);
+		testApplyAllOps(a);
 		testSums(a);
 		testEquals(a);
 		testMathsFunctions(a);
