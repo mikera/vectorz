@@ -301,7 +301,7 @@ public abstract class ArrayVector extends AVector {
 		double[] cdata=getArray();
 		int coffset=getArrayOffset();
 		for (int i = 0; i < len; i++) {
-			set(i,cdata[i+coffset]*data[i+offset]);
+			data[i+offset]=cdata[i+coffset]*data[i+offset];
 		}	
 	}
 	
