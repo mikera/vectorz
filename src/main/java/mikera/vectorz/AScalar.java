@@ -276,6 +276,21 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public boolean epsilonEquals(INDArray a) {
+		return epsilonEquals(a,Vectorz.TEST_EPSILON);
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a, double epsilon) {
+		if (a.dimensionality()!=0) {
+			return false;
+		} else {
+			double d=get()-a.get();
+			return (Math.abs(d)<=epsilon);
+		}
+	}
+	
+	@Override
 	public boolean equals(INDArray o) {
 		return (o.dimensionality()==0)&&(o.get(SCALAR_SHAPE)==get());
 	}
