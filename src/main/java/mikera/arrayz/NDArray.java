@@ -367,7 +367,11 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public boolean equals(NDArray a) {
 		if (dimensions!=a.dimensions) return false;
 		if (dimensions==0) return get()==a.get();
-		for (int i=0; i<dimensions; i++) {
+		
+		int sc=sliceCount();
+		if (a.sliceCount()!=sc) return false;
+		
+		for (int i=0; i<sc; i++) {
 			if (!(slice(i).equals(a.slice(i)))) return false;
 		}
 		return true;
@@ -380,8 +384,11 @@ public final class NDArray extends AbstractArray<INDArray> {
 		}
 		if (dimensions!=a.dimensionality()) return false;
 		if (dimensions==0) return (get()==a.get());
+
+		int sc=sliceCount();
+		if (a.sliceCount()!=sc) return false;
 		
-		for (int i=0; i<dimensions; i++) {
+		for (int i=0; i<sc; i++) {
 			if (!(slice(i).equals(a.slice(i)))) return false;
 		}
 		return true;
