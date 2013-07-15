@@ -18,6 +18,8 @@ import mikera.vectorz.util.VectorzException;
  * 
  * Can be a view into another vector/matrix/array
  * 
+ * TODO: override methods in AScalar
+ * 
  * @author Mike
  */
 public abstract class AScalar extends AbstractArray<Object> implements IScalar {
@@ -304,5 +306,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	public void validate() {
 		get();
 		super.validate();
+	}
+
+	public void abs() {
+		// TODO Auto-generated method stub
+		
 	}
 }

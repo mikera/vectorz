@@ -23,9 +23,34 @@ public class DoubleScalar extends AScalar {
 		this.value=value;
 	}
 	
+	@Override
+	public void abs() {
+		value=Math.abs(value);
+	}
+	
+	@Override
+	public void add(double d) {
+		value+=d;
+	}
+	
+	@Override
+	public void sub(double d) {
+		value-=d;
+	}
+	
+	@Override
+	public void add(AScalar s) {
+		value+=s.get();
+	}
+	
 	@Override 
 	public void multiply(double factor) {
 		value*=factor;
+	}
+	
+	@Override
+	public void negate() {
+		value=-value;
 	}
 	
 	@Override
@@ -36,6 +61,11 @@ public class DoubleScalar extends AScalar {
 	@Override
 	public DoubleScalar clone() {
 		return new DoubleScalar(value);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		dest[offset]=value;
 	}
 	
 	@Override
