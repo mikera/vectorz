@@ -251,6 +251,11 @@ public interface INDArray extends Cloneable {
 	 * @param exponent
 	 */
 	public void pow(double exponent);
+	
+	/**
+	 * Squares all elements of the array
+	 */
+	public void square();
 
 	/**
 	 * Returns a list of all major slices of this array.

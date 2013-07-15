@@ -272,6 +272,17 @@ public class TestArrays {
 			assertTrue(a.toVector().epsilonEquals(a1.toVector()));
 		}
 		
+		INDArray b=a.exactClone();
+		AVector v=b.toVector();
+		b.pow(2.5);
+		v.pow(2.5);
+		assertEquals(v,b.toVector());
+		
+		b=a.exactClone();
+		v=b.toVector();
+		b.square();
+		v.square();
+		assertEquals(v,b.toVector());
 	}
 	
 	

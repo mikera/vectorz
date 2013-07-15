@@ -98,6 +98,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 	}
 	
+	@Override
+	public void square() {
+		int len=rowCount();
+		for (int i = 0; i < len; i++) {
+			getRow(i).square();
+		}
+	}
+	
 	@Override 
 	public void set(int[] indexes, double value) {
 		if (indexes.length==2) {
