@@ -39,7 +39,7 @@ public class ArrayIndexScalar extends AScalar {
 	
 	@Override
 	public DoubleScalar clone() {
-		return new DoubleScalar(array[index]);
+		return DoubleScalar.create(array[index]);
 	}
 
 	@Override

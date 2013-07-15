@@ -9,9 +9,14 @@ public class DoubleScalar extends AScalar {
 		this.value=value;
 	}
 	
-	public static AScalar create(double value) {
+	public static DoubleScalar create(double value) {
 		return new DoubleScalar(value);
 	}	
+	
+	public static DoubleScalar create(AScalar a) {
+		return create(a.get());
+	}	
+
 
 	@Override
 	public double get() {
