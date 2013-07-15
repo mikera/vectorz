@@ -1,8 +1,26 @@
 package mikera.vectorz.ops;
 
+import mikera.arrayz.INDArray;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.util.DoubleArrays;
 
 public final class Reciprocal extends AFunctionOp {
+	@Override
+	public void applyTo(INDArray a) {
+		a.reciprocal();
+	}
+	
+	@Override
+	public void applyTo(AVector a) {
+		a.reciprocal();
+	}
+	
+	@Override
+	public void applyTo(double[] data, int start,int length) {
+		DoubleArrays.reciprocal(data, start, length);
+	}
+	
 	@Override
 	public double apply(double x) {
 		return 1.0/x;
