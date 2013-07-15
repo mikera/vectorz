@@ -291,6 +291,11 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
+	public void reciprocal() {
+		DoubleArrays.reciprocal(data,0,data.length);
+	}
+	
+	@Override
 	public void clamp(double min, double max) {
 		DoubleArrays.clamp(data,0,data.length,min,max);
 	}

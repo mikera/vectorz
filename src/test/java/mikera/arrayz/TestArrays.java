@@ -238,6 +238,19 @@ public class TestArrays {
 		assertEquals(14.0,Vectorz.maxValue(a.toVector()),0.0001);
 	}
 	
+	private void testMathsFunctions(INDArray a) {
+		if (!a.isFullyMutable()) return;
+		a=a.exactClone();
+		
+		if (a.nonZeroCount()==a.elementCount()) {
+			INDArray a1=a.exactClone();
+			a1.reciprocal();
+			a1.reciprocal();
+			assertTrue(a.toVector().epsilonEquals(a1.toVector()));
+		}
+		
+	}
+	
 	
 	public void testArray(INDArray a) {
 		a.validate();
@@ -246,6 +259,7 @@ public class TestArrays {
 		testMultiply(a);
 		testApplyOp(a);
 		testSums(a);
+		testMathsFunctions(a);
 		testTranspose(a);
 		testSetElements(a);
 		testGetElements(a);

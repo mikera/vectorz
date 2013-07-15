@@ -417,6 +417,11 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void reciprocal() {
+		DoubleArrays.reciprocal(getArray(),getArrayOffset(),length());			
+	}
+	
+	@Override
 	public void clamp(double min, double max) {
 		DoubleArrays.clamp(getArray(),getArrayOffset(),length(),min,max);
 	}

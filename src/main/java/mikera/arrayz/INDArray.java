@@ -79,7 +79,9 @@ public interface INDArray extends Cloneable {
 	public void sub(double a);
 	public void add(INDArray a);
 	public void sub(INDArray a);
+	
 	public void negate();
+	public void reciprocal();
 	
 	public void clamp(double min, double max);
 
@@ -282,4 +284,6 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public AVector toVector();
+
+//	public boolean epsilonEquals(INDArray a1);
 }

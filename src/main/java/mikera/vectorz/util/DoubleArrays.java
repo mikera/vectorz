@@ -109,4 +109,9 @@ public final class DoubleArrays {
 		}
 	}
 
+	public static void reciprocal(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			data[i+offset]=1.0/data[i+offset];
+		}
+	}
 }
