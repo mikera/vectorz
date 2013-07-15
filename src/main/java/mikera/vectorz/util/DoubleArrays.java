@@ -109,7 +109,4 @@ public final class DoubleArrays {
 		}
 	}
 
-
-
-
 }
