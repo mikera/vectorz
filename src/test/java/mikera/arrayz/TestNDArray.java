@@ -47,6 +47,13 @@ public class TestNDArray {
 
 	}
 	
+	@Test public void testVectorEquals() {
+		NDArray a=NDArray.wrap(Vector.of(1,2));
+		
+		assertTrue(a.equals(Vector.of(1,2)));
+		assertTrue(!a.equals(Vector.of(1,2,3)));
+	}
+	
 	@Test public void testOuterProduct() {
 		NDArray a=NDArray.newArray(1,2,3);
 		
