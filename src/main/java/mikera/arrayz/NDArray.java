@@ -228,7 +228,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	@Override
 	public AVector asVector() {
-		if (fittedDataArray()) {
+		if (isPackedArray()) {
 			return Vector.wrap(data);
 		} else if (dimensions==0) {
 			return ArraySubVector.wrap(data,offset,1);
@@ -244,7 +244,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		}
 	}
 
-	private boolean fittedDataArray() {
+	private boolean isPackedArray() {
 		if (offset!=0) return false;
 		
 		int st=1;
@@ -436,7 +436,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		if (dimensions==0) {
 			dest.put(data[offset]);
-		} else if (fittedDataArray()) {
+		} else if (isPackedArray()) {
 			dest.put(data,0,data.length);
 		} else {
 			int sc=sliceCount();
