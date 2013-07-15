@@ -139,6 +139,18 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public void square() {
+		double v=get();
+		set(v*v);
+	}
+	
+	@Override
+	public void pow(double exponent) {
+		double v=get();
+		set(Math.pow(v,exponent));
+	}
+	
+	@Override
 	public void clamp(double min, double max) {
 		double v=get();
 		if (v<min) {
