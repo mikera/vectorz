@@ -58,6 +58,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override
+	public void fill(double value) {
+		if (dimensionality()==0) {
+			set(value);
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				INDArray s=slice(i);
+				s.fill(value);
+			}			
+		}
+	}
+	
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AScalar) {
 			INDArray c=clone();

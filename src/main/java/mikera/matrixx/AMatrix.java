@@ -79,6 +79,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override 
 	public void set(double value) {
+		throw new VectorzException("0D set not supported on matrix!");
+	}
+	
+	@Override 
+	public void fill(double value) {
 		asVector().fill(value);
 	}
 	

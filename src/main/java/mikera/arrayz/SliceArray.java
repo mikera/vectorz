@@ -87,13 +87,23 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	@Override
+	public void set(double value) {
+		for (T s:slices) {
+			s.set(value);
+		}
+	}
+	
+	public void fill(double value) {
+		for (T s:slices) {
+			s.fill(value);
+		}
+	}
+	
+	@Override
 	public void set(int[] indexes, double value) {
 		int d=indexes.length;
 		if (d==0) {
-			for (int i=0; i<slices.length; i++) {
-				slices[i].set(indexes,value);
-			}
-			return;
+			set(value);
 		}
 		
 		T slice=slices[indexes[0]];
