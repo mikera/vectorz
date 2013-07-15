@@ -64,7 +64,7 @@ public final class Vector extends ArrayVector {
 		int length = values.length;
 		double[] data = new double[length];
 		System.arraycopy(values, 0, data, 0, length);
-		return new Vector(data);
+		return Vector.wrap(data);
 	}
 	
 	/**
@@ -112,11 +112,6 @@ public final class Vector extends ArrayVector {
 		} else {
 			super.set(a);
 		}
-	}
-	
-	@Override 
-	public void set(double value) {
-		Arrays.fill(data,value);
 	}
 
 	@Override

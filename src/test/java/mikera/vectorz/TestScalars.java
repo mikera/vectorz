@@ -21,6 +21,7 @@ public class TestScalars {
 		assertEquals(1, v.length());
 		assertEquals(s.get(), v.get(0), 0.0);
 		
+		// confirm that asVector has produced a view
 		v.set(0,Double.NaN);
 		assertTrue(Double.isNaN(s.get()));
 	}

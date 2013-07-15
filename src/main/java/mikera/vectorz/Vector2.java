@@ -162,7 +162,7 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override 
-	public void set(double v) {
+	public void fill(double v) {
 		x=v;
 		y=v;
 	}

@@ -709,7 +709,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public void set(double a) {
+	public final void set(double a) {
 		throw new UnsupportedOperationException("0d set not supported for vectors - use fill instead?");
 	}
 	

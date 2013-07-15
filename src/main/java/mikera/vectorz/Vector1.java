@@ -64,7 +64,7 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override 
-	public void set(double v) {
+	public void fill(double v) {
 		x=v;
 	}
 	
