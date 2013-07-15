@@ -116,7 +116,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public long elementCount() {
+	public final long elementCount() {
 		return length();
 	}
 	
