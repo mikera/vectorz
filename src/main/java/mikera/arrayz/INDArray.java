@@ -300,5 +300,7 @@ public interface INDArray extends Cloneable {
 	public boolean epsilonEquals(INDArray a);
 	public boolean epsilonEquals(INDArray a, double epsilon);
 
+	public void abs();
+
 
 }
