@@ -16,9 +16,13 @@ public class TestScalars {
 	}
 
 	private void testAsVector(AScalar s) {
+		s=s.exactClone();
 		AVector v = s.asVector();
 		assertEquals(1, v.length());
 		assertEquals(s.get(), v.get(0), 0.0);
+		
+		v.set(0,Double.NaN);
+		assertTrue(Double.isNaN(s.get()));
 	}
 
 	private void testToString(AScalar s) {
