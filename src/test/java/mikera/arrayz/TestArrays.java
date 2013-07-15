@@ -156,25 +156,26 @@ public class TestArrays {
 		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
 	}
-	
+
 	private void testApplyAllOps(INDArray a) {
-		for (Op op:TestOps.ALL_OPS) {
-			int n=(int) a.elementCount();
-			
-			INDArray b=a.exactClone();
-			AVector v=b.toVector();
-			double[] ds=new double[n];
-			double[] tmp=new double[n];
+		for (Op op : TestOps.ALL_OPS) {
+			int n = (int) a.elementCount();
+
+			INDArray b = a.exactClone();
+			AVector v = b.toVector();
+			double[] ds = new double[n];
+			double[] tmp = new double[n];
 			a.getElements(ds, 0);
-			
-			for (int i=0; i<n; i++) tmp[i]=op.apply(b.get(i));
+
+			for (int i = 0; i < n; i++)
+				tmp[i] = op.apply(b.get(i));
 			op.applyTo(b);
 			op.applyTo(v);
 			op.applyTo(ds);
-			
-			assertEquals(v,b.toVector());
-			assertEquals(v,Vector.wrap(ds));
-			assertEquals(v,Vector.wrap(tmp));
+
+			assertEquals(v, b.toVector());
+			assertEquals(v, Vector.wrap(ds));
+			assertEquals(v, Vector.wrap(tmp));
 		}
 	}
 
@@ -279,9 +280,9 @@ public class TestArrays {
 
 		INDArray b = a.clone();
 		a = a.exactClone();
-		
+
 		b.clamp(-Double.MAX_VALUE, Double.MAX_VALUE);
-		assertEquals(a,b);
+		assertEquals(a, b);
 
 		a.set(13.0);
 		a.clamp(14, 15);
@@ -350,6 +351,5 @@ public class TestArrays {
 
 		NDArray ndscalar = NDArray.newArray();
 		testArray(ndscalar);
-
 	}
 }
