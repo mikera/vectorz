@@ -309,6 +309,13 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void scaleAdd(double factor, double constant) {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.scaleAdd(this.data[j],offsets[j],subLength(j),factor,constant);
+		}
+	}
+	
+	@Override
 	public void square() {
 		for (int j=0; j<numArrays; j++) {
 			DoubleArrays.square(this.data[j],offsets[j],subLength(j));
