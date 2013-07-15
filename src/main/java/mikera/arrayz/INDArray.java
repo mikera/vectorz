@@ -244,6 +244,13 @@ public interface INDArray extends Cloneable {
 	 * @param d
 	 */
 	public void multiply(double d);
+	
+	/**
+	 * Raises all elements of the array to a specified power
+	 * 
+	 * @param exponent
+	 */
+	public void pow(double exponent);
 
 	/**
 	 * Returns a list of all major slices of this array.
@@ -287,5 +294,6 @@ public interface INDArray extends Cloneable {
 
 	public boolean epsilonEquals(INDArray a);
 	public boolean epsilonEquals(INDArray a, double epsilon);
+
 
 }

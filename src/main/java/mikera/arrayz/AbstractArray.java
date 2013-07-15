@@ -253,6 +253,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override 
+	public void pow(double exponent) {
+		int dims=dimensionality();
+		if (dims ==0) {
+			set(Math.pow(get(), exponent));
+		} else {
+			int n=sliceCount();
+			for (int i=0; i<n; i++) {
+				slice(i).pow(exponent);
+			}	
+		}
+	}
+	
 	@Override
 	public void sub(double a) {
 		int dims=dimensionality();

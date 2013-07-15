@@ -690,6 +690,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		multiply(-1.0);
 	}
 	
+	@Override
 	public void pow(double exponent) {
 		int len=length();
 		for (int i=0; i<len; i++) {

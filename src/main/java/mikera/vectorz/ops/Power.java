@@ -38,10 +38,10 @@ public final class Power extends Op {
 		return Math.pow(x, exponent);
 	}
 	
-//	@Override
-//	public void applyTo(INDArray a) {
-//		a.pow(exponent);
-//	}
+	@Override
+	public void applyTo(INDArray a) {
+		a.pow(exponent);
+	}
 	
 	@Override
 	public void applyTo(AVector a) {
