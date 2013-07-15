@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
@@ -116,6 +117,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void clamp(double min, double max) {
+		if (dimensionality()==0) {
+			set(Maths.bound(get(), min, max));
+			return;
+		}
+		
 		int len=sliceCount();
 		for (int i = 0; i < len; i++) {
 			slice(i).clamp(min, max);

@@ -225,6 +225,19 @@ public class TestArrays {
 		assertEquals(a,a.getTranspose().getTranspose());
 	}
 	
+	private void testClamp(INDArray a) {
+		if (!a.isFullyMutable()) return;
+		if (a.elementCount()==0) return;
+		
+		a=a.exactClone();
+		
+		a.set(13.0);
+		a.clamp(14, 15);
+		assertEquals(14.0,Vectorz.minValue(a.toVector()),0.0001);
+		a.clamp(12, 17);
+		assertEquals(14.0,Vectorz.maxValue(a.toVector()),0.0001);
+	}
+	
 	
 	public void testArray(INDArray a) {
 		a.validate();
@@ -238,6 +251,7 @@ public class TestArrays {
 		testGetElements(a);
 		testBroadcast(a);
 		testShape(a);
+		testClamp(a);
 		testHash(a);
 		testClone(a);
 		testMutability(a);
