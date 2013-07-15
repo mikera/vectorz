@@ -347,9 +347,11 @@ public class TestArrays {
 		testArray(sa);
 
 		NDArray nd1 = NDArray.newArray(3, 3, 3);
+		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
 
 		NDArray ndscalar = NDArray.newArray();
+		ndscalar.set(1.0);
 		testArray(ndscalar);
 	}
 }
