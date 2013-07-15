@@ -53,6 +53,10 @@ public final class Matrix extends AMatrix {
 		return false;
 	}
 	
+	public boolean isPackedArray() {
+		return true;
+	}
+	
 	private Matrix(int rowCount, int columnCount, double[] data) {
 		this.rows=rowCount;
 		this.columns=columnCount;
