@@ -167,6 +167,29 @@ public class TestArrays {
 		assertEquals(a.asVector().hashCode(),a.hashCode());
 	}
 	
+	private void testEquals(INDArray a) {
+		assertEquals(a,a.exactClone());
+		assertEquals(a,a.clone());
+		
+		assertTrue(a.epsilonEquals(a.exactClone()));
+		
+		if ((!a.isFullyMutable())||(a.elementCount()==0)) return;
+		
+		INDArray b=a.exactClone();
+		b.add(Vectorz.TEST_EPSILON*0.5);
+		assertFalse(a.equals(b));
+		assertFalse(b.equals(a));
+		assertTrue(a.epsilonEquals(b));
+		assertTrue(b.epsilonEquals(a));	
+
+		b.add(Vectorz.TEST_EPSILON*1.5);
+		assertFalse(a.equals(b));
+		assertFalse(b.equals(a));
+		assertFalse(a.epsilonEquals(b));
+		assertFalse(b.epsilonEquals(a));	
+
+	}
+	
 	private void testParserRoundTrip(INDArray a) {
 		String s=a.toString();
 		assertEquals(a,Arrayz.load(new StringReader(s)));
@@ -259,6 +282,7 @@ public class TestArrays {
 		testMultiply(a);
 		testApplyOp(a);
 		testSums(a);
+		testEquals(a);
 		testMathsFunctions(a);
 		testTranspose(a);
 		testSetElements(a);
