@@ -221,6 +221,10 @@ public class TestArrays {
 		assertEquals(a.elementSquaredSum(),b.elementSum(),0.000001);
 	}
 	
+	private void testTranspose(INDArray a) {
+		assertEquals(a,a.getTranspose().getTranspose());
+	}
+	
 	
 	public void testArray(INDArray a) {
 		a.validate();
@@ -229,6 +233,7 @@ public class TestArrays {
 		testMultiply(a);
 		testApplyOp(a);
 		testSums(a);
+		testTranspose(a);
 		testSetElements(a);
 		testGetElements(a);
 		testBroadcast(a);

@@ -215,6 +215,16 @@ public final class NDArray extends AbstractArray<INDArray> {
 	public INDArray outerProduct(INDArray a) {
 		return super.outerProduct(a);
 	}
+	
+	@Override
+	public INDArray getTranspose() {
+		return new NDArray(data,dimensions,offset,IntArrays.reverse(shape),IntArrays.reverse(stride));
+	}
+	
+	@Override
+	public INDArray getTransposeView() {
+		return getTranspose();
+	}
 
 	@Override
 	public AVector asVector() {

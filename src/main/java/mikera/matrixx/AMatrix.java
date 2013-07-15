@@ -525,7 +525,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Returns a transposed version of this matrix. May or may not be a view.
 	 * @return
 	 */
+	@Override
 	public AMatrix getTranspose() {
+		return TransposedMatrix.wrap(this);
+	}
+	
+	@Override
+	public AMatrix getTransposeView() {
 		return TransposedMatrix.wrap(this);
 	}
 	

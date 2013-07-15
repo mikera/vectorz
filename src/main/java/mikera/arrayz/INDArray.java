@@ -108,6 +108,15 @@ public interface INDArray extends Cloneable {
 	public INDArray slice(int majorSlice);
 
 	public INDArray slice(int dimension, int index);
+	
+	public INDArray getTranspose();
+	
+	/**
+	 * Returns a transposed view of the array. May throw UnsupportedOperationException 
+	 * if the array does not support this capability
+	 * @return
+	 */
+	public INDArray getTransposeView();
 
 	
 	public int sliceCount();

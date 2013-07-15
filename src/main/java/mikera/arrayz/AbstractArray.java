@@ -59,6 +59,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return Arrayz.create(al);
 	}
 	
+	@Override
+	public INDArray getTranspose() {
+		NDArray nd=NDArray.newArray(this.getShape());
+		nd.set(this);
+		return nd.getTransposeView();
+	}
+	
+	@Override
+	public INDArray getTransposeView() {
+		throw new UnsupportedOperationException();
+	}
+	
 	public final void scale(double d) {
 		multiply(d);
 	}

@@ -10,4 +10,13 @@ public class IntArrays {
 		System.arraycopy(data, index+1, result, index, len-index-1);
 		return result;
 	}
+
+	public static int[] reverse(int[] data) {
+		int n = data.length;
+		int[] result=new int[n];
+		for (int i=0; i<n; i++) {
+			result[n-1-i]=data[i];
+		}
+		return result;
+	}
 }
