@@ -95,8 +95,11 @@ public final class DoubleArrays {
 	public static void clamp(double[] data, int offset, int length, double min,double max) {
 		for (int i=0; i<length; i++) {
 			double v=data[offset+i];
-			v=(v<min)?min:((v>max)?max:v);
-			data[offset+i]=v;
+			if (v<min) {
+				data[offset+i]=min;
+			} else if (v>max) {
+				data[offset+i]=max;
+			}
 		}
 	}
 

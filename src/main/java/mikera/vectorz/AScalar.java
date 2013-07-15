@@ -139,8 +139,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	@Override
 	public void clamp(double min, double max) {
 		double v=get();
-		v=(v<min)?min:((v>max)?max:v);
-		set(v);
+		if (v<min) {
+			set(min);
+		} else if (v>max) {
+			set(max);
+		}
 	}
 	
 	@Override
