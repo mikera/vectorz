@@ -145,6 +145,11 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void clamp(double min, double max) {
+		DoubleArrays.clamp(data,0,data.length,min,max);
+	}
+	
+	@Override
 	public void square() {
 		int len=length();
 		for (int i=0; i<len; i++) {

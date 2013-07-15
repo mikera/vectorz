@@ -82,6 +82,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		asVector().fill(value);
 	}
 	
+	@Override
+	public void clamp(double min, double max) {
+		int len=rowCount();
+		for (int i = 0; i < len; i++) {
+			getRow(i).clamp(min, max);
+		}
+	}
+	
 	@Override 
 	public void set(int[] indexes, double value) {
 		if (indexes.length==2) {

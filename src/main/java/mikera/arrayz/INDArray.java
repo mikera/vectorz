@@ -80,6 +80,8 @@ public interface INDArray extends Cloneable {
 	public void add(INDArray a);
 	public void sub(INDArray a);
 	public void negate();
+	
+	public void clamp(double min, double max);
 
 	/**
 	 * Calculates the inner product of this array with another array.

@@ -409,6 +409,11 @@ public abstract class ArrayVector extends AVector {
 	}
 	
 	@Override
+	public void clamp(double min, double max) {
+		DoubleArrays.clamp(getArray(),getArrayOffset(),length(),min,max);
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		DoubleArrays.multiply(getArray(), getArrayOffset(),length(),factor);
 	}

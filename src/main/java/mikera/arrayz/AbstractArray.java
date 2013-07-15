@@ -114,6 +114,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override
+	public void clamp(double min, double max) {
+		int len=sliceCount();
+		for (int i = 0; i < len; i++) {
+			slice(i).clamp(min, max);
+		}
+	}
+	
 	public void set(Object o) {
 		if (o instanceof INDArray) {set((INDArray)o); return;}
 		if (o instanceof Number) {

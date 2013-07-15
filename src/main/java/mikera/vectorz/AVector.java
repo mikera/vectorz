@@ -309,6 +309,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Clamps all values in the vector to a given range
 	 * @param value
 	 */
+	@Override
 	public void clamp(double min, double max) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
