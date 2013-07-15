@@ -1,5 +1,6 @@
 package mikera.vectorz.ops;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
@@ -34,6 +35,11 @@ public final class Linear extends ALinearOp {
 	@Override
 	public double applyInverse(double y) {
 		return (y-constant)/factor;
+	}
+	
+	@Override
+	public void applyTo(INDArray v) {
+		v.scaleAdd(factor,constant);
 	}
 	
 	@Override
