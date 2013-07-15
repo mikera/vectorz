@@ -494,7 +494,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public AVector getTranspose() {return this;}
 	
 	@Override
-	public AVector getTransposeView() {return this;}
+	public final AVector getTransposeView() {return this;}
 	
 	public AMatrix outerProduct(AVector a) {
 		int rc=length();

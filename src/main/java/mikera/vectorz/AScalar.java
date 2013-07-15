@@ -48,7 +48,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	public AScalar getTranspose() {return this;}
 	
 	@Override
-	public AScalar getTransposeView() {return this;}
+	public final AScalar getTransposeView() {return this;}
 
 	
 	@Override
