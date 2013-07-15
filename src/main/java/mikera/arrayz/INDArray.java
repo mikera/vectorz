@@ -285,5 +285,7 @@ public interface INDArray extends Cloneable {
 	 */
 	public AVector toVector();
 
-//	public boolean epsilonEquals(INDArray a1);
+	public boolean epsilonEquals(INDArray a);
+	public boolean epsilonEquals(INDArray a, double epsilon);
+
 }

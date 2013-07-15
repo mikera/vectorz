@@ -12,6 +12,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -34,6 +35,27 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public int getShape(int dim) {
 		return getShape()[dim];
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a) {
+		return epsilonEquals(a,Vectorz.TEST_EPSILON);
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a, double epsilon) {
+		if (dimensionality()==0) {
+			double d=get()-a.get();
+			return (Math.abs(d)<=epsilon);
+		} else {
+			int sc=sliceCount();
+			if (a.sliceCount()!=sc) return false;
+			for (int i=0; i<sc; i++) {
+				INDArray s=slice(i);
+				if (!s.epsilonEquals(a.slice(i),epsilon)) return false;
+			}			
+			return true;
+		}
 	}
 	
 	public INDArray innerProduct(INDArray a) {
@@ -95,7 +117,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int tdims=this.dimensionality();
 		int adims=a.dimensionality();
 		if (adims<tdims) {
-			int sc=getShape()[0];
+			int sc=sliceCount();
 			for (int i=0; i<sc; i++) {
 				INDArray s=slice(i);
 				s.set(a);

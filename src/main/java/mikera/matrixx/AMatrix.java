@@ -766,6 +766,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public Iterator<AVector> iterator() {
 		return new MatrixIterator(this);
 	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a) {
+		return epsilonEquals(a,Vectorz.TEST_EPSILON);
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a, double epsilon) {
+		if (a.dimensionality()!=2) {
+			return false;
+		} else {
+			int sc=rowCount();
+			if (a.sliceCount()!=sc) return false;
+			for (int i=0; i<sc; i++) {
+				INDArray s=getRow(i);
+				if (!s.epsilonEquals(a.slice(i),epsilon)) return false;
+			}			
+			return true;
+		}
+	}
 
 	@Override
 	public boolean equals(Object o) {
