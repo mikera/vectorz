@@ -181,6 +181,18 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void reciprocal() {
+		left.reciprocal();
+		right.reciprocal();
+	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		left.clamp(min, max);
+		right.clamp(min, max);
+	}
+	
+	@Override
 	public double dotProduct (AVector v) {
 		if (v instanceof JoinedVector) {
 			JoinedVector jv=(JoinedVector)v;

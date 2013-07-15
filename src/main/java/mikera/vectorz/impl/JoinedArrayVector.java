@@ -316,6 +316,13 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void clamp(double min, double max) {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.clamp(this.data[j],offsets[j],subLength(j),min,max);
+		}
+	}
+	
+	@Override
 	public void square() {
 		for (int j=0; j<numArrays; j++) {
 			DoubleArrays.square(this.data[j],offsets[j],subLength(j));
