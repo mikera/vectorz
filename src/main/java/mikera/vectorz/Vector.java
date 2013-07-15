@@ -2,7 +2,6 @@ package mikera.vectorz;
 
 import java.util.Arrays;
 
-import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
@@ -75,6 +74,13 @@ public final class Vector extends ArrayVector {
 	 */
 	public static Vector createLength(int length) {
 		return new Vector(length);
+	}
+
+	public static Vector create(AVector a) {
+		int n=a.length();
+		Vector v=createLength(n);
+		a.copyTo(v.data);
+		return v;
 	}
 	
 	@Override
@@ -439,8 +445,4 @@ public final class Vector extends ArrayVector {
 		return true;
 	}
 
-	public static INDArray wrap(double[] data, int length) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
