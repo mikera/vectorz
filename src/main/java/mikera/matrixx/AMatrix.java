@@ -781,6 +781,39 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		getRow(dst).addMultiple(getRow(src), factor);
 	}
 	
+	/**
+	 * Swaps two rows of the matrix in place
+	 */
+	public void swapRows(int i, int j) {
+		if (i == j)
+			return;
+		AVector a = getRow(i);
+		AVector b = getRow(j);
+		int cc = columnCount();
+		for (int k = 0; k < cc; k++) {
+			double t = a.get(k);
+			a.set(k, b.get(k));
+			b.set(k, t);
+		}
+	}
+
+	/**
+	 * Swaps two columns of the matrix in place
+	 */
+	public void swapColumns(int i, int j) {
+		if (i == j)
+			return;
+		AVector a = getColumn(i);
+		AVector b = getColumn(j);
+		int rc = rowCount();
+		for (int k = 0; k < rc; k++) {
+			double t = a.get(k);
+			a.set(k, b.get(k));
+			b.set(k, t);
+		}
+	}
+
+	
 	@Override
 	public void composeWith(ATransform a) {
 		if (a instanceof AMatrix) {
@@ -1063,37 +1096,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return isSquare()&&(determinant()!=0.0);
 	}
 
-	/**
-	 * Swaps two rows of the matrix in place
-	 */
-	public void swapRows(int i, int j) {
-		if (i == j)
-			return;
-		AVector a = getRow(i);
-		AVector b = getRow(j);
-		int cc = columnCount();
-		for (int k = 0; k < cc; k++) {
-			double t = a.get(k);
-			a.set(k, b.get(k));
-			b.set(k, t);
-		}
-	}
-
-	/**
-	 * Swaps two columns of the matrix in place
-	 */
-	public void swapColumns(int i, int j) {
-		if (i == j)
-			return;
-		AVector a = getColumn(i);
-		AVector b = getColumn(j);
-		int rc = rowCount();
-		for (int k = 0; k < rc; k++) {
-			double t = a.get(k);
-			a.set(k, b.get(k));
-			b.set(k, t);
-		}
-	}
 
 	/**
 	 * Converts the matrix to a single flattened vector
