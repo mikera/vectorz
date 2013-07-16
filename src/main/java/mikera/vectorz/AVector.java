@@ -427,6 +427,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
 	public void log() {
 		int len=length();
 		for (int i=0; i<len; i++) {
