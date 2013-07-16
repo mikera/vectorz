@@ -165,6 +165,7 @@ public class TestArrays {
 			int n = (int) a.elementCount();
 
 			INDArray b = a.exactClone();
+			INDArray c = a.exactClone();
 			AVector v = b.toVector();
 			assertEquals(n,v.length());
 			double[] ds = new double[n];
@@ -179,9 +180,11 @@ public class TestArrays {
 			}
 			if (nan) continue; // TODO: compare NaNs properly
 			op.applyTo(b);
+			c.applyOp(op);
 			op.applyTo(v);
 			op.applyTo(ds);
 
+			assertEquals(b, c);
 			assertEquals(v, b.toVector());
 			assertEquals(v, Vector.wrap(ds));
 			assertEquals(v, Vector.wrap(tmp));
