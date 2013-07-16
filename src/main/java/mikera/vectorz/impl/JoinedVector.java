@@ -298,6 +298,12 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void negate() {
+		left.negate();
+		right.negate();
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		left.applyOp(op);
 		right.applyOp(op);

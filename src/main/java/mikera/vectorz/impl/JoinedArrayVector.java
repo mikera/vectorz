@@ -377,6 +377,13 @@ public final class JoinedArrayVector extends AVector {
 			DoubleArrays.sqrt(this.data[j],offsets[j],subLength(j));
 		}		
 	}
+	
+	@Override
+	public void negate() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.negate(this.data[j],offsets[j],subLength(j));
+		}		
+	}
 
 	@Override
 	public JoinedArrayVector exactClone() {

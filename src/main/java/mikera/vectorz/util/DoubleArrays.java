@@ -149,4 +149,11 @@ public final class DoubleArrays {
 			data[i+offset]=Math.sqrt(val);
 		}
 	}
+
+	public static void negate(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			double val=data[i+offset];
+			data[i+offset]=-val;
+		}
+	}
 }
