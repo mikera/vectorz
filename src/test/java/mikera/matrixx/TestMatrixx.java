@@ -30,7 +30,7 @@ public class TestMatrixx {
 		AVector v = Vectorz.createUniformRandomVector(m.rowCount());
 		
 		AMatrix mi=m.inverse();
-		assertEquals(1.0/m.determinant(),mi.determinant(),0.001);
+		assertEquals(1.0,m.determinant()*mi.determinant(),0.001);
 		
 		AVector mv=m.transform(v);
 		AVector mimv=mi.transform(mv);
