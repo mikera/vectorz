@@ -319,6 +319,7 @@ public class TestArrays {
 	private void testIndexedAccess(INDArray a) {
 		if ((a.elementCount() <= 1)) return;
 
+		// 0d indexed access
 		try {
 			a.get();
 			fail("0d get should fail for array with shape: "+a.getShape());
@@ -339,6 +340,7 @@ public class TestArrays {
 			fail("0d set should fail for array with shape: "+a.getShape());
 		} catch (Throwable t) { /* OK */ }
 
+		// 1D indexed access
 		if (a.dimensionality()>1) {
 			try {
 				a.get(0);
