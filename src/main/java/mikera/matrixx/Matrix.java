@@ -7,7 +7,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.StridedArrayVector;
+import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -143,7 +143,7 @@ public final class Matrix extends AMatrix {
 	
 	@Override
 	public AVector getColumn(int row) {
-		return StridedArrayVector.wrap(data,row,rows,columns);
+		return StridedVector.wrap(data,row,rows,columns);
 	}
 
 	@Override

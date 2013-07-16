@@ -13,7 +13,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.StridedArrayVector;
+import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
@@ -232,7 +232,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		} else if (dimensions==0) {
 			return ArraySubVector.wrap(data,offset,1);
 		} else if (dimensions==1) {
-			return StridedArrayVector.wrap(data, offset, getShape(0), getStride(0));
+			return StridedVector.wrap(data, offset, getShape(0), getStride(0));
 		} else {
 			AVector v=Vector0.INSTANCE;
 			int n=getShape(0);
@@ -278,7 +278,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 			if (st==1) {
 				return Vectorz.wrap(data, offset+majorSlice*getStride(0), getShape(1));
 			} else {
-				return StridedArrayVector.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
+				return StridedVector.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
 			}
 		} else {
 			return new NDArray(data,
@@ -294,7 +294,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimension==0) return slice(index);
 		if (dimensions==2) {
 			if (dimension!=1) throw new IllegalArgumentException("Dimension out of range!");
-			return StridedArrayVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
+			return StridedVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
 		return new NDArray(data,
 				offset,

@@ -3,7 +3,7 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 
-public final class StridedArrayVector extends AVector {
+public final class StridedVector extends AVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
 	private final double[] data;
@@ -11,15 +11,15 @@ public final class StridedArrayVector extends AVector {
 	private final int offset;
 	private final int stride;
 	
-	private StridedArrayVector(double[] data, int offset, int length, int stride) {
+	private StridedVector(double[] data, int offset, int length, int stride) {
 		this.data=data;
 		this.offset=offset;
 		this.length=length;
 		this.stride=stride;
 	}
 	
-	public static StridedArrayVector wrapStrided(double[] data, int offset, int length, int stride) {
-		return new StridedArrayVector(data,offset,length,stride);
+	public static StridedVector wrapStrided(double[] data, int offset, int length, int stride) {
+		return new StridedVector(data,offset,length,stride);
 	}
 
 	public static AVector wrap(double[] data, int offset, int length, int stride) {
@@ -103,7 +103,7 @@ public final class StridedArrayVector extends AVector {
 	}
 	
 	@Override
-	public StridedArrayVector exactClone() {
+	public StridedVector exactClone() {
 		double[] data=this.data.clone();
 		return wrapStrided(data,offset,length,stride);
 	}
