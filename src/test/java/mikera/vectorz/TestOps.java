@@ -28,7 +28,7 @@ public class TestOps {
 	public static final List<Op> ALL_OPS=new ArrayList<Op>();
 	
 	static {
-		Field[] declaredFields = String.class.getDeclaredFields();
+		Field[] declaredFields = Ops.class.getDeclaredFields();
 		for (Field field : declaredFields) {
 		    if (Modifier.isStatic(field.getModifiers())&&(Op.class.isAssignableFrom(field.getType()))) {
 		    	try {

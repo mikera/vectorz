@@ -161,6 +161,7 @@ public class TestArrays {
 	private void testApplyAllOps(INDArray a) {
 		if (!a.isFullyMutable()) return;
 		for (Op op : TestOps.ALL_OPS) {
+			if (op.isStochastic()) continue;
 			int n = (int) a.elementCount();
 
 			INDArray b = a.exactClone();
@@ -170,9 +171,13 @@ public class TestArrays {
 			double[] tmp = new double[n];
 			a.getElements(ds, 0);
 
+			boolean nan=false;
 			for (int i = 0; i < n; i++) {
-				tmp[i] = op.apply(v.get(i));
+				double x= op.apply(v.get(i));
+				if (Double.isNaN(x)) nan=true;
+				tmp[i] = x;
 			}
+			if (nan) continue;
 			op.applyTo(b);
 			op.applyTo(v);
 			op.applyTo(ds);
