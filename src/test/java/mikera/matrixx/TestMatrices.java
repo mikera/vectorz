@@ -60,6 +60,7 @@ public class TestMatrices {
 	
 	@Test public void testStridedMatrix() {
 		StridedMatrix m=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
+		m=m.getTranspose();
 		assertEquals(m.clone(),m);
 		assertEquals(m.getRow(1),m.clone().getRow(1));
 		assertEquals(m.getTranspose(),m.getTranspose().clone());

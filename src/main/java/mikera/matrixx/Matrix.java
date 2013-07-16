@@ -270,15 +270,10 @@ public final class Matrix extends AMatrix {
 	@Override
 	public void set(AMatrix a) {
 		int rc = rowCount();
-		assert(rc==a.rowCount());
+		if (!(rc==a.rowCount())) throw new IllegalArgumentException("Non-matching row count");
 		int cc = columnCount();
-		assert(cc==a.columnCount());
-		int di=0;
-		for (int row = 0; row < rc; row++) {
-			for (int column = 0; column < cc; column++) {
-				data[di++]=a.get(row, column);
-			}
-		}
+		if (!(cc==a.columnCount())) throw new IllegalArgumentException("Non-matching column count");
+		a.getElements(this.data, 0);
 	}
 	
 	@Override

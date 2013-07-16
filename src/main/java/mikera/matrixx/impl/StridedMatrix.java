@@ -69,6 +69,20 @@ public class StridedMatrix extends AMatrix {
 			}
 		}
 	}
+	
+	@Override
+	public void getElements(double[] dest, int destOffset) {
+		int rc = rowCount();
+		int cc = columnCount();
+		int di=destOffset;
+		for (int row = 0; row < rc; row++) {
+			for (int col = 0; col < cc; col++) {
+				int index = index(row,col);
+				double v = data[index];
+				dest[di++] = v;
+			}
+		}
+	}
 
 	@Override
 	public StridedMatrix getTranspose() {
@@ -123,7 +137,12 @@ public class StridedMatrix extends AMatrix {
 		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
 	}
 
-	private final int index(int i, int j) {
-		return offset+(i*rowStride)+(j*colStride);
+	private final int index(int row, int col) {
+		return offset+(row*rowStride)+(col*colStride);
+	}
+	
+	@Override
+	public Matrix clone() {
+		return Matrix.create(this);
 	}
 }
