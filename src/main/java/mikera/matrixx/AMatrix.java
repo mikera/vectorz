@@ -773,16 +773,25 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		this.composeWith(a);
 	}
 	
+	/**
+	 * Multiplies a row by a constant factor
+	 * This is an elementary row operation
+	 */
 	public void multiplyRow(int i, double factor) {
 		getRow(i).multiply(factor);
 	}
 	
+	/**
+	 * Adds a multiple of a source row to a destination row
+	 * This is an elementary row operation
+	 */
 	public void addRowMultiple(int src, int dst, double factor) {
 		getRow(dst).addMultiple(getRow(src), factor);
 	}
 	
 	/**
 	 * Swaps two rows of the matrix in place
+	 * This is an elementary row operation
 	 */
 	public void swapRows(int i, int j) {
 		if (i == j)
