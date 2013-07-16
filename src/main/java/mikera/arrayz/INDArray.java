@@ -333,5 +333,7 @@ public interface INDArray extends Cloneable {
 	 */
 	public void log();
 
+	public void exp();
+
 
 }

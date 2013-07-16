@@ -410,6 +410,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void exp() {
+		if (dimensionality()==0) {
+			set(Math.exp(get()));
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).exp();
+			}
+		}
+	}
+	
+	@Override
 	public void signum() {
 		if (dimensionality()==0) {
 			set(Math.signum(get()));
