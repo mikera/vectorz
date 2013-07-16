@@ -287,6 +287,11 @@ public abstract class ArrayVector extends AVector {
 		DoubleArrays.square(getArray(), getArrayOffset(), length());	
 	}
 	
+	@Override
+	public void sqrt() {
+		DoubleArrays.sqrt(getArray(), getArrayOffset(), length());	
+	}
+	
 	/**
 	 * Sets each component of the vector to its sign value (-1, 0 or 1)
 	 */

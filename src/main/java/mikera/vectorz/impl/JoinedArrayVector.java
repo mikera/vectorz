@@ -370,6 +370,13 @@ public final class JoinedArrayVector extends AVector {
 			DoubleArrays.square(this.data[j],offsets[j],subLength(j));
 		}		
 	}
+	
+	@Override
+	public void sqrt() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.sqrt(this.data[j],offsets[j],subLength(j));
+		}		
+	}
 
 	@Override
 	public JoinedArrayVector exactClone() {

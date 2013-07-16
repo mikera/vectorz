@@ -363,6 +363,12 @@ public final class JoinedVector extends AVector {
 		right.square();
 	}
 	
+	@Override
+	public void sqrt() {
+		left.sqrt();
+		right.sqrt();
+	}
+	
 	@Override 
 	public void multiply(double value) {
 		left.multiply(value);
