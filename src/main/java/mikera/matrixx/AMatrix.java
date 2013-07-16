@@ -1118,6 +1118,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return v;
 	}
 	
+	/**
+	 * Converts the matrix to a the standard mutable Matrix type
+	 * in row major order.
+	 */
+	public Matrix toMatrix() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(rc, cc);
+		this.getElements(m.data,0);
+		return m;
+	}
+	
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		int n=rowCount();

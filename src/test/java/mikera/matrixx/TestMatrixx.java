@@ -417,7 +417,9 @@ public class TestMatrixx {
 	private void testExactClone(AMatrix m) {
 		AMatrix c=m.exactClone();
 		AMatrix d=m.clone();
+		Matrix mc=m.toMatrix();
 		
+		assertEquals(m,mc);
 		assertEquals(m,c);
 		assertEquals(m,d);
 	}
