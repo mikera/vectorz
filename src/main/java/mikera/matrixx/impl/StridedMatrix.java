@@ -61,4 +61,9 @@ public class StridedMatrix extends AMatrix {
 	public static StridedMatrix wrap(Matrix m) {
 		return new StridedMatrix(m.data,m.rowCount(),m.columnCount(),0,m.columnCount(),1);
 	}
+
+	public static StridedMatrix wrap(double[] data, int rows, int columns,
+			int offset, int rowStride, int columnStride) {
+		return new StridedMatrix(data,rows,columns,offset,rowStride,columnStride);
+	}
 }

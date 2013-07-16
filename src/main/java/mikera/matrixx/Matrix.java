@@ -3,6 +3,7 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -283,6 +284,11 @@ public final class Matrix extends AMatrix {
 	@Override
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(data, 0, dest, offset, data.length);
+	}
+	
+	@Override
+	public StridedMatrix getTranspose() {
+		return StridedMatrix.wrap(data,columns,rows,0,1,columns);
 	}
 	
 	@Override 
