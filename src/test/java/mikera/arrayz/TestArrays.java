@@ -177,7 +177,7 @@ public class TestArrays {
 				if (Double.isNaN(x)) nan=true;
 				tmp[i] = x;
 			}
-			if (nan) continue;
+			if (nan) continue; // TODO: compare NaNs properly
 			op.applyTo(b);
 			op.applyTo(v);
 			op.applyTo(ds);
