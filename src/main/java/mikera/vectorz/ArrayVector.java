@@ -69,7 +69,7 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void fillRange(int offset, int length, double value) {
-		assert ((offset>=0)||((offset+length)<=length()));
+		assert ((offset>=0)&&(length>=0)&&((offset+length)<=length()));
 		double[] arr=getArray();
 		int off=getArrayOffset();
 		Arrays.fill(arr, off+offset, off+offset+length, value);
