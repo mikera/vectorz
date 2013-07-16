@@ -339,6 +339,17 @@ public class TestArrays {
 			fail("0d set should fail for array with shape: "+a.getShape());
 		} catch (Throwable t) { /* OK */ }
 
+		if (a.dimensionality()>1) {
+			try {
+				a.get(0);
+				fail("1d get should fail for array with shape: "+a.getShape());
+			} catch (Throwable t) { /* OK */ }
+			
+			try {
+				a.set(0,1.0);
+				fail("1d set should fail for array with shape: "+a.getShape());
+			} catch (Throwable t) { /* OK */ }
+		}
 	}
 
 	public void testArray(INDArray a) {
