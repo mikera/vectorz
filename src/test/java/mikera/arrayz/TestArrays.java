@@ -166,6 +166,7 @@ public class TestArrays {
 
 			INDArray b = a.exactClone();
 			INDArray c = a.exactClone();
+			INDArray d = a.exactClone();
 			AVector v = b.toVector();
 			assertEquals(n,v.length());
 			double[] ds = new double[n];
@@ -183,8 +184,10 @@ public class TestArrays {
 			c.applyOp(op);
 			op.applyTo(v);
 			op.applyTo(ds);
+			op.applyTo(d.asVector());
 
 			assertEquals(b, c);
+			assertEquals(b, d);
 			assertEquals(v, b.toVector());
 			assertEquals(v, Vector.wrap(ds));
 			assertEquals(v, Vector.wrap(tmp));
