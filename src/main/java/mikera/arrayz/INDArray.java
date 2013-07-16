@@ -328,5 +328,10 @@ public interface INDArray extends Cloneable {
 	 */
 	public void abs();
 
+	/**
+	 * Computes the natural logarithm (in-place) for all array elements
+	 */
+	public void log();
+
 
 }

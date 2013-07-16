@@ -427,6 +427,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	public void log() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double val=get(i);
+			set(i,Math.log(val));
+		}
+	}
+	
 	/**
 	 * Sets each component of the vector to its sign value (-1, 0 or 1)
 	 */
