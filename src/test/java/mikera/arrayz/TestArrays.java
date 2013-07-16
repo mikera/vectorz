@@ -159,17 +159,20 @@ public class TestArrays {
 	}
 
 	private void testApplyAllOps(INDArray a) {
+		if (!a.isFullyMutable()) return;
 		for (Op op : TestOps.ALL_OPS) {
 			int n = (int) a.elementCount();
 
 			INDArray b = a.exactClone();
 			AVector v = b.toVector();
+			assertEquals(n,v.length());
 			double[] ds = new double[n];
 			double[] tmp = new double[n];
 			a.getElements(ds, 0);
 
-			for (int i = 0; i < n; i++)
-				tmp[i] = op.apply(b.get(i));
+			for (int i = 0; i < n; i++) {
+				tmp[i] = op.apply(v.get(i));
+			}
 			op.applyTo(b);
 			op.applyTo(v);
 			op.applyTo(ds);

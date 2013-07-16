@@ -38,6 +38,7 @@ public class TestOps {
 				}
 		    }
 		}
+		ALL_OPS.add(Constant.ONE);
 	}
 	
 	@Test public void testComposedOp() {
