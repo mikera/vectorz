@@ -255,7 +255,17 @@ public abstract class ArrayVector extends AVector {
 	@Override
 	public void abs() {
 		DoubleArrays.abs(getArray(),getArrayOffset(),length());
-	}
+	} 
+	
+	@Override
+	public void log() {
+		DoubleArrays.log(getArray(),getArrayOffset(),length());
+	} 
+	
+	@Override
+	public void exp() {
+		DoubleArrays.exp(getArray(),getArrayOffset(),length());
+	} 
 	
 	@Override
 	public void applyOp(Op op) {
