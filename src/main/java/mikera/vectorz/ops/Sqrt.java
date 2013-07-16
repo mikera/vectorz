@@ -2,6 +2,7 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
+import mikera.vectorz.util.DoubleArrays;
 
 public class Sqrt extends AFunctionOp {
 	
@@ -12,6 +13,16 @@ public class Sqrt extends AFunctionOp {
 	@Override
 	public double apply(double x) {
 		return Math.sqrt(x);
+	}
+	
+//	@Override
+//	public double applyTo(INDArray a) {
+//		a.sqrt();
+//	}
+	
+	@Override
+	public void applyTo(double[] data, int offset, int length) {
+		DoubleArrays.sqrt(data,offset,length);
 	}
 	
 	@Override

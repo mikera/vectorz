@@ -142,4 +142,11 @@ public final class DoubleArrays {
 			data[i+offset]=Math.log(val);
 		}
 	}
+
+	public static void sqrt(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			double val=data[i+offset];
+			data[i+offset]=Math.sqrt(val);
+		}
+	}
 }

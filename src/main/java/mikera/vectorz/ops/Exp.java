@@ -2,6 +2,7 @@ package mikera.vectorz.ops;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.Op;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * The renowned exponential function
@@ -15,6 +16,11 @@ public final class Exp extends AFunctionOp {
 	@Override
 	public void applyTo(INDArray a) {
 		a.exp();
+	}
+	
+	@Override
+	public void applyTo(double[] data, int offset, int length) {
+		DoubleArrays.exp(data,offset,length);
 	}
 	
 	@Override

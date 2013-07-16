@@ -3,6 +3,7 @@ package mikera.vectorz.ops;
 import mikera.arrayz.INDArray;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * The renowned exponential function
@@ -21,6 +22,11 @@ public final class Log extends AFunctionOp {
 	@Override
 	public void applyTo(INDArray a) {
 		a.log();
+	}
+	
+	@Override
+	public void applyTo(double[] data, int offset, int length) {
+		DoubleArrays.log(data,offset,length);
 	}
 
 	@Override
