@@ -118,6 +118,8 @@ public interface INDArray extends Cloneable {
 	 */
 	public AVector asVector();
 	
+	public List<Double> asElementList();
+	
 	public INDArray reshape(int... shape);
 
 	public INDArray broadcast(int... shape);

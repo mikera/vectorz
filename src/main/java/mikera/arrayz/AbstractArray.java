@@ -437,6 +437,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public List<Double> asElementList() {
+		return asVector().asElementList();
+	}
+
+	
+	@Override
 	public void getElements(double[] dest, int offset) {
 		if (dimensionality()==0) {
 			dest[offset]=get();

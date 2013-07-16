@@ -926,6 +926,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * 
 	 * @return
 	 */
+	@Override
 	public AVector asVector() {
 		int rc = rowCount();
 		if (rc == 0) {
@@ -937,6 +938,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			v = Vectorz.join(v, getRow(i));
 		}
 		return v;
+	}
+	
+	@Override
+	public List<Double> asElementList() {
+		return asVector().asElementList();
 	}
 	
 	@Override
