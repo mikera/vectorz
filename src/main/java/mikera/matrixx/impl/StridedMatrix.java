@@ -34,6 +34,10 @@ public class StridedMatrix extends AMatrix {
 	public int columnCount() {
 		return columnCount;
 	}
+	
+	public boolean isPackedArray() {
+		return (offset==0)&&(columnStride==1)&&(rowStride==columnCount)&&(data.length==rowCount*columnCount);
+	}
 
 	@Override
 	public double get(int row, int column) {
