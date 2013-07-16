@@ -8,8 +8,8 @@ import java.util.List;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
-import mikera.vectorz.Tools;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -35,7 +35,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	public static <T extends INDArray>  SliceArray<T> create(T... slices) {
-		return new SliceArray<T>(Tools.consArray(slices.length,slices[0].getShape()),slices.clone());
+		return new SliceArray<T>(IntArrays.consArray(slices.length,slices[0].getShape()),slices.clone());
 	}
 	
 	public static <T extends INDArray> SliceArray<T> repeat (T s, int n) {
@@ -50,7 +50,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		int slen=slices.size();
 		if (slen==0) throw new VectorzException("Empty list of slices provided to SliceArray");
 		T[] arr=(T[]) Array.newInstance(slices.get(0).getClass(),slen);
-		return new SliceArray<T>(Tools.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
+		return new SliceArray<T>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
 	}
 	
 	@Override
@@ -149,7 +149,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 
 	@Override
 	public long elementCount() {
-		return Tools.arrayProduct(shape);
+		return IntArrays.arrayProduct(shape);
 	}
 	
 	public INDArray innerProduct(INDArray a) {

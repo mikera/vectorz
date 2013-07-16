@@ -9,7 +9,6 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
-import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
@@ -107,7 +106,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	@Override
 	public long[] getLongShape() {
 		long[] sh=new long[dimensions];
-		Tools.copyIntsToLongs(shape,sh);
+		IntArrays.copyIntsToLongs(shape,sh);
 		return sh;
 	}
 
@@ -314,7 +313,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	@Override
 	public long elementCount() {
-		return Tools.arrayProduct(shape);
+		return IntArrays.arrayProduct(shape);
 	}
 
 	@Override
@@ -436,7 +435,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 			}
 		} else {
 			int sc=getShape(0);
-			int ssize=(int) Tools.arrayProduct(shape,1,dimensions);
+			int ssize=(int) IntArrays.arrayProduct(shape,1,dimensions);
 			for (int i=0; i<sc; i++) {
 				slice(i).setElements(values,offset+ssize*i,ssize);
 			}
