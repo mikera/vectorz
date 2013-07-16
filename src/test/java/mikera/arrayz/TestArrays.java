@@ -13,6 +13,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.IntArrays;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -325,6 +326,16 @@ public class TestArrays {
 		
 		try {
 			a.set(1.0);
+			fail("0d set should fail for array with shape: "+a.getShape());
+		} catch (Throwable t) { /* OK */ }
+
+		try {
+			a.get(IntArrays.EMPTY_INT_ARRAY);
+			fail("0d get should fail for array with shape: "+a.getShape());
+		} catch (Throwable t) { /* OK */ }
+		
+		try {
+			a.set(IntArrays.EMPTY_INT_ARRAY,1.0);
 			fail("0d set should fail for array with shape: "+a.getShape());
 		} catch (Throwable t) { /* OK */ }
 
