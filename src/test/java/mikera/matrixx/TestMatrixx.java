@@ -12,6 +12,7 @@ import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -577,5 +578,8 @@ public class TestMatrixx {
 		doGenericTests(new ColumnMatrix(Vector.of(1,2,3,4)));
 		doGenericTests(new RowMatrix(Vector3.of(1,2,3)));
 		doGenericTests(new ColumnMatrix(Vector3.of(1,2,3)));
+		
+		doGenericTests(StridedMatrix.create(1, 1));
+		doGenericTests(StridedMatrix.create(3, 4));
 	}
 }
