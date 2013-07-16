@@ -370,7 +370,7 @@ public class TestMatrixx {
 		AVector v=m.asVector();
 		assertEquals(v,m.toVector());
 		
-		assertEquals(m.elementSum(),v.elementSum(),0.0);
+		assertEquals(m.elementSum(),v.elementSum(),0.000001);
 		
 		AMatrix m2=Matrixx.createFromVector(v, m.rowCount(), m.columnCount());
 		
@@ -579,7 +579,11 @@ public class TestMatrixx {
 		doGenericTests(new RowMatrix(Vector3.of(1,2,3)));
 		doGenericTests(new ColumnMatrix(Vector3.of(1,2,3)));
 		
-		doGenericTests(StridedMatrix.create(1, 1));
-		doGenericTests(StridedMatrix.create(3, 4));
+		StridedMatrix strm=StridedMatrix.create(1, 1);
+		doGenericTests(strm);
+		strm=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
+		doGenericTests(strm);
+		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3)));
+		doGenericTests(strm);
 	}
 }

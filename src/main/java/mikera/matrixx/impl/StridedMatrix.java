@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 
 public class StridedMatrix extends AMatrix {
 	private final double[] data;
@@ -49,5 +50,15 @@ public class StridedMatrix extends AMatrix {
 	@Override
 	public AMatrix exactClone() {
 		return new StridedMatrix(data.clone(),rowCount,columnCount,offset,rowStride,columnStride);
+	}
+
+	public static StridedMatrix create(AMatrix m) {
+		StridedMatrix sm=StridedMatrix.create(m.rowCount(),m.columnCount());
+		sm.set(m);
+		return sm;
+	}
+	
+	public static StridedMatrix wrap(Matrix m) {
+		return new StridedMatrix(m.data,m.rowCount(),m.columnCount(),0,m.columnCount(),1);
 	}
 }
