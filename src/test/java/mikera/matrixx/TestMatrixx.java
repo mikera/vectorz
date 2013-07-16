@@ -410,7 +410,8 @@ public class TestMatrixx {
 		
 		c.asVector().fill(5.0);
 		d.applyOp(Constant.create(5.0));
-		assertTrue(c.equals(d));
+		assertEquals(c,d);
+		assertTrue(d.epsilonEquals(c));
 	}
 	
 	private void testExactClone(AMatrix m) {
@@ -496,6 +497,8 @@ public class TestMatrixx {
 	}
 	
 	void doGenericTests(AMatrix m) {
+		m.validate();
+		
 		testApplyOp(m);
 		testExactClone(m);
 		testSparseClone(m);

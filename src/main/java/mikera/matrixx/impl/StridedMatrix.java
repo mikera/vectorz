@@ -2,24 +2,27 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.impl.StridedVector;
+import mikera.vectorz.util.VectorzException;
 
 public class StridedMatrix extends AMatrix {
 	private final double[] data;
-	private final int rowCount;
-	private final int columnCount;
+	private final int rows;
+	private final int cols;
 	private final int rowStride;
-	private final int columnStride;
+	private final int colStride;
 	private final int offset;
 
 	private StridedMatrix(double[] data, int rowCount, int columnCount,
 			int offset, int rowStride, int columnStride) {
 		this.data = data;
 		this.offset = offset;
-		this.rowCount = rowCount;
-		this.columnCount = columnCount;
+		this.rows = rowCount;
+		this.cols = columnCount;
 		this.rowStride = rowStride;
-		this.columnStride = columnStride;
+		this.colStride = columnStride;
 	}
 
 	public static StridedMatrix create(int rowCount, int columnCount) {
@@ -29,18 +32,29 @@ public class StridedMatrix extends AMatrix {
 
 	@Override
 	public int rowCount() {
-		return rowCount;
+		return rows;
 	}
 
 	@Override
 	public int columnCount() {
-		return columnCount;
+		return cols;
 	}
 
+	@Override
+	public AVector getRow(int i) {
+		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
+	}
+	
+	@Override
+	public AVector getColumn(int i) {
+		return StridedVector.wrap(data, offset+i*colStride, rows, rowStride);
+	}
+	
 	public boolean isPackedArray() {
-		return (offset == 0) && (columnStride == 1)
-				&& (rowStride == columnCount)
-				&& (data.length == rowCount * columnCount);
+		return (offset == 0) 
+				&& (colStride == 1)
+				&& (rowStride == cols)
+				&& (data.length == rows * cols);
 	}
 
 	@Override
@@ -49,39 +63,39 @@ public class StridedMatrix extends AMatrix {
 		int cc = columnCount();
 		for (int row = 0; row < rc; row++) {
 			for (int col = 0; col < cc; col++) {
-				int i = offset + row * rowStride + col * columnStride;
-				double v = data[i];
-				data[i] = op.apply(v);
+				int index = index(row,col);
+				double v = data[index];
+				data[index] = op.apply(v);
 			}
 		}
 	}
 
 	@Override
 	public StridedMatrix getTranspose() {
-		return StridedMatrix.wrap(data, columnCount, rowCount, offset,
-				columnStride, rowStride);
+		return StridedMatrix.wrap(data, cols, rows, offset,
+				colStride, rowStride);
 	}
 
 	@Override
 	public double get(int row, int column) {
-		if ((row < 0) || (column < 0) || (row >= rowCount)
-				|| (column >= columnCount))
+		if ((row < 0) || (column < 0) || (row >= rows)
+				|| (column >= cols))
 			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
-		return data[offset + row * rowStride + column * columnStride];
+		return data[index(row,column)];
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		if ((row < 0) || (column < 0) || (row >= rowCount)
-				|| (column >= columnCount))
+		if ((row < 0) || (column < 0) || (row >= rows)
+				|| (column >= cols))
 			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
-		data[offset + row * rowStride + column * columnStride] = value;
+		data[index(row,column)] = value;
 	}
 
 	@Override
 	public AMatrix exactClone() {
-		return new StridedMatrix(data.clone(), rowCount, columnCount, offset,
-				rowStride, columnStride);
+		return new StridedMatrix(data.clone(), rows, cols, offset,
+				rowStride, colStride);
 	}
 
 	public static StridedMatrix create(AMatrix m) {
@@ -99,5 +113,17 @@ public class StridedMatrix extends AMatrix {
 			int offset, int rowStride, int columnStride) {
 		return new StridedMatrix(data, rows, columns, offset, rowStride,
 				columnStride);
+	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+		if (!equals(this)) throw new VectorzException("Universe destroyed: thing not equal to itself");
+		if (offset<0) throw new VectorzException("Negative offset! ["+offset+"]");
+		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
+	}
+
+	private final int index(int i, int j) {
+		return offset+(i*rowStride)+(j*colStride);
 	}
 }
