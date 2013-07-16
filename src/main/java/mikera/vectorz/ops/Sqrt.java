@@ -1,5 +1,6 @@
 package mikera.vectorz.ops;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 import mikera.vectorz.util.DoubleArrays;
@@ -15,10 +16,10 @@ public class Sqrt extends AFunctionOp {
 		return Math.sqrt(x);
 	}
 	
-//	@Override
-//	public double applyTo(INDArray a) {
-//		a.sqrt();
-//	}
+	@Override
+	public void applyTo(INDArray a) {
+		a.sqrt();
+	}
 	
 	@Override
 	public void applyTo(double[] data, int offset, int length) {
