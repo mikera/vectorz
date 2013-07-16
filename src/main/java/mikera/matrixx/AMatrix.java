@@ -716,6 +716,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public void sqrt() {
+		int sc=rowCount();
+		for (int i=0; i<sc; i++) {
+			getRow(i).sqrt();
+		}
+	}
+	
+	@Override
 	public void log() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {

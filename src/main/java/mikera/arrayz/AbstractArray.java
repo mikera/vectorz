@@ -398,6 +398,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void sqrt() {
+		if (dimensionality()==0) {
+			set(Math.sqrt(get()));
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).sqrt();
+			}
+		}
+	}
+	
+	@Override
 	public void log() {
 		if (dimensionality()==0) {
 			set(Math.log(get()));

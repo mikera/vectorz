@@ -276,6 +276,11 @@ public interface INDArray extends Cloneable {
 	public void square();
 	
 	/**
+	 * Computes the square root of all elements in the array
+	 */
+	public void sqrt();
+	
+	/**
 	 * Calculates the signum of all elements of the array
 	 */
 	public void signum();
