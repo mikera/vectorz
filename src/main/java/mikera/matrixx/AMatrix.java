@@ -24,6 +24,7 @@ import mikera.vectorz.ArrayVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
@@ -1098,15 +1099,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Converts the matrix to a single flattened vector
 	 * in row major order.
 	 */
-	public AVector toVector() {
+	public Vector toVector() {
 		int rc = rowCount();
 		int cc = columnCount();
-		AVector v = Vectorz.newVector(rc * cc);
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				v.set(i * cc + j, get(i, j));
-			}
-		}
+		Vector v = Vector.createLength(rc * cc);
+		this.getElements(v.data,0);
 		return v;
 	}
 	

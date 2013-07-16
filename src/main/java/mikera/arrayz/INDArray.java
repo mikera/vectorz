@@ -6,6 +6,7 @@ import java.util.List;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 
 /**
  * Interface for general multi-dimensional arrays of doubles
@@ -323,7 +324,7 @@ public interface INDArray extends Cloneable {
 	 * Converts the array into a flattened vector
 	 * @return
 	 */
-	public AVector toVector();
+	public Vector toVector();
 
 	public boolean epsilonEquals(INDArray a);
 	public boolean epsilonEquals(INDArray a, double epsilon);

@@ -8,7 +8,6 @@ import java.util.List;
 
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
-import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -465,7 +464,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public AVector toVector() {
+	public Vector toVector() {
 		int n=(int)elementCount();
 		double[] data=new double[n];
 		this.getElements(data, 0);

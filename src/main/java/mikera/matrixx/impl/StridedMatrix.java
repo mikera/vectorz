@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -96,6 +97,14 @@ public class StridedMatrix extends AMatrix {
 				|| (column >= cols))
 			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
 		return data[index(row,column)];
+	}
+	
+	@Override
+	public AVector asVector() {
+		if (isPackedArray()) {
+			return Vector.wrap(data);
+		}
+		return super.asVector();
 	}
 
 	@Override

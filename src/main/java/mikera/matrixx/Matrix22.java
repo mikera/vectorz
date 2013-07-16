@@ -2,8 +2,8 @@ package mikera.matrixx;
 
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
-import mikera.vectorz.Vector4;
 
 /**
  * Specialised 2*2 Matrix for Vector2 maths, using primitive matrix elements
@@ -162,8 +162,8 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
-	public Vector4 toVector() {
-		return new Vector4(m00,m01,m10,m11);
+	public Vector toVector() {
+		return Vector.of(m00,m01,m10,m11);
 	}
 
 	@Override

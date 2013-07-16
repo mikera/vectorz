@@ -1029,6 +1029,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return sb.toString();
 	}
 	
+	@Override
+	public Vector toVector() {
+		return Vector.create(this);
+	}
+	
 	public List<Double> asElementList() {
 		return new ListWrapper(this);
 	}
