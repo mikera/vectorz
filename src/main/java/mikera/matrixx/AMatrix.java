@@ -319,10 +319,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 
 	@SuppressWarnings("serial")
-	private class MatrixRow extends MatrixSubVector {
+	private class MatrixRowView extends MatrixSubVector {
 		private final int row;
 
-		private MatrixRow(int row) {
+		private MatrixRowView(int row) {
 			this.row = row;
 		}
 
@@ -348,16 +348,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 		
 		@Override
-		public MatrixRow exactClone() {
-			return AMatrix.this.exactClone().new MatrixRow(row);
+		public MatrixRowView exactClone() {
+			return AMatrix.this.exactClone().new MatrixRowView(row);
 		}
 	}
 
 	@SuppressWarnings("serial")
-	private class MatrixColumn extends MatrixSubVector {
+	private class MatrixColumnView extends MatrixSubVector {
 		private final int column;
 
-		private MatrixColumn(int column) {
+		private MatrixColumnView(int column) {
 			this.column = column;
 		}
 
@@ -382,8 +382,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		
 		@Override
-		public MatrixColumn exactClone() {
-			return AMatrix.this.exactClone().new MatrixColumn(column);
+		public MatrixColumnView exactClone() {
+			return AMatrix.this.exactClone().new MatrixColumnView(column);
 		}
 	}
 
@@ -391,14 +391,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Returns a row of the matrix as a vector view
 	 */
 	public AVector getRow(int row) {
-		return new MatrixRow(row);
+		return new MatrixRowView(row);
 	}
 
 	/**
 	 * Returns a column of the matrix as a vector view
 	 */
 	public AVector getColumn(int column) {
-		return new MatrixColumn(column);
+		return new MatrixColumnView(column);
 	}
 
 	public AVector cloneRow(int row) {
