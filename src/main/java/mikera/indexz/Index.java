@@ -93,7 +93,7 @@ public final class Index extends AIndex {
 	}
 	
 	public boolean isEvenPermutation() {
-		return (swapCount()&1)==1;
+		return (swapCount()&1)==0;
 	}
 	
 	

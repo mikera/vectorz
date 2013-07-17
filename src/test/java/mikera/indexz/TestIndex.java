@@ -126,6 +126,7 @@ public class TestIndex {
 		assertEquals(0,Indexz.createLength(0).swapCount());
 		assertEquals(0,Indexz.createSequence(3).swapCount());
 		assertEquals(0,Indexz.createSequence(10).swapCount());
+		assertTrue(Indexz.createSequence(10).isEvenPermutation());
 		
 		Index ind=Indexz.createSequence(10);
 		ind.swap(1, 3);
