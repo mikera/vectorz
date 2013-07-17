@@ -56,10 +56,6 @@ public final class Index extends AIndex {
 	
 	@Override
 	public boolean isPermutation() {
-		return checkValidPermutation();
-	}
-	
-	public boolean checkValidPermutation() {
 		int n=length();
 		boolean[] chk=new boolean[n];
 		for (int i=0; i<n; i++) {
