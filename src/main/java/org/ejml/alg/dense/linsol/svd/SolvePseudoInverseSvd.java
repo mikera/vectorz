@@ -73,7 +73,7 @@ public class SolvePseudoInverseSvd implements LinearSolver<DenseMatrix64F> {
 
     @Override
     public boolean setA(DenseMatrix64F A) {
-        pinv.reshape(A.cols,A.rows,false);
+        pinv.reshape(A.columnCount(),A.rowCount(),false);
 
         if( !svd.decompose(A) )
             return false;
@@ -81,7 +81,7 @@ public class SolvePseudoInverseSvd implements LinearSolver<DenseMatrix64F> {
         DenseMatrix64F U_t = svd.getU(null,true);
         DenseMatrix64F V = svd.getV(null,false);
         double []S = svd.getSingularValues();
-        int N = Math.min(A.rows,A.cols);
+        int N = Math.min(A.rowCount(),A.columnCount());
 
         // compute the threshold for singular values which are to be zeroed
         double maxSingular = 0;
@@ -90,7 +90,7 @@ public class SolvePseudoInverseSvd implements LinearSolver<DenseMatrix64F> {
                 maxSingular = S[i];
         }
 
-        double tau = threshold*Math.max(A.cols,A.rows)*maxSingular;
+        double tau = threshold*Math.max(A.columnCount(),A.rowCount())*maxSingular;
 
         // computer the pseudo inverse of A
         for( int i = 0; i < N; i++ ) {
@@ -102,9 +102,9 @@ public class SolvePseudoInverseSvd implements LinearSolver<DenseMatrix64F> {
         }
 
         // V*W
-        for( int i = 0; i < V.rows; i++ ) {
-            int index = i*V.cols;
-            for( int j = 0; j < V.cols; j++ ) {
+        for( int i = 0; i < V.rowCount(); i++ ) {
+            int index = i*V.columnCount();
+            for( int j = 0; j < V.columnCount(); j++ ) {
                 V.data[index++] *= S[j];
             }
         }

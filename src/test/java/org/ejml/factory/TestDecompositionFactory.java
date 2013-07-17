@@ -40,7 +40,7 @@ public class TestDecompositionFactory {
         // I'm assuming it can process this matrix with no problems
         DenseMatrix64F A = RandomMatrices.createSymmetric(5,-1,1,rand);
 
-        EigenDecomposition<DenseMatrix64F> eig = DecompositionFactory.eig(A.rows,true);
+        EigenDecomposition<DenseMatrix64F> eig = DecompositionFactory.eig(A.rowCount(),true);
 
         assertTrue(eig.decompose(A));
 
@@ -60,7 +60,7 @@ public class TestDecompositionFactory {
         // I'm assuming it can process this matrix with no problems
         DenseMatrix64F A = RandomMatrices.createRandom(4,5,rand);
 
-        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.rows,A.cols,true,true,false);
+        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),true,true,false);
 
         assertTrue(svd.decompose(A));
 

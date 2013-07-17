@@ -39,7 +39,7 @@ public class RrefGaussJordanRowPivot implements ReducedRowEchelonForm<DenseMatri
 
     @Override
     public void reduce( DenseMatrix64F A , int coefficientColumns) {
-        if( A.cols < coefficientColumns)
+        if( A.columnCount() < coefficientColumns)
             throw new IllegalArgumentException("The system must be at least as wide as A");
 
         // number of leading ones which have been found
@@ -51,8 +51,8 @@ public class RrefGaussJordanRowPivot implements ReducedRowEchelonForm<DenseMatri
             int pivotRow = -1;
             double maxValue = tol;
 
-            for( int row = leadIndex; row < A.rows; row++ ) {
-                double v = Math.abs(A.data[row*A.cols + i]);
+            for( int row = leadIndex; row < A.rowCount(); row++ ) {
+                double v = Math.abs(A.data[row*A.columnCount() + i]);
 
                 if( v > maxValue ) {
                     maxValue = v;
@@ -70,24 +70,24 @@ public class RrefGaussJordanRowPivot implements ReducedRowEchelonForm<DenseMatri
                 swapRows(A,leadIndex,pivotRow);
 
             // zero column 'i' in all but the pivot row
-            for( int row = 0; row < A.rows; row++ ) {
+            for( int row = 0; row < A.rowCount(); row++ ) {
                 if( row == leadIndex ) continue;
 
-                int indexPivot = leadIndex*A.cols+i;
-                int indexTarget = row*A.cols+i;
+                int indexPivot = leadIndex*A.columnCount()+i;
+                int indexTarget = row*A.columnCount()+i;
 
                 double alpha = A.data[indexTarget]/A.data[indexPivot++];
                 A.data[indexTarget++] = 0;
-                for( int col = i+1; col < A.cols; col++ ) {
+                for( int col = i+1; col < A.columnCount(); col++ ) {
                     A.data[indexTarget++] -= A.data[indexPivot++]*alpha;
                 }
             }
 
             // update the pivot row
-            int indexPivot = leadIndex*A.cols+i;
+            int indexPivot = leadIndex*A.columnCount()+i;
             double alpha = 1.0/A.data[indexPivot];
             A.data[indexPivot++] = 1;
-            for( int col = i+1; col < A.cols; col++ ) {
+            for( int col = i+1; col < A.columnCount(); col++ ) {
                 A.data[indexPivot++] *= alpha;
             }
             leadIndex++;
@@ -95,10 +95,10 @@ public class RrefGaussJordanRowPivot implements ReducedRowEchelonForm<DenseMatri
     }
 
     protected static void swapRows( DenseMatrix64F A , int rowA , int rowB ) {
-        int indexA = rowA*A.cols;
-        int indexB = rowB*A.cols;
+        int indexA = rowA*A.columnCount();
+        int indexB = rowB*A.columnCount();
 
-        for( int i = 0; i < A.cols; i++ , indexA++,indexB++) {
+        for( int i = 0; i < A.columnCount(); i++ , indexA++,indexB++) {
             double temp = A.data[indexA];
             A.data[indexA] = A.data[indexB];
             A.data[indexB] = temp;

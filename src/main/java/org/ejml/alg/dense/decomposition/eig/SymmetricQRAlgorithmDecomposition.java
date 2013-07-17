@@ -133,10 +133,10 @@ public class SymmetricQRAlgorithmDecomposition
      */
     @Override
     public boolean decompose(DenseMatrix64F orig) {
-        if( orig.cols != orig.rows )
+        if( orig.columnCount() != orig.rowCount() )
             throw new IllegalArgumentException("Matrix must be square.");
 
-        int N = orig.rows;
+        int N = orig.rowCount();
 
         // compute a similar tridiagonal matrix
         if( !decomp.decompose(orig) )

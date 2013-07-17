@@ -100,8 +100,8 @@ public abstract class StandardTridiagonalTests {
             DenseMatrix64F Q = alg.getQ(null,false);
             DenseMatrix64F Q_t = alg.getQ(null,true);
 
-            for( int i = 0; i < Q.rows; i++ ) {
-                for( int j = 0; j < Q.cols; j++ ) {
+            for( int i = 0; i < Q.rowCount(); i++ ) {
+                for( int j = 0; j < Q.columnCount(); j++ ) {
                     assertEquals(Q.get(i,j),Q_t.get(j,i),1e-8);
                 }
             }

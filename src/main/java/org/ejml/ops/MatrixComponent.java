@@ -51,8 +51,8 @@ public class MatrixComponent extends JPanel {
         int w = image.getWidth();
         int h = image.getHeight();
 
-        double widthStep = (double)M.cols / image.getWidth();
-        double heightStep = (double)M.rows / image.getHeight();
+        double widthStep = (double)M.columnCount() / image.getWidth();
+        double heightStep = (double)M.rowCount() / image.getHeight();
 
         for( int i = 0; i < h; i++ ) {
             for( int j = 0; j < w; j++ ) {

@@ -53,10 +53,10 @@ public abstract class LinearSolverLuBase extends LinearSolverAbstract {
         double []vv = decomp._getVV();
         DenseMatrix64F LU = decomp.getLU();
         
-        if( A_inv.cols != LU.cols || A_inv.rows != LU.rows )
+        if( A_inv.columnCount() != LU.columnCount() || A_inv.rowCount() != LU.rowCount() )
             throw new IllegalArgumentException("Unexpected matrix dimension");
 
-        int n = A.cols;
+        int n = A.columnCount();
 
         double dataInv[] = A_inv.data;
 
@@ -80,7 +80,7 @@ public abstract class LinearSolverLuBase extends LinearSolverAbstract {
      */
     public void improveSol( DenseMatrix64F b , DenseMatrix64F x )
     {
-        if( b.cols != x.cols ) {
+        if( b.columnCount() != x.columnCount() ) {
             throw new IllegalArgumentException("bad shapes");
         }
 
@@ -88,8 +88,8 @@ public abstract class LinearSolverLuBase extends LinearSolverAbstract {
         double dataB[] = b.data;
         double dataX[] = x.data;
 
-        final int nc = b.cols;
-        final int n = b.cols;
+        final int nc = b.columnCount();
+        final int n = b.columnCount();
 
         double []vv = decomp._getVV();
         DenseMatrix64F LU = decomp.getLU();

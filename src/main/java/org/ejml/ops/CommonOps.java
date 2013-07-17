@@ -70,9 +70,9 @@ public class CommonOps {
      */
     public static void mult( RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
-        if( b.cols == 1 ) {
+        if( b.columnCount() == 1 ) {
             MatrixVectorMult.mult(a,b,c);
-        } else if( b.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+        } else if( b.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
             MatrixMatrixMult.mult_reorder(a,b,c);
         } else {
             MatrixMatrixMult.mult_small(a,b,c);
@@ -95,7 +95,7 @@ public class CommonOps {
     public static void mult( double alpha , RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
         // TODO add a matrix vectory multiply here
-        if( b.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+        if( b.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
             MatrixMatrixMult.mult_reorder(alpha,a,b,c);
         } else {
             MatrixMatrixMult.mult_small(alpha,a,b,c);
@@ -116,16 +116,16 @@ public class CommonOps {
      */
     public static void multTransA( RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
-        if( b.cols == 1 ) {
+        if( b.columnCount() == 1 ) {
             // todo check a.numCols == 1 and do inner product?
             // there are significantly faster algorithms when dealing with vectors
-            if( a.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+            if( a.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
                 MatrixVectorMult.multTransA_reorder(a,b,c);
             } else {
                 MatrixVectorMult.multTransA_small(a,b,c);
             }
-        } else if( a.cols >= EjmlParameters.MULT_COLUMN_SWITCH ||
-                b.cols >= EjmlParameters.MULT_COLUMN_SWITCH  ) {
+        } else if( a.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ||
+                b.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH  ) {
             MatrixMatrixMult.multTransA_reorder(a,b,c);
         } else {
             MatrixMatrixMult.multTransA_small(a,b,c);
@@ -148,8 +148,8 @@ public class CommonOps {
     public static void multTransA( double alpha , RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
         // TODO add a matrix vectory multiply here
-        if( a.cols >= EjmlParameters.MULT_COLUMN_SWITCH ||
-                b.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+        if( a.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ||
+                b.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
             MatrixMatrixMult.multTransA_reorder(alpha,a,b,c);
         } else {
             MatrixMatrixMult.multTransA_small(alpha,a,b,c);
@@ -170,7 +170,7 @@ public class CommonOps {
      */
     public static void multTransB( RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
-        if( b.rows == 1 ) {
+        if( b.rowCount() == 1 ) {
             MatrixVectorMult.mult(a,b,c);
         } else {
             MatrixMatrixMult.multTransB(a,b,c);
@@ -210,14 +210,14 @@ public class CommonOps {
      */
     public static void multTransAB( RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
-        if( b.rows == 1) {
+        if( b.rowCount() == 1) {
             // there are significantly faster algorithms when dealing with vectors
-            if( a.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+            if( a.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
                 MatrixVectorMult.multTransA_reorder(a,b,c);
             } else {
                 MatrixVectorMult.multTransA_small(a,b,c);
             }
-        } else if( a.cols >= EjmlParameters.MULT_TRANAB_COLUMN_SWITCH ) {
+        } else if( a.columnCount() >= EjmlParameters.MULT_TRANAB_COLUMN_SWITCH ) {
             MatrixMatrixMult.multTransAB_aux(a,b,c,null);
         } else {
             MatrixMatrixMult.multTransAB(a,b,c);
@@ -240,7 +240,7 @@ public class CommonOps {
     public static void multTransAB( double alpha , RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
         // TODO add a matrix vectory multiply here
-        if( a.cols >= EjmlParameters.MULT_TRANAB_COLUMN_SWITCH ) {
+        if( a.columnCount() >= EjmlParameters.MULT_TRANAB_COLUMN_SWITCH ) {
             MatrixMatrixMult.multTransAB_aux(alpha,a,b,c,null);
         } else {
             MatrixMatrixMult.multTransAB(alpha,a,b,c);
@@ -265,10 +265,10 @@ public class CommonOps {
      */
     public static void multInner( RowD1Matrix64F a , RowD1Matrix64F c )
     {
-        if( a.cols != c.cols || a.cols != c.rows )
+        if( a.columnCount() != c.columnCount() || a.columnCount() != c.rowCount() )
             throw new IllegalArgumentException("Rows and columns of 'c' must be the same as the columns in 'a'");
         
-        if( a.cols >= EjmlParameters.MULT_INNER_SWITCH ) {
+        if( a.columnCount() >= EjmlParameters.MULT_INNER_SWITCH ) {
             MatrixMultProduct.inner_small(a, c);
         } else {
             MatrixMultProduct.inner_reorder(a, c);
@@ -292,7 +292,7 @@ public class CommonOps {
      */
     public static void multOuter( RowD1Matrix64F a , RowD1Matrix64F c )
     {
-        if( a.rows != c.cols || a.rows != c.rows )
+        if( a.rowCount() != c.columnCount() || a.rowCount() != c.rowCount() )
             throw new IllegalArgumentException("Rows and columns of 'c' must be the same as the rows in 'a'");
 
         MatrixMultProduct.outer(a, c);
@@ -312,10 +312,10 @@ public class CommonOps {
      */
     public static void multAdd( RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
-        if( b.cols == 1 ) {
+        if( b.columnCount() == 1 ) {
             MatrixVectorMult.multAdd(a,b,c);
         } else {
-            if( b.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+            if( b.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
                 MatrixMatrixMult.multAdd_reorder(a,b,c);
             } else {
                 MatrixMatrixMult.multAdd_small(a,b,c);
@@ -339,7 +339,7 @@ public class CommonOps {
     public static void multAdd( double alpha , RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
         // TODO add a matrix vectory multiply here
-        if( b.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+        if( b.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
             MatrixMatrixMult.multAdd_reorder(alpha,a,b,c);
         } else {
             MatrixMatrixMult.multAdd_small(alpha,a,b,c);
@@ -360,15 +360,15 @@ public class CommonOps {
      */
     public static void multAddTransA( RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
-        if( b.cols == 1 ) {
-            if( a.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+        if( b.columnCount() == 1 ) {
+            if( a.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
                 MatrixVectorMult.multAddTransA_reorder(a,b,c);
             } else {
                 MatrixVectorMult.multAddTransA_small(a,b,c);
             }
         } else {
-            if( a.cols >= EjmlParameters.MULT_COLUMN_SWITCH ||
-                    b.cols >= EjmlParameters.MULT_COLUMN_SWITCH  ) {
+            if( a.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ||
+                    b.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH  ) {
                 MatrixMatrixMult.multAddTransA_reorder(a,b,c);
             } else {
                 MatrixMatrixMult.multAddTransA_small(a,b,c);
@@ -392,8 +392,8 @@ public class CommonOps {
     public static void multAddTransA( double alpha , RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
         // TODO add a matrix vectory multiply here
-        if( a.cols >= EjmlParameters.MULT_COLUMN_SWITCH ||
-                b.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+        if( a.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ||
+                b.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
             MatrixMatrixMult.multAddTransA_reorder(alpha,a,b,c);
         } else {
             MatrixMatrixMult.multAddTransA_small(alpha,a,b,c);
@@ -450,14 +450,14 @@ public class CommonOps {
      */
     public static void multAddTransAB( RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
-        if( b.rows == 1 ) {
+        if( b.rowCount() == 1 ) {
             // there are significantly faster algorithms when dealing with vectors
-            if( a.cols >= EjmlParameters.MULT_COLUMN_SWITCH ) {
+            if( a.columnCount() >= EjmlParameters.MULT_COLUMN_SWITCH ) {
                 MatrixVectorMult.multAddTransA_reorder(a,b,c);
             } else {
                 MatrixVectorMult.multAddTransA_small(a,b,c);
             }
-        } else if( a.cols >= EjmlParameters.MULT_TRANAB_COLUMN_SWITCH ) {
+        } else if( a.columnCount() >= EjmlParameters.MULT_TRANAB_COLUMN_SWITCH ) {
             MatrixMatrixMult.multAddTransAB_aux(a,b,c,null);
         } else {
             MatrixMatrixMult.multAddTransAB(a,b,c);
@@ -480,7 +480,7 @@ public class CommonOps {
     public static void multAddTransAB( double alpha , RowD1Matrix64F a , RowD1Matrix64F b , RowD1Matrix64F c )
     {
         // TODO add a matrix vectory multiply here
-        if( a.cols >= EjmlParameters.MULT_TRANAB_COLUMN_SWITCH ) {
+        if( a.columnCount() >= EjmlParameters.MULT_TRANAB_COLUMN_SWITCH ) {
             MatrixMatrixMult.multAddTransAB_aux(alpha,a,b,c,null);
         } else {
             MatrixMatrixMult.multAddTransAB(alpha,a,b,c);
@@ -517,7 +517,7 @@ public class CommonOps {
      */
     public static boolean solve( DenseMatrix64F a , DenseMatrix64F b , DenseMatrix64F x )
     {
-        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.general(a.rows,a.cols);
+        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.general(a.rowCount(),a.columnCount());
 
         // make sure the inputs 'a' and 'b' are not modified
         solver = new LinearSolverSafe<DenseMatrix64F>(solver);
@@ -536,10 +536,10 @@ public class CommonOps {
      * @param mat The matrix that is to be transposed. Modified.
      */
     public static void transpose( DenseMatrix64F mat ) {
-        if( mat.cols == mat.rows ){
+        if( mat.columnCount() == mat.rowCount() ){
             TransposeAlgs.square(mat);
         } else {
-            DenseMatrix64F b = new DenseMatrix64F(mat.cols,mat.rows);
+            DenseMatrix64F b = new DenseMatrix64F(mat.columnCount(),mat.rowCount());
             transpose(mat,b);
             mat.setReshape(b);
         }
@@ -560,15 +560,15 @@ public class CommonOps {
     public static DenseMatrix64F transpose( DenseMatrix64F A, DenseMatrix64F A_tran)
     {
         if( A_tran == null ) {
-            A_tran = new DenseMatrix64F(A.cols,A.rows);
+            A_tran = new DenseMatrix64F(A.columnCount(),A.rowCount());
         } else {
-            if( A.rows != A_tran.cols || A.cols != A_tran.rows ) {
+            if( A.rowCount() != A_tran.columnCount() || A.columnCount() != A_tran.rowCount() ) {
                 throw new IllegalArgumentException("Incompatible matrix dimensions");
             }
         }
 
-        if( A.rows > EjmlParameters.TRANSPOSE_SWITCH &&
-                A.cols > EjmlParameters.TRANSPOSE_SWITCH )
+        if( A.rowCount() > EjmlParameters.TRANSPOSE_SWITCH &&
+                A.columnCount() > EjmlParameters.TRANSPOSE_SWITCH )
             TransposeAlgs.block(A,A_tran,EjmlParameters.BLOCK_WIDTH);
         else
             TransposeAlgs.standard(A,A_tran);
@@ -590,15 +590,15 @@ public class CommonOps {
      * @param a A square matrix.  Not modified.
      */
     public static double trace( RowD1Matrix64F a ) {
-        if( a.rows != a.cols ) {
+        if( a.rowCount() != a.columnCount() ) {
             throw new IllegalArgumentException("The matrix must be square");
         }
 
         double sum = 0;
         int index = 0;
-        for( int i = 0; i < a.rows; i++ ) {
+        for( int i = 0; i < a.rowCount(); i++ ) {
             sum += a.get(index);
-            index += 1 + a.cols;
+            index += 1 + a.columnCount();
         }
 
         return sum;
@@ -655,12 +655,12 @@ public class CommonOps {
      * @return true if it could invert the matrix false if it could not.
      */
     public static boolean invert( DenseMatrix64F mat) {
-        if( mat.cols <= UnrolledInverseFromMinor.MAX ) {
-            if( mat.cols != mat.rows ) {
+        if( mat.columnCount() <= UnrolledInverseFromMinor.MAX ) {
+            if( mat.columnCount() != mat.rowCount() ) {
                 throw new IllegalArgumentException("Must be a square matrix.");
             }
 
-            if( mat.cols >= 2 ) {
+            if( mat.columnCount() >= 2 ) {
                 UnrolledInverseFromMinor.inv(mat,mat);
             } else {
                 mat.set(0, 1.0/mat.get(0));
@@ -702,11 +702,11 @@ public class CommonOps {
      * @return true if it could invert the matrix false if it could not.
      */
     public static boolean invert( DenseMatrix64F mat, DenseMatrix64F result ) {
-        if( mat.cols <= UnrolledInverseFromMinor.MAX ) {
-            if( mat.cols != mat.rows ) {
+        if( mat.columnCount() <= UnrolledInverseFromMinor.MAX ) {
+            if( mat.columnCount() != mat.rowCount() ) {
                 throw new IllegalArgumentException("Must be a square matrix.");
             }
-            if( result.cols >= 2 ) {
+            if( result.columnCount() >= 2 ) {
                 UnrolledInverseFromMinor.inv(mat,result);
             } else {
                 result.set(0,  1.0/mat.get(0));
@@ -760,22 +760,22 @@ public class CommonOps {
     public static DenseMatrix64F[] columnsToVector(DenseMatrix64F A, DenseMatrix64F[] v)
     {
         DenseMatrix64F []ret;
-        if( v == null || v.length < A.cols ) {
-            ret = new DenseMatrix64F[ A.cols ];
+        if( v == null || v.length < A.columnCount() ) {
+            ret = new DenseMatrix64F[ A.columnCount() ];
         } else {
             ret = v;
         }
 
         for( int i = 0; i < ret.length; i++ ) {
             if( ret[i] == null ) {
-                ret[i] = new DenseMatrix64F(A.rows,1);
+                ret[i] = new DenseMatrix64F(A.rowCount(),1);
             } else {
-                ret[i].reshape(A.rows,1, false);
+                ret[i].reshape(A.rowCount(),1, false);
             }
 
             DenseMatrix64F u = ret[i];
 
-            for( int j = 0; j < A.rows; j++ ) {
+            for( int j = 0; j < A.rowCount(); j++ ) {
                 u.set(j,0, A.get(j,i));
             }
         }
@@ -793,8 +793,8 @@ public class CommonOps {
     public static DenseMatrix64F[] rowsToVector(DenseMatrix64F A, DenseMatrix64F[] v)
     {
         DenseMatrix64F []ret;
-        if( v == null || v.length < A.rows ) {
-            ret = new DenseMatrix64F[ A.rows ];
+        if( v == null || v.length < A.rowCount() ) {
+            ret = new DenseMatrix64F[ A.rowCount() ];
         } else {
             ret = v;
         }
@@ -802,14 +802,14 @@ public class CommonOps {
 
         for( int i = 0; i < ret.length; i++ ) {
             if( ret[i] == null ) {
-                ret[i] = new DenseMatrix64F(A.cols,1);
+                ret[i] = new DenseMatrix64F(A.columnCount(),1);
             } else {
-                ret[i].reshape(A.cols,1, false);
+                ret[i].reshape(A.columnCount(),1, false);
             }
 
             DenseMatrix64F u = ret[i];
 
-            for( int j = 0; j < A.cols; j++ ) {
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 u.set(j,0, A.get(i,j));
             }
         }
@@ -827,7 +827,7 @@ public class CommonOps {
      */
     public static void setIdentity( RowD1Matrix64F mat )
     {
-        int width = mat.rows < mat.cols ? mat.rows : mat.cols;
+        int width = mat.rowCount() < mat.columnCount() ? mat.rowCount() : mat.columnCount();
 
         int length = (int)mat.elementCount();
 
@@ -836,7 +836,7 @@ public class CommonOps {
         }
 
         int index = 0;
-        for( int i = 0; i < width; i++ , index += mat.cols + 1) {
+        for( int i = 0; i < width; i++ , index += mat.columnCount() + 1) {
             mat.set( index , 1 );
         }
     }
@@ -907,7 +907,7 @@ public class CommonOps {
         if( ret == null ) {
             ret = new DenseMatrix64F(width,width);
         } else {
-            if( ret.rows != width || ret.cols != width )
+            if( ret.rowCount() != width || ret.columnCount() != width )
                 throw new IllegalArgumentException("Unexpected matrix size");
 
             CommonOps.fill(ret, 0);
@@ -964,24 +964,24 @@ public class CommonOps {
      */
     public static void kron( DenseMatrix64F A , DenseMatrix64F B , DenseMatrix64F C )
     {
-        int numColsC = A.cols*B.cols;
-        int numRowsC = A.rows*B.rows;
+        int numColsC = A.columnCount()*B.columnCount();
+        int numRowsC = A.rowCount()*B.rowCount();
 
-        if( C.cols != numColsC || C.rows != numRowsC) {
+        if( C.columnCount() != numColsC || C.rowCount() != numRowsC) {
             throw new IllegalArgumentException("C does not have the expected dimensions");
         }
 
         // TODO see comment below
         // this will work well for small matrices
         // but an alternative version should be made for large matrices
-        for( int i = 0; i < A.rows; i++ ) {
-            for( int j = 0; j < A.cols; j++ ) {
+        for( int i = 0; i < A.rowCount(); i++ ) {
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 double a = A.get(i,j);
 
-                for( int rowB = 0; rowB < B.rows; rowB++ ) {
-                    for( int colB = 0; colB < B.cols; colB++ ) {
+                for( int rowB = 0; rowB < B.rowCount(); rowB++ ) {
+                    for( int colB = 0; colB < B.columnCount(); colB++ ) {
                         double val = a*B.get(rowB,colB);
-                        C.set(i*B.rows+rowB,j*B.cols+colB,val);
+                        C.set(i*B.rowCount()+rowB,j*B.columnCount()+colB,val);
                     }
                 }
             }
@@ -1014,17 +1014,17 @@ public class CommonOps {
                                 Matrix64F dst ,
                                 int dstY0, int dstX0 )
     {
-        if( srcY1 < srcY0 || srcY0 < 0 || srcY1 > src.rows )
+        if( srcY1 < srcY0 || srcY0 < 0 || srcY1 > src.rowCount() )
             throw new IllegalArgumentException("srcY1 < srcY0 || srcY0 < 0 || srcY1 > src.numRows");
-        if( srcX1 < srcX0 || srcX0 < 0 || srcX1 > src.cols )
+        if( srcX1 < srcX0 || srcX0 < 0 || srcX1 > src.columnCount() )
             throw new IllegalArgumentException("srcX1 < srcX0 || srcX0 < 0 || srcX1 > src.numCols");
 
         int w = srcX1-srcX0;
         int h = srcY1-srcY0;
 
-        if( dstY0+h > dst.rows )
+        if( dstY0+h > dst.rowCount() )
             throw new IllegalArgumentException("dst is too small in rows");
-        if( dstX0+w > dst.cols )
+        if( dstX0+w > dst.columnCount() )
             throw new IllegalArgumentException("dst is too small in columns");
 
         // interestingly, the performance is only different for small matrices but identical for larger ones
@@ -1057,9 +1057,9 @@ public class CommonOps {
                                           int srcY0, int srcY1,
                                           int srcX0, int srcX1 )
     {
-        if( srcY1 <= srcY0 || srcY0 < 0 || srcY1 > src.rows )
+        if( srcY1 <= srcY0 || srcY0 < 0 || srcY1 > src.rowCount() )
             throw new IllegalArgumentException("srcY1 <= srcY0 || srcY0 < 0 || srcY1 > src.numRows");
-        if( srcX1 <= srcX0 || srcX0 < 0 || srcX1 > src.cols )
+        if( srcX1 <= srcX0 || srcX0 < 0 || srcX1 > src.columnCount() )
             throw new IllegalArgumentException("srcX1 <= srcX0 || srcX0 < 0 || srcX1 > src.numCols");
 
         int w = srcX1-srcX0;
@@ -1083,7 +1083,7 @@ public class CommonOps {
      */
     public static void extractDiag( DenseMatrix64F src, DenseMatrix64F dst )
     {
-        int N = Math.min(src.rows, src.cols);
+        int N = Math.min(src.rowCount(), src.columnCount());
 
         if( !MatrixFeatures.isVector(dst) ) {
             throw new IllegalArgumentException("Expected a vector for dst.");
@@ -1106,7 +1106,7 @@ public class CommonOps {
      * @param destX0 Start column for the copy into dest.
      */
     public static void insert( Matrix64F src, Matrix64F dest, int destY0, int destX0) {
-        extract(src,0,src.rows,0,src.cols,dest,destY0,destX0);
+        extract(src,0,src.rowCount(),0,src.columnCount(),dest,destY0,destX0);
     }
 
     /**
@@ -1215,7 +1215,7 @@ public class CommonOps {
      */
     public static void elementMult( D1Matrix64F a , D1Matrix64F b )
     {
-        if( a.cols != b.cols || a.rows != b.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount() ) {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatable dimensions");
         }
 
@@ -1237,8 +1237,8 @@ public class CommonOps {
      */
     public static void elementMult( D1Matrix64F a , D1Matrix64F b , D1Matrix64F c )
     {
-        if( a.cols != b.cols || a.rows != b.rows
-                || a.rows != c.rows || a.cols != c.cols ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount()
+                || a.rowCount() != c.rowCount() || a.columnCount() != c.columnCount() ) {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatible dimensions");
         }
 
@@ -1259,7 +1259,7 @@ public class CommonOps {
      */
     public static void elementDiv( D1Matrix64F a , D1Matrix64F b )
     {
-        if( a.cols != b.cols || a.rows != b.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount() ) {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatable dimensions");
         }
 
@@ -1281,8 +1281,8 @@ public class CommonOps {
      */
     public static void elementDiv( D1Matrix64F a , D1Matrix64F b , D1Matrix64F c )
     {
-        if( a.cols != b.cols || a.rows != b.rows
-                || a.rows != c.rows || a.cols != c.cols ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount()
+                || a.rowCount() != c.rowCount() || a.columnCount() != c.columnCount() ) {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatible dimensions");
         }
 
@@ -1350,15 +1350,15 @@ public class CommonOps {
      */
     public static DenseMatrix64F sumRows( DenseMatrix64F input , DenseMatrix64F output ) {
         if( output == null ) {
-            output = new DenseMatrix64F(input.rows,1);
-        } else if( output.elementCount() != input.rows )
+            output = new DenseMatrix64F(input.rowCount(),1);
+        } else if( output.elementCount() != input.rowCount() )
             throw new IllegalArgumentException("Output does not have enough elements to store the results");
 
-        for( int row = 0; row < input.rows; row++ ) {
+        for( int row = 0; row < input.rowCount(); row++ ) {
             double total = 0;
 
-            int end = (row+1)*input.cols;
-            for( int index = row*input.cols; index < end; index++ ) {
+            int end = (row+1)*input.columnCount();
+            for( int index = row*input.columnCount(); index < end; index++ ) {
                 total += input.data[index];
             }
 
@@ -1380,16 +1380,16 @@ public class CommonOps {
      */
     public static DenseMatrix64F sumCols( DenseMatrix64F input , DenseMatrix64F output ) {
         if( output == null ) {
-            output = new DenseMatrix64F(1,input.cols);
-        } else if( output.elementCount() != input.cols )
+            output = new DenseMatrix64F(1,input.columnCount());
+        } else if( output.elementCount() != input.columnCount() )
             throw new IllegalArgumentException("Output does not have enough elements to store the results");
 
-        for( int cols = 0; cols < input.cols; cols++ ) {
+        for( int cols = 0; cols < input.columnCount(); cols++ ) {
             double total = 0;
 
             int index = cols;
-            int end = index + input.cols*input.rows;
-            for( ; index < end; index += input.cols ) {
+            int end = index + input.columnCount()*input.rowCount();
+            for( ; index < end; index += input.columnCount() ) {
                 total += input.data[index];
             }
 
@@ -1410,7 +1410,7 @@ public class CommonOps {
      */
     public static void addEquals( D1Matrix64F a , D1Matrix64F b )
     {
-        if( a.cols != b.cols || a.rows != b.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount() ) {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatible dimensions");
         }
 
@@ -1434,7 +1434,7 @@ public class CommonOps {
      */
     public static void addEquals( D1Matrix64F a , double beta, D1Matrix64F b )
     {
-        if( a.cols != b.cols || a.rows != b.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount() ) {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatible dimensions");
         }
 
@@ -1462,8 +1462,8 @@ public class CommonOps {
      */
     public static void add( final D1Matrix64F a , final D1Matrix64F b , final D1Matrix64F c )
     {
-        if( a.cols != b.cols || a.rows != b.rows
-                || a.cols != c.cols || a.rows != c.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount()
+                || a.columnCount() != c.columnCount() || a.rowCount() != c.rowCount() ) {
             throw new IllegalArgumentException("The matrices are not all the same dimension.");
         }
 
@@ -1492,8 +1492,8 @@ public class CommonOps {
      */
     public static void add( D1Matrix64F a , double beta , D1Matrix64F b , D1Matrix64F c )
     {
-        if( a.cols != b.cols || a.rows != b.rows
-                || a.cols != c.cols || a.rows != c.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount()
+                || a.columnCount() != c.columnCount() || a.rowCount() != c.rowCount() ) {
             throw new IllegalArgumentException("The matrices are not all the same dimension.");
         }
 
@@ -1523,8 +1523,8 @@ public class CommonOps {
      */
     public static void add( double alpha , D1Matrix64F a , double beta , D1Matrix64F b , D1Matrix64F c )
     {
-        if( a.cols != b.cols || a.rows != b.rows
-                || a.cols != c.cols || a.rows != c.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount()
+                || a.columnCount() != c.columnCount() || a.rowCount() != c.rowCount() ) {
             throw new IllegalArgumentException("The matrices are not all the same dimension.");
         }
 
@@ -1553,8 +1553,8 @@ public class CommonOps {
      */
     public static void add( double alpha , D1Matrix64F a , D1Matrix64F b , D1Matrix64F c )
     {
-        if( a.cols != b.cols || a.rows != b.rows
-                || a.cols != c.cols || a.rows != c.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount()
+                || a.columnCount() != c.columnCount() || a.rowCount() != c.rowCount() ) {
             throw new IllegalArgumentException("The matrices are not all the same dimension.");
         }
 
@@ -1595,7 +1595,7 @@ public class CommonOps {
      * @param val The value that's added to each element.
      */
     public static void add( D1Matrix64F a , double val , D1Matrix64F c ) {
-        if( a.rows != c.rows || a.cols != c.cols ) {
+        if( a.rowCount() != c.rowCount() || a.columnCount() != c.columnCount() ) {
             throw new IllegalArgumentException("Dimensions of a and c do not match.");
         }
 
@@ -1618,7 +1618,7 @@ public class CommonOps {
      */
     public static void subEquals( D1Matrix64F a , D1Matrix64F b )
     {
-        if( a.cols != b.cols || a.rows != b.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount() ) {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatable dimensions");
         }
 
@@ -1645,7 +1645,7 @@ public class CommonOps {
      */
     public static void sub( D1Matrix64F a , D1Matrix64F b , D1Matrix64F c )
     {
-        if( a.cols != b.cols || a.rows != b.rows ) {
+        if( a.columnCount() != b.columnCount() || a.rowCount() != b.rowCount() ) {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatable dimensions");
         }
 
@@ -1689,7 +1689,7 @@ public class CommonOps {
      */
     public static void scale( double alpha , D1Matrix64F a , D1Matrix64F b)
     {
-        if( a.rows != b.rows || a.cols != b.cols )
+        if( a.rowCount() != b.rowCount() || a.columnCount() != b.columnCount() )
             throw new IllegalArgumentException("Matrices must have the same shape");
 
         final int size = (int)a.elementCount();
@@ -1730,7 +1730,7 @@ public class CommonOps {
      */
     public static void divide( double alpha , D1Matrix64F a , D1Matrix64F b)
     {
-        if( a.rows != b.rows || a.cols != b.cols )
+        if( a.rowCount() != b.rowCount() || a.columnCount() != b.columnCount() )
             throw new IllegalArgumentException("Matrices must have the same shape");
 
         final int size = (int)a.elementCount();
@@ -1801,15 +1801,15 @@ public class CommonOps {
      */
     public static DenseMatrix64F rref( DenseMatrix64F A , int numUnknowns, DenseMatrix64F reduced ) {
         if( reduced == null ) {
-            reduced = new DenseMatrix64F(A.rows,A.cols);
-        } else if( reduced.cols != A.cols || reduced.rows != A.rows )
+            reduced = new DenseMatrix64F(A.rowCount(),A.columnCount());
+        } else if( reduced.columnCount() != A.columnCount() || reduced.rowCount() != A.rowCount() )
             throw new IllegalArgumentException("'re' must have the same shape as the original input matrix");
 
         if( numUnknowns <= 0 )
-            numUnknowns = Math.min(A.cols,A.rows);
+            numUnknowns = Math.min(A.columnCount(),A.rowCount());
 
         ReducedRowEchelonForm<DenseMatrix64F> alg = new RrefGaussJordanRowPivot();
-        alg.setTolerance(elementMaxAbs(A)* UtilEjml.EPS*Math.max(A.rows,A.cols));
+        alg.setTolerance(elementMaxAbs(A)* UtilEjml.EPS*Math.max(A.rowCount(),A.columnCount()));
 
         reduced.set(A);
         alg.reduce(reduced, numUnknowns);

@@ -87,8 +87,8 @@ public class VectorVectorMult {
      */
     public static double innerProdA( D1Matrix64F x, D1Matrix64F A , D1Matrix64F y )
     {
-        int n = A.rows;
-        int m = A.cols;
+        int n = A.rowCount();
+        int m = A.columnCount();
 
         if( x.elementCount() != n )
             throw new IllegalArgumentException("Unexpected number of elements in x");
@@ -124,9 +124,9 @@ public class VectorVectorMult {
     // TODO better name for this
     public static double innerProdTranA( D1Matrix64F x, D1Matrix64F A , D1Matrix64F y )
     {
-        int n = A.rows;
+        int n = A.rowCount();
 
-        if( n != A.cols)
+        if( n != A.columnCount())
             throw new IllegalArgumentException("A must be square");
 
         if( x.elementCount() != n )
@@ -171,8 +171,8 @@ public class VectorVectorMult {
      * @param A A Matrix with m by n elements. Modified.
      */
     public static void outerProd( D1Matrix64F x, D1Matrix64F y, RowD1Matrix64F A ) {
-        int m = A.rows;
-        int n = A.cols;
+        int m = A.rowCount();
+        int n = A.columnCount();
 
         int index = 0;
         for( int i = 0; i < m; i++ ) {
@@ -206,8 +206,8 @@ public class VectorVectorMult {
      * @param A A Matrix with m by n elements. Modified.
      */
     public static void addOuterProd( double gamma , D1Matrix64F x, D1Matrix64F y, RowD1Matrix64F A ) {
-        int m = A.rows;
-        int n = A.cols;
+        int m = A.rowCount();
+        int n = A.columnCount();
 
         int index = 0;
         if( gamma == 1.0 ) {

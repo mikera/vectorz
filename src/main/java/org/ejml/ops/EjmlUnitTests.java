@@ -36,8 +36,8 @@ public class EjmlUnitTests {
      * @param A Matrix
      */
     public static void assertCountable(  Matrix64F A ) {
-        for( int i = 0; i < A.rows; i++ ){
-            for( int j = 0; j < A.cols; j++ ) {
+        for( int i = 0; i < A.rowCount(); i++ ){
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 assertTrue(  !Double.isNaN(A.get(i,j)) , "NaN found at "+i+" "+j );
                 assertTrue(  !Double.isInfinite(A.get(i,j)) , "Infinite found at "+i+" "+j );
             }
@@ -53,8 +53,8 @@ public class EjmlUnitTests {
      * @param B Matrix
      */
     public static void assertShape( Matrix64F A , Matrix64F B ) {
-        assertTrue(  A.rows == B.rows , "Number of rows do not match");
-        assertTrue(  A.cols == B.cols , "Number of columns do not match");
+        assertTrue(  A.rowCount() == B.rowCount() , "Number of rows do not match");
+        assertTrue(  A.columnCount() == B.columnCount() , "Number of columns do not match");
     }
 
     /**
@@ -67,8 +67,8 @@ public class EjmlUnitTests {
      * @param numCols expected number of columns in the matrix
      */
     public static void assertShape( Matrix64F A , int numRows , int numCols ) {
-        assertTrue(  A.rows == numRows , "Unexpected number of rows.");
-        assertTrue(  A.cols == numCols , "Unexpected number of columns.");
+        assertTrue(  A.rowCount() == numRows , "Unexpected number of rows.");
+        assertTrue(  A.columnCount() == numCols , "Unexpected number of columns.");
     }
 
     /**
@@ -92,8 +92,8 @@ public class EjmlUnitTests {
     public static void assertEqualsUncountable( Matrix64F A , Matrix64F B , double tol ) {
         assertShape(A,B);
 
-        for( int i = 0; i < A.rows; i++ ){
-            for( int j = 0; j < A.cols; j++ ) {
+        for( int i = 0; i < A.rowCount(); i++ ){
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 double valA = A.get(i,j);
                 double valB = B.get(i,j);
 
@@ -130,8 +130,8 @@ public class EjmlUnitTests {
     public static void assertEquals( Matrix64F A , Matrix64F B , double tol ) {
         assertShape(A,B);
 
-        for( int i = 0; i < A.rows; i++ ){
-            for( int j = 0; j < A.cols; j++ ) {
+        for( int i = 0; i < A.rowCount(); i++ ){
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 double valA = A.get(i,j);
                 double valB = B.get(i,j);
 
@@ -160,10 +160,10 @@ public class EjmlUnitTests {
      * @param tol Tolerance
      */
     public static void assertEqualsTrans( Matrix64F A , Matrix64F B , double tol ) {
-        assertShape(A,B.cols,B.rows);
+        assertShape(A,B.columnCount(),B.rowCount());
 
-        for( int i = 0; i < A.rows; i++ ){
-            for( int j = 0; j < A.cols; j++ ) {
+        for( int i = 0; i < A.rowCount(); i++ ){
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 double valA = A.get(i,j);
                 double valB = B.get(j,i);
 

@@ -45,9 +45,9 @@ public class TestTriangularSolver {
 
         DenseMatrix64F L_inv = L.copy();
 
-        TriangularSolver.invertLower(L_inv.data,L.rows);
+        TriangularSolver.invertLower(L_inv.data,L.rowCount());
 
-        DenseMatrix64F I = new DenseMatrix64F(L.rows,L.cols);
+        DenseMatrix64F I = new DenseMatrix64F(L.rowCount(),L.columnCount());
 
         CommonOps.mult(L,L_inv,I);
 
@@ -60,9 +60,9 @@ public class TestTriangularSolver {
 
         DenseMatrix64F L_inv = L.copy();
 
-        TriangularSolver.invertLower(L.data,L_inv.data,L.rows);
+        TriangularSolver.invertLower(L.data,L_inv.data,L.rowCount());
 
-        DenseMatrix64F I = new DenseMatrix64F(L.rows,L.cols);
+        DenseMatrix64F I = new DenseMatrix64F(L.rowCount(),L.columnCount());
 
         CommonOps.mult(L,L_inv,I);
 
@@ -89,8 +89,8 @@ public class TestTriangularSolver {
 
     private DenseMatrix64F createRandomLowerTriangular() {
         DenseMatrix64F L = RandomMatrices.createRandom(3,3,rand);
-        for( int i = 0; i < L.rows; i++ ) {
-            for( int j = i+1; j < L.cols; j++ ) {
+        for( int i = 0; i < L.rowCount(); i++ ) {
+            for( int j = i+1; j < L.columnCount(); j++ ) {
                 L.set(i,j,0);
             }
         }
@@ -135,7 +135,7 @@ public class TestTriangularSolver {
     @Test
     public void solveU() {
         DenseMatrix64F U = RandomMatrices.createRandom(3,3,rand);
-        for( int i = 0; i < U.rows; i++ ) {
+        for( int i = 0; i < U.rowCount(); i++ ) {
             for( int j = 0; j < i; j++ ) {
                 U.set(i,j,0);
             }
@@ -159,7 +159,7 @@ public class TestTriangularSolver {
 
         // create U and B.  Insert into a larger matrix
         DenseMatrix64F U_orig = RandomMatrices.createRandom(3,3,rand);
-        for( int i = 0; i < U_orig.rows; i++ ) {
+        for( int i = 0; i < U_orig.rowCount(); i++ ) {
             for( int j = 0; j < i; j++ ) {
                 U_orig.set(i,j,0);
             }
@@ -179,12 +179,12 @@ public class TestTriangularSolver {
 
         DenseMatrix64F expected = RandomMatrices.createRandom(3,2,rand);
 
-        int startU = 2*U.cols+3;
-        int strideU = U.cols;
-        int widthU = U_orig.cols;
-        int startB = 1*B.cols+2;
-        int strideB = B.cols;
-        int widthB = B_orig.cols;
+        int startU = 2*U.columnCount()+3;
+        int strideU = U.columnCount();
+        int widthU = U_orig.columnCount();
+        int startB = 1*B.columnCount()+2;
+        int strideB = B.columnCount();
+        int widthB = B_orig.columnCount();
         TriangularSolver.solveU(U.data,startU,strideU,widthU,B.data,startB,strideB,widthB);
 
         DenseMatrix64F found = CommonOps.extract(B,1,4,2,4);

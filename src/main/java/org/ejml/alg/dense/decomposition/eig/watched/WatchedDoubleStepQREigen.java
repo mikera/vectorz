@@ -127,17 +127,17 @@ public class WatchedDoubleStepQREigen {
     }
 
     public void setup( DenseMatrix64F A ) {
-        if( A.rows != A.cols )
+        if( A.rowCount() != A.columnCount() )
             throw new RuntimeException("Must be square") ;
 
-        if( N != A.rows ) {
-            N = A.rows;
+        if( N != A.rowCount() ) {
+            N = A.rowCount();
 
             this.A = A.copy();
-            u = new DenseMatrix64F(A.rows,1);
+            u = new DenseMatrix64F(A.rowCount(),1);
 
-            _temp = new DenseMatrix64F(A.rows,1);
-            numStepsFind = new int[ A.rows ];
+            _temp = new DenseMatrix64F(A.rowCount(),1);
+            numStepsFind = new int[ A.rowCount() ];
         } else {
             this.A.set(A);
             UtilEjml.memset(numStepsFind,0,numStepsFind.length);
@@ -150,7 +150,7 @@ public class WatchedDoubleStepQREigen {
             }
         }
 
-        eigenvalues = new Complex64F[ A.rows ];
+        eigenvalues = new Complex64F[ A.rowCount() ];
         for( int i = 0; i < eigenvalues.length; i++ ) {
             eigenvalues[i] = new Complex64F();
         }

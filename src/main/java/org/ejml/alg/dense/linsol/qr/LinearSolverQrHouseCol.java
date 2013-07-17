@@ -78,12 +78,12 @@ public class LinearSolverQrHouseCol extends LinearSolverAbstract {
      */
     @Override
     public boolean setA(DenseMatrix64F A) {
-        if( A.rows > maxRows || A.cols > maxCols )
-            setMaxSize(A.rows,A.cols);
+        if( A.rowCount() > maxRows || A.columnCount() > maxCols )
+            setMaxSize(A.rowCount(),A.columnCount());
 
-        R.reshape(A.cols,A.cols);
-        a.reshape(A.rows,1);
-        temp.reshape(A.rows,1);
+        R.reshape(A.columnCount(),A.columnCount());
+        a.reshape(A.rowCount(),1);
+        temp.reshape(A.rowCount(),1);
 
         _setA(A);
         if( !decomposer.decompose(A) )
@@ -108,12 +108,12 @@ public class LinearSolverQrHouseCol extends LinearSolverAbstract {
      */
     @Override
     public void solve(DenseMatrix64F B, DenseMatrix64F X) {
-        if( X.rows != numCols )
-            throw new IllegalArgumentException("Unexpected dimensions for X: X rows = "+X.rows+" expected = "+numCols);
-        else if( B.rows != numRows || B.cols != X.cols )
+        if( X.rowCount() != numCols )
+            throw new IllegalArgumentException("Unexpected dimensions for X: X rows = "+X.rowCount()+" expected = "+numCols);
+        else if( B.rowCount() != numRows || B.columnCount() != X.columnCount() )
             throw new IllegalArgumentException("Unexpected dimensions for B");
 
-        int BnumCols = B.cols;
+        int BnumCols = B.columnCount();
         
         // solve each column one by one
         for( int colB = 0; colB < BnumCols; colB++ ) {
@@ -142,7 +142,7 @@ public class LinearSolverQrHouseCol extends LinearSolverAbstract {
 
             // save the results
             for( int i = 0; i < numCols; i++ ) {
-                X.data[i*X.cols+colB] = a.data[i];
+                X.data[i*X.columnCount()+colB] = a.data[i];
             }
         }
     }

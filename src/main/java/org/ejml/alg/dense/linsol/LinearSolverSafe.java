@@ -54,8 +54,8 @@ public class LinearSolverSafe<T extends Matrix64F> implements LinearSolver<T> {
             if( this.A == null ) {
                 this.A = (T)A.copy();
             } else {
-                if( this.A.rows != A.rows || this.A.cols != A.cols ) {
-                    this.A.reshape(A.rows,A.cols,false);
+                if( this.A.rowCount() != A.rowCount() || this.A.columnCount() != A.columnCount() ) {
+                    this.A.reshape(A.rowCount(),A.columnCount(),false);
                 }
                 this.A.set(A);
             }
@@ -76,8 +76,8 @@ public class LinearSolverSafe<T extends Matrix64F> implements LinearSolver<T> {
             if( this.B == null ) {
                 this.B = (T)B.copy();
             } else {
-                if( this.B.rows != B.rows || this.B.cols != B.cols ) {
-                    this.B.reshape(A.rows,B.cols,false);
+                if( this.B.rowCount() != B.rowCount() || this.B.columnCount() != B.columnCount() ) {
+                    this.B.reshape(A.rowCount(),B.columnCount(),false);
                 }
                 this.B.set(B);
             }

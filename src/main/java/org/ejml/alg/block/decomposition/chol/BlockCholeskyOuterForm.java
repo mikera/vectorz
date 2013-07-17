@@ -62,7 +62,7 @@ public class BlockCholeskyOuterForm implements CholeskyDecomposition<BlockMatrix
      */
     @Override
     public boolean decompose(BlockMatrix64F A) {
-        if( A.cols != A.rows )
+        if( A.columnCount() != A.rowCount() )
             throw new IllegalArgumentException("A must be square");
 
         this.T = A;
@@ -80,17 +80,17 @@ public class BlockCholeskyOuterForm implements CholeskyDecomposition<BlockMatrix
         D1Submatrix64F subB = new D1Submatrix64F(T);
         D1Submatrix64F subC = new D1Submatrix64F(T);
 
-        for( int i = 0; i < T.cols; i += blockLength ) {
-            int widthA = Math.min(blockLength, T.cols-i);
+        for( int i = 0; i < T.columnCount(); i += blockLength ) {
+            int widthA = Math.min(blockLength, T.columnCount()-i);
 
             subA.col0 = i;           subA.col1 = i+widthA;
             subA.row0 = subA.col0;   subA.row1 = subA.col1;
 
             subB.col0 = i;           subB.col1 = i+widthA;
-            subB.row0 = i+widthA;    subB.row1 = T.rows;
+            subB.row0 = i+widthA;    subB.row1 = T.rowCount();
 
-            subC.col0 = i+widthA;    subC.col1 = T.rows;
-            subC.row0 = i+widthA;    subC.row1 = T.rows;
+            subC.col0 = i+widthA;    subC.col1 = T.rowCount();
+            subC.row0 = i+widthA;    subC.row1 = T.rowCount();
             
             // cholesky on inner block A
             if( !BlockInnerCholesky.lower(subA))
@@ -119,17 +119,17 @@ public class BlockCholeskyOuterForm implements CholeskyDecomposition<BlockMatrix
         D1Submatrix64F subB = new D1Submatrix64F(T);
         D1Submatrix64F subC = new D1Submatrix64F(T);
 
-        for( int i = 0; i < T.cols; i += blockLength ) {
-            int widthA = Math.min(blockLength, T.cols-i);
+        for( int i = 0; i < T.columnCount(); i += blockLength ) {
+            int widthA = Math.min(blockLength, T.columnCount()-i);
 
             subA.col0 = i;          subA.col1 = i+widthA;
             subA.row0 = subA.col0;  subA.row1 = subA.col1;
 
-            subB.col0 = i+widthA;   subB.col1 = T.cols;
+            subB.col0 = i+widthA;   subB.col1 = T.columnCount();
             subB.row0 = i;          subB.row1 = i+widthA;
 
-            subC.col0 = i+widthA;   subC.col1 = T.cols;
-            subC.row0 = i+widthA;   subC.row1 = T.cols;
+            subC.col0 = i+widthA;   subC.col1 = T.columnCount();
+            subC.row0 = i+widthA;   subC.row1 = T.columnCount();
 
             // cholesky on inner block A
             if( !BlockInnerCholesky.upper(subA))

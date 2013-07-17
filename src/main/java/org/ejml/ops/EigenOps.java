@@ -78,13 +78,13 @@ public class EigenOps {
      */
     public static Eigenpair computeEigenVector( DenseMatrix64F A , double eigenvalue )
     {
-        if( A.rows != A.cols )
+        if( A.rowCount() != A.columnCount() )
             throw new IllegalArgumentException("Must be a square matrix.");
 
-        DenseMatrix64F M = new DenseMatrix64F(A.rows,A.cols);
+        DenseMatrix64F M = new DenseMatrix64F(A.rowCount(),A.columnCount());
 
-        DenseMatrix64F x = new DenseMatrix64F(A.rows,1);
-        DenseMatrix64F b = new DenseMatrix64F(A.rows,1);
+        DenseMatrix64F x = new DenseMatrix64F(A.rowCount(),1);
+        DenseMatrix64F b = new DenseMatrix64F(A.rowCount(),1);
 
         CommonOps.fill(b, 1);
         
@@ -100,7 +100,7 @@ public class EigenOps {
         double prevError = Double.MAX_VALUE;
         boolean hasWorked = false;
 
-        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.linear(M.rows);
+        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.linear(M.rowCount());
 
         double perp = 0.0001;
 
@@ -185,7 +185,7 @@ public class EigenOps {
     // TODO maybe do the regular power method, estimate the eigenvalue, then shift invert?
     public static Eigenpair dominantEigenpair( DenseMatrix64F A ) {
 
-        EigenPowerMethod power = new EigenPowerMethod(A.rows);
+        EigenPowerMethod power = new EigenPowerMethod(A.rowCount());
 
         // eh maybe 0.1 is a good value.  who knows.
         if( !power.computeShiftInvert(A,0.1) )
@@ -209,13 +209,13 @@ public class EigenOps {
      * @return Lower and upper bound in the first and second elements respectively.
      */
     public static double [] boundLargestEigenValue( DenseMatrix64F A , double []bound ) {
-        if( A.rows != A.cols )
+        if( A.rowCount() != A.columnCount() )
             throw new IllegalArgumentException("A must be a square matrix.");
 
         double min = Double.MAX_VALUE;
         double max = 0;
 
-        int n = A.rows;
+        int n = A.rowCount();
 
         for( int i = 0; i < n; i++ ) {
             double total = 0;

@@ -36,7 +36,7 @@ public class InvertUsingSolve {
 
     public static void invert( LinearSolver<DenseMatrix64F> solver , RowD1Matrix64F A , DenseMatrix64F A_inv , DenseMatrix64F storage) {
 
-        if( A.rows != A_inv.rows || A.cols != A_inv.cols) {
+        if( A.rowCount() != A_inv.rowCount() || A.columnCount() != A_inv.columnCount()) {
             throw new IllegalArgumentException("A and A_inv must have the same dimensions");
         }
 
@@ -47,7 +47,7 @@ public class InvertUsingSolve {
 
     public static void invert( LinearSolver<DenseMatrix64F> solver , RowD1Matrix64F A , DenseMatrix64F A_inv ) {
 
-        if( A.rows != A_inv.rows || A.cols != A_inv.cols) {
+        if( A.rowCount() != A_inv.rowCount() || A.columnCount() != A_inv.columnCount()) {
             throw new IllegalArgumentException("A and A_inv must have the same dimensions");
         }
 

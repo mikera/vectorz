@@ -142,11 +142,11 @@ public class TestQrUpdate {
     }
 
     public static DenseMatrix64F createQMod( DenseMatrix64F Q , int insertRow ) {
-        DenseMatrix64F Qmod = new DenseMatrix64F(Q.rows+1,Q.cols+1);
+        DenseMatrix64F Qmod = new DenseMatrix64F(Q.rowCount()+1,Q.columnCount()+1);
 
-        SubmatrixOps.setSubMatrix(Q,Qmod,0,0,0,1,insertRow,Q.cols);
+        SubmatrixOps.setSubMatrix(Q,Qmod,0,0,0,1,insertRow,Q.columnCount());
         Qmod.set(insertRow,0,1);
-        SubmatrixOps.setSubMatrix(Q,Qmod,insertRow,0,insertRow+1,1,Q.rows-insertRow,Q.cols);
+        SubmatrixOps.setSubMatrix(Q,Qmod,insertRow,0,insertRow+1,1,Q.rowCount()-insertRow,Q.columnCount());
 
         return Qmod;
     }

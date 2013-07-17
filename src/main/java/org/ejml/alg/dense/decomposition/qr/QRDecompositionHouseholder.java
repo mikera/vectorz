@@ -128,7 +128,7 @@ public class QRDecompositionHouseholder implements QRDecomposition<DenseMatrix64
             if( Q == null ) {
                 Q = CommonOps.identity(numRows,minLength);
             } else {
-                if( Q.rows != numRows || Q.cols != minLength ) {
+                if( Q.rowCount() != numRows || Q.columnCount() != minLength ) {
                     throw new IllegalArgumentException("Unexpected matrix dimension.");
                 } else {
                     CommonOps.setIdentity(Q);
@@ -138,7 +138,7 @@ public class QRDecompositionHouseholder implements QRDecomposition<DenseMatrix64
             if( Q == null ) {
                 Q = CommonOps.identity(numRows);
             } else {
-                if( Q.rows != numRows || Q.cols != numRows ) {
+                if( Q.rowCount() != numRows || Q.columnCount() != numRows ) {
                     throw new IllegalArgumentException("Unexpected matrix dimension.");
                 } else {
                     CommonOps.setIdentity(Q);
@@ -172,15 +172,15 @@ public class QRDecompositionHouseholder implements QRDecomposition<DenseMatrix64
                 R = new DenseMatrix64F(numRows,numCols);
         } else {
             if( compact ) {
-                if( R.cols != numCols || R.rows != minLength )
+                if( R.columnCount() != numCols || R.rowCount() != minLength )
                     throw new IllegalArgumentException("Unexpected dimensions");
             } else {
-                if( R.cols != numCols || R.rows != numRows )
+                if( R.columnCount() != numCols || R.rowCount() != numRows )
                     throw new IllegalArgumentException("Unexpected dimensions");
             }
 
-            for( int i = 0; i < R.rows; i++ ) {
-                int min = Math.min(i,R.cols);
+            for( int i = 0; i < R.rowCount(); i++ ) {
+                int min = Math.min(i,R.columnCount());
                 for( int j = 0; j < min; j++ ) {
                     R.set(i,j,0);
                 }
@@ -356,7 +356,7 @@ public class QRDecompositionHouseholder implements QRDecomposition<DenseMatrix64
      * @param A
      */
     protected void commonSetup(DenseMatrix64F A) {
-        setExpectedMaxSize(A.rows,A.cols);
+        setExpectedMaxSize(A.rowCount(),A.columnCount());
 
         QR.set(A);
     }

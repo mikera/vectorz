@@ -191,7 +191,7 @@ public class TestMatrixMatrixMult {
     }
 
     private void transpose( DenseMatrix64F a ) {
-        DenseMatrix64F b = new DenseMatrix64F(a.cols,a.rows);
+        DenseMatrix64F b = new DenseMatrix64F(a.columnCount(),a.rowCount());
         CommonOps.transpose(a,b);
         a.setReshape(b);
     }

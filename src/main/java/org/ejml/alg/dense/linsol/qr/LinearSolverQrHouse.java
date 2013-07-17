@@ -74,8 +74,8 @@ public class LinearSolverQrHouse extends LinearSolverAbstract {
      */
     @Override
     public boolean setA(DenseMatrix64F A) {
-        if( A.rows > maxRows ) {
-            setMaxSize(A.rows);
+        if( A.rowCount() > maxRows ) {
+            setMaxSize(A.rowCount());
         }
 
         _setA(A);
@@ -101,12 +101,12 @@ public class LinearSolverQrHouse extends LinearSolverAbstract {
      */
     @Override
     public void solve(DenseMatrix64F B, DenseMatrix64F X) {
-        if( X.rows != numCols )
+        if( X.rowCount() != numCols )
             throw new IllegalArgumentException("Unexpected dimensions for X");
-        else if( B.rows != numRows || B.cols != X.cols )
+        else if( B.rowCount() != numRows || B.columnCount() != X.columnCount() )
             throw new IllegalArgumentException("Unexpected dimensions for B");
 
-        int BnumCols = B.cols;
+        int BnumCols = B.columnCount();
 
         // solve each column one by one
         for( int colB = 0; colB < BnumCols; colB++ ) {
@@ -142,7 +142,7 @@ public class LinearSolverQrHouse extends LinearSolverAbstract {
 
             // save the results
             for( int i = 0; i < numCols; i++ ) {
-                X.data[i*X.cols+colB] = a[i];
+                X.data[i*X.columnCount()+colB] = a[i];
             }
         }
     }

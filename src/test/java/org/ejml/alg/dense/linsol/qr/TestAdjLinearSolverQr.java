@@ -55,7 +55,7 @@ public class TestAdjLinearSolverQr extends GenericLinearSolverChecks {
 
         // Compute the solution to the modified  system
         DenseMatrix64F X = RandomMatrices.createRandom(n,2,rand);
-        DenseMatrix64F Y = new DenseMatrix64F(A_e.rows,X.cols);
+        DenseMatrix64F Y = new DenseMatrix64F(A_e.rowCount(),X.columnCount());
         CommonOps.mult(A_e,X,Y);
 
         // create the solver from A then add a A.  The solver
@@ -66,7 +66,7 @@ public class TestAdjLinearSolverQr extends GenericLinearSolverChecks {
         adjSolver.addRowToA(row,insert);
 
         // solve the system and see if it gets the expected solution
-        DenseMatrix64F X_found = RandomMatrices.createRandom(X.rows,X.cols,rand);
+        DenseMatrix64F X_found = RandomMatrices.createRandom(X.rowCount(),X.columnCount(),rand);
         adjSolver.solve(Y,X_found);
 
         // see if they produce the same results
@@ -88,7 +88,7 @@ public class TestAdjLinearSolverQr extends GenericLinearSolverChecks {
 
         // Compute the solution to the modified system
         DenseMatrix64F X = RandomMatrices.createRandom(n,2,rand);
-        DenseMatrix64F Y = new DenseMatrix64F(A_e.rows,X.cols);
+        DenseMatrix64F Y = new DenseMatrix64F(A_e.rowCount(),X.columnCount());
         CommonOps.mult(A_e,X,Y);
 
         // create the solver from the original system then modify it
@@ -100,7 +100,7 @@ public class TestAdjLinearSolverQr extends GenericLinearSolverChecks {
         // see if it produces the epected results
 
         // solve the system and see if it gets the expected solution
-        DenseMatrix64F X_found = RandomMatrices.createRandom(X.rows,X.cols,rand);
+        DenseMatrix64F X_found = RandomMatrices.createRandom(X.rowCount(),X.columnCount(),rand);
         adjSolver.solve(Y,X_found);
 
         // see if they produce the same results

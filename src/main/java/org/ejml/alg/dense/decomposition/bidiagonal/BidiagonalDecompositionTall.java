@@ -108,8 +108,8 @@ public class BidiagonalDecompositionTall
            // U = [Q1*U1 Q2]
             DenseMatrix64F Q = decompQRP.getQ(U,false);
             DenseMatrix64F U1 = decompBi.getU(null,false,true);
-            DenseMatrix64F Q1 = CommonOps.extract(Q,0,Q.rows,0,min);
-            DenseMatrix64F tmp = new DenseMatrix64F(Q1.rows,U1.cols);
+            DenseMatrix64F Q1 = CommonOps.extract(Q,0,Q.rowCount(),0,min);
+            DenseMatrix64F tmp = new DenseMatrix64F(Q1.rowCount(),U1.columnCount());
             CommonOps.mult(Q1,U1,tmp);
             CommonOps.insert(tmp,Q,0,0);
         }
@@ -133,8 +133,8 @@ public class BidiagonalDecompositionTall
             return false;
         }
 
-        m = orig.rows;
-        n = orig.cols;
+        m = orig.rowCount();
+        n = orig.columnCount();
         min = Math.min(m, n);
         B.reshape(min, n,false);
 

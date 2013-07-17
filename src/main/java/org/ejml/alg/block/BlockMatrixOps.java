@@ -45,22 +45,22 @@ public class BlockMatrixOps {
      */
     public static void convert( DenseMatrix64F src , BlockMatrix64F dst )
     {
-        if( src.rows != dst.rows || src.cols != dst.cols )
+        if( src.rowCount() != dst.rowCount() || src.columnCount() != dst.columnCount() )
             throw new IllegalArgumentException("Must be the same size.");
 
-        for( int i = 0; i < dst.rows; i += dst.blockLength ) {
-            int blockHeight = Math.min( dst.blockLength , dst.rows - i);
+        for( int i = 0; i < dst.rowCount(); i += dst.blockLength ) {
+            int blockHeight = Math.min( dst.blockLength , dst.rowCount() - i);
 
-            for( int j = 0; j < dst.cols; j += dst.blockLength ) {
-                int blockWidth = Math.min( dst.blockLength , dst.cols - j);
+            for( int j = 0; j < dst.columnCount(); j += dst.blockLength ) {
+                int blockWidth = Math.min( dst.blockLength , dst.columnCount() - j);
 
-                int indexDst = i*dst.cols + blockHeight*j;
-                int indexSrcRow = i*dst.cols + j;
+                int indexDst = i*dst.columnCount() + blockHeight*j;
+                int indexSrcRow = i*dst.columnCount() + j;
 
                 for( int k = 0; k < blockHeight; k++ ) {
                     System.arraycopy(src.data,indexSrcRow,dst.data,indexDst,blockWidth);
                     indexDst += blockWidth;
-                    indexSrcRow += dst.cols;
+                    indexSrcRow += dst.columnCount();
                 }
             }
         }
@@ -115,25 +115,25 @@ public class BlockMatrixOps {
     public static DenseMatrix64F convert( BlockMatrix64F src , DenseMatrix64F dst )
     {
         if( dst != null ) {
-            if( dst.rows != src.rows || dst.cols != src.cols )
+            if( dst.rowCount() != src.rowCount() || dst.columnCount() != src.columnCount() )
                 throw new IllegalArgumentException("Must be the same size.");
         } else {
-            dst = new DenseMatrix64F(src.rows,src.cols);        
+            dst = new DenseMatrix64F(src.rowCount(),src.columnCount());        
         }
 
-        for( int i = 0; i < src.rows; i += src.blockLength ) {
-            int blockHeight = Math.min( src.blockLength , src.rows - i);
+        for( int i = 0; i < src.rowCount(); i += src.blockLength ) {
+            int blockHeight = Math.min( src.blockLength , src.rowCount() - i);
 
-            for( int j = 0; j < src.cols; j += src.blockLength ) {
-                int blockWidth = Math.min( src.blockLength , src.cols - j);
+            for( int j = 0; j < src.columnCount(); j += src.blockLength ) {
+                int blockWidth = Math.min( src.blockLength , src.columnCount() - j);
 
-                int indexSrc = i*src.cols + blockHeight*j;
-                int indexDstRow = i*dst.cols + j;
+                int indexSrc = i*src.columnCount() + blockHeight*j;
+                int indexDstRow = i*dst.columnCount() + j;
 
                 for( int k = 0; k < blockHeight; k++ ) {
                     System.arraycopy(src.data,indexSrc,dst.data,indexDstRow,blockWidth);
                     indexSrc += blockWidth;
-                    indexDstRow += dst.cols;
+                    indexDstRow += dst.columnCount();
                 }
             }
         }
@@ -188,20 +188,20 @@ public class BlockMatrixOps {
      */
     public static void convertTranSrc( DenseMatrix64F src , BlockMatrix64F dst )
     {
-        if( src.rows != dst.cols || src.cols != dst.rows )
+        if( src.rowCount() != dst.columnCount() || src.columnCount() != dst.rowCount() )
             throw new IllegalArgumentException("Incompatible matrix shapes.");
 
-        for( int i = 0; i < dst.rows; i += dst.blockLength ) {
-            int blockHeight = Math.min( dst.blockLength , dst.rows - i);
+        for( int i = 0; i < dst.rowCount(); i += dst.blockLength ) {
+            int blockHeight = Math.min( dst.blockLength , dst.rowCount() - i);
 
-            for( int j = 0; j < dst.cols; j += dst.blockLength ) {
-                int blockWidth = Math.min( dst.blockLength , dst.cols - j);
+            for( int j = 0; j < dst.columnCount(); j += dst.blockLength ) {
+                int blockWidth = Math.min( dst.blockLength , dst.columnCount() - j);
 
-                int indexDst = i*dst.cols + blockHeight*j;
-                int indexSrc = j*src.cols + i;
+                int indexDst = i*dst.columnCount() + blockHeight*j;
+                int indexSrc = j*src.columnCount() + i;
 
                 for( int l = 0; l < blockWidth; l++ ) {
-                    int rowSrc = indexSrc + l*src.cols;
+                    int rowSrc = indexSrc + l*src.columnCount();
                     int rowDst = indexDst + l;
                     for( int k = 0; k < blockHeight; k++ , rowDst += blockWidth ) {
                         dst.data[ rowDst ] = src.data[rowSrc++];
@@ -215,60 +215,60 @@ public class BlockMatrixOps {
     // and other stuff.  doesn't seem to have any speed advantage over mult_reorder()
     public static void mult( BlockMatrix64F A , BlockMatrix64F B , BlockMatrix64F C )
     {
-        if( A.cols != B.rows )
+        if( A.columnCount() != B.rowCount() )
             throw new IllegalArgumentException("Columns in A are incompatible with rows in B");
-        if( A.rows != C.rows )
+        if( A.rowCount() != C.rowCount() )
             throw new IllegalArgumentException("Rows in A are incompatible with rows in C");
-        if( B.cols != C.cols )
+        if( B.columnCount() != C.columnCount() )
             throw new IllegalArgumentException("Columns in B are incompatible with columns in C");
         if( A.blockLength != B.blockLength || A.blockLength != C.blockLength )
             throw new IllegalArgumentException("Block lengths are not all the same.");
 
         final int blockLength = A.blockLength;
 
-        D1Submatrix64F Asub = new D1Submatrix64F(A,0, A.rows, 0, A.cols);
-        D1Submatrix64F Bsub = new D1Submatrix64F(B,0, B.rows, 0, B.cols);
-        D1Submatrix64F Csub = new D1Submatrix64F(C,0, C.rows, 0, C.cols);
+        D1Submatrix64F Asub = new D1Submatrix64F(A,0, A.rowCount(), 0, A.columnCount());
+        D1Submatrix64F Bsub = new D1Submatrix64F(B,0, B.rowCount(), 0, B.columnCount());
+        D1Submatrix64F Csub = new D1Submatrix64F(C,0, C.rowCount(), 0, C.columnCount());
 
         BlockMultiplication.mult(blockLength,Asub,Bsub,Csub);
     }
 
     public static void multTransA( BlockMatrix64F A , BlockMatrix64F B , BlockMatrix64F C )
     {
-        if( A.rows != B.rows )
+        if( A.rowCount() != B.rowCount() )
             throw new IllegalArgumentException("Rows in A are incompatible with rows in B");
-        if( A.cols != C.rows )
+        if( A.columnCount() != C.rowCount() )
             throw new IllegalArgumentException("Columns in A are incompatible with rows in C");
-        if( B.cols != C.cols )
+        if( B.columnCount() != C.columnCount() )
             throw new IllegalArgumentException("Columns in B are incompatible with columns in C");
         if( A.blockLength != B.blockLength || A.blockLength != C.blockLength )
             throw new IllegalArgumentException("Block lengths are not all the same.");
 
         final int blockLength = A.blockLength;
 
-        D1Submatrix64F Asub = new D1Submatrix64F(A,0, A.rows, 0, A.cols);
-        D1Submatrix64F Bsub = new D1Submatrix64F(B,0, B.rows, 0, B.cols);
-        D1Submatrix64F Csub = new D1Submatrix64F(C,0, C.rows, 0, C.cols);
+        D1Submatrix64F Asub = new D1Submatrix64F(A,0, A.rowCount(), 0, A.columnCount());
+        D1Submatrix64F Bsub = new D1Submatrix64F(B,0, B.rowCount(), 0, B.columnCount());
+        D1Submatrix64F Csub = new D1Submatrix64F(C,0, C.rowCount(), 0, C.columnCount());
 
         BlockMultiplication.multTransA(blockLength,Asub,Bsub,Csub);
     }
 
     public static void multTransB( BlockMatrix64F A , BlockMatrix64F B , BlockMatrix64F C )
     {
-        if( A.cols != B.cols )
+        if( A.columnCount() != B.columnCount() )
             throw new IllegalArgumentException("Columns in A are incompatible with columns in B");
-        if( A.rows != C.rows )
+        if( A.rowCount() != C.rowCount() )
             throw new IllegalArgumentException("Rows in A are incompatible with rows in C");
-        if( B.rows != C.cols )
+        if( B.rowCount() != C.columnCount() )
             throw new IllegalArgumentException("Rows in B are incompatible with columns in C");
         if( A.blockLength != B.blockLength || A.blockLength != C.blockLength )
             throw new IllegalArgumentException("Block lengths are not all the same.");
 
         final int blockLength = A.blockLength;
 
-        D1Submatrix64F Asub = new D1Submatrix64F(A,0, A.rows, 0, A.cols);
-        D1Submatrix64F Bsub = new D1Submatrix64F(B,0, B.rows, 0, B.cols);
-        D1Submatrix64F Csub = new D1Submatrix64F(C,0, C.rows, 0, C.cols);
+        D1Submatrix64F Asub = new D1Submatrix64F(A,0, A.rowCount(), 0, A.columnCount());
+        D1Submatrix64F Bsub = new D1Submatrix64F(B,0, B.rowCount(), 0, B.columnCount());
+        D1Submatrix64F Csub = new D1Submatrix64F(C,0, C.rowCount(), 0, C.columnCount());
 
         BlockMultiplication.multTransB(blockLength,Asub,Bsub,Csub);
     }
@@ -282,23 +282,23 @@ public class BlockMatrixOps {
     public static BlockMatrix64F transpose( BlockMatrix64F A , BlockMatrix64F A_tran )
     {
         if( A_tran != null ) {
-            if( A.rows != A_tran.cols || A.cols != A_tran.rows )
+            if( A.rowCount() != A_tran.columnCount() || A.columnCount() != A_tran.rowCount() )
                 throw new IllegalArgumentException("Incompatible dimensions.");
             if( A.blockLength != A_tran.blockLength )
                 throw new IllegalArgumentException("Incompatible block size.");
         } else {
-            A_tran = new BlockMatrix64F(A.cols,A.rows,A.blockLength);
+            A_tran = new BlockMatrix64F(A.columnCount(),A.rowCount(),A.blockLength);
 
         }
 
-        for( int i = 0; i < A.rows; i += A.blockLength ) {
-            int blockHeight = Math.min( A.blockLength , A.rows - i);
+        for( int i = 0; i < A.rowCount(); i += A.blockLength ) {
+            int blockHeight = Math.min( A.blockLength , A.rowCount() - i);
 
-            for( int j = 0; j < A.cols; j += A.blockLength ) {
-                int blockWidth = Math.min( A.blockLength , A.cols - j);
+            for( int j = 0; j < A.columnCount(); j += A.blockLength ) {
+                int blockWidth = Math.min( A.blockLength , A.columnCount() - j);
 
-                int indexA = i*A.cols + blockHeight*j;
-                int indexC = j*A_tran.cols + blockWidth*i;
+                int indexA = i*A.columnCount() + blockHeight*j;
+                int indexC = j*A_tran.columnCount() + blockWidth*i;
 
                 transposeBlock( A , A_tran , indexA , indexC , blockWidth , blockHeight );
             }
@@ -347,13 +347,13 @@ public class BlockMatrixOps {
 
 
     public static BlockMatrix64F convert(DenseMatrix64F A , int blockLength ) {
-        BlockMatrix64F ret = new BlockMatrix64F(A.rows,A.cols,blockLength);
+        BlockMatrix64F ret = new BlockMatrix64F(A.rowCount(),A.columnCount(),blockLength);
         convert(A,ret);
         return ret;
     }
 
     public static BlockMatrix64F convert(DenseMatrix64F A ) {
-        BlockMatrix64F ret = new BlockMatrix64F(A.rows,A.cols);
+        BlockMatrix64F ret = new BlockMatrix64F(A.rowCount(),A.columnCount());
         convert(A,ret);
         return ret;
     }
@@ -382,13 +382,13 @@ public class BlockMatrixOps {
         int blockLength = A.blockLength;
 
         if( upper ) {
-            for( int i = 0; i < A.rows; i += blockLength ) {
-                int h = Math.min(blockLength,A.rows-i);
+            for( int i = 0; i < A.rowCount(); i += blockLength ) {
+                int h = Math.min(blockLength,A.rowCount()-i);
 
-                for( int j = i; j < A.cols; j += blockLength ) {
-                    int w = Math.min(blockLength,A.cols-j);
+                for( int j = i; j < A.columnCount(); j += blockLength ) {
+                    int w = Math.min(blockLength,A.columnCount()-j);
 
-                    int index = i*A.cols + h*j;
+                    int index = i*A.columnCount() + h*j;
 
                     if( j == i ) {
                         for( int k = 0; k < h; k++ ) {
@@ -406,13 +406,13 @@ public class BlockMatrixOps {
                 }
             }
         } else {
-            for( int i = 0; i < A.rows; i += blockLength ) {
-                int h = Math.min(blockLength,A.rows-i);
+            for( int i = 0; i < A.rowCount(); i += blockLength ) {
+                int h = Math.min(blockLength,A.rowCount()-i);
 
                 for( int j = 0; j <= i; j += blockLength ) {
-                    int w = Math.min(blockLength,A.cols-j);
+                    int w = Math.min(blockLength,A.columnCount()-j);
 
-                    int index = i*A.cols + h*j;
+                    int index = i*A.columnCount() + h*j;
 
                     if( j == i ) {
                         for( int k = 0; k < h; k++ ) {
@@ -445,27 +445,27 @@ public class BlockMatrixOps {
     {
         if( src.blockLength != dst.blockLength )
             throw new IllegalArgumentException("Block size is different");
-        if( src.rows < dst.rows )
+        if( src.rowCount() < dst.rowCount() )
             throw new IllegalArgumentException("The src has fewer rows than dst");
-        if( src.cols < dst.cols )
+        if( src.columnCount() < dst.columnCount() )
             throw new IllegalArgumentException("The src has fewer columns than dst");
 
         int blockLength = src.blockLength;
 
-        int numRows = Math.min(src.rows,dst.rows);
-        int numCols = Math.min(src.cols,dst.cols);
+        int numRows = Math.min(src.rowCount(),dst.rowCount());
+        int numCols = Math.min(src.columnCount(),dst.columnCount());
 
         if( upper ) {
             for( int i = 0; i < numRows; i += blockLength ) {
-                int heightSrc = Math.min(blockLength,src.rows-i);
-                int heightDst = Math.min(blockLength,dst.rows-i);
+                int heightSrc = Math.min(blockLength,src.rowCount()-i);
+                int heightDst = Math.min(blockLength,dst.rowCount()-i);
 
                 for( int j = i; j < numCols; j += blockLength ) {
-                    int widthSrc = Math.min(blockLength,src.cols-j);
-                    int widthDst = Math.min(blockLength,dst.cols-j);
+                    int widthSrc = Math.min(blockLength,src.columnCount()-j);
+                    int widthDst = Math.min(blockLength,dst.columnCount()-j);
 
-                    int indexSrc = i*src.cols + heightSrc*j;
-                    int indexDst = i*dst.cols + heightDst*j;
+                    int indexSrc = i*src.columnCount() + heightSrc*j;
+                    int indexDst = i*dst.columnCount() + heightDst*j;
 
                     if( j == i ) {
                         for( int k = 0; k < heightDst; k++ ) {
@@ -482,15 +482,15 @@ public class BlockMatrixOps {
             }
         } else {
             for( int i = 0; i < numRows; i += blockLength ) {
-                int heightSrc = Math.min(blockLength,src.rows-i);
-                int heightDst = Math.min(blockLength,dst.rows-i);
+                int heightSrc = Math.min(blockLength,src.rowCount()-i);
+                int heightDst = Math.min(blockLength,dst.rowCount()-i);
 
                 for( int j = 0; j <= i; j += blockLength ) {
-                    int widthSrc = Math.min(blockLength,src.cols-j);
-                    int widthDst = Math.min(blockLength,dst.cols-j);
+                    int widthSrc = Math.min(blockLength,src.columnCount()-j);
+                    int widthDst = Math.min(blockLength,dst.columnCount()-j);
 
-                    int indexSrc = i*src.cols + heightSrc*j;
-                    int indexDst = i*dst.cols + heightDst*j;
+                    int indexSrc = i*src.columnCount() + heightSrc*j;
+                    int indexDst = i*dst.columnCount() + heightDst*j;
 
                     if( j == i ) {
                         for( int k = 0; k < heightDst; k++ ) {
@@ -530,17 +530,17 @@ public class BlockMatrixOps {
      */
     public static void setIdentity( BlockMatrix64F A )
     {
-        int minLength = Math.min(A.rows,A.cols);
+        int minLength = Math.min(A.rowCount(),A.columnCount());
 
         CommonOps.fill(A, 0);
 
         int blockLength = A.blockLength;
 
         for( int i = 0; i < minLength; i += blockLength ) {
-            int h = Math.min(blockLength,A.rows-i);
-            int w = Math.min(blockLength,A.cols-i);
+            int h = Math.min(blockLength,A.rowCount()-i);
+            int w = Math.min(blockLength,A.columnCount()-i);
 
-            int index = i*A.cols + h*i;
+            int index = i*A.columnCount() + h*i;
 
             int m = Math.min(h,w);
             for( int k = 0; k < m; k++ ) {
@@ -577,10 +577,10 @@ public class BlockMatrixOps {
         int minLength = Math.min(numRows,numCols);
 
         for( int i = 0; i < minLength; i += blockLength ) {
-            int h = Math.min(blockLength,A.rows-i);
-            int w = Math.min(blockLength,A.cols-i);
+            int h = Math.min(blockLength,A.rowCount()-i);
+            int w = Math.min(blockLength,A.columnCount()-i);
 
-            int index = i*A.cols + h*i;
+            int index = i*A.columnCount() + h*i;
 
             int m = Math.min(h,w);
             for( int k = 0; k < m; k++ ) {
@@ -602,9 +602,9 @@ public class BlockMatrixOps {
     public static void checkIdenticalShape( BlockMatrix64F A , BlockMatrix64F B ) {
         if( A.blockLength != B.blockLength )
             throw new IllegalArgumentException("Block size is different");
-        if( A.rows != B.rows )
+        if( A.rowCount() != B.rowCount() )
             throw new IllegalArgumentException("Number of rows is different");
-        if( A.cols != B.cols )
+        if( A.columnCount() != B.columnCount() )
             throw new IllegalArgumentException("NUmber of columns is different");
     }
 
@@ -621,26 +621,26 @@ public class BlockMatrixOps {
     public static void extractAligned(BlockMatrix64F src, BlockMatrix64F dst) {
         if( src.blockLength != dst.blockLength )
             throw new IllegalArgumentException("Block size is different");
-        if( src.rows < dst.rows )
+        if( src.rowCount() < dst.rowCount() )
             throw new IllegalArgumentException("The src has fewer rows than dst");
-        if( src.cols < dst.cols )
+        if( src.columnCount() < dst.columnCount() )
             throw new IllegalArgumentException("The src has fewer columns than dst");
 
         int blockLength = src.blockLength;
 
-        int numRows = Math.min(src.rows,dst.rows);
-        int numCols = Math.min(src.cols,dst.cols);
+        int numRows = Math.min(src.rowCount(),dst.rowCount());
+        int numCols = Math.min(src.columnCount(),dst.columnCount());
 
         for( int i = 0; i < numRows; i += blockLength ) {
-            int heightSrc = Math.min(blockLength,src.rows-i);
-            int heightDst = Math.min(blockLength,dst.rows-i);
+            int heightSrc = Math.min(blockLength,src.rowCount()-i);
+            int heightDst = Math.min(blockLength,dst.rowCount()-i);
 
             for( int j = 0; j < numCols; j += blockLength ) {
-                int widthSrc = Math.min(blockLength,src.cols-j);
-                int widthDst = Math.min(blockLength,dst.cols-j);
+                int widthSrc = Math.min(blockLength,src.columnCount()-j);
+                int widthDst = Math.min(blockLength,dst.columnCount()-j);
 
-                int indexSrc = i*src.cols + heightSrc*j;
-                int indexDst = i*dst.cols + heightDst*j;
+                int indexSrc = i*src.columnCount() + heightSrc*j;
+                int indexDst = i*dst.columnCount() + heightDst*j;
 
                 for( int k = 0; k < heightDst; k++ ) {
                     System.arraycopy(src.data, indexSrc + widthSrc * k, dst.data, indexDst + widthDst * k, widthDst);
@@ -662,11 +662,11 @@ public class BlockMatrixOps {
         if( A.row0 % blockLength != 0 )
             return false;
 
-        if( A.col1 % blockLength != 0 && A.col1 != A.original.cols ) {
+        if( A.col1 % blockLength != 0 && A.col1 != A.original.columnCount() ) {
             return false;
         }
 
-        if( A.row1 % blockLength != 0 && A.row1 != A.original.rows) {
+        if( A.row1 % blockLength != 0 && A.row1 != A.original.rowCount()) {
             return false;
         }
 

@@ -113,13 +113,13 @@ public abstract class CholeskyDecompositionCommon
      */
     @Override
     public boolean decompose( DenseMatrix64F mat ) {
-        if( mat.rows > maxWidth ) {
-            setExpectedMaxSize(mat.rows,mat.cols);
-        } else if( mat.rows != mat.cols ) {
+        if( mat.rowCount() > maxWidth ) {
+            setExpectedMaxSize(mat.rowCount(),mat.columnCount());
+        } else if( mat.rowCount() != mat.columnCount() ) {
             throw new IllegalArgumentException("Must be a square matrix.");
         }
 
-        n = mat.rows;
+        n = mat.rowCount();
 
         T = mat;
         t = T.data;
@@ -156,7 +156,7 @@ public abstract class CholeskyDecompositionCommon
         if( T == null ) {
             T = new DenseMatrix64F(n,n);
         } else {
-            if( T.rows != n || T.cols != n )
+            if( T.rowCount() != n || T.columnCount() != n )
                 throw new IllegalArgumentException("Unexpected matrix dimension for T.");
 
             CommonOps.fill(T, 0);

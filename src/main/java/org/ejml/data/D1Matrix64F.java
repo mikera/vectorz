@@ -71,7 +71,7 @@ public abstract class D1Matrix64F extends Matrix64F {
      */
     public void set( D1Matrix64F b )
     {
-        if( rows != b.rows || cols != b.cols ) {
+        if( rowCount() != b.rowCount() || columnCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The two matrices do not have compatible shapes.");
         }
 

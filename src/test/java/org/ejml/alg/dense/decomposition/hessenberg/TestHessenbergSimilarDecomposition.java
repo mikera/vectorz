@@ -48,7 +48,7 @@ public class TestHessenbergSimilarDecomposition {
     }
 
     private void checkItAll(DenseMatrix64F A) {
-        HessenbergSimilarDecomposition decomp = new HessenbergSimilarDecomposition(A.rows);
+        HessenbergSimilarDecomposition decomp = new HessenbergSimilarDecomposition(A.rowCount());
 
         assertTrue(safeDecomposition(decomp,A));
 
@@ -83,7 +83,7 @@ public class TestHessenbergSimilarDecomposition {
         DenseMatrix64F A = RandomMatrices.createRandom(4,4,rand);
         DenseMatrix64F B = A.copy();
 
-        HessenbergSimilarDecomposition decomp = new HessenbergSimilarDecomposition(A.rows);
+        HessenbergSimilarDecomposition decomp = new HessenbergSimilarDecomposition(A.rowCount());
 
         assertTrue(safeDecomposition(decomp,A));
 
@@ -118,7 +118,7 @@ public class TestHessenbergSimilarDecomposition {
         DenseMatrix64F A = RandomMatrices.createRandom(N,N,rand);
         DenseMatrix64F B = new DenseMatrix64F(N,N);
 
-        HessenbergSimilarDecomposition decomp = new HessenbergSimilarDecomposition(A.rows);
+        HessenbergSimilarDecomposition decomp = new HessenbergSimilarDecomposition(A.rowCount());
 
         assertTrue(safeDecomposition(decomp,A));
         
@@ -171,7 +171,7 @@ public class TestHessenbergSimilarDecomposition {
         int N = 5;
         DenseMatrix64F A = RandomMatrices.createRandom(N,N,rand);
 
-        HessenbergSimilarDecomposition decomp = new HessenbergSimilarDecomposition(A.rows);
+        HessenbergSimilarDecomposition decomp = new HessenbergSimilarDecomposition(A.rowCount());
 
         assertTrue(safeDecomposition(decomp,A));
 

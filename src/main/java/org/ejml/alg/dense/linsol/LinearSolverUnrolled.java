@@ -35,11 +35,11 @@ public class LinearSolverUnrolled implements LinearSolver<DenseMatrix64F> {
 
     @Override
     public boolean setA(DenseMatrix64F A) {
-        if( A.rows != A.cols)
+        if( A.rowCount() != A.columnCount())
             return false;
 
         this.A = A;
-        return A.rows <= UnrolledInverseFromMinor.MAX;
+        return A.rowCount() <= UnrolledInverseFromMinor.MAX;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class LinearSolverUnrolled implements LinearSolver<DenseMatrix64F> {
 
     @Override
     public void invert(DenseMatrix64F A_inv) {
-        if( A.rows == 1 )
+        if( A.rowCount() == 1 )
             A_inv.set(0,  1.0/A.get(0));
         UnrolledInverseFromMinor.inv(A,A_inv);
     }

@@ -140,7 +140,7 @@ public abstract class GeneralReducedRowEchelonFormChecks {
     private void checkRref( DenseMatrix64F A , int systemWidth ) {
         int prevLeading = -1;
 
-        for( int row = 0; row < A.rows; row++ ) {
+        for( int row = 0; row < A.rowCount(); row++ ) {
 
             // find the next leading
             for( int col = 0; col < systemWidth; col++ ) {
@@ -151,7 +151,7 @@ public abstract class GeneralReducedRowEchelonFormChecks {
                         fail("The next leading one should be at a later column than the previous");
                     prevLeading = col;
 
-                    for( int i = 0; i < A.rows; i++ ) {
+                    for( int i = 0; i < A.rowCount(); i++ ) {
                         if( i == row ) continue;
                         assertTrue("Column should be all zeros, except at the leading",0==A.get(i,col));
                     }

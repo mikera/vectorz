@@ -87,18 +87,18 @@ public class CovarianceOps {
      * @return true if it could invert the matrix false if it could not.
      */
     public static boolean invert( final DenseMatrix64F cov , final DenseMatrix64F cov_inv ) {
-        if( cov.cols <= 4 ) {
-            if( cov.cols != cov.rows ) {
+        if( cov.columnCount() <= 4 ) {
+            if( cov.columnCount() != cov.rowCount() ) {
                 throw new IllegalArgumentException("Must be a square matrix.");
             }
 
-            if( cov.cols >= 2 )
+            if( cov.columnCount() >= 2 )
                 UnrolledInverseFromMinor.inv(cov,cov_inv);
             else
                 cov_inv.data[0] = 1.0/cov_inv.data[0];
 
         } else {
-            LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.symmPosDef(cov.rows);
+            LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.symmPosDef(cov.rowCount());
             // wrap it to make sure the covariance is not modified.
             solver = new LinearSolverSafe<DenseMatrix64F>(solver);
             if( !solver.setA(cov) )

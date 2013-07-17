@@ -45,7 +45,7 @@ public class TestLinearSolverFactory {
         DenseMatrix64F x = RandomMatrices.createRandom(4,1,rand);
         DenseMatrix64F y = new DenseMatrix64F(5,1);
 
-        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.general(A.rows, A.cols);
+        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.general(A.rowCount(), A.columnCount());
 
         standardTest(A, x, y, solver);
     }
@@ -56,7 +56,7 @@ public class TestLinearSolverFactory {
         DenseMatrix64F x = RandomMatrices.createRandom(4,1,rand);
         DenseMatrix64F y = new DenseMatrix64F(4,1);
 
-        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.linear(A.rows);
+        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.linear(A.rowCount());
 
         standardTest(A, x, y, solver);
     }
@@ -67,7 +67,7 @@ public class TestLinearSolverFactory {
         DenseMatrix64F x = RandomMatrices.createRandom(4,1,rand);
         DenseMatrix64F y = new DenseMatrix64F(5,1);
 
-        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.leastSquares(A.rows,A.cols);
+        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.leastSquares(A.rowCount(),A.columnCount());
 
         standardTest(A, x, y, solver);
     }
@@ -78,7 +78,7 @@ public class TestLinearSolverFactory {
         DenseMatrix64F x = RandomMatrices.createRandom(5,1,rand);
         DenseMatrix64F y = new DenseMatrix64F(5,1);
 
-        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.symmPosDef(A.cols);
+        LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.symmPosDef(A.columnCount());
 
         standardTest(A, x, y, solver);
     }
@@ -94,10 +94,10 @@ public class TestLinearSolverFactory {
         standardTest(A, x, y, solver);
 
         // remove the last observation
-        solver.removeRowFromA(y.rows-1);
+        solver.removeRowFromA(y.rowCount()-1);
 
         // compute the adjusted solution
-        y.rows--;
+        y.setRowCount(y.rowCount() - 1);
         DenseMatrix64F x_adj = new DenseMatrix64F(4,1);
         solver.solve(y,x_adj);
 
@@ -115,7 +115,7 @@ public class TestLinearSolverFactory {
 
         CommonOps.mult(a,x,y);
 
-        DenseMatrix64F x_found = new DenseMatrix64F(x.rows,1);
+        DenseMatrix64F x_found = new DenseMatrix64F(x.rowCount(),1);
 
         assertTrue(solver.setA(a));
         solver.solve(y,x_found);

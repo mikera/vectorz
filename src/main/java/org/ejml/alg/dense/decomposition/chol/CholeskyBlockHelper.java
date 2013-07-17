@@ -65,7 +65,7 @@ class CholeskyBlockHelper {
 
         for( int i = 0; i < n; i++ ) {
             for( int j = i; j < n; j++ ) {
-                double sum = m[indexStart+i*mat.cols+j];
+                double sum = m[indexStart+i*mat.columnCount()+j];
 
                 int iEl = i*n;
                 int jEl = j*n;
@@ -83,12 +83,12 @@ class CholeskyBlockHelper {
 
                     el_ii = Math.sqrt(sum);
                     el[i*n+i] = el_ii;
-                    m[indexStart+i*mat.cols+i] = el_ii;
+                    m[indexStart+i*mat.columnCount()+i] = el_ii;
                     div_el_ii = 1.0/el_ii;
                 } else {
                     double v = sum*div_el_ii;
                     el[j*n+i] = v;
-                    m[indexStart+j*mat.cols+i] = v;
+                    m[indexStart+j*mat.columnCount()+i] = v;
                 }
             }
         }

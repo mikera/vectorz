@@ -66,23 +66,23 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         double valA;
         int indexCbase= 0;
-        int endOfKLoop = b.rows*b.cols;
+        int endOfKLoop = b.rowCount()*b.columnCount();
 
-        for( int i = 0; i < a.rows; i++ ) {
-            int indexA = i*a.cols;
+        for( int i = 0; i < a.rowCount(); i++ ) {
+            int indexA = i*a.columnCount();
 
             // need to assign c.data to a value initially
             int indexB = 0;
             int indexC = indexCbase;
-            int end = indexB + b.cols;
+            int end = indexB + b.columnCount();
 
             valA = a.get(indexA++);
 
@@ -93,7 +93,7 @@ public class MatrixMatrixMult {
             // now add to it
             while( indexB != endOfKLoop ) { // k loop
                 indexC = indexCbase;
-                end = indexB + b.cols;
+                end = indexB + b.columnCount();
 
                 valA = a.get(indexA++);
 
@@ -101,7 +101,7 @@ public class MatrixMatrixMult {
                     c.plus(indexC++ , valA*b.get(indexB++));
                 }
             }
-            indexCbase += c.cols;
+            indexCbase += c.columnCount();
         }
     }
 
@@ -112,30 +112,30 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int aIndexStart = 0;
         int cIndex = 0;
 
-        for( int i = 0; i < a.rows; i++ ) {
-            for( int j = 0; j < b.cols; j++ ) {
+        for( int i = 0; i < a.rowCount(); i++ ) {
+            for( int j = 0; j < b.columnCount(); j++ ) {
                 double total = 0;
 
                 int indexA = aIndexStart;
                 int indexB = j;
-                int end = indexA + b.rows;
+                int end = indexA + b.rowCount();
                 while( indexA < end ) {
                     total += a.get(indexA++) * b.get(indexB);
-                    indexB += b.cols;
+                    indexB += b.columnCount();
                 }
 
                 c.set( cIndex++ , total );
             }
-            aIndexStart += a.cols;
+            aIndexStart += a.columnCount();
         }
     }
 
@@ -146,27 +146,27 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
-        if( aux == null ) aux = new double[ b.rows ];
+        if( aux == null ) aux = new double[ b.rowCount() ];
 
-        for( int j = 0; j < b.cols; j++ ) {
+        for( int j = 0; j < b.columnCount(); j++ ) {
             // create a copy of the column in B to avoid cache issues
-            for( int k = 0; k < b.rows; k++ ) {
+            for( int k = 0; k < b.rowCount(); k++ ) {
                 aux[k] = b.unsafe_get(k,j);
             }
 
             int indexA = 0;
-            for( int i = 0; i < a.rows; i++ ) {
+            for( int i = 0; i < a.rowCount(); i++ ) {
                 double total = 0;
-                for( int k = 0; k < b.rows; ) {
+                for( int k = 0; k < b.rowCount(); ) {
                     total += a.get(indexA++)*aux[k++];
                 }
-                c.set( i*c.cols+j , total );
+                c.set( i*c.columnCount()+j , total );
             }
         }
     }
@@ -178,29 +178,29 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.rows ) {
+        else if( a.rowCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.cols != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         double valA;
 
-        for( int i = 0; i < a.cols; i++ ) {
-            int indexC_start = i*c.cols;
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            int indexC_start = i*c.columnCount();
 
             // first assign R
             valA = a.get(i);
             int indexB = 0;
-            int end = indexB+b.cols;
+            int end = indexB+b.columnCount();
             int indexC = indexC_start;
             while( indexB<end ) {
                 c.set( indexC++ , valA*b.get(indexB++));
             }
             // now increment it
-            for( int k = 1; k < a.rows; k++ ) {
+            for( int k = 1; k < a.rowCount(); k++ ) {
                 valA = a.unsafe_get(k,i);
-                end = indexB+b.cols;
+                end = indexB+b.columnCount();
                 indexC = indexC_start;
                 // this is the loop for j
                 while( indexB<end ) {
@@ -217,26 +217,26 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.rows ) {
+        else if( a.rowCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.cols != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
 
-        for( int i = 0; i < a.cols; i++ ) {
-            for( int j = 0; j < b.cols; j++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            for( int j = 0; j < b.columnCount(); j++ ) {
                 int indexA = i;
                 int indexB = j;
-                int end = indexB + b.rows*b.cols;
+                int end = indexB + b.rowCount()*b.columnCount();
 
                 double total = 0;
 
                 // loop for k
-                for(; indexB < end; indexB += b.cols ) {
+                for(; indexB < end; indexB += b.columnCount() ) {
                     total += a.get(indexA) * b.get(indexB);
-                    indexA += a.cols;
+                    indexA += a.columnCount();
                 }
 
                 c.set( cIndex++ , total );
@@ -251,25 +251,25 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.cols ) {
+        else if( a.rowCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.rows != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
 
-        for( int i = 0; i < a.cols; i++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
             int indexB = 0;
-            for( int j = 0; j < b.rows; j++ ) {
+            for( int j = 0; j < b.rowCount(); j++ ) {
                 int indexA = i;
-                int end = indexB + b.cols;
+                int end = indexB + b.columnCount();
 
                 double total = 0;
 
                 for( ;indexB<end; ) {
                     total += a.get(indexA) * b.get(indexB++);
-                    indexA += a.cols;
+                    indexA += a.columnCount();
                 }
 
                 c.set( cIndex++ , total );
@@ -284,24 +284,24 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.cols ) {
+        else if( a.rowCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.rows != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
-        if( aux == null ) aux = new double[ a.rows ];
+        if( aux == null ) aux = new double[ a.rowCount() ];
 
         int indexC = 0;
-        for( int i = 0; i < a.cols; i++ ) {
-            for( int k = 0; k < b.cols; k++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            for( int k = 0; k < b.columnCount(); k++ ) {
                 aux[k] = a.unsafe_get(k,i);
             }
 
-            for( int j = 0; j < b.rows; j++ ) {
+            for( int j = 0; j < b.rowCount(); j++ ) {
                 double total = 0;
 
-                for( int k = 0; k < b.cols; k++ ) {
+                for( int k = 0; k < b.columnCount(); k++ ) {
                     total += aux[k] * b.unsafe_get(j,k);
                 }
                 c.set( indexC++ , total );
@@ -316,19 +316,19 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.cols ) {
+        else if( a.columnCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.rows != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
         int aIndexStart = 0;
 
-        for( int xA = 0; xA < a.rows; xA++ ) {
-            int end = aIndexStart + b.cols;
+        for( int xA = 0; xA < a.rowCount(); xA++ ) {
+            int end = aIndexStart + b.columnCount();
             int indexB = 0;
-            for( int xB = 0; xB < b.rows; xB++ ) {
+            for( int xB = 0; xB < b.rowCount(); xB++ ) {
                 int indexA = aIndexStart;
 
                 double total = 0;
@@ -339,7 +339,7 @@ public class MatrixMatrixMult {
 
                 c.set( cIndex++ , total );
             }
-            aIndexStart += a.cols;
+            aIndexStart += a.columnCount();
         }
     }
 
@@ -350,23 +350,23 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         double valA;
         int indexCbase= 0;
-        int endOfKLoop = b.rows*b.cols;
+        int endOfKLoop = b.rowCount()*b.columnCount();
 
-        for( int i = 0; i < a.rows; i++ ) {
-            int indexA = i*a.cols;
+        for( int i = 0; i < a.rowCount(); i++ ) {
+            int indexA = i*a.columnCount();
 
             // need to assign c.data to a value initially
             int indexB = 0;
             int indexC = indexCbase;
-            int end = indexB + b.cols;
+            int end = indexB + b.columnCount();
 
             valA = a.get(indexA++);
 
@@ -377,7 +377,7 @@ public class MatrixMatrixMult {
             // now add to it
             while( indexB != endOfKLoop ) { // k loop
                 indexC = indexCbase;
-                end = indexB + b.cols;
+                end = indexB + b.columnCount();
 
                 valA = a.get(indexA++);
 
@@ -385,7 +385,7 @@ public class MatrixMatrixMult {
                     c.plus(indexC++ , valA*b.get(indexB++));
                 }
             }
-            indexCbase += c.cols;
+            indexCbase += c.columnCount();
         }
     }
 
@@ -396,30 +396,30 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int aIndexStart = 0;
         int cIndex = 0;
 
-        for( int i = 0; i < a.rows; i++ ) {
-            for( int j = 0; j < b.cols; j++ ) {
+        for( int i = 0; i < a.rowCount(); i++ ) {
+            for( int j = 0; j < b.columnCount(); j++ ) {
                 double total = 0;
 
                 int indexA = aIndexStart;
                 int indexB = j;
-                int end = indexA + b.rows;
+                int end = indexA + b.rowCount();
                 while( indexA < end ) {
                     total += a.get(indexA++) * b.get(indexB);
-                    indexB += b.cols;
+                    indexB += b.columnCount();
                 }
 
                 c.plus( cIndex++ , total );
             }
-            aIndexStart += a.cols;
+            aIndexStart += a.columnCount();
         }
     }
 
@@ -430,27 +430,27 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
-        if( aux == null ) aux = new double[ b.rows ];
+        if( aux == null ) aux = new double[ b.rowCount() ];
 
-        for( int j = 0; j < b.cols; j++ ) {
+        for( int j = 0; j < b.columnCount(); j++ ) {
             // create a copy of the column in B to avoid cache issues
-            for( int k = 0; k < b.rows; k++ ) {
+            for( int k = 0; k < b.rowCount(); k++ ) {
                 aux[k] = b.unsafe_get(k,j);
             }
 
             int indexA = 0;
-            for( int i = 0; i < a.rows; i++ ) {
+            for( int i = 0; i < a.rowCount(); i++ ) {
                 double total = 0;
-                for( int k = 0; k < b.rows; ) {
+                for( int k = 0; k < b.rowCount(); ) {
                     total += a.get(indexA++)*aux[k++];
                 }
-                c.plus( i*c.cols+j , total );
+                c.plus( i*c.columnCount()+j , total );
             }
         }
     }
@@ -462,29 +462,29 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.rows ) {
+        else if( a.rowCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.cols != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         double valA;
 
-        for( int i = 0; i < a.cols; i++ ) {
-            int indexC_start = i*c.cols;
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            int indexC_start = i*c.columnCount();
 
             // first assign R
             valA = a.get(i);
             int indexB = 0;
-            int end = indexB+b.cols;
+            int end = indexB+b.columnCount();
             int indexC = indexC_start;
             while( indexB<end ) {
                 c.plus( indexC++ , valA*b.get(indexB++));
             }
             // now increment it
-            for( int k = 1; k < a.rows; k++ ) {
+            for( int k = 1; k < a.rowCount(); k++ ) {
                 valA = a.unsafe_get(k,i);
-                end = indexB+b.cols;
+                end = indexB+b.columnCount();
                 indexC = indexC_start;
                 // this is the loop for j
                 while( indexB<end ) {
@@ -501,26 +501,26 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.rows ) {
+        else if( a.rowCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.cols != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
 
-        for( int i = 0; i < a.cols; i++ ) {
-            for( int j = 0; j < b.cols; j++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            for( int j = 0; j < b.columnCount(); j++ ) {
                 int indexA = i;
                 int indexB = j;
-                int end = indexB + b.rows*b.cols;
+                int end = indexB + b.rowCount()*b.columnCount();
 
                 double total = 0;
 
                 // loop for k
-                for(; indexB < end; indexB += b.cols ) {
+                for(; indexB < end; indexB += b.columnCount() ) {
                     total += a.get(indexA) * b.get(indexB);
-                    indexA += a.cols;
+                    indexA += a.columnCount();
                 }
 
                 c.plus( cIndex++ , total );
@@ -535,25 +535,25 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.cols ) {
+        else if( a.rowCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.rows != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
 
-        for( int i = 0; i < a.cols; i++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
             int indexB = 0;
-            for( int j = 0; j < b.rows; j++ ) {
+            for( int j = 0; j < b.rowCount(); j++ ) {
                 int indexA = i;
-                int end = indexB + b.cols;
+                int end = indexB + b.columnCount();
 
                 double total = 0;
 
                 for( ;indexB<end; ) {
                     total += a.get(indexA) * b.get(indexB++);
-                    indexA += a.cols;
+                    indexA += a.columnCount();
                 }
 
                 c.plus( cIndex++ , total );
@@ -568,24 +568,24 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.cols ) {
+        else if( a.rowCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.rows != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
-        if( aux == null ) aux = new double[ a.rows ];
+        if( aux == null ) aux = new double[ a.rowCount() ];
 
         int indexC = 0;
-        for( int i = 0; i < a.cols; i++ ) {
-            for( int k = 0; k < b.cols; k++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            for( int k = 0; k < b.columnCount(); k++ ) {
                 aux[k] = a.unsafe_get(k,i);
             }
 
-            for( int j = 0; j < b.rows; j++ ) {
+            for( int j = 0; j < b.rowCount(); j++ ) {
                 double total = 0;
 
-                for( int k = 0; k < b.cols; k++ ) {
+                for( int k = 0; k < b.columnCount(); k++ ) {
                     total += aux[k] * b.unsafe_get(j,k);
                 }
                 c.plus( indexC++ , total );
@@ -600,19 +600,19 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.cols ) {
+        else if( a.columnCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.rows != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
         int aIndexStart = 0;
 
-        for( int xA = 0; xA < a.rows; xA++ ) {
-            int end = aIndexStart + b.cols;
+        for( int xA = 0; xA < a.rowCount(); xA++ ) {
+            int end = aIndexStart + b.columnCount();
             int indexB = 0;
-            for( int xB = 0; xB < b.rows; xB++ ) {
+            for( int xB = 0; xB < b.rowCount(); xB++ ) {
                 int indexA = aIndexStart;
 
                 double total = 0;
@@ -623,7 +623,7 @@ public class MatrixMatrixMult {
 
                 c.plus( cIndex++ , total );
             }
-            aIndexStart += a.cols;
+            aIndexStart += a.columnCount();
         }
     }
 
@@ -634,23 +634,23 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         double valA;
         int indexCbase= 0;
-        int endOfKLoop = b.rows*b.cols;
+        int endOfKLoop = b.rowCount()*b.columnCount();
 
-        for( int i = 0; i < a.rows; i++ ) {
-            int indexA = i*a.cols;
+        for( int i = 0; i < a.rowCount(); i++ ) {
+            int indexA = i*a.columnCount();
 
             // need to assign c.data to a value initially
             int indexB = 0;
             int indexC = indexCbase;
-            int end = indexB + b.cols;
+            int end = indexB + b.columnCount();
 
             valA = alpha*a.get(indexA++);
 
@@ -661,7 +661,7 @@ public class MatrixMatrixMult {
             // now add to it
             while( indexB != endOfKLoop ) { // k loop
                 indexC = indexCbase;
-                end = indexB + b.cols;
+                end = indexB + b.columnCount();
 
                 valA = alpha*a.get(indexA++);
 
@@ -669,7 +669,7 @@ public class MatrixMatrixMult {
                     c.plus(indexC++ , valA*b.get(indexB++));
                 }
             }
-            indexCbase += c.cols;
+            indexCbase += c.columnCount();
         }
     }
 
@@ -680,30 +680,30 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int aIndexStart = 0;
         int cIndex = 0;
 
-        for( int i = 0; i < a.rows; i++ ) {
-            for( int j = 0; j < b.cols; j++ ) {
+        for( int i = 0; i < a.rowCount(); i++ ) {
+            for( int j = 0; j < b.columnCount(); j++ ) {
                 double total = 0;
 
                 int indexA = aIndexStart;
                 int indexB = j;
-                int end = indexA + b.rows;
+                int end = indexA + b.rowCount();
                 while( indexA < end ) {
                     total += a.get(indexA++) * b.get(indexB);
-                    indexB += b.cols;
+                    indexB += b.columnCount();
                 }
 
                 c.set( cIndex++ , alpha*total );
             }
-            aIndexStart += a.cols;
+            aIndexStart += a.columnCount();
         }
     }
 
@@ -714,27 +714,27 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
-        if( aux == null ) aux = new double[ b.rows ];
+        if( aux == null ) aux = new double[ b.rowCount() ];
 
-        for( int j = 0; j < b.cols; j++ ) {
+        for( int j = 0; j < b.columnCount(); j++ ) {
             // create a copy of the column in B to avoid cache issues
-            for( int k = 0; k < b.rows; k++ ) {
+            for( int k = 0; k < b.rowCount(); k++ ) {
                 aux[k] = b.unsafe_get(k,j);
             }
 
             int indexA = 0;
-            for( int i = 0; i < a.rows; i++ ) {
+            for( int i = 0; i < a.rowCount(); i++ ) {
                 double total = 0;
-                for( int k = 0; k < b.rows; ) {
+                for( int k = 0; k < b.rowCount(); ) {
                     total += a.get(indexA++)*aux[k++];
                 }
-                c.set( i*c.cols+j , alpha*total );
+                c.set( i*c.columnCount()+j , alpha*total );
             }
         }
     }
@@ -746,29 +746,29 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.rows ) {
+        else if( a.rowCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.cols != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         double valA;
 
-        for( int i = 0; i < a.cols; i++ ) {
-            int indexC_start = i*c.cols;
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            int indexC_start = i*c.columnCount();
 
             // first assign R
             valA = alpha*a.get(i);
             int indexB = 0;
-            int end = indexB+b.cols;
+            int end = indexB+b.columnCount();
             int indexC = indexC_start;
             while( indexB<end ) {
                 c.set( indexC++ , valA*b.get(indexB++));
             }
             // now increment it
-            for( int k = 1; k < a.rows; k++ ) {
+            for( int k = 1; k < a.rowCount(); k++ ) {
                 valA = alpha*a.unsafe_get(k,i);
-                end = indexB+b.cols;
+                end = indexB+b.columnCount();
                 indexC = indexC_start;
                 // this is the loop for j
                 while( indexB<end ) {
@@ -785,26 +785,26 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.rows ) {
+        else if( a.rowCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.cols != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
 
-        for( int i = 0; i < a.cols; i++ ) {
-            for( int j = 0; j < b.cols; j++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            for( int j = 0; j < b.columnCount(); j++ ) {
                 int indexA = i;
                 int indexB = j;
-                int end = indexB + b.rows*b.cols;
+                int end = indexB + b.rowCount()*b.columnCount();
 
                 double total = 0;
 
                 // loop for k
-                for(; indexB < end; indexB += b.cols ) {
+                for(; indexB < end; indexB += b.columnCount() ) {
                     total += a.get(indexA) * b.get(indexB);
-                    indexA += a.cols;
+                    indexA += a.columnCount();
                 }
 
                 c.set( cIndex++ , alpha*total );
@@ -819,25 +819,25 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.cols ) {
+        else if( a.rowCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.rows != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
 
-        for( int i = 0; i < a.cols; i++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
             int indexB = 0;
-            for( int j = 0; j < b.rows; j++ ) {
+            for( int j = 0; j < b.rowCount(); j++ ) {
                 int indexA = i;
-                int end = indexB + b.cols;
+                int end = indexB + b.columnCount();
 
                 double total = 0;
 
                 for( ;indexB<end; ) {
                     total += a.get(indexA) * b.get(indexB++);
-                    indexA += a.cols;
+                    indexA += a.columnCount();
                 }
 
                 c.set( cIndex++ , alpha*total );
@@ -852,24 +852,24 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.cols ) {
+        else if( a.rowCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.rows != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
-        if( aux == null ) aux = new double[ a.rows ];
+        if( aux == null ) aux = new double[ a.rowCount() ];
 
         int indexC = 0;
-        for( int i = 0; i < a.cols; i++ ) {
-            for( int k = 0; k < b.cols; k++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            for( int k = 0; k < b.columnCount(); k++ ) {
                 aux[k] = a.unsafe_get(k,i);
             }
 
-            for( int j = 0; j < b.rows; j++ ) {
+            for( int j = 0; j < b.rowCount(); j++ ) {
                 double total = 0;
 
-                for( int k = 0; k < b.cols; k++ ) {
+                for( int k = 0; k < b.columnCount(); k++ ) {
                     total += aux[k] * b.unsafe_get(j,k);
                 }
                 c.set( indexC++ , alpha*total );
@@ -884,19 +884,19 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.cols ) {
+        else if( a.columnCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.rows != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
         int aIndexStart = 0;
 
-        for( int xA = 0; xA < a.rows; xA++ ) {
-            int end = aIndexStart + b.cols;
+        for( int xA = 0; xA < a.rowCount(); xA++ ) {
+            int end = aIndexStart + b.columnCount();
             int indexB = 0;
-            for( int xB = 0; xB < b.rows; xB++ ) {
+            for( int xB = 0; xB < b.rowCount(); xB++ ) {
                 int indexA = aIndexStart;
 
                 double total = 0;
@@ -907,7 +907,7 @@ public class MatrixMatrixMult {
 
                 c.set( cIndex++ , alpha*total );
             }
-            aIndexStart += a.cols;
+            aIndexStart += a.columnCount();
         }
     }
 
@@ -918,23 +918,23 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         double valA;
         int indexCbase= 0;
-        int endOfKLoop = b.rows*b.cols;
+        int endOfKLoop = b.rowCount()*b.columnCount();
 
-        for( int i = 0; i < a.rows; i++ ) {
-            int indexA = i*a.cols;
+        for( int i = 0; i < a.rowCount(); i++ ) {
+            int indexA = i*a.columnCount();
 
             // need to assign c.data to a value initially
             int indexB = 0;
             int indexC = indexCbase;
-            int end = indexB + b.cols;
+            int end = indexB + b.columnCount();
 
             valA = alpha*a.get(indexA++);
 
@@ -945,7 +945,7 @@ public class MatrixMatrixMult {
             // now add to it
             while( indexB != endOfKLoop ) { // k loop
                 indexC = indexCbase;
-                end = indexB + b.cols;
+                end = indexB + b.columnCount();
 
                 valA = alpha*a.get(indexA++);
 
@@ -953,7 +953,7 @@ public class MatrixMatrixMult {
                     c.plus(indexC++ , valA*b.get(indexB++));
                 }
             }
-            indexCbase += c.cols;
+            indexCbase += c.columnCount();
         }
     }
 
@@ -964,30 +964,30 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int aIndexStart = 0;
         int cIndex = 0;
 
-        for( int i = 0; i < a.rows; i++ ) {
-            for( int j = 0; j < b.cols; j++ ) {
+        for( int i = 0; i < a.rowCount(); i++ ) {
+            for( int j = 0; j < b.columnCount(); j++ ) {
                 double total = 0;
 
                 int indexA = aIndexStart;
                 int indexB = j;
-                int end = indexA + b.rows;
+                int end = indexA + b.rowCount();
                 while( indexA < end ) {
                     total += a.get(indexA++) * b.get(indexB);
-                    indexB += b.cols;
+                    indexB += b.columnCount();
                 }
 
                 c.plus( cIndex++ , alpha*total );
             }
-            aIndexStart += a.cols;
+            aIndexStart += a.columnCount();
         }
     }
 
@@ -998,27 +998,27 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.rows ) {
+        else if( a.columnCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.cols != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
-        if( aux == null ) aux = new double[ b.rows ];
+        if( aux == null ) aux = new double[ b.rowCount() ];
 
-        for( int j = 0; j < b.cols; j++ ) {
+        for( int j = 0; j < b.columnCount(); j++ ) {
             // create a copy of the column in B to avoid cache issues
-            for( int k = 0; k < b.rows; k++ ) {
+            for( int k = 0; k < b.rowCount(); k++ ) {
                 aux[k] = b.unsafe_get(k,j);
             }
 
             int indexA = 0;
-            for( int i = 0; i < a.rows; i++ ) {
+            for( int i = 0; i < a.rowCount(); i++ ) {
                 double total = 0;
-                for( int k = 0; k < b.rows; ) {
+                for( int k = 0; k < b.rowCount(); ) {
                     total += a.get(indexA++)*aux[k++];
                 }
-                c.plus( i*c.cols+j , alpha*total );
+                c.plus( i*c.columnCount()+j , alpha*total );
             }
         }
     }
@@ -1030,29 +1030,29 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.rows ) {
+        else if( a.rowCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.cols != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         double valA;
 
-        for( int i = 0; i < a.cols; i++ ) {
-            int indexC_start = i*c.cols;
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            int indexC_start = i*c.columnCount();
 
             // first assign R
             valA = alpha*a.get(i);
             int indexB = 0;
-            int end = indexB+b.cols;
+            int end = indexB+b.columnCount();
             int indexC = indexC_start;
             while( indexB<end ) {
                 c.plus( indexC++ , valA*b.get(indexB++));
             }
             // now increment it
-            for( int k = 1; k < a.rows; k++ ) {
+            for( int k = 1; k < a.rowCount(); k++ ) {
                 valA = alpha*a.unsafe_get(k,i);
-                end = indexB+b.cols;
+                end = indexB+b.columnCount();
                 indexC = indexC_start;
                 // this is the loop for j
                 while( indexB<end ) {
@@ -1069,26 +1069,26 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.rows ) {
+        else if( a.rowCount() != b.rowCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.cols != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.columnCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
 
-        for( int i = 0; i < a.cols; i++ ) {
-            for( int j = 0; j < b.cols; j++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            for( int j = 0; j < b.columnCount(); j++ ) {
                 int indexA = i;
                 int indexB = j;
-                int end = indexB + b.rows*b.cols;
+                int end = indexB + b.rowCount()*b.columnCount();
 
                 double total = 0;
 
                 // loop for k
-                for(; indexB < end; indexB += b.cols ) {
+                for(; indexB < end; indexB += b.columnCount() ) {
                     total += a.get(indexA) * b.get(indexB);
-                    indexA += a.cols;
+                    indexA += a.columnCount();
                 }
 
                 c.plus( cIndex++ , alpha*total );
@@ -1103,25 +1103,25 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.cols ) {
+        else if( a.rowCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.rows != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
 
-        for( int i = 0; i < a.cols; i++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
             int indexB = 0;
-            for( int j = 0; j < b.rows; j++ ) {
+            for( int j = 0; j < b.rowCount(); j++ ) {
                 int indexA = i;
-                int end = indexB + b.cols;
+                int end = indexB + b.columnCount();
 
                 double total = 0;
 
                 for( ;indexB<end; ) {
                     total += a.get(indexA) * b.get(indexB++);
-                    indexA += a.cols;
+                    indexA += a.columnCount();
                 }
 
                 c.plus( cIndex++ , alpha*total );
@@ -1136,24 +1136,24 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.rows != b.cols ) {
+        else if( a.rowCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.cols != c.rows || b.rows != c.cols ) {
+        } else if( a.columnCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
-        if( aux == null ) aux = new double[ a.rows ];
+        if( aux == null ) aux = new double[ a.rowCount() ];
 
         int indexC = 0;
-        for( int i = 0; i < a.cols; i++ ) {
-            for( int k = 0; k < b.cols; k++ ) {
+        for( int i = 0; i < a.columnCount(); i++ ) {
+            for( int k = 0; k < b.columnCount(); k++ ) {
                 aux[k] = a.unsafe_get(k,i);
             }
 
-            for( int j = 0; j < b.rows; j++ ) {
+            for( int j = 0; j < b.rowCount(); j++ ) {
                 double total = 0;
 
-                for( int k = 0; k < b.cols; k++ ) {
+                for( int k = 0; k < b.columnCount(); k++ ) {
                     total += aux[k] * b.unsafe_get(j,k);
                 }
                 c.plus( indexC++ , alpha*total );
@@ -1168,19 +1168,19 @@ public class MatrixMatrixMult {
     {
         if( a == c || b == c )
             throw new IllegalArgumentException("Neither 'a' or 'b' can be the same matrix as 'c'");
-        else if( a.cols != b.cols ) {
+        else if( a.columnCount() != b.columnCount() ) {
             throw new MatrixDimensionException("The 'a' and 'b' matrices do not have compatible dimensions");
-        } else if( a.rows != c.rows || b.rows != c.cols ) {
+        } else if( a.rowCount() != c.rowCount() || b.rowCount() != c.columnCount() ) {
             throw new MatrixDimensionException("The results matrix does not have the desired dimensions");
         }
 
         int cIndex = 0;
         int aIndexStart = 0;
 
-        for( int xA = 0; xA < a.rows; xA++ ) {
-            int end = aIndexStart + b.cols;
+        for( int xA = 0; xA < a.rowCount(); xA++ ) {
+            int end = aIndexStart + b.columnCount();
             int indexB = 0;
-            for( int xB = 0; xB < b.rows; xB++ ) {
+            for( int xB = 0; xB < b.rowCount(); xB++ ) {
                 int indexA = aIndexStart;
 
                 double total = 0;
@@ -1191,7 +1191,7 @@ public class MatrixMatrixMult {
 
                 c.plus( cIndex++ , alpha*total );
             }
-            aIndexStart += a.cols;
+            aIndexStart += a.columnCount();
         }
     }
 

@@ -82,7 +82,7 @@ public class SafeSvd
     @Override
     public boolean decompose(DenseMatrix64F orig) {
         if( alg.inputModified() ) {
-            work.reshape(orig.rows,orig.cols);
+            work.reshape(orig.rowCount(),orig.columnCount());
             work.set(orig);
             return alg.decompose(work);
         } else {

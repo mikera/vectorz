@@ -369,16 +369,16 @@ public class TestMatrixFeatures {
         // test matrices that are upper triangular to various degree hessenberg
         for( int hessenberg = 0; hessenberg < 2; hessenberg++ ) {
             DenseMatrix64F A = new DenseMatrix64F(6,6);
-            for( int i = 0; i < A.rows; i++ ) {
+            for( int i = 0; i < A.rowCount(); i++ ) {
                 int s = i <= hessenberg ? 0 : i-hessenberg;
 
-                for( int j = s; j < A.cols; j++ ) {
+                for( int j = s; j < A.columnCount(); j++ ) {
                    A.set(i,j,2);
                 }
             }
 
             // test positive
-            for( int i = hessenberg; i < A.rows; i++ ) {
+            for( int i = hessenberg; i < A.rowCount(); i++ ) {
                 assertTrue(MatrixFeatures.isUpperTriangle(A,i,1e-8));
             }
 

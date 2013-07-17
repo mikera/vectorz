@@ -225,18 +225,18 @@ public class QrHelperFunctions {
 //        }
 
         // reordered to reduce cpu cache issues
-        for( int i = colA0; i < A.cols; i++ ) {
-            _temp[i] = u[w0]*A.data[w0 *A.cols +i];
+        for( int i = colA0; i < A.columnCount(); i++ ) {
+            _temp[i] = u[w0]*A.data[w0 *A.columnCount() +i];
         }
 
         for( int k = w0+1; k < w1; k++ ) {
-            int indexA = k*A.cols + colA0;
+            int indexA = k*A.columnCount() + colA0;
             double valU = u[k];
-            for( int i = colA0; i < A.cols; i++ ) {
+            for( int i = colA0; i < A.columnCount(); i++ ) {
                 _temp[i] += valU*A.data[indexA++];
             }
         }
-        for( int i = colA0; i < A.cols; i++ ) {
+        for( int i = colA0; i < A.columnCount(); i++ ) {
             _temp[i] *= gamma;
         }
 
@@ -245,8 +245,8 @@ public class QrHelperFunctions {
         for( int i = w0; i < w1; i++ ) {
             double valU = u[i];
 
-            int indexA = i*A.cols + colA0;
-            for( int j = colA0; j < A.cols; j++ ) {
+            int indexA = i*A.columnCount() + colA0;
+            for( int j = colA0; j < A.columnCount(); j++ ) {
                 A.data[indexA++] -= valU*_temp[j];
             }
         }
@@ -269,18 +269,18 @@ public class QrHelperFunctions {
 //        }
 
         // reordered to reduce cpu cache issues
-        for( int i = colA0; i < A.cols; i++ ) {
-            _temp[i] = u[w0+offsetU]*A.data[w0 *A.cols +i];
+        for( int i = colA0; i < A.columnCount(); i++ ) {
+            _temp[i] = u[w0+offsetU]*A.data[w0 *A.columnCount() +i];
         }
 
         for( int k = w0+1; k < w1; k++ ) {
-            int indexA = k*A.cols + colA0;
+            int indexA = k*A.columnCount() + colA0;
             double valU = u[k+offsetU];
-            for( int i = colA0; i < A.cols; i++ ) {
+            for( int i = colA0; i < A.columnCount(); i++ ) {
                 _temp[i] += valU*A.data[indexA++];
             }
         }
-        for( int i = colA0; i < A.cols; i++ ) {
+        for( int i = colA0; i < A.columnCount(); i++ ) {
             _temp[i] *= gamma;
         }
 
@@ -289,8 +289,8 @@ public class QrHelperFunctions {
         for( int i = w0; i < w1; i++ ) {
             double valU = u[i+offsetU];
 
-            int indexA = i*A.cols + colA0;
-            for( int j = colA0; j < A.cols; j++ ) {
+            int indexA = i*A.columnCount() + colA0;
+            for( int j = colA0; j < A.columnCount(); j++ ) {
                 A.data[indexA++] -= valU*_temp[j];
             }
         }
@@ -317,8 +317,8 @@ public class QrHelperFunctions {
                                          int colA0,
                                          int w0 , int w1 )
     {
-        for( int i = colA0; i < A.rows; i++ ) {
-            int startIndex = i*A.cols+w0;
+        for( int i = colA0; i < A.rowCount(); i++ ) {
+            int startIndex = i*A.columnCount()+w0;
             double sum = 0;
             int rowIndex = startIndex;
             for( int j = w0; j < w1; j++ ) {

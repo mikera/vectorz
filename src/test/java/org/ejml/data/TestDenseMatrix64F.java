@@ -158,7 +158,7 @@ public class TestDenseMatrix64F {
         double d[][] = new double[][]{{1,2},{3,4},{5,6}};
 
         DenseMatrix64F mat = new DenseMatrix64F(d);
-        DenseMatrix64F mat2 = new DenseMatrix64F(mat.rows,mat.cols);
+        DenseMatrix64F mat2 = new DenseMatrix64F(mat.rowCount(),mat.columnCount());
 
         mat2.set(mat);
 

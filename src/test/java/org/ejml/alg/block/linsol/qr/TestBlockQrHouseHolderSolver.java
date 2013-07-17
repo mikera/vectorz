@@ -152,7 +152,7 @@ public class TestBlockQrHouseHolderSolver {
 
         BlockMatrix64F B = BlockMatrixOps.createRandom(4,2,-1,1,rand,3);
         BlockMatrix64F B_orig = B.copy();
-        BlockMatrix64F X = new BlockMatrix64F(A.rows,B.cols,3);
+        BlockMatrix64F X = new BlockMatrix64F(A.rowCount(),B.columnCount(),3);
 
         solver.solve(B,X);
 

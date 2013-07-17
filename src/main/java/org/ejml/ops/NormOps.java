@@ -104,17 +104,17 @@ public class NormOps {
     {
         if( p == 2 ) {
             return conditionP2(A);
-        } else if( A.rows == A.cols ){
+        } else if( A.rowCount() == A.columnCount() ){
             // square matrices are the typical case
 
-            DenseMatrix64F A_inv = new DenseMatrix64F(A.rows,A.cols);
+            DenseMatrix64F A_inv = new DenseMatrix64F(A.rowCount(),A.columnCount());
 
             if( !CommonOps.invert(A,A_inv) )
                 throw new IllegalArgumentException("A can't be inverted.");
 
             return normP(A,p) * normP(A_inv,p);
         } else  {
-            DenseMatrix64F pinv = new DenseMatrix64F(A.cols,A.rows);
+            DenseMatrix64F pinv = new DenseMatrix64F(A.columnCount(),A.rowCount());
             CommonOps.pinv(A,pinv);
 
             return normP(A,p) * normP(pinv,p);
@@ -137,7 +137,7 @@ public class NormOps {
      */
     public static double conditionP2( DenseMatrix64F A )
     {
-        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.rows,A.cols,false,false,true);
+        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
 
         svd.decompose(A);
 
@@ -395,8 +395,8 @@ public class NormOps {
     public static double inducedP1( DenseMatrix64F A ) {
         double max = 0;
 
-        int m = A.rows;
-        int n = A.cols;
+        int m = A.rowCount();
+        int n = A.columnCount();
 
         for( int j = 0; j < n; j++ ) {
             double total = 0;
@@ -420,7 +420,7 @@ public class NormOps {
      * @return The norm.
      */
     public static double inducedP2( DenseMatrix64F A ) {
-        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.rows,A.cols,false,false,true);
+        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
 
         if( !svd.decompose(A) )
             throw new RuntimeException("Decomposition failed");
@@ -444,8 +444,8 @@ public class NormOps {
     public static double inducedPInf( DenseMatrix64F A ) {
         double max = 0;
 
-        int m = A.rows;
-        int n = A.cols;
+        int m = A.rowCount();
+        int n = A.columnCount();
 
         for( int i = 0; i < m; i++ ) {
             double total = 0;

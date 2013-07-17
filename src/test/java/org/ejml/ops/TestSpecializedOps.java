@@ -84,7 +84,7 @@ public class TestSpecializedOps {
         for( int i = 0; i < order.length; i++ ) {
             int o = order[i];
 
-            for( int j = 0; j < A.cols; j++ ) {
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 assertEquals(A.get(o,j),C.get(i,j),1e-16);
             }
         }
@@ -190,7 +190,7 @@ public class TestSpecializedOps {
             assertEquals(3,a.rowCount());
             assertEquals(1,a.columnCount());
 
-            for( int j = 0; j < A.rows; j++ ) {
+            for( int j = 0; j < A.rowCount(); j++ ) {
                 assertEquals(A.get(j,i),a.get(j),1e-8);
             }
         }
@@ -205,7 +205,7 @@ public class TestSpecializedOps {
             assertEquals(1,a.rowCount());
             assertEquals(5,a.columnCount());
 
-            for( int j = 0; j < A.cols; j++ ) {
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 assertEquals(A.get(i,j),a.get(j),1e-8);
             }
         }

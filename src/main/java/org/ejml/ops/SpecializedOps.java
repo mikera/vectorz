@@ -96,16 +96,16 @@ public class SpecializedOps {
     public static DenseMatrix64F copyChangeRow( int order[] , DenseMatrix64F src , DenseMatrix64F dst )
     {
         if( dst == null ) {
-            dst = new DenseMatrix64F(src.rows,src.cols);
-        } else if( src.rows != dst.rows || src.cols != dst.cols ) {
+            dst = new DenseMatrix64F(src.rowCount(),src.columnCount());
+        } else if( src.rowCount() != dst.rowCount() || src.columnCount() != dst.columnCount() ) {
             throw new IllegalArgumentException("src and dst must have the same dimensions.");
         }
 
-        for( int i = 0; i < src.rows; i++ ) {
-            int indexDst = i*src.cols;
-            int indexSrc = order[i]*src.cols;
+        for( int i = 0; i < src.rowCount(); i++ ) {
+            int indexDst = i*src.columnCount();
+            int indexSrc = order[i]*src.columnCount();
 
-            System.arraycopy(src.data,indexSrc,dst.data,indexDst,src.cols);
+            System.arraycopy(src.data,indexSrc,dst.data,indexDst,src.columnCount());
         }
 
         return dst;
@@ -121,21 +121,21 @@ public class SpecializedOps {
      */
     public static DenseMatrix64F copyTriangle( DenseMatrix64F src , DenseMatrix64F dst , boolean upper ) {
         if( dst == null ) {
-            dst = new DenseMatrix64F(src.rows,src.cols);
-        } else if( src.rows != dst.rows || src.cols != dst.cols ) {
+            dst = new DenseMatrix64F(src.rowCount(),src.columnCount());
+        } else if( src.rowCount() != dst.rowCount() || src.columnCount() != dst.columnCount() ) {
             throw new IllegalArgumentException("src and dst must have the same dimensions.");
         }
 
         if( upper ) {
-            int N = Math.min(src.rows,src.cols);
+            int N = Math.min(src.rowCount(),src.columnCount());
             for( int i = 0; i < N; i++ ) {
-                int index = i*src.cols+i;
-                System.arraycopy(src.data,index,dst.data,index,src.cols-i);
+                int index = i*src.columnCount()+i;
+                System.arraycopy(src.data,index,dst.data,index,src.columnCount()-i);
             }
         } else {
-            for( int i = 0; i < src.rows; i++ ) {
-                int length = Math.min(i+1,src.cols);
-                int index = i*src.cols;
+            for( int i = 0; i < src.rowCount(); i++ ) {
+                int length = Math.min(i+1,src.columnCount());
+                int index = i*src.columnCount();
                 System.arraycopy(src.data,index,dst.data,index,length);
             }
         }
@@ -162,7 +162,7 @@ public class SpecializedOps {
      */
     public static double diffNormF( D1Matrix64F a , D1Matrix64F b )
     {
-        if( a.rows != b.rows || a.cols != b.cols ) {
+        if( a.rowCount() != b.rowCount() || a.columnCount() != b.columnCount() ) {
             throw new IllegalArgumentException("Both matrices must have the same shape.");
         }
 
@@ -178,7 +178,7 @@ public class SpecializedOps {
 
     public static double diffNormF_fast( D1Matrix64F a , D1Matrix64F b )
     {
-        if( a.rows != b.rows || a.cols != b.cols ) {
+        if( a.rowCount() != b.rowCount() || a.columnCount() != b.columnCount() ) {
             throw new IllegalArgumentException("Both matrices must have the same shape.");
         }
 
@@ -211,7 +211,7 @@ public class SpecializedOps {
      */
     public static double diffNormP1( D1Matrix64F a , D1Matrix64F b )
     {
-        if( a.rows != b.rows || a.cols != b.cols ) {
+        if( a.rowCount() != b.rowCount() || a.columnCount() != b.columnCount() ) {
             throw new IllegalArgumentException("Both matrices must have the same shape.");
         }
 
@@ -237,12 +237,12 @@ public class SpecializedOps {
      */
     public static void addIdentity( RowD1Matrix64F A , RowD1Matrix64F B , double alpha )
     {
-        if( A.cols != A.rows )
+        if( A.columnCount() != A.rowCount() )
             throw new IllegalArgumentException("A must be square");
-        if( B.cols != A.cols || B.rows != A.rows )
+        if( B.columnCount() != A.columnCount() || B.rowCount() != A.rowCount() )
             throw new IllegalArgumentException("B must be the same shape as A");
 
-        int n = A.cols;
+        int n = A.columnCount();
 
         int index = 0;
         for( int i = 0; i < n; i++ ) {
@@ -292,10 +292,10 @@ public class SpecializedOps {
      */
     public static DenseMatrix64F[] splitIntoVectors( RowD1Matrix64F A , boolean column )
     {
-        int w = column ? A.cols : A.rows;
+        int w = column ? A.columnCount() : A.rowCount();
 
-        int M = column ? A.rows : 1;
-        int N = column ? 1 : A.cols;
+        int M = column ? A.rowCount() : 1;
+        int N = column ? 1 : A.columnCount();
 
         int o = Math.max(M,N);
 
@@ -336,7 +336,7 @@ public class SpecializedOps {
         if( ret == null ) {
             ret = new DenseMatrix64F(numPivots, numPivots);
         } else {
-            if( ret.cols != numPivots || ret.rows != numPivots )
+            if( ret.columnCount() != numPivots || ret.rowCount() != numPivots )
                 throw new IllegalArgumentException("Unexpected matrix dimension");
             CommonOps.fill(ret, 0);
         }
@@ -364,7 +364,7 @@ public class SpecializedOps {
     public static double diagProd( RowD1Matrix64F T )
     {
         double prod = 1.0;
-        int N = Math.min(T.rows,T.cols);
+        int N = Math.min(T.rowCount(),T.columnCount());
         for( int i = 0; i < N; i++ ) {
             prod *= T.unsafe_get(i,i);
         }
@@ -385,7 +385,7 @@ public class SpecializedOps {
      */
     public static double qualityTriangular(boolean upper, D1Matrix64F T)
     {
-        int N = Math.min(T.rows,T.cols);
+        int N = Math.min(T.rowCount(),T.columnCount());
 
         // TODO make faster by just checking the upper triangular portion
         double max = CommonOps.elementMaxAbs(T);

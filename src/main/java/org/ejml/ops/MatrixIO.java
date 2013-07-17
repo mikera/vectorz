@@ -102,8 +102,8 @@ public class MatrixIO {
 
         fileStream.print(A.rowCount()+" ");
         fileStream.println(A.columnCount());
-        for( int i = 0; i < A.rows; i++ ) {
-            for( int j = 0; j < A.cols; j++ ) {
+        for( int i = 0; i < A.rowCount(); i++ ) {
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 fileStream.print(A.get(i,j)+" ");
             }
             fileStream.println();
@@ -167,12 +167,12 @@ public class MatrixIO {
     }
 
     public static void print(PrintStream out , Matrix64F mat , String format ) {
-        out.println("Type = dense , numRows = "+mat.rows+" , numCols = "+mat.cols);
+        out.println("Type = dense , numRows = "+mat.rowCount()+" , numCols = "+mat.columnCount());
 
         format += " ";
 
-        for( int y = 0; y < mat.rows; y++ ) {
-            for( int x = 0; x < mat.cols; x++ ) {
+        for( int y = 0; y < mat.rowCount(); y++ ) {
+            for( int x = 0; x < mat.columnCount(); x++ ) {
                 out.printf(format,mat.get(y,x));
             }
             out.println();

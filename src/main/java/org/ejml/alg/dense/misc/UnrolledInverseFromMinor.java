@@ -41,13 +41,13 @@ public class UnrolledInverseFromMinor {
             if( a > max ) max = a;
         }
 
-        if( mat.rows == 2 ) {
+        if( mat.rowCount() == 2 ) {
             inv2(mat,inv,1.0/max);
-        } else if( mat.rows == 3 ) {
+        } else if( mat.rowCount() == 3 ) {
             inv3(mat,inv,1.0/max);            
-        } else if( mat.rows == 4 ) {
+        } else if( mat.rowCount() == 4 ) {
             inv4(mat,inv,1.0/max);            
-        } else if( mat.rows == 5 ) {
+        } else if( mat.rowCount() == 5 ) {
             inv5(mat,inv,1.0/max);            
         } else {
             throw new IllegalArgumentException("Not supported");

@@ -117,7 +117,7 @@ public class TestBlockMultiplication {
         // offset it to make the test harder
         // randomize to see if its set or adding
         BlockMatrix64F subC = BlockMatrixOps.createRandom(BLOCK_LENGTH +h, BLOCK_LENGTH +w, -1,1,rand, BLOCK_LENGTH);
-        D1Submatrix64F C = new D1Submatrix64F(subC, BLOCK_LENGTH, subC.rows, BLOCK_LENGTH, subC.cols);
+        D1Submatrix64F C = new D1Submatrix64F(subC, BLOCK_LENGTH, subC.rowCount(), BLOCK_LENGTH, subC.columnCount());
 
         DenseMatrix64F rmC = multByExtract(operationType,A,B,C);
 

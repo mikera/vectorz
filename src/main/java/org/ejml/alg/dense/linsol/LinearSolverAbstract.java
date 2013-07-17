@@ -48,8 +48,8 @@ public abstract class LinearSolverAbstract implements LinearSolver<DenseMatrix64
 
     protected void _setA(DenseMatrix64F A) {
         this.A = A;
-        this.numRows = A.rows;
-        this.numCols = A.cols;
+        this.numRows = A.rowCount();
+        this.numCols = A.columnCount();
     }
 
     @Override

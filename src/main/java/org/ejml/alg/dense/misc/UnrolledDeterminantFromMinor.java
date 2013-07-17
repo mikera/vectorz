@@ -33,15 +33,15 @@ public class UnrolledDeterminantFromMinor {
     public static final int MAX = 6;
     
     public static double det( RowD1Matrix64F mat ) {
-        if( mat.rows == 2 ) {
+        if( mat.rowCount() == 2 ) {
             return det2(mat);
-        } else if( mat.rows == 3 ) {
+        } else if( mat.rowCount() == 3 ) {
             return det3(mat);            
-        } else if( mat.rows == 4 ) {
+        } else if( mat.rowCount() == 4 ) {
             return det4(mat);            
-        } else if( mat.rows == 5 ) {
+        } else if( mat.rowCount() == 5 ) {
             return det5(mat);            
-        } else if( mat.rows == 6 ) {
+        } else if( mat.rowCount() == 6 ) {
             return det6(mat);            
         }
         

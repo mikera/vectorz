@@ -67,7 +67,7 @@ public class BlockQrHouseHolderSolver implements LinearSolver<BlockMatrix64F> {
      */
     @Override
     public boolean setA(BlockMatrix64F A) {
-        if( A.rows < A.cols )
+        if( A.rowCount() < A.columnCount() )
             throw new IllegalArgumentException("Number of rows must be more than or equal to the number of columns.  " +
                     "Can't solve an underdetermined system.");
 
@@ -92,11 +92,11 @@ public class BlockQrHouseHolderSolver implements LinearSolver<BlockMatrix64F> {
     @Override
     public void solve(BlockMatrix64F B, BlockMatrix64F X) {
 
-        if( B.cols != X.cols )
+        if( B.columnCount() != X.columnCount() )
             throw new IllegalArgumentException("Columns of B and X do not match");
-        if( QR.cols != X.rows )
+        if( QR.columnCount() != X.rowCount() )
             throw new IllegalArgumentException("Rows in X do not match the columns in A");
-        if( QR.rows != B.rows )
+        if( QR.rowCount() != B.rowCount() )
             throw new IllegalArgumentException("Rows in B do not match the rows in A.");
         if( B.blockLength != QR.blockLength || X.blockLength != QR.blockLength )
             throw new IllegalArgumentException("All matrices must have the same block length.");
@@ -113,7 +113,7 @@ public class BlockQrHouseHolderSolver implements LinearSolver<BlockMatrix64F> {
         BlockMatrixOps.extractAligned(B,X);
 
         // extract a block aligned matrix
-        int M = Math.min(QR.rows,QR.cols);
+        int M = Math.min(QR.rowCount(),QR.columnCount());
 
         BlockTriangularSolver.solve(QR.blockLength,true,
                 new D1Submatrix64F(QR,0,M,0,M),new D1Submatrix64F(X),false);
@@ -127,8 +127,8 @@ public class BlockQrHouseHolderSolver implements LinearSolver<BlockMatrix64F> {
      */
     @Override
     public void invert(BlockMatrix64F A_inv) {
-        int M = Math.min(QR.rows,QR.cols);
-        if( A_inv.rows != M || A_inv.cols != M )
+        int M = Math.min(QR.rowCount(),QR.columnCount());
+        if( A_inv.rowCount() != M || A_inv.columnCount() != M )
             throw new IllegalArgumentException("A_inv must be square an have dimension "+M);
 
 

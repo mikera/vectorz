@@ -60,13 +60,13 @@ public class BlockMultiplication {
             for( int j = B.col0; j < B.col1; j += blockLength ) {
                 int widthB = Math.min( blockLength , B.col1 - j );
 
-                int indexC = (i-A.row0+C.row0)*C.original.cols + (j-B.col0+C.col0)*heightA;
+                int indexC = (i-A.row0+C.row0)*C.original.columnCount() + (j-B.col0+C.col0)*heightA;
 
                 for( int k = A.col0; k < A.col1; k += blockLength ) {
                     int widthA = Math.min( blockLength , A.col1 - k );
 
-                    int indexA = i*A.original.cols + k*heightA;
-                    int indexB = (k-A.col0+B.row0)*B.original.cols + j*widthA;
+                    int indexA = i*A.original.columnCount() + k*heightA;
+                    int indexB = (k-A.col0+B.row0)*B.original.columnCount() + j*widthA;
 
                     if( k == A.col0 )
                         blockMultSet(A.original.data,B.original.data,C.original.data,
@@ -108,13 +108,13 @@ public class BlockMultiplication {
             for( int j = B.col0; j < B.col1; j += blockLength ) {
                 int widthB = Math.min( blockLength , B.col1 - j );
 
-                int indexC = (i-A.row0+C.row0)*C.original.cols + (j-B.col0+C.col0)*heightA;
+                int indexC = (i-A.row0+C.row0)*C.original.columnCount() + (j-B.col0+C.col0)*heightA;
 
                 for( int k = A.col0; k < A.col1; k += blockLength ) {
                     int widthA = Math.min( blockLength , A.col1 - k );
 
-                    int indexA = i*A.original.cols + k*heightA;
-                    int indexB = (k-A.col0+B.row0)*B.original.cols + j*widthA;
+                    int indexA = i*A.original.columnCount() + k*heightA;
+                    int indexB = (k-A.col0+B.row0)*B.original.columnCount() + j*widthA;
 
                     blockMultPlus(A.original.data,B.original.data,C.original.data,
                             indexA,indexB,indexC,heightA,widthA,widthB);
@@ -152,13 +152,13 @@ public class BlockMultiplication {
             for( int j = B.col0; j < B.col1; j += blockLength ) {
                 int widthB = Math.min( blockLength , B.col1 - j );
 
-                int indexC = (i-A.row0+C.row0)*C.original.cols + (j-B.col0+C.col0)*heightA;
+                int indexC = (i-A.row0+C.row0)*C.original.columnCount() + (j-B.col0+C.col0)*heightA;
 
                 for( int k = A.col0; k < A.col1; k += blockLength ) {
                     int widthA = Math.min( blockLength , A.col1 - k );
 
-                    int indexA = i*A.original.cols + k*heightA;
-                    int indexB = (k-A.col0+B.row0)*B.original.cols + j*widthA;
+                    int indexA = i*A.original.columnCount() + k*heightA;
+                    int indexB = (k-A.col0+B.row0)*B.original.columnCount() + j*widthA;
 
                     blockMultMinus(A.original.data,B.original.data,C.original.data,
                             indexA,indexB,indexC,heightA,widthA,widthB);
@@ -219,13 +219,13 @@ public class BlockMultiplication {
             for( int j = B.col0; j < B.col1; j += blockLength ) {
                 int widthB = Math.min( blockLength , B.col1 - j );
 
-                int indexC = (i-A.col0+C.row0)*C.original.cols + (j-B.col0+C.col0)*widthA;
+                int indexC = (i-A.col0+C.row0)*C.original.columnCount() + (j-B.col0+C.col0)*widthA;
 
                 for( int k = A.row0; k < A.row1; k += blockLength ) {
                     int heightA = Math.min( blockLength , A.row1 - k );
 
-                    int indexA = k*A.original.cols + i*heightA;
-                    int indexB = (k-A.row0+B.row0)*B.original.cols + j*heightA;
+                    int indexA = k*A.original.columnCount() + i*heightA;
+                    int indexB = (k-A.row0+B.row0)*B.original.columnCount() + j*heightA;
 
                     if( k == A.row0 )
                         blockMultSetTransA(A.original.data,B.original.data,C.original.data,
@@ -248,13 +248,13 @@ public class BlockMultiplication {
             for( int j = B.col0; j < B.col1; j += blockLength ) {
                 int widthB = Math.min( blockLength , B.col1 - j );
 
-                int indexC = (i-A.col0+C.row0)*C.original.cols + (j-B.col0+C.col0)*widthA;
+                int indexC = (i-A.col0+C.row0)*C.original.columnCount() + (j-B.col0+C.col0)*widthA;
 
                 for( int k = A.row0; k < A.row1; k += blockLength ) {
                     int heightA = Math.min( blockLength , A.row1 - k );
 
-                    int indexA = k*A.original.cols + i*heightA;
-                    int indexB = (k-A.row0+B.row0)*B.original.cols + j*heightA;
+                    int indexA = k*A.original.columnCount() + i*heightA;
+                    int indexB = (k-A.row0+B.row0)*B.original.columnCount() + j*heightA;
 
                     blockMultPlusTransA(A.original.data,B.original.data,C.original.data,
                             indexA,indexB,indexC,heightA,widthA,widthB);
@@ -273,13 +273,13 @@ public class BlockMultiplication {
             for( int j = B.col0; j < B.col1; j += blockLength ) {
                 int widthB = Math.min( blockLength , B.col1 - j );
 
-                int indexC = (i-A.col0+C.row0)*C.original.cols + (j-B.col0+C.col0)*widthA;
+                int indexC = (i-A.col0+C.row0)*C.original.columnCount() + (j-B.col0+C.col0)*widthA;
 
                 for( int k = A.row0; k < A.row1; k += blockLength ) {
                     int heightA = Math.min( blockLength , A.row1 - k );
 
-                    int indexA = k*A.original.cols + i*heightA;
-                    int indexB = (k-A.row0+B.row0)*B.original.cols + j*heightA;
+                    int indexA = k*A.original.columnCount() + i*heightA;
+                    int indexB = (k-A.row0+B.row0)*B.original.columnCount() + j*heightA;
 
                     blockMultMinusTransA(A.original.data,B.original.data,C.original.data,
                             indexA,indexB,indexC,heightA,widthA,widthB);
@@ -316,13 +316,13 @@ public class BlockMultiplication {
             for( int j = B.row0; j < B.row1; j += blockLength ) {
                 int widthC = Math.min( blockLength , B.row1 - j );
 
-                int indexC = (i-A.row0+C.row0)*C.original.cols + (j-B.row0+C.col0)*heightA;
+                int indexC = (i-A.row0+C.row0)*C.original.columnCount() + (j-B.row0+C.col0)*heightA;
 
                 for( int k = A.col0; k < A.col1; k += blockLength ) {
                     int widthA = Math.min( blockLength , A.col1 - k );
 
-                    int indexA = i*A.original.cols + k*heightA;
-                    int indexB = j*B.original.cols + (k-A.col0+B.col0)*widthC;
+                    int indexA = i*A.original.columnCount() + k*heightA;
+                    int indexB = j*B.original.columnCount() + (k-A.col0+B.col0)*widthC;
 
                     if( k == A.col0 )
                         blockMultSetTransB(A.original.data,B.original.data,C.original.data,

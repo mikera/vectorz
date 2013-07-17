@@ -382,7 +382,7 @@ public class TestSingularOps {
     }
 
     public void rank_and_nullity( DenseMatrix64F A , int rank , int nullity ) {
-        SingularValueDecomposition<DenseMatrix64F> alg = DecompositionFactory.svd(A.rows,A.cols,true,true,false);
+        SingularValueDecomposition<DenseMatrix64F> alg = DecompositionFactory.svd(A.rowCount(),A.columnCount(),true,true,false);
         assertTrue(alg.decompose(A));
 
         assertEquals(rank,SingularOps.rank(alg, UtilEjml.EPS));

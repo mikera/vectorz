@@ -92,13 +92,13 @@ public abstract class LUDecompositionBase
     @Override
     public DenseMatrix64F getLower( DenseMatrix64F lower )
     {
-        int numRows = LU.rows;
-        int numCols = LU.rows < LU.cols ? LU.rows : LU.cols;
+        int numRows = LU.rowCount();
+        int numCols = LU.rowCount() < LU.columnCount() ? LU.rowCount() : LU.columnCount();
 
         if( lower == null ) {
             lower = new DenseMatrix64F(numRows,numCols);
         } else {
-            if( lower.cols != numCols || lower.rows != numRows )
+            if( lower.columnCount() != numCols || lower.rowCount() != numRows )
                 throw new IllegalArgumentException("Unexpected matrix dimension");
             CommonOps.fill(lower, 0);
         }
@@ -129,13 +129,13 @@ public abstract class LUDecompositionBase
     @Override
     public DenseMatrix64F getUpper( DenseMatrix64F upper )
     {
-        int numRows = LU.rows < LU.cols ? LU.rows : LU.cols;
-        int numCols = LU.cols;
+        int numRows = LU.rowCount() < LU.columnCount() ? LU.rowCount() : LU.columnCount();
+        int numCols = LU.columnCount();
 
         if( upper == null ) {
             upper = new DenseMatrix64F(numRows, numCols);
         } else {
-            if( upper.cols != numCols || upper.rows != numRows )
+            if( upper.columnCount() != numCols || upper.rowCount() != numRows )
                 throw new IllegalArgumentException("Unexpected matrix dimension");
             CommonOps.fill(upper, 0);
         }
@@ -150,16 +150,16 @@ public abstract class LUDecompositionBase
     }
 
     public DenseMatrix64F getPivot( DenseMatrix64F pivot ) {
-        return SpecializedOps.pivotMatrix(pivot, this.pivot, LU.rows, false);
+        return SpecializedOps.pivotMatrix(pivot, this.pivot, LU.rowCount(), false);
     }
 
     protected void decomposeCommonInit(DenseMatrix64F a) {
-        if( a.rows > maxWidth || a.cols > maxWidth ) {
-            setExpectedMaxSize(a.rows,a.cols);
+        if( a.rowCount() > maxWidth || a.columnCount() > maxWidth ) {
+            setExpectedMaxSize(a.rowCount(),a.columnCount());
         }
 
-        m = a.rows;
-        n = a.cols;
+        m = a.rowCount();
+        n = a.columnCount();
 
         LU.setReshape(a);
         for (int i = 0; i < m; i++) {

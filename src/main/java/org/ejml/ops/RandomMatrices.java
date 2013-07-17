@@ -395,12 +395,12 @@ public class RandomMatrices {
      * @param rand Random number generator.
      */
     public static void createSymmetric(DenseMatrix64F A, double min, double max, Random rand) {
-        if( A.rows != A.cols )
+        if( A.rowCount() != A.columnCount() )
             throw new IllegalArgumentException("A must be a square matrix");
 
         double range = max-min;
 
-        int length = A.rows;
+        int length = A.rowCount();
 
         for( int i = 0; i < length; i++ ) {
             for( int j = i; j < length; j++ ) {

@@ -59,7 +59,7 @@ public class TestQRDecompositionHouseholderTran extends GenericQrCheck {
         DenseMatrix64F Q = alg.getQ(null,false);
         DenseMatrix64F B = RandomMatrices.createRandom(5,2,rand);
 
-        DenseMatrix64F expected = new DenseMatrix64F(B.rows,B.cols);
+        DenseMatrix64F expected = new DenseMatrix64F(B.rowCount(),B.columnCount());
         CommonOps.mult(Q,B,expected);
 
         alg.applyQ(B);
@@ -81,7 +81,7 @@ public class TestQRDecompositionHouseholderTran extends GenericQrCheck {
         DenseMatrix64F Q = alg.getQ(null,false);
         DenseMatrix64F B = RandomMatrices.createRandom(5,2,rand);
 
-        DenseMatrix64F expected = new DenseMatrix64F(B.rows,B.cols);
+        DenseMatrix64F expected = new DenseMatrix64F(B.rowCount(),B.columnCount());
         CommonOps.multTransA(Q,B,expected);
 
         alg.applyTranQ(B);
@@ -195,7 +195,7 @@ public class TestQRDecompositionHouseholderTran extends GenericQrCheck {
         }
 
         public void updateA( int w , double u[] , double gamma , double tau ) {
-            System.arraycopy(u,0,this.QR.data,w*QR.rows,u.length);
+            System.arraycopy(u,0,this.QR.data,w*QR.rowCount(),u.length);
             this.gamma = gamma;
             this.tau = tau;
 

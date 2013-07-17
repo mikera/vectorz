@@ -33,7 +33,7 @@ public class BlockInnerCholesky {
     public static boolean upper( D1Submatrix64F T )
     {
         int n = T.row1-T.row0;
-        int indexT = T.row0* T.original.cols + T.col0*n;
+        int indexT = T.row0* T.original.columnCount() + T.col0*n;
 
         return upper(T.original.data,indexT,n);
     }
@@ -41,7 +41,7 @@ public class BlockInnerCholesky {
     public static boolean lower( D1Submatrix64F T )
     {
         int n = T.row1-T.row0;
-        int indexT = T.row0* T.original.cols + T.col0*n;
+        int indexT = T.row0* T.original.columnCount() + T.col0*n;
 
         return lower(T.original.data,indexT,n);
     }

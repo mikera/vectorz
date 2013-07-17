@@ -38,11 +38,11 @@ public class TransposeAlgs {
     public static void square( RowD1Matrix64F mat )
     {
         int index = 1;
-        int indexEnd = mat.cols;
-        for( int i = 0; i < mat.rows;
-             i++ , index += i+1 , indexEnd += mat.cols ) {
-            int indexOther = (i+1)*mat.cols + i;
-            for( ; index < indexEnd; index++, indexOther += mat.cols) {
+        int indexEnd = mat.columnCount();
+        for( int i = 0; i < mat.rowCount();
+             i++ , index += i+1 , indexEnd += mat.columnCount() ) {
+            int indexOther = (i+1)*mat.columnCount() + i;
+            for( ; index < indexEnd; index++, indexOther += mat.columnCount()) {
                 double val = mat.get( index );
                 mat.set( index , mat.get( indexOther ));
                 mat.set( indexOther , val );
@@ -65,14 +65,14 @@ public class TransposeAlgs {
     public static void block( RowD1Matrix64F A , RowD1Matrix64F A_tran ,
                               final int blockLength )
     {
-        for( int i = 0; i < A.rows; i += blockLength ) {
-            int blockHeight = Math.min( blockLength , A.rows - i);
+        for( int i = 0; i < A.rowCount(); i += blockLength ) {
+            int blockHeight = Math.min( blockLength , A.rowCount() - i);
 
-            int indexSrc = i*A.cols;
+            int indexSrc = i*A.columnCount();
             int indexDst = i;
 
-            for( int j = 0; j < A.cols; j += blockLength ) {
-                int blockWidth = Math.min( blockLength , A.cols - j);
+            for( int j = 0; j < A.columnCount(); j += blockLength ) {
+                int blockWidth = Math.min( blockLength , A.columnCount() - j);
 
 //                int indexSrc = i*A.numCols + j;
 //                int indexDst = j*A_tran.numCols + i;
@@ -84,11 +84,11 @@ public class TransposeAlgs {
                     int rowDst = indexDst;
                     int end = rowDst + blockHeight;
 //                    for( int k = 0; k < blockHeight; k++ , rowSrc += A.numCols ) {
-                    for( ; rowDst < end; rowSrc += A.cols ) {
+                    for( ; rowDst < end; rowSrc += A.columnCount() ) {
                         // faster to write in sequence than to read in sequence
                         A_tran.set( rowDst++ , A.get( rowSrc ));
                     }
-                    indexDst += A_tran.cols;
+                    indexDst += A_tran.columnCount();
                 }
             }
         }
@@ -103,13 +103,13 @@ public class TransposeAlgs {
     public static void standard( RowD1Matrix64F A, RowD1Matrix64F A_tran)
     {
         int index = 0;
-        for( int i = 0; i < A_tran.rows; i++ ) {
+        for( int i = 0; i < A_tran.rowCount(); i++ ) {
             int index2 = i;
 
-            int end = index + A_tran.cols;
+            int end = index + A_tran.columnCount();
             while( index < end ) {
                 A_tran.set( index++ , A.get( index2 ));
-                index2 += A.cols;
+                index2 += A.columnCount();
             }
         }
     }

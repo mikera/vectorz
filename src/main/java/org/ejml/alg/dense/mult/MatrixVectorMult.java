@@ -61,18 +61,18 @@ public class MatrixVectorMult {
      */
     public static void mult( RowD1Matrix64F a, D1Matrix64F b, D1Matrix64F c)
     {
-        if( c.cols != 1 ) {
+        if( c.columnCount() != 1 ) {
             throw new MatrixDimensionException("C is not a column vector");
-        } else if( c.rows != a.rows ) {
+        } else if( c.rowCount() != a.rowCount() ) {
             throw new MatrixDimensionException("C is not the expected length");
         }
         
-        if( b.rows == 1 ) {
-            if( a.cols != b.cols ) {
+        if( b.rowCount() == 1 ) {
+            if( a.columnCount() != b.columnCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
-        } else if( b.cols == 1 ) {
-            if( a.cols != b.rows ) {
+        } else if( b.columnCount() == 1 ) {
+            if( a.columnCount() != b.rowCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
         } else {
@@ -82,10 +82,10 @@ public class MatrixVectorMult {
         int indexA = 0;
         int cIndex = 0;
         double b0 = b.get(0);
-        for( int i = 0; i < a.rows; i++ ) {
+        for( int i = 0; i < a.rowCount(); i++ ) {
             double total = a.get(indexA++) * b0;
 
-            for( int j = 1; j < a.cols; j++ ) {
+            for( int j = 1; j < a.columnCount(); j++ ) {
                 total += a.get(indexA++) * b.get(j);
             }
 
@@ -113,17 +113,17 @@ public class MatrixVectorMult {
     public static void multAdd( RowD1Matrix64F A , D1Matrix64F B , D1Matrix64F C )
     {
 
-        if( C.cols != 1 ) {
+        if( C.columnCount() != 1 ) {
             throw new MatrixDimensionException("C is not a column vector");
-        } else if( C.rows != A.rows ) {
+        } else if( C.rowCount() != A.rowCount() ) {
             throw new MatrixDimensionException("C is not the expected length");
         }
-        if( B.rows == 1 ) {
-            if( A.cols != B.cols ) {
+        if( B.rowCount() == 1 ) {
+            if( A.columnCount() != B.columnCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
-        } else if( B.cols == 1 ) {
-            if( A.cols != B.rows ) {
+        } else if( B.columnCount() == 1 ) {
+            if( A.columnCount() != B.rowCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
         } else {
@@ -132,10 +132,10 @@ public class MatrixVectorMult {
 
         int indexA = 0;
         int cIndex = 0;
-        for( int i = 0; i < A.rows; i++ ) {
+        for( int i = 0; i < A.rowCount(); i++ ) {
             double total = A.get(indexA++) * B.get(0);
 
-            for( int j = 1; j < A.cols; j++ ) {
+            for( int j = 1; j < A.columnCount(); j++ ) {
                 total += A.get(indexA++) * B.get(j);
             }
 
@@ -168,17 +168,17 @@ public class MatrixVectorMult {
      */
     public static void multTransA_small( RowD1Matrix64F A , D1Matrix64F B , D1Matrix64F C )
     {
-        if( C.cols != 1 ) {
+        if( C.columnCount() != 1 ) {
             throw new MatrixDimensionException("C is not a column vector");
-        } else if( C.rows != A.cols ) {
+        } else if( C.rowCount() != A.columnCount() ) {
             throw new MatrixDimensionException("C is not the expected length");
         }
-        if( B.rows == 1 ) {
-            if( A.rows != B.cols ) {
+        if( B.rowCount() == 1 ) {
+            if( A.rowCount() != B.columnCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
-        } else if( B.cols == 1 ) {
-            if( A.rows != B.rows ) {
+        } else if( B.columnCount() == 1 ) {
+            if( A.rowCount() != B.rowCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
         } else {
@@ -186,13 +186,13 @@ public class MatrixVectorMult {
         }
 
         int cIndex = 0;
-        for( int i = 0; i < A.cols; i++ ) {
+        for( int i = 0; i < A.columnCount(); i++ ) {
             double total = 0.0;
 
             int indexA = i;
-            for( int j = 0; j < A.rows; j++ ) {
+            for( int j = 0; j < A.rowCount(); j++ ) {
                 total += A.get(indexA) * B.get(j);
-                indexA += A.cols;
+                indexA += A.columnCount();
             }
 
             C.set(cIndex++ , total);
@@ -209,17 +209,17 @@ public class MatrixVectorMult {
      */
     public static void multTransA_reorder( RowD1Matrix64F A , D1Matrix64F B , D1Matrix64F C )
     {
-        if( C.cols != 1 ) {
+        if( C.columnCount() != 1 ) {
             throw new MatrixDimensionException("C is not a column vector");
-        } else if( C.rows != A.cols ) {
+        } else if( C.rowCount() != A.columnCount() ) {
             throw new MatrixDimensionException("C is not the expected length");
         }
-        if( B.rows == 1 ) {
-            if( A.rows != B.cols ) {
+        if( B.rowCount() == 1 ) {
+            if( A.rowCount() != B.columnCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
-        } else if( B.cols == 1 ) {
-            if( A.rows != B.rows ) {
+        } else if( B.columnCount() == 1 ) {
+            if( A.rowCount() != B.rowCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
         } else {
@@ -227,14 +227,14 @@ public class MatrixVectorMult {
         }
 
         double B_val = B.get(0);
-        for( int i = 0; i < A.cols; i++ ) {
+        for( int i = 0; i < A.columnCount(); i++ ) {
             C.set( i , A.get(i) * B_val );
         }
 
-        int indexA = A.cols;
-        for( int i = 1; i < A.rows; i++ ) {
+        int indexA = A.columnCount();
+        for( int i = 1; i < A.rowCount(); i++ ) {
             B_val = B.get(i);
-            for( int j = 0; j < A.cols; j++ ) {
+            for( int j = 0; j < A.columnCount(); j++ ) {
                 C.plus(  j , A.get(indexA++) * B_val );
             }
         }
@@ -263,17 +263,17 @@ public class MatrixVectorMult {
      */
     public static void multAddTransA_small( RowD1Matrix64F A , D1Matrix64F B , D1Matrix64F C )
     {
-        if( C.cols != 1 ) {
+        if( C.columnCount() != 1 ) {
             throw new MatrixDimensionException("C is not a column vector");
-        } else if( C.rows != A.cols ) {
+        } else if( C.rowCount() != A.columnCount() ) {
             throw new MatrixDimensionException("C is not the expected length");
         }
-        if( B.rows == 1 ) {
-            if( A.rows != B.cols ) {
+        if( B.rowCount() == 1 ) {
+            if( A.rowCount() != B.columnCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
-        } else if( B.cols == 1 ) {
-            if( A.rows != B.rows ) {
+        } else if( B.columnCount() == 1 ) {
+            if( A.rowCount() != B.rowCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
         } else {
@@ -281,13 +281,13 @@ public class MatrixVectorMult {
         }
 
         int cIndex = 0;
-        for( int i = 0; i < A.cols; i++ ) {
+        for( int i = 0; i < A.columnCount(); i++ ) {
             double total = 0.0;
 
             int indexA = i;
-            for( int j = 0; j < A.rows; j++ ) {
+            for( int j = 0; j < A.rowCount(); j++ ) {
                 total += A.get(indexA) * B.get(j);
-                indexA += A.cols;
+                indexA += A.columnCount();
             }
 
             C.plus( cIndex++ , total );
@@ -304,17 +304,17 @@ public class MatrixVectorMult {
      */
     public static void multAddTransA_reorder( RowD1Matrix64F A , D1Matrix64F B , D1Matrix64F C )
     {
-        if( C.cols != 1 ) {
+        if( C.columnCount() != 1 ) {
             throw new MatrixDimensionException("C is not a column vector");
-        } else if( C.rows != A.cols ) {
+        } else if( C.rowCount() != A.columnCount() ) {
             throw new MatrixDimensionException("C is not the expected length");
         }
-        if( B.rows == 1 ) {
-            if( A.rows != B.cols ) {
+        if( B.rowCount() == 1 ) {
+            if( A.rowCount() != B.columnCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
-        } else if( B.cols == 1 ) {
-            if( A.rows != B.rows ) {
+        } else if( B.columnCount() == 1 ) {
+            if( A.rowCount() != B.rowCount() ) {
                 throw new MatrixDimensionException("A and B are not compatible");
             }
         } else {
@@ -322,9 +322,9 @@ public class MatrixVectorMult {
         }
 
         int indexA = 0;
-        for( int j = 0; j < A.rows; j++ ) {
+        for( int j = 0; j < A.rowCount(); j++ ) {
             double B_val = B.get(j);
-            for( int i = 0; i < A.cols; i++ ) {
+            for( int i = 0; i < A.columnCount(); i++ ) {
                 C.plus( i , A.get(indexA++) * B_val );
             }
         }

@@ -49,12 +49,12 @@ public class LinearSolverQrpHouseCol extends BaseLinearSolverQrp {
 
     @Override
     public void solve(DenseMatrix64F B, DenseMatrix64F X) {
-        if( X.rows != numCols )
+        if( X.rowCount() != numCols )
             throw new IllegalArgumentException("Unexpected dimensions for X");
-        else if( B.rows != numRows || B.cols != X.cols )
+        else if( B.rowCount() != numRows || B.columnCount() != X.columnCount() )
             throw new IllegalArgumentException("Unexpected dimensions for B");
 
-        int BnumCols = B.cols;
+        int BnumCols = B.columnCount();
 
         // get the pivots and transpose them
         int pivots[] = decomposition.getPivots();

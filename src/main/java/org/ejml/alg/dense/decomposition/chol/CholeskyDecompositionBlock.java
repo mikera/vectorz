@@ -92,17 +92,17 @@ public class CholeskyDecompositionBlock extends CholeskyDecompositionCommon {
             numBlocks++;
         }
 
-        B.cols = n;
+        B.setColumnCount(n);
 
         for( int i = 0; i < numBlocks; i++ ) {
-            B.cols -= blockWidth;
+            B.setColumnCount(B.columnCount() - blockWidth);
 
-            if( B.cols > 0 ) {
+            if( B.columnCount() > 0 ) {
                 // apply cholesky to the current block
-                if( !chol.decompose(T,(i*blockWidth)* T.cols + i*blockWidth,blockWidth) )  return false;
+                if( !chol.decompose(T,(i*blockWidth)* T.columnCount() + i*blockWidth,blockWidth) )  return false;
 
-                int indexSrc = i*blockWidth* T.cols + (i+1)*blockWidth;
-                int indexDst = (i+1)*blockWidth* T.cols + i*blockWidth;
+                int indexSrc = i*blockWidth* T.columnCount() + (i+1)*blockWidth;
+                int indexDst = (i+1)*blockWidth* T.columnCount() + i*blockWidth;
 
                 // B = L^(-1) * B
                 solveL_special(chol.getL().data, T,indexSrc,indexDst,B);
@@ -113,7 +113,7 @@ public class CholeskyDecompositionBlock extends CholeskyDecompositionCommon {
                 symmRankTranA_sub(B, T,indexL);
             } else {
                 int width = remainder > 0 ? remainder : blockWidth;
-                if( !chol.decompose(T,(i*blockWidth)* T.cols + i*blockWidth,width) )  return false;
+                if( !chol.decompose(T,(i*blockWidth)* T.columnCount() + i*blockWidth,width) )  return false;
             }
         }
 
@@ -153,8 +153,8 @@ public class CholeskyDecompositionBlock extends CholeskyDecompositionCommon {
         final double dataSrc[] = b_src.data;
 
         final double b[]= B.data;
-        final int m = B.rows;
-        final int n = B.cols;
+        final int m = B.rowCount();
+        final int n = B.columnCount();
         final int widthL = m;
 
 //        for( int j = 0; j < n; j++ ) {
@@ -175,7 +175,7 @@ public class CholeskyDecompositionBlock extends CholeskyDecompositionCommon {
             
             //for( int i = 0; i < widthL; i++
             for( int i = 0; i < widthL; i++ ,  indexb += n, rowL += widthL ) {
-                double sum = dataSrc[indexSrc+i*b_src.cols+j];
+                double sum = dataSrc[indexSrc+i*b_src.columnCount()+j];
 
                 int indexL = rowL;
                 int endL = indexL + i;
@@ -185,7 +185,7 @@ public class CholeskyDecompositionBlock extends CholeskyDecompositionCommon {
                     sum -= L[indexL++]* b[indexB];
                 }
                 double val = sum / L[i*widthL+i];
-                dataSrc[indexDst+j*b_src.cols+i] = val;
+                dataSrc[indexDst+j*b_src.columnCount()+i] = val;
                 b[indexb] = val;
             }
         }
@@ -222,12 +222,12 @@ public class CholeskyDecompositionBlock extends CholeskyDecompositionCommon {
 //            }
 //        }
 
-        final int strideC = c.cols + 1;
-        for( int i = 0; i < a.cols; i++ ) {
+        final int strideC = c.columnCount() + 1;
+        for( int i = 0; i < a.columnCount(); i++ ) {
             int indexA = i;
-            int endR = a.cols;
+            int endR = a.columnCount();
 
-            for( int k = 0; k < a.rows; k++ , indexA += a.cols , endR += a.cols) {
+            for( int k = 0; k < a.rowCount(); k++ , indexA += a.columnCount() , endR += a.columnCount()) {
                 int indexC = startIndexC;
                 final double valA = dataA[indexA];
                 int indexR = indexA;

@@ -125,13 +125,13 @@ public class EigenPowerMethod {
 
 
     private void initPower(DenseMatrix64F A ) {
-        if( A.rows != A.cols )
+        if( A.rowCount() != A.columnCount() )
             throw new IllegalArgumentException("A must be a square matrix.");
 
         if( seed != null ) {
             q0.set(seed);
         } else {
-            for( int i = 0; i < A.rows; i++ ) {
+            for( int i = 0; i < A.rowCount(); i++ ) {
                 q0.data[i] = 1;
             }
         }
@@ -147,7 +147,7 @@ public class EigenPowerMethod {
     private boolean checkConverged(DenseMatrix64F A) {
         double worst = 0;
         double worst2 = 0;
-        for( int j = 0; j < A.rows; j++ ) {
+        for( int j = 0; j < A.rowCount(); j++ ) {
             double val = Math.abs(q2.data[j] - q0.data[j]);
             if( val > worst ) worst = val;
             val = Math.abs(q2.data[j] + q0.data[j]);
@@ -195,7 +195,7 @@ public class EigenPowerMethod {
     public boolean computeShiftInvert( DenseMatrix64F A , double alpha ) {
         initPower(A);
 
-        LinearSolver solver = LinearSolverFactory.linear(A.cols);
+        LinearSolver solver = LinearSolverFactory.linear(A.columnCount());
 
         SpecializedOps.addIdentity(A,B,-alpha);
         solver.setA(B);

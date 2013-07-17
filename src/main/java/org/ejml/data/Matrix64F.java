@@ -33,11 +33,11 @@ public abstract class Matrix64F implements Serializable {
     /**
      * Number of rows in the matrix.
      */
-    public int rows;
+    protected int rows;
     /**
      * Number of columns in the matrix.
      */
-    public int cols;
+    protected int cols;
 
     /**
      * <p>
@@ -201,4 +201,12 @@ public abstract class Matrix64F implements Serializable {
     public abstract <T extends Matrix64F> T copy();
 
     public abstract void print();
+
+	public void setRowCount(int rows) {
+		this.rows = rows;
+	}
+
+	public void setColumnCount(int cols) {
+		this.cols = cols;
+	}
 }
