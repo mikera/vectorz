@@ -23,6 +23,12 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 		return new PermutationMatrix(Indexz.createSequence(length));
 	}
 	
+	public static PermutationMatrix createSwap(int i, int j, int length) {
+		PermutationMatrix p=createIdentity(length);
+		p.swapRows(i, j);
+		return p;
+	}
+	
 	public static PermutationMatrix create(Index rowPermutations) {
 		return new PermutationMatrix(rowPermutations.clone());
 	}
@@ -64,10 +70,26 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public boolean isIdentity() {
+		int[] data=perm.data;
 		for (int i=0; i<size; i++) {
-			if (perm.get(i)!=i) return false;
+			if (data[i]!=i) return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean isDiagonal() {
+		return isIdentity();
+	}
+	
+	@Override
+	public boolean isUpperTriangular() {
+		return isIdentity();
+	}
+	
+	@Override
+	public boolean isLowerTriangular() {
+		return isIdentity();
 	}
 	
 	@Override
@@ -91,8 +113,22 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public double elementSquaredSum() {
+		return size;
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return size;
+	}
+	
+	@Override
+	public double trace() {
+		int result=0;
+		for (int i=0; i<size; i++) {
+			if (perm.data[i]==i) result++;
+		}
+		return result;
 	}
 	
 	@Override
@@ -112,6 +148,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public void set(int row, int column, double value) {
+		if (get(row,column)==value) return;
 		throw new UnsupportedOperationException("Can't arbitrarily mutate a permutation matrix");
 	}
 	
@@ -176,12 +213,6 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 		}
 		return result;
 	}
-
-	@Override
-	public PermutationMatrix exactClone() {
-		return new PermutationMatrix(perm.clone());
-	}
-
 	
 	@Override
 	public void validate() {
@@ -194,5 +225,8 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 		return 1.0/size;
 	}
 
-
+	@Override
+	public PermutationMatrix exactClone() {
+		return new PermutationMatrix(perm.clone());
+	}
 }

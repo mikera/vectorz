@@ -591,6 +591,7 @@ public class TestMatrixx {
 		
 		doGenericTests(PermutationMatrix.create(0,1,2));
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(10)));
 
 	}
 }
