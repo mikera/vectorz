@@ -78,6 +78,8 @@ public class TestDecomposition {
 		AMatrix v=ms[2];
 		
 		// we are testing that A = USV*
-		assertTrue(u.innerProduct(s.innerProduct(v.getTranspose())).epsilonEquals(a));
+		AMatrix usvt=u.innerProduct(s.innerProduct(v.getTranspose()));
+		//assertEquals(a,usvt);
+		assertTrue(usvt.epsilonEquals(a));
 	}
 }
