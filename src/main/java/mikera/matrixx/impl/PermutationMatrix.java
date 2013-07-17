@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
@@ -8,7 +9,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.VectorzException;
 
-public final class PermutationMatrix extends AMatrix {
+public final class PermutationMatrix extends AMatrix implements ISparse {
 	private final Index perm;
 	private final int size;
 	
@@ -190,6 +191,11 @@ public final class PermutationMatrix extends AMatrix {
 	public void validate() {
 		super.validate();
 		if (size!=perm.length()) throw new VectorzException("Whoops!");
+	}
+
+	@Override
+	public double density() {
+		return 1.0/size;
 	}
 
 
