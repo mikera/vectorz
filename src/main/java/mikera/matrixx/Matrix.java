@@ -177,6 +177,19 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
+	public void swapColumns(int i, int j) {
+		if (i == j) return;
+		int rc = rowCount();
+		int cc = columnCount();
+		for (int k = 0; k < rc; k++) {
+			int x=k*cc;
+			double t = data[i+x];
+			data[i+x]=data[j+x];
+			data[j+x]=t;
+		}
+	}
+	
+	@Override
 	public void multiplyRow(int i, double factor) {
 		int offset=i*columns;
 		for (int j=0; j<columns; j++) {

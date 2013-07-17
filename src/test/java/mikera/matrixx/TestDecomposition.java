@@ -71,7 +71,7 @@ public class TestDecomposition {
 	
 	@Test public void testSVD() {
 		
-		AMatrix a=Matrixx.createRandomMatrix(4, 3);
+		AMatrix a=Matrixx.createRandomMatrix(6, 3);
 		AMatrix[] ms=ThinSVD.decompose(a);
 		
 		AMatrix u=ms[0];

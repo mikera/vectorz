@@ -447,9 +447,9 @@ public class ThinSVD {
                 break;
 
             case 4: {
-
+            	double skk=s.get(k,k);
                 if (s.get(k, k) <= 0.0) {
-                    s.set(k, k, s.get(k, k) < 0.0 ? -s.get(k, k) : 0.0);
+                    s.set(k, k, -skk);
                     for (int i = 0; i <= pp; i++) {
                         v.set(i,  k, -v.get(i,k));
                     }
@@ -466,19 +466,21 @@ public class ThinSVD {
                     s.set(k + 1, k + 1, t);
 
                     if (k < cc - 1) {
-                        for (int i = 0; i < cc; i++) {
-                            t = v.get(i, k + 1);
-                            v.set(i, k + 1, v.get(i, k));
-                            v.set(i, k, t);
-                        }
+                    	v.swapColumns(k, k+1);
+//                        for (int i = 0; i < cc; i++) {
+//                            t = v.get(i, k + 1);
+//                            v.set(i, k + 1, v.get(i, k));
+//                            v.set(i, k, t);
+//                        }
                     }
 
                     if (k < rc - 1) {
-                        for (int i = 0; i < rc; i++) {
-                            t = u.get(i, k + 1);
-                            u.set(i, k + 1, u.get(i, k));
-                            u.set(i, k, t);
-                        }
+                    	u.swapColumns(k, k+1);
+//                        for (int i = 0; i < rc; i++) {
+//                            t = u.get(i, k + 1);
+//                            u.set(i, k + 1, u.get(i, k));
+//                            u.set(i, k, t);
+//                        }
                     }
 
                     k++;
