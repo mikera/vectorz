@@ -13,6 +13,7 @@ public final class PermutationMatrix extends AMatrix {
 	private final int size;
 	
 	private PermutationMatrix(Index perm) {
+		if (!perm.isPermutation()) throw new VectorzException("Not a valid permutation: "+perm);
 		this.perm=perm;
 		size=perm.length();
 	}
@@ -30,7 +31,8 @@ public final class PermutationMatrix extends AMatrix {
 	}
 	
 	public static AMatrix create(int... rowPermutations) {
-		return wrap(Index.of(rowPermutations));
+		Index index=Index.of(rowPermutations);
+		return wrap(index);
 	}
 	
 	public static PermutationMatrix createRandomPermutation(int length) {
@@ -52,6 +54,11 @@ public final class PermutationMatrix extends AMatrix {
 	@Override
 	public boolean isSymmetric() {
 		return isIdentity();
+	}
+	
+	@Override
+	public double determinant() {
+		return perm.isEvenPermutation()?1.0:-1.0;
 	}
 	
 	@Override

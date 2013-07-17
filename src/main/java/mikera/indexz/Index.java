@@ -88,6 +88,15 @@ public final class Index extends AIndex {
 		return swaps;
 	}
 	
+	public boolean isOddPermutation() {
+		return (swapCount()&1)==1;
+	}
+	
+	public boolean isEvenPermutation() {
+		return (swapCount()&1)==1;
+	}
+	
+	
 	/**
 	 * Creates a new Index, wrapping the provided index array
 	 */
