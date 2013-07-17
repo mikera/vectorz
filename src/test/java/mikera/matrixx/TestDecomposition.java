@@ -62,7 +62,7 @@ public class TestDecomposition {
 		assertTrue(q.innerProduct(r).epsilonEquals(a));
 
 		// check properties of Q - should be orthogonal
-		assertTrue(q.getTranspose().innerProduct(q).epsilonEquals(IdentityMatrix.create(r.rowCount())));
+		assertTrue(q.isOrthonormalColumns());
 		
 		// check properties of R - should be upper triangular
 		assertTrue(r.isUpperTriangular());

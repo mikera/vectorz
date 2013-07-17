@@ -9,6 +9,7 @@ import java.util.List;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.SliceArray;
+import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
@@ -239,6 +240,20 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public boolean isSquare() {
 		return rowCount() == columnCount();
+	}
+	
+	public boolean isOrthogonal() {
+		return isSquare()
+				&&getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
+	}
+
+	
+	public boolean isOrthonormalColumns() {
+		return getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
+	}
+	
+	public boolean isOrthonormalRows() {
+		return innerProduct(getTranspose()).epsilonEquals(IdentityMatrix.create(columnCount()));
 	}
 
 	@Override

@@ -101,6 +101,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 		return true;
 	}
 	
+	@Override
+	public boolean isOrthogonal() {
+		return true;
+	}
+	
 	@Override 
 	public AMatrix inverse() {
 		return this;
