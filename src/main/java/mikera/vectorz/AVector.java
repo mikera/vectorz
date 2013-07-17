@@ -526,15 +526,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return super.outerProduct(a);
 	}
 	
-	public AScalar innerProduct(AVector v) {
+	public DoubleScalar innerProduct(AVector v) {
 		return DoubleScalar.create(dotProduct(v));
 	}
 	
-	public AVector innerProduct(AMatrix m) {
+	public Vector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
 		int rc=m.rowCount();
 		if (rc!=length()) throw new VectorzException("Incompatible sizes for inner product: ["+length()+ "] x ["+rc+","+cc+"]");
-		AVector r=Vectorz.newVector(cc);
+		Vector r=Vector.createLength(cc);
 		for (int i=0; i<cc; i++) {
 			double y=0.0;
 			for (int j=0; j<rc; j++) {

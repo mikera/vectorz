@@ -317,19 +317,13 @@ public class Matrixx {
 	 * @param columns
 	 * @return
 	 */
-	public static AMatrix newMatrix(int rows, int columns) {
-		if ((rows == columns)) {
-			if (rows == 3)
-				return new Matrix33();
-			if (rows == 2)
-				return new Matrix22();
-		}
-		return new Matrix(rows, columns);
+	public static Matrix newMatrix(int rows, int columns) {
+		return Matrix.create(rows, columns);
 	}
 
-	public static AMatrix createFromVector(AVector data, int rows, int columns) {
+	public static Matrix createFromVector(AVector data, int rows, int columns) {
 		assert (data.length() == rows * columns);
-		AMatrix m = newMatrix(rows, columns);
+		Matrix m = newMatrix(rows, columns);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				m.set(i, j, data.get(i * columns + j));

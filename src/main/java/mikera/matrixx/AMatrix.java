@@ -1035,7 +1035,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int rc=this.rowCount();
 		int cc=a.columnCount();
 		int ic=this.columnCount();
-		AMatrix result=Matrixx.newMatrix(rc,cc);
+		Matrix result=Matrixx.newMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
