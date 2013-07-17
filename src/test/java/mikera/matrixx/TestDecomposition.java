@@ -60,10 +60,10 @@ public class TestDecomposition {
 		// we are testing that A = QR
 		assertTrue(q.innerProduct(r).epsilonEquals(a));
 
-		// check properties of Q (why does this work with R???)
-		assertTrue(r.isSquare());
-		assertTrue(r.innerProduct(r.inverse()).epsilonEquals(IdentityMatrix.create(r.rowCount())));
+		// check properties of Q - should be orthogonal
+		assertTrue(q.getTranspose().innerProduct(q).epsilonEquals(IdentityMatrix.create(r.rowCount())));
 		
+		// check properties of R - should be upper triangular
 		assertTrue(r.isUpperTriangular());
 	}
 }
