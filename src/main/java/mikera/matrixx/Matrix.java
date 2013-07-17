@@ -3,6 +3,7 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.matrixx.impl.ArrayMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
@@ -18,10 +19,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class Matrix extends AMatrix {
-	private final int rows;
-	private final int columns;
-	public final double[] data;
+public final class Matrix extends ArrayMatrix {
 	
 	public Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
@@ -42,12 +40,11 @@ public final class Matrix extends AMatrix {
 		set(m);
 	}
 	
-	public Matrix(Object... rowVectors) {
+	public Matrix create(Object... rowVectors) {
 		AMatrix m=VectorMatrixMN.create(rowVectors);
-		rows=m.rowCount();
-		columns=m.columnCount();
-		data=new double[rows*columns];
-		set(m);
+		Matrix r=new Matrix(m.rowCount(),m.columnCount(),new double[rows*columns]);
+		r.set(m);
+		return r;
 	}
 	
 	@Override
@@ -60,9 +57,7 @@ public final class Matrix extends AMatrix {
 	}
 	
 	private Matrix(int rowCount, int columnCount, double[] data) {
-		this.rows=rowCount;
-		this.columns=columnCount;
-		this.data=data;
+		super(data,rowCount,columnCount);
 	}
 	
 	public static Matrix wrap(int rowCount, int columnCount, double[] data) {
