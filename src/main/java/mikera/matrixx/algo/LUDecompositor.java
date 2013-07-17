@@ -4,6 +4,7 @@ import mikera.vectorz.Vector;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.impl.PermutationMatrix;
 
 /*
  * Copyright 2011-2013, by Vladimir Kostyukov, Mike Anderson and Contributors.
@@ -26,22 +27,23 @@ import mikera.matrixx.Matrix;
  * 
  */
 
-// TODO: implement pivoting
 public class LUDecompositor {
 
-	public static Matrix[] decompose(AMatrix matrix) {
-		return decomposeInternal(Matrix.create(matrix));
+	public static AMatrix[] decomposeLUP(AMatrix matrix) {
+		return decomposeLUPInternal(Matrix.create(matrix));
 	}
 
-	public static Matrix[] decompose(Matrix matrix) {
-		return decomposeInternal(matrix.clone());
+	public static AMatrix[] decomposeLUP(Matrix matrix) {
+		return decomposeLUPInternal(matrix.clone());
 	}
 
-	private static Matrix[] decomposeInternal(Matrix lu) {
+	private static AMatrix[] decomposeLUPInternal(Matrix lu) {
 		if (!lu.isSquare()) { throw new IllegalArgumentException(
 				"Wrong matrix size: " + "not square"); }
 
 		int n = lu.rowCount();
+		
+		PermutationMatrix perm=PermutationMatrix.createIdentity(n);
 
 		for (int j = 0; j < n; j++) {
 
@@ -67,8 +69,8 @@ public class LUDecompositor {
 			}
 
 			if (p != j) {
-				// this seems to be a bug in original LU code???
-				//lu.swapRows(p, j);
+				lu.swapRows(p, j);
+				perm.swapRows(p,j);
 			}
 
 			if ((j < n) & lu.get(j, j) != 0.0) {
@@ -95,6 +97,6 @@ public class LUDecompositor {
 			}
 		}
 
-		return new Matrix[] { l, u };
+		return new AMatrix[] { l, u , perm};
 	}
 }
