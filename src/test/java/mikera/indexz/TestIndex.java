@@ -126,6 +126,15 @@ public class TestIndex {
 		assertEquals(0,Indexz.createLength(0).swapCount());
 		assertEquals(0,Indexz.createSequence(3).swapCount());
 		assertEquals(0,Indexz.createSequence(10).swapCount());
+		
+		Index ind=Indexz.createSequence(10);
+		ind.swap(1, 3);
+		ind.swap(6, 7);
+		ind.swap(8, 9);
+		assertEquals(3,ind.swapCount());
+		ind.swap(8, 9);
+		assertEquals(2,ind.swapCount());
+
 	}
 
 
