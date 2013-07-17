@@ -27,7 +27,7 @@ import mikera.matrixx.impl.PermutationMatrix;
  * 
  */
 
-public class LUDecompositor {
+public class LU {
 
 	public static AMatrix[] decomposeLUP(AMatrix matrix) {
 		return decomposeLUPInternal(Matrix.create(matrix));
