@@ -119,6 +119,14 @@ public class TestIndex {
 		};
 		doTests(ci);
 	}
+	
+	
+	@Test
+	public void testSwapCount() {
+		assertEquals(0,Indexz.createLength(0).swapCount());
+		assertEquals(0,Indexz.createSequence(3).swapCount());
+		assertEquals(0,Indexz.createSequence(10).swapCount());
+	}
 
 
 }

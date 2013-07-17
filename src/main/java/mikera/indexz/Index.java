@@ -70,6 +70,25 @@ public final class Index extends AIndex {
 	}
 	
 	/**
+	 * Counts the number of swaps required to create this permutation
+	 * @return
+	 */
+	public int swapCount() {
+		int n=length();
+		int swaps=0;
+		boolean[] seen=new boolean[n];
+		for (int i=0; i<n; i++) {
+			if (seen[i]) continue;
+			seen[i]=true;
+			for(int j=data[i]; !seen[j]; j=data[j]) {
+				seen[j]=true;
+				swaps++;
+			}		
+		}
+		return swaps;
+	}
+	
+	/**
 	 * Creates a new Index, wrapping the provided index array
 	 */
 	public static Index wrap(int[] indexes) {
