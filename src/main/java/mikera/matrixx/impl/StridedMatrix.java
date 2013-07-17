@@ -8,20 +8,15 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.VectorzException;
 
-public class StridedMatrix extends AMatrix {
-	private final double[] data;
-	private final int rows;
-	private final int cols;
+public class StridedMatrix extends ArrayMatrix {
 	private final int rowStride;
 	private final int colStride;
 	private final int offset;
 
 	private StridedMatrix(double[] data, int rowCount, int columnCount,
 			int offset, int rowStride, int columnStride) {
-		this.data = data;
+		super(data,rowCount,columnCount);
 		this.offset = offset;
-		this.rows = rowCount;
-		this.cols = columnCount;
 		this.rowStride = rowStride;
 		this.colStride = columnStride;
 	}

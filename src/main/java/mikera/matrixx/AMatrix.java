@@ -10,6 +10,7 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.SliceArray;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
@@ -686,6 +687,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 		return result;
+	}
+	
+	public Iterator<Double> elementIterator() {
+		return new MatrixElementIterator(this);
 	}
 	
 	@Override
