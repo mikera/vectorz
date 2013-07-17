@@ -2,6 +2,8 @@ package mikera.matrixx.impl;
 
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.util.VectorzException;
 
 public final class PermutationMatrix extends AMatrix {
 	private final Index perm;
@@ -45,6 +47,32 @@ public final class PermutationMatrix extends AMatrix {
 	public void set(int row, int column, double value) {
 		throw new UnsupportedOperationException("Can't arbitrarily mutate a permutation matrix");
 	}
+	
+	@Override
+	public AxisVector getRow(int i) {
+		return AxisVector.create(perm.get(i), size);
+	}
+	
+	@Override
+	public AxisVector getColumn(int j) {
+		return AxisVector.create(perm.find(j), size);
+	}
+	
+	@Override
+	public void swapRows(int i, int j) {
+		if (i!=j) {
+			perm.swap(i, j);
+		}
+	}
+	
+	@Override
+	public void swapColumns(int i, int j) {
+		if (i!=j) {
+			int a=perm.find(i);
+			int b=perm.find(j);
+			perm.swap(a, b); 
+		}
+	}
 
 	@Override
 	public PermutationMatrix exactClone() {
@@ -53,5 +81,11 @@ public final class PermutationMatrix extends AMatrix {
 
 	public static AMatrix create(int... rowPermutations) {
 		return create(Index.of(rowPermutations));
+	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+		if (size!=perm.length()) throw new VectorzException("Whoops!");
 	}
 }

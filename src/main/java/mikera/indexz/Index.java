@@ -200,4 +200,18 @@ public final class Index extends AIndex {
 		}
 		return min;
 	}
+
+	/**
+	 * Finds a value in this Index and return's it's position, or -1 if not found
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public int find(int value) {
+		for (int i=0; i<data.length; i++) {
+			if (data[i]==value) return i;
+		}
+			
+		return -1;
+	}
 }
