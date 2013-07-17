@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import mikera.indexz.Index;
 import mikera.matrixx.impl.DiagonalMatrix;
+import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -64,5 +65,11 @@ public class TestMatrices {
 		assertEquals(m.clone(),m);
 		assertEquals(m.getRow(1),m.clone().getRow(1));
 		assertEquals(m.getTranspose(),m.getTranspose().clone());
+	}
+	
+	@Test public void testPermutationMatrix() {
+		PermutationMatrix p=PermutationMatrix.createRandomPermutation(10);
+		
+		assertTrue(p.innerProduct(p.getTranspose()).isIdentity());
 	}
 }

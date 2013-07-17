@@ -428,7 +428,7 @@ public class TestMatrixx {
 	}
 	
 	void doScaleTest(AMatrix m) {
-		if(!m.isMutable()) return;
+		if(!m.isFullyMutable()) return;
 		AMatrix m1=m.exactClone();
 		AMatrix m2=m.clone();
 		

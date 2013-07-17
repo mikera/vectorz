@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.indexz.Index;
+import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -24,9 +25,32 @@ public final class PermutationMatrix extends AMatrix {
 		return create(Index.of(rowPermutations));
 	}
 	
+	public static PermutationMatrix createRandomPermutation(int length) {
+		Index index=Indexz.createRandomPermutation(length);
+		return new PermutationMatrix(index);
+	}
+	
 	@Override
 	public boolean isFullyMutable() {
 		return false;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return true;
+	}
+	
+	@Override
+	public boolean isSymmetric() {
+		return isIdentity();
+	}
+	
+	@Override
+	public boolean isIdentity() {
+		for (int i=0; i<size; i++) {
+			if (perm.get(i)!=i) return false;
+		}
+		return true;
 	}
 	
 	@Override
@@ -42,6 +66,20 @@ public final class PermutationMatrix extends AMatrix {
 	@Override
 	public int columnCount() {
 		return size;
+	}
+	
+	@Override
+	public PermutationMatrix inverse() {
+		return getTranspose();
+	}
+	
+	@Override
+	public PermutationMatrix getTranspose() {
+		Index ni=new Index(size);
+		for (int i=0; i<size; i++) {
+			ni.set(perm.get(i), i);
+		}
+		return new PermutationMatrix(ni);
 	}
 
 	@Override
@@ -97,7 +135,7 @@ public final class PermutationMatrix extends AMatrix {
 		for (int i=0; i<size; i++) {
 			int dstIndex=i*cc;
 			int srcRow=perm.get(i);
-			for (int j=0; i<cc; j++) {
+			for (int j=0; j<cc; j++) {
 				result.data[dstIndex+j]=a.get(srcRow,j);
 			}
 		}
@@ -127,4 +165,6 @@ public final class PermutationMatrix extends AMatrix {
 		super.validate();
 		if (size!=perm.length()) throw new VectorzException("Whoops!");
 	}
+
+
 }
