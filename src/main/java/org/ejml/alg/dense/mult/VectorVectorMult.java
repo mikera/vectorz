@@ -65,7 +65,7 @@ public class VectorVectorMult {
      */
     public static double innerProd( D1Matrix64F x, D1Matrix64F y )
     {
-        int m = x.elementCount();
+        int m = (int) x.elementCount();
 
         double total = 0;
         for( int i = 0; i < m; i++ ) {
@@ -245,7 +245,7 @@ public class VectorVectorMult {
                                     D1Matrix64F u ,
                                     D1Matrix64F x , D1Matrix64F y )
     {
-        int n = u.elementCount();
+        int n = (int)u.elementCount();
 
         double sum = 0;
         for( int i = 0; i < n; i++ ) {
@@ -278,7 +278,7 @@ public class VectorVectorMult {
                                     DenseMatrix64F u , DenseMatrix64F w ,
                                     DenseMatrix64F B )
     {
-        int n = u.elementCount();
+        int n = (int)u.elementCount();
 
         int matrixIndex = 0;
         for( int i = 0; i < n; i++ ) {
@@ -309,7 +309,7 @@ public class VectorVectorMult {
                                     DenseMatrix64F u ,
                                     DenseMatrix64F w )
     {
-        int n = u.elementCount();
+        int n = (int)u.elementCount();
 
         int matrixIndex = 0;
         for( int i = 0; i < n; i++ ) {

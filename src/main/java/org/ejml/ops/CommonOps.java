@@ -829,7 +829,7 @@ public class CommonOps {
     {
         int width = mat.rows < mat.cols ? mat.rows : mat.cols;
 
-        int length = mat.elementCount();
+        int length = (int)mat.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             mat.set(i , 0 );
@@ -1120,7 +1120,7 @@ public class CommonOps {
      * @return The max element value of the matrix.
      */
     public static double elementMax( D1Matrix64F a ) {
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         double max = a.get(0);
         for( int i = 1; i < size; i++ ) {
@@ -1144,7 +1144,7 @@ public class CommonOps {
      * @return The max element value of the matrix.
      */
     public static double elementMaxAbs( D1Matrix64F a ) {
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         double max = 0;
         for( int i = 0; i < size; i++ ) {
@@ -1168,7 +1168,7 @@ public class CommonOps {
      * @return The value of element in the matrix with the minimum value.
      */
     public static double elementMin( D1Matrix64F a ) {
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         double min = a.get(0);
         for( int i = 1; i < size; i++ ) {
@@ -1192,7 +1192,7 @@ public class CommonOps {
      * @return The max element value of the matrix.
      */
     public static double elementMinAbs( D1Matrix64F a ) {
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         double min = Double.MAX_VALUE;
         for( int i = 0; i < size; i++ ) {
@@ -1219,7 +1219,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatable dimensions");
         }
 
-        int length = a.elementCount();
+        int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             a.times(i , b.get(i));
@@ -1242,7 +1242,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatible dimensions");
         }
 
-        int length = a.elementCount();
+        int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             c.set( i , a.get(i) * b.get(i) );
@@ -1263,7 +1263,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatable dimensions");
         }
 
-        int length = a.elementCount();
+        int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             a.div(i , b.get(i));
@@ -1286,7 +1286,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatible dimensions");
         }
 
-        int length = a.elementCount();
+        int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             c.set( i , a.get(i) / b.get(i) );
@@ -1306,7 +1306,7 @@ public class CommonOps {
     public static double elementSum( D1Matrix64F mat ) {
         double total = 0;
 
-        int size = mat.elementCount();
+        int size = (int)mat.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             total += mat.get(i);
@@ -1328,7 +1328,7 @@ public class CommonOps {
     public static double elementSumAbs( D1Matrix64F mat ) {
         double total = 0;
 
-        int size = mat.elementCount();
+        int size = (int)mat.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             total += Math.abs(mat.get(i));
@@ -1414,7 +1414,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatible dimensions");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             a.plus(i, b.get(i));
@@ -1438,7 +1438,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatible dimensions");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             a.plus(i, beta * b.get(i));
@@ -1467,7 +1467,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The matrices are not all the same dimension.");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             c.set( i , a.get(i)+b.get(i) );
@@ -1497,7 +1497,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The matrices are not all the same dimension.");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             c.set( i , a.get(i)+beta*b.get(i) );
@@ -1528,7 +1528,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The matrices are not all the same dimension.");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             c.set(i , alpha*a.get(i) + beta*b.get(i));
@@ -1558,7 +1558,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The matrices are not all the same dimension.");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             c.set( i , alpha*a.get(i) + b.get(i));
@@ -1576,7 +1576,7 @@ public class CommonOps {
      * @param val The value that's added to each element.
      */
     public static void add( D1Matrix64F a , double val ) {
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             a.plus( i , val);
@@ -1599,7 +1599,7 @@ public class CommonOps {
             throw new IllegalArgumentException("Dimensions of a and c do not match.");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             c.set( i , a.get(i) + val);
@@ -1622,7 +1622,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatable dimensions");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             a.minus( i , b.get(i) );
@@ -1649,7 +1649,7 @@ public class CommonOps {
             throw new IllegalArgumentException("The 'a' and 'b' matrices do not have compatable dimensions");
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             c.set( i , a.get(i) - b.get(i));
@@ -1670,7 +1670,7 @@ public class CommonOps {
     {
         // on very small matrices (2 by 2) the call to elementCount() can slow it down
         // slightly compared to other libraries since it involves an extra multiplication.
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             a.times( i , alpha );
@@ -1692,7 +1692,7 @@ public class CommonOps {
         if( a.rows != b.rows || a.cols != b.cols )
             throw new IllegalArgumentException("Matrices must have the same shape");
 
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             b.set( i , a.get(i)*alpha );
@@ -1711,7 +1711,7 @@ public class CommonOps {
      */
     public static void divide( double alpha , D1Matrix64F a )
     {
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             a.div( i , alpha );
@@ -1733,7 +1733,7 @@ public class CommonOps {
         if( a.rows != b.rows || a.cols != b.cols )
             throw new IllegalArgumentException("Matrices must have the same shape");
 
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             b.set( i , a.get(i)/alpha );
@@ -1751,7 +1751,7 @@ public class CommonOps {
      */
     public static void changeSign( D1Matrix64F a )
     {
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             a.set( i , - a.get(i) );
@@ -1770,7 +1770,7 @@ public class CommonOps {
      */
     public static void fill(D1Matrix64F a, double value)
     {
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             a.set( i , value );

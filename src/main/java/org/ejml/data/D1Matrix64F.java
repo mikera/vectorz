@@ -75,7 +75,7 @@ public abstract class D1Matrix64F extends Matrix64F {
             throw new MatrixDimensionException("The two matrices do not have compatible shapes.");
         }
 
-        int dataLength = b.elementCount();
+        int dataLength = (int)b.elementCount();
 
         System.arraycopy(b.data, 0, this.data, 0, dataLength);
     }

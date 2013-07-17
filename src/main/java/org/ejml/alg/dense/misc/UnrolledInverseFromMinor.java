@@ -34,7 +34,7 @@ public class UnrolledInverseFromMinor {
     
     public static void inv( DenseMatrix64F mat , DenseMatrix64F inv ) {
         double max = Math.abs(mat.data[0]);
-        int N = mat.elementCount();
+        int N = (int)mat.elementCount();
         
         for( int i = 1; i < N; i++ ) {
             double a = Math.abs(mat.data[i]);

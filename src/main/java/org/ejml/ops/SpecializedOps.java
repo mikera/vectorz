@@ -54,7 +54,7 @@ public class SpecializedOps {
         double norm = NormOps.fastNormF(u);
         double gamma = -2.0/(norm*norm);
 
-        DenseMatrix64F Q = CommonOps.identity(u.elementCount());
+        DenseMatrix64F Q = CommonOps.identity((int)u.elementCount());
         CommonOps.multAddTransB(gamma,u,u,Q);
 
         return Q;
@@ -80,7 +80,7 @@ public class SpecializedOps {
         if( !MatrixFeatures.isVector(u))
             throw new IllegalArgumentException("u must be a vector");
 
-        DenseMatrix64F Q = CommonOps.identity(u.elementCount());
+        DenseMatrix64F Q = CommonOps.identity((int)u.elementCount());
         CommonOps.multAddTransB(-gamma,u,u,Q);
 
         return Q;
@@ -166,7 +166,7 @@ public class SpecializedOps {
             throw new IllegalArgumentException("Both matrices must have the same shape.");
         }
 
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         DenseMatrix64F diff = new DenseMatrix64F(size,1);
 
@@ -182,7 +182,7 @@ public class SpecializedOps {
             throw new IllegalArgumentException("Both matrices must have the same shape.");
         }
 
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         double total=0;
         for( int i = 0; i < size; i++ ) {
@@ -215,7 +215,7 @@ public class SpecializedOps {
             throw new IllegalArgumentException("Both matrices must have the same shape.");
         }
 
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         double total=0;
         for( int i = 0; i < size; i++ ) {
@@ -411,7 +411,7 @@ public class SpecializedOps {
     public static double elementSumSq( D1Matrix64F m  ) {
         double total = 0;
         
-        int N = m.elementCount();
+        int N = (int)m.elementCount();
         for( int i = 0; i < N; i++ ) {
             double d = m.data[i];
             total += d*d;

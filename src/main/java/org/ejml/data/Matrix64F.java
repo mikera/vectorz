@@ -175,7 +175,7 @@ public abstract class Matrix64F implements Serializable {
      *
      * @return Number of elements in this matrix.
      */
-    public abstract int elementCount();
+    public abstract long elementCount();
 
     /**
      * Assigns the value of 'this' matrix to be the same as 'A'.  The shape of

@@ -596,7 +596,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return The number of elements in the matrix.
      */
     public int elementCount() {
-        return mat.elementCount();
+        return (int)mat.elementCount();
     }
 
 

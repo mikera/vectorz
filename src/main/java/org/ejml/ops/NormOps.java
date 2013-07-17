@@ -79,7 +79,7 @@ public class NormOps {
         if( val == 0 )
             return;
 
-        int size = A.elementCount();
+        int size = (int)A.elementCount();
 
         for( int i = 0; i < size; i++) {
             A.div(i , val);
@@ -172,7 +172,7 @@ public class NormOps {
     public static double fastNormF( D1Matrix64F a ) {
         double total = 0;
 
-        int size = a.elementCount();
+        int size = (int)a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             double val = a.get(i);
@@ -204,7 +204,7 @@ public class NormOps {
         if( scale == 0.0 )
             return 0.0;
 
-        final int size = a.elementCount();
+        final int size = (int)a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             double val = a.get(i)/scale;
@@ -242,7 +242,7 @@ public class NormOps {
 
             double total = 0;
 
-            int size = A.elementCount();
+            int size = (int)A.elementCount();
 
             for( int i = 0; i < size; i++ ) {
                 double a = A.get(i)/max;
@@ -267,7 +267,7 @@ public class NormOps {
         } else {
             double total = 0;
 
-            int size = A.elementCount();
+            int size = (int)A.elementCount();
 
             for( int i = 0; i < size; i++ ) {
                 double a = A.get(i);

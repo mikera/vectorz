@@ -55,7 +55,7 @@ public class MatrixFeatures {
      */
     public static boolean hasNaN( D1Matrix64F m )
     {
-        int length = m.elementCount();
+        int length = (int)m.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             if( Double.isNaN(m.get(i)))
@@ -72,7 +72,7 @@ public class MatrixFeatures {
      */
     public static boolean hasUncountable( D1Matrix64F m )
     {
-        int length = m.elementCount();
+        int length = (int)m.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             double a = m.get(i);
@@ -301,7 +301,7 @@ public class MatrixFeatures {
         if( tol == 0.0 )
             return isEquals(a,b);
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             if( !(tol >= Math.abs(a.get(i) - b.get(i))) ) {
@@ -376,7 +376,7 @@ public class MatrixFeatures {
             return false;
         }
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
         for( int i = 0; i < length; i++ ) {
             if( !(a.get(i) == b.get(i)) ) {
                 return false;
@@ -412,7 +412,7 @@ public class MatrixFeatures {
         if( tol < 0 )
             throw new IllegalArgumentException("Tolerance must be greater than or equal to zero.");
 
-        final int length = a.elementCount();
+        final int length = (int)a.elementCount();
         for( int i = 0; i < length; i++ ) {
             double valA = a.get(i);
             double valB = b.get(i);
@@ -573,7 +573,7 @@ public class MatrixFeatures {
         if( a.rows != b.rows || a.cols != b.cols )
             throw new IllegalArgumentException("Matrix dimensions must match");
 
-        int length = a.elementCount();
+        int length = (int)a.elementCount();
 
         for( int i = 0; i < length; i++ ) {
             if( !(Math.abs(a.get(i)+b.get(i)) <= tol) )

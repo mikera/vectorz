@@ -168,7 +168,7 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      */
     public DenseMatrix64F( DenseMatrix64F orig ) {
         this(orig.rows,orig.cols);
-        System.arraycopy(orig.data, 0, this.data, 0, orig.elementCount());
+        System.arraycopy(orig.data, 0, this.data, 0, (int)orig.elementCount());
     }
 
     /**
@@ -228,7 +228,7 @@ public class DenseMatrix64F extends RowD1Matrix64F {
             double []d = new double[ numRows*numCols ];
 
             if( saveValues ) {
-                System.arraycopy(data,0,d,0,elementCount());
+                System.arraycopy(data,0,d,0,(int)elementCount());
             }
 
             this.data = d;
@@ -329,7 +329,7 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      * @return The number of elements in the matrix.
      */
     @Override
-    public int elementCount() {
+    public long elementCount() {
         return rows*cols;
     }
 
@@ -351,7 +351,7 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      */
     public void setReshape( DenseMatrix64F b)
     {
-        int dataLength = b.elementCount();
+        int dataLength = (int)b.elementCount();
 
         if( data.length < dataLength ) {
             data = new double[ dataLength ];

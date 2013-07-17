@@ -85,7 +85,7 @@ public class BlockMatrix64F extends D1Matrix64F {
             double[] data = new double[ numRows*numCols ];
 
             if( saveValues ) {
-                System.arraycopy(this.data,0,data,0,elementCount());
+                System.arraycopy(this.data,0,data,0,(int)elementCount());
             }
 
             this.rows = numRows;
@@ -148,7 +148,7 @@ public class BlockMatrix64F extends D1Matrix64F {
     }
 
     @Override
-    public int elementCount() {
+    public long elementCount() {
         return rows*cols;
     }
 
