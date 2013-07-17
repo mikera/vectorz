@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import mikera.matrixx.algo.Cholesky;
 import mikera.matrixx.algo.LU;
+import mikera.matrixx.algo.QR;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.vectorz.Vector;
@@ -46,5 +47,23 @@ public class TestDecomposition {
 		assertEquals(IdentityMatrix.create(4),ms[0]);
 		assertEquals(IdentityMatrix.create(4),ms[1]);
 		assertEquals(a,ms[2].inverse());
+	}
+	
+	@Test public void testQR() {
+		
+		AMatrix a=Matrixx.createRandomMatrix(5, 4);
+		AMatrix[] ms=QR.decompose(a);
+		
+		AMatrix q=ms[0];
+		AMatrix r=ms[1];
+		
+		// we are testing that A = QR
+		assertTrue(q.innerProduct(r).epsilonEquals(a));
+
+		// check properties of Q (why does this work with R???)
+		assertTrue(r.isSquare());
+		assertTrue(r.innerProduct(r.inverse()).epsilonEquals(IdentityMatrix.create(r.rowCount())));
+		
+		assertTrue(r.isUpperTriangular());
 	}
 }
