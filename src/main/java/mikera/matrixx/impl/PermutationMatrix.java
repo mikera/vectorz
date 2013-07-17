@@ -2,6 +2,8 @@ package mikera.matrixx.impl;
 
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -16,6 +18,10 @@ public final class PermutationMatrix extends AMatrix {
 	
 	public static PermutationMatrix create(Index rowPermutations) {
 		return new PermutationMatrix(rowPermutations.clone());
+	}
+	
+	public static AMatrix create(int... rowPermutations) {
+		return create(Index.of(rowPermutations));
 	}
 	
 	@Override
@@ -73,15 +79,48 @@ public final class PermutationMatrix extends AMatrix {
 			perm.swap(a, b); 
 		}
 	}
+	
+	@Override
+	public void transform(AVector source, AVector dest) {
+		assert(rowCount()==dest.length());
+		assert(columnCount()==source.length());
+		for (int i=0; i<size; i++) {
+			dest.set(i,source.get(perm.get(i)));
+		}
+	}
+	
+	@Override
+	public Matrix innerProduct(AMatrix a) {
+		if (a instanceof Matrix) return innerProduct((Matrix)a);
+		int cc=a.columnCount();
+		Matrix result=Matrix.create(size,cc);
+		for (int i=0; i<size; i++) {
+			int dstIndex=i*cc;
+			int srcRow=perm.get(i);
+			for (int j=0; i<cc; j++) {
+				result.data[dstIndex+j]=a.get(srcRow,j);
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public Matrix innerProduct(Matrix a) {
+		int cc=a.columnCount();
+		Matrix result=Matrix.create(size,cc);
+		for (int i=0; i<size; i++) {
+			int srcIndex=perm.get(i)*cc;
+			int dstIndex=i*cc;
+			System.arraycopy(a.data,srcIndex,result.data,dstIndex,cc);
+		}
+		return result;
+	}
 
 	@Override
 	public PermutationMatrix exactClone() {
 		return new PermutationMatrix(perm.clone());
 	}
 
-	public static AMatrix create(int... rowPermutations) {
-		return create(Index.of(rowPermutations));
-	}
 	
 	@Override
 	public void validate() {
