@@ -22,10 +22,7 @@ public final class StridedVector extends AVector {
 		return new StridedVector(data,offset,length,stride);
 	}
 
-	public static AVector wrap(double[] data, int offset, int length, int stride) {
-		if (stride==1) {
-			return ArraySubVector.wrap(data, offset, length);
-		}
+	public static StridedVector wrap(double[] data, int offset, int length, int stride) {
 		return wrapStrided(data,offset,length,stride);
 	}
 	

@@ -153,8 +153,8 @@ public class Matrixx {
 		return createRotationMatrix(0, 0, 1, angle);
 	}
 
-	public static AMatrix createRandomSquareMatrix(int dimensions) {
-		AMatrix m = createSquareMatrix(dimensions);
+	public static Matrix createRandomSquareMatrix(int dimensions) {
+		Matrix m = createSquareMatrix(dimensions);
 		fillRandomValues(m);
 		return m;
 	}
@@ -332,30 +332,14 @@ public class Matrixx {
 		return m;
 	}
 
-	private static AMatrix createSquareMatrix(int dimensions) {
-		switch (dimensions) {
-		case 2:
-			return new Matrix22();
-		case 3:
-			return new Matrix33();
-		default:
-			return newMatrix(dimensions, dimensions);
-		}
+	private static Matrix createSquareMatrix(int dimensions) {
+		return newMatrix(dimensions, dimensions);
 	}
 
 	/**
 	 * Creates a mutable deep copy of a matrix
 	 */
-	public static AMatrix create(AMatrix m) {
-		int rows = m.rowCount();
-		int columns = m.columnCount();
-		if (rows == columns) {
-			if (rows == 3) {
-				return new Matrix33(m);
-			} else if (rows == 2) {
-				return new Matrix22(m);
-			}
-		}
+	public static Matrix create(AMatrix m) {
 		return new Matrix(m);
 	}
 
@@ -452,7 +436,7 @@ public class Matrixx {
 		return m;
 	}
 
-	public static AMatrix deepCopy(AMatrix m) {
+	public static Matrix deepCopy(AMatrix m) {
 		return create(m);
 	}
 

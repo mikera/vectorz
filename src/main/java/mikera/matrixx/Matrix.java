@@ -125,6 +125,11 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
+	public Matrix clone() {
+		return new Matrix(rows,columns,data.clone());
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		assert(rowCount()==dest.length());
 		assert(columnCount()==source.length());
@@ -144,7 +149,7 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
-	public AVector getColumn(int row) {
+	public StridedVector getColumn(int row) {
 		return StridedVector.wrap(data,row,rows,columns);
 	}
 

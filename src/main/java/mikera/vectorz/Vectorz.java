@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.VectorBuilder;
@@ -86,6 +87,13 @@ public class Vectorz {
 	public static AVector wrap(double[] data, int offset, int length) {
 		if ((offset==0)&&(length==data.length)) return wrap(data);
 		return ArraySubVector.wrap(data, offset, length);
+	}
+	
+	public static AVector wrapStrided(double[] data, int offset, int length, int stride) {
+		if (stride==1) {
+			return ArraySubVector.wrap(data, offset, length);
+		}
+		return StridedVector.wrapStrided(data,offset,length,stride);
 	}
 
 	/**
