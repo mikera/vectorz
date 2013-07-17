@@ -257,4 +257,17 @@ public final class Index extends AIndex {
 			
 		return -1;
 	}
+
+	/**
+	 * Inverts the permutation represented by this Index
+	 * @return
+	 */
+	public Index invert() {
+		int n=length();
+		Index ni=new Index(n);
+		for (int i=0; i<n; i++) {
+			ni.set(this.get(i), i);
+		}
+		return ni;
+	}
 }

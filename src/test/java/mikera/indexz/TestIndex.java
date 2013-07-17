@@ -120,6 +120,14 @@ public class TestIndex {
 		doTests(ci);
 	}
 	
+	@Test
+	public void testInvert() {
+		int N=20;
+		Index ind=Indexz.createRandomPermutation(N);
+		Index id=ind.clone();
+		id.permute(ind.invert());
+		assertEquals(Indexz.createSequence(N),id);
+	}
 	
 	@Test
 	public void testSwapCount() {

@@ -102,11 +102,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public PermutationMatrix getTranspose() {
-		Index ni=new Index(size);
-		for (int i=0; i<size; i++) {
-			ni.set(perm.get(i), i);
-		}
-		return new PermutationMatrix(ni);
+		return new PermutationMatrix(perm.invert());
 	}
 
 	@Override
