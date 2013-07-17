@@ -17,6 +17,10 @@ public final class PermutationMatrix extends AMatrix {
 		size=perm.length();
 	}
 	
+	public static PermutationMatrix createIdentity(int length) {
+		return new PermutationMatrix(Indexz.createSequence(length));
+	}
+	
 	public static PermutationMatrix create(Index rowPermutations) {
 		return new PermutationMatrix(rowPermutations.clone());
 	}

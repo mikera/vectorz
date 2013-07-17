@@ -46,6 +46,11 @@ public class Indexz {
 		return result;
 	}
 
+	/**
+	 * Creates a Index containing the sequence 0, 1, ... length-1
+	 * @param length
+	 * @return
+	 */
 	public static Index createSequence(int length) {
 		return createSequence(0,length);
 	}
