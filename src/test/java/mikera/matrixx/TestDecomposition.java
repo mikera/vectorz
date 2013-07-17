@@ -7,7 +7,7 @@ import org.junit.Test;
 import mikera.matrixx.algo.Cholesky;
 import mikera.matrixx.algo.LU;
 import mikera.matrixx.algo.QR;
-import mikera.matrixx.algo.SVD;
+import mikera.matrixx.algo.ThinSVD;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.vectorz.Vector;
@@ -63,6 +63,7 @@ public class TestDecomposition {
 
 		// check properties of Q - should be orthogonal
 		assertTrue(q.isOrthonormalColumns());
+		// assertTrue(q.isSquare()); // TODO: should be square??
 		
 		// check properties of R - should be upper triangular
 		assertTrue(r.isUpperTriangular());
@@ -71,7 +72,7 @@ public class TestDecomposition {
 	@Test public void testSVD() {
 		
 		AMatrix a=Matrixx.createRandomMatrix(4, 3);
-		AMatrix[] ms=SVD.decompose(a);
+		AMatrix[] ms=ThinSVD.decompose(a);
 		
 		AMatrix u=ms[0];
 		AMatrix s=ms[1];
@@ -81,5 +82,9 @@ public class TestDecomposition {
 		AMatrix usvt=u.innerProduct(s.innerProduct(v.getTranspose()));
 		//assertEquals(a,usvt);
 		assertTrue(usvt.epsilonEquals(a));
+		
+		assertTrue(v.isOrthogonal());
+		assertTrue(s.isRectangularDiagonal()); 
+		assertTrue(u.isOrthonormalColumns()); 
 	}
 }

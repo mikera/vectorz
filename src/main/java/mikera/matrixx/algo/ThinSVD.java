@@ -24,7 +24,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.Vector;
 
-public class SVD {
+public class ThinSVD {
 	
 
 	public static AMatrix[] decompose(AMatrix a) {
@@ -38,15 +38,15 @@ public class SVD {
     public static Matrix[] decomposeInternal(Matrix a) {
     	int rc=a.rowCount();
     	int cc=a.columnCount();
-    	
-        // AHTIUNG: this code derived from Jama
 
         if (rc < cc) {
             throw new IllegalArgumentException("Wrong matrix size: " 
                     + "rows < columns");
         }
 
-        int n = Math.min(rc,cc);
+        // TODO: confirm this is a "Thin SVD"
+        // as per Wikipedia
+        int n = Math.min(rc,cc); // this should always be cc??
 
         Matrix u = Matrix.create(rc, n);
         Matrix s = Matrix.create(cc, cc);
