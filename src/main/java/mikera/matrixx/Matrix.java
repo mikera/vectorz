@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 import mikera.matrixx.impl.StridedMatrix;
+import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -41,8 +42,8 @@ public final class Matrix extends AMatrix {
 		set(m);
 	}
 	
-	public Matrix(Object... vs) {
-		AMatrix m=Matrixx.create(vs);
+	public Matrix(Object... rowVectors) {
+		AMatrix m=VectorMatrixMN.create(rowVectors);
 		rows=m.rowCount();
 		columns=m.columnCount();
 		data=new double[rows*columns];
