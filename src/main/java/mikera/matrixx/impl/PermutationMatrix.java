@@ -31,7 +31,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 		return new PermutationMatrix(rowPermutations);
 	}
 	
-	public static AMatrix create(int... rowPermutations) {
+	public static PermutationMatrix create(int... rowPermutations) {
 		Index index=Index.of(rowPermutations);
 		return wrap(index);
 	}

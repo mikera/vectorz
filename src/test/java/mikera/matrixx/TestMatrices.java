@@ -71,5 +71,12 @@ public class TestMatrices {
 		PermutationMatrix p=PermutationMatrix.createRandomPermutation(10);
 		
 		assertTrue(p.innerProduct(p.getTranspose()).isIdentity());
+		
+		try {
+			p=PermutationMatrix.create(0,1,2,2,4);
+			fail("Should not be able to create PermutationMAtrix with invalid permutation");
+		} catch (Throwable t) {
+			// OK
+		}
 	}
 }
