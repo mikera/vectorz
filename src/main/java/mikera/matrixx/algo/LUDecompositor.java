@@ -43,7 +43,7 @@ public class LUDecompositor {
 
 		int n = lu.rowCount();
 		
-		PermutationMatrix perm=PermutationMatrix.createIdentity(n);
+		PermutationMatrix p=PermutationMatrix.createIdentity(n);
 
 		for (int j = 0; j < n; j++) {
 
@@ -62,15 +62,15 @@ public class LUDecompositor {
 				lu.set(i, j, jcolumn.get(i));
 			}
 
-			int p = j;
+			int biggest = j;
 
 			for (int i = j + 1; i < n; i++) {
-				if (Math.abs(jcolumn.get(i)) > Math.abs(jcolumn.get(p))) p = i;
+				if (Math.abs(jcolumn.get(i)) > Math.abs(jcolumn.get(biggest))) biggest = i;
 			}
 
-			if (p != j) {
-				lu.swapRows(p, j);
-				perm.swapRows(p,j);
+			if (biggest != j) {
+				lu.swapRows(biggest, j);
+				p.swapRows(biggest,j);
 			}
 
 			if ((j < n) & lu.get(j, j) != 0.0) {
@@ -97,6 +97,6 @@ public class LUDecompositor {
 			}
 		}
 
-		return new AMatrix[] { l, u , perm};
+		return new AMatrix[] { l, u , p};
 	}
 }
