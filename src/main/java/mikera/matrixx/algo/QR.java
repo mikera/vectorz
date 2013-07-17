@@ -28,17 +28,6 @@ import mikera.vectorz.Vector;
 
 public class QR {
 
-	public static final double EPS;
-
-	// Determine the machine epsilon
-	// Tolerance is 10e1
-	static {
-		double eps = 1.0;
-		while (1 + eps > 1) {
-			eps = eps / 2;
-		}
-		EPS = eps * 10e1;
-	}
 
 	public static Matrix[] decompose(AMatrix matrix) {
 		return decompose(Matrix.create(matrix));
@@ -63,7 +52,7 @@ public class QR {
 				norm = Math.hypot(norm, qr.get(i, k));
 			}
 
-			if (Math.abs(norm) > EPS) {
+			if (Math.abs(norm) > Decompositions.EPS) {
 
 				if (qr.get(k, k) < 0.0) {
 					norm = -norm;
@@ -102,7 +91,7 @@ public class QR {
 
 			for (int j = k; j < cc; j++) {
 
-				if (Math.abs(qr.get(k, k)) > EPS) {
+				if (Math.abs(qr.get(k, k)) > Decompositions.EPS) {
 
 					double summand = 0.0;
 

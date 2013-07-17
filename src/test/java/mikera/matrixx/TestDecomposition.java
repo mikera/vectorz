@@ -7,6 +7,7 @@ import org.junit.Test;
 import mikera.matrixx.algo.Cholesky;
 import mikera.matrixx.algo.LU;
 import mikera.matrixx.algo.QR;
+import mikera.matrixx.algo.SVD;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.vectorz.Vector;
@@ -65,5 +66,18 @@ public class TestDecomposition {
 		
 		// check properties of R - should be upper triangular
 		assertTrue(r.isUpperTriangular());
+	}
+	
+	@Test public void testSVD() {
+		
+		AMatrix a=Matrixx.createRandomMatrix(4, 3);
+		AMatrix[] ms=SVD.decompose(a);
+		
+		AMatrix u=ms[0];
+		AMatrix s=ms[1];
+		AMatrix v=ms[2];
+		
+		// we are testing that A = USV*
+		assertTrue(u.innerProduct(s.innerProduct(v.getTranspose())).epsilonEquals(a));
 	}
 }
