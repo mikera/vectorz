@@ -95,6 +95,15 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 		ensureRowCapacity(rowCount+1);
 		rows[rowCount++]=row;
 	}
+	
+	@Override
+	public void swapRows(int i, int j) {
+		if (i!=j) {
+			AVector t=rows[i];
+			rows[i]=rows[j];
+			rows[j]=t;
+		}
+	}
 
 	@Override
 	public AVector getRow(int row) {
