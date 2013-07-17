@@ -1349,6 +1349,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		return true;
 	}
+	
+	public void setRow(int i, AVector row) {
+		getRow(i).set(row);
+	}
 
 	public abstract AMatrix exactClone();
 	

@@ -306,8 +306,11 @@ public final class Matrix extends AMatrix {
 		return new Matrix(this);
 	}
 
+	@Override
 	public void setRow(int i, AVector row) {
-		row.getElements(data, i*columnCount());
+		int cc=columnCount();
+		if (row.length()!=cc) throw new IllegalArgumentException("Row has wrong length: "+row.length());
+		row.getElements(data, i*cc);
 	}
 
 }
