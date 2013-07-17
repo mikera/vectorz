@@ -54,6 +54,25 @@ public final class Index extends AIndex {
 		return true;
 	}
 	
+	@Override
+	public boolean isPermutation() {
+		return checkValidPermutation();
+	}
+	
+	public boolean checkValidPermutation() {
+		int n=length();
+		boolean[] chk=new boolean[n];
+		for (int i=0; i<n; i++) {
+			int v=data[i];
+			if (chk[v]) return false;
+			chk[v]=true;
+		}
+		for (int i=0; i<n; i++) {
+			if (!chk[i]) return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Creates a new Index, wrapping the provided index array
 	 */

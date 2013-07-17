@@ -25,8 +25,12 @@ public final class PermutationMatrix extends AMatrix {
 		return new PermutationMatrix(rowPermutations.clone());
 	}
 	
+	public static PermutationMatrix wrap(Index rowPermutations) {
+		return new PermutationMatrix(rowPermutations);
+	}
+	
 	public static AMatrix create(int... rowPermutations) {
-		return create(Index.of(rowPermutations));
+		return wrap(Index.of(rowPermutations));
 	}
 	
 	public static PermutationMatrix createRandomPermutation(int length) {
@@ -41,6 +45,7 @@ public final class PermutationMatrix extends AMatrix {
 	
 	@Override
 	public boolean isMutable() {
+		// PermutationMatrix is mutable (rows can be swapped, etc.)
 		return true;
 	}
 	
@@ -69,6 +74,16 @@ public final class PermutationMatrix extends AMatrix {
 
 	@Override
 	public int columnCount() {
+		return size;
+	}
+	
+	@Override
+	public double elementSum() {
+		return size;
+	}
+	
+	@Override
+	public long nonZeroCount() {
 		return size;
 	}
 	
