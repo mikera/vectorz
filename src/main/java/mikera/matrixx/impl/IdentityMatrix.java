@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.ArrayVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 
@@ -76,8 +77,8 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public AVector transform(AVector source) {
-		return source.clone();		
+	public Vector transform(AVector source) {
+		return source.toVector();		
 	}
 	
 	@Override

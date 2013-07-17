@@ -5,6 +5,7 @@ import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.transformz.ATranslation;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
 /**
@@ -50,8 +51,8 @@ public final class IdentityTranslation extends ATranslation {
 	}
 	
 	@Override
-	public AVector transform(AVector source) {
-		return source.clone();		
+	public Vector transform(AVector source) {
+		return source.toVector();		
 	}
 	
 	@Override

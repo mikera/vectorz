@@ -53,14 +53,11 @@ public class TestMatrixx {
 		Matrix33 rot=Matrixx.createRotationMatrix(v, angle);
 		
 		AVector r=rot.transform(v);
-		assertTrue(r instanceof Vector3);
 		assertEquals(v.get(0),r.get(0),0.00001);
 		assertEquals(v.get(1),r.get(1),0.00001);
 		assertEquals(v.get(2),r.get(2),0.00001);
 		assertEquals(v.magnitude(),r.magnitude(),0.00001);
 		assertTrue(r.epsilonEquals(v));
-		
-		
 	}
 	
 	@Test

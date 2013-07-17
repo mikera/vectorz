@@ -6,7 +6,7 @@ import mikera.transformz.impl.AConstantTransform;
 import mikera.transformz.impl.CompoundTransform;
 import mikera.transformz.impl.SubsetTransform;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vectorz;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.SingleElementVector;
 
 /**
@@ -100,8 +100,8 @@ public abstract class ATransform implements Cloneable, ITransform {
 	 * @param v
 	 * @return
 	 */
-	public AVector transform(AVector v) {
-		AVector temp=Vectorz.newVector(outputDimensions());
+	public Vector transform(AVector v) {
+		Vector temp=Vector.createLength(outputDimensions());
 		transform(v,temp);
 		return temp;
 	}
