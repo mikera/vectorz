@@ -361,5 +361,14 @@ public final class Matrix extends AMatrix {
 		if (row.length()!=cc) throw new IllegalArgumentException("Row has wrong length: "+row.length());
 		row.getElements(data, i*cc);
 	}
+	
+	@Override
+	public void setColumn(int j, AVector col) {
+		int rc=rowCount();
+		if (col.length()!=rc) throw new IllegalArgumentException("Column has wrong length: "+col.length());
+		for (int i=0; i<rc; i++) {
+			data[i*columns+j]=col.get(j);
+		}
+	}
 
 }

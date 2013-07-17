@@ -1,11 +1,3 @@
-package mikera.matrixx.algo;
-
-import mikera.vectorz.Vector;
-
-import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
-import mikera.matrixx.impl.PermutationMatrix;
-
 /*
  * Copyright 2011-2013, by Vladimir Kostyukov, Mike Anderson and Contributors.
  * 
@@ -27,6 +19,14 @@ import mikera.matrixx.impl.PermutationMatrix;
  * 
  */
 
+package mikera.matrixx.algo;
+
+import mikera.vectorz.Vector;
+
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
+import mikera.matrixx.impl.PermutationMatrix;
+
 public class LU {
 
 	public static AMatrix[] decomposeLUP(AMatrix matrix) {
@@ -42,8 +42,8 @@ public class LU {
 				"Wrong matrix size: " + "not square"); }
 
 		int n = lu.rowCount();
-		
-		PermutationMatrix p=PermutationMatrix.createIdentity(n);
+
+		PermutationMatrix p = PermutationMatrix.createIdentity(n);
 
 		for (int j = 0; j < n; j++) {
 
@@ -65,12 +65,13 @@ public class LU {
 			int biggest = j;
 
 			for (int i = j + 1; i < n; i++) {
-				if (Math.abs(jcolumn.get(i)) > Math.abs(jcolumn.get(biggest))) biggest = i;
+				if (Math.abs(jcolumn.get(i)) > Math.abs(jcolumn.get(biggest)))
+					biggest = i;
 			}
 
 			if (biggest != j) {
 				lu.swapRows(biggest, j);
-				p.swapRows(biggest,j);
+				p.swapRows(biggest, j);
 			}
 
 			if ((j < n) & lu.get(j, j) != 0.0) {
@@ -89,14 +90,14 @@ public class LU {
 			l.set(i, i, 1.0);
 		}
 
-		// clear low elements to ensure upper triangle only is populated		
-		Matrix u=lu;
+		// clear low elements to ensure upper triangle only is populated
+		Matrix u = lu;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < i; j++) {
 				u.set(i, j, 0.0);
 			}
 		}
 
-		return new AMatrix[] { l, u , p};
+		return new AMatrix[] { l, u, p };
 	}
 }
