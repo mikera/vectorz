@@ -42,7 +42,7 @@ public final class Matrix extends ArrayMatrix {
 	
 	public Matrix create(Object... rowVectors) {
 		AMatrix m=VectorMatrixMN.create(rowVectors);
-		Matrix r=new Matrix(m.rowCount(),m.columnCount(),new double[rows*columns]);
+		Matrix r=new Matrix(m.rowCount(),m.columnCount(),new double[rows*cols]);
 		r.set(m);
 		return r;
 	}
@@ -146,7 +146,7 @@ public final class Matrix extends ArrayMatrix {
 	
 	@Override
 	public Matrix clone() {
-		return new Matrix(rows,columns,data.clone());
+		return new Matrix(rows,cols,data.clone());
 	}
 	
 	@Override
@@ -156,7 +156,7 @@ public final class Matrix extends ArrayMatrix {
 		int index=0;
 		for (int i=0; i<rows; i++) {
 			double acc=0.0;
-			for (int j=0; j<columns; j++) {
+			for (int j=0; j<cols; j++) {
 				acc+=data[index++]*source.get(j);
 			}
 			dest.set(i,acc);
@@ -165,12 +165,12 @@ public final class Matrix extends ArrayMatrix {
 	
 	@Override
 	public ArraySubVector getRow(int row) {
-		return ArraySubVector.wrap(data,row*columns,columns);
+		return ArraySubVector.wrap(data,row*cols,cols);
 	}
 	
 	@Override
 	public StridedVector getColumn(int row) {
-		return StridedVector.wrap(data,row,rows,columns);
+		return StridedVector.wrap(data,row,rows,cols);
 	}
 
 	@Override
@@ -180,14 +180,14 @@ public final class Matrix extends ArrayMatrix {
 
 	@Override
 	public int columnCount() {
-		return columns;
+		return cols;
 	}
 	
 	@Override
 	public void swapRows(int i, int j) {
 		if (i == j) return;
-		int a = i*columns;
-		int b = j*columns;
+		int a = i*cols;
+		int b = j*cols;
 		int cc = columnCount();
 		for (int k = 0; k < cc; k++) {
 			double t = data[a+k];
@@ -211,17 +211,17 @@ public final class Matrix extends ArrayMatrix {
 	
 	@Override
 	public void multiplyRow(int i, double factor) {
-		int offset=i*columns;
-		for (int j=0; j<columns; j++) {
+		int offset=i*cols;
+		for (int j=0; j<cols; j++) {
 			data[offset+j]*=factor;
 		}
 	}
 	
 	@Override
 	public void addRowMultiple(int src, int dst, double factor) {
-		int soffset=src*columns;
-		int doffset=dst*columns;
-		for (int j=0; j<columns; j++) {
+		int soffset=src*cols;
+		int doffset=dst*cols;
+		for (int j=0; j<cols; j++) {
 			data[doffset+j]+=factor*data[soffset+j];
 		}
 	}
@@ -238,12 +238,12 @@ public final class Matrix extends ArrayMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		return data[(row*columns)+column];
+		return data[(row*cols)+column];
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		data[(row*columns)+column]=value;
+		data[(row*cols)+column]=value;
 	}
 	
 	@Override
@@ -322,12 +322,12 @@ public final class Matrix extends ArrayMatrix {
 	
 	@Override
 	public StridedMatrix getTranspose() {
-		return StridedMatrix.wrap(data,columns,rows,0,1,columns);
+		return StridedMatrix.wrap(data,cols,rows,0,1,cols);
 	}
 	
 	@Override
 	public StridedMatrix getTransposeView() {
-		return StridedMatrix.wrap(data,columns,rows,0,1,columns);
+		return StridedMatrix.wrap(data,cols,rows,0,1,cols);
 	}
 	
 	@Override 
@@ -362,7 +362,7 @@ public final class Matrix extends ArrayMatrix {
 		int rc=rowCount();
 		if (col.length()!=rc) throw new IllegalArgumentException("Column has wrong length: "+col.length());
 		for (int i=0; i<rc; i++) {
-			data[i*columns+j]=col.get(j);
+			data[i*cols+j]=col.get(j);
 		}
 	}
 
