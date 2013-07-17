@@ -102,7 +102,7 @@ public class QRDecompositionHouseholderColumn implements QRDecomposition<DenseMa
             if( Q == null ) {
                 Q = CommonOps.identity(numRows,minLength);
             } else {
-                if( Q.numRows != numRows || Q.numCols != minLength ) {
+                if( Q.rows != numRows || Q.cols != minLength ) {
                     throw new IllegalArgumentException("Unexpected matrix dimension.");
                 } else {
                     CommonOps.setIdentity(Q);
@@ -112,7 +112,7 @@ public class QRDecompositionHouseholderColumn implements QRDecomposition<DenseMa
             if( Q == null ) {
                 Q = CommonOps.identity(numRows);
             } else {
-                if( Q.numRows != numRows || Q.numCols != numRows ) {
+                if( Q.rows != numRows || Q.cols != numRows ) {
                     throw new IllegalArgumentException("Unexpected matrix dimension.");
                 } else {
                     CommonOps.setIdentity(Q);
@@ -147,16 +147,16 @@ public class QRDecompositionHouseholderColumn implements QRDecomposition<DenseMa
                 R = new DenseMatrix64F(numRows,numCols);
         } else {
             if( compact ) {
-                if( R.numCols != numCols || R.numRows != minLength )
+                if( R.cols != numCols || R.rows != minLength )
                     throw new IllegalArgumentException(
-                            "Unexpected dimensions: found( "+R.numRows+" "+R.numCols+" ) expected( "+minLength+" "+numCols+" )");
+                            "Unexpected dimensions: found( "+R.rows+" "+R.cols+" ) expected( "+minLength+" "+numCols+" )");
             } else {
-                if( R.numCols != numCols || R.numRows != numRows )
+                if( R.cols != numCols || R.rows != numRows )
                     throw new IllegalArgumentException("Unexpected dimensions");
             }
 
-            for( int i = 0; i < R.numRows; i++ ) {
-                int min = Math.min(i,R.numCols);
+            for( int i = 0; i < R.rows; i++ ) {
+                int min = Math.min(i,R.cols);
                 for( int j = 0; j < min; j++ ) {
                     R.set(i,j,0);
                 }
@@ -189,7 +189,7 @@ public class QRDecompositionHouseholderColumn implements QRDecomposition<DenseMa
      */
     @Override
     public boolean decompose( DenseMatrix64F A ) {
-        setExpectedMaxSize(A.numRows, A.numCols);
+        setExpectedMaxSize(A.rows, A.cols);
 
         convertToColumnMajor(A);
 

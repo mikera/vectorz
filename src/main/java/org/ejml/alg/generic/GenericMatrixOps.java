@@ -38,11 +38,11 @@ public class GenericMatrixOps {
 
     public static boolean isEquivalent( Matrix64F a , Matrix64F b , double tol )
     {
-        if( a.numRows != b.numRows || a.numCols != b.numCols )
+        if( a.rows != b.rows || a.cols != b.cols )
             return false;
 
-        for( int i = 0; i < a.numRows; i++ ) {
-            for( int j = 0; j < a.numCols; j++ ) {
+        for( int i = 0; i < a.rows; i++ ) {
+            for( int j = 0; j < a.cols; j++ ) {
                 double diff = Math.abs(a.get(i,j) - b.get(i,j));
 
                 if( diff > tol )
@@ -63,8 +63,8 @@ public class GenericMatrixOps {
      */
     public static boolean isIdentity( Matrix64F a , double tol )
     {
-        for( int i = 0; i < a.numRows; i++ ) {
-            for( int j = 0; j < a.numCols; j++ ) {
+        for( int i = 0; i < a.rows; i++ ) {
+            for( int j = 0; j < a.cols; j++ ) {
                 if( i == j ) {
                     if( Math.abs(a.get(i,j)-1.0) > tol )
                         return false;
@@ -79,12 +79,12 @@ public class GenericMatrixOps {
 
     public static boolean isEquivalentTriangle( boolean upper , Matrix64F a , Matrix64F b , double tol )
     {
-        if( a.numRows != b.numRows || a.numCols != b.numCols )
+        if( a.rows != b.rows || a.cols != b.cols )
             return false;
 
         if( upper ) {
-            for( int i = 0; i < a.numRows; i++ ) {
-                for( int j = i; j < a.numCols; j++ ) {
+            for( int i = 0; i < a.rows; i++ ) {
+                for( int j = i; j < a.cols; j++ ) {
                     double diff = Math.abs(a.get(i,j) - b.get(i,j));
 
                     if( diff > tol )
@@ -92,8 +92,8 @@ public class GenericMatrixOps {
                 }
             }
         } else {
-            for( int j = 0; j < a.numCols; j++ ) {
-                for( int i = j; i < a.numRows; i++ ) {
+            for( int j = 0; j < a.cols; j++ ) {
+                for( int i = j; i < a.rows; i++ ) {
                     double diff = Math.abs(a.get(i,j) - b.get(i,j));
 
                     if( diff > tol )
@@ -107,8 +107,8 @@ public class GenericMatrixOps {
 
     public static void copy( Matrix64F from , Matrix64F to )
     {
-        int numCols = from.getNumCols();
-        int numRows = from.getNumRows();
+        int numCols = from.columnCount();
+        int numRows = from.rowCount();
 
         for( int i = 0; i < numRows; i++ ) {
             for( int j = 0; j < numCols; j++ ) {
@@ -119,8 +119,8 @@ public class GenericMatrixOps {
 
     public static void setRandom( Matrix64F a , double min , double max , Random rand )
     {
-        for( int i = 0; i < a.numRows; i++ ) {
-            for( int j = 0; j < a.numCols; j++ ) {
+        for( int i = 0; i < a.rows; i++ ) {
+            for( int j = 0; j < a.cols; j++ ) {
                 double val = rand.nextDouble()*(max-min)+min;
                 a.set(i,j,val);
             }

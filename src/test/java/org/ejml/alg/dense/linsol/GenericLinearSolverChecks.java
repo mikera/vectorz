@@ -78,7 +78,7 @@ public abstract class GenericLinearSolverChecks {
 
         DenseMatrix64F B = RandomMatrices.createRandom(4,2,rand);
         DenseMatrix64F B_orig = B.copy();
-        DenseMatrix64F X = new DenseMatrix64F(A.numRows,B.numCols);
+        DenseMatrix64F X = new DenseMatrix64F(A.rows,B.cols);
 
         solver.solve(B,X);
 
@@ -247,8 +247,8 @@ public abstract class GenericLinearSolverChecks {
 
         CommonOps.mult(A,A_inv,I);
 
-        for( int i = 0; i < I.numRows; i++ ) {
-            for( int j = 0; j < I.numCols; j++ ) {
+        for( int i = 0; i < I.rows; i++ ) {
+            for( int j = 0; j < I.cols; j++ ) {
                 if( i == j )
                     assertEquals(1,I.get(i,j),tol);
                 else

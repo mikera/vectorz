@@ -71,8 +71,8 @@ public class BidiagonalDecompositionNaive {
     }
 
     protected void init(DenseMatrix64F A) {
-        m = A.numRows;
-        n = A.numCols;
+        m = A.rows;
+        n = A.cols;
 
         min = Math.min(m,n);
 

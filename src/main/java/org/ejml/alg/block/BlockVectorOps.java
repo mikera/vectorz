@@ -82,8 +82,8 @@ public class BlockVectorOps {
             int widthA = Math.min(blockLength,A.col1-A.col0-i);
             int widthB = Math.min(blockLength,B.col1-B.col0-i);
 
-            int indexA = rowBlockA*A.original.numCols + (A.col0+i)*heightA + rowA*widthA;
-            int indexB = rowBlockB*B.original.numCols + (B.col0+i)*heightB + rowB*widthB;
+            int indexA = rowBlockA*A.original.cols + (A.col0+i)*heightA + rowA*widthA;
+            int indexB = rowBlockB*B.original.cols + (B.col0+i)*heightB + rowB*widthB;
 
             if( i == startI ) {
                 indexA += offset;
@@ -141,8 +141,8 @@ public class BlockVectorOps {
             int widthA = Math.min(blockLength,A.col1-A.col0-i);
             int widthB = Math.min(blockLength,B.col1-B.col0-i);
 
-            int indexA = rowBlockA*A.original.numCols + (A.col0+i)*heightA + rowA*widthA;
-            int indexB = rowBlockB*B.original.numCols + (B.col0+i)*heightB + rowB*widthB;
+            int indexA = rowBlockA*A.original.cols + (A.col0+i)*heightA + rowA*widthA;
+            int indexB = rowBlockB*B.original.cols + (B.col0+i)*heightB + rowB*widthB;
 
             if( i == startI ) {
                 indexA += offset;
@@ -202,9 +202,9 @@ public class BlockVectorOps {
             int widthB = Math.min(blockLength,B.col1-B.col0-i);
             int widthC = Math.min(blockLength,C.col1-C.col0-i);
 
-            int indexA = A.row0*A.original.numCols + (A.col0+i)*heightA + rowA*widthA;
-            int indexB = B.row0*B.original.numCols + (B.col0+i)*heightB + rowB*widthB;
-            int indexC = C.row0*C.original.numCols + (C.col0+i)*heightC + rowC*widthC;
+            int indexA = A.row0*A.original.cols + (A.col0+i)*heightA + rowA*widthA;
+            int indexB = B.row0*B.original.cols + (B.col0+i)*heightB + rowB*widthB;
+            int indexC = C.row0*C.original.cols + (C.col0+i)*heightC + rowC*widthC;
 
             if( i == startI ) {
                 indexA += offset;
@@ -270,8 +270,8 @@ public class BlockVectorOps {
             int widthA = Math.min(blockLength,A.col1-A.col0-i);
             int widthB = Math.min(blockLength,B.col1-B.col0-i);
 
-            int indexA = rowBlockA*A.original.numCols + (A.col0+i)*heightA + rowA*widthA;
-            int indexB = rowBlockB*B.original.numCols + (B.col0+i)*heightB + rowB*widthB;
+            int indexA = rowBlockA*A.original.cols + (A.col0+i)*heightA + rowA*widthA;
+            int indexB = rowBlockB*B.original.cols + (B.col0+i)*heightB + rowB*widthB;
 
             if( i == startI ) {
                 indexA += offset;
@@ -338,8 +338,8 @@ public class BlockVectorOps {
             int widthA = Math.min(blockLength,A.col1-A.col0-i);
             int heightB = Math.min(blockLength,B.row1-B.row0-i);
 
-            int indexA = rowBlockA*A.original.numCols + (A.col0+i)*heightA + rowA*widthA;
-            int indexB = (B.row0+i)*B.original.numCols + colBlockB*heightB + colB;
+            int indexA = rowBlockA*A.original.cols + (A.col0+i)*heightA + rowA*widthA;
+            int indexB = (B.row0+i)*B.original.cols + colBlockB*heightB + colB;
 
             if( i == startI ) {
                 indexA += offset;

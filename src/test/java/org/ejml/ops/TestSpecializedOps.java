@@ -84,7 +84,7 @@ public class TestSpecializedOps {
         for( int i = 0; i < order.length; i++ ) {
             int o = order[i];
 
-            for( int j = 0; j < A.numCols; j++ ) {
+            for( int j = 0; j < A.cols; j++ ) {
                 assertEquals(A.get(o,j),C.get(i,j),1e-16);
             }
         }
@@ -131,7 +131,7 @@ public class TestSpecializedOps {
 
         CommonOps.sub(a,b,c);
         double expectedNorm = 0;
-        for( int i = 0; i < c.getNumElements(); i++ ) {
+        for( int i = 0; i < c.elementCount(); i++ ) {
             expectedNorm += Math.abs(c.get(i));
         }
         double foundNorm = SpecializedOps.diffNormP1(a,b);
@@ -187,10 +187,10 @@ public class TestSpecializedOps {
         for( int i = 0; i < v.length; i++ ) {
             DenseMatrix64F a = v[i];
 
-            assertEquals(3,a.getNumRows());
-            assertEquals(1,a.getNumCols());
+            assertEquals(3,a.rowCount());
+            assertEquals(1,a.columnCount());
 
-            for( int j = 0; j < A.numRows; j++ ) {
+            for( int j = 0; j < A.rows; j++ ) {
                 assertEquals(A.get(j,i),a.get(j),1e-8);
             }
         }
@@ -202,10 +202,10 @@ public class TestSpecializedOps {
         for( int i = 0; i < v.length; i++ ) {
             DenseMatrix64F a = v[i];
 
-            assertEquals(1,a.getNumRows());
-            assertEquals(5,a.getNumCols());
+            assertEquals(1,a.rowCount());
+            assertEquals(5,a.columnCount());
 
-            for( int j = 0; j < A.numCols; j++ ) {
+            for( int j = 0; j < A.cols; j++ ) {
                 assertEquals(A.get(i,j),a.get(j),1e-8);
             }
         }

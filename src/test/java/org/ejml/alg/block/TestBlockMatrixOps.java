@@ -58,7 +58,7 @@ public class TestBlockMatrixOps {
 
     private void checkConvert_dense_to_block( int m , int n ) {
         DenseMatrix64F A = RandomMatrices.createRandom(m,n,rand);
-        BlockMatrix64F B = new BlockMatrix64F(A.numRows,A.numCols,BLOCK_LENGTH);
+        BlockMatrix64F B = new BlockMatrix64F(A.rows,A.cols,BLOCK_LENGTH);
 
         BlockMatrixOps.convert(A,B);
 
@@ -80,7 +80,7 @@ public class TestBlockMatrixOps {
         DenseMatrix64F A_orig = A.copy();
 
         BlockMatrixOps.convertRowToBlock(m,n,BLOCK_LENGTH,A.data,tmp);
-        BlockMatrix64F B = BlockMatrix64F.wrap(A.data,A.numRows,A.numCols,BLOCK_LENGTH);
+        BlockMatrix64F B = BlockMatrix64F.wrap(A.data,A.rows,A.cols,BLOCK_LENGTH);
 
         assertTrue( GenericMatrixOps.isEquivalent(A_orig,B,1e-8));
     }
@@ -121,7 +121,7 @@ public class TestBlockMatrixOps {
         BlockMatrix64F A_orig = A.copy();
 
         BlockMatrixOps.convertBlockToRow(m,n,BLOCK_LENGTH,A.data,tmp);
-        DenseMatrix64F B = DenseMatrix64F.wrap(A.numRows,A.numCols,A.data);
+        DenseMatrix64F B = DenseMatrix64F.wrap(A.rows,A.cols,A.data);
 
         assertTrue( GenericMatrixOps.isEquivalent(A_orig,B,1e-8));
     }
@@ -176,14 +176,14 @@ public class TestBlockMatrixOps {
         A.blockLength = 3;
 
         // check for bad size C
-        C.numCols = 7;
+        C.cols = 7;
         invokeErrorCheck(func,transA , transB ,A,B,C);
-        C.numCols = 6;
-        C.numRows = 4;
+        C.cols = 6;
+        C.rows = 4;
         invokeErrorCheck(func,transA , transB ,A,B,C);
 
         // make A and B incompatible
-        A.numCols = 3;
+        A.cols = 3;
         invokeErrorCheck(func,transA , transB ,A,B,C);
     }
 
@@ -337,7 +337,7 @@ public class TestBlockMatrixOps {
         DenseMatrix64F A = RandomMatrices.createRandom(m,n,rand);
         DenseMatrix64F A_t = new DenseMatrix64F(n,m);
 
-        BlockMatrix64F B = new BlockMatrix64F(A.numRows,A.numCols,BLOCK_LENGTH);
+        BlockMatrix64F B = new BlockMatrix64F(A.rows,A.cols,BLOCK_LENGTH);
         BlockMatrix64F B_t = new BlockMatrix64F(n,m,BLOCK_LENGTH);
 
         BlockMatrixOps.convert(A,B);
@@ -357,8 +357,8 @@ public class TestBlockMatrixOps {
                 BlockMatrix64F B = BlockMatrixOps.createRandom(numRows,numCols,-1,1,rand,r);
                 BlockMatrixOps.zeroTriangle(true,B);
 
-                for( int i = 0; i < B.numRows; i++ ) {
-                    for( int j = 0; j < B.numCols; j++ ) {
+                for( int i = 0; i < B.rows; i++ ) {
+                    for( int j = 0; j < B.cols; j++ ) {
                         if( j <= i )
                             assertTrue(B.get(i,j) != 0 );
                         else
@@ -380,8 +380,8 @@ public class TestBlockMatrixOps {
 
                 BlockMatrixOps.zeroTriangle(false,B);
 
-                for( int i = 0; i < B.numRows; i++ ) {
-                    for( int j = 0; j < B.numCols; j++ ) {
+                for( int i = 0; i < B.rows; i++ ) {
+                    for( int j = 0; j < B.cols; j++ ) {
                         if( j >= i )
                             assertTrue(B.get(i,j) != 0 );
                         else
@@ -437,8 +437,8 @@ public class TestBlockMatrixOps {
 
                 BlockMatrixOps.copyTriangle(true,A,B);
 
-                for( int i = 0; i < B.numRows; i++) {
-                    for( int j = 0; j < B.numCols; j++ ) {
+                for( int i = 0; i < B.rows; i++) {
+                    for( int j = 0; j < B.cols; j++ ) {
                         if( j >= i )
                             assertTrue(A.get(i,j) == B.get(i,j));
                         else
@@ -449,8 +449,8 @@ public class TestBlockMatrixOps {
                 CommonOps.fill(B, 0);
                 BlockMatrixOps.copyTriangle(false,A,B);
 
-                for( int i = 0; i < B.numRows; i++) {
-                    for( int j = 0; j < B.numCols; j++ ) {
+                for( int i = 0; i < B.rows; i++) {
+                    for( int j = 0; j < B.cols; j++ ) {
                         if( j <= i )
                             assertTrue(A.get(i,j) == B.get(i,j));
                         else
@@ -489,11 +489,11 @@ public class TestBlockMatrixOps {
 
         SimpleMatrix S = BlockMatrixOps.convertSimple(A);
 
-        assertEquals(A.numRows,S.numRows());
-        assertEquals(A.numCols,S.numCols());
+        assertEquals(A.rows,S.numRows());
+        assertEquals(A.cols,S.numCols());
 
-        for( int i = 0; i < A.numRows; i++ ) {
-            for( int j = 0; j < A.numCols; j++ ) {
+        for( int i = 0; i < A.rows; i++ ) {
+            for( int j = 0; j < A.cols; j++ ) {
                 assertEquals(A.get(i,j),S.get(i,j),1e-8);
             }
         }
@@ -521,8 +521,8 @@ public class TestBlockMatrixOps {
 
         BlockMatrixOps.extractAligned(A,B);
 
-        for( int i = 0; i < B.numRows; i++ ) {
-            for( int j = 0; j < B.numCols; j++ ) {
+        for( int i = 0; i < B.rows; i++ ) {
+            for( int j = 0; j < B.cols; j++ ) {
                 assertEquals(A.get(i,j),B.get(i,j),1e-8);
             }
         }

@@ -58,8 +58,8 @@ public class TestInvertUsingSolve {
 
         CommonOps.mult(A,A_inv,I);
 
-        for( int i = 0; i < I.numRows; i++ ) {
-            for( int j = 0; j < I.numCols; j++ ) {
+        for( int i = 0; i < I.rows; i++ ) {
+            for( int j = 0; j < I.cols; j++ ) {
                 if( i == j )
                     assertEquals(1,I.get(i,j),tol);
                 else

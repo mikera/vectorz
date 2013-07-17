@@ -52,7 +52,7 @@ public class NaiveDeterminant {
      */
     public static double leibniz( DenseMatrix64F mat )
     {
-        PermuteArray perm = new PermuteArray( mat.numCols );
+        PermuteArray perm = new PermuteArray( mat.cols );
 
         double total = 0;
 
@@ -62,7 +62,7 @@ public class NaiveDeterminant {
 
             double prod = 1;
 
-            for( int i = 0; i < mat.numRows; i++ ) {
+            for( int i = 0; i < mat.rows; i++ ) {
                 prod *= mat.get(i,p[i]);
             }
 
@@ -84,21 +84,21 @@ public class NaiveDeterminant {
      */
     public static double recursive( DenseMatrix64F mat )
     {
-        if(mat.numRows == 1) {
+        if(mat.rows == 1) {
             return mat.get(0);
-        } else if(mat.numRows == 2) {
+        } else if(mat.rows == 2) {
             return mat.get(0) * mat.get(3) - mat.get(1) * mat.get(2);
-        } else if( mat.numRows == 3 ) {
+        } else if( mat.rows == 3 ) {
             return UnrolledDeterminantFromMinor.det3(mat);
         }
 
         double result = 0;
 
-        for(int i = 0; i < mat.numRows; i++) {
-            DenseMatrix64F minorMat = new DenseMatrix64F(mat.numRows-1,mat.numRows-1);
+        for(int i = 0; i < mat.rows; i++) {
+            DenseMatrix64F minorMat = new DenseMatrix64F(mat.rows-1,mat.rows-1);
 
-            for(int j = 1; j < mat.numRows; j++) {
-                for(int k = 0; k < mat.numRows; k++) {
+            for(int j = 1; j < mat.rows; j++) {
+                for(int k = 0; k < mat.rows; k++) {
 
                     if(k < i) {
                         minorMat.set(j-1,k,mat.get(j,k));

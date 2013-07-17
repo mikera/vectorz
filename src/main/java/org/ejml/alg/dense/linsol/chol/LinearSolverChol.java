@@ -45,7 +45,7 @@ public class LinearSolverChol extends LinearSolverAbstract {
         _setA(A);
 
         if( decomp.decompose(A) ){
-            n = A.numCols;
+            n = A.cols;
             vv = decomp._getVV();
             t = decomp.getT().data;
             return true;
@@ -76,11 +76,11 @@ public class LinearSolverChol extends LinearSolverAbstract {
      */
     @Override
     public void solve( DenseMatrix64F B , DenseMatrix64F X ) {
-        if( B.numCols != X.numCols && B.numRows != n && X.numRows != n) {
+        if( B.cols != X.cols && B.rows != n && X.rows != n) {
             throw new IllegalArgumentException("Unexpected matrix size");
         }
 
-        int numCols = B.numCols;
+        int numCols = B.cols;
 
         double dataB[] = B.data;
         double dataX[] = X.data;
@@ -114,7 +114,7 @@ public class LinearSolverChol extends LinearSolverAbstract {
      */
     @Override
     public void invert( DenseMatrix64F inv ) {
-        if( inv.numRows != n || inv.numCols != n ) {
+        if( inv.rows != n || inv.cols != n ) {
             throw new RuntimeException("Unexpected matrix dimension");
         }
         if( inv.data == t ) {

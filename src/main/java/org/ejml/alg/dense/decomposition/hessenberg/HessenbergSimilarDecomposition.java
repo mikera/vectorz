@@ -84,12 +84,12 @@ public class HessenbergSimilarDecomposition
     @Override
     public boolean decompose( DenseMatrix64F A )
     {
-        if( A.numRows != A.numCols )
+        if( A.rows != A.cols )
             throw new IllegalArgumentException("A must be square.");
 
         QH = A;
 
-        N = A.numCols;
+        N = A.cols;
 
         if( b.length < N ) {
             b = new double[ N ];
@@ -122,7 +122,7 @@ public class HessenbergSimilarDecomposition
     public DenseMatrix64F getH( DenseMatrix64F H ) {
         if( H == null ) {
             H = new DenseMatrix64F(N,N);
-        } else if( N != H.numRows || N != H.numCols )
+        } else if( N != H.rows || N != H.cols )
             throw new IllegalArgumentException("The provided H must have the same dimensions as the decomposed matrix.");
         else
             H.zero();
@@ -151,7 +151,7 @@ public class HessenbergSimilarDecomposition
             for( int i = 0; i < N; i++ ) {
                 Q.data[i*N+i] = 1;
             }
-        } else if( N != Q.numRows || N != Q.numCols )
+        } else if( N != Q.rows || N != Q.cols )
             throw new IllegalArgumentException("The provided H must have the same dimensions as the decomposed matrix.");
         else
             CommonOps.setIdentity(Q);

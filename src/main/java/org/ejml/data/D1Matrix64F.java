@@ -71,11 +71,11 @@ public abstract class D1Matrix64F extends Matrix64F {
      */
     public void set( D1Matrix64F b )
     {
-        if( numRows != b.numRows || numCols != b.numCols ) {
+        if( rows != b.rows || cols != b.cols ) {
             throw new MatrixDimensionException("The two matrices do not have compatible shapes.");
         }
 
-        int dataLength = b.getNumElements();
+        int dataLength = b.elementCount();
 
         System.arraycopy(b.data, 0, this.data, 0, dataLength);
     }

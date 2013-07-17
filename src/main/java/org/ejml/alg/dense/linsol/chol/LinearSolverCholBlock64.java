@@ -46,7 +46,7 @@ public class LinearSolverCholBlock64 extends WrapLinearSolverBlock64 {
      */
     @Override
     public void solve(DenseMatrix64F B, DenseMatrix64F X) {
-        blockB.reshape(B.numRows,B.numCols,false);
+        blockB.reshape(B.rows,B.cols,false);
         BlockMatrixOps.convert(B,blockB);
 
         // since overwrite B is true X does not need to be passed in

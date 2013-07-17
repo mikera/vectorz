@@ -70,7 +70,7 @@ public class BaseCholeskySolveTests {
 
     public void testInvert( LinearSolver<DenseMatrix64F> solver ) {
         DenseMatrix64F A = new DenseMatrix64F(3,3, true, 1, 2, 4, 2, 13, 23, 4, 23, 90);
-        DenseMatrix64F found = new DenseMatrix64F(A.numRows,A.numCols);
+        DenseMatrix64F found = new DenseMatrix64F(A.rows,A.cols);
 
         assertTrue(solver.setA(A));
         solver.invert(found);

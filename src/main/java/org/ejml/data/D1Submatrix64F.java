@@ -54,8 +54,8 @@ public class D1Submatrix64F {
 
     public D1Submatrix64F(D1Matrix64F original) {
         this.original = original;
-        row1 = original.numRows;
-        col1 = original.numCols;
+        row1 = original.rows;
+        col1 = original.cols;
     }
 
     public int getRows() {

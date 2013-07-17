@@ -45,7 +45,7 @@ public class WatchedDoubleStepQREigenvalue implements EigenvalueExtractor {
         implicitQR.setup(A);
         implicitQR.setQ(null);
 
-        splits = new int[ A.numRows ];
+        splits = new int[ A.rows ];
         numSplits = 0;
     }
 
@@ -54,9 +54,9 @@ public class WatchedDoubleStepQREigenvalue implements EigenvalueExtractor {
         setup(origA);
 
         x1 = 0;
-        x2 = origA.numRows-1;
+        x2 = origA.rows-1;
 
-        while( implicitQR.numEigen < origA.numRows ) {
+        while( implicitQR.numEigen < origA.rows ) {
             if( implicitQR.steps > implicitQR.maxIterations )
                 return false;
 

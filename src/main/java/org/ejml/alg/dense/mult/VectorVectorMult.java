@@ -65,7 +65,7 @@ public class VectorVectorMult {
      */
     public static double innerProd( D1Matrix64F x, D1Matrix64F y )
     {
-        int m = x.getNumElements();
+        int m = x.elementCount();
 
         double total = 0;
         for( int i = 0; i < m; i++ ) {
@@ -87,12 +87,12 @@ public class VectorVectorMult {
      */
     public static double innerProdA( D1Matrix64F x, D1Matrix64F A , D1Matrix64F y )
     {
-        int n = A.numRows;
-        int m = A.numCols;
+        int n = A.rows;
+        int m = A.cols;
 
-        if( x.getNumElements() != n )
+        if( x.elementCount() != n )
             throw new IllegalArgumentException("Unexpected number of elements in x");
-        if( y.getNumElements() != m )
+        if( y.elementCount() != m )
             throw new IllegalArgumentException("Unexpected number of elements in y");
 
         double result = 0;
@@ -124,14 +124,14 @@ public class VectorVectorMult {
     // TODO better name for this
     public static double innerProdTranA( D1Matrix64F x, D1Matrix64F A , D1Matrix64F y )
     {
-        int n = A.numRows;
+        int n = A.rows;
 
-        if( n != A.numCols)
+        if( n != A.cols)
             throw new IllegalArgumentException("A must be square");
 
-        if( x.getNumElements() != n )
+        if( x.elementCount() != n )
             throw new IllegalArgumentException("Unexpected number of elements in x");
-        if( y.getNumElements() != n )
+        if( y.elementCount() != n )
             throw new IllegalArgumentException("Unexpected number of elements in y");
 
         double result = 0;
@@ -171,8 +171,8 @@ public class VectorVectorMult {
      * @param A A Matrix with m by n elements. Modified.
      */
     public static void outerProd( D1Matrix64F x, D1Matrix64F y, RowD1Matrix64F A ) {
-        int m = A.numRows;
-        int n = A.numCols;
+        int m = A.rows;
+        int n = A.cols;
 
         int index = 0;
         for( int i = 0; i < m; i++ ) {
@@ -206,8 +206,8 @@ public class VectorVectorMult {
      * @param A A Matrix with m by n elements. Modified.
      */
     public static void addOuterProd( double gamma , D1Matrix64F x, D1Matrix64F y, RowD1Matrix64F A ) {
-        int m = A.numRows;
-        int n = A.numCols;
+        int m = A.rows;
+        int n = A.cols;
 
         int index = 0;
         if( gamma == 1.0 ) {
@@ -245,7 +245,7 @@ public class VectorVectorMult {
                                     D1Matrix64F u ,
                                     D1Matrix64F x , D1Matrix64F y )
     {
-        int n = u.getNumElements();
+        int n = u.elementCount();
 
         double sum = 0;
         for( int i = 0; i < n; i++ ) {
@@ -278,7 +278,7 @@ public class VectorVectorMult {
                                     DenseMatrix64F u , DenseMatrix64F w ,
                                     DenseMatrix64F B )
     {
-        int n = u.getNumElements();
+        int n = u.elementCount();
 
         int matrixIndex = 0;
         for( int i = 0; i < n; i++ ) {
@@ -309,7 +309,7 @@ public class VectorVectorMult {
                                     DenseMatrix64F u ,
                                     DenseMatrix64F w )
     {
-        int n = u.getNumElements();
+        int n = u.elementCount();
 
         int matrixIndex = 0;
         for( int i = 0; i < n; i++ ) {

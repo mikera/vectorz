@@ -386,10 +386,10 @@ public abstract class GeneralEigenDecompositionCheck {
     {
 
         // basic sanity tests
-        assertEquals(A.numRows,alg.getNumberOfEigenvalues());
+        assertEquals(A.rows,alg.getNumberOfEigenvalues());
 
         if( numReal >= 0 ) {
-            for( int i = 0; i < A.numRows; i++ ) {
+            for( int i = 0; i < A.rows; i++ ) {
                 Complex64F v = alg.getEigenvalue(i);
 
                 assertFalse( Double.isNaN(v.getReal() ));
@@ -520,7 +520,7 @@ public abstract class GeneralEigenDecompositionCheck {
 
             if( c.isReal() ) {
                 // test using the characteristic equation
-                double det = SimpleMatrix.identity(A.numCols).scale(c.real).minus(a).determinant();
+                double det = SimpleMatrix.identity(A.cols).scale(c.real).minus(a).determinant();
 
                 // extremely crude test.  given perfect data this is probably considered a failure...  However,
                 // its hard to tell what a good test value actually is.

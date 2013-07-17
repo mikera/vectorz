@@ -47,11 +47,11 @@ public class TestQRColPivDecompositionHouseholderColumn {
         DenseMatrix64F A = RandomMatrices.createOrthogonal(6, 3, rand);
 
         // make sure the columns have norms in descending magnitude
-        for( int i = 0; i < A.numCols; i++ ) {
+        for( int i = 0; i < A.cols; i++ ) {
 
-            double scale = (A.numCols-i)*3;
+            double scale = (A.cols-i)*3;
 
-            for( int j = 0; j < A.numRows; j++ ) {
+            for( int j = 0; j < A.rows; j++ ) {
                 A.set(j,i,scale*A.get(j,i));
             }
         }
@@ -63,14 +63,14 @@ public class TestQRColPivDecompositionHouseholderColumn {
         DenseMatrix64F Q = alg.getQ(null, false);
         DenseMatrix64F R = alg.getR(null, false);
 
-        DenseMatrix64F found = new DenseMatrix64F(A.numRows,A.numCols);
+        DenseMatrix64F found = new DenseMatrix64F(A.rows,A.cols);
         CommonOps.mult(Q,R,found);
 
         assertTrue(MatrixFeatures.isIdentical(A,found,1e-8));
 
         // check the pivots
         int pivots[] = alg.getPivots();
-        for( int i = 0; i < A.numCols; i++ ) {
+        for( int i = 0; i < A.cols; i++ ) {
             assertEquals(i,pivots[i]);
         }
 

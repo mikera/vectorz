@@ -61,7 +61,7 @@ public class LinearSolverLuKJI extends LinearSolverLuBase {
      */
     @Override
     public void solve(DenseMatrix64F b, DenseMatrix64F x) {
-        if( b.numCols != x.numCols && b.numRows != numCols && x.numRows != numCols) {
+        if( b.cols != x.cols && b.rows != numCols && x.rows != numCols) {
             throw new IllegalArgumentException("Unexpected matrix size");
         }
 
@@ -72,7 +72,7 @@ public class LinearSolverLuKJI extends LinearSolverLuBase {
         }
 
         // Copy right hand side with pivoting
-        int nx = b.numCols;
+        int nx = b.cols;
         double[] dataX = x.data;
 
         // Solve L*Y = B(piv,:)

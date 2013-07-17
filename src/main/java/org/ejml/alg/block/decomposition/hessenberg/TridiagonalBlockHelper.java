@@ -191,8 +191,8 @@ public class TridiagonalBlockHelper {
         for( int i = 0; i < row; i++ ) {
             int width = Math.min(blockLength,A.col1 - A.col0);
 
-            indexU = A.original.numCols*A.row0 + height*A.col0 + i*width + row;
-            indexV = V.original.numCols*V.row0 + height*V.col0 + i*width + row;
+            indexU = A.original.cols*A.row0 + height*A.col0 + i*width + row;
+            indexV = V.original.cols*V.row0 + height*V.col0 + i*width + row;
 
             double u_row = (i+1 == row) ? 1.0 : dataA[ indexU ];
             double v_row = dataV[ indexV ];

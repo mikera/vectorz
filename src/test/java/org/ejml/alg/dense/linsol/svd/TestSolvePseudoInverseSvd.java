@@ -36,7 +36,7 @@ public class TestSolvePseudoInverseSvd extends GenericLinearSolverChecks {
 
     @Override
     protected LinearSolver<DenseMatrix64F> createSolver( DenseMatrix64F A ) {
-        return new SolvePseudoInverseSvd(A.numRows,A.numCols);
+        return new SolvePseudoInverseSvd(A.rows,A.cols);
     }
 
     @Test

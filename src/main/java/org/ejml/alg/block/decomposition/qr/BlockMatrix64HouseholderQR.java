@@ -117,7 +117,7 @@ public class BlockMatrix64HouseholderQR
      */
     @Override
     public BlockMatrix64F getQ(BlockMatrix64F Q, boolean compact) {
-        Q = initializeQ(Q, dataA.numRows , dataA.numCols  , blockLength , compact);
+        Q = initializeQ(Q, dataA.rows , dataA.cols  , blockLength , compact);
  
         applyQ(Q,true);
 
@@ -136,8 +136,8 @@ public class BlockMatrix64HouseholderQR
                 Q = new BlockMatrix64F(numRows,minLength,blockLength);
                 BlockMatrixOps.setIdentity(Q);
             } else {
-                if( Q.numRows != numRows || Q.numCols != minLength ) {
-                    throw new IllegalArgumentException("Unexpected matrix dimension. Found "+Q.numRows+" "+Q.numCols);
+                if( Q.rows != numRows || Q.cols != minLength ) {
+                    throw new IllegalArgumentException("Unexpected matrix dimension. Found "+Q.rows+" "+Q.cols);
                 } else {
                     BlockMatrixOps.setIdentity(Q);
                 }
@@ -147,8 +147,8 @@ public class BlockMatrix64HouseholderQR
                 Q = new BlockMatrix64F(numRows,numRows,blockLength);
                 BlockMatrixOps.setIdentity(Q);
             } else {
-                if( Q.numRows != numRows || Q.numCols != numRows ) {
-                    throw new IllegalArgumentException("Unexpected matrix dimension. Found "+Q.numRows+" "+Q.numCols);
+                if( Q.rows != numRows || Q.cols != numRows ) {
+                    throw new IllegalArgumentException("Unexpected matrix dimension. Found "+Q.rows+" "+Q.cols);
                 } else {
                     BlockMatrixOps.setIdentity(Q);
                 }
@@ -181,12 +181,12 @@ public class BlockMatrix64HouseholderQR
      * @param isIdentity If B is an identity matrix.
      */
     public void applyQ( BlockMatrix64F B , boolean isIdentity ) {
-        int minDimen = Math.min(dataA.numCols,dataA.numRows);
+        int minDimen = Math.min(dataA.cols,dataA.rows);
 
         D1Submatrix64F subB = new D1Submatrix64F(B);
 
         W.col0 = W.row0 = 0;
-        Y.row1 = W.row1 = dataA.numRows;
+        Y.row1 = W.row1 = dataA.rows;
         WTA.row0 = WTA.col0 = 0;
 
         int start = minDimen - minDimen % blockLength;
@@ -199,7 +199,7 @@ public class BlockMatrix64HouseholderQR
         for( int i = start; i >= 0; i -= blockLength ) {
 
             Y.col0 = i;
-            Y.col1 = Math.min(Y.col0+blockLength,dataA.numCols);
+            Y.col1 = Math.min(Y.col0+blockLength,dataA.cols);
             Y.row0 = i;
             if( isIdentity )
                 subB.col0 = i;
@@ -234,19 +234,19 @@ public class BlockMatrix64HouseholderQR
      * @param B Matrix which Q is applied to.  Modified.
      */
     public void applyQTran( BlockMatrix64F B ) {
-        int minDimen = Math.min(dataA.numCols,dataA.numRows);
+        int minDimen = Math.min(dataA.cols,dataA.rows);
 
         D1Submatrix64F subB = new D1Submatrix64F(B);
 
         W.col0 = W.row0 = 0;
-        Y.row1 = W.row1 = dataA.numRows;
+        Y.row1 = W.row1 = dataA.rows;
         WTA.row0 = WTA.col0 = 0;
 
         // (Q3^T * (Q2^T * (Q1^t * A)))
         for( int i = 0; i < minDimen; i += blockLength ) {
 
             Y.col0 = i;
-            Y.col1 = Math.min(Y.col0+blockLength,dataA.numCols);
+            Y.col1 = Math.min(Y.col0+blockLength,dataA.cols);
             Y.row0 = i;
             
             subB.row0 = i;
@@ -277,20 +277,20 @@ public class BlockMatrix64HouseholderQR
      */
     @Override
     public BlockMatrix64F getR(BlockMatrix64F R, boolean compact) {
-        int min = Math.min(dataA.numRows,dataA.numCols);
+        int min = Math.min(dataA.rows,dataA.cols);
 
         if( R == null ) {
             if( compact ) {
-                R = new BlockMatrix64F(min,dataA.numCols,blockLength);
+                R = new BlockMatrix64F(min,dataA.cols,blockLength);
             } else {
-                R = new BlockMatrix64F(dataA.numRows,dataA.numCols,blockLength);
+                R = new BlockMatrix64F(dataA.rows,dataA.cols,blockLength);
             }
         } else {
             if( compact ) {
-                if( R.numCols != dataA.numCols || R.numRows != min ) {
+                if( R.cols != dataA.cols || R.rows != min ) {
                     throw new IllegalArgumentException("Unexpected dimension.");
                 }
-            } else if( R.numCols != dataA.numCols || R.numRows != dataA.numRows ) {
+            } else if( R.cols != dataA.cols || R.rows != dataA.rows ) {
                 throw new IllegalArgumentException("Unexpected dimension.");
             }
         }
@@ -308,12 +308,12 @@ public class BlockMatrix64HouseholderQR
     public boolean decompose(BlockMatrix64F orig) {
         setup(orig);
 
-        int m = Math.min(orig.numCols,orig.numRows);
+        int m = Math.min(orig.cols,orig.rows);
 
         // process the matrix one column block at a time and overwrite the input matrix
         for( int j = 0; j < m; j += blockLength ) {
             Y.col0 = j;
-            Y.col1 = Math.min( orig.numCols , Y.col0 + blockLength );
+            Y.col1 = Math.min( orig.cols , Y.col0 + blockLength );
             Y.row0 = j;
 
             // compute the QR decomposition of the left most block column
@@ -343,18 +343,18 @@ public class BlockMatrix64HouseholderQR
         this.dataA = orig;
         A.original = dataA;
 
-        int l = Math.min(blockLength,orig.numCols);
-        dataW.reshape(orig.numRows,l,false);
-        dataWTA.reshape(l,orig.numRows,false);
+        int l = Math.min(blockLength,orig.cols);
+        dataW.reshape(orig.rows,l,false);
+        dataWTA.reshape(l,orig.rows,false);
         Y.original = orig;
-        Y.row1 = W.row1 = orig.numRows;
+        Y.row1 = W.row1 = orig.rows;
         if( temp.length < blockLength )
             temp = new double[blockLength];
-        if( gammas.length < orig.numCols )
-            gammas = new double[ orig.numCols ];
+        if( gammas.length < orig.cols )
+            gammas = new double[ orig.cols ];
 
         if( saveW ) {
-            dataW.reshape(orig.numRows,orig.numCols,false);
+            dataW.reshape(orig.rows,orig.cols,false);
         }
     }
 
@@ -373,7 +373,7 @@ public class BlockMatrix64HouseholderQR
         A.row0 = Y.row0;
         A.row1 = Y.row1;
         A.col0 = Y.col1;
-        A.col1 = Y.original.numCols;
+        A.col1 = Y.original.cols;
 
         WTA.row0 = 0;
         WTA.col0 = 0;

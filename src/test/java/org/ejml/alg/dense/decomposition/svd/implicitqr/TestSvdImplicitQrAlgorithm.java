@@ -210,11 +210,11 @@ public class TestSvdImplicitQrAlgorithm {
     public static SvdImplicitQrAlgorithm createHelper( DenseMatrix64F a ) {
         BidiagonalDecompositionRow bidiag = new BidiagonalDecompositionRow();
         assertTrue(bidiag.decompose(a.copy()));
-        double diag[] = new double[a.numRows];
+        double diag[] = new double[a.rows];
         double off[] = new double[ diag.length-1 ];
         bidiag.getDiagonal(diag,off);
 
-        return createHelper(a.numRows,a.numCols,diag,off);
+        return createHelper(a.rows,a.cols,diag,off);
     }
 
     public static SvdImplicitQrAlgorithm createHelper( int numRows , int numCols ,

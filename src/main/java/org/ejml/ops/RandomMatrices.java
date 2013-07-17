@@ -110,7 +110,7 @@ public class RandomMatrices {
     public static DenseMatrix64F createInSpan( DenseMatrix64F[] span , double min , double max , Random rand ) {
         DenseMatrix64F A = new DenseMatrix64F(span.length,1);
 
-        DenseMatrix64F B = new DenseMatrix64F(span[0].getNumElements(),1);
+        DenseMatrix64F B = new DenseMatrix64F(span[0].elementCount(),1);
 
         for( int i = 0; i < span.length; i++ ) {
             B.set(span[i]);
@@ -277,7 +277,7 @@ public class RandomMatrices {
      */
     public static void addRandom( DenseMatrix64F A , double min , double max , Random rand ) {
         double d[] = A.getData();
-        int size = A.getNumElements();
+        int size = A.elementCount();
 
         double r = max-min;
 
@@ -333,7 +333,7 @@ public class RandomMatrices {
     public static void setRandom( D1Matrix64F mat , double min , double max , Random rand )
     {
         double d[] = mat.getData();
-        int size = mat.getNumElements();
+        int size = mat.elementCount();
 
         double r = max-min;
 
@@ -395,12 +395,12 @@ public class RandomMatrices {
      * @param rand Random number generator.
      */
     public static void createSymmetric(DenseMatrix64F A, double min, double max, Random rand) {
-        if( A.numRows != A.numCols )
+        if( A.rows != A.cols )
             throw new IllegalArgumentException("A must be a square matrix");
 
         double range = max-min;
 
-        int length = A.numRows;
+        int length = A.rows;
 
         for( int i = 0; i < length; i++ ) {
             for( int j = i; j < length; j++ ) {

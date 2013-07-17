@@ -128,7 +128,7 @@ public class TestBlockInnerMultiplication {
             CommonOps.scale(alpha,C);
         }
 
-        invoke(method,alpha,A.data,B.data,C_found.data,0,0,0,A.numRows,A.numCols,C_found.numCols);
+        invoke(method,alpha,A.data,B.data,C_found.data,0,0,0,A.rows,A.cols,C_found.cols);
 
         if( !MatrixFeatures.isIdentical(C,C_found,1e-10) ) {
             C.print();

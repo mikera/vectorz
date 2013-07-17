@@ -52,10 +52,10 @@ public class MatrixVisualization {
         int width = 300;
         int height = 300;
 
-        if( A.numRows > A.numCols) {
-            width = width*A.numCols/A.numRows;
+        if( A.rows > A.cols) {
+            width = width*A.cols/A.rows;
         } else {
-            height = height*A.numRows/A.numCols;
+            height = height*A.rows/A.cols;
         }
 
         MatrixComponent panel = new MatrixComponent(width,height);

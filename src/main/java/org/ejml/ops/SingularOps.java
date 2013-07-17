@@ -52,7 +52,7 @@ public class SingularOps {
                                         DenseMatrix64F W ,
                                         DenseMatrix64F V , boolean tranV )
     {
-        int numSingular = Math.min(W.numRows,W.numCols);
+        int numSingular = Math.min(W.rows,W.cols);
 
         checkSvdMatrixSize(U, tranU, W, V, tranV);
 
@@ -155,31 +155,31 @@ public class SingularOps {
      * then an exception is thrown.  This automatically handles compact and non-compact formats
      */
     public static void checkSvdMatrixSize(DenseMatrix64F U, boolean tranU, DenseMatrix64F W, DenseMatrix64F V, boolean tranV ) {
-        int numSingular = Math.min(W.numRows,W.numCols);
-        boolean compact = W.numRows == W.numCols;
+        int numSingular = Math.min(W.rows,W.cols);
+        boolean compact = W.rows == W.cols;
 
         if( compact ) {
             if( U != null ) {
-                if( tranU && U.numRows != numSingular )
+                if( tranU && U.rows != numSingular )
                     throw new IllegalArgumentException("Unexpected size of matrix U");
-                else if( !tranU && U.numCols != numSingular )
+                else if( !tranU && U.cols != numSingular )
                     throw new IllegalArgumentException("Unexpected size of matrix U");
             }
 
             if( V != null ) {
-            if( tranV && V.numRows != numSingular )
+            if( tranV && V.rows != numSingular )
                 throw new IllegalArgumentException("Unexpected size of matrix V");
-            else if( !tranV && V.numCols != numSingular )
+            else if( !tranV && V.cols != numSingular )
                 throw new IllegalArgumentException("Unexpected size of matrix V");
             }
         } else {
-            if( U != null && U.numRows != U.numCols )
+            if( U != null && U.rows != U.cols )
                 throw new IllegalArgumentException("Unexpected size of matrix U");
-            if( V != null && V.numRows != V.numCols )
+            if( V != null && V.rows != V.cols )
                 throw new IllegalArgumentException("Unexpected size of matrix V");
-            if( U != null && U.numRows != W.numRows )
+            if( U != null && U.rows != W.rows )
                 throw new IllegalArgumentException("Unexpected size of W");
-            if( V != null && V.numRows != W.numCols )
+            if( V != null && V.rows != W.cols )
                 throw new IllegalArgumentException("Unexpected size of W");
         }
     }
@@ -188,14 +188,14 @@ public class SingularOps {
         double tmp;
         if( tran ) {
             // swap the rows
-            for( int col = 0; col < M.numCols; col++ ) {
+            for( int col = 0; col < M.cols; col++ ) {
                 tmp = M.get(i,col);
                 M.set(i,col,M.get(bigIndex,col));
                 M.set(bigIndex,col,tmp);
             }
         } else {
             // swap the columns
-            for( int row = 0; row < M.numRows; row++ ) {
+            for( int row = 0; row < M.rows; row++ ) {
                 tmp = M.get(row,i);
                 M.set(row,i,M.get(row,bigIndex));
                 M.set(row,bigIndex,tmp);
@@ -227,7 +227,7 @@ public class SingularOps {
 
         DenseMatrix64F V = svd.getV(null,true);
 
-        if( V.numRows != svd.numCols() ) {
+        if( V.rows != svd.numCols() ) {
             throw new IllegalArgumentException("Can't compute the null space using a compact SVD for a matrix of this size.");
         }
 
@@ -251,11 +251,11 @@ public class SingularOps {
         int count = 0;
         for( int i = 0; i < N; i++ ) {
             if( s[i] <= tol ) {
-                CommonOps.extract(V, i,i+1,0, V.numCols,nullSpace,count++,0);
+                CommonOps.extract(V, i,i+1,0, V.cols,nullSpace,count++,0);
             }
         }
         for( int i = N; i < svd.numCols(); i++ ) {
-            CommonOps.extract(V, i,i+1,0, V.numCols,nullSpace,count++,0);
+            CommonOps.extract(V, i,i+1,0, V.cols,nullSpace,count++,0);
         }
 
         CommonOps.transpose(nullSpace);
@@ -285,7 +285,7 @@ public class SingularOps {
         DenseMatrix64F A = isRight ? svd.getV(null,true) : svd.getU(null,false);
 
         if( isRight ) {
-            if( A.numRows != svd.numCols() ) {
+            if( A.rows != svd.numCols() ) {
                 throw new IllegalArgumentException("Can't compute the null space using a compact SVD for a matrix of this size.");
             }
 
@@ -293,7 +293,7 @@ public class SingularOps {
                 nullVector = new DenseMatrix64F(svd.numCols(),1);
             }
         } else {
-            if( A.numCols != svd.numRows() ) {
+            if( A.cols != svd.numRows() ) {
                 throw new IllegalArgumentException("Can't compute the null space using a compact SVD for a matrix of this size.");
             }
 
@@ -322,9 +322,9 @@ public class SingularOps {
 
         // extract the null space
         if( isRight )
-            SpecializedOps.subvector(A,smallestIndex,0,A.numRows,true,0,nullVector);
+            SpecializedOps.subvector(A,smallestIndex,0,A.rows,true,0,nullVector);
         else
-            SpecializedOps.subvector(A,0,smallestIndex,A.numRows,false,0,nullVector);
+            SpecializedOps.subvector(A,0,smallestIndex,A.rows,false,0,nullVector);
 
         return nullVector;
     }

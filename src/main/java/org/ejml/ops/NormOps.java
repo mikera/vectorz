@@ -79,7 +79,7 @@ public class NormOps {
         if( val == 0 )
             return;
 
-        int size = A.getNumElements();
+        int size = A.elementCount();
 
         for( int i = 0; i < size; i++) {
             A.div(i , val);
@@ -104,17 +104,17 @@ public class NormOps {
     {
         if( p == 2 ) {
             return conditionP2(A);
-        } else if( A.numRows == A.numCols ){
+        } else if( A.rows == A.cols ){
             // square matrices are the typical case
 
-            DenseMatrix64F A_inv = new DenseMatrix64F(A.numRows,A.numCols);
+            DenseMatrix64F A_inv = new DenseMatrix64F(A.rows,A.cols);
 
             if( !CommonOps.invert(A,A_inv) )
                 throw new IllegalArgumentException("A can't be inverted.");
 
             return normP(A,p) * normP(A_inv,p);
         } else  {
-            DenseMatrix64F pinv = new DenseMatrix64F(A.numCols,A.numRows);
+            DenseMatrix64F pinv = new DenseMatrix64F(A.cols,A.rows);
             CommonOps.pinv(A,pinv);
 
             return normP(A,p) * normP(pinv,p);
@@ -137,7 +137,7 @@ public class NormOps {
      */
     public static double conditionP2( DenseMatrix64F A )
     {
-        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.numRows,A.numCols,false,false,true);
+        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.rows,A.cols,false,false,true);
 
         svd.decompose(A);
 
@@ -172,7 +172,7 @@ public class NormOps {
     public static double fastNormF( D1Matrix64F a ) {
         double total = 0;
 
-        int size = a.getNumElements();
+        int size = a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             double val = a.get(i);
@@ -204,7 +204,7 @@ public class NormOps {
         if( scale == 0.0 )
             return 0.0;
 
-        final int size = a.getNumElements();
+        final int size = a.elementCount();
 
         for( int i = 0; i < size; i++ ) {
             double val = a.get(i)/scale;
@@ -242,7 +242,7 @@ public class NormOps {
 
             double total = 0;
 
-            int size = A.getNumElements();
+            int size = A.elementCount();
 
             for( int i = 0; i < size; i++ ) {
                 double a = A.get(i)/max;
@@ -267,7 +267,7 @@ public class NormOps {
         } else {
             double total = 0;
 
-            int size = A.getNumElements();
+            int size = A.elementCount();
 
             for( int i = 0; i < size; i++ ) {
                 double a = A.get(i);
@@ -395,8 +395,8 @@ public class NormOps {
     public static double inducedP1( DenseMatrix64F A ) {
         double max = 0;
 
-        int m = A.numRows;
-        int n = A.numCols;
+        int m = A.rows;
+        int n = A.cols;
 
         for( int j = 0; j < n; j++ ) {
             double total = 0;
@@ -420,7 +420,7 @@ public class NormOps {
      * @return The norm.
      */
     public static double inducedP2( DenseMatrix64F A ) {
-        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.numRows,A.numCols,false,false,true);
+        SingularValueDecomposition<DenseMatrix64F> svd = DecompositionFactory.svd(A.rows,A.cols,false,false,true);
 
         if( !svd.decompose(A) )
             throw new RuntimeException("Decomposition failed");
@@ -444,8 +444,8 @@ public class NormOps {
     public static double inducedPInf( DenseMatrix64F A ) {
         double max = 0;
 
-        int m = A.numRows;
-        int n = A.numCols;
+        int m = A.rows;
+        int n = A.cols;
 
         for( int i = 0; i < m; i++ ) {
             double total = 0;

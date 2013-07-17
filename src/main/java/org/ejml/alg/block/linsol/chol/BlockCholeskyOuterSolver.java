@@ -94,10 +94,10 @@ public class BlockCholeskyOuterSolver implements LinearSolver<BlockMatrix64F> {
         if( X != null ) {
             if( X.blockLength != blockLength )
                 throw new IllegalArgumentException("Unexpected blocklength in X.");
-            if( X.numRows != L.col1 ) throw new IllegalArgumentException("Not enough rows in X");
+            if( X.rows != L.col1 ) throw new IllegalArgumentException("Not enough rows in X");
         }
         
-        if( B.numRows != L.col1 ) throw new IllegalArgumentException("Not enough rows in B");
+        if( B.rows != L.col1 ) throw new IllegalArgumentException("Not enough rows in B");
 
         //  L * L^T*X = B
 
@@ -117,7 +117,7 @@ public class BlockCholeskyOuterSolver implements LinearSolver<BlockMatrix64F> {
     @Override
     public void invert(BlockMatrix64F A_inv) {
         BlockMatrix64F T = chol.getT(null);
-        if( A_inv.numRows != T.numRows || A_inv.numCols != T.numCols )
+        if( A_inv.rows != T.rows || A_inv.cols != T.cols )
             throw new IllegalArgumentException("Unexpected number or rows and/or columns");
 
 

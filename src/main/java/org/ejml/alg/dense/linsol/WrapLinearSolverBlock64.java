@@ -55,7 +55,7 @@ public class WrapLinearSolverBlock64 implements LinearSolver<DenseMatrix64F> {
      */
     @Override
     public boolean setA(DenseMatrix64F A) {
-        blockA.reshape(A.numRows,A.numCols,false);
+        blockA.reshape(A.rows,A.cols,false);
         BlockMatrixOps.convert(A,blockA);
 
         return alg.setA(blockA);
@@ -74,8 +74,8 @@ public class WrapLinearSolverBlock64 implements LinearSolver<DenseMatrix64F> {
      */
     @Override
     public void solve(DenseMatrix64F B, DenseMatrix64F X) {
-        blockB.reshape(B.numRows,B.numCols,false);
-        blockX.reshape(X.numRows,X.numCols,false);
+        blockB.reshape(B.rows,B.cols,false);
+        blockX.reshape(X.rows,X.cols,false);
         BlockMatrixOps.convert(B,blockB);
 
         alg.solve(blockB,blockX);
@@ -91,7 +91,7 @@ public class WrapLinearSolverBlock64 implements LinearSolver<DenseMatrix64F> {
      */
     @Override
     public void invert(DenseMatrix64F A_inv) {
-        blockB.reshape(A_inv.numRows,A_inv.numCols,false);
+        blockB.reshape(A_inv.rows,A_inv.cols,false);
 
         alg.invert(blockB);
 

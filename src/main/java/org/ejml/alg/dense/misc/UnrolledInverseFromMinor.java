@@ -34,20 +34,20 @@ public class UnrolledInverseFromMinor {
     
     public static void inv( DenseMatrix64F mat , DenseMatrix64F inv ) {
         double max = Math.abs(mat.data[0]);
-        int N = mat.getNumElements();
+        int N = mat.elementCount();
         
         for( int i = 1; i < N; i++ ) {
             double a = Math.abs(mat.data[i]);
             if( a > max ) max = a;
         }
 
-        if( mat.numRows == 2 ) {
+        if( mat.rows == 2 ) {
             inv2(mat,inv,1.0/max);
-        } else if( mat.numRows == 3 ) {
+        } else if( mat.rows == 3 ) {
             inv3(mat,inv,1.0/max);            
-        } else if( mat.numRows == 4 ) {
+        } else if( mat.rows == 4 ) {
             inv4(mat,inv,1.0/max);            
-        } else if( mat.numRows == 5 ) {
+        } else if( mat.rows == 5 ) {
             inv5(mat,inv,1.0/max);            
         } else {
             throw new IllegalArgumentException("Not supported");

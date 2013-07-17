@@ -47,7 +47,7 @@ public class TridiagonalDecompositionBlock
 
     @Override
     public DenseMatrix64F getT(DenseMatrix64F T) {
-        int N = Ablock.numRows;
+        int N = Ablock.rows;
 
         if( T == null ) {
             T = new DenseMatrix64F(N,N);
@@ -73,18 +73,18 @@ public class TridiagonalDecompositionBlock
     @Override
     public DenseMatrix64F getQ(DenseMatrix64F Q, boolean transposed) {
         if( Q == null ) {
-            Q = new DenseMatrix64F(Ablock.numRows,Ablock.numCols);
+            Q = new DenseMatrix64F(Ablock.rows,Ablock.cols);
         }
 
         BlockMatrix64F Qblock = new BlockMatrix64F();
-        Qblock.numRows =  Q.numRows;
-        Qblock.numCols =  Q.numCols;
+        Qblock.rows =  Q.rows;
+        Qblock.cols =  Q.cols;
         Qblock.blockLength = blockLength;
         Qblock.data = Q.data;
 
         ((TridiagonalDecompositionBlockHouseholder)alg).getQ(Qblock,transposed);
 
-        convertBlockToRow(Q.numRows,Q.numCols,Ablock.blockLength,Q.data);
+        convertBlockToRow(Q.rows,Q.cols,Ablock.blockLength,Q.data);
 
         return Q;
     }

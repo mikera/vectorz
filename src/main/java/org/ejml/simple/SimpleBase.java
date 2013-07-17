@@ -89,7 +89,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return A matrix that is n by m.
      */
     public T transpose() {
-        T ret = createMatrix(mat.numCols,mat.numRows);
+        T ret = createMatrix(mat.cols,mat.rows);
 
         CommonOps.transpose(mat,ret.getMatrix());
 
@@ -112,7 +112,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return The results of this operation.
      */
     public T mult( T b ) {
-        T ret = createMatrix(mat.numRows,b.getMatrix().numCols);
+        T ret = createMatrix(mat.rows,b.getMatrix().cols);
 
         CommonOps.mult(mat,b.getMatrix(),ret.getMatrix());
 
@@ -132,7 +132,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return Kronecker product between this matrix and B.
      */
     public T kron( T B ) {
-        T ret = createMatrix(mat.numRows*B.numRows(),mat.numCols*B.numCols());
+        T ret = createMatrix(mat.rows*B.numRows(),mat.cols*B.numCols());
         CommonOps.kron(mat,B.getMatrix(),ret.getMatrix());
 
         return ret;
@@ -230,7 +230,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return Returns true for vectors and false otherwise.
      */
     public boolean isVector() {
-        return mat.numRows == 1 || mat.numCols == 1;
+        return mat.rows == 1 || mat.cols == 1;
     }
 
     /**
@@ -290,7 +290,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return The inverse of this matrix.
      */
     public T invert() {
-        T ret = createMatrix(mat.numRows,mat.numCols);
+        T ret = createMatrix(mat.rows,mat.cols);
         if( !CommonOps.invert(mat,ret.getMatrix()) ) {
             throw new SingularMatrixException();
         }
@@ -305,7 +305,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return inverse computed using the pseudo inverse.
      */
     public T pseudoInverse() {
-        T ret = createMatrix(mat.numCols,mat.numRows);
+        T ret = createMatrix(mat.cols,mat.rows);
         CommonOps.pinv(mat,ret.getMatrix());
         return ret;
     }
@@ -333,7 +333,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      */
     public T solve( T b )
     {
-        T x = createMatrix(mat.numCols,b.getMatrix().numCols);
+        T x = createMatrix(mat.cols,b.getMatrix().cols);
 
         if( !CommonOps.solve(mat,b.getMatrix(),x.getMatrix()) )
             throw new SingularMatrixException();
@@ -540,7 +540,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return The index of the specified element.
      */
     public int getIndex( int row , int col ) {
-        return row * mat.numCols + col;
+        return row * mat.cols + col;
     }
 
     /**
@@ -566,7 +566,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return A new identical matrix.
      */
     public T copy() {
-        T ret = createMatrix(mat.numRows,mat.numCols);
+        T ret = createMatrix(mat.rows,mat.cols);
         ret.getMatrix().set(this.getMatrix());
         return ret;
     }
@@ -577,7 +577,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return number of rows.
      */
     public int numRows() {
-        return mat.numRows;
+        return mat.rows;
     }
 
     /**
@@ -586,7 +586,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return number of columns.
      */
     public int numCols() {
-        return mat.numCols;
+        return mat.cols;
     }
 
     /**
@@ -595,8 +595,8 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      *
      * @return The number of elements in the matrix.
      */
-    public int getNumElements() {
-        return mat.getNumElements();
+    public int elementCount() {
+        return mat.elementCount();
     }
 
 
@@ -662,10 +662,10 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return The submatrix.
      */
     public T extractMatrix(int y0 , int y1, int x0 , int x1 ) {
-        if( y0 == SimpleMatrix.END ) y0 = mat.numRows;
-        if( y1 == SimpleMatrix.END ) y1 = mat.numRows;
-        if( x0 == SimpleMatrix.END ) x0 = mat.numCols;
-        if( x1 == SimpleMatrix.END ) x1 = mat.numCols;
+        if( y0 == SimpleMatrix.END ) y0 = mat.rows;
+        if( y1 == SimpleMatrix.END ) y1 = mat.rows;
+        if( x0 == SimpleMatrix.END ) x0 = mat.cols;
+        if( x1 == SimpleMatrix.END ) x1 = mat.cols;
 
         T ret = createMatrix(y1-y0,x1-x0);
 
@@ -686,7 +686,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      */
     public T extractVector( boolean extractRow , int element )
     {
-        int length = extractRow ? mat.numCols : mat.numRows;
+        int length = extractRow ? mat.cols : mat.rows;
 
         T ret = extractRow ? createMatrix(1,length) : createMatrix(length,1);
 
@@ -709,7 +709,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      */
     public T extractDiag()
     {
-        int N = Math.min(mat.numCols,mat.numRows);
+        int N = Math.min(mat.cols,mat.rows);
 
         T diag = createMatrix(N,1);
 
@@ -801,11 +801,11 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
     public T combine( int insertRow, int insertCol, T B) {
 
         if( insertRow == SimpleMatrix.END ) {
-            insertRow = mat.numRows;
+            insertRow = mat.rows;
         }
 
         if( insertCol == SimpleMatrix.END ) {
-            insertCol = mat.numCols;
+            insertCol = mat.cols;
         }
 
         int maxRow = insertRow + B.numRows();
@@ -813,9 +813,9 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
 
         T ret;
 
-        if( maxRow > mat.numRows || maxCol > mat.numCols) {
-            int M = Math.max(maxRow,mat.numRows);
-            int N = Math.max(maxCol,mat.numCols);
+        if( maxRow > mat.rows || maxCol > mat.cols) {
+            int M = Math.max(maxRow,mat.rows);
+            int N = Math.max(maxCol,mat.cols);
 
             ret = createMatrix(M,N);
             ret.insertIntoThis(0,0,this);
@@ -858,7 +858,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      */
     public T elementMult( T b )
     {
-        T c = createMatrix(mat.numRows,mat.numCols);
+        T c = createMatrix(mat.rows,mat.cols);
 
         CommonOps.elementMult(mat,b.getMatrix(),c.getMatrix());
 
@@ -968,7 +968,7 @@ public abstract class SimpleBase <T extends SimpleBase> implements Serializable 
      * @return true if it is a valid element in the matrix.
      */
     public boolean isInBounds(int row, int col) {
-        return row >= 0 && col >= 0 && row < mat.numRows && col < mat.numCols;
+        return row >= 0 && col >= 0 && row < mat.rows && col < mat.cols;
     }
 
     /**

@@ -190,7 +190,7 @@ public class TestBlockVectorOps {
     public static void checkVector_row(int row, int end, int offset,
                                        SimpleMatrix untouched,
                                        BlockMatrix64F modMatrix, SimpleMatrix modVector) {
-        for( int i = 0; i < modMatrix.numRows; i++ ) {
+        for( int i = 0; i < modMatrix.rows; i++ ) {
             if( i == row ) {
                 for( int j = 0; j < offset; j++ ) {
                     assertEquals(untouched.get(i,j), modMatrix.get(i,j),1e-8);
@@ -198,11 +198,11 @@ public class TestBlockVectorOps {
                 for( int j = offset; j < end; j++ ) {
                     assertEquals(modVector.get(j), modMatrix.get(i,j),1e-8);
                 }
-                for( int j = end; j < modMatrix.numCols; j++ ) {
+                for( int j = end; j < modMatrix.cols; j++ ) {
                     assertEquals(untouched.get(i,j), modMatrix.get(i,j),1e-8);
                 }
             } else {
-                for( int j = 0; j < modMatrix.numCols; j++ ) {
+                for( int j = 0; j < modMatrix.cols; j++ ) {
                     assertEquals(i+" "+j, untouched.get(i,j), modMatrix.get(i,j),1e-8);
                 }
             }

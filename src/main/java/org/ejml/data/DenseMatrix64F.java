@@ -111,8 +111,8 @@ public class DenseMatrix64F extends RowD1Matrix64F {
         final int length = numRows * numCols;
         this.data = new double[ length ];
 
-        this.numRows = numRows;
-        this.numCols = numCols;
+        this.rows = numRows;
+        this.cols = numCols;
 
         set(numRows,numCols, rowMajor, data);
     }
@@ -127,22 +127,22 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      * @param data 2D array representation of the matrix. Not modified.
      */
     public DenseMatrix64F( double data[][] ) {
-        this.numRows = data.length;
-        this.numCols = data[0].length;
+        this.rows = data.length;
+        this.cols = data[0].length;
 
-        this.data = new double[ numRows*numCols ];
+        this.data = new double[ rows*cols ];
 
         int pos = 0;
-        for( int i = 0; i < numRows; i++ ) {
+        for( int i = 0; i < rows; i++ ) {
             double []row = data[i];
 
-            if( row.length != numCols ) {
+            if( row.length != cols ) {
                 throw new IllegalArgumentException("All rows must have the same length");
             }
 
-            System.arraycopy(row,0,this.data,pos,numCols);
+            System.arraycopy(row,0,this.data,pos,cols);
 
-            pos += numCols;
+            pos += cols;
         }
     }
 
@@ -156,8 +156,8 @@ public class DenseMatrix64F extends RowD1Matrix64F {
     public DenseMatrix64F( int numRows  , int numCols ) {
         data = new double[ numRows * numCols ];
 
-        this.numRows = numRows;
-        this.numCols = numCols;
+        this.rows = numRows;
+        this.cols = numCols;
     }
 
     /**
@@ -167,8 +167,8 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      * @param orig The matrix which is to be copied.  This is not modified or saved.
      */
     public DenseMatrix64F( DenseMatrix64F orig ) {
-        this(orig.numRows,orig.numCols);
-        System.arraycopy(orig.data, 0, this.data, 0, orig.getNumElements());
+        this(orig.rows,orig.cols);
+        System.arraycopy(orig.data, 0, this.data, 0, orig.elementCount());
     }
 
     /**
@@ -192,9 +192,9 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      * @param mat Matrix whose values will be copied.  Not modified.
      */
     public DenseMatrix64F(Matrix64F mat) {
-        this(mat.numRows,mat.numCols);
-        for( int i = 0; i < numRows; i++ ) {
-            for( int j = 0; j < numCols; j++ ) {
+        this(mat.rows,mat.cols);
+        for( int i = 0; i < rows; i++ ) {
+            for( int j = 0; j < cols; j++ ) {
                 set(i,j, mat.get(i,j));
             }
         }
@@ -213,8 +213,8 @@ public class DenseMatrix64F extends RowD1Matrix64F {
     public static DenseMatrix64F wrap( int numRows , int numCols , double []data ) {
         DenseMatrix64F s = new DenseMatrix64F();
         s.data = data;
-        s.numRows = numRows;
-        s.numCols = numCols;
+        s.rows = numRows;
+        s.cols = numCols;
 
         return s;
     }
@@ -228,14 +228,14 @@ public class DenseMatrix64F extends RowD1Matrix64F {
             double []d = new double[ numRows*numCols ];
 
             if( saveValues ) {
-                System.arraycopy(data,0,d,0,getNumElements());
+                System.arraycopy(data,0,d,0,elementCount());
             }
 
             this.data = d;
         }
 
-        this.numRows = numRows;
-        this.numCols = numCols;
+        this.rows = numRows;
+        this.cols = numCols;
     }
 
     /**
@@ -252,16 +252,16 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      */
     @Override
     public void set( int row , int col , double value ) {
-        if( col < 0 || col >= numCols || row < 0 || row >= numRows ) {
+        if( col < 0 || col >= cols || row < 0 || row >= rows ) {
             throw new IllegalArgumentException("Specified element is out of bounds: ("+row+" , "+col+")");
         }
 
-        data[ row * numCols + col ] = value;
+        data[ row * cols + col ] = value;
     }
 
     @Override
     public void unsafe_set( int row , int col , double value ) {
-        data[ row * numCols + col ] = value;
+        data[ row * cols + col ] = value;
     }
 
     /**
@@ -277,11 +277,11 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      */
     // todo move to commonops
     public void add( int row , int col , double value ) {
-        if( col < 0 || col >= numCols || row < 0 || row >= numRows ) {
+        if( col < 0 || col >= cols || row < 0 || row >= rows ) {
             throw new IllegalArgumentException("Specified element is out of bounds");
         }
 
-        data[ row * numCols + col ] += value;
+        data[ row * cols + col ] += value;
     }
 
     /**
@@ -294,21 +294,21 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      */
     @Override
     public double get( int row , int col ) {
-        if( col < 0 || col >= numCols || row < 0 || row >= numRows ) {
+        if( col < 0 || col >= cols || row < 0 || row >= rows ) {
             throw new IllegalArgumentException("Specified element is out of bounds: "+row+" "+col);
         }
 
-        return data[ row * numCols + col ];
+        return data[ row * cols + col ];
     }
 
     @Override
     public double unsafe_get( int row , int col ) {
-        return data[ row * numCols + col ];
+        return data[ row * cols + col ];
     }
 
     @Override
     public int getIndex( int row , int col ) {
-        return row * numCols + col;
+        return row * cols + col;
     }
 
     /**
@@ -319,7 +319,7 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      * @return True if it is inside the matrices bound, false otherwise.
      */
     public boolean isInBounds( int row  , int col ) {
-        return( col >= 0 && col < numCols && row >= 0 && row < numRows );
+        return( col >= 0 && col < cols && row >= 0 && row < rows );
     }
 
     /**
@@ -329,8 +329,8 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      * @return The number of elements in the matrix.
      */
     @Override
-    public int getNumElements() {
-        return numRows*numCols;
+    public int elementCount() {
+        return rows*cols;
     }
 
 
@@ -351,14 +351,14 @@ public class DenseMatrix64F extends RowD1Matrix64F {
      */
     public void setReshape( DenseMatrix64F b)
     {
-        int dataLength = b.getNumElements();
+        int dataLength = b.elementCount();
 
         if( data.length < dataLength ) {
             data = new double[ dataLength ];
         }
 
-        this.numRows = b.numRows;
-        this.numCols = b.numCols;
+        this.rows = b.rows;
+        this.cols = b.cols;
 
         System.arraycopy(b.data, 0, this.data, 0, dataLength);
     }
@@ -375,7 +375,7 @@ public class DenseMatrix64F extends RowD1Matrix64F {
     {
         int length = numRows*numCols;
 
-        if( numRows != this.numRows || numCols != this.numCols)
+        if( numRows != this.rows || numCols != this.cols)
             throw new IllegalArgumentException("Unexpected matrix shape.");
         if( length > this.data.length )
             throw new IllegalArgumentException("The length of this matrix's data array is too small.");

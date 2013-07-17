@@ -131,10 +131,10 @@ public abstract class BaseLinearSolverQrp extends LinearSolverAbstract {
             CommonOps.extract(R,0,rank,rank,numCols,W,0,0);
 
             // W=inv(R11)*R12
-            TriangularSolver.solveU(R11.data, 0, R11.numCols, R11.numCols, W.data, 0, W.numCols, W.numCols);
+            TriangularSolver.solveU(R11.data, 0, R11.cols, R11.cols, W.data, 0, W.cols, W.cols);
 
             // set the identity matrix in the upper portion
-            W.reshape(numCols, W.numCols,true);
+            W.reshape(numCols, W.cols,true);
 
             for( int i = 0; i < numCols-rank; i++ ) {
                 for( int j = 0; j < numCols-rank; j++ ) {
@@ -185,7 +185,7 @@ public abstract class BaseLinearSolverQrp extends LinearSolverAbstract {
 
     @Override
     public void invert(DenseMatrix64F A_inv) {
-        if( A_inv.numCols != numRows || A_inv.numRows != numCols )
+        if( A_inv.cols != numRows || A_inv.rows != numCols )
             throw new IllegalArgumentException("Unexpected dimensions for A_inv");
 
         I.reshape(numRows, numRows);

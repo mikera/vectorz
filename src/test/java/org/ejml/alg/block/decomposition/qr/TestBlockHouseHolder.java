@@ -57,7 +57,7 @@ public class TestBlockHouseHolder {
         QRDecompositionHouseholderTran algTest = new QRDecompositionHouseholderTran();
         assertTrue(algTest.decompose(A));
 
-        double gammas[] = new double[A.numCols];
+        double gammas[] = new double[A.cols];
         BlockHouseHolder.decomposeQR_block_col(r,new D1Submatrix64F(Ab),gammas);
 
         DenseMatrix64F expected = CommonOps.transpose(algTest.getQR(),null);
@@ -170,11 +170,11 @@ public class TestBlockHouseHolder {
         for( int colBlock = 0; colBlock < r*2; colBlock+=r) {
             int colA = colBlock+innerCol;
             int colB = colA+innerCol+1;
-            int widthA = Math.min(r,A.numCols - (colA-colA%r));
-            int widthB = Math.min(r,A.numCols - (colB-colB%r));
+            int widthA = Math.min(r,A.cols - (colA-colA%r));
+            int widthB = Math.min(r,A.cols - (colB-colB%r));
 
-            DenseMatrix64F v0 = CommonOps.extract(A,row,A.numRows,colA,colA+1);
-            DenseMatrix64F v1 = CommonOps.extract(A,row,A.numRows,colB,colB+1);
+            DenseMatrix64F v0 = CommonOps.extract(A,row,A.rows,colA,colA+1);
+            DenseMatrix64F v1 = CommonOps.extract(A,row,A.rows,colB,colB+1);
             for( int j = 0; j < innerCol; j++ ) {
                 v0.set(j,0.0);
             }
@@ -182,7 +182,7 @@ public class TestBlockHouseHolder {
 
             double expected = VectorVectorMult.innerProd(v0,v1);
 
-            D1Submatrix64F subAb = new D1Submatrix64F(Ab,row,A.numRows,colBlock,A.numCols);
+            D1Submatrix64F subAb = new D1Submatrix64F(Ab,row,A.rows,colBlock,A.cols);
 
             double found = BlockHouseHolder.innerProdCol(r,subAb,colA-colBlock,widthA,colB-colBlock,widthB);
 
@@ -201,8 +201,8 @@ public class TestBlockHouseHolder {
             int rowA = 2;
             int rowB = 1;
 
-            DenseMatrix64F v0 = CommonOps.extract(A,rowBlock+rowA,rowBlock+rowA+1,0,A.numCols);
-            DenseMatrix64F v1 = CommonOps.extract(A,rowBlock+rowB,rowBlock+rowB+1,0,A.numCols);
+            DenseMatrix64F v0 = CommonOps.extract(A,rowBlock+rowA,rowBlock+rowA+1,0,A.cols);
+            DenseMatrix64F v1 = CommonOps.extract(A,rowBlock+rowB,rowBlock+rowB+1,0,A.cols);
             for( int j = 0; j < rowA+zeroOffset; j++ ) {
                 v0.set(j,0.0);
             }
@@ -210,7 +210,7 @@ public class TestBlockHouseHolder {
 
             double expected = VectorVectorMult.innerProd(v0,v1);
 
-            D1Submatrix64F subAb = new D1Submatrix64F(Ab,rowBlock,A.numRows,0,A.numCols);
+            D1Submatrix64F subAb = new D1Submatrix64F(Ab,rowBlock,A.rows,0,A.cols);
 
             double found = BlockHouseHolder.innerProdRow(r, subAb,rowA,subAb,rowB,zeroOffset);
 
@@ -228,7 +228,7 @@ public class TestBlockHouseHolder {
 
         BlockHouseHolder.divideElementsCol(r,new D1Submatrix64F(A),col,div);
 
-        for( int i = col+1; i < A.numRows; i++ ) {
+        for( int i = col+1; i < A.rows; i++ ) {
             assertEquals(A_orig.get(i,col)/div , A.get(i,col),1e-8);
         }
     }
@@ -246,7 +246,7 @@ public class TestBlockHouseHolder {
         // check the one
         assertEquals(div,A.get(row,row+1),1e-8);
         // check the rest
-        for( int i = row+2; i < A.numCols; i++ ) {
+        for( int i = row+2; i < A.cols; i++ ) {
             assertEquals(A_orig.get(row,i)*div , A.get(row,i),1e-8);
         }
     }
@@ -306,7 +306,7 @@ public class TestBlockHouseHolder {
 
         // manual alg
         double expected = 0;
-        for( int i = col; i < A.numRows; i++ ) {
+        for( int i = col; i < A.rows; i++ ) {
             double val = A.get(i,col)/max;
             expected += val*val;
         }
@@ -316,7 +316,7 @@ public class TestBlockHouseHolder {
 
         assertEquals(expected,found,1e-8);
 
-        for( int i = col; i < A.numRows; i++ ) {
+        for( int i = col; i < A.rows; i++ ) {
             assertEquals(A_orig.get(i,col)/max , A.get(i,col),1e-8);
         }
 
@@ -332,7 +332,7 @@ public class TestBlockHouseHolder {
 
         // manual alg
         double expected = 0;
-        for( int j = colStart; j < A.numCols; j++ ) {
+        for( int j = colStart; j < A.cols; j++ ) {
             double val = A.get(row,j)/max;
             expected += val*val;
         }
@@ -342,7 +342,7 @@ public class TestBlockHouseHolder {
 
         assertEquals(expected,found,1e-8);
 
-        for( int j = colStart; j < A.numCols; j++ ) {
+        for( int j = colStart; j < A.cols; j++ ) {
             assertEquals(A_orig.get(row,j)/max , A.get(row,j),1e-8);
         }
     }
@@ -401,7 +401,7 @@ public class TestBlockHouseHolder {
         double temp[] = new double[ r ];
 
         BlockMatrix64F Ab = BlockMatrixOps.convert(A.getMatrix(),r);
-        BlockMatrix64F Wb = new BlockMatrix64F(Ab.numRows,Ab.numCols,r);
+        BlockMatrix64F Wb = new BlockMatrix64F(Ab.rows,Ab.cols,r);
 
         D1Submatrix64F Ab_sub = new D1Submatrix64F(Ab);
         D1Submatrix64F Wb_sub = new D1Submatrix64F(Wb);
@@ -428,7 +428,7 @@ public class TestBlockHouseHolder {
 
         assertEquals(-beta,Wb.get(0,0),1e-8);
 
-        for( int i = 1; i < Wb.numRows; i++ ) {
+        for( int i = 1; i < Wb.rows; i++ ) {
             assertEquals(-beta*Ab.get(i,0),Wb.get(i,0),1e-8);
         }
     }

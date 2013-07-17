@@ -45,11 +45,11 @@ public class LinearSolverLu extends LinearSolverLuBase {
 
     @Override
     public void solve(DenseMatrix64F b, DenseMatrix64F x) {
-        if( b.numCols != x.numCols && b.numRows != numCols && x.numRows != numCols) {
+        if( b.cols != x.cols && b.rows != numCols && x.rows != numCols) {
             throw new IllegalArgumentException("Unexpected matrix size");
         }
 
-        int numCols = b.numCols;
+        int numCols = b.cols;
 
         double dataB[] = b.data;
         double dataX[] = x.data;

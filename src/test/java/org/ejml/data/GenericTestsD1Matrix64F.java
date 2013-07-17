@@ -44,8 +44,8 @@ public abstract class GenericTestsD1Matrix64F extends GenericTestsMatrix64F {
         mat.reshape(6,1, false);
 
         assertTrue(origData == mat.getData());
-        assertEquals(1,mat.getNumCols());
-        assertEquals(6,mat.getNumRows());
+        assertEquals(1,mat.columnCount());
+        assertEquals(6,mat.rowCount());
     }
 
     public void testSetAndGet_1D() {

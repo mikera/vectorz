@@ -384,8 +384,8 @@ public class SvdImplicitQrAlgorithm {
      * @param s sine of rotator.
      */
     protected void updateRotator( DenseMatrix64F Q , int m, int n, double c, double s) {
-        int rowA = m*Q.numCols;
-        int rowB = n*Q.numCols;
+        int rowA = m*Q.cols;
+        int rowB = n*Q.cols;
 
 //        for( int i = 0; i < Q.numCols; i++ ) {
 //            double a = Q.get(rowA+i);
@@ -396,7 +396,7 @@ public class SvdImplicitQrAlgorithm {
 //        System.out.println("------ AFter Update Rotator "+m+" "+n);
 //        Q.print();
 //        System.out.println();
-        int endA = rowA + Q.numCols;
+        int endA = rowA + Q.cols;
         for( ; rowA != endA; rowA++ , rowB++ ) {
             double a = Q.get(rowA);
             double b = Q.get(rowB);

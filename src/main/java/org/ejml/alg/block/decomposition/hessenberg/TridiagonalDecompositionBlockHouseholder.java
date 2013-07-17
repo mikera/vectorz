@@ -65,16 +65,16 @@ public class TridiagonalDecompositionBlockHouseholder
     @Override
     public BlockMatrix64F getT(BlockMatrix64F T) {
         if( T == null ) {
-            T = new BlockMatrix64F(A.numRows,A.numCols,A.blockLength);
+            T = new BlockMatrix64F(A.rows,A.cols,A.blockLength);
         } else {
-            if( T.numRows != A.numRows || T.numCols != A.numCols )
+            if( T.rows != A.rows || T.cols != A.cols )
                 throw new IllegalArgumentException("T must have the same dimensions as the input matrix");
 
             CommonOps.fill(T, 0);
         }
 
         T.set(0,0,A.data[0]);
-        for( int i = 1; i < A.numRows; i++ ) {
+        for( int i = 1; i < A.rows; i++ ) {
             double d = A.get(i-1,i);
             T.set(i,i,A.get(i,i));
             T.set(i-1,i,d);
@@ -86,11 +86,11 @@ public class TridiagonalDecompositionBlockHouseholder
 
     @Override
     public BlockMatrix64F getQ(BlockMatrix64F Q, boolean transposed) {
-        Q = BlockMatrix64HouseholderQR.initializeQ(Q, A.numRows , A.numCols  , A.blockLength , false);
+        Q = BlockMatrix64HouseholderQR.initializeQ(Q, A.rows , A.cols  , A.blockLength , false);
 
-        int height = Math.min(A.blockLength,A.numRows);
-        V.reshape(height,A.numCols,false);
-        tmp.reshape(height,A.numCols,false);
+        int height = Math.min(A.blockLength,A.rows);
+        V.reshape(height,A.cols,false);
+        tmp.reshape(height,A.cols,false);
 
         D1Submatrix64F subQ = new D1Submatrix64F(Q);
         D1Submatrix64F subU = new D1Submatrix64F(A);
@@ -98,7 +98,7 @@ public class TridiagonalDecompositionBlockHouseholder
         D1Submatrix64F tmp = new D1Submatrix64F(this.tmp);
 
 
-        int N = A.numRows;
+        int N = A.rows;
 
         int start = N - N % A.blockLength;
         if( start == N )
@@ -116,7 +116,7 @@ public class TridiagonalDecompositionBlockHouseholder
 
             if( transposed ) {
                 tmp.row0 = i;
-                tmp.row1 = A.numCols;
+                tmp.row1 = A.cols;
                 tmp.col0 = 0;
                 tmp.col1 = blockSize;
             } else {
@@ -171,7 +171,7 @@ public class TridiagonalDecompositionBlockHouseholder
                 subU.set(i,j,0);
             }
             // save the one
-            if( subU.col0 + i + 1 < subU.original.numCols ) {
+            if( subU.col0 + i + 1 < subU.original.cols ) {
                 zerosM.unsafe_set(i,i+1,subU.get(i,i+1));
                 subU.set(i,i+1,1);
             }
@@ -186,7 +186,7 @@ public class TridiagonalDecompositionBlockHouseholder
                 subU.set(i,j,zerosM.get(i,j));
             }
             // save the one
-            if( subU.col0 + i + 1 < subU.original.numCols ) {
+            if( subU.col0 + i + 1 < subU.original.cols ) {
                 subU.set(i,i+1,zerosM.get(i,i+1));
             }
         }
@@ -195,7 +195,7 @@ public class TridiagonalDecompositionBlockHouseholder
     @Override
     public void getDiagonal(double[] diag, double[] off) {
         diag[0] = A.data[0];
-        for( int i = 1; i < A.numRows; i++ ) {
+        for( int i = 1; i < A.rows; i++ ) {
             diag[i] = A.get(i,i);
             off[i-1] = A.get(i-1,i);
         }
@@ -203,7 +203,7 @@ public class TridiagonalDecompositionBlockHouseholder
 
     @Override
     public boolean decompose(BlockMatrix64F orig) {
-        if( orig.numCols != orig.numRows )
+        if( orig.cols != orig.rows )
             throw new IllegalArgumentException("Input matrix must be square.");
 
         init(orig);
@@ -212,11 +212,11 @@ public class TridiagonalDecompositionBlockHouseholder
         D1Submatrix64F subV = new D1Submatrix64F(V);
         D1Submatrix64F subU = new D1Submatrix64F(A);
 
-        int N = orig.numCols;
+        int N = orig.cols;
 
         for( int i = 0; i < N; i += A.blockLength ) {
 //            System.out.println("-------- triag i "+i);
-            int height = Math.min(A.blockLength,A.numRows-i);
+            int height = Math.min(A.blockLength,A.rows-i);
 
             subA.col0 = subU.col0 = i;
             subA.row0 = subU.row0 = i;
@@ -232,7 +232,7 @@ public class TridiagonalDecompositionBlockHouseholder
 
             // apply Householder reflectors to the lower portion using block multiplication
 
-            if( subU.row1 < orig.numCols) {
+            if( subU.row1 < orig.cols) {
                 // take in account the 1 in the last row.  The others are skipped over.
                 double before = subU.get(A.blockLength-1,A.blockLength);
                 subU.set(A.blockLength-1,A.blockLength,1);
@@ -265,13 +265,13 @@ public class TridiagonalDecompositionBlockHouseholder
         for( int i = C.row0+blockLength; i < C.row1; i += blockLength ) {
             int heightC = Math.min( blockLength , C.row1 - i );
 
-            int indexA = A.row0*A.original.numCols + (i-C.row0+A.col0)*heightA;
+            int indexA = A.row0*A.original.cols + (i-C.row0+A.col0)*heightA;
 
             for( int j = i; j < C.col1; j += blockLength ) {
                 int widthC = Math.min( blockLength , C.col1 - j );
 
-                int indexC = i*C.original.numCols + j*heightC;
-                int indexB = B.row0*B.original.numCols + (j-C.col0+B.col0)*heightA;
+                int indexC = i*C.original.cols + j*heightC;
+                int indexB = B.row0*B.original.cols + (j-C.col0+B.col0)*heightA;
 
                 blockMultPlusTransA(A.original.data,B.original.data,C.original.data,
                             indexA,indexB,indexC,heightA,heightC,widthC);
@@ -282,12 +282,12 @@ public class TridiagonalDecompositionBlockHouseholder
     private void init( BlockMatrix64F orig ) {
         this.A = orig;
 
-        int height = Math.min(A.blockLength,A.numRows);
-        V.reshape(height,A.numCols,A.blockLength,false);
-        tmp.reshape(height,A.numCols,A.blockLength,false);
+        int height = Math.min(A.blockLength,A.rows);
+        V.reshape(height,A.cols,A.blockLength,false);
+        tmp.reshape(height,A.cols,A.blockLength,false);
 
-        if( gammas.length < A.numCols )
-            gammas = new double[ A.numCols ];
+        if( gammas.length < A.cols )
+            gammas = new double[ A.cols ];
 
         zerosM.reshape(A.blockLength,A.blockLength+1,false);
     }

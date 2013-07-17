@@ -87,12 +87,12 @@ public class CholeskyDecompositionLDL
      * @return True if it was able to finish the decomposition.
      */
     public boolean decompose( DenseMatrix64F mat ) {
-        if( mat.numRows > maxWidth ) {
-            setExpectedMaxSize(mat.numRows,mat.numCols);
-        } else if( mat.numRows != mat.numCols ) {
+        if( mat.rows > maxWidth ) {
+            setExpectedMaxSize(mat.rows,mat.cols);
+        } else if( mat.rows != mat.cols ) {
             throw new RuntimeException("Can only decompose square matrices");
         }
-        n = mat.numRows;
+        n = mat.rows;
 
         L.setReshape(mat);
 

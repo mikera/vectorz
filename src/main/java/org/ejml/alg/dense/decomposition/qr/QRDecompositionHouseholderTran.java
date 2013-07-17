@@ -103,7 +103,7 @@ public class QRDecompositionHouseholderTran implements QRDecomposition<DenseMatr
             if( Q == null ) {
                 Q = CommonOps.identity(numRows,minLength);
             } else {
-                if( Q.numRows != numRows || Q.numCols != minLength ) {
+                if( Q.rows != numRows || Q.cols != minLength ) {
                     throw new IllegalArgumentException("Unexpected matrix dimension.");
                 } else {
                     CommonOps.setIdentity(Q);
@@ -113,7 +113,7 @@ public class QRDecompositionHouseholderTran implements QRDecomposition<DenseMatr
             if( Q == null ) {
                 Q = CommonOps.identity(numRows);
             } else {
-                if( Q.numRows != numRows || Q.numCols != numRows ) {
+                if( Q.rows != numRows || Q.cols != numRows ) {
                     throw new IllegalArgumentException("Unexpected matrix dimension.");
                 } else {
                     CommonOps.setIdentity(Q);
@@ -140,7 +140,7 @@ public class QRDecompositionHouseholderTran implements QRDecomposition<DenseMatr
      * @param A Matrix that is being multiplied by Q.  Is modified.
      */
     public void applyQ( DenseMatrix64F A ) {
-        if( A.numRows != numRows )
+        if( A.rows != numRows )
             throw new IllegalArgumentException("A must have at least "+numRows+" rows.");
 
         for( int j = minLength-1; j >= 0; j-- ) {
@@ -182,23 +182,23 @@ public class QRDecompositionHouseholderTran implements QRDecomposition<DenseMatr
                 R = new DenseMatrix64F(numRows,numCols);
         } else {
             if( compact ) {
-                if( R.numCols != numCols || R.numRows != minLength )
+                if( R.cols != numCols || R.rows != minLength )
                     throw new IllegalArgumentException("Unexpected dimensions");
             } else {
-                if( R.numCols != numCols || R.numRows != numRows )
+                if( R.cols != numCols || R.rows != numRows )
                     throw new IllegalArgumentException("Unexpected dimensions");
             }
 
-            for( int i = 0; i < R.numRows; i++ ) {
-                int min = Math.min(i,R.numCols);
+            for( int i = 0; i < R.rows; i++ ) {
+                int min = Math.min(i,R.cols);
                 for( int j = 0; j < min; j++ ) {
                     R.unsafe_set(i,j,0);
                 }
             }
         }
 
-        for( int i = 0; i < R.numRows; i++ ) {
-            for( int j = i; j < R.numCols; j++ ) {
+        for( int i = 0; i < R.rows; i++ ) {
+            for( int j = i; j < R.cols; j++ ) {
                 R.unsafe_set(i,j,QR.unsafe_get(j,i));
             }
         }
@@ -221,7 +221,7 @@ public class QRDecompositionHouseholderTran implements QRDecomposition<DenseMatr
      */
     @Override
     public boolean decompose( DenseMatrix64F A ) {
-        setExpectedMaxSize(A.numRows, A.numCols);
+        setExpectedMaxSize(A.rows, A.cols);
 
         CommonOps.transpose(A,QR);
 

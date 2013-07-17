@@ -51,7 +51,7 @@ public class CholeskyDecompositionBlock64
         BlockMatrix64F T_block = ((BlockCholeskyOuterForm)alg).getT(null);
 
         if( T == null ) {
-            T = new DenseMatrix64F(T_block.numRows,T_block.numCols);
+            T = new DenseMatrix64F(T_block.rows,T_block.cols);
         }
 
         BlockMatrixOps.convert(T_block,T);

@@ -92,13 +92,13 @@ public abstract class LUDecompositionBase
     @Override
     public DenseMatrix64F getLower( DenseMatrix64F lower )
     {
-        int numRows = LU.numRows;
-        int numCols = LU.numRows < LU.numCols ? LU.numRows : LU.numCols;
+        int numRows = LU.rows;
+        int numCols = LU.rows < LU.cols ? LU.rows : LU.cols;
 
         if( lower == null ) {
             lower = new DenseMatrix64F(numRows,numCols);
         } else {
-            if( lower.numCols != numCols || lower.numRows != numRows )
+            if( lower.cols != numCols || lower.rows != numRows )
                 throw new IllegalArgumentException("Unexpected matrix dimension");
             CommonOps.fill(lower, 0);
         }
@@ -129,13 +129,13 @@ public abstract class LUDecompositionBase
     @Override
     public DenseMatrix64F getUpper( DenseMatrix64F upper )
     {
-        int numRows = LU.numRows < LU.numCols ? LU.numRows : LU.numCols;
-        int numCols = LU.numCols;
+        int numRows = LU.rows < LU.cols ? LU.rows : LU.cols;
+        int numCols = LU.cols;
 
         if( upper == null ) {
             upper = new DenseMatrix64F(numRows, numCols);
         } else {
-            if( upper.numCols != numCols || upper.numRows != numRows )
+            if( upper.cols != numCols || upper.rows != numRows )
                 throw new IllegalArgumentException("Unexpected matrix dimension");
             CommonOps.fill(upper, 0);
         }
@@ -150,16 +150,16 @@ public abstract class LUDecompositionBase
     }
 
     public DenseMatrix64F getPivot( DenseMatrix64F pivot ) {
-        return SpecializedOps.pivotMatrix(pivot, this.pivot, LU.numRows, false);
+        return SpecializedOps.pivotMatrix(pivot, this.pivot, LU.rows, false);
     }
 
     protected void decomposeCommonInit(DenseMatrix64F a) {
-        if( a.numRows > maxWidth || a.numCols > maxWidth ) {
-            setExpectedMaxSize(a.numRows,a.numCols);
+        if( a.rows > maxWidth || a.cols > maxWidth ) {
+            setExpectedMaxSize(a.rows,a.cols);
         }
 
-        m = a.numRows;
-        n = a.numCols;
+        m = a.rows;
+        n = a.cols;
 
         LU.setReshape(a);
         for (int i = 0; i < m; i++) {

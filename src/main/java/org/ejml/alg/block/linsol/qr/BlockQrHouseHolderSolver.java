@@ -67,7 +67,7 @@ public class BlockQrHouseHolderSolver implements LinearSolver<BlockMatrix64F> {
      */
     @Override
     public boolean setA(BlockMatrix64F A) {
-        if( A.numRows < A.numCols )
+        if( A.rows < A.cols )
             throw new IllegalArgumentException("Number of rows must be more than or equal to the number of columns.  " +
                     "Can't solve an underdetermined system.");
 
@@ -92,11 +92,11 @@ public class BlockQrHouseHolderSolver implements LinearSolver<BlockMatrix64F> {
     @Override
     public void solve(BlockMatrix64F B, BlockMatrix64F X) {
 
-        if( B.numCols != X.numCols )
+        if( B.cols != X.cols )
             throw new IllegalArgumentException("Columns of B and X do not match");
-        if( QR.numCols != X.numRows )
+        if( QR.cols != X.rows )
             throw new IllegalArgumentException("Rows in X do not match the columns in A");
-        if( QR.numRows != B.numRows )
+        if( QR.rows != B.rows )
             throw new IllegalArgumentException("Rows in B do not match the rows in A.");
         if( B.blockLength != QR.blockLength || X.blockLength != QR.blockLength )
             throw new IllegalArgumentException("All matrices must have the same block length.");
@@ -113,7 +113,7 @@ public class BlockQrHouseHolderSolver implements LinearSolver<BlockMatrix64F> {
         BlockMatrixOps.extractAligned(B,X);
 
         // extract a block aligned matrix
-        int M = Math.min(QR.numRows,QR.numCols);
+        int M = Math.min(QR.rows,QR.cols);
 
         BlockTriangularSolver.solve(QR.blockLength,true,
                 new D1Submatrix64F(QR,0,M,0,M),new D1Submatrix64F(X),false);
@@ -127,8 +127,8 @@ public class BlockQrHouseHolderSolver implements LinearSolver<BlockMatrix64F> {
      */
     @Override
     public void invert(BlockMatrix64F A_inv) {
-        int M = Math.min(QR.numRows,QR.numCols);
-        if( A_inv.numRows != M || A_inv.numCols != M )
+        int M = Math.min(QR.rows,QR.cols);
+        if( A_inv.rows != M || A_inv.cols != M )
             throw new IllegalArgumentException("A_inv must be square an have dimension "+M);
 
 

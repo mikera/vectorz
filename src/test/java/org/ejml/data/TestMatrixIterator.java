@@ -39,10 +39,10 @@ public class TestMatrixIterator {
     public void allRow() {
         DenseMatrix64F A = RandomMatrices.createRandom(3,6,rand);
 
-        MatrixIterator iter = A.iterator(true,0, 0, A.numRows-1, A.numCols-1);
+        MatrixIterator iter = A.iterator(true,0, 0, A.rows-1, A.cols-1);
 
-        for( int i = 0; i < A.numRows; i++ ) {
-            for( int j = 0; j < A.numCols; j++ ) {
+        for( int i = 0; i < A.rows; i++ ) {
+            for( int j = 0; j < A.cols; j++ ) {
                 assertTrue(iter.hasNext());
                 assertEquals(A.get(i,j),iter.next(),1e-8);
             }
@@ -54,10 +54,10 @@ public class TestMatrixIterator {
     public void allCol() {
         DenseMatrix64F A = RandomMatrices.createRandom(3,6,rand);
 
-        MatrixIterator iter = A.iterator(false,0, 0, A.numRows-1, A.numCols-1);
+        MatrixIterator iter = A.iterator(false,0, 0, A.rows-1, A.cols-1);
 
-        for( int j = 0; j < A.numCols; j++ ) {
-            for( int i = 0; i < A.numRows; i++ ) {
+        for( int j = 0; j < A.cols; j++ ) {
+            for( int i = 0; i < A.rows; i++ ) {
                 assertTrue(iter.hasNext());
                 assertEquals(A.get(i,j),iter.next(),1e-8);
             }
@@ -69,10 +69,10 @@ public class TestMatrixIterator {
     public void subRow() {
         DenseMatrix64F A = RandomMatrices.createRandom(3,6,rand);
 
-        MatrixIterator iter = A.iterator(true,1, 2 , A.numRows-2, A.numCols-1);
+        MatrixIterator iter = A.iterator(true,1, 2 , A.rows-2, A.cols-1);
 
-        for( int i = 1; i < A.numRows-1; i++ ) {
-            for( int j = 2; j < A.numCols; j++ ) {
+        for( int i = 1; i < A.rows-1; i++ ) {
+            for( int j = 2; j < A.cols; j++ ) {
                 assertTrue(iter.hasNext());
                 assertEquals(A.get(i,j),iter.next(),1e-8);
             }
@@ -85,10 +85,10 @@ public class TestMatrixIterator {
     public void subCol() {
         DenseMatrix64F A = RandomMatrices.createRandom(3,6,rand);
 
-        MatrixIterator iter = A.iterator(false,1, 2 , A.numRows-2, A.numCols-1);
+        MatrixIterator iter = A.iterator(false,1, 2 , A.rows-2, A.cols-1);
 
-        for( int j = 2; j < A.numCols; j++ ) {
-            for( int i = 1; i < A.numRows-1; i++ ) {
+        for( int j = 2; j < A.cols; j++ ) {
+            for( int i = 1; i < A.rows-1; i++ ) {
                 assertTrue(iter.hasNext());
                 assertEquals(A.get(i,j),iter.next(),1e-8);
             }

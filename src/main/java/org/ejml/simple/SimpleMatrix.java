@@ -173,7 +173,7 @@ public class SimpleMatrix extends SimpleBase<SimpleMatrix> {
      * @param orig The original matrix whose value is copied.  Not modified.
      */
     public SimpleMatrix( Matrix64F orig ) {
-        this.mat = new DenseMatrix64F(orig.numRows,orig.numCols);
+        this.mat = new DenseMatrix64F(orig.rows,orig.cols);
 
         GenericMatrixOps.copy(orig,mat);
     }

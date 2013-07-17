@@ -120,7 +120,7 @@ public class TestTridiagonalBlockHelper {
 
             // now compute it using the block matrix stuff
             BlockMatrix64F Ab = BlockMatrixOps.convert(A.getMatrix(),r);
-            BlockMatrix64F Wb = new BlockMatrix64F(Ab.numRows,Ab.numCols,r);
+            BlockMatrix64F Wb = new BlockMatrix64F(Ab.rows,Ab.cols,r);
 
             D1Submatrix64F Ab_sub = new D1Submatrix64F(Ab);
             D1Submatrix64F Wb_sub = new D1Submatrix64F(Wb);
@@ -177,7 +177,7 @@ public class TestTridiagonalBlockHelper {
         CommonOps.insert(A.getMatrix(),B,offRow,offCol);
 
         BlockMatrix64F C = BlockMatrixOps.convert(B,r);
-        return new D1Submatrix64F(C,offRow,C.numRows,offCol,C.numCols);
+        return new D1Submatrix64F(C,offRow,C.rows,offCol,C.cols);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class TestTridiagonalBlockHelper {
         A = A.transpose().mult(A);
 
         BlockMatrix64F Ab = BlockMatrixOps.convert(A.getMatrix(),r);
-        BlockMatrix64F V = new BlockMatrix64F(r,Ab.numCols,r);
+        BlockMatrix64F V = new BlockMatrix64F(r,Ab.cols,r);
 
         int row = 1;
 

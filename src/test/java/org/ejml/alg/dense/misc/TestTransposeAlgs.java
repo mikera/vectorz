@@ -43,8 +43,8 @@ public class TestTransposeAlgs {
 
         TransposeAlgs.square(matTran);
 
-        assertEquals(mat.getNumCols(),matTran.getNumRows());
-        assertEquals(mat.getNumRows(),matTran.getNumCols());
+        assertEquals(mat.columnCount(),matTran.rowCount());
+        assertEquals(mat.rowCount(),matTran.columnCount());
 
         EjmlUnitTests.assertEqualsTrans(mat,matTran,0);
     }
@@ -59,8 +59,8 @@ public class TestTransposeAlgs {
 
                 TransposeAlgs.block(mat,matTran,7);
 
-                assertEquals(numCols,matTran.getNumRows());
-                assertEquals(numRows,matTran.getNumCols());
+                assertEquals(numCols,matTran.rowCount());
+                assertEquals(numRows,matTran.columnCount());
 
                 EjmlUnitTests.assertEqualsTrans(mat,matTran,0);
             }
@@ -74,8 +74,8 @@ public class TestTransposeAlgs {
 
         TransposeAlgs.standard(mat,matTran);
 
-        assertEquals(mat.getNumCols(),matTran.getNumRows());
-        assertEquals(mat.getNumRows(),matTran.getNumCols());
+        assertEquals(mat.columnCount(),matTran.rowCount());
+        assertEquals(mat.rowCount(),matTran.columnCount());
 
         EjmlUnitTests.assertEqualsTrans(mat,matTran,0);
     }

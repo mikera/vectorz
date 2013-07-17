@@ -295,11 +295,11 @@ public class TestCommonOps {
 
         CommonOps.transpose(mat,matTran);
 
-        assertEquals(mat.getNumCols(),matTran.getNumRows());
-        assertEquals(mat.getNumRows(),matTran.getNumCols());
+        assertEquals(mat.columnCount(),matTran.rowCount());
+        assertEquals(mat.rowCount(),matTran.columnCount());
 
-        for( int y = 0; y < mat.getNumRows(); y++ ){
-            for( int x = 0; x < mat.getNumCols(); x++ ) {
+        for( int y = 0; y < mat.rowCount(); y++ ){
+            for( int x = 0; x < mat.columnCount(); x++ ) {
                 assertEquals(mat.get(y,x),matTran.get(x,y),1e-6);
             }
         }
@@ -374,15 +374,15 @@ public class TestCommonOps {
 
         DenseMatrix64F v[] = CommonOps.columnsToVector(M, null);
 
-        assertEquals(M.numCols,v.length);
+        assertEquals(M.cols,v.length);
 
         for( int i = 0; i < v.length; i++ ) {
             DenseMatrix64F a = v[i];
 
-            assertEquals(M.numRows,a.numRows);
-            assertEquals(1,a.numCols);
+            assertEquals(M.rows,a.rows);
+            assertEquals(1,a.cols);
 
-            for( int j = 0; j < M.numRows; j++ ) {
+            for( int j = 0; j < M.rows; j++ ) {
                 assertEquals(a.get(j),M.get(j,i),1e-8);
             }
         }
@@ -392,8 +392,8 @@ public class TestCommonOps {
     public void identity() {
         DenseMatrix64F A = CommonOps.identity(4);
 
-        assertEquals(4,A.numRows);
-        assertEquals(4,A.numCols);
+        assertEquals(4,A.rows);
+        assertEquals(4,A.cols);
 
         assertEquals(4,CommonOps.elementSum(A),1e-8);
     }
@@ -402,8 +402,8 @@ public class TestCommonOps {
     public void identity_rect() {
         DenseMatrix64F A = CommonOps.identity(4,6);
 
-        assertEquals(4,A.numRows);
-        assertEquals(6,A.numCols);
+        assertEquals(4,A.rows);
+        assertEquals(6,A.cols);
 
         assertEquals(4,CommonOps.elementSum(A),1e-8);
     }
@@ -414,8 +414,8 @@ public class TestCommonOps {
 
         CommonOps.setIdentity(A);
 
-        assertEquals(4,A.numRows);
-        assertEquals(4,A.numCols);
+        assertEquals(4,A.rows);
+        assertEquals(4,A.cols);
 
         assertEquals(4,CommonOps.elementSum(A),1e-8);
     }
@@ -424,8 +424,8 @@ public class TestCommonOps {
     public void diag() {
         DenseMatrix64F A = CommonOps.diag(2.0,3.0,6.0,7.0);
 
-        assertEquals(4,A.numRows);
-        assertEquals(4,A.numCols);
+        assertEquals(4,A.rows);
+        assertEquals(4,A.cols);
 
         assertEquals(2,A.get(0,0),1e-8);
         assertEquals(3,A.get(1,1),1e-8);
@@ -439,8 +439,8 @@ public class TestCommonOps {
     public void diag_rect() {
         DenseMatrix64F A = CommonOps.diagR(4,6,2.0,3.0,6.0,7.0);
 
-        assertEquals(4,A.numRows);
-        assertEquals(6,A.numCols);
+        assertEquals(4,A.rows);
+        assertEquals(6,A.cols);
 
         assertEquals(2,A.get(0,0),1e-8);
         assertEquals(3,A.get(1,1),1e-8);
@@ -469,12 +469,12 @@ public class TestCommonOps {
                     for( int l = 1; l <= 3; l++ ) {
                         A = RandomMatrices.createRandom(i,j,rand);
                         B = RandomMatrices.createRandom(k,l,rand);
-                        C = new DenseMatrix64F(A.numRows*B.numRows,A.numCols*B.numCols);
+                        C = new DenseMatrix64F(A.rows*B.rows,A.cols*B.cols);
 
                         CommonOps.kron(A,B,C);
 
-                        assertEquals(i*k,C.numRows);
-                        assertEquals(j*l,C.numCols);
+                        assertEquals(i*k,C.rows);
+                        assertEquals(j*l,C.cols);
                     }
                 }
             }
@@ -502,8 +502,8 @@ public class TestCommonOps {
 
         DenseMatrix64F B = CommonOps.extract(A,1,3,2,5);
 
-        assertEquals(B.numRows,2);
-        assertEquals(B.numCols,3);
+        assertEquals(B.rows,2);
+        assertEquals(B.cols,3);
 
         for( int i = 1; i < 3; i++ ) {
             for( int j = 2; j < 5; j++ ) {
@@ -531,9 +531,9 @@ public class TestCommonOps {
     @Test
     public void insert() {
         DenseMatrix64F A = new DenseMatrix64F(5,5);
-        for( int i = 0; i < A.numRows; i++ ) {
-            for( int j = 0; j < A.numCols; j++ ) {
-                A.set(i,j,i*A.numRows+j);
+        for( int i = 0; i < A.rows; i++ ) {
+            for( int j = 0; j < A.cols; j++ ) {
+                A.set(i,j,i*A.rows+j);
             }
         }
 
@@ -741,7 +741,7 @@ public class TestCommonOps {
 
         CommonOps.fill(mat, 1);
 
-        for( int i = 0; i < mat.getNumElements(); i++ ) {
+        for( int i = 0; i < mat.elementCount(); i++ ) {
             assertEquals(1,mat.get(i),1e-8);
         }
     }
@@ -753,7 +753,7 @@ public class TestCommonOps {
 
         mat.zero();
 
-        for( int i = 0; i < mat.getNumElements(); i++ ) {
+        for( int i = 0; i < mat.elementCount(); i++ ) {
             assertEquals(0,mat.get(i),1e-8);
         }
     }
@@ -798,8 +798,8 @@ public class TestCommonOps {
         M.reshape(4,3, false);
 
         double sum = 0;
-        for( int i = 0; i < M.numRows; i++ ) {
-            for( int j = 0; j < M.numCols; j++ ) {
+        for( int i = 0; i < M.rows; i++ ) {
+            for( int j = 0; j < M.cols; j++ ) {
                 sum += M.get(i,j);
             }
         }
@@ -815,8 +815,8 @@ public class TestCommonOps {
         M.reshape(4,3, false);
 
         double sum = 0;
-        for( int i = 0; i < M.numRows; i++ ) {
-            for( int j = 0; j < M.numCols; j++ ) {
+        for( int i = 0; i < M.rows; i++ ) {
+            for( int j = 0; j < M.cols; j++ ) {
                 sum += Math.abs(M.get(i,j));
             }
         }
@@ -831,9 +831,9 @@ public class TestCommonOps {
 
         assertTrue( output == CommonOps.sumRows(input,output));
 
-        for( int i = 0; i < input.numRows; i++ ) {
+        for( int i = 0; i < input.rows; i++ ) {
             double total = 0;
-            for( int j = 0; j < input.numCols; j++ ) {
+            for( int j = 0; j < input.cols; j++ ) {
                 total += input.get(i,j);
             }
             assertEquals( total, output.get(i),1e-8);
@@ -852,9 +852,9 @@ public class TestCommonOps {
 
         assertTrue( output == CommonOps.sumCols(input,output));
 
-        for( int i = 0; i < input.numCols; i++ ) {
+        for( int i = 0; i < input.cols; i++ ) {
             double total = 0;
-            for( int j = 0; j < input.numRows; j++ ) {
+            for( int j = 0; j < input.rows; j++ ) {
                 total += input.get(j,i);
             }
             assertEquals( total, output.get(i),1e-8);

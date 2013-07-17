@@ -82,8 +82,8 @@ public class TestMatrixMultProduct {
         MatrixMultProduct.inner_reorder_upper(A, found);
 
         // only check the upper triangle
-        for( int i = 0; i < found.numRows; i++ ) {
-            for( int j = i; j < found.numCols; j++ ) {
+        for( int i = 0; i < found.rows; i++ ) {
+            for( int j = i; j < found.cols; j++ ) {
                 assertEquals(expected.get(i,j),found.get(i,j),1e-8);
             }
         }

@@ -60,7 +60,7 @@ public class BlockInnerRankUpdate {
 
         for( int i = B.col0; i < B.col1; i += blockLength ) {
 
-            int indexB_i = B.row0*B.original.numCols + i*heightB;
+            int indexB_i = B.row0*B.original.cols + i*heightB;
             int widthB_i = Math.min(blockLength,B.col1-i);
 
             int rowA = i-B.col0+A.row0;
@@ -70,8 +70,8 @@ public class BlockInnerRankUpdate {
 
                 int widthB_j = Math.min(blockLength,B.col1-j);
 
-                int indexA = rowA * A.original.numCols + (j-B.col0+A.col0)*heightA;
-                int indexB_j = B.row0*B.original.numCols + j*heightB;
+                int indexA = rowA * A.original.cols + (j-B.col0+A.col0)*heightA;
+                int indexB_j = B.row0*B.original.cols + j*heightB;
 
                 BlockInnerMultiplication.blockMultPlusTransA(alpha,
                         B.original.data,B.original.data,A.original.data,
@@ -106,7 +106,7 @@ public class BlockInnerRankUpdate {
 
         for( int i = B.col0; i < B.col1; i += blockLength ) {
 
-            int indexB_i = B.row0*B.original.numCols + i*heightB;
+            int indexB_i = B.row0*B.original.cols + i*heightB;
             int widthB_i = Math.min(blockLength,B.col1-i);
 
             int rowA = i-B.col0+A.row0;
@@ -116,8 +116,8 @@ public class BlockInnerRankUpdate {
 
                 int widthB_j = Math.min(blockLength,B.col1-j);
 
-                int indexA = rowA * A.original.numCols + (j-B.col0+A.col0)*heightA;
-                int indexB_j = B.row0*B.original.numCols + j*heightB;
+                int indexA = rowA * A.original.cols + (j-B.col0+A.col0)*heightA;
+                int indexB_j = B.row0*B.original.cols + j*heightB;
 
                 if( i == j ) {
                     // only the upper portion of this block needs to be modified since it is along a diagonal
@@ -157,7 +157,7 @@ public class BlockInnerRankUpdate {
 
 
             int heightB_i = Math.min(blockLength,B.row1-i);
-            int indexB_i = i*B.original.numCols + heightB_i*B.col0;
+            int indexB_i = i*B.original.cols + heightB_i*B.col0;
 
             int rowA = i-B.row0+A.row0;
             int heightA = Math.min( blockLength , A.row1 - rowA);
@@ -166,8 +166,8 @@ public class BlockInnerRankUpdate {
                 
                 int widthB_j = Math.min(blockLength,B.row1-j);
 
-                int indexA = rowA * A.original.numCols + (j-B.row0+A.col0)*heightA;
-                int indexB_j = j*B.original.numCols + widthB_j*B.col0;
+                int indexA = rowA * A.original.cols + (j-B.row0+A.col0)*heightA;
+                int indexB_j = j*B.original.cols + widthB_j*B.col0;
 
                 if( i == j ) {
                     multTransBBlockMinus_L( B.original.data,A.original.data,

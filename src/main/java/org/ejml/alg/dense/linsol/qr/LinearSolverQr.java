@@ -85,8 +85,8 @@ public class LinearSolverQr extends LinearSolverAbstract {
      */
     @Override
     public boolean setA(DenseMatrix64F A) {
-        if( A.numRows > maxRows || A.numCols > maxCols ) {
-            setMaxSize(A.numRows,A.numCols);
+        if( A.rows > maxRows || A.cols > maxCols ) {
+            setMaxSize(A.rows,A.cols);
         }
 
         _setA(A);
@@ -114,12 +114,12 @@ public class LinearSolverQr extends LinearSolverAbstract {
      */
     @Override
     public void solve(DenseMatrix64F B, DenseMatrix64F X) {
-        if( X.numRows != numCols )
+        if( X.rows != numCols )
             throw new IllegalArgumentException("Unexpected dimensions for X");
-        else if( B.numRows != numRows || B.numCols != X.numCols )
+        else if( B.rows != numRows || B.cols != X.cols )
             throw new IllegalArgumentException("Unexpected dimensions for B");
 
-        int BnumCols = B.numCols;
+        int BnumCols = B.cols;
 
         Y.reshape(numRows,1, false);
         Z.reshape(numRows,1, false);

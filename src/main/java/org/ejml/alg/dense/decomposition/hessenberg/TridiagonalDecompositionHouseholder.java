@@ -99,7 +99,7 @@ public class TridiagonalDecompositionHouseholder
     public DenseMatrix64F getT( DenseMatrix64F T ) {
         if( T == null ) {
             T = new DenseMatrix64F(N,N);
-        } else if( N != T.numRows || N != T.numCols )
+        } else if( N != T.rows || N != T.cols )
             throw new IllegalArgumentException("The provided H must have the same dimensions as the decomposed matrix.");
         else
             T.zero();
@@ -132,7 +132,7 @@ public class TridiagonalDecompositionHouseholder
     public DenseMatrix64F getQ( DenseMatrix64F Q , boolean transposed ) {
         if( Q == null ) {
             Q = CommonOps.identity(N);
-        } else if( N != Q.numRows || N != Q.numCols )
+        } else if( N != Q.rows || N != Q.cols )
             throw new IllegalArgumentException("The provided H must have the same dimensions as the decomposed matrix.");
         else
             CommonOps.setIdentity(Q);
@@ -277,11 +277,11 @@ public class TridiagonalDecompositionHouseholder
      * @param A Matrix being decomposed.
      */
     public void init( DenseMatrix64F A ) {
-        if( A.numRows != A.numCols)
+        if( A.rows != A.cols)
             throw new IllegalArgumentException("Must be square");
 
-        if( A.numCols != N ) {
-            N = A.numCols;
+        if( A.cols != N ) {
+            N = A.cols;
 
             if( w.length < N ) {
                 w = new double[ N ];

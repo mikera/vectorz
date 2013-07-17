@@ -97,7 +97,7 @@ public class QRColPivDecompositionHouseholderColumn
             if( Q == null ) {
                 Q = CommonOps.identity(numRows,minLength);
             } else {
-                if( Q.numRows != numRows || Q.numCols != minLength ) {
+                if( Q.rows != numRows || Q.cols != minLength ) {
                     throw new IllegalArgumentException("Unexpected matrix dimension.");
                 } else {
                     CommonOps.setIdentity(Q);
@@ -107,7 +107,7 @@ public class QRColPivDecompositionHouseholderColumn
             if( Q == null ) {
                 Q = CommonOps.identity(numRows);
             } else {
-                if( Q.numRows != numRows || Q.numCols != numRows ) {
+                if( Q.rows != numRows || Q.cols != numRows ) {
                     throw new IllegalArgumentException("Unexpected matrix dimension.");
                 } else {
                     CommonOps.setIdentity(Q);
@@ -141,7 +141,7 @@ public class QRColPivDecompositionHouseholderColumn
      */
     @Override
     public boolean decompose( DenseMatrix64F A ) {
-        setExpectedMaxSize(A.numRows, A.numCols);
+        setExpectedMaxSize(A.rows, A.cols);
 
         convertToColumnMajor(A);
 
@@ -301,9 +301,9 @@ public class QRColPivDecompositionHouseholderColumn
     public DenseMatrix64F getPivotMatrix(DenseMatrix64F P) {
         if( P == null )
             P = new DenseMatrix64F(numCols,numCols);
-        else if( P.numRows != numCols )
+        else if( P.rows != numCols )
             throw new IllegalArgumentException("Number of rows must be "+numCols);
-        else if( P.numCols != numCols )
+        else if( P.cols != numCols )
             throw new IllegalArgumentException("Number of columns must be "+numCols);
         else {
             P.zero();

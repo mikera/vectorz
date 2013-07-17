@@ -180,7 +180,7 @@ public abstract class StandardSvdChecks {
         DenseMatrix64F U = alg.getU(null,false);
         DenseMatrix64F Ut = alg.getU(null,true);
 
-        DenseMatrix64F found = new DenseMatrix64F(U.numCols,U.numRows);
+        DenseMatrix64F found = new DenseMatrix64F(U.cols,U.rows);
 
         CommonOps.transpose(U,found);
 
@@ -198,14 +198,14 @@ public abstract class StandardSvdChecks {
 
         // test positive cases
         DenseMatrix64F U = alg.getU(null,false);
-        DenseMatrix64F storage = new DenseMatrix64F(U.numRows,U.numCols);
+        DenseMatrix64F storage = new DenseMatrix64F(U.rows,U.cols);
 
         alg.getU(storage,false);
 
         assertTrue( MatrixFeatures.isEquals(U,storage));
 
         U = alg.getU(null,true);
-        storage = new DenseMatrix64F(U.numRows,U.numCols);
+        storage = new DenseMatrix64F(U.rows,U.cols);
 
         alg.getU(storage,true);
         assertTrue( MatrixFeatures.isEquals(U,storage));
@@ -233,7 +233,7 @@ public abstract class StandardSvdChecks {
         DenseMatrix64F V = alg.getV(null,false);
         DenseMatrix64F Vt = alg.getV(null,true);
 
-        DenseMatrix64F found = new DenseMatrix64F(V.numCols,V.numRows);
+        DenseMatrix64F found = new DenseMatrix64F(V.cols,V.rows);
 
         CommonOps.transpose(V,found);
 
@@ -251,14 +251,14 @@ public abstract class StandardSvdChecks {
 
         // test positive cases
         DenseMatrix64F V = alg.getV(null, false);
-        DenseMatrix64F storage = new DenseMatrix64F(V.numRows,V.numCols);
+        DenseMatrix64F storage = new DenseMatrix64F(V.rows,V.cols);
 
         alg.getV(storage, false);
 
         assertTrue(MatrixFeatures.isEquals(V, storage));
 
         V = alg.getV(null, true);
-        storage = new DenseMatrix64F(V.numRows,V.numCols);
+        storage = new DenseMatrix64F(V.rows,V.cols);
 
         alg.getV(storage, true);
         assertTrue( MatrixFeatures.isEquals(V,storage));

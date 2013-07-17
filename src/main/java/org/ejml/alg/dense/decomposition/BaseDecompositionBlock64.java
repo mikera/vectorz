@@ -47,25 +47,25 @@ public class BaseDecompositionBlock64 implements DecompositionInterface<DenseMat
 
     @Override
     public boolean decompose(DenseMatrix64F A) {
-        Ablock.numRows = A.numRows;
-        Ablock.numCols = A.numCols;
+        Ablock.rows = A.rows;
+        Ablock.cols = A.cols;
         Ablock.blockLength = blockLength;
         Ablock.data = A.data;
 
-        int tmpLength = Math.min( Ablock.blockLength , A.numRows ) * A.numCols;
+        int tmpLength = Math.min( Ablock.blockLength , A.rows ) * A.cols;
 
         if( tmp == null || tmp.length < tmpLength )
             tmp = new double[ tmpLength ];
 
         // doing an in-place convert is much more memory efficient at the cost of a little
         // but of CPU
-        BlockMatrixOps.convertRowToBlock(A.numRows,A.numCols,Ablock.blockLength,A.data,tmp);
+        BlockMatrixOps.convertRowToBlock(A.rows,A.cols,Ablock.blockLength,A.data,tmp);
 
         boolean ret = alg.decompose(Ablock);
 
         // convert it back to the normal format if it wouldn't have been modified
         if( !alg.inputModified() ) {
-            BlockMatrixOps.convertBlockToRow(A.numRows,A.numCols,Ablock.blockLength,A.data,tmp);
+            BlockMatrixOps.convertBlockToRow(A.rows,A.cols,Ablock.blockLength,A.data,tmp);
         }
 
         return ret;

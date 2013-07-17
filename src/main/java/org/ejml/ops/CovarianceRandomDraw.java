@@ -44,7 +44,7 @@ public class CovarianceRandomDraw {
      */
     public CovarianceRandomDraw( Random rand , DenseMatrix64F cov )
     {
-        r = new DenseMatrix64F(cov.numRows,1);
+        r = new DenseMatrix64F(cov.rows,1);
         CholeskyDecompositionInner choleky = new CholeskyDecompositionInner( true);
 
         choleky.decompose(cov);
@@ -58,7 +58,7 @@ public class CovarianceRandomDraw {
      */
     public void next( DenseMatrix64F x )
     {
-        for( int i = 0; i < r.numRows; i++ ) {
+        for( int i = 0; i < r.rows; i++ ) {
             r.set(i,0,rand.nextGaussian());
         }
 
@@ -73,7 +73,7 @@ public class CovarianceRandomDraw {
     public double computeLikelihoodP() {
         double ret = 1.0;
 
-        for( int i = 0; i < r.numRows; i++ ) {
+        for( int i = 0; i < r.rows; i++ ) {
             double a = r.get(i,0);
 
             ret *= Math.exp(-a*a/2.0);

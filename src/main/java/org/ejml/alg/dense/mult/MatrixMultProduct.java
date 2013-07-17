@@ -36,14 +36,14 @@ import org.ejml.data.RowD1Matrix64F;
 public class MatrixMultProduct {
 
     public static void outer(RowD1Matrix64F a, RowD1Matrix64F c) {
-        for( int i = 0; i < a.numRows; i++ ) {
-            int indexC1 = i*c.numCols+i;
+        for( int i = 0; i < a.rows; i++ ) {
+            int indexC1 = i*c.cols+i;
             int indexC2 = indexC1;
-            for( int j = i; j < a.numRows; j++ , indexC2 += c.numCols) {
-                int indexA = i*a.numCols;
-                int indexB = j*a.numCols;
+            for( int j = i; j < a.rows; j++ , indexC2 += c.cols) {
+                int indexA = i*a.cols;
+                int indexB = j*a.cols;
                 double sum = 0;
-                int end = indexA + a.numCols;
+                int end = indexA + a.cols;
                 for( ; indexA < end; indexA++,indexB++ ) {
                     sum += a.data[indexA]*a.data[indexB];
                 }
@@ -63,15 +63,15 @@ public class MatrixMultProduct {
     
     public static void inner_small(RowD1Matrix64F a, RowD1Matrix64F c) {
 
-        for( int i = 0; i < a.numCols; i++ ) {
-            for( int j = i; j < a.numCols; j++ ) {
-                int indexC1 = i*c.numCols+j;
-                int indexC2 = j*c.numCols+i;
+        for( int i = 0; i < a.cols; i++ ) {
+            for( int j = i; j < a.cols; j++ ) {
+                int indexC1 = i*c.cols+j;
+                int indexC2 = j*c.cols+i;
                 int indexA = i;
                 int indexB = j;
                 double sum = 0;
-                int end = indexA + a.numRows*a.numCols;
-                for( ; indexA < end; indexA += a.numCols, indexB += a.numCols ) {
+                int end = indexA + a.rows*a.cols;
+                for( ; indexA < end; indexA += a.cols, indexB += a.cols ) {
                     sum += a.data[indexA]*a.data[indexB];
                 }
                 c.data[indexC1] = c.data[indexC2] = sum;
@@ -91,25 +91,25 @@ public class MatrixMultProduct {
 
     public static void inner_reorder(RowD1Matrix64F a, RowD1Matrix64F c) {
 
-        for( int i = 0; i < a.numCols; i++ ) {
-            int indexC = i*c.numCols+i;
+        for( int i = 0; i < a.cols; i++ ) {
+            int indexC = i*c.cols+i;
             double valAi = a.data[i];
-            for( int j = i; j < a.numCols; j++ ) {
+            for( int j = i; j < a.cols; j++ ) {
                 c.data[indexC++] =  valAi*a.data[j];
             }
 
-            for( int k = 1; k < a.numRows; k++ ) {
-                indexC = i*c.numCols+i;
-                int indexB = k*a.numCols+i;
+            for( int k = 1; k < a.rows; k++ ) {
+                indexC = i*c.cols+i;
+                int indexB = k*a.cols+i;
                 valAi = a.data[indexB];
-                for( int j = i; j < a.numCols; j++ ) {
+                for( int j = i; j < a.cols; j++ ) {
                     c.data[indexC++] +=  valAi*a.data[indexB++];
                 }
             }
 
-            indexC = i*c.numCols+i;
+            indexC = i*c.cols+i;
             int indexC2 = indexC;
-            for( int j = i; j < a.numCols; j++ , indexC2 += c.numCols) {
+            for( int j = i; j < a.cols; j++ , indexC2 += c.cols) {
                 c.data[indexC2] = c.data[indexC++];
             }
         }
@@ -131,18 +131,18 @@ public class MatrixMultProduct {
     }
 
     public static void inner_reorder_upper(RowD1Matrix64F a, RowD1Matrix64F c) {
-        for( int i = 0; i < a.numCols; i++ ) {
-            int indexC = i*c.numCols+i;
+        for( int i = 0; i < a.cols; i++ ) {
+            int indexC = i*c.cols+i;
             double valAi = a.data[i];
-            for( int j = i; j < a.numCols; j++ ) {
+            for( int j = i; j < a.cols; j++ ) {
                 c.data[indexC++] =  valAi*a.data[j];
             }
 
-            for( int k = 1; k < a.numRows; k++ ) {
-                indexC = i*c.numCols+i;
-                int indexB = k*a.numCols+i;
+            for( int k = 1; k < a.rows; k++ ) {
+                indexC = i*c.cols+i;
+                int indexB = k*a.cols+i;
                 valAi = a.data[indexB];
-                for( int j = i; j < a.numCols; j++ ) {
+                for( int j = i; j < a.cols; j++ ) {
                     c.data[indexC++] +=  valAi*a.data[indexB++];
                 }
             }

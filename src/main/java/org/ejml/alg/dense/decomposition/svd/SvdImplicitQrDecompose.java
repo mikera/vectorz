@@ -126,14 +126,14 @@ public class SvdImplicitQrDecompose implements SingularValueDecomposition<DenseM
         if( transpose ) {
             if( U == null )
                 return Ut;
-            else if( U.numRows != Ut.numRows || U.numCols != Ut.numCols )
+            else if( U.rows != Ut.rows || U.cols != Ut.cols )
                 throw new IllegalArgumentException("Unexpected shape of U");
 
             U.set(Ut);
         } else {
             if( U == null )
-                U = new DenseMatrix64F(Ut.numCols,Ut.numRows);
-            else if( U.numRows != Ut.numCols || U.numCols != Ut.numRows )
+                U = new DenseMatrix64F(Ut.cols,Ut.rows);
+            else if( U.rows != Ut.cols || U.cols != Ut.rows )
                 throw new IllegalArgumentException("Unexpected shape of U");
 
             CommonOps.transpose(Ut,U);
@@ -149,14 +149,14 @@ public class SvdImplicitQrDecompose implements SingularValueDecomposition<DenseM
         if( transpose ) {
             if( V == null )
                 return Vt;
-            else if( V.numRows != Vt.numRows || V.numCols != Vt.numCols )
+            else if( V.rows != Vt.rows || V.cols != Vt.cols )
                 throw new IllegalArgumentException("Unexpected shape of V");
 
             V.set(Vt);
         } else {
             if( V == null )
-                V = new DenseMatrix64F(Vt.numCols,Vt.numRows);
-            else if( V.numRows != Vt.numCols || V.numCols != Vt.numRows )
+                V = new DenseMatrix64F(Vt.cols,Vt.rows);
+            else if( V.rows != Vt.cols || V.cols != Vt.rows )
                 throw new IllegalArgumentException("Unexpected shape of V");
             CommonOps.transpose(Vt,V);
         }
@@ -210,10 +210,10 @@ public class SvdImplicitQrDecompose implements SingularValueDecomposition<DenseM
     private boolean bidiagonalization(DenseMatrix64F orig) {
         // change the matrix to bidiagonal form
         if( transposed ) {
-            A_mod.reshape(orig.numCols,orig.numRows,false);
+            A_mod.reshape(orig.cols,orig.rows,false);
             CommonOps.transpose(orig,A_mod);
         } else {
-            A_mod.reshape(orig.numRows,orig.numCols,false);
+            A_mod.reshape(orig.rows,orig.cols,false);
             A_mod.set(orig);
         }
         return !bidiag.decompose(A_mod);
@@ -265,23 +265,23 @@ public class SvdImplicitQrDecompose implements SingularValueDecomposition<DenseM
     }
 
     private void setup(DenseMatrix64F orig) {
-        transposed = orig.numCols > orig.numRows;
+        transposed = orig.cols > orig.rows;
 
         // flag what should be computed and what should not be computed
         if( transposed ) {
             computeU = prefComputeV;
             computeV = prefComputeU;
-            numRowsT = orig.numCols;
-            numColsT = orig.numRows;
+            numRowsT = orig.cols;
+            numColsT = orig.rows;
         } else {
             computeU = prefComputeU;
             computeV = prefComputeV;
-            numRowsT = orig.numRows;
-            numColsT = orig.numCols;
+            numRowsT = orig.rows;
+            numColsT = orig.cols;
         }
 
-        numRows = orig.numRows;
-        numCols = orig.numCols;
+        numRows = orig.rows;
+        numCols = orig.cols;
 
         if( diag == null || diag.length < numColsT ) {
             diag = new double[ numColsT ];
@@ -315,8 +315,8 @@ public class SvdImplicitQrDecompose implements SingularValueDecomposition<DenseM
                 if( computeU ) {
                     // compute the results of multiplying it by an element of -1 at this location in
                     // a diagonal matrix.
-                    int start = i* Ut.numCols;
-                    int stop = start+ Ut.numCols;
+                    int start = i* Ut.cols;
+                    int stop = start+ Ut.cols;
 
                     for( int j = start; j < stop; j++ ) {
                         Ut.set(j, 0.0d - Ut.get(j));

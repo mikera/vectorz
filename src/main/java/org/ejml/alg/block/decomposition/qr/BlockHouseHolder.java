@@ -174,8 +174,8 @@ public class BlockHouseHolder {
             for( int i = A.row0; i < A.row1; i += blockLength ) {
                 int height = Math.min( blockLength , A.row1 - i );
 
-                int indexU = i*A.original.numCols + height*A.col0 + col;
-                int indexA = i*A.original.numCols + height*A.col0 + j;
+                int indexU = i*A.original.cols + height*A.col0 + col;
+                int indexA = i*A.original.cols + height*A.col0 + j;
 
                 if( i == A.row0 ) {
                     indexU += width*(col+1);
@@ -231,8 +231,8 @@ public class BlockHouseHolder {
                 int i = A.row0;
                 int height = Math.min( blockLength , A.row1 - i );
 
-                int indexU = i*A.original.numCols + height*A.col0 + col;
-                int indexA = i*A.original.numCols + height*colStartJ + j;
+                int indexU = i*A.original.cols + height*A.col0 + col;
+                int indexA = i*A.original.cols + height*colStartJ + j;
 
                 // take in account zeros and one
                 indexU += widthCol*(col+1);
@@ -282,8 +282,8 @@ public class BlockHouseHolder {
             for( int j = A.col0; j < A.col1; j += blockLength ) {
                 int width = Math.min( blockLength , A.col1 - j );
 
-                int indexU = A.row0*A.original.numCols + height*j + row*width;
-                int indexA = A.row0*A.original.numCols + height*j + i*width;
+                int indexU = A.row0*A.original.cols + height*j + row*width;
+                int indexA = A.row0*A.original.cols + height*j + i*width;
 
                 if( j == A.col0 ) {
                     indexU += colStart+1;
@@ -338,8 +338,8 @@ public class BlockHouseHolder {
                 // A(i,:) - gamma*U*total
 //                plusScale_row(blockLength,);
 
-                int indexU = A.row0*A.original.numCols + heightU*A.col0 + row*width;
-                int indexA = blockStart*A.original.numCols + heightA*A.col0 + i*width;
+                int indexU = A.row0*A.original.cols + heightU*A.col0 + row*width;
+                int indexA = blockStart*A.original.cols + heightA*A.col0 + i*width;
 
                 // skip over zeros and assume first element in U is 1
                 indexU += zeroOffset+1;
@@ -391,8 +391,8 @@ public class BlockHouseHolder {
 
             int height = Math.min( blockLength , A.row1 - i );
 
-            int indexA = i*A.original.numCols + height*colBlockA + colA;
-            int indexB = i*A.original.numCols + height*colBlockB + colB;
+            int indexA = i*A.original.cols + height*colBlockA + colA;
+            int indexB = i*A.original.cols + height*colBlockB + colB;
 
             if( i == A.row0 ) {
                 // handle leading zeros
@@ -484,7 +484,7 @@ public class BlockHouseHolder {
         for( int i = Y.row0; i < Y.row1; i += blockLength ) {
             int height = Math.min( blockLength , Y.row1 - i );
 
-            int index = i*Y.original.numCols + height*Y.col0 + col;
+            int index = i*Y.original.cols + height*Y.col0 + col;
 
             if( i == Y.row0 ) {
                 index += width*(col+1);
@@ -561,7 +561,7 @@ public class BlockHouseHolder {
         for( int i = Y.row0; i < Y.row1; i += blockLength ) {
             int height = Math.min( blockLength , Y.row1 - i );
 
-            int index = i*Y.original.numCols + height*Y.col0 + col;
+            int index = i*Y.original.cols + height*Y.col0 + col;
 
             if( i == Y.row0 ) {
                 index += width*col;
@@ -627,7 +627,7 @@ public class BlockHouseHolder {
         for( int j = startJ; j < Y.col1; j += blockLength ) {
             int width = Math.min( blockLength , Y.col1 - j );
 
-            int index = Y.row0*Y.original.numCols + height*j + row*width;
+            int index = Y.row0*Y.original.cols + height*j + row*width;
 
             if( j == startJ ) {
                 index += colStart;
@@ -671,7 +671,7 @@ public class BlockHouseHolder {
         for( int i = Y.row0; i < Y.row1; i += blockLength ) {
             int height = Math.min( blockLength , Y.row1 - i );
 
-            int index = i*Y.original.numCols + height*Y.col0 + col;
+            int index = i*Y.original.cols + height*Y.col0 + col;
 
             if( i == Y.row0 ) {
                 index += width*col;
@@ -710,7 +710,7 @@ public class BlockHouseHolder {
         for( int j = Y.col0; j < Y.col1; j += blockLength ) {
             int width = Math.min( blockLength , Y.col1 - j );
 
-            int index = Y.row0*Y.original.numCols + height*j + row*width;
+            int index = Y.row0*Y.original.cols + height*j + row*width;
 
             if( j == Y.col0 ) {
                 index += colStart;
@@ -807,8 +807,8 @@ public class BlockHouseHolder {
         for( int i = W.row0; i < W.row1; i += blockLength ) {
             int heightW = Math.min( blockLength , W.row1 - i );
 
-            int indexW = i*W.original.numCols + heightW*W.col0;
-            int indexY = i*Y.original.numCols + heightW*Y.col0;
+            int indexW = i*W.original.cols + heightW*W.col0;
+            int indexY = i*Y.original.cols + heightW*Y.col0;
 
             // take in account the first element in V being 1
             if( i == W.row0 ) {
@@ -843,7 +843,7 @@ public class BlockHouseHolder {
         final double dataW[] = W.original.data;
         final double dataY[] = Y.original.data;
 
-        final int colsW = W.original.numCols;
+        final int colsW = W.original.cols;
 
         final double beta_neg = -beta;
 
@@ -852,7 +852,7 @@ public class BlockHouseHolder {
 
             int indexW = i*colsW + heightW*W.col0;
             int indexZ = i*colsW + heightW*W.col0 + col;
-            int indexV = i*Y.original.numCols + heightW*Y.col0 + col;
+            int indexV = i*Y.original.cols + heightW*Y.col0 + col;
 
             if( i == Y.row0 ) {
                 // handle the triangular portion with the leading zeros and the one
@@ -928,11 +928,11 @@ public class BlockHouseHolder {
             for( int j = B.col0; j < B.col1; j += blockLength ) {
                 int widthB = Math.min( blockLength , B.col1 - j );
 
-                int indexC = (i-Y.row0+C.row0)*C.original.numCols + (j-B.col0+C.col0)*heightY;
+                int indexC = (i-Y.row0+C.row0)*C.original.cols + (j-B.col0+C.col0)*heightY;
 
                 for( int k = Y.col0; k < Y.col1; k += blockLength ) {
-                    int indexY = i*Y.original.numCols + k*heightY;
-                    int indexB = (k-Y.col0+B.row0)*B.original.numCols + j*widthY;
+                    int indexY = i*Y.original.cols + k*heightY;
+                    int indexB = (k-Y.col0+B.row0)*B.original.cols + j*widthY;
 
                     if( i == Y.row0 ) {
                         multBlockAdd_zerosone(Y.original.data,B.original.data,C.original.data,
@@ -993,13 +993,13 @@ public class BlockHouseHolder {
         for( int j = B.col0; j < B.col1; j += blockLength ) {
             int widthB = Math.min( blockLength , B.col1 - j );
 
-            int indexC = C.row0*C.original.numCols + (j-B.col0+C.col0)*widthA;
+            int indexC = C.row0*C.original.cols + (j-B.col0+C.col0)*widthA;
 
             for( int k = A.row0; k < A.row1; k += blockLength ) {
                 int heightA = Math.min( blockLength , A.row1 - k );
 
-                int indexA = k*A.original.numCols + A.col0*heightA;
-                int indexB = (k-A.row0+B.row0)*B.original.numCols + j*heightA;
+                int indexA = k*A.original.cols + A.col0*heightA;
+                int indexB = (k-A.row0+B.row0)*B.original.cols + j*heightA;
 
                 if( k == A.row0 )
                     multTransABlockSet_lowerTriag(A.original.data,B.original.data,C.original.data,

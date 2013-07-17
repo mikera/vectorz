@@ -39,13 +39,13 @@ public abstract class GenericTestsMatrix64F {
     public void testGetNumRows() {
         Matrix64F mat = createMatrix(2,3);
 
-        assertEquals(2,mat.getNumRows());
+        assertEquals(2,mat.rowCount());
     }
 
     public void testGetNumCols() {
         Matrix64F mat = createMatrix(2,3);
 
-        assertEquals(3,mat.getNumCols());
+        assertEquals(3,mat.columnCount());
     }
 
     public void testSetAndGet_2D() {

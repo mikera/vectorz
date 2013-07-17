@@ -68,12 +68,12 @@ public class BlockTriangularSolver {
         final double dataT[] = T.original.data;
         final double dataX[] = T_inv.original.data;
 
-        final int offsetT = T.row0*T.original.numCols+M*T.col0;
+        final int offsetT = T.row0*T.original.cols+M*T.col0;
 
         for( int i = 0; i < M; i += blockLength ) {
             int heightT = Math.min(T.row1-(i+T.row0),blockLength);
 
-            int indexII = offsetT + T.original.numCols*(i+T.row0) + heightT*(i+T.col0);
+            int indexII = offsetT + T.original.cols*(i+T.row0) + heightT*(i+T.col0);
 
             for( int j = 0; j < i; j += blockLength ) {
                 int widthX = Math.min(T.col1-(j+T.col0),blockLength);
@@ -85,13 +85,13 @@ public class BlockTriangularSolver {
                 for( int k = j; k < i; k += blockLength ) {
                     int widthT = Math.min(T.col1-(k+T.col0),blockLength);
 
-                    int indexL = offsetT + T.original.numCols*(i+T.row0) + heightT*(k+T.col0);
-                    int indexX = offsetT + T.original.numCols*(k+T.row0) + widthT*(j+T.col0);
+                    int indexL = offsetT + T.original.cols*(i+T.row0) + heightT*(k+T.col0);
+                    int indexX = offsetT + T.original.cols*(k+T.row0) + widthT*(j+T.col0);
 
                     blockMultMinus(dataT,dataX,temp,indexL,indexX,0,heightT,widthT,widthX);
                 }
 
-                int indexX = offsetT + T.original.numCols*(i+T.row0) + heightT*(j+T.col0);
+                int indexX = offsetT + T.original.cols*(i+T.row0) + heightT*(j+T.col0);
 
                 BlockInnerTriangularSolver.solveL(dataT,temp,heightT,widthX,heightT,indexII,0);
                 System.arraycopy(temp,0,dataX,indexX,widthX*heightT);
@@ -122,12 +122,12 @@ public class BlockTriangularSolver {
         final int M = T.row1-T.row0;
 
         final double dataT[] = T.original.data;
-        final int offsetT = T.row0*T.original.numCols+M*T.col0;
+        final int offsetT = T.row0*T.original.cols+M*T.col0;
 
         for( int i = 0; i < M; i += blockLength ) {
             int heightT = Math.min(T.row1-(i+T.row0),blockLength);
 
-            int indexII = offsetT + T.original.numCols*(i+T.row0) + heightT*(i+T.col0);
+            int indexII = offsetT + T.original.cols*(i+T.row0) + heightT*(i+T.col0);
 
             for( int j = 0; j < i; j += blockLength ) {
                 int widthX = Math.min(T.col1-(j+T.col0),blockLength);
@@ -139,13 +139,13 @@ public class BlockTriangularSolver {
                 for( int k = j; k < i; k += blockLength ) {
                     int widthT = Math.min(T.col1-(k+T.col0),blockLength);
 
-                    int indexL = offsetT + T.original.numCols*(i+T.row0) + heightT*(k+T.col0);
-                    int indexX = offsetT + T.original.numCols*(k+T.row0) + widthT*(j+T.col0);
+                    int indexL = offsetT + T.original.cols*(i+T.row0) + heightT*(k+T.col0);
+                    int indexX = offsetT + T.original.cols*(k+T.row0) + widthT*(j+T.col0);
 
                     blockMultMinus(dataT,dataT,temp,indexL,indexX,0,heightT,widthT,widthX);
                 }
 
-                int indexX = offsetT + T.original.numCols*(i+T.row0) + heightT*(j+T.col0);
+                int indexX = offsetT + T.original.cols*(i+T.row0) + heightT*(j+T.col0);
 
                 BlockInnerTriangularSolver.solveL(dataT,temp,heightT,widthX,heightT,indexII,0);
                 System.arraycopy(temp,0,dataT,indexX,widthX*heightT);
@@ -210,10 +210,10 @@ public class BlockTriangularSolver {
         if( Trows > blockLength )
             throw new IllegalArgumentException("T can be at most the size of a block");
         // number of rows in a block.  The submatrix can be smaller than a block
-        final int blockT_rows = Math.min(blockLength,T.original.numRows-T.row0);
-        final int blockT_cols = Math.min(blockLength,T.original.numCols-T.col0);
+        final int blockT_rows = Math.min(blockLength,T.original.rows-T.row0);
+        final int blockT_cols = Math.min(blockLength,T.original.cols-T.col0);
 
-        int offsetT = T.row0*T.original.numCols+blockT_rows*T.col0;
+        int offsetT = T.row0*T.original.cols+blockT_rows*T.col0;
 
         final double dataT[] = T.original.data;
         final double dataB[] = B.original.data;
@@ -232,7 +232,7 @@ public class BlockTriangularSolver {
                     for( int i = B.row0; i < B.row1; i += blockLength ) {
                         int N = Math.min(B.row1 , i + blockLength ) - i;
 
-                        int offsetB = i*B.original.numCols + N*B.col0;
+                        int offsetB = i*B.original.cols + N*B.col0;
 
                         BlockInnerTriangularSolver.solveLTransB(dataT,dataB,blockT_rows,N,blockT_rows,offsetT,offsetB);
                     }
@@ -245,14 +245,14 @@ public class BlockTriangularSolver {
             if( upper ) {
                 if ( transT ) {
                     for( int i = B.col0; i < B.col1; i += blockLength ) {
-                        int offsetB = B.row0*B.original.numCols + Trows*i;
+                        int offsetB = B.row0*B.original.cols + Trows*i;
 
                         int N = Math.min(B.col1 , i + blockLength ) - i;
                         BlockInnerTriangularSolver.solveTransU(dataT,dataB,Trows,N,Trows,offsetT,offsetB);
                     }
                 } else {
                     for( int i = B.col0; i < B.col1; i += blockLength ) {
-                        int offsetB = B.row0*B.original.numCols + Trows*i;
+                        int offsetB = B.row0*B.original.cols + Trows*i;
 
                         int N = Math.min(B.col1 , i + blockLength ) - i;
                         BlockInnerTriangularSolver.solveU(dataT,dataB,Trows,N,Trows,offsetT,offsetB);
@@ -261,14 +261,14 @@ public class BlockTriangularSolver {
             } else {
                 if ( transT ) {
                     for( int i = B.col0; i < B.col1; i += blockLength ) {
-                        int offsetB = B.row0*B.original.numCols + Trows*i;
+                        int offsetB = B.row0*B.original.cols + Trows*i;
 
                         int N = Math.min(B.col1 , i + blockLength ) - i;
                         BlockInnerTriangularSolver.solveTransL(dataT,dataB,Trows,N,blockT_cols,offsetT,offsetB);
                     }
                 } else {
                     for( int i = B.col0; i < B.col1; i += blockLength ) {
-                        int offsetB = B.row0*B.original.numCols + Trows*i;
+                        int offsetB = B.row0*B.original.cols + Trows*i;
 
                         int N = Math.min(B.col1 , i + blockLength ) - i;
                         BlockInnerTriangularSolver.solveL(dataT,dataB,Trows,N,blockT_cols,offsetT,offsetB);

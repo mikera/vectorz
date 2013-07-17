@@ -33,11 +33,11 @@ public abstract class Matrix64F implements Serializable {
     /**
      * Number of rows in the matrix.
      */
-    public int numRows;
+    public int rows;
     /**
      * Number of columns in the matrix.
      */
-    public int numCols;
+    public int cols;
 
     /**
      * <p>
@@ -138,8 +138,8 @@ public abstract class Matrix64F implements Serializable {
      *
      * @return Number of rows.
      */
-    public int getNumRows() {
-        return numRows;    
+    public int rowCount() {
+        return rows;    
     }
 
     /**
@@ -147,8 +147,8 @@ public abstract class Matrix64F implements Serializable {
      *
      * @return Number of columns.
      */
-    public int getNumCols() {
-        return numCols;
+    public int columnCount() {
+        return cols;
     }
 
     /**
@@ -157,7 +157,7 @@ public abstract class Matrix64F implements Serializable {
      * @param numRows Number of rows
      */
     public void setNumRows(int numRows) {
-        this.numRows = numRows;
+        this.rows = numRows;
     }
 
     /**
@@ -166,7 +166,7 @@ public abstract class Matrix64F implements Serializable {
      * @param numCols Number of columns
      */
     public void setNumCols(int numCols) {
-        this.numCols = numCols;
+        this.cols = numCols;
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class Matrix64F implements Serializable {
      *
      * @return Number of elements in this matrix.
      */
-    public abstract int getNumElements();
+    public abstract int elementCount();
 
     /**
      * Assigns the value of 'this' matrix to be the same as 'A'.  The shape of
@@ -184,15 +184,15 @@ public abstract class Matrix64F implements Serializable {
      * @param A The matrix whose value is to be copied into 'this'.
      */
     public void set( Matrix64F A ) {
-        if( A.numRows != numRows )
+        if( A.rows != rows )
             throw new IllegalArgumentException("Unexpected number of rows.");
 
-        if( A.numCols != numCols )
+        if( A.cols != cols )
             throw new IllegalArgumentException("Unexpected number of columns.");
 
 
-        for( int i = 0; i < A.numRows; i++ ) {
-            for( int j = 0; j < A.numCols; j++ ) {
+        for( int i = 0; i < A.rows; i++ ) {
+            for( int j = 0; j < A.cols; j++ ) {
                 set(i,j,A.get(i,j));
             }
         }

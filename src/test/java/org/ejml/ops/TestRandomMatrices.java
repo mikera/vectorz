@@ -74,9 +74,9 @@ public class TestRandomMatrices {
         DenseMatrix64F A = RandomMatrices.createInSpan(span,-1,1,rand);
 
         // reconstructed matrix
-        DenseMatrix64F R = new DenseMatrix64F(A.numRows,A.numCols);
+        DenseMatrix64F R = new DenseMatrix64F(A.rows,A.cols);
 
-        DenseMatrix64F tmp = new DenseMatrix64F(A.numRows,A.numCols);
+        DenseMatrix64F tmp = new DenseMatrix64F(A.rows,A.cols);
 
         // project the matrix into the span and recreate the original matrix
         for( int i = 0; i < 5; i++ ) {
@@ -98,8 +98,8 @@ public class TestRandomMatrices {
             for( int numCols = 1; numCols <= numRows; numCols++ ) {
                 DenseMatrix64F Q = RandomMatrices.createOrthogonal(numRows,numCols,rand);
 
-                assertEquals(Q.numRows,numRows);
-                assertEquals(Q.numCols,numCols);
+                assertEquals(Q.rows,numRows);
+                assertEquals(Q.cols,numCols);
 
                 assertTrue(CommonOps.elementSum(Q) != 0);
                 assertTrue(MatrixFeatures.isOrthogonal(Q,1e-8));
@@ -112,8 +112,8 @@ public class TestRandomMatrices {
         DenseMatrix64F A = RandomMatrices.createDiagonal(5,1,10,rand);
 
         assertTrue(CommonOps.elementSum(A) > 5 );
-        for( int i = 0; i < A.numRows; i++ ) {
-            for( int j = 0; j < A.numCols; j++ ) {
+        for( int i = 0; i < A.rows; i++ ) {
+            for( int j = 0; j < A.cols; j++ ) {
                 double v = A.get(i,j);
 
                 if( i == j ) {
@@ -135,12 +135,12 @@ public class TestRandomMatrices {
     public void testDiagonal( int numRows , int numCols ) {
         DenseMatrix64F A = RandomMatrices.createDiagonal(numRows,numCols,1,10,rand);
 
-        assertEquals(A.getNumRows(),numRows);
-        assertEquals(A.getNumCols(),numCols);
+        assertEquals(A.rowCount(),numRows);
+        assertEquals(A.columnCount(),numCols);
 
         assertTrue(CommonOps.elementSum(A) > 5 );
-        for( int i = 0; i < A.numRows; i++ ) {
-            for( int j = 0; j < A.numCols; j++ ) {
+        for( int i = 0; i < A.rows; i++ ) {
+            for( int j = 0; j < A.cols; j++ ) {
                 double v = A.get(i,j);
 
                 if( i == j ) {
@@ -162,7 +162,7 @@ public class TestRandomMatrices {
                 DenseMatrix64F A = RandomMatrices.createSingularValues(numRows,numCols, rand, sv);
 
                 SingularValueDecomposition<DenseMatrix64F> svd =
-                        DecompositionFactory.svd(A.numRows,A.numCols,true,true,false);
+                        DecompositionFactory.svd(A.rows,A.cols,true,true,false);
                 assertTrue(svd.decompose(A));
 
                 int o = Math.min(numRows,numCols);
@@ -175,7 +175,7 @@ public class TestRandomMatrices {
         DenseMatrix64F A = RandomMatrices.createSingularValues(5,5, rand, sv);
 
         SingularValueDecomposition<DenseMatrix64F> svd =
-                DecompositionFactory.svd(A.numRows,A.numCols,true,true,false);
+                DecompositionFactory.svd(A.rows,A.cols,true,true,false);
         assertTrue(svd.decompose(A));
 
         UtilTestMatrix.checkSameElements(1e-8,sv.length,sv,svd.getSingularValues());
@@ -190,7 +190,7 @@ public class TestRandomMatrices {
         assertTrue(MatrixFeatures.isSymmetric(A,1e-10));
 
         // decompose the matrix and extract its eigenvalues
-        EigenDecomposition<DenseMatrix64F> eig = DecompositionFactory.eig(A.numRows,true);
+        EigenDecomposition<DenseMatrix64F> eig = DecompositionFactory.eig(A.rows,true);
         assertTrue(eig.decompose(A));
 
         double ev[] = new double[5];
@@ -218,7 +218,7 @@ public class TestRandomMatrices {
 
         RandomMatrices.addRandom(A,1,2,rand);
 
-        for( int i = 0; i < A.getNumElements(); i++ ) {
+        for( int i = 0; i < A.elementCount(); i++ ) {
             assertTrue(A.get(i) >= -1 && A.get(i) <= 0 );
         }
     }
@@ -247,12 +247,12 @@ public class TestRandomMatrices {
     }
 
     private void checkRandom1(DenseMatrix64F a) {
-        assertEquals(5, a.numRows);
-        assertEquals(4, a.numCols);
+        assertEquals(5, a.rows);
+        assertEquals(4, a.cols);
 
         double total = 0;
-        for( int i = 0; i < a.numRows; i++ ) {
-            for( int j = 0; j < a.numCols; j++ ) {
+        for( int i = 0; i < a.rows; i++ ) {
+            for( int j = 0; j < a.cols; j++ ) {
                 double val = a.get(i,j);
 
                 assertTrue( val >= 0);
@@ -273,13 +273,13 @@ public class TestRandomMatrices {
     }
 
     private void checkRandomRange(DenseMatrix64F a) {
-        assertEquals(30, a.numRows);
-        assertEquals(20, a.numCols);
+        assertEquals(30, a.rows);
+        assertEquals(20, a.cols);
 
         int numNeg = 0;
         int numPos = 0;
-        for( int i = 0; i < a.numRows; i++ ) {
-            for( int j = 0; j < a.numCols; j++ ) {
+        for( int i = 0; i < a.rows; i++ ) {
+            for( int j = 0; j < a.cols; j++ ) {
                 double val = a.get(i,j);
 
                 if( val < 0 )

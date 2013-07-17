@@ -35,7 +35,7 @@ public class UtilTestMatrix {
     {
         double data[] = mat.getData();
 
-        for( int i = 0; i < mat.getNumElements(); i++ ) {
+        for( int i = 0; i < mat.elementCount(); i++ ) {
             assertEquals(d[i],data[i],1e-6);
         }
     }

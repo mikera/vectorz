@@ -71,9 +71,9 @@ public class MatrixIterator implements Iterator<Double> {
             throw new IllegalArgumentException("maxCol has to be more than or equal to minCol");
         if( maxRow < minRow )
             throw new IllegalArgumentException("maxRow has to be more than or equal to minCol");
-        if( maxCol >= a.numCols)
+        if( maxCol >= a.cols)
             throw new IllegalArgumentException("maxCol must be < numCols");
-        if( maxRow >= a.numRows)
+        if( maxRow >= a.rows)
             throw new IllegalArgumentException("maxRow must be < numCRows");
 
 

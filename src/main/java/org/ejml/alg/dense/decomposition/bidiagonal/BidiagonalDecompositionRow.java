@@ -91,8 +91,8 @@ public class BidiagonalDecompositionRow
     protected void init(DenseMatrix64F A ) {
         UBV = A;
 
-        m = UBV.numRows;
-        n = UBV.numCols;
+        m = UBV.rows;
+        n = UBV.cols;
 
         min = Math.min(m,n);
         int max = Math.max(m,n);

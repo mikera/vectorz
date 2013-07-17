@@ -35,8 +35,8 @@ public class BlockMatrix64F extends D1Matrix64F {
     {
         this.data = new double[ numRows * numCols ];
         this.blockLength = blockLength;
-        this.numRows = numRows;
-        this.numCols = numCols;
+        this.rows = numRows;
+        this.cols = numCols;
     }
 
     public BlockMatrix64F( int numRows , int numCols )
@@ -48,10 +48,10 @@ public class BlockMatrix64F extends D1Matrix64F {
 
     public void set( BlockMatrix64F A ) {
         this.blockLength = A.blockLength;
-        this.numRows = A.numRows;
-        this.numCols = A.numCols;
+        this.rows = A.rows;
+        this.cols = A.cols;
 
-        int N = numCols*numRows;
+        int N = cols*rows;
 
         if( data.length < N )
             data = new double[ N ];
@@ -63,8 +63,8 @@ public class BlockMatrix64F extends D1Matrix64F {
     {
         BlockMatrix64F ret = new BlockMatrix64F();
         ret.data = data;
-        ret.numRows = numRows;
-        ret.numCols = numCols;
+        ret.rows = numRows;
+        ret.cols = numCols;
         ret.blockLength = blockLength;
 
         return ret;
@@ -79,17 +79,17 @@ public class BlockMatrix64F extends D1Matrix64F {
     public void reshape(int numRows, int numCols, boolean saveValues)
     {
         if( numRows*numCols <= data.length  ) {
-            this.numRows = numRows;
-            this.numCols = numCols;
+            this.rows = numRows;
+            this.cols = numCols;
         } else {
             double[] data = new double[ numRows*numCols ];
 
             if( saveValues ) {
-                System.arraycopy(this.data,0,data,0,getNumElements());
+                System.arraycopy(this.data,0,data,0,elementCount());
             }
 
-            this.numRows = numRows;
-            this.numCols = numCols;
+            this.rows = numRows;
+            this.cols = numCols;
             this.data = data;
         }
     }
@@ -105,11 +105,11 @@ public class BlockMatrix64F extends D1Matrix64F {
         int blockRow = row / blockLength;
         int blockCol = col / blockLength;
 
-        int localHeight = Math.min(numRows - blockRow*blockLength , blockLength);
+        int localHeight = Math.min(rows - blockRow*blockLength , blockLength);
 
-        int index = blockRow*blockLength*numCols + blockCol* localHeight * blockLength;
+        int index = blockRow*blockLength*cols + blockCol* localHeight * blockLength;
 
-        int localLength = Math.min(numCols - blockLength*blockCol , blockLength);
+        int localLength = Math.min(cols - blockLength*blockCol , blockLength);
 
         row = row % blockLength;
         col = col % blockLength;
@@ -138,18 +138,18 @@ public class BlockMatrix64F extends D1Matrix64F {
     }
 
     @Override
-    public int getNumRows() {
-        return numRows;
+    public int rowCount() {
+        return rows;
     }
 
     @Override
-    public int getNumCols() {
-        return numCols;
+    public int columnCount() {
+        return cols;
     }
 
     @Override
-    public int getNumElements() {
-        return numRows*numCols;
+    public int elementCount() {
+        return rows*cols;
     }
 
     @Override
@@ -158,7 +158,7 @@ public class BlockMatrix64F extends D1Matrix64F {
     }
 
     public BlockMatrix64F copy() {
-        BlockMatrix64F A = new BlockMatrix64F(numRows,numCols,blockLength);
+        BlockMatrix64F A = new BlockMatrix64F(rows,cols,blockLength);
         A.set(this);
         return A;
     }

@@ -112,7 +112,7 @@ public class DeterminantFromMinor {
      * @return The determinant.
      */
     public double compute( RowD1Matrix64F mat ) {
-        if( width != mat.numCols || width != mat.numRows ) {
+        if( width != mat.cols || width != mat.rows ) {
             throw new RuntimeException("Unexpected matrix dimension");
         }
 

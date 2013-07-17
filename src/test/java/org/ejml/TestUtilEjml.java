@@ -55,8 +55,8 @@ public class TestUtilEjml {
 
         DenseMatrix64F m = UtilEjml.parseMatrix(a,2);
 
-        assertEquals(2,m.numCols);
-        assertEquals(2,m.numRows);
+        assertEquals(2,m.cols);
+        assertEquals(2,m.rows);
         assertEquals(-0.779094 , m.get(0,0) , 1e-5);
         assertEquals(1.682750  , m.get(0,1)  , 1e-5);
         assertEquals(1.304014  , m.get(1,0)  , 1e-5);
@@ -67,8 +67,8 @@ public class TestUtilEjml {
            "   1.304014  -1.880739  8\n";
 
         m = UtilEjml.parseMatrix(a,3);
-        assertEquals(3,m.numCols);
-        assertEquals(2,m.numRows);
+        assertEquals(3,m.cols);
+        assertEquals(2,m.rows);
         assertEquals(-0.779094 , m.get(0,0) , 1e-5);
     }
 }

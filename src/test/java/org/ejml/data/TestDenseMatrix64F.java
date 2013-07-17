@@ -99,8 +99,8 @@ public class TestDenseMatrix64F {
     public void testConstructorShape() {
         DenseMatrix64F mat = new DenseMatrix64F(7,5);
 
-        assertEquals(5,mat.getNumCols());
-        assertEquals(7,mat.getNumRows());
+        assertEquals(5,mat.columnCount());
+        assertEquals(7,mat.rowCount());
         assertEquals(7*5,mat.data.length);
     }
 
@@ -118,10 +118,10 @@ public class TestDenseMatrix64F {
 
         assertTrue( mat.data != copy.data );
 
-        assertEquals(mat.getNumCols(),copy.getNumCols());
-        assertEquals(mat.getNumRows(),copy.getNumRows());
+        assertEquals(mat.columnCount(),copy.columnCount());
+        assertEquals(mat.rowCount(),copy.rowCount());
 
-        for( int i = 0; i < mat.getNumElements(); i++ ) {
+        for( int i = 0; i < mat.elementCount(); i++ ) {
             assertEquals(mat.get(i),copy.get(i),1e-10);
         }
     }
@@ -158,7 +158,7 @@ public class TestDenseMatrix64F {
         double d[][] = new double[][]{{1,2},{3,4},{5,6}};
 
         DenseMatrix64F mat = new DenseMatrix64F(d);
-        DenseMatrix64F mat2 = new DenseMatrix64F(mat.numRows,mat.numCols);
+        DenseMatrix64F mat2 = new DenseMatrix64F(mat.rows,mat.cols);
 
         mat2.set(mat);
 
@@ -197,8 +197,8 @@ public class TestDenseMatrix64F {
 
         mat2.setReshape(mat);
 
-        assertEquals(mat.getNumCols(),mat2.getNumCols());
-        assertEquals(mat.getNumRows(),mat2.getNumRows());
+        assertEquals(mat.columnCount(),mat2.columnCount());
+        assertEquals(mat.rowCount(),mat2.rowCount());
 
         EjmlUnitTests.assertEquals(mat,mat2,1e-10);
     }

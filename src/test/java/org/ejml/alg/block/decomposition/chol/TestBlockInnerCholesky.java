@@ -64,8 +64,8 @@ public class TestBlockInnerCholesky {
         DenseMatrix64F expected = chol.getT(null);
 
         // copy the original data by an offset
-        double data[] = new double[ A.getNumElements() + 2 ];
-        System.arraycopy(A.data,0,data,2,A.getNumElements());
+        double data[] = new double[ A.elementCount() + 2 ];
+        System.arraycopy(A.data,0,data,2,A.elementCount());
 
         // decompose using the algorithm
         if( lower )
@@ -92,8 +92,8 @@ public class TestBlockInnerCholesky {
         }
 
         // copy the original data by an offset
-        double data[] = new double[ A.getNumElements() + 2 ];
-        System.arraycopy(A.data,0,data,2,A.getNumElements());
+        double data[] = new double[ A.elementCount() + 2 ];
+        System.arraycopy(A.data,0,data,2,A.elementCount());
 
         // decompose using the algorithm
         if( lower )

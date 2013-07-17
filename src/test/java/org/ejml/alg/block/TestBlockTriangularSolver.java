@@ -113,7 +113,7 @@ public class TestBlockTriangularSolver {
                     }
 
                     BlockMatrix64F B = BlockMatrixOps.createRandom(triangleSize,cols,-1,1,rand,r);
-                    BlockMatrix64F Y = new BlockMatrix64F(B.numRows,B.numCols,r);
+                    BlockMatrix64F Y = new BlockMatrix64F(B.rows,B.cols,r);
 
                     checkSolve(T,B,Y,r,upper,false);
                     checkSolve(T,B,Y,r,upper,true);
@@ -160,9 +160,9 @@ public class TestBlockTriangularSolver {
         BlockMatrix64F T2;
 
         if( upper )
-            T2 = BlockMatrixOps.createRandom(T.numRows+1,T.numCols,-1,1,rand,T.blockLength);
+            T2 = BlockMatrixOps.createRandom(T.rows+1,T.cols,-1,1,rand,T.blockLength);
         else
-            T2 = BlockMatrixOps.createRandom(T.numRows,T.numCols+1,-1,1,rand,T.blockLength);
+            T2 = BlockMatrixOps.createRandom(T.rows,T.cols+1,-1,1,rand,T.blockLength);
 
         CommonOps.insert(T,T2,0,0);
 
@@ -176,12 +176,12 @@ public class TestBlockTriangularSolver {
             BlockMatrixOps.mult(T,B,Y);
         }
 
-        int size = T.numRows;
+        int size = T.rows;
 
         // Y is overwritten with the solution
         BlockTriangularSolver.solve(r,upper,new D1Submatrix64F(T2,0,size,0,size),new D1Submatrix64F(Y),transT);
 
-        assertTrue( "Failed upper = "+upper+" transT = "+transT+" T.length "+T.numRows+" B.cols "+B.numCols,
+        assertTrue( "Failed upper = "+upper+" transT = "+transT+" T.length "+T.rows+" B.cols "+B.cols,
                 BlockMatrixOps.isEquals(B,Y,1e-8));
     }
 

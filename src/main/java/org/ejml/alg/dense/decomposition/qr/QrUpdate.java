@@ -214,15 +214,15 @@ public class QrUpdate {
      * @param R The R matrix which is to be modified.  Is modified later and reference saved.
      */
     private void setQR( DenseMatrix64F Q , DenseMatrix64F R , int growRows ) {
-        if( Q.numRows != Q.numCols ) {
+        if( Q.rows != Q.cols ) {
             throw new IllegalArgumentException("Q should be square.");
         }
 
         this.Q = Q;
         this.R = R;
 
-        m = Q.numRows;
-        n = R.numCols;
+        m = Q.rows;
+        n = R.cols;
 
         if( m+growRows > maxRows || n > maxCols ) {
             if( autoGrow ) {

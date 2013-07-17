@@ -139,8 +139,8 @@ public abstract class GenericQrCheck {
         alg.decompose(A.getMatrix());
 
         // check the case where it creates the matrix first
-        assertTrue(alg.getR(null,true).numRows == width);
-        assertTrue(alg.getR(null,false).numRows == height);
+        assertTrue(alg.getR(null,true).rows == width);
+        assertTrue(alg.getR(null,false).rows == height);
 
         // check the case where a matrix is provided
         alg.getR(new DenseMatrix64F(width,width),true);
