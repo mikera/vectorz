@@ -9,6 +9,7 @@ import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
@@ -587,5 +588,9 @@ public class TestMatrixx {
 		doGenericTests(strm);
 		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3)));
 		doGenericTests(strm);
+		
+		doGenericTests(PermutationMatrix.create(0,1,2));
+		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
+
 	}
 }
