@@ -62,7 +62,7 @@ public class TestDecomposition {
 		assertTrue(q.innerProduct(r).epsilonEquals(a));
 
 		// check properties of Q - should be orthogonal
-		assertTrue(q.isOrthonormalColumns());
+		assertTrue(q.hasOrthonormalColumns());
 		// assertTrue(q.isSquare()); // TODO: should be square??
 		
 		// check properties of R - should be upper triangular
@@ -71,7 +71,7 @@ public class TestDecomposition {
 	
 	@Test public void testSVD() {
 		
-		AMatrix a=Matrixx.createRandomMatrix(6, 3);
+		AMatrix a=Matrixx.createRandomMatrix(5, 3);
 		AMatrix[] ms=ThinSVD.decompose(a);
 		
 		AMatrix u=ms[0];
@@ -85,6 +85,6 @@ public class TestDecomposition {
 		
 		assertTrue(v.isOrthogonal());
 		assertTrue(s.isRectangularDiagonal()); 
-		assertTrue(u.isOrthonormalColumns()); 
+		assertTrue(u.hasOrthonormalColumns()); 
 	}
 }

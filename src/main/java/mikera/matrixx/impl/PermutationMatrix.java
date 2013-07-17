@@ -83,6 +83,16 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public boolean hasOrthonormalColumns() {
+		return true;
+	}
+	
+	@Override
+	public boolean hassOrthonormalRows() {
+		return true;
+	}
+	
+	@Override
 	public boolean isDiagonal() {
 		return isIdentity();
 	}

@@ -70,6 +70,31 @@ public final class Matrix extends AMatrix {
 		return new Matrix(rowCount,columnCount,data);
 	}
 	
+	@Override
+	public AVector innerProduct(AVector a) {
+		if (a instanceof Vector) return innerProduct((Vector)a);
+		return super.innerProduct(a);
+	}
+	
+	public Vector innerProduct(Vector a) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if ((cc!=a.length())) {
+			throw new VectorzException("Matrix sizes not compatible!");
+		}		
+		Vector result=Vector.createLength(rows);
+		for (int i=0; i<rc; i++) {
+			int di=i*cc;
+			double acc=0.0;
+			for (int j=0; j<cc; j++) {
+				acc+=data[di+j]*a.data[j];
+			}
+			result.set(i,acc);
+		}
+		return result;
+	}
+	
+	@Override
 	public Matrix innerProduct(Matrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
@@ -302,6 +327,11 @@ public final class Matrix extends AMatrix {
 	
 	@Override
 	public StridedMatrix getTranspose() {
+		return StridedMatrix.wrap(data,columns,rows,0,1,columns);
+	}
+	
+	@Override
+	public StridedMatrix getTransposeView() {
 		return StridedMatrix.wrap(data,columns,rows,0,1,columns);
 	}
 	

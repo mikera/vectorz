@@ -25,476 +25,456 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.Vector;
 
 public class ThinSVD {
-	
 
 	public static AMatrix[] decompose(AMatrix a) {
 		return decompose(Matrix.create(a));
 	}
-	
-    public static Matrix[] decompose(Matrix matrix) {
-    	return decomposeInternal(matrix.clone());
-    }
-	
-    public static Matrix[] decomposeInternal(Matrix a) {
-    	int rc=a.rowCount();
-    	int cc=a.columnCount();
 
-        if (rc < cc) {
-            throw new IllegalArgumentException("Wrong matrix size: " 
-                    + "rows < columns");
-        }
+	public static Matrix[] decompose(Matrix matrix) {
+		return decomposeInternal(matrix.clone());
+	}
 
-        // TODO: confirm this is a "Thin SVD"
-        // as per Wikipedia
-        int n = Math.min(rc,cc); // this should always be cc??
+	public static Matrix[] decomposeInternal(Matrix a) {
+		int rc = a.rowCount();
+		int cc = a.columnCount();
 
-        Matrix u = Matrix.create(rc, n);
-        Matrix s = Matrix.create(cc, cc);
-        Matrix v = Matrix.create(cc, cc);
+		if (rc < cc) { throw new IllegalArgumentException("Wrong matrix size: "
+				+ "rows < columns"); }
 
-        Vector e = Vector.createLength(cc);
-        Vector work = Vector.createLength(rc);
+		// TODO: confirm this is a "Thin SVD"
+		// as per Wikipedia
+		int n = Math.min(rc, cc); // this should always be cc??
 
-        int nct = Math.min(rc - 1, cc);
-        int nrt = Math.max(0, Math.min(cc - 2, rc));
+		Matrix u = Matrix.create(rc, n);
+		Matrix s = Matrix.create(cc, cc);
+		Matrix v = Matrix.create(cc, cc);
 
-        for (int k = 0; k < Math.max(nct, nrt); k++) {
+		Vector e = Vector.createLength(cc);
+		Vector work = Vector.createLength(rc);
 
-            if (k < nct) {
+		int nct = Math.min(rc - 1, cc);
+		int nrt = Math.max(0, Math.min(cc - 2, rc));
 
-                for (int i = k; i < rc; i++) {
-                    s.set(k, k, Math.hypot(s.get(k, k), a.get(i, k)));
-                }
+		for (int k = 0; k < Math.max(nct, nrt); k++) {
 
-                if (Math.abs(s.get(k, k)) > Decompositions.EPS) {
+			if (k < nct) {
 
-                    if (a.get(k, k) < 0.0) {
-                        s.set(k, k, -s.get(k,k));
-                    }
+				for (int i = k; i < rc; i++) {
+					s.set(k, k, Math.hypot(s.get(k, k), a.get(i, k)));
+				}
 
-                    for (int i = k; i < rc; i++) {
-                        a.set(i, k, a.get(i,k)/(s.get(k, k)));
-                    }
+				if (Math.abs(s.get(k, k)) > Decompositions.EPS) {
 
-                    a.addAt(k, k, 1.0);
-                }
+					if (a.get(k, k) < 0.0) {
+						s.set(k, k, -s.get(k, k));
+					}
 
-                s.set(k, k, -s.get(k,k));
-            }
+					for (int i = k; i < rc; i++) {
+						a.set(i, k, a.get(i, k) / (s.get(k, k)));
+					}
 
-            for (int j = k + 1; j < cc; j++) {
+					a.addAt(k, k, 1.0);
+				}
 
-                if ((k < nct) & (Math.abs(s.get(k, k)) > Decompositions.EPS)) {
+				s.set(k, k, -s.get(k, k));
+			}
 
-                    double t = 0;
+			for (int j = k + 1; j < cc; j++) {
 
-                    for (int i = k; i < rc; i++) {
-                        t += a.get(i, k) * a.get(i, j);
-                    }
+				if ((k < nct) & (Math.abs(s.get(k, k)) > Decompositions.EPS)) {
 
-                    t = -t / a.get(k, k);
+					double t = 0;
 
-                    for (int i = k; i < rc; i++) {
-                        a.addAt(i, j, (t * a.get(i, k)));
-                    }
-                }
+					for (int i = k; i < rc; i++) {
+						t += a.get(i, k) * a.get(i, j);
+					}
 
-                e.set(j, a.get(k, j));
-            }
+					t = -t / a.get(k, k);
 
-            if (k < nct) {
+					for (int i = k; i < rc; i++) {
+						a.addAt(i, j, (t * a.get(i, k)));
+					}
+				}
 
-                for (int i = k; i < rc; i++) {
-                    u.set(i, k, a.get(i, k));
-                }
+				e.set(j, a.get(k, j));
+			}
 
-            }
+			if (k < nct) {
 
-            if (k < nrt) {
+				for (int i = k; i < rc; i++) {
+					u.set(i, k, a.get(i, k));
+				}
 
-                e.set(k, 0);
+			}
 
-                for (int i = k + 1; i < cc; i++) {
-                    e.set(k, Math.hypot(e.get(k), e.get(i)));
-                }
+			if (k < nrt) {
 
-                if (Math.abs(e.get(k)) > Decompositions.EPS) {
+				e.set(k, 0);
 
-                    if (e.get(k + 1) < 0.0) {
+				for (int i = k + 1; i < cc; i++) {
+					e.set(k, Math.hypot(e.get(k), e.get(i)));
+				}
 
-                        e.set(k, -e.get(k));
-                    }
+				if (Math.abs(e.get(k)) > Decompositions.EPS) {
 
-                    for (int i = k + 1; i < cc; i++) {
-                        e.set(i, e.get(i)/(e.get(k)));
-                    }
+					if (e.get(k + 1) < 0.0) {
 
-                    e.addAt(k + 1, 1.0);
-                }
+						e.set(k, -e.get(k));
+					}
 
-                e.set(k, -e.get(k));
+					for (int i = k + 1; i < cc; i++) {
+						e.set(i, e.get(i) / (e.get(k)));
+					}
 
-                if ((k + 1 < rc) 
-                		& (Math.abs(e.get(k)) > Decompositions.EPS)) {
+					e.addAt(k + 1, 1.0);
+				}
 
-                    for (int j = k + 1; j < cc; j++) {
-                        for (int i = k + 1; i < rc; i++) {
-                            work.addAt(i, (e.get(j) * a.get(i, j)));
-                        }
-                    }
+				e.set(k, -e.get(k));
 
-                    for (int j = k + 1; j < cc; j++) {
+				if ((k + 1 < rc) & (Math.abs(e.get(k)) > Decompositions.EPS)) {
 
-                        double t = -e.get(j) / e.get(k + 1);
+					for (int j = k + 1; j < cc; j++) {
+						for (int i = k + 1; i < rc; i++) {
+							work.addAt(i, (e.get(j) * a.get(i, j)));
+						}
+					}
 
-                        for (int i = k + 1; i < rc; i++) {
-                            a.addAt(i, j, (t * work.get(i)));
-                        }
-                    }
-                }
+					for (int j = k + 1; j < cc; j++) {
 
-                for (int i = k + 1; i < cc; i++) {
-                    v.set(i, k, e.get(i));
-                }
-            }
-        }
+						double t = -e.get(j) / e.get(k + 1);
 
-        int p = Math.min(cc, rc + 1);
+						for (int i = k + 1; i < rc; i++) {
+							a.addAt(i, j, (t * work.get(i)));
+						}
+					}
+				}
 
-        if (nct < cc) {
-            s.set(nct, nct, a.get(nct, nct));
-        }
+				for (int i = k + 1; i < cc; i++) {
+					v.set(i, k, e.get(i));
+				}
+			}
+		}
 
-        if (rc < p) {
-            s.set(p - 1, p - 1, 0.0);
-        }
+		int p = Math.min(cc, rc + 1);
 
-        if (nrt + 1 < p) {
-            e.set(nrt, a.get(nrt, p - 1));
-        }
+		if (nct < cc) {
+			s.set(nct, nct, a.get(nct, nct));
+		}
 
-        e.set(p - 1, 0.0);
+		if (rc < p) {
+			s.set(p - 1, p - 1, 0.0);
+		}
 
-        for (int j = nct; j < n; j++) {
+		if (nrt + 1 < p) {
+			e.set(nrt, a.get(nrt, p - 1));
+		}
 
-            for (int i = 0; i < rc; i++) {
-                u.set(i, j, 0.0);
-            }
+		e.set(p - 1, 0.0);
 
-            u.set(j, j, 1.0);
-        }
+		for (int j = nct; j < n; j++) {
 
-        for (int k = nct - 1; k >= 0; k--) {
+			for (int i = 0; i < rc; i++) {
+				u.set(i, j, 0.0);
+			}
 
-            if (Math.abs(s.get(k, k)) > Decompositions.EPS) {
+			u.set(j, j, 1.0);
+		}
 
-                for (int j = k + 1; j < n; j++) {
+		for (int k = nct - 1; k >= 0; k--) {
 
-                    double t = 0;
-                    for (int i = k; i < rc; i++) {
-                        t += u.get(i, k) * u.get(i, j);
-                    }
+			if (Math.abs(s.get(k, k)) > Decompositions.EPS) {
 
-                    t = -t / u.get(k, k);
+				for (int j = k + 1; j < n; j++) {
 
-                    for (int i = k; i < rc; i++) {
-                        u.addAt(i, j, (t * u.get(i, k)));
-                    }
-                }
+					double t = 0;
+					for (int i = k; i < rc; i++) {
+						t += u.get(i, k) * u.get(i, j);
+					}
 
-                for (int i = k; i < rc; i++) {
-                    u.set(i, k, -u.get(i,k));
-                }
+					t = -t / u.get(k, k);
 
-                u.addAt(k, k, 1.0);
+					for (int i = k; i < rc; i++) {
+						u.addAt(i, j, (t * u.get(i, k)));
+					}
+				}
 
-                for (int i = 0; i < k - 1; i++) {
-                    u.set(i, k, 0.0);
-                }
+				for (int i = k; i < rc; i++) {
+					u.set(i, k, -u.get(i, k));
+				}
 
-            } else {
+				u.addAt(k, k, 1.0);
 
-                for (int i = 0; i < rc; i++) {
-                    u.set(i, k, 0.0);
-                }
+				for (int i = 0; i < k - 1; i++) {
+					u.set(i, k, 0.0);
+				}
 
-                u.set(k, k, 1.0);
-            }
-        }
+			} else {
 
-        for (int k = n - 1; k >= 0; k--) {
+				for (int i = 0; i < rc; i++) {
+					u.set(i, k, 0.0);
+				}
 
-            if ((k < nrt) & (Math.abs(e.get(k)) > Decompositions.EPS)) {
+				u.set(k, k, 1.0);
+			}
+		}
 
-                for (int j = k + 1; j < n; j++) {
+		for (int k = n - 1; k >= 0; k--) {
 
-                    double t = 0;
+			if ((k < nrt) & (Math.abs(e.get(k)) > Decompositions.EPS)) {
 
-                    for (int i = k + 1; i < cc; i++) {
-                        t += v.get(i, k) * v.get(i, j);
-                    }
+				for (int j = k + 1; j < n; j++) {
 
-                    t = -t / v.get(k + 1, k);
+					double t = 0;
 
-                    for (int i = k + 1; i < cc; i++) {
-                        v.addAt(i, j, (t * v.get(i, k)));
-                    }
-                }
-            }
+					for (int i = k + 1; i < cc; i++) {
+						t += v.get(i, k) * v.get(i, j);
+					}
 
-            for (int i = 0; i < cc; i++) {
-                v.set(i, k, 0.0);
-            }
+					t = -t / v.get(k + 1, k);
 
-            v.set(k, k, 1.0);
-        }
+					for (int i = k + 1; i < cc; i++) {
+						v.addAt(i, j, (t * v.get(i, k)));
+					}
+				}
+			}
 
-        int pp = p - 1;
-        int iter = 0;
-        double eps = Math.pow(2.0, -52.0);
-        double tiny = Math.pow(2.0, -966.0);
+			for (int i = 0; i < cc; i++) {
+				v.set(i, k, 0.0);
+			}
 
-        while (p > 0) {
+			v.set(k, k, 1.0);
+		}
 
-            int k, kase;
+		int pp = p - 1;
+		int iter = 0;
+		double eps = Math.pow(2.0, -52.0);
+		double tiny = Math.pow(2.0, -966.0);
 
-            for (k = p - 2; k >= -1; k--) {
-                if (k == -1)
-                    break;
+		while (p > 0) {
 
-                if (Math.abs(e.get(k)) <= tiny
-                        + eps
-                        * (Math.abs(s.get(k, k)) + Math
-                                .abs(s.get(k + 1, k + 1)))) {
-                    e.set(k, 0.0);
-                    break;
-                }
-            }
+			int k, kase;
 
-            if (k == p - 2) {
+			for (k = p - 2; k >= -1; k--) {
+				if (k == -1) break;
 
-                kase = 4;
+				if (Math.abs(e.get(k)) <= tiny
+						+ eps
+						* (Math.abs(s.get(k, k)) + Math
+								.abs(s.get(k + 1, k + 1)))) {
+					e.set(k, 0.0);
+					break;
+				}
+			}
 
-            } else {
+			if (k == p - 2) {
 
-                int ks;
+				kase = 4;
 
-                for (ks = p - 1; ks >= k; ks--) {
+			} else {
 
-                    if (ks == k)
-                        break;
+				int ks;
 
-                    double t = (ks != p ? Math.abs(e.get(ks)) : 0.)
-                            + (ks != k + 1 ? Math.abs(e.get(ks - 1)) 
-                            			   : 0.);
+				for (ks = p - 1; ks >= k; ks--) {
 
-                    if (Math.abs(s.get(ks, ks)) <= tiny + eps * t) {
-                        s.set(ks, ks, 0.0);
-                        break;
-                    }
-                }
+					if (ks == k) break;
 
-                if (ks == k) {
-                    kase = 3;
-                } else if (ks == p - 1) {
-                    kase = 1;
-                } else {
-                    kase = 2;
-                    k = ks;
-                }
-            }
+					double t = (ks != p ? Math.abs(e.get(ks)) : 0.)
+							+ (ks != k + 1 ? Math.abs(e.get(ks - 1)) : 0.);
 
-            k++;
+					if (Math.abs(s.get(ks, ks)) <= tiny + eps * t) {
+						s.set(ks, ks, 0.0);
+						break;
+					}
+				}
 
-            switch (kase) {
+				if (ks == k) {
+					kase = 3;
+				} else if (ks == p - 1) {
+					kase = 1;
+				} else {
+					kase = 2;
+					k = ks;
+				}
+			}
 
-            case 1: {
-                double f = e.get(p - 2);
-                e.set(p - 2, 0.0);
+			k++;
 
-                for (int j = p - 2; j >= k; j--) {
+			switch (kase) {
 
-                    double t = Math.hypot(s.get(j, j), f);
-                    double cs = s.get(j, j) / t;
-                    double sn = f / t;
+			case 1: {
+				double f = e.get(p - 2);
+				e.set(p - 2, 0.0);
 
-                    s.set(j, j, t);
+				for (int j = p - 2; j >= k; j--) {
 
-                    if (j != k) {
-                        f = -sn * e.get(j - 1);
-                        e.set(j - 1, cs * e.get(j - 1));
-                    }
-
-                    for (int i = 0; i < cc; i++) {
-                        t = cs * v.get(i, j) + sn 
-                        		* v.get(i, p - 1);
-                        v.set(i, p - 1,
-                                -sn * v.get(i, j) 
-                                + cs * v.get(i, p - 1));
-                        v.set(i, j, t);
-                    }
-                }
-            }
-                break;
-
-            case 2: {
-                double f = e.get(k - 1);
-                e.set(k - 1, 0.0);
-
-                for (int j = k; j < p; j++) {
-
-                    double t = Math.hypot(s.get(j, j), f);
-                    double cs = s.get(j, j) / t;
-                    double sn = f / t;
-
-                    s.set(j, j, t);
-                    f = -sn * e.get(j);
-                    e.set(j, cs * e.get(j));
-
-                    for (int i = 0; i < rc; i++) {
-                        t = cs * u.get(i, j) 
-                        		+ sn * u.get(i, k - 1);
-                        u.set(i, k - 1,
-                                -sn * u.get(i, j) 
-                                + cs * u.get(i, k - 1));
-                        u.set(i, j, t);
-                    }
-                }
-            }
-                break;
-
-            case 3: {
-
-                double scale = Math.max(
-                        Math.max(Math.max(
-                                Math.max(Math.abs(s.get(p - 1, p - 1)),
-                                        Math.abs(s.get(p - 2, p - 2))),
-                                    Math.abs(e.get(p - 2))), 
-                                Math.abs(s.get(k, k))),
-                        Math.abs(e.get(k)));
-
-                double sp = s.get(p - 1, p - 1) / scale;
-                double spm1 = s.get(p - 2, p - 2) / scale;
-                double epm1 = e.get(p - 2) / scale;
-                double sk = s.get(k, k) / scale;
-                double ek = e.get(k) / scale;
-                double b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
-                double c = (sp * epm1) * (sp * epm1);
-                double shift = 0.0;
-
-                if ((b != 0.0) | (c != 0.0)) {
-                    shift = Math.sqrt(b * b + c);
-                    if (b < 0.0) {
-                        shift = -shift;
-                    }
-                    shift = c / (b + shift);
-                }
-
-                double f = (sk + sp) * (sk - sp) + shift;
-                double g = sk * ek;
-
-                for (int j = k; j < p - 1; j++) {
-                    double t = Math.hypot(f, g);
-                    double cs = f / t;
-                    double sn = g / t;
-
-                    if (j != k) {
-                        e.set(j - 1, t);
-                    }
-
-                    f = cs * s.get(j, j) + sn * e.get(j);
-                    e.set(j, 
-                    		cs * e.get(j) - sn * s.get(j, j));
-                    g = sn * s.get(j + 1, j + 1);
-                    s.set(j + 1, j + 1, 
-                    		cs * s.get(j + 1, j + 1));
-
-                    for (int i = 0; i < cc; i++) {
-                        t = cs * v.get(i, j) 
-                        		+ sn * v.get(i, j + 1);
-                        v.set(i, j + 1,
-                                -sn * v.get(i, j) 
-                                + cs * v.get(i, j + 1));
-                        v.set(i, j, t);
-                    }
-
-                    t = Math.hypot(f, g);
-                    cs = f / t;
-                    sn = g / t;
-                    s.set(j, j, t);
-                    f = cs * e.get(j) + sn * s.get(j + 1, j + 1);
-                    s.set(j + 1, j + 1, 
-                            -sn * e.get(j) 
-                            + cs * s.get(j + 1, j + 1));
-                    g = sn * e.get(j + 1);
-                    e.set(j + 1, e.get(j+1)*(cs));
-
-                    if (j < rc - 1) {
-                        for (int i = 0; i < rc; i++) {
-                            t = cs * u.get(i, j) 
-                                    + sn * u.get(i, j + 1);
-                            u.set(i, j + 1,
-                                    -sn * u.get(i, j) 
-                                    + cs * u.get(i, j + 1));
-                            u.set(i, j, t);
-                        }
-                    }
-                }
-
-                e.set(p - 2, f);
-                iter = iter + 1;
-            }
-                break;
-
-            case 4: {
-            	double skk=s.get(k,k);
-                if (s.get(k, k) <= 0.0) {
-                    s.set(k, k, -skk);
-                    for (int i = 0; i <= pp; i++) {
-                        v.set(i,  k, -v.get(i,k));
-                    }
-                }
-
-                while (k < pp) {
-
-                    if (s.get(k, k) >= s.get(k + 1, k + 1)) {
-                        break;
-                    }
-
-                    double t = s.get(k, k);
-                    s.set(k, k, s.get(k + 1, k + 1));
-                    s.set(k + 1, k + 1, t);
-
-                    if (k < cc - 1) {
-                    	v.swapColumns(k, k+1);
-//                        for (int i = 0; i < cc; i++) {
-//                            t = v.get(i, k + 1);
-//                            v.set(i, k + 1, v.get(i, k));
-//                            v.set(i, k, t);
-//                        }
-                    }
-
-                    if (k < rc - 1) {
-                    	u.swapColumns(k, k+1);
-//                        for (int i = 0; i < rc; i++) {
-//                            t = u.get(i, k + 1);
-//                            u.set(i, k + 1, u.get(i, k));
-//                            u.set(i, k, t);
-//                        }
-                    }
-
-                    k++;
-                }
-
-                iter = 0;
-                p--;
-            }
-                break;
-            }
-        }
-
-        return new Matrix[] { u, s, v };
-    }
+					double t = Math.hypot(s.get(j, j), f);
+					double cs = s.get(j, j) / t;
+					double sn = f / t;
 
+					s.set(j, j, t);
+
+					if (j != k) {
+						f = -sn * e.get(j - 1);
+						e.set(j - 1, cs * e.get(j - 1));
+					}
+
+					for (int i = 0; i < cc; i++) {
+						t = cs * v.get(i, j) + sn * v.get(i, p - 1);
+						v.set(i, p - 1,
+								-sn * v.get(i, j) + cs * v.get(i, p - 1));
+						v.set(i, j, t);
+					}
+				}
+			}
+				break;
+
+			case 2: {
+				double f = e.get(k - 1);
+				e.set(k - 1, 0.0);
+
+				for (int j = k; j < p; j++) {
+
+					double t = Math.hypot(s.get(j, j), f);
+					double cs = s.get(j, j) / t;
+					double sn = f / t;
+
+					s.set(j, j, t);
+					f = -sn * e.get(j);
+					e.set(j, cs * e.get(j));
+
+					for (int i = 0; i < rc; i++) {
+						t = cs * u.get(i, j) + sn * u.get(i, k - 1);
+						u.set(i, k - 1,
+								-sn * u.get(i, j) + cs * u.get(i, k - 1));
+						u.set(i, j, t);
+					}
+				}
+			}
+				break;
+
+			case 3: {
+
+				double scale = Math
+						.max(Math.max(Math.max(
+								Math.max(Math.abs(s.get(p - 1, p - 1)),
+										Math.abs(s.get(p - 2, p - 2))),
+								Math.abs(e.get(p - 2))), Math.abs(s.get(k, k))),
+								Math.abs(e.get(k)));
+
+				double sp = s.get(p - 1, p - 1) / scale;
+				double spm1 = s.get(p - 2, p - 2) / scale;
+				double epm1 = e.get(p - 2) / scale;
+				double sk = s.get(k, k) / scale;
+				double ek = e.get(k) / scale;
+				double b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
+				double c = (sp * epm1) * (sp * epm1);
+				double shift = 0.0;
+
+				if ((b != 0.0) | (c != 0.0)) {
+					shift = Math.sqrt(b * b + c);
+					if (b < 0.0) {
+						shift = -shift;
+					}
+					shift = c / (b + shift);
+				}
+
+				double f = (sk + sp) * (sk - sp) + shift;
+				double g = sk * ek;
+
+				for (int j = k; j < p - 1; j++) {
+					double t = Math.hypot(f, g);
+					double cs = f / t;
+					double sn = g / t;
+
+					if (j != k) {
+						e.set(j - 1, t);
+					}
+
+					f = cs * s.get(j, j) + sn * e.get(j);
+					e.set(j, cs * e.get(j) - sn * s.get(j, j));
+					g = sn * s.get(j + 1, j + 1);
+					s.set(j + 1, j + 1, cs * s.get(j + 1, j + 1));
+
+					for (int i = 0; i < cc; i++) {
+						t = cs * v.get(i, j) + sn * v.get(i, j + 1);
+						v.set(i, j + 1,
+								-sn * v.get(i, j) + cs * v.get(i, j + 1));
+						v.set(i, j, t);
+					}
+
+					t = Math.hypot(f, g);
+					cs = f / t;
+					sn = g / t;
+					s.set(j, j, t);
+					f = cs * e.get(j) + sn * s.get(j + 1, j + 1);
+					s.set(j + 1, j + 1,
+							-sn * e.get(j) + cs * s.get(j + 1, j + 1));
+					g = sn * e.get(j + 1);
+					e.set(j + 1, e.get(j + 1) * (cs));
+
+					if (j < rc - 1) {
+						for (int i = 0; i < rc; i++) {
+							t = cs * u.get(i, j) + sn * u.get(i, j + 1);
+							u.set(i, j + 1,
+									-sn * u.get(i, j) + cs * u.get(i, j + 1));
+							u.set(i, j, t);
+						}
+					}
+				}
+
+				e.set(p - 2, f);
+				iter = iter + 1;
+			}
+				break;
+
+			case 4: {
+				double skk = s.get(k, k);
+				if (s.get(k, k) <= 0.0) {
+					s.set(k, k, -skk);
+					for (int i = 0; i <= pp; i++) {
+						v.set(i, k, -v.get(i, k));
+					}
+				}
+
+				while (k < pp) {
+
+					if (s.get(k, k) >= s.get(k + 1, k + 1)) {
+						break;
+					}
+
+					double t = s.get(k, k);
+					s.set(k, k, s.get(k + 1, k + 1));
+					s.set(k + 1, k + 1, t);
+
+					if (k < cc - 1) {
+						v.swapColumns(k, k + 1);
+						// for (int i = 0; i < cc; i++) {
+						// t = v.get(i, k + 1);
+						// v.set(i, k + 1, v.get(i, k));
+						// v.set(i, k, t);
+						// }
+					}
+
+					if (k < rc - 1) {
+						u.swapColumns(k, k + 1);
+						// for (int i = 0; i < rc; i++) {
+						// t = u.get(i, k + 1);
+						// u.set(i, k + 1, u.get(i, k));
+						// u.set(i, k, t);
+						// }
+					}
+
+					k++;
+				}
+
+				iter = 0;
+				p--;
+			}
+				break;
+			}
+		}
+
+		return new Matrix[] { u, s, v };
+	}
 
 }

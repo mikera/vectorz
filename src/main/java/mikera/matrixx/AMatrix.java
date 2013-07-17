@@ -248,11 +248,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	
-	public boolean isOrthonormalColumns() {
+	public boolean hasOrthonormalColumns() {
 		return getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
 	}
 	
-	public boolean isOrthonormalRows() {
+	public boolean hassOrthonormalRows() {
 		return innerProduct(getTranspose()).epsilonEquals(IdentityMatrix.create(columnCount()));
 	}
 
