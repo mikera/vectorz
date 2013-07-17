@@ -2,6 +2,8 @@ package mikera.matrixx;
 
 import static org.junit.Assert.*;
 
+import java.util.Iterator;
+
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
@@ -496,6 +498,18 @@ public class TestMatrixx {
 		}
 	}
 	
+	private void doElementIteratorTest(AMatrix m) {
+		Iterator<Double> it=m.elementIterator();
+		
+		int i=0;
+		AVector av=m.asVector();
+		while (it.hasNext()) {
+			double v=it.next();
+			assertEquals(av.get(i++),v,0.0);
+		}
+		assertEquals(m.elementCount(),i);
+	}
+	
 	void doGenericTests(AMatrix m) {
 		m.validate();
 		
@@ -506,6 +520,7 @@ public class TestMatrixx {
 		doTransposeTest(m);
 		doTriangularTests(m);
 		doVectorTest(m);
+		doElementIteratorTest(m);
 		doParseTest(m);
 		doHashTest(m);
 		doNDArrayTest(m);
