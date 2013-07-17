@@ -306,4 +306,8 @@ public final class Matrix extends AMatrix {
 		return new Matrix(this);
 	}
 
+	public void setRow(int i, AVector row) {
+		row.getElements(data, i*columnCount());
+	}
+
 }

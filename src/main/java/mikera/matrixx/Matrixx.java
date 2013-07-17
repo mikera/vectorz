@@ -371,13 +371,18 @@ public class Matrixx {
 	 * @param rows
 	 * @return
 	 */
-	public static AMatrix create(List<Object> rows) {
+	public static Matrix create(List<Object> rows) {
 		int rc = rows.size();
-		AVector[] vs = new AVector[rc];
-		for (int i = 0; i < rc; i++) {
-			vs[i] = Vectorz.create(rows.get(i));
+		AVector firstRow=Vectorz.create(rows.get(0));
+		int cc=firstRow.length();
+		
+		Matrix m=Matrix.create(rc, cc);
+		m.setRow(0,firstRow);
+		
+		for (int i = 1; i < rc; i++) {
+			m.setRow(i, Vectorz.create(rows.get(i)));
 		}
-		return VectorMatrixMN.wrap(vs);
+		return m;
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.List;
+
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -29,6 +31,21 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 		this.rows=rows;
 		this.rowCount=rowCount;
 		this.columnCount=columnCount;
+	}
+	
+	/**
+	 * Create a matrix from a list of rows
+	 * 
+	 * @param rows
+	 * @return
+	 */
+	public static AMatrix create(List<Object> rows) {
+		int rc = rows.size();
+		AVector[] vs = new AVector[rc];
+		for (int i = 0; i < rc; i++) {
+			vs[i] = Vectorz.create(rows.get(i));
+		}
+		return VectorMatrixMN.wrap(vs);
 	}
 	
 	public static VectorMatrixMN wrap(AVector[] rows) {
