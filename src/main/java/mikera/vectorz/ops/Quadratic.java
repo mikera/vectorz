@@ -1,8 +1,8 @@
 package mikera.vectorz.ops;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.impl.AArrayVector;
 
 public final class Quadratic extends APolynomialOp {
 	private final double a;

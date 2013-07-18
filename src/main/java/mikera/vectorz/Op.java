@@ -5,6 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.ops.Composed;
 import mikera.vectorz.ops.Derivative;
 import mikera.vectorz.ops.Division;

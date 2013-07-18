@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import java.io.ObjectStreamException;
 
-import mikera.vectorz.APrimitiveVector;
 import mikera.vectorz.AVector;
 
 /**

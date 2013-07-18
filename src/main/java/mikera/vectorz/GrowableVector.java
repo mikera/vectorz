@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.VectorzException;
 
 /**

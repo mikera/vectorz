@@ -22,12 +22,12 @@ import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
-import mikera.vectorz.AArrayVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
 

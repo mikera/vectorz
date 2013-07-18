@@ -1,12 +1,12 @@
-package mikera.vectorz;
+package mikera.vectorz.impl;
 
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
-import mikera.vectorz.impl.AStridedVector;
-import mikera.vectorz.impl.ArrayIndexScalar;
-import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.JoinedArrayVector;
+import mikera.vectorz.AScalar;
+import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 

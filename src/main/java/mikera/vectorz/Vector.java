@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.util.Arrays;
 
 import mikera.indexz.Index;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 

@@ -6,7 +6,6 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.VectorzException;

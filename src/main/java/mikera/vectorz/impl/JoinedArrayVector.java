@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;

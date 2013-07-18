@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import static org.junit.Assert.*;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
-import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 

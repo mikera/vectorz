@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.APrimitiveVector;
+
 /**
  * Specialised 1D vector
  * 

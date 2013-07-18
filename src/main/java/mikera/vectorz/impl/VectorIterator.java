@@ -1,6 +1,8 @@
-package mikera.vectorz;
+package mikera.vectorz.impl;
 
 import java.util.Iterator;
+
+import mikera.vectorz.AVector;
 
 /**
  * General purpose iterator for arbitrary vectors.

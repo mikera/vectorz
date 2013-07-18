@@ -2,6 +2,8 @@ package mikera.vectorz;
 
 import java.nio.DoubleBuffer;
 
+import mikera.vectorz.impl.APrimitiveVector;
+
 /**
  * Specialised 4D vector
  * 

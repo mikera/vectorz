@@ -3,7 +3,7 @@ package mikera.matrixx.impl;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.AArrayVector;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.VectorzException;
 
 /**

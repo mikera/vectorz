@@ -2,6 +2,8 @@ package mikera.vectorz;
 
 import static org.junit.Assert.*;
 
+import mikera.vectorz.impl.AArrayVector;
+
 import org.junit.Test;
 
 public class TestVector {

@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import java.util.Iterator;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.VectorIterator;
 
 public final class WrappedSubVector extends AVector {
 	private static final long serialVersionUID = 2323553136938665228L;
