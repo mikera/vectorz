@@ -121,7 +121,12 @@ public class AxisVector extends ComputedVector implements ISparse {
 
 	@Override
 	public double get(int i) {
-		assert((i>=0)&&(i<length));
+		if((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		return (i==axis)?1.0:0.0;
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
 		return (i==axis)?1.0:0.0;
 	}
 	

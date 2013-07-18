@@ -80,7 +80,13 @@ public final class SingleElementVector extends AVector implements ISparse {
 
 	@Override
 	public double get(int i) {
-		assert((i>=0)&&(i<dimensions));
+		if(!((i>=0)&&(i<dimensions))) throw new IndexOutOfBoundsException();
+		return (i==index)?value:0.0;
+	}
+	
+
+	@Override
+	public double unsafeGet(int i) {
 		return (i==index)?value:0.0;
 	}
 

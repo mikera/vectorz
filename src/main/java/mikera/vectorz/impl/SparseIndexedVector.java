@@ -182,6 +182,14 @@ public class SparseIndexedVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		int ip=index.indexPosition(i);
+		if (ip<0) return 0.0;
+		return data[ip];
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
 		int ip=index.indexPosition(i);
 		if (ip<0) return 0.0;
 		return data[ip];

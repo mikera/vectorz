@@ -24,7 +24,12 @@ public class WrappedScalarVector extends AVector {
 
 	@Override
 	public double get(int i) {
-		assert(i==0);
+		if (i!=0) throw new IndexOutOfBoundsException("Index: "+i);
+		return scalar.get();
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
 		return scalar.get();
 	}
 

@@ -40,7 +40,12 @@ public final class RepeatedElementVector extends AVector {
 	
 	@Override
 	public double get(int i) {
-		assert((i>=0)&&(i<dimensions));
+		if (!((i>=0)&&(i<dimensions))) throw new IndexOutOfBoundsException();
+		return value;
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
 		return value;
 	}
 	

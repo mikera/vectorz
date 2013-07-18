@@ -584,6 +584,18 @@ public class TestVectors {
 		}
 	}
 	
+	private void testOutOfBounds(AVector v) {
+		try {
+			v.get(-1);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			v.get(v.length());
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+	}
+	
 	private void testUnsafeSet(AVector v) {
 		if (!v.isFullyMutable()) return;
 		AVector a=v.exactClone();
@@ -693,6 +705,7 @@ public class TestVectors {
 		testAddAt(v);
 		testUnsafeGet(v);
 		testUnsafeSet(v);
+		testOutOfBounds(v);
 		testSlicing(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
