@@ -98,6 +98,17 @@ public final class ArraySubVector extends ArrayVector {
 			throw new IndexOutOfBoundsException("Index: " + i);
 		data[offset + i] = value;
 	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return data[offset + i];
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
+		data[offset + i] = value;
+	}
+
 
 	@Override
 	public void add(ArrayVector v) {

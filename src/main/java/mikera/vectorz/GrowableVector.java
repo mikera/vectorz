@@ -89,6 +89,16 @@ public final class GrowableVector extends ArrayVector {
 	}
 	
 	@Override
+	public double unsafeGet(int i) {
+		return data[i];
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
+		data[i]=value;
+	}
+	
+	@Override
 	public boolean isView() {
 		return false;
 	}

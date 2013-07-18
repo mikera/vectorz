@@ -104,6 +104,18 @@ public abstract class ArrayVector extends AVector {
 		System.arraycopy(getArray(), getArrayOffset(), dest, offset, length());
 	}
 	
+	@Override
+	public abstract double get(int i);
+
+	@Override
+	public abstract void set(int i, double value);
+	
+	@Override
+	public abstract double unsafeGet(int i);
+
+	@Override
+	public abstract void unsafeSet(int i, double value);
+	
 	@Override 
 	public void add(AVector src) {
 		if (src instanceof ArrayVector) {

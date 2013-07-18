@@ -114,6 +114,12 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void unsafeSet(int i, double value) {
+		int ai=findArrayNum(i);
+		data[ai][i-pos[ai]+offsets[ai]]=value;
+	}
+	
+	@Override
 	public void addAt(int i, double value) {
 		int ai=findArrayNum(i);
 		data[ai][i-pos[ai]+offsets[ai]]+=value;

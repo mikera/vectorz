@@ -104,6 +104,11 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
+	public void unsafeSet(int i, double value) {
+		data[i]=value;
+	}
+	
+	@Override
 	public void set(int offset, double[] data, int dataOffset, int length) {
 		System.arraycopy(data, dataOffset, this.data, offset, length);
 	}
