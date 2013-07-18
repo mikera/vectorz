@@ -48,19 +48,19 @@ public final class StridedVector extends AVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		assert(v.length()==length);
+		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
 		double result=0.0;
 		for (int i=0; i<length; i++) {
-			result+=data[offset+i*stride]*v.get(i);
+			result+=data[offset+i*stride]*v.unsafeGet(i);
 		}
 		return result;
 	}
 	
 	@Override
 	public void set(AVector v) {
-		assert(v.length()==length);
+		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
 		for (int i=0; i<length; i++) {
-			data[offset+i*stride]=v.get(i);
+			data[offset+i*stride]=v.unsafeGet(i);
 		}
 	}
 	
