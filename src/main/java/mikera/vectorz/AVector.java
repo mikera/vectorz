@@ -58,6 +58,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	public void unsafeSet(int i, double value) {
+		set(i,value);
+	}
+	
 	public double unsafeGet(int i) {
 		return get(i);
 	}
@@ -1199,12 +1203,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void applyOp(Op op) {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			set(i,op.apply(get(i)));
+			unsafeSet(i,op.apply(unsafeGet(i)));
 		}
 	}
 	
 	public void addAt(int i, double v) {
-		set(i,get(i)+v);
+		set(i,unsafeGet(i)+v);
 	}
 
 	public void scaleAdd(double factor, double constant) {
