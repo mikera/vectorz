@@ -481,7 +481,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int di=offset;
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				set(i,j,values[di++]);
+				unsafeSet(i,j,values[di++]);
 			}
 		}	
 	} 
@@ -572,9 +572,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int dims = rowCount();
 		for (int i = 0; i < dims; i++) {
 			for (int j = i + 1; j < dims; j++) {
-				double temp = get(i, j);
-				set(i, j, get(j, i));
-				set(j, i, temp);
+				double temp = unsafeGet(i, j);
+				unsafeSet(i, j, unsafeGet(j, i));
+				unsafeSet(j, i, temp);
 			}
 		}
 	}
@@ -600,12 +600,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void add(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(rc==m.rowCount());
-		assert(cc==m.columnCount());
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException("Mismatched matrix sizes");
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				set(i,j,get(i,j)+m.get(i, j));
+				unsafeSet(i,j,unsafeGet(i,j)+m.unsafeGet(i, j));
 			}
 		}
 	}
@@ -613,11 +612,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void add(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(cc==v.length());
+		if(cc!=v.length()) throw new IllegalArgumentException("Mismatched matrix and vector sizes");
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				set(i,j,get(i,j)+v.get(j));
+				unsafeSet(i,j,unsafeGet(i,j)+v.unsafeGet(j));
 			}
 		}		
 	}
@@ -625,11 +624,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void sub(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(cc==v.length());
+		if(cc!=v.length()) throw new IllegalArgumentException("Mismatched matrix and vector sizes");
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				addAt(i,j,-v.get(j));
+				addAt(i,j,-v.unsafeGet(j));
 			}
 		}		
 	}
@@ -659,7 +658,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				set(i,j,get(i,j)*factor);
+				unsafeSet(i,j,unsafeGet(i,j)*factor);
 			}
 		}
 	}	
@@ -676,7 +675,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				result+=get(i,j);
+				result+=unsafeGet(i,j);
 			}
 		}
 		return result;
@@ -694,7 +693,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				double value=get(i,j);
+				double value=unsafeGet(i,j);
 				result+=value*value;
 			}
 		}
@@ -714,7 +713,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				if (get(i,j)!=0.0) result++;
+				if (unsafeGet(i,j)!=0.0) result++;
 			}
 		}
 		return result;	
@@ -788,12 +787,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void elementMul(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(rc==m.rowCount());
-		assert(cc==m.columnCount());
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException("Mismatched matrix sizes");
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				set(i,j,get(i,j)*m.get(i, j));
+				unsafeSet(i,j,unsafeGet(i,j)*m.unsafeGet(i, j));
 			}
 		}
 	}
@@ -833,9 +831,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		AVector b = getRow(j);
 		int cc = columnCount();
 		for (int k = 0; k < cc; k++) {
-			double t = a.get(k);
-			a.set(k, b.get(k));
-			b.set(k, t);
+			double t = a.unsafeGet(k);
+			a.unsafeSet(k, b.unsafeGet(k));
+			b.unsafeSet(k, t);
 		}
 	}
 
@@ -849,9 +847,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		AVector b = getColumn(j);
 		int rc = rowCount();
 		for (int k = 0; k < rc; k++) {
-			double t = a.get(k);
-			a.set(k, b.get(k));
-			b.set(k, t);
+			double t = a.unsafeGet(k);
+			a.unsafeSet(k, b.unsafeGet(k));
+			b.unsafeSet(k, t);
 		}
 	}
 
