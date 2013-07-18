@@ -101,7 +101,7 @@ public class VectorVectorMult {
             double total = 0;
 
             for( int j = 0; j < n; j++ ) {
-                total += x.get(j)*A.unsafe_get(j,i);
+                total += x.get(j)*A.unsafeGet(j,i);
             }
 
             result += total*y.get(i);
@@ -140,7 +140,7 @@ public class VectorVectorMult {
             double total = 0;
 
             for( int j = 0; j < n; j++ ) {
-                total += x.get(j)*A.unsafe_get(i,j);
+                total += x.get(j)*A.unsafeGet(i,j);
             }
 
             result += total*y.get(i);

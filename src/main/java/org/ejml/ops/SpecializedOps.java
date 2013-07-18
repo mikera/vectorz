@@ -366,7 +366,7 @@ public class SpecializedOps {
         double prod = 1.0;
         int N = Math.min(T.rowCount(),T.columnCount());
         for( int i = 0; i < N; i++ ) {
-            prod *= T.unsafe_get(i,i);
+            prod *= T.unsafeGet(i,i);
         }
 
         return prod;
@@ -395,7 +395,7 @@ public class SpecializedOps {
 
         double quality = 1.0;
         for( int i = 0; i < N; i++ ) {
-            quality *= T.unsafe_get(i,i)/max;
+            quality *= T.unsafeGet(i,i)/max;
         }
 
         return Math.abs(quality);

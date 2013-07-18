@@ -1092,7 +1092,7 @@ public class CommonOps {
         }
 
         for( int i = 0; i < N; i++ ) {
-            dst.set( i , src.unsafe_get(i,i) );
+            dst.set( i , src.unsafeGet(i,i) );
         }
     }
 

@@ -75,8 +75,8 @@ public class BidiagonalDecompositionTall
     public void getDiagonal(double[] diag, double[] off) {
         diag[0] = B.get(0);
         for( int i = 1; i < n; i++ ) {
-            diag[i] = B.unsafe_get(i,i);
-            off[i-1] = B.unsafe_get(i-1,i);
+            diag[i] = B.unsafeGet(i,i);
+            off[i-1] = B.unsafeGet(i-1,i);
         }
     }
 

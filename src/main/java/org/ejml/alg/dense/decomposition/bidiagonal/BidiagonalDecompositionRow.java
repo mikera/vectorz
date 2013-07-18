@@ -122,8 +122,8 @@ public class BidiagonalDecompositionRow
     public void getDiagonal(double[] diag, double[] off) {
         diag[0] = UBV.get(0);
         for( int i = 1; i < n; i++ ) {
-            diag[i] = UBV.unsafe_get(i,i);
-            off[i-1] = UBV.unsafe_get(i-1,i);
+            diag[i] = UBV.unsafeGet(i,i);
+            off[i-1] = UBV.unsafeGet(i-1,i);
         }
     }
 

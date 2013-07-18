@@ -260,7 +260,7 @@ public class DenseMatrix64F extends RowD1Matrix64F {
     }
 
     @Override
-    public void unsafe_set( int row , int col , double value ) {
+    public void unsafeSet( int row , int col , double value ) {
         data[ row * columnCount() + col ] = value;
     }
 
@@ -302,7 +302,7 @@ public class DenseMatrix64F extends RowD1Matrix64F {
     }
 
     @Override
-    public double unsafe_get( int row , int col ) {
+    public double unsafeGet( int row , int col ) {
         return data[ row * columnCount() + col ];
     }
 

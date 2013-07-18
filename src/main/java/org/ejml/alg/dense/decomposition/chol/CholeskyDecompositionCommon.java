@@ -166,13 +166,13 @@ public abstract class CholeskyDecompositionCommon
         if( lower ) {
             for( int i = 0; i < n; i++ ) {
                 for( int j = 0; j <= i; j++ ) {
-                    T.unsafe_set(i,j,this.T.unsafe_get(i,j));
+                    T.unsafeSet(i,j,this.T.unsafeGet(i,j));
                 }
             }
         } else {
             for( int i = 0; i < n; i++ ) {
                 for( int j = i; j < n; j++ ) {
-                    T.unsafe_set(i,j,this.T.unsafe_get(i,j));
+                    T.unsafeSet(i,j,this.T.unsafeGet(i,j));
                 }
             }
         }

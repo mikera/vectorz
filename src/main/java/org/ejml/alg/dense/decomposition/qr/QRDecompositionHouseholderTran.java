@@ -192,14 +192,14 @@ public class QRDecompositionHouseholderTran implements QRDecomposition<DenseMatr
             for( int i = 0; i < R.rowCount(); i++ ) {
                 int min = Math.min(i,R.columnCount());
                 for( int j = 0; j < min; j++ ) {
-                    R.unsafe_set(i,j,0);
+                    R.unsafeSet(i,j,0);
                 }
             }
         }
 
         for( int i = 0; i < R.rowCount(); i++ ) {
             for( int j = i; j < R.columnCount(); j++ ) {
-                R.unsafe_set(i,j,QR.unsafe_get(j,i));
+                R.unsafeSet(i,j,QR.unsafeGet(j,i));
             }
         }
 

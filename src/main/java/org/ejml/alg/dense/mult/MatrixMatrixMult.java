@@ -157,7 +157,7 @@ public class MatrixMatrixMult {
         for( int j = 0; j < b.columnCount(); j++ ) {
             // create a copy of the column in B to avoid cache issues
             for( int k = 0; k < b.rowCount(); k++ ) {
-                aux[k] = b.unsafe_get(k,j);
+                aux[k] = b.unsafeGet(k,j);
             }
 
             int indexA = 0;
@@ -199,7 +199,7 @@ public class MatrixMatrixMult {
             }
             // now increment it
             for( int k = 1; k < a.rowCount(); k++ ) {
-                valA = a.unsafe_get(k,i);
+                valA = a.unsafeGet(k,i);
                 end = indexB+b.columnCount();
                 indexC = indexC_start;
                 // this is the loop for j
@@ -295,14 +295,14 @@ public class MatrixMatrixMult {
         int indexC = 0;
         for( int i = 0; i < a.columnCount(); i++ ) {
             for( int k = 0; k < b.columnCount(); k++ ) {
-                aux[k] = a.unsafe_get(k,i);
+                aux[k] = a.unsafeGet(k,i);
             }
 
             for( int j = 0; j < b.rowCount(); j++ ) {
                 double total = 0;
 
                 for( int k = 0; k < b.columnCount(); k++ ) {
-                    total += aux[k] * b.unsafe_get(j,k);
+                    total += aux[k] * b.unsafeGet(j,k);
                 }
                 c.set( indexC++ , total );
             }
@@ -441,7 +441,7 @@ public class MatrixMatrixMult {
         for( int j = 0; j < b.columnCount(); j++ ) {
             // create a copy of the column in B to avoid cache issues
             for( int k = 0; k < b.rowCount(); k++ ) {
-                aux[k] = b.unsafe_get(k,j);
+                aux[k] = b.unsafeGet(k,j);
             }
 
             int indexA = 0;
@@ -483,7 +483,7 @@ public class MatrixMatrixMult {
             }
             // now increment it
             for( int k = 1; k < a.rowCount(); k++ ) {
-                valA = a.unsafe_get(k,i);
+                valA = a.unsafeGet(k,i);
                 end = indexB+b.columnCount();
                 indexC = indexC_start;
                 // this is the loop for j
@@ -579,14 +579,14 @@ public class MatrixMatrixMult {
         int indexC = 0;
         for( int i = 0; i < a.columnCount(); i++ ) {
             for( int k = 0; k < b.columnCount(); k++ ) {
-                aux[k] = a.unsafe_get(k,i);
+                aux[k] = a.unsafeGet(k,i);
             }
 
             for( int j = 0; j < b.rowCount(); j++ ) {
                 double total = 0;
 
                 for( int k = 0; k < b.columnCount(); k++ ) {
-                    total += aux[k] * b.unsafe_get(j,k);
+                    total += aux[k] * b.unsafeGet(j,k);
                 }
                 c.plus( indexC++ , total );
             }
@@ -725,7 +725,7 @@ public class MatrixMatrixMult {
         for( int j = 0; j < b.columnCount(); j++ ) {
             // create a copy of the column in B to avoid cache issues
             for( int k = 0; k < b.rowCount(); k++ ) {
-                aux[k] = b.unsafe_get(k,j);
+                aux[k] = b.unsafeGet(k,j);
             }
 
             int indexA = 0;
@@ -767,7 +767,7 @@ public class MatrixMatrixMult {
             }
             // now increment it
             for( int k = 1; k < a.rowCount(); k++ ) {
-                valA = alpha*a.unsafe_get(k,i);
+                valA = alpha*a.unsafeGet(k,i);
                 end = indexB+b.columnCount();
                 indexC = indexC_start;
                 // this is the loop for j
@@ -863,14 +863,14 @@ public class MatrixMatrixMult {
         int indexC = 0;
         for( int i = 0; i < a.columnCount(); i++ ) {
             for( int k = 0; k < b.columnCount(); k++ ) {
-                aux[k] = a.unsafe_get(k,i);
+                aux[k] = a.unsafeGet(k,i);
             }
 
             for( int j = 0; j < b.rowCount(); j++ ) {
                 double total = 0;
 
                 for( int k = 0; k < b.columnCount(); k++ ) {
-                    total += aux[k] * b.unsafe_get(j,k);
+                    total += aux[k] * b.unsafeGet(j,k);
                 }
                 c.set( indexC++ , alpha*total );
             }
@@ -1009,7 +1009,7 @@ public class MatrixMatrixMult {
         for( int j = 0; j < b.columnCount(); j++ ) {
             // create a copy of the column in B to avoid cache issues
             for( int k = 0; k < b.rowCount(); k++ ) {
-                aux[k] = b.unsafe_get(k,j);
+                aux[k] = b.unsafeGet(k,j);
             }
 
             int indexA = 0;
@@ -1051,7 +1051,7 @@ public class MatrixMatrixMult {
             }
             // now increment it
             for( int k = 1; k < a.rowCount(); k++ ) {
-                valA = alpha*a.unsafe_get(k,i);
+                valA = alpha*a.unsafeGet(k,i);
                 end = indexB+b.columnCount();
                 indexC = indexC_start;
                 // this is the loop for j
@@ -1147,14 +1147,14 @@ public class MatrixMatrixMult {
         int indexC = 0;
         for( int i = 0; i < a.columnCount(); i++ ) {
             for( int k = 0; k < b.columnCount(); k++ ) {
-                aux[k] = a.unsafe_get(k,i);
+                aux[k] = a.unsafeGet(k,i);
             }
 
             for( int j = 0; j < b.rowCount(); j++ ) {
                 double total = 0;
 
                 for( int k = 0; k < b.columnCount(); k++ ) {
-                    total += aux[k] * b.unsafe_get(j,k);
+                    total += aux[k] * b.unsafeGet(j,k);
                 }
                 c.plus( indexC++ , alpha*total );
             }

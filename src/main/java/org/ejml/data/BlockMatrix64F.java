@@ -123,7 +123,7 @@ public class BlockMatrix64F extends D1Matrix64F {
     }
 
     @Override
-    public double unsafe_get( int row, int col) {
+    public double unsafeGet( int row, int col) {
         return data[ getIndex(row,col)];
     }
 
@@ -133,7 +133,7 @@ public class BlockMatrix64F extends D1Matrix64F {
     }
 
     @Override
-    public void unsafe_set( int row, int col, double val) {
+    public void unsafeSet( int row, int col, double val) {
         data[ getIndex(row,col)] = val;
     }
 

@@ -167,12 +167,12 @@ public class TridiagonalDecompositionBlockHouseholder
         for( int i = 0; i < N; i++ ) {
             // save the zeros
             for( int j = 0; j <= i; j++ ) {
-                zerosM.unsafe_set(i,j,subU.get(i,j));
+                zerosM.unsafeSet(i,j,subU.get(i,j));
                 subU.set(i,j,0);
             }
             // save the one
             if( subU.col0 + i + 1 < subU.original.columnCount() ) {
-                zerosM.unsafe_set(i,i+1,subU.get(i,i+1));
+                zerosM.unsafeSet(i,i+1,subU.get(i,i+1));
                 subU.set(i,i+1,1);
             }
         }

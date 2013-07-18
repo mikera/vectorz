@@ -177,7 +177,7 @@ public class SvdImplicitQrDecompose implements SingularValueDecomposition<DenseM
         }
 
         for( int i = 0; i < numSingular; i++ ) {
-            W.unsafe_set(i,i, singularValues[i]);
+            W.unsafeSet(i,i, singularValues[i]);
         }
 
         return W;

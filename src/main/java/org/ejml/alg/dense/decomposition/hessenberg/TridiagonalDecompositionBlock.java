@@ -60,11 +60,11 @@ public class TridiagonalDecompositionBlock
 
         ((TridiagonalDecompositionBlockHouseholder)alg).getDiagonal(diag,off);
 
-        T.unsafe_set(0,0,diag[0]);
+        T.unsafeSet(0,0,diag[0]);
         for( int i = 1; i < N; i++ ) {
-            T.unsafe_set(i,i,diag[i]);
-            T.unsafe_set(i,i-1,off[i-1]);
-            T.unsafe_set(i-1,i,off[i-1]);
+            T.unsafeSet(i,i,diag[i]);
+            T.unsafeSet(i,i-1,off[i-1]);
+            T.unsafeSet(i-1,i,off[i-1]);
         }
 
         return T;

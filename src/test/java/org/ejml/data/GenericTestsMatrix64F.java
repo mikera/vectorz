@@ -93,13 +93,13 @@ public abstract class GenericTestsMatrix64F {
 
         for( int i = 0; i < m; i++ ) {
             for( int j = 0; j < n; j++ ) {
-                mat.unsafe_set(i,j, i* m +j);
+                mat.unsafeSet(i,j, i* m +j);
             }
         }
 
         for( int i = 0; i < m; i++ ) {
             for( int j = 0; j < n; j++ ) {
-                double found = mat.unsafe_get(i,j);
+                double found = mat.unsafeGet(i,j);
 
                 assertEquals(i* m +j,found,1e-8);
             }
