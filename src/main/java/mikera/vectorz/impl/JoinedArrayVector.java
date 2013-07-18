@@ -102,6 +102,13 @@ public final class JoinedArrayVector extends AVector {
 
 	@Override
 	public double get(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+		int ai=findArrayNum(i);
+		return data[ai][i-pos[ai]+offsets[ai]];
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
 		int ai=findArrayNum(i);
 		return data[ai][i-pos[ai]+offsets[ai]];
 	}
