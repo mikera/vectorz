@@ -90,6 +90,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		asVector().fill(value);
 	}
 	
+	public void unsafeSet(int row, int column, double value) {
+		set(row,column,value);
+	}
+	
+	public double unsafeGet(int row, int column) {
+		return get(row,column);
+	}
+	
 	@Override
 	public void clamp(double min, double max) {
 		int len=rowCount();

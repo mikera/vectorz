@@ -243,6 +243,16 @@ public final class Matrix extends ArrayMatrix {
 	}
 
 	@Override
+	public void unsafeSet(int row, int column, double value) {
+		data[(row*cols)+column]=value;
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return data[(row*cols)+column];
+	}
+
+	@Override
 	public void set(int row, int column, double value) {
 		data[(row*cols)+column]=value;
 	}
