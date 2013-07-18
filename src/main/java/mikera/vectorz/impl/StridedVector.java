@@ -3,7 +3,7 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 
-public final class StridedVector extends AVector {
+public final class StridedVector extends AStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
 	private final double[] data;
@@ -62,6 +62,34 @@ public final class StridedVector extends AVector {
 		for (int i=0; i<length; i++) {
 			data[offset+i*stride]=v.unsafeGet(i);
 		}
+	}
+	
+	@Override
+	public void add(AVector v) {
+		if (v instanceof AStridedVector) {
+			add((AStridedVector)v);
+			return;
+		}
+		super.add(v);
+	}
+	
+	public void add(AStridedVector v) {
+		if (length!=v.length()) throw new IllegalArgumentException("Mismatched vector lengths");
+	}
+	
+	@Override
+	public int getStride() {
+		return stride;
+	}
+	
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+	
+	@Override
+	public int getArrayOffset() {
+		return offset;
 	}
 	
 	@Override
