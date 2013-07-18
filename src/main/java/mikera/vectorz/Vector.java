@@ -216,9 +216,9 @@ public final class Vector extends ArrayVector {
 			add(((ArrayVector)v),0); return;
 		}
 		int length=length();
-		assert(length==v.length());
+		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		for (int i = 0; i < length; i++) {
-			data[i] += v.get(i);
+			data[i] += v.unsafeGet(i);
 		}
 	}
 	
@@ -269,9 +269,9 @@ public final class Vector extends ArrayVector {
 	public void sub(AVector v) {
 		if (v instanceof ArrayVector) {sub(((ArrayVector)v)); return;}
 		int length=length();
-		assert(length==v.length());
+		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		for (int i = 0; i < length; i++) {
-			data[i] -= v.get(i);
+			data[i] -= v.unsafeGet(i);
 		}
 	}
 	
@@ -283,7 +283,7 @@ public final class Vector extends ArrayVector {
 		double result=0.0;
 		int[] idata=ix.getData();
 		for (int i=0; i<vl; i++) {
-			result+=data[idata[i]]*v.get(i);
+			result+=data[idata[i]]*v.unsafeGet(i);
 		}
 		return result;
 	}
@@ -303,17 +303,17 @@ public final class Vector extends ArrayVector {
 	public double dotProduct(AVector v) {
 		if ((v instanceof Vector)) return dotProduct((Vector)v);
 		int len=length();
-		assert(v.length()==len);
+		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=data[i]*v.get(i);
+			result+=data[i]*v.unsafeGet(i);
 		}
 		return result;
 	}
 	
 	public double dotProduct(Vector v) {
 		int len=length();
-		assert(v.length()==len);
+		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			result+=data[i]*v.data[i];
@@ -366,9 +366,9 @@ public final class Vector extends ArrayVector {
 	public void addWeighted(AVector v, double factor) {
 		if (v instanceof ArrayVector) {addWeighted(((ArrayVector)v),factor); return;}
 		int length=length();
-		assert(length==v.length());
+		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		for (int i = 0; i < length; i++) {
-			data[i] = (data[i]*(1.0-factor)) + (v.get(i)*factor);
+			data[i] = (data[i]*(1.0-factor)) + (v.unsafeGet(i)*factor);
 		}
 	}
 	
@@ -416,9 +416,9 @@ public final class Vector extends ArrayVector {
 	public void multiply(AVector v) {
 		if (v instanceof Vector) {multiply(((Vector)v)); return;}
 		int len=length();
-		assert(len==v.length());
+		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		for (int i = 0; i < len; i++) {
-			set(i,get(i)*v.get(i));
+			unsafeSet(i,unsafeGet(i)*v.unsafeGet(i));
 		}	
 	}
 	
