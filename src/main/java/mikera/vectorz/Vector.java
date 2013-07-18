@@ -92,6 +92,11 @@ public final class Vector extends ArrayVector {
 	public double get(int i) {
 		return data[i];
 	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return data[i];
+	}
 
 	@Override
 	public void set(int i, double value) {

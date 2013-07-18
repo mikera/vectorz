@@ -58,6 +58,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	public double unsafeGet(int i) {
+		return get(i);
+	}
+	
 	@Override
 	public int dimensionality() {
 		return 1;
@@ -1270,4 +1274,5 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		super.validate();
 	}
+
 }
