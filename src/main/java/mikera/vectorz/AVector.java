@@ -1208,8 +1208,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Adds a value to a specific element of the vector
+	 * 
+	 * This function does not perform bounds checking
+	 * 
+	 * @param i
+	 * @param v
+	 */
 	public void addAt(int i, double v) {
-		set(i,unsafeGet(i)+v);
+		unsafeSet(i,unsafeGet(i)+v);
 	}
 
 	public void scaleAdd(double factor, double constant) {
@@ -1244,8 +1252,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Set part of this vector from a double array
 	 */
 	public void set(int offset, double[] data, int dataOffset, int length) {
+		if ((offset<0)||(offset+length>this.length())) throw new IndexOutOfBoundsException("Offset: "+offset+" , Length: "+length +" on vector with total length "+length());
 		for (int i=0; i<length; i++) {
-			set(offset+i,data[dataOffset+i]);
+			unsafeSet(offset+i,data[dataOffset+i]);
 		}
 	}
 	
