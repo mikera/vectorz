@@ -1282,10 +1282,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	@Override
 	public void validate() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			if (get(i)!=unsafeGet(i)) throw new VectorzException("Unsafe etting problem!");
-		}
 		super.validate();
 	}
 

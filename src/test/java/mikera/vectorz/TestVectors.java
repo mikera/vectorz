@@ -577,8 +577,25 @@ public class TestVectors {
 		assertFalse(Double.isNaN(tv.get(len)));
 	}
 
-
+	private void testUnsafeGet(AVector v) {
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			assertEquals(v.get(i),v.unsafeGet(i),0.0);
+		}
+	}
 	
+	private void testUnsafeSet(AVector v) {
+		if (!v.isFullyMutable()) return;
+		AVector a=v.exactClone();
+		AVector b=v.exactClone();
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			v.set(i, a.get(i)+1.0);
+			v.unsafeSet(i, a.get(i)+1.0);
+		}
+		assertEquals(a,b);
+	}
+
 	private void testAsList(AVector v) {
 		List<Double> al=v.asElementList();
 		List<Double> tl=v.toList();
@@ -674,6 +691,8 @@ public class TestVectors {
 		testAddToArray(v);
 		testElementSum(v);
 		testAddAt(v);
+		testUnsafeGet(v);
+		testUnsafeSet(v);
 		testSlicing(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
