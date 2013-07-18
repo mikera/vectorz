@@ -22,7 +22,7 @@ import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.AArrayVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
@@ -306,8 +306,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof ArrayVector) {
-			transformInPlace((ArrayVector)v);
+		if (v instanceof AArrayVector) {
+			transformInPlace((AArrayVector)v);
 			return;
 		}
 		double[] temp = new double[v.length()];
@@ -326,7 +326,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		v.setElements(temp);
 	}
 	
-	public void transformInPlace(ArrayVector v) {
+	public void transformInPlace(AArrayVector v) {
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Vector;
 
 /**
@@ -13,7 +13,7 @@ import mikera.vectorz.Vector;
  * @author Mike
  * 
  */
-public final class ArraySubVector extends ArrayVector {
+public final class ArraySubVector extends AArrayVector {
 	private static final long serialVersionUID = 1262951505515197105L;
 
 	private final double[] data;
@@ -61,7 +61,7 @@ public final class ArraySubVector extends ArrayVector {
 	 * @param offset
 	 * @param length
 	 */
-	public ArraySubVector(ArrayVector source, int offset, int length) {
+	public ArraySubVector(AArrayVector source, int offset, int length) {
 		int len=source.length();
 		if (offset < 0) {
 			throw new IndexOutOfBoundsException("Negative offset for Vector: "
@@ -111,7 +111,7 @@ public final class ArraySubVector extends ArrayVector {
 
 
 	@Override
-	public void add(ArrayVector v) {
+	public void add(AArrayVector v) {
 		int vlength=v.length();
 		if (vlength != length) {
 			throw new Error("Source vector has different size: " + vlength);
@@ -124,7 +124,7 @@ public final class ArraySubVector extends ArrayVector {
 	}
 	
 	@Override
-	public void addMultiple(ArrayVector v, double factor) {
+	public void addMultiple(AArrayVector v, double factor) {
 		assert (v.length() == length);
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();

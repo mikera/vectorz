@@ -11,7 +11,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class GrowableVector extends ArrayVector {
+public final class GrowableVector extends AArrayVector {
 	private static final long serialVersionUID = -4560854157937758671L;
 
 	private double[] data;

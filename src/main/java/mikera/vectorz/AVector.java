@@ -273,8 +273,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
 	public void copyTo(AVector dest, int destOffset) {
-		if (dest instanceof ArrayVector) {
-			copyTo((ArrayVector) dest,destOffset);
+		if (dest instanceof AArrayVector) {
+			copyTo((AArrayVector) dest,destOffset);
 			return;
 		}
 		int len = length();
@@ -286,7 +286,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
-	public void copyTo(ArrayVector dest, int destOffset) {
+	public void copyTo(AArrayVector dest, int destOffset) {
 		copyTo(dest.getArray(),dest.getArrayOffset()+destOffset);
 	}
 	
@@ -1160,8 +1160,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof ArrayVector) {
-			addProductToArray(factor,offset,(ArrayVector)other,otherOffset,array,arrayOffset,length);
+		if (other instanceof AArrayVector) {
+			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
 		assert(offset>=0);
@@ -1171,7 +1171,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}		
 	}
 	
-	public void addProductToArray(double factor, int offset, ArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		assert(offset>=0);
 		assert(offset+length<=length());
 		double[] otherArray=other.getArray();

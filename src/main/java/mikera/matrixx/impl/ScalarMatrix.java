@@ -2,7 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.AArrayVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 
 /**
@@ -63,7 +63,7 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public void transformInPlace(ArrayVector v) {
+	public void transformInPlace(AArrayVector v) {
 		v.multiply(scale);
 	}
 

@@ -13,7 +13,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class Vector extends ArrayVector {
+public final class Vector extends AArrayVector {
 	private static final long serialVersionUID = 6283741614665875877L;
 
 	public final double[] data;
@@ -193,7 +193,7 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
-	public void add(ArrayVector src, int srcOffset) {
+	public void add(AArrayVector src, int srcOffset) {
 		int length=length();
 		assert(srcOffset>=0);
 		assert(srcOffset+length<=src.length());
@@ -205,7 +205,7 @@ public final class Vector extends ArrayVector {
 	}
 	
 	@Override
-	public void addMultiple(ArrayVector v, double factor) {
+	public void addMultiple(AArrayVector v, double factor) {
 		int length=length();
 		assert(length==v.length());
 		double[] vdata=v.getArray();
@@ -217,8 +217,8 @@ public final class Vector extends ArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if (v instanceof ArrayVector) {
-			add(((ArrayVector)v),0); return;
+		if (v instanceof AArrayVector) {
+			add(((AArrayVector)v),0); return;
 		}
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
@@ -272,7 +272,7 @@ public final class Vector extends ArrayVector {
 	
 	@Override
 	public void sub(AVector v) {
-		if (v instanceof ArrayVector) {sub(((ArrayVector)v)); return;}
+		if (v instanceof AArrayVector) {sub(((AArrayVector)v)); return;}
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		for (int i = 0; i < length; i++) {
@@ -347,11 +347,11 @@ public final class Vector extends ArrayVector {
 		return super.distance(v);
 	}
 	
-	public void sub(ArrayVector v) {
+	public void sub(AArrayVector v) {
 		sub(v,0);
 	}
 	
-	public void sub(ArrayVector src,int srcOffset) {
+	public void sub(AArrayVector src,int srcOffset) {
 		int length=length();
 		assert(length==src.length());
 		double[] srcData=src.getArray();
@@ -363,13 +363,13 @@ public final class Vector extends ArrayVector {
 	
 	@Override
 	public void addMultiple(AVector v, double factor) {
-		if (v instanceof ArrayVector) {addMultiple(((ArrayVector)v),factor); return;}
+		if (v instanceof AArrayVector) {addMultiple(((AArrayVector)v),factor); return;}
 		v.addMultipleToArray(factor, 0, data, 0, length());
 	}
 	
 	@Override
 	public void addWeighted(AVector v, double factor) {
-		if (v instanceof ArrayVector) {addWeighted(((ArrayVector)v),factor); return;}
+		if (v instanceof AArrayVector) {addWeighted(((AArrayVector)v),factor); return;}
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		for (int i = 0; i < length; i++) {
@@ -377,7 +377,7 @@ public final class Vector extends ArrayVector {
 		}
 	}
 	
-	public void addWeighted(ArrayVector v, double factor) {
+	public void addWeighted(AArrayVector v, double factor) {
 		int length=length();
 		assert(length==v.length());
 		double[] arr=v.getArray();

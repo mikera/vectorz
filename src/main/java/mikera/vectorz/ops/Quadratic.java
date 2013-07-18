@@ -1,7 +1,7 @@
 package mikera.vectorz.ops;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Op;
 
 public final class Quadratic extends APolynomialOp {
@@ -37,8 +37,8 @@ public final class Quadratic extends APolynomialOp {
 	
 	@Override
 	public void applyTo(AVector v) {
-		if (v instanceof ArrayVector) {
-			ArrayVector av=(ArrayVector)v;
+		if (v instanceof AArrayVector) {
+			AArrayVector av=(AArrayVector)v;
 			applyTo(av.getArray(),av.getArrayOffset(),av.length());
 			return;
 		}

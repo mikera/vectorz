@@ -3,7 +3,7 @@ package mikera.matrixx.impl;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.AArrayVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -93,8 +93,8 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof ArrayVector) {
-			transformInPlace((ArrayVector) v);
+		if (v instanceof AArrayVector) {
+			transformInPlace((AArrayVector) v);
 			return;
 		}
 		for (int i=0; i<dimensions; i++) {
@@ -103,7 +103,7 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
-	public void transformInPlace(ArrayVector v) {
+	public void transformInPlace(AArrayVector v) {
 		double[] data=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int i=0; i<dimensions; i++) {

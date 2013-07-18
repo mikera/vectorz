@@ -11,18 +11,21 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Base class for vectors backed by a double[] array.
+ * Base class for vectors backed by a double[] array with a fixed stride of 1
  * 
  * The double array can be directly accessed for performance purposes
  * 
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class ArrayVector extends AStridedVector {
-
-	public abstract double[] getArray();
-	
-	public abstract int getArrayOffset();
+public abstract class AArrayVector extends AStridedVector {	
+	/**
+	 * ArrayVector has a fixed stride of 1, which enables efficient operations on arrays
+	 */
+	@Override
+	public final int getStride() {
+		return 1;
+	}
 
 	/**
 	 * Returns a vector referencing a sub-vector of the current vector
@@ -56,11 +59,6 @@ public abstract class ArrayVector extends AStridedVector {
 	public boolean isView() {
 		// ArrayVector is usually a view
 		return true;
-	}
-	
-	@Override
-	public final int getStride() {
-		return 1;
 	}
 	
 	@Override
@@ -124,23 +122,23 @@ public abstract class ArrayVector extends AStridedVector {
 	
 	@Override 
 	public void add(AVector src) {
-		if (src instanceof ArrayVector) {
-			add ((ArrayVector)src,0);
+		if (src instanceof AArrayVector) {
+			add ((AArrayVector)src,0);
 			return;
 		}
 		int length=length();
 		src.addToArray(0,getArray(),getArrayOffset(),length);		
 	}
 	
-	public void add(ArrayVector v) {
+	public void add(AArrayVector v) {
 		assert(length()==v.length());
 		add(v,0);
 	}
 	
 	@Override
 	public void add(AVector src, int srcOffset) {
-		if (src instanceof ArrayVector) {
-			add ((ArrayVector)src,srcOffset);
+		if (src instanceof AArrayVector) {
+			add ((AArrayVector)src,srcOffset);
 			return;
 		}
 		int length=length();
@@ -149,27 +147,27 @@ public abstract class ArrayVector extends AStridedVector {
 	
 	@Override
 	public void add(int offset, AVector src) {
-		if (src instanceof ArrayVector) {
-			add (offset, (ArrayVector)src);
+		if (src instanceof AArrayVector) {
+			add (offset, (AArrayVector)src);
 			return;
 		}
 		int length=src.length();
 		src.addToArray(0,getArray(),getArrayOffset()+offset,length);
 	}
 	
-	public void add(int offset, ArrayVector src) {
+	public void add(int offset, AArrayVector src) {
 		int length=src.length();
 		DoubleArrays.add(src.getArray(), src.getArrayOffset(), getArray(), offset+getArrayOffset(), length);
 	}
 	
-	public void add(int offset, ArrayVector src, int srcOffset, int length) {
+	public void add(int offset, AArrayVector src, int srcOffset, int length) {
 		DoubleArrays.add(src.getArray(), src.getArrayOffset()+srcOffset, getArray(), offset+getArrayOffset(), length);
 	}
 	
 	@Override
 	public void addMultiple(AVector v, double factor) {
-		if (v instanceof ArrayVector) {
-			addMultiple ((ArrayVector)v,factor);
+		if (v instanceof AArrayVector) {
+			addMultiple ((AArrayVector)v,factor);
 			return;
 		}
 		int length=length();
@@ -225,8 +223,8 @@ public abstract class ArrayVector extends AStridedVector {
 	
 	@Override
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof ArrayVector) {
-			addProductToArray(factor,offset,(ArrayVector)other,otherOffset,array,arrayOffset,length);
+		if (other instanceof AArrayVector) {
+			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
 		assert(offset>=0);
@@ -239,7 +237,7 @@ public abstract class ArrayVector extends AStridedVector {
 	}
 	
 	@Override
-	public void addProductToArray(double factor, int offset, ArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		assert(offset>=0);
 		assert(offset+length<=length());
 		double[] otherArray=other.getArray();
@@ -251,7 +249,7 @@ public abstract class ArrayVector extends AStridedVector {
 		}		
 	}
 	
-	public void add(ArrayVector src, int srcOffset) {
+	public void add(AArrayVector src, int srcOffset) {
 		int length=length();
 		double[] vdata=src.getArray();
 		double[] data=getArray();
@@ -348,7 +346,7 @@ public abstract class ArrayVector extends AStridedVector {
 		double[] cdata=getArray();
 		int coffset=getArrayOffset();
 		for (int i = 0; i < len; i++) {
-			set(i,cdata[i+coffset]/data[i+offset]);
+			unsafeSet(i,cdata[i+coffset]/data[i+offset]);
 		}	
 	}
 	
@@ -360,8 +358,8 @@ public abstract class ArrayVector extends AStridedVector {
 	
 	@Override
 	public void copyTo(int start, AVector dest, int destOffset, int length) {
-		if (dest instanceof ArrayVector) {
-			copyTo(start,(ArrayVector)dest,destOffset,length);
+		if (dest instanceof AArrayVector) {
+			copyTo(start,(AArrayVector)dest,destOffset,length);
 			return;
 		}
 		double[] src=getArray();
@@ -371,7 +369,7 @@ public abstract class ArrayVector extends AStridedVector {
 		}
 	}
 	
-	public void copyTo(int offset, ArrayVector dest, int destOffset, int length) {
+	public void copyTo(int offset, AArrayVector dest, int destOffset, int length) {
 		double[] src=getArray();
 		int off=getArrayOffset();
 		double[] dst=dest.getArray();
@@ -385,7 +383,7 @@ public abstract class ArrayVector extends AStridedVector {
 		System.arraycopy(src, off+offset, dest, destOffset, length);
 	}
 	
-	public void addMultiple(ArrayVector v, double factor) {
+	public void addMultiple(AArrayVector v, double factor) {
 		int vlength=v.length();
 		int length=length();
 		if (vlength != length) {
@@ -450,12 +448,12 @@ public abstract class ArrayVector extends AStridedVector {
 	
 	@Override
 	public AVector join(AVector v) {
-		if (v instanceof ArrayVector) return join((ArrayVector)v);
+		if (v instanceof AArrayVector) return join((AArrayVector)v);
 		if (v instanceof JoinedArrayVector) return join((JoinedArrayVector)v);
 		return super.join(v);
 	}
 	
-	public AVector join(ArrayVector v) {
+	public AVector join(AArrayVector v) {
 		if ((v.getArray()==getArray())&&((getArrayOffset()+length())==v.getArrayOffset())) {
 			return Vectorz.wrap(getArray(),getArrayOffset(),length()+v.length());
 		}

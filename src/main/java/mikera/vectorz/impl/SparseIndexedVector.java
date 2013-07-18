@@ -6,7 +6,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.VectorzException;
@@ -109,8 +109,8 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void multiply (AVector v) {
-		if (v instanceof ArrayVector) {
-			multiply((ArrayVector)v);
+		if (v instanceof AArrayVector) {
+			multiply((AArrayVector)v);
 			return;
 		}
 		for (int i=0; i<data.length; i++) {
@@ -118,7 +118,7 @@ public class SparseIndexedVector extends ASparseVector {
 		}
 	}
 	
-	public void multiply(ArrayVector v) {
+	public void multiply(AArrayVector v) {
 		multiply(v.getArray(),v.getArrayOffset());
 	}
 	
@@ -220,7 +220,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if (v instanceof ArrayVector) return dotProduct((ArrayVector)v);
+		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
 		double result=0.0;
 		for (int j=0; j<data.length; j++) {
 			result+=data[j]*v.get(index.data[j]);
@@ -228,7 +228,7 @@ public class SparseIndexedVector extends ASparseVector {
 		return result;
 	}
 	
-	public double dotProduct(ArrayVector v) {
+	public double dotProduct(AArrayVector v) {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
 		double result=0.0;
@@ -263,8 +263,8 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof ArrayVector) {
-			addProductToArray(factor,offset,(ArrayVector)other,otherOffset,array,arrayOffset,length);
+		if (other instanceof AArrayVector) {
+			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
 		assert(offset>=0);
@@ -277,7 +277,7 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public void addProductToArray(double factor, int offset, ArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		assert(offset>=0);
 		assert(offset+length<=length());
 		double[] otherArray=other.getArray();
@@ -302,8 +302,8 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override public void copyTo(AVector v, int offset) {
-		if (v instanceof ArrayVector) {
-			ArrayVector av=(ArrayVector)v;
+		if (v instanceof AArrayVector) {
+			AArrayVector av=(AArrayVector)v;
 			copyTo(av.getArray(),av.getArrayOffset()+offset);
 		}
 		v.fillRange(offset,length,0.0);

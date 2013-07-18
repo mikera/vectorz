@@ -2,7 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
@@ -99,8 +99,8 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof ArrayVector) {
-			transformInPlace((ArrayVector) v);
+		if (v instanceof AArrayVector) {
+			transformInPlace((AArrayVector) v);
 			return;
 		}
 		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong length vector: "+v.length());
@@ -110,7 +110,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public void transformInPlace(ArrayVector v) {
+	public void transformInPlace(AArrayVector v) {
 		double[] dest=v.getArray();
 		int offset=v.getArrayOffset();
 		DoubleArrays.arraymultiply(data, 0, dest, offset, dimensions);

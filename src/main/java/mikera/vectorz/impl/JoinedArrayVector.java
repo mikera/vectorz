@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.AArrayVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
@@ -42,7 +42,7 @@ public final class JoinedArrayVector extends AVector {
 		return jav;
 	}
 	
-	public static JoinedArrayVector wrap(ArrayVector v) {
+	public static JoinedArrayVector wrap(AArrayVector v) {
 		return new JoinedArrayVector(v.length(),
 				new double[][] {v.getArray()},
 				new int[] {v.getArrayOffset()},
@@ -77,8 +77,8 @@ public final class JoinedArrayVector extends AVector {
 		return ArraySubVector.wrap(data[j], offsets[j], subLength(j));
 	}
 	
-	public List<ArrayVector> toSubArrays() {
-		ArrayList<ArrayVector> al=new ArrayList<ArrayVector>();
+	public List<AArrayVector> toSubArrays() {
+		ArrayList<AArrayVector> al=new ArrayList<AArrayVector>();
 		for (int i=0; i<numArrays; i++) {
 			al.add(subArrayVector(i));
 		}
@@ -159,14 +159,14 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public double dotProduct (AVector v) {
-		if (v instanceof ArrayVector) {
-			ArrayVector av=(ArrayVector)v;
+		if (v instanceof AArrayVector) {
+			AArrayVector av=(AArrayVector)v;
 			return dotProduct(av);
 		}
 		return super.dotProduct(v);
 	}
 	
-	public double dotProduct (ArrayVector v) {
+	public double dotProduct (AArrayVector v) {
 		double result=0.0;
 		double[] arr=v.getArray();
 		int ao=v.getArrayOffset();
@@ -439,11 +439,11 @@ public final class JoinedArrayVector extends AVector {
 	@Override
 	public AVector join(AVector v) {
 		if (v instanceof JoinedArrayVector) return joinVectors(this,(JoinedArrayVector) v);
-		if (v instanceof ArrayVector) return join((ArrayVector) v);
+		if (v instanceof AArrayVector) return join((AArrayVector) v);
 		return super.join(v);
 	}
 	
-	public JoinedArrayVector join(ArrayVector v) {
+	public JoinedArrayVector join(AArrayVector v) {
 		int newLen=length+v.length();
 		
 		int[] newOffsets=new int[numArrays+1];
@@ -509,7 +509,7 @@ public final class JoinedArrayVector extends AVector {
 		}
 	}
 
-	public static AVector joinVectors(ArrayVector a, ArrayVector b) {
+	public static AVector joinVectors(AArrayVector a, AArrayVector b) {
 		if (a.getArray()==b.getArray()) {
 			if ((a.getArrayOffset()+a.length())==b.getArrayOffset()) {
 				return Vectorz.wrap(a.getArray(),a.getArrayOffset(),a.length()+b.length());
