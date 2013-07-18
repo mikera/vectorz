@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
@@ -130,8 +131,12 @@ public class Vectorz {
 		nv.set(vector);
 		return nv;
 	}	
+
+	public static DoubleScalar createScalar(double value) {
+		return new DoubleScalar(value);
+	}	
 	
-	public static void copy(AVector source, int srcOffset, AVector dest, int destOffset, int length) {
+	static void copy(AVector source, int srcOffset, AVector dest, int destOffset, int length) {
 		source.copyTo(srcOffset, dest, destOffset, length);
 	}
 
