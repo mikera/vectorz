@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
@@ -17,7 +18,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class ArrayVector extends AVector {
+public abstract class ArrayVector extends AStridedVector {
 
 	public abstract double[] getArray();
 	
@@ -55,6 +56,11 @@ public abstract class ArrayVector extends AVector {
 	public boolean isView() {
 		// ArrayVector is usually a view
 		return true;
+	}
+	
+	@Override
+	public final int getStride() {
+		return 1;
 	}
 	
 	@Override
