@@ -939,7 +939,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			return false;
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				if (get(i, j) != a.get(i, j))
+				if (unsafeGet(i, j) != a.unsafeGet(i, j))
 					return false;
 			}
 		}
@@ -961,7 +961,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			ind[0]=i;
 			for (int j=0; j<cc; j++) {
 				ind[1]=j;
-				if (get(i,j) != v.get(ind)) return false;
+				if (unsafeGet(i,j) != v.get(ind)) return false;
 			}
 		}
 		return true;
@@ -978,7 +978,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			throw new VectorzException("Mismatched matrix sizes!");
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				if (!Tools.epsilonEquals(get(i, j), a.get(i, j)))
+				if (!Tools.epsilonEquals(unsafeGet(i, j), a.unsafeGet(i, j)))
 					return false;
 			}
 		}
@@ -1012,7 +1012,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				hashCode = 31 * hashCode + (Hash.hashCode(get(i, j)));
+				hashCode = 31 * hashCode + (Hash.hashCode(unsafeGet(i, j)));
 			}
 		}
 		return hashCode;
@@ -1073,9 +1073,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.get(i, k)*a.get(k, j);
+					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
 				}
-				result.set(i,j,acc);
+				result.unsafeSet(i,j,acc);
 			}
 		}
 		return result;		
@@ -1094,9 +1094,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.get(i, k)*a.get(k, j);
+					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
 				}
-				result.set(i,j,acc);
+				result.unsafeSet(i,j,acc);
 			}
 		}
 		return result;		
@@ -1149,7 +1149,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		assert(rc==columnCount());
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
-			result+=get(i,i);
+			result+=unsafeGet(i,i);
 		}
 		return result;
 	}
@@ -1300,7 +1300,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	public void addAt(int i, int j, double d) {
-		set(i,j,get(i,j)+d);
+		unsafeSet(i,j,unsafeGet(i,j)+d);
 	}
 	
 	public INDArray broadcast(int... targetShape) {
@@ -1324,7 +1324,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				if (get(i,j)!=0.0) return false;
+				if (unsafeGet(i,j)!=0.0) return false;
 			}
 		}
 		return true;
@@ -1346,7 +1346,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		if (rc!=cc) return false;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				if ((i!=j)&&(get(i,j)!=0.0)) return false;
+				if ((i!=j)&&(unsafeGet(i,j)!=0.0)) return false;
 			}
 		}
 		return true;
@@ -1357,7 +1357,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc=columnCount();
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				if ((i!=j)&&(get(i,j)!=0.0)) return false;
+				if ((i!=j)&&(unsafeGet(i,j)!=0.0)) return false;
 			}
 		}
 		return true;
@@ -1372,7 +1372,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		if (rc!=cc) return false;
 		for (int i=0; i<rc; i++) {
 			for (int j=i+1; j<cc; j++) {
-				if (get(i,j)!=get(j,i)) return false;
+				if (unsafeGet(i,j)!=unsafeGet(j,i)) return false;
 			}
 		}
 		return true;
@@ -1395,7 +1395,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc=columnCount();
 		for (int j=0; j<cc; j++) {
 			for (int i=j+1; i<rc; i++) {
-				if (get(i,j)!=0.0) return false;
+				if (unsafeGet(i,j)!=0.0) return false;
 			}
 		}
 		return true;
@@ -1409,7 +1409,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc=columnCount();
 		for (int i=0; i<rc; i++) {
 			for (int j=i+1; j<cc; j++) {
-				if (get(i,j)!=0.0) return false;
+				if (unsafeGet(i,j)!=0.0) return false;
 			}
 		}
 		return true;
