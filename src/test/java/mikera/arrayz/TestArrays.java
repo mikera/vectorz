@@ -3,6 +3,7 @@ package mikera.arrayz;
 import java.io.StringReader;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.SliceArray;
@@ -306,6 +307,18 @@ public class TestArrays {
 		a.clamp(12, 17);
 		assertEquals(14.0, Vectorz.maxValue(a.toVector()), 0.0001);
 	}
+	
+	private void testElementIterator(INDArray m) {
+		Iterator<Double> it=m.elementIterator();
+		
+		int i=0;
+		AVector av=m.asVector();
+		while (it.hasNext()) {
+			double v=it.next();
+			assertEquals(av.get(i++),v,0.0);
+		}
+		assertEquals(m.elementCount(),i);
+	}
 
 	private void testMathsFunctions(INDArray a) {
 		if (!a.isFullyMutable()) return;
@@ -376,6 +389,7 @@ public class TestArrays {
 		testMultiply(a);
 		testApplyOp(a);
 		testApplyAllOps(a);
+		testElementIterator(a);
 		testSums(a);
 		testEquals(a);
 		testIndexedAccess(a);

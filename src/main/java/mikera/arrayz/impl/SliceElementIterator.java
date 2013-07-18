@@ -41,7 +41,7 @@ public class SliceElementIterator implements Iterator<Double> {
 		Double d=inner.next();
 		if (!inner.hasNext()) {
 			pos++;
-			inner=source.slice(pos).elementIterator();
+			if (pos<maxPos) inner=source.slice(pos).elementIterator();
 		}
 		return d;
 	}
