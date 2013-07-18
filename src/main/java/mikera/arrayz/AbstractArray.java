@@ -8,7 +8,6 @@ import java.util.List;
 
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
-import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -55,6 +54,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				if (!s.epsilonEquals(a.slice(i),epsilon)) return false;
 			}			
 			return true;
+		}
+	}
+	
+	@Override
+	public void fill(double value) {
+		if (dimensionality()==0) {
+			set(value);
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				INDArray s=slice(i);
+				s.fill(value);
+			}			
 		}
 	}
 	
@@ -384,6 +396,54 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override
+	public void sqrt() {
+		if (dimensionality()==0) {
+			set(Math.sqrt(get()));
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).sqrt();
+			}
+		}
+	}
+	
+	@Override
+	public void log() {
+		if (dimensionality()==0) {
+			set(Math.log(get()));
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).log();
+			}
+		}
+	}
+	
+	@Override
+	public void exp() {
+		if (dimensionality()==0) {
+			set(Math.exp(get()));
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).exp();
+			}
+		}
+	}
+	
+	@Override
+	public void signum() {
+		if (dimensionality()==0) {
+			set(Math.signum(get()));
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).signum();
+			}
+		}
+	}
+	
 	
 	@Override
 	public INDArray reshape(int... targetShape) {
@@ -404,12 +464,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public AVector toVector() {
+	public Vector toVector() {
 		int n=(int)elementCount();
 		double[] data=new double[n];
 		this.getElements(data, 0);
 		return Vector.wrap(data);
 	}
+	
+	@Override
+	public List<Double> asElementList() {
+		return asVector().asElementList();
+	}
+
 	
 	@Override
 	public void getElements(double[] dest, int offset) {

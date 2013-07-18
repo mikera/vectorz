@@ -3,11 +3,14 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.matrixx.impl.ArrayMatrix;
+import mikera.matrixx.impl.StridedMatrix;
+import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.StridedArrayVector;
+import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -16,10 +19,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class Matrix extends AMatrix {
-	private final int rows;
-	private final int columns;
-	public final double[] data;
+public final class Matrix extends ArrayMatrix {
 	
 	public Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
@@ -40,12 +40,11 @@ public final class Matrix extends AMatrix {
 		set(m);
 	}
 	
-	public Matrix(Object... vs) {
-		AMatrix m=Matrixx.create(vs);
-		rows=m.rowCount();
-		columns=m.columnCount();
-		data=new double[rows*columns];
-		set(m);
+	public Matrix create(Object... rowVectors) {
+		AMatrix m=VectorMatrixMN.create(rowVectors);
+		Matrix r=new Matrix(m.rowCount(),m.columnCount(),new double[rows*cols]);
+		r.set(m);
+		return r;
 	}
 	
 	@Override
@@ -58,9 +57,7 @@ public final class Matrix extends AMatrix {
 	}
 	
 	private Matrix(int rowCount, int columnCount, double[] data) {
-		this.rows=rowCount;
-		this.columns=columnCount;
-		this.data=data;
+		super(data,rowCount,columnCount);
 	}
 	
 	public static Matrix wrap(int rowCount, int columnCount, double[] data) {
@@ -68,6 +65,31 @@ public final class Matrix extends AMatrix {
 		return new Matrix(rowCount,columnCount,data);
 	}
 	
+	@Override
+	public AVector innerProduct(AVector a) {
+		if (a instanceof Vector) return innerProduct((Vector)a);
+		return super.innerProduct(a);
+	}
+	
+	public Vector innerProduct(Vector a) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if ((cc!=a.length())) {
+			throw new VectorzException("Matrix sizes not compatible!");
+		}		
+		Vector result=Vector.createLength(rows);
+		for (int i=0; i<rc; i++) {
+			int di=i*cc;
+			double acc=0.0;
+			for (int j=0; j<cc; j++) {
+				acc+=data[di+j]*a.data[j];
+			}
+			result.set(i,acc);
+		}
+		return result;
+	}
+	
+	@Override
 	public Matrix innerProduct(Matrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
@@ -123,13 +145,18 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
+	public Matrix clone() {
+		return new Matrix(rows,cols,data.clone());
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		assert(rowCount()==dest.length());
 		assert(columnCount()==source.length());
 		int index=0;
 		for (int i=0; i<rows; i++) {
 			double acc=0.0;
-			for (int j=0; j<columns; j++) {
+			for (int j=0; j<cols; j++) {
 				acc+=data[index++]*source.get(j);
 			}
 			dest.set(i,acc);
@@ -138,12 +165,12 @@ public final class Matrix extends AMatrix {
 	
 	@Override
 	public ArraySubVector getRow(int row) {
-		return ArraySubVector.wrap(data,row*columns,columns);
+		return ArraySubVector.wrap(data,row*cols,cols);
 	}
 	
 	@Override
-	public AVector getColumn(int row) {
-		return StridedArrayVector.wrap(data,row,rows,columns);
+	public StridedVector getColumn(int row) {
+		return StridedVector.wrap(data,row,rows,cols);
 	}
 
 	@Override
@@ -153,14 +180,14 @@ public final class Matrix extends AMatrix {
 
 	@Override
 	public int columnCount() {
-		return columns;
+		return cols;
 	}
 	
 	@Override
 	public void swapRows(int i, int j) {
 		if (i == j) return;
-		int a = i*columns;
-		int b = j*columns;
+		int a = i*cols;
+		int b = j*cols;
 		int cc = columnCount();
 		for (int k = 0; k < cc; k++) {
 			double t = data[a+k];
@@ -170,18 +197,31 @@ public final class Matrix extends AMatrix {
 	}
 	
 	@Override
+	public void swapColumns(int i, int j) {
+		if (i == j) return;
+		int rc = rowCount();
+		int cc = columnCount();
+		for (int k = 0; k < rc; k++) {
+			int x=k*cc;
+			double t = data[i+x];
+			data[i+x]=data[j+x];
+			data[j+x]=t;
+		}
+	}
+	
+	@Override
 	public void multiplyRow(int i, double factor) {
-		int offset=i*columns;
-		for (int j=0; j<columns; j++) {
+		int offset=i*cols;
+		for (int j=0; j<cols; j++) {
 			data[offset+j]*=factor;
 		}
 	}
 	
 	@Override
 	public void addRowMultiple(int src, int dst, double factor) {
-		int soffset=src*columns;
-		int doffset=dst*columns;
-		for (int j=0; j<columns; j++) {
+		int soffset=src*cols;
+		int doffset=dst*cols;
+		for (int j=0; j<cols; j++) {
 			data[doffset+j]+=factor*data[soffset+j];
 		}
 	}
@@ -198,12 +238,12 @@ public final class Matrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		return data[(row*columns)+column];
+		return data[(row*cols)+column];
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		data[(row*columns)+column]=value;
+		data[(row*cols)+column]=value;
 	}
 	
 	@Override
@@ -269,20 +309,25 @@ public final class Matrix extends AMatrix {
 	@Override
 	public void set(AMatrix a) {
 		int rc = rowCount();
-		assert(rc==a.rowCount());
+		if (!(rc==a.rowCount())) throw new IllegalArgumentException("Non-matching row count");
 		int cc = columnCount();
-		assert(cc==a.columnCount());
-		int di=0;
-		for (int row = 0; row < rc; row++) {
-			for (int column = 0; column < cc; column++) {
-				data[di++]=a.get(row, column);
-			}
-		}
+		if (!(cc==a.columnCount())) throw new IllegalArgumentException("Non-matching column count");
+		a.getElements(this.data, 0);
 	}
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(data, 0, dest, offset, data.length);
+	}
+	
+	@Override
+	public StridedMatrix getTranspose() {
+		return StridedMatrix.wrap(data,cols,rows,0,1,cols);
+	}
+	
+	@Override
+	public StridedMatrix getTransposeView() {
+		return StridedMatrix.wrap(data,cols,rows,0,1,cols);
 	}
 	
 	@Override 
@@ -303,6 +348,22 @@ public final class Matrix extends AMatrix {
 	@Override
 	public Matrix exactClone() {
 		return new Matrix(this);
+	}
+
+	@Override
+	public void setRow(int i, AVector row) {
+		int cc=columnCount();
+		if (row.length()!=cc) throw new IllegalArgumentException("Row has wrong length: "+row.length());
+		row.getElements(data, i*cc);
+	}
+	
+	@Override
+	public void setColumn(int j, AVector col) {
+		int rc=rowCount();
+		if (col.length()!=rc) throw new IllegalArgumentException("Column has wrong length: "+col.length());
+		for (int i=0; i<rc; i++) {
+			data[i*cols+j]=col.get(j);
+		}
 	}
 
 }

@@ -84,36 +84,4 @@ public final class Tools {
 		if ((diff>tolerance)||(diff<-tolerance)) return false;
 		return true;
 	}
-
-	public static int[] consArray(int a, int[] as) {
-		int len=as.length;
-		int[] nas=new int[len+1];
-		nas[0]=a;
-		System.arraycopy(as, 0, nas, 1, len);
-		return nas;
-	}
-
-	public static void copyIntsToLongs(int[] src, long[] dst) {
-		for (int i=0; i<src.length; i++) {
-			dst[i]=src[i];
-		}
-	}
-
-	public static long arrayProduct(int[] shape) {
-		long r=1;
-		for (int x:shape) {
-			r*=x;
-		}
-		return r;
-	}
-
-	public static long arrayProduct(int[] shape, int from, int to) {
-		long r=1;
-		for (int i=from; i<to; i++) {
-			r*=shape[i];
-		}
-		return r;
-	}
-
-
 }

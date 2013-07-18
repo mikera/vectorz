@@ -13,6 +13,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.IntArrays;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -119,7 +120,7 @@ public class TestArrays {
 
 		a = a.exactClone();
 		INDArray c = a.clone();
-		a.set(Double.NaN);
+		a.fill(Double.NaN);
 
 		double[] arr = c.asVector().toArray();
 		assertEquals(a.elementCount(), arr.length);
@@ -142,7 +143,7 @@ public class TestArrays {
 		}
 
 		INDArray b = a.exactClone();
-		b.set(Double.NaN);
+		b.fill(Double.NaN);
 		b.setElements(data, 1, ecount);
 		assertEquals(a, b);
 	}
@@ -158,21 +159,35 @@ public class TestArrays {
 	}
 
 	private void testApplyAllOps(INDArray a) {
+		if (!a.isFullyMutable()) return;
 		for (Op op : TestOps.ALL_OPS) {
+			if (op.isStochastic()) continue;
 			int n = (int) a.elementCount();
 
 			INDArray b = a.exactClone();
+			INDArray c = a.exactClone();
+			INDArray d = a.exactClone();
 			AVector v = b.toVector();
+			assertEquals(n,v.length());
 			double[] ds = new double[n];
 			double[] tmp = new double[n];
 			a.getElements(ds, 0);
 
-			for (int i = 0; i < n; i++)
-				tmp[i] = op.apply(b.get(i));
+			boolean nan=false;
+			for (int i = 0; i < n; i++) {
+				double x= op.apply(v.get(i));
+				if (Double.isNaN(x)) nan=true;
+				tmp[i] = x;
+			}
+			if (nan) continue; // TODO: compare NaNs properly
 			op.applyTo(b);
+			c.applyOp(op);
 			op.applyTo(v);
 			op.applyTo(ds);
+			op.applyTo(d.asVector());
 
+			assertEquals(b, c);
+			assertEquals(b, d);
 			assertEquals(v, b.toVector());
 			assertEquals(v, Vector.wrap(ds));
 			assertEquals(v, Vector.wrap(tmp));
@@ -284,7 +299,7 @@ public class TestArrays {
 		b.clamp(-Double.MAX_VALUE, Double.MAX_VALUE);
 		assertEquals(a, b);
 
-		a.set(13.0);
+		a.fill(13.0);
 		a.clamp(14, 15);
 		assertEquals(14.0, Vectorz.minValue(a.toVector()), 0.0001);
 		a.clamp(12, 17);
@@ -314,6 +329,44 @@ public class TestArrays {
 		v.square();
 		assertEquals(v, b.toVector());
 	}
+	
+	private void testIndexedAccess(INDArray a) {
+		if ((a.elementCount() <= 1)) return;
+
+		// 0d indexed access
+		try {
+			a.get();
+			fail("0d get should fail for array with shape: "+a.getShape());
+		} catch (Throwable t) { /* OK */ }
+		
+		try {
+			a.set(1.0);
+			fail("0d set should fail for array with shape: "+a.getShape());
+		} catch (Throwable t) { /* OK */ }
+
+		try {
+			a.get(IntArrays.EMPTY_INT_ARRAY);
+			fail("0d get should fail for array with shape: "+a.getShape());
+		} catch (Throwable t) { /* OK */ }
+		
+		try {
+			a.set(IntArrays.EMPTY_INT_ARRAY,1.0);
+			fail("0d set should fail for array with shape: "+a.getShape());
+		} catch (Throwable t) { /* OK */ }
+
+		// 1D indexed access
+		if (a.dimensionality()>1) {
+			try {
+				a.get(0);
+				fail("1d get should fail for array with shape: "+a.getShape());
+			} catch (Throwable t) { /* OK */ }
+			
+			try {
+				a.set(0,1.0);
+				fail("1d set should fail for array with shape: "+a.getShape());
+			} catch (Throwable t) { /* OK */ }
+		}
+	}
 
 	public void testArray(INDArray a) {
 		a.validate();
@@ -324,6 +377,7 @@ public class TestArrays {
 		testApplyAllOps(a);
 		testSums(a);
 		testEquals(a);
+		testIndexedAccess(a);
 		testMathsFunctions(a);
 		testTranspose(a);
 		testSetElements(a);
@@ -347,9 +401,11 @@ public class TestArrays {
 		testArray(sa);
 
 		NDArray nd1 = NDArray.newArray(3, 3, 3);
+		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
 
 		NDArray ndscalar = NDArray.newArray();
+		ndscalar.set(1.0);
 		testArray(ndscalar);
 	}
 }

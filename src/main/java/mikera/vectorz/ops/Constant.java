@@ -36,7 +36,7 @@ public final class Constant extends ALinearOp {
 	
 	@Override
 	public void applyTo(INDArray v) {
-		v.set(value);
+		v.fill(value);
 	}
 	
 	@Override

@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import mikera.indexz.Index;
 import mikera.matrixx.impl.DiagonalMatrix;
+import mikera.matrixx.impl.PermutationMatrix;
+import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.Vector;
@@ -55,5 +57,26 @@ public class TestMatrices {
 		
 		assertEquals(new Matrix22(1,2,6,8),d.compose(m));
 		assertEquals(new Matrix22(1,4,3,8),m.compose(d));
+	}
+	
+	@Test public void testStridedMatrix() {
+		StridedMatrix m=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
+		m=m.getTranspose();
+		assertEquals(m.clone(),m);
+		assertEquals(m.getRow(1),m.clone().getRow(1));
+		assertEquals(m.getTranspose(),m.getTranspose().clone());
+	}
+	
+	@Test public void testPermutationMatrix() {
+		PermutationMatrix p=PermutationMatrix.createRandomPermutation(10);
+		
+		assertTrue(p.innerProduct(p.getTranspose()).isIdentity());
+		
+		try {
+			p=PermutationMatrix.create(0,1,2,2,4);
+			fail("Should not be able to create PermutationMatrix with invalid permutation");
+		} catch (Throwable t) {
+			// OK
+		}
 	}
 }

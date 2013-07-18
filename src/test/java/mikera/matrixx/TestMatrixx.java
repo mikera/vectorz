@@ -2,6 +2,8 @@ package mikera.matrixx;
 
 import static org.junit.Assert.*;
 
+import java.util.Iterator;
+
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
@@ -9,9 +11,11 @@ import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -30,7 +34,7 @@ public class TestMatrixx {
 		AVector v = Vectorz.createUniformRandomVector(m.rowCount());
 		
 		AMatrix mi=m.inverse();
-		assertEquals(1.0/m.determinant(),mi.determinant(),0.001);
+		assertEquals(1.0,m.determinant()*mi.determinant(),0.001);
 		
 		AVector mv=m.transform(v);
 		AVector mimv=mi.transform(mv);
@@ -52,14 +56,11 @@ public class TestMatrixx {
 		Matrix33 rot=Matrixx.createRotationMatrix(v, angle);
 		
 		AVector r=rot.transform(v);
-		assertTrue(r instanceof Vector3);
 		assertEquals(v.get(0),r.get(0),0.00001);
 		assertEquals(v.get(1),r.get(1),0.00001);
 		assertEquals(v.get(2),r.get(2),0.00001);
 		assertEquals(v.magnitude(),r.magnitude(),0.00001);
 		assertTrue(r.epsilonEquals(v));
-		
-		
 	}
 	
 	@Test
@@ -359,7 +360,9 @@ public class TestMatrixx {
 		assertEquals(0.78,row.get(0),0.0);
 		assertEquals(0.78,col.get(0),0.0);
 		
-
+		new TestArrays().testArray(row);
+		new TestArrays().testArray(col);
+		new TestArrays().testArray(all);
 	}
 	
 	void doVectorTest(AMatrix m) {
@@ -367,7 +370,7 @@ public class TestMatrixx {
 		AVector v=m.asVector();
 		assertEquals(v,m.toVector());
 		
-		assertEquals(m.elementSum(),v.elementSum(),0.0);
+		assertEquals(m.elementSum(),v.elementSum(),0.000001);
 		
 		AMatrix m2=Matrixx.createFromVector(v, m.rowCount(), m.columnCount());
 		
@@ -407,13 +410,16 @@ public class TestMatrixx {
 		
 		c.asVector().fill(5.0);
 		d.applyOp(Constant.create(5.0));
-		assertTrue(c.equals(d));
+		assertEquals(c,d);
+		assertTrue(d.epsilonEquals(c));
 	}
 	
 	private void testExactClone(AMatrix m) {
 		AMatrix c=m.exactClone();
 		AMatrix d=m.clone();
+		Matrix mc=m.toMatrix();
 		
+		assertEquals(m,mc);
 		assertEquals(m,c);
 		assertEquals(m,d);
 	}
@@ -424,7 +430,7 @@ public class TestMatrixx {
 	}
 	
 	void doScaleTest(AMatrix m) {
-		if(!m.isMutable()) return;
+		if(!m.isFullyMutable()) return;
 		AMatrix m1=m.exactClone();
 		AMatrix m2=m.clone();
 		
@@ -492,7 +498,21 @@ public class TestMatrixx {
 		}
 	}
 	
+	private void doElementIteratorTest(AMatrix m) {
+		Iterator<Double> it=m.elementIterator();
+		
+		int i=0;
+		AVector av=m.asVector();
+		while (it.hasNext()) {
+			double v=it.next();
+			assertEquals(av.get(i++),v,0.0);
+		}
+		assertEquals(m.elementCount(),i);
+	}
+	
 	void doGenericTests(AMatrix m) {
+		m.validate();
+		
 		testApplyOp(m);
 		testExactClone(m);
 		testSparseClone(m);
@@ -500,6 +520,7 @@ public class TestMatrixx {
 		doTransposeTest(m);
 		doTriangularTests(m);
 		doVectorTest(m);
+		doElementIteratorTest(m);
 		doParseTest(m);
 		doHashTest(m);
 		doNDArrayTest(m);
@@ -575,5 +596,17 @@ public class TestMatrixx {
 		doGenericTests(new ColumnMatrix(Vector.of(1,2,3,4)));
 		doGenericTests(new RowMatrix(Vector3.of(1,2,3)));
 		doGenericTests(new ColumnMatrix(Vector3.of(1,2,3)));
+		
+		StridedMatrix strm=StridedMatrix.create(1, 1);
+		doGenericTests(strm);
+		strm=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
+		doGenericTests(strm);
+		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3)));
+		doGenericTests(strm);
+		
+		doGenericTests(PermutationMatrix.create(0,1,2));
+		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(10)));
+
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 
 /**
  * Interface for general multi-dimensional arrays of doubles
@@ -80,7 +81,20 @@ public interface INDArray extends Cloneable {
 	public void add(INDArray a);
 	public void sub(INDArray a);
 	
+	/**
+	 * Fills the array with asingle double value
+	 * @param value
+	 */
+	public void fill(double value);
+	
+	/**
+	 * Negates all elements in the array
+	 */
 	public void negate();
+	
+	/**
+	 * Replaces all elements in the array with their reciprocal
+	 */
 	public void reciprocal();
 	
 	public void clamp(double min, double max);
@@ -105,9 +119,11 @@ public interface INDArray extends Cloneable {
 	 */
 	public AVector asVector();
 	
-	public INDArray reshape(int... dimensions);
+	public List<Double> asElementList();
+	
+	public INDArray reshape(int... shape);
 
-	public INDArray broadcast(int... dimensions);
+	public INDArray broadcast(int... shape);
 
 	public INDArray slice(int majorSlice);
 
@@ -122,7 +138,10 @@ public interface INDArray extends Cloneable {
 	 */
 	public INDArray getTransposeView();
 
-	
+	/**
+	 * returns the number of major slices in this array.
+	 * @return
+	 */
 	public int sliceCount();
 	
 	/**
@@ -256,6 +275,16 @@ public interface INDArray extends Cloneable {
 	 * Squares all elements of the array
 	 */
 	public void square();
+	
+	/**
+	 * Computes the square root of all elements in the array
+	 */
+	public void sqrt();
+	
+	/**
+	 * Calculates the signum of all elements of the array
+	 */
+	public void signum();
 
 	/**
 	 * Returns a list of all major slices of this array.
@@ -295,12 +324,22 @@ public interface INDArray extends Cloneable {
 	 * Converts the array into a flattened vector
 	 * @return
 	 */
-	public AVector toVector();
+	public Vector toVector();
 
 	public boolean epsilonEquals(INDArray a);
 	public boolean epsilonEquals(INDArray a, double epsilon);
 
+	/**
+	 * Replaces all elements of this array with their absolute values, according to Math.abs(double)
+	 */
 	public void abs();
+
+	/**
+	 * Computes the natural logarithm (in-place) for all array elements
+	 */
+	public void log();
+
+	public void exp();
 
 
 }

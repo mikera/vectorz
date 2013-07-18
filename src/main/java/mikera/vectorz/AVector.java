@@ -427,6 +427,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
+	public void log() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double val=get(i);
+			set(i,Math.log(val));
+		}
+	}
+	
 	/**
 	 * Sets each component of the vector to its sign value (-1, 0 or 1)
 	 */
@@ -517,15 +526,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return super.outerProduct(a);
 	}
 	
-	public AScalar innerProduct(AVector v) {
+	public DoubleScalar innerProduct(AVector v) {
 		return DoubleScalar.create(dotProduct(v));
 	}
 	
-	public AVector innerProduct(AMatrix m) {
+	public Vector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
 		int rc=m.rowCount();
 		if (rc!=length()) throw new VectorzException("Incompatible sizes for inner product: ["+length()+ "] x ["+rc+","+cc+"]");
-		AVector r=Vectorz.newVector(cc);
+		Vector r=Vector.createLength(cc);
 		for (int i=0; i<cc; i++) {
 			double y=0.0;
 			for (int j=0; j<rc; j++) {
@@ -709,11 +718,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public void set(double a) {
-		fill(a);
+	public final void set(double a) {
+		throw new UnsupportedOperationException("0d set not supported for vectors - use fill instead?");
 	}
 	
+	@Deprecated
 	public void set(double[] data) {
+		setElements(data,0,length());
+	}
+	
+	@Override
+	public void setElements(double[] data) {
 		setElements(data,0,length());
 	}
 	
@@ -1012,6 +1027,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		sb.append(']');
 		return sb.toString();
+	}
+	
+	@Override
+	public Vector toVector() {
+		return Vector.create(this);
 	}
 	
 	public List<Double> asElementList() {

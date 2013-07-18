@@ -121,4 +121,39 @@ public final class DoubleArrays {
 			data[i+offset]=(factor*data[i+offset])+constant;
 		}
 	}
+
+	public static void abs(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			double val=data[i+offset];
+			if (val<0) data[i+offset]=-val;
+		}
+	}
+	
+	public static void exp(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			double val=data[i+offset];
+			data[i+offset]=Math.exp(val);
+		}
+	}
+	
+	public static void log(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			double val=data[i+offset];
+			data[i+offset]=Math.log(val);
+		}
+	}
+
+	public static void sqrt(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			double val=data[i+offset];
+			data[i+offset]=Math.sqrt(val);
+		}
+	}
+
+	public static void negate(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			double val=data[i+offset];
+			data[i+offset]=-val;
+		}
+	}
 }

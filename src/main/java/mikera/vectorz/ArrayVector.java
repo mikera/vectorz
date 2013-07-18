@@ -69,7 +69,7 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void fillRange(int offset, int length, double value) {
-		assert ((offset>=0)||((offset+length)<=length()));
+		assert ((offset>=0)&&(length>=0)&&((offset+length)<=length()));
 		double[] arr=getArray();
 		int off=getArrayOffset();
 		Arrays.fill(arr, off+offset, off+offset+length, value);
@@ -254,14 +254,18 @@ public abstract class ArrayVector extends AVector {
 	
 	@Override
 	public void abs() {
-		int len=length();
-		double[] data=getArray();
-		int offset=getArrayOffset();
-		for (int i=0; i<len; i++) {
-			double val=data[i+offset];
-			if (val<0) data[i+offset]=-val;
-		}
-	}
+		DoubleArrays.abs(getArray(),getArrayOffset(),length());
+	} 
+	
+	@Override
+	public void log() {
+		DoubleArrays.log(getArray(),getArrayOffset(),length());
+	} 
+	
+	@Override
+	public void exp() {
+		DoubleArrays.exp(getArray(),getArrayOffset(),length());
+	} 
 	
 	@Override
 	public void applyOp(Op op) {
@@ -281,6 +285,11 @@ public abstract class ArrayVector extends AVector {
 	@Override
 	public void square() {
 		DoubleArrays.square(getArray(), getArrayOffset(), length());	
+	}
+	
+	@Override
+	public void sqrt() {
+		DoubleArrays.sqrt(getArray(), getArrayOffset(), length());	
 	}
 	
 	/**

@@ -153,8 +153,8 @@ public class Matrixx {
 		return createRotationMatrix(0, 0, 1, angle);
 	}
 
-	public static AMatrix createRandomSquareMatrix(int dimensions) {
-		AMatrix m = createSquareMatrix(dimensions);
+	public static Matrix createRandomSquareMatrix(int dimensions) {
+		Matrix m = createSquareMatrix(dimensions);
 		fillRandomValues(m);
 		return m;
 	}
@@ -317,19 +317,13 @@ public class Matrixx {
 	 * @param columns
 	 * @return
 	 */
-	public static AMatrix newMatrix(int rows, int columns) {
-		if ((rows == columns)) {
-			if (rows == 3)
-				return new Matrix33();
-			if (rows == 2)
-				return new Matrix22();
-		}
-		return new Matrix(rows, columns);
+	public static Matrix newMatrix(int rows, int columns) {
+		return Matrix.create(rows, columns);
 	}
 
-	public static AMatrix createFromVector(AVector data, int rows, int columns) {
+	public static Matrix createFromVector(AVector data, int rows, int columns) {
 		assert (data.length() == rows * columns);
-		AMatrix m = newMatrix(rows, columns);
+		Matrix m = newMatrix(rows, columns);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				m.set(i, j, data.get(i * columns + j));
@@ -338,30 +332,14 @@ public class Matrixx {
 		return m;
 	}
 
-	private static AMatrix createSquareMatrix(int dimensions) {
-		switch (dimensions) {
-		case 2:
-			return new Matrix22();
-		case 3:
-			return new Matrix33();
-		default:
-			return newMatrix(dimensions, dimensions);
-		}
+	private static Matrix createSquareMatrix(int dimensions) {
+		return newMatrix(dimensions, dimensions);
 	}
 
 	/**
 	 * Creates a mutable deep copy of a matrix
 	 */
-	public static AMatrix create(AMatrix m) {
-		int rows = m.rowCount();
-		int columns = m.columnCount();
-		if (rows == columns) {
-			if (rows == 3) {
-				return new Matrix33(m);
-			} else if (rows == 2) {
-				return new Matrix22(m);
-			}
-		}
+	public static Matrix create(AMatrix m) {
 		return new Matrix(m);
 	}
 
@@ -371,13 +349,18 @@ public class Matrixx {
 	 * @param rows
 	 * @return
 	 */
-	public static AMatrix create(List<Object> rows) {
+	public static Matrix create(List<Object> rows) {
 		int rc = rows.size();
-		AVector[] vs = new AVector[rc];
-		for (int i = 0; i < rc; i++) {
-			vs[i] = Vectorz.create(rows.get(i));
+		AVector firstRow=Vectorz.create(rows.get(0));
+		int cc=firstRow.length();
+		
+		Matrix m=Matrix.create(rc, cc);
+		m.setRow(0,firstRow);
+		
+		for (int i = 1; i < rc; i++) {
+			m.setRow(i, Vectorz.create(rows.get(i)));
 		}
-		return VectorMatrixMN.wrap(vs);
+		return m;
 	}
 
 	/**
@@ -453,7 +436,7 @@ public class Matrixx {
 		return m;
 	}
 
-	public static AMatrix deepCopy(AMatrix m) {
+	public static Matrix deepCopy(AMatrix m) {
 		return create(m);
 	}
 

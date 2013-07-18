@@ -286,6 +286,24 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void exp() {
+		left.exp();
+		right.exp();
+	}
+	
+	@Override
+	public void log() {
+		left.log();
+		right.log();
+	}
+	
+	@Override
+	public void negate() {
+		left.negate();
+		right.negate();
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		left.applyOp(op);
 		right.applyOp(op);
@@ -349,6 +367,12 @@ public final class JoinedVector extends AVector {
 	public void square() {
 		left.square();
 		right.square();
+	}
+	
+	@Override
+	public void sqrt() {
+		left.sqrt();
+		right.sqrt();
 	}
 	
 	@Override 

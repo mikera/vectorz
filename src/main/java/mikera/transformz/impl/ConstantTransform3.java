@@ -4,6 +4,7 @@ import mikera.transformz.ATranslation;
 import mikera.transformz.Translation3;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 
 /**
@@ -55,7 +56,11 @@ public final class ConstantTransform3 extends AConstantTransform implements ISpe
 	}
 	
 	@Override
-	public Vector3 transform(AVector source) {
+	public Vector transform(AVector source) {
+		return Vector.of(x,y,z);
+	}
+	
+	public Vector3 transform(Vector3 source) {
 		return Vector3.of(x,y,z);
 	}
 	

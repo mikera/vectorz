@@ -22,7 +22,7 @@ import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
-import mikera.vectorz.impl.StridedArrayVector;
+import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Constant;
@@ -352,7 +352,7 @@ public class TestVectors {
 
 		Vectorz.fillRandom(v);
 		double[] data=v.toArray();
-		v2.set(data);
+		v2.setElements(data);
 		assertEquals(v,v2);
 	}
 	
@@ -801,7 +801,7 @@ public class TestVectors {
 		doGenericTests(jav2.join(jav1).subVector(2, 5));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
 		
-		doGenericTests(StridedArrayVector.wrap(new double[]{}, 0, 0, 100));
-		doGenericTests(StridedArrayVector.wrap(new double[]{1,2}, 1, 1, 100));
+		doGenericTests(StridedVector.wrap(new double[]{}, 0, 0, 100));
+		doGenericTests(StridedVector.wrap(new double[]{1,2}, 1, 1, 100));
 	}
 }

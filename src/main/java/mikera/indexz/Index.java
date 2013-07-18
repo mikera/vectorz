@@ -54,6 +54,49 @@ public final class Index extends AIndex {
 		return true;
 	}
 	
+	@Override
+	public boolean isPermutation() {
+		int n=length();
+		boolean[] chk=new boolean[n];
+		for (int i=0; i<n; i++) {
+			int v=data[i];
+			if (chk[v]) return false;
+			chk[v]=true;
+		}
+		for (int i=0; i<n; i++) {
+			if (!chk[i]) return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Counts the number of swaps required to create this permutation
+	 * @return
+	 */
+	public int swapCount() {
+		int n=length();
+		int swaps=0;
+		boolean[] seen=new boolean[n];
+		for (int i=0; i<n; i++) {
+			if (seen[i]) continue;
+			seen[i]=true;
+			for(int j=data[i]; !seen[j]; j=data[j]) {
+				seen[j]=true;
+				swaps++;
+			}		
+		}
+		return swaps;
+	}
+	
+	public boolean isOddPermutation() {
+		return (swapCount()&1)==1;
+	}
+	
+	public boolean isEvenPermutation() {
+		return (swapCount()&1)==0;
+	}
+	
+	
 	/**
 	 * Creates a new Index, wrapping the provided index array
 	 */
@@ -199,5 +242,32 @@ public final class Index extends AIndex {
 			}
 		}
 		return min;
+	}
+
+	/**
+	 * Finds a value in this Index and return's it's position, or -1 if not found
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public int find(int value) {
+		for (int i=0; i<data.length; i++) {
+			if (data[i]==value) return i;
+		}
+			
+		return -1;
+	}
+
+	/**
+	 * Inverts the permutation represented by this Index
+	 * @return
+	 */
+	public Index invert() {
+		int n=length();
+		Index ni=new Index(n);
+		for (int i=0; i<n; i++) {
+			ni.set(this.get(i), i);
+		}
+		return ni;
 	}
 }

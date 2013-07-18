@@ -9,12 +9,11 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
-import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.StridedArrayVector;
+import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
@@ -107,7 +106,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	@Override
 	public long[] getLongShape() {
 		long[] sh=new long[dimensions];
-		Tools.copyIntsToLongs(shape,sh);
+		IntArrays.copyIntsToLongs(shape,sh);
 		return sh;
 	}
 
@@ -233,7 +232,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		} else if (dimensions==0) {
 			return ArraySubVector.wrap(data,offset,1);
 		} else if (dimensions==1) {
-			return StridedArrayVector.wrap(data, offset, getShape(0), getStride(0));
+			return StridedVector.wrap(data, offset, getShape(0), getStride(0));
 		} else {
 			AVector v=Vector0.INSTANCE;
 			int n=getShape(0);
@@ -279,7 +278,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 			if (st==1) {
 				return Vectorz.wrap(data, offset+majorSlice*getStride(0), getShape(1));
 			} else {
-				return StridedArrayVector.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
+				return StridedVector.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
 			}
 		} else {
 			return new NDArray(data,
@@ -295,7 +294,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimension==0) return slice(index);
 		if (dimensions==2) {
 			if (dimension!=1) throw new IllegalArgumentException("Dimension out of range!");
-			return StridedArrayVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
+			return StridedVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
 		return new NDArray(data,
 				offset,
@@ -314,7 +313,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	@Override
 	public long elementCount() {
-		return Tools.arrayProduct(shape);
+		return IntArrays.arrayProduct(shape);
 	}
 
 	@Override
@@ -436,7 +435,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 			}
 		} else {
 			int sc=getShape(0);
-			int ssize=(int) Tools.arrayProduct(shape,1,dimensions);
+			int ssize=(int) IntArrays.arrayProduct(shape,1,dimensions);
 			for (int i=0; i<sc; i++) {
 				slice(i).setElements(values,offset+ssize*i,ssize);
 			}

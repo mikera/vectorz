@@ -337,9 +337,51 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void abs() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.abs(this.data[j],offsets[j],subLength(j));
+		}		
+	}
+	
+	@Override
+	public void exp() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.exp(this.data[j],offsets[j],subLength(j));
+		}		
+	}
+	
+	@Override
+	public void log() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.log(this.data[j],offsets[j],subLength(j));
+		}		
+	}
+	
+	@Override
+	public void signum() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.signum(this.data[j],offsets[j],subLength(j));
+		}		
+	}
+	
+	@Override
 	public void square() {
 		for (int j=0; j<numArrays; j++) {
 			DoubleArrays.square(this.data[j],offsets[j],subLength(j));
+		}		
+	}
+	
+	@Override
+	public void sqrt() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.sqrt(this.data[j],offsets[j],subLength(j));
+		}		
+	}
+	
+	@Override
+	public void negate() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.negate(this.data[j],offsets[j],subLength(j));
 		}		
 	}
 

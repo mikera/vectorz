@@ -9,6 +9,8 @@ import java.util.List;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.SliceArray;
+import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
@@ -24,6 +26,7 @@ import mikera.vectorz.ArrayVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.VectorzException;
@@ -79,6 +82,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override 
 	public void set(double value) {
+		throw new VectorzException("0D set not supported on matrix!");
+	}
+	
+	@Override 
+	public void fill(double value) {
 		asVector().fill(value);
 	}
 	
@@ -234,6 +242,20 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public boolean isSquare() {
 		return rowCount() == columnCount();
 	}
+	
+	public boolean isOrthogonal() {
+		return isSquare()
+				&&getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
+	}
+
+	
+	public boolean hasOrthonormalColumns() {
+		return getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
+	}
+	
+	public boolean hassOrthonormalRows() {
+		return innerProduct(getTranspose()).epsilonEquals(IdentityMatrix.create(columnCount()));
+	}
 
 	@Override
 	public int inputDimensions() {
@@ -289,7 +311,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 			temp[row] = total;
 		}
-		v.set(temp);
+		v.setElements(temp);
 	}
 	
 	public void transformInPlace(ArrayVector v) {
@@ -308,15 +330,15 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 			temp[row] = total;
 		}
-		v.set(temp);
+		v.setElements(temp);
 	}
 
 
 	@SuppressWarnings("serial")
-	private class MatrixRow extends MatrixSubVector {
+	private class MatrixRowView extends MatrixSubVector {
 		private final int row;
 
-		private MatrixRow(int row) {
+		private MatrixRowView(int row) {
 			this.row = row;
 		}
 
@@ -342,16 +364,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 		
 		@Override
-		public MatrixRow exactClone() {
-			return AMatrix.this.exactClone().new MatrixRow(row);
+		public MatrixRowView exactClone() {
+			return AMatrix.this.exactClone().new MatrixRowView(row);
 		}
 	}
 
 	@SuppressWarnings("serial")
-	private class MatrixColumn extends MatrixSubVector {
+	private class MatrixColumnView extends MatrixSubVector {
 		private final int column;
 
-		private MatrixColumn(int column) {
+		private MatrixColumnView(int column) {
 			this.column = column;
 		}
 
@@ -376,8 +398,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		
 		@Override
-		public MatrixColumn exactClone() {
-			return AMatrix.this.exactClone().new MatrixColumn(column);
+		public MatrixColumnView exactClone() {
+			return AMatrix.this.exactClone().new MatrixColumnView(column);
 		}
 	}
 
@@ -385,14 +407,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Returns a row of the matrix as a vector view
 	 */
 	public AVector getRow(int row) {
-		return new MatrixRow(row);
+		return new MatrixRowView(row);
 	}
 
 	/**
 	 * Returns a column of the matrix as a vector view
 	 */
 	public AVector getColumn(int column) {
-		return new MatrixColumn(column);
+		return new MatrixColumnView(column);
 	}
 
 	public AVector cloneRow(int row) {
@@ -667,6 +689,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;
 	}
 	
+	public Iterator<Double> elementIterator() {
+		return new MatrixElementIterator(this);
+	}
+	
 	@Override
 	public long nonZeroCount() {
 		long result=0;
@@ -710,6 +736,38 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 	}
 	
+	@Override
+	public void sqrt() {
+		int sc=rowCount();
+		for (int i=0; i<sc; i++) {
+			getRow(i).sqrt();
+		}
+	}
+	
+	@Override
+	public void log() {
+		int sc=rowCount();
+		for (int i=0; i<sc; i++) {
+			getRow(i).log();
+		}
+	}
+	
+	@Override
+	public void exp() {
+		int sc=rowCount();
+		for (int i=0; i<sc; i++) {
+			getRow(i).exp();
+		}
+	}
+	
+	@Override
+	public void signum() {
+		int sc=rowCount();
+		for (int i=0; i<sc; i++) {
+			getRow(i).signum();
+		}
+	}
+	
 	/**
 	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
 	 * @param m
@@ -735,13 +793,55 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		this.composeWith(a);
 	}
 	
+	/**
+	 * Multiplies a row by a constant factor
+	 * This is an elementary row operation
+	 */
 	public void multiplyRow(int i, double factor) {
 		getRow(i).multiply(factor);
 	}
 	
+	/**
+	 * Adds a multiple of a source row to a destination row
+	 * This is an elementary row operation
+	 */
 	public void addRowMultiple(int src, int dst, double factor) {
 		getRow(dst).addMultiple(getRow(src), factor);
 	}
+	
+	/**
+	 * Swaps two rows of the matrix in place
+	 * This is an elementary row operation
+	 */
+	public void swapRows(int i, int j) {
+		if (i == j)
+			return;
+		AVector a = getRow(i);
+		AVector b = getRow(j);
+		int cc = columnCount();
+		for (int k = 0; k < cc; k++) {
+			double t = a.get(k);
+			a.set(k, b.get(k));
+			b.set(k, t);
+		}
+	}
+
+	/**
+	 * Swaps two columns of the matrix in place
+	 */
+	public void swapColumns(int i, int j) {
+		if (i == j)
+			return;
+		AVector a = getColumn(i);
+		AVector b = getColumn(j);
+		int rc = rowCount();
+		for (int k = 0; k < rc; k++) {
+			double t = a.get(k);
+			a.set(k, b.get(k));
+			b.set(k, t);
+		}
+	}
+
 	
 	@Override
 	public void composeWith(ATransform a) {
@@ -913,6 +1013,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * 
 	 * @return
 	 */
+	@Override
 	public AVector asVector() {
 		int rc = rowCount();
 		if (rc == 0) {
@@ -924,6 +1025,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			v = Vectorz.join(v, getRow(i));
 		}
 		return v;
+	}
+	
+	@Override
+	public List<Double> asElementList() {
+		return asVector().asElementList();
 	}
 	
 	@Override
@@ -943,13 +1049,36 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AMatrix innerProduct(AMatrix a) {
-		if ((this.columnCount()!=a.rowCount())) {
-			throw new VectorzException("Matrix sizes not compatible!");
-		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
 		int ic=this.columnCount();
-		AMatrix result=Matrixx.newMatrix(rc,cc);
+		
+		if ((ic!=a.rowCount())) {
+			throw new VectorzException("Matrix sizes not compatible!");
+		}
+
+		Matrix result=Matrixx.newMatrix(rc,cc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				double acc=0.0;
+				for (int k=0; k<ic; k++) {
+					acc+=this.get(i, k)*a.get(k, j);
+				}
+				result.set(i,j,acc);
+			}
+		}
+		return result;		
+	}
+	
+	public Matrix innerProduct(Matrix a) {
+		int rc=this.rowCount();
+		int cc=a.columnCount();
+		int ic=this.columnCount();
+		
+		if ((ic!=a.rowCount())) {
+			throw new VectorzException("Matrix sizes not compatible!");
+		}
+		Matrix result=Matrixx.newMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
@@ -1019,52 +1148,29 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return isSquare()&&(determinant()!=0.0);
 	}
 
-	/**
-	 * Swaps two rows of the matrix in place
-	 */
-	public void swapRows(int i, int j) {
-		if (i == j)
-			return;
-		AVector a = getRow(i);
-		AVector b = getRow(j);
-		int cc = columnCount();
-		for (int k = 0; k < cc; k++) {
-			double t = a.get(k);
-			a.set(k, b.get(k));
-			b.set(k, t);
-		}
-	}
-
-	/**
-	 * Swaps two columns of the matrix in place
-	 */
-	public void swapColumns(int i, int j) {
-		if (i == j)
-			return;
-		AVector a = getColumn(i);
-		AVector b = getColumn(j);
-		int rc = rowCount();
-		for (int k = 0; k < rc; k++) {
-			double t = a.get(k);
-			a.set(k, b.get(k));
-			b.set(k, t);
-		}
-	}
 
 	/**
 	 * Converts the matrix to a single flattened vector
 	 * in row major order.
 	 */
-	public AVector toVector() {
+	public Vector toVector() {
 		int rc = rowCount();
 		int cc = columnCount();
-		AVector v = Vectorz.newVector(rc * cc);
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				v.set(i * cc + j, get(i, j));
-			}
-		}
+		Vector v = Vector.createLength(rc * cc);
+		this.getElements(v.data,0);
 		return v;
+	}
+	
+	/**
+	 * Converts the matrix to a the standard mutable Matrix type
+	 * in row major order.
+	 */
+	public Matrix toMatrix() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(rc, cc);
+		this.getElements(m.data,0);
+		return m;
 	}
 	
 	@Override
@@ -1221,12 +1327,23 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
-	 * Returns true if a matrix is diagonal
+	 * Returns true iff a matrix is a square diagonal matrix
 	 */
 	public boolean isDiagonal() {
 		int rc=rowCount();
 		int cc=columnCount();
 		if (rc!=cc) return false;
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				if ((i!=j)&&(get(i,j)!=0.0)) return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean isRectangularDiagonal() {
+		int rc=rowCount();
+		int cc=columnCount();
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				if ((i!=j)&&(get(i,j)!=0.0)) return false;
@@ -1285,6 +1402,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 		return true;
+	}
+	
+	public void setRow(int i, AVector row) {
+		getRow(i).set(row);
+	}
+	
+	public void setColumn(int i, AVector col) {
+		getColumn(i).set(col);
 	}
 
 	public abstract AMatrix exactClone();

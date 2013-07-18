@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 
 /**
  * Matrix class that wraps a vector as a 1-columns matrix
@@ -68,8 +69,8 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
-	public AVector toVector() {
-		return vector.clone();
+	public Vector toVector() {
+		return vector.toVector();
 	}
 	
 	@Override
