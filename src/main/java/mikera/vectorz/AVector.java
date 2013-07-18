@@ -502,7 +502,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double total=0.0;
 		for (int i=0; i<len; i++) {
-			double x=get(i);
+			double x=unsafeGet(i);
 			total+=x*x;
 		}
 		return total;
@@ -521,7 +521,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int di=0;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				m.data[di++]=get(i)*a.get(j);
+				m.data[di++]=unsafeGet(i)*a.unsafeGet(j);
 			}
 		}
 		return m;
@@ -546,9 +546,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		for (int i=0; i<cc; i++) {
 			double y=0.0;
 			for (int j=0; j<rc; j++) {
-				y+=get(j)*m.get(j,i);
+				y+=unsafeGet(j)*m.unsafeGet(j,i);
 			}
-			r.set(i,y);
+			r.unsafeSet(i,y);
 		}
 		return r;
 	}
@@ -564,29 +564,29 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double total=0.0;
 		for (int i=0; i<len; i++) {
-			total+=get(i)*v.get(i);
+			total+=unsafeGet(i)*v.unsafeGet(i);
 		}
 		return total;
 	}
 	
 	public double dotProduct(AVector v, Index ix) {
 		int vl=v.length();
-		assert(v.length()==ix.length());
+		if (v.length()!=ix.length()) throw new IllegalArgumentException("Mismtached source vector and index sizes");
 		double result=0.0;
 		for (int i=0; i<vl; i++) {
-			result+=get(ix.get(i))*v.get(i);
+			result+=get(ix.get(i))*v.unsafeGet(i);
 		}
 		return result;
 	}
 	
 	public void crossProduct(AVector a) {
-		assert((length()==3)&&(a.length()==3));
-		double x=get(0);
-		double y=get(1);
-		double z=get(2);
-		double x2=a.get(0);
-		double y2=a.get(1);
-		double z2=a.get(2);
+		if(!((length()==3)&&(a.length()==3))) throw new IllegalArgumentException("Cross product requires length 3 vectors");
+		double x=unsafeGet(0);
+		double y=unsafeGet(1);
+		double z=unsafeGet(2);
+		double x2=a.unsafeGet(0);
+		double y2=a.unsafeGet(1);
+		double z2=a.unsafeGet(2);
 		double tx=y*z2-z*y2;
 		double ty=z*x2-x*z2;
 		double tz=x*y2-y*x2;			
@@ -607,7 +607,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double total=0.0;
 		for (int i=0; i<len; i++) {
-			double d=get(i)-v.get(i);
+			double d=unsafeGet(i)-v.unsafeGet(i);
 			total+=d*d;
 		}
 		return total;
@@ -621,7 +621,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double total=0.0;
 		for (int i=0; i<len; i++) {
-			double d=get(i)-v.get(i);
+			double d=unsafeGet(i)-v.unsafeGet(i);
 			total+=Math.abs(d);
 		}
 		return total;
@@ -631,7 +631,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			double d=Math.abs(get(i)-v.get(i));
+			double d=Math.abs(unsafeGet(i)-v.unsafeGet(i));
 			result=Math.max(result,d);
 		}
 		return result;
@@ -673,7 +673,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=get(i);
+			result+=unsafeGet(i);
 		}		
 		return result;
 	}
@@ -711,7 +711,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void pow(double exponent) {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			set(i,Math.pow(get(i),exponent));
+			unsafeSet(i,Math.pow(unsafeGet(i),exponent));
 		}				
 	}
 	
@@ -722,7 +722,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		if (src.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+src.length());
 		for (int i=0; i<len; i++) {
-			set(i,src.get(i));
+			unsafeSet(i,src.unsafeGet(i));
 		}
 	}
 	
@@ -745,7 +745,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (a.dimensionality()==1) {
 			int len=length();
 			for (int i=0; i<len; i++) {
-				set(i,a.get(i));
+				unsafeSet(i,a.get(i));
 			}		
 		} else {
 			throw new IllegalArgumentException("Cannot set vector using array of dimensonality: "+a.dimensionality());
@@ -758,7 +758,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			throw new IllegalArgumentException("Incorrect length: "+length);
 		}
 		for (int i=0; i<length; i++) {
-			set(i,values[offset+i]);
+			unsafeSet(i,values[offset+i]);
 		}
 	}
 	
@@ -774,9 +774,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void set(AVector src, int srcOffset) {
 		int len=length();
-		assert(len+srcOffset<=src.length());
+		if ((srcOffset<0)||(len+srcOffset>src.length())) throw new IndexOutOfBoundsException();
 		for (int i=0; i<len; i++) {
-			set(i,src.get(srcOffset+i));
+			unsafeSet(i,src.unsafeGet(srcOffset+i));
 		}
 	}
 	
@@ -784,7 +784,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		if (values.length!=len) throw new VectorzException("Trying to set vectors with incorrect number of doubles: "+values.length);
 		for (int i=0; i<len; i++) {
-			set(i,values[i]);
+			unsafeSet(i,values[i]);
 		}		
 	}
 	
@@ -792,7 +792,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int z=0;
 		int len=length();
 		for (int i=0; i<len; i++) {
-			if (get(i)==0.0) z++;
+			if (unsafeGet(i)==0.0) z++;
 		}
 		return z;
 	}
@@ -956,7 +956,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
-		assert(offset+length<=length());
+		if ((offset+length)>length()) throw new IndexOutOfBoundsException();
 		for (int i = 0; i < length; i++) {
 			addAt(i+offset,src.get(i+srcOffset)*factor);
 		}
