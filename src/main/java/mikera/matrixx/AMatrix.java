@@ -689,6 +689,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;
 	}
 	
+	@Override
 	public Iterator<Double> elementIterator() {
 		return new MatrixElementIterator(this);
 	}

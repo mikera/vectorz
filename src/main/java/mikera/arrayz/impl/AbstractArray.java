@@ -197,6 +197,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return new SliceIterator<T>(this);
 	}
 	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new SliceElementIterator(this);
+	}
+	
 	public boolean equals(Object o) {
 		if (!(o instanceof INDArray)) return false;
 		return equals((INDArray)o);

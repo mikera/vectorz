@@ -167,7 +167,7 @@ public interface INDArray extends Cloneable {
 	 * Returns an iterator over all elements in this array.
 	 * @return
 	 */
-	//public Iterator<Double> elementIterator();
+	public Iterator<Double> elementIterator();
 	
 	/**
 	 * Multiplies all elements by the equivalent elements in a second array
