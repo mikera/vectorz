@@ -79,11 +79,23 @@ public final class StridedVector extends AVector {
 	
 	@Override
 	public double get(int i) {
+		if (i<0||i>=length) throw new IndexOutOfBoundsException();
 		return data[offset+i*stride];
 	}
 	
 	@Override
 	public void set(int i, double value) {
+		if (i<0||i>=length) throw new IndexOutOfBoundsException();
+		data[offset+i*stride]=value;
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return data[offset+i*stride];
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
 		data[offset+i*stride]=value;
 	}
 	

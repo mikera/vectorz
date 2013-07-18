@@ -322,16 +322,26 @@ public final class JoinedVector extends AVector {
 	
 	@Override
 	public double get(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
 		if (i<split) {
-			return left.get(i);
+			return left.unsafeGet(i);
 		}
-		return right.get(i-split);
+		return right.unsafeGet(i-split);
 	}
 	
 	@Override
 	public void set(AVector src) {
 		set(src,0);
 	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		if (i<split) {
+			return left.unsafeGet(i);
+		}
+		return right.unsafeGet(i-split);
+	}
+
 	
 	@Override
 	public void set(AVector src, int srcOffset) {
@@ -350,10 +360,20 @@ public final class JoinedVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
 		if (i<split) {
 			left.set(i,value);
 		} else {
 			right.set(i-split,value);
+		}
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
+		if (i<split) {
+			left.unsafeSet(i,value);
+		} else {
+			right.unsafeSet(i-split,value);
 		}
 	}
 	
