@@ -96,6 +96,11 @@ public class StridedMatrix extends ArrayMatrix {
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return data[index(row,column)];
+	}
+	
+	@Override
 	public AVector asVector() {
 		if (isPackedArray()) {
 			return Vector.wrap(data);
@@ -108,6 +113,11 @@ public class StridedMatrix extends ArrayMatrix {
 		if ((row < 0) || (column < 0) || (row >= rows)
 				|| (column >= cols))
 			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
+		data[index(row,column)] = value;
+	}
+	
+	@Override
+	public void unsafeSet(int row, int column, double value) {
 		data[index(row,column)] = value;
 	}
 

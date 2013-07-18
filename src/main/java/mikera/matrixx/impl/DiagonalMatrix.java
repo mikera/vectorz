@@ -76,6 +76,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public void unsafeSet(int row, int column, double value) {
+		data[row]=value;
+	}
+	
+	@Override
 	public boolean isMutable() {
 		return true;
 	}

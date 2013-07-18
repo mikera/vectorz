@@ -66,6 +66,20 @@ public class PermutedMatrix extends AMatrix{
 		source.set(sourceRow, sourceColumn,value);
 	}
 	
+	@Override
+	public double unsafeGet(int row, int column) {
+		int sourceRow=rowPermutations.get(row);
+		int sourceColumn=columnPermutations.get(column);
+		return source.unsafeGet(sourceRow, sourceColumn);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		int sourceRow=rowPermutations.get(row);
+		int sourceColumn=columnPermutations.get(column);
+		source.unsafeSet(sourceRow, sourceColumn,value);
+	}
+	
 	/**
 	 * Returns a row of the permuted matrix as a vector reference
 	 */
