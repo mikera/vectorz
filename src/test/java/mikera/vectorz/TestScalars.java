@@ -4,13 +4,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import mikera.arrayz.TestArrays;
-import mikera.vectorz.impl.DoubleScalar;
 
 public class TestScalars {
 
 	@Test
 	public void miscTests() {
-		AScalar s = new DoubleScalar(2.0);
+		AScalar s = new Scalar(2.0);
 		assertEquals(2.0, s.elementSum(), 0.0);
 		assertEquals(1, s.nonZeroCount(), 0.0);
 	}
@@ -40,7 +39,7 @@ public class TestScalars {
 
 	@Test
 	public void genericTests() {
-		testScalar(new DoubleScalar(1.0));
+		testScalar(new Scalar(1.0));
 		testScalar(Vector.of(1, 2, 3).slice(1));
 		testScalar(Vector.of(1, 2, 3, 4, 5, 6).slice(1));
 	}

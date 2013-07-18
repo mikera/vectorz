@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
-import mikera.vectorz.impl.DoubleScalar;
 
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class TestNDArray {
 		assertEquals(1,a.nonZeroCount());
 		assertEquals(3.0,a.elementSum(),0.0);
 		
-		DoubleScalar s=new DoubleScalar(1.0);
+		Scalar s=new Scalar(1.0);
 		s.set(a);
 		assertEquals(3.0,s.get(),0.0);
 		s.set(2.0);
@@ -31,11 +31,11 @@ public class TestNDArray {
 	
 	@Test public void testScalarAdd() {
 		NDArray a=NDArray.newArray();
-		assertEquals(a,new DoubleScalar(0.0));
+		assertEquals(a,new Scalar(0.0));
 		
 		a.add(1.0);
-		assertEquals(a,new DoubleScalar(1.0));
-		assertFalse(a.equals(new DoubleScalar(0.0)));
+		assertEquals(a,new Scalar(1.0));
+		assertFalse(a.equals(new Scalar(0.0)));
 	}
 	
 	@Test public void testWrap() {

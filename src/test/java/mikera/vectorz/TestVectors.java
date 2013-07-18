@@ -15,7 +15,6 @@ import mikera.matrixx.Matrixx;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
-import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -836,7 +835,7 @@ public class TestVectors {
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
 		
-		doGenericTests(new DoubleScalar(1.0).asVector());
+		doGenericTests(new Scalar(1.0).asVector());
 		
 		AVector jav1=JoinedArrayVector.create(v4);
 		AVector jav2=JoinedArrayVector.create(j5);

@@ -17,7 +17,6 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.AArrayVector;
-import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
@@ -536,8 +535,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return super.outerProduct(a);
 	}
 	
-	public DoubleScalar innerProduct(AVector v) {
-		return DoubleScalar.create(dotProduct(v));
+	public Scalar innerProduct(AVector v) {
+		return Scalar.create(dotProduct(v));
 	}
 	
 	public Vector innerProduct(AMatrix m) {
@@ -557,7 +556,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AVector) {
-			return DoubleScalar.create(dotProduct((AVector)a));
+			return Scalar.create(dotProduct((AVector)a));
 		}
 		return super.innerProduct(a);
 	}

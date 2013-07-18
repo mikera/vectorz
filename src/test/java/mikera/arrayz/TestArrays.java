@@ -9,10 +9,10 @@ import java.util.List;
 import mikera.arrayz.impl.SliceArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
@@ -256,7 +256,7 @@ public class TestArrays {
 		INDArray m = a.exactClone();
 
 		m.multiply(2.0);
-		m.multiply(DoubleScalar.create(0.5));
+		m.multiply(Scalar.create(0.5));
 		assertEquals(a, m);
 	}
 

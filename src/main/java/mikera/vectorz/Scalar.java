@@ -1,19 +1,18 @@
-package mikera.vectorz.impl;
+package mikera.vectorz;
 
-import mikera.vectorz.AScalar;
 
-public class DoubleScalar extends AScalar {
+public class Scalar extends AScalar {
 	public double value;
 
-	public DoubleScalar(double value) {
+	public Scalar(double value) {
 		this.value = value;
 	}
 
-	public static DoubleScalar create(double value) {
-		return new DoubleScalar(value);
+	public static Scalar create(double value) {
+		return new Scalar(value);
 	}
 
-	public static DoubleScalar create(AScalar a) {
+	public static Scalar create(AScalar a) {
 		return create(a.get());
 	}
 
@@ -63,8 +62,8 @@ public class DoubleScalar extends AScalar {
 	}
 
 	@Override
-	public DoubleScalar clone() {
-		return new DoubleScalar(value);
+	public Scalar clone() {
+		return new Scalar(value);
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class DoubleScalar extends AScalar {
 	}
 
 	@Override
-	public DoubleScalar exactClone() {
+	public Scalar exactClone() {
 		return clone();
 	}
 
