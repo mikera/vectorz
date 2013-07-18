@@ -1,10 +1,12 @@
-package mikera.arrayz;
+package mikera.arrayz.impl;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.arrayz.Arrayz;
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;

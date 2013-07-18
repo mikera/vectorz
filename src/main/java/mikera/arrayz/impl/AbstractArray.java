@@ -1,4 +1,4 @@
-package mikera.arrayz;
+package mikera.arrayz.impl;
 
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -6,6 +6,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.Arrayz;
+import mikera.arrayz.INDArray;
+import mikera.arrayz.NDArray;
+import mikera.arrayz.SliceIterator;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;

@@ -4,8 +4,8 @@ import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.AbstractArray;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.impl.AbstractArray;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.WrappedScalarVector;
