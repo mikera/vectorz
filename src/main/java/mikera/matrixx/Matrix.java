@@ -283,13 +283,12 @@ public final class Matrix extends ArrayMatrix {
 		if (m instanceof Matrix) {addMultiple((Matrix)m,factor); return;}
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(rc==m.rowCount());
-		assert(cc==m.columnCount());
+		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException("Incompatoble matrix sizes");
 
 		int di=0;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				data[di++]+=m.get(i, j)*factor;
+				data[di++]+=m.unsafeGet(i, j)*factor;
 			}
 		}
 	}
@@ -299,13 +298,12 @@ public final class Matrix extends ArrayMatrix {
 		if (m instanceof Matrix) {add((Matrix)m); return;}
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(rc==m.rowCount());
-		assert(cc==m.columnCount());
+		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException("Incompatoble matrix sizes");
 
 		int di=0;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				data[di++]+=m.get(i, j);
+				data[di++]+=m.unsafeGet(i, j);
 			}
 		}
 	}
@@ -373,7 +371,7 @@ public final class Matrix extends ArrayMatrix {
 		int rc=rowCount();
 		if (col.length()!=rc) throw new IllegalArgumentException("Column has wrong length: "+col.length());
 		for (int i=0; i<rc; i++) {
-			data[i*cols+j]=col.get(j);
+			data[i*cols+j]=col.unsafeGet(j);
 		}
 	}
 
