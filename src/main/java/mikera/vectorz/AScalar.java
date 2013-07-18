@@ -8,6 +8,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.impl.WrappedScalarVector;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
@@ -319,6 +320,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	@Override
 	public String toString() {
 		return Double.toString(get());
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new SingleDoubleIterator(get());
 	}
 	
 	@Override
