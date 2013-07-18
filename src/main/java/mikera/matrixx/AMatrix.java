@@ -278,6 +278,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			return Arrayz.createFromVector(toVector(), dimensions);
 		}
 	}
+	
+	public Matrix reshape(int rows, int cols) {
+		return Matrixx.createFromVector(asVector(), rows, cols);
+	}
 
 	@Override
 	public void transform(AVector source, AVector dest) {
