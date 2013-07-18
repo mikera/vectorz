@@ -1200,7 +1200,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				set(i,j,op.apply(get(i,j)));
+				unsafeSet(i,j,op.apply(unsafeGet(i,j)));
 			}
 		}
 	}
@@ -1212,7 +1212,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				set(i,j,op.apply(get(i,j)));
+				unsafeSet(i,j,op.apply(unsafeGet(i,j)));
 			}
 		}
 	}

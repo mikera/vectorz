@@ -52,12 +52,18 @@ public final class BitVector extends AVector {
 		return length;
 	}
 	
-	public final boolean getBit(int i) {
+	private final boolean getBit(int i) {
 		return (((data[i>>>6] >>> (i%64))&1L)!=0L);
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return getBit(i) ? BIT_ON : BIT_OFF;
 	}
 
 	@Override
 	public double get(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index = "+i);
 		return getBit(i) ? BIT_ON : BIT_OFF;
 	}
 	
@@ -88,7 +94,7 @@ public final class BitVector extends AVector {
 	public void copyTo(double[] data, int offset) {
 		int len = length();
 		for (int i=0; i<len; i++) {
-			data[i+offset]=get(i);
+			data[i+offset]=unsafeGet(i);
 		}
 	}
 	

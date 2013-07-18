@@ -52,6 +52,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return (row==column)?1.0:0.0;
+	}
+	
+	@Override
 	public AxisVector getRow(int row) {
 		return AxisVector.create(row,dimensions);
 	}

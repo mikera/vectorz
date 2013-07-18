@@ -147,7 +147,8 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 
 	public double getDiagonalValue(int i) {
-		return get(i,i);
+		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException();
+		return unsafeGet(i,i);
 	}
 	
 	@Override
