@@ -1038,8 +1038,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return new ListWrapper(this);
 	}
 	
+	@Override
 	public Iterator<Double> iterator() {
 		return new VectorIterator(this);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return iterator();
 	}
 
 	public void set(IVector vector) {
