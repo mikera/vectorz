@@ -92,7 +92,7 @@ public final class SingleElementVector extends AVector implements ISparse {
 
 	@Override
 	public void set(int i, double value) {
-		assert((i>=0)&&(i<dimensions));
+		if(!((i>=0)&&(i<dimensions))) throw new IndexOutOfBoundsException();
 		if (i==index) {
 			this.value=value;
 		} else { 

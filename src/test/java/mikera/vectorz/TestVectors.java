@@ -594,6 +594,19 @@ public class TestVectors {
 			v.get(v.length());
 			fail();
 		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		if (v.isFullyMutable()) {
+			v=v.exactClone();
+			try {
+				v.set(-1,1);
+				fail();
+			} catch (IndexOutOfBoundsException a) {/* OK */}
+			
+			if (!(v instanceof GrowableVector)) try {
+				v.set(v.length(),1);
+				fail();
+			} catch (IndexOutOfBoundsException a) {/* OK */}
+		}
 	}
 	
 	private void testUnsafeSet(AVector v) {
