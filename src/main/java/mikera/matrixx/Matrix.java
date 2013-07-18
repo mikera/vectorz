@@ -172,7 +172,6 @@ public final class Matrix extends ArrayMatrix {
 	
 	@Override
 	public AStridedVector getColumn(int col) {
-		if ((col<0)||(col>=cols)) throw new IndexOutOfBoundsException();
 		if (cols==1) {
 			return Vector.wrap(data);
 		} else {

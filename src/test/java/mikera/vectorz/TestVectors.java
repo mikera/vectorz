@@ -846,7 +846,7 @@ public class TestVectors {
 		doGenericTests(jav2.join(jav1).subVector(2, 5));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
 		
-		doGenericTests(StridedVector.wrap(new double[]{}, 0, 0, 100));
+		doGenericTests(StridedVector.wrap(new double[]{1,2,3}, 2, 3, -1));
 		doGenericTests(StridedVector.wrap(new double[]{1,2}, 1, 1, 100));
 	}
 }
