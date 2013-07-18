@@ -46,6 +46,7 @@ public class StridedMatrix extends ArrayMatrix {
 		return StridedVector.wrap(data, offset+i*colStride, rows, rowStride);
 	}
 	
+	@Override
 	public boolean isPackedArray() {
 		return (offset == 0) 
 				&& (colStride == 1)

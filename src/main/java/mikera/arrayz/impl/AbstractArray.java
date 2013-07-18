@@ -1,4 +1,4 @@
-package mikera.arrayz;
+package mikera.arrayz.impl;
 
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.Arrayz;
+import mikera.arrayz.INDArray;
+import mikera.arrayz.NDArray;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
@@ -192,6 +195,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public Iterator<T> iterator() {
 		return new SliceIterator<T>(this);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new SliceElementIterator(this);
 	}
 	
 	public boolean equals(Object o) {

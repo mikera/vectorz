@@ -8,7 +8,7 @@ import java.util.List;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
-import mikera.arrayz.SliceArray;
+import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
@@ -689,6 +689,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;
 	}
 	
+	@Override
 	public Iterator<Double> elementIterator() {
 		return new MatrixElementIterator(this);
 	}

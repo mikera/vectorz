@@ -52,6 +52,7 @@ public final class Matrix extends ArrayMatrix {
 		return false;
 	}
 	
+	@Override
 	public boolean isPackedArray() {
 		return true;
 	}

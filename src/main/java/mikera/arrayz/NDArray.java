@@ -3,8 +3,10 @@ package mikera.arrayz;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.impl.AbstractArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -13,6 +15,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.IntArrays;
@@ -469,6 +472,15 @@ public final class NDArray extends AbstractArray<INDArray> {
 				al.add(slice(i));
 			}
 			return al;
+		}
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		if (dimensionality()==0) {
+			return new SingleDoubleIterator(data[offset]);
+		} else {
+			return super.elementIterator();
 		}
 	}
 	

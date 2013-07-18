@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.AbstractArray;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
-import mikera.arrayz.SliceArray;
+import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.SliceArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -1038,8 +1038,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return new ListWrapper(this);
 	}
 	
+	@Override
 	public Iterator<Double> iterator() {
 		return new VectorIterator(this);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return iterator();
 	}
 
 	public void set(IVector vector) {

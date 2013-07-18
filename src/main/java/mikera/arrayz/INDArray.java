@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.nio.DoubleBuffer;
+import java.util.Iterator;
 import java.util.List;
 
 import mikera.vectorz.AVector;
@@ -161,6 +162,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public double elementSquaredSum();
+	
+	/**
+	 * Returns an iterator over all elements in this array.
+	 * @return
+	 */
+	public Iterator<Double> elementIterator();
 	
 	/**
 	 * Multiplies all elements by the equivalent elements in a second array
