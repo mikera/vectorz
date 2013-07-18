@@ -5,8 +5,10 @@ import mikera.vectorz.AVector;
 
 /**
  * A length 1 vector, as a view wrapping a single AScalar
+ * 
+ * Main purpose is to provide an efficient view for AScalar.asVector()
+ * 
  * @author Mike
- *
  */
 public class WrappedScalarVector extends AVector {
 	private static final long serialVersionUID = 1912695454407729415L;
