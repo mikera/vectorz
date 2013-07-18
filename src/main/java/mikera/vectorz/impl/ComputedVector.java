@@ -1,7 +1,5 @@
 package mikera.vectorz.impl;
 
-import mikera.vectorz.AVector;
-
 /**
  * Base class for computed vectors. Assumed to be immutable and fixed size.
  * 
@@ -9,7 +7,7 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ComputedVector extends AVector {
+public abstract class ComputedVector extends AConstrainedVector {
 
 	@Override
 	public abstract int length();

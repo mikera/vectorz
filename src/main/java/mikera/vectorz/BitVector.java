@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.AConstrainedVector;
+
 /**
  * Vector of bits - constrained to 0.0 / 1.0 values
  * 
@@ -8,7 +10,7 @@ package mikera.vectorz;
  * @author Mike
  */
 
-public final class BitVector extends AVector {
+public final class BitVector extends AConstrainedVector {
 	private static final long serialVersionUID = 349277216077562294L;
 	public static final double BIT_ON=1.0;
 	public static final double BIT_OFF=0.0;
@@ -102,13 +104,6 @@ public final class BitVector extends AVector {
 	public boolean isFullyMutable() {
 		return false;
 	}
-	
-	@Override
-	public boolean isElementConstrained() {
-		// elements are constrained to 0.0 or 1.0
-		return true;
-	}
-	
 	
 	@Override
 	public boolean isView() {
