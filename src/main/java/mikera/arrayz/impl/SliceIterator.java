@@ -1,6 +1,8 @@
-package mikera.arrayz;
+package mikera.arrayz.impl;
 
 import java.util.Iterator;
+
+import mikera.arrayz.INDArray;
 
 /**
  * General purpose iterator for arbitrary vectors.

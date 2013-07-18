@@ -9,7 +9,6 @@ import java.util.List;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
-import mikera.arrayz.SliceIterator;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
