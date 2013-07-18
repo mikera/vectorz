@@ -9,6 +9,7 @@ import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
@@ -170,8 +171,13 @@ public final class Matrix extends ArrayMatrix {
 	}
 	
 	@Override
-	public StridedVector getColumn(int row) {
-		return StridedVector.wrap(data,row,rows,cols);
+	public AStridedVector getColumn(int col) {
+		if ((col<0)||(col>=cols)) throw new IndexOutOfBoundsException();
+		if (cols==1) {
+			return Vector.wrap(data);
+		} else {
+			return StridedVector.wrap(data,col,rows,cols);
+		}
 	}
 
 	@Override
