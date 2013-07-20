@@ -336,7 +336,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	@Override
 	public boolean isView() {
-		return true;
+		return (!isPackedArray());
 	}
 
 	@Override

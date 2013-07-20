@@ -54,6 +54,17 @@ public class TestNDArray {
 		assertTrue(!a.equals(Vector.of(1,2,3)));
 	}
 	
+	@Test public void testClone() {
+		INDArray a=NDArray.newArray(2,3,4,5);
+		assertFalse(a.isView()); // should be fully packed
+		
+		a=a.slice(0); 
+		assertTrue(a.isView()); // should be a view
+		
+		a=a.ensureMutable();
+		assertFalse(a.isView()); // should be fully packed	
+	}
+	
 	@Test public void testOuterProduct() {
 		NDArray a=NDArray.newArray(1,2,3);
 		
