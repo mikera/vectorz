@@ -268,6 +268,21 @@ public abstract class AArrayVector extends AStridedVector {
 		data[i+offset]+=v;
 	}
 	
+	@Override public double dotProduct(double[] data, int offset) {
+		return DoubleArrays.dotProduct(getArray(), getArrayOffset(), data, offset, length());
+	}
+	
+	@Override public double dotProduct(AVector v) {
+		int length=length();
+		if (length!=v.length()) throw new IndexOutOfBoundsException("Incompatible vector sizes");
+		if (v instanceof AArrayVector) {
+			AArrayVector vv=(AArrayVector)v;
+			return DoubleArrays.dotProduct(getArray(), getArrayOffset(), vv.getArray(), vv.getArrayOffset(), length);
+		} else {
+			return v.dotProduct(this.getArray(), this.getArrayOffset());
+		}
+	}
+	
 	@Override
 	public void abs() {
 		DoubleArrays.abs(getArray(),getArrayOffset(),length());
