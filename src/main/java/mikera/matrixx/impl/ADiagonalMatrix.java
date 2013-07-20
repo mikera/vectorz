@@ -152,6 +152,11 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public ADiagonalMatrix getTranspose() {
+		return this;
+	}
+	
+	@Override
 	public ADiagonalMatrix getTransposeView() {
 		return this;
 	}

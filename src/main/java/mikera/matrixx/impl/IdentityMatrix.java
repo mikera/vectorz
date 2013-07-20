@@ -143,7 +143,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override 
-	public AMatrix getTranspose() {
+	public IdentityMatrix getTransposeView() {
 		return this;
 	}
 	
