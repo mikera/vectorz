@@ -54,6 +54,14 @@ public final class StridedMatrix extends AArrayMatrix {
 				&& (rowStride == cols)
 				&& (data.length == rows * cols);
 	}
+	
+	@Override
+	public AArrayMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		if ((rowStart<0)||(rowStart>=rows)||(colStart<0)||(colStart>=cols)) throw new IndexOutOfBoundsException("Invalid submatrix start position");
+		if ((rowStart+rows>this.rows)||(colStart+cols>this.cols)) throw new IndexOutOfBoundsException("Invalid submatrix end position");
+		if ((rows<1)||(cols<1)) throw new IllegalArgumentException("Submatrix has no elements");
+		return new StridedMatrix(data, rows, cols, offset+rowStart*rowStride+colStart*colStride, rowStride, colStride);
+	}
 
 	@Override
 	public void applyOp(Op op) {
