@@ -44,7 +44,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public abstract void set(int i, double value);
 	
-	
 	// ================================================
 	// Standard implementations
 

@@ -68,6 +68,14 @@ public final class Vector3 extends APrimitiveVector {
 		return new Vector3(values);
 	}
 	
+	public static Vector3 create(Object o) {
+		return create(Vectorz.create(o));
+	}
+	
+	public static Vector3 create(AVector v) {
+		return new Vector3(v);
+	}
+	
 	@Override
 	public double angle(AVector v) {
 		if (v instanceof Vector3) {return angle((Vector3)v);}
@@ -296,7 +304,7 @@ public final class Vector3 extends APrimitiveVector {
 	
 	@Override 
 	public void set(AVector v) {
-		assert(v.length()==3);
+		if (v.length()!=3) throw new IllegalArgumentException("Can only assign Vector3 with length 3");
 		x=v.get(0);
 		y=v.get(1);
 		z=v.get(2);

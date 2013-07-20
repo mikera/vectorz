@@ -83,8 +83,8 @@ public final class Vector2 extends APrimitiveVector {
 		return x*data[offset+0]+y*data[offset+1];
 	}
 	
-	public double dotProduct(Vector2 v) {
-		return x*v.x+y*v.y;
+	public double dotProduct(Vector2 a) {
+		return x*a.x+y*a.y;
 	}
 	
 	@Override

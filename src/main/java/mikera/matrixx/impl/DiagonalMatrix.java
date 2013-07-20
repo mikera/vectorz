@@ -158,6 +158,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return Vector.wrap(data);
 	}
 
+	@Override
 	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof ADiagonalMatrix) {
 			return innerProduct((ADiagonalMatrix) a);
@@ -165,7 +166,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return super.innerProduct(a);
 	}
 	
-	public AMatrix innerProduct(ADiagonalMatrix a) {
+	public DiagonalMatrix innerProduct(ADiagonalMatrix a) {
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		for (int i=0; i<dimensions; i++) {

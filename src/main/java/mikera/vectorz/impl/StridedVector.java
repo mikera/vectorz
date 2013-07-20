@@ -53,6 +53,10 @@ public final class StridedVector extends AStridedVector {
 	@Override
 	public double dotProduct(AVector v) {
 		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
+		if (v instanceof AArrayVector) {
+			AArrayVector av=(AArrayVector) v;
+			return dotProduct(av.getArray(),av.getArrayOffset());
+		}
 		double result=0.0;
 		for (int i=0; i<length; i++) {
 			result+=data[offset+i*stride]*v.unsafeGet(i);

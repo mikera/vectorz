@@ -22,6 +22,18 @@ public abstract class AStridedVector extends AVector {
 		return clone();
 	}
 	
+	@Override public double dotProduct(double[] data, int offset) {
+		double[] array=getArray();
+		int thisOffset=getArrayOffset();
+		int stride=getStride();
+		int length=length();
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=array[i*stride+thisOffset]*data[i+offset];
+		}
+		return result;
+	}
+	
 	@Override
 	public AStridedVector clone() {
 		return Vector.create(this);
