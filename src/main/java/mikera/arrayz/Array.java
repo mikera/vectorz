@@ -176,9 +176,7 @@ public final class Array extends AbstractArray<INDArray> {
 
 	public boolean equals(Array a) {
 		if (a.dimensions != dimensions) return false;
-		for (int i = 0; i < dimensions; i++) {
-			if (a.shape[i] != shape[i]) return false;
-		}
+		if (!IntArrays.equals(shape, a.shape)) return false;
 		return DoubleArrays.equals(data, a.data);
 	}
 
