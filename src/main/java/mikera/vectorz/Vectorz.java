@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mikera.util.Rand;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
@@ -89,8 +90,11 @@ public class Vectorz {
 		return ArraySubVector.wrap(data, offset, length);
 	}
 	
-	public static AVector wrapStrided(double[] data, int offset, int length, int stride) {
+	public static AStridedVector wrapStrided(double[] data, int offset, int length, int stride) {
 		if (stride==1) {
+			if ((offset==0)&&(length==data.length)) {
+				return Vector.wrap(data);
+			}
 			return ArraySubVector.wrap(data, offset, length);
 		}
 		return StridedVector.wrapStrided(data,offset,length,stride);

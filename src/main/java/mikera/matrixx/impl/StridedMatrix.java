@@ -5,6 +5,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -104,6 +105,10 @@ public final class StridedMatrix extends AArrayMatrix {
 	public AVector asVector() {
 		if (isPackedArray()) {
 			return Vector.wrap(data);
+		} else if (cols==1) {
+			return Vectorz.wrapStrided(data, offset, rows, rowStride);
+		} else if (rows ==1){
+			return Vectorz.wrapStrided(data, offset, cols, colStride);			
 		}
 		return super.asVector();
 	}
