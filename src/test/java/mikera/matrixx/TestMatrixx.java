@@ -331,6 +331,21 @@ public class TestMatrixx {
 		m2.set(0,0,Math.PI);
 		assertNotSame(m.get(0,0),m2.get(0,0));
 	}
+	
+	private void doSubMatrixTest(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		if ((rc<=1)||(cc<=1)) return;
+		AMatrix sm=m.subMatrix(1, rc-1, 1, cc-1);
+		
+		assertEquals(rc-1,sm.rowCount());
+		assertEquals(cc-1,sm.columnCount());
+		for (int i=1; i<rc; i++) {
+			for (int j=1; j<cc; j++) {
+				assertEquals(m.get(i,j),sm.get(i-1,j-1),0.0);
+			}
+		}
+	}
 
 	private void doRowColumnTests(AMatrix m) {
 		assertEquals(m.rowCount(),m.outputDimensions());
@@ -518,6 +533,7 @@ public class TestMatrixx {
 		doMaybeSquareTests(m);
 		doRandomTests(m);
 		doBigComposeTest(m);
+		doSubMatrixTest(m);
 		
 		new TestArrays().testArray(m);
 	}

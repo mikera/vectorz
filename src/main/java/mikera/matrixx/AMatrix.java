@@ -290,6 +290,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public Matrix reshape(int rows, int cols) {
 		return Matrixx.createFromVector(asVector(), rows, cols);
 	}
+	
+	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		VectorMatrixMN vm=new VectorMatrixMN(0,cols);
+		for (int i=0; i<rows; i++) {
+			vm.appendRow(this.getRow(rowStart+i).subVector(colStart, cols));
+		}
+		return vm;	
+	}
 
 	@Override
 	public void transform(AVector source, AVector dest) {
