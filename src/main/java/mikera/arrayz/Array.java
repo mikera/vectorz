@@ -9,6 +9,8 @@ import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
@@ -109,12 +111,22 @@ public final class Array extends AbstractArray<INDArray> {
 	}
 
 	@Override
-	public NDArray slice(int majorSlice) {
+	public INDArray slice(int majorSlice) {
 		return slice(0, majorSlice);
 	}
 
 	@Override
-	public NDArray slice(int dimension, int index) {
+	public INDArray slice(int dimension, int index) {
+		if ((dimension<0)||(dimension>=dimensions)) throw new IndexOutOfBoundsException("Dimension out of range: "+dimension);
+		if (dimensions==1) return ArrayIndexScalar.wrap(data, index);
+		if (dimensions==2) {
+			if (dimension==0) {
+				return Vectorz.wrap(data, index* shape[1], shape[1]);				
+			} else {
+				return Vectorz.wrapStrided(data, index, shape[0], strides[0]);
+			}
+		}
+		
 		int offset = index * getStride(dimension);
 		return new NDArray(data, offset,
 				IntArrays.removeIndex(shape, dimension), IntArrays.removeIndex(
@@ -255,6 +267,9 @@ public final class Array extends AbstractArray<INDArray> {
 		super.validate();
 		if (dimensions != shape.length)
 			throw new VectorzException("Inconsistent dimensionality");
+		if ((dimensions>0)&&(strides[dimensions-1]!=1))
+			throw new VectorzException("Last stride should be 1");
+		
 		if (data.length != IntArrays.arrayProduct(shape))
 			throw new VectorzException("Inconsistent shape");
 		if (!IntArrays.equals(strides, IntArrays.calcStrides(shape)))
