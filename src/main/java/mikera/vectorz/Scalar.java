@@ -55,6 +55,11 @@ public class Scalar extends AScalar {
 	public void negate() {
 		value = -value;
 	}
+	
+	@Override
+	public void scaleAdd(double factor, double constant) {
+		value = value*factor + constant;
+	}
 
 	@Override
 	public boolean isView() {
