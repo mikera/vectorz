@@ -64,6 +64,29 @@ public final class Vector2 extends APrimitiveVector {
 		y+=a.y*b.y*factor;
 	}
 	
+	
+	@Override
+	public double dotProduct(AVector a) {
+		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		return x*a.unsafeGet(0)+y*a.unsafeGet(1);
+
+	}
+	
+	@Override
+	public double dotProduct(Vector v) {
+		if (v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		return x*v.data[0]+y*v.data[1];
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return x*data[offset+0]+y*data[offset+1];
+	}
+	
+	public double dotProduct(Vector2 v) {
+		return x*v.x+y*v.y;
+	}
+	
 	@Override
 	public void scaleAdd(double factor, double constant) {
 		x=(x*factor)+constant;

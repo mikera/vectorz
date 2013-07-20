@@ -192,6 +192,23 @@ public final class Vector3 extends APrimitiveVector {
 	} 
 	
 	@Override
+	public double dotProduct(AVector a) {
+		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		return x*a.unsafeGet(0)+y*a.unsafeGet(1)+z*a.unsafeGet(2);
+	}
+	
+	@Override
+	public double dotProduct(Vector v) {
+		if (v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		return x*v.data[0]+y*v.data[1]+z*v.data[2];
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return x*data[offset+0]+y*data[offset+1]+z*data[offset+2];
+	}
+	
+	@Override
 	public void crossProduct(AVector a) {
 		if (a instanceof Vector3) {
 			crossProduct((Vector3) a);

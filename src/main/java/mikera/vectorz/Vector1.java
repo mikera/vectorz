@@ -34,6 +34,23 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double dotProduct(AVector a) {
+		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		return x*a.unsafeGet(0);
+	}
+	
+	@Override
+	public double dotProduct(Vector v) {
+		if (v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		return x*v.data[0];
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return x*data[offset+0];
+	}
+	
+	@Override
 	public int length() {
 		return 1;
 	}
