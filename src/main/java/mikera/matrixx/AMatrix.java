@@ -519,6 +519,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public AMatrix clone() {
 		return Matrixx.deepCopy(this);
 	}
+	
+	@Override
+	public INDArray ensureMutable() {
+		if (isFullyMutable()&&!isView()) return this;
+		return clone();
+	}
 
 	/**
 	 * Calculates the determinant of the matrix.

@@ -213,6 +213,12 @@ public interface INDArray extends Cloneable {
 	public INDArray clone();
 
 	/**
+	 * Ensures the array is a fully mutable, efficient representation that is not 
+	 * a view. Returns either the same array or a new clone.
+	 */
+	public INDArray ensureMutable();
+	
+	/**
 	 * Applies a unary operator to all elements of the array (in-place)
 	 * @param op
 	 */

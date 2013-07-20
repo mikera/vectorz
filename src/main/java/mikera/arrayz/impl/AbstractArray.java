@@ -61,6 +61,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray ensureMutable() {
+		if (isFullyMutable()&&!isView()) return this;
+		return clone();
+	}
+	
+	@Override
 	public void fill(double value) {
 		if (dimensionality()==0) {
 			set(value);
