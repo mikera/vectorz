@@ -263,8 +263,13 @@ public final class Matrix extends AArrayMatrix {
 	}
 	
 	@Override
+	public Vector toVector() {
+		return Vector.create(data);
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
-		dest.put(data,0,data.length);
+		dest.put(data);
 	}
 
 	@Override

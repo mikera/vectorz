@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 import mikera.indexz.Index;
@@ -463,6 +464,11 @@ public final class Vector extends AArrayVector {
 	@Override
 	public boolean isPackedArray() {
 		return true;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(data);
 	}
 
 }
