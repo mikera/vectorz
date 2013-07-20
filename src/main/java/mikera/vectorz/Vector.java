@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import mikera.indexz.Index;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -444,6 +445,11 @@ public final class Vector extends AArrayVector {
 	@Override
 	public Vector clone() {
 		return new Vector(this);
+	}
+	
+	@Override
+	public AStridedVector ensureMutable() {
+		return this;
 	}
 	
 	@Override 

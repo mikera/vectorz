@@ -3,8 +3,6 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.randomz.Hash;
-import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 
 /**
  * Vector referring to an offset into a double[] array
@@ -163,11 +161,6 @@ public final class ArraySubVector extends AArrayVector {
 	@Override
 	public boolean isView() {
 		return true;
-	}
-	
-	@Override
-	public AVector clone() {
-		return Vector.create(this);
 	}
 
 	@Override 

@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 
 /**
  * Abstract base class for vectors backed by a double[] array with a constant stride
@@ -15,4 +16,15 @@ public abstract class AStridedVector extends AVector {
 	public abstract double[] getArray();
 	public abstract int getArrayOffset();
 	public abstract int getStride();
+	
+	@Override
+	public AStridedVector ensureMutable() {
+		return clone();
+	}
+	
+	@Override
+	public AStridedVector clone() {
+		return Vector.create(this);
+	}
+
 }
