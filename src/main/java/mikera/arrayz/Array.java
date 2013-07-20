@@ -92,6 +92,11 @@ public final class Array extends AbstractArray<INDArray> {
 	public Vector asVector() {
 		return Vector.wrap(data);
 	}
+	
+	@Override
+	public Vector toVector() {
+		return Vector.create(data);
+	}
 
 	@Override
 	public INDArray slice(int majorSlice) {

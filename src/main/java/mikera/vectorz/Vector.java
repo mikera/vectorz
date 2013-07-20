@@ -55,6 +55,10 @@ public final class Vector extends AArrayVector {
 		return new Vector(source);
 	}
 	
+	public static Vector create(double[] data) {
+		return wrap(data.clone());
+	}
+	
 	/**
 	 * Create a vector with specific component values. 
 	 * Creates a copy of the value array
