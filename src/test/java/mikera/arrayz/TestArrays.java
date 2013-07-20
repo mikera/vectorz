@@ -204,6 +204,9 @@ public class TestArrays {
 		if (a.isElementConstrained()) {
 			assertFalse(a.isFullyMutable());
 		}
+		
+		INDArray b=a.ensureMutable();
+		assertTrue(mikera.vectorz.util.Testing.validateFullyMutable(b));
 	}
 
 	private void testHash(INDArray a) {
