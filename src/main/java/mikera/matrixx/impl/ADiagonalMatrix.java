@@ -152,6 +152,11 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public ADiagonalMatrix getTransposeView() {
+		return this;
+	}
+	
+	@Override
 	public double density() {
 		return 1.0/dimensions;
 	}

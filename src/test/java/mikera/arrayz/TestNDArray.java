@@ -62,7 +62,7 @@ public class TestNDArray {
 		assertTrue(a.isView()); // should be a view
 		
 		a=a.ensureMutable();
-		assertFalse(a.isView()); // should be fully packed	
+		assertFalse(a.isView()); // should be fully packed again
 	}
 	
 	@Test public void testOuterProduct() {
