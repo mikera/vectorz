@@ -570,6 +570,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return total;
 	}
 	
+	public double dotProduct(Vector v) {
+		if(v.length()!=length()) throw new IllegalArgumentException("VEctor size mismatch");
+		return dotProduct(v.data, 0);
+	}
+	
 	public double dotProduct(AVector v, Index ix) {
 		int vl=v.length();
 		if (v.length()!=ix.length()) throw new IllegalArgumentException("Mismtached source vector and index sizes");

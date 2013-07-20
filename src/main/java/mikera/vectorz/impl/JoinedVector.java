@@ -201,6 +201,11 @@ public final class JoinedVector extends AVector {
 		return super.dotProduct(v);
 	}
 	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return left.dotProduct(data, offset)+right.dotProduct(data, offset+split);
+	}
+	
 	public double dotProduct (JoinedVector jv) {
 		// in likely case of two equally structured JoinedVectors....
 		if (jv.left.length()==left.length()) {

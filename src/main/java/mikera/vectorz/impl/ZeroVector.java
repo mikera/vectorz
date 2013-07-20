@@ -35,6 +35,11 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	}
 	
 	@Override
+	public double dotProduct(double[] data, int offset) {
+		return 0.0;
+	}
+	
+	@Override
 	public ZeroVector innerProduct(AMatrix m) {
 		if (m.rowCount()!=length) throw new IllegalArgumentException("Incompatible vector*matrix sizes");
 		return ZeroVector.create(m.columnCount());

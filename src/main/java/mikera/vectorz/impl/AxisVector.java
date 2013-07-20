@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.util.VectorzException;
@@ -98,6 +99,12 @@ public class AxisVector extends ComputedVector implements ISparse {
 	public double dotProduct(AVector v) {
 		assert(length==v.length());
 		return v.get(axis);
+	}
+	
+	@Override 
+	public double dotProduct(Vector v) {
+		assert(length==v.length());
+		return v.data[axis];
 	}
 	
 	public double dotProduct(Vector3 v) {

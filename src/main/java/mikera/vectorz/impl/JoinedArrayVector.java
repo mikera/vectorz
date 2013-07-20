@@ -176,6 +176,15 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public double dotProduct(double[] arr, int offset) {
+		double result=0.0;
+		for (int j=0; j<numArrays; j++) {
+			result+=DoubleArrays.dotProduct(data[j], offsets[j], arr,offset+pos[j],subLength(j));
+		}
+		return result;
+	}
+	
+	@Override
 	public void add(AVector a) {
 		add(0,a,0,length);
 	}
