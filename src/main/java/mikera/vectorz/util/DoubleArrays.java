@@ -9,6 +9,14 @@ public final class DoubleArrays {
 		return result;
 	}
 	
+	public static double elementSquaredSum(double[] data, int offset, int length) {
+		double result = 0.0;
+		for (int i=0; i<length; i++) {
+			double x=data[offset+i];
+			result+=x*x;
+		}
+		return result;	}
+	
 	public static int nonZeroCount(double[] data, int offset, int length) {
 		int result = 0;
 		for (int i=0; i<length; i++) {
@@ -165,4 +173,5 @@ public final class DoubleArrays {
 		}
 		return true;
 	}
+
 }

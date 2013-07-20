@@ -9,6 +9,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 
 public final class Array extends AbstractArray<INDArray> {
 	final int dimensions;
@@ -23,7 +24,6 @@ public final class Array extends AbstractArray<INDArray> {
 		int n=(int)IntArrays.arrayProduct(shape);
 		this.data=new double[n];
 	}
-	
 	
 	private Array(int dims, int[] shape, double[] data) {
 		this(dims,shape,IntArrays.calcStrides(shape),data);
@@ -99,12 +99,12 @@ public final class Array extends AbstractArray<INDArray> {
 	}
 
 	@Override
-	public INDArray slice(int majorSlice) {
+	public NDArray slice(int majorSlice) {
 		return slice(0,majorSlice);
 	}
 
 	@Override
-	public INDArray slice(int dimension, int index) {
+	public NDArray slice(int dimension, int index) {
 		int offset=index*getStride(dimension);
 		return new NDArray(data,offset,IntArrays.removeIndex(shape, dimension),IntArrays.removeIndex(strides, dimension));
 	}
@@ -122,6 +122,11 @@ public final class Array extends AbstractArray<INDArray> {
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(data, 0, data.length);
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return DoubleArrays.elementSquaredSum(data, 0, data.length);
 	}
 
 	@Override
@@ -174,7 +179,7 @@ public final class Array extends AbstractArray<INDArray> {
 	}
 
 	@Override
-	public INDArray exactClone() {
+	public Array exactClone() {
 		return new Array(dimensions,shape,strides,data.clone());
 	}
 
@@ -201,5 +206,13 @@ public final class Array extends AbstractArray<INDArray> {
 	@Override
 	public Array clone() {
 		return new Array(dimensions,shape,data.clone());
+	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+		if (dimensions!=shape.length) throw new VectorzException("Inconsistent dimensionality");
+		if (data.length!=IntArrays.arrayProduct(shape)) throw new VectorzException("Inconsistent shape");
+		if (!IntArrays.equals(strides,IntArrays.calcStrides(shape))) throw new VectorzException("Inconsistent strides");
 	}
 }
