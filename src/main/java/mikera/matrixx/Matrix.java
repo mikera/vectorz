@@ -3,7 +3,7 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
-import mikera.matrixx.impl.ArrayMatrix;
+import mikera.matrixx.impl.AArrayMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
@@ -20,7 +20,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class Matrix extends ArrayMatrix {
+public final class Matrix extends AArrayMatrix {
 	
 	public Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
