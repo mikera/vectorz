@@ -4,8 +4,10 @@ import java.nio.DoubleBuffer;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
@@ -16,39 +18,39 @@ public final class Array extends AbstractArray<INDArray> {
 	final int[] shape;
 	final int[] strides;
 	final double[] data;
-	
-	private Array(int dims, int[] shape,int[] strides) {
-		this.dimensions=dims;
-		this.shape=shape;
-		this.strides=strides;
-		int n=(int)IntArrays.arrayProduct(shape);
-		this.data=new double[n];
+
+	private Array(int dims, int[] shape, int[] strides) {
+		this.dimensions = dims;
+		this.shape = shape;
+		this.strides = strides;
+		int n = (int) IntArrays.arrayProduct(shape);
+		this.data = new double[n];
 	}
-	
+
 	private Array(int dims, int[] shape, double[] data) {
-		this(dims,shape,IntArrays.calcStrides(shape),data);
+		this(dims, shape, IntArrays.calcStrides(shape), data);
 	}
-	
-	private Array(int dims, int[] shape,int[] strides,double[] data) {
-		this.dimensions=dims;
-		this.shape=shape;
-		this.strides=strides;
-		this.data=data;
+
+	private Array(int dims, int[] shape, int[] strides, double[] data) {
+		this.dimensions = dims;
+		this.shape = shape;
+		this.strides = strides;
+		this.data = data;
 	}
 
 	public static Array newArray(int... shape) {
-		int n=(int)IntArrays.arrayProduct(shape);
-		double[] data=new double[n];
-		return new Array(shape.length,shape,data);
+		int n = (int) IntArrays.arrayProduct(shape);
+		double[] data = new double[n];
+		return new Array(shape.length, shape, data);
 	}
-	
+
 	public static Array create(INDArray a) {
-		int n=(int)a.elementCount();
-		double[] data=new double[n];
+		int n = (int) a.elementCount();
+		double[] data = new double[n];
 		a.getElements(data, 0);
-		return new Array(a.dimensionality(),a.getShape(),data);
+		return new Array(a.dimensionality(), a.getShape(), data);
 	}
-	
+
 	@Override
 	public int dimensionality() {
 		return dimensions;
@@ -61,19 +63,19 @@ public final class Array extends AbstractArray<INDArray> {
 
 	@Override
 	public long[] getLongShape() {
-		long[] lshape=new long[dimensions];
+		long[] lshape = new long[dimensions];
 		IntArrays.copyIntsToLongs(shape, lshape);
 		return lshape;
 	}
-	
+
 	public int getStride(int dim) {
 		return strides[dim];
 	}
-	
+
 	public int getIndex(int... indexes) {
-		int ix=0;
-		for (int i=0; i<dimensions; i++) {
-			ix+=indexes[i]*getStride(i);
+		int ix = 0;
+		for (int i = 0; i < dimensions; i++) {
+			ix += indexes[i] * getStride(i);
 		}
 		return ix;
 	}
@@ -85,14 +87,14 @@ public final class Array extends AbstractArray<INDArray> {
 
 	@Override
 	public void set(int[] indexes, double value) {
-		data[getIndex(indexes)]=value;
+		data[getIndex(indexes)] = value;
 	}
 
 	@Override
 	public Vector asVector() {
 		return Vector.wrap(data);
 	}
-	
+
 	@Override
 	public Vector toVector() {
 		return Vector.create(data);
@@ -100,13 +102,15 @@ public final class Array extends AbstractArray<INDArray> {
 
 	@Override
 	public NDArray slice(int majorSlice) {
-		return slice(0,majorSlice);
+		return slice(0, majorSlice);
 	}
 
 	@Override
 	public NDArray slice(int dimension, int index) {
-		int offset=index*getStride(dimension);
-		return new NDArray(data,offset,IntArrays.removeIndex(shape, dimension),IntArrays.removeIndex(strides, dimension));
+		int offset = index * getStride(dimension);
+		return new NDArray(data, offset,
+				IntArrays.removeIndex(shape, dimension), IntArrays.removeIndex(
+						strides, dimension));
 	}
 
 	@Override
@@ -118,12 +122,12 @@ public final class Array extends AbstractArray<INDArray> {
 	public long elementCount() {
 		return data.length;
 	}
-	
+
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(data, 0, data.length);
 	}
-	
+
 	@Override
 	public double elementSquaredSum() {
 		return DoubleArrays.elementSquaredSum(data, 0, data.length);
@@ -157,10 +161,10 @@ public final class Array extends AbstractArray<INDArray> {
 	@Override
 	public void applyOp(IOp op) {
 		if (op instanceof Op) {
-			((Op)op).applyTo(data);
+			((Op) op).applyTo(data);
 		} else {
-			for (int i=0; i<data.length; i++) {
-				data[i]=op.apply(data[i]);
+			for (int i = 0; i < data.length; i++) {
+				data[i] = op.apply(data[i]);
 			}
 		}
 	}
@@ -169,18 +173,18 @@ public final class Array extends AbstractArray<INDArray> {
 	public boolean equals(INDArray a) {
 		return super.equals(a);
 	}
-	
+
 	public boolean equals(Array a) {
-		if (a.dimensions!=dimensions) return false;
-		for (int i=0; i<dimensions; i++) {
-			if (a.shape[i]!=shape[i]) return false;
+		if (a.dimensions != dimensions) return false;
+		for (int i = 0; i < dimensions; i++) {
+			if (a.shape[i] != shape[i]) return false;
 		}
-		return DoubleArrays.equals(data,a.data);
+		return DoubleArrays.equals(data, a.data);
 	}
 
 	@Override
 	public Array exactClone() {
-		return new Array(dimensions,shape,strides,data.clone());
+		return new Array(dimensions, shape, strides, data.clone());
 	}
 
 	@Override
@@ -197,22 +201,30 @@ public final class Array extends AbstractArray<INDArray> {
 	public List<INDArray> getSlices() {
 		return super.getSliceViews();
 	}
-	
+
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
 
 	@Override
-	public Array clone() {
-		return new Array(dimensions,shape,data.clone());
+	public INDArray clone() {
+		switch (dimensions) {
+		case 0: return Scalar.create(data[0]);
+		case 1:	return Vector.create(data);
+		case 2: return Matrix.wrap(shape[0], shape[1], data.clone());
+		default: return new Array(dimensions, shape, data.clone());
+		}	
 	}
-	
+
 	@Override
 	public void validate() {
 		super.validate();
-		if (dimensions!=shape.length) throw new VectorzException("Inconsistent dimensionality");
-		if (data.length!=IntArrays.arrayProduct(shape)) throw new VectorzException("Inconsistent shape");
-		if (!IntArrays.equals(strides,IntArrays.calcStrides(shape))) throw new VectorzException("Inconsistent strides");
+		if (dimensions != shape.length)
+			throw new VectorzException("Inconsistent dimensionality");
+		if (data.length != IntArrays.arrayProduct(shape))
+			throw new VectorzException("Inconsistent shape");
+		if (!IntArrays.equals(strides, IntArrays.calcStrides(shape)))
+			throw new VectorzException("Inconsistent strides");
 	}
 }
