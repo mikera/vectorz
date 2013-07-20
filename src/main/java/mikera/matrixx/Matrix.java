@@ -142,6 +142,31 @@ public final class Matrix extends AArrayMatrix {
 	}
 	
 	@Override
+	public void abs() {
+		DoubleArrays.abs(data, 0, data.length);
+	}
+	
+	@Override
+	public void signum() {
+		DoubleArrays.signum(data, 0, data.length);
+	}
+	
+	@Override
+	public void square() {
+		DoubleArrays.square(data, 0, data.length);
+	}
+	
+	@Override
+	public void exp() {
+		DoubleArrays.exp(data, 0, data.length);
+	}
+	
+	@Override
+	public void log() {
+		DoubleArrays.log(data, 0, data.length);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return DoubleArrays.nonZeroCount(data, 0, data.length);
 	}

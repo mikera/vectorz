@@ -13,11 +13,19 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * General purpose mutable backed N-dimensional array
+ * 
+ * This is the general multi-dimensional equivalent of Matrix and Vector
+ * 
+ * @author Mike
+ *
+ */
 public final class Array extends AbstractArray<INDArray> {
-	final int dimensions;
-	final int[] shape;
-	final int[] strides;
-	final double[] data;
+	private final int dimensions;
+	private final int[] shape;
+	private final int[] strides;
+	private final double[] data;
 
 	private Array(int dims, int[] shape, int[] strides) {
 		this.dimensions = dims;
@@ -132,6 +140,32 @@ public final class Array extends AbstractArray<INDArray> {
 	public double elementSquaredSum() {
 		return DoubleArrays.elementSquaredSum(data, 0, data.length);
 	}
+	
+	
+	@Override
+	public void abs() {
+		DoubleArrays.abs(data, 0, data.length);
+	}
+	
+	@Override
+	public void signum() {
+		DoubleArrays.signum(data, 0, data.length);
+	}
+	
+	@Override
+	public void square() {
+		DoubleArrays.square(data, 0, data.length);
+	}
+	
+	@Override
+	public void exp() {
+		DoubleArrays.exp(data, 0, data.length);
+	}
+	
+	@Override
+	public void log() {
+		DoubleArrays.log(data, 0, data.length);
+	}
 
 	@Override
 	public boolean isMutable() {
@@ -171,6 +205,7 @@ public final class Array extends AbstractArray<INDArray> {
 
 	@Override
 	public boolean equals(INDArray a) {
+		if (a instanceof Array) return equals((Array)a);
 		return super.equals(a);
 	}
 
