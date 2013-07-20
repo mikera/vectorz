@@ -243,7 +243,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return sb.toString();
 	}
 	
-	public AbstractArray<?> clone() {
+	public INDArray clone() {
 		try {
 			return (AbstractArray<?>)super.clone();
 		} catch (CloneNotSupportedException e) {

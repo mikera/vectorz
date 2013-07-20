@@ -392,10 +392,8 @@ public final class NDArray extends AbstractArray<INDArray> {
 	}
 	
 	@Override
-	public NDArray clone() {
-		NDArray c=new NDArray(shape.clone());
-		c.set(this);
-		return c;
+	public INDArray clone() {
+		return Array.create(this);
 	}
 
 	@Override
