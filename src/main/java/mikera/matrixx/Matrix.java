@@ -68,7 +68,7 @@ public final class Matrix extends AArrayMatrix {
 	}
 	
 	@Override
-	public AVector innerProduct(AVector a) {
+	public Vector innerProduct(AVector a) {
 		if (a instanceof Vector) return innerProduct((Vector)a);
 		return super.innerProduct(a);
 	}
