@@ -580,6 +580,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	public double dotProduct(double[] data, int offset) {
+		int len=length();
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			result+=unsafeGet(i)*data[offset+i];
+		}
+		return result;
+	}
+	
 	public void crossProduct(AVector a) {
 		if(!((length()==3)&&(a.length()==3))) throw new IllegalArgumentException("Cross product requires length 3 vectors");
 		double x=unsafeGet(0);
