@@ -35,6 +35,12 @@ public final class Array extends AbstractArray<INDArray> {
 		this.strides=strides;
 		this.data=data;
 	}
+
+	public static Array newArray(int... shape) {
+		int n=(int)IntArrays.arrayProduct(shape);
+		double[] data=new double[n];
+		return new Array(shape.length,shape,data);
+	}
 	
 	public static Array create(INDArray a) {
 		int n=(int)a.elementCount();

@@ -70,7 +70,7 @@ public class Arrayz {
 			case 0: return Scalar.create(0.0);
 			case 1: return Vector.createLength(shape[0]);
 			case 2: return Matrix.create(shape[0], shape[1]);
-			default: return NDArray.newArray(shape);
+			default: return Array.newArray(shape);
 		}
 	}
 	
