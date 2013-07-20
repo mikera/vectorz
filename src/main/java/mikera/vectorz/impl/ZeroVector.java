@@ -1,7 +1,9 @@
 package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
+import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
+import mikera.vectorz.AVector;
 
 /**
  * Specialised immuatble vector containing nothing but zeros.
@@ -24,6 +26,18 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	@Override
 	public int length() {
 		return length;
+	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		if (v.length()!=length) throw new IllegalArgumentException("Different vector lengths");
+		return 0.0;
+	}
+	
+	@Override
+	public ZeroVector innerProduct(AMatrix m) {
+		if (m.rowCount()!=length) throw new IllegalArgumentException("Incompatible vector*matrix sizes");
+		return ZeroVector.create(m.columnCount());
 	}
 
 	@Override

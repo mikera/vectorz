@@ -539,7 +539,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Scalar.create(dotProduct(v));
 	}
 	
-	public Vector innerProduct(AMatrix m) {
+	public AVector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
 		int rc=m.rowCount();
 		if (rc!=length()) throw new VectorzException("Incompatible sizes for inner product: ["+length()+ "] x ["+rc+","+cc+"]");
