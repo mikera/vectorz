@@ -28,10 +28,16 @@ public class IntArrays {
 		return nas;
 	}
 
-	public static void copyIntsToLongs(int[] src, long[] dst) {
+	public static long[] copyIntsToLongs(int[] src, long[] dst) {
 		for (int i=0; i<src.length; i++) {
 			dst[i]=src[i];
 		}
+		return dst;
+	}
+	
+	public static long[] copyIntsToLongs(int[] src) {
+		long[] dst=new long[src.length];
+		return copyIntsToLongs(src,dst);
 	}
 
 	public static long arrayProduct(int[] shape) {
@@ -48,5 +54,16 @@ public class IntArrays {
 			r*=shape[i];
 		}
 		return r;
+	}
+
+	public static final int[] calcStrides(int[] shape) {
+		int dimensions=shape.length;
+		int[] stride=new int[dimensions];
+		int st=1;
+		for (int j=dimensions-1; j>=0; j--) {
+			stride[j]=st;
+			st*=shape[j];
+		}
+		return stride;
 	}
 }

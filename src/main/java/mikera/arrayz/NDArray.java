@@ -35,26 +35,15 @@ public final class NDArray extends AbstractArray<INDArray> {
 	private final double[] data;
 	private int[] stride;
 	
-	private static final int[] defaultStride(int[] shape) {
-		int dimensions=shape.length;
-		int[] stride=new int[dimensions];
-		int st=1;
-		for (int j=dimensions-1; j>=0; j--) {
-			stride[j]=st;
-			st*=shape[j];
-		}
-		return stride;
-	}
-	
-	private NDArray(int... shape) {
+	NDArray(int... shape) {
 		this.shape=shape.clone();
 		dimensions=shape.length;
 		data=new double[(int)elementCount()];
-		stride=defaultStride(shape);
+		stride=IntArrays.calcStrides(shape);
 		offset=0;
 	}
 	
-	private NDArray(double[] data, int offset, int[] shape, int[] stride) {
+	NDArray(double[] data, int offset, int[] shape, int[] stride) {
 		this.data=data;
 		this.offset=offset;
 		this.shape=shape;
@@ -72,7 +61,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	
 	public static NDArray wrap(double[] data, int[] shape) {
 		int dims=shape.length;
-		return new NDArray(data,dims,0,shape,defaultStride(shape));
+		return new NDArray(data,dims,0,shape,IntArrays.calcStrides(shape));
 	}
 	
 	public static NDArray wrap(Vector v) {

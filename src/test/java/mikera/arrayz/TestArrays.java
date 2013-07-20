@@ -417,13 +417,26 @@ public class TestArrays {
 				Vectorz.createUniformRandomVector(10),
 				Vectorz.createUniformRandomVector(10));
 		testArray(sa);
+		testArray(Array.create(sa));
 
-		NDArray nd1 = NDArray.newArray(3, 3, 3);
+		NDArray nd1 = NDArray.newArray(3);
 		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
+		testArray(Array.create(nd1));
+		
+		NDArray nd2 = NDArray.newArray(3, 3);
+		Vectorz.fillIndexes(nd2.asVector());
+		testArray(nd2);
+		testArray(Array.create(nd2));
+		
+		NDArray nd3 = NDArray.newArray(3, 3, 3);
+		Vectorz.fillIndexes(nd3.asVector());
+		testArray(nd3);
+		testArray(Array.create(nd3));
 
 		NDArray ndscalar = NDArray.newArray();
 		ndscalar.set(1.0);
 		testArray(ndscalar);
+		testArray(Array.create(ndscalar));
 	}
 }

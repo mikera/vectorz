@@ -156,4 +156,13 @@ public final class DoubleArrays {
 			data[i+offset]=-val;
 		}
 	}
+
+	public static boolean equals(double[] as, double[] bs) {
+		int n=as.length;
+		if (n!=bs.length) return false;
+		for (int i=0; i<n; i++) {
+			if (as[i]!=bs[i]) return false;
+		}
+		return true;
+	}
 }

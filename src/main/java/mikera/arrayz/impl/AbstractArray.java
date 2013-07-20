@@ -15,6 +15,7 @@ import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -205,7 +206,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public Iterator<Double> elementIterator() {
-		return new SliceElementIterator(this);
+		if (dimensionality()==0) {
+			return new SingleDoubleIterator(get());
+		} else {
+			return new SliceElementIterator(this);
+		}
 	}
 	
 	public boolean equals(Object o) {
@@ -244,6 +249,21 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		} catch (CloneNotSupportedException e) {
 			throw new VectorzException("AbstractArray clone failed");
 		}
+	}
+	
+	@Override
+	public boolean equals(INDArray a) {
+		int dims=dimensionality();
+		if (a.dimensionality()!=dims) return false;
+		if (dims==0) {
+			return (get()==a.get());
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				if (!slice(i).equals(a.slice(i))) return false;
+			}
+		}
+		return true;
 	}
 	
 	@Override
