@@ -6,8 +6,6 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AxisVector;
-import mikera.vectorz.impl.ComputedVector;
-import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -81,16 +79,6 @@ public final class SubsetMatrix extends AMatrix implements ISparse {
 	@Override
 	public AxisVector getRow(int i) {
 		return AxisVector.create(components.get(i), inputDims);
-	}
-	
-	@Override
-	public ComputedVector getColumn(int j) {
-		int x=components.find(j);
-		if (x>=0) {
-			return AxisVector.create(x, rowCount());
-		} else {
-			return ZeroVector.create(rowCount());
-		}
 	}
 	
 	@Override

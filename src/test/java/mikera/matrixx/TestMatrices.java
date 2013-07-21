@@ -26,6 +26,13 @@ public class TestMatrices {
 		assertEquals(Vector.of(0,1,0),SparseIndexedVector.create(m.getColumn(1)));
 	}
 	
+	@Test public void testSubsetMatrix2() {
+		SubsetMatrix m=SubsetMatrix.create(Index.of(1,1),2);
+		
+		assertEquals(Vector.of(0,0),m.getColumn(0));
+		assertEquals(Vector.of(1,1),m.getColumn(1));
+	}
+	
 
 	@Test public void testSubMatrix() {
 		Matrix m=(Matrix) Matrixx.newMatrix(4,4);
