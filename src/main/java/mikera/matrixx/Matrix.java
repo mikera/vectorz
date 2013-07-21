@@ -282,6 +282,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public double get(int row, int column) {
+		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException();
 		return data[(row*cols)+column];
 	}
 
@@ -297,6 +298,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void set(int row, int column, double value) {
+		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException();
 		data[(row*cols)+column]=value;
 	}
 	
