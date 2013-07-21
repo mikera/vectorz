@@ -317,18 +317,26 @@ public class Matrixx {
 		return Matrix.create(rows, columns);
 	}
 
+	/**
+	 * Creates a new matrix using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new matrix
+	 * @param data
+	 * @param rows
+	 * @param columns
+	 * @return
+	 */
 	public static Matrix createFromVector(AVector data, int rows, int columns) {
-		if (data.length() != rows * columns)
-			throw new IllegalArgumentException("Wrong data vector size");
 		Matrix m = Matrix.create(rows, columns);
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				m.unsafeSet(i, j, data.unsafeGet(i * columns + j));
-			}
-		}
+		int n=Math.min(rows*columns, data.length());
+		data.copyTo(0, m.data, 0, n);
 		return m;
 	}
 
+	/**
+	 * Creates a zero-filled matrix with the specified number of dimensions for both rows and columns
+	 * @param dimensions
+	 * @return
+	 */
 	private static Matrix createSquareMatrix(int dimensions) {
 		return Matrix.create(dimensions, dimensions);
 	}

@@ -3,7 +3,6 @@ package mikera.arrayz;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import us.bpsm.edn.parser.Parseable;
@@ -20,6 +19,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -108,23 +108,24 @@ public class Arrayz {
 		}
 	}
 
-	public static INDArray createFromVector(AVector a, int[] shape) {
+	/**
+	 * Creates a new array using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new array
+	 * @param data
+	 * @param rows
+	 * @param columns
+	 * @return
+	 */
+	public static INDArray createFromVector(AVector a, int... shape) {
 		int dims=shape.length;
 		if (dims==0) {
-			return Scalar.create(a.get(0));
+			return Scalar.createFromVector(a);
 		} else if (dims==1) {
-			return a.subVector(0, shape[0]);
+			return Vector.createFromVector(a,shape[0]);
 		} else if (dims==2) {
 			return Matrixx.createFromVector(a, shape[0], shape[1]);
 		} else {
-			int n=shape[0];
-			int[] ss=Arrays.copyOfRange(shape, 1, dims);
-			int skip=(int)Arrayz.elementCount(ss);
-			ArrayList<INDArray> al=new ArrayList<INDArray>();
-			for (int i=0; i<n; i++) {
-				al.add(createFromVector(a.subVector(i*skip, skip),ss));
-			}
-			return SliceArray.create(al);
+			return Array.createFromVector(a,shape);
 		}
 	}
 	
@@ -138,11 +139,7 @@ public class Arrayz {
 		return load(new StringReader(ednString));	
 	}
 
-	private static long elementCount(int[] ss) {
-		long r=1;
-		for (int x:ss) {
-			r*=x;
-		}
-		return r;
+	public static long elementCount(int[] shape) {
+		return IntArrays.arrayProduct(shape);
 	}
 }

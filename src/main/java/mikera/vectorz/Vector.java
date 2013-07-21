@@ -488,4 +488,17 @@ public final class Vector extends AArrayVector {
 		dest.put(data);
 	}
 
+	/**
+	 * Creates a new vector using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new vector
+	 * @param data
+	 * @return
+	 */
+	public static Vector createFromVector(AVector source, int length) {
+		Vector v=Vector.createLength(length);
+		int n=Math.min(length, source.length());
+		source.copyTo(0, v.data, 0, n);
+		return v;
+	}
+
 }

@@ -2,9 +2,11 @@ package mikera.arrayz;
 
 import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.Vector0;
 
 import org.junit.Test;
 
@@ -31,6 +33,11 @@ public class TestMiscArrayOps {
 		
 		v.scale(0.0);
 		assertEquals(0,v.nonZeroCount());
+	}
+	
+	@Test public void testZeroPaddedReshape() {
+		assertTrue(Vector0.INSTANCE.reshape(1,1).asVector().isZeroVector());
+		assertTrue(Matrix.create(1,1).reshape(1,2,3).asVector().isZeroVector());
 	}
 
 

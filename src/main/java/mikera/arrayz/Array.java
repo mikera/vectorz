@@ -5,6 +5,7 @@ import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
 import mikera.matrixx.Matrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
@@ -279,5 +280,20 @@ public final class Array extends AbstractArray<INDArray> {
 			throw new VectorzException("Inconsistent shape");
 		if (!IntArrays.equals(strides, IntArrays.calcStrides(shape)))
 			throw new VectorzException("Inconsistent strides");
+	}
+
+	/**
+	 * Creates a new matrix using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new matrix
+	 * @param data
+	 * @param rows
+	 * @param columns
+	 * @return
+	 */
+	public static Array createFromVector(AVector a, int[] shape) {
+		Array m = Array.newArray(shape);
+		int n=(int)Math.min(m.elementCount(), a.length());
+		a.copyTo(0, m.data, 0, n);
+		return m;
 	}
 }

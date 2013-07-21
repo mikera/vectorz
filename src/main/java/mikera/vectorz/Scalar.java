@@ -85,4 +85,16 @@ public final class Scalar extends AScalar {
 		return clone();
 	}
 
+	/**
+	 * Creates a new Scalar using the elements in the specified vector.
+	 * Zero-pads the data as required to define the Scalar
+	 * @param data
+	 * @param rows
+	 * @param columns
+	 * @return
+	 */
+	public static Scalar createFromVector(AVector data) {
+		return new Scalar(data.length()>0?data.get(0):0.0);
+	}
+
 }
