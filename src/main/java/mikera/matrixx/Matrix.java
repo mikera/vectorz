@@ -120,9 +120,9 @@ public final class Matrix extends ADenseArrayMatrix {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.get(i, k)*a.get(k, j);
+					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
 				}
-				result.set(i,j,acc);
+				result.unsafeSet(i,j,acc);
 			}
 		}
 		return result;
@@ -144,9 +144,9 @@ public final class Matrix extends ADenseArrayMatrix {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.get(i, k)*a.get(k, j);
+					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
 				}
-				result.set(i,j,acc);
+				result.unsafeSet(i,j,acc);
 			}
 		}
 		return result;
@@ -209,7 +209,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		for (int i=0; i<rows; i++) {
 			double acc=0.0;
 			for (int j=0; j<cols; j++) {
-				acc+=data[index++]*source.get(j);
+				acc+=data[index++]*source.unsafeGet(j);
 			}
 			dest.set(i,acc);
 		}
