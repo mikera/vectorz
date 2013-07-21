@@ -8,7 +8,7 @@ public final class Logistic extends ABoundedOp {
 	
 	public static final Logistic INSTANCE=new Logistic();
 	
-	static double logisticFunction(double a) {
+	public static double logisticFunction(double a) {
 		double ea=Math.exp(-a);
 		double df=(1/(1.0f+ea));
 		if (Double.isNaN(df)) return (a>0)?1:0;
@@ -41,7 +41,7 @@ public final class Logistic extends ABoundedOp {
 	
 	@Override
 	public void applyTo(AVector v) {
-		super.applyTo(v);
+		v.logistic();
 	}
 	
 	@Override

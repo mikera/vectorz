@@ -13,7 +13,7 @@ public final class Tanh extends ABoundedOp {
 	
 	@Override
 	public void applyTo(AVector v) {
-		super.applyTo(v);
+		v.tanh();
 	}
 	
 	@Override

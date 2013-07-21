@@ -22,6 +22,7 @@ import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.VectorIterator;
 import mikera.vectorz.impl.WrappedSubVector;
+import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -460,9 +461,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void square() {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			double x=get(i);
-			set(i,x*x);
+			double x=unsafeGet(i);
+			unsafeSet(i,x*x);
 		}		
+	}
+	
+	public void tanh() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=unsafeGet(i);
+			unsafeSet(i,Math.tanh(x));
+		}			
+	}
+	
+	public void logistic() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=unsafeGet(i);
+			unsafeSet(i,Logistic.logisticFunction(x));
+		}			
 	}
 	
 	/**

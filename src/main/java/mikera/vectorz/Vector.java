@@ -6,6 +6,7 @@ import java.util.Arrays;
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -177,6 +178,24 @@ public final class Vector extends AArrayVector {
 			double x=data[i];
 			data[i]=x*x;
 		}		
+	}
+	
+	@Override
+	public void tanh() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=unsafeGet(i);
+			unsafeSet(i,Math.tanh(x));
+		}			
+	}
+	
+	@Override
+	public void logistic() {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=unsafeGet(i);
+			unsafeSet(i,Logistic.logisticFunction(x));
+		}			
 	}
 	
 	@Override
