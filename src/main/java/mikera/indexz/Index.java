@@ -108,7 +108,6 @@ public final class Index extends AIndex {
 		return (swapCount()&1)==0;
 	}
 	
-	
 	/**
 	 * Creates a new Index, wrapping the provided index array
 	 */

@@ -32,7 +32,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	private final int dimensions;
 	private final int[] shape;
-	private int offset;
+	private int offset; // not final, in case we want to do "sliding window" trick :-)
 	private final double[] data;
 	private final int[] stride;
 	
