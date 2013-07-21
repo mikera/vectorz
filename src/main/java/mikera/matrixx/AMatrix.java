@@ -31,6 +31,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.Errors;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -602,7 +603,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	public void transposeInPlace() {
 		if (!isSquare())
-			throw new Error("Only square matrixes can be transposed in place!");
+			throw new UnsupportedOperationException(Errors.squareTransposeInPlace(this));
 		int dims = rowCount();
 		for (int i = 0; i < dims; i++) {
 			for (int j = i + 1; j < dims; j++) {
@@ -634,7 +635,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void add(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException("Mismatched matrix sizes");
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(Errors.mismatch(this, m));
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -646,7 +647,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void add(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if(cc!=v.length()) throw new IllegalArgumentException("Mismatched matrix and vector sizes");
+		if(cc!=v.length()) throw new IllegalArgumentException(Errors.mismatch(this, v));
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -658,7 +659,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void sub(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if(cc!=v.length()) throw new IllegalArgumentException("Mismatched matrix and vector sizes");
+		if(cc!=v.length()) throw new IllegalArgumentException(Errors.incompatibleShapes(this, v));
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -827,7 +828,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void elementMul(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException("Mismatched matrix sizes");
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(Errors.mismatch(this, m));
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -1015,7 +1016,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int rc = rowCount();
 		int cc = columnCount();
 		if ((rc != a.rowCount())||(cc!=a.columnCount()))
-			throw new VectorzException("Mismatched matrix sizes!");
+			throw new IllegalArgumentException(Errors.mismatch(this, a));
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
 				if (!Tools.epsilonEquals(unsafeGet(i, j), a.unsafeGet(i, j)))
