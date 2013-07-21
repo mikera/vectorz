@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Tools;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -123,9 +124,18 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override 
 	public boolean isIdentity() {
-		int dimensions=dimensions();
 		for (int i=0; i<dimensions; i++ ) {
-			if (get(i,i)!=1.0) return false;
+			if (unsafeGet(i,i)!=1.0) return false;
+			
+		}
+		return true;
+	}
+	
+	
+	@Override
+	public boolean isBoolean() {
+		for (int i=0; i<dimensions; i++ ) {
+			if (!Tools.isBoolean(unsafeGet(i,i))) return false;
 			
 		}
 		return true;
