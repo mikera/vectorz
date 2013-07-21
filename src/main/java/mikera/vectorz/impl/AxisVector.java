@@ -91,6 +91,11 @@ public class AxisVector extends ComputedVector implements ISparse {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public boolean isUnitLengthVector() {
 		return true;
 	}

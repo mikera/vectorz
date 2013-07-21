@@ -125,6 +125,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return DoubleArrays.isBoolean(data, 0, dimensions);
+	}
+	
+	@Override
 	public DiagonalMatrix clone() {
 		DiagonalMatrix m=new DiagonalMatrix(data);
 		return m;

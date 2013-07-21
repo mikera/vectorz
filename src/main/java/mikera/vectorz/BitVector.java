@@ -120,6 +120,11 @@ public final class BitVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public AVector clone() {
 		AVector v=Vectorz.newVector(length);
 		v.set(this);

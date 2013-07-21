@@ -56,6 +56,11 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		// no change
 	}

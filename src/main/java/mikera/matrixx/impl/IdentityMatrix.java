@@ -38,6 +38,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public double calculateElement(int i, AVector v) {
 		return v.get(i);
 	}

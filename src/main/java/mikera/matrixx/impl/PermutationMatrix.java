@@ -64,6 +64,11 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public double determinant() {
 		return perm.isEvenPermutation()?1.0:-1.0;
 	}
