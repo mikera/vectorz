@@ -6,7 +6,6 @@ import java.util.Arrays;
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.vectorz.impl.AArrayVector;
-import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -168,63 +167,42 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void clamp(double min, double max) {
-		DoubleArrays.clamp(data,0,data.length,min,max);
+		DoubleArrays.clamp(data,min,max);
 	}
 	
 	@Override
 	public void square() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			double x=data[i];
-			data[i]=x*x;
-		}		
+		DoubleArrays.square(data);	
 	}
 	
 	@Override
 	public void tanh() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			double x=unsafeGet(i);
-			unsafeSet(i,Math.tanh(x));
-		}			
+		DoubleArrays.tanh(data);		
 	}
 	
 	@Override
 	public void logistic() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			double x=unsafeGet(i);
-			unsafeSet(i,Logistic.logisticFunction(x));
-		}			
+		DoubleArrays.logistic(data);		
 	}
 	
 	@Override
 	public double elementSum() {
-		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			result+=data[i];
-		}
-		return result;
+		return DoubleArrays.elementSum(data);
 	}
 	
 	@Override
 	public long nonZeroCount() {
-		return DoubleArrays.nonZeroCount(data, 0, data.length);
+		return DoubleArrays.nonZeroCount(data);
 	}	
 	
 	@Override
 	public void signum() {
-		for (int i=0; i<data.length; i++) {
-			data[i]=Math.signum(data[i]);
-		}
+		DoubleArrays.signum(data);
 	}
 	
 	@Override
 	public void abs() {
-		for (int i=0; i<data.length; i++) {
-			double val=data[i];
-			if (val<0) data[i]=-val;
-		}
+		DoubleArrays.abs(data);
 	}
 	
 	@Override
@@ -475,7 +453,7 @@ public final class Vector extends AArrayVector {
 		int len=length();
 		assert(len==v.length());
 		for (int i = 0; i < len; i++) {
-			set(i,data[i]*v.data[i]);
+			data[i]=(data[i]*v.data[i]);
 		}	
 	}
 	
