@@ -2,6 +2,8 @@ package mikera.indexz;
 
 import java.util.Arrays;
 
+import mikera.vectorz.AVector;
+
 /**
  * Class to represent a mutable list of integer indexes, typically used for indexing into
  * vectors or matrices.
@@ -46,10 +48,20 @@ public final class Index extends AIndex {
 		}
 	}
 	
+	@Override
 	public boolean isDistinctSorted() {
 		int len=length();
 		for (int i=1; i<len; i++) {
 			if (data[i-1]>=data[i]) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isSorted() {
+		int len=length();
+		for (int i=1; i<len; i++) {
+			if (data[i-1]>data[i]) return false;
 		}
 		return true;
 	}
@@ -109,6 +121,19 @@ public final class Index extends AIndex {
 	 */
 	public static Index of(int... indexes) {
 		return new Index(indexes.clone());
+	}
+	
+	public static Index createLength(int len) {
+		return new Index(len);
+	}
+	
+	public static Index create(AVector v) {
+		int len=v.length(); 
+		Index a=Index.createLength(len); 
+		for (int i=0; i<len; i++) {
+			a.data[i]=(int) v.get(i);
+		}
+		return a;
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.DoubleArrays;
@@ -86,6 +87,15 @@ public final class Vector extends AArrayVector {
 		int n=a.length();
 		Vector v=createLength(n);
 		a.copyTo(v.data);
+		return v;
+	}
+	
+	public static Vector create(AIndex a) {
+		int n=a.length();
+		Vector v=createLength(n);
+		for (int i=0; i<n; i++) {
+			v.set(i,a.get(i));
+		}
 		return v;
 	}
 	
