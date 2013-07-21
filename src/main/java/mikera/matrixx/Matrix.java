@@ -4,7 +4,7 @@ import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 import mikera.matrixx.impl.ADenseArrayMatrix;
-import mikera.matrixx.impl.AArrayMatrix;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
@@ -69,11 +69,13 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
-	public AArrayMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+	public AStridedMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		if ((rowStart<0)||(rowStart>=rows)||(colStart<0)||(colStart>=cols)) throw new IndexOutOfBoundsException("Invalid submatrix start position");
 		if ((rowStart+rows>this.rows)||(colStart+cols>this.cols)) throw new IndexOutOfBoundsException("Invalid submatrix end position");
 		if ((rows<1)||(cols<1)) throw new IllegalArgumentException("Submatrix has no elements");
-		return StridedMatrix.wrap(data, rows, cols, rowStart*cols+colStart, cols, 1);
+		return StridedMatrix.wrap(data, rows, cols, 
+				rowStart*rowStride()+colStart*columnStride(), 
+				rowStride(), columnStride());
 	}
 	
 	@Override
