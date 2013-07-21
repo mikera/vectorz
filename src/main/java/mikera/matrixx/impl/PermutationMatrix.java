@@ -15,7 +15,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	private final int size;
 	
 	private PermutationMatrix(Index perm) {
-		if (!perm.isPermutation()) throw new VectorzException("Not a valid permutation: "+perm);
+		if (!perm.isPermutation()) throw new IllegalArgumentException("Not a valid permutation: "+perm);
 		this.perm=perm;
 		size=perm.length();
 	}
@@ -164,7 +164,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public double get(int row, int column) {
-		if (column<0||(column>=size)) throw new IndexOutOfBoundsException();
+		if (column<0||(column>=size)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
 		return (perm.get(row)==column)?1.0:0.0;
 	}
 

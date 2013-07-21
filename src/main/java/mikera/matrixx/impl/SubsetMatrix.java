@@ -4,6 +4,7 @@ import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Matrix that transforms to a subset of elements of the source vector
@@ -73,10 +74,15 @@ public final class SubsetMatrix extends AMatrix implements ISparse {
 	public double get(int row, int column) {
 		return (column==components.get(row))?1.0:0.0;
 	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return (column==components.get(row))?1.0:0.0;
+	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		throw new UnsupportedOperationException("Can't set matrix values on: "+this.getClass().getName());
+		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 	}
 
 	@Override

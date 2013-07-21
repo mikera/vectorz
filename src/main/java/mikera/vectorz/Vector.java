@@ -7,6 +7,7 @@ import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 
@@ -234,7 +235,7 @@ public final class Vector extends AArrayVector {
 			add(((AArrayVector)v),0); return;
 		}
 		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			data[i] += v.unsafeGet(i);
 		}
@@ -243,7 +244,7 @@ public final class Vector extends AArrayVector {
 	@Override
 	public void add(Vector v) {
 		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			data[i] += v.data[i];
 		}
@@ -393,7 +394,7 @@ public final class Vector extends AArrayVector {
 	public void addWeighted(AVector v, double factor) {
 		if (v instanceof AArrayVector) {addWeighted(((AArrayVector)v),factor); return;}
 		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			data[i] = (data[i]*(1.0-factor)) + (v.unsafeGet(i)*factor);
 		}
@@ -443,7 +444,7 @@ public final class Vector extends AArrayVector {
 	public void multiply(AVector v) {
 		if (v instanceof Vector) {multiply(((Vector)v)); return;}
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < len; i++) {
 			unsafeSet(i,unsafeGet(i)*v.unsafeGet(i));
 		}	

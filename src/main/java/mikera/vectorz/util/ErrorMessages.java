@@ -37,6 +37,16 @@ public class ErrorMessages {
 	public static String incompatibleShapes(INDArray a, INDArray b) {
 		return "Incompatible shapes: "+shape(a)+" vs. "+shape(b);
 	}
+	
+	/**
+	 * Returns an error message indicating that two arrays have incompatible sizes
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static String incompatibleBroadcast(INDArray a, int... shape) {
+		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(shape);
+	}
 
 	public static String notFullyMutable(AMatrix m,	int row, int column) {
 		return "Can't mutate "+m.getClass()+ " at position: "+pos(row,column);

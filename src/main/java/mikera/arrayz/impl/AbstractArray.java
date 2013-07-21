@@ -17,9 +17,8 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleDoubleIterator;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
-import mikera.vectorz.util.VectorzException;
-
 /**
  * Abstract base class for INDArray implementations
  * @author Mike
@@ -167,7 +166,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				s.set(a.slice(i));
 			}
 		} else {
-			throw new IllegalArgumentException("Can't set array to value of higher dimensionality");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		}
 	}
 	
@@ -259,7 +258,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		try {
 			return (AbstractArray<?>)super.clone();
 		} catch (CloneNotSupportedException e) {
-			throw new VectorzException("AbstractArray clone failed");
+			throw new RuntimeException("AbstractArray clone failed!?!");
 		}
 	}
 	
@@ -285,7 +284,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int dims=dimensionality();
 		int adims=a.dimensionality();
 		if (dims==adims) {
-			if (n!=na) throw new VectorzException("Non-matching dimensions");
+			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			for (int i=0; i<n; i++) {
 				slice(i).add(a.slice(i));
 			}
@@ -294,7 +293,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				slice(i).add(a);
 			}	
 		} else {
-			throw new VectorzException("Cannot add array of greater dimensionality");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		}
 	}
 	
@@ -339,7 +338,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int n=sliceCount();
 		int na=a.sliceCount();
 		if (dims==adims) {
-			if (n!=na) throw new VectorzException("Non-matching dimensions");
+			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			for (int i=0; i<n; i++) {
 				slice(i).multiply(a.slice(i));
 			}
@@ -348,7 +347,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				slice(i).multiply(a);
 			}	
 		} else {
-			throw new VectorzException("Cannot multiply array of greater dimensionality");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		}
 	}
 	
@@ -400,7 +399,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int dims=dimensionality();
 		int adims=a.dimensionality();
 		if (dims==adims) {
-			if (n!=na) throw new VectorzException("Non-matching dimensions");
+			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			for (int i=0; i<n; i++) {
 				slice(i).sub(a.slice(i));
 			}
@@ -409,7 +408,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				slice(i).sub(a);
 			}	
 		} else {
-			throw new VectorzException("Cannot add array of greater dimensionality");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		}	
 	}
 	
@@ -562,7 +561,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int dims=dimensionality();
 		int tdims=targetShape.length;
 		if (tdims<dims) {
-			throw new VectorzException("Can't broadcast to a smaller shape!");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 		} else if (dims==tdims) {
 			return this;
 		} else {

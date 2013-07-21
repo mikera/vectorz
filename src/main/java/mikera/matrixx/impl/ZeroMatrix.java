@@ -7,6 +7,7 @@ import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Lightweight immutable zero matrix class
@@ -105,7 +106,7 @@ public final class ZeroMatrix extends AMatrix {
 
 	@Override
 	public void set(int row, int column, double value) {
-		throw new UnsupportedOperationException("ZeroMatrix is immutable!");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
