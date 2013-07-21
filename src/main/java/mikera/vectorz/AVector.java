@@ -134,7 +134,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int n=length();
 		long result=0;
 		for (int i=0; i<n; i++) {
-			if (get(i)!=0.0) result++;
+			if (unsafeGet(i)!=0.0) result++;
 		}
 		return result;
 	}
@@ -184,13 +184,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (len != v.length())
 			return false;
 		for (int i = 0; i < len; i++) {
-			if (get(i) != v.get(i))
+			if (unsafeGet(i) != v.unsafeGet(i))
 				return false;
 		}
 		return true;
 	}
 	
 	public boolean equals(INDArray v) {
+		if (v instanceof AVector) return equals((AVector)v);
 		if (v.dimensionality()!=1) return false;
 		int len=length();
 		if (len != v.getShape()[0]) return false;
@@ -198,7 +199,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int[] ind = new int[1];
 		for (int i = 0; i < len; i++) {
 			ind[0]=i;
-			if (get(i) != v.get(ind))
+			if (unsafeGet(i) != v.get(ind))
 				return false;
 		}
 		return true;
@@ -208,7 +209,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		ArrayList<Double> al=new ArrayList<Double>();
 		int len=length();
 		for (int i=0; i<len; i++) {
-			al.add(get(i));
+			al.add(unsafeGet(i));
 		}
 		return al;
 	}
@@ -223,7 +224,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (len!=v.length())
 			throw new VectorzException("Mismatched vector sizes!");
 		for (int i = 0; i < len; i++) {
-			if (!Tools.epsilonEquals(get(i), v.get(i), tolerance)) return false;
+			if (!Tools.epsilonEquals(unsafeGet(i), v.unsafeGet(i), tolerance)) return false;
 		}
 		return true;
 	}
@@ -233,7 +234,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int hashCode = 1;
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			hashCode = 31 * hashCode + (Hash.hashCode(get(i)));
+			hashCode = 31 * hashCode + (Hash.hashCode(unsafeGet(i)));
 		}
 		return hashCode;
 	}
@@ -266,7 +267,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			dest.put(get(i));
+			dest.put(unsafeGet(i));
 		}
 	}
 	
@@ -279,8 +280,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			return;
 		}
 		int len = length();
+		if (destOffset+len>dest.length()) throw new IndexOutOfBoundsException();
 		for (int i=0; i<len; i++) {
-			dest.set(destOffset+i,get(i));
+			dest.unsafeSet(destOffset+i,unsafeGet(i));
 		}
 	}
 	
@@ -309,8 +311,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void fillRange(int offset, int length, double value) {
+		if ((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
 		for (int i = 0; i < length; i++) {
-			set(i+offset,value);
+			unsafeSet(i+offset,value);
 		}
 	}
 	
@@ -1166,7 +1169,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		assert(indexes.length()==len);
 		for (int i=0; i<len ; i++) {
-			set(i, v.get(indexes.get(i)));
+			unsafeSet(i, v.get(indexes.get(i)));
 		}
 	}
 	
@@ -1175,9 +1178,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		assert(offset+length<=length());
+		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
 		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=get(i+offset);
+			array[i+arrayOffset]+=unsafeGet(i+offset);
 		}
 	}
 	
