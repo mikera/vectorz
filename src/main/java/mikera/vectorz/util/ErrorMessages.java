@@ -5,7 +5,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
-public class Errors {
+public class ErrorMessages {
 	private static String shape(INDArray a) {
 		return Index.of(a.getShape()).toString();
 	}
@@ -46,8 +46,8 @@ public class Errors {
 		return "Wrong source vector size: "+shape(source);
 	}
 
-	public static String squareTransposeInPlace(AMatrix m) {
-		return "Only square matrixes can be transposed in place! This shape: "+shape(m);
+	public static String squareMatrixRequired(AMatrix m) {
+		return "Square matrix required! This matrix has shape: "+shape(m);
 	}
 
 }

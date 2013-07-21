@@ -31,7 +31,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
-import mikera.vectorz.util.Errors;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -212,7 +212,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * @return
 	 */
 	public AVector getLeadingDiagonal() {
-		if (!isSquare()) throw new UnsupportedOperationException("Not a square matrix!");
+		if (!isSquare()) throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
 		int dims=rowCount();
 		AVector v=Vectorz.newVector(dims);
 		for (int i=0; i<dims; i++) {
@@ -310,8 +310,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void transform(AVector source, AVector dest) {
 		int rc = rowCount();
 		int cc = columnCount();
-		if (source.length()!=cc) throw new IllegalArgumentException("Wrong source vector length");
-		if (dest.length()!=rc) throw new IllegalArgumentException("Wrong source vector length");
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		for (int row = 0; row < rc; row++) {
 			double total = 0.0;
 			for (int column = 0; column < cc; column++) {
@@ -330,7 +330,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();
-		if (v.length()!=rc) throw new IllegalArgumentException("Wrong vector length");
+		if (v.length()!=rc) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
 		if (rc != cc)
 			throw new UnsupportedOperationException(
 					"Cannot transform in place with a non-square transformation");
@@ -348,7 +348,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();
-		if (v.length()!=rc) throw new IllegalArgumentException("Wrong vector length");
+		if (v.length()!=rc) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
 		if (rc != cc)
 			throw new UnsupportedOperationException(
 					"Cannot transform in place with a non-square transformation");
@@ -470,13 +470,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void set(AMatrix a) {
 		int rc = rowCount();
 		if (a.rowCount() != rc)
-			throw new IllegalArgumentException(
-					"Source matrix has wrog number of rows: " + a.rowCount());
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		int cc = columnCount();
 		if (a.columnCount() != cc)
-			throw new IllegalArgumentException(
-					"Source matrix has wrong number of columns: "
-							+ a.columnCount());
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		for (int row = 0; row < rc; row++) {
 			for (int column = 0; column < cc; column++) {
 				set(row, column, a.get(row, column));
@@ -603,7 +600,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	public void transposeInPlace() {
 		if (!isSquare())
-			throw new UnsupportedOperationException(Errors.squareTransposeInPlace(this));
+			throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
 		int dims = rowCount();
 		for (int i = 0; i < dims; i++) {
 			for (int j = i + 1; j < dims; j++) {
@@ -635,7 +632,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void add(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(Errors.mismatch(this, m));
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -647,7 +644,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void add(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if(cc!=v.length()) throw new IllegalArgumentException(Errors.mismatch(this, v));
+		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -659,7 +656,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void sub(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if(cc!=v.length()) throw new IllegalArgumentException(Errors.incompatibleShapes(this, v));
+		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -828,7 +825,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void elementMul(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(Errors.mismatch(this, m));
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -1016,7 +1013,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int rc = rowCount();
 		int cc = columnCount();
 		if ((rc != a.rowCount())||(cc!=a.columnCount()))
-			throw new IllegalArgumentException(Errors.mismatch(this, a));
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
 				if (!Tools.epsilonEquals(unsafeGet(i, j), a.unsafeGet(i, j)))
@@ -1106,7 +1103,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int ic=this.columnCount();
 		
 		if ((ic!=a.rowCount())) {
-			throw new VectorzException("Matrix sizes not compatible!");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		}
 
 		AMatrix result=Matrixx.newMatrix(rc,cc);
@@ -1128,7 +1125,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int ic=this.columnCount();
 		
 		if ((ic!=a.rowCount())) {
-			throw new VectorzException("Matrix sizes not compatible!");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		}
 		AMatrix result=Matrixx.newMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
@@ -1306,7 +1303,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 					slice(i).multiply(a.slice(i));
 				}		
 			} else {
-				throw new VectorzException("Can't multiply matrix with array of dimensionality: "+dims);
+				throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 			}
 		}
 	}
@@ -1353,7 +1350,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public INDArray broadcast(int... targetShape) {
 		int tdims=targetShape.length;
 		if (tdims<2) {
-			throw new VectorzException("Can't broadcast to a smaller shape!");
+			throw new IllegalArgumentException("Can't broadcast to a smaller shape!");
 		} else if (2==tdims) {
 			return this;
 		} else {

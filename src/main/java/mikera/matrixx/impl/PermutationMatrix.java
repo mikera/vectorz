@@ -7,7 +7,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AxisVector;
-import mikera.vectorz.util.Errors;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class PermutationMatrix extends AMatrix implements ISparse {
@@ -171,7 +171,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	@Override
 	public void unsafeSet(int row, int column, double value) {
 		if (get(row,column)==value) return; 
-		throw new UnsupportedOperationException(Errors.notFullyMutable(this,row,column));
+		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this,row,column));
 	}
 	
 	@Override
@@ -182,7 +182,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	@Override
 	public void set(int row, int column, double value) {
 		if (get(row,column)==value) return;
-		throw new UnsupportedOperationException(Errors.notFullyMutable(this,row,column));
+		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this,row,column));
 	}
 	
 	@Override
@@ -223,7 +223,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	@Override
 	public Matrix innerProduct(AMatrix a) {
 		if (a instanceof Matrix) return innerProduct((Matrix)a);
-		if (a.rowCount()!=size) throw new IllegalArgumentException(Errors.mismatch(this,a));
+		if (a.rowCount()!=size) throw new IllegalArgumentException(ErrorMessages.mismatch(this,a));
 		int cc=a.columnCount();
 		Matrix result=Matrix.create(size,cc);
 		for (int i=0; i<size; i++) {
@@ -238,7 +238,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public Matrix innerProduct(Matrix a) {
-		if (a.rowCount()!=size) throw new IllegalArgumentException(Errors.mismatch(this,a));
+		if (a.rowCount()!=size) throw new IllegalArgumentException(ErrorMessages.mismatch(this,a));
 		int cc=a.columnCount();
 		Matrix result=Matrix.create(size,cc);
 		for (int i=0; i<size; i++) {

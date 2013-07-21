@@ -14,7 +14,7 @@ import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
-import mikera.vectorz.util.Errors;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /** 
@@ -94,7 +94,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		int rc=rowCount();
 		int cc=columnCount();
 		if ((cc!=a.length())) {
-			throw new IllegalArgumentException(Errors.mismatch(this, a));
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}		
 		Vector result=Vector.createLength(rows);
 		for (int i=0; i<rc; i++) {
@@ -111,7 +111,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public Matrix innerProduct(Matrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
-			throw new IllegalArgumentException(Errors.mismatch(this, a));
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
@@ -135,7 +135,7 @@ public final class Matrix extends ADenseArrayMatrix {
 			return innerProduct((Matrix)a);
 		}
 		if ((this.columnCount()!=a.rowCount())) {
-			throw new IllegalArgumentException(Errors.mismatch(this, a));
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
@@ -204,8 +204,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
-		if(rows!=dest.length()) throw new IllegalArgumentException(Errors.wrongDestLength(dest));
-		if(cols!=source.length()) throw new IllegalArgumentException(Errors.wrongSourceLength(source));
+		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		int index=0;
 		for (int i=0; i<rows; i++) {
 			double acc=0.0;
@@ -336,7 +336,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		if (m instanceof Matrix) {addMultiple((Matrix)m,factor); return;}
 		int rc=rowCount();
 		int cc=columnCount();
-		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(Errors.mismatch(this, m));
+		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
 		int di=0;
 		for (int i=0; i<rc; i++) {
@@ -351,7 +351,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		if (m instanceof Matrix) {add((Matrix)m); return;}
 		int rc=rowCount();
 		int cc=columnCount();
-		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(Errors.mismatch(this, m));
+		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
 		int di=0;
 		for (int i=0; i<rc; i++) {
@@ -371,9 +371,9 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void set(AMatrix a) {
 		int rc = rowCount();
-		if (!(rc==a.rowCount())) throw new IllegalArgumentException(Errors.mismatch(this, a));
+		if (!(rc==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		int cc = columnCount();
-		if (!(cc==a.columnCount())) throw new IllegalArgumentException(Errors.mismatch(this, a));
+		if (!(cc==a.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		a.getElements(this.data, 0);
 	}
 	
@@ -415,14 +415,14 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void setRow(int i, AVector row) {
 		int cc=columnCount();
-		if (row.length()!=cc) throw new IllegalArgumentException(Errors.mismatch(this.getRow(i), row));
+		if (row.length()!=cc) throw new IllegalArgumentException(ErrorMessages.mismatch(this.getRow(i), row));
 		row.getElements(data, i*cc);
 	}
 	
 	@Override
 	public void setColumn(int j, AVector col) {
 		int rc=rowCount();
-		if (col.length()!=rc) throw new IllegalArgumentException(Errors.mismatch(this.getColumn(j), col));
+		if (col.length()!=rc) throw new IllegalArgumentException(ErrorMessages.mismatch(this.getColumn(j), col));
 		for (int i=0; i<rc; i++) {
 			data[index(i,j)]=col.unsafeGet(j);
 		}
