@@ -59,12 +59,18 @@ public final class Vector4 extends APrimitiveVector {
 		t=op.apply(t);
 	}
 
-	
 	public void add(double dx, double dy, double dz, double dt) {
 		x+=dx;
 		y+=dy;
 		z+=dz;
 		t+=dt;
+	}
+	
+	public void add(Vector4 a) {
+		this.x+=a.x;
+		this.y+=a.y;
+		this.z+=a.z;
+		this.t+=a.t;
 	}
 	
 	public void set(Vector4 a) {

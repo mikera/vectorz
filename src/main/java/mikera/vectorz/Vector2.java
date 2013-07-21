@@ -49,6 +49,11 @@ public final class Vector2 extends APrimitiveVector {
 		y+=v.y;
 	}
 	
+	public void sub(Vector2 v) {
+		x-=v.x;
+		y-=v.y;
+	}
+	
 	public void addMultiple(Vector2 v, double factor) {
 		x+=v.x*factor;
 		y+=v.y*factor;
@@ -199,6 +204,15 @@ public final class Vector2 extends APrimitiveVector {
 		case 1: y+=value; return;
 		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
+	}
+	
+	public void rotateInPlace(int angle) {
+		double ca=Math.cos(angle);
+		double sa=Math.sin(angle);
+		double nx=(x*ca)-(y*sa);
+		double ny=(x*sa)+(y*ca);
+		x=nx;
+		y=ny;
 	}
 	
 	public void setValues(double x, double y) {
