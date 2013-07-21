@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import mikera.vectorz.AVector;
 
@@ -33,8 +34,8 @@ public final class VectorIterator implements Iterator<Double> {
 
 	@Override
 	public Double next() {
-		assert(pos<maxPos);
-		return source.get(pos++);
+		if(pos>=maxPos) throw new NoSuchElementException();
+		return source.unsafeGet(pos++);
 	}
 
 	@Override
