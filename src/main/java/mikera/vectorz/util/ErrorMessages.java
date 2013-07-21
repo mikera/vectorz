@@ -10,6 +10,10 @@ public class ErrorMessages {
 		return Index.of(a.getShape()).toString();
 	}
 	
+	private static String shape(int... indexes) {
+		return Index.of(indexes).toString();
+	}
+	
 	private static String pos(int... indexes) {
 		return Index.of(indexes).toString();
 	}
@@ -52,6 +56,14 @@ public class ErrorMessages {
 
 	public static String position(int... indexes) {
 		return "Invalid index: "+pos(indexes);
+	}
+
+	public static String illegalSize(int... shape) {
+		return "Illegal shape" +shape(shape);
+	}
+
+	public static String immutable(Object a) {
+		return a.getClass().toString()+" is immutable!";
 	}
 
 }

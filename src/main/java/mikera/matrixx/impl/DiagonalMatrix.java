@@ -5,6 +5,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -62,6 +63,15 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 
 	@Override
 	public double get(int row, int column) {
+		if (row!=column) {
+			if ((row<0)||(row>=dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
+			return 0.0;
+		}
+		return data[row];
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
 		if (row!=column) return 0.0;
 		return data[row];
 	}
@@ -69,7 +79,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	@Override
 	public void set(int row, int column, double value) {
 		if (row!=column) {
-			if (value!=0.0) throw new UnsupportedOperationException("Diagonal matrix cannot be set to non-zero value at position ("+row+","+column+")!");
+			if (value!=0.0) throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 		} else {
 			data[row]=value;
 		}

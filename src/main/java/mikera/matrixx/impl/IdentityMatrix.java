@@ -6,6 +6,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised identity matrix class. Immutable.
@@ -49,10 +50,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		assert(row>=0);
-		assert(column>=0);
-		assert(row<dimensions);
-		assert(column<dimensions);
+		if ((row<0)||(column<0)||(row>=dimensions)||(column>=dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
 		return (row==column)?1.0:0.0;
 	}
 	
@@ -78,7 +76,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 
 	@Override
 	public void set(int row, int column, double value) {
-		throw new UnsupportedOperationException("Identity matrix is immutable!");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override 
