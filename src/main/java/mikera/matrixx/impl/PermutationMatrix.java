@@ -11,7 +11,7 @@ import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
-public final class PermutationMatrix extends AMatrix implements ISparse {
+public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	private final Index perm;
 	private final int size;
 	
@@ -50,11 +50,6 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
-	public boolean isFullyMutable() {
-		return false;
-	}
-	
-	@Override
 	public boolean isMutable() {
 		// PermutationMatrix is mutable (rows can be swapped, etc.)
 		return true;
@@ -63,11 +58,6 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	@Override
 	public boolean isSymmetric() {
 		return isIdentity();
-	}
-	
-	@Override
-	public boolean isBoolean() {
-		return true;
 	}
 	
 	@Override

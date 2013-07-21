@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
-import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AxisVector;
@@ -14,7 +13,7 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class SubsetMatrix extends AMatrix implements ISparse {
+public final class SubsetMatrix extends ABooleanMatrix implements ISparse {
 	private int inputDims;
 	private Index components;
 
@@ -34,16 +33,6 @@ public final class SubsetMatrix extends AMatrix implements ISparse {
 	@Override
 	public void transform(AVector source, AVector dest) {
 		dest.set(source, components);
-	}
-	
-	@Override
-	public boolean isFullyMutable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isBoolean() {
-		return true;
 	}
 
 	@Override
