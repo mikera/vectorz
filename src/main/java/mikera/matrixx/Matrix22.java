@@ -41,13 +41,12 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 		m11=m.get(1,1);
 	}
 	
-	public Matrix22 createRotationMatrix(double angle) {
+	public static Matrix22 createRotationMatrix(double angle) {
 		double sa=Math.sin(angle);
 		double ca=Math.cos(angle);
 		return new Matrix22(
 				ca,-sa,
 				sa,ca);
-		
 	}
 	
 	@Override
