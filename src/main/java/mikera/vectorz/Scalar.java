@@ -1,7 +1,11 @@
 package mikera.vectorz;
 
-
-public class Scalar extends AScalar {
+/**
+ * Basic Scalar class containing a single mutable double value
+ * 
+ * @author Mike
+ */
+public final class Scalar extends AScalar {
 	public double value;
 
 	public Scalar(double value) {
