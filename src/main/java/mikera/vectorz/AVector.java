@@ -843,6 +843,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Returns true if this vector is of a view type that references other vectors / data.
 	 * @return
 	 */
+	@Override
 	public boolean isView() {
 		return true;
 	}
@@ -851,6 +852,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Returns true if this vector is mutable.
 	 * @return
 	 */
+	@Override
 	public boolean isMutable() {
 		return true;
 	}
@@ -865,6 +867,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Returns true if this vector is fully mutable, i.e. can contain any unconstrained double values
 	 * @return
 	 */
+	@Override
 	public boolean isFullyMutable() {
 		return isMutable();
 	}
