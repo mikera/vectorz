@@ -347,6 +347,34 @@ public class TestMatrixx {
 			}
 		}
 	}
+	
+	private void doBoundsTest(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		
+		try {
+			m.get(-1,-1);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(rc,cc);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		if (m.isFullyMutable()) {
+			m=m.exactClone();
+			try {
+				m.set(-1,-1,1);
+				fail();
+			} catch (IndexOutOfBoundsException a) {/* OK */}
+			
+			try {
+				m.set(rc,cc,1);
+				fail();
+			} catch (IndexOutOfBoundsException a) {/* OK */}
+		}
+	}
 
 	private void doRowColumnTests(AMatrix m) {
 		assertEquals(m.rowCount(),m.outputDimensions());
@@ -526,6 +554,7 @@ public class TestMatrixx {
 		doHashTest(m);
 		doNDArrayTest(m);
 		doScaleTest(m);
+		doBoundsTest(m);
 		doMulTest(m);
 		doAddTest(m);
 		doRowColumnTests(m);

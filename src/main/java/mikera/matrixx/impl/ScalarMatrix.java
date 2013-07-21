@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Scalar matrix class - i.e. multiplies every component by a constant factor
@@ -35,6 +36,14 @@ public class ScalarMatrix extends ADiagonalMatrix {
 
 	@Override
 	public double get(int row, int column) {
+		if ((row<0)||(row>=dimensions)||(column<0)||(column>=dimensions)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
+		}
+		return (row==column)?scale:0;
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
 		return (row==column)?scale:0;
 	}
 	
