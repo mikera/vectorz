@@ -106,6 +106,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	public double calculateElement(int i, AVector v) {
 		return data[i]*v.unsafeGet(i);
 	}
+	
+	@Override
+	public double calculateElement(int i, Vector v) {
+		return data[i]*v.unsafeGet(i);
+	}
 
 	@Override
 	public void transformInPlace(AVector v) {
