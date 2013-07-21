@@ -6,6 +6,7 @@ import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -218,6 +219,16 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 		for (int i=0; i<size; i++) {
 			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
 		}
+	}
+	
+	@Override
+	public double calculateElement(int i, AVector inputVector) {
+		return inputVector.unsafeGet(perm.get(i));
+	}
+	
+	@Override
+	public double calculateElement(int i, Vector inputVector) {
+		return inputVector.unsafeGet(perm.get(i));
 	}
 	
 	@Override
