@@ -34,7 +34,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	private final int[] shape;
 	private int offset;
 	private final double[] data;
-	private int[] stride;
+	private final int[] stride;
 	
 	NDArray(int... shape) {
 		this.shape=shape.clone();
