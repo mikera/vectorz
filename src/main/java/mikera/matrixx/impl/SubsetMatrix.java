@@ -72,6 +72,9 @@ public final class SubsetMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public double get(int row, int column) {
+		if (column<0||column>=inputDims) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
+		}
 		return (column==components.get(row))?1.0:0.0;
 	}
 	

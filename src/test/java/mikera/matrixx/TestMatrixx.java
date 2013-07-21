@@ -362,6 +362,27 @@ public class TestMatrixx {
 			fail();
 		} catch (IndexOutOfBoundsException a) {/* OK */}
 		
+		try {
+			m.get(0,-1);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(0,cc);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(-1,0);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(rc,0);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+
+		
 		if (m.isFullyMutable()) {
 			m=m.exactClone();
 			try {
