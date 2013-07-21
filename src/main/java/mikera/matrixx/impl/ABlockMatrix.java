@@ -2,6 +2,11 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 
+/**
+ * Abstract base class for a large matrix constructed out of regular subMatrix blocks
+ * @author Mike
+ *
+ */
 public abstract class ABlockMatrix extends AMatrix {
 	
 	public abstract AMatrix getBlock(int rowBlock, int colBlock);

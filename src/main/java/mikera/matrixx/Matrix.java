@@ -3,6 +3,7 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.matrixx.impl.AArrayDenseMatrix;
 import mikera.matrixx.impl.AArrayMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -20,7 +21,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class Matrix extends AArrayMatrix {
+public final class Matrix extends AArrayDenseMatrix {
 	
 	public Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
@@ -425,6 +426,11 @@ public final class Matrix extends AArrayMatrix {
 		for (int i=0; i<rc; i++) {
 			data[i*cols+j]=col.unsafeGet(j);
 		}
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return 0;
 	}
 
 }
