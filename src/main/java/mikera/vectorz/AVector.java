@@ -887,6 +887,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
 	public void add(INDArray a) {
 		if (a instanceof AVector) {
 			add((AVector)a);
@@ -897,6 +898,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
 	public void sub(INDArray a) {
 		if (a instanceof AVector) {
 			sub((AVector)a);
