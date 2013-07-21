@@ -5,6 +5,7 @@ import mikera.vectorz.ops.AFunctionOp;
 import mikera.vectorz.ops.ARoundingOp;
 import mikera.vectorz.ops.Absolute;
 import mikera.vectorz.ops.Clamp;
+import mikera.vectorz.ops.Cosh;
 import mikera.vectorz.ops.Exp;
 import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
@@ -76,12 +77,7 @@ public final class Ops {
 		}
 	};
 
-	public static final AFunctionOp COSH = new AFunctionOp() {
-		@Override
-		public double apply(double x) {
-			return Math.cosh(x);
-		}
-	};
+	public static final AFunctionOp COSH = Cosh.INSTANCE;
 
 	public static final AFunctionOp SINH = new AFunctionOp() {
 		@Override
