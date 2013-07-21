@@ -170,8 +170,8 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public void unsafeSet(int row, int column, double value) {
-		if (get(row,column)==value) return;
-		throw new UnsupportedOperationException("Can't arbitrarily mutate a permutation matrix");
+		if (get(row,column)==value) return; 
+		throw new UnsupportedOperationException(Errors.notFullyMutable(this,row,column));
 	}
 	
 	@Override
@@ -182,7 +182,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	@Override
 	public void set(int row, int column, double value) {
 		if (get(row,column)==value) return;
-		throw new UnsupportedOperationException("Can't arbitrarily mutate a permutation matrix");
+		throw new UnsupportedOperationException(Errors.notFullyMutable(this,row,column));
 	}
 	
 	@Override
