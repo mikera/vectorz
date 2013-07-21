@@ -26,18 +26,18 @@ public abstract class APrimitiveVector extends AVector {
 	}
 	
 	public double getX() {
-		throw new IndexOutOfBoundsException("Cannot get x co-ordinate of "+this.length()+" dimensional vector");
+		throw new IndexOutOfBoundsException("Cannot get x co-ordinate of "+this.getClass());
 	}
 	
 	public double getY() {
-		throw new IndexOutOfBoundsException("Cannot get y co-ordinate of "+this.length()+" dimensional vector");
+		throw new IndexOutOfBoundsException("Cannot get y co-ordinate of "+this.getClass());
 	}
 	
 	public double getZ() {
-		throw new IndexOutOfBoundsException("Cannot get z co-ordinate of "+this.length()+" dimensional vector");
+		throw new IndexOutOfBoundsException("Cannot get z co-ordinate of "+this.getClass());
 	}
 	
 	public double getT() {
-		throw new IndexOutOfBoundsException("Cannot get t co-ordinate of "+this.length()+" dimensional vector");
+		throw new IndexOutOfBoundsException("Cannot get t co-ordinate of "+this.getClass());
 	}
 }

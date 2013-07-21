@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -78,13 +79,13 @@ public final class GrowableVector extends AArrayVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return data[i];
 	}
 
 	@Override
 	public void set(int i, double value) {
-		if (i<0) throw new IndexOutOfBoundsException("Index: "+i);
+		if (i<0) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		ensureCapacity(i+1);
 		data[i]=value;
 	}
@@ -143,7 +144,7 @@ public final class GrowableVector extends AArrayVector {
 	
 	@Override
 	public void validate() {
-		if (length>data.length) throw new VectorzException("Array problem");
+		if (length>data.length) throw new VectorzException("data array is wrong size!?!");
 		super.validate();
 	}
 }

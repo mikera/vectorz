@@ -4,6 +4,7 @@ import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised immuatble vector containing nothing but zeros.
@@ -47,12 +48,23 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 
 	@Override
 	public double get(int i) {
+		if (i<0||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return 0.0;
 	}
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException("Cannot set on immutable ZeroVector");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return 0.0;
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
