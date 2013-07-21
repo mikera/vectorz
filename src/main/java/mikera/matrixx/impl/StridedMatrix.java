@@ -48,6 +48,16 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 	
 	@Override
+	public int rowStride() {
+		return rowStride;
+	}
+	
+	@Override
+	public int columnStride() {
+		return colStride;
+	}
+	
+	@Override
 	public boolean isPackedArray() {
 		return (offset == 0) 
 				&& (colStride == 1)

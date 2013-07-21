@@ -17,4 +17,14 @@ public abstract class AArrayDenseMatrix extends AStridedMatrix {
 	public boolean isPackedArray() {
 		return (getArrayOffset()==0) && (data.length ==(rows*cols));
 	}
+	
+	@Override
+	public int rowStride() {
+		return cols;
+	}
+	
+	@Override
+	public int columnStride() {
+		return 1;
+	}
 }

@@ -6,4 +6,9 @@ public abstract class AStridedMatrix extends AArrayMatrix {
 		super(data, rows, cols);
 	}
 
+	public abstract int rowStride();
+	
+	public abstract int columnStride();
+
+	
 }
