@@ -95,7 +95,7 @@ public final class Vector extends AArrayVector {
 		int n=a.length();
 		Vector v=createLength(n);
 		for (int i=0; i<n; i++) {
-			v.set(i,a.get(i));
+			v.unsafeSet(i,a.get(i));
 		}
 		return v;
 	}

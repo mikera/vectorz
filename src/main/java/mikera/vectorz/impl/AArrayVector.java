@@ -234,7 +234,7 @@ public abstract class AArrayVector extends AStridedVector {
 		double[] thisArray=getArray();
 		offset+=getArrayOffset();
 		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*thisArray[i+offset]*other.get(i+otherOffset);
+			array[i+arrayOffset]+=factor*thisArray[i+offset]*other.unsafeGet(i+otherOffset);
 		}		
 	}
 	
@@ -382,7 +382,7 @@ public abstract class AArrayVector extends AStridedVector {
 		double[] src=getArray();
 		int off=getArrayOffset();
 		for (int i = 0; i < length; i++) {
-			dest.set(destOffset+i,src[off+start+i]);
+			dest.unsafeSet(destOffset+i,src[off+start+i]);
 		}
 	}
 	
