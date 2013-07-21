@@ -1,5 +1,6 @@
 package mikera.vectorz.util;
 
+import mikera.vectorz.Tools;
 import mikera.vectorz.ops.Logistic;
 
 public final class DoubleArrays {
@@ -183,6 +184,13 @@ public final class DoubleArrays {
 		if (n!=bs.length) return false;
 		for (int i=0; i<n; i++) {
 			if (as[i]!=bs[i]) return false;
+		}
+		return true;
+	}
+
+	public static boolean isBoolean(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			if (!Tools.isBoolean(data[offset+i])) return false;
 		}
 		return true;
 	}

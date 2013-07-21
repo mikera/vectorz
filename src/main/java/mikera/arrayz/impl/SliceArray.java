@@ -185,6 +185,14 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean isBoolean() {
+		for (INDArray a:slices) {
+			if (!a.isBoolean()) return false;
+		}
+		return true;
+	}
 
 	@Override
 	public boolean isElementConstrained() {

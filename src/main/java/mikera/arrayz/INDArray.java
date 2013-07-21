@@ -188,6 +188,11 @@ public interface INDArray extends Cloneable {
 	public boolean isMutable();
 	
 	/**
+	 * Returns true if the array is boolean (contains only 0.0 or 1.0 value
+	 */
+	public boolean isBoolean();
+	
+	/**
 	 * Returns true if the INDArray is fully mutable in all positions
 	 * i.e. every position can store any valid double value
 	 * @return

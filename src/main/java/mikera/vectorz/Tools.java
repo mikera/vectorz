@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.matrixx.AMatrix;
+
 public final class Tools {
 	public static void debugBreak(Object o) {
 		o.toString();
@@ -83,5 +85,16 @@ public final class Tools {
 		double diff=a-b;
 		if ((diff>tolerance)||(diff<-tolerance)) return false;
 		return true;
+	}
+
+	public static boolean isBoolean(double d) {
+		return (d==0.0)||(d==1.0);
+	}
+
+	public static double[] getElements(AMatrix m) {
+		int n=(int)m.elementCount();
+		double[] data=new double[n];
+		m.getElements(data, 0);
+		return data;
 	}
 }

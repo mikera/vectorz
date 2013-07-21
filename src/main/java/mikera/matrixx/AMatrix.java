@@ -29,6 +29,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -717,6 +718,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public Iterator<Double> elementIterator() {
 		return new MatrixElementIterator(this);
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		double[] data=Tools.getElements(this);
+		return DoubleArrays.isBoolean(data,0,data.length);
 	}
 	
 	@Override

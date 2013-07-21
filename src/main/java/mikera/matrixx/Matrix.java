@@ -55,6 +55,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return DoubleArrays.isBoolean(data,0,data.length);
+	}
+	
+	@Override
 	public boolean isPackedArray() {
 		return true;
 	}

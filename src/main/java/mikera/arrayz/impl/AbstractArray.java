@@ -62,6 +62,17 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		if (dimensionality()==0) return Tools.isBoolean(get());
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			INDArray s=slice(i);
+			if (!s.isBoolean()) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public INDArray ensureMutable() {
 		if (isFullyMutable()&&!isView()) return this;
 		return clone();
