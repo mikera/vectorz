@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.randomz.Hash;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Vector referring to an offset into a double[] array
@@ -85,14 +86,14 @@ public final class ArraySubVector extends AArrayVector {
 	@Override
 	public double get(int i) {
 		if ((i < 0) || (i >= length))
-			throw new IndexOutOfBoundsException("Index: " + i);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return data[offset + i];
 	}
 
 	@Override
 	public void set(int i, double value) {
 		if ((i < 0) || (i >= length))
-			throw new IndexOutOfBoundsException("Index: " + i);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		data[offset + i] = value;
 	}
 	
@@ -111,7 +112,7 @@ public final class ArraySubVector extends AArrayVector {
 	public void add(AArrayVector v) {
 		int vlength=v.length();
 		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		}
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();

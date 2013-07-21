@@ -12,6 +12,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -118,8 +119,7 @@ public final class Array extends AbstractArray<INDArray> {
 	@Override
 	public INDArray slice(int dimension, int index) {
 		if ((dimension < 0) || (dimension >= dimensions))
-			throw new IndexOutOfBoundsException("Dimension out of range: "
-					+ dimension);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
 		if (dimensions == 1) return ArrayIndexScalar.wrap(data, index);
 		if (dimensions == 2) {
 			if (dimension == 0) {

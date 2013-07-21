@@ -4,6 +4,7 @@ import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised 2*2 Matrix for Vector2 maths, using primitive matrix elements
@@ -91,15 +92,15 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 			switch (column) {
 			case 0: return m00;
 			case 1: return m01;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 		case 1:
 			switch (column) {
 			case 0: return m10;
 			case 1: return m11;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
-		default: throw new IndexOutOfBoundsException("Row: "+row);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 	}
 
@@ -110,15 +111,15 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 			switch (column) {
 			case 0: m00=value; return;
 			case 1: m01=value; return;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 		case 1:
 			switch (column) {
 			case 0: m10=value; return;
 			case 1: m11=value; return;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
-		default: throw new IndexOutOfBoundsException("Row: "+row);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}	
 	}
 	

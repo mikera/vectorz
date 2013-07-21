@@ -8,6 +8,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -276,7 +277,7 @@ public abstract class AArrayVector extends AStridedVector {
 	
 	@Override public double dotProduct(AVector v) {
 		int length=length();
-		if (length!=v.length()) throw new IndexOutOfBoundsException("Incompatible vector sizes");
+		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		if (v instanceof AArrayVector) {
 			AArrayVector vv=(AArrayVector)v;
 			return DoubleArrays.dotProduct(getArray(), getArrayOffset(), vv.getArray(), vv.getArrayOffset(), length);
@@ -404,7 +405,7 @@ public abstract class AArrayVector extends AStridedVector {
 		int vlength=v.length();
 		int length=length();
 		if (vlength != length) {
-			throw new Error("Source vector has different size: " + vlength);
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		}
 		double[] data=getArray();
 		int offset=getArrayOffset();

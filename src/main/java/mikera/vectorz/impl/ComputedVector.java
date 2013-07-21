@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import mikera.vectorz.util.ErrorMessages;
+
 /**
  * Base class for computed vectors. Assumed to be immutable and fixed size.
  * 
@@ -17,7 +19,7 @@ public abstract class ComputedVector extends AConstrainedVector {
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException("Vector is immutable: "+this.getClass());
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -101,7 +102,7 @@ public final class JoinedArrayVector extends AVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		int ai=findArrayNum(i);
 		return data[ai][i-pos[ai]+offsets[ai]];
 	}
@@ -114,7 +115,7 @@ public final class JoinedArrayVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		int ai=findArrayNum(i);
 		data[ai][i-pos[ai]+offsets[ai]]=value;
 	}
@@ -549,7 +550,7 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public void validate() {
-		if (length!=pos[numArrays]) throw new VectorzException("Validation problem");
+		if (length!=pos[numArrays]) throw new VectorzException("End position incorrect!?!");
 		
 		for (int i=0; i<numArrays; i++) {
 			subArrayVector(i).validate();

@@ -29,7 +29,9 @@ public class ErrorMessages {
 	}
 	
 	/**
-	 * Returns an error message indicating that two arrays have incompatible sizes
+	 * Returns an error message indicating that two arrays have incompatible shapes.
+	 * 
+	 * e.g. "Incompatible shapes: [3,2] vs. [2,2]"
 	 * @param a
 	 * @param b
 	 * @return
@@ -39,7 +41,9 @@ public class ErrorMessages {
 	}
 	
 	/**
-	 * Returns an error message indicating that two arrays have incompatible sizes
+	 * Returns an error message indicating that a broadcast is not possible
+	 * 
+	 * e.g. "Can't broadcast Matrix with shape [2,2] to shape [3,3,3]
 	 * @param a
 	 * @param b
 	 * @return
@@ -74,6 +78,27 @@ public class ErrorMessages {
 
 	public static String immutable(Object a) {
 		return a.getClass().toString()+" is immutable!";
+	}
+
+	public static String invalidDimension(INDArray a, int dimension) {
+		return ""+a.getClass()+" with shape "+shape(a)+" does not have dimension: "+dimension;
+	}
+
+	public static String invalidIndex(INDArray a, int... indexes) {
+		int[] shape=a.getShape();
+		if (shape.length!=indexes.length) {
+			return ""+indexes.length+"-D access with index "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
+		} else {
+			return "Access at position "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
+		}
+	}
+
+	public static String invalidSlice(INDArray a, int slice) {
+		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice;
+	}
+
+	public static String noSlices(INDArray a) {
+		return "Cannot access slices of 0-D "+a.getClass();
 	}
 
 }
