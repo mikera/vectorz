@@ -13,7 +13,7 @@ import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
-import mikera.matrixx.impl.MatrixSubVector;
+import mikera.matrixx.impl.AMatrixSubVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.randomz.Hash;
@@ -366,7 +366,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 
 	@SuppressWarnings("serial")
-	private class MatrixRowView extends MatrixSubVector {
+	private class MatrixRowView extends AMatrixSubVector {
 		private final int row;
 
 		private MatrixRowView(int row) {
@@ -411,7 +411,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	@SuppressWarnings("serial")
-	private class MatrixColumnView extends MatrixSubVector {
+	private class MatrixColumnView extends AMatrixSubVector {
 		private final int column;
 
 		private MatrixColumnView(int column) {

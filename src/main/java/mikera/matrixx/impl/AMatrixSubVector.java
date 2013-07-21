@@ -7,7 +7,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class MatrixSubVector extends AVector {
+public abstract class AMatrixSubVector extends AVector {
 	@Override
 	public boolean isView() {
 		return true;
