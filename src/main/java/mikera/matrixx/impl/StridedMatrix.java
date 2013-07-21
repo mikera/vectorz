@@ -58,6 +58,11 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 	
 	@Override
+	public int getArrayOffset() {
+		return offset;
+	}
+	
+	@Override
 	public boolean isPackedArray() {
 		return (offset == 0) 
 				&& (colStride == 1)

@@ -11,6 +11,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix {
 		super(data, rows, cols);
 	}
 
+	@Override
 	public abstract int getArrayOffset();
 	
 	@Override
