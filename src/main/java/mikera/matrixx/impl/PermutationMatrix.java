@@ -200,10 +200,10 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
-		assert(rowCount()==dest.length());
-		assert(columnCount()==source.length());
+		if(rowCount()!=dest.length()) throw new IllegalArgumentException("Wrong dest vector length");
+		if(columnCount()!=source.length()) throw new IllegalArgumentException("Wrong source vector length");
 		for (int i=0; i<size; i++) {
-			dest.set(i,source.get(perm.get(i)));
+			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
 		}
 	}
 	

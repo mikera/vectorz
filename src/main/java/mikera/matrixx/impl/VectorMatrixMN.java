@@ -123,20 +123,32 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 	
 	@Override
 	public double get(int row, int column) {
-		assert(row<rowCount);
+		if (row>=rowCount) throw new IndexOutOfBoundsException("Row: "+row);
 		return rows[row].get(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		assert(row<rowCount);
+		if (row>=rowCount) throw new IndexOutOfBoundsException("Row: "+row);
 		rows[row].set(column,value);
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		assert(row<rowCount);
+		return rows[row].unsafeGet(column);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		assert(row<rowCount);
+		rows[row].unsafeSet(column,value);
 	}
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
 		for (int i=0; i<rowCount; i++) {
-			dest.set(i,getRow(i).dotProduct(source));
+			dest.unsafeSet(i,getRow(i).dotProduct(source));
 		}
 	}
 	

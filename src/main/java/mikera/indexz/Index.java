@@ -141,6 +141,10 @@ public final class Index extends AIndex {
 		return data[i];
 	}
 	
+	public int unsafeGet(int i) {
+		return data[i];
+	}
+	
 	@Override
 	public void set(int i, int value) {
 		data[i]=value;
@@ -295,4 +299,5 @@ public final class Index extends AIndex {
 		}
 		return ni;
 	}
+
 }
