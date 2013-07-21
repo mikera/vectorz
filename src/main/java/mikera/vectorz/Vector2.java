@@ -101,8 +101,8 @@ public final class Vector2 extends APrimitiveVector {
 	@Override
 	public void scaleAdd(double factor, AVector constant) {
 		if (constant instanceof Vector2) {scaleAdd(factor,(Vector2)constant); return; }
-		x=(x*factor)+constant.get(0);
-		y=(y*factor)+constant.get(1);
+		x=(x*factor)+constant.unsafeGet(0);
+		y=(y*factor)+constant.unsafeGet(1);
 	}
 	
 	public void scaleAdd(double factor, Vector2 constant) {
@@ -136,9 +136,9 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public void add(AVector v) {
-		assert(v.length()==2);
-		x+=v.get(0);
-		y+=v.get(1);
+		if(v.length()!=2) throw new IllegalArgumentException("Mismatched vector sizes");
+		x+=v.unsafeGet(0);
+		y+=v.unsafeGet(1);
 	}
 	
 	@Override

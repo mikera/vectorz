@@ -34,6 +34,7 @@ public abstract class ADerivedVector extends AVector {
 	public void unsafeSet(int i, double value) {
 		source.unsafeSet(i,value);
 	}
+
 	
 	@Override
 	public boolean isView() {

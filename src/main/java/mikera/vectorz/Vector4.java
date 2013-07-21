@@ -100,10 +100,11 @@ public final class Vector4 extends APrimitiveVector {
 		if (v instanceof Vector4) {
 			addMultiple((Vector4)v,factor);
 		} else {
-			x+=v.get(0)*factor;
-			y+=v.get(1)*factor;
-			z+=v.get(2)*factor;
-			t+=v.get(3)*factor;
+			if (v.length()!=4) throw new IllegalArgumentException("Mismatched vector sizes");
+			x+=v.unsafeGet(0)*factor;
+			y+=v.unsafeGet(1)*factor;
+			z+=v.unsafeGet(2)*factor;
+			t+=v.unsafeGet(3)*factor;
 		}
 	}
 	

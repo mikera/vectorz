@@ -102,8 +102,8 @@ public class AxisVector extends ComputedVector implements ISparse {
 	
 	@Override 
 	public double dotProduct(AVector v) {
-		assert(length==v.length());
-		return v.get(axis);
+		if (v.length()!=length) throw new IllegalArgumentException("Mismatched vector sizes");
+		return v.unsafeGet(axis);
 	}
 	
 	@Override 

@@ -138,9 +138,9 @@ public final class Vector3 extends APrimitiveVector {
 		if (v instanceof Vector3) {
 			addMultiple((Vector3)v,factor);
 		} else {
-			x+=v.get(0)*factor;
-			y+=v.get(1)*factor;
-			z+=v.get(2)*factor;
+			x+=v.unsafeGet(0)*factor;
+			y+=v.unsafeGet(1)*factor;
+			z+=v.unsafeGet(2)*factor;
 		}
 	}
 	
@@ -173,9 +173,9 @@ public final class Vector3 extends APrimitiveVector {
 		if (v instanceof Vector3) {
 			add((Vector3)v);
 		} else {
-			x+=v.get(0);
-			y+=v.get(1);
-			z+=v.get(2);
+			x+=v.unsafeGet(0);
+			y+=v.unsafeGet(1);
+			z+=v.unsafeGet(2);
 		}
 	}
 	
@@ -222,9 +222,9 @@ public final class Vector3 extends APrimitiveVector {
 			crossProduct((Vector3) a);
 			return;
 		}
-		double x2=a.get(0);
-		double y2=a.get(1);
-		double z2=a.get(2);
+		double x2=a.unsafeGet(0);
+		double y2=a.unsafeGet(1);
+		double z2=a.unsafeGet(2);
 		double tx=y*z2-z*y2;
 		double ty=z*x2-x*z2;
 		double tz=x*y2-y*x2;			
@@ -274,9 +274,9 @@ public final class Vector3 extends APrimitiveVector {
 	@Override
 	public void scaleAdd(double factor, AVector constant) {
 		if (constant instanceof Vector3) {scaleAdd(factor,(Vector3)constant); return; }
-		x=(x*factor)+constant.get(0);
-		y=(y*factor)+constant.get(1);
-		z=(z*factor)+constant.get(2);
+		x=(x*factor)+constant.unsafeGet(0);
+		y=(y*factor)+constant.unsafeGet(1);
+		z=(z*factor)+constant.unsafeGet(2);
 	}
 	
 	public void scaleAdd(double factor, Vector3 constant) {
@@ -305,9 +305,9 @@ public final class Vector3 extends APrimitiveVector {
 	@Override 
 	public void set(AVector v) {
 		if (v.length()!=3) throw new IllegalArgumentException("Can only assign Vector3 with length 3");
-		x=v.get(0);
-		y=v.get(1);
-		z=v.get(2);
+		x=v.unsafeGet(0);
+		y=v.unsafeGet(1);
+		z=v.unsafeGet(2);
 	}
 	
 	@Override 

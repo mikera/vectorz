@@ -1213,8 +1213,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
 		int length=length();
+		if ((aOffset<0)||(aOffset+length>a.length())) throw new IndexOutOfBoundsException();
+		if ((bOffset<0)||(bOffset+length>b.length())) throw new IndexOutOfBoundsException();
 		for (int i=0; i<length; i++) {
-			addAt(i, (a.get(i+aOffset)* b.get(i+bOffset)*factor));
+			addAt(i, (a.unsafeGet(i+aOffset)* b.unsafeGet(i+bOffset)*factor));
 		}
 	}
 	
