@@ -28,16 +28,6 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public int rowCount() {
-		return rows;
-	}
-
-	@Override
-	public int columnCount() {
-		return cols;
-	}
-
-	@Override
 	public AVector getRow(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
 	}

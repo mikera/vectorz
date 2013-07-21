@@ -223,16 +223,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public int rowCount() {
-		return rows;
-	}
-
-	@Override
-	public int columnCount() {
-		return cols;
-	}
-	
-	@Override
 	public void swapRows(int i, int j) {
 		if (i == j) return;
 		int a = i*cols;

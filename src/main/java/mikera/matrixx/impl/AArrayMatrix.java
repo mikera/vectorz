@@ -18,5 +18,13 @@ public abstract class AArrayMatrix extends AMatrix {
 		this.data=data;
 	}
 	
+	public final int rowCount() {
+		return rows;
+	}
+	
+	public final int columnCount() {
+		return cols;
+	}
+	
 	public abstract boolean isPackedArray();
 }
