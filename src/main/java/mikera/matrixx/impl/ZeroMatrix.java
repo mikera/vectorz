@@ -12,7 +12,7 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Lightweight immutable zero matrix class
  */
-public final class ZeroMatrix extends AMatrix {
+public final class ZeroMatrix extends ABooleanMatrix {
 	private final int inputDimensions;
 	private final int outputDimensions;
 
@@ -83,7 +83,7 @@ public final class ZeroMatrix extends AMatrix {
 	
 	@Override
 	public double determinant() {
-		assert(isSquare());
+		if(isSquare()) throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
 		return 0.0;
 	}
 	
