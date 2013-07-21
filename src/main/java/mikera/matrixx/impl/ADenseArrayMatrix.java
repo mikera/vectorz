@@ -5,9 +5,9 @@ package mikera.matrixx.impl;
  * @author Mike
  *
  */
-public abstract class AArrayDenseMatrix extends AStridedMatrix {
+public abstract class ADenseArrayMatrix extends AStridedMatrix {
 
-	protected AArrayDenseMatrix(double[] data, int rows, int cols) {
+	protected ADenseArrayMatrix(double[] data, int rows, int cols) {
 		super(data, rows, cols);
 	}
 
@@ -27,4 +27,18 @@ public abstract class AArrayDenseMatrix extends AStridedMatrix {
 	public int columnStride() {
 		return 1;
 	}
+	
+	public double unsafeGet(int i, int j) {
+		return data[index(i,j)];
+	}
+	
+	public void unsafeSet(int i, int j,double value) {
+		data[index(i,j)]=value;
+	}
+	
+	
+	protected int index(int row, int col) {
+		return getArrayOffset()+(row*cols)+col;
+	}
+
 }
