@@ -159,8 +159,19 @@ public interface INDArray extends Cloneable {
 	 */
 	public List<Double> asElementList();
 	
+	/**
+	 * Returns a new array by rearranging the elements of this array into the desired shape
+	 * Truncates or zero-pads the elements as required to fill the new shape
+	 * @param shape
+	 * @return
+	 */
 	public INDArray reshape(int... shape);
 
+	/**
+	 * Returns a view of this array broadcasted up to a larger shape
+	 * @param shape
+	 * @return
+	 */
 	public INDArray broadcast(int... shape);
 
 	/**
