@@ -39,6 +39,16 @@ public final class WrappedSubVector extends AVector {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return wrapped.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return wrapped.isElementConstrained();
+	}
+	
+	@Override
 	public boolean isView() {
 		return true;
 	}

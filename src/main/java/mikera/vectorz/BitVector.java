@@ -40,7 +40,7 @@ public final class BitVector extends AConstrainedVector {
 	}
 	
 	public BitVector(BitVector source) {
-		this(source.data,source.length());
+		this(source.data.clone(),source.length());
 	}
 
 

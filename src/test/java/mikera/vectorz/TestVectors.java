@@ -57,7 +57,7 @@ public class TestVectors {
 	}
 	
 	public void testSquare(AVector v) {
-		if (!v.isMutable()) return;
+		if (!v.isFullyMutable()) return;
 		v=v.exactClone();
 		AVector vc=v.clone();
 		v.square();
@@ -750,11 +750,13 @@ public class TestVectors {
 		doGenericTests(new Vector2(1.0,2.0));
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector4(1.0,2.0,3.0,4.0));
+		doGenericTests(new Vector4(1.0,2.0,3.0,4.0).subVector(1, 2));
 		
 		// bit vectors
 		doGenericTests(BitVector.of());
 		doGenericTests(BitVector.of(0));
 		doGenericTests(BitVector.of(0,1,0));
+		doGenericTests(BitVector.of(0,1,0).subVector(1, 1));
 		
 		// zero-length Vectors
 		doGenericTests(Vector.of());
@@ -819,6 +821,7 @@ public class TestVectors {
 		doGenericTests(m3.asVector());
 		doGenericTests(m3.getRow(2));
 		doGenericTests(m3.getColumn(2));
+		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
 		
 		doGenericTests(new AxisVector(1,3));
 		doGenericTests(new AxisVector(0,1));
@@ -828,14 +831,16 @@ public class TestVectors {
 		doGenericTests(new SingleElementVector(0,1));
 
 		doGenericTests(new RepeatedElementVector(1,1.0));
-		doGenericTests(new RepeatedElementVector(10,1.0));
 		doGenericTests(new RepeatedElementVector(4,0.0));
+		doGenericTests(new RepeatedElementVector(10,1.0));
+		doGenericTests(new RepeatedElementVector(10,1.0).subVector(2, 5));
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
 		
 		doGenericTests(new Scalar(1.0).asVector());
+		doGenericTests(Vector.of(1,2,3).slice(1).asVector());
 		
 		AVector jav1=JoinedArrayVector.create(v4);
 		AVector jav2=JoinedArrayVector.create(j5);
