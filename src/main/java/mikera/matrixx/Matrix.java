@@ -102,7 +102,7 @@ public final class Matrix extends ADenseArrayMatrix {
 			for (int j=0; j<cc; j++) {
 				acc+=data[di+j]*a.data[j];
 			}
-			result.set(i,acc);
+			result.unsafeSet(i,acc);
 		}
 		return result;
 	}
@@ -154,37 +154,37 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public double elementSum() {
-		return DoubleArrays.elementSum(data, 0, data.length);
+		return DoubleArrays.elementSum(data);
 	}
 	
 	@Override
 	public void abs() {
-		DoubleArrays.abs(data, 0, data.length);
+		DoubleArrays.abs(data);
 	}
 	
 	@Override
 	public void signum() {
-		DoubleArrays.signum(data, 0, data.length);
+		DoubleArrays.signum(data);
 	}
 	
 	@Override
 	public void square() {
-		DoubleArrays.square(data, 0, data.length);
+		DoubleArrays.square(data);
 	}
 	
 	@Override
 	public void exp() {
-		DoubleArrays.exp(data, 0, data.length);
+		DoubleArrays.exp(data);
 	}
 	
 	@Override
 	public void log() {
-		DoubleArrays.log(data, 0, data.length);
+		DoubleArrays.log(data);
 	}
 	
 	@Override
 	public long nonZeroCount() {
-		return DoubleArrays.nonZeroCount(data, 0, data.length);
+		return DoubleArrays.nonZeroCount(data);
 	}
 	
 	@Override
@@ -203,15 +203,15 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
-		assert(rowCount()==dest.length());
-		assert(columnCount()==source.length());
+		if(rows!=dest.length()) throw new IllegalArgumentException("Wrong dest vector size");
+		if(cols!=source.length()) throw new IllegalArgumentException("Wrong dest vector size");
 		int index=0;
 		for (int i=0; i<rows; i++) {
 			double acc=0.0;
 			for (int j=0; j<cols; j++) {
 				acc+=data[index++]*source.unsafeGet(j);
 			}
-			dest.set(i,acc);
+			dest.unsafeSet(i,acc);
 		}
 	}
 	
