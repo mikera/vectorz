@@ -380,6 +380,12 @@ public interface INDArray extends Cloneable {
 	 * @param arr
 	 */
 	public void toDoubleBuffer(DoubleBuffer dest);
+	
+	/**
+	 * Copies the elements of this INDArray to a new double array
+	 * @param arr
+	 */
+	public double[] toDoubleArray();
 
 	/**
 	 * Returns a list of slices as mutable INDArray views.

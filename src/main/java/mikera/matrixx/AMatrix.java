@@ -9,7 +9,7 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
-import mikera.arrayz.impl.SliceArray;
+import mikera.arrayz.SliceArray;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
@@ -1234,6 +1234,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		for (int i=0; i<n; i++) {
 			getRow(i).toDoubleBuffer(dest);
 		}
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		int n=(int)elementCount();
+		double[] result=new double[n];
+		getElements(result,0);
+		return result;
 	}
 	
 	@Override

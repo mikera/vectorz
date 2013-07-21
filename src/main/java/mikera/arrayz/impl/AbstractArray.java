@@ -10,6 +10,7 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
+import mikera.arrayz.SliceArray;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
@@ -555,6 +556,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 
+	@Override
+	public double[] toDoubleArray() {
+		int n=(int)elementCount();
+		double[] result=new double[n];
+		getElements(result,0);
+		return result;
+	}
 	
 	@Override
 	public INDArray broadcast(int... targetShape) {
