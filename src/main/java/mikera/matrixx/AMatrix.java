@@ -225,6 +225,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return getRow(i).dotProduct(v);
 	}
 	
+	public double calculateElement(int i, Vector v) {
+		return getRow(i).dotProduct(v);
+	}
+	
 	@Override
 	public AAffineTransform toAffineTransform() {
 		return new AffineMN(new VectorMatrixMN(this),getTranslationComponent());
@@ -242,7 +246,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double expected=(i==j)?1.0:0.0;
-				if (!(this.get(i,j)==expected)) return false;
+				if (!(this.unsafeGet(i,j)==expected)) return false;
 			}
 		}
 		return true;
