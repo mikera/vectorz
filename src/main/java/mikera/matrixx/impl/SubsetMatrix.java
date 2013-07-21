@@ -9,7 +9,7 @@ import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Matrix that transforms to a subset of elements of the source vector
+ * Matrix that transforms to a selection of specific elements of the source vector
  * i.e. has exactly one 1.0 in each row
  * 
  * @author Mike
@@ -39,6 +39,11 @@ public final class SubsetMatrix extends AMatrix implements ISparse {
 	@Override
 	public boolean isFullyMutable() {
 		return false;
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		return true;
 	}
 
 	@Override

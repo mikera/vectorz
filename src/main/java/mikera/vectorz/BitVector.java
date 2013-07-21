@@ -1,6 +1,6 @@
 package mikera.vectorz;
 
-import mikera.vectorz.impl.AConstrainedVector;
+import mikera.vectorz.impl.ABitVector;
 
 /**
  * Vector of bits - constrained to 0.0 / 1.0 values
@@ -10,7 +10,7 @@ import mikera.vectorz.impl.AConstrainedVector;
  * @author Mike
  */
 
-public final class BitVector extends AConstrainedVector {
+public final class BitVector extends ABitVector {
 	private static final long serialVersionUID = 349277216077562294L;
 	public static final double BIT_ON=1.0;
 	public static final double BIT_OFF=0.0;
@@ -118,11 +118,7 @@ public final class BitVector extends AConstrainedVector {
 		int p=i>>>6;
 		data[p]=(data[p]&(~mask))|(value>=BIT_THRESHOLD?mask:0L);
 	}
-	
-	@Override
-	public boolean isBoolean() {
-		return true;
-	}
+
 	
 	@Override
 	public AVector clone() {
