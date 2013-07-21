@@ -7,6 +7,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.util.Errors;
 import mikera.vectorz.util.VectorzException;
 
 public final class PermutationMatrix extends AMatrix implements ISparse {
@@ -163,7 +164,19 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public double get(int row, int column) {
+		if (column<0||(column>=size)) throw new IndexOutOfBoundsException();
 		return (perm.get(row)==column)?1.0:0.0;
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		if (get(row,column)==value) return;
+		throw new UnsupportedOperationException("Can't arbitrarily mutate a permutation matrix");
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return (perm.unsafeGet(row)==column)?1.0:0.0;
 	}
 
 	@Override
@@ -210,13 +223,14 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	@Override
 	public Matrix innerProduct(AMatrix a) {
 		if (a instanceof Matrix) return innerProduct((Matrix)a);
+		if (a.rowCount()!=size) throw new IllegalArgumentException(Errors.mismatch(this,a));
 		int cc=a.columnCount();
 		Matrix result=Matrix.create(size,cc);
 		for (int i=0; i<size; i++) {
 			int dstIndex=i*cc;
 			int srcRow=perm.get(i);
 			for (int j=0; j<cc; j++) {
-				result.data[dstIndex+j]=a.get(srcRow,j);
+				result.data[dstIndex+j]=a.unsafeGet(srcRow,j);
 			}
 		}
 		return result;
@@ -224,6 +238,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public Matrix innerProduct(Matrix a) {
+		if (a.rowCount()!=size) throw new IllegalArgumentException(Errors.mismatch(this,a));
 		int cc=a.columnCount();
 		Matrix result=Matrix.create(size,cc);
 		for (int i=0; i<size; i++) {

@@ -385,7 +385,7 @@ public class Matrixx {
 		int columns = m.columnCount();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				m.set(i, j, Rand.nextDouble());
+				m.unsafeSet(i, j, Rand.nextDouble());
 			}
 		}
 	}
