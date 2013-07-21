@@ -300,4 +300,19 @@ public final class Index extends AIndex {
 		return ni;
 	}
 
+	/**
+	 * Checks that all values in this index are within the specified range of
+	 * start (inclusive) to end (exclusive)
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public boolean allInRange(int start, int end) {
+		for (int i=0; i<data.length; i++) {
+			int a=data[i];
+			if ((a<start)||(a>=end)) return false;
+		}
+		return true;
+	}
+
 }

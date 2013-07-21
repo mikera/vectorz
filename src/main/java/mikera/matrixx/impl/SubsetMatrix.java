@@ -22,7 +22,11 @@ public final class SubsetMatrix extends AMatrix implements ISparse {
 	}
 	
 	public static SubsetMatrix create(Index components, int inputDimensions) {
-		return new SubsetMatrix(inputDimensions,components);
+		SubsetMatrix sm=new SubsetMatrix(inputDimensions,components);
+		if (!sm.components.allInRange(0,sm.inputDims)) {
+			throw new IllegalArgumentException("SubsetMatrix with input dimensionality "+sm.inputDims+" not valid for component indexes: "+sm.components);
+		}
+		return sm;
 	}
 	
 	@Override
@@ -91,5 +95,10 @@ public final class SubsetMatrix extends AMatrix implements ISparse {
 	@Override
 	public SubsetMatrix exactClone() {
 		return SubsetMatrix.create(components.clone(),inputDims);
+	}
+	
+	@Override
+	public void validate() {
+		super.validate();
 	}
 }
