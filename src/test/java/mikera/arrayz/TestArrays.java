@@ -87,6 +87,8 @@ public class TestArrays {
 				}
 			}
 		}
+		
+		assertEquals(a.toArray().asVector(),a.asVector());
 	}
 
 	private void testToArray(INDArray a) {
