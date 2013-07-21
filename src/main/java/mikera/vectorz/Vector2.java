@@ -206,6 +206,10 @@ public final class Vector2 extends APrimitiveVector {
 		}
 	}
 	
+	/**
+	 * Rorates a 2D vector around the origin by a given angle
+	 * @param angle
+	 */
 	public void rotateInPlace(int angle) {
 		double ca=Math.cos(angle);
 		double sa=Math.sin(angle);

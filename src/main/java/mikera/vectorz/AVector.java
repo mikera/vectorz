@@ -802,13 +802,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}		
 	}
 	
-	public int countZeros() {
-		int z=0;
-		int len=length();
-		for (int i=0; i<len; i++) {
-			if (unsafeGet(i)==0.0) z++;
-		}
-		return z;
+	public long zeroCount() {
+		return elementCount()-nonZeroCount();
 	}
 	
 	/**
