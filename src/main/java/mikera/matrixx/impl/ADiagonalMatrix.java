@@ -5,6 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -75,7 +76,7 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	public AMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
+		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		DiagonalMatrix result=DiagonalMatrix.create(dimensions);
 		for (int i=0; i<dimensions; i++) {
 			result.data[i]=getDiagonalValue(i)*a.getDiagonalValue(i);
@@ -88,7 +89,7 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 		if (a instanceof ADiagonalMatrix) {
 			return innerProduct((ADiagonalMatrix) a);
 		}
-		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException("Matrix dimensions not compatible!");
+		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		return super.innerProduct(a);
 	}
 	
@@ -98,7 +99,7 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 			transformInPlace((AArrayVector) v);
 			return;
 		}
-		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong target vector size");
+		if (v.length()!=dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
 		for (int i=0; i<dimensions; i++) {
 			v.unsafeSet(i,v.unsafeGet(i)*getDiagonalValue(i));
 		}
@@ -154,7 +155,7 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public void set(int row, int column, double value) {
-		throw new UnsupportedOperationException("Matrix set not supported by "+this.getClass());
+		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 	}
 
 	public double getDiagonalValue(int i) {

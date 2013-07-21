@@ -50,4 +50,8 @@ public class ErrorMessages {
 		return "Square matrix required! This matrix has shape: "+shape(m);
 	}
 
+	public static String position(int... indexes) {
+		return "Invalid index: "+pos(indexes);
+	}
+
 }
