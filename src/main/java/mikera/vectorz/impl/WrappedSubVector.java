@@ -46,13 +46,23 @@ public final class WrappedSubVector extends AVector {
 	@Override
 	public double get(int i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
-		return wrapped.get(i+offset);
+		return wrapped.unsafeGet(i+offset);
 	}
 
 	@Override
 	public void set(int i, double value) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
-		wrapped.set(i+offset,value);
+		wrapped.unsafeSet(i+offset,value);
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return wrapped.unsafeGet(i+offset);
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
+		wrapped.unsafeSet(i+offset,value);
 	}
 	
 	@Override

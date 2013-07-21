@@ -44,8 +44,8 @@ public final class Quadratic extends APolynomialOp {
 		}
 		int len=v.length();
 		for (int i=0; i<len; i++) {
-			double x=v.get(i);
-			v.set(i,apply(x));
+			double x=v.unsafeGet(i);
+			v.unsafeSet(i,apply(x));
 		}	
 	}
 	

@@ -16,7 +16,7 @@ public class Testing {
 		if ((!c.isMutable())&&(n>0)) return false;	
 		
 		for (int i=0; i<n ; i++) {
-			double t=v.get(i);
+			double t=v.unsafeGet(i);
 			double x=10+Rand.nextDouble()*1000;
 			if (t==x) {x=x+1;}
 			v.set(i,x);
