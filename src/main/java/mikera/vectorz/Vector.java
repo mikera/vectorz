@@ -244,6 +244,15 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
+	public void add(Vector v) {
+		int length=length();
+		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		for (int i = 0; i < length; i++) {
+			data[i] += v.data[i];
+		}
+	}
+	
+	@Override
 	public void scaleAdd(double factor, double constant) {
 		int length=length();
 		for (int i=0; i<length; i++) {
