@@ -823,7 +823,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public AVector asVector() {
+	public final AVector asVector() {
 		return this;
 	}
 	
