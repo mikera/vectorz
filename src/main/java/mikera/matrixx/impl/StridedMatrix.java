@@ -9,7 +9,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.VectorzException;
 
-public final class StridedMatrix extends AArrayMatrix {
+public final class StridedMatrix extends AStridedMatrix {
 	private final int rowStride;
 	private final int colStride;
 	private final int offset;
