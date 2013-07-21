@@ -391,6 +391,20 @@ public final class JoinedArrayVector extends AVector {
 			DoubleArrays.square(this.data[j],offsets[j],subLength(j));
 		}		
 	}
+		
+	@Override
+	public void tanh() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.tanh(this.data[j],offsets[j],subLength(j));
+		}		
+	}
+	
+	@Override
+	public void logistic() {
+		for (int j=0; j<numArrays; j++) {
+			DoubleArrays.logistic(this.data[j],offsets[j],subLength(j));
+		}		
+	}
 	
 	@Override
 	public void sqrt() {

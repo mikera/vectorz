@@ -400,6 +400,18 @@ public final class JoinedVector extends AVector {
 		right.sqrt();
 	}
 	
+	@Override
+	public void tanh() {
+		left.tanh();
+		right.tanh();
+	}
+	
+	@Override
+	public void logistic() {
+		left.logistic();
+		right.logistic();
+	}
+	
 	@Override 
 	public void multiply(double value) {
 		left.multiply(value);

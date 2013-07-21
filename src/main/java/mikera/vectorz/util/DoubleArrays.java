@@ -1,5 +1,7 @@
 package mikera.vectorz.util;
 
+import mikera.vectorz.ops.Logistic;
+
 public final class DoubleArrays {
 	public static final double elementSum(double[] data, int offset, int length) {
 		double result = 0.0;
@@ -37,6 +39,17 @@ public final class DoubleArrays {
 		}
 	}
 	
+	public static void tanh(double[] ds, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			ds[offset+i]=Math.tanh(ds[offset+i]);
+		}
+	}
+		
+	public static void logistic(double[] ds, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			ds[offset+i]=Logistic.logisticFunction(ds[offset+i]);
+		}
+	}
 
 	public static void signum(double[] ds, int offset, int length) {
 		for (int i=0; i<length; i++) {
