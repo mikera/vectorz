@@ -164,11 +164,18 @@ public final class DoubleArrays {
 			data[i+offset]=Math.log(val);
 		}
 	}
-
+	
 	public static void sqrt(double[] data, int offset, int length) {
 		for (int i=0; i<length; i++) {
 			double val=data[i+offset];
 			data[i+offset]=Math.sqrt(val);
+		}
+	}
+	
+	public static void negate(double[] data) {
+		for (int i=0; i<data.length; i++) {
+			double val=data[i];
+			data[i]=-val;
 		}
 	}
 
@@ -186,6 +193,13 @@ public final class DoubleArrays {
 			if (as[i]!=bs[i]) return false;
 		}
 		return true;
+	}
+	
+	public static boolean isBoolean(double[] data) {
+		for (int i=0; i<data.length; i++) {
+			if (!Tools.isBoolean(data[i])) return false;
+		}
+		return true;		
 	}
 
 	public static boolean isBoolean(double[] data, int offset, int length) {

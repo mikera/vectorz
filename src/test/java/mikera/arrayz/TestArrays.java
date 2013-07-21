@@ -11,6 +11,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Constant;
@@ -262,6 +263,10 @@ public class TestArrays {
 		m.multiply(Scalar.create(0.5));
 		assertEquals(a, m);
 	}
+	
+	private void testBoolean(INDArray a) {
+		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(Tools.getElements(a)));
+	}
 
 	private void testBroadcast(INDArray a) {
 		int dims = a.dimensionality();
@@ -393,6 +398,7 @@ public class TestArrays {
 		testApplyOp(a);
 		testApplyAllOps(a);
 		testElementIterator(a);
+		testBoolean(a);
 		testSums(a);
 		testEquals(a);
 		testIndexedAccess(a);

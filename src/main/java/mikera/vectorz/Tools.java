@@ -1,6 +1,6 @@
 package mikera.vectorz;
 
-import mikera.matrixx.AMatrix;
+import mikera.arrayz.INDArray;
 
 public final class Tools {
 	public static void debugBreak(Object o) {
@@ -91,10 +91,10 @@ public final class Tools {
 		return (d==0.0)||(d==1.0);
 	}
 
-	public static double[] getElements(AMatrix m) {
-		int n=(int)m.elementCount();
+	public static double[] getElements(INDArray a) {
+		int n=(int)a.elementCount();
 		double[] data=new double[n];
-		m.getElements(data, 0);
+		a.getElements(data, 0);
 		return data;
 	}
 }
