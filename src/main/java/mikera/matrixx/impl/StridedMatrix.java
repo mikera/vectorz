@@ -170,7 +170,8 @@ public final class StridedMatrix extends AStridedMatrix {
 		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
 	}
 
-	private final int index(int row, int col) {
+	@Override
+	protected final int index(int row, int col) {
 		return offset+(row*rowStride)+(col*colStride);
 	}
 	

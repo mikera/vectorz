@@ -4,6 +4,9 @@ import mikera.matrixx.AMatrix;
 
 /**
  * Abstract class for a Matrix backed with a single double[] data array
+ * 
+ * Dimensions are fixed, but leaves open the possibility of arbitrary indexing
+ * 
  * @author Mike
  *
  */
@@ -26,5 +29,17 @@ public abstract class AArrayMatrix extends AMatrix {
 		return cols;
 	}
 	
+	/**
+	 * Returns true if the data array is fully packed by this matrix in row-major order
+	 * @return
+	 */
 	public abstract boolean isPackedArray();
+	
+	/**
+	 * Computes the index into the data array for a given position in the matrix
+	 * @param i
+	 * @param j
+	 * @return
+	 */
+	protected abstract int index(int i, int j);
 }
