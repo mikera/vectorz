@@ -322,11 +322,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void clamp(double min, double max) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			double v=get(i);
+			double v=unsafeGet(i);
 			if (v<min) {
-				set(i,min);
+				unsafeSet(i,min);
 			} else if (v>max) {
-				set(i,max);
+				unsafeSet(i,max);
 			}
 		}
 	}
@@ -334,9 +334,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void clampMax(double max) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			double v=get(i);
+			double v=unsafeGet(i);
 			if (v>max) {
-				set(i,max);
+				unsafeSet(i,max);
 			}
 		}
 	}
@@ -344,9 +344,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void clampMin(double min) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			double v=get(i);
+			double v=unsafeGet(i);
 			if (v<min) {
-				set(i,min);
+				unsafeSet(i,min);
 			} 
 		}
 	}
@@ -358,7 +358,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void multiply(double factor) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			set(i,get(i)*factor);
+			unsafeSet(i,unsafeGet(i)*factor);
 		}	
 	}
 	
@@ -379,9 +379,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void multiply(AVector v) {
 		int len=length();
-		assert(len==v.length());
+		if(len!=v.length()) throw new IllegalArgumentException("Wrong vector sizes");
 		for (int i = 0; i < len; i++) {
-			set(i,get(i)*v.get(i));
+			unsafeSet(i,unsafeGet(i)*v.unsafeGet(i));
 		}	
 	}
 	
@@ -431,8 +431,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void abs() {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			double val=get(i);
-			if (val<0) set(i,-val);
+			double val=unsafeGet(i);
+			if (val<0) unsafeSet(i,-val);
 		}
 	}
 	
@@ -932,8 +932,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void add(AVector src, int srcOffset) {
 		int length=length();
-		assert(srcOffset>=0);
-		assert(srcOffset+length<=src.length());
+		if (!((srcOffset>=0)&&(srcOffset+length<=src.length()))) throw new IndexOutOfBoundsException();
 		for (int i = 0; i < length; i++) {
 			addAt(i,src.get(srcOffset+i));
 		}
@@ -1183,10 +1182,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
-		assert(offset>=0);
-		assert(offset+length<=length());
+		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
 		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*get(i+offset);
+			array[i+arrayOffset]+=factor*unsafeGet(i+offset);
 		}
 	}
 	
@@ -1195,16 +1193,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
-		assert(offset>=0);
-		assert(offset+length<=length());
+		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
 		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*get(i+offset)*other.get(i+otherOffset);
+			array[i+arrayOffset]+=factor*unsafeGet(i+offset)*other.get(i+otherOffset);
 		}		
 	}
 	
 	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		assert(offset>=0);
-		assert(offset+length<=length());
+		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
 		double[] otherArray=other.getArray();
 		otherOffset+=other.getArrayOffset();
 		for (int i=0; i<length; i++) {
