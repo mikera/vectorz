@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.Vector0;
@@ -38,6 +39,14 @@ public class TestMiscArrayOps {
 	@Test public void testZeroPaddedReshape() {
 		assertTrue(Vector0.INSTANCE.reshape(1,1).asVector().isZeroVector());
 		assertTrue(Matrix.create(1,1).reshape(1,2,3).asVector().isZeroVector());
+		
+		assertEquals(Vector.of(2,0,0),Scalar.create(2).reshape(3));
+		assertEquals(Vector.of(1,2),Vector.of(1,2,3,4).reshape(2));
+		assertEquals(Scalar.create(2),Vector.of(2,3,4).reshape());
+		
+		assertEquals(Vector0.INSTANCE,Array.newArray(2,3,4,5).reshape(0));
+
+
 	}
 
 

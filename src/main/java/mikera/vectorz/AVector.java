@@ -851,7 +851,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public INDArray reshape(int... dimensions) {
 		int ndims=dimensions.length;
 		if (ndims==1) {
-			return clone();
+			return Vector.createFromVector(this, dimensions[0]);
 		} else if (ndims==2) {
 			return Matrixx.createFromVector(this, dimensions[0], dimensions[1]);
 		} else {
