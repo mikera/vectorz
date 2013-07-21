@@ -16,7 +16,7 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /** 
- * Standard MxN matrix class backed by a flat double[] array
+ * Standard MxN matrix class backed by a fully packed double[] array
  * 
  * @author Mike
  */

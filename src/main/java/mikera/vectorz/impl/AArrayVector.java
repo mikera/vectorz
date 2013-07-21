@@ -19,6 +19,8 @@ import mikera.vectorz.util.VectorzException;
  */
 @SuppressWarnings("serial")
 public abstract class AArrayVector extends AStridedVector {	
+	
+	
 	/**
 	 * AArrayVector has a fixed stride of 1, which enables efficient operations on arrays
 	 */

@@ -1082,7 +1082,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			throw new VectorzException("Matrix sizes not compatible!");
 		}
 
-		Matrix result=Matrixx.newMatrix(rc,cc);
+		AMatrix result=Matrixx.newMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
@@ -1095,7 +1095,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;		
 	}
 	
-	public Matrix innerProduct(Matrix a) {
+	public AMatrix innerProduct(Matrix a) {
 		int rc=this.rowCount();
 		int cc=a.columnCount();
 		int ic=this.columnCount();
@@ -1103,7 +1103,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		if ((ic!=a.rowCount())) {
 			throw new VectorzException("Matrix sizes not compatible!");
 		}
-		Matrix result=Matrixx.newMatrix(rc,cc);
+		AMatrix result=Matrixx.newMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;

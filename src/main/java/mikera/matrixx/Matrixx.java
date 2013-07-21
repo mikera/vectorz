@@ -317,13 +317,15 @@ public class Matrixx {
 	 * @param columns
 	 * @return
 	 */
-	public static Matrix newMatrix(int rows, int columns) {
+	public static AMatrix newMatrix(int rows, int columns) {
+		if (rows==2&&columns==2) return new Matrix22();
+		if (rows==3&&columns==3) return new Matrix33();		
 		return Matrix.create(rows, columns);
 	}
 
 	public static Matrix createFromVector(AVector data, int rows, int columns) {
 		assert (data.length() == rows * columns);
-		Matrix m = newMatrix(rows, columns);
+		Matrix m = Matrix.create(rows, columns);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				m.set(i, j, data.get(i * columns + j));
@@ -333,7 +335,7 @@ public class Matrixx {
 	}
 
 	private static Matrix createSquareMatrix(int dimensions) {
-		return newMatrix(dimensions, dimensions);
+		return Matrix.create(dimensions, dimensions);
 	}
 
 	/**
