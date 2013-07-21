@@ -31,12 +31,19 @@ public class TestMatrices {
 		Matrix m=(Matrix) Matrixx.newMatrix(4,4);
 		Vectorz.fillIndexes(m.asVector());
 		
+		// regression test
+		{@SuppressWarnings("unused") AStridedMatrix tsm=m.subMatrix(1, 1, 1, 1);}
+		
 		AStridedMatrix sm=m.subMatrix(1, 2, 1, 2);
 		assertEquals(2,sm.rowCount());
 		assertEquals(2,sm.columnCount());
 		assertTrue(sm.data==m.data);
 		
 		assertEquals(Matrixx.create(new double[][] {{5.0,6.0},{9.0,10.0}}),sm);
+		
+		AStridedMatrix ssm=sm.subMatrix(1, 1, 1, 1);
+		assertEquals(Matrixx.create(new double[][] {{10.0}}),ssm);
+		
 	}
 	
 	@Test public void testToString() {
