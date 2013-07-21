@@ -35,7 +35,7 @@ public class TestTransformz {
 		}
 	}
 	
-	public static void doApplyTest(ITransform t) {
+	private static void doApplyTest(ITransform t) {
 		AVector x=Vectorz.createUniformRandomVector(t.inputDimensions());
 		AVector y=Vectorz.newVector(t.outputDimensions());
 		y.fill(Double.NaN);
@@ -51,17 +51,17 @@ public class TestTransformz {
 		assertTrue(x.equals(x2));
 	}
 	
-	public static void doHashTest(ATransform t) {
+	private static void doHashTest(ATransform t) {
 		t.hashCode();
 	}
 	
-	public static void doSubTest(ATransform t) {
+	private static void doSubTest(ATransform t) {
 		ATransform st=t.takeComponents(Indexz.createRandomSubset(t.outputDimensions(), 0.5));	
 		AVector v=Vectorz.createUniformRandomVector(st.inputDimensions());
 		st.transform(v);
 	}
 	
-	public static void doComponentTests(ATransform t) {
+	private static void doComponentTests(ATransform t) {
 		AVector v=Vectorz.createUniformRandomVector(t.inputDimensions());
 		AVector r=t.transform(v);
 		
@@ -70,7 +70,7 @@ public class TestTransformz {
 		}
 	}
 	
-	public static void doSizeTest(ATransform t) {
+	private static void doSizeTest(ATransform t) {
 		assertEquals(t.inputDimensions()==t.outputDimensions(),t.isSquare());
 		
 		AVector iv=Vectorz.createUniformRandomVector(t.inputDimensions());
@@ -81,6 +81,16 @@ public class TestTransformz {
 		t.transform(iv, ov);
 	}
 	
+	private static void doComponentTest(ATransform t) {
+		AVector iv=Vectorz.createUniformRandomVector(t.inputDimensions());
+		AVector ov=Vectorz.createUniformRandomVector(t.outputDimensions());
+		
+		t.transform(iv, ov);
+		for (int i=0; i<t.outputDimensions(); i++) {
+			assertEquals(ov.get(i),t.calculateElement(i, iv),0.0);
+		}
+	}
+	
 	public static void doITransformTests(ITransform t) {
 		doApplyTest(t);
 	}
@@ -89,6 +99,7 @@ public class TestTransformz {
 		doITransformTests(t);
 		doSizeTest(t);
 		doSubTest(t);
+		doComponentTest(t);
 		doHashTest(t);
 		doComponentTests(t);
 	}

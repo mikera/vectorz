@@ -18,6 +18,7 @@ import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.ATransform;
+import mikera.transformz.TestTransformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
@@ -534,6 +535,8 @@ public class TestMatrixx {
 		doRandomTests(m);
 		doBigComposeTest(m);
 		doSubMatrixTest(m);
+		
+		TestTransformz.doITransformTests(m);
 		
 		new TestArrays().testArray(m);
 	}
