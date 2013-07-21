@@ -1,5 +1,7 @@
 package mikera.vectorz.ops;
 
+import mikera.vectorz.AVector;
+
 public final class Tanh extends ABoundedOp {
 	
 	public static final Tanh INSTANCE=new Tanh();
@@ -7,6 +9,11 @@ public final class Tanh extends ABoundedOp {
 	@Override
 	public double apply(double x) {
 		return Math.tanh(x);
+	}
+	
+	@Override
+	public void applyTo(AVector v) {
+		super.applyTo(v);
 	}
 	
 	@Override
