@@ -6,6 +6,8 @@ import mikera.vectorz.Op;
 import mikera.vectorz.util.DoubleArrays;
 
 public final class Reciprocal extends AFunctionOp {
+	public static final Reciprocal INSTANCE = new Reciprocal();
+
 	@Override
 	public void applyTo(INDArray a) {
 		a.reciprocal();

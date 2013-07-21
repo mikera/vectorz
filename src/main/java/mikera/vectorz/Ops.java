@@ -53,7 +53,7 @@ public final class Ops {
 	public static final Op LOG = Log.INSTANCE;
 	public static final Op LOG10 = LogN.LOG10;
 
-	public static final Op RECIPROCAL = new Reciprocal();
+	public static final Op RECIPROCAL = Reciprocal.INSTANCE;
 
 	public static final ARoundingOp CEIL = new ARoundingOp() {
 		@Override
