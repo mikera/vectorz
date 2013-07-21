@@ -21,7 +21,7 @@ import mikera.vectorz.util.VectorzException;
  * This is the general multi-dimensional equivalent of Matrix and Vector
  * 
  * @author Mike
- *
+ * 
  */
 public final class Array extends AbstractArray<INDArray> {
 	private final int dimensions;
@@ -117,16 +117,18 @@ public final class Array extends AbstractArray<INDArray> {
 
 	@Override
 	public INDArray slice(int dimension, int index) {
-		if ((dimension<0)||(dimension>=dimensions)) throw new IndexOutOfBoundsException("Dimension out of range: "+dimension);
-		if (dimensions==1) return ArrayIndexScalar.wrap(data, index);
-		if (dimensions==2) {
-			if (dimension==0) {
-				return Vectorz.wrap(data, index* shape[1], shape[1]);				
+		if ((dimension < 0) || (dimension >= dimensions))
+			throw new IndexOutOfBoundsException("Dimension out of range: "
+					+ dimension);
+		if (dimensions == 1) return ArrayIndexScalar.wrap(data, index);
+		if (dimensions == 2) {
+			if (dimension == 0) {
+				return Vectorz.wrap(data, index * shape[1], shape[1]);
 			} else {
 				return Vectorz.wrapStrided(data, index, shape[0], strides[0]);
 			}
 		}
-		
+
 		int offset = index * getStride(dimension);
 		return new NDArray(data, offset,
 				IntArrays.removeIndex(shape, dimension), IntArrays.removeIndex(
@@ -150,33 +152,32 @@ public final class Array extends AbstractArray<INDArray> {
 
 	@Override
 	public double elementSquaredSum() {
-		return DoubleArrays.elementSquaredSum(data, 0, data.length);
+		return DoubleArrays.elementSquaredSum(data);
 	}
-	
-	
+
 	@Override
 	public void abs() {
-		DoubleArrays.abs(data, 0, data.length);
+		DoubleArrays.abs(data);
 	}
-	
+
 	@Override
 	public void signum() {
-		DoubleArrays.signum(data, 0, data.length);
+		DoubleArrays.signum(data);
 	}
-	
+
 	@Override
 	public void square() {
-		DoubleArrays.square(data, 0, data.length);
+		DoubleArrays.square(data);
 	}
-	
+
 	@Override
 	public void exp() {
-		DoubleArrays.exp(data, 0, data.length);
+		DoubleArrays.exp(data);
 	}
-	
+
 	@Override
 	public void log() {
-		DoubleArrays.log(data, 0, data.length);
+		DoubleArrays.log(data);
 	}
 
 	@Override
@@ -217,7 +218,7 @@ public final class Array extends AbstractArray<INDArray> {
 
 	@Override
 	public boolean equals(INDArray a) {
-		if (a instanceof Array) return equals((Array)a);
+		if (a instanceof Array) return equals((Array) a);
 		return super.equals(a);
 	}
 
@@ -255,11 +256,15 @@ public final class Array extends AbstractArray<INDArray> {
 	@Override
 	public INDArray clone() {
 		switch (dimensions) {
-		case 0: return Scalar.create(data[0]);
-		case 1:	return Vector.create(data);
-		case 2: return Matrix.wrap(shape[0], shape[1], data.clone());
-		default: return new Array(dimensions, shape, data.clone());
-		}	
+		case 0:
+			return Scalar.create(data[0]);
+		case 1:
+			return Vector.create(data);
+		case 2:
+			return Matrix.wrap(shape[0], shape[1], data.clone());
+		default:
+			return new Array(dimensions, shape, data.clone());
+		}
 	}
 
 	@Override
@@ -267,9 +272,9 @@ public final class Array extends AbstractArray<INDArray> {
 		super.validate();
 		if (dimensions != shape.length)
 			throw new VectorzException("Inconsistent dimensionality");
-		if ((dimensions>0)&&(strides[dimensions-1]!=1))
+		if ((dimensions > 0) && (strides[dimensions - 1] != 1))
 			throw new VectorzException("Last stride should be 1");
-		
+
 		if (data.length != IntArrays.arrayProduct(shape))
 			throw new VectorzException("Inconsistent shape");
 		if (!IntArrays.equals(strides, IntArrays.calcStrides(shape)))
