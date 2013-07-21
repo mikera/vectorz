@@ -44,7 +44,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return v.get(i);
+		return v.unsafeGet(i);
 	}
 
 	@Override

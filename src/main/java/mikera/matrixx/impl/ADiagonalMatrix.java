@@ -98,8 +98,9 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 			transformInPlace((AArrayVector) v);
 			return;
 		}
+		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong target vector size");
 		for (int i=0; i<dimensions; i++) {
-			v.set(i,v.get(i)*getDiagonalValue(i));
+			v.unsafeSet(i,v.unsafeGet(i)*getDiagonalValue(i));
 		}
 	}
 	
@@ -148,7 +149,7 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return v.get(i)*getDiagonalValue(i);
+		return v.unsafeGet(i)*getDiagonalValue(i);
 	}
 	
 	@Override

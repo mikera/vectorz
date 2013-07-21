@@ -94,7 +94,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return data[i]*v.get(i);
+		return data[i]*v.unsafeGet(i);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		}
 		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong length vector: "+v.length());
 		for (int i=0; i<dimensions; i++) {
-			v.set(i,v.get(i)*data[i]);
+			v.unsafeSet(i,v.unsafeGet(i)*data[i]);
 		}
 	}
 	

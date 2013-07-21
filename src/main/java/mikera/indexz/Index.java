@@ -131,7 +131,7 @@ public final class Index extends AIndex {
 		int len=v.length(); 
 		Index a=Index.createLength(len); 
 		for (int i=0; i<len; i++) {
-			a.data[i]=(int) v.get(i);
+			a.data[i]=(int) v.unsafeGet(i);
 		}
 		return a;
 	}

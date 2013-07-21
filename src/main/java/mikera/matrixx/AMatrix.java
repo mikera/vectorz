@@ -305,12 +305,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void transform(AVector source, AVector dest) {
 		int rc = rowCount();
 		int cc = columnCount();
+		if (source.length()!=cc) throw new IllegalArgumentException("Wrong source vector length");
+		if (dest.length()!=rc) throw new IllegalArgumentException("Wrong source vector length");
 		for (int row = 0; row < rc; row++) {
 			double total = 0.0;
 			for (int column = 0; column < cc; column++) {
-				total += get(row, column) * source.get(column);
+				total += unsafeGet(row, column) * source.unsafeGet(column);
 			}
-			dest.set(row, total);
+			dest.unsafeSet(row, total);
 		}
 	}
 
@@ -323,13 +325,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();
+		if (v.length()!=rc) throw new IllegalArgumentException("Wrong vector length");
 		if (rc != cc)
 			throw new UnsupportedOperationException(
 					"Cannot transform in place with a non-square transformation");
 		for (int row = 0; row < rc; row++) {
 			double total = 0.0;
 			for (int column = 0; column < cc; column++) {
-				total += get(row, column) * v.get(column);
+				total += unsafeGet(row, column) * v.unsafeGet(column);
 			}
 			temp[row] = total;
 		}
@@ -340,6 +343,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();
+		if (v.length()!=rc) throw new IllegalArgumentException("Wrong vector length");
 		if (rc != cc)
 			throw new UnsupportedOperationException(
 					"Cannot transform in place with a non-square transformation");
@@ -348,7 +352,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		for (int row = 0; row < rc; row++) {
 			double total = 0.0;
 			for (int column = 0; column < cc; column++) {
-				total += get(row, column) * data[offset+column];
+				total += unsafeGet(row, column) * data[offset+column];
 			}
 			temp[row] = total;
 		}
@@ -377,6 +381,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		@Override
 		public void set(int i, double value) {
 			AMatrix.this.set(row, i, value);
+		}
+		
+		@Override
+		public double unsafeGet(int i) {
+			return AMatrix.this.unsafeGet(row, i);
+		}
+
+		@Override
+		public void unsafeSet(int i, double value) {
+			AMatrix.this.unsafeSet(row, i, value);
 		}
 		
 		@Override 

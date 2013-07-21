@@ -53,13 +53,13 @@ public class ColumnMatrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		assert(column==0);
+		if(column!=0) throw new IndexOutOfBoundsException("Column: "+column);
 		return vector.get(row);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		assert(column==0);
+		if(column!=0) throw new IndexOutOfBoundsException("Column: "+column);
 		vector.set(row,value);
 	}
 	

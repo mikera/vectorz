@@ -138,7 +138,7 @@ public class Matrixx {
 		if (!(v.length() == 3))
 			throw new VectorzException(
 					"Rotation matrix requires a 3d axis vector");
-		return createRotationMatrix(v.get(0), v.get(1), v.get(2), angle);
+		return createRotationMatrix(v.unsafeGet(0), v.unsafeGet(1), v.unsafeGet(2), angle);
 	}
 
 	public static Matrix33 createXAxisRotationMatrix(double angle) {
@@ -324,11 +324,11 @@ public class Matrixx {
 	}
 
 	public static Matrix createFromVector(AVector data, int rows, int columns) {
-		assert (data.length() == rows * columns);
+		if (data.length() != rows * columns) throw new IllegalArgumentException("Wrong data vector size");
 		Matrix m = Matrix.create(rows, columns);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				m.set(i, j, data.get(i * columns + j));
+				m.unsafeSet(i, j, data.unsafeGet(i * columns + j));
 			}
 		}
 		return m;

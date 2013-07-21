@@ -223,7 +223,8 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 			transformInPlace((Vector3)dest);
 			return;
 		}
-		double sx=dest.get(0), sy=dest.get(1), sz=dest.get(2);
+		if (dest.length()!=3) throw new IllegalArgumentException("Wrong target vector length");
+		double sx=dest.unsafeGet(0), sy=dest.unsafeGet(1), sz=dest.unsafeGet(2);
 		double tx=((m00*sx)+(m01*sy)+(m02*sz));
 		double ty=((m10*sx)+(m11*sy)+(m12*sz));
 		double tz=((m20*sx)+(m21*sy)+(m22*sz));

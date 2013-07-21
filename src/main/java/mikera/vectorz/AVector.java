@@ -68,7 +68,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public int dimensionality() {
+	public final int dimensionality() {
 		return 1;
 	}
 	
