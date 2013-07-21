@@ -33,16 +33,19 @@ public final class BitVector extends ABitVector {
 	public static BitVector createLength(int length) {
 		return new BitVector(length);
 	}
+	
+	public static BitVector create(AVector source) {
+		return new BitVector(source);
+	}
 
-	public BitVector(AVector source) {
+	private BitVector(AVector source) {
 		this(source.length());
 		set(source);
 	}
 	
-	public BitVector(BitVector source) {
+	private BitVector(BitVector source) {
 		this(source.data.clone(),source.length());
 	}
-
 
 	private BitVector(long[] data, int length) {
 		this.length=length;

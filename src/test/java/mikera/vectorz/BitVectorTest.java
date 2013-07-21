@@ -38,15 +38,15 @@ public class BitVectorTest {
 	
 	@Test 
 	public void testBigBitVector() {
-		BitVector b=new BitVector(Vectorz.createUniformRandomVector(1000));
+		BitVector b=BitVector.create(Vectorz.createUniformRandomVector(1000));
 		
 		AVector v=b.clone();
-		AVector v2=new BitVector(b).clone();
+		AVector v2=BitVector.create(b).clone();
 		assertEquals(v,v2);
 		b.set(v2);
 		assertEquals(v,b);
 		
-		// should have fully murable vectors after clone
+		// should have fully mutable vectors after clone
 		v.add(b);
 		v2.multiply(2.0);
 		assertEquals(v,v2);
