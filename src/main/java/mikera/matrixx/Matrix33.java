@@ -145,6 +145,18 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 		return super.innerProduct(a);
 	}
 	
+	@Override
+	public AVector innerProduct(AVector a) {
+		if (a instanceof Vector3) {
+			return innerProduct((Vector3)a);
+		}
+		return super.innerProduct(a);
+	}
+	
+	public Vector3 innerProduct(Vector3 a) {
+		return transform(a);
+	}
+	
 	public Matrix33 innerProduct(Matrix33 a) {
 		Matrix33 r=new Matrix33();
 		for (int i=0; i<3; i++) {

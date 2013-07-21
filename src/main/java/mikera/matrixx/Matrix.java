@@ -78,7 +78,7 @@ public final class Matrix extends AArrayMatrix {
 	@Override
 	public Vector innerProduct(AVector a) {
 		if (a instanceof Vector) return innerProduct((Vector)a);
-		return super.innerProduct(a);
+		return transform(a);
 	}
 	
 	public Vector innerProduct(Vector a) {
@@ -182,6 +182,15 @@ public final class Matrix extends AArrayMatrix {
 	@Override
 	public Matrix clone() {
 		return new Matrix(rows,cols,data.clone());
+	}
+	
+	@Override
+	public Vector transform (AVector a) {
+		Vector v=Vector.createLength(rows);
+		for (int i=0; i<rows; i++) {
+			v.data[i]=a.dotProduct(data, i*cols);
+		}
+		return v;
 	}
 	
 	@Override
