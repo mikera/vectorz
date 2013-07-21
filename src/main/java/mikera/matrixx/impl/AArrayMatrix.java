@@ -29,6 +29,28 @@ public abstract class AArrayMatrix extends AMatrix {
 		return cols;
 	}
 	
+	@Override
+	public double get(int i, int j) {
+		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException();
+		return data[index(i,j)];
+	}
+	
+	@Override
+	public void set(int i, int j,double value) {
+		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException();
+		data[index(i,j)]=value;
+	}
+	
+	@Override
+	public double unsafeGet(int i, int j) {
+		return data[index(i,j)];
+	}
+	
+	@Override
+	public void unsafeSet(int i, int j,double value) {
+		data[index(i,j)]=value;
+	}
+	
 	/**
 	 * Returns true if the data array is fully packed by this matrix in row-major order
 	 * @return

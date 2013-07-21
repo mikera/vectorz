@@ -29,10 +29,12 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix {
 		return 1;
 	}
 	
+	@Override
 	public double unsafeGet(int i, int j) {
 		return data[index(i,j)];
 	}
 	
+	@Override
 	public void unsafeSet(int i, int j,double value) {
 		data[index(i,j)]=value;
 	}
