@@ -34,7 +34,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	public static DiagonalMatrix create(AVector v) {
-		return wrap(v.toArray());
+		return wrap(v.toDoubleArray());
 	}
 	
 	public static DiagonalMatrix wrap(double[] data) {

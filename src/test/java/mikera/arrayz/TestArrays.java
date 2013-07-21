@@ -125,7 +125,7 @@ public class TestArrays {
 		INDArray c = a.clone();
 		a.fill(Double.NaN);
 
-		double[] arr = c.asVector().toArray();
+		double[] arr = c.asVector().toDoubleArray();
 		assertEquals(a.elementCount(), arr.length);
 		a.setElements(arr);
 		assertEquals(c.asVector(), a.asVector());

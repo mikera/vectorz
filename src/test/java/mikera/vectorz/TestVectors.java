@@ -350,7 +350,7 @@ public class TestVectors {
 		assertEquals(v,v2);
 
 		Vectorz.fillRandom(v);
-		double[] data=v.toArray();
+		double[] data=v.toDoubleArray();
 		v2.setElements(data);
 		assertEquals(v,v2);
 	}
@@ -362,7 +362,7 @@ public class TestVectors {
 		Vectorz.fillGaussian(v);
 		AVector vc=v.clone();
 		
-		double[] data=v.toArray();
+		double[] data=v.toDoubleArray();
 		v.fill(0.0);
 		v.setElements(data);
 		

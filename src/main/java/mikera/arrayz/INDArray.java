@@ -343,6 +343,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public Vector toVector();
+	
+	/**
+	 * Converts the array into a packed mutable Array instance
+	 * @return
+	 */
+	public Array toArray();
 
 	public boolean epsilonEquals(INDArray a);
 	public boolean epsilonEquals(INDArray a, double epsilon);

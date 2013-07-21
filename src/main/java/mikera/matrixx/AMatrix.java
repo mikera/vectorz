@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.SliceArray;
@@ -1185,12 +1186,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * Converts the matrix to a single flattened vector
 	 * in row major order.
 	 */
+	@Override
 	public Vector toVector() {
 		int rc = rowCount();
 		int cc = columnCount();
 		Vector v = Vector.createLength(rc * cc);
 		this.getElements(v.data,0);
 		return v;
+	}
+	
+	@Override
+	public Array toArray() {
+		return Array.create(this);
 	}
 	
 	/**

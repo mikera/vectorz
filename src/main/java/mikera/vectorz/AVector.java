@@ -256,7 +256,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public double[] toArray() {
+	public double[] toDoubleArray() {
 		double[] result=new double[length()];
 		copyTo(result,0);
 		return result;

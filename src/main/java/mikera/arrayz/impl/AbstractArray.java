@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
@@ -514,6 +515,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		double[] data=new double[n];
 		this.getElements(data, 0);
 		return Vector.wrap(data);
+	}
+	
+	@Override
+	public Array toArray() {
+		return Array.create(this);
 	}
 	
 	@Override
