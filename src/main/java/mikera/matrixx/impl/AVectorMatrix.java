@@ -38,6 +38,15 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 		return getRow(row).unsafeGet(column);
 	}
 	
+	@Override
+	public boolean isFullyMutable() {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).isFullyMutable()) return false;
+		}
+		return true;
+	}
+	
 	@Override 
 	public void set(double value) {
 		int rc=rowCount();
