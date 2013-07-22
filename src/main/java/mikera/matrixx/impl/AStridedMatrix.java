@@ -1,10 +1,11 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.impl.IStridedArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 
-public abstract class AStridedMatrix extends AArrayMatrix {
+public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArray {
 
 	protected AStridedMatrix(double[] data, int rows, int cols) {
 		super(data, rows, cols);
@@ -33,5 +34,9 @@ public abstract class AStridedMatrix extends AArrayMatrix {
 	@Override
 	public AVector getColumn(int i) {
 		return Vectorz.wrapStrided(data, getArrayOffset()+i*columnStride(), rows, rowStride());
+	}
+	
+	public int[] getStrides() {
+		return new int[] {rowStride(), columnStride()};
 	}
 }

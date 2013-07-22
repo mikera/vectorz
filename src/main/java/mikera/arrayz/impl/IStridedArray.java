@@ -1,6 +1,8 @@
 package mikera.arrayz.impl;
 
-public interface IStridedArray {
+import mikera.arrayz.INDArray;
+
+public interface IStridedArray extends INDArray {
 	
 	public double[] getArray();
 	
