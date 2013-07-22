@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -28,7 +29,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class NDArray extends AbstractArray<INDArray> {
+public final class NDArray extends AbstractArray<INDArray> implements IStridedArray {
 
 	private final int dimensions;
 	private final int[] shape;
@@ -478,5 +479,20 @@ public final class NDArray extends AbstractArray<INDArray> {
 		
 		if ((offset<0)||(offset>=data.length)) throw new VectorzException("Offset out of bounds");
 		super.validate();
+	}
+
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return offset;
+	}
+
+	@Override
+	public int[] getStrides() {
+		return stride;
 	}
 }

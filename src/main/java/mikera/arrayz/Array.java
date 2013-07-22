@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -25,7 +26,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  * 
  */
-public final class Array extends AbstractArray<INDArray> {
+public final class Array extends AbstractArray<INDArray> implements IStridedArray {
 	private final int dimensions;
 	private final int[] shape;
 	private final int[] strides;
@@ -307,5 +308,20 @@ public final class Array extends AbstractArray<INDArray> {
 		int n=(int)Math.min(m.elementCount(), a.length());
 		a.copyTo(0, m.data, 0, n);
 		return m;
+	}
+
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return 0;
+	}
+
+	@Override
+	public int[] getStrides() {
+		return strides;
 	}
 }
