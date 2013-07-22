@@ -264,6 +264,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public double[] asDoubleArray() {
+		return null;
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		int len=length();
 		for (int i=0; i<len; i++) {

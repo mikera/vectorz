@@ -246,7 +246,7 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		}
 	}
 
-	private boolean isPackedArray() {
+	public boolean isPackedArray() {
 		if (offset!=0) return false;
 		
 		int st=1;
@@ -458,6 +458,10 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		}
 	}
 
+	@Override
+	public double[] asDoubleArray() {
+		return isPackedArray()?data:null;
+	}
 
 	@Override
 	public List<INDArray> getSlices() {

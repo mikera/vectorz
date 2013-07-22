@@ -50,4 +50,14 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		}
 	}
 	
+	@Override
+	public boolean isPackedArray() {
+		return (getArrayOffset()==0)&&(columnStride()==1)&&(rowStride()==columnCount())&&(getArray().length==elementCount());
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		if (isPackedArray()) return getArray();
+		return null;
+	}
 }

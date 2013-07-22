@@ -50,6 +50,17 @@ public abstract class AStridedVector extends AVector implements IStridedArray {
 	}
 	
 	@Override
+	public double[] asDoubleArray() {
+		if (isPackedArray()) return getArray();
+		return null;
+	}
+
+	@Override
+	public boolean isPackedArray() {
+		return (getStride()==1)&&(getArrayOffset()==0)&&(getArray().length==length());
+	}
+	
+	@Override
 	public int[] getStrides() {
 		return new int[] {getStride()};
 	}

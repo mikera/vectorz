@@ -487,6 +487,11 @@ public final class Vector extends AArrayVector {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return data;
+	}
 
 	/**
 	 * Creates a new vector using the elements in the specified vector.

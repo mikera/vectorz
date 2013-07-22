@@ -333,6 +333,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public double[] asDoubleArray() {
+		return null;
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {get()};
+	}
+	
+	@Override
 	public abstract AScalar exactClone();
 	
 	@Override

@@ -266,6 +266,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return data;
+	}
 
 	@Override
 	public INDArray clone() {
@@ -323,5 +328,10 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public int[] getStrides() {
 		return strides;
+	}
+
+	@Override
+	public boolean isPackedArray() {
+		return true;
 	}
 }

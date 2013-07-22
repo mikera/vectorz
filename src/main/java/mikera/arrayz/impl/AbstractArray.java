@@ -565,6 +565,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public double[] asDoubleArray() {
+		return null;
+	}
+	
+	@Override
 	public INDArray broadcast(int... targetShape) {
 		int dims=dimensionality();
 		int tdims=targetShape.length;

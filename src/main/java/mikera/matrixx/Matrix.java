@@ -287,6 +287,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return data;
+	}
 
 	@Override
 	public double get(int row, int column) {

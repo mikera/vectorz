@@ -1,10 +1,12 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.impl.IStridedArray;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Scalar;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
-public class ArrayIndexScalar extends AScalar {
+public class ArrayIndexScalar extends AScalar implements IStridedArray {
 	final double[] array;
 	final int index;
 
@@ -53,5 +55,35 @@ public class ArrayIndexScalar extends AScalar {
 			throw new VectorzException("Index out of bounds"); 
 		}
 		super.validate();
+	}
+
+	@Override
+	public double[] getArray() {
+		return array;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return index;
+	}
+
+	@Override
+	public int[] getStrides() {
+		return IntArrays.EMPTY_INT_ARRAY;
+	}
+
+	@Override
+	public int getStride(int dimension) {
+		throw new IndexOutOfBoundsException("Can't access strides for a scalar");
+	}
+
+	@Override
+	public boolean isPackedArray() {
+		return (index==0)&&(array.length==1);
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return isPackedArray()?array:null;
 	}
 }

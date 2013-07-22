@@ -1245,6 +1245,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public double[] asDoubleArray() {
+		return null;
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		int rc = rowCount();
 		int cc = columnCount();

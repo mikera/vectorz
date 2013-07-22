@@ -397,6 +397,13 @@ public interface INDArray extends Cloneable {
 	 * @param arr
 	 */
 	public double[] toDoubleArray();
+	
+	/**
+	 * Returns the underlying double array representing the packed elements of this array
+	 * Returns nil if there is no such underlying array
+	 * @param arr
+	 */
+	public double[] asDoubleArray();
 
 	/**
 	 * Returns a list of slices as mutable INDArray views.
