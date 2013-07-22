@@ -345,7 +345,12 @@ public class TestArrays {
 			assertEquals(m.getStride(i),strides[i]);
 		}
 		
-		if (m.isPackedArray()) assertNotNull(m.asDoubleArray());
+		if (m.isPackedArray()) {
+			assertNotNull(m.asDoubleArray());
+			assertTrue(m.asDoubleArray()==m.getArray());
+		} else {
+			assertNull(m.asDoubleArray());
+		}
 		
 		if (m.elementCount()==0) return;
 		
