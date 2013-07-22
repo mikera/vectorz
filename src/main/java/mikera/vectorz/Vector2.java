@@ -2,6 +2,8 @@ package mikera.vectorz;
 
 import java.nio.DoubleBuffer;
 
+import mikera.vectorz.impl.APrimitiveVector;
+
 /**
  * Specialised 2D vector
  * 
@@ -47,6 +49,11 @@ public final class Vector2 extends APrimitiveVector {
 		y+=v.y;
 	}
 	
+	public void sub(Vector2 v) {
+		x-=v.x;
+		y-=v.y;
+	}
+	
 	public void addMultiple(Vector2 v, double factor) {
 		x+=v.x*factor;
 		y+=v.y*factor;
@@ -62,6 +69,29 @@ public final class Vector2 extends APrimitiveVector {
 		y+=a.y*b.y*factor;
 	}
 	
+	
+	@Override
+	public double dotProduct(AVector a) {
+		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		return x*a.unsafeGet(0)+y*a.unsafeGet(1);
+
+	}
+	
+	@Override
+	public double dotProduct(Vector v) {
+		if (v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		return x*v.data[0]+y*v.data[1];
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return x*data[offset+0]+y*data[offset+1];
+	}
+	
+	public double dotProduct(Vector2 a) {
+		return x*a.x+y*a.y;
+	}
+	
 	@Override
 	public void scaleAdd(double factor, double constant) {
 		x=(x*factor)+constant;
@@ -71,8 +101,8 @@ public final class Vector2 extends APrimitiveVector {
 	@Override
 	public void scaleAdd(double factor, AVector constant) {
 		if (constant instanceof Vector2) {scaleAdd(factor,(Vector2)constant); return; }
-		x=(x*factor)+constant.get(0);
-		y=(y*factor)+constant.get(1);
+		x=(x*factor)+constant.unsafeGet(0);
+		y=(y*factor)+constant.unsafeGet(1);
 	}
 	
 	public void scaleAdd(double factor, Vector2 constant) {
@@ -106,9 +136,9 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public void add(AVector v) {
-		assert(v.length()==2);
-		x+=v.get(0);
-		y+=v.get(1);
+		if(v.length()!=2) throw new IllegalArgumentException("Mismatched vector sizes");
+		x+=v.unsafeGet(0);
+		y+=v.unsafeGet(1);
 	}
 	
 	@Override
@@ -174,6 +204,19 @@ public final class Vector2 extends APrimitiveVector {
 		case 1: y+=value; return;
 		default: throw new IndexOutOfBoundsException("Index: "+i);
 		}
+	}
+	
+	/**
+	 * Rorates a 2D vector around the origin by a given angle
+	 * @param angle
+	 */
+	public void rotateInPlace(int angle) {
+		double ca=Math.cos(angle);
+		double sa=Math.sin(angle);
+		double nx=(x*ca)-(y*sa);
+		double ny=(x*sa)+(y*ca);
+		x=nx;
+		y=ny;
 	}
 	
 	public void setValues(double x, double y) {

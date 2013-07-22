@@ -6,15 +6,17 @@ import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
-public final class PermutationMatrix extends AMatrix implements ISparse {
+public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	private final Index perm;
 	private final int size;
 	
 	private PermutationMatrix(Index perm) {
-		if (!perm.isPermutation()) throw new VectorzException("Not a valid permutation: "+perm);
+		if (!perm.isPermutation()) throw new IllegalArgumentException("Not a valid permutation: "+perm);
 		this.perm=perm;
 		size=perm.length();
 	}
@@ -45,11 +47,6 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	public static PermutationMatrix createRandomPermutation(int length) {
 		Index index=Indexz.createRandomPermutation(length);
 		return new PermutationMatrix(index);
-	}
-	
-	@Override
-	public boolean isFullyMutable() {
-		return false;
 	}
 	
 	@Override
@@ -158,13 +155,25 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public double get(int row, int column) {
+		if (column<0||(column>=size)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
 		return (perm.get(row)==column)?1.0:0.0;
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		if (get(row,column)==value) return; 
+		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this,row,column));
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return (perm.unsafeGet(row)==column)?1.0:0.0;
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
 		if (get(row,column)==value) return;
-		throw new UnsupportedOperationException("Can't arbitrarily mutate a permutation matrix");
+		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this,row,column));
 	}
 	
 	@Override
@@ -195,23 +204,34 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
-		assert(rowCount()==dest.length());
-		assert(columnCount()==source.length());
+		if(rowCount()!=dest.length()) throw new IllegalArgumentException("Wrong dest vector length");
+		if(columnCount()!=source.length()) throw new IllegalArgumentException("Wrong source vector length");
 		for (int i=0; i<size; i++) {
-			dest.set(i,source.get(perm.get(i)));
+			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
 		}
+	}
+	
+	@Override
+	public double calculateElement(int i, AVector inputVector) {
+		return inputVector.unsafeGet(perm.get(i));
+	}
+	
+	@Override
+	public double calculateElement(int i, Vector inputVector) {
+		return inputVector.unsafeGet(perm.get(i));
 	}
 	
 	@Override
 	public Matrix innerProduct(AMatrix a) {
 		if (a instanceof Matrix) return innerProduct((Matrix)a);
+		if (a.rowCount()!=size) throw new IllegalArgumentException(ErrorMessages.mismatch(this,a));
 		int cc=a.columnCount();
 		Matrix result=Matrix.create(size,cc);
 		for (int i=0; i<size; i++) {
 			int dstIndex=i*cc;
 			int srcRow=perm.get(i);
 			for (int j=0; j<cc; j++) {
-				result.data[dstIndex+j]=a.get(srcRow,j);
+				result.data[dstIndex+j]=a.unsafeGet(srcRow,j);
 			}
 		}
 		return result;
@@ -219,6 +239,7 @@ public final class PermutationMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public Matrix innerProduct(Matrix a) {
+		if (a.rowCount()!=size) throw new IllegalArgumentException(ErrorMessages.mismatch(this,a));
 		int cc=a.columnCount();
 		Matrix result=Matrix.create(size,cc);
 		for (int i=0; i<size; i++) {

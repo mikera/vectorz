@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import java.util.Iterator;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.VectorIterator;
 
 public final class WrappedSubVector extends AVector {
 	private static final long serialVersionUID = 2323553136938665228L;
@@ -40,6 +39,16 @@ public final class WrappedSubVector extends AVector {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return wrapped.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return wrapped.isElementConstrained();
+	}
+	
+	@Override
 	public boolean isView() {
 		return true;
 	}
@@ -47,13 +56,23 @@ public final class WrappedSubVector extends AVector {
 	@Override
 	public double get(int i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
-		return wrapped.get(i+offset);
+		return wrapped.unsafeGet(i+offset);
 	}
 
 	@Override
 	public void set(int i, double value) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
-		wrapped.set(i+offset,value);
+		wrapped.unsafeSet(i+offset,value);
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return wrapped.unsafeGet(i+offset);
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
+		wrapped.unsafeSet(i+offset,value);
 	}
 	
 	@Override

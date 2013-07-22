@@ -3,8 +3,11 @@ package mikera.arrayz;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -13,8 +16,10 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -24,34 +29,23 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class NDArray extends AbstractArray<INDArray> {
+public final class NDArray extends AbstractArray<INDArray> implements IStridedArray {
 
 	private final int dimensions;
 	private final int[] shape;
-	private int offset;
+	private int offset; // not final, in case we want to do "sliding window" trick :-)
 	private final double[] data;
-	private int[] stride;
+	private final int[] stride;
 	
-	private static final int[] defaultStride(int[] shape) {
-		int dimensions=shape.length;
-		int[] stride=new int[dimensions];
-		int st=1;
-		for (int j=dimensions-1; j>=0; j--) {
-			stride[j]=st;
-			st*=shape[j];
-		}
-		return stride;
-	}
-	
-	private NDArray(int... shape) {
+	NDArray(int... shape) {
 		this.shape=shape.clone();
 		dimensions=shape.length;
 		data=new double[(int)elementCount()];
-		stride=defaultStride(shape);
+		stride=IntArrays.calcStrides(shape);
 		offset=0;
 	}
 	
-	private NDArray(double[] data, int offset, int[] shape, int[] stride) {
+	NDArray(double[] data, int offset, int[] shape, int[] stride) {
 		this.data=data;
 		this.offset=offset;
 		this.shape=shape;
@@ -69,7 +63,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	
 	public static NDArray wrap(double[] data, int[] shape) {
 		int dims=shape.length;
-		return new NDArray(data,dims,0,shape,defaultStride(shape));
+		return new NDArray(data,dims,0,shape,IntArrays.calcStrides(shape));
 	}
 	
 	public static NDArray wrap(Vector v) {
@@ -78,6 +72,15 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	public static NDArray wrap(Matrix m) {
 		return wrap(m.data,m.getShape());
+	}
+	
+	public static NDArray wrap(IStridedArray a) {
+		return new NDArray(a.getArray(),a.getArrayOffset(),a.getShape(),a.getStrides());
+	}
+	
+	public static NDArray wrap(INDArray a) {
+		if (!(a instanceof IStridedArray)) throw new IllegalArgumentException(a.getClass()+" is not a strided array!");
+		return wrap((IStridedArray)a);
 	}
 	
 	public static NDArray newArray(int... shape) {
@@ -115,7 +118,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==0) {
 			return data[offset];
 		} else {
-			throw new UnsupportedOperationException("0-d get not possible on NDArray with dimensionality="+dimensions);
+			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this));
 		}
 	}
 
@@ -124,7 +127,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==1) {
 			return data[offset+x*getStride(0)];
 		} else {
-			throw new UnsupportedOperationException("1-d get not possible on NDArray with dimensionality="+dimensions);
+			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x));
 		}
 	}
 
@@ -133,7 +136,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==2) {
 			return data[offset+x*getStride(0)+y*getStride(1)];
 		} else {
-			throw new UnsupportedOperationException("2-d get not possible on NDArray with dimensionality="+dimensions);
+			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x,y));
 		}
 	}
 
@@ -168,7 +171,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==1) {
 			data[offset+x*getStride(0)]=value;
 		} else {
-			throw new UnsupportedOperationException("1-d set not possible on NDArray with dimensionality="+dimensions);
+			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x));
 		}
 	}
 
@@ -177,7 +180,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		if (dimensions==2) {
 			data[offset+x*getStride(0)+y*getStride(1)]=value;
 		} else {
-			throw new UnsupportedOperationException("2-d set not possible on NDArray with dimensionality="+dimensions);
+			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x,y));
 		}
 	}
 
@@ -273,7 +276,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 		} else if (dimensions==1) {
 			return new ArrayIndexScalar(data,offset+majorSlice*getStride(0));
 		} else if (dimensions==2) {
-			if ((majorSlice<0)||(majorSlice>shape[0])) throw new IllegalArgumentException("Slice out of range: "+majorSlice);
+			if ((majorSlice<0)||(majorSlice>shape[0])) throw new IllegalArgumentException(ErrorMessages.invalidSlice(this,majorSlice));
 			int st=stride[1];
 			if (st==1) {
 				return Vectorz.wrap(data, offset+majorSlice*getStride(0), getShape(1));
@@ -290,10 +293,10 @@ public final class NDArray extends AbstractArray<INDArray> {
 	
 	@Override
 	public INDArray slice(int dimension, int index) {
-		if ((dimension<0)||(dimension>=dimensions)) throw new IllegalArgumentException("Dimension out of range!");
+		if ((dimension<0)||(dimension>=dimensions)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		if (dimension==0) return slice(index);
 		if (dimensions==2) {
-			if (dimension!=1) throw new IllegalArgumentException("Dimension out of range!");
+			if (dimension!=1) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 			return StridedVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
 		return new NDArray(data,
@@ -305,7 +308,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	@Override
 	public int sliceCount() {
 		if (dimensions==0) {
-			throw new IllegalArgumentException("Can't count slices o 0-d array");
+			throw new IllegalArgumentException(ErrorMessages.noSlices(this));
 		} else {
 			return getShape(0);
 		}
@@ -333,7 +336,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 
 	@Override
 	public boolean isView() {
-		return true;
+		return (!isPackedArray());
 	}
 
 	@Override
@@ -400,10 +403,8 @@ public final class NDArray extends AbstractArray<INDArray> {
 	}
 	
 	@Override
-	public NDArray clone() {
-		NDArray c=new NDArray(shape.clone());
-		c.set(this);
-		return c;
+	public INDArray clone() {
+		return Array.create(this);
 	}
 
 	@Override
@@ -461,7 +462,7 @@ public final class NDArray extends AbstractArray<INDArray> {
 	@Override
 	public List<INDArray> getSlices() {
 		if (dimensions==0) {
-			throw new IllegalArgumentException("Can't get slices of 0-d NDArray");
+			throw new IllegalArgumentException(ErrorMessages.noSlices(this));
 		} else {
 			ArrayList<INDArray> al=new ArrayList<INDArray>();
 			int n=getShape(0);
@@ -472,11 +473,35 @@ public final class NDArray extends AbstractArray<INDArray> {
 		}
 	}
 	
+	@Override
+	public Iterator<Double> elementIterator() {
+		if (dimensionality()==0) {
+			return new SingleDoubleIterator(data[offset]);
+		} else {
+			return super.elementIterator();
+		}
+	}
+	
 	@Override public void validate() {
 		if (dimensions>shape.length) throw new VectorzException("Insufficient shape data");
 		if (dimensions>stride.length) throw new VectorzException("Insufficient stride data");
 		
 		if ((offset<0)||(offset>=data.length)) throw new VectorzException("Offset out of bounds");
 		super.validate();
+	}
+
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return offset;
+	}
+
+	@Override
+	public int[] getStrides() {
+		return stride;
 	}
 }

@@ -1,24 +1,26 @@
-package mikera.vectorz;
+package mikera.arrayz.impl;
 
 import java.util.Iterator;
 
+import mikera.arrayz.INDArray;
+
 /**
- * General purpose iterator for arbitrary vectors.
+ * General purpose iterator for slices of arbitrary arrays.
  * 
  * @author Mike
  */
-public final class VectorIterator implements Iterator<Double> {
-	private final AVector source;
+public class SliceIterator<T> implements Iterator<T> {
+	private final INDArray source;
 	private final int maxPos;
 	private int pos;
 	
-	public VectorIterator(AVector source) {
+	public SliceIterator(INDArray source) {
 		this.pos=0;
 		this.source=source;
-		this.maxPos=source.length();
+		this.maxPos=source.sliceCount();
 	}
 	
-	public VectorIterator(AVector source, int start, int length) {
+	public SliceIterator(INDArray source, int start, int length) {
 		this.pos=start;
 		this.source=source;
 		this.maxPos=start+length;
@@ -30,9 +32,9 @@ public final class VectorIterator implements Iterator<Double> {
 	}
 
 	@Override
-	public Double next() {
+	public T next() {
 		assert(pos<maxPos);
-		return source.get(pos++);
+		return (T)source.slice(pos++);
 	}
 
 	@Override

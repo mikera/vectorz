@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Vector that addresses elements indexed into another source vector
@@ -23,12 +24,22 @@ public final class IndexedSubVector extends AIndexedVector {
 
 	@Override
 	public double get(int i) {
-		return data.get(indexes[i]);
+		return data.unsafeGet(indexes[i]);
 	}
 
 	@Override
 	public void set(int i, double value) {
-		data.set(indexes[i],value);
+		data.unsafeSet(indexes[i],value);
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return data.unsafeGet(indexes[i]);
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
+		data.unsafeSet(indexes[i],value);
 	}
 	
 	@Override
@@ -46,5 +57,14 @@ public final class IndexedSubVector extends AIndexedVector {
 	@Override 
 	public IndexedSubVector exactClone() {
 		return IndexedSubVector.wrap(data.exactClone(), indexes.clone());
+	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+		int slen=data.length();
+		for (int i=0; i<length; i++) {
+			if ((indexes[i]<0)||(indexes[i]>=slen)) throw new VectorzException("Indexes out of range");
+		}
 	}
 }

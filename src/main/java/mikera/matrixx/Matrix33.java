@@ -4,6 +4,7 @@ import mikera.transformz.Affine34;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised 3*3 Matrix for Vector3 maths, using primitive matrix elements
@@ -87,24 +88,24 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 			case 0: return m00;
 			case 1: return m01;
 			case 2: return m02;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 		case 1:
 			switch (column) {
 			case 0: return m10;
 			case 1: return m11;
 			case 2: return m12;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 		case 2:
 			switch (column) {
 			case 0: return m20;
 			case 1: return m21;
 			case 2: return m22;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 
-		default: throw new IndexOutOfBoundsException("Row: "+row);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 	}
 
@@ -116,24 +117,24 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 			case 0: m00=value; return;
 			case 1: m01=value; return;
 			case 2: m02=value; return;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 		case 1:
 			switch (column) {
 			case 0: m10=value; return;
 			case 1: m11=value; return;
 			case 2: m12=value; return;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 		case 2:
 			switch (column) {
 			case 0: m20=value; return;
 			case 1: m21=value; return;
 			case 2: m22=value; return;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 
-		default: throw new IndexOutOfBoundsException("Row: "+row);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}	
 	}
 	
@@ -143,6 +144,18 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 			return innerProduct((Matrix33)a);
 		}
 		return super.innerProduct(a);
+	}
+	
+	@Override
+	public AVector innerProduct(AVector a) {
+		if (a instanceof Vector3) {
+			return innerProduct((Vector3)a);
+		}
+		return super.innerProduct(a);
+	}
+	
+	public Vector3 innerProduct(Vector3 a) {
+		return transform(a);
 	}
 	
 	public Matrix33 innerProduct(Matrix33 a) {
@@ -211,7 +224,8 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 			transformInPlace((Vector3)dest);
 			return;
 		}
-		double sx=dest.get(0), sy=dest.get(1), sz=dest.get(2);
+		if (dest.length()!=3) throw new IllegalArgumentException("Wrong target vector length");
+		double sx=dest.unsafeGet(0), sy=dest.unsafeGet(1), sz=dest.unsafeGet(2);
 		double tx=((m00*sx)+(m01*sy)+(m02*sz));
 		double ty=((m10*sx)+(m11*sy)+(m12*sz));
 		double tz=((m20*sx)+(m21*sy)+(m22*sz));

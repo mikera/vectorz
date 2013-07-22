@@ -2,6 +2,8 @@ package mikera.vectorz;
 
 import java.nio.DoubleBuffer;
 
+import mikera.vectorz.impl.APrimitiveVector;
+
 /**
  * Specialised 4D vector
  * 
@@ -57,12 +59,18 @@ public final class Vector4 extends APrimitiveVector {
 		t=op.apply(t);
 	}
 
-	
 	public void add(double dx, double dy, double dz, double dt) {
 		x+=dx;
 		y+=dy;
 		z+=dz;
 		t+=dt;
+	}
+	
+	public void add(Vector4 a) {
+		this.x+=a.x;
+		this.y+=a.y;
+		this.z+=a.z;
+		this.t+=a.t;
 	}
 	
 	public void set(Vector4 a) {
@@ -92,10 +100,11 @@ public final class Vector4 extends APrimitiveVector {
 		if (v instanceof Vector4) {
 			addMultiple((Vector4)v,factor);
 		} else {
-			x+=v.get(0)*factor;
-			y+=v.get(1)*factor;
-			z+=v.get(2)*factor;
-			t+=v.get(3)*factor;
+			if (v.length()!=4) throw new IllegalArgumentException("Mismatched vector sizes");
+			x+=v.unsafeGet(0)*factor;
+			y+=v.unsafeGet(1)*factor;
+			z+=v.unsafeGet(2)*factor;
+			t+=v.unsafeGet(3)*factor;
 		}
 	}
 	

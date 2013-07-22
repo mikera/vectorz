@@ -1,24 +1,27 @@
-package mikera.arrayz;
+package mikera.vectorz.impl;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import mikera.vectorz.AVector;
 
 /**
  * General purpose iterator for arbitrary vectors.
  * 
  * @author Mike
  */
-public class SliceIterator<T> implements Iterator<T> {
-	private final INDArray source;
+public final class VectorIterator implements Iterator<Double> {
+	private final AVector source;
 	private final int maxPos;
 	private int pos;
 	
-	public SliceIterator(INDArray source) {
+	public VectorIterator(AVector source) {
 		this.pos=0;
 		this.source=source;
-		this.maxPos=source.sliceCount();
+		this.maxPos=source.length();
 	}
 	
-	public SliceIterator(INDArray source, int start, int length) {
+	public VectorIterator(AVector source, int start, int length) {
 		this.pos=start;
 		this.source=source;
 		this.maxPos=start+length;
@@ -30,9 +33,9 @@ public class SliceIterator<T> implements Iterator<T> {
 	}
 
 	@Override
-	public T next() {
-		assert(pos<maxPos);
-		return (T)source.slice(pos++);
+	public Double next() {
+		if(pos>=maxPos) throw new NoSuchElementException();
+		return source.unsafeGet(pos++);
 	}
 
 	@Override

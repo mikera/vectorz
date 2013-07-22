@@ -5,6 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.transformz.ATransform;
 import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.ops.Composed;
 import mikera.vectorz.ops.Derivative;
 import mikera.vectorz.ops.Division;
@@ -36,8 +37,8 @@ public abstract class Op implements IOp, ITransform {
 	
 	@Override
 	public void applyTo(AVector v) {
-		if (v instanceof ArrayVector) {
-			applyTo((ArrayVector)v);
+		if (v instanceof AArrayVector) {
+			applyTo((AArrayVector)v);
 		} else {
 			v.applyOp(this);
 		}
@@ -61,7 +62,7 @@ public abstract class Op implements IOp, ITransform {
 		s.set(apply(s.get()));
 	}
 	
-	public void applyTo(ArrayVector v) {
+	public void applyTo(AArrayVector v) {
 		applyTo(v.getArray(), v.getArrayOffset(),v.length());
 	}
 	

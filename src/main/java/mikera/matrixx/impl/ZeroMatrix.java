@@ -7,11 +7,12 @@ import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Lightweight immutable zero matrix class
  */
-public final class ZeroMatrix extends AMatrix {
+public final class ZeroMatrix extends ABooleanMatrix {
 	private final int inputDimensions;
 	private final int outputDimensions;
 
@@ -56,6 +57,11 @@ public final class ZeroMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		// no change
 	}
@@ -77,7 +83,7 @@ public final class ZeroMatrix extends AMatrix {
 	
 	@Override
 	public double determinant() {
-		assert(isSquare());
+		if(isSquare()) throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
 		return 0.0;
 	}
 	
@@ -95,12 +101,25 @@ public final class ZeroMatrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
+		if ((row<0)||(row>=outputDimensions)||(column<0)||(column>=inputDimensions)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
+		}
 		return 0.0;
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		throw new UnsupportedOperationException("ZeroMatrix is immutable!");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return 0.0;
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override

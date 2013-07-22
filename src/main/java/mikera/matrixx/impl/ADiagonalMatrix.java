@@ -3,7 +3,9 @@ package mikera.matrixx.impl;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
+import mikera.vectorz.Tools;
+import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -74,7 +76,7 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	public AMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
+		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		DiagonalMatrix result=DiagonalMatrix.create(dimensions);
 		for (int i=0; i<dimensions; i++) {
 			result.data[i]=getDiagonalValue(i)*a.getDiagonalValue(i);
@@ -87,23 +89,24 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 		if (a instanceof ADiagonalMatrix) {
 			return innerProduct((ADiagonalMatrix) a);
 		}
-		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException("Matrix dimensions not compatible!");
+		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		return super.innerProduct(a);
 	}
 	
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof ArrayVector) {
-			transformInPlace((ArrayVector) v);
+		if (v instanceof AArrayVector) {
+			transformInPlace((AArrayVector) v);
 			return;
 		}
+		if (v.length()!=dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
 		for (int i=0; i<dimensions; i++) {
-			v.set(i,v.get(i)*getDiagonalValue(i));
+			v.unsafeSet(i,v.unsafeGet(i)*getDiagonalValue(i));
 		}
 	}
 	
 	@Override
-	public void transformInPlace(ArrayVector v) {
+	public void transformInPlace(AArrayVector v) {
 		double[] data=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int i=0; i<dimensions; i++) {
@@ -123,9 +126,18 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override 
 	public boolean isIdentity() {
-		int dimensions=dimensions();
 		for (int i=0; i<dimensions; i++ ) {
-			if (get(i,i)!=1.0) return false;
+			if (unsafeGet(i,i)!=1.0) return false;
+			
+		}
+		return true;
+	}
+	
+	
+	@Override
+	public boolean isBoolean() {
+		for (int i=0; i<dimensions; i++ ) {
+			if (!Tools.isBoolean(unsafeGet(i,i))) return false;
 			
 		}
 		return true;
@@ -138,16 +150,27 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return v.get(i)*getDiagonalValue(i);
+		return v.unsafeGet(i)*getDiagonalValue(i);
 	}
 	
 	@Override
 	public void set(int row, int column, double value) {
-		throw new UnsupportedOperationException("Matrix set not supported by "+this.getClass());
+		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 	}
 
 	public double getDiagonalValue(int i) {
-		return get(i,i);
+		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException();
+		return unsafeGet(i,i);
+	}
+	
+	@Override
+	public ADiagonalMatrix getTranspose() {
+		return this;
+	}
+	
+	@Override
+	public ADiagonalMatrix getTransposeView() {
+		return this;
 	}
 	
 	@Override

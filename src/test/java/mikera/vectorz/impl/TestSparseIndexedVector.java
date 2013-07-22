@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import static org.junit.Assert.*;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
@@ -33,7 +32,7 @@ public class TestSparseIndexedVector {
 		AVector vz=Vectorz.newVector(10);
 		AVector vs=Vector.of(0,1,2,3,4,5,6,7,8,9);
 		
-		assertTrue(vz instanceof ArrayVector);
+		assertTrue(vz instanceof AArrayVector);
 		
 		AVector v=vz.exactClone();
 		v.addProduct(sv, vs);

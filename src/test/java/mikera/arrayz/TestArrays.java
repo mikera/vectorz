@@ -3,14 +3,17 @@ package mikera.arrayz;
 import java.io.StringReader;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.impl.IStridedArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
@@ -84,6 +87,8 @@ public class TestArrays {
 				}
 			}
 		}
+		
+		assertEquals(a.toArray().asVector(),a.asVector());
 	}
 
 	private void testToArray(INDArray a) {
@@ -122,7 +127,7 @@ public class TestArrays {
 		INDArray c = a.clone();
 		a.fill(Double.NaN);
 
-		double[] arr = c.asVector().toArray();
+		double[] arr = c.asVector().toDoubleArray();
 		assertEquals(a.elementCount(), arr.length);
 		a.setElements(arr);
 		assertEquals(c.asVector(), a.asVector());
@@ -202,6 +207,9 @@ public class TestArrays {
 		if (a.isElementConstrained()) {
 			assertFalse(a.isFullyMutable());
 		}
+		
+		INDArray b=a.ensureMutable();
+		assertTrue(mikera.vectorz.util.Testing.validateFullyMutable(b));
 	}
 
 	private void testHash(INDArray a) {
@@ -254,8 +262,12 @@ public class TestArrays {
 		INDArray m = a.exactClone();
 
 		m.multiply(2.0);
-		m.multiply(DoubleScalar.create(0.5));
+		m.multiply(Scalar.create(0.5));
 		assertEquals(a, m);
+	}
+	
+	private void testBoolean(INDArray a) {
+		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(Tools.getElements(a)));
 	}
 
 	private void testBroadcast(INDArray a) {
@@ -304,6 +316,37 @@ public class TestArrays {
 		assertEquals(14.0, Vectorz.minValue(a.toVector()), 0.0001);
 		a.clamp(12, 17);
 		assertEquals(14.0, Vectorz.maxValue(a.toVector()), 0.0001);
+	}
+	
+	private void testElementIterator(INDArray m) {
+		Iterator<Double> it=m.elementIterator();
+		
+		int i=0;
+		AVector av=m.asVector();
+		while (it.hasNext()) {
+			double v=it.next();
+			assertEquals(av.get(i++),v,0.0);
+		}
+		assertEquals(m.elementCount(),i);
+	}
+	
+	private void testStridedArray(INDArray mm) {
+		if (!(mm instanceof IStridedArray)) return;
+		IStridedArray m=(IStridedArray)mm;
+		
+		int dims=m.dimensionality();
+		int[] shape=m.getShape();
+		int[] strides=m.getStrides();
+		double[] data=m.getArray();
+		for (int i=0; i<dims; i++) {
+			assertEquals(m.getStride(i),strides[i]);
+		}
+		
+		if (m.elementCount()==0) return;
+		
+		int[] ix = IntArrays.rand(shape);
+		int off=m.getArrayOffset()+IntArrays.dotProduct(strides,ix);
+		assertEquals(data[off],m.get(ix),0.0);
 	}
 
 	private void testMathsFunctions(INDArray a) {
@@ -375,6 +418,9 @@ public class TestArrays {
 		testMultiply(a);
 		testApplyOp(a);
 		testApplyAllOps(a);
+		testElementIterator(a);
+		testStridedArray(a);
+		testBoolean(a);
 		testSums(a);
 		testEquals(a);
 		testIndexedAccess(a);
@@ -399,13 +445,26 @@ public class TestArrays {
 				Vectorz.createUniformRandomVector(10),
 				Vectorz.createUniformRandomVector(10));
 		testArray(sa);
+		testArray(Array.create(sa));
 
-		NDArray nd1 = NDArray.newArray(3, 3, 3);
+		NDArray nd1 = NDArray.newArray(3);
 		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
+		testArray(Array.create(nd1));
+		
+		NDArray nd2 = NDArray.newArray(3, 3);
+		Vectorz.fillIndexes(nd2.asVector());
+		testArray(nd2);
+		testArray(Array.create(nd2));
+		
+		NDArray nd3 = NDArray.newArray(3, 3, 3);
+		Vectorz.fillIndexes(nd3.asVector());
+		testArray(nd3);
+		testArray(Array.create(nd3));
 
 		NDArray ndscalar = NDArray.newArray();
 		ndscalar.set(1.0);
 		testArray(ndscalar);
+		testArray(Array.create(ndscalar));
 	}
 }

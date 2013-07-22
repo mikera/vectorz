@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.ABitVector;
+
 /**
  * Vector of bits - constrained to 0.0 / 1.0 values
  * 
@@ -8,7 +10,7 @@ package mikera.vectorz;
  * @author Mike
  */
 
-public final class BitVector extends AVector {
+public final class BitVector extends ABitVector {
 	private static final long serialVersionUID = 349277216077562294L;
 	public static final double BIT_ON=1.0;
 	public static final double BIT_OFF=0.0;
@@ -31,16 +33,19 @@ public final class BitVector extends AVector {
 	public static BitVector createLength(int length) {
 		return new BitVector(length);
 	}
+	
+	public static BitVector create(AVector source) {
+		return new BitVector(source);
+	}
 
-	public BitVector(AVector source) {
+	private BitVector(AVector source) {
 		this(source.length());
 		set(source);
 	}
 	
-	public BitVector(BitVector source) {
-		this(source.data,source.length());
+	private BitVector(BitVector source) {
+		this(source.data.clone(),source.length());
 	}
-
 
 	private BitVector(long[] data, int length) {
 		this.length=length;
@@ -52,12 +57,18 @@ public final class BitVector extends AVector {
 		return length;
 	}
 	
-	public final boolean getBit(int i) {
+	private final boolean getBit(int i) {
 		return (((data[i>>>6] >>> (i%64))&1L)!=0L);
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return getBit(i) ? BIT_ON : BIT_OFF;
 	}
 
 	@Override
 	public double get(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index = "+i);
 		return getBit(i) ? BIT_ON : BIT_OFF;
 	}
 	
@@ -88,7 +99,7 @@ public final class BitVector extends AVector {
 	public void copyTo(double[] data, int offset) {
 		int len = length();
 		for (int i=0; i<len; i++) {
-			data[i+offset]=get(i);
+			data[i+offset]=unsafeGet(i);
 		}
 	}
 	
@@ -96,13 +107,6 @@ public final class BitVector extends AVector {
 	public boolean isFullyMutable() {
 		return false;
 	}
-	
-	@Override
-	public boolean isElementConstrained() {
-		// elements are constrained to 0.0 or 1.0
-		return true;
-	}
-	
 	
 	@Override
 	public boolean isView() {
@@ -117,6 +121,7 @@ public final class BitVector extends AVector {
 		int p=i>>>6;
 		data[p]=(data[p]&(~mask))|(value>=BIT_THRESHOLD?mask:0L);
 	}
+
 	
 	@Override
 	public AVector clone() {

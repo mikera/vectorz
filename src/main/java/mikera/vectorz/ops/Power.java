@@ -21,6 +21,7 @@ public final class Power extends Op {
 	}
 	
 	public static Op create(double exponent) {
+		if (exponent==-1) return Ops.RECIPROCAL;
 		if (exponent==0) return Constant.ONE;
 		if (exponent==1) return Identity.INSTANCE;
 		if (exponent==2) return Ops.SQUARE;

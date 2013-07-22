@@ -109,12 +109,6 @@ public class Matrixx {
 		return im;
 	}
 
-	public static Matrix22 create2DRotationMatrix(double angle) {
-		double sa = Math.sin(angle);
-		double ca = Math.cos(angle);
-		return new Matrix22(ca, -sa, sa, ca);
-	}
-
 	public static Matrix33 createRotationMatrix(Vector3 axis, double angle) {
 		return createRotationMatrix(axis.x, axis.y, axis.z, angle);
 	}
@@ -138,7 +132,8 @@ public class Matrixx {
 		if (!(v.length() == 3))
 			throw new VectorzException(
 					"Rotation matrix requires a 3d axis vector");
-		return createRotationMatrix(v.get(0), v.get(1), v.get(2), angle);
+		return createRotationMatrix(v.unsafeGet(0), v.unsafeGet(1),
+				v.unsafeGet(2), angle);
 	}
 
 	public static Matrix33 createXAxisRotationMatrix(double angle) {
@@ -151,6 +146,10 @@ public class Matrixx {
 
 	public static Matrix33 createZAxisRotationMatrix(double angle) {
 		return createRotationMatrix(0, 0, 1, angle);
+	}
+
+	public static Matrix22 create2DRotationMatrix(double angle) {
+		return Matrix22.createRotationMatrix(angle);
 	}
 
 	public static Matrix createRandomSquareMatrix(int dimensions) {
@@ -166,10 +165,8 @@ public class Matrixx {
 	}
 
 	static Matrix createInverse(AMatrix m) {
-		if (!m.isSquare()) {
-			throw new IllegalArgumentException(
-					"Matrix must be square for inverse!");
-		}
+		if (!m.isSquare()) { throw new IllegalArgumentException(
+				"Matrix must be square for inverse!"); }
 
 		int dims = m.rowCount();
 
@@ -228,10 +225,8 @@ public class Matrixx {
 
 			permutations[col] = maxIndex;
 
-			if (data[(dims * col) + col] == 0.0) {
-				throw new VectorzException(
-						"Matrix is singular, cannot compute inverse!");
-			}
+			if (data[(dims * col) + col] == 0.0) { throw new VectorzException(
+					"Matrix is singular, cannot compute inverse!"); }
 
 			// Scale lower diagonal matrix using values on diagonal
 			double diagonalValue = data[(dims * col) + col];
@@ -256,9 +251,8 @@ public class Matrixx {
 				maxValue = Math.max(maxValue, Math.abs(data[row * dims + col]));
 			}
 
-			if (maxValue == 0.0) {
-				throw new VectorzException("Matrix is singular!");
-			}
+			if (maxValue == 0.0) { throw new VectorzException(
+					"Matrix is singular!"); }
 
 			// scale factor for row should reduce maximum absolute value to 1.0
 			factorsOut[row] = 1.0 / maxValue;
@@ -317,23 +311,34 @@ public class Matrixx {
 	 * @param columns
 	 * @return
 	 */
-	public static Matrix newMatrix(int rows, int columns) {
+	public static AMatrix newMatrix(int rows, int columns) {
+		if (rows == 2 && columns == 2) return new Matrix22();
+		if (rows == 3 && columns == 3) return new Matrix33();
 		return Matrix.create(rows, columns);
 	}
 
+	/**
+	 * Creates a new matrix using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new matrix
+	 * @param data
+	 * @param rows
+	 * @param columns
+	 * @return
+	 */
 	public static Matrix createFromVector(AVector data, int rows, int columns) {
-		assert (data.length() == rows * columns);
-		Matrix m = newMatrix(rows, columns);
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				m.set(i, j, data.get(i * columns + j));
-			}
-		}
+		Matrix m = Matrix.create(rows, columns);
+		int n=Math.min(rows*columns, data.length());
+		data.copyTo(0, m.data, 0, n);
 		return m;
 	}
 
+	/**
+	 * Creates a zero-filled matrix with the specified number of dimensions for both rows and columns
+	 * @param dimensions
+	 * @return
+	 */
 	private static Matrix createSquareMatrix(int dimensions) {
-		return newMatrix(dimensions, dimensions);
+		return Matrix.create(dimensions, dimensions);
 	}
 
 	/**
@@ -351,12 +356,12 @@ public class Matrixx {
 	 */
 	public static Matrix create(List<Object> rows) {
 		int rc = rows.size();
-		AVector firstRow=Vectorz.create(rows.get(0));
-		int cc=firstRow.length();
-		
-		Matrix m=Matrix.create(rc, cc);
-		m.setRow(0,firstRow);
-		
+		AVector firstRow = Vectorz.create(rows.get(0));
+		int cc = firstRow.length();
+
+		Matrix m = Matrix.create(rc, cc);
+		m.setRow(0, firstRow);
+
 		for (int i = 1; i < rc; i++) {
 			m.setRow(i, Vectorz.create(rows.get(i)));
 		}
@@ -383,7 +388,7 @@ public class Matrixx {
 		int columns = m.columnCount();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				m.set(i, j, Rand.nextDouble());
+				m.unsafeSet(i, j, Rand.nextDouble());
 			}
 		}
 	}
@@ -463,7 +468,9 @@ public class Matrixx {
 		int cols = data[0].length;
 		Matrix m = Matrix.create(rows, cols);
 		for (int i = 0; i < rows; i++) {
-			System.arraycopy(data[i], 0, m.data, i * cols, cols);
+			double[] ds=data[i];
+			if (ds.length!=cols) throw new IllegalArgumentException("Array shape is not rectangular!");
+			System.arraycopy(ds, 0, m.data, i * cols, cols);
 		}
 		return m;
 	}

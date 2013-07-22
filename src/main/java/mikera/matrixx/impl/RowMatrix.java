@@ -62,13 +62,13 @@ public class RowMatrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		assert(row==0);
+		if (row!=0) throw new IndexOutOfBoundsException("Row: "+row);
 		return vector.get(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		assert(row==0);
+		if (row!=0) throw new IndexOutOfBoundsException("Row: "+row);
 		vector.set(column,value);
 	}
 	

@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.util.VectorzException;
@@ -90,14 +91,25 @@ public class AxisVector extends ComputedVector implements ISparse {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public boolean isUnitLengthVector() {
 		return true;
 	}
 	
 	@Override 
 	public double dotProduct(AVector v) {
+		if (v.length()!=length) throw new IllegalArgumentException("Mismatched vector sizes");
+		return v.unsafeGet(axis);
+	}
+	
+	@Override 
+	public double dotProduct(Vector v) {
 		assert(length==v.length());
-		return v.get(axis);
+		return v.data[axis];
 	}
 	
 	public double dotProduct(Vector3 v) {
@@ -121,7 +133,12 @@ public class AxisVector extends ComputedVector implements ISparse {
 
 	@Override
 	public double get(int i) {
-		assert((i>=0)&&(i<length));
+		if((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		return (i==axis)?1.0:0.0;
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
 		return (i==axis)?1.0:0.0;
 	}
 	
