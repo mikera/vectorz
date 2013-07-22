@@ -765,6 +765,15 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		addMultiple(m,-1.0);
 	}
 	
+	public void sub(AScalar a) {
+		sub(a.get());
+	}
+	
+	public void add(AScalar a) {
+		add(a.get());
+	}
+	
+	
 	@Override
 	public void negate() {
 		multiply(-1.0);
@@ -1321,6 +1330,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 	}
 	
+	@Override
 	public void sub(INDArray a) {
 		if (a instanceof AMatrix) {
 			sub((AMatrix)a);
