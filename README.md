@@ -11,6 +11,10 @@ Vectorz is reasonably mature and being used in production applications.
 
 [![Build Status](https://secure.travis-ci.org/mikera/vectorz.png)](http://travis-ci.org/mikera/vectorz)
 
+### Documentation
+
+See the [Vectorz Wiki](https://github.com/mikera/vectorz/wiki)
+
 ### Example usage
 
 ```Java
