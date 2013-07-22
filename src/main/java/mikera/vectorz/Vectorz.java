@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mikera.util.Rand;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
@@ -89,8 +91,11 @@ public class Vectorz {
 		return ArraySubVector.wrap(data, offset, length);
 	}
 	
-	public static AVector wrapStrided(double[] data, int offset, int length, int stride) {
+	public static AStridedVector wrapStrided(double[] data, int offset, int length, int stride) {
 		if (stride==1) {
+			if ((offset==0)&&(length==data.length)) {
+				return Vector.wrap(data);
+			}
 			return ArraySubVector.wrap(data, offset, length);
 		}
 		return StridedVector.wrapStrided(data,offset,length,stride);
@@ -130,8 +135,12 @@ public class Vectorz {
 		nv.set(vector);
 		return nv;
 	}	
+
+	public static Scalar createScalar(double value) {
+		return new Scalar(value);
+	}	
 	
-	public static void copy(AVector source, int srcOffset, AVector dest, int destOffset, int length) {
+	static void copy(AVector source, int srcOffset, AVector dest, int destOffset, int length) {
 		source.copyTo(srcOffset, dest, destOffset, length);
 	}
 
@@ -350,10 +359,10 @@ public class Vectorz {
 	
 	public static double averageSquaredDifference(AVector a, AVector b) {
 		int len=a.length();
-		assert(len==b.length());
+		if (len!=b.length()) throw new IllegalArgumentException("Vector size mismatch");
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			double d=a.get(i)-b.get(i);
+			double d=a.unsafeGet(i)-b.unsafeGet(i);
 			result+=d*d;
 		}
 		return result/len;
@@ -366,7 +375,7 @@ public class Vectorz {
 	public static void fillRandom(AVector v) {
 		int len=v.length();
 		for (int i=0; i<len; i++) {
-			v.set(i,Rand.nextDouble());
+			v.unsafeSet(i,Rand.nextDouble());
 		}
 	}
 	
@@ -381,14 +390,14 @@ public class Vectorz {
 	public static void fillIndexes(AVector v) {
 		int n=v.length();
 		for (int i=0; i<n; i++) {
-			v.set(i,i);
+			v.unsafeSet(i,i);
 		}
 	}
 	
 	public static void fillGaussian(AVector v, double mean, double sd) {
 		int len=v.length();
 		for (int i=0; i<len; i++) {
-			v.set(i,mean+Rand.nextGaussian()*sd);
+			v.unsafeSet(i,mean+Rand.nextGaussian()*sd);
 		}
 	}
 	
@@ -397,15 +406,13 @@ public class Vectorz {
 	}
 	
 	public static AVector axisVector(int axisIndex, int dimensions) {
-		AVector v=Vectorz.newVector(dimensions);
-		v.set(axisIndex,1.0);
-		return v;
+		return AxisVector.create(axisIndex, dimensions);
 	}
 
 	public static void fillBinaryRandom(AVector v, double prob) {
 		int len=v.length();
 		for (int i=0; i<len; i++) {
-			v.set(i,Rand.binary(prob));
+			v.unsafeSet(i,Rand.binary(prob));
 		}
 	}
 
@@ -436,7 +443,7 @@ public class Vectorz {
 	public static AVector createRange(int length) {
 		AVector v=Vectorz.newVector(length);
 		for (int i=0; i<length; i++) {
-			v.set(i,i);
+			v.unsafeSet(i,i);
 		}
 		return v;
 	}

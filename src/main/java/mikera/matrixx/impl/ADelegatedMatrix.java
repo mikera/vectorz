@@ -10,11 +10,11 @@ import mikera.vectorz.Op;
  * 
  * @author Mike
  */
-abstract class DelegatedMatrix extends AMatrix {
+abstract class ADelegatedMatrix extends AMatrix {
 
 	protected final AMatrix source;
 	
-	protected DelegatedMatrix(AMatrix source) {
+	protected ADelegatedMatrix(AMatrix source) {
 		this.source=source;
 	}
 	

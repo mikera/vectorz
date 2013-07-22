@@ -2,6 +2,8 @@ package mikera.vectorz;
 
 import static org.junit.Assert.*;
 
+import mikera.vectorz.impl.APrimitiveVector;
+
 import org.junit.Test;
 
 public class TestPrimitiveVectors {

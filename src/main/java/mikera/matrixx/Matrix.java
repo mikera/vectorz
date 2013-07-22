@@ -3,23 +3,26 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
-import mikera.matrixx.impl.ArrayMatrix;
+import mikera.matrixx.impl.ADenseArrayMatrix;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /** 
- * Standard MxN matrix class backed by a flat double[] array
+ * Standard MxN matrix class backed by a fully packed double[] array
  * 
  * @author Mike
  */
-public final class Matrix extends ArrayMatrix {
+public final class Matrix extends ADenseArrayMatrix {
 	
 	public Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
@@ -53,6 +56,11 @@ public final class Matrix extends ArrayMatrix {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return DoubleArrays.isBoolean(data,0,data.length);
+	}
+	
+	@Override
 	public boolean isPackedArray() {
 		return true;
 	}
@@ -67,16 +75,26 @@ public final class Matrix extends ArrayMatrix {
 	}
 	
 	@Override
-	public AVector innerProduct(AVector a) {
+	public AStridedMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		if ((rowStart<0)||(rowStart>=this.rows)||(colStart<0)||(colStart>=this.cols)) throw new IndexOutOfBoundsException("Invalid submatrix start position");
+		if ((rowStart+rows>this.rows)||(colStart+cols>this.cols)) throw new IndexOutOfBoundsException("Invalid submatrix end position");
+		if ((rows<1)||(cols<1)) throw new IllegalArgumentException("Submatrix has no elements");
+		return StridedMatrix.wrap(data, rows, cols, 
+				rowStart*rowStride()+colStart*columnStride(), 
+				rowStride(), columnStride());
+	}
+	
+	@Override
+	public Vector innerProduct(AVector a) {
 		if (a instanceof Vector) return innerProduct((Vector)a);
-		return super.innerProduct(a);
+		return transform(a);
 	}
 	
 	public Vector innerProduct(Vector a) {
 		int rc=rowCount();
 		int cc=columnCount();
 		if ((cc!=a.length())) {
-			throw new VectorzException("Matrix sizes not compatible!");
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}		
 		Vector result=Vector.createLength(rows);
 		for (int i=0; i<rc; i++) {
@@ -85,7 +103,7 @@ public final class Matrix extends ArrayMatrix {
 			for (int j=0; j<cc; j++) {
 				acc+=data[di+j]*a.data[j];
 			}
-			result.set(i,acc);
+			result.unsafeSet(i,acc);
 		}
 		return result;
 	}
@@ -93,7 +111,7 @@ public final class Matrix extends ArrayMatrix {
 	@Override
 	public Matrix innerProduct(Matrix a) {
 		if ((this.columnCount()!=a.rowCount())) {
-			throw new VectorzException("Matrix sizes not compatible!");
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
@@ -103,9 +121,9 @@ public final class Matrix extends ArrayMatrix {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.get(i, k)*a.get(k, j);
+					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
 				}
-				result.set(i,j,acc);
+				result.unsafeSet(i,j,acc);
 			}
 		}
 		return result;
@@ -117,7 +135,7 @@ public final class Matrix extends ArrayMatrix {
 			return innerProduct((Matrix)a);
 		}
 		if ((this.columnCount()!=a.rowCount())) {
-			throw new VectorzException("Matrix sizes not compatible!");
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
@@ -127,9 +145,9 @@ public final class Matrix extends ArrayMatrix {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.get(i, k)*a.get(k, j);
+					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
 				}
-				result.set(i,j,acc);
+				result.unsafeSet(i,j,acc);
 			}
 		}
 		return result;
@@ -137,12 +155,37 @@ public final class Matrix extends ArrayMatrix {
 	
 	@Override
 	public double elementSum() {
-		return DoubleArrays.elementSum(data, 0, data.length);
+		return DoubleArrays.elementSum(data);
+	}
+	
+	@Override
+	public void abs() {
+		DoubleArrays.abs(data);
+	}
+	
+	@Override
+	public void signum() {
+		DoubleArrays.signum(data);
+	}
+	
+	@Override
+	public void square() {
+		DoubleArrays.square(data);
+	}
+	
+	@Override
+	public void exp() {
+		DoubleArrays.exp(data);
+	}
+	
+	@Override
+	public void log() {
+		DoubleArrays.log(data);
 	}
 	
 	@Override
 	public long nonZeroCount() {
-		return DoubleArrays.nonZeroCount(data, 0, data.length);
+		return DoubleArrays.nonZeroCount(data);
 	}
 	
 	@Override
@@ -151,16 +194,25 @@ public final class Matrix extends ArrayMatrix {
 	}
 	
 	@Override
+	public Vector transform (AVector a) {
+		Vector v=Vector.createLength(rows);
+		for (int i=0; i<rows; i++) {
+			v.data[i]=a.dotProduct(data, i*cols);
+		}
+		return v;
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
-		assert(rowCount()==dest.length());
-		assert(columnCount()==source.length());
+		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		int index=0;
 		for (int i=0; i<rows; i++) {
 			double acc=0.0;
 			for (int j=0; j<cols; j++) {
-				acc+=data[index++]*source.get(j);
+				acc+=data[index++]*source.unsafeGet(j);
 			}
-			dest.set(i,acc);
+			dest.unsafeSet(i,acc);
 		}
 	}
 	
@@ -170,20 +222,14 @@ public final class Matrix extends ArrayMatrix {
 	}
 	
 	@Override
-	public StridedVector getColumn(int row) {
-		return StridedVector.wrap(data,row,rows,cols);
+	public AStridedVector getColumn(int col) {
+		if (cols==1) {
+			return Vector.wrap(data);
+		} else {
+			return StridedVector.wrap(data,col,rows,cols);
+		}
 	}
 
-	@Override
-	public int rowCount() {
-		return rows;
-	}
-
-	@Override
-	public int columnCount() {
-		return cols;
-	}
-	
 	@Override
 	public void swapRows(int i, int j) {
 		if (i == j) return;
@@ -233,17 +279,34 @@ public final class Matrix extends ArrayMatrix {
 	}
 	
 	@Override
+	public Vector toVector() {
+		return Vector.create(data);
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
-		dest.put(data,0,data.length);
+		dest.put(data);
 	}
 
 	@Override
 	public double get(int row, int column) {
+		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException();
+		return data[(row*cols)+column];
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		data[(row*cols)+column]=value;
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
 		return data[(row*cols)+column];
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
+		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException();
 		data[(row*cols)+column]=value;
 	}
 	
@@ -273,13 +336,12 @@ public final class Matrix extends ArrayMatrix {
 		if (m instanceof Matrix) {addMultiple((Matrix)m,factor); return;}
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(rc==m.rowCount());
-		assert(cc==m.columnCount());
+		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
 		int di=0;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				data[di++]+=m.get(i, j)*factor;
+				data[di++]+=m.unsafeGet(i, j)*factor;
 			}
 		}
 	}
@@ -289,13 +351,12 @@ public final class Matrix extends ArrayMatrix {
 		if (m instanceof Matrix) {add((Matrix)m); return;}
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(rc==m.rowCount());
-		assert(cc==m.columnCount());
+		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
 		int di=0;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				data[di++]+=m.get(i, j);
+				data[di++]+=m.unsafeGet(i, j);
 			}
 		}
 	}
@@ -310,9 +371,9 @@ public final class Matrix extends ArrayMatrix {
 	@Override
 	public void set(AMatrix a) {
 		int rc = rowCount();
-		if (!(rc==a.rowCount())) throw new IllegalArgumentException("Non-matching row count");
+		if (!(rc==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		int cc = columnCount();
-		if (!(cc==a.columnCount())) throw new IllegalArgumentException("Non-matching column count");
+		if (!(cc==a.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		a.getElements(this.data, 0);
 	}
 	
@@ -354,17 +415,27 @@ public final class Matrix extends ArrayMatrix {
 	@Override
 	public void setRow(int i, AVector row) {
 		int cc=columnCount();
-		if (row.length()!=cc) throw new IllegalArgumentException("Row has wrong length: "+row.length());
+		if (row.length()!=cc) throw new IllegalArgumentException(ErrorMessages.mismatch(this.getRow(i), row));
 		row.getElements(data, i*cc);
 	}
 	
 	@Override
 	public void setColumn(int j, AVector col) {
 		int rc=rowCount();
-		if (col.length()!=rc) throw new IllegalArgumentException("Column has wrong length: "+col.length());
+		if (col.length()!=rc) throw new IllegalArgumentException(ErrorMessages.mismatch(this.getColumn(j), col));
 		for (int i=0; i<rc; i++) {
-			data[i*cols+j]=col.get(j);
+			data[index(i,j)]=col.unsafeGet(j);
 		}
+	}
+	
+	@Override
+	protected final int index(int row, int col) {
+		return row*cols+col;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return 0;
 	}
 
 }

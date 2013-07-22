@@ -2,6 +2,8 @@ package mikera.indexz;
 
 import java.util.Arrays;
 
+import mikera.vectorz.AVector;
+
 /**
  * Class to represent a mutable list of integer indexes, typically used for indexing into
  * vectors or matrices.
@@ -46,10 +48,20 @@ public final class Index extends AIndex {
 		}
 	}
 	
+	@Override
 	public boolean isDistinctSorted() {
 		int len=length();
 		for (int i=1; i<len; i++) {
 			if (data[i-1]>=data[i]) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isSorted() {
+		int len=length();
+		for (int i=1; i<len; i++) {
+			if (data[i-1]>data[i]) return false;
 		}
 		return true;
 	}
@@ -96,7 +108,6 @@ public final class Index extends AIndex {
 		return (swapCount()&1)==0;
 	}
 	
-	
 	/**
 	 * Creates a new Index, wrapping the provided index array
 	 */
@@ -111,8 +122,25 @@ public final class Index extends AIndex {
 		return new Index(indexes.clone());
 	}
 	
+	public static Index createLength(int len) {
+		return new Index(len);
+	}
+	
+	public static Index create(AVector v) {
+		int len=v.length(); 
+		Index a=Index.createLength(len); 
+		for (int i=0; i<len; i++) {
+			a.data[i]=(int) v.unsafeGet(i);
+		}
+		return a;
+	}
+	
 	@Override
 	public int get(int i) {
+		return data[i];
+	}
+	
+	public int unsafeGet(int i) {
 		return data[i];
 	}
 	
@@ -270,4 +298,20 @@ public final class Index extends AIndex {
 		}
 		return ni;
 	}
+
+	/**
+	 * Checks that all values in this index are within the specified range of
+	 * start (inclusive) to end (exclusive)
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public boolean allInRange(int start, int end) {
+		for (int i=0; i<data.length; i++) {
+			int a=data[i];
+			if ((a<start)||(a>=end)) return false;
+		}
+		return true;
+	}
+
 }

@@ -2,9 +2,10 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -34,7 +35,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	public static DiagonalMatrix create(AVector v) {
-		return wrap(v.toArray());
+		return wrap(v.toDoubleArray());
 	}
 	
 	public static DiagonalMatrix wrap(double[] data) {
@@ -62,6 +63,15 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 
 	@Override
 	public double get(int row, int column) {
+		if (row!=column) {
+			if ((row<0)||(row>=dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
+			return 0.0;
+		}
+		return data[row];
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
 		if (row!=column) return 0.0;
 		return data[row];
 	}
@@ -69,10 +79,15 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	@Override
 	public void set(int row, int column, double value) {
 		if (row!=column) {
-			if (value!=0.0) throw new UnsupportedOperationException("Diagonal matrix cannot be set to non-zero value at position ("+row+","+column+")!");
+			if (value!=0.0) throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 		} else {
 			data[row]=value;
 		}
+	}
+	
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		data[row]=value;
 	}
 	
 	@Override
@@ -89,23 +104,28 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return data[i]*v.get(i);
+		return data[i]*v.unsafeGet(i);
+	}
+	
+	@Override
+	public double calculateElement(int i, Vector v) {
+		return data[i]*v.unsafeGet(i);
 	}
 
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof ArrayVector) {
-			transformInPlace((ArrayVector) v);
+		if (v instanceof AArrayVector) {
+			transformInPlace((AArrayVector) v);
 			return;
 		}
 		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong length vector: "+v.length());
 		for (int i=0; i<dimensions; i++) {
-			v.set(i,v.get(i)*data[i]);
+			v.unsafeSet(i,v.unsafeGet(i)*data[i]);
 		}
 	}
 	
 	@Override
-	public void transformInPlace(ArrayVector v) {
+	public void transformInPlace(AArrayVector v) {
 		double[] dest=v.getArray();
 		int offset=v.getArrayOffset();
 		DoubleArrays.arraymultiply(data, 0, dest, offset, dimensions);
@@ -117,6 +137,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 			if (data[i]!=1.0) return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		return DoubleArrays.isBoolean(data, 0, dimensions);
 	}
 	
 	@Override
@@ -153,6 +178,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return Vector.wrap(data);
 	}
 
+	@Override
 	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof ADiagonalMatrix) {
 			return innerProduct((ADiagonalMatrix) a);
@@ -160,7 +186,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return super.innerProduct(a);
 	}
 	
-	public AMatrix innerProduct(ADiagonalMatrix a) {
+	public DiagonalMatrix innerProduct(ADiagonalMatrix a) {
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		for (int i=0; i<dimensions; i++) {

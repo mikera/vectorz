@@ -5,10 +5,12 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.StridedVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
-public class StridedMatrix extends ArrayMatrix {
+public final class StridedMatrix extends AStridedMatrix {
 	private final int rowStride;
 	private final int colStride;
 	private final int offset;
@@ -27,16 +29,6 @@ public class StridedMatrix extends ArrayMatrix {
 	}
 
 	@Override
-	public int rowCount() {
-		return rows;
-	}
-
-	@Override
-	public int columnCount() {
-		return cols;
-	}
-
-	@Override
 	public AVector getRow(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
 	}
@@ -47,11 +39,34 @@ public class StridedMatrix extends ArrayMatrix {
 	}
 	
 	@Override
+	public int rowStride() {
+		return rowStride;
+	}
+	
+	@Override
+	public int columnStride() {
+		return colStride;
+	}
+	
+	@Override
+	public int getArrayOffset() {
+		return offset;
+	}
+	
+	@Override
 	public boolean isPackedArray() {
 		return (offset == 0) 
 				&& (colStride == 1)
 				&& (rowStride == cols)
 				&& (data.length == rows * cols);
+	}
+	
+	@Override
+	public AStridedMatrix subMatrix(int rowStart, int rowCount, int colStart, int colCount) {
+		if ((rowStart<0)||(rowStart>=this.rows)||(colStart<0)||(colStart>=this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart,colStart));
+		if ((rowStart+rowCount>this.rows)||(colStart+colCount>this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart+rowCount,colStart+colCount));
+		if ((rowCount<1)||(colCount<1)) throw new IllegalArgumentException(ErrorMessages.illegalSize(rowCount,colCount));
+		return new StridedMatrix(data, rowCount, colCount, offset+rowStart*rowStride+colStart*colStride, rowStride, colStride);
 	}
 
 	@Override
@@ -96,9 +111,18 @@ public class StridedMatrix extends ArrayMatrix {
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return data[index(row,column)];
+	}
+	
+	@Override
 	public AVector asVector() {
 		if (isPackedArray()) {
 			return Vector.wrap(data);
+		} else if (cols==1) {
+			return Vectorz.wrapStrided(data, offset, rows, rowStride);
+		} else if (rows ==1){
+			return Vectorz.wrapStrided(data, offset, cols, colStride);			
 		}
 		return super.asVector();
 	}
@@ -108,6 +132,11 @@ public class StridedMatrix extends ArrayMatrix {
 		if ((row < 0) || (column < 0) || (row >= rows)
 				|| (column >= cols))
 			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
+		data[index(row,column)] = value;
+	}
+	
+	@Override
+	public void unsafeSet(int row, int column, double value) {
 		data[index(row,column)] = value;
 	}
 
@@ -142,7 +171,8 @@ public class StridedMatrix extends ArrayMatrix {
 		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
 	}
 
-	private final int index(int row, int col) {
+	@Override
+	protected final int index(int row, int col) {
 		return offset+(row*rowStride)+(col*colStride);
 	}
 	

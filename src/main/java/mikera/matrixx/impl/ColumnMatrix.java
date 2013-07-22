@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Matrix class that wraps a vector as a 1-columns matrix
@@ -53,13 +54,13 @@ public class ColumnMatrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		assert(column==0);
+		if(column!=0) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
 		return vector.get(row);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		assert(column==0);
+		if(column!=0) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
 		vector.set(row,value);
 	}
 	

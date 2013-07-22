@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.HashSet;
 
+import mikera.vectorz.Vector;
+
 import org.junit.Test;
 
 public class TestIndexz {
@@ -18,6 +20,11 @@ public class TestIndexz {
 		
 		assertTrue(ind.contains(chi));
 		
+	}
+	
+	@Test public void testVectorConvert() {
+		Index ind=Indexz.createRandomPermutation(10);
+		assertEquals(ind,Index.create(Vector.create(ind)));
 	}
 	
 	@Test public void testPermutations() {

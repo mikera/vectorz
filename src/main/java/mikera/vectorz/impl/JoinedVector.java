@@ -201,6 +201,11 @@ public final class JoinedVector extends AVector {
 		return super.dotProduct(v);
 	}
 	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return left.dotProduct(data, offset)+right.dotProduct(data, offset+split);
+	}
+	
 	public double dotProduct (JoinedVector jv) {
 		// in likely case of two equally structured JoinedVectors....
 		if (jv.left.length()==left.length()) {
@@ -322,16 +327,26 @@ public final class JoinedVector extends AVector {
 	
 	@Override
 	public double get(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
 		if (i<split) {
-			return left.get(i);
+			return left.unsafeGet(i);
 		}
-		return right.get(i-split);
+		return right.unsafeGet(i-split);
 	}
 	
 	@Override
 	public void set(AVector src) {
 		set(src,0);
 	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		if (i<split) {
+			return left.unsafeGet(i);
+		}
+		return right.unsafeGet(i-split);
+	}
+
 	
 	@Override
 	public void set(AVector src, int srcOffset) {
@@ -350,10 +365,20 @@ public final class JoinedVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
 		if (i<split) {
 			left.set(i,value);
 		} else {
 			right.set(i-split,value);
+		}
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
+		if (i<split) {
+			left.unsafeSet(i,value);
+		} else {
+			right.unsafeSet(i-split,value);
 		}
 	}
 	
@@ -373,6 +398,18 @@ public final class JoinedVector extends AVector {
 	public void sqrt() {
 		left.sqrt();
 		right.sqrt();
+	}
+	
+	@Override
+	public void tanh() {
+		left.tanh();
+		right.tanh();
+	}
+	
+	@Override
+	public void logistic() {
+		left.logistic();
+		right.logistic();
 	}
 	
 	@Override 

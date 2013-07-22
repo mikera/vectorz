@@ -77,6 +77,16 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return rows[row].unsafeGet(column);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		rows[row].unsafeSet(column,value);
+	}
+	
+	@Override
 	public Vector3 getRow(int row) {
 		return  rows[row];
 	}

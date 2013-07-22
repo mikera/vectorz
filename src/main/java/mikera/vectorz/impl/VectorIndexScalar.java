@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.util.VectorzException;
 
 public class VectorIndexScalar extends AScalar {
@@ -40,8 +41,8 @@ public class VectorIndexScalar extends AScalar {
 	}
 	
 	@Override
-	public DoubleScalar clone() {
-		return new DoubleScalar(get());
+	public Scalar clone() {
+		return new Scalar(get());
 	}
 	
 	@Override

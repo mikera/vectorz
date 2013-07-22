@@ -7,7 +7,6 @@ import mikera.transformz.impl.CompoundTransform;
 import mikera.transformz.impl.SubsetTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.impl.SingleElementVector;
 
 /**
  * Abstract base class for all vector transformations.
@@ -113,8 +112,8 @@ public abstract class ATransform implements Cloneable, ITransform {
 	 * Not necessarily faster than calculating full output, but can be in some circumstances.
 	 */
 	public double calculateElement(int i, AVector inputVector) {
-		SingleElementVector r=new SingleElementVector(i,outputDimensions());
-		return r.get(i);
+		Vector r=transform(inputVector);
+		return r.unsafeGet(i);
 	}
 	
 	/**

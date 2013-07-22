@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -11,7 +13,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class GrowableVector extends ArrayVector {
+public final class GrowableVector extends AArrayVector {
 	private static final long serialVersionUID = -4560854157937758671L;
 
 	private double[] data;
@@ -77,14 +79,24 @@ public final class GrowableVector extends ArrayVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return data[i];
 	}
 
 	@Override
 	public void set(int i, double value) {
-		if (i<0) throw new IndexOutOfBoundsException("Index: "+i);
+		if (i<0) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		ensureCapacity(i+1);
+		data[i]=value;
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return data[i];
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
 		data[i]=value;
 	}
 	
@@ -132,7 +144,7 @@ public final class GrowableVector extends ArrayVector {
 	
 	@Override
 	public void validate() {
-		if (length>data.length) throw new VectorzException("Array problem");
+		if (length>data.length) throw new VectorzException("data array is wrong size!?!");
 		super.validate();
 	}
 }

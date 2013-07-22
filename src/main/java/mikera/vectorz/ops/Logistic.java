@@ -2,11 +2,13 @@ package mikera.vectorz.ops;
 
 import java.io.ObjectStreamException;
 
+import mikera.vectorz.AVector;
+
 public final class Logistic extends ABoundedOp {
 	
 	public static final Logistic INSTANCE=new Logistic();
 	
-	static double logisticFunction(double a) {
+	public static double logisticFunction(double a) {
 		double ea=Math.exp(-a);
 		double df=(1/(1.0f+ea));
 		if (Double.isNaN(df)) return (a>0)?1:0;
@@ -35,6 +37,11 @@ public final class Logistic extends ABoundedOp {
 		for (int i=0; i<length; i++) {
 			data[i+start]=logisticFunction(data[i+start]);
 		}	
+	}
+	
+	@Override
+	public void applyTo(AVector v) {
+		v.logistic();
 	}
 	
 	@Override

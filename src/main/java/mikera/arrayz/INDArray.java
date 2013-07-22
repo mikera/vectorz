@@ -74,12 +74,40 @@ public interface INDArray extends Cloneable {
 	public void set(int i, double value);
 	public void set(int i, int j, double value);
 	public void set(int[] indexes, double value);
+	
+	/**
+	 * Sets this array to the element values contained in another array
+	 * @param a
+	 */
 	public void set(INDArray a);
+	
+	/**
+	 * Sets this array to the element values contained in the given object.
+	 * Attempts to interpret the object as an array
+	 * @param a
+	 */
 	public void set(Object o);
 	
+	/**
+	 * Adds a double value to all elements in this array
+	 */
 	public void add(double a);
+	
+	/**
+	 * Subtracts a double value from all elements in this array
+	 */
 	public void sub(double a);
+	
+	/**
+	 * Adds all the elements of another array to this array, in an elementwise order.
+	 * @param a
+	 */
 	public void add(INDArray a);
+	
+	/**
+	 * Subtracts all the elements of another array from this array, in an elementwise order.
+	 * @param a
+	 */
 	public void sub(INDArray a);
 	
 	/**
@@ -98,6 +126,11 @@ public interface INDArray extends Cloneable {
 	 */
 	public void reciprocal();
 	
+	/**
+	 * Clamps all the elments of this array within the specified [min,max] range
+	 * @param min
+	 * @param max
+	 */
 	public void clamp(double min, double max);
 
 	/**
@@ -120,16 +153,46 @@ public interface INDArray extends Cloneable {
 	 */
 	public AVector asVector();
 	
+	/**
+	 * Returns a list containing all elements of this array
+	 * @return
+	 */
 	public List<Double> asElementList();
 	
+	/**
+	 * Returns a new array by rearranging the elements of this array into the desired shape
+	 * Truncates or zero-pads the elements as required to fill the new shape
+	 * @param shape
+	 * @return
+	 */
 	public INDArray reshape(int... shape);
 
+	/**
+	 * Returns a view of this array broadcasted up to a larger shape
+	 * @param shape
+	 * @return
+	 */
 	public INDArray broadcast(int... shape);
 
+	/**
+	 * Returns the specified major slice of this array (slice along dimension 0)
+	 * @param majorSlice
+	 * @return
+	 */
 	public INDArray slice(int majorSlice);
 
+	/**
+	 * Returns a slice of this array along the specified dimension
+	 * @param majorSlice
+	 * @return
+	 */
 	public INDArray slice(int dimension, int index);
 	
+	/**
+	 * Returns the transpose of this array. A transpose of an array is equivalent to 
+	 * reversing the order of dimensions
+	 * @return
+	 */
 	public INDArray getTranspose();
 	
 	/**
@@ -188,6 +251,11 @@ public interface INDArray extends Cloneable {
 	public boolean isMutable();
 	
 	/**
+	 * Returns true if the array is boolean (contains only 0.0 or 1.0 value
+	 */
+	public boolean isBoolean();
+	
+	/**
 	 * Returns true if the INDArray is fully mutable in all positions
 	 * i.e. every position can store any valid double value
 	 * @return
@@ -212,6 +280,12 @@ public interface INDArray extends Cloneable {
 	 */
 	public INDArray clone();
 
+	/**
+	 * Ensures the array is a fully mutable, efficient representation that is not 
+	 * a view. Returns either the same array or a new clone.
+	 */
+	public INDArray ensureMutable();
+	
 	/**
 	 * Applies a unary operator to all elements of the array (in-place)
 	 * @param op
@@ -317,6 +391,12 @@ public interface INDArray extends Cloneable {
 	 * @param arr
 	 */
 	public void toDoubleBuffer(DoubleBuffer dest);
+	
+	/**
+	 * Copies the elements of this INDArray to a new double array
+	 * @param arr
+	 */
+	public double[] toDoubleArray();
 
 	/**
 	 * Returns a list of slices as mutable INDArray views.
@@ -332,8 +412,27 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public Vector toVector();
+	
+	/**
+	 * Converts the array into a packed mutable Array instance
+	 * @return
+	 */
+	public Array toArray();
 
+	/**
+	 * Tests is this array is approximately equal to another array.
+	 * The arrays must have the same shape
+	 * @param a
+	 * @return
+	 */
 	public boolean epsilonEquals(INDArray a);
+	
+	/**
+	 * Tests is this array is approximately equal to another array, up to a given tolerance (epsilon)
+	 * The arrays must have the same shape
+	 * @param a
+	 * @return
+	 */
 	public boolean epsilonEquals(INDArray a, double epsilon);
 
 	/**
@@ -346,6 +445,9 @@ public interface INDArray extends Cloneable {
 	 */
 	public void log();
 
+	/**
+	 * Computes the function e^x (in-place) for all array elements
+	 */
 	public void exp();
 
 

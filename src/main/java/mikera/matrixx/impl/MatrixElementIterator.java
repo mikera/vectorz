@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import mikera.matrixx.AMatrix;
 
@@ -30,13 +31,14 @@ public class MatrixElementIterator implements Iterator<Double> {
 
 	@Override
 	public Double next() {
+		if (row>=source.rowCount()) throw new NoSuchElementException();
 		int ox=col++;
 		int oy=row;
 		if (col>=source.columnCount()) {
 			col=0;
 			row++;
 		}
-		return source.get(oy,ox);
+		return source.unsafeGet(oy,ox);
 	}
 
 	@Override

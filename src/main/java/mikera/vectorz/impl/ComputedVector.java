@@ -1,6 +1,6 @@
 package mikera.vectorz.impl;
 
-import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Base class for computed vectors. Assumed to be immutable and fixed size.
@@ -9,7 +9,7 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ComputedVector extends AVector {
+public abstract class ComputedVector extends AConstrainedVector {
 
 	@Override
 	public abstract int length();
@@ -19,7 +19,7 @@ public abstract class ComputedVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException("Vector is immutable: "+this.getClass());
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override

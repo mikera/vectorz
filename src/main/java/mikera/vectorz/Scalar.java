@@ -1,31 +1,22 @@
-package mikera.vectorz.impl;
-
-import mikera.vectorz.AScalar;
-import mikera.vectorz.AVector;
+package mikera.vectorz;
 
 /**
  * Basic Scalar class containing a single mutable double value
  * 
- * This is deprecated! Prefer mikera.vectorz.Scalar instead.
- * Included only for backwards compatibility purposes
- * 
- * TODO: remove in Vectorz 1.0.0 release
- * 
  * @author Mike
  */
-@Deprecated
-public final class DoubleScalar extends AScalar {
+public final class Scalar extends AScalar {
 	public double value;
 
-	public DoubleScalar(double value) {
+	public Scalar(double value) {
 		this.value = value;
 	}
 
-	public static DoubleScalar create(double value) {
-		return new DoubleScalar(value);
+	public static Scalar create(double value) {
+		return new Scalar(value);
 	}
 
-	public static DoubleScalar create(AScalar a) {
+	public static Scalar create(AScalar a) {
 		return create(a.get());
 	}
 
@@ -80,8 +71,8 @@ public final class DoubleScalar extends AScalar {
 	}
 
 	@Override
-	public DoubleScalar clone() {
-		return new DoubleScalar(value);
+	public Scalar clone() {
+		return new Scalar(value);
 	}
 
 	@Override
@@ -90,7 +81,7 @@ public final class DoubleScalar extends AScalar {
 	}
 
 	@Override
-	public DoubleScalar exactClone() {
+	public Scalar exactClone() {
 		return clone();
 	}
 
@@ -102,8 +93,8 @@ public final class DoubleScalar extends AScalar {
 	 * @param columns
 	 * @return
 	 */
-	public static DoubleScalar createFromVector(AVector data) {
-		return new DoubleScalar(data.length()>0?data.get(0):0.0);
+	public static Scalar createFromVector(AVector data) {
+		return new Scalar(data.length()>0?data.get(0):0.0);
 	}
 
 }

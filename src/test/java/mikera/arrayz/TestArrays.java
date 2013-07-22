@@ -6,13 +6,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.impl.SliceArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
@@ -86,6 +86,8 @@ public class TestArrays {
 				}
 			}
 		}
+		
+		assertEquals(a.toArray().asVector(),a.asVector());
 	}
 
 	private void testToArray(INDArray a) {
@@ -124,7 +126,7 @@ public class TestArrays {
 		INDArray c = a.clone();
 		a.fill(Double.NaN);
 
-		double[] arr = c.asVector().toArray();
+		double[] arr = c.asVector().toDoubleArray();
 		assertEquals(a.elementCount(), arr.length);
 		a.setElements(arr);
 		assertEquals(c.asVector(), a.asVector());
@@ -204,6 +206,9 @@ public class TestArrays {
 		if (a.isElementConstrained()) {
 			assertFalse(a.isFullyMutable());
 		}
+		
+		INDArray b=a.ensureMutable();
+		assertTrue(mikera.vectorz.util.Testing.validateFullyMutable(b));
 	}
 
 	private void testHash(INDArray a) {
@@ -256,8 +261,12 @@ public class TestArrays {
 		INDArray m = a.exactClone();
 
 		m.multiply(2.0);
-		m.multiply(DoubleScalar.create(0.5));
+		m.multiply(Scalar.create(0.5));
 		assertEquals(a, m);
+	}
+	
+	private void testBoolean(INDArray a) {
+		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(Tools.getElements(a)));
 	}
 
 	private void testBroadcast(INDArray a) {
@@ -390,6 +399,7 @@ public class TestArrays {
 		testApplyOp(a);
 		testApplyAllOps(a);
 		testElementIterator(a);
+		testBoolean(a);
 		testSums(a);
 		testEquals(a);
 		testIndexedAccess(a);
@@ -414,13 +424,26 @@ public class TestArrays {
 				Vectorz.createUniformRandomVector(10),
 				Vectorz.createUniformRandomVector(10));
 		testArray(sa);
+		testArray(Array.create(sa));
 
-		NDArray nd1 = NDArray.newArray(3, 3, 3);
+		NDArray nd1 = NDArray.newArray(3);
 		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
+		testArray(Array.create(nd1));
+		
+		NDArray nd2 = NDArray.newArray(3, 3);
+		Vectorz.fillIndexes(nd2.asVector());
+		testArray(nd2);
+		testArray(Array.create(nd2));
+		
+		NDArray nd3 = NDArray.newArray(3, 3, 3);
+		Vectorz.fillIndexes(nd3.asVector());
+		testArray(nd3);
+		testArray(Array.create(nd3));
 
 		NDArray ndscalar = NDArray.newArray();
 		ndscalar.set(1.0);
 		testArray(ndscalar);
+		testArray(Array.create(ndscalar));
 	}
 }

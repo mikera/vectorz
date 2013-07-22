@@ -3,7 +3,7 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 
-public final class StridedVector extends AVector {
+public final class StridedVector extends AStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
 	private final double[] data;
@@ -12,6 +12,10 @@ public final class StridedVector extends AVector {
 	private final int stride;
 	
 	private StridedVector(double[] data, int offset, int length, int stride) {
+		if ((offset<0)) throw new IndexOutOfBoundsException();
+		int lastOffset=(offset+(length-1)*stride);
+		if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException();
+		
 		this.data=data;
 		this.offset=offset;
 		this.length=length;
@@ -48,20 +52,52 @@ public final class StridedVector extends AVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		assert(v.length()==length);
+		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
+		if (v instanceof AArrayVector) {
+			AArrayVector av=(AArrayVector) v;
+			return dotProduct(av.getArray(),av.getArrayOffset());
+		}
 		double result=0.0;
 		for (int i=0; i<length; i++) {
-			result+=data[offset+i*stride]*v.get(i);
+			result+=data[offset+i*stride]*v.unsafeGet(i);
 		}
 		return result;
 	}
 	
 	@Override
 	public void set(AVector v) {
-		assert(v.length()==length);
+		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
 		for (int i=0; i<length; i++) {
-			data[offset+i*stride]=v.get(i);
+			data[offset+i*stride]=v.unsafeGet(i);
 		}
+	}
+	
+	@Override
+	public void add(AVector v) {
+		if (v instanceof AStridedVector) {
+			add((AStridedVector)v);
+			return;
+		}
+		super.add(v);
+	}
+	
+	public void add(AStridedVector v) {
+		if (length!=v.length()) throw new IllegalArgumentException("Mismatched vector lengths");
+	}
+	
+	@Override
+	public int getStride() {
+		return stride;
+	}
+	
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+	
+	@Override
+	public int getArrayOffset() {
+		return offset;
 	}
 	
 	@Override
@@ -79,11 +115,23 @@ public final class StridedVector extends AVector {
 	
 	@Override
 	public double get(int i) {
+		if (i<0||i>=length) throw new IndexOutOfBoundsException();
 		return data[offset+i*stride];
 	}
 	
 	@Override
 	public void set(int i, double value) {
+		if (i<0||i>=length) throw new IndexOutOfBoundsException();
+		data[offset+i*stride]=value;
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return data[offset+i*stride];
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
 		data[offset+i*stride]=value;
 	}
 	

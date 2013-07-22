@@ -9,8 +9,8 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public abstract class ASparseVector extends AVector implements ISparse {
-	private static final long serialVersionUID = -6043956533730989975L;
+@SuppressWarnings("serial")
+public abstract class ASparseVector extends AConstrainedVector implements ISparse {
 
 	/**
 	 * Returns the number of non-sparse elements in the sparse vector.

@@ -23,7 +23,6 @@ package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.Matrixx;
 import mikera.vectorz.Vector;
 
 public class QR {
@@ -83,7 +82,7 @@ public class QR {
 			rdiag.set(k, -norm);
 		}
 
-		Matrix q = Matrixx.newMatrix(rc, cc);
+		Matrix q = Matrix.create(rc, cc);
 
 		for (int k = cc - 1; k >= 0; k--) {
 

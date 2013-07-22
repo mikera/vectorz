@@ -15,7 +15,6 @@ import mikera.matrixx.Matrixx;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
-import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -58,7 +57,7 @@ public class TestVectors {
 	}
 	
 	public void testSquare(AVector v) {
-		if (!v.isMutable()) return;
+		if (!v.isFullyMutable()) return;
 		v=v.exactClone();
 		AVector vc=v.clone();
 		v.square();
@@ -351,7 +350,7 @@ public class TestVectors {
 		assertEquals(v,v2);
 
 		Vectorz.fillRandom(v);
-		double[] data=v.toArray();
+		double[] data=v.toDoubleArray();
 		v2.setElements(data);
 		assertEquals(v,v2);
 	}
@@ -363,7 +362,7 @@ public class TestVectors {
 		Vectorz.fillGaussian(v);
 		AVector vc=v.clone();
 		
-		double[] data=v.toArray();
+		double[] data=v.toDoubleArray();
 		v.fill(0.0);
 		v.setElements(data);
 		
@@ -577,8 +576,50 @@ public class TestVectors {
 		assertFalse(Double.isNaN(tv.get(len)));
 	}
 
-
+	private void testUnsafeGet(AVector v) {
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			assertEquals(v.get(i),v.unsafeGet(i),0.0);
+		}
+	}
 	
+	private void testOutOfBounds(AVector v) {
+		try {
+			v.get(-1);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			v.get(v.length());
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		if (v.isFullyMutable()) {
+			v=v.exactClone();
+			try {
+				v.set(-1,1);
+				fail();
+			} catch (IndexOutOfBoundsException a) {/* OK */}
+			
+			if (!(v instanceof GrowableVector)) try {
+				v.set(v.length(),1);
+				fail();
+			} catch (IndexOutOfBoundsException a) {/* OK */}
+		}
+	}
+	
+	private void testUnsafeSet(AVector v) {
+		if (!v.isFullyMutable()) return;
+		AVector a=v.exactClone();
+		AVector b=v.exactClone();
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			v.set(i, a.get(i)+1.0);
+			v.unsafeSet(i, a.get(i)+1.0);
+		}
+		assertEquals(a,b);
+	}
+
 	private void testAsList(AVector v) {
 		List<Double> al=v.asElementList();
 		List<Double> tl=v.toList();
@@ -674,6 +715,9 @@ public class TestVectors {
 		testAddToArray(v);
 		testElementSum(v);
 		testAddAt(v);
+		testUnsafeGet(v);
+		testUnsafeSet(v);
+		testOutOfBounds(v);
 		testSlicing(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
@@ -706,11 +750,13 @@ public class TestVectors {
 		doGenericTests(new Vector2(1.0,2.0));
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector4(1.0,2.0,3.0,4.0));
+		doGenericTests(new Vector4(1.0,2.0,3.0,4.0).subVector(1, 2));
 		
 		// bit vectors
 		doGenericTests(BitVector.of());
 		doGenericTests(BitVector.of(0));
 		doGenericTests(BitVector.of(0,1,0));
+		doGenericTests(BitVector.of(0,1,0).subVector(1, 1));
 		
 		// zero-length Vectors
 		doGenericTests(Vector.of());
@@ -775,6 +821,7 @@ public class TestVectors {
 		doGenericTests(m3.asVector());
 		doGenericTests(m3.getRow(2));
 		doGenericTests(m3.getColumn(2));
+		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
 		
 		doGenericTests(new AxisVector(1,3));
 		doGenericTests(new AxisVector(0,1));
@@ -784,14 +831,16 @@ public class TestVectors {
 		doGenericTests(new SingleElementVector(0,1));
 
 		doGenericTests(new RepeatedElementVector(1,1.0));
-		doGenericTests(new RepeatedElementVector(10,1.0));
 		doGenericTests(new RepeatedElementVector(4,0.0));
+		doGenericTests(new RepeatedElementVector(10,1.0));
+		doGenericTests(new RepeatedElementVector(10,1.0).subVector(2, 5));
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
 		
-		doGenericTests(new DoubleScalar(1.0).asVector());
+		doGenericTests(new Scalar(1.0).asVector());
+		doGenericTests(Vector.of(1,2,3).slice(1).asVector());
 		
 		AVector jav1=JoinedArrayVector.create(v4);
 		AVector jav2=JoinedArrayVector.create(j5);
@@ -801,7 +850,7 @@ public class TestVectors {
 		doGenericTests(jav2.join(jav1).subVector(2, 5));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
 		
-		doGenericTests(StridedVector.wrap(new double[]{}, 0, 0, 100));
+		doGenericTests(StridedVector.wrap(new double[]{1,2,3}, 2, 3, -1));
 		doGenericTests(StridedVector.wrap(new double[]{1,2}, 1, 1, 100));
 	}
 }

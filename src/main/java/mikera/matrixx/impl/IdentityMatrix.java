@@ -2,10 +2,11 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.ArrayVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised identity matrix class. Immutable.
@@ -38,16 +39,23 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public double calculateElement(int i, AVector v) {
-		return v.get(i);
+		return v.unsafeGet(i);
 	}
 
 	@Override
 	public double get(int row, int column) {
-		assert(row>=0);
-		assert(column>=0);
-		assert(row<dimensions);
-		assert(column<dimensions);
+		if ((row<0)||(column<0)||(row>=dimensions)||(column>=dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
+		return (row==column)?1.0:0.0;
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
 		return (row==column)?1.0:0.0;
 	}
 	
@@ -68,7 +76,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 
 	@Override
 	public void set(int row, int column, double value) {
-		throw new UnsupportedOperationException("Identity matrix is immutable!");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override 
@@ -87,7 +95,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public void transformInPlace(ArrayVector v) {
+	public void transformInPlace(AArrayVector v) {
 		// nothing to do
 	}
 	
@@ -138,7 +146,7 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override 
-	public AMatrix getTranspose() {
+	public IdentityMatrix getTransposeView() {
 		return this;
 	}
 	

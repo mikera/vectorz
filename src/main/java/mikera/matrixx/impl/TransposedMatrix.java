@@ -10,7 +10,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public class TransposedMatrix extends DelegatedMatrix {
+public class TransposedMatrix extends ADelegatedMatrix {
 	
 	private TransposedMatrix(AMatrix source) {
 		super(source);

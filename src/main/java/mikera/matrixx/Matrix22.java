@@ -4,6 +4,7 @@ import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised 2*2 Matrix for Vector2 maths, using primitive matrix elements
@@ -32,12 +33,37 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 
 	public Matrix22(AMatrix m) {
-		assert(m.rowCount()==2);
-		assert(m.columnCount()==2);
-		m00=m.get(0,0);
-		m01=m.get(0,1);
-		m10=m.get(1,0);
-		m11=m.get(1,1);
+		if (m instanceof Matrix22) {
+			set((Matrix22) m);
+		} else {
+			set(m);
+		}
+	}
+	
+	public void set(Matrix22 a) {
+		m00=a.m00; m01=a.m01; 
+		m10=a.m10; m11=a.m11; 
+	}
+	
+	@Override
+	public void set(AMatrix m) {
+		if ((m.rowCount()!=2)||(m.columnCount()!=2)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));
+		m00=m.unsafeGet(0,0);
+		m01=m.unsafeGet(0,1);
+		m10=m.unsafeGet(1,0);
+		m11=m.unsafeGet(1,1);		
+	}
+	
+	public static Matrix22 create(double a, double b, double c, double d) {
+		return new Matrix22(a,b,c,d);
+	}
+	
+	public static Matrix22 createRotationMatrix(double angle) {
+		double sa=Math.sin(angle);
+		double ca=Math.cos(angle);
+		return new Matrix22(
+				ca,-sa,
+				sa,ca);
 	}
 	
 	@Override
@@ -75,6 +101,20 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 		return 2;
 	}
 	
+	public void add(Matrix22 a) {
+		m00+=a.m00;
+		m01+=a.m01;
+		m10+=a.m10;
+		m11+=a.m11;		
+	}
+	
+	public void sub(Matrix22 a) {
+		m00-=a.m00;
+		m01-=a.m01;
+		m10-=a.m10;
+		m11-=a.m11;		
+	}
+	
 	@Override
 	public Vector2 cloneRow(int row) {
 		switch (row) {
@@ -91,15 +131,15 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 			switch (column) {
 			case 0: return m00;
 			case 1: return m01;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 		case 1:
 			switch (column) {
 			case 0: return m10;
 			case 1: return m11;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
-		default: throw new IndexOutOfBoundsException("Row: "+row);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 	}
 
@@ -110,15 +150,15 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 			switch (column) {
 			case 0: m00=value; return;
 			case 1: m01=value; return;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
 		case 1:
 			switch (column) {
 			case 0: m10=value; return;
 			case 1: m11=value; return;
-			default: throw new IndexOutOfBoundsException("Column: "+row);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 			}
-		default: throw new IndexOutOfBoundsException("Row: "+row);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}	
 	}
 	
@@ -159,6 +199,11 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	@Override
 	public boolean isSquare() {
 		return true;
+	}
+	
+	@Override
+	public boolean isSymmetric() {
+		return m01==m10;
 	}
 	
 	@Override

@@ -5,12 +5,14 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import mikera.indexz.Index;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SparseIndexedVector;
 
 public class TestMatrices {
@@ -22,6 +24,33 @@ public class TestMatrices {
 		assertEquals(Vector.of(1,0,0),m.getRow(0));
 		assertEquals(Vector.of(0,1,0),m.getColumn(1));
 		assertEquals(Vector.of(0,1,0),SparseIndexedVector.create(m.getColumn(1)));
+	}
+	
+	@Test public void testSubsetMatrix2() {
+		SubsetMatrix m=SubsetMatrix.create(Index.of(1,1),2);
+		
+		assertEquals(Vector.of(0,0),m.getColumn(0));
+		assertEquals(Vector.of(1,1),m.getColumn(1));
+	}
+	
+
+	@Test public void testSubMatrix() {
+		Matrix m=(Matrix) Matrixx.newMatrix(4,4);
+		Vectorz.fillIndexes(m.asVector());
+		
+		// regression test
+		{@SuppressWarnings("unused") AStridedMatrix tsm=m.subMatrix(1, 1, 1, 1);}
+		
+		AStridedMatrix sm=m.subMatrix(1, 2, 1, 2);
+		assertEquals(2,sm.rowCount());
+		assertEquals(2,sm.columnCount());
+		assertTrue(sm.data==m.data);
+		
+		assertEquals(Matrixx.create(new double[][] {{5.0,6.0},{9.0,10.0}}),sm);
+		
+		AStridedMatrix ssm=sm.subMatrix(1, 1, 1, 1);
+		assertEquals(Matrixx.create(new double[][] {{10.0}}),ssm);
+		
 	}
 	
 	@Test public void testToString() {

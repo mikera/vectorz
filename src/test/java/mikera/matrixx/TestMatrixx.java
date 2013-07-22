@@ -18,6 +18,7 @@ import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.transformz.ATransform;
+import mikera.transformz.TestTransformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
@@ -331,6 +332,70 @@ public class TestMatrixx {
 		m2.set(0,0,Math.PI);
 		assertNotSame(m.get(0,0),m2.get(0,0));
 	}
+	
+	private void doSubMatrixTest(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		if ((rc<=1)||(cc<=1)) return;
+		AMatrix sm=m.subMatrix(1, rc-1, 1, cc-1);
+		
+		assertEquals(rc-1,sm.rowCount());
+		assertEquals(cc-1,sm.columnCount());
+		for (int i=1; i<rc; i++) {
+			for (int j=1; j<cc; j++) {
+				assertEquals(m.get(i,j),sm.get(i-1,j-1),0.0);
+			}
+		}
+	}
+	
+	private void doBoundsTest(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		
+		try {
+			m.get(-1,-1);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(rc,cc);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(0,-1);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(0,cc);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(-1,0);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+		
+		try {
+			m.get(rc,0);
+			fail();
+		} catch (IndexOutOfBoundsException a) {/* OK */}
+
+		
+		if (m.isFullyMutable()) {
+			m=m.exactClone();
+			try {
+				m.set(-1,-1,1);
+				fail();
+			} catch (IndexOutOfBoundsException a) {/* OK */}
+			
+			try {
+				m.set(rc,cc,1);
+				fail();
+			} catch (IndexOutOfBoundsException a) {/* OK */}
+		}
+	}
 
 	private void doRowColumnTests(AMatrix m) {
 		assertEquals(m.rowCount(),m.outputDimensions());
@@ -510,6 +575,7 @@ public class TestMatrixx {
 		doHashTest(m);
 		doNDArrayTest(m);
 		doScaleTest(m);
+		doBoundsTest(m);
 		doMulTest(m);
 		doAddTest(m);
 		doRowColumnTests(m);
@@ -518,6 +584,9 @@ public class TestMatrixx {
 		doMaybeSquareTests(m);
 		doRandomTests(m);
 		doBigComposeTest(m);
+		doSubMatrixTest(m);
+		
+		TestTransformz.doITransformTests(m);
 		
 		new TestArrays().testArray(m);
 	}
@@ -540,16 +609,19 @@ public class TestMatrixx {
 		// specialised Mx3 matrix
 		VectorMatrixM3 mm3=new VectorMatrixM3(10);
 		doGenericTests(mm3);
+		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
 	
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
 		doGenericTests(mmn);
+		doGenericTests(mmn.subMatrix(1, 4, 1, 5));
 		
 		// permuted matrix
 		PermutedMatrix pmm=new PermutedMatrix(mmn,
 				Indexz.createRandomPermutation(mmn.rowCount()),
 				Indexz.createRandomPermutation(mmn.columnCount()));
 		doGenericTests(pmm);
+		doGenericTests(pmm.subMatrix(1, 4, 1, 5));
 
 		// small 2*2 matrix
 		mmn=new VectorMatrixMN(2,2);
@@ -576,6 +648,7 @@ public class TestMatrixx {
 		doGenericTests(ScalarMatrix.create(1,3.0));
 		doGenericTests(ScalarMatrix.create(3,3.0));
 		doGenericTests(ScalarMatrix.create(5,0));
+		doGenericTests(ScalarMatrix.create(5,2.0).subMatrix(1, 3, 1, 3));
 		
 		doGenericTests(new RowMatrix(Vector.of(1,2,3,4)));
 		doGenericTests(new ColumnMatrix(Vector.of(1,2,3,4)));
@@ -592,6 +665,7 @@ public class TestMatrixx {
 		doGenericTests(PermutationMatrix.create(0,1,2));
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(10)));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(6)).subMatrix(1,3,2,4));
 
 	}
 }

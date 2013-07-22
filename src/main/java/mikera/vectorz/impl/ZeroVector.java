@@ -1,15 +1,17 @@
 package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
+import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Specialised vector containing nothing but zeros.
+ * Specialised immuatble vector containing nothing but zeros.
  * 
  * @author Mike
  */
-public final class ZeroVector extends AVector implements ISparse {
+public final class ZeroVector extends ComputedVector implements ISparse {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
 	private int length;
@@ -26,15 +28,43 @@ public final class ZeroVector extends AVector implements ISparse {
 	public int length() {
 		return length;
 	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		if (v.length()!=length) throw new IllegalArgumentException("Different vector lengths");
+		return 0.0;
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return 0.0;
+	}
+	
+	@Override
+	public ZeroVector innerProduct(AMatrix m) {
+		if (m.rowCount()!=length) throw new IllegalArgumentException("Incompatible vector*matrix sizes");
+		return ZeroVector.create(m.columnCount());
+	}
 
 	@Override
 	public double get(int i) {
+		if (i<0||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return 0.0;
 	}
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException("Cannot set on immutable ZeroVector");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return 0.0;
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
@@ -59,6 +89,11 @@ public final class ZeroVector extends AVector implements ISparse {
 
 	@Override
 	public boolean isZeroVector() {
+		return true;
+	}
+	
+	@Override
+	public boolean isBoolean() {
 		return true;
 	}
 	

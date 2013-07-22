@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
-import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -11,17 +10,19 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public final class SingleElementVector extends AVector implements ISparse {
+public final class SingleElementVector extends AConstrainedVector implements ISparse {
 	private final int dimensions;
 	private final int index;
 	private double value;
 	
 	public SingleElementVector(int componentIndex, int dimensions) {
-		this.dimensions=dimensions;
-		this.index=componentIndex;
+		this(componentIndex,dimensions,0.0);
 	}
 	
 	public SingleElementVector(int componentIndex, int dimensions, double value) {
+		if (dimensions<=0) throw new IllegalArgumentException("SingleElementVEctor must habe >= 1 dimensions");
+		if (componentIndex<0||componentIndex>=dimensions) throw new IllegalArgumentException("Invalid non-zero component index: "+componentIndex);
+		
 		this.dimensions=dimensions;
 		this.index=componentIndex;
 		this.value=value;
@@ -69,6 +70,11 @@ public final class SingleElementVector extends AVector implements ISparse {
 	}
 	
 	@Override
+	public boolean isElementConstrained() {
+		return (dimensions!=1);
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		value*=factor;
 	}
@@ -80,13 +86,19 @@ public final class SingleElementVector extends AVector implements ISparse {
 
 	@Override
 	public double get(int i) {
-		assert((i>=0)&&(i<dimensions));
+		if(!((i>=0)&&(i<dimensions))) throw new IndexOutOfBoundsException();
+		return (i==index)?value:0.0;
+	}
+	
+
+	@Override
+	public double unsafeGet(int i) {
 		return (i==index)?value:0.0;
 	}
 
 	@Override
 	public void set(int i, double value) {
-		assert((i>=0)&&(i<dimensions));
+		if(!((i>=0)&&(i<dimensions))) throw new IndexOutOfBoundsException();
 		if (i==index) {
 			this.value=value;
 		} else { 
