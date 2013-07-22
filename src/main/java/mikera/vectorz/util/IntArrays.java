@@ -1,5 +1,7 @@
 package mikera.vectorz.util;
 
+import mikera.util.Rand;
+
 public class IntArrays {
 	public static final int[] EMPTY_INT_ARRAY=new int[0];
 	
@@ -74,5 +76,31 @@ public class IntArrays {
 			if (as[i]!=bs[i]) return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Creates a randomised int[] array, each element in the range [0..max)
+	 * where max is the corresponding element in the shape array
+	 * 
+	 * @param shape
+	 * @return
+	 */
+	public static int[] rand(int[] shape) {
+		int n=shape.length;
+		int[] result=new int[n];
+		for (int i=0; i<n; i++) {
+			result[i]=Rand.r(shape[i]);
+		}
+		return result;
+	}
+
+	public static int dotProduct(int[] xs, int[] ys) {
+		int result=0;
+		int n=xs.length;
+		if (ys.length!=n) throw new IllegalArgumentException("Different array sizes");
+		for (int i=0; i<n; i++) {
+			result+=xs[i]*ys[i];
+		}
+		return result;
 	}
 }

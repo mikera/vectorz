@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.impl.IStridedArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
@@ -328,6 +329,25 @@ public class TestArrays {
 		}
 		assertEquals(m.elementCount(),i);
 	}
+	
+	private void testStridedArray(INDArray mm) {
+		if (!(mm instanceof IStridedArray)) return;
+		IStridedArray m=(IStridedArray)mm;
+		
+		int dims=m.dimensionality();
+		int[] shape=m.getShape();
+		int[] strides=m.getStrides();
+		double[] data=m.getArray();
+		for (int i=0; i<dims; i++) {
+			assertEquals(m.getStride(i),strides[i]);
+		}
+		
+		if (m.elementCount()==0) return;
+		
+		int[] ix = IntArrays.rand(shape);
+		int off=m.getArrayOffset()+IntArrays.dotProduct(strides,ix);
+		assertEquals(data[off],m.get(ix),0.0);
+	}
 
 	private void testMathsFunctions(INDArray a) {
 		if (!a.isFullyMutable()) return;
@@ -399,6 +419,7 @@ public class TestArrays {
 		testApplyOp(a);
 		testApplyAllOps(a);
 		testElementIterator(a);
+		testStridedArray(a);
 		testBoolean(a);
 		testSums(a);
 		testEquals(a);
