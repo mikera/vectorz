@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract base class for vectors backed by a double[] array with a constant stride
@@ -51,5 +52,13 @@ public abstract class AStridedVector extends AVector implements IStridedArray {
 	@Override
 	public int[] getStrides() {
 		return new int[] {getStride()};
+	}
+	
+	@Override
+	public int getStride(int dimension) {
+		switch (dimension) {
+		case 0: return getStride();
+		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		}
 	}
 }

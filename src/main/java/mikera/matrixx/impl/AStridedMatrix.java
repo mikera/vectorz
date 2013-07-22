@@ -36,7 +36,18 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		return Vectorz.wrapStrided(data, getArrayOffset()+i*columnStride(), rows, rowStride());
 	}
 	
+	@Override
 	public int[] getStrides() {
 		return new int[] {rowStride(), columnStride()};
 	}
+	
+	@Override
+	public int getStride(int dimension) {
+		switch (dimension) {
+		case 0: return rowStride();
+		case 1: return columnStride();
+		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		}
+	}
+	
 }
