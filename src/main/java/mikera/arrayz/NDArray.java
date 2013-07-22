@@ -74,6 +74,15 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		return wrap(m.data,m.getShape());
 	}
 	
+	public static NDArray wrap(IStridedArray a) {
+		return new NDArray(a.getArray(),a.getArrayOffset(),a.getShape(),a.getStrides());
+	}
+	
+	public static NDArray wrap(INDArray a) {
+		if (!(a instanceof IStridedArray)) throw new IllegalArgumentException(a.getClass()+" is not a strided array!");
+		return wrap((IStridedArray)a);
+	}
+	
 	public static NDArray newArray(int... shape) {
 		return new NDArray(shape);
 	}
