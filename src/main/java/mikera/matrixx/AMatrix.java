@@ -773,7 +773,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		add(a.get());
 	}
 	
-	
 	@Override
 	public void negate() {
 		multiply(-1.0);
