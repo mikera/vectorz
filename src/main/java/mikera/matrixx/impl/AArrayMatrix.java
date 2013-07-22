@@ -64,4 +64,8 @@ public abstract class AArrayMatrix extends AMatrix {
 	 * @return
 	 */
 	protected abstract int index(int i, int j);
+
+	public double[] getArray() {
+		return data;
+	}
 }

@@ -438,4 +438,9 @@ public final class Matrix extends ADenseArrayMatrix {
 		return 0;
 	}
 
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+
 }

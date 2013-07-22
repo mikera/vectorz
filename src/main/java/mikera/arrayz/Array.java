@@ -38,6 +38,10 @@ public final class Array extends AbstractArray<INDArray> {
 		int n = (int) IntArrays.arrayProduct(shape);
 		this.data = new double[n];
 	}
+	
+	private Array(int[] shape, double[] data) {
+		this(shape.length, shape, IntArrays.calcStrides(shape), data);
+	}
 
 	private Array(int dims, int[] shape, double[] data) {
 		this(dims, shape, IntArrays.calcStrides(shape), data);
@@ -48,6 +52,14 @@ public final class Array extends AbstractArray<INDArray> {
 		this.shape = shape;
 		this.strides = strides;
 		this.data = data;
+	}
+	
+	public static Array wrap(Vector v) {
+		return new Array(v.getShape(),v.getArray());
+	}
+	
+	public static Array wrap(Matrix m) {
+		return new Array(m.getShape(),m.getArray());
 	}
 
 	public static Array newArray(int... shape) {
