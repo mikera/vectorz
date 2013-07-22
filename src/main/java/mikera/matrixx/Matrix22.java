@@ -36,11 +36,7 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 		if (m instanceof Matrix22) {
 			set((Matrix22) m);
 		} else {
-			if ((m.rowCount()!=2)||(m.columnCount()!=2)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));
-			m00=m.unsafeGet(0,0);
-			m01=m.unsafeGet(0,1);
-			m10=m.unsafeGet(1,0);
-			m11=m.unsafeGet(1,1);		
+			set(m);
 		}
 	}
 	
@@ -49,7 +45,16 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 		m10=a.m10; m11=a.m11; 
 	}
 	
-	public static Matrix22 createRotationMatrix(double a, double b, double c, double d) {
+	@Override
+	public void set(AMatrix m) {
+		if ((m.rowCount()!=2)||(m.columnCount()!=2)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));
+		m00=m.unsafeGet(0,0);
+		m01=m.unsafeGet(0,1);
+		m10=m.unsafeGet(1,0);
+		m11=m.unsafeGet(1,1);		
+	}
+	
+	public static Matrix22 create(double a, double b, double c, double d) {
 		return new Matrix22(a,b,c,d);
 	}
 	
@@ -94,6 +99,20 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	@Override
 	public int columnCount() {
 		return 2;
+	}
+	
+	public void add(Matrix22 a) {
+		m00+=a.m00;
+		m01+=a.m01;
+		m10+=a.m10;
+		m11+=a.m11;		
+	}
+	
+	public void sub(Matrix22 a) {
+		m00-=a.m00;
+		m01-=a.m01;
+		m10-=a.m10;
+		m11-=a.m11;		
 	}
 	
 	@Override
@@ -180,6 +199,11 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	@Override
 	public boolean isSquare() {
 		return true;
+	}
+	
+	@Override
+	public boolean isSymmetric() {
+		return m01==m10;
 	}
 	
 	@Override
