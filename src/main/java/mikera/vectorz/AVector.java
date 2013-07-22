@@ -679,7 +679,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			double comp=get(i);
+			double comp=unsafeGet(i);
 			if (comp>result) {
 				result=comp;
 			} else if (-comp>result) {
