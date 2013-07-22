@@ -50,9 +50,7 @@ public final class Linear extends ALinearOp {
 	
 	@Override
 	public void applyTo(double[] data) {
-		for (int i=0; i<data.length; i++) {
-			data[i]=(data[i]*factor)+constant;
-		}
+		DoubleArrays.scaleAdd(data, factor, constant);
 	}
 	
 	@Override

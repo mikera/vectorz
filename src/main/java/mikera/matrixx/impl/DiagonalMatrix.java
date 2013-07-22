@@ -96,6 +96,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return dimensions<=1;
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		for (int i=0; i<data.length; i++) {
 			data[i]*=factor;

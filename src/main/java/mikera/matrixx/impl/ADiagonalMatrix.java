@@ -26,11 +26,6 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
-	public boolean isFullyMutable() {
-		return false;
-	}
-	
-	@Override
 	public boolean isSymmetric() {
 		return true;
 	}
@@ -57,6 +52,11 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public abstract boolean isMutable();
+	
+	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
 	
 	@Override
 	public double determinant() {
