@@ -342,6 +342,8 @@ public class TestArrays {
 			assertEquals(m.getStride(i),strides[i]);
 		}
 		
+		if (m.isPackedArray()) assertNotNull(m.asDoubleArray());
+		
 		if (m.elementCount()==0) return;
 		
 		int[] ix = IntArrays.rand(shape);
