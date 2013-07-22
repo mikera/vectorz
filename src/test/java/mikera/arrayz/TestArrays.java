@@ -331,7 +331,10 @@ public class TestArrays {
 	}
 	
 	private void testStridedArray(INDArray mm) {
-		if (!(mm instanceof IStridedArray)) return;
+		if (!(mm instanceof IStridedArray)) {
+			assertNull(mm.asDoubleArray());
+			return;
+		}
 		IStridedArray m=(IStridedArray)mm;
 		
 		int dims=m.dimensionality();
