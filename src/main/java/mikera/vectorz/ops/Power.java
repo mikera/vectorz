@@ -1,6 +1,7 @@
 package mikera.vectorz.ops;
 
 import mikera.arrayz.INDArray;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
@@ -41,6 +42,11 @@ public final class Power extends Op {
 	
 	@Override
 	public void applyTo(INDArray a) {
+		a.pow(exponent);
+	}
+	
+	@Override
+	public void applyTo(AMatrix a) {
 		a.pow(exponent);
 	}
 	
