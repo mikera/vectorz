@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.impl.IStridedArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 
@@ -10,7 +11,7 @@ import mikera.vectorz.Vector;
  * 
  * @author Mike
  */
-public abstract class AStridedVector extends AVector {
+public abstract class AStridedVector extends AVector implements IStridedArray {
 	private static final long serialVersionUID = -7239429584755803950L;
 
 	public abstract double[] getArray();
@@ -46,5 +47,9 @@ public abstract class AStridedVector extends AVector {
 			addAt(i,v.data[i]);
 		}
 	}
-
+	
+	@Override
+	public int[] getStrides() {
+		return new int[] {getStride()};
+	}
 }
