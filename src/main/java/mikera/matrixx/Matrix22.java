@@ -33,12 +33,24 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 
 	public Matrix22(AMatrix m) {
-		assert(m.rowCount()==2);
-		assert(m.columnCount()==2);
-		m00=m.get(0,0);
-		m01=m.get(0,1);
-		m10=m.get(1,0);
-		m11=m.get(1,1);
+		if (m instanceof Matrix22) {
+			set((Matrix22) m);
+		} else {
+			if ((m.rowCount()!=2)||(m.columnCount()!=2)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));
+			m00=m.unsafeGet(0,0);
+			m01=m.unsafeGet(0,1);
+			m10=m.unsafeGet(1,0);
+			m11=m.unsafeGet(1,1);		
+		}
+	}
+	
+	public void set(Matrix22 a) {
+		m00=a.m00; m01=a.m01; 
+		m10=a.m10; m11=a.m11; 
+	}
+	
+	public static Matrix22 createRotationMatrix(double a, double b, double c, double d) {
+		return new Matrix22(a,b,c,d);
 	}
 	
 	public static Matrix22 createRotationMatrix(double angle) {

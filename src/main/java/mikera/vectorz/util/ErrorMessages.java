@@ -40,6 +40,11 @@ public class ErrorMessages {
 		return "Incompatible shapes: "+shape(a)+" vs. "+shape(b);
 	}
 	
+	public static String incompatibleShape(INDArray m) {
+		return "Incompatible shape: "+shape(m);
+	}
+
+	
 	/**
 	 * Returns an error message indicating that a broadcast is not possible
 	 * 
