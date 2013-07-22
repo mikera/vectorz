@@ -9,6 +9,8 @@ import mikera.vectorz.AVector;
  * This is deprecated! Prefer mikera.vectorz.Scalar instead.
  * Included only for backwards compatibility purposes
  * 
+ * TODO: remove in Vectorz 1.0.0 release
+ * 
  * @author Mike
  */
 @Deprecated
