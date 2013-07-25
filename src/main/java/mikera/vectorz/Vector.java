@@ -339,6 +339,14 @@ public final class Vector extends AArrayVector {
 		return result;
 	}
 	
+	@Override public Scalar innerProduct(AVector v) {
+		return Scalar.create(dotProduct(v));
+	}
+	
+	@Override public Scalar innerProduct(Vector v) {
+		return Scalar.create(dotProduct(v));
+	}
+	
 	public double dotProduct(Vector v) {
 		int len=length();
 		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");

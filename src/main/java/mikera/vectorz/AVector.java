@@ -562,6 +562,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public Scalar innerProduct(AVector v) {
 		return Scalar.create(dotProduct(v));
 	}
+
+	public Scalar innerProduct(Vector v) {
+		return Scalar.create(v.dotProduct(this));
+	}
 	
 	public AVector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
