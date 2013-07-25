@@ -1114,7 +1114,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		}
 
-		AMatrix result=Matrixx.newMatrix(rc,cc);
+		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
@@ -1135,7 +1135,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		if ((ic!=a.rowCount())) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		}
-		AMatrix result=Matrixx.newMatrix(rc,cc);
+		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
