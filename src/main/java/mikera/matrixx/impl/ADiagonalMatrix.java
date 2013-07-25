@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.impl.AArrayVector;
@@ -88,9 +89,33 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof ADiagonalMatrix) {
 			return innerProduct((ADiagonalMatrix) a);
+		} else if (a instanceof Matrix) {
+			return innerProduct((Matrix) a);
 		}
 		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		return super.innerProduct(a);
+		int acc=a.columnCount();
+		Matrix m=Matrix.create(dimensions, acc);
+		for (int i=0; i<dimensions; i++) {
+			double dv=getDiagonalValue(i);
+			for (int j=0; j<acc; j++) {
+				m.unsafeSet(i, j, dv*a.unsafeGet(i,j));
+			}
+		}
+		return m;
+	}
+	
+	@Override
+	public Matrix innerProduct(Matrix a) {
+		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		int acc=a.columnCount();
+		Matrix m=Matrix.create(dimensions, acc);
+		for (int i=0; i<dimensions; i++) {
+			double dv=getDiagonalValue(i);
+			for (int j=0; j<acc; j++) {
+				m.unsafeSet(i, j, dv*a.unsafeGet(i,j));
+			}
+		}
+		return m;
 	}
 	
 	@Override
