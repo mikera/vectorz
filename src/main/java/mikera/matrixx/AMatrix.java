@@ -625,6 +625,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return TransposedMatrix.wrap(this);
 	}
 	
+	public Matrix getTransposeCopy() {
+		int rc=this.rowCount();
+		int cc=this.columnCount();
+		Matrix m=Matrix.create(cc,rc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				m.unsafeSet(j,i,unsafeGet(i,j));
+			}
+		}
+		return m;
+	}
+	
 	/**
 	 * Adds another matrix to this matrix. Matrices must be the same size.
 	 * @param m
