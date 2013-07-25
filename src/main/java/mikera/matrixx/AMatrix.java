@@ -625,6 +625,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return TransposedMatrix.wrap(this);
 	}
 	
+	@Override
 	public Matrix getTransposeCopy() {
 		int rc=this.rowCount();
 		int cc=this.columnCount();

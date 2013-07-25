@@ -300,6 +300,11 @@ public class TestArrays {
 
 	private void testTranspose(INDArray a) {
 		assertEquals(a, a.getTranspose().getTranspose());
+		try {
+			assertEquals(a.getTransposeCopy(), a.getTransposeView());
+		} catch (UnsupportedOperationException x) {
+			// OK, not all matrices have transpose views
+		}
 	}
 
 	private void testClamp(INDArray a) {

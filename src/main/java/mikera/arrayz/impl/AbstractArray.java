@@ -128,6 +128,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		throw new UnsupportedOperationException();
 	}
 	
+	@Override
+	public INDArray getTransposeCopy() {
+		return getTranspose().clone();
+	}
+	
 	public final void scale(double d) {
 		multiply(d);
 	}

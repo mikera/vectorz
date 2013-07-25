@@ -201,6 +201,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray getTransposeView();
+	
+	/**
+	 * Returns a transposed copy of the array. 
+	 * @return
+	 */
+	public INDArray getTransposeCopy();
 
 	/**
 	 * returns the number of major slices in this array.
