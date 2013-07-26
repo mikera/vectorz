@@ -96,7 +96,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		if ((cc!=a.length())) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}		
-		Vector result=Vector.createLength(rows);
+		Vector result=Vector.createLength(rc);
 		for (int i=0; i<rc; i++) {
 			int di=i*cc;
 			double acc=0.0;

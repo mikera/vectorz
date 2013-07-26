@@ -328,15 +328,23 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public double dotProduct(AVector v) {
-		if ((v instanceof Vector)) return dotProduct((Vector)v);
+	public double dotProduct(double[] data, int offset) {
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=data[i]*v.unsafeGet(i);
+			result+=this.data[i]*data[offset+i];
 		}
 		return result;
+	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		if ((v instanceof Vector)) {
+			return dotProduct((Vector)v);
+		} else {
+			if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+			return v.dotProduct(data,0);
+		}
 	}
 	
 	@Override public Scalar innerProduct(AVector v) {
