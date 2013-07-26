@@ -1144,6 +1144,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;		
 	}
 	
+	public Vector innerProduct(Vector v) {
+		return transform(v);
+	}
+	
 	public AMatrix innerProduct(Matrix a) {
 		int rc=this.rowCount();
 		int cc=a.columnCount();
