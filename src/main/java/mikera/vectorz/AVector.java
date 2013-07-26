@@ -587,9 +587,19 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return r;
 	}
 	
+	public AVector innerProduct(AScalar s) {
+		Vector v=toVector();
+		v.scale(s.get());
+		return v;
+	}
+	
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AVector) {
 			return Scalar.create(dotProduct((AVector)a));
+		} else if (a instanceof AScalar) {
+			return innerProduct((AScalar)a);
+		} else if (a instanceof AMatrix) {
+			return innerProduct((AMatrix)a);
 		}
 		return super.innerProduct(a);
 	}

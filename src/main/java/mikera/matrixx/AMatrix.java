@@ -1119,6 +1119,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AMatrix innerProduct(AMatrix a) {
+		if (a instanceof Matrix) {
+			return innerProduct((Matrix)a);
+		}
+		
 		int rc=this.rowCount();
 		int cc=a.columnCount();
 		int ic=this.columnCount();
@@ -1166,7 +1170,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AMatrix innerProduct(AScalar s) {
-		AMatrix r= clone();
+		Matrix r= toMatrix();
 		r.scale(s.get());
 		return r;
 	}
