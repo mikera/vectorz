@@ -107,6 +107,11 @@ public class AxisVector extends ComputedVector implements ISparse {
 	}
 	
 	@Override 
+	public double dotProduct(double[] data, int offset) {
+		return data[offset+axis];
+	}
+	
+	@Override 
 	public double dotProduct(Vector v) {
 		assert(length==v.length());
 		return v.data[axis];
