@@ -1180,12 +1180,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AMatrix transposeInnerProduct(AMatrix s) {
-		AMatrix r= getTranspose();
+		Matrix r= toMatrixTranspose();
 		return r.innerProduct(s);
 	}
 	
 	public Matrix transposeInnerProduct(Matrix s) {
-		return getTranspose().innerProduct(s);
+		Matrix r= toMatrixTranspose();
+		return r.innerProduct(s);
 	}
 	
 	public INDArray innerProduct(INDArray a) {

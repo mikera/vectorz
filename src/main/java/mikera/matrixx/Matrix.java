@@ -110,6 +110,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix innerProduct(Matrix a) {
+		// TODO: detect large matrices and farm off to cache-efficient function
+		
 		int ic=this.columnCount();
 		if ((ic!=a.rowCount())) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
