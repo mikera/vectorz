@@ -27,6 +27,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		data=values;
 	}
 	
+	public static DiagonalMatrix createDimensions(int dims) {
+		return new DiagonalMatrix(dims);
+	}
+	
 	public static DiagonalMatrix create(double... values) {
 		int dimensions=values.length;
 		double[] data=new double[dimensions];
@@ -211,4 +215,5 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		
 		super.validate();
 	}
+
 }

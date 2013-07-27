@@ -1148,7 +1148,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return transform(v);
 	}
 	
-	public AMatrix innerProduct(Matrix a) {
+	public Matrix innerProduct(Matrix a) {
 		int rc=this.rowCount();
 		int cc=a.columnCount();
 		int ic=this.columnCount();
@@ -1177,6 +1177,15 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		Matrix r= toMatrix();
 		r.scale(s.get());
 		return r;
+	}
+	
+	public AMatrix transposeInnerProduct(AMatrix s) {
+		AMatrix r= getTranspose();
+		return r.innerProduct(s);
+	}
+	
+	public Matrix transposeInnerProduct(Matrix s) {
+		return getTranspose().innerProduct(s);
 	}
 	
 	public INDArray innerProduct(INDArray a) {

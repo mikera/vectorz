@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 
 /**
@@ -84,6 +85,10 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public AMatrix getTranspose() {
 		// Transposing again just gets us back to the original source matrix
 		return source;
+	}
+	
+	public Matrix transposeInnerProduct(Matrix s) {
+		return source.innerProduct(s);
 	}
 	
 	@Override

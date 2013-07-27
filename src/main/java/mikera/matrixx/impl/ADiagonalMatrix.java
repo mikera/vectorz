@@ -77,9 +77,10 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	public AMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		DiagonalMatrix result=DiagonalMatrix.create(dimensions);
-		for (int i=0; i<dimensions; i++) {
+		int dims=this.dimensions;
+		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		DiagonalMatrix result=DiagonalMatrix.createDimensions(dims);
+		for (int i=0; i<dims; i++) {
 			result.data[i]=getDiagonalValue(i)*a.getDiagonalValue(i);
 		}
 		return result;
@@ -116,6 +117,11 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 			}
 		}
 		return m;
+	}
+	
+	@Override
+	public Matrix transposeInnerProduct(Matrix s) {
+		return innerProduct(s);
 	}
 	
 	@Override

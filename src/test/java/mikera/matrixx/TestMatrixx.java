@@ -245,6 +245,8 @@ public class TestMatrixx {
 		assertEquals(m.getTranspose(),m2);
 		m2=m2.getTranspose();
 		assertEquals(m,m2);
+		
+		assertEquals(m.getTranspose().innerProduct(m),m.transposeInnerProduct(m));
 	}
 	
 	private void doSquareTransposeTest(AMatrix m) {

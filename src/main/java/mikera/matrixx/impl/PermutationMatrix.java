@@ -251,6 +251,11 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	}
 	
 	@Override
+	public Matrix transposeInnerProduct(Matrix s) {
+		return getTranspose().innerProduct(s);
+	}
+	
+	@Override
 	public void validate() {
 		super.validate();
 		if (size!=perm.length()) throw new VectorzException("Whoops!");
