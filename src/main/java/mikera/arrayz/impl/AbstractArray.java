@@ -273,7 +273,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		case 2:
 			return Matrix.wrap(getShape(0), getShape(1), this.toDoubleArray());
 		default:
-			return Array.createFromArray(this.toDoubleArray(),this.getShape());
+			return Array.wrap(this.toDoubleArray(),this.getShape());
 		}
 	}
 	
