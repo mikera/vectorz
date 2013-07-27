@@ -237,11 +237,6 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public SliceArray<T> clone() {
-		return exactClone();
-	}
-
-	@Override
 	public SliceArray<T> exactClone() {
 		T[] newSlices=slices.clone();
 		for (int i=0; i<slices.length; i++) {

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
@@ -104,6 +105,11 @@ public class TestArrays {
 
 	private void testClone(INDArray a) {
 		INDArray c = a.clone();
+		
+		if (!(c instanceof VectorMatrixM3)) { // allowed to still be a view
+			assertFalse(c.isView());
+		}
+		
 		assertTrue(c.equals(a));
 		assertTrue(a.equals(c));
 		assertEquals(a.hashCode(), c.hashCode());

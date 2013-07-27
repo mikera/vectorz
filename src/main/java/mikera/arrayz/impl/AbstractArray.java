@@ -264,6 +264,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray clone() {
+		// note that we always want to clone into the most efficient basic type
 		int dims=dimensionality();
 		switch (dims) {
 		case 0:
