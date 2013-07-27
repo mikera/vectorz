@@ -12,4 +12,10 @@ public class TestAxisVector {
 		
 		assertEquals(3.0,v.dotProduct(Vector.of(1,2,3,4)),0.0);
 	}
+	
+	@Test public void testSquare() {
+		AxisVector v=AxisVector.create(2, 4);
+		
+		v.square();	
+	}
 }
