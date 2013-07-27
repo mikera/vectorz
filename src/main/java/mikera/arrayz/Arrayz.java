@@ -35,7 +35,7 @@ public class Arrayz {
 	 */
 	@SuppressWarnings("unchecked")
 	public static INDArray create(Object object) {
-		if (object instanceof INDArray) return ((INDArray)object).clone();
+		if (object instanceof INDArray) return create((INDArray)object);
 		
 		if (object instanceof double[]) return Vector.of((double[])object);
 		if (object instanceof List<?>) {
@@ -70,6 +70,20 @@ public class Arrayz {
 			case 1: return Vector.createLength(shape[0]);
 			case 2: return Matrix.create(shape[0], shape[1]);
 			default: return Array.newArray(shape);
+		}
+	}
+	
+	public static INDArray create(INDArray a) {
+		int dims=a.dimensionality();
+		switch (dims) {
+		case 0:
+			return Scalar.create(a.get());
+		case 1:
+			return Vector.create(a.toDoubleArray());
+		case 2:
+			return Matrix.wrap(a.getShape(0), a.getShape(1), a.toDoubleArray());
+		default:
+			return Array.wrap(a.toDoubleArray(),a.getShape());
 		}
 	}
 	
