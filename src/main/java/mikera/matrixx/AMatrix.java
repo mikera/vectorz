@@ -1180,6 +1180,9 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AMatrix transposeInnerProduct(AMatrix s) {
+		// this seems to be a sensible default strategy. Incurs an extra temp copy, 
+		// but probably worth it in most cases to take advantage of Matrix layout
+		// which is optimised for being the first term in an inner product
 		Matrix r= toMatrixTranspose();
 		return r.innerProduct(s);
 	}

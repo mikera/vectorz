@@ -71,11 +71,6 @@ public final class Scalar extends AScalar {
 	}
 
 	@Override
-	public Scalar clone() {
-		return new Scalar(value);
-	}
-
-	@Override
 	public void getElements(double[] dest, int offset) {
 		dest[offset] = value;
 	}

@@ -168,6 +168,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		return a;
 	}
 	
+	public Scalar innerProduct(AScalar a) {
+		return Scalar.create(get()*a.get());
+	}
+	
 	@Override
 	public INDArray outerProduct(INDArray a) {
 		a=a.clone();
@@ -241,8 +245,8 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public AScalar clone() {
-		return (AScalar) super.clone();
+	public Scalar clone() {
+		return Scalar.create(get());
 	}
 	
 	@Override 
@@ -257,7 +261,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public double elementSum() {
+	public final double elementSum() {
 		return get();
 	}
 	
