@@ -590,6 +590,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray broadcastLike(INDArray target) {
+		return broadcast(target.getShape());
+	}
+	
+	@Override
 	public void validate() {
 		// TODO: any generic validation?
 	}

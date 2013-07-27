@@ -1402,6 +1402,22 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			return SliceArray.repeat(s,n);
 		}
 	}
+	
+	@Override
+	public INDArray broadcastLike(INDArray target) {
+		if (target instanceof AMatrix) {
+			return broadcastLike((AMatrix)target);
+		}
+		return broadcast(target.getShape());
+	}
+	
+	public INDArray broadcastLike(AMatrix target) {
+		if (rowCount()==target.rowCount()&&(columnCount()==target.columnCount())) {
+			return this;
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
+		}
+	}
 
 	/**
 	 * Returns true if the matrix is the zero matrix (all components zero)
