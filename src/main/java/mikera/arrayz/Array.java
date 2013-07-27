@@ -47,6 +47,12 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	private Array(int dims, int[] shape, double[] data) {
 		this(dims, shape, IntArrays.calcStrides(shape), data);
 	}
+	
+	public static INDArray createFromArray(double[] data, int[] shape) {
+		long ec=IntArrays.arrayProduct(shape);
+		if (data.length!=ec) throw new IllegalArgumentException("Data array does not have correct number of elements, expected: "+ec);
+		return new Array(shape.length,shape,data);
+	}
 
 	private Array(int dims, int[] shape, int[] strides, double[] data) {
 		this.dimensions = dims;
@@ -334,4 +340,5 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	public boolean isPackedArray() {
 		return true;
 	}
+
 }

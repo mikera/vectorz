@@ -15,6 +15,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.BroadcastVectorMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.JoinedVector;
@@ -23,6 +24,7 @@ import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.VectorIterator;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Logistic;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -1335,6 +1337,23 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			return SliceArray.repeat(s,n);
 		}
 	}
+	
+	@Override
+	public INDArray broadcastLike(INDArray target) {
+		if (target instanceof AMatrix) {
+			return broadcastLike((AMatrix)target);
+		}
+		return broadcast(target.getShape());
+	}
+	
+	public INDArray broadcastLike(AMatrix target) {
+		if (length()==target.columnCount()) {
+			return BroadcastVectorMatrix.wrap(this, target.rowCount());
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
+		}
+	}
+
 
 	@Override
 	public void validate() {

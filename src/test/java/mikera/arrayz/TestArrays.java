@@ -287,11 +287,13 @@ public class TestArrays {
 	}
 	
 	private void testBroadcastLike(INDArray a) {
-		INDArray up=SliceArray.create(a);
-		
-		INDArray b=a.broadcastLike(up);
-		
+		INDArray up=SliceArray.create(a);		
+		INDArray b=a.broadcastLike(up);		
 		assertEquals(up,b);
+		
+		INDArray up2=Arrayz.create(SliceArray.create(a));		
+		INDArray b2=a.broadcastLike(up);		
+		assertEquals(up2,b2);
 	}
 
 	private void testSums(INDArray a) {

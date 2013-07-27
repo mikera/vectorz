@@ -11,9 +11,11 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.SliceArray;
+import mikera.matrixx.Matrix;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -260,11 +262,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return sb.toString();
 	}
 	
+	@Override
 	public INDArray clone() {
-		try {
-			return (AbstractArray<?>)super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("AbstractArray clone failed!?!");
+		int dims=dimensionality();
+		switch (dims) {
+		case 0:
+			return Scalar.create(get());
+		case 1:
+			return Vector.create(this.toDoubleArray());
+		case 2:
+			return Matrix.wrap(getShape(0), getShape(1), this.toDoubleArray());
+		default:
+			return Array.createFromArray(this.toDoubleArray(),this.getShape());
 		}
 	}
 	
