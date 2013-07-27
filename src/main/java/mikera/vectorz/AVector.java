@@ -424,14 +424,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void divide(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			set(i,get(i)/data[i+offset]);
+			unsafeSet(i,unsafeGet(i)/data[i+offset]);
 		}	
 	}
 	
 	public void divideTo(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			data[i+offset]/=get(i);
+			data[i+offset]/=unsafeGet(i);
 		}	
 	}
 	
@@ -450,8 +450,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void log() {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			double val=get(i);
-			set(i,Math.log(val));
+			double val=unsafeGet(i);
+			unsafeSet(i,Math.log(val));
 		}
 	}
 	
@@ -461,7 +461,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void signum() {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			set(i,Math.signum(get(i)));
+			unsafeSet(i,Math.signum(unsafeGet(i)));
 		}
 	}
 	
@@ -627,7 +627,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (v.length()!=ix.length()) throw new IllegalArgumentException("Mismtached source vector and index sizes");
 		double result=0.0;
 		for (int i=0; i<vl; i++) {
-			result+=get(ix.get(i))*v.unsafeGet(i);
+			result+=unsafeGet(ix.get(i))*v.unsafeGet(i);
 		}
 		return result;
 	}

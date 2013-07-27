@@ -110,12 +110,12 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix innerProduct(Matrix a) {
-		if ((this.columnCount()!=a.rowCount())) {
+		int ic=this.columnCount();
+		if ((ic!=a.rowCount())) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
-		int ic=this.columnCount();
 		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
@@ -224,6 +224,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public AStridedVector getColumn(int col) {
 		if (cols==1) {
+			if (col!=0) throw new IndexOutOfBoundsException("Column does not exist: "+col);
 			return Vector.wrap(data);
 		} else {
 			return StridedVector.wrap(data,col,rows,cols);
