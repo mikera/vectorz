@@ -285,6 +285,14 @@ public class TestArrays {
 
 		assertEquals(a, b.slice(0).slice(1));
 	}
+	
+	private void testBroadcastLike(INDArray a) {
+		INDArray up=SliceArray.create(a);
+		
+		INDArray b=a.broadcastLike(up);
+		
+		assertEquals(up,b);
+	}
 
 	private void testSums(INDArray a) {
 		INDArray b = a.clone();
@@ -444,6 +452,7 @@ public class TestArrays {
 		testSetElements(a);
 		testGetElements(a);
 		testBroadcast(a);
+		testBroadcastLike(a);
 		testShape(a);
 		testClamp(a);
 		testHash(a);
