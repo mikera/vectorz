@@ -57,6 +57,20 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 	
 	@Override
+	public Matrix toMatrixTranspose() {
+		if (source instanceof Matrix) {
+			return (Matrix)source;
+		} else {
+			return source.toMatrix();
+		}
+	}
+	
+	@Override
+	public Matrix toMatrix() {
+		return source.toMatrixTranspose();
+	}
+	
+	@Override
 	public AVector getColumn(int column) {
 		return source.getRow(column);
 	}
