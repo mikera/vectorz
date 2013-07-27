@@ -240,9 +240,12 @@ public class TestMatrixx {
 	}
 	
 	private void doTransposeTest(AMatrix m) {
-		AMatrix m2=m.exactClone();
+		AMatrix m2=m.clone();
 		m2=m2.getTranspose();
-		assertEquals(m.getTranspose(),m2);
+		assertEquals(m2, m.getTranspose());
+		assertEquals(m2, m.getTransposeView());
+		assertEquals(m2, m.toMatrixTranspose());
+		
 		m2=m2.getTranspose();
 		assertEquals(m,m2);
 		

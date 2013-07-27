@@ -1255,14 +1255,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
-	 * Converts the matrix to a the standard mutable Matrix type
-	 * in row major order.
+	 * Coerces the matrix to the standard mutable Matrix type
+	 * in row major order. Performs a copy if necessary.
 	 */
 	public Matrix toMatrix() {
 		int rc = rowCount();
 		int cc = columnCount();
 		Matrix m = Matrix.create(rc, cc);
 		this.getElements(m.data,0);
+		return m;
+	}
+	
+	/**
+	 * Coerces the transpose of a matrix to the standard mutable Matrix type
+	 * in row major order. Performs a copy if necessary.
+	 */
+	public Matrix toMatrixTranspose() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(cc, rc);
+		this.getTransposeView().getElements(m.data,0);
 		return m;
 	}
 	
