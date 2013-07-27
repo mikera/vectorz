@@ -571,7 +571,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	public Scalar innerProduct(Vector v) {
-		return Scalar.create(v.dotProduct(this));
+		int vl=v.data.length;
+		if (length()!=vl) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		return Scalar.create(dotProduct(v.data,vl));
 	}
 	
 	public AVector innerProduct(AMatrix m) {
