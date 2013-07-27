@@ -13,6 +13,7 @@ import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.util.Rand;
@@ -473,6 +474,23 @@ public class Matrixx {
 			System.arraycopy(ds, 0, m.data, i * cols, cols);
 		}
 		return m;
+	}
+
+	/**
+	 * Wraps double[] data in a strided matrix
+	 * @param array
+	 * @param arrayOffset
+	 * @param reverse
+	 * @param reverse2
+	 * @return
+	 */
+	public static AMatrix wrapStrided(double[] data, int rows, int cols, int offset, int rowStride, int colStride) {
+		if (offset==0) {
+			if ((cols==rowStride)&&(colStride==1)&&(data.length==rows*cols)) {
+				return Matrix.wrap(rows, cols, data);
+			} 
+		}
+		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);
 	}
 
 }

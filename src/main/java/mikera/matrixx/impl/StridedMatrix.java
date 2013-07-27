@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -97,8 +98,14 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public StridedMatrix getTranspose() {
-		return StridedMatrix.wrap(data, cols, rows, offset,
+	public AMatrix getTranspose() {
+		return Matrixx.wrapStrided(data, cols, rows, offset,
+				colStride, rowStride);
+	}
+	
+	@Override
+	public AMatrix getTransposeView() {
+		return Matrixx.wrapStrided(data, cols, rows, offset,
 				colStride, rowStride);
 	}
 

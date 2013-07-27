@@ -210,6 +210,15 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public Matrix toMatrix() {
+		Matrix m=Matrix.create(dimensions, dimensions);
+		for (int i=0; i<dimensions; i++) {
+			m.data[i*(dimensions+1)]=getDiagonalValue(i);
+		}
+		return m;
+	}
+	
+	@Override
 	public void validate() {
 		if (dimensions!=getLeadingDiagonal().length()) throw new VectorzException("dimension mismatch: "+dimensions);
 		

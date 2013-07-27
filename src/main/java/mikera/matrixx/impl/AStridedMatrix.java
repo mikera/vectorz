@@ -1,6 +1,8 @@
 package mikera.matrixx.impl;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
@@ -48,6 +50,11 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		case 1: return columnStride();
 		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		}
+	}
+	
+	@Override
+	public AMatrix getTransposeView() {
+		return Matrixx.wrapStrided(getArray(),columnCount(),rowCount(),getArrayOffset(),columnStride(),rowStride());
 	}
 	
 	@Override
