@@ -293,12 +293,14 @@ public class TestArrays {
 	}
 	
 	private void testBroadcastLike(INDArray a) {
-		INDArray up=SliceArray.create(a);		
+		INDArray up=SliceArray.create(a,a);		
 		INDArray b=a.broadcastLike(up);		
 		assertEquals(up,b);
+		assertEquals(a,up.slice(0));
+		assertEquals(a,up.slice(1));
 		
 		INDArray up2=Arrayz.create(SliceArray.create(a));		
-		INDArray b2=a.broadcastLike(up);		
+		INDArray b2=a.broadcastLike(up2);		
 		assertEquals(up2,b2);
 	}
 
