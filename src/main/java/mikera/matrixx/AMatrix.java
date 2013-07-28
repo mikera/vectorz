@@ -1416,10 +1416,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public INDArray broadcast(int... targetShape) {
 		int tdims=targetShape.length;
 		if (tdims<2) {
-			throw new IllegalArgumentException("Can't broadcast to a smaller shape!");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
 		} else if (2==tdims) {
-			return this;
+			if (rowCount()==targetShape[0]&&columnCount()==targetShape[1]) return this;
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
 		} else {
+			if (rowCount()!=targetShape[tdims-2]||(columnCount()!=targetShape[tdims-1])) {
+				throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
+			}
 			int n=targetShape[0];
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
 			return SliceArray.repeat(s,n);

@@ -578,7 +578,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (tdims<dims) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 		} else if (dims==tdims) {
-			return this;
+			if (IntArrays.equals(targetShape, this.getShape())) return this;
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 		} else {
 			int n=targetShape[0];
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));

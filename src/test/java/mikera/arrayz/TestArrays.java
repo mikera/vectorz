@@ -292,6 +292,24 @@ public class TestArrays {
 		assertEquals(a, b.slice(0).slice(1));
 	}
 	
+	private void testIllegalBroadcast(INDArray a) {
+		if (a.dimensionality()==0) return; // scalars can broadcast to anything :-)
+		int[] ts=IntArrays.consArray(1,IntArrays.incrementAll(a.getShape()));
+		try {
+			a.broadcast(ts);
+			fail("Broadcast should not be possible!!");
+		} catch (IllegalArgumentException t) {
+			// OK
+		}
+		
+		try {
+			a.broadcastLike(Array.newArray(ts));
+			fail("Broadcast should not be possible!!");
+		} catch (IllegalArgumentException t) {
+			// OK
+		}
+	}
+	
 	private void testBroadcastLike(INDArray a) {
 		INDArray up=SliceArray.create(a,a);		
 		INDArray b=a.broadcastLike(up);		
@@ -463,6 +481,7 @@ public class TestArrays {
 		testGetElements(a);
 		testBroadcast(a);
 		testBroadcastLike(a);
+		testIllegalBroadcast(a);
 		testShape(a);
 		testClamp(a);
 		testHash(a);

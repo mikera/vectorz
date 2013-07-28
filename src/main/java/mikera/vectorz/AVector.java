@@ -1321,20 +1321,23 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public INDArray broadcast(int... targetShape) {
 		int tdims=targetShape.length;
+		int len=this.length();
 		if (tdims<1) {
-			throw new VectorzException("Can't broadcast to a smaller shape!");
+			throw new IllegalArgumentException("Can't broadcast to a smaller shape!");
 		} else if (tdims==1) {
-			if (targetShape[0]!=this.length()) {
-				throw new VectorzException("Can't broadcast to different length: "+targetShape[0]);
+			if (targetShape[0]!=len) {
+				throw new IllegalArgumentException("Can't broadcast to different length: "+targetShape[0]);
 			}
 			return this;
 		} else if (tdims==2) {
 			int n=targetShape[0];
+			if (len!=targetShape[1]) throw new IllegalArgumentException("Can't broadcast to matrix with different length rows");
 			AVector[] vs=new AVector[n];
 			for (int i=0; i<n; i++) {vs[i]=this;}
 			return Matrixx.createFromVectors(vs);
 		} else {
 			int n=targetShape[0];
+			if (len!=targetShape[tdims-1]) throw new IllegalArgumentException("Can't broadcast to matrix with different length rows");
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
 			return SliceArray.repeat(s,n);
 		}
