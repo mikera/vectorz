@@ -55,7 +55,7 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	
 	@Override
 	public long nonZeroCount() {
-		return (value==0)?0:dimensions;
+		return (value==0.0)?0:dimensions;
 	}
 
 	@Override

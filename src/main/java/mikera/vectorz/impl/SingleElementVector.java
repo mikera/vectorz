@@ -20,7 +20,7 @@ public final class SingleElementVector extends AConstrainedVector implements ISp
 	}
 	
 	public SingleElementVector(int componentIndex, int dimensions, double value) {
-		if (dimensions<=0) throw new IllegalArgumentException("SingleElementVEctor must habe >= 1 dimensions");
+		if (dimensions<=0) throw new IllegalArgumentException("SingleElementVEctor must have >= 1 dimensions");
 		if (componentIndex<0||componentIndex>=dimensions) throw new IllegalArgumentException("Invalid non-zero component index: "+componentIndex);
 		
 		this.dimensions=dimensions;
@@ -32,7 +32,7 @@ public final class SingleElementVector extends AConstrainedVector implements ISp
 	public int length() {
 		return dimensions;
 	}
-	
+
 	@Override
 	public double magnitude() {
 		return value;
