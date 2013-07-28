@@ -6,7 +6,7 @@ import com.google.caliper.SimpleBenchmark;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.algo.DenseMultiply;
+import mikera.matrixx.algo.Multiplications;
 import mikera.vectorz.Vector3;
 
 /**
@@ -24,7 +24,7 @@ public class MultiplyBenchmark extends SimpleBenchmark {
 		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
 		
 		for (int i=0; i<runs; i++) {
-			DenseMultiply.multiply(m1, m2);
+			Multiplications.multiply(m1, m2);
 		}		
 	}
 	

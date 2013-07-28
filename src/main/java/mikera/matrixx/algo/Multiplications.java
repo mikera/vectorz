@@ -5,7 +5,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
-public class DenseMultiply {
+public class Multiplications {
 	// target number of elements in working set group
 	// aim for around 16kb => fits comfortably in L1 cache in modern machines
 	protected static final int WORKING_SET_TARGET=2000;
@@ -49,5 +49,27 @@ public class DenseMultiply {
 			}
 		}
 		return result;
+	}
+	
+	public static AMatrix naiveMultiply(AMatrix a, AMatrix b) {
+		int rc=a.rowCount();
+		int cc=b.columnCount();
+		int ic=a.columnCount();
+		
+		if ((ic!=b.rowCount())) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a,b));
+		}
+
+		Matrix result=Matrix.create(rc,cc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				double acc=0.0;
+				for (int k=0; k<ic; k++) {
+					acc+=a.unsafeGet(i, k)*b.unsafeGet(k, j);
+				}
+				result.unsafeSet(i,j,acc);
+			}
+		}
+		return result;		
 	}
 }
