@@ -51,10 +51,12 @@ public class Multiplications {
 		if ((ic!=b.rowCount())) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a,b));
 		}		
+
+		Matrix result=Matrix.create(rc, cc);
+		if (ic==0) return result;
 		
 		int block=(WORKING_SET_TARGET/ic)+1;
 		Matrix ws=Matrix.create(Math.min(block,cc), ic);
-		Matrix result=Matrix.create(rc, cc);
 		
 		for (int bj=0; bj<cc; bj+=block) {
 			int bjsize=Math.min(block, cc-bj);
