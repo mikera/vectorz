@@ -17,7 +17,16 @@ public class MultiplyBenchmark extends SimpleBenchmark {
 	public static final int MATRIX_SIZE=100;
 
 	
-	public void timeDenseMultiply(int runs) {
+	public void timeBlockedMultiply(int runs) {
+		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+		
+		for (int i=0; i<runs; i++) {
+			Multiplications.blockedMultiply(m1, m2);
+		}		
+	}
+	
+	public void timeDefaultMultiply(int runs) {
 		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
 		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
 		

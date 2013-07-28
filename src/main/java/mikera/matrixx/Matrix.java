@@ -146,10 +146,11 @@ public final class Matrix extends ADenseArrayMatrix {
 		int ic=this.columnCount();
 		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
+			int toffset=ic*i;
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
+					acc+=data[toffset+k]*a.unsafeGet(k, j);
 				}
 				result.unsafeSet(i,j,acc);
 			}

@@ -13,6 +13,7 @@ public class TestDenseMultiply {
 		Matrix m=(Matrix)Matrixx.createRandomMatrix(50, 50);
 		Matrix ip=m.innerProduct(m);
 		assertEquals(ip,Multiplications.multiply(m, m));
+		assertEquals(ip,Multiplications.blockedMultiply(m, m));
 		assertEquals(ip,Multiplications.naiveMultiply(m, m));
 	}
 }

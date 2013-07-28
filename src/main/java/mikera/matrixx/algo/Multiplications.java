@@ -10,13 +10,38 @@ public class Multiplications {
 	// aim for around 16kb => fits comfortably in L1 cache in modern machines
 	protected static final int WORKING_SET_TARGET=1000;
 	
+	/** 
+	 * General purpose matrix multiplication
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static Matrix multiply(AMatrix a, AMatrix b) {
+		if (a instanceof Matrix) {
+			return multiply((Matrix)a,b);
+		}
+		return blockedMultiply(a.toMatrix(),b);
+	}
+	
+	public static Matrix multiply(Matrix a, AMatrix b) {
+		// int rc=a.rowCount();
+		int ic=a.columnCount();
+		int cc=b.columnCount();	
+		if ((ic!=b.rowCount())) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a,b));
+		}		
+	
+		if (ic*cc<WORKING_SET_TARGET) return a.innerProduct(b);
+		return blockedMultiply(a.toMatrix(),b);
+	}
+	
 	/**
 	 * Performs fast matrix multiplication using temporary working storage for the second matrix
 	 * @param a
 	 * @param b
 	 * @return
 	 */
-	public static Matrix multiply(Matrix a, AMatrix b) {
+	public static Matrix blockedMultiply(Matrix a, AMatrix b) {
 		int rc=a.rowCount();
 		int cc=b.columnCount();
 		int ic=a.columnCount();
