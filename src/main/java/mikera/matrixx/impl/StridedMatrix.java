@@ -7,6 +7,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -30,12 +31,12 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public AVector getRow(int i) {
+	public AStridedVector getRow(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
 	}
 	
 	@Override
-	public AVector getColumn(int i) {
+	public AStridedVector getColumn(int i) {
 		return StridedVector.wrap(data, offset+i*colStride, rows, rowStride);
 	}
 	
