@@ -440,16 +440,14 @@ public class TestVectors {
 	
 	private void testAddAt(AVector v) {
 		if (!v.isFullyMutable()) return;
-		v=v.exactClone();
 		int len=v.length();
-		AVector c=v.clone();
-		
+		v=v.exactClone();
+
 		for (int i=0; i<len; i++) {
-			v.addAt(i, c.get(i));
+			double old=v.get(i);
+			v.addAt(i, i+1);
+			assertEquals(old+i+1,v.get(i),0.0000001);
 		}
-		c.scale(2.0);
-		
-		assertEquals(c,v);
 	}
 	
 	private void testOutOfBoundsSet(AVector v) {
@@ -707,7 +705,7 @@ public class TestVectors {
 		}	
 	}
 	
-	private void doGenericTests(AVector v) {
+	public void doGenericTests(AVector v) {
 		testClone(v);
 		testExactClone(v);
 		testAdd(v);

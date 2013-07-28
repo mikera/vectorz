@@ -23,9 +23,8 @@ public class Testing {
 				default: return Vector0.INSTANCE;
 			}
 		}
-		if ((length<=4)&&r.nextInt(100)<50) {
-			int len=r.nextInt(4)+1;
-			return Vectorz.newVector(len);
+		if ((length<=5)&&r.nextInt(100)<50) {
+			return Vectorz.newVector(length);
 		}
 		if (r.nextInt(100)<50) {
 			int mid=r.nextInt(length+1);
