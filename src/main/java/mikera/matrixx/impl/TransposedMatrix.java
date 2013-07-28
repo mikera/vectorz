@@ -76,12 +76,12 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 	
 	@Override
-	protected void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int row, double[] dest, int destOffset) {
 		source.getColumn(row).copyTo(dest,destOffset);
 	}
 	
 	@Override
-	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		source.getRow(col).copyTo(dest,destOffset);
 	}
 	

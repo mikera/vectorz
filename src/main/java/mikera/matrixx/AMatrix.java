@@ -1560,11 +1560,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		// TODO: any generic validation?
 	}
 
-	protected void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int row, double[] dest, int destOffset) {
 		getRow(row).copyTo(dest,destOffset);
 	}
 	
-	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		getColumn(col).copyTo(dest,destOffset);
 	}
 }

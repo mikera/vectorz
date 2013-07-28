@@ -189,13 +189,13 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	}
 	
 	@Override
-	protected void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int row, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+size,0.0);
 		dest[destOffset+perm.get(row)]=1.0;
 	}
 	
 	@Override
-	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+size,0.0);
 		dest[destOffset+perm.find(col)]=1.0;
 	}

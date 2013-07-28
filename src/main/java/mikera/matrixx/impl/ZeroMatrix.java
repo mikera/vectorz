@@ -69,12 +69,12 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
-	protected void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int row, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+columnCount(),0.0);
 	}
 	
 	@Override
-	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+rowCount(),0.0);
 	}
 

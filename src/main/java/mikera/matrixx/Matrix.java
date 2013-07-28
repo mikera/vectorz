@@ -205,13 +205,13 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
-	protected final void copyRowTo(int row, double[] dest, int destOffset) {
+	public final void copyRowTo(int row, double[] dest, int destOffset) {
 		int srcOffset=row*cols;
 		System.arraycopy(data, srcOffset, dest, destOffset, cols);
 	}
 	
 	@Override
-	protected final void copyColumnTo(int col, double[] dest, int destOffset) {
+	public final void copyColumnTo(int col, double[] dest, int destOffset) {
 		int colOffset=col;
 		for (int i=0;i<rows; i++) {
 			dest[destOffset+i]=data[colOffset+i*cols];

@@ -79,13 +79,13 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
-	protected void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int row, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+dimensions,0.0);
 		dest[destOffset+row]=getDiagonalValue(row);
 	}
 	
 	@Override
-	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		// copying rows and columns is the same!
 		copyRowTo(col,dest,destOffset);
 	}
