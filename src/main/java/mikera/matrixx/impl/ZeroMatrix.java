@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
@@ -64,6 +66,16 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	@Override
 	public void multiply(double factor) {
 		// no change
+	}
+	
+	@Override
+	protected void copyRowTo(int row, double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+columnCount(),0.0);
+	}
+	
+	@Override
+	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+rowCount(),0.0);
 	}
 
 	@Override

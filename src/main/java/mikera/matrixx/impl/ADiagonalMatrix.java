@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -74,6 +76,18 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	 */
 	public int dimensions() {
 		return dimensions;
+	}
+	
+	@Override
+	protected void copyRowTo(int row, double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+dimensions,0.0);
+		dest[destOffset+row]=getDiagonalValue(row);
+	}
+	
+	@Override
+	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+		// copying rows and columns is the same!
+		copyRowTo(col,dest,destOffset);
 	}
 	
 	public AMatrix innerProduct(ADiagonalMatrix a) {

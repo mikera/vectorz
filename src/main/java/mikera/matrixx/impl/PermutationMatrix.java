@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
@@ -184,6 +186,18 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	@Override
 	public AxisVector getColumn(int j) {
 		return AxisVector.create(perm.find(j), size);
+	}
+	
+	@Override
+	protected void copyRowTo(int row, double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+size,0.0);
+		dest[destOffset+perm.get(row)]=1.0;
+	}
+	
+	@Override
+	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+size,0.0);
+		dest[destOffset+perm.find(col)]=1.0;
 	}
 	
 	@Override
