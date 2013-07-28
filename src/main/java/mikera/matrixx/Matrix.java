@@ -133,6 +133,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public Matrix innerProduct(AMatrix a) {
+		// TODO: consider transposing a into packed arrays?
 		if (a instanceof Matrix) {
 			return innerProduct((Matrix)a);
 		}
