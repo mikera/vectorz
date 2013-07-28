@@ -380,6 +380,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public void add(double d) {
+		DoubleArrays.add(data, d);
+	}
+	
+	@Override
 	public void add(AMatrix m) {
 		if (m instanceof Matrix) {add((Matrix)m); return;}
 		int rc=rowCount();

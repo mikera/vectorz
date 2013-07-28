@@ -776,7 +776,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public void sub(AScalar a) {
-		sub(a.get());
+		add(-a.get());
 	}
 	
 	public void add(AScalar a) {

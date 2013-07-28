@@ -120,6 +120,12 @@ public final class DoubleArrays {
 		}
 	}
 	
+	public static void add(double[] data, double value) {
+		for (int i=0; i<data.length; i++) {
+			data[i]+=value;
+		}
+	}
+	
 	public static void addMultiple(double[] dest, int offset, double[] src, int srcOffset, int length, double factor) {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]+=factor*src[srcOffset+i];
