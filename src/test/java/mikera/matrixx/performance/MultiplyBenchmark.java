@@ -4,10 +4,8 @@ import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
 import mikera.matrixx.Matrix;
-import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.algo.Multiplications;
-import mikera.vectorz.Vector3;
 
 /**
  * Caliper based benchmarks
@@ -34,6 +32,15 @@ public class MultiplyBenchmark extends SimpleBenchmark {
 
 		for (int i=0; i<runs; i++) {
 			m1.innerProduct(m2);
+		}		
+	}
+	
+	public void timeNaiveMultiply(int runs) {
+		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+
+		for (int i=0; i<runs; i++) {
+			Multiplications.naiveMultiply(m1, m2);
 		}		
 	}
 

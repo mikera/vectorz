@@ -8,7 +8,7 @@ import mikera.vectorz.util.ErrorMessages;
 public class Multiplications {
 	// target number of elements in working set group
 	// aim for around 16kb => fits comfortably in L1 cache in modern machines
-	protected static final int WORKING_SET_TARGET=2000;
+	protected static final int WORKING_SET_TARGET=1000;
 	
 	/**
 	 * Performs fast matrix multiplication using temporary working storage for the second matrix
