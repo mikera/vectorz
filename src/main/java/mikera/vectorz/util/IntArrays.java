@@ -1,9 +1,32 @@
 package mikera.vectorz.util;
 
+import java.util.List;
+
 import mikera.util.Rand;
+import mikera.vectorz.Tools;
 
 public class IntArrays {
 	public static final int[] EMPTY_INT_ARRAY=new int[0];
+	
+	public static int[] create(Object o) {
+		if (o instanceof List<?>) {
+			return create((List<?>)o);
+		} else if (o instanceof int[]) {
+			return ((int[]) o).clone();
+		} else if (o instanceof Iterable<?>) {
+			return create(Tools.toList((Iterable<?>) o));
+		}
+		throw new IllegalArgumentException("Can't convert to int[]: "+o);
+	}
+	
+	public static int[] create(List<?> ls) {
+		int n=ls.size();
+		int[] r=new int[n];
+		for (int i=0; i<n; i++) {
+			r[i]=Tools.toInt(ls.get(i));
+		}
+		return r;
+	}
 	
 	public static int[] removeIndex(int[] data, int index) {
 		int len=data.length;
