@@ -112,4 +112,13 @@ public class IntArrays {
 		}
 		return rs;
 	}
+	
+	public static int[] incrementAll(int[] xs) {
+		int len=xs.length;
+		int[] rs=new int[len];
+		for (int i=0; i<len; i++) {
+			rs[i]=xs[i]+1;
+		}
+		return rs;
+	}
 }
