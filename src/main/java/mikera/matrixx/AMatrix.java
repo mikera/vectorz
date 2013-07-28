@@ -1482,7 +1482,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override 
 	public void validate() {
-		// TODO: any generic validation?
+		// nothing to do since we have no data to validate
 	}
 
 	public void copyRowTo(int row, double[] dest, int destOffset) {
