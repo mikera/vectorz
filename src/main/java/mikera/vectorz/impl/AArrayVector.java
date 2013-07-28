@@ -96,7 +96,7 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 	
 	@Override
-	public void set(int offset, double[] data, int dataOffset, int length) {
+	public void setRange(int offset, double[] data, int dataOffset, int length) {
 		System.arraycopy(data, dataOffset, getArray(), getArrayOffset()+offset, length);
 	}
 	

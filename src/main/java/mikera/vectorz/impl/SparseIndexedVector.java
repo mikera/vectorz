@@ -8,6 +8,7 @@ import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -105,6 +106,12 @@ public class SparseIndexedVector extends ASparseVector {
 	public int length() {
 		return length;
 	}
+	
+	@Override
+	public void multiply (double d) {
+		DoubleArrays.multiply(data, d);
+	}
+	
 	
 	@Override
 	public void multiply (AVector v) {

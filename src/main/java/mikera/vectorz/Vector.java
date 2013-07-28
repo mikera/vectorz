@@ -126,7 +126,7 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public void set(int offset, double[] data, int dataOffset, int length) {
+	public void setRange(int offset, double[] data, int dataOffset, int length) {
 		System.arraycopy(data, dataOffset, this.data, offset, length);
 	}
 	

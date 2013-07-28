@@ -60,6 +60,13 @@ public final class DoubleArrays {
 		}
 	}
 	
+	public static void multiply(double[] data, double value) {
+		for (int i=0; i<data.length; i++) {
+			data[i]*=value;
+		}
+	}
+
+	
 	public static void square(double[] ds) {
 		for (int i=0; i<ds.length; i++) {
 			ds[i]*=ds[i];
@@ -321,5 +328,6 @@ public final class DoubleArrays {
 		}
 		return true;
 	}
+
 
 }
