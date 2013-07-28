@@ -1122,6 +1122,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		} else if (a.dimensionality()<=2) {
 			return innerProduct(Arrayz.create(a)); // convert to efficient format
 		}
+		// TODO: fix higher dimensional inner products with second argument
 		throw new UnsupportedOperationException("Can't take inner product with: "+a.getClass());
 	}
 
