@@ -460,10 +460,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	public AVector cloneRow(int row) {
 		int cc = columnCount();
-		AVector v = Vectorz.newVector(cc);
-		for (int i = 0; i < cc; i++) {
-			v.set(i, get(row, i));
-		}
+		Vector v = Vector.createLength(cc);
+		copyRowTo(row,v.data,0);
 		return v;
 	}
 

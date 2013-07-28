@@ -407,14 +407,23 @@ public class TestMatrixx {
 		assertEquals(m.columnCount(),m.inputDimensions());
 		
 		m=m.clone();
-		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		if ((rc==0)||(cc==0)) return;
 		
-		assertEquals(m.getRow(0),m.cloneRow(0));
+		for (int i=0; i<rc; i++) {
+			AVector row=m.getRow(i);
+			assertEquals(row,m.cloneRow(i));
+			assertEquals(cc,row.length());
+		}
+		
+		for (int i=0; i<cc; i++) {
+			AVector col=m.getColumn(i);
+			assertEquals(rc,col.length());
+		}
 		
 		AVector row=m.getRow(0);
 		AVector col=m.getColumn(0);
-		assertEquals(m.columnCount(),row.length());
-		assertEquals(m.rowCount(),col.length());
 		
 		row.set(0,1.77);
 		assertEquals(1.77,m.get(0,0),0.0);
