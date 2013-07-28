@@ -22,8 +22,8 @@ public class SparseIndexedVector extends ASparseVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
 	private final int length;
-	public final Index index;
-	public final double[] data;
+	private final Index index;
+	private final double[] data;
 	
 	
 	private SparseIndexedVector(int length, Index index) {
@@ -222,7 +222,16 @@ public class SparseIndexedVector extends ASparseVector {
 		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
 		double result=0.0;
 		for (int j=0; j<data.length; j++) {
-			result+=data[j]*v.get(index.data[j]);
+			result+=data[j]*v.unsafeGet(index.data[j]);
+		}
+		return result;
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int j=0; j<this.data.length; j++) {
+			result+=this.data[j]*data[offset+index.data[j]];
 		}
 		return result;
 	}
@@ -230,12 +239,7 @@ public class SparseIndexedVector extends ASparseVector {
 	public double dotProduct(AArrayVector v) {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
-		double result=0.0;
-		for (int j=0; j<data.length; j++) {
-			int i= index.data[j];
-			result+=data[j]*array[offset+i];
-		}
-		return result;
+		return dotProduct(array,offset);
 	}
 	
 	@Override
@@ -307,7 +311,7 @@ public class SparseIndexedVector extends ASparseVector {
 		}
 		v.fillRange(offset,length,0.0);
 		for (int i=0; i<data.length; i++) {
-			v.set(offset+index.data[i],data[i]);
+			v.unsafeSet(offset+index.data[i],data[i]);
 		}	
 	}
 
@@ -346,10 +350,18 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public void getElements(double[] dest, int offset) {
+		Arrays.fill(dest, offset,offset+length(),0.0);
+		for (int j=0; j<data.length; j++) {
+			dest[index.data[j]]=data[j];
+		}
+	}
+	
+	@Override
 	public Vector clone() {
 		Vector v=Vector.createLength(length);
 		for (int i=0; i<data.length; i++) {
-			v.set(index.data[i],data[i]);
+			v.unsafeSet(index.data[i],data[i]);
 		}	
 		return v;
 	}
