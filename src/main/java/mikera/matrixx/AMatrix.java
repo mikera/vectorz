@@ -574,13 +574,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	private double calcDeterminant(int[] inds, int offset) {
 		int rc = rowCount();
 		if (offset == (rc - 1))
-			return get(offset, inds[offset]);
+			return unsafeGet(offset, inds[offset]);
 
-		double det = get(offset, inds[offset])
+		double det = unsafeGet(offset, inds[offset])
 				* calcDeterminant(inds, offset + 1);
 		for (int i = 1; i < (rc - offset); i++) {
 			IntArrays.swap(inds, offset, offset + i);
-			det -= get(offset, inds[offset])
+			det -= unsafeGet(offset, inds[offset])
 					* calcDeterminant(inds, offset + 1);
 			IntArrays.swap(inds, offset, offset + i);
 		}
