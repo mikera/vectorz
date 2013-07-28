@@ -3,6 +3,7 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
@@ -43,11 +44,18 @@ public final class Matrix extends ADenseArrayMatrix {
 		set(m);
 	}
 	
-	public Matrix create(Object... rowVectors) {
+	public static Matrix create(INDArray m) {
+		if (m.dimensionality()!=2) throw new IllegalArgumentException("Can only create matrix from 2D array");
+		int rows=m.getShape(0);
+		int cols=m.getShape(1);
+		double[] data=new double[rows*cols];
+		m.getElements(data, 0);
+		return Matrix.wrap(rows, cols, data);		
+	}
+	
+	public static Matrix create(Object... rowVectors) {
 		AMatrix m=VectorMatrixMN.create(rowVectors);
-		Matrix r=new Matrix(m.rowCount(),m.columnCount(),new double[rows*cols]);
-		r.set(m);
-		return r;
+		return create(m);
 	}
 	
 	@Override

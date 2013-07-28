@@ -141,9 +141,9 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override 
-	public Matrix innerProduct(AMatrix a) {
+	public AMatrix innerProduct(AMatrix a) {
 		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		return a.toMatrix();
+		return a.clone();
 	}
 	
 	@Override 

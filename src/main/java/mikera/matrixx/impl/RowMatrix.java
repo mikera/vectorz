@@ -93,7 +93,7 @@ public class RowMatrix extends AMatrix {
 		for (int i=0; i<rc; i++) {
 			double ti=this.get(i);
 			for (int j=0; j<cc; j++) {
-				m.set(i,j,ti*s.get(0,j));
+				m.unsafeSet(i,j,ti*s.unsafeGet(0,j));
 			}
 		}
 		return m;
