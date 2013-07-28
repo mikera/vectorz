@@ -491,6 +491,8 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		if (dimensions>stride.length) throw new VectorzException("Insufficient stride data");
 		
 		if ((offset<0)||(offset>=data.length)) throw new VectorzException("Offset out of bounds");
+		int endOffset=offset+IntArrays.dotProduct(shape, stride);
+		if ((endOffset<0)||(endOffset>=data.length)) throw new VectorzException("End offset out of bounds");
 		super.validate();
 	}
 
@@ -507,5 +509,10 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 	@Override
 	public int[] getStrides() {
 		return stride;
+	}
+
+	public static INDArray wrapStrided(double[] data, int offset,
+			int[] shape, int[] strides) {
+		return new NDArray(data,offset,shape,strides);
 	}
 }

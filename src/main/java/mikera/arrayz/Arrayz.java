@@ -156,4 +156,42 @@ public class Arrayz {
 	public static long elementCount(int[] shape) {
 		return IntArrays.arrayProduct(shape);
 	}
+
+	public static INDArray wrapStrided(double[] data, int offset, int[] shape, int[] strides) {
+		int dims=shape.length;
+		if (dims==0) {
+			return ArrayIndexScalar.wrap(data, offset);
+		} else if (dims==1) {
+			return Vectorz.wrapStrided(data, offset, shape[0], strides[0]);
+		} else if (dims==2) {
+			return Matrixx.wrapStrided(data, shape[0],shape[1], offset, strides[0],strides[1]);
+		} else {
+			if (isPackedLayout(data,offset,shape,strides)) {
+				return Array.wrap(data, shape);
+			} else {
+				return NDArray.wrapStrided(data,offset,shape,strides);
+			}
+		}
+	}
+	
+	public static boolean isPackedLayout(double[] data, int offset, int[] shape, int[] strides) {
+		if (offset!=0) return false;
+		int dims=shape.length;
+		int st=1;
+		for (int i=dims-1; i>=0; i--) {
+			if (strides[i]!=st) return false;
+			st*=shape[i];
+		}
+		return (st==data.length);
+	}
+
+	public static boolean isPackedStrides(int[] shape, int[] strides) {
+		int dims=shape.length;
+		int st=1;
+		for (int i=dims-1; i>=0; i--) {
+			if (strides[i]!=st) return false;
+			st*=shape[i];
+		}
+		return true;
+	}
 }
