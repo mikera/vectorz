@@ -1,6 +1,5 @@
 package mikera.vectorz.impl;
 
-import mikera.vectorz.AVector;
 
 /**
  * A mutable vector that always has a single repeated component.
@@ -9,7 +8,7 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public final class RepeatedElementVector extends AVector {
+public final class RepeatedElementVector extends AConstrainedVector {
 	private final int dimensions;
 	private final double value;
 	

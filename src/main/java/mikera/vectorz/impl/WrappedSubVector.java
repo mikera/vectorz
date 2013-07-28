@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import mikera.vectorz.AVector;
 
-public final class WrappedSubVector extends AVector {
+public final class WrappedSubVector extends AWrappedVector<AVector> {
 	private static final long serialVersionUID = 2323553136938665228L;
 
 	private final AVector wrapped;
@@ -85,5 +85,10 @@ public final class WrappedSubVector extends AVector {
 	@Override
 	public WrappedSubVector exactClone() {
 		return new WrappedSubVector(wrapped.exactClone(),offset,length);
+	}
+
+	@Override
+	public AVector getWrappedObject() {
+		return wrapped;
 	}
 }
