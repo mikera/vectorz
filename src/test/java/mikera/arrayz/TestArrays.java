@@ -485,6 +485,7 @@ public class TestArrays {
 		testArray(Array.create(nd1));
 		
 		NDArray nd2 = NDArray.newArray(3, 3);
+		assertEquals(9,nd2.elementCount());
 		Vectorz.fillIndexes(nd2.asVector());
 		testArray(nd2);
 		testArray(Array.create(nd2));

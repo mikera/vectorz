@@ -103,4 +103,13 @@ public class IntArrays {
 		}
 		return result;
 	}
+
+	public static int[] decrementAll(int[] xs) {
+		int len=xs.length;
+		int[] rs=new int[len];
+		for (int i=0; i<len; i++) {
+			rs[i]=xs[i]-1;
+		}
+		return rs;
+	}
 }

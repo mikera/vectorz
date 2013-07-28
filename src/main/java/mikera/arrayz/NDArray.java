@@ -38,7 +38,7 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 	private final int[] stride;
 	
 	NDArray(int... shape) {
-		this.shape=shape.clone();
+		this.shape=shape;
 		dimensions=shape.length;
 		data=new double[(int)elementCount()];
 		stride=IntArrays.calcStrides(shape);
@@ -187,6 +187,7 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 	@Override
 	public void set(int[] indexes, double value) {
 		int ix=offset;
+		if (indexes.length!=dimensions) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this,indexes)); 
 		for (int i=0; i<dimensions; i++) {
 			ix+=indexes[i]*getStride(i);
 		}
@@ -491,8 +492,9 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		if (dimensions>stride.length) throw new VectorzException("Insufficient stride data");
 		
 		if ((offset<0)||(offset>=data.length)) throw new VectorzException("Offset out of bounds");
-		int endOffset=offset+IntArrays.dotProduct(shape, stride);
-		if ((endOffset<0)||(endOffset>=data.length)) throw new VectorzException("End offset out of bounds");
+		int[] endIndex=IntArrays.decrementAll(shape);
+		int endOffset=offset+IntArrays.dotProduct(endIndex, stride);
+		if ((endOffset<0)||(endOffset>data.length)) throw new VectorzException("End offset out of bounds");
 		super.validate();
 	}
 
