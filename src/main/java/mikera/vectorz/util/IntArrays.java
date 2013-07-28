@@ -17,10 +17,21 @@ public class IntArrays {
 			return create((List<?>)o);
 		} else if (o instanceof int[]) {
 			return ((int[]) o).clone();
+		} else if (o instanceof double[]) {
+			return create((double[]) o);
 		} else if (o instanceof Iterable<?>) {
 			return create(Tools.toList((Iterable<?>) o));
 		}
 		throw new IllegalArgumentException("Can't convert to int[]: "+o);
+	}
+	
+	public static int[] create(double[] ls) {
+		int n=ls.length;
+		int[] r=new int[n];
+		for (int i=0; i<n; i++) {
+			r[i]=Tools.toInt(ls[i]);
+		}
+		return r;
 	}
 	
 	public static int[] create(List<?> ls) {
