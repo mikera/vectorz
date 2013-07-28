@@ -254,12 +254,12 @@ public class TestMatrixx {
 	
 	private void doSquareTransposeTest(AMatrix m) {
 		AMatrix m2=m.clone();
-
 		m2.transposeInPlace();
 		
 		// two different kinds of transpose should produce same result
 		AMatrix tm=m.getTranspose();
 		assertEquals(tm,m2);
+		assertEquals(m.trace(),tm.trace(),0.0);
 		
 		m2.transposeInPlace();
 		assertEquals(m,m2);

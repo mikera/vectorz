@@ -10,6 +10,7 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.SliceArray;
+import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
@@ -1103,12 +1104,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		// but probably worth it in most cases to take advantage of Matrix layout
 		// which is optimised for being the first term in an inner product
 		Matrix r= toMatrixTranspose();
-		return r.innerProduct(s);
+		return Multiplications.multiply(r, s);
 	}
 	
 	public Matrix transposeInnerProduct(Matrix s) {
 		Matrix r= toMatrixTranspose();
-		return r.innerProduct(s);
+		return Multiplications.multiply(r, s);
 	}
 	
 	public INDArray innerProduct(INDArray a) {
