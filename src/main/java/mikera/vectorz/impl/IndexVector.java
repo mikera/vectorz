@@ -7,7 +7,6 @@ import mikera.vectorz.util.IntArrays;
 /**
  * A constrained vector implementation wrapping an integer Index
  * @author Mike
- *
  */
 @SuppressWarnings("serial")
 public class IndexVector extends AConstrainedVector {
