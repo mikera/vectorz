@@ -11,9 +11,10 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.SliceArray;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
-import mikera.matrixx.impl.AMatrixSubVector;
+import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.randomz.Hash;
@@ -366,97 +367,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 
-	@SuppressWarnings("serial")
-	private class MatrixRowView extends AMatrixSubVector {
-		private final int row;
-
-		private MatrixRowView(int row) {
-			this.row = row;
-		}
-
-		@Override
-		public int length() {
-			return columnCount();
-		}
-
-		@Override
-		public double get(int i) {
-			return AMatrix.this.get(row, i);
-		}
-
-		@Override
-		public void set(int i, double value) {
-			AMatrix.this.set(row, i, value);
-		}
-		
-		@Override
-		public double unsafeGet(int i) {
-			return AMatrix.this.unsafeGet(row, i);
-		}
-
-		@Override
-		public void unsafeSet(int i, double value) {
-			AMatrix.this.unsafeSet(row, i, value);
-		}
-		
-		@Override 
-		public boolean isFullyMutable() {
-			return AMatrix.this.isFullyMutable();
-		}
-
-		
-		@Override
-		public MatrixRowView exactClone() {
-			return AMatrix.this.exactClone().new MatrixRowView(row);
-		}
-	}
-
-	@SuppressWarnings("serial")
-	private class MatrixColumnView extends AMatrixSubVector {
-		private final int column;
-
-		private MatrixColumnView(int column) {
-			this.column = column;
-		}
-
-		@Override
-		public int length() {
-			return rowCount();
-		}
-
-		@Override
-		public double get(int i) {
-			return AMatrix.this.get(i, column);
-		}
-		
-		@Override 
-		public boolean isFullyMutable() {
-			return AMatrix.this.isFullyMutable();
-		}
-
-		@Override
-		public void set(int i, double value) {
-			AMatrix.this.set(i, column, value);
-		}
-		
-		@Override
-		public MatrixColumnView exactClone() {
-			return AMatrix.this.exactClone().new MatrixColumnView(column);
-		}
-	}
-
 	/**
 	 * Returns a row of the matrix as a vector view
 	 */
 	public AVector getRow(int row) {
-		return new MatrixRowView(row);
+		return new MatrixRowView(this, row);
 	}
 
 	/**
 	 * Returns a column of the matrix as a vector view
 	 */
 	public AVector getColumn(int column) {
-		return new MatrixColumnView(column);
+		return new MatrixColumnView(this, column);
 	}
 
 	public AVector cloneRow(int row) {
