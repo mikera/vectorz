@@ -41,6 +41,22 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 	
 	@Override
+	protected void copyRowTo(int row, double[] dest, int destOffset) {
+		int rowOffset=offset+row*rowStride;
+		for (int i=0;i<cols; i++) {
+			dest[destOffset+i]=data[rowOffset+i*colStride];
+		}
+	}
+	
+	@Override
+	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+		int colOffset=offset+col*colStride;
+		for (int i=0;i<rows; i++) {
+			dest[destOffset+i]=data[colOffset+i*rowStride];
+		}
+	}
+	
+	@Override
 	public int rowStride() {
 		return rowStride;
 	}

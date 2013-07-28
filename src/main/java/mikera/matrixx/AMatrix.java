@@ -1561,4 +1561,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	protected void copyRowTo(int row, double[] dest, int destOffset) {
 		getRow(row).copyTo(dest,destOffset);
 	}
+	
+	protected void copyColumnTo(int col, double[] dest, int destOffset) {
+		getColumn(col).copyTo(dest,destOffset);
+	}
 }
