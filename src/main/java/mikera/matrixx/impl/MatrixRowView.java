@@ -2,6 +2,10 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 
+/**
+ * A class representing a view of a matrix row as a vector
+ * @author Mike
+ */
 @SuppressWarnings("serial") 
 public class MatrixRowView extends AMatrixSubVector {
 	private final AMatrix source;
@@ -21,15 +25,15 @@ public class MatrixRowView extends AMatrixSubVector {
 	public double get(int i) {
 		return source.get(row, i);
 	}
+		
+	@Override
+	public double unsafeGet(int i) {
+		return source.unsafeGet(row, i);
+	}
 
 	@Override
 	public void set(int i, double value) {
 		source.set(row, i, value);
-	}
-	
-	@Override
-	public double unsafeGet(int i) {
-		return source.unsafeGet(row, i);
 	}
 
 	@Override
