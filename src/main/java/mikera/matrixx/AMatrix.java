@@ -32,6 +32,7 @@ import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -502,17 +503,21 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		int rc = rowCount();
 		int cc = columnCount();
-		int di=offset;
 		for (int i = 0; i < rc; i++) {
+			int iOffset=offset+i*cc;
 			for (int j = 0; j < cc; j++) {
-				unsafeSet(i,j,values[di++]);
+				unsafeSet(i,j,values[iOffset+j]);
 			}
 		}	
 	} 
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
-		asVector().getElements(dest, offset);
+		int rc=this.rowCount();
+		int cc=this.columnCount();
+		for (int i=0; i<rc; i++) {
+			copyRowTo(i,dest,offset+i*cc);
+		}
 	}
 	
 	@Override
@@ -566,12 +571,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return calcDeterminant(inds, 0);
 	}
 
-	private static void swap(int[] inds, int a, int b) {
-		int temp = inds[a];
-		inds[a] = inds[b];
-		inds[b] = temp;
-	}
-
 	private double calcDeterminant(int[] inds, int offset) {
 		int rc = rowCount();
 		if (offset == (rc - 1))
@@ -580,10 +579,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		double det = get(offset, inds[offset])
 				* calcDeterminant(inds, offset + 1);
 		for (int i = 1; i < (rc - offset); i++) {
-			swap(inds, offset, offset + i);
+			IntArrays.swap(inds, offset, offset + i);
 			det -= get(offset, inds[offset])
 					* calcDeterminant(inds, offset + 1);
-			swap(inds, offset, offset + i);
+			IntArrays.swap(inds, offset, offset + i);
 		}
 		return det;
 	}

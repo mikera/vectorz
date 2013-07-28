@@ -121,4 +121,10 @@ public class IntArrays {
 		}
 		return rs;
 	}
+
+	public static void swap(int[] inds, int a, int b) {
+		int temp = inds[a];
+		inds[a] = inds[b];
+		inds[b] = temp;
+	}
 }

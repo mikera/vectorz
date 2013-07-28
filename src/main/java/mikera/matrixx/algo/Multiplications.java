@@ -7,11 +7,13 @@ import mikera.vectorz.util.ErrorMessages;
 
 public class Multiplications {
 	// target number of elements in working set group
-	// aim for around 16kb => fits comfortably in L1 cache in modern machines
-	protected static final int WORKING_SET_TARGET=1000;
+	// aim for around 8-10kb => fits comfortably in L1 cache in modern machines
+	protected static final int WORKING_SET_TARGET=1024;
 	
 	/** 
-	 * General purpose matrix multiplication
+	 * General purpose matrix multiplication, with smart selection of algorithm based
+	 * on matrix size and type.
+	 * 
 	 * @param a
 	 * @param b
 	 * @return
@@ -66,8 +68,9 @@ public class Multiplications {
 				int bisize=Math.min(block, rc-bi);
 				
 				for (int i=bi; i<(bi+bisize); i++) {
+					int aDataOffset=i*ic;
 					for (int j=bj; j<(bj+bjsize); j++) {
-						double val=DoubleArrays.dotProduct(a.data, i*ic, ws.data, ic*(j-bj), ic);
+						double val=DoubleArrays.dotProduct(a.data, aDataOffset, ws.data, ic*(j-bj), ic);
 						result.unsafeSet(i, j, val);
 					}
 				}
