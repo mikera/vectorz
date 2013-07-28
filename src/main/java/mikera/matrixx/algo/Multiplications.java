@@ -34,7 +34,7 @@ public class Multiplications {
 		}		
 	
 		if (ic*cc<WORKING_SET_TARGET) return a.innerProduct(b);
-		return blockedMultiply(a.toMatrix(),b);
+		return blockedMultiply(a,b);
 	}
 	
 	/**
