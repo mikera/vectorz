@@ -53,7 +53,7 @@ public class Multiplications {
 		}		
 		
 		int block=(WORKING_SET_TARGET/ic)+1;
-		Matrix ws=Matrix.create(block, ic);
+		Matrix ws=Matrix.create(Math.min(block,cc), ic);
 		Matrix result=Matrix.create(rc, cc);
 		
 		for (int bj=0; bj<cc; bj+=block) {
