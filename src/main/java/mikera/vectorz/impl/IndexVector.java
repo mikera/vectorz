@@ -23,7 +23,7 @@ public class IndexVector extends AConstrainedVector {
 		return new IndexVector(Index.of(values));
 	}
 	
-	public IndexVector of(double... values) {
+	public IndexVector ofDoubles(double... values) {
 		return new IndexVector(Index.wrap(IntArrays.create(values)));
 	}
 	
