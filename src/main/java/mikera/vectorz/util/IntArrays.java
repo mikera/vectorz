@@ -85,6 +85,11 @@ public class IntArrays {
 		return r;
 	}
 
+	/**
+	 * Computes the standard packed array strides for a given shape.
+	 * @param shape
+	 * @return
+	 */
 	public static final int[] calcStrides(int[] shape) {
 		int dimensions=shape.length;
 		int[] stride=new int[dimensions];
@@ -96,7 +101,14 @@ public class IntArrays {
 		return stride;
 	}
 	
+	/**
+	 * Tests if two int array scontain equal values.
+	 * @param as
+	 * @param bs
+	 * @return
+	 */
 	public static boolean equals(int[] as, int[] bs) {
+		if (as==bs) return true;
 		int n=as.length;
 		if (n!=bs.length) return false;
 		for (int i=0; i<n; i++) {
@@ -117,6 +129,15 @@ public class IntArrays {
 		int[] result=new int[n];
 		for (int i=0; i<n; i++) {
 			result[i]=Rand.r(shape[i]);
+		}
+		return result;
+	}
+	
+	public static int[] rand(int[] shape, java.util.Random r) {
+		int n=shape.length;
+		int[] result=new int[n];
+		for (int i=0; i<n; i++) {
+			result[i]=r.nextInt(shape[i]);
 		}
 		return result;
 	}
