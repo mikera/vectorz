@@ -8,6 +8,10 @@ import mikera.vectorz.Tools;
 public class IntArrays {
 	public static final int[] EMPTY_INT_ARRAY=new int[0];
 	
+	public static int[] of(int... ints) {
+		return ints;
+	}
+	
 	public static int[] create(Object o) {
 		if (o instanceof List<?>) {
 			return create((List<?>)o);
