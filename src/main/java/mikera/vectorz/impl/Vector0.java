@@ -14,7 +14,7 @@ import mikera.vectorz.AVector;
 public final class Vector0 extends APrimitiveVector {
 	private static final long serialVersionUID = -8153360223054646075L;
 
-	private Vector0() {
+	public Vector0() {
 	}
 	
 	public static Vector0 of() {
