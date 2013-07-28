@@ -11,8 +11,8 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.SliceArray;
+import mikera.matrixx.Matrix;
 import mikera.util.Maths;
-import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -93,12 +93,26 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	public INDArray innerProduct(INDArray a) {
-		if (a instanceof AScalar) {
-			INDArray c=clone();
-			c.scale(((AScalar)a).get());
-			return c;
+		int dims=dimensionality();
+		switch (dims) {
+			case 0: {
+				a=a.clone();
+				a.scale(get());
+				return a;
+			}
+			case 1: {
+				return toVector().innerProduct(a);
+			}
+			case 2: {
+				return Matrix.create(this).innerProduct(a);
+			}
 		}
-		throw new UnsupportedOperationException();
+		int sc=sliceCount();
+		ArrayList<INDArray> sips=new ArrayList<INDArray>();
+		for (int i=0; i<sc; i++) {
+			sips.add(slice(i).innerProduct(a));
+		}
+		return SliceArray.create(sips);
 	}
 	
 	public INDArray outerProduct(INDArray a) {
