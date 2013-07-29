@@ -26,6 +26,15 @@ public class MultiplyBenchmark extends SimpleBenchmark {
 		}		
 	}
 	
+	public void timeDoubleBlockedMultiply(int runs) {
+		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+		
+		for (int i=0; i<runs; i++) {
+			Multiplications.doubleBlockedMultiply(m1, m2);
+		}		
+	}
+	
 	public void timeDefaultMultiply(int runs) {
 		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
 		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);

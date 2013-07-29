@@ -56,14 +56,15 @@ public class Multiplications {
 		if (ic==0) return result;
 		
 		int block=(WORKING_SET_TARGET/ic)+1;
-		Matrix ws=Matrix.create(Math.min(block,cc), ic);
+		// working set stores up to <block> number of columns from second matrix
+		Matrix wsb=Matrix.create(Math.min(block,cc), ic);
 		
 		for (int bj=0; bj<cc; bj+=block) {
 			int bjsize=Math.min(block, cc-bj);
 			
 			// copy columns into working set
 			for (int t=0; t<bjsize; t++) {
-				b.copyColumnTo(bj+t,ws.data,t*ic);
+				b.copyColumnTo(bj+t,wsb.data,t*ic);
 			}
 			
 			for (int bi=0; bi<rc; bi+=block) {
@@ -72,7 +73,57 @@ public class Multiplications {
 				for (int i=bi; i<(bi+bisize); i++) {
 					int aDataOffset=i*ic;
 					for (int j=bj; j<(bj+bjsize); j++) {
-						double val=DoubleArrays.dotProduct(a.data, aDataOffset, ws.data, ic*(j-bj), ic);
+						double val=DoubleArrays.dotProduct(a.data, aDataOffset, wsb.data, ic*(j-bj), ic);
+						result.unsafeSet(i, j, val);
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Performs fast matrix multiplication using temporary working storage for both matrices
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static Matrix doubleBlockedMultiply(AMatrix a, AMatrix b) {
+		int rc=a.rowCount();
+		int cc=b.columnCount();
+		int ic=a.columnCount();
+		
+		if ((ic!=b.rowCount())) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a,b));
+		}		
+
+		Matrix result=Matrix.create(rc, cc);
+		if (ic==0) return result;
+		
+		int block=(WORKING_SET_TARGET/ic)+1;
+		// working sets stores up to <block> number of columns from each matrix
+		Matrix wsa=Matrix.create(Math.min(block,rc), ic);
+		Matrix wsb=Matrix.create(Math.min(block,cc), ic);
+		
+		for (int bj=0; bj<cc; bj+=block) {
+			int bjsize=Math.min(block, cc-bj);
+			
+			// copy columns into working set
+			for (int t=0; t<bjsize; t++) {
+				b.copyColumnTo(bj+t,wsb.data,t*ic);
+			}
+			
+			for (int bi=0; bi<rc; bi+=block) {
+				int bisize=Math.min(block, rc-bi);
+				
+				// copy columns into working set
+				for (int t=0; t<bisize; t++) {
+					b.copyRowTo(bi+t,wsa.data,t*ic);
+				}
+				
+				for (int i=bi; i<(bi+bisize); i++) {
+					for (int j=bj; j<(bj+bjsize); j++) {
+						double val=DoubleArrays.dotProduct(wsa.data, ic*(i-bi), wsb.data, ic*(j-bj), ic);
 						result.unsafeSet(i, j, val);
 					}
 				}

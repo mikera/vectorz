@@ -14,6 +14,7 @@ public class TestDenseMultiply {
 		Matrix ip=m.innerProduct(m);
 		assertEquals(ip,Multiplications.multiply(m, m));
 		assertEquals(ip,Multiplications.blockedMultiply(m, m));
+		assertEquals(ip,Multiplications.doubleBlockedMultiply(m, m));
 		assertEquals(ip,Multiplications.naiveMultiply(m, m));
 	}
 	

@@ -629,7 +629,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public double dotProduct(AVector v) {
+		if (v instanceof Vector) return dotProduct((Vector)v);
 		int len=length();
+		if(v.length()!=len) throw new IllegalArgumentException("Vector size mismatch");
 		double total=0.0;
 		for (int i=0; i<len; i++) {
 			total+=unsafeGet(i)*v.unsafeGet(i);
@@ -638,7 +640,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public double dotProduct(Vector v) {
-		if(v.length()!=length()) throw new IllegalArgumentException("VEctor size mismatch");
+		if(v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
 		return dotProduct(v.data, 0);
 	}
 	
@@ -652,6 +654,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	/**
+	 * Fast dot product with a double[] array.
+
+	 * @param data
+	 * @param offset
+	 * @return
+	 */
 	public double dotProduct(double[] data, int offset) {
 		int len=length();
 		double result=0.0;
