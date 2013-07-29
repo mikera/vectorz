@@ -70,6 +70,7 @@ public class Multiplications {
 			for (int bi=0; bi<rc; bi+=block) {
 				int bisize=Math.min(block, rc-bi);
 				
+				// compute inner block
 				for (int i=bi; i<(bi+bisize); i++) {
 					int aDataOffset=i*ic;
 					for (int j=bj; j<(bj+bjsize); j++) {
@@ -121,6 +122,7 @@ public class Multiplications {
 					b.copyRowTo(bi+t,wsa.data,t*ic);
 				}
 				
+				// compute inner block
 				for (int i=bi; i<(bi+bisize); i++) {
 					for (int j=bj; j<(bj+bjsize); j++) {
 						double val=DoubleArrays.dotProduct(wsa.data, ic*(i-bi), wsb.data, ic*(j-bj), ic);
