@@ -158,6 +158,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return JoinedVector.joinVectors(this,second);
 	}
 	
+	@Override
 	public int compareTo(AVector a) {
 		int len=length();
 		if (len!=a.length()) throw new IllegalArgumentException("Vectors must be same length for comparison");
@@ -182,6 +183,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public boolean equals(AVector v) {
+		if (this==v) return true;
 		int len=length();
 		if (len != v.length())
 			return false;
@@ -192,6 +194,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return true;
 	}
 	
+	@Override
 	public boolean equals(INDArray v) {
 		if (v instanceof AVector) return equals((AVector)v);
 		if (v.dimensionality()!=1) return false;
@@ -216,6 +219,23 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return al;
 	}
 	
+	@Override
+	public boolean epsilonEquals(INDArray a, double tolerance) {
+		if (a instanceof AVector) return epsilonEquals((AVector)a);
+		if (a.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		int len=length();
+		if (len!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		for (int i = 0; i < len; i++) {
+			if (!Tools.epsilonEquals(unsafeGet(i), a.get(i), tolerance)) return false;
+		}		
+		return true;
+	}
+	
+	@Override
+	public boolean epsilonEquals(INDArray a) {
+		return epsilonEquals(a,Vectorz.TEST_EPSILON);
+	}
+	
 	public boolean epsilonEquals(AVector v) {
 		return epsilonEquals(v,Vectorz.TEST_EPSILON);
 	}
@@ -224,7 +244,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (this == v) return true;
 		int len=length();
 		if (len!=v.length())
-			throw new VectorzException("Mismatched vector sizes!");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < len; i++) {
 			if (!Tools.epsilonEquals(unsafeGet(i), v.unsafeGet(i), tolerance)) return false;
 		}
