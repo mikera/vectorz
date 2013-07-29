@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AArrayVector;
@@ -141,8 +142,26 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	
 	@Override 
 	public AMatrix innerProduct(AMatrix a) {
-		assert(a.rowCount()==this.dimensions);
+		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		return a.clone();
+	}
+	
+	@Override 
+	public Matrix innerProduct(Matrix a) {
+		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		return a.clone();
+	}
+	
+	@Override 
+	public Vector innerProduct(AVector v) {
+		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+		return v.toVector();
+	}
+	
+	@Override 
+	public Vector innerProduct(Vector v) {
+		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+		return v.clone();
 	}
 	
 	@Override 

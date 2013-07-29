@@ -163,6 +163,35 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public AMatrix innerProduct(AMatrix a) {
+		if (a instanceof Matrix22) {
+			return innerProduct((Matrix22)a);
+		}
+		return super.innerProduct(a);
+	}
+	
+	@Override
+	public AVector innerProduct(AVector a) {
+		if (a instanceof Vector2) {
+			return innerProduct((Vector2)a);
+		}
+		return super.innerProduct(a);
+	}
+	
+	public Vector2 innerProduct(Vector2 a) {
+		return transform(a);
+	}
+	
+	public Matrix22 innerProduct(Matrix22 a) {
+		Matrix22 r=new Matrix22();
+		r.m00=m00*a.m00+m01*a.m10;
+		r.m01=m00*a.m01+m01*a.m11;
+		r.m10=m10*a.m00+m11*a.m10;
+		r.m11=m10*a.m01+m11*a.m11;
+		return r;
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		if (source instanceof Vector2) {transform((Vector2)source,dest); return;}
 		super.transform(source,dest);

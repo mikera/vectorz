@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
@@ -165,12 +167,8 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 	}
 	
 	@Override
-	public VectorMatrixMN clone() {
-		AVector[] newRows=rows.clone();
-		for (int i=0; i<rowCount; i++) {
-			newRows[i]=newRows[i].clone();
-		}
-		return new VectorMatrixMN(newRows,rowCount,columnCount);
+	public Matrix clone() {
+		return Matrixx.create(this);
 	}
 	
 	@Override

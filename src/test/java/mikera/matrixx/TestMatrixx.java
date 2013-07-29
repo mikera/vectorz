@@ -240,21 +240,26 @@ public class TestMatrixx {
 	}
 	
 	private void doTransposeTest(AMatrix m) {
-		AMatrix m2=m.exactClone();
+		AMatrix m2=m.clone();
 		m2=m2.getTranspose();
-		assertEquals(m.getTranspose(),m2);
+		assertEquals(m2, m.getTranspose());
+		assertEquals(m2, m.getTransposeView());
+		assertEquals(m2, m.toMatrixTranspose());
+		
 		m2=m2.getTranspose();
 		assertEquals(m,m2);
+		
+		assertEquals(m.getTranspose().innerProduct(m),m.transposeInnerProduct(m));
 	}
 	
 	private void doSquareTransposeTest(AMatrix m) {
 		AMatrix m2=m.clone();
-
 		m2.transposeInPlace();
 		
 		// two different kinds of transpose should produce same result
 		AMatrix tm=m.getTranspose();
 		assertEquals(tm,m2);
+		assertEquals(m.trace(),tm.trace(),0.0);
 		
 		m2.transposeInPlace();
 		assertEquals(m,m2);
@@ -402,14 +407,23 @@ public class TestMatrixx {
 		assertEquals(m.columnCount(),m.inputDimensions());
 		
 		m=m.clone();
-		if ((m.rowCount()==0)||(m.columnCount()==0)) return;
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		if ((rc==0)||(cc==0)) return;
 		
-		assertEquals(m.getRow(0),m.cloneRow(0));
+		for (int i=0; i<rc; i++) {
+			AVector row=m.getRow(i);
+			assertEquals(row,m.cloneRow(i));
+			assertEquals(cc,row.length());
+		}
+		
+		for (int i=0; i<cc; i++) {
+			AVector col=m.getColumn(i);
+			assertEquals(rc,col.length());
+		}
 		
 		AVector row=m.getRow(0);
 		AVector col=m.getColumn(0);
-		assertEquals(m.columnCount(),row.length());
-		assertEquals(m.rowCount(),col.length());
 		
 		row.set(0,1.77);
 		assertEquals(1.77,m.get(0,0),0.0);

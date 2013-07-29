@@ -80,18 +80,13 @@ public final class DoubleScalar extends AScalar {
 	}
 
 	@Override
-	public DoubleScalar clone() {
-		return new DoubleScalar(value);
-	}
-
-	@Override
 	public void getElements(double[] dest, int offset) {
 		dest[offset] = value;
 	}
 
 	@Override
 	public DoubleScalar exactClone() {
-		return clone();
+		return new DoubleScalar(value);
 	}
 
 	/**

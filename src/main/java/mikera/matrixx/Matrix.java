@@ -3,6 +3,7 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
@@ -43,11 +44,18 @@ public final class Matrix extends ADenseArrayMatrix {
 		set(m);
 	}
 	
-	public Matrix create(Object... rowVectors) {
+	public static Matrix create(INDArray m) {
+		if (m.dimensionality()!=2) throw new IllegalArgumentException("Can only create matrix from 2D array");
+		int rows=m.getShape(0);
+		int cols=m.getShape(1);
+		double[] data=new double[rows*cols];
+		m.getElements(data, 0);
+		return Matrix.wrap(rows, cols, data);		
+	}
+	
+	public static Matrix create(Object... rowVectors) {
 		AMatrix m=VectorMatrixMN.create(rowVectors);
-		Matrix r=new Matrix(m.rowCount(),m.columnCount(),new double[rows*cols]);
-		r.set(m);
-		return r;
+		return create(m);
 	}
 	
 	@Override
@@ -96,7 +104,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		if ((cc!=a.length())) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}		
-		Vector result=Vector.createLength(rows);
+		Vector result=Vector.createLength(rc);
 		for (int i=0; i<rc; i++) {
 			int di=i*cc;
 			double acc=0.0;
@@ -110,18 +118,21 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix innerProduct(Matrix a) {
-		if ((this.columnCount()!=a.rowCount())) {
+		// TODO: detect large matrices and farm off to cache-efficient function
+		
+		int ic=this.columnCount();
+		if ((ic!=a.rowCount())) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}
 		int rc=this.rowCount();
 		int cc=a.columnCount();
-		int ic=this.columnCount();
 		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
+			int toffset=ic*i;
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
+					acc+=data[toffset+k]*a.unsafeGet(k, j);
 				}
 				result.unsafeSet(i,j,acc);
 			}
@@ -131,6 +142,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public Matrix innerProduct(AMatrix a) {
+		// TODO: consider transposing a into packed arrays?
 		if (a instanceof Matrix) {
 			return innerProduct((Matrix)a);
 		}
@@ -142,10 +154,11 @@ public final class Matrix extends ADenseArrayMatrix {
 		int ic=this.columnCount();
 		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
+			int toffset=ic*i;
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
 				for (int k=0; k<ic; k++) {
-					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
+					acc+=data[toffset+k]*a.unsafeGet(k, j);
 				}
 				result.unsafeSet(i,j,acc);
 			}
@@ -194,6 +207,28 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public Vector cloneRow(int row) {
+		int cc = columnCount();
+		Vector v = Vector.createLength(cc);
+		copyRowTo(row,v.data,0);
+		return v;
+	}
+	
+	@Override
+	public final void copyRowTo(int row, double[] dest, int destOffset) {
+		int srcOffset=row*cols;
+		System.arraycopy(data, srcOffset, dest, destOffset, cols);
+	}
+	
+	@Override
+	public final void copyColumnTo(int col, double[] dest, int destOffset) {
+		int colOffset=col;
+		for (int i=0;i<rows; i++) {
+			dest[destOffset+i]=data[colOffset+i*cols];
+		}
+	}
+
+	@Override
 	public Vector transform (AVector a) {
 		Vector v=Vector.createLength(rows);
 		for (int i=0; i<rows; i++) {
@@ -224,6 +259,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public AStridedVector getColumn(int col) {
 		if (cols==1) {
+			if (col!=0) throw new IndexOutOfBoundsException("Column does not exist: "+col);
 			return Vector.wrap(data);
 		} else {
 			return StridedVector.wrap(data,col,rows,cols);
@@ -287,6 +323,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return data;
+	}
 
 	@Override
 	public double get(int row, int column) {
@@ -344,6 +385,11 @@ public final class Matrix extends ADenseArrayMatrix {
 				data[di++]+=m.unsafeGet(i, j)*factor;
 			}
 		}
+	}
+	
+	@Override
+	public void add(double d) {
+		DoubleArrays.add(data, d);
 	}
 	
 	@Override

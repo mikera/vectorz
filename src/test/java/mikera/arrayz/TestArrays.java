@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
@@ -104,6 +105,11 @@ public class TestArrays {
 
 	private void testClone(INDArray a) {
 		INDArray c = a.clone();
+		
+		if (!(c instanceof VectorMatrixM3)) { // allowed to still be a view
+			assertFalse(c.isView());
+		}
+		
 		assertTrue(c.equals(a));
 		assertTrue(a.equals(c));
 		assertEquals(a.hashCode(), c.hashCode());
@@ -285,6 +291,36 @@ public class TestArrays {
 
 		assertEquals(a, b.slice(0).slice(1));
 	}
+	
+	private void testIllegalBroadcast(INDArray a) {
+		if (a.dimensionality()==0) return; // scalars can broadcast to anything :-)
+		int[] ts=IntArrays.consArray(1,IntArrays.incrementAll(a.getShape()));
+		try {
+			a.broadcast(ts);
+			fail("Broadcast should not be possible!!");
+		} catch (IllegalArgumentException t) {
+			// OK
+		}
+		
+		try {
+			a.broadcastLike(Array.newArray(ts));
+			fail("Broadcast should not be possible!!");
+		} catch (IllegalArgumentException t) {
+			// OK
+		}
+	}
+	
+	private void testBroadcastLike(INDArray a) {
+		INDArray up=SliceArray.create(a,a);		
+		INDArray b=a.broadcastLike(up);		
+		assertEquals(up,b);
+		assertEquals(a,up.slice(0));
+		assertEquals(a,up.slice(1));
+		
+		INDArray up2=Arrayz.create(SliceArray.create(a));		
+		INDArray b2=a.broadcastLike(up2);		
+		assertEquals(up2,b2);
+	}
 
 	private void testSums(INDArray a) {
 		INDArray b = a.clone();
@@ -300,6 +336,11 @@ public class TestArrays {
 
 	private void testTranspose(INDArray a) {
 		assertEquals(a, a.getTranspose().getTranspose());
+		try {
+			assertEquals(a.getTransposeCopy(), a.getTransposeView());
+		} catch (UnsupportedOperationException x) {
+			// OK, not all matrices have transpose views
+		}
 	}
 
 	private void testClamp(INDArray a) {
@@ -331,7 +372,10 @@ public class TestArrays {
 	}
 	
 	private void testStridedArray(INDArray mm) {
-		if (!(mm instanceof IStridedArray)) return;
+		if (!(mm instanceof IStridedArray)) {
+			assertNull(mm.asDoubleArray());
+			return;
+		}
 		IStridedArray m=(IStridedArray)mm;
 		
 		int dims=m.dimensionality();
@@ -340,6 +384,13 @@ public class TestArrays {
 		double[] data=m.getArray();
 		for (int i=0; i<dims; i++) {
 			assertEquals(m.getStride(i),strides[i]);
+		}
+		
+		if (m.isPackedArray()) {
+			assertNotNull(m.asDoubleArray());
+			assertTrue(m.asDoubleArray()==m.getArray());
+		} else {
+			assertNull(m.asDoubleArray());
 		}
 		
 		if (m.elementCount()==0) return;
@@ -429,6 +480,8 @@ public class TestArrays {
 		testSetElements(a);
 		testGetElements(a);
 		testBroadcast(a);
+		testBroadcastLike(a);
+		testIllegalBroadcast(a);
 		testShape(a);
 		testClamp(a);
 		testHash(a);
@@ -453,6 +506,7 @@ public class TestArrays {
 		testArray(Array.create(nd1));
 		
 		NDArray nd2 = NDArray.newArray(3, 3);
+		assertEquals(9,nd2.elementCount());
 		Vectorz.fillIndexes(nd2.asVector());
 		testArray(nd2);
 		testArray(Array.create(nd2));

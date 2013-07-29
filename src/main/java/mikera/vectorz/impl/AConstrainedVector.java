@@ -9,5 +9,10 @@ public abstract class AConstrainedVector extends AVector {
 	public boolean isElementConstrained() {
 		return true;
 	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
 
 }

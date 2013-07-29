@@ -114,7 +114,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	@Override
 	public void add(INDArray a) {
-		if (a instanceof AScalar) {
+		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
 			add(a.get());
 		} else {
 			super.add(a);
@@ -123,7 +123,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	@Override
 	public void sub(INDArray a) {
-		if (a instanceof AScalar) {
+		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
 			sub(a.get());
 		} else {
 			super.sub(a);
@@ -166,6 +166,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		a=a.clone();
 		a.scale(get());
 		return a;
+	}
+	
+	public Scalar innerProduct(AScalar a) {
+		return Scalar.create(get()*a.get());
 	}
 	
 	@Override
@@ -241,8 +245,8 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public AScalar clone() {
-		return (AScalar) super.clone();
+	public Scalar clone() {
+		return Scalar.create(get());
 	}
 	
 	@Override 
@@ -257,7 +261,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public double elementSum() {
+	public final double elementSum() {
 		return get();
 	}
 	
@@ -330,6 +334,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(get());
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return null;
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {get()};
 	}
 	
 	@Override

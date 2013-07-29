@@ -1,9 +1,11 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Matrix class that wraps a vector as a 1-row matrix
@@ -80,5 +82,20 @@ public class RowMatrix extends AMatrix {
 	@Override
 	public RowMatrix exactClone() {
 		return new RowMatrix(vector.exactClone());
+	}
+
+	@Override
+	public Matrix transposeInnerProduct(Matrix s) {
+		if (s.rowCount()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, s));
+		int rc=this.columnCount();
+		int cc=s.columnCount();
+		Matrix m=Matrix.create(rc,cc);
+		for (int i=0; i<rc; i++) {
+			double ti=this.get(i);
+			for (int j=0; j<cc; j++) {
+				m.unsafeSet(i,j,ti*s.unsafeGet(0,j));
+			}
+		}
+		return m;
 	}
 }

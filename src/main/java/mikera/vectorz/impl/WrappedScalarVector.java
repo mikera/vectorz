@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
-import mikera.vectorz.AVector;
 
 /**
  * A length 1 vector, as a view wrapping a single AScalar
@@ -10,7 +9,7 @@ import mikera.vectorz.AVector;
  * 
  * @author Mike
  */
-public class WrappedScalarVector extends AVector {
+public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	private static final long serialVersionUID = 1912695454407729415L;
 	
 	public final AScalar scalar;
@@ -44,5 +43,10 @@ public class WrappedScalarVector extends AVector {
 	@Override
 	public WrappedScalarVector exactClone() {
 		return new WrappedScalarVector(scalar.exactClone());
+	}
+
+	@Override
+	public AScalar getWrappedObject() {
+		return scalar;
 	}
 }

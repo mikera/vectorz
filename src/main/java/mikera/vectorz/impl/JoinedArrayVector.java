@@ -135,7 +135,7 @@ public final class JoinedArrayVector extends AVector {
 	@Override
 	public void copyTo(AVector dest, int offset) {
 		for (int j=0; j<numArrays; j++) {
-			dest.set(pos[j]+offset,data[j],offsets[j],subLength(j));
+			dest.setRange(pos[j]+offset,data[j],offsets[j],subLength(j));
 		}
 	}
 

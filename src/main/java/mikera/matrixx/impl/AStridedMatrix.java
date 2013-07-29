@@ -1,8 +1,10 @@
 package mikera.matrixx.impl;
 
 import mikera.arrayz.impl.IStridedArray;
-import mikera.vectorz.AVector;
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
 
 public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArray {
@@ -27,12 +29,12 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
-	public AVector getRow(int i) {
+	public AStridedVector getRow(int i) {
 		return Vectorz.wrapStrided(data, getArrayOffset()+i*rowStride(), cols, columnStride());
 	}
 	
 	@Override
-	public AVector getColumn(int i) {
+	public AStridedVector getColumn(int i) {
 		return Vectorz.wrapStrided(data, getArrayOffset()+i*columnStride(), rows, rowStride());
 	}
 	
@@ -50,4 +52,19 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		}
 	}
 	
+	@Override
+	public AMatrix getTransposeView() {
+		return Matrixx.wrapStrided(getArray(),columnCount(),rowCount(),getArrayOffset(),columnStride(),rowStride());
+	}
+	
+	@Override
+	public boolean isPackedArray() {
+		return (getArrayOffset()==0)&&(columnStride()==1)&&(rowStride()==columnCount())&&(getArray().length==elementCount());
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		if (isPackedArray()) return getArray();
+		return null;
+	}
 }

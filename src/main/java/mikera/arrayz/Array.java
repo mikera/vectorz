@@ -47,6 +47,12 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	private Array(int dims, int[] shape, double[] data) {
 		this(dims, shape, IntArrays.calcStrides(shape), data);
 	}
+	
+	public static INDArray wrap(double[] data, int[] shape) {
+		long ec=IntArrays.arrayProduct(shape);
+		if (data.length!=ec) throw new IllegalArgumentException("Data array does not have correct number of elements, expected: "+ec);
+		return new Array(shape.length,shape,data);
+	}
 
 	private Array(int dims, int[] shape, int[] strides, double[] data) {
 		this.dimensions = dims;
@@ -266,9 +272,15 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return data;
+	}
 
 	@Override
 	public INDArray clone() {
+		// always return the efficient type for each dimensionality
 		switch (dimensions) {
 		case 0:
 			return Scalar.create(data[0]);
@@ -277,7 +289,7 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 		case 2:
 			return Matrix.wrap(shape[0], shape[1], data.clone());
 		default:
-			return new Array(dimensions, shape, data.clone());
+			return Array.wrap(data.clone(),shape);
 		}
 	}
 
@@ -324,4 +336,10 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	public int[] getStrides() {
 		return strides;
 	}
+
+	@Override
+	public boolean isPackedArray() {
+		return true;
+	}
+
 }

@@ -2,10 +2,12 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -29,13 +31,29 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public AVector getRow(int i) {
+	public AStridedVector getRow(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
 	}
 	
 	@Override
-	public AVector getColumn(int i) {
+	public AStridedVector getColumn(int i) {
 		return StridedVector.wrap(data, offset+i*colStride, rows, rowStride);
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		int rowOffset=offset+row*rowStride;
+		for (int i=0;i<cols; i++) {
+			dest[destOffset+i]=data[rowOffset+i*colStride];
+		}
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		int colOffset=offset+col*colStride;
+		for (int i=0;i<rows; i++) {
+			dest[destOffset+i]=data[colOffset+i*rowStride];
+		}
 	}
 	
 	@Override
@@ -97,8 +115,14 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public StridedMatrix getTranspose() {
-		return StridedMatrix.wrap(data, cols, rows, offset,
+	public AMatrix getTranspose() {
+		return Matrixx.wrapStrided(data, cols, rows, offset,
+				colStride, rowStride);
+	}
+	
+	@Override
+	public AMatrix getTransposeView() {
+		return Matrixx.wrapStrided(data, cols, rows, offset,
 				colStride, rowStride);
 	}
 

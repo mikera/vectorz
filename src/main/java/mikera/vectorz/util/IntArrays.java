@@ -1,9 +1,47 @@
 package mikera.vectorz.util;
 
+import java.util.List;
+
 import mikera.util.Rand;
+import mikera.vectorz.Tools;
 
 public class IntArrays {
 	public static final int[] EMPTY_INT_ARRAY=new int[0];
+	
+	public static int[] of(int... ints) {
+		return ints;
+	}
+	
+	public static int[] create(Object o) {
+		if (o instanceof List<?>) {
+			return create((List<?>)o);
+		} else if (o instanceof int[]) {
+			return ((int[]) o).clone();
+		} else if (o instanceof double[]) {
+			return create((double[]) o);
+		} else if (o instanceof Iterable<?>) {
+			return create(Tools.toList((Iterable<?>) o));
+		}
+		throw new IllegalArgumentException("Can't convert to int[]: "+o);
+	}
+	
+	public static int[] create(double[] ls) {
+		int n=ls.length;
+		int[] r=new int[n];
+		for (int i=0; i<n; i++) {
+			r[i]=Tools.toInt(ls[i]);
+		}
+		return r;
+	}
+	
+	public static int[] create(List<?> ls) {
+		int n=ls.size();
+		int[] r=new int[n];
+		for (int i=0; i<n; i++) {
+			r[i]=Tools.toInt(ls.get(i));
+		}
+		return r;
+	}
 	
 	public static int[] removeIndex(int[] data, int index) {
 		int len=data.length;
@@ -58,6 +96,11 @@ public class IntArrays {
 		return r;
 	}
 
+	/**
+	 * Computes the standard packed array strides for a given shape.
+	 * @param shape
+	 * @return
+	 */
 	public static final int[] calcStrides(int[] shape) {
 		int dimensions=shape.length;
 		int[] stride=new int[dimensions];
@@ -69,7 +112,14 @@ public class IntArrays {
 		return stride;
 	}
 	
+	/**
+	 * Tests if two int array scontain equal values.
+	 * @param as
+	 * @param bs
+	 * @return
+	 */
 	public static boolean equals(int[] as, int[] bs) {
+		if (as==bs) return true;
 		int n=as.length;
 		if (n!=bs.length) return false;
 		for (int i=0; i<n; i++) {
@@ -93,6 +143,15 @@ public class IntArrays {
 		}
 		return result;
 	}
+	
+	public static int[] rand(int[] shape, java.util.Random r) {
+		int n=shape.length;
+		int[] result=new int[n];
+		for (int i=0; i<n; i++) {
+			result[i]=r.nextInt(shape[i]);
+		}
+		return result;
+	}
 
 	public static int dotProduct(int[] xs, int[] ys) {
 		int result=0;
@@ -102,5 +161,29 @@ public class IntArrays {
 			result+=xs[i]*ys[i];
 		}
 		return result;
+	}
+
+	public static int[] decrementAll(int[] xs) {
+		int len=xs.length;
+		int[] rs=new int[len];
+		for (int i=0; i<len; i++) {
+			rs[i]=xs[i]-1;
+		}
+		return rs;
+	}
+	
+	public static int[] incrementAll(int[] xs) {
+		int len=xs.length;
+		int[] rs=new int[len];
+		for (int i=0; i<len; i++) {
+			rs[i]=xs[i]+1;
+		}
+		return rs;
+	}
+
+	public static void swap(int[] inds, int a, int b) {
+		int temp = inds[a];
+		inds[a] = inds[b];
+		inds[b] = temp;
 	}
 }

@@ -89,11 +89,13 @@ public class TestMatrices {
 	}
 	
 	@Test public void testStridedMatrix() {
-		StridedMatrix m=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
-		m=m.getTranspose();
+		AMatrix om=Matrixx.createRandomMatrix(3, 4);
+		StridedMatrix sm=StridedMatrix.create(om);
+		AMatrix m=sm.getTranspose();
 		assertEquals(m.clone(),m);
 		assertEquals(m.getRow(1),m.clone().getRow(1));
 		assertEquals(m.getTranspose(),m.getTranspose().clone());
+		assertTrue(m.getTranspose() instanceof Matrix);
 	}
 	
 	@Test public void testPermutationMatrix() {

@@ -126,7 +126,7 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public void set(int offset, double[] data, int dataOffset, int length) {
+	public void setRange(int offset, double[] data, int dataOffset, int length) {
 		System.arraycopy(data, dataOffset, this.data, offset, length);
 	}
 	
@@ -328,15 +328,31 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public double dotProduct(AVector v) {
-		if ((v instanceof Vector)) return dotProduct((Vector)v);
+	public double dotProduct(double[] data, int offset) {
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=data[i]*v.unsafeGet(i);
+			result+=this.data[i]*data[offset+i];
 		}
 		return result;
+	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		if ((v instanceof Vector)) {
+			return dotProduct((Vector)v);
+		} else {
+			if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+			return v.dotProduct(data,0);
+		}
+	}
+	
+	@Override public Scalar innerProduct(AVector v) {
+		return Scalar.create(dotProduct(v));
+	}
+	
+	@Override public Scalar innerProduct(Vector v) {
+		return Scalar.create(dotProduct(v));
 	}
 	
 	public double dotProduct(Vector v) {
@@ -486,6 +502,11 @@ public final class Vector extends AArrayVector {
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return data;
 	}
 
 	/**

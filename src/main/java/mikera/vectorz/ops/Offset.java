@@ -1,6 +1,7 @@
 package mikera.vectorz.ops;
 
 import mikera.arrayz.INDArray;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
@@ -27,6 +28,11 @@ public final class Offset extends ALinearOp {
 	
 	@Override
 	public void applyTo(INDArray v) {
+		v.add(constant);
+	}
+	
+	@Override
+	public void applyTo(AMatrix v) {
 		v.add(constant);
 	}
 	

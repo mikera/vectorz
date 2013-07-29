@@ -13,9 +13,11 @@ public final class StridedVector extends AStridedVector {
 	
 	private StridedVector(double[] data, int offset, int length, int stride) {
 		if ((offset<0)) throw new IndexOutOfBoundsException();
-		int lastOffset=(offset+(length-1)*stride);
-		if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException();
-		
+		if (length>0) {
+			// check last element is in the array
+			int lastOffset=(offset+(length-1)*stride);
+			if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException();
+		}
 		this.data=data;
 		this.offset=offset;
 		this.length=length;

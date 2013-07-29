@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -82,6 +83,12 @@ public class ColumnMatrix extends AMatrix {
 	@Override
 	public ColumnMatrix exactClone() {
 		return new ColumnMatrix(vector.exactClone());
+	}
+
+	@Override
+	public Matrix transposeInnerProduct(Matrix s) {
+		Vector v=vector.innerProduct(s).toVector();
+		return Matrix.wrap(1, s.columnCount(), v.asDoubleArray());
 	}
 
 }

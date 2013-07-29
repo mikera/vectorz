@@ -148,7 +148,7 @@ public interface INDArray extends Cloneable {
 	public INDArray outerProduct(INDArray a);
 	
 	/**
-	 * Creates a view of the array as a single vector in row-major order.
+	 * Constructs a view of the array as a single vector in row-major order.
 	 * @return
 	 */
 	public AVector asVector();
@@ -173,16 +173,23 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray broadcast(int... shape);
+	
+	/**
+	 * Broadcasts to match the shape of the target
+	 * @param target
+	 * @return
+	 */
+	public INDArray broadcastLike(INDArray target);
 
 	/**
-	 * Returns the specified major slice of this array (slice along dimension 0)
+	 * Returns the specified major slice of this array as a view (slice along dimension 0)
 	 * @param majorSlice
 	 * @return
 	 */
 	public INDArray slice(int majorSlice);
 
 	/**
-	 * Returns a slice of this array along the specified dimension
+	 * Returns a slice view of this array along the specified dimension
 	 * @param majorSlice
 	 * @return
 	 */
@@ -201,6 +208,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray getTransposeView();
+	
+	/**
+	 * Returns a transposed copy of the array. 
+	 * @return
+	 */
+	public INDArray getTransposeCopy();
 
 	/**
 	 * returns the number of major slices in this array.
@@ -251,7 +264,7 @@ public interface INDArray extends Cloneable {
 	public boolean isMutable();
 	
 	/**
-	 * Returns true if the array is boolean (contains only 0.0 or 1.0 value
+	 * Returns true if the array is boolean (contains only 0.0 or 1.0 values)
 	 */
 	public boolean isBoolean();
 	
@@ -263,12 +276,12 @@ public interface INDArray extends Cloneable {
 	public boolean isFullyMutable();
 	
 	/**
-	 * Returns true if the IND has additional constraints on element values
+	 * Returns true if this array has some constraints on element values
 	 */
 	public boolean isElementConstrained();
 	
 	/**
-	 * Return true if this is a view
+	 * Return true if this array is a view type
 	 * @return
 	 */
 	public boolean isView();
@@ -397,6 +410,13 @@ public interface INDArray extends Cloneable {
 	 * @param arr
 	 */
 	public double[] toDoubleArray();
+	
+	/**
+	 * Returns the underlying double array representing the packed elements of this array
+	 * Returns nil if there is no such underlying array
+	 * @param arr
+	 */
+	public double[] asDoubleArray();
 
 	/**
 	 * Returns a list of slices as mutable INDArray views.

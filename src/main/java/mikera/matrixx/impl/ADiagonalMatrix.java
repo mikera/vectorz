@@ -1,7 +1,10 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.impl.AArrayVector;
@@ -23,11 +26,6 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	@Override
 	public boolean isSquare() {
 		return true;
-	}
-	
-	@Override
-	public boolean isFullyMutable() {
-		return false;
 	}
 	
 	@Override
@@ -59,6 +57,11 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	public abstract boolean isMutable();
 	
 	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
+	
+	@Override
 	public double determinant() {
 		double det=1.0;
 		for (int i=0; i<dimensions; i++) {
@@ -75,10 +78,23 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 		return dimensions;
 	}
 	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+dimensions,0.0);
+		dest[destOffset+row]=getDiagonalValue(row);
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		// copying rows and columns is the same!
+		copyRowTo(col,dest,destOffset);
+	}
+	
 	public AMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		DiagonalMatrix result=DiagonalMatrix.create(dimensions);
-		for (int i=0; i<dimensions; i++) {
+		int dims=this.dimensions;
+		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		DiagonalMatrix result=DiagonalMatrix.createDimensions(dims);
+		for (int i=0; i<dims; i++) {
 			result.data[i]=getDiagonalValue(i)*a.getDiagonalValue(i);
 		}
 		return result;
@@ -88,9 +104,38 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof ADiagonalMatrix) {
 			return innerProduct((ADiagonalMatrix) a);
+		} else if (a instanceof Matrix) {
+			return innerProduct((Matrix) a);
 		}
 		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		return super.innerProduct(a);
+		int acc=a.columnCount();
+		Matrix m=Matrix.create(dimensions, acc);
+		for (int i=0; i<dimensions; i++) {
+			double dv=getDiagonalValue(i);
+			for (int j=0; j<acc; j++) {
+				m.unsafeSet(i, j, dv*a.unsafeGet(i,j));
+			}
+		}
+		return m;
+	}
+	
+	@Override
+	public Matrix innerProduct(Matrix a) {
+		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		int acc=a.columnCount();
+		Matrix m=Matrix.create(dimensions, acc);
+		for (int i=0; i<dimensions; i++) {
+			double dv=getDiagonalValue(i);
+			for (int j=0; j<acc; j++) {
+				m.unsafeSet(i, j, dv*a.unsafeGet(i,j));
+			}
+		}
+		return m;
+	}
+	
+	@Override
+	public Matrix transposeInnerProduct(Matrix s) {
+		return innerProduct(s);
 	}
 	
 	@Override
@@ -176,6 +221,15 @@ public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
 	@Override
 	public double density() {
 		return 1.0/dimensions;
+	}
+	
+	@Override
+	public Matrix toMatrix() {
+		Matrix m=Matrix.create(dimensions, dimensions);
+		for (int i=0; i<dimensions; i++) {
+			m.data[i*(dimensions+1)]=getDiagonalValue(i);
+		}
+		return m;
 	}
 	
 	@Override

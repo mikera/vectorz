@@ -70,4 +70,12 @@ public class TestNDArray {
 		
 		assertTrue(Arrays.equals(new int[] {1,2,3,1,2,3},a.outerProduct(a).getShape()));
 	}
+	
+	@Test public void testInnerProduct() {
+		Matrix m=Matrixx.createYAxisRotationMatrix(2.0).toMatrix();
+		
+		NDArray a=NDArray.wrap(m);
+		
+		assertEquals(a.innerProduct(a),m.innerProduct(m));
+	}
 }

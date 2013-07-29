@@ -11,8 +11,8 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.SliceArray;
+import mikera.matrixx.Matrix;
 import mikera.util.Maths;
-import mikera.vectorz.AScalar;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -93,12 +93,26 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	public INDArray innerProduct(INDArray a) {
-		if (a instanceof AScalar) {
-			INDArray c=clone();
-			c.scale(((AScalar)a).get());
-			return c;
+		int dims=dimensionality();
+		switch (dims) {
+			case 0: {
+				a=a.clone();
+				a.scale(get());
+				return a;
+			}
+			case 1: {
+				return toVector().innerProduct(a);
+			}
+			case 2: {
+				return Matrix.create(this).innerProduct(a);
+			}
 		}
-		throw new UnsupportedOperationException();
+		int sc=sliceCount();
+		ArrayList<INDArray> sips=new ArrayList<INDArray>();
+		for (int i=0; i<sc; i++) {
+			sips.add(slice(i).innerProduct(a));
+		}
+		return SliceArray.create(sips);
 	}
 	
 	public INDArray outerProduct(INDArray a) {
@@ -126,6 +140,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public INDArray getTransposeView() {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public INDArray getTransposeCopy() {
+		return getTranspose().clone();
 	}
 	
 	public final void scale(double d) {
@@ -255,12 +274,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return sb.toString();
 	}
 	
+	@Override
 	public INDArray clone() {
-		try {
-			return (AbstractArray<?>)super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("AbstractArray clone failed!?!");
-		}
+		return Arrayz.create(this);
 	}
 	
 	@Override
@@ -565,18 +581,29 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public double[] asDoubleArray() {
+		return null;
+	}
+	
+	@Override
 	public INDArray broadcast(int... targetShape) {
 		int dims=dimensionality();
 		int tdims=targetShape.length;
 		if (tdims<dims) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 		} else if (dims==tdims) {
-			return this;
+			if (IntArrays.equals(targetShape, this.getShape())) return this;
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 		} else {
 			int n=targetShape[0];
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
 			return SliceArray.repeat(s,n);
 		}
+	}
+	
+	@Override
+	public INDArray broadcastLike(INDArray target) {
+		return broadcast(target.getShape());
 	}
 	
 	@Override

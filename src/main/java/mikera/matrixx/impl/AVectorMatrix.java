@@ -123,8 +123,8 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}	
 	
 	@Override
-	public AVectorMatrix<?> clone() {
-		AVectorMatrix<?> avm=(AVectorMatrix<?>) super.clone();
+	public AMatrix clone() {
+		AMatrix avm= super.clone();
 		return avm;
 	}
 }

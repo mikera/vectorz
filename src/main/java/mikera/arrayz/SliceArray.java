@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
@@ -154,6 +155,21 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	public INDArray innerProduct(INDArray a) {
+		int dims=dimensionality();
+		switch (dims) {
+			case 0: {
+				a=a.clone();
+				a.scale(get());
+				return a;
+			}
+			case 1: {
+				return this.toVector().innerProduct(a);
+			}
+			case 2: {
+				return Matrix.create(this).innerProduct(a);
+			}
+		}
+		
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (INDArray s:this) {
 			al.add(s.innerProduct(a));
@@ -234,11 +250,6 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 			if (!slices[i].equals(a.slice(i))) return false;
 		}
 		return true;
-	}
-
-	@Override
-	public SliceArray<T> clone() {
-		return exactClone();
 	}
 
 	@Override

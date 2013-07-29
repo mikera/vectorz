@@ -15,6 +15,7 @@ import mikera.matrixx.Matrixx;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -440,16 +441,14 @@ public class TestVectors {
 	
 	private void testAddAt(AVector v) {
 		if (!v.isFullyMutable()) return;
-		v=v.exactClone();
 		int len=v.length();
-		AVector c=v.clone();
-		
+		v=v.exactClone();
+
 		for (int i=0; i<len; i++) {
-			v.addAt(i, c.get(i));
+			double old=v.get(i);
+			v.addAt(i, i+1);
+			assertEquals(old+i+1,v.get(i),0.0000001);
 		}
-		c.scale(2.0);
-		
-		assertEquals(c,v);
 	}
 	
 	private void testOutOfBoundsSet(AVector v) {
@@ -707,7 +706,7 @@ public class TestVectors {
 		}	
 	}
 	
-	private void doGenericTests(AVector v) {
+	public void doGenericTests(AVector v) {
 		testClone(v);
 		testExactClone(v);
 		testAdd(v);
@@ -834,6 +833,10 @@ public class TestVectors {
 		doGenericTests(new RepeatedElementVector(4,0.0));
 		doGenericTests(new RepeatedElementVector(10,1.0));
 		doGenericTests(new RepeatedElementVector(10,1.0).subVector(2, 5));
+		
+		doGenericTests(IndexVector.of(1,2,3));
+		doGenericTests(IndexVector.of(1));
+		doGenericTests(IndexVector.of());
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));

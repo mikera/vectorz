@@ -10,10 +10,12 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.SliceArray;
+import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
-import mikera.matrixx.impl.AMatrixSubVector;
+import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.randomz.Hash;
@@ -32,6 +34,7 @@ import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -365,105 +368,24 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 
-	@SuppressWarnings("serial")
-	private class MatrixRowView extends AMatrixSubVector {
-		private final int row;
-
-		private MatrixRowView(int row) {
-			this.row = row;
-		}
-
-		@Override
-		public int length() {
-			return columnCount();
-		}
-
-		@Override
-		public double get(int i) {
-			return AMatrix.this.get(row, i);
-		}
-
-		@Override
-		public void set(int i, double value) {
-			AMatrix.this.set(row, i, value);
-		}
-		
-		@Override
-		public double unsafeGet(int i) {
-			return AMatrix.this.unsafeGet(row, i);
-		}
-
-		@Override
-		public void unsafeSet(int i, double value) {
-			AMatrix.this.unsafeSet(row, i, value);
-		}
-		
-		@Override 
-		public boolean isFullyMutable() {
-			return AMatrix.this.isFullyMutable();
-		}
-
-		
-		@Override
-		public MatrixRowView exactClone() {
-			return AMatrix.this.exactClone().new MatrixRowView(row);
-		}
-	}
-
-	@SuppressWarnings("serial")
-	private class MatrixColumnView extends AMatrixSubVector {
-		private final int column;
-
-		private MatrixColumnView(int column) {
-			this.column = column;
-		}
-
-		@Override
-		public int length() {
-			return rowCount();
-		}
-
-		@Override
-		public double get(int i) {
-			return AMatrix.this.get(i, column);
-		}
-		
-		@Override 
-		public boolean isFullyMutable() {
-			return AMatrix.this.isFullyMutable();
-		}
-
-		@Override
-		public void set(int i, double value) {
-			AMatrix.this.set(i, column, value);
-		}
-		
-		@Override
-		public MatrixColumnView exactClone() {
-			return AMatrix.this.exactClone().new MatrixColumnView(column);
-		}
-	}
-
 	/**
 	 * Returns a row of the matrix as a vector view
 	 */
 	public AVector getRow(int row) {
-		return new MatrixRowView(row);
+		return new MatrixRowView(this, row);
 	}
 
 	/**
 	 * Returns a column of the matrix as a vector view
 	 */
 	public AVector getColumn(int column) {
-		return new MatrixColumnView(column);
+		return new MatrixColumnView(this, column);
 	}
 
 	public AVector cloneRow(int row) {
 		int cc = columnCount();
-		AVector v = Vectorz.newVector(cc);
-		for (int i = 0; i < cc; i++) {
-			v.set(i, get(row, i));
-		}
+		Vector v = Vector.createLength(cc);
+		copyRowTo(row,v.data,0);
 		return v;
 	}
 
@@ -504,17 +426,21 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		int rc = rowCount();
 		int cc = columnCount();
-		int di=offset;
 		for (int i = 0; i < rc; i++) {
+			int iOffset=offset+i*cc;
 			for (int j = 0; j < cc; j++) {
-				unsafeSet(i,j,values[di++]);
+				unsafeSet(i,j,values[iOffset+j]);
 			}
 		}	
 	} 
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
-		asVector().getElements(dest, offset);
+		int rc=this.rowCount();
+		int cc=this.columnCount();
+		for (int i=0; i<rc; i++) {
+			copyRowTo(i,dest,offset+i*cc);
+		}
 	}
 	
 	@Override
@@ -568,24 +494,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return calcDeterminant(inds, 0);
 	}
 
-	private static void swap(int[] inds, int a, int b) {
-		int temp = inds[a];
-		inds[a] = inds[b];
-		inds[b] = temp;
-	}
-
 	private double calcDeterminant(int[] inds, int offset) {
 		int rc = rowCount();
 		if (offset == (rc - 1))
-			return get(offset, inds[offset]);
+			return unsafeGet(offset, inds[offset]);
 
-		double det = get(offset, inds[offset])
+		double det = unsafeGet(offset, inds[offset])
 				* calcDeterminant(inds, offset + 1);
 		for (int i = 1; i < (rc - offset); i++) {
-			swap(inds, offset, offset + i);
-			det -= get(offset, inds[offset])
+			IntArrays.swap(inds, offset, offset + i);
+			det -= unsafeGet(offset, inds[offset])
 					* calcDeterminant(inds, offset + 1);
-			swap(inds, offset, offset + i);
+			IntArrays.swap(inds, offset, offset + i);
 		}
 		return det;
 	}
@@ -623,6 +543,19 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public AMatrix getTransposeView() {
 		return TransposedMatrix.wrap(this);
+	}
+	
+	@Override
+	public Matrix getTransposeCopy() {
+		int rc=this.rowCount();
+		int cc=this.columnCount();
+		Matrix m=Matrix.create(cc,rc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				m.unsafeSet(j,i,unsafeGet(i,j));
+			}
+		}
+		return m;
 	}
 	
 	/**
@@ -763,6 +696,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 */
 	public void sub(AMatrix m) {
 		addMultiple(m,-1.0);
+	}
+	
+	public void sub(AScalar a) {
+		add(-a.get());
+	}
+	
+	public void add(AScalar a) {
+		add(a.get());
 	}
 	
 	@Override
@@ -1098,6 +1039,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AMatrix innerProduct(AMatrix a) {
+		if (a instanceof Matrix) {
+			return innerProduct((Matrix)a);
+		}
+		
 		int rc=this.rowCount();
 		int cc=a.columnCount();
 		int ic=this.columnCount();
@@ -1106,7 +1051,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		}
 
-		AMatrix result=Matrixx.newMatrix(rc,cc);
+		Matrix result=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double acc=0.0;
@@ -1119,25 +1064,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;		
 	}
 	
-	public AMatrix innerProduct(Matrix a) {
-		int rc=this.rowCount();
-		int cc=a.columnCount();
-		int ic=this.columnCount();
-		
-		if ((ic!=a.rowCount())) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		}
-		AMatrix result=Matrixx.newMatrix(rc,cc);
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				double acc=0.0;
-				for (int k=0; k<ic; k++) {
-					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
-				}
-				result.unsafeSet(i,j,acc);
-			}
-		}
-		return result;		
+	public Vector innerProduct(Vector v) {
+		return transform(v);
+	}
+	
+	public Matrix innerProduct(Matrix a) {
+		return Multiplications.multiply(this, a);
 	}
 	
 	public AVector innerProduct(AVector v) {
@@ -1145,9 +1077,22 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AMatrix innerProduct(AScalar s) {
-		AMatrix r= clone();
+		Matrix r= toMatrix();
 		r.scale(s.get());
 		return r;
+	}
+	
+	public AMatrix transposeInnerProduct(AMatrix s) {
+		// this seems to be a sensible default strategy. Incurs an extra temp copy, 
+		// but probably worth it in most cases to take advantage of Matrix layout
+		// which is optimised for being the first term in an inner product
+		Matrix r= toMatrixTranspose();
+		return Multiplications.multiply(r, s);
+	}
+	
+	public Matrix transposeInnerProduct(Matrix s) {
+		Matrix r= toMatrixTranspose();
+		return Multiplications.multiply(r, s);
 	}
 	
 	public INDArray innerProduct(INDArray a) {
@@ -1157,7 +1102,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			return compose((AMatrix) a);
 		} else if (a instanceof AScalar) {
 			return innerProduct((AScalar)a);
+		} else if (a.dimensionality()<=2) {
+			return innerProduct(Arrayz.create(a)); // convert to efficient format
 		}
+		// TODO: fix higher dimensional inner products with second argument
 		throw new UnsupportedOperationException("Can't take inner product with: "+a.getClass());
 	}
 
@@ -1217,14 +1165,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
-	 * Converts the matrix to a the standard mutable Matrix type
-	 * in row major order.
+	 * Coerces the matrix to the standard mutable Matrix type
+	 * in row major order. Performs a copy if necessary.
 	 */
 	public Matrix toMatrix() {
 		int rc = rowCount();
 		int cc = columnCount();
 		Matrix m = Matrix.create(rc, cc);
 		this.getElements(m.data,0);
+		return m;
+	}
+	
+	/**
+	 * Coerces the transpose of a matrix to the standard mutable Matrix type
+	 * in row major order. Performs a copy if necessary.
+	 */
+	public Matrix toMatrixTranspose() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(cc, rc);
+		this.getTransposeView().getElements(m.data,0);
 		return m;
 	}
 	
@@ -1242,6 +1202,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		double[] result=new double[n];
 		getElements(result,0);
 		return result;
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return null;
 	}
 	
 	@Override
@@ -1316,6 +1281,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 	}
 	
+	@Override
 	public void sub(INDArray a) {
 		if (a instanceof AMatrix) {
 			sub((AMatrix)a);
@@ -1358,13 +1324,33 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public INDArray broadcast(int... targetShape) {
 		int tdims=targetShape.length;
 		if (tdims<2) {
-			throw new IllegalArgumentException("Can't broadcast to a smaller shape!");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
 		} else if (2==tdims) {
-			return this;
+			if (rowCount()==targetShape[0]&&columnCount()==targetShape[1]) return this;
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
 		} else {
+			if (rowCount()!=targetShape[tdims-2]||(columnCount()!=targetShape[tdims-1])) {
+				throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
+			}
 			int n=targetShape[0];
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
 			return SliceArray.repeat(s,n);
+		}
+	}
+	
+	@Override
+	public INDArray broadcastLike(INDArray target) {
+		if (target instanceof AMatrix) {
+			return broadcastLike((AMatrix)target);
+		}
+		return broadcast(target.getShape());
+	}
+	
+	public INDArray broadcastLike(AMatrix target) {
+		if (rowCount()==target.rowCount()&&(columnCount()==target.columnCount())) {
+			return this;
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
 		}
 	}
 
@@ -1479,6 +1465,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override 
 	public void validate() {
-		// TODO: any generic validation?
+		// nothing to do since we have no data to validate
+	}
+
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		getRow(row).copyTo(dest,destOffset);
+	}
+	
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		getColumn(col).copyTo(dest,destOffset);
 	}
 }

@@ -19,4 +19,6 @@ public interface IStridedArray extends INDArray {
 	public int[] getStrides();
 	
 	public int getStride(int dimension);
+
+	boolean isPackedArray();
 }
