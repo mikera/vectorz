@@ -123,11 +123,8 @@ public class Vectorz {
 		return newVector(v.length());
 	}
 
-	public static AVector create(AVector vector) {
-		if (!vector.isView()) return vector.clone();
-		AVector nv=newVector(vector.length());
-		vector.copyTo(nv, 0);
-		return nv;
+	public static Vector create(AVector vector) {
+		return Vector.create(vector);
 	}	
 	
 	public static AVector create(IVector vector) {

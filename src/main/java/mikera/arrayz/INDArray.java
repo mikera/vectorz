@@ -289,6 +289,8 @@ public interface INDArray extends Cloneable {
 	/**
 	 * Returns a clone of the array, as a new array which will be fully mutable
 	 * and may be of a different class to the original.
+	 * 
+	 * Clone should attempt to return the most efficient possible array type.
 	 * @return
 	 */
 	public INDArray clone();

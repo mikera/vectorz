@@ -893,10 +893,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public AVector clone() {
-		// use a deep copy in case this vector is a reference vector type		
-		AVector nv=Vectorz.newVector(length());
-		this.copyTo(nv, 0);
-		return nv;
+		return Vectorz.create(this);
 	}
 	
 	@Override
