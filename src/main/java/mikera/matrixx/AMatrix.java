@@ -144,7 +144,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override
 	public long elementCount() {
-		return rowCount()*columnCount();
+		return ((long)rowCount())*columnCount();
 	}
 	
 	@Override
