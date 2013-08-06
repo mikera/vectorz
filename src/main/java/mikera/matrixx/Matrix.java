@@ -21,10 +21,15 @@ import mikera.vectorz.util.VectorzException;
 /** 
  * Standard MxN matrix class backed by a fully packed double[] array
  * 
+ * This is the most efficient Vectorz type for 2D matrices.
+ * 
  * @author Mike
  */
 public final class Matrix extends ADenseArrayMatrix {
 	
+	/**
+	 * Creates a new zero-filled matrix of the specified shape.
+	 */
 	public Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
 	}
