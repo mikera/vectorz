@@ -27,13 +27,13 @@ import mikera.vectorz.util.VectorzException;
  */
 public final class Matrix extends ADenseArrayMatrix {
 	
-	/**
-	 * Creates a new zero-filled matrix of the specified shape.
-	 */
-	public Matrix(int rowCount, int columnCount) {
+	private Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
 	}
 	
+	/**
+	 * Creates a new zero-filled matrix of the specified shape.
+	 */
 	public static Matrix create(int rowCount, int columnCount) {
 		return new Matrix(rowCount,columnCount);
 	}
