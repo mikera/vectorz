@@ -48,6 +48,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return SliceArray.create(al);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T extends INDArray>  SliceArray<T> create(List<T> slices) {
 		int slen=slices.size();
 		if (slen==0) throw new VectorzException("Empty list of slices provided to SliceArray");
@@ -252,6 +253,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public SliceArray<T> exactClone() {
 		T[] newSlices=slices.clone();
