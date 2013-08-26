@@ -57,7 +57,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		} if (indexes.length==0) {
 			fill(value);
 		} else {
-			throw new VectorzException(""+indexes.length+"D set not supported on AVector");
+			throw new UnsupportedOperationException(""+indexes.length+"D set not supported on AVector");
 		}
 	}
 	
@@ -78,6 +78,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public double get(int... indexes) {
 		assert(indexes.length==1);
 		return get(indexes[0]);
+	}
+	
+	@Override
+	public double get() {
+		throw new UnsupportedOperationException("Can't do 0-d get on a vector!");
 	}
 	
 	@Override
