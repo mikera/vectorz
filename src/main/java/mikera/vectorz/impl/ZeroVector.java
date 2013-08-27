@@ -88,7 +88,7 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	}
 
 	@Override
-	public boolean isZeroVector() {
+	public boolean isZero() {
 		return true;
 	}
 	

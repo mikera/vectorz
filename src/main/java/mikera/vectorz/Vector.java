@@ -12,7 +12,9 @@ import mikera.vectorz.util.VectorzException;
 
 
 /**
- * General purpose vector of arbitrary length, backed by an internal double[] array
+ * General purpose vector of arbitrary length, backed by an internal double[] array.
+ * 
+ * This is the most efficient Vectorz type for 1D vectors.
  * 
  * @author Mike
  *

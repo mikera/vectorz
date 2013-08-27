@@ -69,6 +69,11 @@ public final class Scalar extends AScalar {
 	public boolean isView() {
 		return false;
 	}
+	
+	@Override
+	public boolean isZero() {
+		return value==0.0;
+	}
 
 	@Override
 	public void getElements(double[] dest, int offset) {

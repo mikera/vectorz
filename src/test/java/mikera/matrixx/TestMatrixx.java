@@ -102,7 +102,7 @@ public class TestMatrixx {
 				assertTrue( m.isFullyMutable());
 				assertEquals(rows, m.rowCount());
 				assertEquals(columns,m.columnCount());
-				assertTrue(m.isZeroMatrix());
+				assertTrue(m.isZero());
 			}
 		}
 	}
@@ -517,7 +517,7 @@ public class TestMatrixx {
 		assertTrue(m1.epsilonEquals(m2));
 		
 		m1.scale(0.0);
-		assertTrue(m1.isZeroMatrix());
+		assertTrue(m1.isZero());
 	}
 	
 	private void doMulTest(AMatrix m) {

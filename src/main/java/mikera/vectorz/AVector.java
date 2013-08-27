@@ -57,7 +57,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		} if (indexes.length==0) {
 			fill(value);
 		} else {
-			throw new VectorzException(""+indexes.length+"D set not supported on AVector");
+			throw new UnsupportedOperationException(""+indexes.length+"D set not supported on AVector");
 		}
 	}
 	
@@ -78,6 +78,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public double get(int... indexes) {
 		assert(indexes.length==1);
 		return get(indexes[0]);
+	}
+	
+	@Override
+	public double get() {
+		throw new UnsupportedOperationException("Can't do 0-d get on a vector!");
 	}
 	
 	@Override
@@ -431,6 +436,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void divide(double factor) {
 		multiply(1.0/factor);
+	}
+	
+	@Override
+	public void divide(INDArray a) {
+		if (a instanceof AVector) {
+			divide((AVector)a);
+		} else {
+			super.divide(a);
+		}
 	}
 	
 	public void divide(AVector v) {
@@ -893,10 +907,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public AVector clone() {
-		// use a deep copy in case this vector is a reference vector type		
-		AVector nv=Vectorz.newVector(length());
-		this.copyTo(nv, 0);
-		return nv;
+		return Vectorz.create(this);
 	}
 	
 	@Override
@@ -1082,7 +1093,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Returns true if this vector is a zero vector (all components zero)
 	 * @return
 	 */
-	public boolean isZeroVector() {
+	public boolean isZero() {
 		int len=length();
 		for (int i=0; i<len; i++) {
 			if (unsafeGet(i)!=0.0) return false;

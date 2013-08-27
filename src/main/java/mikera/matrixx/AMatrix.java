@@ -144,7 +144,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override
 	public long elementCount() {
-		return rowCount()*columnCount();
+		return ((long)rowCount())*columnCount();
 	}
 	
 	@Override
@@ -776,6 +776,22 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
+	 * Divides this matrix in-place by another in an entrywise manner (Hadamard product).
+	 * @param m
+	 */
+	public void elementDiv(AMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				unsafeSet(i,j,unsafeGet(i,j)/m.unsafeGet(i, j));
+			}
+		}
+	}
+	
+	/**
 	 * "Multiplies" this matrix by another, composing the transformation
 	 * @param a
 	 */
@@ -1282,6 +1298,36 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public void divide(INDArray a) {
+		if (a instanceof AMatrix) {
+			elementDiv((AMatrix)a);
+		} else if (a instanceof AScalar) {
+			multiply(1.0/a.get());
+		} else {
+			int dims=a.dimensionality();
+			int rc=rowCount();
+			if (dims==0) {
+				multiply(1.0/a.get());
+			} else if (dims==1) {
+				for (int i=0; i<rc; i++) {
+					slice(i).divide(a);
+				}
+			} else if (dims==2) {
+				for (int i=0; i<rc; i++) {
+					slice(i).divide(a.slice(i));
+				}		
+			} else {
+				throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+			}
+		}	
+	}
+	
+	@Override
+	public void divide(double factor) {
+		multiply(1.0/factor);
+	}
+	
+	@Override
 	public void sub(INDArray a) {
 		if (a instanceof AMatrix) {
 			sub((AMatrix)a);
@@ -1353,11 +1399,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
 		}
 	}
+	
+	@Override
+	public INDArray broadcastCloneLike(INDArray target) {
+		INDArray r=this;
+		if (target.dimensionality()>2) r=r.broadcastLike(target);
+		return r.clone();
+	}
 
 	/**
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
-	public boolean isZeroMatrix() {
+	public boolean isZero() {
 		int rc = rowCount();
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {

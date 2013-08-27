@@ -180,6 +180,13 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray broadcastLike(INDArray target);
+	
+	/**
+	 * Creates a clone of the array, broadcasted if necessary to match the shape of the target
+	 * @param target
+	 * @return
+	 */
+	public INDArray broadcastCloneLike(INDArray target);
 
 	/**
 	 * Returns the specified major slice of this array as a view (slice along dimension 0)
@@ -252,6 +259,19 @@ public interface INDArray extends Cloneable {
 	public void multiply(INDArray a);
 	
 	/**
+	 * Divides all elements by the equivalent elements in a second array
+	 * @return
+	 */
+	public void divide(INDArray a);
+	
+	/**
+	 * Divides all elements by a given factor
+	 * @return
+	 */
+	public void divide(double factor);
+
+
+	/**
 	 * Returns the number of non-zero elements in the array.
 	 * @return
 	 */
@@ -287,8 +307,16 @@ public interface INDArray extends Cloneable {
 	public boolean isView();
 
 	/**
+	 * Returns true if the array is zero (all elements equal to zero)
+	 * @return
+	 */
+	public boolean isZero();
+	
+	/**
 	 * Returns a clone of the array, as a new array which will be fully mutable
 	 * and may be of a different class to the original.
+	 * 
+	 * Clone should attempt to return the most efficient possible array type.
 	 * @return
 	 */
 	public INDArray clone();

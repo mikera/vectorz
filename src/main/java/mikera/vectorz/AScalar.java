@@ -100,6 +100,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		return false;
 	}
 	
+	@Override
+	public boolean isZero() {
+		return get()==0.0;
+	}
+
+	
 	public void add(double d) {
 		set(get()+d);
 	}
@@ -254,6 +260,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(factor*get());
 	}
 	
+	@Override
+	public void divide(double factor) {
+		set(get()/factor);
+	}
 	
 	@Override 
 	public void multiply(INDArray a) {

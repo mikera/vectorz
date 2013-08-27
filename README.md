@@ -30,18 +30,18 @@ See the [Vectorz Wiki](https://github.com/mikera/vectorz/wiki)
 
 ### Key features
 
- - Supports `double` vectors of arbitrary size
- - Vector values are mutable
+ - Supports `double` types vectors of arbitrary size
+ - Vector values are mutable, enabling high performance algorithms
  - Support for any size matrices, including higher dimensional (NDArray) matrices
  - Ability to create lightweight "reference" vectors (e.g. to access subranges of other vectors)
  - Library of useful mathematical functions on vectors
  - Vectors have lots of utility functionality implemented - Cloneable, Serializable, Comparable etc.
- - Various specialised vector/matrix types e.g. identity matrices, diagonal matrices.
+ - Various specialised vector/matrix types (e.g. identity matrices, diagonal matrices)
  - Support for affine and matrix transformations
  - Operator system provides composable operators that can be applied to array elements
  - Input / output of vectors and matrices in readable edn format
 
-Vectorz is deigned to allow the maximum performance possible for vector / matrix maths on the JVM.
+Vectorz is deigned to allow the maximum performance possible for vector maths on the JVM.
 
 This focus has driven a number of important design decisions:
 

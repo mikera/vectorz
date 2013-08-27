@@ -80,18 +80,18 @@ public class IntArrays {
 		return copyIntsToLongs(src,dst);
 	}
 
-	public static long arrayProduct(int[] shape) {
+	public static long arrayProduct(int[] vs) {
 		long r=1;
-		for (int x:shape) {
+		for (int x:vs) {
 			r*=x;
 		}
 		return r;
 	}
 
-	public static long arrayProduct(int[] shape, int from, int to) {
+	public static long arrayProduct(int[] vs, int from, int to) {
 		long r=1;
 		for (int i=from; i<to; i++) {
-			r*=shape[i];
+			r*=vs[i];
 		}
 		return r;
 	}

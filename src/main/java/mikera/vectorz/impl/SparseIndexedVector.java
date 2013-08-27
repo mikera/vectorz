@@ -146,7 +146,7 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public boolean isZeroVector() {
+	public boolean isZero() {
 		for (int i=0; i<data.length; i++) {
 			if (data[i]!=0.0) return false;
 		}

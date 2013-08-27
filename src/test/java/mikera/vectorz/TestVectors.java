@@ -533,7 +533,7 @@ public class TestVectors {
 		if (!v.isFullyMutable()) return;
 		v=v.exactClone();
 		v.multiply(0.0);
-		assertTrue(v.isZeroVector());
+		assertTrue(v.isZero());
 	}
 	
 
