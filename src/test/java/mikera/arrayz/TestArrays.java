@@ -273,6 +273,15 @@ public class TestArrays {
 		
 		m.multiply(0.0);
 		assertTrue(m.isZero());
+		
+		INDArray m1 = a.exactClone();
+		INDArray m2 = a.exactClone();
+		Vectorz.fillRandom(m1.asVector());
+		m1.add(1.0);
+		
+		m2.multiply(m1);
+		m2.divide(m1);
+		assertTrue(m2.epsilonEquals(a));
 	}
 	
 	private void testBoolean(INDArray a) {
