@@ -252,6 +252,12 @@ public interface INDArray extends Cloneable {
 	public void multiply(INDArray a);
 	
 	/**
+	 * Multiplies all elements by the equivalent elements in a second array
+	 * @return
+	 */
+	public void divide(INDArray a);
+	
+	/**
 	 * Returns the number of non-zero elements in the array.
 	 * @return
 	 */

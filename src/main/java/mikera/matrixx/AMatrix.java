@@ -776,6 +776,22 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
+	 * Divides this matrix in-place by another in an entrywise manner (Hadamard product).
+	 * @param m
+	 */
+	public void elementDiv(AMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				unsafeSet(i,j,unsafeGet(i,j)/m.unsafeGet(i, j));
+			}
+		}
+	}
+	
+	/**
 	 * "Multiplies" this matrix by another, composing the transformation
 	 * @param a
 	 */
@@ -1279,6 +1295,31 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 				throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 			}
 		}
+	}
+	
+	@Override
+	public void divide(INDArray a) {
+		if (a instanceof AMatrix) {
+			elementDiv((AMatrix)a);
+		} else if (a instanceof AScalar) {
+			multiply(1.0/a.get());
+		} else {
+			int dims=a.dimensionality();
+			int rc=rowCount();
+			if (dims==0) {
+				multiply(1.0/a.get());
+			} else if (dims==1) {
+				for (int i=0; i<rc; i++) {
+					slice(i).divide(a);
+				}
+			} else if (dims==2) {
+				for (int i=0; i<rc; i++) {
+					slice(i).divide(a.slice(i));
+				}		
+			} else {
+				throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+			}
+		}	
 	}
 	
 	@Override

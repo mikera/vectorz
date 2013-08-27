@@ -369,6 +369,29 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void divide(INDArray a) {
+		int dims=dimensionality();
+		if (dims==0) {set(get()/a.get()); return;}
+		int adims=a.dimensionality();
+		if (adims==0) {scale(1.0/a.get()); return;}
+		
+		int n=sliceCount();
+		int na=a.sliceCount();
+		if (dims==adims) {
+			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			for (int i=0; i<n; i++) {
+				slice(i).divide(a.slice(i));
+			}
+		} else if (adims<dims) {
+			for (int i=0; i<n; i++) {
+				slice(i).divide(a);
+			}	
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		if (dimensionality()==0) {
 			return (get()==0.0)?0:1;
