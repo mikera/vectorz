@@ -257,6 +257,10 @@ public interface INDArray extends Cloneable {
 	 */
 	public void divide(INDArray a);
 	
+	/**
+	 * Divides all elements by a given factor
+	 * @return
+	 */
 	public void divide(double factor);
 
 
