@@ -332,6 +332,10 @@ public class TestArrays {
 		INDArray up2=Arrayz.create(SliceArray.create(a));		
 		INDArray b2=a.broadcastLike(up2);		
 		assertEquals(up2,b2);
+		
+		INDArray bcl=a.broadcastCloneLike(a);
+		assertEquals(a,bcl);
+		assertTrue((a.elementCount()==0)||(a!=bcl));
 	}
 
 	private void testSums(INDArray a) {
