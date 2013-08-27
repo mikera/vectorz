@@ -646,6 +646,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray broadcastCloneLike(INDArray target) {
+		INDArray r=this;
+		if (r.dimensionality()<target.dimensionality()) r=r.broadcastLike(target);
+		return r.clone();
+	}
+	
+	@Override
 	public void validate() {
 		// TODO: any generic validation?
 	}

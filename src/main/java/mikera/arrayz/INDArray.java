@@ -180,6 +180,13 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray broadcastLike(INDArray target);
+	
+	/**
+	 * Creates a clone of the array, broadcasted if necessary to match the shape of the target
+	 * @param target
+	 * @return
+	 */
+	public INDArray broadcastCloneLike(INDArray target);
 
 	/**
 	 * Returns the specified major slice of this array as a view (slice along dimension 0)

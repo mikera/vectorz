@@ -1399,6 +1399,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
 		}
 	}
+	
+	@Override
+	public INDArray broadcastCloneLike(INDArray target) {
+		INDArray r=this;
+		if (target.dimensionality()>2) r=r.broadcastLike(target);
+		return r.clone();
+	}
 
 	/**
 	 * Returns true if the matrix is the zero matrix (all components zero)
