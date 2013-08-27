@@ -203,6 +203,15 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	@Override
+	public boolean isZero() {
+		for (INDArray a:slices) {
+			if (!a.isZero()) return false;
+		}
+		return true;
+	}
+
+	
+	@Override
 	public boolean isBoolean() {
 		for (INDArray a:slices) {
 			if (!a.isBoolean()) return false;

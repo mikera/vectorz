@@ -1403,7 +1403,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	/**
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
-	public boolean isZeroMatrix() {
+	public boolean isZero() {
 		int rc = rowCount();
 		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {

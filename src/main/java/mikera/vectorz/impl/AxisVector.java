@@ -86,7 +86,7 @@ public class AxisVector extends ComputedVector implements ISparse {
 	}
 
 	@Override
-	public boolean isZeroVector() {
+	public boolean isZero() {
 		return false;
 	}
 	

@@ -72,7 +72,7 @@ public final class Vector0 extends APrimitiveVector {
 	}
 	
 	@Override
-	public boolean isZeroVector() {
+	public boolean isZero() {
 		return true;
 	}
 	

@@ -270,6 +270,9 @@ public class TestArrays {
 		m.multiply(2.0);
 		m.multiply(Scalar.create(0.5));
 		assertEquals(a, m);
+		
+		m.multiply(0.0);
+		assertTrue(m.isZero());
 	}
 	
 	private void testBoolean(INDArray a) {

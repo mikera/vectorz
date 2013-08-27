@@ -37,8 +37,8 @@ public class TestMiscArrayOps {
 	}
 	
 	@Test public void testZeroPaddedReshape() {
-		assertTrue(Vector0.INSTANCE.reshape(1,1).asVector().isZeroVector());
-		assertTrue(Matrix.create(1,1).reshape(1,2,3).asVector().isZeroVector());
+		assertTrue(Vector0.INSTANCE.reshape(1,1).asVector().isZero());
+		assertTrue(Matrix.create(1,1).reshape(1,2,3).asVector().isZero());
 		
 		assertEquals(Vector.of(2,0,0),Scalar.create(2).reshape(3));
 		assertEquals(Vector.of(1,2),Vector.of(1,2,3,4).reshape(2));

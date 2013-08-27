@@ -296,6 +296,12 @@ public interface INDArray extends Cloneable {
 	public boolean isView();
 
 	/**
+	 * Returns true if the array is zero (all elements equal to zero)
+	 * @return
+	 */
+	public boolean isZero();
+	
+	/**
 	 * Returns a clone of the array, as a new array which will be fully mutable
 	 * and may be of a different class to the original.
 	 * 

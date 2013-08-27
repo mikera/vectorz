@@ -81,7 +81,7 @@ public class TestAffine {
 		AVector r=Vectorz.newVector(dimensions);
 		
 		t.transformNormal(d, r);
-		assertTrue(r.isZeroVector()||r.isUnitLengthVector());
+		assertTrue(r.isZero()||r.isUnitLengthVector());
 	}
 	
 	private void doAffineTests(AAffineTransform t) {

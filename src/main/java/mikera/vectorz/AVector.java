@@ -1093,7 +1093,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Returns true if this vector is a zero vector (all components zero)
 	 * @return
 	 */
-	public boolean isZeroVector() {
+	public boolean isZero() {
 		int len=length();
 		for (int i=0; i<len; i++) {
 			if (unsafeGet(i)!=0.0) return false;

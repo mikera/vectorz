@@ -140,7 +140,7 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
-	public boolean isZeroMatrix() {
+	public boolean isZero() {
 		return true;
 	}
 	
@@ -205,7 +205,7 @@ public final class ZeroMatrix extends ABooleanMatrix {
 
 	@Override
 	public boolean equals(AMatrix m) {
-		return m.isZeroMatrix();
+		return m.isZero();
 	}
 	
 	@Override
