@@ -438,6 +438,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		multiply(1.0/factor);
 	}
 	
+	@Override
+	public void divide(INDArray a) {
+		if (a instanceof AVector) {
+			divide((AVector)a);
+		} else {
+			super.divide(a);
+		}
+	}
+	
 	public void divide(AVector v) {
 		int len=length();
 		assert(len==v.length());

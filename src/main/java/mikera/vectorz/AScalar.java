@@ -254,6 +254,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(factor*get());
 	}
 	
+	@Override
+	public void divide(double factor) {
+		set(get()/factor);
+	}
 	
 	@Override 
 	public void multiply(INDArray a) {

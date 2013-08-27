@@ -392,6 +392,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void divide(double factor) {
+		multiply(1.0/factor);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		if (dimensionality()==0) {
 			return (get()==0.0)?0:1;
@@ -633,4 +638,5 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void validate() {
 		// TODO: any generic validation?
 	}
+
 }

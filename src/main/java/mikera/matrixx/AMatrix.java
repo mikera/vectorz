@@ -1323,6 +1323,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public void divide(double factor) {
+		multiply(1.0/factor);
+	}
+	
+	@Override
 	public void sub(INDArray a) {
 		if (a instanceof AMatrix) {
 			sub((AMatrix)a);
