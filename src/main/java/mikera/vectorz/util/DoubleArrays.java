@@ -331,7 +331,15 @@ public final class DoubleArrays {
 		return true;
 	}
 
-	public static double[] copyOf(double[] data) {
+	/**
+	 * Fast double array copy operation. 
+	 * 
+	 * Appears to be faster than data.clone() ??
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static final double[] copyOf(double[] data) {
 		return Arrays.copyOf(data, data.length);
 	}
 
