@@ -208,7 +208,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix clone() {
-		return new Matrix(rows,cols,data.clone());
+		return new Matrix(rows,cols,DoubleArrays.copyOf(data));
 	}
 	
 	@Override
