@@ -483,7 +483,7 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public Vector clone() {
-		return new Vector(this);
+		return Vector.wrap(data.clone());
 	}
 	
 	@Override
