@@ -256,6 +256,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return true;
 	}
 	
+	/**
+	 * Computes the hashcode of a vector.
+	 * 
+	 * Currently defined to be equal to List.hashCode for a equivalent list of Double values, 
+	 * this may change in future versions.
+	 */
 	@Override
 	public int hashCode() {
 		int hashCode = 1;
