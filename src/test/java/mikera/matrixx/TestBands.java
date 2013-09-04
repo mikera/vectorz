@@ -16,6 +16,9 @@ public class TestBands {
 		assertEquals(2,m.upperBandwidthLimit());
 		assertEquals(2,m.lowerBandwidth());
 		assertEquals(2,m.lowerBandwidthLimit());
+		
+		assertEquals(Vector.of(1,5),m.getBand(1));
+		assertEquals(Vector.of(6),m.getBand(-2));
 
 	}
 	

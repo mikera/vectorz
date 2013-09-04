@@ -215,5 +215,4 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		
 		super.validate();
 	}
-
 }

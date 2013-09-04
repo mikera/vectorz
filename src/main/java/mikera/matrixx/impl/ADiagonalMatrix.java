@@ -8,11 +8,12 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Abstract base class for diagonal matrices
+ * Abstract base class for square diagonal matrices
  * @author Mike
  *
  */
@@ -69,6 +70,17 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	@Override
 	public final int lowerBandwidthLimit() {
 		return 0; 
+	}
+	
+
+	@Override
+	public AVector getBand(int band) {
+		if (band==0) {
+			return getLeadingDiagonal();
+		} else {
+			if ((band>=dimensions)||(band<=-dimensions)) return null;
+			return ZeroVector.create(dimensions-band);
+		}
 	}
 
 	

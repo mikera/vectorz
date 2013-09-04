@@ -31,6 +31,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.MatrixBandVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -211,17 +212,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
-	 * Returns a new vector that contains the leading diagonal values of the matrix
+	 * Returns a vector view of the leading diagonal values of the matrix
 	 * @return
 	 */
 	public AVector getLeadingDiagonal() {
-		if (!isSquare()) throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
-		int dims=rowCount();
-		AVector v=Vectorz.newVector(dims);
-		for (int i=0; i<dims; i++) {
-			v.set(i,this.get(i,i));
-		}
-		return v;
+		return getBand(0);
 	}
 	
 	@Override
@@ -1566,6 +1561,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 		return 0;
+	}
+	
+	public AVector getBand(int band) {
+		return MatrixBandVector.create(this,band);
 	}
 	
 	public void setRow(int i, AVector row) {
