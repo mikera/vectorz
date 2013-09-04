@@ -1506,6 +1506,68 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return true;
 	}
 	
+	/**
+	 * A limit on the upper bandwidth of the banded matrix. Actual upper bandwidth is guaranteed
+	 * to be less than or equal to this value
+	 * @return
+	 */
+	public int upperBandwidthLimit() {
+		return columnCount()-1;
+	}
+	
+	/**
+	 * A limit on the lower bandwidth of the banded matrix. Actual lower bandwidth is guaranteed
+	 * to be less than or equal to this value
+	 * @return
+	 */
+	public int lowerBandwidthLimit() {
+		return rowCount()-1;
+	}
+	
+	/**
+	 * Returns the length of a band of the matrix. Returns 0 if the band is outside the matrix.
+	 * @param band
+	 * @return
+	 */
+	public int bandLength(int band) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if (band>0) {
+			return (band<cc)?Math.min(rc, cc-band):0;
+		} else {
+			band=-band;
+			return (band<rc)?Math.min(cc, rc-band):0;			
+		}
+	}
+	
+	/**
+	 * Computes the upper bandwidth of a matrix
+	 * @return
+	 */
+	public int upperBandwidth() {
+		for (int band=upperBandwidthLimit(); band>0; band--) {
+			int bandLen=bandLength(band);
+			for (int i=0; i<bandLen; i++) {
+				if (unsafeGet(band+i,i)!=0.0) return band;
+			}
+		}
+		return 0;
+	}
+	
+	/**
+	 * Computes the lower bandwidth of a matrix
+	 * @return
+	 */
+	public int lowerBandwidth() {
+		for (int band=lowerBandwidthLimit(); band>0; band--) {
+			int bandLen=bandLength(-band);
+			for (int i=0; i<bandLen; i++) {
+				if (unsafeGet(i,band+i)!=0.0) return band;
+			}
+		}
+		return 0;
+	}
+	
 	public void setRow(int i, AVector row) {
 		getRow(i).set(row);
 	}

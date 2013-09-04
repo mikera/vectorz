@@ -9,8 +9,10 @@ import mikera.matrixx.AMatrix;
  */
 public abstract class ABandedMatrix extends AMatrix {
 	
+	@Override
 	public abstract int upperBandwidthLimit();
 	
+	@Override
 	public abstract int lowerBandwidthLimit();
 	
 
