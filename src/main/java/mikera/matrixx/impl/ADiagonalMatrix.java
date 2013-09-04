@@ -79,7 +79,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 			return getLeadingDiagonal();
 		} else {
 			if ((band>=dimensions)||(band<=-dimensions)) return null;
-			return ZeroVector.create(dimensions-band);
+			return ZeroVector.create(dimensions-Math.abs(band));
 		}
 	}
 

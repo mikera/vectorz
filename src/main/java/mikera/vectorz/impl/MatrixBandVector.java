@@ -13,11 +13,11 @@ public final class MatrixBandVector extends AMatrixViewVector {
 	
 	private MatrixBandVector(AMatrix source, int band) {
 		super(source,source.bandLength(band));
-		if (length<=0) throw new IndexOutOfBoundsException("Matrix band does not exist: "+band);
 		this.band=band;
 	}
 
 	public static AVector create(AMatrix source, int band) {
+		if ((band>=source.columnCount())||(band<=-source.rowCount())) return null;
 		return new MatrixBandVector(source,band);
 	}
 	

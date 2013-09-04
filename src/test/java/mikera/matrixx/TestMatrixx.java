@@ -442,6 +442,19 @@ public class TestMatrixx {
 		new TestArrays().testArray(all);
 	}
 	
+	private void doBandTests(AMatrix m) {
+		int bandMin=1-m.rowCount();
+		int bandMax=m.columnCount()-1;
+		
+		assertNull(m.getBand(bandMin-1));
+		assertNull(m.getBand(bandMax+1));
+		
+		for (int i=bandMin; i<=bandMax; i++) {
+			AVector b=m.getBand(i);
+			assertEquals(b.length(),m.bandLength(i));
+		}
+	}
+	
 	void doVectorTest(AMatrix m) {
 		m=m.clone();
 		AVector v=m.asVector();
@@ -593,6 +606,7 @@ public class TestMatrixx {
 		doMulTest(m);
 		doAddTest(m);
 		doRowColumnTests(m);
+		doBandTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);
 		doMaybeSquareTests(m);
