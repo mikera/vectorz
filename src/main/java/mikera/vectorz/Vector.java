@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
+import mikera.randomz.Hash;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -484,6 +485,16 @@ public final class Vector extends AArrayVector {
 	@Override
 	public Vector clone() {
 		return Vector.wrap(DoubleArrays.copyOf(data));
+	}
+	
+	@Override
+	public int hashCode() {
+		int hashCode = 1;
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			hashCode = 31 * hashCode + (Hash.hashCode(data[i]));
+		}
+		return hashCode;
 	}
 	
 	@Override
