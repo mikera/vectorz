@@ -62,6 +62,17 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	}
 	
 	@Override
+	public final int upperBandwidthLimit() {
+		return 0;
+	}
+	
+	@Override
+	public final int lowerBandwidthLimit() {
+		return 0; 
+	}
+
+	
+	@Override
 	public double determinant() {
 		double det=1.0;
 		for (int i=0; i<dimensions; i++) {
