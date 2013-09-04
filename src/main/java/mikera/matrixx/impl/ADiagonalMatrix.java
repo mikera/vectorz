@@ -16,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public abstract class ADiagonalMatrix extends AMatrix implements ISparse {
+public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	protected final int dimensions;
 	
 	public ADiagonalMatrix(int dimensions) {
