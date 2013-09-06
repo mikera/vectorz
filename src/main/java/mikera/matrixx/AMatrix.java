@@ -1584,7 +1584,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
-	 * Gets a specific band of the matrix, as a view vector
+	 * Gets a specific band of the matrix, as a view vector. The band is truncated at the edges of the
+	 * matrix, i.e. it does not wrap around the matrix.
 	 * 
 	 * @param band
 	 * @return
