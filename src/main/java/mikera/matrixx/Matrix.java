@@ -13,6 +13,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.MatrixBandVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -477,6 +478,14 @@ public final class Matrix extends ADenseArrayMatrix {
 		for (int i=0; i<rc; i++) {
 			data[index(i,j)]=col.unsafeGet(j);
 		}
+	}
+	
+	@Override
+	public StridedVector getBand(int band) {
+		int cc=columnCount();
+		int rc=rowCount();
+		if ((band>=cc)||(band<=-rc)) return null;
+		return StridedVector.wrap(data, (band>=0)?band:(-band)*cc, bandLength(band), cc+1);
 	}
 	
 	@Override
