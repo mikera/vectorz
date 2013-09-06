@@ -19,7 +19,6 @@ public class TestBands {
 		
 		assertEquals(Vector.of(1,5),m.getBand(1));
 		assertEquals(Vector.of(6),m.getBand(-2));
-
 	}
 	
 	@Test public void testDiagonalMatrix() {

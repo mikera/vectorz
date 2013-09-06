@@ -455,7 +455,7 @@ public class TestMatrixx {
 		}
 	}
 	
-	void doVectorTest(AMatrix m) {
+	private void doVectorTest(AMatrix m) {
 		m=m.clone();
 		AVector v=m.asVector();
 		assertEquals(v,m.toVector());
