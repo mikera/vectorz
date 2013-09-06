@@ -1539,8 +1539,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * @return
 	 */
 	public int bandLength(int band) {
-		int rc=rowCount();
-		int cc=columnCount();
+		return bandLength(rowCount(),columnCount(),band);
+	}
+	
+	protected final static int bandLength(int rc, int cc, int band) {
 		if (band>0) {
 			return (band<cc)?Math.min(rc, cc-band):0;
 		} else {
