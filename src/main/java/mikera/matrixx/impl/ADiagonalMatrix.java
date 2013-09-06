@@ -256,6 +256,11 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	}
 	
 	@Override
+	public final Matrix toMatrixTranspose() {
+		return toMatrix();
+	}
+	
+	@Override
 	public void validate() {
 		if (dimensions!=getLeadingDiagonal().length()) throw new VectorzException("dimension mismatch: "+dimensions);
 		

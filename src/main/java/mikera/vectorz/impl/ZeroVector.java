@@ -121,5 +121,17 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	public double density() {
 		return 0.0;
 	}
+	
+	@Override 
+	public AVector join(AVector a) {
+		if (a instanceof ZeroVector) {
+			return join((ZeroVector)a);
+		}
+		return super.join(a);
+	}
+	
+	public ZeroVector join(ZeroVector a) {
+		return ZeroVector.create(length+a.length);
+	}
 
 }

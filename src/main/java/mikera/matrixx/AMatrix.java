@@ -97,10 +97,24 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		asVector().fill(value);
 	}
 	
+	/**
+	 * Sets an element value in the matrix in an unsafe fashion, without performing bound checks
+	 * The result is undefined if the row and column are out of bounds.
+	 * @param row
+	 * @param column
+	 * @return
+	 */
 	public void unsafeSet(int row, int column, double value) {
 		set(row,column,value);
 	}
 	
+	/**
+	 * Gets an element in the matrix in an unsafe fashion, without performing bound checks
+	 * The result is undefined if the row and column are out of bounds.
+	 * @param row
+	 * @param column
+	 * @return
+	 */
 	public double unsafeGet(int row, int column) {
 		return get(row,column);
 	}
