@@ -443,6 +443,8 @@ public class TestMatrixx {
 	}
 	
 	private void doBandTests(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
 		int bandMin=1-m.rowCount();
 		int bandMax=m.columnCount()-1;
 		
@@ -452,6 +454,8 @@ public class TestMatrixx {
 		for (int i=bandMin; i<=bandMax; i++) {
 			AVector b=m.getBand(i);
 			assertEquals(b.length(),m.bandLength(i));
+			
+			assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
 		}
 	}
 	

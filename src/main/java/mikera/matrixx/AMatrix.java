@@ -1583,8 +1583,34 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return 0;
 	}
 	
+	/**
+	 * Gets a specific band of the matrix, as a view vector
+	 * 
+	 * @param band
+	 * @return
+	 */
 	public AVector getBand(int band) {
 		return MatrixBandVector.create(this,band);
+	}
+	
+	public AVector getBandWrapped(int band) {
+		AVector result=Vector0.INSTANCE;
+		int rc=rowCount();
+		int cc=columnCount();
+		if (rc<cc) {
+			int si=band%rc;
+			if (si>0) si-=rc;
+			for (;si<cc; si+=rc) {
+				result=result.join(getBand(si));
+			}
+		} else {
+			int si=band%cc;
+			if (si>0) si-=cc;
+			for (;si<cc; si+=cc) {
+				result=result.join(getBand(si));
+			}
+		}
+		return result;
 	}
 	
 	public void setRow(int i, AVector row) {
