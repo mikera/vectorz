@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -34,6 +35,17 @@ public class BandedMatrix extends ABandedMatrix {
 		return new BandedMatrix(rowCount,columnCount,minBand,bands);
 	}
 	
+	public static BandedMatrix wrap(int rowCount, int columnCount, int minBand, int maxBand, AVector... bands) {
+		if (bands.length!=(maxBand-minBand+1)) throw new IllegalArgumentException("Wrong number of bands: "+bands.length);
+		for (int i=minBand; i<=maxBand; i++) {
+			AVector b=bands[i];
+			if (b.length()!=bandLength(rowCount,columnCount,i)) {
+				throw new IllegalArgumentException("Incorrect length of band "+ i +", was given: "+b.length());
+			}
+		}
+		return new BandedMatrix(rowCount,columnCount,minBand,bands);
+	}
+	
 	@Override
 	public int upperBandwidthLimit() {
 		return maxBand;
@@ -47,6 +59,7 @@ public class BandedMatrix extends ABandedMatrix {
 	@Override
 	public AVector getBand(int band) {
 		if ((band>=minBand)&&(band<=maxBand)) return bands[band-minBand];
+		if ((band>-rowCount)&&(band<columnCount)) return ZeroVector.create(bandLength(band));
 		return null;
 	}
 
@@ -82,7 +95,8 @@ public class BandedMatrix extends ABandedMatrix {
 	@Override public void validate() {
 		super.validate();
 		for (int i=minBand; i<=maxBand; i++) {
-			if (bandLength(i)!=getBand(i).length()) throw new VectorzException("Invalid band length: "+i);
+			AVector v=getBand(i);
+			if (bandLength(i)!=v.length()) throw new VectorzException("Invalid band length: "+i);
 		}
 	}
 	

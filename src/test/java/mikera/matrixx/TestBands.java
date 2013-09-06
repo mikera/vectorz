@@ -1,6 +1,7 @@
 package mikera.matrixx;
 
 import static org.junit.Assert.*;
+import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -47,5 +48,12 @@ public class TestBands {
 		assertEquals(2,m.bandLength(-1));
 		assertEquals(1,m.bandLength(-2));
 		assertEquals(0,m.bandLength(-3));
+	}
+	
+	@Test public void testBandedMatrix() {
+		BandedMatrix bm=BandedMatrix.create(4, 4, 0, 0);
+		bm.getBand(0).fill(1.0);
+		
+		assertEquals(Matrixx.createIdentityMatrix(4),bm);
 	}
 }
