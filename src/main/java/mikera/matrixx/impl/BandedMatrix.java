@@ -30,7 +30,7 @@ public class BandedMatrix extends ABandedMatrix {
 	public static BandedMatrix create(int rowCount, int columnCount, int minBand, int maxBand) {
 		AVector[] bands=new AVector[maxBand-minBand+1];
 		for (int i=minBand; i<=maxBand; i++) {
-			bands[i]=Vector.createLength(bandLength(rowCount,columnCount,i));
+			bands[i-minBand]=Vector.createLength(bandLength(rowCount,columnCount,i));
 		}
 		return new BandedMatrix(rowCount,columnCount,minBand,bands);
 	}
@@ -38,7 +38,7 @@ public class BandedMatrix extends ABandedMatrix {
 	public static BandedMatrix wrap(int rowCount, int columnCount, int minBand, int maxBand, AVector... bands) {
 		if (bands.length!=(maxBand-minBand+1)) throw new IllegalArgumentException("Wrong number of bands: "+bands.length);
 		for (int i=minBand; i<=maxBand; i++) {
-			AVector b=bands[i];
+			AVector b=bands[i-minBand];
 			if (b.length()!=bandLength(rowCount,columnCount,i)) {
 				throw new IllegalArgumentException("Incorrect length of band "+ i +", was given: "+b.length());
 			}
@@ -75,7 +75,8 @@ public class BandedMatrix extends ABandedMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		return getBand(bandIndex(row,column)).get(bandPosition(row,column));
+		if ((row<0)||(column<0)||(row>=rowCount)||(column>=columnCount)) throw new IndexOutOfBoundsException("["+row+","+column+"]");
+		return getBand(bandIndex(row,column)).unsafeGet(bandPosition(row,column));
 	}
 
 	@Override

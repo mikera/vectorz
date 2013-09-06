@@ -1622,8 +1622,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		} else {
 			int si=band%cc;
-			if (si>0) si-=cc;
-			for (;si<cc; si+=cc) {
+			if (si<0) si+=cc;
+			for (;si>-rc; si-=cc) {
 				result=result.join(getBand(si));
 			}
 		}

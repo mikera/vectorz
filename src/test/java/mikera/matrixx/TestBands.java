@@ -22,7 +22,7 @@ public class TestBands {
 		assertEquals(Vector.of(6),m.getBand(-2));
 
 		assertEquals(m.getBand(0),m.getBandWrapped(0));
-		assertEquals(Vector.of(6,1,5),m.getBandWrapped(-2));
+		assertEquals(Vector.of(1,5,6),m.getBandWrapped(-2));
 	}
 	
 	@Test public void testDiagonalMatrix() {
@@ -48,6 +48,16 @@ public class TestBands {
 		assertEquals(2,m.bandLength(-1));
 		assertEquals(1,m.bandLength(-2));
 		assertEquals(0,m.bandLength(-3));
+		
+		assertEquals(4,m.getBandWrapped(1).length());
+
+	}
+	
+	@Test public void testWrappedBand() {
+		Matrix m=Matrix.create(3, 2);
+		
+		assertEquals(3,m.getBandWrapped(0).length());
+
 	}
 	
 	@Test public void testBandedMatrix() {

@@ -22,4 +22,8 @@ public abstract class ABandedMatrix extends AMatrix {
 	@Override
 	public abstract AVector getBand(int band);
 
+	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
 }
