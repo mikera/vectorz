@@ -1536,6 +1536,26 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
+	 * Returns the band index number for a specified position in the matrix.
+	 * @param i
+	 * @param j
+	 * @return
+	 */
+	public int bandIndex(int i, int j) {
+		return j-i;
+	}
+	
+	/**
+	 * Returns the band position for a specified (i,j) index in the matrix.
+	 * @param i
+	 * @param j
+	 * @return
+	 */
+	public int bandPosition(int i, int j) {
+		return Math.min(i, j);
+	}
+	
+	/**
 	 * Computes the upper bandwidth of a matrix
 	 * @return
 	 */
