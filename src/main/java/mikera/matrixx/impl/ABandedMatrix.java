@@ -47,6 +47,16 @@ public abstract class ABandedMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isUpperTriangular() {
+		return (lowerBandwidthLimit()==0)||(lowerBandwidth()==0);
+	}
+	
+	@Override
+	public boolean isLowerTriangular() {
+		return (upperBandwidthLimit()==0)||(upperBandwidth()==0);
+	}
+	
+	@Override
 	public AVector getRow(int row) {
 		return new BandedMatrixRow(row);
 	}

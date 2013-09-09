@@ -73,7 +73,6 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		return 0; 
 	}
 	
-
 	@Override
 	public AVector getBand(int band) {
 		if (band==0) {
