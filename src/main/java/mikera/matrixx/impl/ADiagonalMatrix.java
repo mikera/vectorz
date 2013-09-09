@@ -7,6 +7,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -179,6 +180,17 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		int offset=v.getArrayOffset();
 		for (int i=0; i<dimensions; i++) {
 			data[i+offset]*=getDiagonalValue(i);
+		}
+	}
+	
+	@Override
+	public void transform(Vector source, Vector dest) {
+		int rc = rowCount();
+		int cc = rc;
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		for (int row = 0; row < rc; row++) {
+			dest.data[row]=source.data[row]*getDiagonalValue(row);
 		}
 	}
 	

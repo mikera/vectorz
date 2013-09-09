@@ -120,6 +120,17 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	public double calculateElement(int i, Vector v) {
 		return data[i]*v.unsafeGet(i);
 	}
+	
+	@Override
+	public void transform(Vector source, Vector dest) {
+		int rc = rowCount();
+		int cc = rc;
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		for (int i = 0; i < rc; i++) {
+			dest.data[i]=source.data[i]*this.data[i];
+		}
+	}
 
 	@Override
 	public void transformInPlace(AVector v) {
