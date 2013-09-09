@@ -321,7 +321,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public AVector transform(AVector source) {
 		Vector v=Vector.createLength(outputDimensions());
-		transform(source,v);
+		if (source instanceof Vector) {
+			transform((Vector)source,v);
+		} else {
+			transform(source,v);
+		}
 		return v;
 	}
 	
