@@ -324,9 +324,34 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		transform(source,v);
 		return v;
 	}
+	
+	@Override
+	public Vector transform(Vector source) {
+		Vector v=Vector.createLength(outputDimensions());
+		transform(source,v);
+		return v;
+	}
 
 	@Override
 	public void transform(AVector source, AVector dest) {
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
+		int rc = rowCount();
+		int cc = columnCount();
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		for (int row = 0; row < rc; row++) {
+			double total = 0.0;
+			for (int column = 0; column < cc; column++) {
+				total += unsafeGet(row, column) * source.unsafeGet(column);
+			}
+			dest.unsafeSet(row, total);
+		}
+	}
+	
+	public void transform(Vector source, Vector dest) {
 		int rc = rowCount();
 		int cc = columnCount();
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
