@@ -1134,7 +1134,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AVector innerProduct(AVector v) {
-		return transform(v);
+		if (v instanceof Vector) {
+			return transform((Vector)v);
+		} else {
+			return transform(v);
+		}
 	}
 	
 	public AMatrix innerProduct(AScalar s) {
@@ -1166,8 +1170,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		} else if (a.dimensionality()<=2) {
 			return innerProduct(Arrayz.create(a)); // convert to efficient format
 		}
-		// TODO: fix higher dimensional inner products with second argument
-		throw new UnsupportedOperationException("Can't take inner product with: "+a.getClass());
+		return Array.create(this).innerProduct(a);
 	}
 
 	public INDArray outerProduct(INDArray a) {
