@@ -317,6 +317,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		return vm;	
 	}
+	
+	@Override
+	public AVector transform(AVector source) {
+		Vector v=Vector.createLength(outputDimensions());
+		transform(source,v);
+		return v;
+	}
 
 	@Override
 	public void transform(AVector source, AVector dest) {
