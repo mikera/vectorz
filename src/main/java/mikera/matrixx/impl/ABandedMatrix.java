@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.VectorzException;
@@ -95,6 +96,28 @@ public abstract class ABandedMatrix extends AMatrix {
 		for (int i=-rowCount()+1; i<columnCount(); i++) {
 			getBand(i).fill(value);
 		}
+	}
+	
+	@Override
+	public Matrix toMatrix() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(rc, cc);
+		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+			m.getBand(i).set(this.getBand(i));
+		}
+		return m;
+	}
+	
+	@Override
+	public Matrix toMatrixTranspose() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(cc, rc);
+		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+			m.getBand(-i).set(this.getBand(i));
+		}
+		return m;
 	}
 	
 	/**
