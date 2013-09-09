@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.VectorzException;
 
 /** 
  * Abstract base class for banded matrices
@@ -106,6 +107,19 @@ public abstract class ABandedMatrix extends AMatrix {
 		@Override
 		public boolean isFullyMutable() {
 			return ABandedMatrix.this.isFullyMutable();
+		}
+	}
+	
+	
+	@Override public void validate() {
+		super.validate();
+		int minBand=lowerBandwidthLimit();
+		int maxBand=upperBandwidthLimit();
+		if (minBand<=-rowCount()) throw new VectorzException("Invalid lower limit: "+minBand);
+		if (maxBand>=columnCount()) throw new VectorzException("Invalid upper limit: "+maxBand);
+		for (int i=minBand; i<=maxBand; i++) {
+			AVector v=getBand(i);
+			if (bandLength(i)!=v.length()) throw new VectorzException("Invalid band length: "+i);
 		}
 	}
 }

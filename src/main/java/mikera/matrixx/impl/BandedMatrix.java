@@ -95,10 +95,8 @@ public class BandedMatrix extends ABandedMatrix {
 	
 	@Override public void validate() {
 		super.validate();
-		for (int i=minBand; i<=maxBand; i++) {
-			AVector v=getBand(i);
-			if (bandLength(i)!=v.length()) throw new VectorzException("Invalid band length: "+i);
-		}
+		if (minBand!=lowerBandwidthLimit()) throw new VectorzException("Mismatched lower limit: "+minBand);
+		if (maxBand!=upperBandwidthLimit()) throw new VectorzException("Mismatched upper limit: "+maxBand);
 	}
 	
 }
