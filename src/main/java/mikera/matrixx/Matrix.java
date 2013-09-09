@@ -274,12 +274,13 @@ public final class Matrix extends ADenseArrayMatrix {
 		int cc = columnCount();
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		int di=0;
 		for (int row = 0; row < rc; row++) {
 			double total = 0.0;
-			int di=row*cc;
 			for (int column = 0; column < cc; column++) {
 				total += data[di+column] * source.data[column];
 			}
+			di+=cc;
 			dest.data[row]=total;
 		}
 	}
