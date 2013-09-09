@@ -288,9 +288,9 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 		case 1:
 			return Vector.create(data);
 		case 2:
-			return Matrix.wrap(shape[0], shape[1], data.clone());
+			return Matrix.wrap(shape[0], shape[1], DoubleArrays.copyOf(data));
 		default:
-			return Array.wrap(data.clone(),shape);
+			return Array.wrap(DoubleArrays.copyOf(data),shape);
 		}
 	}
 

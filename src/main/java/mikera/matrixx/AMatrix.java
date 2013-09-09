@@ -31,6 +31,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.MatrixBandVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -96,10 +97,24 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		asVector().fill(value);
 	}
 	
+	/**
+	 * Sets an element value in the matrix in an unsafe fashion, without performing bound checks
+	 * The result is undefined if the row and column are out of bounds.
+	 * @param row
+	 * @param column
+	 * @return
+	 */
 	public void unsafeSet(int row, int column, double value) {
 		set(row,column,value);
 	}
 	
+	/**
+	 * Gets an element in the matrix in an unsafe fashion, without performing bound checks
+	 * The result is undefined if the row and column are out of bounds.
+	 * @param row
+	 * @param column
+	 * @return
+	 */
 	public double unsafeGet(int row, int column) {
 		return get(row,column);
 	}
@@ -211,17 +226,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	/**
-	 * Returns a new vector that contains the leading diagonal values of the matrix
+	 * Returns a vector view of the leading diagonal values of the matrix
 	 * @return
 	 */
 	public AVector getLeadingDiagonal() {
-		if (!isSquare()) throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
-		int dims=rowCount();
-		AVector v=Vectorz.newVector(dims);
-		for (int i=0; i<dims; i++) {
-			v.set(i,this.get(i,i));
-		}
-		return v;
+		return getBand(0);
 	}
 	
 	@Override
@@ -308,9 +317,45 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		}
 		return vm;	
 	}
+	
+	@Override
+	public AVector transform(AVector source) {
+		Vector v=Vector.createLength(outputDimensions());
+		if (source instanceof Vector) {
+			transform((Vector)source,v);
+		} else {
+			transform(source,v);
+		}
+		return v;
+	}
+	
+	@Override
+	public Vector transform(Vector source) {
+		Vector v=Vector.createLength(outputDimensions());
+		transform(source,v);
+		return v;
+	}
 
 	@Override
 	public void transform(AVector source, AVector dest) {
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
+		int rc = rowCount();
+		int cc = columnCount();
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		for (int row = 0; row < rc; row++) {
+			double total = 0.0;
+			for (int column = 0; column < cc; column++) {
+				total += unsafeGet(row, column) * source.unsafeGet(column);
+			}
+			dest.unsafeSet(row, total);
+		}
+	}
+	
+	public void transform(Vector source, Vector dest) {
 		int rc = rowCount();
 		int cc = columnCount();
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
@@ -1080,7 +1125,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;		
 	}
 	
-	public Vector innerProduct(Vector v) {
+	public final Vector innerProduct(Vector v) {
 		return transform(v);
 	}
 	
@@ -1089,7 +1134,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AVector innerProduct(AVector v) {
-		return transform(v);
+		if (v instanceof Vector) {
+			return transform((Vector)v);
+		} else {
+			return transform(v);
+		}
 	}
 	
 	public AMatrix innerProduct(AScalar s) {
@@ -1119,23 +1168,15 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		} else if (a instanceof AScalar) {
 			return innerProduct((AScalar)a);
 		} else if (a.dimensionality()<=2) {
-			return innerProduct(Arrayz.create(a)); // convert to efficient format
+			return innerProduct(Arrayz.create(a)); // convert to most efficient format
 		}
-		// TODO: fix higher dimensional inner products with second argument
-		throw new UnsupportedOperationException("Can't take inner product with: "+a.getClass());
+		return Array.create(this).innerProduct(a);
 	}
 
 	public INDArray outerProduct(INDArray a) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
-		for (Object s:this) {
-			if (s instanceof INDArray) {
-				al.add(((INDArray)s).outerProduct(a));
-			} else {
-				double x=Tools.toDouble(s);
-				INDArray sa=a.clone();
-				sa.scale(x);
-				al.add(sa);
-			}
+		for (AVector s:this) {
+			al.add(s.outerProduct(a));
 		}
 		return Arrayz.create(al);
 	}
@@ -1504,6 +1545,121 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * A limit on the upper bandwidth of the banded matrix. Actual upper bandwidth is guaranteed
+	 * to be less than or equal to this value
+	 * @return
+	 */
+	public int upperBandwidthLimit() {
+		return columnCount()-1;
+	}
+	
+	/**
+	 * A limit on the lower bandwidth of the banded matrix. Actual lower bandwidth is guaranteed
+	 * to be less than or equal to this value
+	 * @return
+	 */
+	public int lowerBandwidthLimit() {
+		return rowCount()-1;
+	}
+	
+	/**
+	 * Returns the length of a band of the matrix. Returns 0 if the band is outside the matrix.
+	 * @param band
+	 * @return
+	 */
+	public int bandLength(int band) {
+		return bandLength(rowCount(),columnCount(),band);
+	}
+	
+	protected final static int bandLength(int rc, int cc, int band) {
+		if (band>0) {
+			return (band<cc)?Math.min(rc, cc-band):0;
+		} else {
+			band=-band;
+			return (band<rc)?Math.min(cc, rc-band):0;			
+		}
+	}
+	
+	/**
+	 * Returns the band index number for a specified position in the matrix.
+	 * @param i
+	 * @param j
+	 * @return
+	 */
+	public int bandIndex(int i, int j) {
+		return j-i;
+	}
+	
+	/**
+	 * Returns the band position for a specified (i,j) index in the matrix.
+	 * @param i
+	 * @param j
+	 * @return
+	 */
+	public int bandPosition(int i, int j) {
+		return Math.min(i, j);
+	}
+	
+	/**
+	 * Computes the upper bandwidth of a matrix
+	 * @return
+	 */
+	public int upperBandwidth() {
+		for (int band=upperBandwidthLimit(); band>0; band--) {
+			int bandLen=bandLength(band);
+			for (int i=0; i<bandLen; i++) {
+				if (unsafeGet(band+i,i)!=0.0) return band;
+			}
+		}
+		return 0;
+	}
+	
+	/**
+	 * Computes the lower bandwidth of a matrix
+	 * @return
+	 */
+	public int lowerBandwidth() {
+		for (int band=lowerBandwidthLimit(); band>0; band--) {
+			int bandLen=bandLength(-band);
+			for (int i=0; i<bandLen; i++) {
+				if (unsafeGet(i,band+i)!=0.0) return band;
+			}
+		}
+		return 0;
+	}
+	
+	/**
+	 * Gets a specific band of the matrix, as a view vector. The band is truncated at the edges of the
+	 * matrix, i.e. it does not wrap around the matrix.
+	 * 
+	 * @param band
+	 * @return
+	 */
+	public AVector getBand(int band) {
+		return MatrixBandVector.create(this,band);
+	}
+	
+	public AVector getBandWrapped(int band) {
+		AVector result=Vector0.INSTANCE;
+		int rc=rowCount();
+		int cc=columnCount();
+		if (rc<cc) {
+			int si=band%rc;
+			if (si>0) si-=rc;
+			for (;si<cc; si+=rc) {
+				result=result.join(getBand(si));
+			}
+		} else {
+			int si=band%cc;
+			if (si<0) si+=cc;
+			for (;si>-rc; si-=cc) {
+				result=result.join(getBand(si));
+			}
+		}
+		return result;
 	}
 	
 	public void setRow(int i, AVector row) {

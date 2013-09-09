@@ -14,7 +14,7 @@ import mikera.vectorz.Tools;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIndex>, Iterable<Integer> {
+public abstract class AIndex implements Serializable, Cloneable, Comparable<AIndex>, Iterable<Integer> {
 	// ===================================
 	// Abstract interface
 	
@@ -36,9 +36,7 @@ public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIn
 	// ===================================
 	// Common implementations
 	
-	public void set(int i, int value) {
-		throw new UnsupportedOperationException();
-	}
+	public abstract void set(int i, int value);
 	
 	public boolean isFullyMutable() {
 		return false;
@@ -245,15 +243,26 @@ public abstract class AIndex  implements Serializable, Cloneable, Comparable<AIn
 		return 0;
 	}
 	
+	/**
+	 * Gets an iterator over all elements of this index
+	 */
 	public IndexIterator iterator() {
 		return new IndexIterator(this);
 	}
 	
+	/**
+	 * Composes this index with a second index, returning a new index.
+	 * 
+	 * New index satisfies index.get(i) == a.get(this.get(i));
+	 * 
+	 * @param a
+	 * @return
+	 */
 	public Index compose(AIndex a) {
 		int len=this.length();
 		Index r=new Index(len);
 		for (int i=0; i<len; i++) {
-			r.data[i]=a.get(get(i));
+			r.data[i]=a.get(this.get(i));
 		}
 		return r;
 	}

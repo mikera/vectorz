@@ -1,5 +1,7 @@
 package mikera.vectorz.util;
 
+import java.util.Arrays;
+
 import mikera.vectorz.Tools;
 import mikera.vectorz.ops.Logistic;
 
@@ -327,6 +329,18 @@ public final class DoubleArrays {
 			if (!Tools.isBoolean(data[offset+i])) return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Fast double array copy operation. 
+	 * 
+	 * Appears to be faster than data.clone() ??
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static final double[] copyOf(double[] data) {
+		return Arrays.copyOf(data, data.length);
 	}
 
 

@@ -13,6 +13,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.MatrixBandVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -103,24 +104,6 @@ public final class Matrix extends ADenseArrayMatrix {
 		return transform(a);
 	}
 	
-	public Vector innerProduct(Vector a) {
-		int rc=rowCount();
-		int cc=columnCount();
-		if ((cc!=a.length())) {
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		}		
-		Vector result=Vector.createLength(rc);
-		for (int i=0; i<rc; i++) {
-			int di=i*cc;
-			double acc=0.0;
-			for (int j=0; j<cc; j++) {
-				acc+=data[di+j]*a.data[j];
-			}
-			result.unsafeSet(i,acc);
-		}
-		return result;
-	}
-	
 	@Override
 	public Matrix innerProduct(Matrix a) {
 		// TODO: detect large matrices and farm off to cache-efficient function
@@ -208,7 +191,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix clone() {
-		return new Matrix(rows,cols,data.clone());
+		return new Matrix(rows,cols,DoubleArrays.copyOf(data));
 	}
 	
 	@Override
@@ -243,7 +226,18 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public Vector transform (Vector a) {
+		Vector v=Vector.createLength(rows);
+		transform(a,v);
+		return v;
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
 		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		int index=0;
@@ -253,6 +247,23 @@ public final class Matrix extends ADenseArrayMatrix {
 				acc+=data[index++]*source.unsafeGet(j);
 			}
 			dest.unsafeSet(i,acc);
+		}
+	}
+	
+	@Override
+	public void transform(Vector source, Vector dest) {
+		int rc = rowCount();
+		int cc = columnCount();
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		int di=0;
+		for (int row = 0; row < rc; row++) {
+			double total = 0.0;
+			for (int column = 0; column < cc; column++) {
+				total += data[di+column] * source.data[column];
+			}
+			di+=cc;
+			dest.data[row]=total;
 		}
 	}
 	
@@ -477,6 +488,14 @@ public final class Matrix extends ADenseArrayMatrix {
 		for (int i=0; i<rc; i++) {
 			data[index(i,j)]=col.unsafeGet(j);
 		}
+	}
+	
+	@Override
+	public StridedVector getBand(int band) {
+		int cc=columnCount();
+		int rc=rowCount();
+		if ((band>=cc)||(band<=-rc)) return null;
+		return StridedVector.wrap(data, (band>=0)?band:(-band)*cc, bandLength(band), cc+1);
 	}
 	
 	@Override

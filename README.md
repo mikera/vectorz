@@ -2,12 +2,12 @@
 
 Fast double-precision vector and matrix maths library for Java.
 
-This library is designed for use in games, simulations, raytracers etc. 
+This library is designed for use in games, simulations, raytracers, machine learning etc. 
 where fast vector maths is important. 
 
 Vectorz can do over *1 billion* 3D vector operations per second on a single thread.
 
-Vectorz is reasonably mature and being used in production applications.
+Vectorz is reasonably mature, battle tested and being used in production applications. The API is still evolving however as new features get added so you can expect a few minor changes.
 
 [![Build Status](https://secure.travis-ci.org/mikera/vectorz.png)](http://travis-ci.org/mikera/vectorz)
 

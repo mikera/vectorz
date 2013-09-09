@@ -1,5 +1,6 @@
 package mikera.vectorz.util;
 
+import java.util.Arrays;
 import java.util.List;
 
 import mikera.util.Rand;
@@ -185,5 +186,9 @@ public class IntArrays {
 		int temp = inds[a];
 		inds[a] = inds[b];
 		inds[b] = temp;
+	}
+
+	public static final int[] copyOf(int[] data) {
+		return Arrays.copyOf(data, data.length);
 	}
 }

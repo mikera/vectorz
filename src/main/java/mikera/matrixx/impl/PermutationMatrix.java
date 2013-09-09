@@ -218,8 +218,23 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
 		if(rowCount()!=dest.length()) throw new IllegalArgumentException("Wrong dest vector length");
 		if(columnCount()!=source.length()) throw new IllegalArgumentException("Wrong source vector length");
+		for (int i=0; i<size; i++) {
+			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
+		}
+	}
+	
+	@Override	
+	public void transform(Vector source, Vector dest) {
+		int rc = rowCount();
+		int cc = columnCount();
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		for (int i=0; i<size; i++) {
 			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
 		}

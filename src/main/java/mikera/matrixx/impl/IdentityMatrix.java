@@ -70,8 +70,14 @@ public class IdentityMatrix extends ADiagonalMatrix {
 		return AxisVector.create(column,dimensions);
 	}
 	
+	@Override
 	public double getDiagonalValue(int i) {
 		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException("Getting diagonal value out of bounds: "+i);
+		return 1.0;
+	}
+	
+	@Override
+	public double unsafeGetDiagonalValue(int i) {
 		return 1.0;
 	}
 
@@ -88,6 +94,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	@Override
 	public Vector transform(AVector source) {
 		return source.toVector();		
+	}
+	
+	@Override
+	public Vector transform(Vector source) {
+		return source.clone();		
 	}
 	
 	@Override
@@ -156,12 +167,6 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	public Vector innerProduct(AVector v) {
 		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
 		return v.toVector();
-	}
-	
-	@Override 
-	public Vector innerProduct(Vector v) {
-		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
-		return v.clone();
 	}
 	
 	@Override 

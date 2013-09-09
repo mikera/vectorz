@@ -256,6 +256,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return true;
 	}
 	
+	/**
+	 * Computes the hashcode of a vector.
+	 * 
+	 * Currently defined to be equal to List.hashCode for a equivalent list of Double values, 
+	 * this may change in future versions.
+	 */
 	@Override
 	public int hashCode() {
 		int hashCode = 1;
@@ -1275,7 +1281,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		double[] otherArray=other.getArray();
 		otherOffset+=other.getArrayOffset();
 		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*get(i+offset)*otherArray[i+otherOffset];
+			array[i+arrayOffset]+=factor*unsafeGet(i+offset)*otherArray[i+otherOffset];
 		}		
 	}
 
