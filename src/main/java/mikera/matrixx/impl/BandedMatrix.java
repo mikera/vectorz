@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -91,6 +92,32 @@ public class BandedMatrix extends ABandedMatrix {
 			b.bands[i-minBand]=b.bands[i-minBand].exactClone();
 		}
 		return b;
+	}
+	
+	@Override
+	public void transform(AVector source, AVector dest) {
+		if (!(dest instanceof Vector)) {
+			super.transform(source, dest);
+		} else if ((source instanceof Vector )) {
+			transform ((Vector)source, (Vector)dest);
+		} else {
+			Vector t=(Vector)dest;
+			t.fill(0.0);
+			for (int i=minBand; i<=maxBand; i++) {
+				AVector b=getBand(i);
+				b.addProductToArray(1.0, 0, source, Math.max(i, 0), t.data, Math.max(-i, 0), bandLength(i));
+			}
+		}
+	}
+	
+	@Override
+	public void transform(Vector source, Vector dest) {
+		Vector t=(Vector)dest;
+		t.fill(0.0);
+		for (int i=minBand; i<=maxBand; i++) {
+			AVector b=getBand(i);
+			b.addProductToArray(1.0, 0, source, Math.max(i, 0), t.data, Math.max(-i, 0), bandLength(i));
+		}		
 	}
 	
 	@Override public void validate() {

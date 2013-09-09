@@ -1281,7 +1281,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		double[] otherArray=other.getArray();
 		otherOffset+=other.getArrayOffset();
 		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*get(i+offset)*otherArray[i+otherOffset];
+			array[i+arrayOffset]+=factor*unsafeGet(i+offset)*otherArray[i+otherOffset];
 		}		
 	}
 
