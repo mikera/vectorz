@@ -74,5 +74,7 @@ public class TestBands {
 		assertFalse(m.isSymmetric());
 		
 		assertEquals(Vector.of(4,6,0),m.transform(Vector.of(1,2,3)));
+		m.getBand(0).add(1.0);
+		assertEquals(Vector.of(5,8,3),m.transform(Vector.of(1,2,3)));
 	}
 }
