@@ -36,9 +36,9 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	public Affine23(AMatrix m, AVector v) {
-		assert(v.length()==3);
-		assert(m.inputDimensions()==3);
-		assert(m.outputDimensions()==3);
+		assert(v.length()==2);
+		assert(m.inputDimensions()==2);
+		assert(m.outputDimensions()==2);
 		m00=m.get(0,0);
 		m01=m.get(0,1);
 		m10=m.get(1,0);
