@@ -81,7 +81,7 @@ public abstract class ABandedMatrix extends AMatrix {
 	
 		@Override
 		public boolean isFullyMutable() {
-			return (row<=-upper)&&((row+upper)>=length);
+			return ABandedMatrix.this.isFullyMutable();
 		}
 	}
 }
