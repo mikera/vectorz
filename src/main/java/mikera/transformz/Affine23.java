@@ -7,9 +7,9 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector2;
 
 /**
- * Specialised 3*4 affine transformation class
+ * Specialised 2x3 affine transformation class
  * 
- * Intended for composing 3d affine transformations.
+ * Intended for composing 2d affine transformations.
  * 
  * @author Mike
  */
