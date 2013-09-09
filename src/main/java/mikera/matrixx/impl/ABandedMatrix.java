@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 
 /** 
  * Abstract base class for banded matrices
@@ -33,10 +34,10 @@ public abstract class ABandedMatrix extends AMatrix {
 	}
 	
 	private final class BandedMatrixRow extends AVector {
-		int row;
-		int length;
-		int lower;
-		int upper;
+		final int row;
+		final int length;
+		final int lower;
+		final int upper;
 		public BandedMatrixRow(int row) {
 			this.row=row;
 			this.length=columnCount();
@@ -60,6 +61,24 @@ public abstract class ABandedMatrix extends AMatrix {
 			int b=i-row;
 			if ((b<lower)||(b>upper)) return 0;
 			return getBand(b).unsafeGet(Math.min(i, row));
+		}
+		
+		@Override 
+		public double dotProduct(AVector v) {
+			double result=0.0;
+			for (int i=Math.max(0,lower+row); i<=Math.min(length-1, row+upper);i++) {
+				result+=getBand(i-row).unsafeGet(Math.min(i, row))*v.unsafeGet(i);
+			}
+			return result;
+		}
+		
+		@Override 
+		public double dotProduct(Vector v) {
+			double result=0.0;
+			for (int i=Math.max(0,lower+row); i<=Math.min(length-1, row+upper);i++) {
+				result+=getBand(i-row).unsafeGet(Math.min(i, row))*v.unsafeGet(i);
+			}
+			return result;
 		}
 
 		@Override
