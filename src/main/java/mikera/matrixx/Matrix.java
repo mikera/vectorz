@@ -104,24 +104,6 @@ public final class Matrix extends ADenseArrayMatrix {
 		return transform(a);
 	}
 	
-	public Vector innerProduct(Vector a) {
-		int rc=rowCount();
-		int cc=columnCount();
-		if ((cc!=a.length())) {
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		}		
-		Vector result=Vector.createLength(rc);
-		for (int i=0; i<rc; i++) {
-			int di=i*cc;
-			double acc=0.0;
-			for (int j=0; j<cc; j++) {
-				acc+=data[di+j]*a.data[j];
-			}
-			result.unsafeSet(i,acc);
-		}
-		return result;
-	}
-	
 	@Override
 	public Matrix innerProduct(Matrix a) {
 		// TODO: detect large matrices and farm off to cache-efficient function

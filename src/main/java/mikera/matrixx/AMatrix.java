@@ -1125,7 +1125,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return result;		
 	}
 	
-	public Vector innerProduct(Vector v) {
+	public final Vector innerProduct(Vector v) {
 		return transform(v);
 	}
 	
@@ -1168,22 +1168,15 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		} else if (a instanceof AScalar) {
 			return innerProduct((AScalar)a);
 		} else if (a.dimensionality()<=2) {
-			return innerProduct(Arrayz.create(a)); // convert to efficient format
+			return innerProduct(Arrayz.create(a)); // convert to most efficient format
 		}
 		return Array.create(this).innerProduct(a);
 	}
 
 	public INDArray outerProduct(INDArray a) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
-		for (Object s:this) {
-			if (s instanceof INDArray) {
-				al.add(((INDArray)s).outerProduct(a));
-			} else {
-				double x=Tools.toDouble(s);
-				INDArray sa=a.clone();
-				sa.scale(x);
-				al.add(sa);
-			}
+		for (AVector s:this) {
+			al.add(s.outerProduct(a));
 		}
 		return Arrayz.create(al);
 	}

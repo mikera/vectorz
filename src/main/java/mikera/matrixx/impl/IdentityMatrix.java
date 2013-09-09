@@ -91,6 +91,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public Vector transform(Vector source) {
+		return source.clone();		
+	}
+	
+	@Override
 	public void transformInPlace(AVector v) {
 		// nothing to do
 	}
@@ -156,12 +161,6 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	public Vector innerProduct(AVector v) {
 		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
 		return v.toVector();
-	}
-	
-	@Override 
-	public Vector innerProduct(Vector v) {
-		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
-		return v.clone();
 	}
 	
 	@Override 
