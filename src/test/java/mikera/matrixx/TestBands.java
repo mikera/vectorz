@@ -66,4 +66,13 @@ public class TestBands {
 		
 		assertEquals(Matrixx.createIdentityMatrix(4),bm);
 	}
+	
+	@Test public void testBandedCase() {
+		AMatrix m=BandedMatrix.create(3, 3, 0, 1);
+		assertTrue(m.isSymmetric());
+		m.getBand(1).fill(2.0);
+		assertFalse(m.isSymmetric());
+		
+		assertEquals(Vector.of(4,6,0),m.transform(Vector.of(1,2,3)));
+	}
 }
