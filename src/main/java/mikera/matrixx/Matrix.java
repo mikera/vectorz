@@ -244,7 +244,18 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public Vector transform (Vector a) {
+		Vector v=Vector.createLength(rows);
+		transform(a,v);
+		return v;
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
 		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		int index=0;
@@ -254,6 +265,22 @@ public final class Matrix extends ADenseArrayMatrix {
 				acc+=data[index++]*source.unsafeGet(j);
 			}
 			dest.unsafeSet(i,acc);
+		}
+	}
+	
+	@Override
+	public void transform(Vector source, Vector dest) {
+		int rc = rowCount();
+		int cc = columnCount();
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		for (int row = 0; row < rc; row++) {
+			double total = 0.0;
+			int di=row*cc;
+			for (int column = 0; column < cc; column++) {
+				total += data[di+column] * source.data[column];
+			}
+			dest.data[row]=total;
 		}
 	}
 	
