@@ -8,6 +8,8 @@ import mikera.vectorz.util.VectorzException;
 /** 
  * Abstract base class for banded matrices
  * 
+ * Banded matrix implementations are assumed to store their data in bands
+ * 
  * May be either square or rectangular
  * 
  * @author Mike
@@ -23,7 +25,6 @@ public abstract class ABandedMatrix extends AMatrix {
 	
 	@Override
 	public abstract AVector getBand(int band);
-	
 	
 	@Override
 	public int upperBandwidth() {
@@ -59,6 +60,40 @@ public abstract class ABandedMatrix extends AMatrix {
 	@Override
 	public AVector getRow(int row) {
 		return new BandedMatrixRow(row);
+	}
+	
+	@Override 
+	public long nonZeroCount() {
+		long t=0;
+		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+			t+=getBand(i).nonZeroCount();
+		}
+		return t;
+	}
+	
+	@Override 
+	public double elementSum() {
+		double t=0;
+		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+			t+=getBand(i).elementSum();
+		}
+		return t;
+	}
+	
+	@Override 
+	public double elementSquaredSum() {
+		double t=0;
+		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+			t+=getBand(i).elementSquaredSum();
+		}
+		return t;
+	}
+	
+	@Override 
+	public void fill(double value) {
+		for (int i=-rowCount()+1; i<columnCount(); i++) {
+			getBand(i).fill(value);
+		}
 	}
 	
 	/**
