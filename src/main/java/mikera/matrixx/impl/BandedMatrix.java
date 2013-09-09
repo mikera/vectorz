@@ -93,6 +93,12 @@ public class BandedMatrix extends ABandedMatrix {
 	public void set(int row, int column, double value) {
 		getBand(bandIndex(row,column)).set(bandPosition(row,column),value);
 	}
+	
+	public void addAt(int i, int j, double d) {
+		int band=j-i;
+		AVector b=getBand(band);
+		b.addAt(bandIndex(i,j), d);
+	}
 
 	@Override
 	public BandedMatrix exactClone() {
