@@ -38,7 +38,7 @@ public abstract class ABandedMatrix extends AMatrix {
 	
 	@Override
 	public int lowerBandwidth() {
-		for (int i=lowerBandwidthLimit(); i<0; i++) {
+		for (int i=-lowerBandwidthLimit(); i<0; i++) {
 			if (!(getBand(i).isZero())) return i;
 		}
 		return 0;
@@ -47,6 +47,16 @@ public abstract class ABandedMatrix extends AMatrix {
 	@Override
 	public boolean isFullyMutable() {
 		return false;
+	}
+	
+	@Override
+	public boolean isSymmetric() {
+		if (rowCount()!=columnCount()) return false;
+		int bs=Math.max(upperBandwidthLimit(), lowerBandwidthLimit());
+		for (int i=1; i<=bs; i++) {
+			if (!getBand(i).equals(getBand(-i))) return false;
+		}
+		return true;
 	}
 	
 	@Override
@@ -67,7 +77,7 @@ public abstract class ABandedMatrix extends AMatrix {
 	@Override 
 	public long nonZeroCount() {
 		long t=0;
-		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+		for (int i=-lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
 			t+=getBand(i).nonZeroCount();
 		}
 		return t;
@@ -76,7 +86,7 @@ public abstract class ABandedMatrix extends AMatrix {
 	@Override 
 	public double elementSum() {
 		double t=0;
-		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+		for (int i=-lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
 			t+=getBand(i).elementSum();
 		}
 		return t;
@@ -85,7 +95,7 @@ public abstract class ABandedMatrix extends AMatrix {
 	@Override 
 	public double elementSquaredSum() {
 		double t=0;
-		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+		for (int i=-lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
 			t+=getBand(i).elementSquaredSum();
 		}
 		return t;
@@ -103,7 +113,7 @@ public abstract class ABandedMatrix extends AMatrix {
 		int rc = rowCount();
 		int cc = columnCount();
 		Matrix m = Matrix.create(rc, cc);
-		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+		for (int i=-lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
 			m.getBand(i).set(this.getBand(i));
 		}
 		return m;
@@ -114,7 +124,7 @@ public abstract class ABandedMatrix extends AMatrix {
 		int rc = rowCount();
 		int cc = columnCount();
 		Matrix m = Matrix.create(cc, rc);
-		for (int i=lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+		for (int i=-lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
 			m.getBand(-i).set(this.getBand(i));
 		}
 		return m;
@@ -133,7 +143,7 @@ public abstract class ABandedMatrix extends AMatrix {
 		public BandedMatrixRow(int row) {
 			this.row=row;
 			this.length=columnCount();
-			this.lower=lowerBandwidthLimit();
+			this.lower=-lowerBandwidthLimit();
 			this.upper=upperBandwidthLimit();
 		}
 
@@ -199,7 +209,8 @@ public abstract class ABandedMatrix extends AMatrix {
 	
 	@Override public void validate() {
 		super.validate();
-		int minBand=lowerBandwidthLimit();
+		if (lowerBandwidthLimit()<0) throw new VectorzException("Negative lower bandwidth limit?!?");
+		int minBand=-lowerBandwidthLimit();
 		int maxBand=upperBandwidthLimit();
 		if (minBand<=-rowCount()) throw new VectorzException("Invalid lower limit: "+minBand);
 		if (maxBand>=columnCount()) throw new VectorzException("Invalid upper limit: "+maxBand);

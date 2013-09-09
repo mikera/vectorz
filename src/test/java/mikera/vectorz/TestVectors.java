@@ -564,6 +564,12 @@ public class TestVectors {
 		assertEquals(1.24,Vectorz.averageValue(v),0.0001);
 	}
 	
+	private void testEquality(AVector v) {
+		assertEquals(v,v.clone());
+		assertNotEquals(v,v.join(Vector.of(1)));
+	}
+	
+	
 	private void testCopyTo(AVector v) {
 		int len=v.length();
 		Vector tv=Vector.createLength(len+2);
@@ -721,6 +727,7 @@ public class TestVectors {
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
+		testEquality(v);
 		testInnerProducts(v);
 		testMultiply(v);
 		testDivide(v);

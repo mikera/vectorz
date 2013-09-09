@@ -54,7 +54,7 @@ public class BandedMatrix extends ABandedMatrix {
 
 	@Override
 	public int lowerBandwidthLimit() {
-		return minBand;
+		return -minBand;
 	}
 	
 	@Override
@@ -82,7 +82,12 @@ public class BandedMatrix extends ABandedMatrix {
 	public int columnCount() {
 		return columnCount;
 	}
-
+	
+	@Override
+	public boolean isView() {
+		return true;
+	}
+	
 	@Override
 	public double get(int row, int column) {
 		if ((row<0)||(column<0)||(row>=rowCount)||(column>=columnCount)) throw new IndexOutOfBoundsException("["+row+","+column+"]");
@@ -137,7 +142,7 @@ public class BandedMatrix extends ABandedMatrix {
 	
 	@Override public void validate() {
 		super.validate();
-		if (minBand!=lowerBandwidthLimit()) throw new VectorzException("Mismatched lower limit: "+minBand);
+		if (minBand!=-lowerBandwidthLimit()) throw new VectorzException("Mismatched lower limit: "+minBand);
 		if (maxBand!=upperBandwidthLimit()) throw new VectorzException("Mismatched upper limit: "+maxBand);
 	}
 	
