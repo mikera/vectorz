@@ -56,6 +56,15 @@ public class BandedMatrix extends ABandedMatrix {
 	public int lowerBandwidthLimit() {
 		return minBand;
 	}
+	
+	@Override
+	public BandedMatrix getTranspose() {
+		AVector[] nbands=new AVector[bands.length];
+		for (int i=0; i<(-minBand+maxBand+1); i++) {
+			nbands[i]=bands[bands.length-1-i];
+		}
+		return BandedMatrix.wrap(columnCount(), rowCount(), -maxBand, -minBand,nbands);
+	}
 
 	@Override
 	public AVector getBand(int band) {

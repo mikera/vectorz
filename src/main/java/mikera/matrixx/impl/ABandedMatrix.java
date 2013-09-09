@@ -8,7 +8,8 @@ import mikera.vectorz.util.VectorzException;
 /** 
  * Abstract base class for banded matrices
  * 
- * Banded matrix implementations are assumed to store their data in bands
+ * Banded matrix implementations are assumed to store their data efficiently in diagonal bands,
+ * so functions on banded matrices are designed to exploit this fact.
  * 
  * May be either square or rectangular
  * 
