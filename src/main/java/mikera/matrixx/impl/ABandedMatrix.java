@@ -23,7 +23,24 @@ public abstract class ABandedMatrix extends AMatrix {
 	
 	@Override
 	public abstract AVector getBand(int band);
-
+	
+	
+	@Override
+	public int upperBandwidth() {
+		for (int i=upperBandwidthLimit(); i>0; i--) {
+			if (!(getBand(i).isZero())) return i;
+		}
+		return 0;
+	}
+	
+	@Override
+	public int lowerBandwidth() {
+		for (int i=lowerBandwidthLimit(); i<0; i++) {
+			if (!(getBand(i).isZero())) return i;
+		}
+		return 0;
+	}
+	
 	@Override
 	public boolean isFullyMutable() {
 		return false;
