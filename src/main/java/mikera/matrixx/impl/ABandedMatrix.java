@@ -33,6 +33,11 @@ public abstract class ABandedMatrix extends AMatrix {
 		return new BandedMatrixRow(row);
 	}
 	
+	/**
+	 * Inner class for generic banded matrix rows
+	 * @author Mike
+	 *
+	 */
 	private final class BandedMatrixRow extends AVector {
 		final int row;
 		final int length;
