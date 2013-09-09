@@ -70,8 +70,14 @@ public class IdentityMatrix extends ADiagonalMatrix {
 		return AxisVector.create(column,dimensions);
 	}
 	
+	@Override
 	public double getDiagonalValue(int i) {
 		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException("Getting diagonal value out of bounds: "+i);
+		return 1.0;
+	}
+	
+	@Override
+	public double unsafeGetDiagonalValue(int i) {
 		return 1.0;
 	}
 

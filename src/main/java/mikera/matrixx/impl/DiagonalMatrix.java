@@ -194,6 +194,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public double unsafeGetDiagonalValue(int i) {
+		return data[i];
+	}
+	
+	@Override
 	public Vector getLeadingDiagonal() {
 		return Vector.wrap(data);
 	}
@@ -210,7 +215,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		for (int i=0; i<dimensions; i++) {
-			result.data[i]*=a.getDiagonalValue(i);
+			result.data[i]*=a.unsafeGetDiagonalValue(i);
 		}
 		return result;
 	}

@@ -79,7 +79,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 			return getLeadingDiagonal();
 		} else {
 			if ((band>=dimensions)||(band<=-dimensions)) return null;
-			return ZeroVector.create(dimensions-Math.abs(band));
+			return ZeroVector.create(bandLength(band));
 		}
 	}
 
@@ -88,7 +88,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	public double determinant() {
 		double det=1.0;
 		for (int i=0; i<dimensions; i++) {
-			det*=getDiagonalValue(i);
+			det*=unsafeGetDiagonalValue(i);
 		}
 		return det;
 	}
@@ -104,7 +104,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+dimensions,0.0);
-		dest[destOffset+row]=getDiagonalValue(row);
+		dest[destOffset+row]=unsafeGetDiagonalValue(row);
 	}
 	
 	@Override
@@ -118,7 +118,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		DiagonalMatrix result=DiagonalMatrix.createDimensions(dims);
 		for (int i=0; i<dims; i++) {
-			result.data[i]=getDiagonalValue(i)*a.getDiagonalValue(i);
+			result.data[i]=unsafeGetDiagonalValue(i)*a.unsafeGetDiagonalValue(i);
 		}
 		return result;
 	}
@@ -134,7 +134,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		int acc=a.columnCount();
 		Matrix m=Matrix.create(dimensions, acc);
 		for (int i=0; i<dimensions; i++) {
-			double dv=getDiagonalValue(i);
+			double dv=unsafeGetDiagonalValue(i);
 			for (int j=0; j<acc; j++) {
 				m.unsafeSet(i, j, dv*a.unsafeGet(i,j));
 			}
@@ -148,7 +148,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		int acc=a.columnCount();
 		Matrix m=Matrix.create(dimensions, acc);
 		for (int i=0; i<dimensions; i++) {
-			double dv=getDiagonalValue(i);
+			double dv=unsafeGetDiagonalValue(i);
 			for (int j=0; j<acc; j++) {
 				m.unsafeSet(i, j, dv*a.unsafeGet(i,j));
 			}
@@ -169,7 +169,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		}
 		if (v.length()!=dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
 		for (int i=0; i<dimensions; i++) {
-			v.unsafeSet(i,v.unsafeGet(i)*getDiagonalValue(i));
+			v.unsafeSet(i,v.unsafeGet(i)*unsafeGetDiagonalValue(i));
 		}
 	}
 	
@@ -178,7 +178,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		double[] data=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int i=0; i<dimensions; i++) {
-			data[i+offset]*=getDiagonalValue(i);
+			data[i+offset]*=unsafeGetDiagonalValue(i);
 		}
 	}
 	
@@ -189,7 +189,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		for (int row = 0; row < rc; row++) {
-			dest.data[row]=source.data[row]*getDiagonalValue(row);
+			dest.data[row]=source.data[row]*unsafeGetDiagonalValue(row);
 		}
 	}
 	
@@ -229,7 +229,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return v.unsafeGet(i)*getDiagonalValue(i);
+		return v.unsafeGet(i)*unsafeGetDiagonalValue(i);
 	}
 	
 	@Override
@@ -239,6 +239,10 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 
 	public double getDiagonalValue(int i) {
 		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException();
+		return unsafeGet(i,i);
+	}
+	
+	public double unsafeGetDiagonalValue(int i) {
 		return unsafeGet(i,i);
 	}
 	
@@ -261,7 +265,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	public Matrix toMatrix() {
 		Matrix m=Matrix.create(dimensions, dimensions);
 		for (int i=0; i<dimensions; i++) {
-			m.data[i*(dimensions+1)]=getDiagonalValue(i);
+			m.data[i*(dimensions+1)]=unsafeGetDiagonalValue(i);
 		}
 		return m;
 	}
