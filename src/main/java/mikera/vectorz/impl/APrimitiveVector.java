@@ -51,4 +51,7 @@ public abstract class APrimitiveVector extends AVector {
 	
 	@Override
 	public abstract APrimitiveVector exactClone();
+	
+	@Override
+	public abstract APrimitiveVector clone();
 }

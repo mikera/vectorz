@@ -24,8 +24,7 @@ public final class Vector2 extends APrimitiveVector {
 		this.y=y;
 	}
 	
-	public Vector2(double... values) {
-		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
+	private Vector2(double... values) {
 		this.x=values[0];
 		this.y=values[1];
 	}
@@ -35,6 +34,7 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	public static Vector2 of(double... values) {
+		if (values.length!=2) throw new IllegalArgumentException("Can't create Vector2 vector from: "+values);
 		return new Vector2(values);
 	}
 	
@@ -79,7 +79,6 @@ public final class Vector2 extends APrimitiveVector {
 	public double dotProduct(AVector a) {
 		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
 		return x*a.unsafeGet(0)+y*a.unsafeGet(1);
-
 	}
 	
 	@Override
@@ -105,7 +104,6 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public void scaleAdd(double factor, AVector constant) {
-		if (constant instanceof Vector2) {scaleAdd(factor,(Vector2)constant); return; }
 		x=(x*factor)+constant.unsafeGet(0);
 		y=(y*factor)+constant.unsafeGet(1);
 	}
