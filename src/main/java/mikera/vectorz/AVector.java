@@ -756,12 +756,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			double comp=unsafeGet(i);
+			double comp=Math.abs(unsafeGet(i));
 			if (comp>result) {
 				result=comp;
-			} else if (-comp>result) {
-				result=-comp;
-			}
+			} 
 		}		
 		return result;
 	}
@@ -772,7 +770,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public double normaliseMaxAbsElement() {
 		double scale=maxAbsElement();
-		scale(1.0/scale);
+		if (scale!=0.0) scale(1.0/scale);
 		return scale;
 	}
 	
@@ -1152,7 +1150,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Creates a new vector representing the normalised value of this vector
+	 * Creates a new mutable vector representing the normalised value of this vector
 	 * @return
 	 */
 	public AVector toNormal() {
