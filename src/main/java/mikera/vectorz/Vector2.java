@@ -115,11 +115,28 @@ public final class Vector2 extends APrimitiveVector {
 		y=(y*factor)+constant.y;
 	}
 	
-	public void multiplyComplex(Vector2 a) {
+	/**
+	 * Complex multiplication by another Vector2, treating an (x,y) vector as the complex value x+iy
+	 * @param a
+	 */
+	public void complexMultiply(Vector2 a) {
 		double nx=x*a.x-y*a.y;
 		double ny=x*a.y+y*a.x;
 		this.x=nx;
 		this.y=ny;	
+	}
+	
+	public Vector2 complexConjugate() {
+		return new Vector2(x,-y);
+	}
+	
+	public Vector2 complexReciprocal() {
+		double d=x*x+y*y;
+		return new Vector2(x/d,-y/d);
+	}
+	
+	public Vector2 complexNegation() {
+		return new Vector2(-x,-y);
 	}
 	
 	@Override
