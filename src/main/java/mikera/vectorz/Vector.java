@@ -518,6 +518,13 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
+	public Vector toNormal() {
+		Vector v= Vector.create(this);
+		v.normalise();
+		return v;
+	}
+	
+	@Override
 	public double[] asDoubleArray() {
 		return data;
 	}

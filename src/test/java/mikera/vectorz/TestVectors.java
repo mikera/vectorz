@@ -542,12 +542,13 @@ public class TestVectors {
 		v=v.exactClone();
 		
 		v.set(0,v.get(0)+Math.random());
- 
+		AVector v2=v.toNormal();
+
 		double d=v.magnitude();
 		double nresult=v.normalise();
 		
+		assertTrue(v2.epsilonEquals(v)); // compared normalised versions
 		assertEquals(d,nresult,0.0000001);
-		
 		assertTrue(v.isUnitLengthVector());
 	}
 	

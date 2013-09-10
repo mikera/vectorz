@@ -1151,6 +1151,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Vector.create(this);
 	}
 	
+	/**
+	 * Creates a new vector representing the normalised value of this vector
+	 * @return
+	 */
+	public AVector toNormal() {
+		Vector v= Vector.create(this);
+		v.normalise();
+		return v;
+	}
+	
 	public List<Double> asElementList() {
 		return new ListWrapper(this);
 	}

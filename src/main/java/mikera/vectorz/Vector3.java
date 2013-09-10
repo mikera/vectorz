@@ -365,6 +365,12 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public Vector3 toNormal() {
+		double d=this.magnitude();
+		return (d==0)?new Vector3():new Vector3(x/d,y/d,z/d);
+	}
+	
+	@Override
 	public Vector3 clone() {
 		return new Vector3(x,y,z);	
 	}
