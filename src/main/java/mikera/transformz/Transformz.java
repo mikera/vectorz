@@ -1,6 +1,7 @@
 package mikera.transformz;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ADiagonalMatrix;
@@ -22,9 +23,31 @@ public class Transformz {
 	/**
 	 * Creates a 3D scaling transform
 	 */
-	public static ADiagonalMatrix scale3D(double factor) {
-		return Matrixx.createScaleMatrix(3, factor);
+	public static Matrix33 scale3D(double factor) {
+		return Matrix33.createScaleMatrix(factor);
 	}
+
+	/**
+	 * Creates a 2D scaling transform
+	 */
+	public static Matrix22 scale2D(double factor) {
+		return Matrix22.createScaleMatrix(factor);
+	}
+	
+	/**
+	 * Creates a 2D rotation transform
+	 */
+	public static Matrix22 rotate2D(double radians) {
+		return Matrix22.createRotationMatrix(radians);
+	}
+	
+	/**
+	 * Creates an n-dimensional scaling transform
+	 */
+	public static AMatrix scale(int dimensions, double factor) {
+		return Matrixx.createScaleMatrix(dimensions,factor);
+	}
+
 	
 	/**
 	 * Creates an identity translation with the given number of dimensions

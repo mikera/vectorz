@@ -38,6 +38,11 @@ public final class Vector2 extends APrimitiveVector {
 		return new Vector2(values);
 	}
 	
+	public static Vector2 create(AVector v) {
+		if (v.length()!=2) throw new IllegalArgumentException("Can't create Vector2 from vector with length "+v.length());
+		return new Vector2(v.get(0),v.get(1));
+	}
+	
 	@Override
 	public void applyOp(Op op) {
 		x=op.apply(x);
@@ -243,4 +248,6 @@ public final class Vector2 extends APrimitiveVector {
 	public Vector2 exactClone() {
 		return clone();
 	}
+
+
 }
