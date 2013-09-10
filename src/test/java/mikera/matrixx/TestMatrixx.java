@@ -11,12 +11,14 @@ import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
+import mikera.matrixx.impl.QuadtreeMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.ATransform;
 import mikera.transformz.TestTransformz;
 import mikera.vectorz.AVector;
@@ -702,5 +704,9 @@ public class TestMatrixx {
 		doGenericTests(BandedMatrix.create(3, 3, -2, 2));
 		doGenericTests(BandedMatrix.wrap(3, 4, 0, 0,Vector.of(1,2,3)));
 
+		doGenericTests(QuadtreeMatrix.create(new Matrix22(1,0,0,2)
+											,ZeroMatrix.create(2, 1)
+											,ZeroMatrix.create(1, 2)
+											,Matrixx.createScaleMatrix(1, 3)));
 	}
 }

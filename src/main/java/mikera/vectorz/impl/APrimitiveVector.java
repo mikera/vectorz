@@ -49,6 +49,8 @@ public abstract class APrimitiveVector extends AVector {
 		return v;
 	}
 	
+	// any clones of primitive vectors should themselves be primitive vectors
+	
 	@Override
 	public abstract APrimitiveVector exactClone();
 	

@@ -341,19 +341,10 @@ public class TestVectors {
 		
 		int len=v.length();
 		
-		Vectorz.fillRandom(v);
-		AVector v2=Vector.createLength(len);
-		v2.set(v);
-		assertEquals(v,v2);
-		
-		Vectorz.fillRandom(v);
-		v2.set(v,0);
-		assertEquals(v,v2);
-
-		Vectorz.fillRandom(v);
-		double[] data=v.toDoubleArray();
-		v2.setElements(data);
-		assertEquals(v,v2);
+		for (int i=0; i<len; i++) {
+			v.set(i,i+0.5);
+			assertEquals(i+0.5,v.get(i),0.0);
+		}
 	}
 	
 	private void testSetElements(AVector v) {
