@@ -1,14 +1,20 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A matrix implemented as a quadtree of submatrices. 
  * 
+ * Useful for large matrices with heirarchical structure where large regions are either fully sparse
+ * or of a specialised subtype (e.g. a diagonal matrix).
+ * 
  * @author Mike
  *
  */
-public class QuadtreeMatrix extends AMatrix {
+public class QuadtreeMatrix extends AMatrix implements ISparse {
 	
 	// Quadtree subcompoents
 	private final AMatrix c00, c01, c10, c11;
@@ -54,36 +60,18 @@ public class QuadtreeMatrix extends AMatrix {
 
 	@Override
 	public double get(int row, int column) {
-		if (row<rowSplit) {
-			if (column<columnSplit) {
-				return c00.get(row,column);
-			} else {
-				return c01.get(row,column-columnSplit);		
-			}
-		} else {
-			if (column<columnSplit) {
-				return c10.get(row-rowSplit,column);
-			} else {
-				return c11.get(row-rowSplit,column-columnSplit);		
-			}	
+		if ((row<0)||(row>=rows)||(column<0)||(column>=columns)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
+		return unsafeGet(row,column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		if (row<rowSplit) {
-			if (column<columnSplit) {
-				c00.set(row,column, value);
-			} else {
-				c01.set(row,column-columnSplit, value);		
-			}
-		} else {
-			if (column<columnSplit) {
-				c10.set(row-rowSplit,column, value);
-			} else {
-				c11.set(row-rowSplit,column-columnSplit, value);		
-			}	
-		}	
+		if ((row<0)||(row>=rows)||(column<0)||(column>=columns)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
+		}
+		unsafeSet(row,column,value);
 	}
 	
 	@Override
@@ -119,9 +107,79 @@ public class QuadtreeMatrix extends AMatrix {
 			}	
 		}	
 	}
+	
+
+	@Override
+	public void addAt(int row, int column, double value) {
+		if (row<rowSplit) {
+			if (column<columnSplit) {
+				c00.addAt(row,column, value);
+			} else {
+				c01.addAt(row,column-columnSplit, value);		
+			}
+		} else {
+			if (column<columnSplit) {
+				c10.addAt(row-rowSplit,column, value);
+			} else {
+				c11.addAt(row-rowSplit,column-columnSplit, value);		
+			}	
+		}	
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		return c00.nonZeroCount()+c01.nonZeroCount()+c10.nonZeroCount()+c11.nonZeroCount();
+	}
+	
+	@Override
+	public double elementSum() {
+		return c00.elementSum()+c01.elementSum()+c10.elementSum()+c11.elementSum();
+	}
+	
+	@Override
+	public void fill(double v) {
+		c00.fill(v);
+		c01.fill(v);
+		c10.fill(v);
+		c11.fill(v);
+	}
+	
+	
+	@Override
+	public void add(double v) {
+		c00.add(v);
+		c01.add(v);
+		c10.add(v);
+		c11.add(v);
+	}
+	
+	@Override
+	public AVector getRow(int row) {
+		if (row<rowSplit) {
+			return c00.getRow(row).join(c01.getRow(row));
+		} else {
+			row-=rowSplit;
+			return c10.getRow(row).join(c11.getRow(row));
+		}
+	}
+	
+	@Override
+	public AVector getColumn(int col) {
+		if (col<columnSplit) {
+			return c00.getColumn(col).join(c10.getColumn(col));
+		} else {
+			col-=columnSplit;
+			return c01.getColumn(col).join(c11.getColumn(col));
+		}
+	}
 
 	@Override
 	public AMatrix exactClone() {
 		return new QuadtreeMatrix(c00.exactClone(),c01.exactClone(),c10.exactClone(),c11.exactClone());
+	}
+
+	@Override
+	public double density() {
+		return ((double)nonZeroCount())/((long)rows*(long)columns);
 	}
 }
