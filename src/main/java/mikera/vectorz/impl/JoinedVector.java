@@ -34,16 +34,20 @@ public final class JoinedVector extends AVector {
 	 * @return
 	 */
 	public static AVector joinVectors(AVector left, AVector right) {
+		int ll=left.length(); // if (ll==0) return right;
+		int rl=right.length(); // if (rl==0) return left;
 		// balancing in case of nested joined vectors
-		while ((left.length()>right.length()*2)&&(left instanceof JoinedVector)) {
+		while ((ll>rl*2)&&(left instanceof JoinedVector)) {
 			JoinedVector bigLeft=((JoinedVector)left);
 			left=bigLeft.left;
 			right=joinVectors(bigLeft.right,right);
+			ll=left.length(); rl=right.length();
 		}
-		while ((left.length()*2<right.length())&&(right instanceof JoinedVector)) {
+		while ((ll*2<rl)&&(right instanceof JoinedVector)) {
 			JoinedVector bigRight=((JoinedVector)right);
 			left=joinVectors(left,bigRight.left);
 			right=bigRight.right;
+			ll=left.length(); rl=right.length();
 		} 
 		return new JoinedVector(left,right);
 	}
