@@ -7,6 +7,26 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.IVector;
 import mikera.vectorz.Vector3;
 
+/**
+ * Benchmark to test the difference between interface and virtual dispatch.
+ * 
+ * This motivates preferring "AVector" to "IVector" where possible to obtain 
+ * polymorphic behaviour in the Vectorz library.
+ * 
+ * Example results:
+ * 
+ *  0% Scenario{vm=java, trial=0, benchmark=Interface} 13.04 ns; σ=0.19 ns @ 10 trials
+ * 50% Scenario{vm=java, trial=0, benchmark=Virtual} 7.39 ns; σ=0.26 ns @ 10 trials
+ * 
+ * benchmark    ns linear runtime
+ * Interface 13.04 ==============================
+ *   Virtual  7.39 =================
+ * 
+ * vm: java
+ * trial: 0
+ * @author Mike
+ *
+ */
 public class InterfaceVsVirtualBenchmark extends SimpleBenchmark {
 
 	public static interface I {
