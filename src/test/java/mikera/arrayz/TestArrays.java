@@ -106,6 +106,8 @@ public class TestArrays {
 	private void testClone(INDArray a) {
 		INDArray c = a.clone();
 		
+		assertTrue(c.isSameShape(a));
+		
 		if (!(c instanceof VectorMatrixM3)) { // allowed to still be a view
 			assertFalse(c.isView());
 		}

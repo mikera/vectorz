@@ -74,6 +74,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public boolean isSameShape(INDArray a) {
+		int dims=dimensionality();
+		if (dims!=a.dimensionality()) return false;
+		for (int i=0; i<dims; i++) {
+			if (getShape(i)!=a.getShape(i)) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean isZero() {
 		if (dimensionality()==0) return get()==0.0;
 		int sc=sliceCount();

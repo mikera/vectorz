@@ -1484,6 +1484,15 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return true;
 	}
 	
+	@Override
+	public boolean isSameShape(INDArray a) {
+		if (a.dimensionality()!=2) return false;
+		for (int i=0; i<2; i++) {
+			if (getShape(i)!=a.getShape(i)) return false;
+		}
+		return true;
+	}
+	
 	public boolean isRectangularDiagonal() {
 		int rc=rowCount();
 		int cc=columnCount();

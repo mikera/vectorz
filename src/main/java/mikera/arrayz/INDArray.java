@@ -301,6 +301,11 @@ public interface INDArray extends Cloneable {
 	public boolean isElementConstrained();
 	
 	/**
+	 * Returns true if this array is the same shape as another array
+	 */
+	public boolean isSameShape(INDArray a);
+	
+	/**
 	 * Return true if this array is a view type
 	 * @return
 	 */
