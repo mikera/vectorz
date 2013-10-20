@@ -24,8 +24,7 @@ public final class Vector2 extends APrimitiveVector {
 		this.y=y;
 	}
 	
-	public Vector2(double... values) {
-		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
+	private Vector2(double... values) {
 		this.x=values[0];
 		this.y=values[1];
 	}
@@ -35,7 +34,13 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	public static Vector2 of(double... values) {
+		if (values.length!=2) throw new IllegalArgumentException("Can't create Vector2 vector from: "+values);
 		return new Vector2(values);
+	}
+	
+	public static Vector2 create(AVector v) {
+		if (v.length()!=2) throw new IllegalArgumentException("Can't create Vector2 from vector with length "+v.length());
+		return new Vector2(v.get(0),v.get(1));
 	}
 	
 	@Override
@@ -74,7 +79,6 @@ public final class Vector2 extends APrimitiveVector {
 	public double dotProduct(AVector a) {
 		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
 		return x*a.unsafeGet(0)+y*a.unsafeGet(1);
-
 	}
 	
 	@Override
@@ -100,7 +104,6 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public void scaleAdd(double factor, AVector constant) {
-		if (constant instanceof Vector2) {scaleAdd(factor,(Vector2)constant); return; }
 		x=(x*factor)+constant.unsafeGet(0);
 		y=(y*factor)+constant.unsafeGet(1);
 	}
@@ -110,11 +113,28 @@ public final class Vector2 extends APrimitiveVector {
 		y=(y*factor)+constant.y;
 	}
 	
-	public void multiplyComplex(Vector2 a) {
+	/**
+	 * Complex multiplication by another Vector2, treating an (x,y) vector as the complex value x+iy
+	 * @param a
+	 */
+	public void complexMultiply(Vector2 a) {
 		double nx=x*a.x-y*a.y;
 		double ny=x*a.y+y*a.x;
 		this.x=nx;
 		this.y=ny;	
+	}
+	
+	public Vector2 complexConjugate() {
+		return new Vector2(x,-y);
+	}
+	
+	public Vector2 complexReciprocal() {
+		double d=x*x+y*y;
+		return new Vector2(x/d,-y/d);
+	}
+	
+	public Vector2 complexNegation() {
+		return new Vector2(-x,-y);
 	}
 	
 	@Override
@@ -181,6 +201,12 @@ public final class Vector2 extends APrimitiveVector {
 		dest.put(x);
 		dest.put(y);
 	}
+	
+	@Override
+	public Vector2 toNormal() {
+		double d=this.magnitude();
+		return (d==0)?new Vector2():new Vector2(x/d,y/d);
+	}
 
 	@Override
 	public void set(int i, double value) {
@@ -243,4 +269,6 @@ public final class Vector2 extends APrimitiveVector {
 	public Vector2 exactClone() {
 		return clone();
 	}
+
+
 }

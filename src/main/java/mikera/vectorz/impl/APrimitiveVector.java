@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 
 /**
  * Abstract base class for specialised primitive vectors
@@ -40,4 +41,19 @@ public abstract class APrimitiveVector extends AVector {
 	public double getT() {
 		throw new IndexOutOfBoundsException("Cannot get t co-ordinate of "+this.getClass());
 	}
+	
+	@Override
+	public APrimitiveVector toNormal() {
+		APrimitiveVector v= this.exactClone();
+		v.normalise();
+		return v;
+	}
+	
+	// any clones of primitive vectors should themselves be primitive vectors
+	
+	@Override
+	public abstract APrimitiveVector exactClone();
+	
+	@Override
+	public abstract APrimitiveVector clone();
 }

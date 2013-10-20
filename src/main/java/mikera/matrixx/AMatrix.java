@@ -256,6 +256,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public boolean isIdentity() {
 		int rc=this.rowCount();
 		int cc=this.columnCount();
+		if (rc!=cc) return false;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double expected=(i==j)?1.0:0.0;
@@ -1482,6 +1483,20 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean isSameShape(INDArray a) {
+		if (a instanceof AMatrix) return isSameShape((AMatrix)a);
+		if (a.dimensionality()!=2) return false;
+		for (int i=0; i<2; i++) {
+			if (getShape(i)!=a.getShape(i)) return false;
+		}
+		return true;
+	}
+	
+	public boolean isSameShape(AMatrix a) {
+		return (this.rowCount()==a.rowCount())&&(this.columnCount()==a.columnCount());
 	}
 	
 	public boolean isRectangularDiagonal() {

@@ -756,12 +756,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			double comp=unsafeGet(i);
+			double comp=Math.abs(unsafeGet(i));
 			if (comp>result) {
 				result=comp;
-			} else if (-comp>result) {
-				result=-comp;
-			}
+			} 
 		}		
 		return result;
 	}
@@ -772,7 +770,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public double normaliseMaxAbsElement() {
 		double scale=maxAbsElement();
-		scale(1.0/scale);
+		if (scale!=0.0) scale(1.0/scale);
 		return scale;
 	}
 	
@@ -1116,6 +1114,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Math.abs(mag-1.0)<Vectorz.TEST_EPSILON;
 	}
 	
+	@Override
+	public boolean isSameShape(INDArray a) {
+		if (a instanceof AVector) return isSameShape((AVector)a);
+		if (a.dimensionality()!=1) return false;
+		return length()==a.getShape(0);
+	}
+	
+	public boolean isSameShape(AVector a) {
+		return length()==a.length();
+	}
+	
 	public void projectToPlane(AVector normal, double distance) {
 		assert(Tools.epsilonEquals(normal.magnitude(), 1.0));
 		double d=dotProduct(normal);
@@ -1149,6 +1158,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public Vector toVector() {
 		return Vector.create(this);
+	}
+	
+	/**
+	 * Creates a new mutable vector representing the normalised value of this vector
+	 * @return
+	 */
+	public AVector toNormal() {
+		Vector v= Vector.create(this);
+		v.normalise();
+		return v;
 	}
 	
 	public List<Double> asElementList() {

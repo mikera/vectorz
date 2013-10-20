@@ -148,6 +148,18 @@ public class AxisVector extends ComputedVector implements ISparse {
 	}
 	
 	@Override
+	public Vector toNormal() {
+		return toVector();
+	}
+	
+	@Override
+	public Vector toVector() {
+		Vector v=Vector.createLength(length);
+		v.data[axis]=1.0;
+		return v;
+	}
+	
+	@Override
 	public AxisVector exactClone() {
 		// immutable, so return self
 		return this;

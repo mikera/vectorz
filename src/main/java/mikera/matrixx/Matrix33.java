@@ -333,4 +333,8 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 				0.0,1.0,0.0,
 				0.0,0.0,1.0);
 	}
+
+	public static Matrix33 createScaleMatrix(double d) {
+		return new Matrix33(d,0,0,0,d,0,0,0,d);
+	}
 }
