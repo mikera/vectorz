@@ -1114,6 +1114,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Math.abs(mag-1.0)<Vectorz.TEST_EPSILON;
 	}
 	
+	@Override
+	public boolean isSameShape(INDArray a) {
+		if (a instanceof AVector) return isSameShape((AVector)a);
+		if (a.dimensionality()!=1) return false;
+		return length()==a.getShape(0);
+	}
+	
+	public boolean isSameShape(AVector a) {
+		return length()==a.length();
+	}
+	
 	public void projectToPlane(AVector normal, double distance) {
 		assert(Tools.epsilonEquals(normal.magnitude(), 1.0));
 		double d=dotProduct(normal);
