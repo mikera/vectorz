@@ -256,6 +256,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public boolean isIdentity() {
 		int rc=this.rowCount();
 		int cc=this.columnCount();
+		if (rc!=cc) return false;
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				double expected=(i==j)?1.0:0.0;
