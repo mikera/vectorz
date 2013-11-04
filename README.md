@@ -1,4 +1,4 @@
-# vectorz
+![Vectorz Logo](https://raw.github.com/wiki/mikera/vectorz/images/vectorz.png)
 
 Fast double-precision vector and matrix maths library for Java.
 
