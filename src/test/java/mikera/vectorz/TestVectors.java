@@ -15,6 +15,7 @@ import mikera.matrixx.Matrixx;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
@@ -854,5 +855,7 @@ public class TestVectors {
 		
 		doGenericTests(StridedVector.wrap(new double[]{1,2,3}, 2, 3, -1));
 		doGenericTests(StridedVector.wrap(new double[]{1,2}, 1, 1, 100));
+		
+		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
 	}
 }
