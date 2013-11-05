@@ -356,6 +356,7 @@ public final class DoubleArrays {
 	 * @return
 	 */
 	public static final double[] copyOf(double[] data) {
-		return Arrays.copyOf(data, data.length);
+		return data.clone();
+		//return Arrays.copyOf(data, data.length);
 	}
 }

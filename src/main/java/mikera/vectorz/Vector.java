@@ -88,6 +88,9 @@ public final class Vector extends AArrayVector {
 	}
 
 	public static Vector create(AVector a) {
+		if (a instanceof Vector) {
+			return ((Vector) a).clone();
+		}
 		int n=a.length();
 		Vector v=createLength(n);
 		a.copyTo(v.data);

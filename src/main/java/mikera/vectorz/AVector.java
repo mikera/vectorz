@@ -912,7 +912,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public AVector clone() {
-		return Vectorz.create(this);
+		return Vector.create(this);
 	}
 	
 	@Override
