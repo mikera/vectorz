@@ -332,6 +332,20 @@ public final class DoubleArrays {
 		}
 		return true;
 	}
+	
+	public static boolean isZero(double[] data) {
+		for (int i=0; i<data.length; i++) {
+			if (data[i]!=0) return false;
+		}
+		return true;
+	}
+	
+	public static boolean isZero(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		return true;
+	}
 
 	/**
 	 * Fast double array copy operation. 
@@ -344,6 +358,4 @@ public final class DoubleArrays {
 	public static final double[] copyOf(double[] data) {
 		return Arrays.copyOf(data, data.length);
 	}
-
-
 }

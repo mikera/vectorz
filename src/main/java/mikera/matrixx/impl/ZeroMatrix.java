@@ -224,7 +224,6 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		assert(inputDimensions==outputDimensions);
 		return RepeatedElementVector.create(inputDimensions, 0.0);
 	}
 	

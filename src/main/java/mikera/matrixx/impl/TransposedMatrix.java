@@ -95,6 +95,11 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public boolean isSymmetric() {
 		return source.isSymmetric();
 	}
+	
+	@Override
+	public boolean isZero() {
+		return source.isZero();
+	}
 
 	@Override
 	public boolean isUpperTriangular() {

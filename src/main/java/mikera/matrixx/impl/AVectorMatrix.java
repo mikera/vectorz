@@ -125,6 +125,15 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}
 	
 	@Override
+	public boolean isZero() {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).isZero()) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public double elementSum() {
 		int rc=rowCount();
 		double result=0.0;

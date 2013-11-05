@@ -41,6 +41,11 @@ public class PermutedMatrix extends AMatrix{
 		this.columnPermutations=columnPermutations;
 		this.source=source;
 	}
+	
+	@Override
+	public boolean isZero() {
+		return source.isZero();
+	}
 
 	@Override
 	public int rowCount() {

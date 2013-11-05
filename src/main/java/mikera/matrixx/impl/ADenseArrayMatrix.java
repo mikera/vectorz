@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import mikera.vectorz.util.DoubleArrays;
+
 /**
  * Abstract base class for matrices wrapping  a dense (rows*cols) subset of a double[] array
  * @author Mike
@@ -17,6 +19,11 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix {
 	@Override
 	public boolean isPackedArray() {
 		return (getArrayOffset()==0) && (data.length ==(rows*cols));
+	}
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data, getArrayOffset(), rows*cols);
 	}
 	
 	@Override
