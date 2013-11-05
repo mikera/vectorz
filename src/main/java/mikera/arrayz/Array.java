@@ -262,6 +262,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 	
 	@Override
+	public void getElements(double[] values, int offset) {
+		System.arraycopy(data, 0, values, offset, data.length);
+	}
+	
+	@Override
 	public Iterator<Double> elementIterator() {
 		return new StridedElementIterator(data,0,(int)elementCount(),1);
 	}
