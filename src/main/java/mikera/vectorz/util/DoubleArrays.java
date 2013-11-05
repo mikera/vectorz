@@ -6,6 +6,8 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.ops.Logistic;
 
 public final class DoubleArrays {
+	public static final double[] EMPTY = new double[0];
+
 	public static final double elementSum(double[] data) {
 		double result = 0.0;
 		for (int i=0; i<data.length; i++) {

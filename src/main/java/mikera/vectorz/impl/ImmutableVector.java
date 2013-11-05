@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Immutable array-backed vector. Keeps defensive array copy to ensure immutability.
@@ -9,6 +10,8 @@ import mikera.vectorz.AVector;
  *
  */
 public class ImmutableVector extends AVector {
+	private static final AVector EMPTY_IMMUTABLE_VECTOR = new ImmutableVector(DoubleArrays.EMPTY);
+	
 	private double[] data;
 	public int offset;
 	public int length;
@@ -32,6 +35,14 @@ public class ImmutableVector extends AVector {
 		double[] data=new double[length];
 		v.getElements(data, 0);
 		return new ImmutableVector(data, 0,length);
+	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		if ((start<0)||(start+length>this.length)||(length<0)) throw new IllegalArgumentException("Illegal subvector with arguments start= "+start+", length= "+length);
+		if (length==0) return EMPTY_IMMUTABLE_VECTOR;
+		if (length==this.length) return this;
+		return new ImmutableVector(data,offset+start,length);
 	}
 	
 	@Override
