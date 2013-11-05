@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import java.nio.DoubleBuffer;
+import java.util.Iterator;
 
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
@@ -138,6 +139,11 @@ public class ImmutableVector extends AVector {
 	@Override
 	public int length() {
 		return length;
+	}
+	
+	@Override
+	public Iterator<Double> iterator() {
+		return new StridedElementIterator(data,offset,length,1);
 	}
 	
 	@Override
