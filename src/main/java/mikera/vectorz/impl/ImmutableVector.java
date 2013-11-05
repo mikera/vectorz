@@ -2,6 +2,12 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 
+/**
+ * Immutable array-backed vector. Keeps defensive array copy to ensure immutability.
+ * 
+ * @author Mike
+ *
+ */
 public class ImmutableVector extends AVector {
 	private double[] data;
 	public int offset;
