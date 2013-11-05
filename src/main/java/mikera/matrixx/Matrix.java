@@ -78,6 +78,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data,0,data.length);
+	}
+	
+	@Override
 	public boolean isPackedArray() {
 		return true;
 	}

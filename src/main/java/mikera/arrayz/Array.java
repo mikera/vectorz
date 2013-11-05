@@ -21,7 +21,7 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose mutable backed N-dimensional array
+ * General purpose mutable packed N-dimensional array
  * 
  * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
  * most efficient storage type for 3D+ arrays
@@ -353,6 +353,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public boolean isPackedArray() {
 		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data,0,data.length);
 	}
 
 }
