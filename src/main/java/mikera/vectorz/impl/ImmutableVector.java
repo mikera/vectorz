@@ -7,6 +7,7 @@ import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Immutable array-backed vector. Keeps defensive array copy to ensure immutability.
@@ -129,7 +130,7 @@ public class ImmutableVector extends AVector {
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException("not mutable");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
 	@Override
@@ -139,12 +140,12 @@ public class ImmutableVector extends AVector {
 
 	@Override
 	public void unsafeSet(int i, double value) {
-		throw new UnsupportedOperationException("not mutable");		
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));		
 	}
 	
 	@Override
 	public void addAt(int i, double v) {
-		throw new UnsupportedOperationException("not mutable");		
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));		
 	}
 
 	@Override
