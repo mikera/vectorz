@@ -96,6 +96,22 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}
 	
 	@Override
+	public final void copyRowTo(int row, double[] dest, int destOffset) {
+		getRow(row).getElements(dest, destOffset);
+	}
+	
+	
+	@Override
+	public final void getElements(double[] dest, int destOffset) {
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int i=0; i<rc; i++) {
+			getRow(i).getElements(dest, destOffset);
+			destOffset+=cc;
+		}
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
