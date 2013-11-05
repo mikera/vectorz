@@ -41,6 +41,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public void set(int row, int column, double value) {
 		source.set(column, row, value);
 	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return source.unsafeGet(column, row);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		source.unsafeSet(column, row, value);
+	}
 
 	@Override
 	public AVector getRow(int row) {
