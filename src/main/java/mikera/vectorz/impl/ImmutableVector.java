@@ -28,6 +28,11 @@ public class ImmutableVector extends AVector {
 		return false;
 	}
 	
+	@Override
+	public boolean isView() {
+		return false;
+	}
+	
 	private ImmutableVector(double[] data) {
 		this(data,0,data.length);
 	}
@@ -94,6 +99,15 @@ public class ImmutableVector extends AVector {
 	
 	@Override public double dotProduct(double[] data, int offset) {
 		return DoubleArrays.dotProduct(this.data, this.offset, data, offset, length());
+	}
+	
+	@Override public double dotProduct(AVector v) {
+		return v.dotProduct(data, offset);
+	}
+	
+	@Override
+	public double magnitudeSquared() {
+		return DoubleArrays.elementSquaredSum(data, offset, length);
 	}
 	
 	@Override
