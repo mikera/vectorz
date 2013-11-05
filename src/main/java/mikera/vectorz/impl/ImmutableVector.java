@@ -39,10 +39,12 @@ public class ImmutableVector extends AVector {
 		return new ImmutableVector(data, 0,length);
 	}
 	
+	@Override
 	public boolean isMutable() {
 		return false;
 	}
 	
+	@Override
 	public boolean isFullyMutable() {
 		return false;
 	}
