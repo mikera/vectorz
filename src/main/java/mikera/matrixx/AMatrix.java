@@ -596,10 +596,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int rc=this.rowCount();
 		int cc=this.columnCount();
 		Matrix m=Matrix.create(cc,rc);
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				m.unsafeSet(j,i,unsafeGet(i,j));
-			}
+		for (int j=0; j<cc; j++) {
+			this.copyColumnTo(j, m.data, j*rc);;
 		}
 		return m;
 	}
