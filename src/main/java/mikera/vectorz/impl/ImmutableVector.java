@@ -79,6 +79,10 @@ public class ImmutableVector extends AVector {
 		DoubleArrays.arraydivide(this.data, this.offset, data,offset,length());
 	}
 	
+	@Override public double dotProduct(double[] data, int offset) {
+		return DoubleArrays.dotProduct(this.data, this.offset, data, offset, length());
+	}
+	
 	@Override
 	public double get(int i) {
 		return data[offset+i];
