@@ -857,5 +857,6 @@ public class TestVectors {
 		doGenericTests(StridedVector.wrap(new double[]{1,2}, 1, 1, 100));
 		
 		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
+		doGenericTests(ImmutableVector.create(Vector.of()));
 	}
 }
