@@ -2,10 +2,12 @@ package mikera.matrixx;
 
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import mikera.arrayz.INDArray;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
+import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
@@ -14,6 +16,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.MatrixBandVector;
+import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -442,6 +445,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(data, 0, dest, offset, data.length);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new StridedElementIterator(data,0,rows*cols,1);
 	}
 	
 	@Override
