@@ -35,10 +35,14 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix {
 	}
 	
 	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		System.arraycopy(data, row*cols, dest, destOffset, cols);
+	}
+	
+	@Override
 	public void unsafeSet(int i, int j,double value) {
 		data[index(i,j)]=value;
 	}
-	
 	
 	protected int index(int row, int col) {
 		return getArrayOffset()+(row*cols)+col;
