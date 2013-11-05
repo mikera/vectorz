@@ -902,7 +902,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Clones the vector, creating a new copy of all data. 
+	 * Clones the vector, creating a new mutable copy of all data. 
 	 * 
 	 * The clone is:
 	 *  - not guaranteed to be of the same type. 

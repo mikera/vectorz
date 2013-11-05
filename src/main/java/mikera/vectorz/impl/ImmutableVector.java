@@ -85,6 +85,17 @@ public class ImmutableVector extends AVector {
 	}
 	
 	@Override
+	public void addToArray(double[] array, int offset) {
+		addToArray(0,array,offset,length());
+	}
+
+	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
+		DoubleArrays.add(data, offset+this.offset, array, arrayOffset, length);
+	}
+	
+	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		int dataOffset=this.offset+offset;
 		
