@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
@@ -68,13 +69,26 @@ public class ImmutableVector extends AVector {
 
 	@Override
 	public void unsafeSet(int i, double value) {
-		throw new UnsupportedOperationException("not mutable");
-		
+		throw new UnsupportedOperationException("not mutable");		
+	}
+	
+	@Override
+	public void addAt(int i, double v) {
+		throw new UnsupportedOperationException("not mutable");		
 	}
 
 	@Override
 	public int length() {
 		return length;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hashCode = 1;
+		for (int i = 0; i < length; i++) {
+			hashCode = 31 * hashCode + (Hash.hashCode(data[offset+i]));
+		}
+		return hashCode;
 	}
 	
 	@Override
