@@ -12,7 +12,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public class AxisVector extends ComputedVector implements ISparse {
+public class AxisVector extends AComputedVector implements ISparse {
 	private static final long serialVersionUID = 6767495113060894804L;
 	
 	private final int axis;

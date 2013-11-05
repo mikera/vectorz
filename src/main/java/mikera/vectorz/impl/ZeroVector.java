@@ -11,7 +11,7 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class ZeroVector extends ComputedVector implements ISparse {
+public final class ZeroVector extends AComputedVector implements ISparse {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
 	private int length;
