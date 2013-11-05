@@ -96,7 +96,7 @@ public final class BitVector extends ABitVector {
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
+	public void getElements(double[] data, int offset) {
 		int len = length();
 		for (int i=0; i<len; i++) {
 			data[i+offset]=unsafeGet(i);

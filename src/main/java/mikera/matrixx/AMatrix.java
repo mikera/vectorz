@@ -1693,10 +1693,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	public void copyRowTo(int row, double[] dest, int destOffset) {
-		getRow(row).copyTo(dest,destOffset);
+		int cc=columnCount();
+		for (int i=0; i<cc; i++) {
+			dest[i+destOffset]=unsafeGet(row,i);
+		}
 	}
 	
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
-		getColumn(col).copyTo(dest,destOffset);
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			dest[i+destOffset]=unsafeGet(i,col);
+		}
 	}
 }

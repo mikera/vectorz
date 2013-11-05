@@ -70,7 +70,7 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
+	public void getElements(double[] data, int offset) {
 		System.arraycopy(getArray(), getArrayOffset(), data, offset, length());
 	}
 	
@@ -85,7 +85,7 @@ public abstract class AArrayVector extends AStridedVector {
 	@Override
 	public void set(AVector a) {
 		assert(a.length()==length());
-		a.copyTo(getArray(),getArrayOffset());
+		a.getElements(getArray(),getArrayOffset());
 	}
 	
 	@Override
@@ -105,11 +105,6 @@ public abstract class AArrayVector extends AStridedVector {
 		assert(length==this.length());
 		System.arraycopy(values, offset, getArray(), getArrayOffset(), length);
 	} 
-	
-	@Override
-	public void getElements(double[] dest, int offset) {
-		System.arraycopy(getArray(), getArrayOffset(), dest, offset, length());
-	}
 	
 	@Override
 	public abstract double get(int i);

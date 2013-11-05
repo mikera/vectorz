@@ -278,16 +278,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	@Override
 	public void copyTo(double[] arr) {
-		copyTo(arr,0);
+		getElements(arr,0);
 	}
 	
-	/**
-	 * Copies a the contents of a vector to a double array at the specified offset
-	 */
-	public void copyTo(double[] data, int offset) {
-		copyTo(0,data,offset,length());
+	public final void copyTo(double[] arr, int offset) {
+		getElements(arr,offset);
 	}
-
+	
 	public void copyTo(int offset, double[] dest, int destOffset, int length) {
 		for (int i=0; i<length; i++) {
 			dest[i+destOffset]=get(i+offset);
@@ -296,7 +293,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public double[] toDoubleArray() {
 		double[] result=new double[length()];
-		copyTo(result,0);
+		getElements(result,0);
 		return result;
 	}
 	
@@ -332,7 +329,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
 	public void copyTo(AArrayVector dest, int destOffset) {
-		copyTo(dest.getArray(),dest.getArrayOffset()+destOffset);
+		getElements(dest.getArray(),dest.getArrayOffset()+destOffset);
 	}
 	
 	/**
@@ -877,7 +874,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
-		copyTo(dest,offset);
+		copyTo(0,dest,offset,length());
 	}
 	
 	/**

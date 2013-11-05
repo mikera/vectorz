@@ -117,9 +117,9 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
-		left.copyTo(data, offset);
-		right.copyTo(data, offset+split);
+	public void getElements(double[] data, int offset) {
+		left.getElements(data, offset);
+		right.getElements(data, offset+split);
 	}
 	
 	@Override

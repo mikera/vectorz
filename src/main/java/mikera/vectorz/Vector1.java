@@ -88,7 +88,7 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
+	public void getElements(double[] data, int offset) {
 		data[offset]=x;
 	}
 	

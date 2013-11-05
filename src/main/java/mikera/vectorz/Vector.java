@@ -49,7 +49,7 @@ public final class Vector extends AArrayVector {
 	public Vector(AVector source) {
 		int length = source.length();
 		data = new double[length];
-		source.copyTo(this.data, 0);
+		source.getElements(this.data, 0);
 	}
 	
 	/**

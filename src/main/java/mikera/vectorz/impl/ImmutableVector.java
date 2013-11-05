@@ -61,17 +61,12 @@ public class ImmutableVector extends AVector {
 	}
 	
 	@Override
-	public void getElements(double[] dest, int offset) {
-		System.arraycopy(this.data, this.offset, dest, offset, length());
-	}
-	
-	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data,offset,length());
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
+	public void getElements(double[] data, int offset) {
 		System.arraycopy(this.data, this.offset, data, offset, length());
 	}
 	

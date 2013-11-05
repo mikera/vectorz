@@ -143,7 +143,7 @@ public final class StridedVector extends AStridedVector {
 	}
 	
 	@Override
-	public void copyTo(double[] dest, int destOffset) {
+	public void getElements(double[] dest, int destOffset) {
 		for (int i=0; i<length; i++) {
 			dest[destOffset+i]=data[offset+(i*stride)];
 		}
