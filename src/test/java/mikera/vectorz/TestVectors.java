@@ -348,6 +348,17 @@ public class TestVectors {
 		}
 	}
 	
+	private void testImmutable(AVector v) {
+		AVector iv=v.immutable();
+		
+		try {
+			iv.set(0,1.0);
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+	}
+	
 	private void testSetElements(AVector v) {
 		if (!v.isFullyMutable()) return;
 		
@@ -736,6 +747,7 @@ public class TestVectors {
 		testIterator(v);
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
+		testImmutable(v);
 		
 		doNonDegenerateTests(v);
 		

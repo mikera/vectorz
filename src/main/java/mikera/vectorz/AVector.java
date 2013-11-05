@@ -18,6 +18,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BroadcastVectorMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
@@ -1158,6 +1159,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public Vector toVector() {
 		return Vector.create(this);
+	}
+	
+	/**
+	 * Creates an immutable copy of a vector
+	 * @return
+	 */
+	@Override
+	public AVector immutable() {
+		return ImmutableVector.create(this);
 	}
 	
 	/**

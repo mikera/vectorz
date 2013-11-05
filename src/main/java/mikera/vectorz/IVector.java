@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.impl.ImmutableVector;
 
 /**
  * Basic interface for a Vector
@@ -17,4 +18,6 @@ public interface IVector extends INDArray {
 	public double get(int i);
 	
 	public void set(int i, double value);
+
+	AVector immutable();
 }
