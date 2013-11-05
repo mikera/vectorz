@@ -85,6 +85,15 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		source.copyRowTo(col, dest, destOffset);
 	}
+	
+	@Override
+	public void getElements(double[] dest, int destOffset) {
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int i=0; i<rc; i++) {
+			source.copyColumnTo(i, dest, destOffset+i*cc);
+		}
+	}
 
 	@Override
 	public double determinant() {
