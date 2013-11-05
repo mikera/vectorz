@@ -178,5 +178,10 @@ public class ImmutableVector extends AVector {
 	public AVector exactClone() {
 		return new ImmutableVector(data,offset,length);
 	}
+	
+	@Override
+	public AVector immutable() {
+		return this;
+	}
 
 }
