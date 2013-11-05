@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.nio.DoubleBuffer;
+
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -50,6 +52,31 @@ public class ImmutableVector extends AVector {
 	@Override
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(this.data, this.offset, dest, offset, length());
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(data,offset,length());
+	}
+	
+	@Override
+	public void copyTo(double[] data, int offset) {
+		System.arraycopy(this.data, this.offset, data, offset, length());
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length) {
+		System.arraycopy(data, this.offset+offset, dest, destOffset, length);
+	}
+	
+	@Override
+	public void multiplyTo(double[] data, int offset) {
+		DoubleArrays.arraymultiply(this.data, this.offset, data,offset,length());
+	}
+	
+	@Override
+	public void divideTo(double[] data, int offset) {
+		DoubleArrays.arraydivide(this.data, this.offset, data,offset,length());
 	}
 	
 	@Override
