@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 
 /**
@@ -46,6 +47,11 @@ public class ImmutableVector extends AVector {
 	}
 	
 	@Override
+	public void getElements(double[] dest, int offset) {
+		System.arraycopy(this.data, this.offset, dest, offset, length());
+	}
+	
+	@Override
 	public double get(int i) {
 		return data[offset+i];
 	}
@@ -69,6 +75,13 @@ public class ImmutableVector extends AVector {
 	@Override
 	public int length() {
 		return length;
+	}
+	
+	@Override
+	public Vector clone() {
+		Vector v=Vector.createLength(length);
+		v.set(this);
+		return v;
 	}
 
 	@Override
