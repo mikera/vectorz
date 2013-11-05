@@ -65,6 +65,11 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(getArray(),getArrayOffset(),length());
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(getArray(),getArrayOffset(),length());
 	}

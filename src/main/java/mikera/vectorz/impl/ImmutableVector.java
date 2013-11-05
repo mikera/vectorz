@@ -21,20 +21,7 @@ public class ImmutableVector extends AVector {
 	private double[] data;
 	public int offset;
 	public int length;
-	
-	public boolean isMutable() {
-		return false;
-	}
-	
-	public boolean isFullyMutable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isView() {
-		return false;
-	}
-	
+		
 	private ImmutableVector(double[] data) {
 		this(data,0,data.length);
 	}
@@ -50,6 +37,24 @@ public class ImmutableVector extends AVector {
 		double[] data=new double[length];
 		v.getElements(data, 0);
 		return new ImmutableVector(data, 0,length);
+	}
+	
+	public boolean isMutable() {
+		return false;
+	}
+	
+	public boolean isFullyMutable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isView() {
+		return false;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data,offset,length);
 	}
 	
 	@Override
