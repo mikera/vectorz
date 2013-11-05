@@ -10,7 +10,6 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
-import mikera.arrayz.SliceArray;
 import mikera.matrixx.Matrix;
 import mikera.util.Maths;
 import mikera.vectorz.Ops;

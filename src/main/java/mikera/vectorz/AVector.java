@@ -9,8 +9,8 @@ import java.util.List;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
-import mikera.arrayz.SliceArray;
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.SliceArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
