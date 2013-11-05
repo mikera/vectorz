@@ -66,6 +66,16 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return vector.unsafeGet(row);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		vector.unsafeSet(row,value);
+	}
+	
+	@Override
 	public RowMatrix getTranspose() {
 		return new RowMatrix(vector);
 	}
