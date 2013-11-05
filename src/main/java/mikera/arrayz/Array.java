@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.nio.DoubleBuffer;
+import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
@@ -13,6 +14,7 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
+import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -257,6 +259,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public void setElements(double[] values, int offset, int length) {
 		System.arraycopy(values, offset, data, 0, length);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new StridedElementIterator(data,0,(int)elementCount(),1);
 	}
 
 	@Override
