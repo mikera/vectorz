@@ -24,6 +24,10 @@ public class ImmutableVector extends AVector {
 		return false;
 	}
 	
+	public boolean isFullyMutable() {
+		return false;
+	}
+	
 	private ImmutableVector(double[] data) {
 		this(data,0,data.length);
 	}
@@ -72,6 +76,15 @@ public class ImmutableVector extends AVector {
 	@Override
 	public void multiplyTo(double[] data, int offset) {
 		DoubleArrays.arraymultiply(this.data, this.offset, data,offset,length());
+	}
+	
+	@Override
+	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
+		int dataOffset=this.offset+offset;
+		
+		for (int i=0; i<length; i++) {
+			array[i+arrayOffset]+=factor*data[i+dataOffset];
+		}
 	}
 	
 	@Override
