@@ -1210,7 +1210,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	public void set(IVector vector) {
 		int len=length();
-		assert(len==vector.length());
+		if (len!=vector.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, vector));
 		for (int i=0; i<len; i++) {
 			this.unsafeSet(i,vector.get(i));
 		}
@@ -1225,7 +1225,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(Vector source, Index sourceToDest, double factor) {
 		if (sourceToDest.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
-		assert(len==sourceToDest.length());
+		if (len!=sourceToDest.length()) throw new IllegalArgumentException("Index length must match source length.");
 		for (int i=0; i<len; i++) {
 			int j=sourceToDest.data[i];
 			this.addAt(j,source.data[i]*factor);
@@ -1241,7 +1241,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(AVector source, Index sourceToDest, double factor) {
 		if (sourceToDest.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
-		assert(len==sourceToDest.length());
+		if (len!=sourceToDest.length()) throw new IllegalArgumentException("Index length must match source length.");
 		for (int i=0; i<len; i++) {
 			int j=sourceToDest.data[i];
 			this.addAt(j,source.unsafeGet(i)*factor);
@@ -1257,7 +1257,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(Index destToSource, Vector source, double factor) {
 		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
 		int len=this.length();
-		assert(len==destToSource.length());
+		if (len!=destToSource.length()) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len; i++) {
 			int j=destToSource.data[i];
 			this.addAt(i,source.data[j]*factor);
