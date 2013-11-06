@@ -32,6 +32,6 @@ public class UnmodifiableVector extends ADerivedVector {
 	
 	@Override
 	public UnmodifiableVector exactClone() {
-		return new UnmodifiableVector(source);
+		return new UnmodifiableVector(source.exactClone());
 	}
 }
