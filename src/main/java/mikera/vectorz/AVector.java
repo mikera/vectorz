@@ -1397,6 +1397,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public abstract AVector exactClone();
 
+	/**
+	 * Returns true if this vector exactly matches a double[] array.
+	 * @param data
+	 * @return
+	 */
 	public boolean equalsArray(double[] data) {
 		int len=length();
 		if (len!=data.length) return false;
