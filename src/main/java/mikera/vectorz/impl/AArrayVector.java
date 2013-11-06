@@ -495,6 +495,12 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 	
 	@Override
+	public boolean equalsArray(double[] data) {
+		if (length()!=data.length) return false;
+		return DoubleArrays.equals(data,0,getArray(), getArrayOffset(),length());
+	}
+	
+	@Override
 	public void validate() {
 		int length=length();
 		double[] data=getArray();
