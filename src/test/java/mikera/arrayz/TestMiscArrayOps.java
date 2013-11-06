@@ -12,6 +12,16 @@ import mikera.vectorz.impl.Vector0;
 import org.junit.Test;
 
 public class TestMiscArrayOps {
+	
+	@Test public void testCreateFromArray() {
+		INDArray[] as=new INDArray[2];
+		as[0]=Vector.of(1,2);
+		as[1]=Vector.of(3,4);
+		
+		INDArray a=Arrayz.create((Object)as);
+		assertTrue(a instanceof AMatrix);
+	}
+	
 	@Test public void testOuterProducts() {
 		AVector v=Vectorz.createUniformRandomVector(5);
 		INDArray a=v.outerProduct(v);

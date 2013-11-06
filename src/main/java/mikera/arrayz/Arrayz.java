@@ -3,6 +3,7 @@ package mikera.arrayz;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import us.bpsm.edn.parser.Parseable;
@@ -30,6 +31,9 @@ import mikera.vectorz.util.VectorzException;
 public class Arrayz {
 	/**
 	 * Creates an array from the given data
+	 * 
+	 * Handles double arrays, INDArray instances, and lists
+	 * 
 	 * @param object
 	 * @return
 	 */
@@ -58,6 +62,10 @@ public class Arrayz {
 		}
 		
 		if (object instanceof Number) return Scalar.create(((Number)object).doubleValue());
+		
+		if (object.getClass().isArray()) {
+			return create(Arrays.asList((Object[])object));
+		}
 		
 		throw new VectorzException("Don't know how to create array from: "+object.getClass());
 	}
@@ -88,12 +96,7 @@ public class Arrayz {
 	}
 	
 	public static INDArray create(Object... data) {
-		int n=data.length;
-		INDArray[] as=new INDArray[n];
-		for (int i=0; i<n; i++) {
-			as[i]=create((Object)data);
-		}
-		return SliceArray.create(as);
+		return create((Object)data);
 	}
 	
 	public static INDArray wrap(double[] data, int[] shape) {
