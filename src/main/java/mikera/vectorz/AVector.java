@@ -1290,6 +1290,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Adds this vector to a double[] array, starting at the specified offset.
+	 * 
+	 * @param array
+	 * @param offset
+	 */
 	public void addToArray(double[] array, int offset) {
 		addToArray(0,array,offset,length());
 	}
@@ -1369,6 +1375,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		unsafeSet(i,unsafeGet(i)+v);
 	}
 
+	/**
+	 * Scales this vector and adds a constant to every element
+	 */
 	public void scaleAdd(double factor, double constant) {
 		scale(factor);
 		add(constant);
