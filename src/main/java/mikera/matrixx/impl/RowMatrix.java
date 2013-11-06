@@ -107,6 +107,11 @@ public class RowMatrix extends AMatrix {
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		dest[destOffset]=vector.get(col);
 	}
+	
+	@Override
+	public void getElements(double[] data, int offset) {
+		vector.getElements(data, offset);
+	}
 
 	@Override
 	public Matrix transposeInnerProduct(Matrix s) {

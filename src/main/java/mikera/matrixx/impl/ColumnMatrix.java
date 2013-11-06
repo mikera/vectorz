@@ -43,6 +43,11 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void getElements(double[] data, int offset) {
+		vector.getElements(data, offset);
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		vector.applyOp(op);
 	}
