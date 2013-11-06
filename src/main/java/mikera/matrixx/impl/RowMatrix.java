@@ -93,6 +93,20 @@ public class RowMatrix extends AMatrix {
 	public RowMatrix exactClone() {
 		return new RowMatrix(vector.exactClone());
 	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		if (row==0) {
+			vector.getElements(dest, destOffset);
+		} else {
+			throw new IndexOutOfBoundsException("Row out of range: "+row);
+		}
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		dest[destOffset]=vector.get(col);
+	}
 
 	@Override
 	public Matrix transposeInnerProduct(Matrix s) {

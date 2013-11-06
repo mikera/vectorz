@@ -34,6 +34,15 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		if (col==0) {
+			vector.getElements(dest, destOffset);
+		} else {
+			throw new IndexOutOfBoundsException("Column out of range: "+col);
+		}
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		vector.applyOp(op);
 	}
