@@ -1410,6 +1410,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		return true;
 	}
+	
+	/**
+	 * Returns true if this vector exactly matches the elements in double[] array, starting
+	 * from the specified offset
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public boolean equalsArray(double[] data, int offset) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			if (unsafeGet(i)!=data[i+offset]) return false;
+		}
+		return true;
+	}
 
 	/**
 	 * Set a subrange of this vector from a double array
