@@ -5,6 +5,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -120,10 +121,8 @@ public class RowMatrix extends AMatrix {
 		int cc=s.columnCount();
 		Matrix m=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
-			double ti=this.get(i);
-			for (int j=0; j<cc; j++) {
-				m.unsafeSet(i,j,ti*s.unsafeGet(0,j));
-			}
+			double ti=vector.unsafeGet(i);
+			DoubleArrays.addMultiple(m.data, i*cc, s.data, 0, cc, ti);
 		}
 		return m;
 	}
