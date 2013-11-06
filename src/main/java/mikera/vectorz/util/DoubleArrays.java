@@ -319,6 +319,14 @@ public final class DoubleArrays {
 		return true;
 	}
 	
+
+	public static boolean equals(double[] as, int aOffset, double[] bs, int bOffset, int length) {
+		for (int i=0; i<length; i++) {
+			if (as[i+aOffset]!=bs[i+bOffset]) return false;
+		}
+		return true;
+	}
+	
 	public static boolean isBoolean(double[] data) {
 		for (int i=0; i<data.length; i++) {
 			if (!Tools.isBoolean(data[i])) return false;
@@ -359,4 +367,5 @@ public final class DoubleArrays {
 		return data.clone();
 		//return Arrays.copyOf(data, data.length);
 	}
+
 }
