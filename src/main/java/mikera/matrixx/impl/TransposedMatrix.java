@@ -141,6 +141,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 		// Transposing again just gets us back to the original source matrix
 		return source;
 	}
+	
+	@Override
+	public Matrix getTransposeCopy() {
+		return source.toMatrix();
+	}
+	
+	@Override
+	public AMatrix transposeInnerProduct(AMatrix s) {
+		return source.innerProduct(s);
+	}
 
 	public Matrix transposeInnerProduct(Matrix s) {
 		return source.innerProduct(s);

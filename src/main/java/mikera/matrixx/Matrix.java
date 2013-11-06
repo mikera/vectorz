@@ -344,6 +344,23 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public final Matrix toMatrix() {
+		return this;
+	}
+	
+	@Override
+	public Matrix toMatrixTranspose() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(cc, rc);
+		double[] targetData=m.data;
+		for (int j=0; j<cc; j++) {
+			copyColumnTo(j,targetData,j*rc);
+		}
+		return m;
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
