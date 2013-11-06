@@ -58,6 +58,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return get((int)i);
 	}
 	
+	public void set(long i, double value) {
+		set((int)i,value);
+	}
+	
 	@Override
 	public void set(int[] indexes, double value) {
 		if (indexes.length==1) {
