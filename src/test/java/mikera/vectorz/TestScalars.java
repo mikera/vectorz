@@ -45,7 +45,7 @@ public class TestScalars {
 	@Test
 	public void genericTests() {
 		testScalar(new Scalar(1.0));
-		testScalar(new DoubleScalar(1.0));
+		testScalar(new DoubleScalar(1.0)); // deprecated but still test it
 		testScalar(ImmutableScalar.create(1.33));
 		testScalar(Vector.of(1, 2, 3).slice(1));
 		testScalar(Vector.of(1, 2, 3, 4, 5, 6).slice(1));
