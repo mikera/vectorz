@@ -8,6 +8,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Immutable array-backed vector. Keeps defensive array copy to ensure immutability.
@@ -176,6 +177,17 @@ public class ImmutableVector extends AVector {
 	}
 	
 	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(data,offset,this.data, this.offset,length());
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data) {
+		if (length()!=data.length) return false;
+		return DoubleArrays.equals(data,0,this.data, this.offset,length());
+	}
+	
+	@Override
 	public Vector clone() {
 		Vector v=Vector.createLength(length);
 		v.set(this);
@@ -190,6 +202,12 @@ public class ImmutableVector extends AVector {
 	@Override
 	public AVector immutable() {
 		return this;
+	}
+	
+	@Override
+	public void validate() {
+		if ((offset<0)||(offset+length>data.length)) throw new VectorzException("ImmutableVector data out of bounds");
+		super.validate();
 	}
 
 }
