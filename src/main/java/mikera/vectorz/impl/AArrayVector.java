@@ -50,7 +50,7 @@ public abstract class AArrayVector extends AStridedVector {
 	
 	@Override
 	public AScalar slice(int position) {
-		assert((position>=0) && (position<length()));
+		if((position<0) || (position>=length())) throw new IndexOutOfBoundsException("Index: "+position);
 		return new ArrayIndexScalar(getArray(),getArrayOffset()+position);
 	}
 	

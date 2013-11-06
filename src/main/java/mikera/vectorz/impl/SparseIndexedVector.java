@@ -9,6 +9,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -188,7 +189,7 @@ public class SparseIndexedVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,i));
 		int ip=index.indexPosition(i);
 		if (ip<0) return 0.0;
 		return data[ip];
@@ -207,21 +208,18 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		return index.length()>0;
+	}
+	
+	@Override
 	public double elementSum() {
-		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			result+=data[i];
-		}
-		return result;
+		return DoubleArrays.elementSum(data);
 	}
 	
 	@Override
 	public long nonZeroCount() {
-		long result=0;
-		for (int i=0; i<data.length; i++) {
-			if (data[i]!=0.0) result++;
-		}
-		return result;
+		return DoubleArrays.nonZeroCount(data);
 	}
 	
 	@Override
