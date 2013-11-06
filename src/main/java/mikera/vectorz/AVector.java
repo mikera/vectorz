@@ -1272,7 +1272,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void addMultiple(Index destToSource, AVector source, double factor) {
 		int len=this.length();
-		if (destToSource.length()!=len) throw new VectorzException("Index must match this vector");
+		if (len!=destToSource.length()) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len; i++) {
 			int j=destToSource.data[i];
 			this.addAt(i,source.get(j)*factor);
@@ -1284,7 +1284,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void set(AVector v, Index indexes) {
 		int len=length();
-		assert(indexes.length()==len);
+		if (len!=indexes.length()) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len ; i++) {
 			unsafeSet(i, v.get(indexes.get(i)));
 		}
