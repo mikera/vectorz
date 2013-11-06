@@ -170,6 +170,12 @@ public class ImmutableVector extends AVector {
 	}
 	
 	@Override
+	public boolean equals(AVector v) {
+		if (v.length()!=length) return false;
+		return v.equalsArray(data, offset);
+	}
+	
+	@Override
 	public Vector clone() {
 		Vector v=Vector.createLength(length);
 		v.set(this);
