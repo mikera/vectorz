@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.nio.DoubleBuffer;
+import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
@@ -13,13 +14,14 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
+import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose mutable backed N-dimensional array
+ * General purpose mutable packed N-dimensional array
  * 
  * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
  * most efficient storage type for 3D+ arrays
@@ -258,6 +260,16 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	public void setElements(double[] values, int offset, int length) {
 		System.arraycopy(values, offset, data, 0, length);
 	}
+	
+	@Override
+	public void getElements(double[] values, int offset) {
+		System.arraycopy(data, 0, values, offset, data.length);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new StridedElementIterator(data,0,(int)elementCount(),1);
+	}
 
 	@Override
 	public void multiply(double factor) {
@@ -341,6 +353,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public boolean isPackedArray() {
 		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data,0,data.length);
 	}
 
 }

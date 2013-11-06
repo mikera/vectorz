@@ -41,6 +41,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public void set(int row, int column, double value) {
 		source.set(column, row, value);
 	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return source.unsafeGet(column, row);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		source.unsafeSet(column, row, value);
+	}
 
 	@Override
 	public AVector getRow(int row) {
@@ -59,11 +69,7 @@ public class TransposedMatrix extends ADelegatedMatrix {
 
 	@Override
 	public Matrix toMatrixTranspose() {
-		if (source instanceof Matrix) {
-			return (Matrix) source;
-		} else {
-			return source.toMatrix();
-		}
+		return source.toMatrix();
 	}
 
 	@Override
@@ -78,12 +84,21 @@ public class TransposedMatrix extends ADelegatedMatrix {
 
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
-		source.getColumn(row).copyTo(dest, destOffset);
+		source.copyColumnTo(row, dest, destOffset);
 	}
 
 	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
-		source.getRow(col).copyTo(dest, destOffset);
+		source.copyRowTo(col, dest, destOffset);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int destOffset) {
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int i=0; i<rc; i++) {
+			source.copyColumnTo(i, dest, destOffset+i*cc);
+		}
 	}
 
 	@Override
@@ -94,6 +109,11 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	@Override
 	public boolean isSymmetric() {
 		return source.isSymmetric();
+	}
+	
+	@Override
+	public boolean isZero() {
+		return source.isZero();
 	}
 
 	@Override
@@ -116,6 +136,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public AMatrix getTransposeView() {
 		// Transposing again just gets us back to the original source matrix
 		return source;
+	}
+	
+	@Override
+	public Matrix getTransposeCopy() {
+		return source.toMatrix();
+	}
+	
+	@Override
+	public AMatrix transposeInnerProduct(AMatrix s) {
+		return source.innerProduct(s);
 	}
 
 	public Matrix transposeInnerProduct(Matrix s) {

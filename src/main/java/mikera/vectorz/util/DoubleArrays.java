@@ -6,6 +6,8 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.ops.Logistic;
 
 public final class DoubleArrays {
+	public static final double[] EMPTY = new double[0];
+
 	public static final double elementSum(double[] data) {
 		double result = 0.0;
 		for (int i=0; i<data.length; i++) {
@@ -317,6 +319,14 @@ public final class DoubleArrays {
 		return true;
 	}
 	
+
+	public static boolean equals(double[] as, int aOffset, double[] bs, int bOffset, int length) {
+		for (int i=0; i<length; i++) {
+			if (as[i+aOffset]!=bs[i+bOffset]) return false;
+		}
+		return true;
+	}
+	
 	public static boolean isBoolean(double[] data) {
 		for (int i=0; i<data.length; i++) {
 			if (!Tools.isBoolean(data[i])) return false;
@@ -330,6 +340,20 @@ public final class DoubleArrays {
 		}
 		return true;
 	}
+	
+	public static boolean isZero(double[] data) {
+		for (int i=0; i<data.length; i++) {
+			if (data[i]!=0) return false;
+		}
+		return true;
+	}
+	
+	public static boolean isZero(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		return true;
+	}
 
 	/**
 	 * Fast double array copy operation. 
@@ -340,8 +364,8 @@ public final class DoubleArrays {
 	 * @return
 	 */
 	public static final double[] copyOf(double[] data) {
-		return Arrays.copyOf(data, data.length);
+		return data.clone();
+		//return Arrays.copyOf(data, data.length);
 	}
-
 
 }

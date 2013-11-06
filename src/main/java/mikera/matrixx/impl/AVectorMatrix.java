@@ -10,7 +10,7 @@ import mikera.vectorz.util.ErrorMessages;
  * Abstract base class for matrices that use a collection of Vectors 
  * as storage for the matrix rows.
  * 
- * Vector matrices support appending with new rows - this functionality can be useful
+ * Vector matrices may support appending with new rows - this functionality can be useful
  * e.g. when building a matrix to represent a data set.
  * 
  * @author Mike
@@ -96,6 +96,22 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}
 	
 	@Override
+	public final void copyRowTo(int row, double[] dest, int destOffset) {
+		getRow(row).getElements(dest, destOffset);
+	}
+	
+	
+	@Override
+	public final void getElements(double[] dest, int destOffset) {
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int i=0; i<rc; i++) {
+			getRow(i).getElements(dest, destOffset);
+			destOffset+=cc;
+		}
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
@@ -105,6 +121,15 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	
 	@Override
 	public boolean isView() {
+		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).isZero()) return false;
+		}
 		return true;
 	}
 	

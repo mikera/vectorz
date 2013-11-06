@@ -11,7 +11,7 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class ZeroVector extends ComputedVector implements ISparse {
+public final class ZeroVector extends AComputedVector implements ISparse {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
 	private int length;
@@ -31,7 +31,7 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException("Different vector lengths");
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return 0.0;
 	}
 	
@@ -42,7 +42,7 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	
 	@Override
 	public ZeroVector innerProduct(AMatrix m) {
-		if (m.rowCount()!=length) throw new IllegalArgumentException("Incompatible vector*matrix sizes");
+		if (m.rowCount()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		return ZeroVector.create(m.columnCount());
 	}
 

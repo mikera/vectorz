@@ -113,7 +113,7 @@ public final class GrowableVector extends AArrayVector {
 	public void append(AVector v) {
 		int vl=v.length();
 		ensureCapacity(length+vl);
-		v.copyTo(data, length);
+		v.getElements(data, length);
 		length+=vl;
 	}
 	

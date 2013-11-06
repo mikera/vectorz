@@ -39,18 +39,17 @@ public abstract class AArrayVector extends AStridedVector {
 	 */
 	public ArraySubVector subVector(int offset, int length) {
 		int len=this.length();
-		if ((offset + length) > len)
-			throw new IndexOutOfBoundsException("Upper bound " + len
-					+ " breached:" + (offset + length));
-		if (offset < 0)
-			throw new IndexOutOfBoundsException("Lower bound breached:"
-					+ offset);
+		if ((offset < 0) || ((offset + length) > len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
 		return new ArraySubVector(this, offset, length);
 	}
 	
 	@Override
 	public AScalar slice(int position) {
-		assert((position>=0) && (position<length()));
+		if((position<0) || (position>=length())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, position));
+		}
 		return new ArrayIndexScalar(getArray(),getArrayOffset()+position);
 	}
 	
@@ -65,12 +64,17 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(getArray(),getArrayOffset(),length());
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(getArray(),getArrayOffset(),length());
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
+	public void getElements(double[] data, int offset) {
 		System.arraycopy(getArray(), getArrayOffset(), data, offset, length());
 	}
 	
@@ -85,7 +89,7 @@ public abstract class AArrayVector extends AStridedVector {
 	@Override
 	public void set(AVector a) {
 		assert(a.length()==length());
-		a.copyTo(getArray(),getArrayOffset());
+		a.getElements(getArray(),getArrayOffset());
 	}
 	
 	@Override
@@ -105,11 +109,6 @@ public abstract class AArrayVector extends AStridedVector {
 		assert(length==this.length());
 		System.arraycopy(values, offset, getArray(), getArrayOffset(), length);
 	} 
-	
-	@Override
-	public void getElements(double[] dest, int offset) {
-		System.arraycopy(getArray(), getArrayOffset(), dest, offset, length());
-	}
 	
 	@Override
 	public abstract double get(int i);
@@ -480,6 +479,24 @@ public abstract class AArrayVector extends AStridedVector {
 	
 	public JoinedArrayVector join(JoinedArrayVector v) {
 		return JoinedArrayVector.wrap(this).join(v);
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		int len=length();
+		if (v.length()!=len) return false;
+		return v.equalsArray(getArray(), getArrayOffset());
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(data,offset,getArray(), getArrayOffset(),length());
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data) {
+		if (length()!=data.length) return false;
+		return DoubleArrays.equals(data,0,getArray(), getArrayOffset(),length());
 	}
 	
 	@Override

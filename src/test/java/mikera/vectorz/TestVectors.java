@@ -15,6 +15,7 @@ import mikera.matrixx.Matrixx;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
@@ -146,7 +147,7 @@ public class TestVectors {
 		
 		assertEquals(Arrays.hashCode(data),v.hashCode());
 		
-		ArraySubVector v2=new ArraySubVector(v);
+		ArraySubVector v2=v.exactClone();
 		assertEquals(v,v2);
 		assertTrue(v2.isView());
 		
@@ -344,6 +345,17 @@ public class TestVectors {
 		for (int i=0; i<len; i++) {
 			v.set(i,i+0.5);
 			assertEquals(i+0.5,v.get(i),0.0);
+		}
+	}
+	
+	private void testImmutable(AVector v) {
+		AVector iv=v.immutable();
+		
+		try {
+			iv.set(0,1.0);
+			fail();
+		} catch (Throwable t) {
+			// OK
 		}
 	}
 	
@@ -735,6 +747,7 @@ public class TestVectors {
 		testIterator(v);
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
+		testImmutable(v);
 		
 		doNonDegenerateTests(v);
 		
@@ -854,5 +867,8 @@ public class TestVectors {
 		
 		doGenericTests(StridedVector.wrap(new double[]{1,2,3}, 2, 3, -1));
 		doGenericTests(StridedVector.wrap(new double[]{1,2}, 1, 1, 100));
+		
+		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
+		doGenericTests(ImmutableVector.create(Vector.of()));
 	}
 }

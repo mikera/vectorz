@@ -9,6 +9,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -41,7 +42,7 @@ public class SparseIndexedVector extends ASparseVector {
 		this.length=length;
 		this.index=index;
 		this.data=new double[index.length()];
-		data.copyTo(this.data, 0);
+		data.getElements(this.data, 0);
 	}
 	
 	/**
@@ -66,7 +67,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	public static SparseIndexedVector create(int length, Index index, AVector data) {
 		SparseIndexedVector sv= create(length, index, new double[index.length()]);
-		data.copyTo(sv.data, 0);
+		data.getElements(sv.data, 0);
 		return sv;
 	}
 	
@@ -188,7 +189,7 @@ public class SparseIndexedVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,i));
 		int ip=index.indexPosition(i);
 		if (ip<0) return 0.0;
 		return data[ip];
@@ -207,21 +208,18 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		return index.length()>0;
+	}
+	
+	@Override
 	public double elementSum() {
-		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			result+=data[i];
-		}
-		return result;
+		return DoubleArrays.elementSum(data);
 	}
 	
 	@Override
 	public long nonZeroCount() {
-		long result=0;
-		for (int i=0; i<data.length; i++) {
-			if (data[i]!=0.0) result++;
-		}
-		return result;
+		return DoubleArrays.nonZeroCount(data);
 	}
 	
 	@Override
@@ -300,7 +298,7 @@ public class SparseIndexedVector extends ASparseVector {
 		}		
 	}
 	
-	@Override public void copyTo(double[] array, int offset) {
+	@Override public void getElements(double[] array, int offset) {
 		Arrays.fill(array,offset,offset+length,0.0);
 		copySparseValuesTo(array,offset);
 	}
@@ -314,7 +312,7 @@ public class SparseIndexedVector extends ASparseVector {
 	@Override public void copyTo(AVector v, int offset) {
 		if (v instanceof AArrayVector) {
 			AArrayVector av=(AArrayVector)v;
-			copyTo(av.getArray(),av.getArrayOffset()+offset);
+			getElements(av.getArray(),av.getArrayOffset()+offset);
 		}
 		v.fillRange(offset,length,0.0);
 		for (int i=0; i<data.length; i++) {
@@ -354,14 +352,6 @@ public class SparseIndexedVector extends ASparseVector {
 	@Override
 	public boolean includesIndex(int i) {
 		return index.indexPosition(i)>=0;
-	}
-	
-	@Override
-	public void getElements(double[] dest, int offset) {
-		Arrays.fill(dest, offset,offset+length(),0.0);
-		for (int j=0; j<data.length; j++) {
-			dest[index.data[j]]=data[j];
-		}
 	}
 	
 	@Override

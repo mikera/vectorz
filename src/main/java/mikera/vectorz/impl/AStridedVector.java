@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.Iterator;
+
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IStridedArray;
@@ -85,7 +87,7 @@ public abstract class AStridedVector extends AVector implements IStridedArray {
 	
 	public void add(Vector v) {
 		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			addAt(i,v.data[i]);
 		}
@@ -105,6 +107,11 @@ public abstract class AStridedVector extends AVector implements IStridedArray {
 	@Override
 	public int[] getStrides() {
 		return new int[] {getStride()};
+	}
+	
+	@Override
+	public Iterator<Double> iterator() {
+		return new StridedElementIterator(getArray(),getArrayOffset(),length(),getStride());
 	}
 	
 	@Override

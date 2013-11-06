@@ -91,6 +91,11 @@ public final class Vector0 extends APrimitiveVector {
 		return v;
 	}
 	
+	@Override
+	public Vector0 immutable() {
+		return this;
+	}
+	
 	/**
 	 * readResolve method to ensure we always use the singleton
 	 */

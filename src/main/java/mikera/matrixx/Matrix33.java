@@ -307,6 +307,19 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public void getElements(double[] data, int offset) {
+		data[offset++]=m00;
+		data[offset++]=m01;
+		data[offset++]=m02;
+		data[offset++]=m10;
+		data[offset++]=m11;
+		data[offset++]=m12;
+		data[offset++]=m20;
+		data[offset++]=m21;
+		data[offset++]=m22;
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Matrix33) {
 			return equals((Matrix33)o);

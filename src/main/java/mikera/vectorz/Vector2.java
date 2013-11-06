@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 
 import mikera.vectorz.impl.APrimitiveVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised 2D vector
@@ -77,13 +78,13 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public double dotProduct(AVector a) {
-		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		if (a.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		return x*a.unsafeGet(0)+y*a.unsafeGet(1);
 	}
 	
 	@Override
 	public double dotProduct(Vector v) {
-		if (v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
 		return x*v.data[0]+y*v.data[1];
 	}
 	
@@ -156,7 +157,7 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public void add(AVector v) {
-		if(v.length()!=2) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(v.length()!=2) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		x+=v.unsafeGet(0);
 		y+=v.unsafeGet(1);
 	}
@@ -186,12 +187,12 @@ public final class Vector2 extends APrimitiveVector {
 		switch (i) {
 			case 0: return x;
 			case 1: return y;
-			default: throw new IndexOutOfBoundsException("Index: "+i);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
+	public void getElements(double[] data, int offset) {
 		data[offset]=x;
 		data[offset+1]=y;
 	}
@@ -213,7 +214,7 @@ public final class Vector2 extends APrimitiveVector {
 		switch (i) {
 			case 0: x=value; return;
 			case 1: y=value; return;
-			default: throw new IndexOutOfBoundsException("Index: "+i);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	
@@ -228,7 +229,7 @@ public final class Vector2 extends APrimitiveVector {
 		switch (i) {
 		case 0: x+=value; return;
 		case 1: y+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: "+i);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	

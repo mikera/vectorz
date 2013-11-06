@@ -37,7 +37,7 @@ public final class JoinedArrayVector extends AVector {
 		int length=v.length();
 		double[][] data=new double[1][];
 		data[0]=new double[length];
-		v.copyTo(data[0], 0);
+		v.getElements(data[0], 0);
 		JoinedArrayVector jav=new JoinedArrayVector(length,data,new int[1],new int[] {0,length});
 		return jav;
 	}
@@ -278,7 +278,7 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
-	public void copyTo(double[] destArray, int offset) {
+	public void getElements(double[] destArray, int offset) {
 		for (int j=0; j<numArrays; j++) {
 			System.arraycopy(this.data[j],offsets[j],destArray,offset+pos[j],subLength(j));
 		}

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;

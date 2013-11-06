@@ -26,14 +26,6 @@ public class Multiplications {
 	}
 	
 	public static Matrix multiply(Matrix a, AMatrix b) {
-		// int rc=a.rowCount();
-		int ic=a.columnCount();
-		int cc=b.columnCount();	
-		if ((ic!=b.rowCount())) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a,b));
-		}		
-	
-		if (ic*cc<WORKING_SET_TARGET) return a.innerProduct(b);
 		return blockedMultiply(a,b);
 	}
 	

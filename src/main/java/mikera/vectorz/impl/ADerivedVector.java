@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Derived vector delegates all calls to an underlying vector
@@ -24,6 +25,16 @@ public abstract class ADerivedVector extends AVector {
 	public double get(int i) {
 		return source.get(i);
 	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return source.unsafeGet(i);
+	}
+	
+	@Override 
+	public double dotProduct(double[] data, int offset) {
+		return source.dotProduct(data,offset);
+	}
 
 	@Override
 	public void set(int i, double value) {
@@ -34,7 +45,11 @@ public abstract class ADerivedVector extends AVector {
 	public void unsafeSet(int i, double value) {
 		source.unsafeSet(i,value);
 	}
-
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		source.getElements(dest, offset);
+	}
 	
 	@Override
 	public boolean isView() {

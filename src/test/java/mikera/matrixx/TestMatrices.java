@@ -8,6 +8,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
+import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -60,6 +61,12 @@ public class TestMatrices {
 	@Test public void testSymmetric() {
 		assertTrue(Matrixx.createIdentityMatrix(5).isSymmetric());
 		assertFalse(Matrixx.createRandomSquareMatrix(3).isSymmetric());
+	}
+	
+	@Test public void testRowMatrix() {
+		RowMatrix rm=RowMatrix.wrap(Vector.of(1,2,3));
+		
+		assertEquals(rm.transposeInnerProduct(rm.toMatrix()),rm.getTranspose().innerProduct(rm));
 	}
 	
 	@Test public void testTriangular() {

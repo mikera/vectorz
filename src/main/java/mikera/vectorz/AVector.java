@@ -9,8 +9,8 @@ import java.util.List;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
-import mikera.arrayz.SliceArray;
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.SliceArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -18,6 +18,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BroadcastVectorMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.VectorIndexScalar;
@@ -41,15 +42,26 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	// ================================================
 	// Abstract interface
+	@Override
 	public abstract int length();
 
+	@Override
 	public abstract double get(int i);
 	
+	@Override
 	public abstract void set(int i, double value);
 	
 	// ================================================
 	// Standard implementations
 
+	public double get(long i) {
+		return get((int)i);
+	}
+	
+	public void set(long i, double value) {
+		set((int)i,value);
+	}
+	
 	@Override
 	public void set(int[] indexes, double value) {
 		if (indexes.length==1) {
@@ -87,12 +99,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AScalar slice(int position) {
+		if ((position<0)||(position>=this.length()))
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, position));
 		return new VectorIndexScalar(this,position);
 	}
 	
 	@Override
 	public AScalar slice(int dimension, int index) {
-		if (dimension!=0) throw new IllegalArgumentException("Dimension out of range!");
+		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		return slice(index);	
 	}	
 	
@@ -274,16 +288,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	@Override
 	public void copyTo(double[] arr) {
-		copyTo(arr,0);
+		getElements(arr,0);
 	}
 	
-	/**
-	 * Copies a the contents of a vector to a double array at the specified offset
-	 */
-	public void copyTo(double[] data, int offset) {
-		copyTo(0,data,offset,length());
+	public final void copyTo(double[] arr, int offset) {
+		getElements(arr,offset);
 	}
-
+	
 	public void copyTo(int offset, double[] dest, int destOffset, int length) {
 		for (int i=0; i<length; i++) {
 			dest[i+destOffset]=get(i+offset);
@@ -292,7 +303,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public double[] toDoubleArray() {
 		double[] result=new double[length()];
-		copyTo(result,0);
+		getElements(result,0);
 		return result;
 	}
 	
@@ -328,7 +339,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
 	public void copyTo(AArrayVector dest, int destOffset) {
-		copyTo(dest.getArray(),dest.getArrayOffset()+destOffset);
+		getElements(dest.getArray(),dest.getArrayOffset()+destOffset);
 	}
 	
 	/**
@@ -873,7 +884,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
-		copyTo(dest,offset);
+		copyTo(0,dest,offset,length());
 	}
 	
 	/**
@@ -902,7 +913,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Clones the vector, creating a new copy of all data. 
+	 * Clones the vector, creating a new mutable copy of all data. 
 	 * 
 	 * The clone is:
 	 *  - not guaranteed to be of the same type. 
@@ -911,7 +922,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public AVector clone() {
-		return Vectorz.create(this);
+		return Vector.create(this);
 	}
 	
 	@Override
@@ -1161,6 +1172,29 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Creates an immutable copy of a vector
+	 * @return
+	 */
+	@Override
+	public AVector immutable() {
+		return ImmutableVector.create(this);
+	}
+	
+	/**
+	 * Coerces to a mutable version of a vector. May or may not be a copy,
+	 * but guaranteed to be fully mutable
+	 * @return
+	 */
+	@Override
+	public AVector mutable() {
+		if (this.isFullyMutable()) {
+			return this;
+		} else {
+			return clone();
+		}
+	}
+	
+	/**
 	 * Creates a new mutable vector representing the normalised value of this vector
 	 * @return
 	 */
@@ -1186,7 +1220,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	public void set(IVector vector) {
 		int len=length();
-		assert(len==vector.length());
+		if (len!=vector.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, vector));
 		for (int i=0; i<len; i++) {
 			this.unsafeSet(i,vector.get(i));
 		}
@@ -1201,7 +1235,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(Vector source, Index sourceToDest, double factor) {
 		if (sourceToDest.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
-		assert(len==sourceToDest.length());
+		if (len!=sourceToDest.length()) throw new IllegalArgumentException("Index length must match source length.");
 		for (int i=0; i<len; i++) {
 			int j=sourceToDest.data[i];
 			this.addAt(j,source.data[i]*factor);
@@ -1217,7 +1251,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(AVector source, Index sourceToDest, double factor) {
 		if (sourceToDest.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
-		assert(len==sourceToDest.length());
+		if (len!=sourceToDest.length()) throw new IllegalArgumentException("Index length must match source length.");
 		for (int i=0; i<len; i++) {
 			int j=sourceToDest.data[i];
 			this.addAt(j,source.unsafeGet(i)*factor);
@@ -1233,7 +1267,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(Index destToSource, Vector source, double factor) {
 		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
 		int len=this.length();
-		assert(len==destToSource.length());
+		if (len!=destToSource.length()) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len; i++) {
 			int j=destToSource.data[i];
 			this.addAt(i,source.data[j]*factor);
@@ -1248,7 +1282,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void addMultiple(Index destToSource, AVector source, double factor) {
 		int len=this.length();
-		if (destToSource.length()!=len) throw new VectorzException("Index must match this vector");
+		if (len!=destToSource.length()) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len; i++) {
 			int j=destToSource.data[i];
 			this.addAt(i,source.get(j)*factor);
@@ -1260,12 +1294,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void set(AVector v, Index indexes) {
 		int len=length();
-		assert(indexes.length()==len);
+		if (len!=indexes.length()) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len ; i++) {
 			unsafeSet(i, v.get(indexes.get(i)));
 		}
 	}
 	
+	/**
+	 * Adds this vector to a double[] array, starting at the specified offset.
+	 * 
+	 * @param array
+	 * @param offset
+	 */
 	public void addToArray(double[] array, int offset) {
 		addToArray(0,array,offset,length());
 	}
@@ -1345,6 +1385,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		unsafeSet(i,unsafeGet(i)+v);
 	}
 
+	/**
+	 * Scales this vector and adds a constant to every element
+	 */
 	public void scaleAdd(double factor, double constant) {
 		scale(factor);
 		add(constant);
@@ -1364,11 +1407,31 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public abstract AVector exactClone();
 
+	/**
+	 * Returns true if this vector exactly matches a double[] array.
+	 * @param data
+	 * @return
+	 */
 	public boolean equalsArray(double[] data) {
 		int len=length();
 		if (len!=data.length) return false;
 		for (int i=0; i<len; i++) {
 			if (unsafeGet(i)!=data[i]) return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true if this vector exactly matches the elements in double[] array, starting
+	 * from the specified offset
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public boolean equalsArray(double[] data, int offset) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			if (unsafeGet(i)!=data[i+offset]) return false;
 		}
 		return true;
 	}

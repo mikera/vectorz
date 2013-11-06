@@ -9,7 +9,7 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
-import mikera.arrayz.SliceArray;
+import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.MatrixColumnView;
@@ -596,10 +596,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int rc=this.rowCount();
 		int cc=this.columnCount();
 		Matrix m=Matrix.create(cc,rc);
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				m.unsafeSet(j,i,unsafeGet(i,j));
-			}
+		for (int j=0; j<cc; j++) {
+			this.copyColumnTo(j, m.data, j*rc);;
 		}
 		return m;
 	}
@@ -1693,10 +1691,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	public void copyRowTo(int row, double[] dest, int destOffset) {
-		getRow(row).copyTo(dest,destOffset);
+		int cc=columnCount();
+		for (int i=0; i<cc; i++) {
+			dest[i+destOffset]=unsafeGet(row,i);
+		}
 	}
 	
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
-		getColumn(col).copyTo(dest,destOffset);
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			dest[i+destOffset]=unsafeGet(i,col);
+		}
 	}
 }

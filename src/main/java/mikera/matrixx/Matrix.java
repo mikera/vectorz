@@ -2,10 +2,13 @@ package mikera.matrixx;
 
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import mikera.arrayz.INDArray;
+import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
+import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
@@ -14,6 +17,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.MatrixBandVector;
+import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -72,6 +76,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public boolean isBoolean() {
 		return DoubleArrays.isBoolean(data,0,data.length);
+	}
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data,0,data.length);
 	}
 	
 	@Override
@@ -137,21 +146,22 @@ public final class Matrix extends ADenseArrayMatrix {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}
-		int rc=this.rowCount();
-		int cc=a.columnCount();
-		int ic=this.columnCount();
-		Matrix result=Matrix.create(rc,cc);
-		for (int i=0; i<rc; i++) {
-			int toffset=ic*i;
-			for (int j=0; j<cc; j++) {
-				double acc=0.0;
-				for (int k=0; k<ic; k++) {
-					acc+=data[toffset+k]*a.unsafeGet(k, j);
-				}
-				result.unsafeSet(i,j,acc);
-			}
-		}
-		return result;
+		return Multiplications.multiply(this, a);
+//		int rc=this.rowCount();
+//		int cc=a.columnCount();
+//		int ic=this.columnCount();
+//		Matrix result=Matrix.create(rc,cc);
+//		for (int i=0; i<rc; i++) {
+//			int toffset=ic*i;
+//			for (int j=0; j<cc; j++) {
+//				double acc=0.0;
+//				for (int k=0; k<ic; k++) {
+//					acc+=data[toffset+k]*a.unsafeGet(k, j);
+//				}
+//				result.unsafeSet(i,j,acc);
+//			}
+//		}
+//		return result;
 	}
 	
 	@Override
@@ -336,6 +346,23 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public final Matrix toMatrix() {
+		return this;
+	}
+	
+	@Override
+	public Matrix toMatrixTranspose() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(cc, rc);
+		double[] targetData=m.data;
+		for (int j=0; j<cc; j++) {
+			copyColumnTo(j,targetData,j*rc);
+		}
+		return m;
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
@@ -442,6 +469,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(data, 0, dest, offset, data.length);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new StridedElementIterator(data,0,rows*cols,1);
 	}
 	
 	@Override

@@ -9,7 +9,7 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ComputedVector extends AConstrainedVector {
+public abstract class AComputedVector extends AConstrainedVector {
 
 	@Override
 	public abstract int length();
@@ -28,7 +28,7 @@ public abstract class ComputedVector extends AConstrainedVector {
 	}
 	
 	@Override
-	public ComputedVector exactClone() {
+	public AComputedVector exactClone() {
 		return this;
 	}
 }
