@@ -138,7 +138,6 @@ public final class JoinedVector extends AVector {
 	public void copyTo(int start, AVector dest, int destOffset, int length) {
 		subVector(start,length).copyTo(dest, destOffset);
 	}
-
 	
 	@Override
 	public AVector subVector(int start, int length) {
@@ -150,7 +149,7 @@ public final class JoinedVector extends AVector {
 		
 		AVector v1=left.subVector(start, split-start);
 		AVector v2=right.subVector(0, length-(split-start));
-		return new JoinedVector(v1,v2);
+		return v1.join(v2);
 	}
 	
 	@Override

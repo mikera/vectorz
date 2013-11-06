@@ -206,7 +206,7 @@ public class ImmutableVector extends AVector {
 	
 	@Override
 	public void validate() {
-		if ((offset<0)||(offset+length>data.length)) throw new VectorzException("ImmutableVector data out of bounds");
+		if ((offset<0)||(offset+length>data.length)||(length<0)) throw new VectorzException("ImmutableVector data out of bounds");
 		super.validate();
 	}
 
