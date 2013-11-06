@@ -216,7 +216,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public long elementCount() {
+	public final long elementCount() {
 		return 1;
 	}
 	
