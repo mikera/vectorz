@@ -1,10 +1,11 @@
 package mikera.vectorz;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.*;
 import mikera.arrayz.TestArrays;
 import mikera.vectorz.impl.DoubleScalar;
+import mikera.vectorz.impl.ImmutableScalar;
 
 @SuppressWarnings("deprecation")
 public class TestScalars {
@@ -23,8 +24,10 @@ public class TestScalars {
 		assertEquals(s.get(), v.get(0), 0.0);
 		
 		// confirm that asVector has produced a view
-		v.set(0,Double.NaN);
-		assertTrue(Double.isNaN(s.get()));
+		if (v.isMutable()) {
+			v.set(0,Double.NaN);
+			assertTrue(Double.isNaN(s.get()));
+		}
 	}
 
 	private void testToString(AScalar s) {
@@ -43,6 +46,7 @@ public class TestScalars {
 	public void genericTests() {
 		testScalar(new Scalar(1.0));
 		testScalar(new DoubleScalar(1.0));
+		testScalar(new ImmutableScalar(1.33));
 		testScalar(Vector.of(1, 2, 3).slice(1));
 		testScalar(Vector.of(1, 2, 3, 4, 5, 6).slice(1));
 	}

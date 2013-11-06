@@ -17,6 +17,16 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	public WrappedScalarVector(AScalar s) {
 		this.scalar=s;
 	}
+	
+	@Override
+	public boolean isMutable() {
+		return scalar.isMutable();
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return scalar.isFullyMutable();
+	}
 
 	@Override
 	public int length() {
