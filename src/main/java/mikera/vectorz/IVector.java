@@ -20,4 +20,6 @@ public interface IVector extends INDArray {
 	public void set(int i, double value);
 
 	AVector immutable();
+
+	AVector mutable();
 }

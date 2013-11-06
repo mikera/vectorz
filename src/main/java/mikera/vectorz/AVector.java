@@ -1171,6 +1171,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Creates an mutable version of a vector. May or may not be a copy,
+	 * but guaranteed to be fully mutable
+	 * @return
+	 */
+	@Override
+	public AVector mutable() {
+		if (this.isFullyMutable()) {
+			return this;
+		} else {
+			return clone();
+		}
+	}
+	
+	/**
 	 * Creates a new mutable vector representing the normalised value of this vector
 	 * @return
 	 */
