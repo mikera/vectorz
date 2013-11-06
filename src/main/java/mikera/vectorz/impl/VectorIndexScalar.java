@@ -52,6 +52,24 @@ public class VectorIndexScalar extends AScalar {
 	}
 	
 	@Override
+	public AScalar mutable() {
+		if (vector.isFullyMutable()) {
+			return this;
+		} else {
+			return Scalar.create(get());
+		}
+	}
+
+	@Override
+	public AScalar immutable() {
+		if (vector.isMutable()) {
+			return ImmutableScalar.create(get());
+		} else {
+			return this;
+		}
+	}
+	
+	@Override
 	public void validate() {
 		if ((index<0)||(index>=vector.length())) throw new VectorzException("Index out of bounds");
 		super.validate();

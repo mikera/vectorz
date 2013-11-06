@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.ImmutableScalar;
+
 /**
  * Basic Scalar class containing a single mutable double value
  * 
@@ -95,6 +97,16 @@ public final class Scalar extends AScalar {
 	 */
 	public static Scalar createFromVector(AVector data) {
 		return new Scalar(data.length()>0?data.get(0):0.0);
+	}
+
+	@Override
+	public Scalar mutable() {
+		return this;
+	}
+
+	@Override
+	public ImmutableScalar immutable() {
+		return ImmutableScalar.create(value);
 	}
 
 }

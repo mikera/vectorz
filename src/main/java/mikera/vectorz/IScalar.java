@@ -19,4 +19,9 @@ public interface IScalar extends INDArray {
 	 * Sets the double value of a scalar array
 	 */
 	public void set(double value);
+	
+	
+	public AScalar mutable();
+	
+	public AScalar immutable();
 }

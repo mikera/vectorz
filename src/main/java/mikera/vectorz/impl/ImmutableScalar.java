@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.util.ErrorMessages;
 
 public final class ImmutableScalar extends AScalar {
@@ -51,6 +52,16 @@ public final class ImmutableScalar extends AScalar {
 	@Override
 	public AScalar exactClone() {
 		return new ImmutableScalar(value);
+	}
+	
+	@Override
+	public Scalar mutable() {
+		return Scalar.create(value);
+	}
+
+	@Override
+	public ImmutableScalar immutable() {
+		return this;
 	}
 
 }
