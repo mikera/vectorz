@@ -1171,7 +1171,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Creates an mutable version of a vector. May or may not be a copy,
+	 * Coerces to a mutable version of a vector. May or may not be a copy,
 	 * but guaranteed to be fully mutable
 	 * @return
 	 */
