@@ -270,6 +270,14 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public void getElements(double[] data, int offset) {
+		data[offset++]=m00;
+		data[offset++]=m01;
+		data[offset++]=m10;
+		data[offset++]=m11;
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Matrix22) {
 			return equals((Matrix22)o);

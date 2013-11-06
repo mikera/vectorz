@@ -10,7 +10,7 @@ import mikera.vectorz.util.ErrorMessages;
  * Abstract base class for matrices that use a collection of Vectors 
  * as storage for the matrix rows.
  * 
- * Vector matrices support appending with new rows - this functionality can be useful
+ * Vector matrices may support appending with new rows - this functionality can be useful
  * e.g. when building a matrix to represent a data set.
  * 
  * @author Mike
