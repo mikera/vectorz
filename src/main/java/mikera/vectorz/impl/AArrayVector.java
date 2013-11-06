@@ -39,18 +39,17 @@ public abstract class AArrayVector extends AStridedVector {
 	 */
 	public ArraySubVector subVector(int offset, int length) {
 		int len=this.length();
-		if ((offset + length) > len)
-			throw new IndexOutOfBoundsException("Upper bound " + len
-					+ " breached:" + (offset + length));
-		if (offset < 0)
-			throw new IndexOutOfBoundsException("Lower bound breached:"
-					+ offset);
+		if ((offset < 0) || ((offset + length) > len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
 		return new ArraySubVector(this, offset, length);
 	}
 	
 	@Override
 	public AScalar slice(int position) {
-		if((position<0) || (position>=length())) throw new IndexOutOfBoundsException("Index: "+position);
+		if((position<0) || (position>=length())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, position));
+		}
 		return new ArrayIndexScalar(getArray(),getArrayOffset()+position);
 	}
 	

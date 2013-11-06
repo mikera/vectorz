@@ -87,7 +87,7 @@ public abstract class AStridedVector extends AVector implements IStridedArray {
 	
 	public void add(Vector v) {
 		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			addAt(i,v.data[i]);
 		}

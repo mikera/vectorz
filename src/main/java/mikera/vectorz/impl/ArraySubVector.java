@@ -61,27 +61,18 @@ public final class ArraySubVector extends AArrayVector {
 	 */
 	public ArraySubVector(AArrayVector source, int offset, int length) {
 		int len=source.length();
-		if (offset < 0) {
-			throw new IndexOutOfBoundsException("Negative offset for Vector: "
-					+ offset);
-		}
-		if (offset + length > len) {
+		if ((offset < 0)||(offset + length > len)) 
 			throw new IndexOutOfBoundsException(
-					"Beyond bounds of parent vector with offset: " + offset
-							+ " and length: " + length);
-		}
+					ErrorMessages.invalidRange(source, offset, length));
 		this.length = length;
 		this.offset = source.getArrayOffset() + offset;
 		this.data = source.getArray();
 	}
 
-
 	@Override
 	public int length() {
 		return length;
 	}
-
-	
 
 	@Override
 	public double get(int i) {

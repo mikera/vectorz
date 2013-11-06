@@ -31,7 +31,7 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException("Different vector lengths");
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return 0.0;
 	}
 	
@@ -42,7 +42,7 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 	
 	@Override
 	public ZeroVector innerProduct(AMatrix m) {
-		if (m.rowCount()!=length) throw new IllegalArgumentException("Incompatible vector*matrix sizes");
+		if (m.rowCount()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		return ZeroVector.create(m.columnCount());
 	}
 

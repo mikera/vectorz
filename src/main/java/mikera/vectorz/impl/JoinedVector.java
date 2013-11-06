@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A vector that represents the concatenation of two vectors.
@@ -141,11 +142,13 @@ public final class JoinedVector extends AVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		assert(start>=0);
-		assert((start+length)<=this.length);
+		int end=start+length;
+		if ((start<0)||(end>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
 		if ((start==0)&&(length==this.length)) return this;
 		if (start>=split) return right.subVector(start-split, length);
-		if ((start+length)<=split) return left.subVector(start, length);
+		if (end<=split) return left.subVector(start, length);
 		
 		AVector v1=left.subVector(start, split-start);
 		AVector v2=right.subVector(0, length-(split-start));

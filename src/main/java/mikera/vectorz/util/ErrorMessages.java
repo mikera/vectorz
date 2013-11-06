@@ -97,6 +97,10 @@ public class ErrorMessages {
 			return "Access at position "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
 		}
 	}
+	
+	public static String invalidRange(AVector v, int start, int length) {
+		return "Subrange {start="+start+", length="+length+"} not valid on vector with length "+v.length();
+	}
 
 	public static String invalidSlice(INDArray a, int slice) {
 		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice;
