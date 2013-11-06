@@ -10,6 +10,7 @@ public class VectorIndexScalar extends AScalar {
 	final int index;
 	
 	public VectorIndexScalar(AVector vector, int index) {
+		// don't check - should be checked by caller
 		assert((index>=0)&&(index<vector.length()));
 		this.vector=vector;
 		this.index=index;

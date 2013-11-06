@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 
 import mikera.vectorz.impl.APrimitiveVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised 3D vector
@@ -201,13 +202,13 @@ public final class Vector3 extends APrimitiveVector {
 	
 	@Override
 	public double dotProduct(AVector a) {
-		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		if (a.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		return x*a.unsafeGet(0)+y*a.unsafeGet(1)+z*a.unsafeGet(2);
 	}
 	
 	@Override
 	public double dotProduct(Vector v) {
-		if (v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
 		return x*v.data[0]+y*v.data[1]+z*v.data[2];
 	}
 	
@@ -298,7 +299,7 @@ public final class Vector3 extends APrimitiveVector {
 		case 0: return x;
 		case 1: return y;
 		case 2: return z;
-		default: throw new IndexOutOfBoundsException("Index: "+i);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	
@@ -323,7 +324,7 @@ public final class Vector3 extends APrimitiveVector {
 		case 0: x=value; return;
 		case 1: y=value; return;
 		case 2: z=value; return;
-		default: throw new IndexOutOfBoundsException("Index: "+i);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	
@@ -333,7 +334,7 @@ public final class Vector3 extends APrimitiveVector {
 		case 0: x+=value; return;
 		case 1: y+=value; return;
 		case 2: z+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: "+i);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	
