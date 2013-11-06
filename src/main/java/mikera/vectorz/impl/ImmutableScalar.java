@@ -3,15 +3,28 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.util.ErrorMessages;
 
-public class ImmutableScalar extends AScalar {
+public final class ImmutableScalar extends AScalar {
 	private final double value;
 	
-	public ImmutableScalar(double value) {
+	private ImmutableScalar(double value) {
 		this.value=value;
+	}
+	
+	public static ImmutableScalar create(double value) {
+		return new ImmutableScalar(value);
+	}
+
+	public static ImmutableScalar create(AScalar a) {
+		return create(a.get());
 	}
 	
 	@Override
 	public boolean isMutable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
 		return false;
 	}
 	
@@ -23,6 +36,11 @@ public class ImmutableScalar extends AScalar {
 	@Override
 	public double get() {
 		return value;
+	}
+
+	@Override
+	public void getElements(double[] dest, int offset) {
+		dest[offset] = value;
 	}
 	
 	@Override

@@ -46,7 +46,7 @@ public class TestScalars {
 	public void genericTests() {
 		testScalar(new Scalar(1.0));
 		testScalar(new DoubleScalar(1.0));
-		testScalar(new ImmutableScalar(1.33));
+		testScalar(ImmutableScalar.create(1.33));
 		testScalar(Vector.of(1, 2, 3).slice(1));
 		testScalar(Vector.of(1, 2, 3, 4, 5, 6).slice(1));
 	}
