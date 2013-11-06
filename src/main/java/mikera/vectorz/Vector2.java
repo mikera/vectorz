@@ -157,7 +157,7 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public void add(AVector v) {
-		if(v.length()!=2) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(v.length()!=2) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		x+=v.unsafeGet(0);
 		y+=v.unsafeGet(1);
 	}

@@ -303,7 +303,7 @@ public final class Vector extends AArrayVector {
 	public void sub(AVector v) {
 		if (v instanceof AArrayVector) {sub(((AArrayVector)v)); return;}
 		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			data[i] -= v.unsafeGet(i);
 		}
@@ -363,7 +363,7 @@ public final class Vector extends AArrayVector {
 	
 	public double dotProduct(Vector v) {
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			result+=data[i]*v.data[i];

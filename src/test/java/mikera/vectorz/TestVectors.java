@@ -147,7 +147,7 @@ public class TestVectors {
 		
 		assertEquals(Arrays.hashCode(data),v.hashCode());
 		
-		ArraySubVector v2=new ArraySubVector(v);
+		ArraySubVector v2=v.exactClone();
 		assertEquals(v,v2);
 		assertTrue(v2.isView());
 		

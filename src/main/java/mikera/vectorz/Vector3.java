@@ -305,7 +305,7 @@ public final class Vector3 extends APrimitiveVector {
 	
 	@Override 
 	public void set(AVector v) {
-		if (v.length()!=3) throw new IllegalArgumentException("Can only assign Vector3 with length 3");
+		if (v.length()!=3) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		x=v.unsafeGet(0);
 		y=v.unsafeGet(1);
 		z=v.unsafeGet(2);

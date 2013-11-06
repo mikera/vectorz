@@ -33,18 +33,10 @@ public final class ArraySubVector extends AArrayVector {
 		this.length=length;
 	}
 
-
 	public ArraySubVector(int length) {
 		this.length = length;
 		offset = 0;
 		data = new double[length];
-	}
-
-	public ArraySubVector(ArraySubVector source) {
-		length = source.length;
-		this.offset = 0;
-		data = new double[length];
-		System.arraycopy(source.data, source.offset, this.data, 0, length);
 	}
 	
 	public static ArraySubVector wrap(double[] data, int offset, int length) {
