@@ -289,8 +289,8 @@ public interface INDArray extends Cloneable {
 	public boolean isBoolean();
 	
 	/**
-	 * Returns true if the INDArray is fully mutable in all positions
-	 * i.e. every position can store any valid double value
+	 * If this method returns true, the INDArray is guaranteed to be fully mutable 
+	 * in all positions i.e. every position can store any valid double value
 	 * @return
 	 */
 	public boolean isFullyMutable();

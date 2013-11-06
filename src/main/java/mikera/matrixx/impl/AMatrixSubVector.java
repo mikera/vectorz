@@ -4,6 +4,7 @@ import mikera.vectorz.AVector;
 
 /**
  * Abstract class for matrix sub vector views (rows and columns etc.)
+ * 
  * @author Mike
  */
 @SuppressWarnings("serial")
