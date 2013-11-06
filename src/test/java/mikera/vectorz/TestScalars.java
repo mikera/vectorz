@@ -29,6 +29,25 @@ public class TestScalars {
 			assertTrue(Double.isNaN(s.get()));
 		}
 	}
+	
+	private void testMutability(AScalar s) {
+		assertTrue(s.mutable().isFullyMutable());
+		assertTrue(s.mutable().isMutable());
+
+		assertFalse(s.immutable().isFullyMutable());
+		assertFalse(s.immutable().isMutable());
+		
+		if (s.isMutable()) {
+			s.exactClone().set(12456);
+		} else {
+			try {
+				s.set(5476476);
+				fail("Should nopt be mutable!");
+			} catch (Throwable t) {
+				// OK;
+			}
+		}
+	}
 
 	private void testToString(AScalar s) {
 		assertEquals(Double.toString(s.get()), s.toString());
@@ -36,6 +55,7 @@ public class TestScalars {
 
 	private void testScalar(AScalar s) {
 		testAsVector(s);
+		testMutability(s);
 		testToString(s);
 		assertEquals(0, s.dimensionality());
 
