@@ -487,7 +487,7 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public Vector clone() {
-		return Vector.wrap(DoubleArrays.copyOf(data));
+		return Vector.wrap(data.clone());
 	}
 	
 	@Override
