@@ -88,6 +88,11 @@ public final class Vector1 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public void unsafeSet(int i, double value) {
+		x=value;
+	}
+	
 	@Override 
 	public void fill(double v) {
 		x=v;
