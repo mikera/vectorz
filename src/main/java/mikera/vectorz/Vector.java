@@ -237,14 +237,8 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if (v instanceof AArrayVector) {
-			add(((AArrayVector)v),0); return;
-		}
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		for (int i = 0; i < length; i++) {
-			data[i] += v.unsafeGet(i);
-		}
+		if(length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.addToArray(data, 0);
 	}
 	
 	@Override
