@@ -318,7 +318,13 @@ public final class DoubleArrays {
 		}
 		return true;
 	}
-	
+
+	public static void add(double[] dest, double[] src) {
+		int n=src.length;
+		for (int i=0; i<n; i++) {
+			dest[i]+=src[i];
+		}
+	}
 
 	public static boolean equals(double[] as, int aOffset, double[] bs, int bOffset, int length) {
 		for (int i=0; i<length; i++) {
@@ -358,7 +364,8 @@ public final class DoubleArrays {
 	/**
 	 * Fast double array copy operation. 
 	 * 
-	 * Appears to be faster than data.clone() ??
+	 * Appears to be faster than data.clone() 
+	 * ?? this is debatable, needs more rigorous benchmarking
 	 * 
 	 * @param data
 	 * @return
@@ -367,5 +374,6 @@ public final class DoubleArrays {
 		return data.clone();
 		//return Arrays.copyOf(data, data.length);
 	}
+
 
 }
