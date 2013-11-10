@@ -123,6 +123,20 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	public int columnCount() {
 		return 2;
 	}
+
+	@Override
+	public void add(AMatrix a) {
+		if (a instanceof Matrix22) {
+			add((Matrix22)a); return;
+		}
+		if ((a.rowCount()!=2)||(a.columnCount()!=2)) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+		m00+=a.unsafeGet(0, 0);
+		m01+=a.unsafeGet(0, 1);
+		m10+=a.unsafeGet(1, 0);
+		m11+=a.unsafeGet(1, 1);
+	}
 	
 	public void add(Matrix22 a) {
 		m00+=a.m00;

@@ -223,6 +223,14 @@ public final class Vector2 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public void unsafeSet(int i, double value) {
+		switch (i) {
+		case 0: x=value; return;
+		default: y=value; return;
+		}
+	}
+	
 	@Override 
 	public void fill(double v) {
 		x=v;
