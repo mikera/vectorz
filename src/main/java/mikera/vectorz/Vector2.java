@@ -192,6 +192,11 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double unsafeGet(int i) {
+		return (i==0)?x:y;
+	}
+	
+	@Override
 	public void getElements(double[] data, int offset) {
 		data[offset]=x;
 		data[offset+1]=y;

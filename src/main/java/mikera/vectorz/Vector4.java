@@ -67,6 +67,17 @@ public final class Vector4 extends APrimitiveVector {
 		t+=dt;
 	}
 	
+	@Override
+	public void add(AVector v) {
+		if (v.length()!=4) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		}
+		x+=v.unsafeGet(0);
+		y+=v.unsafeGet(1);
+		z+=v.unsafeGet(2);
+		t+=v.unsafeGet(3);
+	}
+	
 	public void add(Vector4 a) {
 		this.x+=a.x;
 		this.y+=a.y;

@@ -303,6 +303,15 @@ public final class Vector3 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public double unsafeGet(int i) {
+		switch (i) {
+		case 0: return x;
+		case 1: return y;
+		default: return z;
+		}
+	}
+	
 	@Override 
 	public void set(AVector v) {
 		if (v.length()!=3) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
