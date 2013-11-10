@@ -246,6 +246,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	public boolean isSquare() {
 		return true;
 	}
+	
+	@Override
+	public boolean isSymmetric() {
+		return (m01==m10)&&(m20==m02)&&(m21==m12);
+	}
 
 	@Override
 	public Affine34 toAffineTransform() {
