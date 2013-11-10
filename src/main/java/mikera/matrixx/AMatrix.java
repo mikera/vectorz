@@ -1099,29 +1099,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	public AMatrix innerProduct(AMatrix a) {
-		if (a instanceof Matrix) {
-			return innerProduct((Matrix)a);
-		}
-		
-		int rc=this.rowCount();
-		int cc=a.columnCount();
-		int ic=this.columnCount();
-		
-		if ((ic!=a.rowCount())) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		}
-
-		Matrix result=Matrix.create(rc,cc);
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				double acc=0.0;
-				for (int k=0; k<ic; k++) {
-					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
-				}
-				result.unsafeSet(i,j,acc);
-			}
-		}
-		return result;		
+		return Multiplications.multiply(this, a);
 	}
 	
 	public final Vector innerProduct(Vector v) {
