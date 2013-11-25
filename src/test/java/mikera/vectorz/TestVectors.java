@@ -17,6 +17,7 @@ import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
+import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -870,5 +871,9 @@ public class TestVectors {
 		
 		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
 		doGenericTests(ImmutableVector.create(Vector.of()));
+		
+		doGenericTests(RangeVector.create(10,0));
+		doGenericTests(RangeVector.create(-10,3));
+		doGenericTests(RangeVector.create(0,7));
 	}
 }
