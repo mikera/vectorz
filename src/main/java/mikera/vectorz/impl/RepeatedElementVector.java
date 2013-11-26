@@ -72,6 +72,7 @@ public final class RepeatedElementVector extends AConstrainedVector {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		}
 		if (length==this.length) return this;
+		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length,value);
 	}
 
