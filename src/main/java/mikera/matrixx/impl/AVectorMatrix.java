@@ -4,6 +4,8 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -170,6 +172,22 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 		}
 		return result;
 	}	
+	
+	@Override
+	public AVector asVector() {
+		int rc = rowCount();
+		if (rc == 0) return Vector0.INSTANCE;
+		if (rc == 1) return getRow(0);
+		
+		int cc= columnCount();
+		if (cc==1) return getColumn(0);
+
+		AVector v = getRow(0);
+		for (int i = 1; i < rc; i++) {
+			v = Vectorz.join(v, getRow(i));
+		}
+		return v;
+	}
 	
 	@Override
 	public AMatrix clone() {
