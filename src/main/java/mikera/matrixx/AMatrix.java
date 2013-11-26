@@ -16,6 +16,7 @@ import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixRowView;
+import mikera.matrixx.impl.MatrixViewVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.randomz.Hash;
@@ -94,7 +95,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override 
 	public void fill(double value) {
-		asVector().fill(value);
+		int rc = rowCount();
+		int cc = columnCount();
+		for (int row = 0; row < rc; row++) {
+			for (int column = 0; column < cc; column++) {
+				unsafeSet(row,column,value);
+			}
+		}	
 	}
 	
 	/**
@@ -1073,11 +1080,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc= columnCount();
 		if (cc==1) return getColumn(0);
 
-		AVector v = getRow(0);
-		for (int i = 1; i < rc; i++) {
-			v = Vectorz.join(v, getRow(i));
-		}
-		return v;
+		return new MatrixViewVector(this);
+//		AVector v = getRow(0);
+//		for (int i = 1; i < rc; i++) {
+//			v = Vectorz.join(v, getRow(i));
+//		}
+//		return v;
 	}
 	
 	@Override
