@@ -166,6 +166,8 @@ public class AxisVector extends AComputedVector implements ISparse {
 		if ((start<0)||(start+length>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
 		}
+		if (length==this.length) return this;
+		
 		if ((start<=axis)&&(start+length>axis)) {
 			return new AxisVector(axis-start,length);
 		} else {

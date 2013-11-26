@@ -307,6 +307,12 @@ public class TestVectors {
 		
 		AVector zv=v.subVector(len/2, 0);
 		assertTrue(zv==Vector0.INSTANCE);
+		
+		// whole subvector should return same vector
+		if (len>0) {
+			AVector fv=v.subVector(0, len);
+			assertTrue(fv==v);
+		}
 	}
 	
 	private void testClone(AVector v) {

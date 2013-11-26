@@ -166,11 +166,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Changes to the sub-vector will be reflected in this vector
 	 */
 	public AVector subVector(int offset, int length) {
-		if (length==0) {
-			if ((offset>=0)&&(offset<=length())) {return Vector0.INSTANCE;} else {
-				throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-			}
+		int len=this.length();
+		if ((offset<0)||(offset+length>len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		}
+
+		if (length==0) return Vector0.INSTANCE;
+		if (length==len) return this;
+		
 		return new WrappedSubVector(this,offset,length);
 	}
 

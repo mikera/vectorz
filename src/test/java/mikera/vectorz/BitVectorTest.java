@@ -20,7 +20,7 @@ public class BitVectorTest {
 	public void testSubVector() {
 		BitVector b=BitVector.of(0,1,0);
 		AVector sb=b.subVector(1, 1);
-		System.out.println(sb.getClass());
+		
 		assertEquals(Vector.of(1),sb);
 		assertTrue(sb.isView());
 	}

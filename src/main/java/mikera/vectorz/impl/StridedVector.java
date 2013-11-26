@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class StridedVector extends AStridedVector {
@@ -104,15 +105,18 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		assert(start>=0);
-		assert((start+length)<=this.length);
+		int len=this.length();
+		if ((start<0)||(start+length>len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
+
+		if (length==0) return Vector0.INSTANCE;
+		if (length==len) return this;
+		
 		if (length==1) {
 			return ArraySubVector.wrap(data, offset+start*stride, 1);
-		} else if (length>0) {
-			return wrapStrided(data,offset+start*stride,length,stride);
-		} else {
-			return Vector0.INSTANCE;
-		}
+		} 
+		return wrapStrided(data,offset+start*stride,length,stride);
 	}
 	
 	@Override
