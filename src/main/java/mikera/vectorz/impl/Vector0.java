@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.io.ObjectStreamException;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Special singleton zero length vector class.
@@ -97,6 +98,12 @@ public final class Vector0 extends APrimitiveVector {
 	@Override
 	public Vector0 immutable() {
 		return this;
+	}
+	
+	@Override
+	public Vector0 subVector(int start, int length) {
+		if ((start==0)&&(length==0)) return this;
+		throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
 	}
 
 	/**
