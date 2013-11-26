@@ -444,14 +444,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 
 	public void set(AMatrix a) {
 		int rc = rowCount();
-		if (a.rowCount() != rc)
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		int cc = columnCount();
-		if (a.columnCount() != cc)
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		if ((a.rowCount() != rc)||(a.columnCount()!=cc)) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));			
+		}
 		for (int row = 0; row < rc; row++) {
 			for (int column = 0; column < cc; column++) {
-				set(row, column, a.get(row, column));
+				unsafeSet(row, column, a.unsafeGet(row, column));
 			}
 		}
 	}
