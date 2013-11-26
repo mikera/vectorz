@@ -4,6 +4,7 @@ import java.util.List;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
 
 @SuppressWarnings("serial")
@@ -67,6 +68,16 @@ public class MatrixViewVector extends AMatrixSubVector {
 		return source.isMutable();
 	}
 	
+	@Override
+	public boolean isView() {
+		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return source.isZero();
+	}
+
 	@Override 
 	public void getElements(double[] data, int offset) {
 		source.getElements(data,offset);
@@ -90,6 +101,11 @@ public class MatrixViewVector extends AMatrixSubVector {
 	@Override
 	public double magnitudeSquared() {
 		return source.elementSquaredSum();
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		source.applyOp(op);
 	}
 	
 	@Override
