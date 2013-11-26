@@ -281,4 +281,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		
 		super.validate();
 	}
+	
+	@Override 
+	public abstract ADiagonalMatrix exactClone();
 }

@@ -151,6 +151,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 		return dimensions;
 	}
 	
+	@Override
+	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
+		return a.exactClone();
+	}
+	
 	@Override 
 	public AMatrix innerProduct(AMatrix a) {
 		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
