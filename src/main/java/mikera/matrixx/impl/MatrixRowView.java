@@ -45,7 +45,6 @@ public class MatrixRowView extends AMatrixSubVector {
 	public boolean isFullyMutable() {
 		return source.isFullyMutable();
 	}
-
 	
 	@Override
 	public MatrixRowView exactClone() {
