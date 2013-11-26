@@ -1183,6 +1183,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public AVector immutable() {
+		if (!isMutable()) return this;
 		return ImmutableVector.create(this);
 	}
 	
