@@ -86,4 +86,14 @@ public class ArrayIndexScalar extends AScalar implements IStridedArray {
 	public double[] asDoubleArray() {
 		return isPackedArray()?array:null;
 	}
+	
+	@Override
+	public ArrayIndexScalar mutable() {
+		return this;
+	}
+
+	@Override
+	public ImmutableScalar immutable() {
+		return ImmutableScalar.create(get());
+	}
 }

@@ -130,7 +130,7 @@ public final class StridedMatrix extends AStridedMatrix {
 	public double get(int row, int column) {
 		if ((row < 0) || (column < 0) || (row >= rows)
 				|| (column >= cols))
-			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		return data[index(row,column)];
 	}
 	

@@ -120,6 +120,17 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	public double calculateElement(int i, Vector v) {
 		return data[i]*v.unsafeGet(i);
 	}
+	
+	@Override
+	public void transform(Vector source, Vector dest) {
+		int rc = rowCount();
+		int cc = rc;
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		for (int i = 0; i < rc; i++) {
+			dest.data[i]=source.data[i]*this.data[i];
+		}
+	}
 
 	@Override
 	public void transformInPlace(AVector v) {
@@ -154,6 +165,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data);
+	}
+	
+	@Override
 	public DiagonalMatrix clone() {
 		DiagonalMatrix m=new DiagonalMatrix(data);
 		return m;
@@ -183,6 +199,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public double unsafeGetDiagonalValue(int i) {
+		return data[i];
+	}
+	
+	@Override
 	public Vector getLeadingDiagonal() {
 		return Vector.wrap(data);
 	}
@@ -195,11 +216,12 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return super.innerProduct(a);
 	}
 	
-	public DiagonalMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
+	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
+		if (!(a instanceof DiagonalMatrix)) return a.innerProduct(this);
+		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		for (int i=0; i<dimensions; i++) {
-			result.data[i]*=a.getDiagonalValue(i);
+			result.data[i]*=a.unsafeGetDiagonalValue(i);
 		}
 		return result;
 	}
@@ -215,5 +237,4 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		
 		super.validate();
 	}
-
 }

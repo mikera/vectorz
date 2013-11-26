@@ -3,6 +3,7 @@ package mikera.indexz;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * Class to represent a mutable list of integer indexes, typically used for indexing into
@@ -156,7 +157,7 @@ public final class Index extends AIndex {
 	
 	@Override
 	public Index clone() {
-		return new Index(data.clone());
+		return new Index(IntArrays.copyOf(data));
 	}
 	
 	/**

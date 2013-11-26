@@ -11,16 +11,28 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class ZeroVector extends ComputedVector implements ISparse {
+public final class ZeroVector extends AComputedVector implements ISparse {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
 	private int length;
+	
+	private static final AVector[] ZERO_VECTORS = new AVector[] {
+		Vector0.INSTANCE,
+		new ZeroVector(1),
+		new ZeroVector(2),
+		new ZeroVector(3),
+		new ZeroVector(4)
+	};
 	
 	public ZeroVector(int dimensions) {
 		length=dimensions;
 	}
 	
-	public static ZeroVector create(int dimensions) {
+	public static AVector create(int dimensions) {
+		if (dimensions<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(dimensions));
+		if (dimensions<ZERO_VECTORS.length) {
+			return ZERO_VECTORS[dimensions];
+		}
 		return new ZeroVector(dimensions);
 	}
 
@@ -31,7 +43,7 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException("Different vector lengths");
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return 0.0;
 	}
 	
@@ -41,8 +53,8 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	}
 	
 	@Override
-	public ZeroVector innerProduct(AMatrix m) {
-		if (m.rowCount()!=length) throw new IllegalArgumentException("Incompatible vector*matrix sizes");
+	public AVector innerProduct(AMatrix m) {
+		if (m.rowCount()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		return ZeroVector.create(m.columnCount());
 	}
 
@@ -88,7 +100,7 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	}
 
 	@Override
-	public boolean isZeroVector() {
+	public boolean isZero() {
 		return true;
 	}
 	
@@ -120,6 +132,27 @@ public final class ZeroVector extends ComputedVector implements ISparse {
 	@Override
 	public double density() {
 		return 0.0;
+	}
+	
+	@Override
+	public AVector subVector(int offset, int length) {
+		if ((offset<0)||(offset+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
+		if (length==this.length) return this;
+		return ZeroVector.create(length);
+	}
+	
+	@Override 
+	public AVector join(AVector a) {
+		if (a instanceof ZeroVector) {
+			return join((ZeroVector)a);
+		}
+		return super.join(a);
+	}
+	
+	public AVector join(ZeroVector a) {
+		return ZeroVector.create(length+a.length);
 	}
 
 }

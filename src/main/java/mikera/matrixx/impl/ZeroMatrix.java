@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import java.util.Arrays;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.transformz.ATransform;
@@ -26,6 +27,10 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	private ZeroMatrix(int rows, int columns) {
 		outputDimensions=rows;
 		inputDimensions=columns;
+	}
+	
+	public static ZeroMatrix create(int rows, int columns) {
+		return new ZeroMatrix(rows,columns);
 	}
 	
 	@Override
@@ -65,7 +70,7 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	
 	@Override
 	public void multiply(double factor) {
-		// no change
+		// no change - should maybe be an exception because immutable?
 	}
 	
 	@Override
@@ -76,6 +81,11 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+rowCount(),0.0);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+rowCount()*columnCount(),0.0);
 	}
 
 	@Override
@@ -140,7 +150,7 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
-	public boolean isZeroMatrix() {
+	public boolean isZero() {
 		return true;
 	}
 	
@@ -205,21 +215,27 @@ public final class ZeroMatrix extends ABooleanMatrix {
 
 	@Override
 	public boolean equals(AMatrix m) {
-		return m.isZeroMatrix();
+		return m.isZero();
 	}
 	
 	@Override
 	public ZeroMatrix getTranspose() {
+		if (inputDimensions==outputDimensions) return this;
 		return ZeroMatrix.create(inputDimensions, outputDimensions);
 	}
-
-	public static ZeroMatrix create(int rows, int columns) {
-		return new ZeroMatrix(rows,columns);
+	
+	@Override
+	public Matrix toMatrix() {
+		return Matrix.create(rowCount(), columnCount());
+	}
+	
+	@Override
+	public Matrix toMatrixTranspose() {
+		return Matrix.create(columnCount(), rowCount());
 	}
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		assert(inputDimensions==outputDimensions);
 		return RepeatedElementVector.create(inputDimensions, 0.0);
 	}
 	

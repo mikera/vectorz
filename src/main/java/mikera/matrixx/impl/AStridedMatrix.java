@@ -39,6 +39,22 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		int cc=columnCount();
+		for (int i=0; i<cc; i++) {
+			dest[i+destOffset]=unsafeGet(row,i);
+		}
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			dest[i+destOffset]=unsafeGet(i,col);
+		}
+	}
+	
+	@Override
 	public int[] getStrides() {
 		return new int[] {rowStride(), columnStride()};
 	}

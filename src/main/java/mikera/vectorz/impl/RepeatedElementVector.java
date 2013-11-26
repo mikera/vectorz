@@ -1,5 +1,8 @@
 package mikera.vectorz.impl;
 
+import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
+
 
 /**
  * A mutable vector that always has a single repeated component.
@@ -9,11 +12,11 @@ package mikera.vectorz.impl;
  */
 @SuppressWarnings("serial")
 public final class RepeatedElementVector extends AConstrainedVector {
-	private final int dimensions;
+	private final int length;
 	private final double value;
 	
 	public RepeatedElementVector(int dims, double value) {
-		this.dimensions=dims;
+		this.length=dims;
 		this.value=value;
 	}
 	
@@ -24,7 +27,7 @@ public final class RepeatedElementVector extends AConstrainedVector {
 
 	@Override
 	public int length() {
-		return dimensions;
+		return length;
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	
 	@Override
 	public double get(int i) {
-		if (!((i>=0)&&(i<dimensions))) throw new IndexOutOfBoundsException();
+		if (!((i>=0)&&(i<length))) throw new IndexOutOfBoundsException();
 		return value;
 	}
 	
@@ -50,21 +53,31 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	
 	@Override
 	public double elementSum() {
-		return dimensions*value;
+		return length*value;
 	}
 	
 	@Override
 	public long nonZeroCount() {
-		return (value==0.0)?0:dimensions;
+		return (value==0.0)?0:length;
 	}
 
 	@Override
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException(this.getClass().toString()+" is not mutable");
 	}
+	
+	@Override
+	public AVector subVector(int offset, int length) {
+		if ((offset<0)||(offset+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
+		if (length==this.length) return this;
+		if (length==0) return Vector0.INSTANCE;
+		return RepeatedElementVector.create(length,value);
+	}
 
 	@Override 
 	public RepeatedElementVector exactClone() {
-		return new RepeatedElementVector(dimensions,value);
+		return new RepeatedElementVector(length,value);
 	}
 }

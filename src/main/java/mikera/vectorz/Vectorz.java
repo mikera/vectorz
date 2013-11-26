@@ -68,8 +68,14 @@ public class Vectorz {
 		return v;
 	}
 	
+	/**
+	 * Creates an immutable zero vector of the specified length.
+	 * @param length
+	 * @return
+	 */
 	public static AVector createZeroVector(int length) {
-		return newVector(length);
+		if (length==0) return Vector0.INSTANCE;
+		return ZeroVector.create(length);
 	}
 	
 	public static Vector wrap(double[] data) {
@@ -102,7 +108,7 @@ public class Vectorz {
 	}
 
 	/**
-	 * Returns a vector filled with zeros of the specified length.
+	 * Returns a new mutable vector filled with zeros of the specified length.
 	 * 
 	 * Attempts to select the most efficient mutable concrete Vector type for any given length.
 	 * @param length
@@ -115,7 +121,7 @@ public class Vectorz {
 			case 2: return new Vector2();
 			case 3: return new Vector3();
 			case 4: return new Vector4();
-			default: return new Vector(length);
+			default: return Vector.createLength(length);
 		}
 	}
 
@@ -123,17 +129,22 @@ public class Vectorz {
 		return newVector(v.length());
 	}
 
+	/**
+	 * Creates a mutable clone of a given vector
+	 * @param vector
+	 * @return
+	 */
 	public static AVector create(AVector vector) {
-		if (!vector.isView()) return vector.clone();
-		AVector nv=newVector(vector.length());
-		vector.copyTo(nv, 0);
-		return nv;
+		return vector.clone();
 	}	
 	
+	/**
+	 * Creates a mutable clone of a given vector
+	 * @param vector
+	 * @return
+	 */
 	public static AVector create(IVector vector) {
-		AVector nv=newVector(vector.length());
-		nv.set(vector);
-		return nv;
+		return (AVector)vector.clone();
 	}	
 
 	public static Scalar createScalar(double value) {
@@ -152,20 +163,9 @@ public class Vectorz {
 		return v;
 	}
 
-	public static AVector createMutableVector(AVector t) {
-		AVector v=newVector(t.length());
-		v.set(t);
-		return v;
+	public static AVector createMutableVector(AVector v) {
+		return v.clone();
 	}
-	
-	private static final AVector[] ZERO_VECTORS = new AVector[] {
-		Vector0.INSTANCE,
-		new ZeroVector(1),
-		new ZeroVector(2),
-		new ZeroVector(3),
-		new ZeroVector(4)
-	};
-	
 	
 	/**
 	 * Returns an immutable vector of zeros
@@ -173,8 +173,7 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector immutableZeroVector(int dimensions) {
-		if (dimensions>=ZERO_VECTORS.length) return new ZeroVector(dimensions);
-		return ZERO_VECTORS[dimensions];
+		return ZeroVector.create(dimensions);
 	}
 	
 	// ====================================

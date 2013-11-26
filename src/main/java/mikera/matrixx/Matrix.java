@@ -2,8 +2,10 @@ package mikera.matrixx;
 
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import mikera.arrayz.INDArray;
+import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
@@ -13,6 +15,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -21,14 +24,19 @@ import mikera.vectorz.util.VectorzException;
 /** 
  * Standard MxN matrix class backed by a fully packed double[] array
  * 
+ * This is the most efficient Vectorz type for 2D matrices.
+ * 
  * @author Mike
  */
 public final class Matrix extends ADenseArrayMatrix {
 	
-	public Matrix(int rowCount, int columnCount) {
+	private Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
 	}
 	
+	/**
+	 * Creates a new zero-filled matrix of the specified shape.
+	 */
 	public static Matrix create(int rowCount, int columnCount) {
 		return new Matrix(rowCount,columnCount);
 	}
@@ -69,6 +77,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data,0,data.length);
+	}
+	
+	@Override
 	public boolean isPackedArray() {
 		return true;
 	}
@@ -96,24 +109,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	public Vector innerProduct(AVector a) {
 		if (a instanceof Vector) return innerProduct((Vector)a);
 		return transform(a);
-	}
-	
-	public Vector innerProduct(Vector a) {
-		int rc=rowCount();
-		int cc=columnCount();
-		if ((cc!=a.length())) {
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		}		
-		Vector result=Vector.createLength(rc);
-		for (int i=0; i<rc; i++) {
-			int di=i*cc;
-			double acc=0.0;
-			for (int j=0; j<cc; j++) {
-				acc+=data[di+j]*a.data[j];
-			}
-			result.unsafeSet(i,acc);
-		}
-		return result;
 	}
 	
 	@Override
@@ -149,21 +144,22 @@ public final class Matrix extends ADenseArrayMatrix {
 		if ((this.columnCount()!=a.rowCount())) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		}
-		int rc=this.rowCount();
-		int cc=a.columnCount();
-		int ic=this.columnCount();
-		Matrix result=Matrix.create(rc,cc);
-		for (int i=0; i<rc; i++) {
-			int toffset=ic*i;
-			for (int j=0; j<cc; j++) {
-				double acc=0.0;
-				for (int k=0; k<ic; k++) {
-					acc+=data[toffset+k]*a.unsafeGet(k, j);
-				}
-				result.unsafeSet(i,j,acc);
-			}
-		}
-		return result;
+		return Multiplications.multiply(this, a);
+//		int rc=this.rowCount();
+//		int cc=a.columnCount();
+//		int ic=this.columnCount();
+//		Matrix result=Matrix.create(rc,cc);
+//		for (int i=0; i<rc; i++) {
+//			int toffset=ic*i;
+//			for (int j=0; j<cc; j++) {
+//				double acc=0.0;
+//				for (int k=0; k<ic; k++) {
+//					acc+=data[toffset+k]*a.unsafeGet(k, j);
+//				}
+//				result.unsafeSet(i,j,acc);
+//			}
+//		}
+//		return result;
 	}
 	
 	@Override
@@ -238,7 +234,18 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public Vector transform (Vector a) {
+		Vector v=Vector.createLength(rows);
+		transform(a,v);
+		return v;
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
 		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		int index=0;
@@ -248,6 +255,23 @@ public final class Matrix extends ADenseArrayMatrix {
 				acc+=data[index++]*source.unsafeGet(j);
 			}
 			dest.unsafeSet(i,acc);
+		}
+	}
+	
+	@Override
+	public void transform(Vector source, Vector dest) {
+		int rc = rowCount();
+		int cc = columnCount();
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		int di=0;
+		for (int row = 0; row < rc; row++) {
+			double total = 0.0;
+			for (int column = 0; column < cc; column++) {
+				total += data[di+column] * source.data[column];
+			}
+			di+=cc;
+			dest.data[row]=total;
 		}
 	}
 	
@@ -320,6 +344,23 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public final Matrix toMatrix() {
+		return this;
+	}
+	
+	@Override
+	public Matrix toMatrixTranspose() {
+		int rc = rowCount();
+		int cc = columnCount();
+		Matrix m = Matrix.create(cc, rc);
+		double[] targetData=m.data;
+		for (int j=0; j<cc; j++) {
+			copyColumnTo(j,targetData,j*rc);
+		}
+		return m;
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
@@ -365,11 +406,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public void add(Matrix m) {
-		assert(rowCount()==m.rowCount());
-		assert(columnCount()==m.columnCount());
-		for (int i=0; i<data.length; i++) {
-			data[i]+=m.data[i];
-		}
+		if ((rowCount()!=m.rowCount())||(columnCount()!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		DoubleArrays.add(data, m.data);
 	}
 
 	@Override
@@ -416,16 +454,20 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public void set(AMatrix a) {
-		int rc = rowCount();
-		if (!(rc==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		int cc = columnCount();
-		if (!(cc==a.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		if ((rowCount()!=a.rowCount())||(columnCount()!=a.columnCount())) {
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		}
 		a.getElements(this.data, 0);
 	}
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(data, 0, dest, offset, data.length);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new StridedElementIterator(data,0,rows*cols,1);
 	}
 	
 	@Override
@@ -475,6 +517,14 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public StridedVector getBand(int band) {
+		int cc=columnCount();
+		int rc=rowCount();
+		if ((band>=cc)||(band<=-rc)) return null;
+		return StridedVector.wrap(data, (band>=0)?band:(-band)*cc, bandLength(band), cc+1);
+	}
+	
+	@Override
 	protected final int index(int row, int col) {
 		return row*cols+col;
 	}
@@ -488,5 +538,4 @@ public final class Matrix extends ADenseArrayMatrix {
 	public double[] getArray() {
 		return data;
 	}
-
 }

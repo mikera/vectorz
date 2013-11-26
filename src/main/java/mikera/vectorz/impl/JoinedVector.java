@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A vector that represents the concatenation of two vectors.
@@ -34,16 +35,20 @@ public final class JoinedVector extends AVector {
 	 * @return
 	 */
 	public static AVector joinVectors(AVector left, AVector right) {
+		int ll=left.length(); if (ll==0) return right;
+		int rl=right.length(); if (rl==0) return left;
 		// balancing in case of nested joined vectors
-		while ((left.length()>right.length()*2)&&(left instanceof JoinedVector)) {
+		while ((ll>rl*2)&&(left instanceof JoinedVector)) {
 			JoinedVector bigLeft=((JoinedVector)left);
 			left=bigLeft.left;
 			right=joinVectors(bigLeft.right,right);
+			ll=left.length(); rl=right.length();
 		}
-		while ((left.length()*2<right.length())&&(right instanceof JoinedVector)) {
+		while ((ll*2<rl)&&(right instanceof JoinedVector)) {
 			JoinedVector bigRight=((JoinedVector)right);
 			left=joinVectors(left,bigRight.left);
 			right=bigRight.right;
+			ll=left.length(); rl=right.length();
 		} 
 		return new JoinedVector(left,right);
 	}
@@ -113,9 +118,9 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
-		left.copyTo(data, offset);
-		right.copyTo(data, offset+split);
+	public void getElements(double[] data, int offset) {
+		left.getElements(data, offset);
+		right.getElements(data, offset+split);
 	}
 	
 	@Override
@@ -134,19 +139,20 @@ public final class JoinedVector extends AVector {
 	public void copyTo(int start, AVector dest, int destOffset, int length) {
 		subVector(start,length).copyTo(dest, destOffset);
 	}
-
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		assert(start>=0);
-		assert((start+length)<=this.length);
-		if ((start==0)&&(length==this.length)) return this;
+		int end=start+length;
+		if ((start<0)||(end>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==this.length) return this;
 		if (start>=split) return right.subVector(start-split, length);
-		if ((start+length)<=split) return left.subVector(start, length);
+		if (end<=split) return left.subVector(start, length);
 		
 		AVector v1=left.subVector(start, split-start);
 		AVector v2=right.subVector(0, length-(split-start));
-		return new JoinedVector(v1,v2);
+		return v1.join(v2);
 	}
 	
 	@Override

@@ -44,6 +44,16 @@ abstract class ADelegatedMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return source.unsafeGet(row,column);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		source.unsafeSet(row,column,value);
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		source.applyOp(op);
 	}

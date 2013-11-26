@@ -10,7 +10,6 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
-import mikera.arrayz.SliceArray;
 import mikera.matrixx.Matrix;
 import mikera.util.Maths;
 import mikera.vectorz.Ops;
@@ -69,6 +68,27 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		for (int i=0; i<sc; i++) {
 			INDArray s=slice(i);
 			if (!s.isBoolean()) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isSameShape(INDArray a) {
+		int dims=dimensionality();
+		if (dims!=a.dimensionality()) return false;
+		for (int i=0; i<dims; i++) {
+			if (getShape(i)!=a.getShape(i)) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		if (dimensionality()==0) return get()==0.0;
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			INDArray s=slice(i);
+			if (!s.isZero()) return false;
 		}
 		return true;
 	}
@@ -369,6 +389,34 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void divide(INDArray a) {
+		int dims=dimensionality();
+		if (dims==0) {set(get()/a.get()); return;}
+		int adims=a.dimensionality();
+		if (adims==0) {scale(1.0/a.get()); return;}
+		
+		int n=sliceCount();
+		int na=a.sliceCount();
+		if (dims==adims) {
+			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			for (int i=0; i<n; i++) {
+				slice(i).divide(a.slice(i));
+			}
+		} else if (adims<dims) {
+			for (int i=0; i<n; i++) {
+				slice(i).divide(a);
+			}	
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+	}
+	
+	@Override
+	public void divide(double factor) {
+		multiply(1.0/factor);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		if (dimensionality()==0) {
 			return (get()==0.0)?0:1;
@@ -607,7 +655,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray broadcastCloneLike(INDArray target) {
+		INDArray r=this;
+		if (r.dimensionality()<target.dimensionality()) r=r.broadcastLike(target);
+		return r.clone();
+	}
+	
+	@Override
 	public void validate() {
 		// TODO: any generic validation?
 	}
+
 }

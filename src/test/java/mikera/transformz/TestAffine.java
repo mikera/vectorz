@@ -81,7 +81,7 @@ public class TestAffine {
 		AVector r=Vectorz.newVector(dimensions);
 		
 		t.transformNormal(d, r);
-		assertTrue(r.isZeroVector()||r.isUnitLengthVector());
+		assertTrue(r.isZero()||r.isUnitLengthVector());
 	}
 	
 	private void doAffineTests(AAffineTransform t) {
@@ -121,6 +121,9 @@ public class TestAffine {
 		Affine34 a34=new Affine34(Matrixx.createRandomSquareMatrix(3),Vectorz.createUniformRandomVector(3));
 		doAffineTests(a34);
 		
+		Affine23 a23=new Affine23(Matrixx.createRandomSquareMatrix(2),Vectorz.createUniformRandomVector(2));
+		doAffineTests(a23);
+	
 		Translation3 t3=new Translation3(Vectorz.createUniformRandomVector(3));
 		doAffineTests(t3);
 

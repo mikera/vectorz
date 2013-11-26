@@ -66,6 +66,29 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 				sa,ca);
 	}
 	
+	public static Matrix22 createScaleMatrix(double d) {
+		return new Matrix22(d,0,0,d);
+	}
+	
+	/**
+	 * Creates a new mutable 2D identity matrix
+	 * @return
+	 */
+	public static Matrix22 createIdentity() {
+		return new Matrix22(1,0,0,1);
+	}
+	
+	public static Matrix22 createReflectionMatrix(AVector normal) {
+		return createReflectionMatrix(Vector2.create(normal));
+	}
+	
+	public static Matrix22 createReflectionMatrix(Vector2 normal) {
+		double x=normal.x, y=normal.y;
+		double ca=x*x-y*y;
+		double sa=2*x*y;
+		return new Matrix22(ca, sa, sa, -ca);
+	}
+	
 	@Override
 	public void multiply(double factor) {
 		m00*=factor; m01*=factor;
@@ -99,6 +122,20 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	@Override
 	public int columnCount() {
 		return 2;
+	}
+
+	@Override
+	public void add(AMatrix a) {
+		if (a instanceof Matrix22) {
+			add((Matrix22)a); return;
+		}
+		if ((a.rowCount()!=2)||(a.columnCount()!=2)) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+		m00+=a.unsafeGet(0, 0);
+		m01+=a.unsafeGet(0, 1);
+		m10+=a.unsafeGet(1, 0);
+		m11+=a.unsafeGet(1, 1);
 	}
 	
 	public void add(Matrix22 a) {
@@ -247,6 +284,14 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public void getElements(double[] data, int offset) {
+		data[offset++]=m00;
+		data[offset++]=m01;
+		data[offset++]=m10;
+		data[offset++]=m11;
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Matrix22) {
 			return equals((Matrix22)o);
@@ -271,4 +316,5 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	public Matrix22 exactClone() {
 		return new Matrix22(this);
 	}
+
 }

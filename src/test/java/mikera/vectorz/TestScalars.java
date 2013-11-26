@@ -1,10 +1,11 @@
 package mikera.vectorz;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.*;
 import mikera.arrayz.TestArrays;
 import mikera.vectorz.impl.DoubleScalar;
+import mikera.vectorz.impl.ImmutableScalar;
 
 @SuppressWarnings("deprecation")
 public class TestScalars {
@@ -23,8 +24,29 @@ public class TestScalars {
 		assertEquals(s.get(), v.get(0), 0.0);
 		
 		// confirm that asVector has produced a view
-		v.set(0,Double.NaN);
-		assertTrue(Double.isNaN(s.get()));
+		if (v.isMutable()) {
+			v.set(0,Double.NaN);
+			assertTrue(Double.isNaN(s.get()));
+		}
+	}
+	
+	private void testMutability(AScalar s) {
+		assertTrue(s.mutable().isFullyMutable());
+		assertTrue(s.mutable().isMutable());
+
+		assertFalse(s.immutable().isFullyMutable());
+		assertFalse(s.immutable().isMutable());
+		
+		if (s.isMutable()) {
+			s.exactClone().set(12456);
+		} else {
+			try {
+				s.set(5476476);
+				fail("Should nopt be mutable!");
+			} catch (Throwable t) {
+				// OK;
+			}
+		}
 	}
 
 	private void testToString(AScalar s) {
@@ -33,6 +55,7 @@ public class TestScalars {
 
 	private void testScalar(AScalar s) {
 		testAsVector(s);
+		testMutability(s);
 		testToString(s);
 		assertEquals(0, s.dimensionality());
 
@@ -42,7 +65,8 @@ public class TestScalars {
 	@Test
 	public void genericTests() {
 		testScalar(new Scalar(1.0));
-		testScalar(new DoubleScalar(1.0));
+		testScalar(new DoubleScalar(1.0)); // deprecated but still test it
+		testScalar(ImmutableScalar.create(1.33));
 		testScalar(Vector.of(1, 2, 3).slice(1));
 		testScalar(Vector.of(1, 2, 3, 4, 5, 6).slice(1));
 	}

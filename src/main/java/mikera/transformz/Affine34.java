@@ -14,28 +14,29 @@ import mikera.vectorz.Vector3;
  * @author Mike
  */
 public final class Affine34 extends AAffineTransform  implements ISpecialisedTransform {
-	public double m00,m01,m02,m03,
-                  m10,m11,m12,m13,
-                  m20,m21,m22,m23;
+	public double m00,m01,m02,tr0,
+                  m10,m11,m12,tr1,
+                  m20,m21,m22,tr2;
 	
 	public Affine34() {	
 	}
 	
-	public Affine34(double m00, double m01, double m02, double m03, 
-			        double m10, double m11, double m12, double m13,
-			        double m20, double m21, double m22, double m23) {
+	public Affine34(double m00, double m01, double m02, double tr0, 
+			        double m10, double m11, double m12, double tr1,
+			        double m20, double m21, double m22, double tr2) {
 		this.m00=m00;
 		this.m01=m01;
 		this.m02=m02;
-		this.m03=m03;
 		this.m10=m10;
 		this.m11=m11;
 		this.m12=m12;
-		this.m13=m13;
 		this.m20=m20;
 		this.m21=m21;
 		this.m22=m22;
-		this.m23=m23;
+		
+		this.tr0=tr0;
+		this.tr1=tr1;
+		this.tr2=tr2;
 	}
 	
 	public Affine34(AMatrix matrix, ATranslation trans) {
@@ -43,21 +44,22 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	public Affine34(AMatrix m, AVector v) {
-		assert(v.length()==3);
-		assert(m.inputDimensions()==3);
-		assert(m.outputDimensions()==3);
-		m00=m.get(0,0);
-		m01=m.get(0,1);
-		m02=m.get(0,2);
-		m10=m.get(1,0);
-		m11=m.get(1,1);
-		m12=m.get(1,2);
-		m20=m.get(2,0);
-		m21=m.get(2,1);
-		m22=m.get(2,2);
-		m03=v.get(0);
-		m13=v.get(1);
-		m23=v.get(2);
+		if ((v.length()!=3)||(m.inputDimensions()!=3)||(m.outputDimensions()!=3)) {
+			throw new IllegalArgumentException("Wrong source sizes for Affine34");
+		}
+		m00=m.unsafeGet(0,0);
+		m01=m.unsafeGet(0,1);
+		m02=m.unsafeGet(0,2);
+		m10=m.unsafeGet(1,0);
+		m11=m.unsafeGet(1,1);
+		m12=m.unsafeGet(1,2);
+		m20=m.unsafeGet(2,0);
+		m21=m.unsafeGet(2,1);
+		m22=m.unsafeGet(2,2);
+		
+		tr0=v.unsafeGet(0);
+		tr1=v.unsafeGet(1);
+		tr2=v.unsafeGet(2);
 	}
 	
 	public Affine34(Matrix33 m, AVector v) {
@@ -73,9 +75,10 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 		m20=m.m20;
 		m21=m.m21;
 		m22=m.m22;
-		m03=v.get(0);
-		m13=v.get(1);
-		m23=v.get(2);
+		
+		tr0=v.get(0);
+		tr1=v.get(1);
+		tr2=v.get(2);
 	}
 
 	@Override
@@ -95,7 +98,7 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	
 	@Override
 	public Vector3 copyOfTranslationVector() {
-		return Vector3.of(m03,m13,m23);
+		return Vector3.of(tr0,tr1,tr2);
 	}
 
 	@Override
@@ -105,9 +108,9 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 			return;
 		}
 		double x=source.get(0), y=source.get(1), z=source.get(2);
-		dest.set(0,((m00*x)+(m01*y)+(m02*z)+m03));
-		dest.set(1,((m10*x)+(m11*y)+(m12*z)+m13));
-		dest.set(2,((m20*x)+(m21*y)+(m22*z)+m23));
+		dest.set(0,((m00*x)+(m01*y)+(m02*z)+tr0));
+		dest.set(1,((m10*x)+(m11*y)+(m12*z)+tr1));
+		dest.set(2,((m20*x)+(m21*y)+(m22*z)+tr2));
 	}
 	
 	@Override
@@ -135,23 +138,23 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 			return;
 		}
 		double x=dest.get(0), y=dest.get(1), z=dest.get(2);
-		dest.set(0,((m00*x)+(m01*y)+(m02*z)+m03));
-		dest.set(1,((m10*x)+(m11*y)+(m12*z)+m13));
-		dest.set(2,((m20*x)+(m21*y)+(m22*z)+m23));
+		dest.set(0,((m00*x)+(m01*y)+(m02*z)+tr0));
+		dest.set(1,((m10*x)+(m11*y)+(m12*z)+tr1));
+		dest.set(2,((m20*x)+(m21*y)+(m22*z)+tr2));
 	}
 	
 	public void transform(Vector3 source, Vector3 dest) {
 		Vector3 s=source;
-		dest.x=((m00*s.x)+(m01*s.y)+(m02*s.z)+m03);
-		dest.y=((m10*s.x)+(m11*s.y)+(m12*s.z)+m13);
-		dest.z=((m20*s.x)+(m21*s.y)+(m22*s.z)+m23);
+		dest.x=((m00*s.x)+(m01*s.y)+(m02*s.z)+tr0);
+		dest.y=((m10*s.x)+(m11*s.y)+(m12*s.z)+tr1);
+		dest.z=((m20*s.x)+(m21*s.y)+(m22*s.z)+tr2);
 	}
 	
 	public void transformInPlace(Vector3 dest) {
 		Vector3 s=dest;
-		double tx=((m00*s.x)+(m01*s.y)+(m02*s.z)+m03);
-		double ty=((m10*s.x)+(m11*s.y)+(m12*s.z)+m13);
-		double tz=((m20*s.x)+(m21*s.y)+(m22*s.z)+m23);
+		double tx=((m00*s.x)+(m01*s.y)+(m02*s.z)+tr0);
+		double ty=((m10*s.x)+(m11*s.y)+(m12*s.z)+tr1);
+		double tz=((m20*s.x)+(m21*s.y)+(m22*s.z)+tr2);
 		s.x=tx; s.y=ty; s.z=tz;
 	}
 
@@ -191,12 +194,12 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 		double t21=(m20*a.m01)+(m21*a.m11)+(m22*a.m21);
 		double t22=(m20*a.m02)+(m21*a.m12)+(m22*a.m22);
 		
-		double t03=(m00*a.m03)+(m01*a.m13)+(m02*a.m23)+m03;
-		double t13=(m10*a.m03)+(m11*a.m13)+(m12*a.m23)+m13;
-		double t23=(m20*a.m03)+(m21*a.m13)+(m22*a.m23)+m23;
-		m00=t00; m01=t01; m02=t02; m03=t03;
-		m10=t10; m11=t11; m12=t12; m13=t13;
-		m20=t20; m21=t21; m22=t22; m23=t23;
+		double t03=(m00*a.tr0)+(m01*a.tr1)+(m02*a.tr2)+tr0;
+		double t13=(m10*a.tr0)+(m11*a.tr1)+(m12*a.tr2)+tr1;
+		double t23=(m20*a.tr0)+(m21*a.tr1)+(m22*a.tr2)+tr2;
+		m00=t00; m01=t01; m02=t02; tr0=t03;
+		m10=t10; m11=t11; m12=t12; tr1=t13;
+		m20=t20; m21=t21; m22=t22; tr2=t23;
 	}
 	
 	public void composeWith(Matrix33 a) {
@@ -216,9 +219,9 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	public void composeWith(Translation3 a) {
-		m03+=a.dx;
-		m13+=a.dy;
-		m23+=a.dz;
+		tr0+=a.dx;
+		tr1+=a.dy;
+		tr2+=a.dz;
 	}
 	
 	@Override
@@ -234,14 +237,14 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 			(m00==m.m00) &&
 			(m01==m.m01) &&
 			(m02==m.m02) &&
-			(m03==m.m03) &&
 			(m10==m.m10) &&
 			(m11==m.m11) &&
 			(m12==m.m12) &&
-			(m13==m.m13) &&
 			(m20==m.m20) &&
 			(m21==m.m21) &&
 			(m22==m.m22) &&
-			(m23==m.m23);
+			(tr0==m.tr0) &&
+			(tr1==m.tr1) &&
+			(tr2==m.tr2);
 	}
 }

@@ -34,6 +34,20 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		if (col==0) {
+			vector.getElements(dest, destOffset);
+		} else {
+			throw new IndexOutOfBoundsException("Column out of range: "+col);
+		}
+	}
+	
+	@Override
+	public void getElements(double[] data, int offset) {
+		vector.getElements(data, offset);
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		vector.applyOp(op);
 	}
@@ -63,6 +77,16 @@ public class ColumnMatrix extends AMatrix {
 	public void set(int row, int column, double value) {
 		if(column!=0) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
 		vector.set(row,value);
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return vector.unsafeGet(row);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		vector.unsafeSet(row,value);
 	}
 	
 	@Override

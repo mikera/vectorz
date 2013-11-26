@@ -24,7 +24,7 @@ public final class ConstantTransform extends AConstantTransform {
 		super(inputDimensions);
 		outputDimensions=value.length();
 		constant=new double[outputDimensions];
-		value.copyTo(constant, 0);
+		value.getElements(constant, 0);
 	}
 	
 	@Override

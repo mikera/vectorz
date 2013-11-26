@@ -1,11 +1,12 @@
-package mikera.arrayz;
+package mikera.arrayz.impl;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.Arrayz;
+import mikera.arrayz.INDArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -200,6 +201,15 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean isZero() {
+		for (INDArray a:slices) {
+			if (!a.isZero()) return false;
+		}
+		return true;
+	}
+
 	
 	@Override
 	public boolean isBoolean() {

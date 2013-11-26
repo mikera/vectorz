@@ -12,10 +12,13 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.MatrixViewVector;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
+import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -118,12 +121,12 @@ public class TestVectors {
 		assertEquals(10,v.get(10),0.0);
 		assertTrue(v.isView());
 		
-		ArraySubVector v2=v.subVector(5, 90);
+		AVector v2=v.subVector(5, 90);
 		assertEquals(90,v2.length());
 		assertEquals(15,v2.get(10),0.0);
 		assertTrue(v2.isView());
 		
-		ArraySubVector v3=v2.subVector(5,80);
+		AVector v3=v2.subVector(5,80);
 		assertEquals(20,v3.get(10),0.0);
 		assertTrue(v3.isView());
 		
@@ -146,7 +149,7 @@ public class TestVectors {
 		
 		assertEquals(Arrays.hashCode(data),v.hashCode());
 		
-		ArraySubVector v2=new ArraySubVector(v);
+		ArraySubVector v2=v.exactClone();
 		assertEquals(v,v2);
 		assertTrue(v2.isView());
 		
@@ -302,6 +305,15 @@ public class TestVectors {
 		
 		AVector v2=v.subVector(0, m).join(v.subVector(m, len-m));
 		assertEquals(v,v2);
+		
+		AVector zv=v.subVector(len/2, 0);
+		assertTrue(zv==Vector0.INSTANCE);
+		
+		// whole subvector should return same vector
+		if (len>0) {
+			AVector fv=v.subVector(0, len);
+			assertTrue(fv==v);
+		}
 	}
 	
 	private void testClone(AVector v) {
@@ -341,19 +353,21 @@ public class TestVectors {
 		
 		int len=v.length();
 		
-		Vectorz.fillRandom(v);
-		AVector v2=Vector.createLength(len);
-		v2.set(v);
-		assertEquals(v,v2);
+		for (int i=0; i<len; i++) {
+			v.set(i,i+0.5);
+			assertEquals(i+0.5,v.get(i),0.0);
+		}
+	}
+	
+	private void testImmutable(AVector v) {
+		AVector iv=v.immutable();
 		
-		Vectorz.fillRandom(v);
-		v2.set(v,0);
-		assertEquals(v,v2);
-
-		Vectorz.fillRandom(v);
-		double[] data=v.toDoubleArray();
-		v2.setElements(data);
-		assertEquals(v,v2);
+		try {
+			iv.set(0,1.0);
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
 	}
 	
 	private void testSetElements(AVector v) {
@@ -487,9 +501,8 @@ public class TestVectors {
 		}
 	}
 	public void testSubVectorMutability(AVector v) {
-		// defensive copy
-		v=v.clone();
-		assertTrue(!v.isView());
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
 		
 		int vlen=v.length();
 		
@@ -497,9 +510,6 @@ public class TestVectors {
 		
 		AVector s1 = v.subVector(start, vlen-start);
 		AVector s2 = v.subVector(start, vlen-start);
-		
-		assertTrue(s1.isView());
-		assertNotSame(s1,s2);
 		
 		int len=s1.length();
 		for (int i=0; i<len; i++) {
@@ -533,7 +543,7 @@ public class TestVectors {
 		if (!v.isFullyMutable()) return;
 		v=v.exactClone();
 		v.multiply(0.0);
-		assertTrue(v.isZeroVector());
+		assertTrue(v.isZero());
 	}
 	
 
@@ -542,12 +552,13 @@ public class TestVectors {
 		v=v.exactClone();
 		
 		v.set(0,v.get(0)+Math.random());
- 
+		AVector v2=v.toNormal();
+
 		double d=v.magnitude();
 		double nresult=v.normalise();
 		
+		assertTrue(v2.epsilonEquals(v)); // compared normalised versions
 		assertEquals(d,nresult,0.0000001);
-		
 		assertTrue(v.isUnitLengthVector());
 	}
 	
@@ -563,6 +574,12 @@ public class TestVectors {
 		assertEquals(1.24,Vectorz.maxValue(v),0.0);
 		assertEquals(1.24,Vectorz.averageValue(v),0.0001);
 	}
+	
+	private void testEquality(AVector v) {
+		assertEquals(v,v.clone());
+		assertNotEquals(v,v.join(Vector.of(1)));
+	}
+	
 	
 	private void testCopyTo(AVector v) {
 		int len=v.length();
@@ -721,6 +738,7 @@ public class TestVectors {
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
+		testEquality(v);
 		testInnerProducts(v);
 		testMultiply(v);
 		testDivide(v);
@@ -736,6 +754,7 @@ public class TestVectors {
 		testIterator(v);
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
+		testImmutable(v);
 		
 		doNonDegenerateTests(v);
 		
@@ -815,12 +834,14 @@ public class TestVectors {
 		doGenericTests(m2.getRow(1));
 		doGenericTests(m2.getColumn(1));
 		doGenericTests(m2.getLeadingDiagonal());
+		doGenericTests(new MatrixViewVector(m2));
 
 		AMatrix m3=Matrixx.createRandomMatrix(4,5);
 		doGenericTests(m3.asVector());
 		doGenericTests(m3.getRow(2));
 		doGenericTests(m3.getColumn(2));
 		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
+		doGenericTests(new MatrixViewVector(m3));
 		
 		doGenericTests(new AxisVector(1,3));
 		doGenericTests(new AxisVector(0,1));
@@ -855,5 +876,12 @@ public class TestVectors {
 		
 		doGenericTests(StridedVector.wrap(new double[]{1,2,3}, 2, 3, -1));
 		doGenericTests(StridedVector.wrap(new double[]{1,2}, 1, 1, 100));
+		
+		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
+		doGenericTests(ImmutableVector.create(Vector.of()));
+		
+		doGenericTests(RangeVector.create(10,0));
+		doGenericTests(RangeVector.create(-10,3));
+		doGenericTests(RangeVector.create(0,7));
 	}
 }

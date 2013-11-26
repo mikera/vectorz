@@ -44,17 +44,18 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 
 	public Matrix33(AMatrix m) {
-		assert(m.rowCount()==3);
-		assert(m.columnCount()==3);
-		m00=m.get(0,0);
-		m01=m.get(0,1);
-		m02=m.get(0,2);
-		m10=m.get(1,0);
-		m11=m.get(1,1);
-		m12=m.get(1,2);
-		m20=m.get(2,0);
-		m21=m.get(2,1);
-		m22=m.get(2,2);
+		if((m.rowCount()==3)||(m.columnCount()!=3)) {
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+		}
+		m00=m.unsafeGet(0,0);
+		m01=m.unsafeGet(0,1);
+		m02=m.unsafeGet(0,2);
+		m10=m.unsafeGet(1,0);
+		m11=m.unsafeGet(1,1);
+		m12=m.unsafeGet(1,2);
+		m20=m.unsafeGet(2,0);
+		m21=m.unsafeGet(2,1);
+		m22=m.unsafeGet(2,2);
 	}
 
 	@Override
@@ -180,10 +181,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	
 	public void transform(Vector3 source, AVector dest) {
 		if (dest instanceof Vector3) {transform(source,(Vector3)dest); return;}
+		if (dest.length()!=3) throw new IllegalArgumentException(ErrorMessages.mismatch(source,dest));
 		Vector3 s=source;
-		dest.set(0,(m00*s.x)+(m01*s.y)+(m02*s.z));
-		dest.set(1,(m10*s.x)+(m11*s.y)+(m12*s.z));
-		dest.set(2,(m20*s.x)+(m21*s.y)+(m22*s.z));
+		dest.unsafeSet(0,(m00*s.x)+(m01*s.y)+(m02*s.z));
+		dest.unsafeSet(1,(m10*s.x)+(m11*s.y)+(m12*s.z));
+		dest.unsafeSet(2,(m20*s.x)+(m21*s.y)+(m22*s.z));
 	}
 	
 	public void transform(Vector3 source, Vector3 dest) {
@@ -246,6 +248,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	public boolean isSquare() {
 		return true;
 	}
+	
+	@Override
+	public boolean isSymmetric() {
+		return (m01==m10)&&(m20==m02)&&(m21==m12);
+	}
 
 	@Override
 	public Affine34 toAffineTransform() {
@@ -307,6 +314,19 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public void getElements(double[] data, int offset) {
+		data[offset++]=m00;
+		data[offset++]=m01;
+		data[offset++]=m02;
+		data[offset++]=m10;
+		data[offset++]=m11;
+		data[offset++]=m12;
+		data[offset++]=m20;
+		data[offset++]=m21;
+		data[offset++]=m22;
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Matrix33) {
 			return equals((Matrix33)o);
@@ -332,5 +352,9 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 				1.0,0.0,0.0,
 				0.0,1.0,0.0,
 				0.0,0.0,1.0);
+	}
+
+	public static Matrix33 createScaleMatrix(double d) {
+		return new Matrix33(d,0,0,0,d,0,0,0,d);
 	}
 }

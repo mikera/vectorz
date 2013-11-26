@@ -1,22 +1,24 @@
 package mikera.matrixx;
 
 import static org.junit.Assert.*;
-
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
+import mikera.matrixx.impl.QuadtreeMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.ATransform;
 import mikera.transformz.TestTransformz;
 import mikera.vectorz.AVector;
@@ -102,7 +104,7 @@ public class TestMatrixx {
 				assertTrue( m.isFullyMutable());
 				assertEquals(rows, m.rowCount());
 				assertEquals(columns,m.columnCount());
-				assertTrue(m.isZeroMatrix());
+				assertTrue(m.isZero());
 			}
 		}
 	}
@@ -442,7 +444,24 @@ public class TestMatrixx {
 		new TestArrays().testArray(all);
 	}
 	
-	void doVectorTest(AMatrix m) {
+	private void doBandTests(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		int bandMin=1-m.rowCount();
+		int bandMax=m.columnCount()-1;
+		
+		assertNull(m.getBand(bandMin-1));
+		assertNull(m.getBand(bandMax+1));
+		
+		for (int i=bandMin; i<=bandMax; i++) {
+			AVector b=m.getBand(i);
+			assertEquals(b.length(),m.bandLength(i));
+			
+			assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
+		}
+	}
+	
+	private void doVectorTest(AMatrix m) {
 		m=m.clone();
 		AVector v=m.asVector();
 		assertEquals(v,m.toVector());
@@ -517,7 +536,7 @@ public class TestMatrixx {
 		assertTrue(m1.epsilonEquals(m2));
 		
 		m1.scale(0.0);
-		assertTrue(m1.isZeroMatrix());
+		assertTrue(m1.isZero());
 	}
 	
 	private void doMulTest(AMatrix m) {
@@ -593,6 +612,7 @@ public class TestMatrixx {
 		doMulTest(m);
 		doAddTest(m);
 		doRowColumnTests(m);
+		doBandTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);
 		doMaybeSquareTests(m);
@@ -680,6 +700,13 @@ public class TestMatrixx {
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(10)));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(6)).subMatrix(1,3,2,4));
+		
+		doGenericTests(BandedMatrix.create(3, 3, -2, 2));
+		doGenericTests(BandedMatrix.wrap(3, 4, 0, 0,Vector.of(1,2,3)));
 
+		doGenericTests(QuadtreeMatrix.create(new Matrix22(1,0,0,2)
+											,ZeroMatrix.create(2, 1)
+											,ZeroMatrix.create(1, 2)
+											,Matrixx.createScaleMatrix(1, 3)));
 	}
 }

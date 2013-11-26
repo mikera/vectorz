@@ -378,7 +378,7 @@ public class Matrixx {
 		AMatrix result = newMatrix(rows, columns);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				result.set(i, j, m.get(i, j));
+				result.unsafeSet(i, j, m.get(i, j));
 			}
 		}
 		return result;
@@ -436,7 +436,7 @@ public class Matrixx {
 		AMatrix m = newMatrix(rc, cc);
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				m.set(i, j, Tools.toDouble(data.get(i).get(j)));
+				m.unsafeSet(i, j, Tools.toDouble(data.get(i).get(j)));
 			}
 		}
 		return m;

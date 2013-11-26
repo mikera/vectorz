@@ -17,4 +17,8 @@ public interface IVector extends INDArray {
 	public double get(int i);
 	
 	public void set(int i, double value);
+
+	AVector immutable();
+
+	AVector mutable();
 }

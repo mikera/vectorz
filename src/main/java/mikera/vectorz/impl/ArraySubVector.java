@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.randomz.Hash;
+import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -33,18 +34,10 @@ public final class ArraySubVector extends AArrayVector {
 		this.length=length;
 	}
 
-
 	public ArraySubVector(int length) {
 		this.length = length;
 		offset = 0;
 		data = new double[length];
-	}
-
-	public ArraySubVector(ArraySubVector source) {
-		length = source.length;
-		this.offset = 0;
-		data = new double[length];
-		System.arraycopy(source.data, source.offset, this.data, 0, length);
 	}
 	
 	public static ArraySubVector wrap(double[] data, int offset, int length) {
@@ -61,27 +54,18 @@ public final class ArraySubVector extends AArrayVector {
 	 */
 	public ArraySubVector(AArrayVector source, int offset, int length) {
 		int len=source.length();
-		if (offset < 0) {
-			throw new IndexOutOfBoundsException("Negative offset for Vector: "
-					+ offset);
-		}
-		if (offset + length > len) {
+		if ((offset < 0)||(offset + length > len)) 
 			throw new IndexOutOfBoundsException(
-					"Beyond bounds of parent vector with offset: " + offset
-							+ " and length: " + length);
-		}
+					ErrorMessages.invalidRange(source, offset, length));
 		this.length = length;
 		this.offset = source.getArrayOffset() + offset;
 		this.data = source.getArray();
 	}
 
-
 	@Override
 	public int length() {
 		return length;
 	}
-
-	
 
 	@Override
 	public double get(int i) {
@@ -106,7 +90,6 @@ public final class ArraySubVector extends AArrayVector {
 	public void unsafeSet(int i, double value) {
 		data[offset + i] = value;
 	}
-
 
 	@Override
 	public void add(AArrayVector v) {
@@ -162,6 +145,17 @@ public final class ArraySubVector extends AArrayVector {
 	@Override
 	public boolean isView() {
 		return true;
+	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		int len=length();
+		if ((start<0)||(start+length>len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==0) return Vector0.INSTANCE;
+		if (len==length) return this;
+		return ArraySubVector.wrap(data, offset+start, length);
 	}
 
 	@Override 

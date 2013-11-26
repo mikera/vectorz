@@ -5,14 +5,16 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Specialized unit axis vector. Has a 1.0 in one element, 0.0 everywhere else.
+ * Specialised immutable unit axis vector. Has a 1.0 in one element, 0.0 everywhere else.
  * 
  * @author Mike
  */
-public class AxisVector extends ComputedVector implements ISparse {
+public class AxisVector extends AComputedVector implements ISparse {
 	private static final long serialVersionUID = 6767495113060894804L;
 	
 	private final int axis;
@@ -86,7 +88,7 @@ public class AxisVector extends ComputedVector implements ISparse {
 	}
 
 	@Override
-	public boolean isZeroVector() {
+	public boolean isZero() {
 		return false;
 	}
 	
@@ -145,6 +147,32 @@ public class AxisVector extends ComputedVector implements ISparse {
 	@Override
 	public double unsafeGet(int i) {
 		return (i==axis)?1.0:0.0;
+	}
+	
+	@Override
+	public Vector toNormal() {
+		return toVector();
+	}
+	
+	@Override
+	public Vector toVector() {
+		Vector v=Vector.createLength(length);
+		v.data[axis]=1.0;
+		return v;
+	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		if ((start<0)||(start+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==this.length) return this;
+		
+		if ((start<=axis)&&(start+length>axis)) {
+			return new AxisVector(axis-start,length);
+		} else {
+			return Vectorz.createZeroVector(length);
+		}
 	}
 	
 	@Override

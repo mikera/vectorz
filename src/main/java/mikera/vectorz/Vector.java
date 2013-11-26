@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
+import mikera.randomz.Hash;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -12,7 +13,9 @@ import mikera.vectorz.util.VectorzException;
 
 
 /**
- * General purpose vector of arbitrary length, backed by an internal double[] array
+ * General purpose vector of arbitrary length, backed by an internal double[] array.
+ * 
+ * This is the most efficient Vectorz type for 1D vectors.
  * 
  * @author Mike
  *
@@ -46,7 +49,7 @@ public final class Vector extends AArrayVector {
 	public Vector(AVector source) {
 		int length = source.length();
 		data = new double[length];
-		source.copyTo(this.data, 0);
+		source.getElements(this.data, 0);
 	}
 	
 	/**
@@ -85,6 +88,9 @@ public final class Vector extends AArrayVector {
 	}
 
 	public static Vector create(AVector a) {
+		if (a instanceof Vector) {
+			return ((Vector) a).clone();
+		}
 		int n=a.length();
 		Vector v=createLength(n);
 		a.copyTo(v.data);
@@ -231,14 +237,8 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if (v instanceof AArrayVector) {
-			add(((AArrayVector)v),0); return;
-		}
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		for (int i = 0; i < length; i++) {
-			data[i] += v.unsafeGet(i);
-		}
+		if(length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.addToArray(data, 0);
 	}
 	
 	@Override
@@ -297,7 +297,7 @@ public final class Vector extends AArrayVector {
 	public void sub(AVector v) {
 		if (v instanceof AArrayVector) {sub(((AArrayVector)v)); return;}
 		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			data[i] -= v.unsafeGet(i);
 		}
@@ -357,7 +357,7 @@ public final class Vector extends AArrayVector {
 	
 	public double dotProduct(Vector v) {
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			result+=data[i]*v.data[i];
@@ -481,7 +481,17 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public Vector clone() {
-		return new Vector(this);
+		return Vector.wrap(data.clone());
+	}
+	
+	@Override
+	public int hashCode() {
+		int hashCode = 1;
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			hashCode = 31 * hashCode + (Hash.hashCode(data[i]));
+		}
+		return hashCode;
 	}
 	
 	@Override
@@ -502,6 +512,13 @@ public final class Vector extends AArrayVector {
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
+	}
+	
+	@Override
+	public Vector toNormal() {
+		Vector v= Vector.create(this);
+		v.normalise();
+		return v;
 	}
 	
 	@Override

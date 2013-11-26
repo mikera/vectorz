@@ -68,7 +68,7 @@ public abstract class ATranslation extends AAffineTransform {
 	 */
 	@Override
 	public boolean isIdentity() {
-		return getTranslationVector().isZeroVector();
+		return getTranslationVector().isZero();
 	}
 	
 	public boolean equals(ATranslation a) {

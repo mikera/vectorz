@@ -5,6 +5,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -75,6 +76,16 @@ public class RowMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return vector.unsafeGet(column);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		vector.unsafeSet(column,value);
+	}
+	
+	@Override
 	public ColumnMatrix getTranspose() {
 		return new ColumnMatrix(vector);
 	}
@@ -82,6 +93,25 @@ public class RowMatrix extends AMatrix {
 	@Override
 	public RowMatrix exactClone() {
 		return new RowMatrix(vector.exactClone());
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		if (row==0) {
+			vector.getElements(dest, destOffset);
+		} else {
+			throw new IndexOutOfBoundsException("Row out of range: "+row);
+		}
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		dest[destOffset]=vector.get(col);
+	}
+	
+	@Override
+	public void getElements(double[] data, int offset) {
+		vector.getElements(data, offset);
 	}
 
 	@Override
@@ -91,10 +121,8 @@ public class RowMatrix extends AMatrix {
 		int cc=s.columnCount();
 		Matrix m=Matrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
-			double ti=this.get(i);
-			for (int j=0; j<cc; j++) {
-				m.unsafeSet(i,j,ti*s.unsafeGet(0,j));
-			}
+			double ti=vector.unsafeGet(i);
+			DoubleArrays.addMultiple(m.data, i*cc, s.data, 0, cc, ti);
 		}
 		return m;
 	}

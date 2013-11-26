@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -105,6 +106,8 @@ public class TestArrays {
 
 	private void testClone(INDArray a) {
 		INDArray c = a.clone();
+		
+		assertTrue(c.isSameShape(a));
 		
 		if (!(c instanceof VectorMatrixM3)) { // allowed to still be a view
 			assertFalse(c.isView());
@@ -270,6 +273,18 @@ public class TestArrays {
 		m.multiply(2.0);
 		m.multiply(Scalar.create(0.5));
 		assertEquals(a, m);
+		
+		m.multiply(0.0);
+		assertTrue(m.isZero());
+		
+		INDArray m1 = a.exactClone();
+		INDArray m2 = a.exactClone();
+		Vectorz.fillRandom(m1.asVector());
+		m1.add(1.0);
+		
+		m2.multiply(m1);
+		m2.divide(m1);
+		assertTrue(m2.epsilonEquals(a));
 	}
 	
 	private void testBoolean(INDArray a) {
@@ -320,6 +335,10 @@ public class TestArrays {
 		INDArray up2=Arrayz.create(SliceArray.create(a));		
 		INDArray b2=a.broadcastLike(up2);		
 		assertEquals(up2,b2);
+		
+		INDArray bcl=a.broadcastCloneLike(a);
+		assertEquals(a,bcl);
+		assertTrue((a.elementCount()==0)||(a!=bcl));
 	}
 
 	private void testSums(INDArray a) {

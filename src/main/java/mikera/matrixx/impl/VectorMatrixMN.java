@@ -9,6 +9,7 @@ import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A matrix implemented as a composition of M length N vectors
@@ -79,7 +80,7 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 		this(source.rowCount(),source.columnCount());
 		for (int i=0; i<rowCount; i++) {
 			for (int j=0; j<columnCount; j++) {
-				set(i,j,source.get(i, j));
+				unsafeSet(i,j,source.unsafeGet(i, j));
 			}
 		}
 	}
@@ -125,25 +126,25 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 	
 	@Override
 	public double get(int row, int column) {
+		if ((column<0)||(column>=columnCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		if (row>=rowCount) throw new IndexOutOfBoundsException("Row: "+row);
-		return rows[row].get(column);
+		return rows[row].unsafeGet(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
+		if ((column<0)||(column>=columnCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		if (row>=rowCount) throw new IndexOutOfBoundsException("Row: "+row);
-		rows[row].set(column,value);
+		rows[row].unsafeSet(column,value);
 	}
 	
 	@Override
 	public double unsafeGet(int row, int column) {
-		assert(row<rowCount);
 		return rows[row].unsafeGet(column);
 	}
 
 	@Override
 	public void unsafeSet(int row, int column, double value) {
-		assert(row<rowCount);
 		rows[row].unsafeSet(column,value);
 	}
 	

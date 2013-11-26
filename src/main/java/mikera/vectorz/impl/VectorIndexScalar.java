@@ -10,6 +10,7 @@ public class VectorIndexScalar extends AScalar {
 	final int index;
 	
 	public VectorIndexScalar(AVector vector, int index) {
+		// don't check - should be checked by caller
 		assert((index>=0)&&(index<vector.length()));
 		this.vector=vector;
 		this.index=index;
@@ -48,6 +49,24 @@ public class VectorIndexScalar extends AScalar {
 	@Override
 	public VectorIndexScalar exactClone() {
 		return new VectorIndexScalar(vector.clone(),index);
+	}
+	
+	@Override
+	public AScalar mutable() {
+		if (vector.isFullyMutable()) {
+			return this;
+		} else {
+			return Scalar.create(get());
+		}
+	}
+
+	@Override
+	public AScalar immutable() {
+		if (vector.isMutable()) {
+			return ImmutableScalar.create(get());
+		} else {
+			return this;
+		}
 	}
 	
 	@Override

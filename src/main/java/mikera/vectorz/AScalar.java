@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.randomz.Hash;
+import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.impl.WrappedScalarVector;
@@ -99,6 +100,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	public boolean isElementConstrained() {
 		return false;
 	}
+	
+	@Override
+	public boolean isZero() {
+		return get()==0.0;
+	}
+
 	
 	public void add(double d) {
 		set(get()+d);
@@ -210,7 +217,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public long elementCount() {
+	public final long elementCount() {
 		return 1;
 	}
 	
@@ -254,6 +261,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(factor*get());
 	}
 	
+	@Override
+	public void divide(double factor) {
+		set(get()/factor);
+	}
 	
 	@Override 
 	public void multiply(INDArray a) {
@@ -348,6 +359,24 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	@Override
 	public abstract AScalar exactClone();
+	
+	@Override
+	public AScalar mutable() {
+		if (isFullyMutable()) {
+			return this;
+		} else {
+			return Scalar.create(get());
+		}
+	}
+
+	@Override
+	public AScalar immutable() {
+		if (isMutable()) {
+			return ImmutableScalar.create(get());
+		} else {
+			return this;
+		}
+	}
 	
 	@Override
 	public void validate() {
