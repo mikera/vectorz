@@ -80,7 +80,7 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 		this(source.rowCount(),source.columnCount());
 		for (int i=0; i<rowCount; i++) {
 			for (int j=0; j<columnCount; j++) {
-				set(i,j,source.get(i, j));
+				unsafeSet(i,j,source.unsafeGet(i, j));
 			}
 		}
 	}

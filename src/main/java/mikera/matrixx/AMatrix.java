@@ -930,12 +930,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	public void addMultiple(AMatrix m, double factor) {
 		int rc=rowCount();
 		int cc=columnCount();
-		assert(rc==m.rowCount());
-		assert(cc==m.columnCount());
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
 		
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				set(i,j,get(i,j)+(m.get(i, j)*factor));
+				unsafeSet(i,j,unsafeGet(i,j)+(m.unsafeGet(i, j)*factor));
 			}
 		}
 	}

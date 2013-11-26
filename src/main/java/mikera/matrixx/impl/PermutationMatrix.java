@@ -174,7 +174,6 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 
 	@Override
 	public void set(int row, int column, double value) {
-		if (get(row,column)==value) return;
 		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this,row,column));
 	}
 	
