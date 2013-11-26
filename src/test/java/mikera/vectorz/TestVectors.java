@@ -304,6 +304,9 @@ public class TestVectors {
 		
 		AVector v2=v.subVector(0, m).join(v.subVector(m, len-m));
 		assertEquals(v,v2);
+		
+		AVector zv=v.subVector(len/2, 0);
+		assertTrue(zv==Vector0.INSTANCE);
 	}
 	
 	private void testClone(AVector v) {

@@ -20,8 +20,6 @@ import mikera.vectorz.util.VectorzException;
  */
 @SuppressWarnings("serial")
 public abstract class AArrayVector extends AStridedVector {	
-	
-	
 	/**
 	 * AArrayVector has a fixed stride of 1, which enables efficient operations on arrays
 	 */
@@ -42,8 +40,8 @@ public abstract class AArrayVector extends AStridedVector {
 		if ((offset < 0) || ((offset + length) > len)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		}
-		if (length==len) return this;
 		if (length==0) return Vector0.INSTANCE;
+		if (length==len) return this;
 		return new ArraySubVector(this, offset, length);
 	}
 	

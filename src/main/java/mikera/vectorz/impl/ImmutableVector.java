@@ -17,8 +17,8 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public class ImmutableVector extends AVector {
-	private static final AVector EMPTY_IMMUTABLE_VECTOR = new ImmutableVector(DoubleArrays.EMPTY);
-	
+	private static final long serialVersionUID = -3679147880242779555L;
+
 	private double[] data;
 	public int offset;
 	public int length;
@@ -63,7 +63,7 @@ public class ImmutableVector extends AVector {
 	@Override
 	public AVector subVector(int start, int length) {
 		if ((start<0)||(start+length>this.length)||(length<0)) throw new IllegalArgumentException("Illegal subvector with arguments start= "+start+", length= "+length);
-		if (length==0) return EMPTY_IMMUTABLE_VECTOR;
+		if (length==0) return Vector0.INSTANCE;
 		if (length==this.length) return this;
 		return new ImmutableVector(data,offset+start,length);
 	}

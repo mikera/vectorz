@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -41,10 +42,13 @@ public class RangeVector extends AComputedVector {
 	}
 	
 	@Override
-	public RangeVector subVector(int start, int length) {
+	public AVector subVector(int start, int length) {
 		if ((start<0)||(start+length>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
 		}
+		if (length==0) return Vector0.INSTANCE;
+		if (length==this.length) return this;
+		
 		return create(this.start+start,length);
 	}
 }

@@ -3,6 +3,8 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.randomz.Hash;
+import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -90,7 +92,6 @@ public final class ArraySubVector extends AArrayVector {
 		data[offset + i] = value;
 	}
 
-
 	@Override
 	public void add(AArrayVector v) {
 		int vlength=v.length();
@@ -145,6 +146,17 @@ public final class ArraySubVector extends AArrayVector {
 	@Override
 	public boolean isView() {
 		return true;
+	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		int len=length();
+		if ((start<0)||(start+length>len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==0) return Vector0.INSTANCE;
+		if (len==length) return this;
+		return ArraySubVector.wrap(data, offset+start, length);
 	}
 
 	@Override 
