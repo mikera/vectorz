@@ -2,6 +2,12 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * Immutable vector type representing a consecutive, increasing range of integers.
+ * 
+ * @author Mike
+ *
+ */
 public class RangeVector extends AComputedVector {
 	private static final long serialVersionUID = 2068299118332621781L;
 
@@ -33,5 +39,12 @@ public class RangeVector extends AComputedVector {
 	public double unsafeGet(int i) {
 		return start+i;
 	}
-
+	
+	@Override
+	public RangeVector subVector(int start, int length) {
+		if ((start<0)||(start+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		return create(this.start+start,length);
+	}
 }
