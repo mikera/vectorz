@@ -37,11 +37,13 @@ public abstract class AArrayVector extends AStridedVector {
 	 * @param length
 	 * @return
 	 */
-	public ArraySubVector subVector(int offset, int length) {
+	public AVector subVector(int offset, int length) {
 		int len=this.length();
 		if ((offset < 0) || ((offset + length) > len)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		}
+		if (length==len) return this;
+		if (length==0) return Vector0.INSTANCE;
 		return new ArraySubVector(this, offset, length);
 	}
 	

@@ -161,7 +161,6 @@ public class AxisVector extends AComputedVector implements ISparse {
 		return v;
 	}
 	
-	
 	@Override
 	public AVector subVector(int start, int length) {
 		if ((start<0)||(start+length>this.length)) {

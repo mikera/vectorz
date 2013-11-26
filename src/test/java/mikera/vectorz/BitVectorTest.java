@@ -14,7 +14,15 @@ public class BitVectorTest {
 		b.set(1,0.5);
 		b.set(2,0.9);
 		assertEquals(BitVector.of(0,1,1),b);
-		
+	}
+	
+	@Test
+	public void testSubVector() {
+		BitVector b=BitVector.of(0,1,0);
+		AVector sb=b.subVector(1, 1);
+		System.out.println(sb.getClass());
+		assertEquals(Vector.of(1),sb);
+		assertTrue(sb.isView());
 	}
 	
 	@Test 
