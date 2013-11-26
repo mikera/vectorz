@@ -5,6 +5,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -157,6 +158,19 @@ public class AxisVector extends AComputedVector implements ISparse {
 		Vector v=Vector.createLength(length);
 		v.data[axis]=1.0;
 		return v;
+	}
+	
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		if ((start<0)||(start+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if ((start<=axis)&&(start+length>axis)) {
+			return new AxisVector(axis-start,length);
+		} else {
+			return ZeroVector.create(length);
+		}
 	}
 	
 	@Override
