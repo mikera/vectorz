@@ -5,6 +5,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -169,7 +170,7 @@ public class AxisVector extends AComputedVector implements ISparse {
 		if ((start<=axis)&&(start+length>axis)) {
 			return new AxisVector(axis-start,length);
 		} else {
-			return ZeroVector.create(length);
+			return Vectorz.createZeroVector(length);
 		}
 	}
 	

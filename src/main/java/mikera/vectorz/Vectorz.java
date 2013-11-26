@@ -68,8 +68,14 @@ public class Vectorz {
 		return v;
 	}
 	
+	/**
+	 * Creates a zer vector of the specified length.
+	 * @param length
+	 * @return
+	 */
 	public static AVector createZeroVector(int length) {
-		return newVector(length);
+		if (length==0) return Vector0.INSTANCE;
+		return ZeroVector.create(length);
 	}
 	
 	public static Vector wrap(double[] data) {
