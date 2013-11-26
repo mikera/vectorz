@@ -76,4 +76,19 @@ public class MatrixViewVector extends AMatrixSubVector {
 	public List<Double> asElementList() {
 		return source.asElementList();
 	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		source.clamp(min, max);
+	}
+	
+	@Override
+	public double elementSum() {
+		return source.elementSum();
+	}
+	
+	@Override
+	public double magnitudeSquared() {
+		return source.elementSquaredSum();
+	}
 }
