@@ -76,10 +76,8 @@ public final class WrappedSubVector extends AWrappedVector<AVector> {
 	}
 	
 	@Override
-	public WrappedSubVector subVector(int offset, int length) {
-		if (offset<0) throw new IndexOutOfBoundsException("Start Index: "+offset);
-		if ((offset+length)>this.length) throw new IndexOutOfBoundsException("End Index: "+(offset+length));
-		return new WrappedSubVector(wrapped, this.offset+offset,length);
+	public AVector subVector(int offset, int length) {
+		return wrapped.subVector(this.offset+offset, length);
 	}
 	
 	@Override
