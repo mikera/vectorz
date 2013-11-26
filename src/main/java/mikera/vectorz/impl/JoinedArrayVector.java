@@ -436,8 +436,10 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		assert(start>=0);
-		assert((start+length)<=this.length);
+		if ((start<0)||(start+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==this.length) return this;
 		if (length==0) return Vector0.INSTANCE;
 		
 		int a=findArrayNum(start);
