@@ -16,11 +16,23 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 	
 	private int length;
 	
+	private static final AVector[] ZERO_VECTORS = new AVector[] {
+		Vector0.INSTANCE,
+		new ZeroVector(1),
+		new ZeroVector(2),
+		new ZeroVector(3),
+		new ZeroVector(4)
+	};
+	
 	public ZeroVector(int dimensions) {
 		length=dimensions;
 	}
 	
-	public static ZeroVector create(int dimensions) {
+	public static AVector create(int dimensions) {
+		if (dimensions<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(dimensions));
+		if (dimensions<ZERO_VECTORS.length) {
+			return ZERO_VECTORS[dimensions];
+		}
 		return new ZeroVector(dimensions);
 	}
 
@@ -41,7 +53,7 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 	}
 	
 	@Override
-	public ZeroVector innerProduct(AMatrix m) {
+	public AVector innerProduct(AMatrix m) {
 		if (m.rowCount()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		return ZeroVector.create(m.columnCount());
 	}
@@ -139,7 +151,7 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 		return super.join(a);
 	}
 	
-	public ZeroVector join(ZeroVector a) {
+	public AVector join(ZeroVector a) {
 		return ZeroVector.create(length+a.length);
 	}
 

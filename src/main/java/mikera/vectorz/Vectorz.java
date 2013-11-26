@@ -163,20 +163,9 @@ public class Vectorz {
 		return v;
 	}
 
-	public static AVector createMutableVector(AVector t) {
-		AVector v=newVector(t.length());
-		v.set(t);
-		return v;
+	public static AVector createMutableVector(AVector v) {
+		return v.clone();
 	}
-	
-	private static final AVector[] ZERO_VECTORS = new AVector[] {
-		Vector0.INSTANCE,
-		new ZeroVector(1),
-		new ZeroVector(2),
-		new ZeroVector(3),
-		new ZeroVector(4)
-	};
-	
 	
 	/**
 	 * Returns an immutable vector of zeros
@@ -184,8 +173,7 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector immutableZeroVector(int dimensions) {
-		if (dimensions>=ZERO_VECTORS.length) return new ZeroVector(dimensions);
-		return ZERO_VECTORS[dimensions];
+		return ZeroVector.create(dimensions);
 	}
 	
 	// ====================================
