@@ -217,7 +217,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	public DiagonalMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
+		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		for (int i=0; i<dimensions; i++) {
 			result.data[i]*=a.unsafeGetDiagonalValue(i);
