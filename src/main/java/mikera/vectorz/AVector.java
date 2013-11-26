@@ -21,6 +21,7 @@ import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.VectorIterator;
 import mikera.vectorz.impl.WrappedSubVector;
@@ -165,6 +166,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Changes to the sub-vector will be reflected in this vector
 	 */
 	public AVector subVector(int offset, int length) {
+		if (length==0) {
+			if ((offset>=0)&&(offset<=length())) {return Vector0.INSTANCE;} else {
+				throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+			}
+		}
 		return new WrappedSubVector(this,offset,length);
 	}
 
