@@ -1,10 +1,8 @@
 package mikera.matrixx.impl;
 
-import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ZeroVector;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -132,7 +130,7 @@ public class BandedMatrix extends ABandedMatrix {
 	
 	@Override
 	public void transform(Vector source, Vector dest) {
-		Vector t=(Vector)dest;
+		Vector t=dest;
 		t.fill(0.0);
 		for (int i=minBand; i<=maxBand; i++) {
 			AVector b=getBand(i);

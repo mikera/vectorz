@@ -1,6 +1,5 @@
 package mikera.vectorz.performance;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import mikera.vectorz.Vector;

@@ -1,8 +1,6 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
-
-import mikera.vectorz.impl.AArrayVector;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 

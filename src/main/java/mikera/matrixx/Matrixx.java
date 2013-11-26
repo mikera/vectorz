@@ -427,7 +427,6 @@ public class Matrixx {
 	 * @param ednString
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static AMatrix parse(String ednString) {
 		Parser p = Parsers.newParser(getMatrixParserConfig());
 		Parseable ps = Parsers.newParseable(ednString);
@@ -437,7 +436,7 @@ public class Matrixx {
 		AMatrix m = newMatrix(rc, cc);
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				m.set(i, j, Tools.toDouble(data.get(i).get(j)));
+				m.unsafeSet(i, j, Tools.toDouble(data.get(i).get(j)));
 			}
 		}
 		return m;

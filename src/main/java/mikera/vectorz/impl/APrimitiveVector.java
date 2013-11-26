@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 
 /**
  * Abstract base class for specialised primitive vectors

@@ -1,7 +1,5 @@
 package mikera.vectorz.util;
 
-import java.util.Arrays;
-
 import mikera.vectorz.Tools;
 import mikera.vectorz.ops.Logistic;
 

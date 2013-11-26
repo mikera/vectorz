@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Derived vector delegates all calls to an underlying vector

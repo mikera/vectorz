@@ -56,6 +56,14 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 			getRow(i).set(value);
 		}
 	}
+	
+	@Override 
+	public void fill(double value) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRow(i).fill(value);
+		}
+	}
 
 	@Override
 	public void set(int row, int column, double value) {

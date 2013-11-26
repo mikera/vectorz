@@ -11,6 +11,7 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
+@SuppressWarnings("serial")
 public abstract class AMatrixViewVector extends AVector {
 	protected AMatrix source;
 	protected int length;

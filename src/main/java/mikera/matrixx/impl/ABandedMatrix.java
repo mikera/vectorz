@@ -135,6 +135,7 @@ public abstract class ABandedMatrix extends AMatrix {
 	 * @author Mike
 	 *
 	 */
+	@SuppressWarnings("serial")
 	private final class BandedMatrixRow extends AVector {
 		final int row;
 		final int length;

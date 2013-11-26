@@ -8,6 +8,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
+@SuppressWarnings("serial")
 public final class MatrixBandVector extends AMatrixViewVector {
 	private int band;
 	

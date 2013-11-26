@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
