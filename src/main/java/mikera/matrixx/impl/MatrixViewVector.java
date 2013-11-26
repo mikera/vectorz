@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.List;
+
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -63,5 +65,15 @@ public class MatrixViewVector extends AMatrixSubVector {
 	@Override
 	public boolean isMutable() {
 		return source.isMutable();
+	}
+	
+	@Override 
+	public void getElements(double[] data, int offset) {
+		source.getElements(data,offset);
+	}
+	
+	@Override 
+	public List<Double> asElementList() {
+		return source.asElementList();
 	}
 }
