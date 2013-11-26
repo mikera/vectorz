@@ -8,7 +8,7 @@ import mikera.vectorz.Vector3;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Specialized unit axis vector. Has a 1.0 in one element, 0.0 everywhere else.
+ * Specialised immutable unit axis vector. Has a 1.0 in one element, 0.0 everywhere else.
  * 
  * @author Mike
  */
