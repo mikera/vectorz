@@ -146,7 +146,7 @@ public final class JoinedVector extends AVector {
 		if ((start<0)||(end>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
 		}
-		if ((start==0)&&(length==this.length)) return this;
+		if (length==this.length) return this;
 		if (start>=split) return right.subVector(start-split, length);
 		if (end<=split) return left.subVector(start, length);
 		
