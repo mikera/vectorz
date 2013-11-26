@@ -454,10 +454,9 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public void set(AMatrix a) {
-		int rc = rowCount();
-		if (!(rc==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		int cc = columnCount();
-		if (!(cc==a.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		if ((rowCount()!=a.rowCount())||(columnCount()!=a.columnCount())) {
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		}
 		a.getElements(this.data, 0);
 	}
 	
@@ -539,5 +538,4 @@ public final class Matrix extends ADenseArrayMatrix {
 	public double[] getArray() {
 		return data;
 	}
-
 }
