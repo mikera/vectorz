@@ -122,6 +122,15 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 		return 0.0;
 	}
 	
+	@Override
+	public AVector subVector(int offset, int length) {
+		if ((offset<0)||(offset+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
+		if (length==this.length) return this;
+		return ZeroVector.create(length);
+	}
+	
 	@Override 
 	public AVector join(AVector a) {
 		if (a instanceof ZeroVector) {
