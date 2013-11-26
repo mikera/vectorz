@@ -36,6 +36,16 @@ public class MatrixViewVector extends AMatrixSubVector {
 	}
 	
 	@Override
+	public double unsafeGet(int i) {
+		return source.unsafeGet(i/columns, i%columns);
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
+		source.unsafeSet(i/columns, i%columns,value);	
+	}
+	
+	@Override
 	public AVector exactClone() {
 		return new MatrixViewVector(source.exactClone());
 	}
@@ -43,5 +53,15 @@ public class MatrixViewVector extends AMatrixSubVector {
 	@Override
 	public void fill(double v) {
 		source.fill(v);
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return source.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return source.isMutable();
 	}
 }
