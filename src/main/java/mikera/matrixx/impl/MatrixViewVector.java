@@ -91,4 +91,44 @@ public class MatrixViewVector extends AMatrixSubVector {
 	public double magnitudeSquared() {
 		return source.elementSquaredSum();
 	}
+	
+	@Override
+	public void abs() {
+		source.abs();
+	}
+	
+	@Override
+	public void signum() {
+		source.signum();
+	}
+	
+	@Override
+	public void negate() {
+		source.negate();
+	}
+	
+	@Override
+	public void exp() {
+		source.exp();
+	}
+	
+	@Override
+	public void log() {
+		source.log();
+	}
+	
+	@Override
+	public void square() {
+		source.square();
+	}
+	
+	@Override
+	public void sqrt() {
+		source.sqrt();
+	}
+	
+	@Override
+	public void pow(double exponent) {
+		source.pow(exponent);
+	}
 }
