@@ -113,7 +113,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		copyRowTo(col,dest,destOffset);
 	}
 	
-	public AMatrix innerProduct(ADiagonalMatrix a) {
+	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
 		int dims=this.dimensions;
 		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		DiagonalMatrix result=DiagonalMatrix.createDimensions(dims);
