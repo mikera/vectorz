@@ -6,7 +6,6 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -129,6 +128,11 @@ public final class ImmutableMatrix extends AMatrix {
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(data);
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return DoubleArrays.elementSquaredSum(data);
 	}
 	
 	@Override
