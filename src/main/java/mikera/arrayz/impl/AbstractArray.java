@@ -568,7 +568,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public List<INDArray> getSlices(int dimension) {
-		if ((dimension<0)||(dimension>=dimensionality())) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		int l=getShape(dimension);
 		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
 		for (int i=0; i<l; i++) {
