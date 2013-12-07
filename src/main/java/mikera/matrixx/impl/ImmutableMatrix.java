@@ -151,6 +151,11 @@ public final class ImmutableMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void getElements(double[] dest, int offset) {
+		System.arraycopy(data, 0, dest, offset, data.length);
+	}
+	
+	@Override
 	public Matrix clone() {
 		return Matrix.create(this);
 	}
