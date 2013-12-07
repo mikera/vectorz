@@ -195,6 +195,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return al;
 	}
 	
+	@Override
 	public List<AVector> getSlices(int dimension) {
 		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		int l=getShape(dimension);

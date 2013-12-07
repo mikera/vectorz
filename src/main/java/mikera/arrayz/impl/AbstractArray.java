@@ -560,9 +560,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return Arrayz.createFromVector(asVector(), targetShape);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public abstract List<T> getSlices();
+	public List<T> getSlices() {
+		return (List<T>)getSlices(0);
+	}
 	
+	@Override
 	public List<INDArray> getSlices(int dimension) {
 		if ((dimension<0)||(dimension>=dimensionality())) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		int l=getShape(dimension);
