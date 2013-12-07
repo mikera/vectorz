@@ -1,6 +1,10 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
+import mikera.vectorz.Vector;
+import mikera.vectorz.impl.ImmutableVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 public final class ImmutableMatrix extends AMatrix {
@@ -55,6 +59,16 @@ public final class ImmutableMatrix extends AMatrix {
 	@Override
 	public void set(int row, int column, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public Vector toVector() {
+		return Vector.create(data);
+	}
+	
+	@Override
+	public Matrix toMatrix() {
+		return Matrix.wrap(rows, cols, DoubleArrays.copyOf(data));
 	}
 
 	@Override
