@@ -12,6 +12,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.MatrixBandView;
 import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
@@ -32,7 +33,6 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
-import mikera.vectorz.impl.MatrixBandVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -1640,7 +1640,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * @return
 	 */
 	public AVector getBand(int band) {
-		return MatrixBandVector.create(this,band);
+		return MatrixBandView.create(this,band);
 	}
 	
 	public AVector getBandWrapped(int band) {
