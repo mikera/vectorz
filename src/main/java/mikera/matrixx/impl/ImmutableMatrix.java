@@ -42,6 +42,17 @@ public final class ImmutableMatrix extends AMatrix {
 	public boolean isView() {
 		return false;
 	}
+	
+	@Override
+	public boolean isBoolean() {
+		return DoubleArrays.isBoolean(data,0,data.length);
+	}
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data,0,data.length);
+	}
+	
 
 	@Override
 	public double get(int row, int column) {
