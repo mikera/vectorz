@@ -175,7 +175,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
-	public INDArray slice(int dimension, int index) {
+	public AVector slice(int dimension, int index) {
 		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException("Dimension out of range!");
 		return (dimension==0)?getRow(index):getColumn(index);	
 	}	
@@ -193,6 +193,16 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			al.add(getRow(i));
 		}
 		return al;
+	}
+	
+	public List<AVector> getSlices(int dimension) {
+		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		int l=getShape(dimension);
+		ArrayList<AVector> al=new ArrayList<AVector>(l);
+		for (int i=0; i<l; i++) {
+			al.add(slice(dimension,i));
+		}
+		return al;	
 	}
 	
 	@Override

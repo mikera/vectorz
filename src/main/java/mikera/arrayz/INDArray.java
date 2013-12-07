@@ -420,6 +420,12 @@ public interface INDArray extends Cloneable {
 	public List<?> getSlices();
 	
 	/**
+	 * Returns a list of all slices of this array along a given dimension
+	 * @return
+	 */
+	public List<?> getSlices(int dimension);
+	
+	/**
 	 * Validates the internal data structure of the INDArray. Throws an exception on failure.
 	 * 
 	 * Failure indicates a serious bug and/or data corruption.
