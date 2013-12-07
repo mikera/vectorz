@@ -145,6 +145,17 @@ public final class ImmutableMatrix extends AMatrix {
 		return Matrix.wrap(rows, cols, DoubleArrays.copyOf(data));
 	}
 	
+	public Matrix toMatrixTranspose() {
+		int di=0;
+		Matrix m = Matrix.create(cols, rows);
+		for (int j=0; j<rows; j++) {
+			for (int i=0; i<cols; i++) {
+				m.unsafeSet(i, j, data[di++]);
+			}
+		}
+		return m;
+	}
+	
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
