@@ -70,6 +70,8 @@ public class TestArrays {
 
 		List<?> slices = a.getSlices();
 		assertEquals(a, Arrayz.create(slices));
+		
+		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
 	}
 
 	private void testAsVector(INDArray a) {
