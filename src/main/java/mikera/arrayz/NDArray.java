@@ -9,7 +9,6 @@ import java.util.List;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.Matrix;
-import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
