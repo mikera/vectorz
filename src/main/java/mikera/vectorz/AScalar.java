@@ -7,7 +7,6 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.randomz.Hash;
-import mikera.util.Maths;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
