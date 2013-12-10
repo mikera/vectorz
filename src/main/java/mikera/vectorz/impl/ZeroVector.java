@@ -14,7 +14,7 @@ import mikera.vectorz.util.ErrorMessages;
 public final class ZeroVector extends AComputedVector implements ISparse {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
-	private int length;
+	private final int length;
 	
 	private static final AVector[] ZERO_VECTORS = new AVector[] {
 		Vector0.INSTANCE,
@@ -152,6 +152,10 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 	}
 	
 	public AVector join(ZeroVector a) {
+		if (length==0) return a;
+		
+		int alen=a.length;
+		if (alen==0) return this;
 		return ZeroVector.create(length+a.length);
 	}
 
