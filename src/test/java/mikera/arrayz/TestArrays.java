@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
@@ -541,5 +542,8 @@ public class TestArrays {
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
+		
+		testArray(JoinedArray.join(Vector.of(1,2),Vector.of(1,2,3,4,5),0));
+		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 3),1));
 	}
 }

@@ -12,6 +12,9 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.matrixx.Matrix;
 import mikera.util.Maths;
+import mikera.vectorz.AVector;
+import mikera.vectorz.IOp;
+import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -19,6 +22,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.LongArrays;
 /**
  * Abstract base class for INDArray implementations
  * @author Mike
@@ -38,6 +42,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public int getShape(int dim) {
 		return getShape()[dim];
+	}
+	
+	@Override
+	public int[] getShapeClone() {
+		int n=dimensionality();
+		int[] sh=new int[n];
+		for (int i=0; i<n; i++) {
+			sh[i]=getShape(i);
+		}
+		return sh;
+	}
+	
+	
+	@Override
+	public long[] getLongShape() {
+		return LongArrays.copyOf(getShape());
 	}
 	
 	@Override
@@ -73,6 +93,58 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			if (slice(i).isMutable()) return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isFullyMutable() {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			if (!slice(i).isFullyMutable()) return false;
+		}
+		return true;	
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).applyOp(op);
+		}
+	}
+
+	@Override
+	public void applyOp(IOp op) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).applyOp(op);
+		}
+	}
+	
+
+	@Override
+	public void multiply(double d) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).multiply(d);
+		}
+	}
+
+	@Override
+	public boolean isElementConstrained() {
+		int n=sliceCount(); 
+		for (int i=0; i<n; i++) {
+			if (slice(i).isElementConstrained()) return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean isSameShape(INDArray a) {
 		int dims=dimensionality();
 		if (dims!=a.dimensionality()) return false;
@@ -80,6 +152,25 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			if (getShape(i)!=a.getShape(i)) return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public AVector asVector() {
+		int n=sliceCount();
+		AVector result=slice(0).asVector();
+		for (int i=1; i<n; i++) {
+			result=result.join(slice(i).asVector());
+		}
+		return result;
+	}
+	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		int n=sliceCount();
+		int ss=(int)(slice(0).elementCount());
+		for (int i=0; i<n; i++) {
+			slice(i).setElements(values, offset+i*ss, ss);
+		}
 	}
 	
 	@Override

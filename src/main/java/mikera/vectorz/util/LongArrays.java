@@ -10,4 +10,13 @@ public class LongArrays {
 		System.arraycopy(data, index+1, result, index, len-index-1);
 		return result;
 	}
+
+	public static long[] copyOf(int[] xs) {
+		int n=xs.length;
+		long[] ls=new long[n];
+		for (int i=0; i<n; i++) {
+			ls[i]=xs[i];
+		}
+		return ls;
+	}
 }

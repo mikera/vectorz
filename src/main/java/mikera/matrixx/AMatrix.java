@@ -222,6 +222,11 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public int[] getShapeClone() {
+		return new int[] {rowCount(),columnCount()};
+	}
+	
+	@Override
 	public int getShape(int dim) {
 		if (dim==0) {
 			return rowCount();

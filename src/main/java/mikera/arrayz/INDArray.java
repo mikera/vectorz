@@ -29,6 +29,12 @@ public interface INDArray extends Cloneable {
 	public int[] getShape();
 	
 	/**
+	 * Returns the shape of the array as an array of ints, guaranteed to be a new array
+	 * @return
+	 */
+	public int[] getShapeClone();
+	
+	/**
 	 * Returns the dimension size for a specific dimension in the array's shape
 	 * @param dim
 	 * @return
