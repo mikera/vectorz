@@ -167,6 +167,9 @@ public interface INDArray extends Cloneable {
 	 */
 	public INDArray reshape(int... shape);
 
+	// TODO: general rotated views
+	// public INDArray rotateView(int dimension, int shift);
+	
 	/**
 	 * Returns a view of this array broadcasted up to a larger shape
 	 * @param shape
