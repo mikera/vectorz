@@ -54,7 +54,7 @@ public final class BroadcastVectorMatrix extends AVectorMatrix<AVector> {
 
 	@Override
 	public AMatrix exactClone() {
-		return BroadcastVectorMatrix.wrap(vector,rows);
+		return BroadcastVectorMatrix.wrap(vector.exactClone(),rows);
 	}
 
 }
