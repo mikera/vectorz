@@ -371,7 +371,12 @@ public class TestVectors {
 	}
 	
 	private void testJoining(AVector v) {
-		assertEquals(v.join(v),v.join(v,0));
+		AVector vv=v.join(v);
+		assertEquals(vv,v.join(v,0));
+		
+		int n=v.length();
+		AVector v2=vv.subVector(n, n);
+		assertEquals(v,v2);
 	}
 	
 	private void testSetElements(AVector v) {
