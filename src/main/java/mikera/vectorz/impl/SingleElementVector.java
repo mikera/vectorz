@@ -66,12 +66,12 @@ public final class SingleElementVector extends AConstrainedVector implements ISp
 	
 	@Override
 	public boolean isFullyMutable() {
-		return (dimensions==1);
+		return (dimensions<=1);
 	}
 	
 	@Override
 	public boolean isElementConstrained() {
-		return (dimensions!=1);
+		return (dimensions>1);
 	}
 	
 	@Override
@@ -110,5 +110,4 @@ public final class SingleElementVector extends AConstrainedVector implements ISp
 	public SingleElementVector exactClone() {
 		return new SingleElementVector(index,dimensions,value);
 	}
-
 }
