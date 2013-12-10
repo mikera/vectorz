@@ -61,6 +61,17 @@ public class TestArrays {
 		
 		assertEquals(a,a2);
 	}
+	
+	private void testRotateView(INDArray a) {
+		int n=a.dimensionality();
+		if (n==0) return;
+		
+		for (int i=0; i<n; i++) {
+			int size=a.getShape(i);
+			assertEquals(a,a.rotateView(i, 0));
+			assertEquals(a,a.rotateView(i, 1).rotateView(i, size-1));
+		}
+	}
 
 	private void testSlices(INDArray a) {
 		if ((a.elementCount() == 0) || (a.dimensionality() == 0)) return;
@@ -518,6 +529,7 @@ public class TestArrays {
 		testMutability(a);
 		testSlices(a);
 		testSubArray(a);
+		testRotateView(a);
 		testParserRoundTrip(a);
 		testBufferRoundTrip(a);
 	}

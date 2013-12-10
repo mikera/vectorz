@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.randomz.Hash;
+import mikera.util.Maths;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
@@ -87,7 +88,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		if (shape.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
 		return this;
 	}
-	
+
 	@Override
 	public Iterator<Object> iterator() {
 		throw new UnsupportedOperationException("Can't slice a scalar!");

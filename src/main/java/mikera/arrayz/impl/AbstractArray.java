@@ -708,6 +708,25 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray rotateView(int dimension, int shift) {
+		int dlen=getShape(dimension);
+		int n=dimensionality();
+		
+		shift = Maths.mod(shift,dlen);
+		if (shift==0) return this;
+		
+		int[] off=new int[n];
+		int[] shp=getShapeClone();
+		
+		shp[dimension]=shift;
+		INDArray right=subArray(off,shp);
+		shp[dimension]=dlen-shift;
+		off[dimension]=shift;
+		INDArray left=subArray(off,shp);
+		return left.join(right,dimension);
+	}
+	
+	@Override
 	public Vector toVector() {
 		int n=(int)elementCount();
 		double[] data=new double[n];

@@ -17,6 +17,7 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BroadcastVectorMatrix;
 import mikera.randomz.Hash;
+import mikera.util.Maths;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.JoinedVector;
@@ -172,6 +173,23 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (shape.length!=1) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
 		return subVector(offsets[0],shape[0]);
 	}
+	
+	
+	@Override
+	public INDArray rotateView(int dimension, int shift) {
+		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		return rotateView(shift);
+	}
+	
+	public INDArray rotateView(int shift) {
+		int n=length();
+		if (n==0) return this;
+		
+		shift = Maths.mod(shift,n);
+		if (shift==0) return this;
+			
+		return subVector(shift,n-shift).join(subVector(0,shift));
+	}	
 	
 	/**
 	 * Obtains a sub-vector that refers to this vector.

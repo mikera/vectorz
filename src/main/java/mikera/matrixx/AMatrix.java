@@ -26,6 +26,7 @@ import mikera.transformz.AAffineTransform;
 import mikera.transformz.ALinearTransform;
 import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
+import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -356,6 +357,25 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		if (offsets.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
 		if (shape.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
 		return subMatrix(offsets[0],shape[0],offsets[1],shape[1]);
+	}
+	
+	@Override
+	public INDArray rotateView(int dimension, int shift) {
+		int n=getShape(dimension);
+		
+		if (n==0) return this;
+		shift = Maths.mod(shift,n);
+		if (shift==0) return this;
+		
+		int[] off=new int[2];
+		int[] shp=getShapeClone();
+		
+		shp[dimension]=shift;
+		INDArray right=subArray(off,shp);
+		shp[dimension]=n-shift;
+		off[dimension]=shift;
+		INDArray left=subArray(off,shp);
+		return left.join(right,dimension);
 	}
 	
 	@Override
