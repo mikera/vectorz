@@ -759,7 +759,7 @@ public class FFT {
         }
         wtable[offw + fourn] = n;
         wtable[offw + 1 + fourn] = nf;
-        argh = TWO_PI / (double) n;
+        argh = TWO_PI / n;
         i = 1;
         l1 = 1;
         for (k1 = 1; k1 <= nf; k1++) {
@@ -842,7 +842,7 @@ public class FFT {
         }
         wtable[fourn] = n;
         wtable[1 + fourn] = nf;
-        argh = TWO_PI / (double) n;
+        argh = TWO_PI / n;
         i = 1;
         l1 = 1;
         for (k1 = 1; k1 <= nf; k1++) {
@@ -926,7 +926,7 @@ public class FFT {
         }
         wtable_r[twon] = n;
         wtable_r[1 + twon] = nf;
-        argh = TWO_PI / (double) (n);
+        argh = TWO_PI / (n);
         is = 0;
         nfm1 = nf - 1;
         l1 = 1;
@@ -941,7 +941,7 @@ public class FFT {
             for (j = 1; j <= ipm; ++j) {
                 ld += l1;
                 i = is;
-                argld = (double) ld * argh;
+                argld = ld * argh;
 
                 fi = 0;
                 for (ii = 3; ii <= ido; ii += 2) {
@@ -2401,7 +2401,7 @@ public class FFT {
         double dc2, ai1, ai2, ar1, ar2, ds2, dcp, arg, dsp, ar1h, ar2h, w1r, w1i;
         int iw1 = offset;
 
-        arg = TWO_PI / (double) ip;
+        arg = TWO_PI / ip;
         dcp = Math.cos(arg);
         dsp = Math.sin(arg);
         ipph = (ip + 1) / 2;
@@ -2692,7 +2692,7 @@ public class FFT {
         double dcp, arg, dsp, ar1h, ar2h;
         int iw1 = offset;
 
-        arg = TWO_PI / (double) ip;
+        arg = TWO_PI / ip;
         dcp = Math.cos(arg);
         dsp = Math.sin(arg);
         nbd = (ido - 1) / 2;
@@ -5153,55 +5153,6 @@ public class FFT {
         x0i = x1i - x3r;
         a[idx3 + 2] = wk3i * x0r + wk3r * x0i;
         a[idx3 + 3] = wk3i * x0i - wk3r * x0r;
-    }
-
-
-    private void cftrec4_th(final int n, final double[] a, final int offa, final int nw, final double[] w) {
-        int i;
-         
-        final int mf = n >> 1;
-        for (i = 0; i < 2; i++) {
-            final int firstIdx = offa + i * mf;
-            if (i != 0) {
-            	{
-                    int isplt, j, k, m;
-                    int idx1 = firstIdx + mf;
-                    m = n;
-                    while (m > 512) {
-                        m >>= 2;
-                        cftmdl1(m, a, idx1 - m, w, nw - (m >> 1));
-                    }
-                    cftleaf(m, 1, a, idx1 - m, nw, w);
-                    k = 0;
-                    int idx2 = firstIdx - m;
-                    for (j = mf - m; j > 0; j -= m) {
-                        k++;
-                        isplt = cfttree(m, j, k, a, firstIdx, nw, w);
-                        cftleaf(m, isplt, a, idx2 + j, nw, w);
-                    }
-                }
-            } else {
-            	{
-                    int isplt, j, k, m;
-                    int idx1 = firstIdx + mf;
-                    k = 1;
-                    m = n;
-                    while (m > 512) {
-                        m >>= 2;
-                        k <<= 2;
-                        cftmdl2(m, a, idx1 - m, w, nw - m);
-                    }
-                    cftleaf(m, 0, a, idx1 - m, nw, w);
-                    k >>= 1;
-                    int idx2 = firstIdx - m;
-                    for (j = mf - m; j > 0; j -= m) {
-                        k++;
-                        isplt = cfttree(m, j, k, a, firstIdx, nw, w);
-                        cftleaf(m, isplt, a, idx2 + j, nw, w);
-                    }
-                }
-            }
-        }
     }
 
     private void cftrec4(int n, double[] a, int offa, int nw, double[] w) {

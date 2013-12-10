@@ -1,14 +1,12 @@
 package mikera.matrix.algo;
 
-import static org.junit.Assert.*;
-
-import java.util.Arrays;
-
-import org.junit.Test;
-
+import static org.junit.Assert.assertEquals;
 import mikera.matrixx.algo.FFT;
 import mikera.vectorz.Vector;
 
+import org.junit.Test;
+
+@SuppressWarnings("unused")
 public class TestFFT {
 	@Test public void testFFT() {
 		double[] d=new double[2];
@@ -33,11 +31,11 @@ public class TestFFT {
 		
 		FFT fft=new FFT(3);
 		
-		System.out.println(Vector.create(d));
+		//System.out.println(Vector.create(d));
 		fft.realForwardFull(d);
-		System.out.println(Vector.create(d));	
+		//System.out.println(Vector.create(d));	
 		fft.complexInverse(d, true);
-		System.out.println(Vector.create(d));
+		//System.out.println(Vector.create(d));
 		assertEquals(r0,d[0],0.000001);
 		assertEquals(r1,d[2],0.000001);
 		assertEquals(r2,d[4],0.000001);
