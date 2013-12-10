@@ -24,8 +24,9 @@ public class Multiplications {
 			return multiply((Matrix)a,b);
 		} else if (a instanceof ImmutableMatrix) {
 			return multiply(Matrix.wrap(a.rowCount(),a.columnCount(),((ImmutableMatrix)a).getInternalData()),b);
+		} else {
+			return blockedMultiply(a.toMatrix(),b);
 		}
-		return blockedMultiply(a.toMatrix(),b);
 	}
 	
 	public static Matrix multiply(Matrix a, AMatrix b) {
