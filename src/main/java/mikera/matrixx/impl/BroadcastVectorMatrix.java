@@ -19,6 +19,11 @@ public final class BroadcastVectorMatrix extends AVectorMatrix<AVector> {
 		this.vector=v;
 	}
 	
+	@Override
+	public boolean isFullyMutable() {
+		return (rows==1)&&vector.isFullyMutable();
+	}
+	
 	public static BroadcastVectorMatrix wrap(AVector v, int rows) {
 		return new BroadcastVectorMatrix(v,rows);
 	}
