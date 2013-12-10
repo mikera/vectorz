@@ -678,6 +678,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray join(INDArray a, int dimension) {
+		return JoinedArray.join(this,a,dimension);
+	}
+	
+	@Override
 	public Vector toVector() {
 		int n=(int)elementCount();
 		double[] data=new double[n];

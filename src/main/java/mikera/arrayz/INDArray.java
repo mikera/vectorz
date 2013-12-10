@@ -203,6 +203,13 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray slice(int majorSlice);
+	
+	/**
+	 * Joins an array with another array along a specified dimension
+	 * @param majorSlice
+	 * @return
+	 */
+	public INDArray join(INDArray a, int dimension);
 
 	/**
 	 * Returns a slice view of this array along the specified dimension

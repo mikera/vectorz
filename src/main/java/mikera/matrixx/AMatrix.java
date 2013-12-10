@@ -9,6 +9,7 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -214,6 +215,14 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			al.add(getRow(i));
 		}
 		return al;
+	}
+	
+	@Override
+	public INDArray join(INDArray a, int dimension) {
+		if (a instanceof AMatrix) {
+			// TODO: JoinedMatrix implementation
+		}
+		return JoinedArray.join(this,a,dimension);
 	}
 	
 	@Override

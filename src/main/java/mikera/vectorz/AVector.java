@@ -187,6 +187,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public INDArray join(INDArray a, int dimension) {
+		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		if (a instanceof AVector) {
+			return join((AVector)a);
+		}
+		if (a.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		return join(a.asVector());
+	}
+	
+	@Override
 	public int compareTo(AVector a) {
 		int len=length();
 		if (len!=a.length()) throw new IllegalArgumentException("Vectors must be same length for comparison");
