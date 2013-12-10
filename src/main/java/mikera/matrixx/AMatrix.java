@@ -352,6 +352,13 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public AMatrix subArray(int[] offsets, int[] shape) {
+		if (offsets.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		return subMatrix(offsets[0],shape[0],offsets[1],shape[1]);
+	}
+	
+	@Override
 	public AVector transform(AVector source) {
 		Vector v=Vector.createLength(outputDimensions());
 		if (source instanceof Vector) {

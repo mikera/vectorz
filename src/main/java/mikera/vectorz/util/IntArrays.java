@@ -191,4 +191,11 @@ public class IntArrays {
 	public static final int[] copyOf(int[] data) {
 		return Arrays.copyOf(data, data.length);
 	}
+
+	public static boolean isZero(int[] as) {
+		for (int i=0; i<as.length; i++) {
+			if (as[i]!=0) return false;
+		}
+		return true;
+	}
 }

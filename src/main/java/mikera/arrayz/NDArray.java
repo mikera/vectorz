@@ -9,6 +9,7 @@ import java.util.List;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.Matrix;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
 import mikera.vectorz.Op;
@@ -305,6 +306,26 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 				IntArrays.removeIndex(shape,index),
 				IntArrays.removeIndex(stride,index));	
 	}	
+	
+	@Override
+	public NDArray subArray(int[] offsets, int[] shape) {
+		int n=dimensions;
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		if (IntArrays.equals(shape, this.shape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		return new NDArray(data,
+				offset+IntArrays.dotProduct(offsets, stride),
+				IntArrays.copyOf(shape),
+				stride);
+	}
 
 	@Override
 	public int sliceCount() {

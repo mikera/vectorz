@@ -54,6 +54,13 @@ public class TestArrays {
 
 		assertEquals(a, a.reshape(shape));
 	}
+	
+	private void testSubArray(INDArray a) {
+		int n=a.dimensionality();
+		INDArray a2=a.subArray(new int[n], a.getShape());
+		
+		assertEquals(a,a2);
+	}
 
 	private void testSlices(INDArray a) {
 		if ((a.elementCount() == 0) || (a.dimensionality() == 0)) return;
@@ -510,6 +517,7 @@ public class TestArrays {
 		testClone(a);
 		testMutability(a);
 		testSlices(a);
+		testSubArray(a);
 		testParserRoundTrip(a);
 		testBufferRoundTrip(a);
 	}

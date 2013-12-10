@@ -678,6 +678,31 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray subArray(int[] offsets, int[] shape) {
+		int n=dimensionality();
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		int[] thisShape=this.getShape();
+		if (IntArrays.equals(shape, thisShape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		int endIndex=offsets[0]+shape[0];
+		int[] zzoffsets=IntArrays.removeIndex(offsets, 0);
+		int[] zzshape=IntArrays.removeIndex(shape, 0);
+		for (int i=offsets[0]; i<endIndex; i++) {
+			al.add(slice(i).subArray(zzoffsets, zzshape));
+		}
+		return SliceArray.create(al);
+	}
+	
+	@Override
 	public INDArray join(INDArray a, int dimension) {
 		return JoinedArray.join(this,a,dimension);
 	}

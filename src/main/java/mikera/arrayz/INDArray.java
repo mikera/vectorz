@@ -219,6 +219,13 @@ public interface INDArray extends Cloneable {
 	public INDArray slice(int dimension, int index);
 	
 	/**
+	 * Returns a subarray view of a larger array
+	 * @param majorSlice
+	 * @return
+	 */
+	public INDArray subArray(int[] offsets, int[] shape);
+	
+	/**
 	 * Returns the transpose of this array. A transpose of an array is equivalent to 
 	 * reversing the order of dimensions
 	 * @return
