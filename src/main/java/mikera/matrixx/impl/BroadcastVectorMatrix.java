@@ -33,6 +33,14 @@ public final class BroadcastVectorMatrix extends AVectorMatrix<AVector> {
 		if (row<0 ||(row>=rows)) throw new IndexOutOfBoundsException("Row: "+row);
 		return vector;
 	}
+	
+	@Override
+	public final void copyColumnTo(int col, double[] dest, int destOffset) {
+		double v=vector.get(col);
+		for (int i=0;i<rows; i++) {
+			dest[destOffset+i]=v;
+		}
+	}
 
 	@Override
 	public int rowCount() {
