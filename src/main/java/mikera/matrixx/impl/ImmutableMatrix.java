@@ -176,4 +176,11 @@ public final class ImmutableMatrix extends AMatrix {
 		return new ImmutableMatrix(this);
 	}
 
+	/**
+	 * Unsafe method that returns the internal data array
+	 * @return
+	 */
+	public double[] getInternalData() {
+		return data;
+	}
 }
