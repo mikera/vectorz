@@ -370,6 +370,10 @@ public class TestVectors {
 		}
 	}
 	
+	private void testJoining(AVector v) {
+		assertEquals(v.join(v),v.join(v,0));
+	}
+	
 	private void testSetElements(AVector v) {
 		if (!v.isFullyMutable()) return;
 		
@@ -735,6 +739,7 @@ public class TestVectors {
 		testUnsafeSet(v);
 		testOutOfBounds(v);
 		testSlicing(v);
+		testJoining(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
