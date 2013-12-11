@@ -97,6 +97,11 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		return shape;
 	}
 	
+	@Override
+	public int[] getShapeClone() {
+		return shape.clone();
+	}
+	
 	public int getStride(int dim) {
 		return stride[dim];
 	}
@@ -105,6 +110,7 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 	public int getShape(int dim) {
 		return shape[dim];
 	}
+
 
 	@Override
 	public long[] getLongShape() {

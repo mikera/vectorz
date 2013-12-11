@@ -94,6 +94,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	public int[] getShape() {
 		return shape;
 	}
+	
+	@Override
+	public int[] getShapeClone() {
+		return shape.clone();
+	}
 
 	@Override
 	public long[] getLongShape() {
