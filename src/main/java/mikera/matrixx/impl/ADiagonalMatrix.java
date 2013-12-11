@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 
-import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -18,7 +17,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public abstract class ADiagonalMatrix extends ASingleBandMatrix implements ISparse {
+public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	protected final int dimensions;
 	
 	public ADiagonalMatrix(int dimensions) {

@@ -143,5 +143,4 @@ public class BandedMatrix extends ABandedMatrix {
 		if (minBand!=-lowerBandwidthLimit()) throw new VectorzException("Mismatched lower limit: "+minBand);
 		if (maxBand!=upperBandwidthLimit()) throw new VectorzException("Mismatched upper limit: "+maxBand);
 	}
-	
 }

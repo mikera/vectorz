@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -17,7 +18,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public abstract class ABandedMatrix extends AMatrix {
+public abstract class ABandedMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public abstract int upperBandwidthLimit();
@@ -207,7 +208,6 @@ public abstract class ABandedMatrix extends AMatrix {
 		}
 	}
 	
-	
 	@Override public void validate() {
 		super.validate();
 		if (lowerBandwidthLimit()<0) throw new VectorzException("Negative lower bandwidth limit?!?");
@@ -219,5 +219,10 @@ public abstract class ABandedMatrix extends AMatrix {
 			AVector v=getBand(i);
 			if (bandLength(i)!=v.length()) throw new VectorzException("Invalid band length: "+i);
 		}
+	}
+
+	@Override
+	public double density() {
+		return nonZeroCount()/((double)elementCount());
 	}
 }
