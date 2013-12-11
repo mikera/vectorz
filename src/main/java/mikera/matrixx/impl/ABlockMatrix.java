@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 
 /**
  * Abstract base class for a large matrix constructed out of regular subMatrix blocks
+ * 
  * @author Mike
  *
  */

@@ -14,7 +14,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public class QuadtreeMatrix extends AMatrix implements ISparse {
+public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	
 	// Quadtree subcompoents
 	private final AMatrix c00, c01, c10, c11;
@@ -181,5 +181,55 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 	@Override
 	public double density() {
 		return ((double)nonZeroCount())/((long)rows*(long)columns);
+	}
+
+	@Override
+	public AMatrix getBlock(int rowBlock, int colBlock) {
+		switch (rowBlock) {
+		case 0:
+			switch (colBlock) {
+			case 0: return c00;
+			case 1: return c01;
+			default: throw new IndexOutOfBoundsException("Column Block: "+colBlock);			
+			}
+		case 1:
+			switch (colBlock) {
+			case 0: return c10;
+			case 1: return c11;
+			default: throw new IndexOutOfBoundsException("Column Block: "+colBlock);			
+			}
+		
+		default: throw new IndexOutOfBoundsException("Row Block: "+rowBlock);
+		}
+	}
+
+	@Override
+	public int getBlockColumnCount(int colBlock) {
+		return (colBlock==0)?columnSplit:(columns-columnSplit);
+	}
+
+	@Override
+	public int getBlockRowCount(int rowBlock) {
+		return (rowBlock==0)?rowSplit:(rows-rowSplit);
+	}
+
+	@Override
+	public int getColumnBlockIndex(int col) {
+		return col<columnSplit?0:1;
+	}
+
+	@Override
+	public int getRowBlockIndex(int row) {
+		return row<rowSplit?0:1;
+	}
+
+	@Override
+	public int columnBlockCount() {
+		return 2;
+	}
+
+	@Override
+	public int rowBlockCount() {
+		return 2;
 	}
 }
