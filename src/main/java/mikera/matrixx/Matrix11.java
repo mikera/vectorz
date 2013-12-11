@@ -7,7 +7,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public class Matrix11 extends AMatrix {
+public final class Matrix11 extends AMatrix {
 	private double value;
 	
 	public Matrix11() {
