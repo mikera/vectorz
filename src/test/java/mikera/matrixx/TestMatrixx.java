@@ -643,6 +643,10 @@ public class TestMatrixx {
 		Matrix22 m22=new Matrix22();
 		doGenericTests(m22);
 		
+		// specialised 1*1 matrix
+		Matrix22 m11=new Matrix22();
+		doGenericTests(m11);
+
 		// specialised Mx3 matrix
 		VectorMatrixM3 mm3=new VectorMatrixM3(10);
 		doGenericTests(mm3);
