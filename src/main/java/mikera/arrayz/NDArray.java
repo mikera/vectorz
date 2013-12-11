@@ -46,11 +46,7 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 	}
 	
 	NDArray(double[] data, int offset, int[] shape, int[] stride) {
-		this.data=data;
-		this.offset=offset;
-		this.shape=shape;
-		this.stride=stride;
-		this.dimensions=shape.length;
+		this(data,shape.length,offset,shape,stride);
 	}
 	
 	private NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
