@@ -1,7 +1,5 @@
 package mikera.matrixx;
 
-import java.util.Arrays;
-
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -40,6 +38,16 @@ public class Matrix11 extends AMatrix {
 	public void set(int row, int column, double value) {
 		if ((row!=0)||(column!=0)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		this.value=value;
+	}
+	
+	@Override
+	public void addAt(int i, int j, double value) {
+		this.value+=value;
+	}
+	
+	@Override
+	public void multiply(double factor) {
+		value*=factor; 
 	}
 	
 	@Override
