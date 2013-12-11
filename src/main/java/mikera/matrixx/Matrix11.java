@@ -53,6 +53,31 @@ public final class Matrix11 extends AMatrix {
 	public long elementCount() {
 		return 1;
 	}
+	
+	@Override
+	public boolean isSquare() {
+		return true;
+	}
+	
+	@Override
+	public boolean isDiagonal() {
+		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return value==0;
+	}
+	
+	@Override
+	public boolean isIdentity() {
+		return value==1.0;
+	}
+	
+	@Override
+	public double trace() {
+		return value;
+	}
 
 	@Override
 	public double get(int row, int column) {
