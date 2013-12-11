@@ -93,6 +93,11 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse {
 		return t;
 	}
 	
+	@Override
+	public double trace() {
+		return getBand(0).elementSum();
+	}
+	
 	@Override 
 	public double elementSquaredSum() {
 		double t=0;
