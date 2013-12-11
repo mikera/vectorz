@@ -49,6 +49,11 @@ public class Matrix11 extends AMatrix {
 	public void unsafeSet(int row, int column, double value) {
 		this.value=value;
 	}
+	
+	@Override
+	public void getElements(double[] data, int offset) {
+		data[offset]=value;
+	}
 
 	@Override
 	public AMatrix exactClone() {
