@@ -303,7 +303,7 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 			return StridedVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
 		return new NDArray(data,
-				offset,
+				offset+index*stride[dimension],
 				IntArrays.removeIndex(shape,index),
 				IntArrays.removeIndex(stride,index));	
 	}	
