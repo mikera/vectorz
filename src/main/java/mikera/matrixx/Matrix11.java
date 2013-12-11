@@ -27,6 +27,32 @@ public class Matrix11 extends AMatrix {
 	public int columnCount() {
 		return 1;
 	}
+	
+
+	@Override
+	public double determinant() {
+		return value;
+	}
+	
+	@Override
+	public double elementSum() {
+		return value;
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return value*value;
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		return (value==0)?0:1;
+	}
+	
+	@Override
+	public long elementCount() {
+		return 1;
+	}
 
 	@Override
 	public double get(int row, int column) {

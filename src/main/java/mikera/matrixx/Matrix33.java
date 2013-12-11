@@ -65,6 +65,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public long elementCount() {
+		return 9;
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		m00*=factor; m01*=factor; m02*=factor;
 		m10*=factor; m11*=factor; m12*=factor;
