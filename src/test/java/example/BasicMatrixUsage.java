@@ -6,9 +6,6 @@ import mikera.matrixx.Matrixx;
 
 public class BasicMatrixUsage {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		Matrix33 m=new Matrix33();
 		
