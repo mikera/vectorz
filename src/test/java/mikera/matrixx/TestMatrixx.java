@@ -701,7 +701,7 @@ public class TestMatrixx {
 		
 		doGenericTests(PermutationMatrix.create(0,1,2));
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
-		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(10)));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(8)));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(6)).subMatrix(1,3,2,4));
 		
 		doGenericTests(BandedMatrix.create(3, 3, -2, 2));
