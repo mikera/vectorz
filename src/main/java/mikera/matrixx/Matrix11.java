@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import java.util.Arrays;
+
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -53,6 +55,16 @@ public class Matrix11 extends AMatrix {
 	@Override
 	public void getElements(double[] data, int offset) {
 		data[offset]=value;
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		dest[destOffset]=value;
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		dest[destOffset]=value;
 	}
 
 	@Override
