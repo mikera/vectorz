@@ -110,4 +110,8 @@ public class ErrorMessages {
 		return "Cannot access slices of 0-D "+a.getClass();
 	}
 
+	public static String insufficientElements(int length) {
+		return "Insufficient elements "+length;
+	}
+
 }

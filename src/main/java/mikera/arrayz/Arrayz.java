@@ -12,6 +12,7 @@ import us.bpsm.edn.parser.Parsers;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
@@ -20,6 +21,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -99,14 +101,23 @@ public class Arrayz {
 		return create((Object)data);
 	}
 	
+	/**
+	 * Creates an INDArray instance wrappring the given double data, with the provided shape.
+	 * 
+	 * @param data
+	 * @param shape
+	 * @return
+	 */
 	public static INDArray wrap(double[] data, int[] shape) {
+		int dlength=data.length;
 		switch (shape.length) {
 			case 0:
 				return ArrayIndexScalar.wrap(data,0);
 				
 			case 1:
 				int n=shape[0];
-				if (n==data.length) {
+				if (dlength<n) throw new IllegalArgumentException(ErrorMessages.insufficientElements(dlength));
+				if (n==dlength) {
 					return Vector.wrap(data); 
 				} else {
 					return ArraySubVector.wrap(data, 0, n);
@@ -114,14 +125,22 @@ public class Arrayz {
 				
 			case 2:
 				int rc=shape[0], cc=shape[1];
-				if (rc*cc==data.length) {
+				int ec=rc*cc;
+				if (dlength<ec) throw new IllegalArgumentException(ErrorMessages.insufficientElements(dlength));
+				if (ec==dlength) {
 					return Matrix.wrap(rc,cc, data);
 				} else {
-					return NDArray.wrap(data, shape);
+					return StridedMatrix.wrap(data, shape[0], shape[1], 0, shape[1], 1);
 				}
 		
 			default:
-				return NDArray.wrap(data, shape);
+				long eec=IntArrays.arrayProduct(shape);
+				if (dlength<eec) throw new IllegalArgumentException(ErrorMessages.insufficientElements(dlength));
+				if (eec==dlength) {
+					return Array.wrap(data, shape);
+				} else {
+					return NDArray.wrap(data, shape);
+				}
 		}
 	}
 
@@ -188,6 +207,12 @@ public class Arrayz {
 		return (st==data.length);
 	}
 
+	/**
+	 * Checks if the given set of strides represents a fully packed, row major layout for the given shape
+	 * @param shape
+	 * @param strides
+	 * @return
+	 */
 	public static boolean isPackedStrides(int[] shape, int[] strides) {
 		int dims=shape.length;
 		int st=1;
