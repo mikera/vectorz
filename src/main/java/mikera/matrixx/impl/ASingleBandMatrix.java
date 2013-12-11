@@ -34,6 +34,16 @@ public abstract class ASingleBandMatrix extends ABandedMatrix {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return getNonZeroBand().isZero();
+	}
+	
+	@Override 
+	public long nonZeroCount() {
+		return getNonZeroBand().nonZeroCount();
+	}
+	
+	@Override
 	public AVector getBand(int band) {
 		if (band==nonZeroBand()) {
 			return getNonZeroBand();
@@ -41,4 +51,6 @@ public abstract class ASingleBandMatrix extends ABandedMatrix {
 			return ZeroVector.create(bandLength(band));
 		}
 	}
+	
+	// TODO: inner product with single band matrix should be v.fast
 }
