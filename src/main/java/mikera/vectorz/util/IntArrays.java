@@ -163,6 +163,25 @@ public class IntArrays {
 		}
 		return result;
 	}
+	
+	/**
+	 * Finds the position of a value in a sorted index, or -1 if before the array.
+	 */
+	public static final int indexLookup(int[] data, int i) {
+		if (i<data[0]) return -1;
+		int min=0; int max=data.length-1;
+		while (min<max) {
+			int mid=(min+max+1)>>1;
+			int mi=data[mid];
+			if (i==mi) return mid;
+			if (i<mi) {
+				max=mid-1;
+			} else {
+				min=mid;
+			}
+		}
+		return min;
+	}
 
 	public static int[] decrementAll(int[] xs) {
 		int len=xs.length;

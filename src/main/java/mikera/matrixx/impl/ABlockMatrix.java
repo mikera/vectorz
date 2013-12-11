@@ -16,6 +16,6 @@ public abstract class ABlockMatrix extends AMatrix {
 	public abstract int getColumnBlockIndex(int col);
 	public abstract int getRowBlockIndex(int row);
 	
-	public abstract int getColumnBlockLength(int col);
-	public abstract int getRowBlockLength(int row);
+	public abstract int columnBlockCount();
+	public abstract int rowBlockCount();
 }

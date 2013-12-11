@@ -8,7 +8,9 @@ import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BandedMatrix;
+import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
@@ -715,5 +717,8 @@ public class TestMatrixx {
 		// Immutable matrices
 		doGenericTests(new ImmutableMatrix(Matrixx.createRandomMatrix(4, 5)));
 		doGenericTests(new ImmutableMatrix(Matrixx.createRandomMatrix(3, 3)));
+		
+		// block diagonal matrices
+		doGenericTests(BlockDiagonalMatrix.create(IdentityMatrix.create(2),Matrixx.createRandomSquareMatrix(2)));
 	}
 }
