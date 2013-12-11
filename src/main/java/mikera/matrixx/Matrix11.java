@@ -39,6 +39,16 @@ public class Matrix11 extends AMatrix {
 		if ((row!=0)||(column!=0)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		this.value=value;
 	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return value;
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		this.value=value;
+	}
 
 	@Override
 	public AMatrix exactClone() {
