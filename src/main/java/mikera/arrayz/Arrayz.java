@@ -72,6 +72,12 @@ public class Arrayz {
 		throw new VectorzException("Don't know how to create array from: "+object.getClass());
 	}
 	
+	/**
+	 * Create a new array instance with the given shape. New array will be filled with zeroes.
+	 * 
+	 * @param shape
+	 * @return
+	 */
 	public static INDArray newArray(int... shape) {
 		int dims=shape.length;
 		
@@ -97,12 +103,18 @@ public class Arrayz {
 		}
 	}
 	
+	/**
+	 * Creates an array using the given data as slices.
+	 * 
+	 * @param data
+	 * @return
+	 */
 	public static INDArray create(Object... data) {
 		return create((Object)data);
 	}
 	
 	/**
-	 * Creates an INDArray instance wrappring the given double data, with the provided shape.
+	 * Creates an INDArray instance wrapping the given double data, with the provided shape.
 	 * 
 	 * @param data
 	 * @param shape
@@ -171,12 +183,14 @@ public class Arrayz {
 		return Arrayz.create(p.nextValue(pbr));
 	}
 	
+	/**
+	 * Parse an array from a String. String should be in edn format
+	 * 
+	 * @param ednString
+	 * @return
+	 */
 	public static INDArray parse(String ednString) {
 		return load(new StringReader(ednString));	
-	}
-
-	public static long elementCount(int[] shape) {
-		return IntArrays.arrayProduct(shape);
 	}
 
 	public static INDArray wrapStrided(double[] data, int offset, int[] shape, int[] strides) {
