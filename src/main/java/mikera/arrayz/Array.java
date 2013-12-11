@@ -158,9 +158,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 		}
 
 		int offset = index * getStride(dimension);
-		return new NDArray(data, offset,
-				IntArrays.removeIndex(shape, dimension), IntArrays.removeIndex(
-						strides, dimension));
+		return new NDArray(
+				data, 
+				offset,
+				IntArrays.removeIndex(shape, dimension), 
+				IntArrays.removeIndex(strides, dimension));
 	}
 	
 	@Override
