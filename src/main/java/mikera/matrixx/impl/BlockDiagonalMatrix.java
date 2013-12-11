@@ -1,5 +1,8 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
+import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.util.IntArrays;
 
@@ -11,7 +14,7 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public class BlockDiagonalMatrix extends ABlockMatrix {
+public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 	private final AMatrix[] mats;
 	private final int[] sizes;
 	private final int[] offsets;
@@ -22,7 +25,7 @@ public class BlockDiagonalMatrix extends ABlockMatrix {
 		blockCount=newMats.length;
 		mats=newMats;
 		sizes=new int[blockCount];
-		offsets=new int[blockCount];
+		offsets=new int[blockCount+1];
 		int totalSize=0;
 		for (int i=0; i<blockCount; i++) {
 			int size=mats[i].rowCount();
@@ -31,6 +34,7 @@ public class BlockDiagonalMatrix extends ABlockMatrix {
 			totalSize+=size;
 		}
 		this.size=totalSize;
+		offsets[blockCount]=size;
 	}
 	
 	public static BlockDiagonalMatrix create(AMatrix... blocks) {
@@ -129,5 +133,34 @@ public class BlockDiagonalMatrix extends ABlockMatrix {
 	@Override
 	public int rowBlockCount() {
 		return blockCount;
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		int i=getColumnBlockIndex(col);
+		int si=offsets[i];
+		int di=offsets[i+1];
+		Arrays.fill(dest, destOffset, si+destOffset, 0.0);
+		mats[i].copyColumnTo(col-si, dest, destOffset+si);
+		Arrays.fill(dest, di+destOffset, size+destOffset, 0.0);
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		int i=getRowBlockIndex(row);
+		int si=offsets[i];
+		int di=offsets[i+1];
+		Arrays.fill(dest, destOffset, si+destOffset, 0.0);
+		mats[i].copyRowTo(row-si, dest, destOffset+si);
+		Arrays.fill(dest, di+destOffset, size+destOffset, 0.0);
+	}
+
+	@Override
+	public double density() {
+		long nzero=0;
+		for (int i=0; i<blockCount; i++) {
+			nzero+=mats[i].nonZeroCount();
+		}
+		return nzero/((double)elementCount());
 	}
 }
