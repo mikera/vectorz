@@ -480,7 +480,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void multiply(AVector v) {
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException("Wrong vector sizes");
+		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < len; i++) {
 			unsafeSet(i,unsafeGet(i)*v.unsafeGet(i));
 		}	
@@ -489,7 +489,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void multiply(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			set(i,get(i)*data[i+offset]);
+			unsafeSet(i,unsafeGet(i)*data[i+offset]);
 		}	
 	}
 	
