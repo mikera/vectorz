@@ -16,13 +16,14 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 	
 	private final int length;
 	
-	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[] {
-		new ZeroVector(0),
-		new ZeroVector(1),
-		new ZeroVector(2),
-		new ZeroVector(3),
-		new ZeroVector(4)
-	};
+	private static final int ZERO_VECTOR_CACHE=30;
+	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE];
+	
+	static {
+		for (int i=0; i<ZERO_VECTOR_CACHE; i++) {
+			ZERO_VECTORS[i]=new ZeroVector(i);
+		}
+	}
 	
 	private ZeroVector(int dimensions) {
 		length=dimensions;
@@ -30,7 +31,7 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 	
 	public static ZeroVector create(int dimensions) {
 		if (dimensions<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(dimensions));
-		if (dimensions<ZERO_VECTORS.length) {
+		if (dimensions<ZERO_VECTOR_CACHE) {
 			return ZERO_VECTORS[dimensions];
 		}
 		return new ZeroVector(dimensions);
