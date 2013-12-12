@@ -18,12 +18,12 @@ public class VectorIndexScalar extends AScalar {
 	
 	@Override
 	public double get() {
-		return vector.get(index);
+		return vector.unsafeGet(index);
 	}
 	
 	@Override
 	public void set(double value) {
-		vector.set(index,value);
+		vector.unsafeSet(index,value);
 	}
 	
 	@Override
