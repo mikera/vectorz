@@ -90,7 +90,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public double get(int... indexes) {
-		assert(indexes.length==1);
+		if (indexes.length!=1) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, indexes));
 		return get(indexes[0]);
 	}
 	
@@ -122,7 +122,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		ArrayList<Double> al=new ArrayList<Double>();
 		int l=length();
 		for (int i=0; i<l; i++) {
-			al.add(get(i));
+			al.add(unsafeGet(i));
 		}
 		return al;
 	}
@@ -346,7 +346,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void copyTo(int offset, double[] dest, int destOffset, int length) {
 		for (int i=0; i<length; i++) {
-			dest[i+destOffset]=get(i+offset);
+			dest[i+destOffset]=unsafeGet(i+offset);
 		}
 	}
 	
@@ -496,7 +496,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void multiplyTo(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			data[i+offset]*=get(i);
+			data[i+offset]*=unsafeGet(i);
 		}	
 	}
 	
@@ -515,9 +515,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void divide(AVector v) {
 		int len=length();
-		assert(len==v.length());
+		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < len; i++) {
-			set(i,get(i)/v.get(i));
+			unsafeSet(i,unsafeGet(i)/v.unsafeGet(i));
 		}	
 	}
 	
@@ -1346,7 +1346,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		if (len!=indexes.length()) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len ; i++) {
-			unsafeSet(i, v.get(indexes.get(i)));
+			unsafeSet(i, v.get(indexes.unsafeGet(i)));
 		}
 	}
 	
