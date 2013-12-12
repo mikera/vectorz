@@ -1121,9 +1121,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
-		if ((offset+length)>length()) throw new IndexOutOfBoundsException();
+		if ((offset+length)>length()) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		if ((srcOffset<0)||(srcOffset+length>src.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(src, srcOffset, length));
 		for (int i = 0; i < length; i++) {
-			addAt(i+offset,src.get(i+srcOffset)*factor);
+			addAt(i+offset,src.unsafeGet(i+srcOffset)*factor);
 		}
 	}
 	
@@ -1426,7 +1427,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Adds a value to a specific element of the vector
 	 * 
-	 * This function does not perform bounds checking
+	 * This function does not perform bounds checking, i.e. is an unsafe operation
 	 * 
 	 * @param i
 	 * @param v
