@@ -48,15 +48,15 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	public Affine23(Matrix22 m, AVector v) {
-		assert(v.length()==3);
-		assert(m.inputDimensions()==3);
-		assert(m.outputDimensions()==3);
+		assert(v.length()==2);
+		assert(m.inputDimensions()==2);
+		assert(m.outputDimensions()==2);
 		m00=m.m00;
 		m01=m.m01;
 		m10=m.m10;
 		m11=m.m11;
-		tr0=v.get(0);
-		tr1=v.get(1);
+		tr0=v.unsafeGet(0);
+		tr1=v.unsafeGet(1);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 			transform((Vector2)source,(Vector2)dest);
 			return;
 		}
-		double x=source.get(0), y=source.get(1);
+		double x=source.unsafeGet(0), y=source.unsafeGet(1);
 		dest.set(0,((m00*x)+(m01*y)+tr0));
 		dest.set(1,((m10*x)+(m11*y)+tr1));
 	}

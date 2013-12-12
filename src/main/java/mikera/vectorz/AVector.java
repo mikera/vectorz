@@ -1069,7 +1069,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int length=length();
 		if (!((srcOffset>=0)&&(srcOffset+length<=src.length()))) throw new IndexOutOfBoundsException();
 		for (int i = 0; i < length; i++) {
-			addAt(i,src.get(srcOffset+i));
+			addAt(i,src.unsafeGet(srcOffset+i));
 		}
 	}
 	
@@ -1089,7 +1089,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void add(int offset, AVector a, int aOffset, int length) {
 		for (int i = 0; i < length; i++) {
-			addAt(offset+i,a.get(i+aOffset));
+			addAt(offset+i,a.unsafeGet(i+aOffset));
 		}		
 	}
 	
