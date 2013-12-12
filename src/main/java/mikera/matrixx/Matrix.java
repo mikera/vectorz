@@ -15,6 +15,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;

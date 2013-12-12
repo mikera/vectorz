@@ -14,10 +14,21 @@ public final class ImmutableMatrix extends AMatrix {
 	private int rows;
 	private int cols;
 	
+	private ImmutableMatrix(int rows, int cols, double[] data) {
+		this.rows=rows;
+		this.cols=cols;
+		this.data=data;
+	}
+	
 	public ImmutableMatrix(AMatrix m) {
 		rows=m.rowCount();
 		cols=m.columnCount();
 		data=m.toDoubleArray();
+	}
+	
+	public static ImmutableMatrix wrap(Matrix source) {
+		double[] data=source.data;
+		return new ImmutableMatrix(source.rowCount(), source.columnCount(), data);
 	}
 
 	@Override
