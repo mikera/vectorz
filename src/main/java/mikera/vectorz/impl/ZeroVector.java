@@ -14,23 +14,24 @@ import mikera.vectorz.util.ErrorMessages;
 public final class ZeroVector extends AComputedVector implements ISparse {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
-	private int length;
+	private final int length;
 	
-	private static final AVector[] ZERO_VECTORS = new AVector[] {
-		Vector0.INSTANCE,
-		new ZeroVector(1),
-		new ZeroVector(2),
-		new ZeroVector(3),
-		new ZeroVector(4)
-	};
+	private static final int ZERO_VECTOR_CACHE=30;
+	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE];
 	
-	public ZeroVector(int dimensions) {
+	static {
+		for (int i=0; i<ZERO_VECTOR_CACHE; i++) {
+			ZERO_VECTORS[i]=new ZeroVector(i);
+		}
+	}
+	
+	private ZeroVector(int dimensions) {
 		length=dimensions;
 	}
 	
-	public static AVector create(int dimensions) {
+	public static ZeroVector create(int dimensions) {
 		if (dimensions<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(dimensions));
-		if (dimensions<ZERO_VECTORS.length) {
+		if (dimensions<ZERO_VECTOR_CACHE) {
 			return ZERO_VECTORS[dimensions];
 		}
 		return new ZeroVector(dimensions);
@@ -151,7 +152,11 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 		return super.join(a);
 	}
 	
-	public AVector join(ZeroVector a) {
+	public ZeroVector join(ZeroVector a) {
+		if (length==0) return a;
+		
+		int alen=a.length;
+		if (alen==0) return this;
 		return ZeroVector.create(length+a.length);
 	}
 

@@ -29,6 +29,12 @@ public interface INDArray extends Cloneable {
 	public int[] getShape();
 	
 	/**
+	 * Returns the shape of the array as an array of ints, guaranteed to be a new array
+	 * @return
+	 */
+	public int[] getShapeClone();
+	
+	/**
 	 * Returns the dimension size for a specific dimension in the array's shape
 	 * @param dim
 	 * @return
@@ -168,6 +174,12 @@ public interface INDArray extends Cloneable {
 	public INDArray reshape(int... shape);
 
 	/**
+	 * Returns rotated view of this array
+	 * @return
+	 */
+	public INDArray rotateView(int dimension, int shift);
+	
+	/**
 	 * Returns a view of this array broadcasted up to a larger shape
 	 * @param shape
 	 * @return
@@ -194,6 +206,13 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray slice(int majorSlice);
+	
+	/**
+	 * Joins an array with another array along a specified dimension
+	 * @param majorSlice
+	 * @return
+	 */
+	public INDArray join(INDArray a, int dimension);
 
 	/**
 	 * Returns a slice view of this array along the specified dimension
@@ -201,6 +220,13 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray slice(int dimension, int index);
+	
+	/**
+	 * Returns a subarray view of a larger array
+	 * @param majorSlice
+	 * @return
+	 */
+	public INDArray subArray(int[] offsets, int[] shape);
 	
 	/**
 	 * Returns the transpose of this array. A transpose of an array is equivalent to 
@@ -418,6 +444,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public List<?> getSlices();
+	
+	/**
+	 * Returns a list of all slices of this array along a given dimension
+	 * @return
+	 */
+	public List<?> getSlices(int dimension);
 	
 	/**
 	 * Validates the internal data structure of the INDArray. Throws an exception on failure.

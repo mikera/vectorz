@@ -24,7 +24,7 @@ public abstract class AComputedVector extends AConstrainedVector {
 	
 	@Override
 	public boolean isMutable() {
-		return false;
+		return false; // i.e. immutable
 	}
 	
 	@Override

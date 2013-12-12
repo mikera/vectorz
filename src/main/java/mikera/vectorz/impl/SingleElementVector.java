@@ -1,6 +1,9 @@
 package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
+import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -66,12 +69,12 @@ public final class SingleElementVector extends AConstrainedVector implements ISp
 	
 	@Override
 	public boolean isFullyMutable() {
-		return (dimensions==1);
+		return (dimensions<=1);
 	}
 	
 	@Override
 	public boolean isElementConstrained() {
-		return (dimensions!=1);
+		return (dimensions>1);
 	}
 	
 	@Override
@@ -107,8 +110,17 @@ public final class SingleElementVector extends AConstrainedVector implements ISp
 	}
 	
 	@Override
+	public AVector subVector(int offset, int length) {
+		int end=offset+length;
+		if ((offset>index)||(end<=index)) {
+			if ((offset<0)||(end>this.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+			return Vectorz.createZeroVector(length);
+		}
+		return super.subVector(offset, length);
+	}
+	
+	@Override
 	public SingleElementVector exactClone() {
 		return new SingleElementVector(index,dimensions,value);
 	}
-
 }

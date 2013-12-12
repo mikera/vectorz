@@ -9,9 +9,11 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.MatrixBandView;
 import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
@@ -24,6 +26,7 @@ import mikera.transformz.AAffineTransform;
 import mikera.transformz.ALinearTransform;
 import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
+import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -32,7 +35,6 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
-import mikera.vectorz.impl.MatrixBandVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -175,7 +177,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
-	public INDArray slice(int dimension, int index) {
+	public AVector slice(int dimension, int index) {
 		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException("Dimension out of range!");
 		return (dimension==0)?getRow(index):getColumn(index);	
 	}	
@@ -196,6 +198,17 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public List<AVector> getSlices(int dimension) {
+		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		int l=getShape(dimension);
+		ArrayList<AVector> al=new ArrayList<AVector>(l);
+		for (int i=0; i<l; i++) {
+			al.add(slice(dimension,i));
+		}
+		return al;	
+	}
+	
+	@Override
 	public List<INDArray> getSliceViews() {	
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		int rc=rowCount();
@@ -206,7 +219,20 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
+	public INDArray join(INDArray a, int dimension) {
+		if (a instanceof AMatrix) {
+			// TODO: JoinedMatrix implementation
+		}
+		return JoinedArray.join(this,a,dimension);
+	}
+	
+	@Override
 	public int[] getShape() {
+		return new int[] {rowCount(),columnCount()};
+	}
+	
+	@Override
+	public int[] getShapeClone() {
 		return new int[] {rowCount(),columnCount()};
 	}
 	
@@ -324,6 +350,32 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			vm.appendRow(this.getRow(rowStart+i).subVector(colStart, cols));
 		}
 		return vm;	
+	}
+	
+	@Override
+	public AMatrix subArray(int[] offsets, int[] shape) {
+		if (offsets.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		return subMatrix(offsets[0],shape[0],offsets[1],shape[1]);
+	}
+	
+	@Override
+	public INDArray rotateView(int dimension, int shift) {
+		int n=getShape(dimension);
+		
+		if (n==0) return this;
+		shift = Maths.mod(shift,n);
+		if (shift==0) return this;
+		
+		int[] off=new int[2];
+		int[] shp=getShapeClone();
+		
+		shp[dimension]=shift;
+		INDArray right=subArray(off,shp);
+		shp[dimension]=n-shift;
+		off[dimension]=shift;
+		INDArray left=subArray(off,shp);
+		return left.join(right,dimension);
 	}
 	
 	@Override
@@ -1080,11 +1132,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		if (cc==1) return getColumn(0);
 
 		return new MatrixViewVector(this);
-//		AVector v = getRow(0);
-//		for (int i = 1; i < rc; i++) {
-//			v = Vectorz.join(v, getRow(i));
-//		}
-//		return v;
 	}
 	
 	@Override
@@ -1640,7 +1687,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	 * @return
 	 */
 	public AVector getBand(int band) {
-		return MatrixBandVector.create(this,band);
+		return MatrixBandView.create(this,band);
 	}
 	
 	public AVector getBandWrapped(int band) {

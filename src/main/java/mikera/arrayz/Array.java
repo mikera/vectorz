@@ -94,6 +94,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	public int[] getShape() {
 		return shape;
 	}
+	
+	@Override
+	public int[] getShapeClone() {
+		return shape.clone();
+	}
 
 	@Override
 	public long[] getLongShape() {
@@ -153,9 +158,32 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 		}
 
 		int offset = index * getStride(dimension);
-		return new NDArray(data, offset,
-				IntArrays.removeIndex(shape, dimension), IntArrays.removeIndex(
-						strides, dimension));
+		return new NDArray(
+				data, 
+				offset,
+				IntArrays.removeIndex(shape, dimension), 
+				IntArrays.removeIndex(strides, dimension));
+	}
+	
+	@Override
+	public INDArray subArray(int[] offsets, int[] shape) {
+		int n=dimensions;
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		if (IntArrays.equals(shape, this.shape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		int[] strides=IntArrays.calcStrides(this.shape);
+		return new NDArray(data,
+				IntArrays.dotProduct(offsets, strides),
+				IntArrays.copyOf(shape),
+				strides);
 	}
 
 	@Override

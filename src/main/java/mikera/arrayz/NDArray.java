@@ -46,11 +46,7 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 	}
 	
 	NDArray(double[] data, int offset, int[] shape, int[] stride) {
-		this.data=data;
-		this.offset=offset;
-		this.shape=shape;
-		this.stride=stride;
-		this.dimensions=shape.length;
+		this(data,shape.length,offset,shape,stride);
 	}
 	
 	private NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
@@ -97,6 +93,11 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		return shape;
 	}
 	
+	@Override
+	public int[] getShapeClone() {
+		return shape.clone();
+	}
+	
 	public int getStride(int dim) {
 		return stride[dim];
 	}
@@ -105,6 +106,7 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 	public int getShape(int dim) {
 		return shape[dim];
 	}
+
 
 	@Override
 	public long[] getLongShape() {
@@ -301,10 +303,30 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 			return StridedVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
 		return new NDArray(data,
-				offset,
+				offset+index*stride[dimension],
 				IntArrays.removeIndex(shape,index),
 				IntArrays.removeIndex(stride,index));	
 	}	
+	
+	@Override
+	public NDArray subArray(int[] offsets, int[] shape) {
+		int n=dimensions;
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		if (IntArrays.equals(shape, this.shape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		return new NDArray(data,
+				offset+IntArrays.dotProduct(offsets, stride),
+				IntArrays.copyOf(shape),
+				stride);
+	}
 
 	@Override
 	public int sliceCount() {

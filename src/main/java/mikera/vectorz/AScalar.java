@@ -11,6 +11,7 @@ import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.impl.WrappedScalarVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
 import mikera.vectorz.util.VectorzException;
@@ -80,6 +81,13 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		throw new UnsupportedOperationException("Can't slice a scalar!");
 	}
 	
+	@Override
+	public AScalar subArray(int[] offsets, int[] shape) {
+		if (offsets.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		return this;
+	}
+
 	@Override
 	public Iterator<Object> iterator() {
 		throw new UnsupportedOperationException("Can't slice a scalar!");

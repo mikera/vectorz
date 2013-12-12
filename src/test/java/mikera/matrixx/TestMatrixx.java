@@ -8,7 +8,10 @@ import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BandedMatrix;
+import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
 import mikera.matrixx.impl.QuadtreeMatrix;
@@ -640,6 +643,10 @@ public class TestMatrixx {
 		Matrix22 m22=new Matrix22();
 		doGenericTests(m22);
 		
+		// specialised 1*1 matrix
+		Matrix22 m11=new Matrix22();
+		doGenericTests(m11);
+
 		// specialised Mx3 matrix
 		VectorMatrixM3 mm3=new VectorMatrixM3(10);
 		doGenericTests(mm3);
@@ -684,11 +691,13 @@ public class TestMatrixx {
 		doGenericTests(ScalarMatrix.create(5,0));
 		doGenericTests(ScalarMatrix.create(5,2.0).subMatrix(1, 3, 1, 3));
 		
+		// row and column matrices
 		doGenericTests(new RowMatrix(Vector.of(1,2,3,4)));
 		doGenericTests(new ColumnMatrix(Vector.of(1,2,3,4)));
 		doGenericTests(new RowMatrix(Vector3.of(1,2,3)));
 		doGenericTests(new ColumnMatrix(Vector3.of(1,2,3)));
 		
+		// strided matrices
 		StridedMatrix strm=StridedMatrix.create(1, 1);
 		doGenericTests(strm);
 		strm=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
@@ -698,7 +707,7 @@ public class TestMatrixx {
 		
 		doGenericTests(PermutationMatrix.create(0,1,2));
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
-		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(10)));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(8)));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(6)).subMatrix(1,3,2,4));
 		
 		doGenericTests(BandedMatrix.create(3, 3, -2, 2));
@@ -708,5 +717,12 @@ public class TestMatrixx {
 											,ZeroMatrix.create(2, 1)
 											,ZeroMatrix.create(1, 2)
 											,Matrixx.createScaleMatrix(1, 3)));
+		
+		// Immutable matrices
+		doGenericTests(new ImmutableMatrix(Matrixx.createRandomMatrix(4, 5)));
+		doGenericTests(new ImmutableMatrix(Matrixx.createRandomMatrix(3, 3)));
+		
+		// block diagonal matrices
+		doGenericTests(BlockDiagonalMatrix.create(IdentityMatrix.create(2),Matrixx.createRandomSquareMatrix(2)));
 	}
 }

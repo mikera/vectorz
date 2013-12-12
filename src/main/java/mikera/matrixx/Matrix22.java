@@ -101,6 +101,11 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public long elementCount() {
+		return 4;
+	}
+	
+	@Override
 	public double trace() {
 		return m00+m11;
 	}

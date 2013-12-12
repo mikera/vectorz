@@ -2,6 +2,7 @@ package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -21,8 +22,11 @@ public class Multiplications {
 	public static Matrix multiply(AMatrix a, AMatrix b) {
 		if (a instanceof Matrix) {
 			return multiply((Matrix)a,b);
+		} else if (a instanceof ImmutableMatrix) {
+			return multiply(Matrix.wrap(a.rowCount(),a.columnCount(),((ImmutableMatrix)a).getInternalData()),b);
+		} else {
+			return blockedMultiply(a.toMatrix(),b);
 		}
-		return blockedMultiply(a.toMatrix(),b);
 	}
 	
 	public static Matrix multiply(Matrix a, AMatrix b) {

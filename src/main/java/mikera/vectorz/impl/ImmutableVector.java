@@ -40,6 +40,10 @@ public class ImmutableVector extends AVector {
 		return new ImmutableVector(data, 0,length);
 	}
 	
+	public static ImmutableVector wrap(double[] data) {
+		return new ImmutableVector(data,0,data.length);
+	}
+	
 	@Override
 	public boolean isMutable() {
 		return false;
@@ -209,5 +213,6 @@ public class ImmutableVector extends AVector {
 		if ((offset<0)||(offset+length>data.length)||(length<0)) throw new VectorzException("ImmutableVector data out of bounds");
 		super.validate();
 	}
+
 
 }

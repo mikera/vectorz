@@ -1,25 +1,26 @@
-package mikera.vectorz.impl;
+package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
- * Vector class representing a matrix band
+ * Vector class representing a view of a matrix band
  * @author Mike
  *
  */
 @SuppressWarnings("serial")
-public final class MatrixBandVector extends AMatrixViewVector {
+public final class MatrixBandView extends AMatrixViewVector {
 	private int band;
 	
-	private MatrixBandVector(AMatrix source, int band) {
+	private MatrixBandView(AMatrix source, int band) {
 		super(source,source.bandLength(band));
 		this.band=band;
 	}
 
 	public static AVector create(AMatrix source, int band) {
 		if ((band>=source.columnCount())||(band<=-source.rowCount())) return null;
-		return new MatrixBandVector(source,band);
+		return new MatrixBandView(source,band);
 	}
 	
 	@Override
@@ -33,7 +34,7 @@ public final class MatrixBandVector extends AMatrixViewVector {
 
 	@Override
 	public AVector exactClone() {
-		return new MatrixBandVector(source.exactClone(),band);
+		return new MatrixBandView(source.exactClone(),band);
 	}
 
 }

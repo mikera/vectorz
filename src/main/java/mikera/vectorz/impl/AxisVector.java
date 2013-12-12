@@ -81,11 +81,6 @@ public class AxisVector extends AComputedVector implements ISparse {
 	public long nonZeroCount() {
 		return 1;
 	}
-	
-	@Override
-	public boolean isMutable() {
-		return false; // i.e. immutable
-	}
 
 	@Override
 	public boolean isZero() {
@@ -169,7 +164,7 @@ public class AxisVector extends AComputedVector implements ISparse {
 		if (length==this.length) return this;
 		
 		if ((start<=axis)&&(start+length>axis)) {
-			return new AxisVector(axis-start,length);
+			return AxisVector.create(axis-start,length);
 		} else {
 			return Vectorz.createZeroVector(length);
 		}

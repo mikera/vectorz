@@ -12,6 +12,9 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.matrixx.Matrix;
 import mikera.util.Maths;
+import mikera.vectorz.AVector;
+import mikera.vectorz.IOp;
+import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -19,6 +22,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.LongArrays;
 /**
  * Abstract base class for INDArray implementations
  * @author Mike
@@ -38,6 +42,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public int getShape(int dim) {
 		return getShape()[dim];
+	}
+	
+	@Override
+	public int[] getShapeClone() {
+		int n=dimensionality();
+		int[] sh=new int[n];
+		for (int i=0; i<n; i++) {
+			sh[i]=getShape(i);
+		}
+		return sh;
+	}
+	
+	
+	@Override
+	public long[] getLongShape() {
+		return LongArrays.copyOf(getShape());
 	}
 	
 	@Override
@@ -73,6 +93,58 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			if (slice(i).isMutable()) return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isFullyMutable() {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			if (!slice(i).isFullyMutable()) return false;
+		}
+		return true;	
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).applyOp(op);
+		}
+	}
+
+	@Override
+	public void applyOp(IOp op) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).applyOp(op);
+		}
+	}
+	
+
+	@Override
+	public void multiply(double d) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).multiply(d);
+		}
+	}
+
+	@Override
+	public boolean isElementConstrained() {
+		int n=sliceCount(); 
+		for (int i=0; i<n; i++) {
+			if (slice(i).isElementConstrained()) return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean isSameShape(INDArray a) {
 		int dims=dimensionality();
 		if (dims!=a.dimensionality()) return false;
@@ -80,6 +152,25 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			if (getShape(i)!=a.getShape(i)) return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public AVector asVector() {
+		int n=sliceCount();
+		AVector result=slice(0).asVector();
+		for (int i=1; i<n; i++) {
+			result=result.join(slice(i).asVector());
+		}
+		return result;
+	}
+	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		int n=sliceCount();
+		int ss=(int)(slice(0).elementCount());
+		for (int i=0; i<n; i++) {
+			slice(i).setElements(values, offset+i*ss, ss);
+		}
 	}
 	
 	@Override
@@ -560,8 +651,21 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return Arrayz.createFromVector(asVector(), targetShape);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public abstract List<T> getSlices();
+	public List<T> getSlices() {
+		return (List<T>)getSlices(0);
+	}
+	
+	@Override
+	public List<INDArray> getSlices(int dimension) {
+		int l=getShape(dimension);
+		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
+		for (int i=0; i<l; i++) {
+			al.add(slice(dimension,i));
+		}
+		return al;	
+	}
 	
 	@Override
 	public List<INDArray> getSliceViews() {
@@ -571,6 +675,55 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			al.add(slice(i));
 		}
 		return al;
+	}
+	
+	@Override
+	public INDArray subArray(int[] offsets, int[] shape) {
+		int n=dimensionality();
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		int[] thisShape=this.getShape();
+		if (IntArrays.equals(shape, thisShape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		int endIndex=offsets[0]+shape[0];
+		int[] zzoffsets=IntArrays.removeIndex(offsets, 0);
+		int[] zzshape=IntArrays.removeIndex(shape, 0);
+		for (int i=offsets[0]; i<endIndex; i++) {
+			al.add(slice(i).subArray(zzoffsets, zzshape));
+		}
+		return SliceArray.create(al);
+	}
+	
+	@Override
+	public INDArray join(INDArray a, int dimension) {
+		return JoinedArray.join(this,a,dimension);
+	}
+	
+	@Override
+	public INDArray rotateView(int dimension, int shift) {
+		int dlen=getShape(dimension);
+		int n=dimensionality();
+		
+		shift = Maths.mod(shift,dlen);
+		if (shift==0) return this;
+		
+		int[] off=new int[n];
+		int[] shp=getShapeClone();
+		
+		shp[dimension]=shift;
+		INDArray right=subArray(off,shp);
+		shp[dimension]=dlen-shift;
+		off[dimension]=shift;
+		INDArray left=subArray(off,shp);
+		return left.join(right,dimension);
 	}
 	
 	@Override

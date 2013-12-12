@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
@@ -53,6 +54,24 @@ public class TestArrays {
 
 		assertEquals(a, a.reshape(shape));
 	}
+	
+	private void testSubArray(INDArray a) {
+		int n=a.dimensionality();
+		INDArray a2=a.subArray(new int[n], a.getShape());
+		
+		assertEquals(a,a2);
+	}
+	
+	private void testRotateView(INDArray a) {
+		int n=a.dimensionality();
+		if (n==0) return;
+		
+		for (int i=0; i<n; i++) {
+			int size=a.getShape(i);
+			assertEquals(a,a.rotateView(i, 0));
+			assertEquals(a,a.rotateView(i, 1).rotateView(i, size-1));
+		}
+	}
 
 	private void testSlices(INDArray a) {
 		if ((a.elementCount() == 0) || (a.dimensionality() == 0)) return;
@@ -70,6 +89,8 @@ public class TestArrays {
 
 		List<?> slices = a.getSlices();
 		assertEquals(a, Arrayz.create(slices));
+		
+		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
 	}
 
 	private void testAsVector(INDArray a) {
@@ -144,8 +165,6 @@ public class TestArrays {
 	}
 
 	private void testGetElements(INDArray a) {
-		if (!a.isFullyMutable()) return;
-
 		int ecount = (int) a.elementCount();
 		double[] data = new double[ecount + 1];
 		Arrays.fill(data, Double.NaN);
@@ -155,6 +174,14 @@ public class TestArrays {
 		for (int i = 1; i < data.length; i++) {
 			assertFalse(Double.isNaN(data[i]));
 		}
+		
+		double[] data2=new double[ecount+1];
+		data[0]=13;
+		data2[0]=13;
+		a.asVector().getElements(data2, 1);
+		assertTrue(DoubleArrays.equals(data, data2));
+		
+		if (!a.isFullyMutable()) return;
 
 		INDArray b = a.exactClone();
 		b.fill(Double.NaN);
@@ -507,6 +534,8 @@ public class TestArrays {
 		testClone(a);
 		testMutability(a);
 		testSlices(a);
+		testSubArray(a);
+		testRotateView(a);
 		testParserRoundTrip(a);
 		testBufferRoundTrip(a);
 	}
@@ -539,5 +568,8 @@ public class TestArrays {
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
+		
+		testArray(JoinedArray.join(Vector.of(1,2),Vector.of(1,2,3,4,5),0));
+		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 3),1));
 	}
 }

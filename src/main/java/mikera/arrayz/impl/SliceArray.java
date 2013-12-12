@@ -1,6 +1,5 @@
 package mikera.arrayz.impl;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,19 +40,19 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return new SliceArray<T>(IntArrays.consArray(slices.length,slices[0].getShape()),slices.clone());
 	}
 	
-	public static <T extends INDArray> SliceArray<T> repeat (T s, int n) {
-		ArrayList<T> al=new ArrayList<T>();
+	public static SliceArray<INDArray> repeat (INDArray s, int n) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (int i=0; i<n; i++) {
 			al.add(s);
 		}
 		return SliceArray.create(al);
 	}
 	
-	public static <T extends INDArray>  SliceArray<T> create(List<T> slices) {
+	public static SliceArray<INDArray> create(List<INDArray> slices) {
 		int slen=slices.size();
 		if (slen==0) throw new VectorzException("Empty list of slices provided to SliceArray");
-		T[] arr=(T[]) Array.newInstance(slices.get(0).getClass(),slen);
-		return new SliceArray<T>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
+		INDArray[] arr=new INDArray[slen];
+		return new SliceArray<INDArray>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
 	}
 	
 	@Override

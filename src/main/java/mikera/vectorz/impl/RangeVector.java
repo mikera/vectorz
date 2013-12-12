@@ -42,6 +42,15 @@ public class RangeVector extends AComputedVector {
 	}
 	
 	@Override
+	public double dotProduct(double[] data, int offset) {
+		double res=0;
+		for (int i=0; i<length; i++) {
+			res+=(i+start)*data[i+offset];
+		}
+		return res;
+	}
+	
+	@Override
 	public AVector subVector(int start, int length) {
 		if ((start<0)||(start+length>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));

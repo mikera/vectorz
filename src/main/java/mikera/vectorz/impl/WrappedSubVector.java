@@ -53,13 +53,13 @@ public final class WrappedSubVector extends AWrappedVector<AVector> {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return wrapped.unsafeGet(i+offset);
 	}
 
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		wrapped.unsafeSet(i+offset,value);
 	}
 	
@@ -81,6 +81,21 @@ public final class WrappedSubVector extends AWrappedVector<AVector> {
 		if (length==0) return Vector0.INSTANCE;
 		if (length==this.length) return this;
 		return wrapped.subVector(this.offset+offset, length);
+	}
+	
+	@Override
+	public AVector join(AVector a) {
+		if (a instanceof WrappedSubVector) return join((WrappedSubVector)a);
+		return super.join(a);
+	}
+	
+	public AVector join(WrappedSubVector a) {
+		if ((a.wrapped==this.wrapped)&&(a.offset==(this.offset+this.length))) {
+			int newLength=this.length+a.length;
+			if ((offset==0)&&(newLength==wrapped.length())) return wrapped;
+			return new WrappedSubVector(wrapped,offset,newLength);
+		}
+		return super.join(a);
 	}
 	
 	@Override

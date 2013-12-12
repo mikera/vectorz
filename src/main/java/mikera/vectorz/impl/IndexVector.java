@@ -35,6 +35,11 @@ public class IndexVector extends AConstrainedVector {
 	public double get(int i) {
 		return index.get(i);
 	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return index.unsafeGet(i);
+	}
 
 	@Override
 	public void set(int i, double value) {
@@ -44,6 +49,12 @@ public class IndexVector extends AConstrainedVector {
 		} else {
 			throw new IllegalArgumentException("Can't convert to an integer index value: "+value);
 		}
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
+		int v=(int)value;
+		index.set(i, v);
 	}
 
 	@Override
