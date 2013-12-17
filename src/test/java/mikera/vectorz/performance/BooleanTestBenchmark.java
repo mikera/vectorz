@@ -1,7 +1,5 @@
 package mikera.vectorz.performance;
 
-import java.util.ArrayList;
-
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
