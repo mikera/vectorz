@@ -11,10 +11,23 @@ package mikera.vectorz;
  *
  */
 public class Quaternions {
+	/** 
+	 * Computes the conjugate of a quaternion
+	 * 
+	 * @param a
+	 * @return
+	 */
 	public static Vector4 conjugate(Vector4 a) {
 		return new Vector4(-a.x,-a.y,-a.z,a.t);
 	}
 	
+	/**
+	 * Computes the product of two quaternions as a new quaternion
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	public static Vector4 mul(Vector4 a, Vector4 b) {
 		double rt=(a.t*b.t)-(a.x*b.x)-(a.y*b.y)-(a.z*b.z);
 		double rx=(a.t*b.x)+(a.x*b.t)+(a.y*b.z)-(a.z*b.y);
@@ -57,6 +70,12 @@ public class Quaternions {
 		return new Vector4(ff*x,ff*y,ff*z,ca);
 	}
 	
+	/**
+	 * Normalises a quaternion
+	 * 
+	 * @param a
+	 * @return
+	 */
 	public static Vector4 normalise(Vector4 a) {
 		double dd=a.elementSquaredSum();
 		if (dd>0.0) {
@@ -67,6 +86,12 @@ public class Quaternions {
 		}
 	}
 	
+	/**
+	 * Inverts a quaternion
+	 * 
+	 * @param a
+	 * @return
+	 */
 	public static Vector4 invert(Vector4 a) {
 		double dd=a.elementSquaredSum();
 		double ff=1.0/dd;
