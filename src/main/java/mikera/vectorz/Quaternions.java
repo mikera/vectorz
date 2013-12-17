@@ -5,7 +5,7 @@ package mikera.vectorz;
  * 
  * Vector4 instance represents (x,y,z,t) tuple,
  * 
- * Where quaternion value = x.i + y.j + z.k + t
+ * Where: quaternion value = x.i + y.j + z.k + t
  * 
  * @author Mike
  *
@@ -95,6 +95,6 @@ public class Quaternions {
 	public static Vector4 invert(Vector4 a) {
 		double dd=a.elementSquaredSum();
 		double ff=1.0/dd;
-		return new Vector4(-a.x*ff,-a.y*ff,a.z*ff,a.t*ff);
+		return new Vector4(-a.x*ff,-a.y*ff,-a.z*ff,a.t*ff);
 	}
  }
