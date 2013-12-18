@@ -10,7 +10,7 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public abstract class BaseNDArray extends AbstractArray<INDArray> { 
+public abstract class BaseNDArray extends AbstractArray<INDArray> implements IStridedArray { 
 	protected final int dimensions;
 	protected final int[] shape;
 	protected int offset; // not final, in case we want to do "sliding window" trick :-)
@@ -90,6 +90,16 @@ public abstract class BaseNDArray extends AbstractArray<INDArray> {
 	@Override
 	public long elementCount() {
 		return IntArrays.arrayProduct(shape);
+	}
+	
+	@Override
+	public int getArrayOffset() {
+		return offset;
+	}
+
+	@Override
+	public int[] getStrides() {
+		return stride;
 	}
 
 }

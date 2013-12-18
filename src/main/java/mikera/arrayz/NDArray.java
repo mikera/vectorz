@@ -29,7 +29,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class NDArray extends BaseNDArray implements IStridedArray {
+public final class NDArray extends BaseNDArray {
 
 	NDArray(int... shape) {
 		super(new double[(int)IntArrays.arrayProduct(shape)],
@@ -446,16 +446,6 @@ public final class NDArray extends BaseNDArray implements IStridedArray {
 	@Override
 	public double[] getArray() {
 		return data;
-	}
-
-	@Override
-	public int getArrayOffset() {
-		return offset;
-	}
-
-	@Override
-	public int[] getStrides() {
-		return stride;
 	}
 
 	public static INDArray wrapStrided(double[] data, int offset,
