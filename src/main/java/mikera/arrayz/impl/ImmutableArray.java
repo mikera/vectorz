@@ -39,6 +39,16 @@ public class ImmutableArray extends BaseNDArray {
 	}
 
 	@Override
+	public boolean isMutable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
+
+	@Override
 	public int[] getShape() {
 		return shape;
 	}
