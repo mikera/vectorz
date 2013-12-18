@@ -2,6 +2,12 @@ package mikera.arrayz.impl;
 
 import mikera.arrayz.INDArray;
 
-public abstract class BaseNDArray extends AbstractArray <INDArray> { 
-
+/**
+ * Base class for NDArray implementations.
+ * 
+ * @author Mike
+ *
+ */
+public abstract class BaseNDArray extends AbstractArray<INDArray> { 
+	
 }

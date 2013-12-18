@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.BaseNDArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -29,7 +29,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class NDArray extends AbstractArray<INDArray> implements IStridedArray {
+public final class NDArray extends BaseNDArray implements IStridedArray {
 
 	private final int dimensions;
 	private final int[] shape;
