@@ -127,6 +127,17 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	}
 	
 	@Override
+	public void copyRowTo(int row, double[] data, int offset) {
+		if (row<rowSplit) {
+			c00.copyRowTo(row, data, offset);
+			c01.copyRowTo(row, data, offset+columnSplit);
+		} else {
+			c10.copyRowTo(row-rowSplit, data, offset);
+			c11.copyRowTo(row-rowSplit, data, offset+columnSplit);
+		}
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return c00.nonZeroCount()+c01.nonZeroCount()+c10.nonZeroCount()+c11.nonZeroCount();
 	}
