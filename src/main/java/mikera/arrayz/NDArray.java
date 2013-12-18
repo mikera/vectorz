@@ -73,34 +73,6 @@ public final class NDArray extends BaseNDArray {
 		return new NDArray(shape);
 	}
 	
-
-	@Override
-	public double get() {
-		if (dimensions==0) {
-			return data[offset];
-		} else {
-			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this));
-		}
-	}
-
-	@Override
-	public double get(int x) {
-		if (dimensions==1) {
-			return data[offset+x*getStride(0)];
-		} else {
-			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x));
-		}
-	}
-
-	@Override
-	public double get(int x, int y) {
-		if (dimensions==2) {
-			return data[offset+x*getStride(0)+y*getStride(1)];
-		} else {
-			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x,y));
-		}
-	}
-
 	@Override
 	public void set(double value) {
 		if (dimensions==0) {

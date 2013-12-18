@@ -65,6 +65,34 @@ public abstract class BaseNDArray extends AbstractArray<INDArray> implements ISt
 		return data[ix];
 	}
 	
+	@Override
+	public double get() {
+		if (dimensions==0) {
+			return data[offset];
+		} else {
+			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this));
+		}
+	}
+
+	@Override
+	public double get(int x) {
+		if (dimensions==1) {
+			return data[offset+x*getStride(0)];
+		} else {
+			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x));
+		}
+	}
+
+	@Override
+	public double get(int x, int y) {
+		if (dimensions==2) {
+			return data[offset+x*getStride(0)+y*getStride(1)];
+		} else {
+			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x,y));
+		}
+	}
+	
+	@Override
 	public boolean isPackedArray() {
 		if (offset!=0) return false;
 		
