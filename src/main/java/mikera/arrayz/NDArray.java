@@ -31,30 +31,20 @@ import mikera.vectorz.util.VectorzException;
  */
 public final class NDArray extends BaseNDArray implements IStridedArray {
 
-	private final int dimensions;
-	private final int[] shape;
-	private int offset; // not final, in case we want to do "sliding window" trick :-)
-	private final double[] data;
-	private final int[] stride;
-	
 	NDArray(int... shape) {
-		this.shape=shape;
-		dimensions=shape.length;
-		data=new double[(int)elementCount()];
-		stride=IntArrays.calcStrides(shape);
-		offset=0;
+		super(new double[(int)IntArrays.arrayProduct(shape)],
+				shape.length,
+				0,
+				shape,
+				IntArrays.calcStrides(shape));
 	}
 	
 	NDArray(double[] data, int offset, int[] shape, int[] stride) {
 		this(data,shape.length,offset,shape,stride);
 	}
 	
-	private NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
-		this.data=data;
-		this.offset=offset;
-		this.shape=shape;
-		this.stride=stride;
-		this.dimensions=dimensions;
+	NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
+		super(data,shape.length,offset,shape,stride);
 	}
 	
 	public static NDArray wrap(double[] data, int[] shape) {
