@@ -1,8 +1,10 @@
 package mikera.arrayz.impl;
 
 import java.nio.DoubleBuffer;
+import java.util.Arrays;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
@@ -90,12 +92,50 @@ public class ImmutableArray extends BaseNDArray {
 
 	@Override
 	public INDArray slice(int majorSlice) {
-		throw new UnsupportedOperationException("TODO: slices not yet supported on immutable arrays");
+		if (dimensions==0) {
+			throw new IllegalArgumentException("Can't slice a 0-d NDArray");
+		} else if (dimensions==1) {
+			return ImmutableScalar.create(get(majorSlice));
+		} else {
+			return new ImmutableArray(data,
+					dimensions-1,
+					offset+majorSlice*getStride(0),
+					Arrays.copyOfRange(shape, 1,dimensions),
+					Arrays.copyOfRange(stride, 1,dimensions));
+		}
 	}
-
+	
 	@Override
 	public INDArray slice(int dimension, int index) {
-		throw new UnsupportedOperationException("TODO: slices not yet supported on immutable arrays");
+		if ((dimension<0)||(dimension>=dimensions)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		if (dimension==0) return slice(index);
+		return new ImmutableArray(data,
+				dimensions-1,
+				offset+index*stride[dimension],
+				IntArrays.removeIndex(shape,index),
+				IntArrays.removeIndex(stride,index));	
+	}	
+	
+	
+	@Override
+	public ImmutableArray subArray(int[] offsets, int[] shape) {
+		int n=dimensions;
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		if (IntArrays.equals(shape, this.shape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		return new ImmutableArray(data,
+				n,
+				offset+IntArrays.dotProduct(offsets, stride),
+				IntArrays.copyOf(shape),
+				stride);
 	}
 
 	@Override
