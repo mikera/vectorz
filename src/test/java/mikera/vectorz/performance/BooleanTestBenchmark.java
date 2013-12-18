@@ -40,8 +40,6 @@ public class BooleanTestBenchmark extends SimpleBenchmark {
 	}
 	
 	public void timeWithTest(int runs) {
-		boolean b=false;
-		
 		for (int i=0; i<runs; i++) {
 			result=withTest(false);
 		}
