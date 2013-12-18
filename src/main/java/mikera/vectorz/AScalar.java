@@ -379,11 +379,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 
 	@Override
 	public AScalar immutable() {
-		if (isMutable()) {
-			return ImmutableScalar.create(get());
-		} else {
-			return this;
-		}
+		return ImmutableScalar.create(get());
 	}
 	
 	@Override
