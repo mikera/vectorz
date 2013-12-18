@@ -540,4 +540,8 @@ public interface INDArray extends Cloneable {
 	 */
 	public INDArray immutable();
 
+	/**
+	 * Coerces this INDArray to a fully mutable format. May return the same INDArray if already mutable
+	 */
+	public INDArray mutable();
 }

@@ -1727,6 +1727,12 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return ImmutableMatrix.create(this);
 	}
 	
+	@Override
+	public INDArray mutable() {
+		if (isFullyMutable()) return this;
+		return clone();
+	}
+	
 	@Override 
 	public void validate() {
 		// nothing to do since we have no data to validate
