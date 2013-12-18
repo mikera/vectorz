@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.ImmutableArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -386,6 +387,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public boolean isZero() {
 		return DoubleArrays.isZero(data,0,data.length);
+	}
+
+	@Override
+	public INDArray immutable() {
+		return ImmutableArray.wrap(DoubleArrays.copyOf(data), this.shape);
 	}
 
 }

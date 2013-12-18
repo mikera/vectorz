@@ -8,6 +8,7 @@ import java.util.List;
 
 import mikera.arrayz.impl.BaseNDArray;
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.ImmutableArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -413,6 +414,11 @@ public final class NDArray extends BaseNDArray {
 		int endOffset=offset+IntArrays.dotProduct(endIndex, stride);
 		if ((endOffset<0)||(endOffset>data.length)) throw new VectorzException("End offset out of bounds");
 		super.validate();
+	}
+	
+	@Override
+	public INDArray immutable() {
+		return ImmutableArray.create(this);
 	}
 
 	@Override

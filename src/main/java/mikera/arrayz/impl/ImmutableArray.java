@@ -125,4 +125,11 @@ public class ImmutableArray extends AbstractArray<INDArray> {
 		return new ImmutableArray(this.shape,data.clone());
 	}
 
+	public static INDArray create(INDArray a) {
+		int[] shape=a.getShape();
+		int n=(int)IntArrays.arrayProduct(shape);
+		double[] data = new double[n];
+		return ImmutableArray.wrap(data, shape);
+	}
+
 }
