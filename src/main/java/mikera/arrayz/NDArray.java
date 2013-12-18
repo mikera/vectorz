@@ -73,37 +73,6 @@ public final class NDArray extends BaseNDArray implements IStridedArray {
 		return new NDArray(shape);
 	}
 	
-	@Override
-	public int dimensionality() {
-		return dimensions;
-	}
-
-	@Override
-	public int[] getShape() {
-		return shape;
-	}
-	
-	@Override
-	public int[] getShapeClone() {
-		return shape.clone();
-	}
-	
-	public int getStride(int dim) {
-		return stride[dim];
-	}
-	
-	@Override
-	public int getShape(int dim) {
-		return shape[dim];
-	}
-
-
-	@Override
-	public long[] getLongShape() {
-		long[] sh=new long[dimensions];
-		IntArrays.copyIntsToLongs(shape,sh);
-		return sh;
-	}
 
 	@Override
 	public double get() {
@@ -130,15 +99,6 @@ public final class NDArray extends BaseNDArray implements IStridedArray {
 		} else {
 			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x,y));
 		}
-	}
-
-	@Override
-	public double get(int... indexes) {
-		int ix=offset;
-		for (int i=0; i<dimensions; i++) {
-			ix+=indexes[i]*getStride(i);
-		}
-		return data[ix];
 	}
 
 	@Override
@@ -239,19 +199,6 @@ public final class NDArray extends BaseNDArray implements IStridedArray {
 		}
 	}
 
-	public boolean isPackedArray() {
-		if (offset!=0) return false;
-		
-		int st=1;
-		for (int i=dimensions-1; i>=0; i--) {
-			if (getStride(i)!=st) return false;
-			int d=shape[i];
-			st*=d;
-		}
-			
-		return (st==data.length);
-	}
-
 	@Override
 	public INDArray reshape(int... dimensions) {
 		return super.reshape(dimensions);
@@ -316,20 +263,6 @@ public final class NDArray extends BaseNDArray implements IStridedArray {
 				offset+IntArrays.dotProduct(offsets, stride),
 				IntArrays.copyOf(shape),
 				stride);
-	}
-
-	@Override
-	public int sliceCount() {
-		if (dimensions==0) {
-			throw new IllegalArgumentException(ErrorMessages.noSlices(this));
-		} else {
-			return getShape(0);
-		}
-	}
-
-	@Override
-	public long elementCount() {
-		return IntArrays.arrayProduct(shape);
 	}
 
 	@Override
