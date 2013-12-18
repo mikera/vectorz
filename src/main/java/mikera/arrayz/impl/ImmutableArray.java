@@ -4,10 +4,20 @@ import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ImmutableScalar;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
+/**
+ * Immutable N-dimensional array class
+ * 
+ * Uses strided array storage
+ * 
+ * @author Mike
+ *
+ */
 public class ImmutableArray extends BaseNDArray {
 	private ImmutableArray(int dims, int[] shape, int[] strides) {
 		this(new double[(int)IntArrays.arrayProduct(shape)],shape.length,0,shape,strides);
@@ -48,6 +58,11 @@ public class ImmutableArray extends BaseNDArray {
 	@Override
 	public boolean isFullyMutable() {
 		return false;
+	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return true;
 	}
 
 	@Override
@@ -154,25 +169,31 @@ public class ImmutableArray extends BaseNDArray {
 	}
 	
 	@Override
-	public void toDoubleBuffer(DoubleBuffer dest) {
-		dest.put(data);
+	public AVector asVector() {
+		if (dimensions>0) return super.asVector();
+		return ImmutableVector.wrap(new double[] {data[offset]});
+	}
+		
+	@Override
+	public INDArray exactClone() {
+		return new ImmutableArray(data.clone(),dimensions,offset,shape.clone(),stride.clone());
 	}
 	
 	@Override
-	public void getElements(double[] dest, int offset) {
-		System.arraycopy(data, 0, dest, offset, data.length);
-	}
-
-	@Override
-	public INDArray exactClone() {
-		return new ImmutableArray(this.shape,data.clone());
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		if (dimensions>0) {
+			super.toDoubleBuffer(dest);
+		} else {
+			dest.put(data[offset]);
+		}
 	}
 
 	public static INDArray create(INDArray a) {
 		int[] shape=a.getShape();
 		int n=(int)IntArrays.arrayProduct(shape);
-		double[] data = new double[n];
-		return ImmutableArray.wrap(data, shape);
+		double[] newData = new double[n];
+		a.getElements(newData, 0);
+		return ImmutableArray.wrap(newData, shape);
 	}
 
 	@Override
