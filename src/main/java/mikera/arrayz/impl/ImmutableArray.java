@@ -1,5 +1,7 @@
 package mikera.arrayz.impl;
 
+import java.nio.DoubleBuffer;
+
 import mikera.arrayz.INDArray;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -106,6 +108,16 @@ public class ImmutableArray extends AbstractArray<INDArray> {
 	@Override
 	public boolean isView() {
 		return false;
+	}
+	
+	@Override
+	public void toDoubleBuffer(DoubleBuffer dest) {
+		dest.put(data);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		System.arraycopy(data, 0, dest, offset, data.length);
 	}
 
 	@Override
