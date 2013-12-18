@@ -55,6 +55,14 @@ public abstract class BaseNDArray extends AbstractArray<INDArray> implements ISt
 		IntArrays.copyIntsToLongs(shape,sh);
 		return sh;
 	}
+	
+	public int getIndex(int... indexes) {
+		int ix = offset;
+		for (int i = 0; i < dimensions; i++) {
+			ix += indexes[i] * getStride(i);
+		}
+		return ix;
+	}
 
 	@Override
 	public double get(int... indexes) {

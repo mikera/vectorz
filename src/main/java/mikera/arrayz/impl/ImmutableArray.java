@@ -6,18 +6,13 @@ import mikera.arrayz.INDArray;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
-public class ImmutableArray extends AbstractArray<INDArray> {
-	private final int dimensions;
-	private final int[] shape;
-	private final int[] strides;
-	private final double[] data;
-
+public class ImmutableArray extends BaseNDArray {
 	private ImmutableArray(int dims, int[] shape, int[] strides) {
-		this.dimensions = dims;
-		this.shape = shape;
-		this.strides = strides;
-		int n = (int) IntArrays.arrayProduct(shape);
-		this.data = new double[n];
+		this(new double[(int)IntArrays.arrayProduct(shape)],shape.length,0,shape,strides);
+	}
+	
+	private ImmutableArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
+		super(data,dimensions,offset,shape,stride);
 	}
 	
 	private ImmutableArray(int[] shape, double[] data) {
@@ -35,10 +30,7 @@ public class ImmutableArray extends AbstractArray<INDArray> {
 	}
 
 	private ImmutableArray(int dims, int[] shape, int[] strides, double[] data) {
-		this.dimensions = dims;
-		this.shape = shape;
-		this.strides = strides;
-		this.data = data;
+		this(data,dims,0,shape,strides);
 	}
 	
 	@Override
@@ -64,11 +56,12 @@ public class ImmutableArray extends AbstractArray<INDArray> {
 	}
 
 	public int getStride(int dim) {
-		return strides[dim];
+		return stride[dim];
 	}
 
+	@Override
 	public int getIndex(int... indexes) {
-		int ix = 0;
+		int ix = offset;
 		for (int i = 0; i < dimensions; i++) {
 			ix += indexes[i] * getStride(i);
 		}
@@ -132,4 +125,8 @@ public class ImmutableArray extends AbstractArray<INDArray> {
 		return ImmutableArray.wrap(data, shape);
 	}
 
+	@Override
+	public double[] getArray() {
+		throw new UnsupportedOperationException("Array access not supported by Immutablearray");
+	}
 }
