@@ -42,8 +42,11 @@ public class Quaternions {
 	 * @param a
 	 * @return
 	 */
-	public static Vector3 rotate(Vector4 q, Vector3 a) {
-		throw new UnsupportedOperationException();
+	public static Vector3 rotate(Vector4 a, Vector3 b) {
+		double rx=(a.t*b.x)+(a.y*b.z)-(a.z*b.y);
+		double ry=(a.t*b.y)-(a.x*b.z)+(a.z*b.x);
+		double rz=(a.t*b.z)+(a.x*b.y)-(a.y*b.x);
+		return new Vector3(rx,ry,rz);
 	}
 	
 	/**
@@ -56,7 +59,7 @@ public class Quaternions {
 	 * @return
 	 */
 	public static Vector4 axisAngle(Vector3 axis, double angle) {
-		double ha=0.5*angle;
+		double ha=angle; // 0.5*angle;
 		double ca=Math.cos(ha);
 		double sa=Math.sin(ha);
 		double x=axis.x, y=axis.y, z=axis.z;
