@@ -26,6 +26,10 @@ public class IndexVector extends AConstrainedVector {
 		return new IndexVector(Index.wrap(IntArrays.create(values)));
 	}
 	
+	public static IndexVector wrap(Index a) {
+		return new IndexVector(a);		
+	}
+	
 	@Override
 	public int length() {
 		return length;
