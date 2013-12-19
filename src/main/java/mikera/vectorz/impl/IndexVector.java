@@ -60,6 +60,13 @@ public class IndexVector extends AConstrainedVector {
 		int v=(int)value;
 		index.set(i, v);
 	}
+	
+	@Override
+	public void getElements(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			data[offset+i]=index.unsafeGet(i);
+		}
+	}
 
 	@Override
 	public AVector exactClone() {
