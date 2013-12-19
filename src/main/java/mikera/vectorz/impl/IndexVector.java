@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * A constrained vector implementation wrapping an integer Index
@@ -71,6 +72,12 @@ public class IndexVector extends AConstrainedVector {
 	@Override
 	public AVector exactClone() {
 		return new IndexVector(index.clone());
+	}
+	
+	@Override
+	public void validate() {
+		if (length!=index.length()) throw new VectorzException("Incorrect index length!!");
+		super.validate();
 	}
 
 }
