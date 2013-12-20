@@ -28,6 +28,33 @@ public final class Index extends AIndex {
 		data=indexes;
 	}
 	
+	public static Index create(AVector v) {
+		int n=v.length();
+		Index ind=new Index(n);
+		for (int i=0; i<n ; i++) {
+			ind.data[i]=(int)v.unsafeGet(i);
+		}
+		return ind;
+	}
+	
+	/**
+	 * Creates a new Index, wrapping the provided index array
+	 */
+	public static Index wrap(int[] indexes) {
+		return new Index(indexes);
+	}
+	
+	/**
+	 * Creates a new Index, using the specified index values
+	 */
+	public static Index of(int... indexes) {
+		return new Index(indexes.clone());
+	}
+	
+	public static Index createLength(int len) {
+		return new Index(len);
+	}
+	
 	/**
 	 * Swaps (in-place) the indexes at two positions
 	 */
@@ -108,33 +135,6 @@ public final class Index extends AIndex {
 	
 	public boolean isEvenPermutation() {
 		return (swapCount()&1)==0;
-	}
-	
-	/**
-	 * Creates a new Index, wrapping the provided index array
-	 */
-	public static Index wrap(int[] indexes) {
-		return new Index(indexes);
-	}
-	
-	/**
-	 * Creates a new Index, using the specified index values
-	 */
-	public static Index of(int... indexes) {
-		return new Index(indexes.clone());
-	}
-	
-	public static Index createLength(int len) {
-		return new Index(len);
-	}
-	
-	public static Index create(AVector v) {
-		int len=v.length(); 
-		Index a=Index.createLength(len); 
-		for (int i=0; i<len; i++) {
-			a.data[i]=(int) v.unsafeGet(i);
-		}
-		return a;
 	}
 	
 	@Override
