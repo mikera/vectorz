@@ -21,7 +21,7 @@ public final class Index extends AIndex {
 	public final int[] data;
 	
 	public Index(int length) {
-		data=new int[length];
+		this(new int[length]);
 	}
 	
 	private Index(int[] indexes) {
@@ -51,6 +51,9 @@ public final class Index extends AIndex {
 		return new Index(indexes.clone());
 	}
 	
+	/**
+	 * Create a new zero-filled Index with the specified length
+	 */
 	public static Index createLength(int len) {
 		return new Index(len);
 	}
