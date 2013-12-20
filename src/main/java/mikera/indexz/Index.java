@@ -98,7 +98,7 @@ public final class Index extends AIndex {
 	@Override
 	public boolean isPermutation() {
 		int n=length();
-		if (n>63) {
+		if (n>=64) {
 			return isLongPermutation();
 		} else {
 			return isShortPermutation();
@@ -111,9 +111,9 @@ public final class Index extends AIndex {
 		for (int i=0; i<n; i++) {
 			int v=data[i];
 			if ((v<0)||(v>=n)) return false;			
-			chk=chk|(1<<v);
+			chk=chk|(1L<<v);
 		}
-		return (chk+1)==((n<63)?(1<<n):0);
+		return (chk+1)==(1L<<n);
 	}
 	
 	private boolean isLongPermutation() {

@@ -110,6 +110,8 @@ public class TestIndex {
 		Index b=Indexz.createRandomPermutation(10);
 		assertTrue(b.isPermutation());
 		
+		Index c0=Indexz.createRandomPermutation(62);
+		assertTrue(c0.isPermutation());
 		Index c1=Indexz.createRandomPermutation(63);
 		assertTrue(c1.isPermutation());
 		Index c2=Indexz.createRandomPermutation(64);
