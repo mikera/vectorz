@@ -73,7 +73,7 @@ public class TestIndex {
 		AIndex index2=index.clone();
 		assertEquals(index,index2);
 		
-		Index index3=Indexz.createCopy(index);
+		Index index3=Indexz.create(index);
 		assertEquals(index,index3);
 		
 		Index index4=Indexz.create(index.toList());

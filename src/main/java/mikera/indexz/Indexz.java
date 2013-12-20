@@ -22,12 +22,15 @@ public class Indexz {
 		return result;
 	}
 	
-	public static Index createCopy(AIndex source) {
+	public static Index create(AIndex source) {
 		Index result=new Index(source.length());
 		source.copyTo(result.getData(), 0);
 		return result;
 	}
 
+	/**
+	 * Create an Index containing an arithmetic progression
+	 */
 	public static Index createProgression(int start, int length, int skip) {
 		Index result=new Index(length);
 		int pos=start;
@@ -38,6 +41,10 @@ public class Indexz {
 		return result;
 	}
 
+	/**
+	 * Create an Index containing an arithmetic sequence
+	 * (a, a+1, a+2 ..... a+length-1)
+	 */
 	public static Index createSequence(int start, int length) {
 		Index result=new Index(length);
 		for (int i=0; i<length; i++) {
