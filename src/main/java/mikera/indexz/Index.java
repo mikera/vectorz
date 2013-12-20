@@ -3,6 +3,7 @@ package mikera.indexz;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.util.IntArrays;
 
 /**
@@ -179,6 +180,10 @@ public final class Index extends AIndex {
 	@Override
 	public void sort() {
 		Arrays.sort(data);
+	}
+	
+	public AVector asVector() {
+		return IndexVector.wrap(this);
 	}
 
 	@Override
