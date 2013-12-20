@@ -108,7 +108,7 @@ public class TestIndex {
 		assertTrue(a.isPermutation());
 
 		Index b=Indexz.createRandomPermutation(10);
-		assertTrue(a.isPermutation());
+		assertTrue(b.isPermutation());
 	}
 
 	@SuppressWarnings("serial")
