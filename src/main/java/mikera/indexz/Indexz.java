@@ -27,6 +27,10 @@ public class Indexz {
 		source.copyTo(result.getData(), 0);
 		return result;
 	}
+	
+	public static Index create(int[] source) {
+		return Index.of(source);
+	}
 
 	/**
 	 * Create an Index containing an arithmetic progression

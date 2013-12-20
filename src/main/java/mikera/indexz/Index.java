@@ -113,7 +113,7 @@ public final class Index extends AIndex {
 			if ((v<0)||(v>=n)) return false;			
 			chk=chk|(1<<v);
 		}
-		return (chk+1)==(1<<n);
+		return (chk+1)==((n<63)?(1<<n):0);
 	}
 	
 	private boolean isLongPermutation() {
