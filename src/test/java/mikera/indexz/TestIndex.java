@@ -103,7 +103,7 @@ public class TestIndex {
 		doRandomSubsetTest(index);
 	}
 	
-	@Test public void testPermutaions() {
+	@Test public void testPermutations() {
 		Index a=Indexz.createRandomPermutation(100);
 		assertTrue(a.isPermutation());
 
