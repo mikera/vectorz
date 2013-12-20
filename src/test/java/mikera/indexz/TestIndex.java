@@ -97,13 +97,19 @@ public class TestIndex {
 		assertTrue(index.isDistinctSorted() == (index.isSorted() & index.isDistinct()));
 	}
 
-	
 	private void doTests(AIndex index) {
 		doCloneTest(index);
 		doDistinctSortedTest(index);
 		doRandomSubsetTest(index);
 	}
+	
+	@Test public void testPermutaions() {
+		Index a=Indexz.createRandomPermutation(100);
+		assertTrue(a.isPermutation());
 
+		Index b=Indexz.createRandomPermutation(10);
+		assertTrue(a.isPermutation());
+	}
 
 	@SuppressWarnings("serial")
 	@Test public void genericTests() {

@@ -98,10 +98,30 @@ public final class Index extends AIndex {
 	@Override
 	public boolean isPermutation() {
 		int n=length();
+		if (n>63) {
+			return isLongPermutation();
+		} else {
+			return isShortPermutation();
+		}
+	}
+	
+	private boolean isShortPermutation() {
+		int n=length();
+		long chk=0;
+		for (int i=0; i<n; i++) {
+			int v=data[i];
+			if ((v<0)||(v>=n)) return false;			
+			chk=chk|(1<<v);
+		}
+		return (chk+1)==(1<<n);
+	}
+	
+	private boolean isLongPermutation() {
+		int n=length();
 		boolean[] chk=new boolean[n];
 		for (int i=0; i<n; i++) {
 			int v=data[i];
-			if (chk[v]) return false;
+			if ((v<0)||(v>=n)||chk[v]) return false;
 			chk[v]=true;
 		}
 		for (int i=0; i<n; i++) {
