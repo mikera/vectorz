@@ -173,8 +173,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
-	public AVector slice (int rowNumber) {
-		return getRow(rowNumber);
+	public final AVector slice(int row) {
+		return getRow(row);
 	}
 	
 	@Override

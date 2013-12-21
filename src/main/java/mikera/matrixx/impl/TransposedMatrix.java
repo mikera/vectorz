@@ -58,11 +58,6 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 
 	@Override
-	public AVector slice(int rowNumber) {
-		return source.getColumn(rowNumber);
-	}
-
-	@Override
 	public int sliceCount() {
 		return source.columnCount();
 	}
