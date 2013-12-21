@@ -63,5 +63,4 @@ public final class ImmutableScalar extends AScalar {
 	public ImmutableScalar immutable() {
 		return this;
 	}
-
 }

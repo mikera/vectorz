@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import java.nio.DoubleBuffer;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -14,10 +15,25 @@ public final class ImmutableMatrix extends AMatrix {
 	private int rows;
 	private int cols;
 	
+	private ImmutableMatrix(int rows, int cols, double[] data) {
+		this.rows=rows;
+		this.cols=cols;
+		this.data=data;
+	}
+	
 	public ImmutableMatrix(AMatrix m) {
 		rows=m.rowCount();
 		cols=m.columnCount();
 		data=m.toDoubleArray();
+	}
+	
+	public static ImmutableMatrix wrap(Matrix source) {
+		double[] data=source.data;
+		return new ImmutableMatrix(source.rowCount(), source.columnCount(), data);
+	}
+	
+	public static ImmutableMatrix wrap(int rows, int cols, double[] data) {
+		return new ImmutableMatrix(rows,cols, data);
 	}
 
 	@Override
@@ -181,5 +197,14 @@ public final class ImmutableMatrix extends AMatrix {
 	 */
 	public double[] getInternalData() {
 		return data;
+	}
+
+	public static INDArray create(AMatrix a) {
+		int rows=a.rowCount();
+		int cols=a.columnCount();
+		int n=rows*cols;
+		double[] data = new double[n];
+		a.getElements(data,0);
+		return ImmutableMatrix.wrap(rows,cols,data);
 	}
 }

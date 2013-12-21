@@ -43,6 +43,11 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		dest[destOffset]=vector.get(row);
+	}
+	
+	@Override
 	public void getElements(double[] data, int offset) {
 		vector.getElements(data, offset);
 	}

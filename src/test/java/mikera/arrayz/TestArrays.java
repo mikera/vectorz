@@ -7,8 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.ImmutableArray;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -427,23 +429,26 @@ public class TestArrays {
 		int dims=m.dimensionality();
 		int[] shape=m.getShape();
 		int[] strides=m.getStrides();
-		double[] data=m.getArray();
-		for (int i=0; i<dims; i++) {
-			assertEquals(m.getStride(i),strides[i]);
-		}
-		
-		if (m.isPackedArray()) {
-			assertNotNull(m.asDoubleArray());
-			assertTrue(m.asDoubleArray()==m.getArray());
-		} else {
-			assertNull(m.asDoubleArray());
-		}
 		
 		if (m.elementCount()==0) return;
 		
-		int[] ix = IntArrays.rand(shape);
-		int off=m.getArrayOffset()+IntArrays.dotProduct(strides,ix);
-		assertEquals(data[off],m.get(ix),0.0);
+		if (mm.isMutable()) {
+			double[] data=m.getArray();
+			for (int i=0; i<dims; i++) {
+				assertEquals(m.getStride(i),strides[i]);
+			}
+			
+			if (m.isPackedArray()) {
+				assertNotNull(m.asDoubleArray());
+				assertTrue(m.asDoubleArray()==m.getArray());
+			} else {
+				assertNull(m.asDoubleArray());
+			}
+			
+			int[] ix = IntArrays.rand(shape);
+			int off=m.getArrayOffset()+IntArrays.dotProduct(strides,ix);
+			assertEquals(data[off],m.get(ix),0.0);
+		}	
 	}
 
 	private void testMathsFunctions(INDArray a) {
@@ -571,5 +576,11 @@ public class TestArrays {
 		
 		testArray(JoinedArray.join(Vector.of(1,2),Vector.of(1,2,3,4,5),0));
 		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 3),1));
+		
+		// immutable array tests
+		testArray(nd3.immutable());
+		testArray(ImmutableArray.create(Matrixx.createRandomMatrix(4, 5)));
+		testArray(ImmutableArray.create(Vectorz.createUniformRandomVector(4)));
+		testArray(ImmutableArray.create(Scalar.create(4)));
 	}
 }

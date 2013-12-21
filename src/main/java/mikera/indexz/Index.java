@@ -1,8 +1,10 @@
 package mikera.indexz;
 
 import java.util.Arrays;
+import java.util.BitSet;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.util.IntArrays;
 
 /**
@@ -20,11 +22,49 @@ public final class Index extends AIndex {
 	public final int[] data;
 	
 	public Index(int length) {
-		data=new int[length];
+		this(new int[length]);
 	}
 	
 	private Index(int[] indexes) {
 		data=indexes;
+	}
+	
+	/**
+	 * Creates an Index using the values from the given AVector.
+	 * 
+	 * Values are cast to integers as needed, according to the semantics of (int)value
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static Index create(AVector v) {
+		int n=v.length();
+		Index ind=new Index(n);
+		for (int i=0; i<n ; i++) {
+			ind.data[i]=(int)v.unsafeGet(i);
+		}
+		return ind;
+	}
+	
+	/**
+	 * Creates a new Index, wrapping the provided index array
+	 */
+	public static Index wrap(int[] indexes) {
+		return new Index(indexes);
+	}
+	
+	/**
+	 * Creates a new Index, using the specified index values
+	 */
+	public static Index of(int... indexes) {
+		return new Index(indexes.clone());
+	}
+	
+	/**
+	 * Create a new zero-filled Index with the specified length
+	 */
+	public static Index createLength(int len) {
+		return new Index(len);
 	}
 	
 	/**
@@ -70,10 +110,30 @@ public final class Index extends AIndex {
 	@Override
 	public boolean isPermutation() {
 		int n=length();
+		if (n>=64) {
+			return isLongPermutation();
+		} else {
+			return isShortPermutation();
+		}
+	}
+	
+	private boolean isShortPermutation() {
+		int n=length();
+		long chk=0;
+		for (int i=0; i<n; i++) {
+			int v=data[i];
+			if ((v<0)||(v>=n)) return false;			
+			chk=chk|(1L<<v);
+		}
+		return (chk+1)==(1L<<n);
+	}
+	
+	private boolean isLongPermutation() {
+		int n=length();
 		boolean[] chk=new boolean[n];
 		for (int i=0; i<n; i++) {
 			int v=data[i];
-			if (chk[v]) return false;
+			if ((v<0)||(v>=n)||chk[v]) return false;
 			chk[v]=true;
 		}
 		for (int i=0; i<n; i++) {
@@ -83,18 +143,45 @@ public final class Index extends AIndex {
 	}
 	
 	/**
-	 * Counts the number of swaps required to create this permutation
+	 * Counts the number of swaps required to create this permutation.
+	 * 
+	 * The index must represent a permutation, or the behaviour is undefined.
+	 * 
 	 * @return
 	 */
 	public int swapCount() {
+		if (length()<=64) {
+			return swapCountSmall();
+		} else {
+			return swapCountLong();
+		}
+	}
+	
+	private int swapCountLong() {
 		int n=length();
 		int swaps=0;
-		boolean[] seen=new boolean[n];
+		BitSet seen=new BitSet(n);
 		for (int i=0; i<n; i++) {
-			if (seen[i]) continue;
-			seen[i]=true;
-			for(int j=data[i]; !seen[j]; j=data[j]) {
-				seen[j]=true;
+			if (seen.get(i)) continue;
+			seen.set(i);
+			for(int j=data[i]; !seen.get(j); j=data[j]) {
+				seen.set(j);
+				swaps++;
+			}		
+		}
+		return swaps;
+	}
+	
+	private int swapCountSmall() {
+		int n=length();
+		int swaps=0;
+		long seen=0;
+		for (int i=0; i<n; i++) {
+			long mask=(1L<<i);
+			if ((seen&mask)!=0) continue;
+			seen|=mask;
+			for(int j=data[i]; (seen&(1L<<j))==0; j=data[j]) {
+				seen|=(1L<<j);
 				swaps++;
 			}		
 		}
@@ -107,33 +194,6 @@ public final class Index extends AIndex {
 	
 	public boolean isEvenPermutation() {
 		return (swapCount()&1)==0;
-	}
-	
-	/**
-	 * Creates a new Index, wrapping the provided index array
-	 */
-	public static Index wrap(int[] indexes) {
-		return new Index(indexes);
-	}
-	
-	/**
-	 * Creates a new Index, using the specified index values
-	 */
-	public static Index of(int... indexes) {
-		return new Index(indexes.clone());
-	}
-	
-	public static Index createLength(int len) {
-		return new Index(len);
-	}
-	
-	public static Index create(AVector v) {
-		int len=v.length(); 
-		Index a=Index.createLength(len); 
-		for (int i=0; i<len; i++) {
-			a.data[i]=(int) v.unsafeGet(i);
-		}
-		return a;
 	}
 	
 	@Override
@@ -179,6 +239,10 @@ public final class Index extends AIndex {
 	@Override
 	public void sort() {
 		Arrays.sort(data);
+	}
+	
+	public AVector asVector() {
+		return IndexVector.wrap(this);
 	}
 
 	@Override

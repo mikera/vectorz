@@ -13,6 +13,7 @@ import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.MatrixBandView;
 import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
@@ -1719,6 +1720,18 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 
 	public abstract AMatrix exactClone();
+	
+	@Override
+	public INDArray immutable() {
+		if (!isMutable()) return this;
+		return ImmutableMatrix.create(this);
+	}
+	
+	@Override
+	public INDArray mutable() {
+		if (isFullyMutable()) return this;
+		return clone();
+	}
 	
 	@Override 
 	public void validate() {

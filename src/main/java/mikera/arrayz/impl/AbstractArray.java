@@ -803,6 +803,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray immutable() {
+		if (!isMutable()) return this;
+		return ImmutableArray.create(this);
+	}
+	
+	@Override
+	public INDArray mutable() {
+		if (isFullyMutable()) return this;
+		return clone();
+	}
+	
+	@Override
 	public INDArray broadcastLike(INDArray target) {
 		return broadcast(target.getShape());
 	}

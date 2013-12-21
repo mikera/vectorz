@@ -534,6 +534,14 @@ public interface INDArray extends Cloneable {
 	 * Computes the function e^x (in-place) for all array elements
 	 */
 	public void exp();
+	
+	/**
+	 * Returns an immutable version of this INDArray's data
+	 */
+	public INDArray immutable();
 
-
+	/**
+	 * Coerces this INDArray to a fully mutable format. May return the same INDArray if already mutable
+	 */
+	public INDArray mutable();
 }

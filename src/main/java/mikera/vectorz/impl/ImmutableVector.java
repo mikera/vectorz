@@ -44,6 +44,11 @@ public class ImmutableVector extends AVector {
 		return new ImmutableVector(data,0,data.length);
 	}
 	
+	public static ImmutableVector wrap(Vector source) {
+		double[] data=source.data;
+		return new ImmutableVector(data,0,data.length);
+	}
+	
 	@Override
 	public boolean isMutable() {
 		return false;

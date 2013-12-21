@@ -6,8 +6,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.BaseNDArray;
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.ImmutableArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -29,32 +30,22 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class NDArray extends AbstractArray<INDArray> implements IStridedArray {
+public final class NDArray extends BaseNDArray {
 
-	private final int dimensions;
-	private final int[] shape;
-	private int offset; // not final, in case we want to do "sliding window" trick :-)
-	private final double[] data;
-	private final int[] stride;
-	
 	NDArray(int... shape) {
-		this.shape=shape;
-		dimensions=shape.length;
-		data=new double[(int)elementCount()];
-		stride=IntArrays.calcStrides(shape);
-		offset=0;
+		super(new double[(int)IntArrays.arrayProduct(shape)],
+				shape.length,
+				0,
+				shape,
+				IntArrays.calcStrides(shape));
 	}
 	
 	NDArray(double[] data, int offset, int[] shape, int[] stride) {
 		this(data,shape.length,offset,shape,stride);
 	}
 	
-	private NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
-		this.data=data;
-		this.offset=offset;
-		this.shape=shape;
-		this.stride=stride;
-		this.dimensions=dimensions;
+	NDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
+		super(data,shape.length,offset,shape,stride);
 	}
 	
 	public static NDArray wrap(double[] data, int[] shape) {
@@ -83,74 +74,6 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		return new NDArray(shape);
 	}
 	
-	@Override
-	public int dimensionality() {
-		return dimensions;
-	}
-
-	@Override
-	public int[] getShape() {
-		return shape;
-	}
-	
-	@Override
-	public int[] getShapeClone() {
-		return shape.clone();
-	}
-	
-	public int getStride(int dim) {
-		return stride[dim];
-	}
-	
-	@Override
-	public int getShape(int dim) {
-		return shape[dim];
-	}
-
-
-	@Override
-	public long[] getLongShape() {
-		long[] sh=new long[dimensions];
-		IntArrays.copyIntsToLongs(shape,sh);
-		return sh;
-	}
-
-	@Override
-	public double get() {
-		if (dimensions==0) {
-			return data[offset];
-		} else {
-			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this));
-		}
-	}
-
-	@Override
-	public double get(int x) {
-		if (dimensions==1) {
-			return data[offset+x*getStride(0)];
-		} else {
-			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x));
-		}
-	}
-
-	@Override
-	public double get(int x, int y) {
-		if (dimensions==2) {
-			return data[offset+x*getStride(0)+y*getStride(1)];
-		} else {
-			throw new UnsupportedOperationException(ErrorMessages.invalidIndex(this,x,y));
-		}
-	}
-
-	@Override
-	public double get(int... indexes) {
-		int ix=offset;
-		for (int i=0; i<dimensions; i++) {
-			ix+=indexes[i]*getStride(i);
-		}
-		return data[ix];
-	}
-
 	@Override
 	public void set(double value) {
 		if (dimensions==0) {
@@ -249,19 +172,6 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		}
 	}
 
-	public boolean isPackedArray() {
-		if (offset!=0) return false;
-		
-		int st=1;
-		for (int i=dimensions-1; i>=0; i--) {
-			if (getStride(i)!=st) return false;
-			int d=shape[i];
-			st*=d;
-		}
-			
-		return (st==data.length);
-	}
-
 	@Override
 	public INDArray reshape(int... dimensions) {
 		return super.reshape(dimensions);
@@ -326,20 +236,6 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 				offset+IntArrays.dotProduct(offsets, stride),
 				IntArrays.copyOf(shape),
 				stride);
-	}
-
-	@Override
-	public int sliceCount() {
-		if (dimensions==0) {
-			throw new IllegalArgumentException(ErrorMessages.noSlices(this));
-		} else {
-			return getShape(0);
-		}
-	}
-
-	@Override
-	public long elementCount() {
-		return IntArrays.arrayProduct(shape);
 	}
 
 	@Override
@@ -519,20 +415,15 @@ public final class NDArray extends AbstractArray<INDArray> implements IStridedAr
 		if ((endOffset<0)||(endOffset>data.length)) throw new VectorzException("End offset out of bounds");
 		super.validate();
 	}
+	
+	@Override
+	public INDArray immutable() {
+		return ImmutableArray.create(this);
+	}
 
 	@Override
 	public double[] getArray() {
 		return data;
-	}
-
-	@Override
-	public int getArrayOffset() {
-		return offset;
-	}
-
-	@Override
-	public int[] getStrides() {
-		return stride;
 	}
 
 	public static INDArray wrapStrided(double[] data, int offset,
