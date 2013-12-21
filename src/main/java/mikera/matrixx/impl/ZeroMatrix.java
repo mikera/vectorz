@@ -74,6 +74,16 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
+	public ZeroVector getRow(int row) {
+		return ZeroVector.create(inputDimensions);
+	}
+	
+	@Override
+	public ZeroVector getColumn(int col) {
+		return ZeroVector.create(outputDimensions);
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+columnCount(),0.0);
 	}
