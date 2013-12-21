@@ -3,17 +3,22 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public class VectorIndexScalar extends AScalar {
 	final AVector vector;
 	final int index;
 	
-	public VectorIndexScalar(AVector vector, int index) {
-		// don't check - should be checked by caller
-		assert((index>=0)&&(index<vector.length()));
+	private VectorIndexScalar(AVector vector, int index) {
+		// don't check index - should be checked by caller
 		this.vector=vector;
 		this.index=index;
+	}
+	
+	public static VectorIndexScalar wrap(AVector vector, int index) {
+		if ((index<0)||(index>=vector.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(vector, index));
+		return new VectorIndexScalar(vector,index);
 	}
 	
 	@Override

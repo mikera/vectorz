@@ -101,9 +101,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AScalar slice(int position) {
-		if ((position<0)||(position>=this.length()))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, position));
-		return new VectorIndexScalar(this,position);
+		return VectorIndexScalar.wrap(this,position);
 	}
 	
 	@Override

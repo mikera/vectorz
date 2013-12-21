@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
@@ -107,6 +108,13 @@ public final class SingleElementVector extends AConstrainedVector implements ISp
 		} else { 
 			if (value!=0.0) throw new VectorzException("SingleElementVector not mutable at position: "+i);
 		}
+	}
+	
+	@Override
+	public final AScalar slice(int i) {
+		if (i==index) return VectorIndexScalar.wrap(this, i);
+		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		return ImmutableScalar.ZERO;
 	}
 	
 	@Override
