@@ -5,20 +5,18 @@ import java.util.List;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.impl.AMatrixViewVector;
 import mikera.vectorz.util.ErrorMessages;
 
 @SuppressWarnings("serial")
-public class MatrixViewVector extends AMatrixSubVector {
-	protected final AMatrix source;
+public class MatrixViewVector extends AMatrixViewVector {
 	protected final int rows;
 	protected final int columns;
-	protected final int length;
 	
 	public MatrixViewVector(AMatrix a) {
-		source=a;
+		super(a,a.rowCount()*a.columnCount());
 		rows=a.rowCount();
 		columns=a.columnCount();
-		length=rows*columns;
 	}
 
 	@Override
@@ -146,5 +144,15 @@ public class MatrixViewVector extends AMatrixSubVector {
 	@Override
 	public void pow(double exponent) {
 		source.pow(exponent);
+	}
+
+	@Override
+	protected int calcRow(int i) {
+		return i/columns;
+	}
+
+	@Override
+	protected int calcCol(int i) {
+		return i%columns;
 	}
 }
