@@ -1,18 +1,18 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
  * A class representing a view of a matrix row as a vector
  * @author Mike
  */
 @SuppressWarnings("serial") 
-public class MatrixRowView extends AMatrixSubVector {
-	private final AMatrix source;
+public class MatrixRowView extends AMatrixViewVector {
 	private final int row;
 
 	public MatrixRowView(AMatrix aMatrix, int row) {
-		source = aMatrix;
+		super(aMatrix,aMatrix.columnCount());
 		this.row = row;
 	}
 
@@ -53,5 +53,15 @@ public class MatrixRowView extends AMatrixSubVector {
 	
 	@Override public void getElements(double[] data, int offset) {
 		source.copyRowTo(row,data,offset);
+	}
+
+	@Override
+	protected int calcRow(int i) {
+		return row;
+	}
+
+	@Override
+	protected int calcCol(int i) {
+		return i;
 	}
 }
