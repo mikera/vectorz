@@ -1,24 +1,24 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
  * A class representing a view of a matrix column as a vector
  * @author Mike
  */
 @SuppressWarnings("serial")
-public class MatrixColumnView extends AMatrixSubVector {
-	private final AMatrix source;
+public class MatrixColumnView extends AMatrixViewVector {
 	private final int column;
 
 	public MatrixColumnView(AMatrix aMatrix, int column) {
-		source = aMatrix;
+		super(aMatrix,aMatrix.rowCount());
 		this.column = column;
 	}
 
 	@Override
 	public int length() {
-		return source.rowCount();
+		return length;
 	}
 
 	@Override
@@ -53,5 +53,15 @@ public class MatrixColumnView extends AMatrixSubVector {
 	
 	@Override public void getElements(double[] data, int offset) {
 		source.copyColumnTo(column,data,offset);
+	}
+
+	@Override
+	protected int calcRow(int i) {
+		return i;
+	}
+
+	@Override
+	protected int calcCol(int i) {
+		return column;
 	}
 }
