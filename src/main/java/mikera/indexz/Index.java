@@ -29,6 +29,14 @@ public final class Index extends AIndex {
 		data=indexes;
 	}
 	
+	/**
+	 * Creates an Index using the values from the given AVector.
+	 * 
+	 * Values are cast to integers as needed, according to the semantics of (int)value
+	 * 
+	 * @param v
+	 * @return
+	 */
 	public static Index create(AVector v) {
 		int n=v.length();
 		Index ind=new Index(n);
@@ -135,7 +143,10 @@ public final class Index extends AIndex {
 	}
 	
 	/**
-	 * Counts the number of swaps required to create this permutation
+	 * Counts the number of swaps required to create this permutation.
+	 * 
+	 * The index must represent a permutation, or the behaviour is undefined.
+	 * 
 	 * @return
 	 */
 	public int swapCount() {
