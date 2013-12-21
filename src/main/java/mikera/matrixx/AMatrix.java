@@ -19,7 +19,7 @@ import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixRowView;
-import mikera.matrixx.impl.MatrixViewVector;
+import mikera.matrixx.impl.MatrixAsVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.randomz.Hash;
@@ -1132,7 +1132,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		int cc= columnCount();
 		if (cc==1) return getColumn(0);
 
-		return new MatrixViewVector(this);
+		return new MatrixAsVector(this);
 	}
 	
 	@Override
