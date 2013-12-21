@@ -157,7 +157,10 @@ public class TestIndex {
 		assertEquals(3,ind.swapCount());
 		ind.swap(8, 9);
 		assertEquals(2,ind.swapCount());
-
+		
+		Index ind2=Indexz.createSequence(100);
+		ind2.reverse();
+		assertEquals(50,ind2.swapCount());
 	}
 
 

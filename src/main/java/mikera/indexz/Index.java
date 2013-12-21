@@ -1,6 +1,7 @@
 package mikera.indexz;
 
 import java.util.Arrays;
+import java.util.BitSet;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.IndexVector;
@@ -148,12 +149,12 @@ public final class Index extends AIndex {
 	private int swapCountLong() {
 		int n=length();
 		int swaps=0;
-		boolean[] seen=new boolean[n];
+		BitSet seen=new BitSet(n);
 		for (int i=0; i<n; i++) {
-			if (seen[i]) continue;
-			seen[i]=true;
-			for(int j=data[i]; !seen[j]; j=data[j]) {
-				seen[j]=true;
+			if (seen.get(i)) continue;
+			seen.set(i);
+			for(int j=data[i]; !seen.get(j); j=data[j]) {
+				seen.set(j);
 				swaps++;
 			}		
 		}
