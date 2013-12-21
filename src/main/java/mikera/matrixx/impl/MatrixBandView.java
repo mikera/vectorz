@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AMatrixViewVector;
 import mikera.vectorz.impl.MatrixIndexScalar;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Vector class representing a view of a matrix band
@@ -35,6 +36,7 @@ public final class MatrixBandView extends AMatrixViewVector {
 	
 	@Override
 	public MatrixIndexScalar slice(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return MatrixIndexScalar.wrap(source, calcRow(i), calcCol(i));
 	}
 
