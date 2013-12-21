@@ -278,7 +278,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override
 	public AAffineTransform toAffineTransform() {
-		return new AffineMN(new VectorMatrixMN(this),getTranslationComponent());
+		return new AffineMN(this,getTranslationComponent());
 	}
 
 	@Override
