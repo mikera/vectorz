@@ -725,8 +725,8 @@ public class TestVectors {
 	private void testSlicing(AVector v) {
 		for (int i=0; i<v.length(); i++) {
 			AScalar ss=v.slice(0, i);
-			assertTrue(ss.isView());
 			if (v.isFullyMutable()) {
+				assertTrue(ss.isView());
 				assertTrue(ss.isFullyMutable());
 			}
 		}	

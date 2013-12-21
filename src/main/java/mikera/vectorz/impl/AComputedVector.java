@@ -23,6 +23,11 @@ public abstract class AComputedVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public final ImmutableScalar slice(int i) {
+		return ImmutableScalar.create(get(i));
+	}
+	
+	@Override
 	public boolean isMutable() {
 		return false; // i.e. immutable
 	}
