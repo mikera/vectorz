@@ -9,10 +9,10 @@ import mikera.vectorz.util.ErrorMessages;
 
 @SuppressWarnings("serial")
 public class MatrixViewVector extends AMatrixSubVector {
-	final AMatrix source;
-	final int rows;
-	final int columns;
-	final int length;
+	protected final AMatrix source;
+	protected final int rows;
+	protected final int columns;
+	protected final int length;
 	
 	public MatrixViewVector(AMatrix a) {
 		source=a;
