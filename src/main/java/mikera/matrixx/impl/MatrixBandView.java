@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AMatrixViewVector;
+import mikera.vectorz.impl.MatrixIndexScalar;
 
 /**
  * Vector class representing a view of a matrix band
@@ -30,6 +31,11 @@ public final class MatrixBandView extends AMatrixViewVector {
 	@Override
 	protected int calcCol(int i) {
 		return (band>0)?i+band:i;
+	}
+	
+	@Override
+	public MatrixIndexScalar slice(int i) {
+		return MatrixIndexScalar.wrap(source, calcRow(i), calcCol(i));
 	}
 
 	@Override

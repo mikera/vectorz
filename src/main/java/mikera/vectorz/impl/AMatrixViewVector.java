@@ -51,6 +51,11 @@ public abstract class AMatrixViewVector extends AVector {
 	}
 	
 	@Override
+	public MatrixIndexScalar slice(int i) {
+		return MatrixIndexScalar.wrap(source, calcRow(i), calcCol(i));
+	}
+	
+	@Override
 	public int length() {
 		return length;
 	}
