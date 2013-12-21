@@ -138,6 +138,14 @@ public final class Index extends AIndex {
 	 * @return
 	 */
 	public int swapCount() {
+		if (length()<=64) {
+			return swapCountSmall();
+		} else {
+			return swapCountLong();
+		}
+	}
+	
+	private int swapCountLong() {
 		int n=length();
 		int swaps=0;
 		boolean[] seen=new boolean[n];
@@ -146,6 +154,22 @@ public final class Index extends AIndex {
 			seen[i]=true;
 			for(int j=data[i]; !seen[j]; j=data[j]) {
 				seen[j]=true;
+				swaps++;
+			}		
+		}
+		return swaps;
+	}
+	
+	private int swapCountSmall() {
+		int n=length();
+		int swaps=0;
+		long seen=0;
+		for (int i=0; i<n; i++) {
+			long mask=(1L<<i);
+			if ((seen&mask)!=0) continue;
+			seen|=mask;
+			for(int j=data[i]; (seen&(1L<<j))==0; j=data[j]) {
+				seen|=(1L<<j);
 				swaps++;
 			}		
 		}
