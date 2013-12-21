@@ -121,6 +121,12 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 	}
 	
 	@Override
+	public final ImmutableScalar slice(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		return ImmutableScalar.ZERO;
+	}
+	
+	@Override
 	public int hashCode() {
 		return Hash.zeroVectorHash(length);
 	}
