@@ -51,4 +51,9 @@ public class TestVectorMatrix {
 		
 		assertTrue(m.epsilonEquals(Matrixx.createImmutableIdentityMatrix(3)));
 	}
+	
+	@Test public void testWrap() {
+		AMatrix m=Matrixx.createRandomMatrix(4, 5);
+		assertEquals(VectorMatrixMN.create(m),VectorMatrixMN.wrap(m));
+	}
 }
