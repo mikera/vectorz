@@ -18,6 +18,11 @@ public class TestOpsExtra {
 		}
 	}
 	
+	@Test public void testSinh() {
+		Op op=Ops.SINH;
+		assertEquals(0.0,op.apply(0.0),0.0);
+	}
+	
 	private void testDerivativeAt(Op op, double x) {
 		double dx=op.derivative(x);
 		double epsilon=0.00001;

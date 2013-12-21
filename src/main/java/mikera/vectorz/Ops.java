@@ -82,7 +82,7 @@ public final class Ops {
 	public static final AFunctionOp SINH = new AFunctionOp() {
 		@Override
 		public double apply(double x) {
-			return Math.cosh(x);
+			return Math.sinh(x);
 		}
 	};
 
