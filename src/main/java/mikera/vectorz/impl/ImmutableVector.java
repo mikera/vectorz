@@ -70,6 +70,11 @@ public class ImmutableVector extends AVector {
 	}
 	
 	@Override
+	public final ImmutableScalar slice(int i) {
+		return ImmutableScalar.create(get(i));
+	}
+	
+	@Override
 	public AVector subVector(int start, int length) {
 		if ((start<0)||(start+length>this.length)||(length<0)) throw new IllegalArgumentException("Illegal subvector with arguments start= "+start+", length= "+length);
 		if (length==0) return Vector0.INSTANCE;

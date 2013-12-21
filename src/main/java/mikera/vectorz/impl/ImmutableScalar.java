@@ -5,6 +5,9 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.util.ErrorMessages;
 
 public final class ImmutableScalar extends AScalar {
+	public static final ImmutableScalar ONE = ImmutableScalar.create(1.0);
+	public static final ImmutableScalar ZERO = ImmutableScalar.create(0.0);
+	
 	private final double value;
 	
 	private ImmutableScalar(double value) {

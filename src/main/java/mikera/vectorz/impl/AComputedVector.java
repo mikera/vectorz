@@ -23,7 +23,7 @@ public abstract class AComputedVector extends AConstrainedVector {
 	}
 	
 	@Override
-	public final ImmutableScalar slice(int i) {
+	public ImmutableScalar slice(int i) {
 		return ImmutableScalar.create(get(i));
 	}
 	

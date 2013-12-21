@@ -145,6 +145,13 @@ public class AxisVector extends AComputedVector implements ISparse {
 	}
 	
 	@Override
+	public final ImmutableScalar slice(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		if (i==axis) return ImmutableScalar.ONE;
+		return ImmutableScalar.ZERO;
+	}
+	
+	@Override
 	public Vector toNormal() {
 		return toVector();
 	}
