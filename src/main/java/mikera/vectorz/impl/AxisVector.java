@@ -1,6 +1,6 @@
 package mikera.vectorz.impl;
 
-import mikera.arrayz.ISparse;
+import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
@@ -14,7 +14,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public class AxisVector extends AComputedVector implements ISparse {
+public class AxisVector extends ASparseVector {
 	private static final long serialVersionUID = 6767495113060894804L;
 	
 	private final int axis;
@@ -84,6 +84,11 @@ public class AxisVector extends AComputedVector implements ISparse {
 
 	@Override
 	public boolean isZero() {
+		return false;
+	}
+	
+	@Override
+	public boolean isMutable() {
 		return false;
 	}
 	
@@ -193,6 +198,34 @@ public class AxisVector extends AComputedVector implements ISparse {
 		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
 		if ((axis<0)||(axis>length)) throw new VectorzException("Axis index out of bounds");
 		super.validate();
+	}
+
+	@Override
+	public int nonSparseElementCount() {
+		return 1;
+	}
+
+	private static final ImmutableVector NON_SPARSE=ImmutableVector.of(1.0);
+	
+	@Override
+	public AVector nonSparseValues() {
+		return NON_SPARSE;
+	}
+
+	@Override
+	public Index nonSparseIndexes() {
+		return Index.of(axis);
+	}
+
+	@Override
+	public boolean includesIndex(int i) {
+		return (i==axis);
+	}
+
+	@Override
+	public void set(int i, double value) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -27,6 +27,10 @@ public class ImmutableVector extends AVector {
 		this(data,0,data.length);
 	}
 	
+	public static ImmutableVector of(double... data) {
+		return wrap(data.clone());
+	}
+	
 	private ImmutableVector(double[] data, int offset, int length) {
 		this.data=data;
 		this.length=length;
