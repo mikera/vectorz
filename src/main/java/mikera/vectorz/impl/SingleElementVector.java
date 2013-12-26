@@ -1,8 +1,9 @@
 package mikera.vectorz.impl;
 
-import mikera.arrayz.ISparse;
+import mikera.indexz.Index;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector1;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -14,7 +15,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public final class SingleElementVector extends AConstrainedVector implements ISparse {
+public final class SingleElementVector extends ASparseVector {
 	private final int dimensions;
 	private final int index;
 	private double value;
@@ -130,5 +131,25 @@ public final class SingleElementVector extends AConstrainedVector implements ISp
 	@Override
 	public SingleElementVector exactClone() {
 		return new SingleElementVector(index,dimensions,value);
+	}
+
+	@Override
+	public int nonSparseElementCount() {
+		return 1;
+	}
+
+	@Override
+	public AVector nonSparseValues() {
+		return Vector1.of(value);
+	}
+
+	@Override
+	public Index nonSparseIndexes() {
+		return Index.of(index);
+	}
+
+	@Override
+	public boolean includesIndex(int i) {
+		return (i==index);
 	}
 }

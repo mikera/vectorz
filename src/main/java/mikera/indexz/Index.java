@@ -19,6 +19,8 @@ import mikera.vectorz.util.IntArrays;
 public final class Index extends AIndex {
 	private static final long serialVersionUID = 8698831088064498284L;
 
+	public static final Index EMPTY = new Index(0);
+
 	public final int[] data;
 	
 	public Index(int length) {

@@ -1,6 +1,6 @@
 package mikera.vectorz.impl;
 
-import mikera.arrayz.ISparse;
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
@@ -11,7 +11,7 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class ZeroVector extends AComputedVector implements ISparse {
+public final class ZeroVector extends ASparseVector {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
 	private final int length;
@@ -164,6 +164,26 @@ public final class ZeroVector extends AComputedVector implements ISparse {
 		int alen=a.length;
 		if (alen==0) return this;
 		return ZeroVector.create(length+a.length);
+	}
+
+	@Override
+	public int nonSparseElementCount() {
+		return 0;
+	}
+
+	@Override
+	public AVector nonSparseValues() {
+		return Vector0.INSTANCE;
+	}
+
+	@Override
+	public Index nonSparseIndexes() {
+		return Index.EMPTY;
+	}
+
+	@Override
+	public boolean includesIndex(int i) {
+		return false;
 	}
 
 }
