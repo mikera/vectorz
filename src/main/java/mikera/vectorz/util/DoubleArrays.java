@@ -373,5 +373,11 @@ public final class DoubleArrays {
 		//return Arrays.copyOf(data, data.length);
 	}
 
+	public static double[] copyOf(double[] data, int start, int length) {
+		double[] rs=new double[length];
+		System.arraycopy(data, start, rs, 0, length);
+		return rs;
+	}
+
 
 }

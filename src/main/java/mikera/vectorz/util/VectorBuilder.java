@@ -1,7 +1,7 @@
 package mikera.vectorz.util;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vectorz;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ArraySubVector;
 
 /**
@@ -45,9 +45,7 @@ public class VectorBuilder {
 		return ArraySubVector.wrap(data, 0, length);
 	}
 	
-	public AVector toVector() {
-		AVector v=Vectorz.newVector(length);
-		v.setRange(0,data,0,length);
-		return v;
+	public Vector toVector() {
+		return Vector.create(data,0,length);
 	}
 }

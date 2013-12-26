@@ -65,6 +65,10 @@ public final class Vector extends AArrayVector {
 		return wrap(data.clone());
 	}
 	
+	public static Vector create(double[] data, int start, int length) {
+		return wrap(DoubleArrays.copyOf(data,start,length));
+	}
+	
 	/**
 	 * Create a vector with specific component values. 
 	 * Creates a copy of the value array
@@ -538,5 +542,4 @@ public final class Vector extends AArrayVector {
 		source.copyTo(0, v.data, 0, n);
 		return v;
 	}
-
 }
