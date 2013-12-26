@@ -12,8 +12,8 @@ import mikera.vectorz.util.ErrorMessages;
  * Abstract base class for matrices that use a collection of Vectors 
  * as storage for the matrix rows.
  * 
- * Vector matrices may support appending with new rows - this functionality can be useful
- * e.g. when building a matrix to represent a data set.
+ * Vector matrices can support appending / replacing with new rows - 
+ * - this functionality can be useful e.g. when building a matrix to represent a data set.
  * 
  * @author Mike
  *
@@ -23,11 +23,25 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	 * Abstract interface
 	 */
 	
+	/**
+	 * Appends a row to this matrix in-place. The row must be of a type allowed by the matrix.
+	 * @param row
+	 */
 	public abstract void appendRow(AVector row);
 	
 	/**
-	 * Gets a row of the matrix. Should be guaranteed to be an existing vector by all
-	 * descendents of VectorMatrix.
+	 * Replaces a row in this matrix. The row must be of a type allowed by the matrix.
+	 * 
+	 * Detaches the current row: this will invalidate views over the matrix that include the original row.
+	 * @param i
+	 * @param row
+	 */
+	public abstract void replaceRow(int i, AVector row);
+	
+	/**
+	 * Gets a row of the matrix. 
+	 * 
+	 * Guaranteed to be an existing vector by all descendants of VectorMatrix.
 	 */
 	@Override
 	public abstract T getRow(int row);
@@ -195,12 +209,5 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 		return avm;
 	}
 
-	/**
-	 * Replaces a row in this matrix. 
-	 * 
-	 * Detaches the current row: this will invalidate views over the matrix that include the original row.
-	 * @param i
-	 * @param row
-	 */
-	public abstract void replaceRow(int i, AVector row);
+
 }
