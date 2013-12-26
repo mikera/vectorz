@@ -32,6 +32,10 @@ public final class SingleElementVector extends ASparseVector {
 		this.index=componentIndex;
 		this.value=value;
 	}
+	
+	public static AVector create(double val, int i, int len) {
+		return new SingleElementVector(i,len,val);
+	}
 
 	@Override
 	public int length() {
@@ -152,4 +156,5 @@ public final class SingleElementVector extends ASparseVector {
 	public boolean includesIndex(int i) {
 		return (i==index);
 	}
+
 }

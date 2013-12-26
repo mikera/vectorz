@@ -8,6 +8,8 @@ import mikera.util.Rand;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.SingleElementVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
@@ -122,6 +124,30 @@ public class Vectorz {
 			case 3: return new Vector3();
 			case 4: return new Vector4();
 			default: return Vector.createLength(length);
+		}
+	}
+	
+	public static AVector createSparse(AVector v) {
+		int len=v.length();
+		long n=v.nonZeroCount();
+		if (n==0) {
+			return ZeroVector.create(len);
+		} else if (n==1) {
+			for (int i=0; i<len; i++) {
+				double val=v.unsafeGet(i);
+				if (val!=0.0) {
+					if (val==1) {
+						return AxisVector.create(i, len);
+					} else {
+						return SingleElementVector.create(val,i,len);
+					}
+				}
+			}
+			throw new VectorzException("non-zero element not found!!");
+		} else if (n>(len/2)) {
+			return Vector.create(v); // not enough sparsity to make worthwhile
+		} else {
+			return SparseIndexedVector.create(v);
 		}
 	}
 
