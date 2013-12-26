@@ -66,6 +66,16 @@ public final class Matrix extends ADenseArrayMatrix {
 		return create(m);
 	}
 	
+	public static Matrix create(double[][] data) {
+		int rc=data.length;
+		int cc=data[0].length;
+		Matrix m=Matrix.create(rc,cc);
+		for (int i=0; i<rc; i++) {
+			m.getRow(i).setElements(data[i]);
+		}
+		return m;
+	}
+	
 	@Override
 	public boolean isView() {
 		return false;
