@@ -224,7 +224,7 @@ public class Vectorz {
 							} else {
 								throw new VectorzException("Cannot parse double value from class: "+o.getClass());
 							}
-							b.add(d);
+							b.append(d);
 						}
 
 						@Override

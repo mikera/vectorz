@@ -29,6 +29,7 @@ import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Constant;
+import mikera.vectorz.util.VectorBuilder;
 
 import org.junit.Test;
 
@@ -893,5 +894,16 @@ public class TestVectors {
 		doGenericTests(RangeVector.create(10,0));
 		doGenericTests(RangeVector.create(-10,3));
 		doGenericTests(RangeVector.create(0,7));
+		
+		// VectorBuilder as a Vector
+		VectorBuilder vbl=new VectorBuilder();
+		doGenericTests(vbl);
+		vbl.append(1.0);
+		doGenericTests(vbl);
+		vbl.append(2.0,3.0);
+		doGenericTests(vbl);
+		vbl.append(4,5,6);
+		doGenericTests(vbl);
+		
 	}
 }

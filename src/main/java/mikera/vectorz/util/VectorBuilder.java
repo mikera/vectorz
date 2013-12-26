@@ -2,15 +2,16 @@ package mikera.vectorz.util;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.ArraySubVector;
 
 /**
  * Utility class for efficiently building vectors by addition of doubles
  * @author Mike
  */
-public class VectorBuilder {
+@SuppressWarnings("serial")
+public class VectorBuilder extends AArrayVector {
 	private double[] data;
-	
 	int length=0;
 	
 	public VectorBuilder() {
@@ -21,6 +22,11 @@ public class VectorBuilder {
 		data=new double[initialCapacity];
 	}
 	
+	private VectorBuilder(double[] data, int length) {
+		this.data=data;
+		this.length=length;
+	}
+
 	private void ensureSize(int newSize) {
 		if (newSize>data.length) {
 			double[] nd=new double[Math.min(newSize, data.length*2)];
@@ -29,9 +35,17 @@ public class VectorBuilder {
 		}
 	}
 
-	public void add(double d) {
+	public void append(double d) {
 		ensureSize(length+1);
 		data[length++]=d;
+	}
+	
+
+	public void append(double... ds) {
+		int n=ds.length;
+		ensureSize(length+n);
+		System.arraycopy(ds, 0, data, length, n);
+		length+=n;
 	}
 
 
@@ -48,4 +62,47 @@ public class VectorBuilder {
 	public Vector toVector() {
 		return Vector.create(data,0,length);
 	}
+
+	@Override
+	public double get(int i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		return data[i];
+	}
+
+	@Override
+	public void set(int i, double value) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		data[i]=value;		
+	}
+
+	@Override
+	public double unsafeGet(int i) {
+		return data[i];
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
+		data[i]=value;		
+	}
+
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return 0;
+	}
+
+	@Override
+	public int length() {
+		return length;
+	}
+
+	@Override
+	public AVector exactClone() {
+		return new VectorBuilder(data.clone(),length);
+	}
+
 }
