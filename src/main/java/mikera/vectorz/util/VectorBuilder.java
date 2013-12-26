@@ -6,7 +6,8 @@ import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.ArraySubVector;
 
 /**
- * Utility class for efficiently building vectors by addition of doubles
+ * Special AVector class for efficiently building vectors by appending doubles / other vectors
+ * 
  * @author Mike
  */
 @SuppressWarnings("serial")
@@ -39,7 +40,6 @@ public class VectorBuilder extends AArrayVector {
 		ensureSize(length+1);
 		data[length++]=d;
 	}
-	
 
 	public void append(double... ds) {
 		int n=ds.length;
@@ -47,7 +47,13 @@ public class VectorBuilder extends AArrayVector {
 		System.arraycopy(ds, 0, data, length, n);
 		length+=n;
 	}
-
+	
+	public void append(AVector v) {
+		int n=v.length();
+		ensureSize(length+n);
+		v.copyTo(data, length);
+		length+=n;
+	}
 
 	/**
 	 * Creates a vector that wraps the internal data of this VectorBuilder.
