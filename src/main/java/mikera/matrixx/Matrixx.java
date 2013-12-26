@@ -394,10 +394,10 @@ public class Matrixx {
 		}
 	}
 
-	public static AMatrix createFromVectors(AVector... data) {
+	public static Matrix createFromVectors(AVector... data) {
 		int rc = data.length;
 		int cc = (rc == 0) ? 0 : data[0].length();
-		AMatrix m = newMatrix(rc, cc);
+		Matrix m = Matrix.create(rc, cc);
 		for (int i = 0; i < rc; i++) {
 			m.getRow(i).set(data[i]);
 		}
