@@ -587,6 +587,7 @@ public class TestVectors {
 	private void testEquality(AVector v) {
 		assertEquals(v,v.clone());
 		assertNotEquals(v,v.join(Vector.of(1)));
+		assertEquals(v,Vectorz.createSparse(v));
 	}
 	
 	
