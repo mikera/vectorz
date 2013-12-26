@@ -67,11 +67,13 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public static Matrix create(double[][] data) {
-		int rc=data.length;
-		int cc=data[0].length;
-		Matrix m=Matrix.create(rc,cc);
-		for (int i=0; i<rc; i++) {
-			m.getRow(i).setElements(data[i]);
+		int rows = data.length;
+		int cols = data[0].length;
+		Matrix m = Matrix.create(rows, cols);
+		for (int i = 0; i < rows; i++) {
+			double[] ds=data[i];
+			if (ds.length!=cols) throw new IllegalArgumentException("Array shape is not rectangular!");
+			System.arraycopy(ds, 0, m.data, i * cols, cols);
 		}
 		return m;
 	}

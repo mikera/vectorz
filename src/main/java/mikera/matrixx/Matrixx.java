@@ -465,15 +465,7 @@ public class Matrixx {
 	}
 
 	public static Matrix create(double[][] data) {
-		int rows = data.length;
-		int cols = data[0].length;
-		Matrix m = Matrix.create(rows, cols);
-		for (int i = 0; i < rows; i++) {
-			double[] ds=data[i];
-			if (ds.length!=cols) throw new IllegalArgumentException("Array shape is not rectangular!");
-			System.arraycopy(ds, 0, m.data, i * cols, cols);
-		}
-		return m;
+		return Matrix.create(data);
 	}
 
 	/**
