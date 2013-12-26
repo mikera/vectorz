@@ -22,17 +22,17 @@ public class MatrixBuilder {
 		}
 	}
 
-	public void add(Iterable<Object> d) {
+	public void append(Iterable<Object> d) {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(d);
 	}
 	
-	public void add(AVector v) {
+	public void append(AVector v) {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(v);
 	}
 
-	public void add(double[] ds) {
+	public void append(double[] ds) {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(ds);
 	}
