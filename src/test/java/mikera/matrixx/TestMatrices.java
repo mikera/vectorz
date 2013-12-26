@@ -95,6 +95,11 @@ public class TestMatrices {
 		assertEquals(new Matrix22(1,4,3,8),m.compose(d));
 	}
 	
+	@Test public void testMatrixFromDoubles() {
+		Matrix m=Matrix.create(new double[][] {{1,0},{0,1}});
+		assertTrue(m.isIdentity());
+	}
+	
 	@Test public void testJoin() {
 		DiagonalMatrix d1=DiagonalMatrix.create(1,2);
 		DiagonalMatrix d2=DiagonalMatrix.create(3,4);
