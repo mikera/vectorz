@@ -67,4 +67,9 @@ public final class BroadcastVectorMatrix extends AVectorMatrix<AVector> {
 		return BroadcastVectorMatrix.wrap(vector.exactClone(),rows);
 	}
 
+	@Override
+	public void replaceRow(int i, AVector row) {
+		throw new UnsupportedOperationException("Broadcasted matrix does not support replaceRow");
+	}
+
 }

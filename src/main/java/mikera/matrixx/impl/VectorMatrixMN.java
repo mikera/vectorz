@@ -112,6 +112,12 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 		rows[rowCount++]=row;
 	}
 	
+	@Override 
+	public void replaceRow(int i, AVector row) {
+		if ((i<0)||(i>=rowCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
+		rows[i]=row;
+	}
+	
 	@Override
 	public void swapRows(int i, int j) {
 		if (i!=j) {

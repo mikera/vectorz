@@ -194,4 +194,13 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 		AMatrix avm= super.clone();
 		return avm;
 	}
+
+	/**
+	 * Replaces a row in this matrix. 
+	 * 
+	 * Detaches the current row: this will invalidate views over the matrix that include the original row.
+	 * @param i
+	 * @param row
+	 */
+	public abstract void replaceRow(int i, AVector row);
 }
