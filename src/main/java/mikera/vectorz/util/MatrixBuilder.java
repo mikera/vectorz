@@ -1,14 +1,13 @@
 package mikera.vectorz.util;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
-import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 /**
  * Utility class for efficiently building matrices by addition of vector rows
+ * 
  * @author Mike
  */
 public class MatrixBuilder extends AVectorMatrix<AVector> {
@@ -37,16 +36,6 @@ public class MatrixBuilder extends AVectorMatrix<AVector> {
 	public void append(double[] ds) {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(ds);
-	}
-
-	/**
-	 * Builds a matrix using a copy of the data in this MatrixBuilder
-	 * @return
-	 */
-	public Matrix toMatrix() {
-		AVector[] nd=new AVector[length];
-		System.arraycopy(data, 0, nd, 0, length);
-		return Matrixx.createFromVectors(nd);
 	}
 
 	@Override
