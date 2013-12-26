@@ -5,6 +5,7 @@ import mikera.indexz.Indexz;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.util.Rand;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 
 public class SparseMatrix {
@@ -42,7 +43,7 @@ public class SparseMatrix {
 			if (sum>0) {
 				row.divide(sum);
 			} else {
-				row.fill(1.0/SIZE);
+				m.setRow(i, new RepeatedElementVector(SIZE,1.0/SIZE));
 			}
 		}
 		
