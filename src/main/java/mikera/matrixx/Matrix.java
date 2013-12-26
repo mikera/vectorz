@@ -22,7 +22,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /** 
- * Standard MxN matrix class backed by a fully packed double[] array
+ * Standard MxN matrix class backed by a densely packed double[] array
  * 
  * This is the most efficient Vectorz type for 2D matrices.
  * 

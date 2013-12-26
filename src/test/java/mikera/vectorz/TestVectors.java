@@ -590,7 +590,6 @@ public class TestVectors {
 		assertEquals(v,Vectorz.createSparse(v));
 	}
 	
-	
 	private void testCopyTo(AVector v) {
 		int len=v.length();
 		Vector tv=Vector.createLength(len+2);

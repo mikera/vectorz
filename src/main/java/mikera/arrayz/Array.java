@@ -22,7 +22,7 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose mutable packed N-dimensional array
+ * General purpose mutable dense N-dimensional array
  * 
  * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
  * most efficient storage type for 3D+ arrays
