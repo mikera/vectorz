@@ -7,6 +7,7 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.AVectorMatrix;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
@@ -597,6 +598,7 @@ public class TestMatrixx {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	void doGenericTests(AMatrix m) {
 		m.validate();
 		
@@ -622,6 +624,10 @@ public class TestMatrixx {
 		doRandomTests(m);
 		doBigComposeTest(m);
 		doSubMatrixTest(m);
+		
+		if (m instanceof AVectorMatrix<?>) {
+			TestVectorMatrix.doVectorMatrixTests((AVectorMatrix<AVector>)m);
+		}
 		
 		TestTransformz.doITransformTests(m);
 		
