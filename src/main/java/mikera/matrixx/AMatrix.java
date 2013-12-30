@@ -25,8 +25,6 @@ import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.randomz.Hash;
 import mikera.transformz.AAffineTransform;
-import mikera.transformz.ALinearTransform;
-import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
 import mikera.transformz.impl.IdentityTranslation;
 import mikera.util.Maths;
@@ -51,7 +49,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix, Iterable<AVector> {
+public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix {
 	// ==============================================
 	// Abstract interface
 
