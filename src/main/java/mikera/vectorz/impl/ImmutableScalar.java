@@ -4,9 +4,18 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * Immutable scalar class
+ * 
+ * Conceptually equivalent to a wrapped Double value, but supports all the Vectorz
+ * interfaces and functionality as a scalar object.
+ * 
+ * @author Mike
+ *
+ */
 public final class ImmutableScalar extends AScalar {
-	public static final ImmutableScalar ONE = ImmutableScalar.create(1.0);
-	public static final ImmutableScalar ZERO = ImmutableScalar.create(0.0);
+	public static final ImmutableScalar ONE = new ImmutableScalar(1.0);
+	public static final ImmutableScalar ZERO = new ImmutableScalar(0.0);
 	
 	private final double value;
 	
@@ -15,6 +24,8 @@ public final class ImmutableScalar extends AScalar {
 	}
 	
 	public static ImmutableScalar create(double value) {
+		if (value==0.0) return ZERO;
+		if (value==1.0) return ONE;
 		return new ImmutableScalar(value);
 	}
 
