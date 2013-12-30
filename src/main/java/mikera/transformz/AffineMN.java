@@ -17,8 +17,8 @@ public final class AffineMN extends AAffineTransform {
 	public AffineMN(AMatrix matrix, ATranslation translation) {
 		this.matrix=matrix;
 		this.translation=translation;
-		inputDimensions=matrix.inputDimensions();
-		outputDimensions=matrix.outputDimensions();
+		inputDimensions=matrix.columnCount();
+		outputDimensions=matrix.rowCount();
 		if (outputDimensions!=translation.inputDimensions()) {
 			throw new IllegalArgumentException("matrix and translation have incompatible dimensionality");
 		}

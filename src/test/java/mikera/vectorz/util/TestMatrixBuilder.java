@@ -19,7 +19,7 @@ public class TestMatrixBuilder {
 		
 		AMatrix m= mb.toMatrix();
 		
-		assertEquals(3,m.outputDimensions());
+		assertEquals(3,m.rowCount());
 		assertTrue(m.isIdentity());
 	}
 }

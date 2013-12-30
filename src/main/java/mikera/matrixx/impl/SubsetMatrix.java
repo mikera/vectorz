@@ -36,16 +36,6 @@ public final class SubsetMatrix extends ABooleanMatrix implements ISparse {
 	}
 
 	@Override
-	public int inputDimensions() {
-		return inputDims;
-	}
-
-	@Override
-	public int outputDimensions() {
-		return components.length();
-	}
-	
-	@Override
 	public double elementSum() {
 		return rowCount();
 	}
@@ -57,12 +47,12 @@ public final class SubsetMatrix extends ABooleanMatrix implements ISparse {
 
 	@Override
 	public int rowCount() {
-		return outputDimensions();
+		return components.length();
 	}
 
 	@Override
 	public int columnCount() {
-		return inputDimensions();
+		return inputDims;
 	}
 	
 	@Override

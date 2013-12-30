@@ -36,7 +36,7 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	public Affine23(AMatrix m, AVector v) {
-		if ((v.length()!=2)||(m.inputDimensions()!=2)||(m.outputDimensions()!=2)) {
+		if ((v.length()!=2)||(m.columnCount()!=2)||(m.rowCount()!=2)) {
 			throw new IllegalArgumentException("Wrong source sizes for Affine23");
 		}
 		m00=m.unsafeGet(0,0);
@@ -49,8 +49,8 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 	
 	public Affine23(Matrix22 m, AVector v) {
 		assert(v.length()==2);
-		assert(m.inputDimensions()==2);
-		assert(m.outputDimensions()==2);
+		assert(m.columnCount()==2);
+		assert(m.rowCount()==2);
 		m00=m.m00;
 		m01=m.m01;
 		m10=m.m10;
@@ -146,10 +146,7 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 		if (a instanceof Affine23) {
 			composeWith((Affine23)a);
 			return;
-		} else if (a instanceof Matrix22) {
-			composeWith((Matrix22)a);
-			return;
-		}
+		} 
 		super.composeWith(a);
 	}
 	

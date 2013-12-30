@@ -200,7 +200,6 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 		dest.z=((m20*x)+(m21*y)+(m22*z));
 	}
 	
-	@Override
 	public void transformNormal(AVector source, AVector dest) {
 		if ((source instanceof Vector3)&&(dest instanceof Vector3)) {
 			transformNormal((Vector3)source,(Vector3)dest);

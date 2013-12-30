@@ -44,7 +44,7 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	public Affine34(AMatrix m, AVector v) {
-		if ((v.length()!=3)||(m.inputDimensions()!=3)||(m.outputDimensions()!=3)) {
+		if ((v.length()!=3)||(m.columnCount()!=3)||(m.rowCount()!=3)) {
 			throw new IllegalArgumentException("Wrong source sizes for Affine34");
 		}
 		m00=m.unsafeGet(0,0);
@@ -64,8 +64,8 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	
 	public Affine34(Matrix33 m, AVector v) {
 		assert(v.length()==3);
-		assert(m.inputDimensions()==3);
-		assert(m.outputDimensions()==3);
+		assert(m.columnCount()==3);
+		assert(m.rowCount()==3);
 		m00=m.m00;
 		m01=m.m01;
 		m02=m.m02;
@@ -172,9 +172,6 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	public void composeWith(ATransform a) {
 		if (a instanceof Affine34) {
 			composeWith((Affine34)a);
-			return;
-		} else if (a instanceof Matrix33) {
-			composeWith((Matrix33)a);
 			return;
 		} else if (a instanceof Translation3) {
 			composeWith((Translation3)a);

@@ -18,7 +18,7 @@ public class MatrixIterator implements Iterator<AVector> {
 	public MatrixIterator(AMatrix source) {
 		this.pos=0;
 		this.source=source;
-		this.maxPos=source.outputDimensions();
+		this.maxPos=source.rowCount();
 	}
 	
 	@Override

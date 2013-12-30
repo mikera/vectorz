@@ -24,6 +24,7 @@ import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.ATransform;
+import mikera.transformz.MatrixTransform;
 import mikera.transformz.TestTransformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -47,11 +48,10 @@ public class TestMatrixx {
 		assertTrue(mimv.epsilonEquals(v));		
 		
 		// composition of matrix and its inverse should be an identity transform
-		ATransform id=m.compose(mi);
-		assertTrue(id instanceof AMatrix);
+		MatrixTransform mt=new MatrixTransform(m);
+		ATransform id=mt.compose(new MatrixTransform(mi));
 		AVector idv=id.transform(v);
 		assertTrue(idv.epsilonEquals(v));		
-		
 	}
 	
 	@Test
@@ -224,7 +224,7 @@ public class TestMatrixx {
 		
 		AMatrix m1=Matrixx.createScaleMatrix(3, 2.0);
 		AMatrix m2=Matrixx.createScaleMatrix(3, 1.5);
-		ATransform ct = m2.compose(m1);
+		ATransform ct = new MatrixTransform(m2).compose(new MatrixTransform(m1));
 		
 		assertTrue(Vector3.of(3,6,9).epsilonEquals(ct.transform(v)));
 	}
@@ -409,8 +409,8 @@ public class TestMatrixx {
 	}
 
 	private void doRowColumnTests(AMatrix m) {
-		assertEquals(m.rowCount(),m.outputDimensions());
-		assertEquals(m.columnCount(),m.inputDimensions());
+		assertEquals(m.rowCount(),new MatrixTransform(m).outputDimensions());
+		assertEquals(m.columnCount(),new MatrixTransform(m).inputDimensions());
 		
 		m=m.clone();
 		int rc=m.rowCount();
@@ -492,12 +492,12 @@ public class TestMatrixx {
 	}
 	
 	void doBigComposeTest(AMatrix m) {
-		AMatrix a=Matrixx.createRandomSquareMatrix(m.outputDimensions());
-		AMatrix b=Matrixx.createRandomSquareMatrix(m.inputDimensions());
+		AMatrix a=Matrixx.createRandomSquareMatrix(m.rowCount());
+		AMatrix b=Matrixx.createRandomSquareMatrix(m.columnCount());
 		AMatrix mb=m.compose(b);
 		AMatrix amb=a.compose(mb);
 		
-		AVector v=Vectorz.createUniformRandomVector(b.inputDimensions());
+		AVector v=Vectorz.createUniformRandomVector(b.columnCount());
 		
 		AVector ambv=a.transform(m.transform(b.transform(v)));
 		assertTrue(amb.transform(v).epsilonEquals(ambv));
@@ -629,7 +629,7 @@ public class TestMatrixx {
 			TestVectorMatrix.doVectorMatrixTests((AVectorMatrix<AVector>)m);
 		}
 		
-		TestTransformz.doITransformTests(m);
+		TestTransformz.doITransformTests(new MatrixTransform(m));
 		
 		new TestArrays().testArray(m);
 	}

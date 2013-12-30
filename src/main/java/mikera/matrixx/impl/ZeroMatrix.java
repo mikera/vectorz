@@ -6,7 +6,6 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
-import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
@@ -36,11 +35,6 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	@Override
 	public boolean isMutable() {
 		return false;
-	}
-	
-	@Override
-	public int inputDimensions() {
-		return inputDimensions;
 	}
 	
 	@Override
@@ -96,11 +90,6 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	@Override
 	public void getElements(double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+rowCount()*columnCount(),0.0);
-	}
-
-	@Override
-	public int outputDimensions() {
-		return outputDimensions;
 	}
 
 	@Override
@@ -197,25 +186,9 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
-	public AMatrix compose(ATransform t) {
-		assert(inputDimensions()==t.outputDimensions());
-		return ZeroMatrix.create(outputDimensions, t.inputDimensions());
-	}
-	
-	@Override
 	public AMatrix innerProduct(AMatrix m) {
-		assert(inputDimensions()==m.outputDimensions());
-		return ZeroMatrix.create(outputDimensions, m.inputDimensions());
-	}
-	
-	@Override
-	public void composeWith(ATransform t) {
-		assert(t.inputDimensions()==t.outputDimensions());
-	}
-	
-	@Override
-	public void composeWith(AMatrix t) {
-		assert(t.inputDimensions()==t.outputDimensions());
+		assert(columnCount()==m.rowCount());
+		return ZeroMatrix.create(outputDimensions, m.columnCount());
 	}
 	
 	@Override 

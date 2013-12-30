@@ -37,8 +37,8 @@ public class TestAffine {
 	}
 	
 	private void testAffineDecomposition(AAffineTransform t) {
-		assertTrue(t.getMatrixComponent().inputDimensions()==t.inputDimensions());
-		assertTrue(t.getMatrixComponent().outputDimensions()==t.outputDimensions());
+		assertTrue(t.getMatrixComponent().columnCount()==t.inputDimensions());
+		assertTrue(t.getMatrixComponent().rowCount()==t.outputDimensions());
 		assertTrue(t.getTranslationComponent().inputDimensions()==t.outputDimensions());
 		assertTrue(t.getTranslationComponent().outputDimensions()==t.outputDimensions());
 		
@@ -82,6 +82,10 @@ public class TestAffine {
 		
 		t.transformNormal(d, r);
 		assertTrue(r.isZero()||r.isUnitLengthVector());
+	}
+	
+	private void doAffineTests(AMatrix t) {
+		doAffineTests(new MatrixTransform(t));
 	}
 	
 	private void doAffineTests(AAffineTransform t) {

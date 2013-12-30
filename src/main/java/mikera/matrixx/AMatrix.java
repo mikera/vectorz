@@ -9,6 +9,7 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
@@ -27,6 +28,7 @@ import mikera.transformz.AAffineTransform;
 import mikera.transformz.ALinearTransform;
 import mikera.transformz.ATransform;
 import mikera.transformz.AffineMN;
+import mikera.transformz.impl.IdentityTranslation;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
@@ -49,7 +51,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AMatrix extends ALinearTransform implements IMatrix, Iterable<AVector> {
+public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix, Iterable<AVector> {
 	// ==============================================
 	// Abstract interface
 
@@ -199,10 +201,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	}
 	
 	@Override
-	public List<AVector> getSlices(int dimension) {
+	public List<INDArray> getSlices(int dimension) {
 		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		int l=getShape(dimension);
-		ArrayList<AVector> al=new ArrayList<AVector>(l);
+		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
 		for (int i=0; i<l; i++) {
 			al.add(slice(dimension,i));
 		}
@@ -267,7 +269,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return getBand(0);
 	}
 	
-	@Override
 	public double calculateElement(int i, AVector v) {
 		return getRow(i).dotProduct(v);
 	}
@@ -276,17 +277,10 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return getRow(i).dotProduct(v);
 	}
 	
-	@Override
 	public AAffineTransform toAffineTransform() {
-		return new AffineMN(this,getTranslationComponent());
-	}
-
-	@Override
-	public AMatrix getMatrixComponent() {
-		return this;
+		return new AffineMN(this,IdentityTranslation.create(rowCount()));
 	}
 	
-	@Override
 	public boolean isIdentity() {
 		int rc=this.rowCount();
 		int cc=this.columnCount();
@@ -317,16 +311,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	public boolean hassOrthonormalRows() {
 		return innerProduct(getTranspose()).epsilonEquals(IdentityMatrix.create(columnCount()));
-	}
-
-	@Override
-	public int inputDimensions() {
-		return columnCount();
-	}
-
-	@Override
-	public int outputDimensions() {
-		return rowCount();
 	}
 	
 	@Override
@@ -381,7 +365,7 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	
 	@Override
 	public AVector transform(AVector source) {
-		Vector v=Vector.createLength(outputDimensions());
+		Vector v=Vector.createLength(rowCount());
 		if (source instanceof Vector) {
 			transform((Vector)source,v);
 		} else {
@@ -390,9 +374,8 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		return v;
 	}
 	
-	@Override
 	public Vector transform(Vector source) {
-		Vector v=Vector.createLength(outputDimensions());
+		Vector v=Vector.createLength(rowCount());
 		transform(source,v);
 		return v;
 	}
@@ -706,14 +689,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 		add(-d);
 	}
 	
-	/**
-	 * Scales a matrix by a constant scalar factor.
-	 * @param m
-	 */
-	public final void scale(double factor) {
-		multiply(factor);
-	}
-	
 	@Override
 	public final void scaleAdd(double factor, double constant) {
 		multiply(factor);
@@ -950,15 +925,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 			b.unsafeSet(k, t);
 		}
 	}
-
-	
-	@Override
-	public void composeWith(ATransform a) {
-		if (a instanceof AMatrix) {
-			composeWith((AMatrix)a);
-		}
-		super.composeWith(a);
-	}
 	
 	public void composeWith(AMatrix a) {
 		AMatrix t=compose(a);
@@ -968,16 +934,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public boolean isView() {
 		return false;
-	}
-	
-	@Override
-	public AMatrix copyOfMatrix() {
-		return this.clone();
-	}
-	
-	@Override
-	public AVector copyOfTranslationVector() {
-		return Vectorz.createZeroVector(this.rowCount());
 	}
 	
 	public void addMultiple(AMatrix m, double factor) {
@@ -1138,12 +1094,6 @@ public abstract class AMatrix extends ALinearTransform implements IMatrix, Itera
 	@Override
 	public List<Double> asElementList() {
 		return asVector().asElementList();
-	}
-	
-	@Override
-	public ATransform compose(ATransform a) {
-		if (!(a instanceof AMatrix)) return super.compose(a);
-		return compose((AMatrix)a);
 	}
 	
 	/**
