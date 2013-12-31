@@ -984,6 +984,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	public boolean equals(AMatrix a) {
+		if (a==this) return true;
 		int rc = rowCount();
 		if (rc != a.rowCount())
 			return false;
