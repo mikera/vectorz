@@ -166,6 +166,17 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 			default: throw new IndexOutOfBoundsException("Row index = "+row);
 		}
 	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		if (row==0) {
+			dest[destOffset++]=m00;
+			dest[destOffset++]=m01;
+		} else {
+			dest[destOffset++]=m10;
+			dest[destOffset++]=m11;
+		}
+	}
 
 	@Override
 	public double get(int row, int column) {

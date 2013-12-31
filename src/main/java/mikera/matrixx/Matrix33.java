@@ -282,6 +282,23 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 	
 	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		if (row==0) {
+			dest[destOffset++]=m00;
+			dest[destOffset++]=m01;
+			dest[destOffset++]=m02;
+		} else if (row==1) {
+			dest[destOffset++]=m10;
+			dest[destOffset++]=m11;
+			dest[destOffset++]=m12;
+		} else {
+			dest[destOffset++]=m20;
+			dest[destOffset++]=m21;
+			dest[destOffset++]=m22;
+		}
+	}
+	
+	@Override
 	public Matrix33 inverse() {
 		double det=determinant();
 		if (det==0.0) throw new IllegalArgumentException("Matrix has zero determinant: not invertible");
