@@ -999,6 +999,27 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return true;
 	}
 	
+	/**
+	 * Tests if this matrix ios exactly equal to the transpose of another matrix
+	 * @param a
+	 * @return
+	 */
+	public boolean equalsTranspose(AMatrix a) {
+		int rc = rowCount();
+		if (rc != a.columnCount())
+			return false;
+		int cc = columnCount();
+		if (cc != a.rowCount())
+			return false;
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				if (unsafeGet(i, j) != a.unsafeGet(j, i))
+					return false;
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean equals(INDArray v) {
 		if (v instanceof AMatrix) return equals((AMatrix) v);
