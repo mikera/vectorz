@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.matrixx.impl.APrimitiveMatrix;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -7,7 +8,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class Matrix11 extends AMatrix {
+public final class Matrix11 extends APrimitiveMatrix {
 	private double value;
 	
 	public Matrix11() {

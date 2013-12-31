@@ -81,6 +81,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
+	@Override
 	public boolean isView() {
 		return false;
 	}

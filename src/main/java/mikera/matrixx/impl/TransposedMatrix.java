@@ -31,6 +31,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public int columnCount() {
 		return source.rowCount();
 	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return source.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return source.isMutable();
+	}
 
 	@Override
 	public double get(int row, int column) {

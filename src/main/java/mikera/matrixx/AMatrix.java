@@ -539,9 +539,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		setElements(values,0,values.length);
 	}
 
-	public boolean isFullyMutable() {
-		return true;
-	}
+	@Override
+	public abstract boolean isFullyMutable();
 	
 	@Override
 	public boolean isMutable() {

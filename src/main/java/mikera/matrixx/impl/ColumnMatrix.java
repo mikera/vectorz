@@ -34,6 +34,21 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return vector.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return vector.isMutable();
+	}
+	
+	@Override
+	public boolean isZero() {
+		return vector.isZero();
+	}
+	
+	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		if (col==0) {
 			vector.getElements(dest, destOffset);

@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.matrixx.impl.APrimitiveMatrix;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -12,7 +13,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
+public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTransform {
 	public double m00,m01,
 	              m10,m11;
 	

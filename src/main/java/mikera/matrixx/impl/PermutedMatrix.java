@@ -43,6 +43,16 @@ public class PermutedMatrix extends AMatrix{
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return source.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return source.isMutable();
+	}
+	
+	@Override
 	public boolean isZero() {
 		return source.isZero();
 	}

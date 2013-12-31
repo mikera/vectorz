@@ -29,6 +29,21 @@ public class RowMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return vector.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return vector.isMutable();
+	}
+	
+	@Override
+	public boolean isZero() {
+		return vector.isZero();
+	}
+	
+	@Override
 	public Vector toVector() {
 		return vector.toVector();
 	}

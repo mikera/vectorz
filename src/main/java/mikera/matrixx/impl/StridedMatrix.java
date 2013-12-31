@@ -29,7 +29,17 @@ public final class StridedMatrix extends AStridedMatrix {
 		double[] data = new double[rowCount * columnCount];
 		return new StridedMatrix(data, rowCount, columnCount, 0, columnCount, 1);
 	}
-
+	
+	@Override
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return true;
+	}
+	
 	@Override
 	public AStridedVector getRow(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
