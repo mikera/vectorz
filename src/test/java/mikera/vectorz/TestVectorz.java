@@ -59,6 +59,13 @@ public class TestVectorz {
 	public void testAxisVector() {
 		AVector v = Vectorz.axisVector(1, 3);
 		assertEquals(Vector.of(0,1,0),v);
+		
+		try {
+			v.set(0,2);
+			fail("set on AxisVector succeeded!!");
+		} catch (UnsupportedOperationException t) {
+			// OK
+		}
 	}
 	
 	@Test

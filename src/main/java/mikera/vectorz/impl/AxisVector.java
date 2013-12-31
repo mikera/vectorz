@@ -224,8 +224,7 @@ public class AxisVector extends ASparseVector {
 
 	@Override
 	public void set(int i, double value) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
 

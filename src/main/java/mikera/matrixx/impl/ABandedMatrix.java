@@ -46,6 +46,15 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		int lb=lowerBandwidth(), ub=upperBandwidth();
+		for (int i=-lb; i<=ub; i++) {
+			if (getBand(i).isMutable()) return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean isFullyMutable() {
 		return false;
 	}

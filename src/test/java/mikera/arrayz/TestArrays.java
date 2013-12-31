@@ -22,6 +22,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -248,6 +249,17 @@ public class TestArrays {
 		
 		INDArray b=a.ensureMutable();
 		assertTrue(mikera.vectorz.util.Testing.validateFullyMutable(b));
+		
+		if ((!a.isMutable())&&(a.elementCount()>0)) {
+			try {
+				a.asVector().set(0,Math.PI);
+				fail("Set on immutable array succeeded!");
+			} catch (UnsupportedOperationException t) {
+				// OK
+			} catch (VectorzException t) {
+				// Also OK
+			}
+		}
 	}
 
 	private void testHash(INDArray a) {

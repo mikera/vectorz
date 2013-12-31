@@ -57,6 +57,11 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	public int columnCount() {
 		return columns;
 	}
+	
+	@Override
+	public boolean isMutable() {
+		return (c00.isMutable())||(c01.isMutable())||(c10.isMutable())||(c11.isMutable());
+	}
 
 	@Override
 	public double get(int row, int column) {

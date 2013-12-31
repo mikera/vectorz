@@ -33,7 +33,7 @@ public class VectorIndexScalar extends AScalar {
 	
 	@Override
 	public boolean isMutable() {
-		return vector.isFullyMutable();
+		return vector.isMutable();
 	}
 	
 	@Override
