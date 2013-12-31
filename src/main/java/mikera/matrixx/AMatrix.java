@@ -469,10 +469,27 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return new MatrixColumnView(this, column);
 	}
 
+	/**
+	 * Creates a mutable vector that is the clone of a single row of this matrix
+	 * @param row
+	 * @return
+	 */
 	public AVector cloneRow(int row) {
 		int cc = columnCount();
 		Vector v = Vector.createLength(cc);
 		copyRowTo(row,v.data,0);
+		return v;
+	}
+	
+	/**
+	 * Creates a mutable vector that is the clone of a single column of this matrix
+	 * @param row
+	 * @return
+	 */
+	public AVector cloneColumn(int row) {
+		int rc = rowCount();
+		Vector v = Vector.createLength(rc);
+		copyColumnTo(row,v.data,0);
 		return v;
 	}
 
