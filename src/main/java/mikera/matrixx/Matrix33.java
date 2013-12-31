@@ -248,12 +248,7 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 		double tz=((m20*s.x)+(m21*s.y)+(m22*s.z));
 		s.x=tx; s.y=ty; s.z=tz;
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return true;
-	}
-	
+		
 	@Override
 	public boolean isSymmetric() {
 		return (m01==m10)&&(m20==m02)&&(m21==m12);

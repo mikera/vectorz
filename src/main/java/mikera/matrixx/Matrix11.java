@@ -56,11 +56,6 @@ public final class Matrix11 extends APrimitiveMatrix {
 	}
 	
 	@Override
-	public boolean isSquare() {
-		return true;
-	}
-	
-	@Override
 	public boolean isDiagonal() {
 		return true;
 	}

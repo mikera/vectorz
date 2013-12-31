@@ -267,12 +267,7 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 		double ty=((m10*s.x)+(m11*s.y));
 		s.x=tx; s.y=ty;
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return true;
-	}
-	
+		
 	@Override
 	public boolean isSymmetric() {
 		return m01==m10;
