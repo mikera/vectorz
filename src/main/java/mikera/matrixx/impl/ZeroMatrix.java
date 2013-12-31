@@ -33,6 +33,11 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
+	public boolean isSquare() {
+		return inputDimensions==outputDimensions;
+	}
+	
+	@Override
 	public boolean isMutable() {
 		return false;
 	}
@@ -60,6 +65,16 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	@Override
 	public boolean isBoolean() {
 		return true;
+	}
+	
+	@Override
+	public int upperBandwidthLimit() {
+		return 0;
+	}
+	
+	@Override
+	public int lowerBandwidthLimit() {
+		return 0;
 	}
 	
 	@Override

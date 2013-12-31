@@ -192,6 +192,16 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	}
 	
 	@Override
+	public void add(AVector v) {
+		AVector v0=v.subVector(0, columnSplit);
+		AVector v1=v.subVector(columnSplit,columns-columnSplit);
+		c00.add(v0);
+		c01.add(v1);
+		c10.add(v0);
+		c11.add(v1);
+	}
+	
+	@Override
 	public AVector getRow(int row) {
 		if (row<rowSplit) {
 			return c00.getRow(row).join(c01.getRow(row));
