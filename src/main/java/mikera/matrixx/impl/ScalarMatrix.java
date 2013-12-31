@@ -31,7 +31,7 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public boolean isMutable() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -54,11 +54,6 @@ public class ScalarMatrix extends ADiagonalMatrix {
 
 	public static AMatrix create(int dimensions, double scale) {
 		return new ScalarMatrix(dimensions, scale);
-	}
-	
-	@Override
-	public void multiply(double factor) {
-		scale*=factor;
 	}
 	
 	@Override
