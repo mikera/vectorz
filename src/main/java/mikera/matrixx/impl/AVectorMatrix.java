@@ -120,10 +120,9 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}
 	
 	@Override
-	public final void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int row, double[] dest, int destOffset) {
 		getRow(row).getElements(dest, destOffset);
 	}
-	
 	
 	@Override
 	public final void getElements(double[] dest, int destOffset) {

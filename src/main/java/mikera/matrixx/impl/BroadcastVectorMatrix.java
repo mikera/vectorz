@@ -51,6 +51,11 @@ public final class BroadcastVectorMatrix extends AVectorMatrix<AVector> {
 			dest[destOffset+i]=v;
 		}
 	}
+	
+	@Override
+	public final void copyRowTo(int row, double[] dest, int destOffset) {
+		vector.getElements(dest,destOffset);
+	}
 
 	@Override
 	public int rowCount() {
