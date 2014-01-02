@@ -1,6 +1,9 @@
 package mikera.matrixx.impl;
 
+import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract base class for matrices wrapping  a dense (rows*cols) subset of a double[] array
@@ -53,6 +56,21 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix {
 	
 	protected int index(int row, int col) {
 		return getArrayOffset()+(row*cols)+col;
+	}
+	
+	@Override
+	public void transform(AVector source, AVector dest) {
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
+		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<rows; i++) {
+			dest.unsafeSet(i,source.dotProduct(data, offset+ i*cols));
+		}
 	}
 
 }
