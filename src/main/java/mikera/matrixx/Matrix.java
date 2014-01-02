@@ -267,13 +267,8 @@ public final class Matrix extends ADenseArrayMatrix {
 		}
 		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
-		int index=0;
 		for (int i=0; i<rows; i++) {
-			double acc=0.0;
-			for (int j=0; j<cols; j++) {
-				acc+=data[index++]*source.unsafeGet(j);
-			}
-			dest.unsafeSet(i,acc);
+			dest.unsafeSet(i,source.dotProduct(data, i*cols));
 		}
 	}
 	
