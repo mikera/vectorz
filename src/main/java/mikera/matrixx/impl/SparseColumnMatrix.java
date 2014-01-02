@@ -97,7 +97,36 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 	public void unsafeSet(int row, int column, double value) {
 		cols[column].set(row,value);
 	}
+	
+	@Override
+	public long nonZeroCount() {
+		int cc=columnCount;
+		long result=0;
+		for (int i=0; i<cc; i++) {
+			result+=cols[i].nonZeroCount();
+		}
+		return result;
+	}	
+	
+	@Override
+	public double elementSum() {
+		int cc=columnCount;
+		double result=0;
+		for (int i=0; i<cc; i++) {
+			result+=cols[i].elementSum();
+		}
+		return result;
+	}	
 
+	@Override
+	public double elementSquaredSum() {
+		int cc=columnCount;
+		double result=0;
+		for (int i=0; i<cc; i++) {
+			result+=cols[i].elementSquaredSum();
+		}
+		return result;
+	}	
 
 	@Override
 	public SparseColumnMatrix exactClone() {
