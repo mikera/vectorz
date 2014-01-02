@@ -113,6 +113,11 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public void addAt(int i, int j, double d) {
+		cols[j].addAt(i, d);
+	}
+	
+	@Override
 	public AVector getColumn(int i) {
 		return cols[i];
 	}

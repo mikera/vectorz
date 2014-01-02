@@ -172,6 +172,11 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	}
 	
 	@Override
+	public void addAt(int i, int j, double d) {
+		rows[i].addAt(j, d);
+	}
+	
+	@Override
 	public void transform(AVector source, AVector dest) {
 		for (int i=0; i<rowCount; i++) {
 			dest.unsafeSet(i,getRow(i).dotProduct(source));
