@@ -64,7 +64,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override
 	public boolean isFullyMutable() {
-		return false;
+		return (dimensions<=1)&&(getLeadingDiagonal().isFullyMutable());
 	}
 	
 	@Override
