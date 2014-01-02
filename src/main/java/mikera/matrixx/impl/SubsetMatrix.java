@@ -13,7 +13,7 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class SubsetMatrix extends ABooleanMatrix implements ISparse {
+public final class SubsetMatrix extends ABooleanMatrix implements ISparse, IFastRows {
 	private int inputDims;
 	private Index components;
 

@@ -15,7 +15,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public class IdentityMatrix extends ADiagonalMatrix {
+public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastColumns {
 	private static final int INSTANCE_COUNT=6;
 	
 	private IdentityMatrix(int dimensions) {

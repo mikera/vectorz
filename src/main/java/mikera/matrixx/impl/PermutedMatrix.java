@@ -12,7 +12,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public class PermutedMatrix extends AMatrix{
+public class PermutedMatrix extends AMatrix {
 	private final AMatrix source;
 	private final Index rowPermutations;
 	private final Index columnPermutations;

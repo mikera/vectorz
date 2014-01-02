@@ -13,7 +13,7 @@ import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
-public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
+public final class PermutationMatrix extends ABooleanMatrix implements IFastRows, IFastColumns, ISparse  {
 	private final Index perm;
 	private final int size;
 	
