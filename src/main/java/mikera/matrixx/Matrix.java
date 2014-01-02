@@ -459,7 +459,9 @@ public final class Matrix extends ADenseArrayMatrix {
 		if (m instanceof Matrix) {add((Matrix)m); return;}
 		int rc=rowCount();
 		int cc=columnCount();
-		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) {
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+		}
 
 		int di=0;
 		for (int i=0; i<rc; i++) {
