@@ -8,6 +8,12 @@ import mikera.vectorz.Op;
 import mikera.vectorz.impl.AMatrixViewVector;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * Specialised class for viewing a matrix as a flattened vector
+ * 
+ * @author Mike
+ *
+ */
 @SuppressWarnings("serial")
 public class MatrixAsVector extends AMatrixViewVector {
 	protected final int rows;

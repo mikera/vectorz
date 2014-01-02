@@ -59,6 +59,11 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public double magnitudeSquared() {
+		return length*value*value;
+	}
+	
+	@Override
 	public double dotProduct(AVector v) {
 		return value*v.elementSum();
 	}
