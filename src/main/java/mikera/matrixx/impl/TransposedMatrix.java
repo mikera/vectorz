@@ -153,8 +153,19 @@ public class TransposedMatrix extends ADelegatedMatrix {
 		return source.innerProduct(s);
 	}
 
+	@Override
 	public Matrix transposeInnerProduct(Matrix s) {
 		return source.innerProduct(s);
+	}
+	
+	@Override
+	public AMatrix innerProduct(AMatrix s) {
+		return source.transposeInnerProduct(s);
+	}
+
+	@Override
+	public Matrix innerProduct(Matrix s) {
+		return source.transposeInnerProduct(s);
 	}
 
 	@Override
