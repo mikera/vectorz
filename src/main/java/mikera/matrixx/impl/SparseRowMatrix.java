@@ -7,7 +7,11 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 /**
- * Matrix stored as a collection of sparse row vectors
+ * Matrix stored as a collection of sparse row vectors.
+ * 
+ * This format is especially efficient for:
+ * - innerProduct() with another matrix
+ * - access via getRow() operation
  * 
  * @author Mike
  *
@@ -64,18 +68,16 @@ public class SparseRowMatrix extends VectorMatrixMN implements ISparse {
 	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof SparseColumnMatrix) {
 			return innerProduct((SparseColumnMatrix)a);
-		} else if (a instanceof Matrix) {
-			int cc=a.columnCount();
-			Matrix r=Matrix.create(rowCount, cc);
-			
-			for (int i=0; i<rowCount; i++) {
-				for (int j=0; j<cc; j++) {
-					r.unsafeSet(i,j,rows[i].dotProduct(a.getColumn(j)));
-				}
-			}
-			return r;			
 		}
-		return super.innerProduct(a);
+		int cc=a.columnCount();
+		Matrix r=Matrix.create(rowCount, cc);
+		
+		for (int i=0; i<rowCount; i++) {
+			for (int j=0; j<cc; j++) {
+				r.unsafeSet(i,j,rows[i].dotProduct(a.getColumn(j)));
+			}
+		}
+		return r;			
 	}
 	
 	public AMatrix innerProduct(SparseColumnMatrix a) {
