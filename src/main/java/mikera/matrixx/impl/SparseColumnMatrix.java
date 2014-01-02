@@ -71,7 +71,8 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public boolean isMutable() {
-		for (AVector v:cols) {
+		for (int i=0; i<columnCount; i++) {
+			AVector v=cols[i];
 			if (v.isMutable()) return true;
 		}
 		return false;
@@ -79,8 +80,18 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public boolean isFullyMutable() {
-		for (AVector v:cols) {
+		for (int i=0; i<columnCount; i++) {
+			AVector v=cols[i];
 			if (!v.isFullyMutable()) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		for (int i=0; i<columnCount; i++) {
+			AVector v=cols[i];
+			if (!v.isZero()) return false;
 		}
 		return true;
 	}
