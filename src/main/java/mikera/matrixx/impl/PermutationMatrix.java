@@ -97,6 +97,11 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return true;
+	}
+	
+	@Override
 	public boolean isUpperTriangular() {
 		return isIdentity();
 	}
