@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 
 /**
  * Matrix stored as a collection of sparse row vectors
@@ -22,6 +23,15 @@ public class SparseRowMatrix extends VectorMatrixMN implements ISparse {
 
 	protected SparseRowMatrix(AVector[] rows, int rowCount, int columnCount) {
 		super(rows,rowCount,columnCount);
+	}
+	
+	public static SparseRowMatrix create(AMatrix source) {
+		int rc=source.rowCount();
+		AVector[] rows=new AVector[rc];
+		for (int i=0; i<rc; i++) {
+			rows[i]=Vectorz.createSparse(source.getRow(i));
+		}
+		return new SparseRowMatrix(rows);
 	}
 	
 	@Override

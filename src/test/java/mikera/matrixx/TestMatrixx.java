@@ -732,6 +732,7 @@ public class TestMatrixx {
 											,Matrixx.createScaleMatrix(1, 3)));
 		
 		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
+		doGenericTests(SparseRowMatrix.create(Matrixx.createRandomSquareMatrix(3)));
 		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
 		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(4)));
 		
