@@ -60,5 +60,7 @@ public class BitVectorTest {
 		assertEquals(v,v2);
 		assertEquals(2.0,Vectorz.maxValue(v),0.0);
 		assertEquals(0.0,Vectorz.minValue(v),0.0);
+		
+		assertEquals(b.dotProduct(b),b.elementSquaredSum(),0.0);
 	}
 }
