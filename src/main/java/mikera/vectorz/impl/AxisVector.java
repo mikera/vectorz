@@ -105,23 +105,23 @@ public class AxisVector extends ASparseVector {
 	@Override 
 	public double dotProduct(AVector v) {
 		if (v.length()!=length) throw new IllegalArgumentException("Mismatched vector sizes");
-		return v.unsafeGet(axis);
+		return v.unsafeGet(getAxis());
 	}
 	
 	@Override 
 	public double dotProduct(double[] data, int offset) {
-		return data[offset+axis];
+		return data[offset+getAxis()];
 	}
 	
 	@Override 
 	public double dotProduct(Vector v) {
 		assert(length==v.length());
-		return v.data[axis];
+		return v.data[getAxis()];
 	}
 	
 	public double dotProduct(Vector3 v) {
 		assert(length==3);
-		switch (axis) {
+		switch (getAxis()) {
 			case 0: return v.x;
 			case 1: return v.y;
 			case 2: return v.z;
@@ -131,7 +131,7 @@ public class AxisVector extends ASparseVector {
 	
 	public double dotProduct(Vector2 v) {
 		assert(length==2);
-		switch (axis) {
+		switch (getAxis()) {
 			case 0: return v.x;
 			case 1: return v.y;
 			default: throw new IndexOutOfBoundsException();
@@ -141,18 +141,18 @@ public class AxisVector extends ASparseVector {
 	@Override
 	public double get(int i) {
 		if((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
-		return (i==axis)?1.0:0.0;
+		return (i==getAxis())?1.0:0.0;
 	}
 	
 	@Override
 	public double unsafeGet(int i) {
-		return (i==axis)?1.0:0.0;
+		return (i==getAxis())?1.0:0.0;
 	}
 	
 	@Override
 	public final ImmutableScalar slice(int i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
-		if (i==axis) return ImmutableScalar.ONE;
+		if (i==getAxis()) return ImmutableScalar.ONE;
 		return ImmutableScalar.ZERO;
 	}
 	
@@ -164,7 +164,7 @@ public class AxisVector extends ASparseVector {
 	@Override
 	public Vector toVector() {
 		Vector v=Vector.createLength(length);
-		v.data[axis]=1.0;
+		v.data[getAxis()]=1.0;
 		return v;
 	}
 	
@@ -175,8 +175,8 @@ public class AxisVector extends ASparseVector {
 		}
 		if (length==this.length) return this;
 		
-		if ((start<=axis)&&(start+length>axis)) {
-			return AxisVector.create(axis-start,length);
+		if ((start<=getAxis())&&(start+length>getAxis())) {
+			return AxisVector.create(getAxis()-start,length);
 		} else {
 			return Vectorz.createZeroVector(length);
 		}
@@ -196,7 +196,7 @@ public class AxisVector extends ASparseVector {
 	@Override
 	public void validate() {
 		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
-		if ((axis<0)||(axis>length)) throw new VectorzException("Axis index out of bounds");
+		if ((getAxis()<0)||(getAxis()>length)) throw new VectorzException("Axis index out of bounds");
 		super.validate();
 	}
 
@@ -214,17 +214,21 @@ public class AxisVector extends ASparseVector {
 
 	@Override
 	public Index nonSparseIndexes() {
-		return Index.of(axis);
+		return Index.of(getAxis());
 	}
 
 	@Override
 	public boolean includesIndex(int i) {
-		return (i==axis);
+		return (i==getAxis());
 	}
 
 	@Override
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+
+	public int getAxis() {
+		return axis;
 	}
 
 
