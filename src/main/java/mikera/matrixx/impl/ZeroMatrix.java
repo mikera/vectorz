@@ -7,7 +7,6 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
-import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -234,7 +233,12 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		return RepeatedElementVector.create(inputDimensions, 0.0);
+		return ZeroVector.create(inputDimensions);
+	}
+	
+	@Override
+	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		return ZeroMatrix.create(rows, cols);
 	}
 	
 	@Override
