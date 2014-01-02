@@ -3,7 +3,7 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
-public class UnmodifiableVector extends ADerivedVector {
+public class UnmodifiableVector extends BaseDerivedVector {
 	private static final long serialVersionUID = 2709404707262677811L;
 
 	public UnmodifiableVector(AVector source) {

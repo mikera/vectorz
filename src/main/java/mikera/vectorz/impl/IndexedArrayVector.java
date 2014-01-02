@@ -8,7 +8,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class IndexedArrayVector extends AIndexedVector {
+public final class IndexedArrayVector extends BasedIndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
 	private final double[] data;
