@@ -83,15 +83,27 @@ public class Matrixx {
 	}
 	
 	/**
-	 * Creates a sparse matrix from the given matrix, ignoring zeros
+	 * Creates a SparseColumnMatrix from the given matrix, ignoring zeros
 	 */
-	public static AMatrix createSparseColumns(AMatrix m) {
+	public static SparseColumnMatrix createSparseColumns(AMatrix m) {
 		int cc = m.columnCount();
 		AVector[] cols = new AVector[cc];
 		for (int i = 0; i < cc; i++) {
 			cols[i] = Vectorz.createSparse(m.getColumn(i));
 		}
 		return SparseColumnMatrix.wrap(cols);
+	}
+	
+	/**
+	 * Creates a SparseRowMatrix matrix from the given matrix, ignoring zeros
+	 */
+	public static SparseRowMatrix createSparseRows(AMatrix m) {
+		int rc = m.rowCount();
+		AVector[] rows = new AVector[rc];
+		for (int i = 0; i < rc; i++) {
+			rows[i] = Vectorz.createSparse(m.getRow(i));
+		}
+		return SparseRowMatrix.wrap(rows);
 	}
 
 	/**
