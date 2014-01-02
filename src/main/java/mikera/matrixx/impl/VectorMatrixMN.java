@@ -30,13 +30,17 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 		}
 	}
 	
-	private VectorMatrixMN(AVector[] rows, int rowCount, int columnCount) {
+	protected VectorMatrixMN(AVector[] rows, int rowCount, int columnCount) {
 		if (rows.length<rowCount) throw new IllegalArgumentException("Insufficient rows provided!");
 		this.rows=rows;
 		this.rowCount=rowCount;
 		this.columnCount=columnCount;
 	}
 	
+	protected VectorMatrixMN(AVector[] rows) {
+		this(rows,rows.length,rows[0].length());
+	}
+
 	/**
 	 * Create a matrix from a list of rows
 	 * 

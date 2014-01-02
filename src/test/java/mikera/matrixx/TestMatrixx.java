@@ -18,6 +18,8 @@ import mikera.matrixx.impl.PermutedMatrix;
 import mikera.matrixx.impl.QuadtreeMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.SparseColumnMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
@@ -30,6 +32,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.ops.Constant;
 
 import org.junit.Test;
@@ -727,6 +730,9 @@ public class TestMatrixx {
 											,ZeroMatrix.create(2, 1)
 											,ZeroMatrix.create(1, 2)
 											,Matrixx.createScaleMatrix(1, 3)));
+		
+		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
+		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
 		
 		// Immutable matrices
 		doGenericTests(new ImmutableMatrix(Matrixx.createRandomMatrix(4, 5)));

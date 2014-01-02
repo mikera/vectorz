@@ -253,6 +253,7 @@ public class TestArrays {
 		if ((!a.isMutable())&&(a.elementCount()>0)) {
 			try {
 				a.asVector().set(0,Math.PI);
+				// System.out.println(a.getClass());
 				fail("Set on immutable array succeeded!");
 			} catch (UnsupportedOperationException t) {
 				// OK

@@ -46,7 +46,7 @@ public class MatrixIndexScalar extends AScalar {
 	
 	@Override
 	public boolean isMutable() {
-		return matrix.isFullyMutable();
+		return matrix.isMutable();
 	}
 	
 	@Override

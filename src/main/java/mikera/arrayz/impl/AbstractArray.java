@@ -517,6 +517,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return result;
 	}
 	
+	public double density() {
+		return ((double)nonZeroCount())/elementCount();
+	}
+	
 	@Override
 	public double elementSum() {
 		if (dimensionality()==0) {
