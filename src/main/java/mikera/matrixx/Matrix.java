@@ -404,6 +404,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	public double unsafeGet(int row, int column) {
 		return data[(row*cols)+column];
 	}
+	
+	@Override
+	public void addAt(int i, int j, double d) {
+		data[(i*cols)+j]+=d;
+	}
 
 	@Override
 	public void set(int row, int column, double value) {
