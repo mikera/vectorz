@@ -5,7 +5,7 @@ import mikera.vectorz.impl.ABitVector;
 /**
  * Vector of bits - constrained to 0.0 / 1.0 values
  * 
- * Intended for compact representation/storage of binary vectors
+ * Intended for compact representation/storage of boolean vectors
  * 
  * @author Mike
  */
