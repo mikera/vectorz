@@ -73,6 +73,24 @@ public final class BitVector extends ABitVector {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isView() {
+		return false;
+	}
+	
+	@Override
+	public boolean isZero() {
+		for (int i=0; i<data.length; i++) {
+			if (data[i]!=0) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public double elementSum() {
 		double result=0.0;
 		for (int i=0; i<data.length; i++) {
@@ -101,16 +119,6 @@ public final class BitVector extends ABitVector {
 		for (int i=0; i<len; i++) {
 			data[i+offset]=unsafeGet(i);
 		}
-	}
-	
-	@Override
-	public boolean isFullyMutable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isView() {
-		return false;
 	}
 
 	@Override
