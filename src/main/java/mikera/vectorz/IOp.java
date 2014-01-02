@@ -2,6 +2,12 @@ package mikera.vectorz;
 
 import mikera.transformz.ATransform;
 
+/**
+ * Interface for a scalar operator that transforms a double value to another double value
+ * 
+ * @author Mike
+ *
+ */
 public interface IOp {
 	/**
 	 * Applies the operator to a single value, returning the result
