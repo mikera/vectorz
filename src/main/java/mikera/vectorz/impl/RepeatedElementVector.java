@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 
@@ -54,6 +55,16 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	@Override
 	public double elementSum() {
 		return length*value;
+	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		return value*v.elementSum();
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return value*DoubleArrays.elementSum(data, offset, length);
 	}
 	
 	@Override
