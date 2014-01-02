@@ -307,7 +307,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
 	}
 	
-	public boolean hassOrthonormalRows() {
+	public boolean hasOrthonormalRows() {
 		return innerProduct(getTranspose()).epsilonEquals(IdentityMatrix.create(columnCount()));
 	}
 	

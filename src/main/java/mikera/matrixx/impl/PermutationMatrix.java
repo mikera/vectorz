@@ -87,7 +87,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	}
 	
 	@Override
-	public boolean hassOrthonormalRows() {
+	public boolean hasOrthonormalRows() {
 		return true;
 	}
 	
