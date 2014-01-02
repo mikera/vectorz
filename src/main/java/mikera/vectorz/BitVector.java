@@ -5,6 +5,8 @@ import mikera.vectorz.impl.ABitVector;
 /**
  * Vector of bits - constrained to 0.0 / 1.0 values
  * 
+ * Setting the BitVector will set to 1.0 for any positive values (true) and 0.0 otherwise (false)
+ * 
  * Intended for compact representation/storage of boolean vectors
  * 
  * @author Mike
