@@ -10,7 +10,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public abstract class ADenseArrayMatrix extends AStridedMatrix {
+public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows {
 
 	protected ADenseArrayMatrix(double[] data, int rows, int cols) {
 		super(data, rows, cols);
