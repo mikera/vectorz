@@ -16,10 +16,10 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class VectorMatrixMN extends AVectorMatrix<AVector> {
-	private int rowCount;	
-	private final int columnCount;	
-	private AVector[] rows;
+public class VectorMatrixMN extends AVectorMatrix<AVector> {
+	protected int rowCount;	
+	protected final int columnCount;	
+	protected AVector[] rows;
 	
 	public VectorMatrixMN(int rowCount, int columnCount) {
 		this.rows=new AVector[rowCount];
