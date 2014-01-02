@@ -7,7 +7,7 @@ import mikera.vectorz.util.ErrorMessages;
 
 
 /**
- * A mutable vector that always has a single repeated component.
+ * A vector that always has a single repeated component.
  * Setting any component will therefore set all components.
  * @author Mike
  *
