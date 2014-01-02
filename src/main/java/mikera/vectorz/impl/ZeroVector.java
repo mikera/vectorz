@@ -21,6 +21,8 @@ public final class ZeroVector extends ASparseVector {
 	private static final int ZERO_VECTOR_CACHE=30;
 	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE];
 	
+	private static ZeroVector last=new ZeroVector(ZERO_VECTOR_CACHE);
+	
 	static {
 		for (int i=0; i<ZERO_VECTOR_CACHE; i++) {
 			ZERO_VECTORS[i]=new ZeroVector(i);
@@ -34,7 +36,9 @@ public final class ZeroVector extends ASparseVector {
 	public static ZeroVector create(int dimensions) {
 		ZeroVector zv=tryCreate(dimensions);
 		if (zv!=null) return zv;
-		return new ZeroVector(dimensions);
+		zv= new ZeroVector(dimensions);
+		last=zv;
+		return zv;
 	}
 	
 	private static ZeroVector tryCreate(int dimensions) {
@@ -42,6 +46,7 @@ public final class ZeroVector extends ASparseVector {
 		if (dimensions<ZERO_VECTOR_CACHE) {
 			return ZERO_VECTORS[dimensions];
 		}
+		if (dimensions==last.length) return last;
 		return null;
 	}
 
