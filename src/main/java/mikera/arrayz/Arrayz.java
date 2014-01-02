@@ -95,7 +95,7 @@ public class Arrayz {
 		case 0:
 			return Scalar.create(a.get());
 		case 1:
-			return Vector.create(a.toDoubleArray());
+			return Vector.wrap(a.toDoubleArray());
 		case 2:
 			return Matrix.wrap(a.getShape(0), a.getShape(1), a.toDoubleArray());
 		default:
