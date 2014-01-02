@@ -733,6 +733,7 @@ public class TestMatrixx {
 		
 		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
 		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
+		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(4)));
 		
 		// Immutable matrices
 		doGenericTests(new ImmutableMatrix(Matrixx.createRandomMatrix(4, 5)));

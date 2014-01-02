@@ -5,6 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -27,6 +28,24 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 		cols=columns;
 		this.rowCount=rowCount;
 		this.columnCount=columnCount;
+	}
+	
+	public static AMatrix create(AVector... columns) {
+		int cc=columns.length;
+		int rc=columns[0].length();
+		for (int i=1; i<cc; i++) {
+			if (columns[i].length()!=rc) throw new IllegalArgumentException("Mismatched row count at column: "+i);
+		}
+		return new SparseColumnMatrix(columns.clone());
+	}
+	
+	public static AMatrix create(AMatrix source) {
+		int cc=source.columnCount();
+		AVector[] columns=new AVector[cc];
+		for (int i=0; i<cc; i++) {
+			columns[i]=Vectorz.createSparse(source.getColumn(i));
+		}
+		return new SparseColumnMatrix(columns.clone());
 	}
 
 	@Override
@@ -148,15 +167,6 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 		for (int i=0; i<columnCount; i++) {
 			cols[i].applyOp(op);
 		}
-	}
-
-	public static AMatrix create(AVector... columns) {
-		int cc=columns.length;
-		int rc=columns[0].length();
-		for (int i=1; i<cc; i++) {
-			if (columns[i].length()!=rc) throw new IllegalArgumentException("Mismatched row count at column: "+i);
-		}
-		return new SparseColumnMatrix(columns.clone());
 	}
 	
 	@Override
