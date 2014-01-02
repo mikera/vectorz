@@ -6,6 +6,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Matrix stored as a collection of sparse column vectors
@@ -165,6 +166,14 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 			cols[i].getElements(m.data, rowCount*i);
 		}
 		return m;
+	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+		for (int i=0; i<columnCount; i++) {
+			if (cols[i].length()!=rowCount) throw new VectorzException("Invalid row count at column: "+i);
+		}
 	}
 
 }
