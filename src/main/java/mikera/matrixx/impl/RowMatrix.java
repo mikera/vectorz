@@ -101,6 +101,12 @@ public class RowMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void addAt(int i, int j, double d) {
+		assert(i==0);
+		vector.addAt(j,d);
+	}
+	
+	@Override
 	public ColumnMatrix getTranspose() {
 		return new ColumnMatrix(vector);
 	}
