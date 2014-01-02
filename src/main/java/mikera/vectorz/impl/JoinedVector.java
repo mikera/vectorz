@@ -327,6 +327,11 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public double magnitudeSquared() {
+		return left.magnitudeSquared()+right.magnitudeSquared();
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return left.nonZeroCount()+right.nonZeroCount();
 	}
