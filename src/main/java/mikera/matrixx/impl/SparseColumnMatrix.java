@@ -178,6 +178,20 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 		return m;
 	}
 	
+	@Override 
+	public AMatrix transposeInnerProduct(AMatrix a) {
+		int rc=this.columnCount(); // i.e. rowCount of transpose
+		int cc=a.columnCount();
+		Matrix r=Matrix.create(rc, cc);
+		
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				r.unsafeSet(i,j,cols[i].dotProduct(a.getColumn(j)));
+			}
+		}
+		return r;		
+	}
+	
 	@Override
 	public void validate() {
 		super.validate();
