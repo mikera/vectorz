@@ -40,7 +40,16 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 		for (int i=1; i<cc; i++) {
 			if (columns[i].length()!=rc) throw new IllegalArgumentException("Mismatched row count at column: "+i);
 		}
-		return new SparseColumnMatrix(columns.clone());
+		return new SparseColumnMatrix(columns.clone(),rc,cc);
+	}
+	
+	public static AMatrix wrap(AVector... columns) {
+		int cc=columns.length;
+		int rc=columns[0].length();
+		for (int i=1; i<cc; i++) {
+			if (columns[i].length()!=rc) throw new IllegalArgumentException("Mismatched row count at column: "+i);
+		}
+		return new SparseColumnMatrix(columns,rc,cc);
 	}
 	
 	public static AMatrix create(AMatrix source) {

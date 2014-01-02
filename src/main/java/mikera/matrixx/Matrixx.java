@@ -13,6 +13,7 @@ import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -79,6 +80,18 @@ public class Matrixx {
 			rows[i] = Vectorz.createSparse(m.getRow(i));
 		}
 		return SparseRowMatrix.wrap(rows);
+	}
+	
+	/**
+	 * Creates a sparse matrix from the given matrix, ignoring zeros
+	 */
+	public static AMatrix createSparseColumns(AMatrix m) {
+		int cc = m.columnCount();
+		AVector[] cols = new AVector[cc];
+		for (int i = 0; i < cc; i++) {
+			cols[i] = Vectorz.createSparse(m.getColumn(i));
+		}
+		return SparseColumnMatrix.wrap(cols);
 	}
 
 	/**
