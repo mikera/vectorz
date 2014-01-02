@@ -55,6 +55,11 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public void copyColumnTo(int i, double[] data, int offset) {
+		cols[i].getElements(data, offset);
+	}
+	
+	@Override
 	public double unsafeGet(int row, int column) {
 		return cols[column].get(row);
 	}
