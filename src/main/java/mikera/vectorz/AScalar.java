@@ -260,7 +260,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		set(op.apply(get()));
 	}
 	

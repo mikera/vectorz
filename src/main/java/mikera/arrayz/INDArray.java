@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 
@@ -368,7 +368,7 @@ public interface INDArray extends Cloneable {
 	 * Applies a unary operator to all elements of the array (in-place)
 	 * @param op
 	 */
-	void applyOp(IOp op);
+	void applyOp(IOperator op);
 	
 	/**
 	 * Returns true if the two arrays are exactly equal in value and shape

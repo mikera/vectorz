@@ -11,7 +11,7 @@ import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -281,7 +281,7 @@ public final class NDArray extends BaseNDArray {
 	}
 
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		applyOp((Op)op);
 	}
 	

@@ -13,7 +13,7 @@ import mikera.arrayz.NDArray;
 import mikera.matrixx.Matrix;
 import mikera.util.Maths;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Tools;
@@ -116,7 +116,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		int n=sliceCount();
 		for (int i=0; i<n; i++) {
 			slice(i).applyOp(op);

@@ -8,7 +8,7 @@ import mikera.transformz.ATransform;
  * @author Mike
  *
  */
-public interface IOp {
+public interface IOperator {
 	/**
 	 * Applies the operator to a single value, returning the result
 	 * @param x

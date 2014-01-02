@@ -8,7 +8,7 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.IntArrays;
@@ -239,7 +239,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		for (INDArray a:slices) {
 			a.applyOp(op);
 		}

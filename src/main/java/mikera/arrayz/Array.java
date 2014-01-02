@@ -10,7 +10,7 @@ import mikera.arrayz.impl.ImmutableArray;
 import mikera.indexz.Index;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
@@ -259,7 +259,7 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		if (op instanceof Op) {
 			((Op) op).applyTo(data);
 		} else {

@@ -30,7 +30,7 @@ import mikera.transformz.impl.IdentityTranslation;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -1299,7 +1299,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		if (op instanceof Op) {applyOp((Op)op); return;}
 		int rc = rowCount();
 		int cc = columnCount();

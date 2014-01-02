@@ -2,7 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 
 /**
@@ -59,7 +59,7 @@ abstract class ADelegatedMatrix extends AMatrix {
 	}
 	
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		source.applyOp(op);
 	}
 	

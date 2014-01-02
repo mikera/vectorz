@@ -1412,7 +1412,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		if (op instanceof Op) {
 			applyOp((Op) op);
 		}

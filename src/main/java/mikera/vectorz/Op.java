@@ -17,7 +17,7 @@ import mikera.vectorz.ops.Sum;
  * 
  * @author Mike
  */
-public abstract class Op implements IOp {
+public abstract class Op implements IOperator {
 	
 	
 
