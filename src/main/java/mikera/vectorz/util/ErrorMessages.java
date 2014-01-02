@@ -106,6 +106,10 @@ public class ErrorMessages {
 		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice;
 	}
 
+	public static String invalidSlice(INDArray a, int dimension, int slice) {
+		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice +" on dimension "+dimension;
+	}
+	
 	public static String noSlices(INDArray a) {
 		return "Cannot access slices of 0-D "+a.getClass();
 	}
@@ -113,5 +117,6 @@ public class ErrorMessages {
 	public static String insufficientElements(int length) {
 		return "Insufficient elements "+length;
 	}
+
 
 }

@@ -11,7 +11,7 @@ import mikera.vectorz.util.ErrorMessages;
  * Matrix class that wraps a vector as a 1-columns matrix
  * @author Mike
  */
-public class ColumnMatrix extends AMatrix {
+public class ColumnMatrix extends AMatrix implements IFastColumns {
 	private final AVector vector;
 	
 	public ColumnMatrix(AVector v) {
@@ -118,6 +118,12 @@ public class ColumnMatrix extends AMatrix {
 	@Override
 	public RowMatrix getTranspose() {
 		return new RowMatrix(vector);
+	}
+	
+	@Override
+	public AVector getColumn(int i) {
+		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1,i));
+		return vector;
 	}
 	
 	@Override

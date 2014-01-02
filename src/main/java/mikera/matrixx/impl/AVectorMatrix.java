@@ -18,7 +18,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
+public abstract class AVectorMatrix<T extends AVector> extends AMatrix implements IFastRows {
 	/* ================================
 	 * Abstract interface
 	 */
