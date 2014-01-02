@@ -11,9 +11,9 @@ import mikera.vectorz.AVector;
 public abstract class AAffineTransform extends ATransform {
 	// ===========================================
 	// Abstract interface
-	public abstract AMatrix getMatrixComponent();
+	public abstract AMatrix getMatrix();
 
-	public abstract ATranslation getTranslationComponent();
+	public abstract ATranslation getTranslation();
 
 	// ===========================================
 	// Standard implementation
@@ -22,20 +22,24 @@ public abstract class AAffineTransform extends ATransform {
 	 * Returns a deep copy of the translation vector for this affine transform
 	 */
 	public AVector copyOfTranslationVector() {
-		return getTranslationComponent().getTranslationVector().clone();
+		return getTranslation().getTranslationVector().clone();
 	}
 	
 	/**
 	 * Returns a deep copy of the transformation matrix for this affine transform
 	 */
 	public AMatrix copyOfMatrix() {
-		return getMatrixComponent().clone();
+		return getMatrix().clone();
+	}
+	
+	public MatrixTransform getMatrixTransform() {
+		return new MatrixTransform(getMatrix());
 	}
 	
 	@Override 
 	public boolean isIdentity() {
-		return getMatrixComponent().isIdentity()
-		    && getTranslationComponent().isIdentity();
+		return getMatrix().isIdentity()
+		    && getTranslation().isIdentity();
 	}
 	
 	@Override
@@ -46,30 +50,30 @@ public abstract class AAffineTransform extends ATransform {
 	
 	public ATransform compose(AAffineTransform a) {
 		AVector v=a.copyOfTranslationVector();
-		AMatrix thisM=getMatrixComponent();
+		AMatrix thisM=getMatrix();
 		thisM.transformInPlace(v);
-		v.add(getTranslationComponent().getTranslationVector());
+		v.add(getTranslation().getTranslationVector());
 		
-		AMatrix m=thisM.compose(a.getMatrixComponent());
+		AMatrix m=thisM.compose(a.getMatrix());
 		
 		return Transformz.createAffineTransform(m, v);
 	}
 	
 	@Override 
 	public void transform(AVector source, AVector dest) {
-		getMatrixComponent().transform(source,dest);
-		getTranslationComponent().transformInPlace(dest);
+		getMatrix().transform(source,dest);
+		getTranslation().transformInPlace(dest);
 	}
 	
 	public void transformNormal(AVector source, AVector dest) {
-		getMatrixComponent().transform(source,dest);
+		getMatrix().transform(source,dest);
 		dest.normalise();
 	}
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return getMatrixComponent().calculateElement(i,v)
-				+getTranslationComponent().getTranslationComponent(i);
+		return getMatrix().calculateElement(i,v)
+				+getTranslation().getTranslationComponent(i);
 		
 	}
 
@@ -77,8 +81,8 @@ public abstract class AAffineTransform extends ATransform {
 	
 	@Override 
 	public void transformInPlace(AVector v) {
-		getMatrixComponent().transformInPlace(v);
-		getTranslationComponent().transformInPlace(v);
+		getMatrix().transformInPlace(v);
+		getTranslation().transformInPlace(v);
 	}
 
 	public AAffineTransform toAffineTransform() {
@@ -87,7 +91,7 @@ public abstract class AAffineTransform extends ATransform {
 	
 	@Override
 	public int hashCode() {
-		return getMatrixComponent().hashCode()+getTranslationComponent().hashCode();
+		return getMatrix().hashCode()+getTranslation().hashCode();
 	}
 	
 	@Override
@@ -98,14 +102,14 @@ public abstract class AAffineTransform extends ATransform {
 	
 	public boolean equals(AAffineTransform a) {
 		
-		return a.getMatrixComponent().equals(getMatrixComponent()) &&
-			   a.getTranslationComponent().equals(getTranslationComponent());	
+		return a.getMatrix().equals(getMatrix()) &&
+			   a.getTranslation().equals(getTranslation());	
 	}
 
 	@Override
 	public AAffineTransform inverse() {
-		AMatrix m=getMatrixComponent().inverse();
-		AVector v=getTranslationComponent().getTranslationVector().clone();
+		AMatrix m=getMatrix().inverse();
+		AVector v=getTranslation().getTranslationVector().clone();
 		v.negate();
 		m.transformInPlace(v);
 		return Transformz.createAffineTransform(m, v);
@@ -118,6 +122,6 @@ public abstract class AAffineTransform extends ATransform {
 	
 	@Override
 	public boolean isInvertible() {
-		return getMatrixComponent().isInvertible();
+		return getMatrix().isInvertible();
 	}
 }

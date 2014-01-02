@@ -1078,8 +1078,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	public boolean equals(AAffineTransform a) {
 
-		return a.getTranslationComponent().isIdentity()
-				&& this.equals(a.getMatrixComponent());
+		return a.getTranslation().isIdentity()
+				&& this.equals(a.getMatrix());
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class TestAffine {
 		AVector v=Vectorz.createUniformRandomVector(inputDim);
 		AVector d=Vectorz.createUniformRandomVector(inputDim);
 		
-		AVector td=t.getMatrixComponent().transform(d);
+		AVector td=t.getMatrix().transform(d);
 		AVector tv=t.transform(v);
 		
 		AVector r1=tv.clone();
@@ -37,17 +37,17 @@ public class TestAffine {
 	}
 	
 	private void testAffineDecomposition(AAffineTransform t) {
-		assertTrue(t.getMatrixComponent().columnCount()==t.inputDimensions());
-		assertTrue(t.getMatrixComponent().rowCount()==t.outputDimensions());
-		assertTrue(t.getTranslationComponent().inputDimensions()==t.outputDimensions());
-		assertTrue(t.getTranslationComponent().outputDimensions()==t.outputDimensions());
+		assertTrue(t.getMatrix().columnCount()==t.inputDimensions());
+		assertTrue(t.getMatrix().rowCount()==t.outputDimensions());
+		assertTrue(t.getTranslation().inputDimensions()==t.outputDimensions());
+		assertTrue(t.getTranslation().outputDimensions()==t.outputDimensions());
 		
 		AVector z=Vectorz.createUniformRandomVector(t.inputDimensions());
 		
 		AVector r1=t.transform(z);
 		
-		AVector r2=t.getMatrixComponent().transform(z);
-		t.getTranslationComponent().transformInPlace(r2);
+		AVector r2=t.getMatrix().transform(z);
+		t.getTranslation().transformInPlace(r2);
 		
 		assertTrue(r1.epsilonEquals(r2));
 	}
@@ -57,7 +57,7 @@ public class TestAffine {
 		
 		AVector r=t.transform(z);
 		assertNotNull(r);
-		assertTrue(r.epsilonEquals(t.getTranslationComponent().getTranslationVector()));	
+		assertTrue(r.epsilonEquals(t.getTranslation().getTranslationVector()));	
 		assertTrue(r.epsilonEquals(t.copyOfTranslationVector()));	
 	}
 	

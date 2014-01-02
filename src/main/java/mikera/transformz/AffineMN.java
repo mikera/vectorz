@@ -25,7 +25,7 @@ public final class AffineMN extends AAffineTransform {
 	}
 
 	public AffineMN(AAffineTransform at) {
-		this(at.getMatrixComponent().toMutableMatrix(),at.getTranslationComponent().toMutableTranslation());
+		this(at.getMatrix().toMutableMatrix(),at.getTranslation().toMutableTranslation());
 	}
 
 	public AffineMN(AMatrix m, AVector v) {
@@ -46,12 +46,12 @@ public final class AffineMN extends AAffineTransform {
 	}
 
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return matrix;
 	}
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return translation;
 	}
 

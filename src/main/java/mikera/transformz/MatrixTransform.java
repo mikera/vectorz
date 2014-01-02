@@ -15,7 +15,7 @@ public class MatrixTransform extends ALinearTransform {
 	}
 
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return mat;
 	}
 

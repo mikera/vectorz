@@ -82,12 +82,12 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	}
 
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return copyOfMatrix();
 	}
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return Transformz.createTranslation(copyOfTranslationVector());
 	}
 	

@@ -67,7 +67,7 @@ public final class ConstantTransform4 extends AConstantTransform implements ISpe
 
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return new Translation(new double[]{x,y,z,t});
 	}
 

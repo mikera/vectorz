@@ -20,7 +20,7 @@ public final class Translation extends ATranslation {
 	}
 	
 	public Translation(ATranslation t) {
-		this(Vectorz.create(t.getTranslationComponent().getTranslationVector()));
+		this(Vectorz.create(t.getTranslation().getTranslationVector()));
 	}
 	
 	@Override
@@ -51,12 +51,12 @@ public final class Translation extends ATranslation {
 	
 
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return Matrixx.createImmutableIdentityMatrix(dimensions);
 	}
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return this;
 	}
 
