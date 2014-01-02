@@ -29,15 +29,12 @@ import mikera.vectorz.util.LongArrays;
  * @param <T> The type of array slices
  */
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
-	public double get() {
-		return get(IntArrays.EMPTY_INT_ARRAY);
-	}
-	public double get(int x) {
-		return get(new int[] {x});
-	}
-	public double get(int x, int y) {
-		return get(new int[] {x,y});
-	}
+	
+	public abstract double get();
+	
+	public abstract double get(int x);
+	
+	public abstract double get(int x, int y);
 	
 	@Override
 	public int getShape(int dim) {

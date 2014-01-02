@@ -310,4 +310,19 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		
 		super.validate();
 	}
+
+	@Override
+	public double get() {
+		throw new IllegalArgumentException("0d get not supported on "+getClass());
+	}
+
+	@Override
+	public double get(int x) {
+		return slices[x].get();
+	}
+
+	@Override
+	public double get(int x, int y) {
+		return slices[x].get(y);
+	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
+import mikera.indexz.Index;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOp;
@@ -392,6 +393,33 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public INDArray immutable() {
 		return ImmutableArray.wrap(DoubleArrays.copyOf(data), this.shape);
+	}
+
+	@Override
+	public double get() {
+		if (dimensions==0) {
+			return data[0];
+		} else {
+			throw new IllegalArgumentException("O-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
+	}
+
+	@Override
+	public double get(int x) {
+		if (dimensions==1) {
+			return data[x];
+		} else {
+			throw new IllegalArgumentException("1-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
+	}
+
+	@Override
+	public double get(int x, int y) {
+		if (dimensions==2) {
+			return data[x*strides[0]+y];
+		} else {
+			throw new IllegalArgumentException("2-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
 	}
 
 }

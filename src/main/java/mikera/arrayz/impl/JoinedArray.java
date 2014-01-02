@@ -114,4 +114,45 @@ public class JoinedArray extends AbstractArray<INDArray> {
 		if (left.getShape(dimension)+right.getShape(dimension)!=shape[dimension]) throw new Error("Inconsistent shape along split dimension");
 		super.validate();
 	}
+
+	@Override
+	public double get() {
+		throw new IllegalArgumentException("0d get not supported on "+getClass());
+	}
+
+	@Override
+	public double get(int x) {
+		if ((x<0)||(x>=sliceCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x));
+		}
+		if (x<split) {
+			return left.get(x);
+		} else {
+			return right.get(x-split);
+		}
+	}
+
+	@Override
+	public double get(int x, int y) {
+		if (dimension==0) {
+			if ((x<0)||(x>=sliceCount())) {
+				throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
+			}
+			if (x<split) {
+				return left.get(x,y);
+			} else {
+				return right.get(x-split,y);
+			}
+		} else {
+			if ((y<0)||(y>=sliceCount())) {
+				throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
+			}
+			if (y<split) {
+				return left.get(x,y);
+			} else {
+				return right.get(x,y-split);
+			}
+			
+		}
+	}
 }

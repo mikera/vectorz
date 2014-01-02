@@ -84,6 +84,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public double get(int x, int y) {
+		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, x,y));
+	}
+	
+	@Override
 	public final int dimensionality() {
 		return 1;
 	}

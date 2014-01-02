@@ -108,5 +108,4 @@ public final class Scalar extends AScalar {
 	public ImmutableScalar immutable() {
 		return ImmutableScalar.create(value);
 	}
-
 }
