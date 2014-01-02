@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.io.ObjectStreamException;
+
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
@@ -30,11 +32,17 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	public static ZeroVector create(int dimensions) {
+		ZeroVector zv=tryCreate(dimensions);
+		if (zv!=null) return zv;
+		return new ZeroVector(dimensions);
+	}
+	
+	private static ZeroVector tryCreate(int dimensions) {
 		if (dimensions<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(dimensions));
 		if (dimensions<ZERO_VECTOR_CACHE) {
 			return ZERO_VECTORS[dimensions];
 		}
-		return new ZeroVector(dimensions);
+		return null;
 	}
 
 	@Override
@@ -167,6 +175,15 @@ public final class ZeroVector extends ASparseVector {
 		int alen=a.length;
 		if (alen==0) return this;
 		return ZeroVector.create(length+a.length);
+	}
+	
+	/**
+	 * readResolve method to ensure we always use the singleton
+	 */
+	private Object readResolve() throws ObjectStreamException {
+		ZeroVector zv=tryCreate(length);
+		if (zv!=null) return zv;
+		return this;
 	}
 
 	@Override
