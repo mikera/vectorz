@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
@@ -57,6 +58,34 @@ public class SparseRowMatrix extends VectorMatrixMN implements ISparse {
 			if (rows[i].length()!=cc) throw new IllegalArgumentException("Mismatched column count at row: "+i);
 		}
 		return new SparseRowMatrix(rows.clone());
+	}
+	
+	@Override 
+	public AMatrix innerProduct(AMatrix a) {
+		if (a instanceof SparseColumnMatrix) {
+			return innerProduct((SparseColumnMatrix)a);
+		} else if (a instanceof Matrix) {
+			int cc=a.columnCount();
+			Matrix r=Matrix.create(rowCount, cc);
+			
+			for (int i=0; i<rowCount; i++) {
+				for (int j=0; j<cc; j++) {
+					r.unsafeSet(i,j,rows[i].dotProduct(a.getColumn(j)));
+				}
+			}
+			return r;			
+		}
+		return super.innerProduct(a);
+	}
+	
+	public AMatrix innerProduct(SparseColumnMatrix a) {
+		Matrix r=Matrix.create(rowCount, a.columnCount);
+		for (int i=0; i<rowCount; i++) {
+			for (int j=0; j<a.columnCount; j++) {
+				r.unsafeSet(i,j,rows[i].dotProduct(a.getColumn(j)));
+			}
+		}
+		return r;
 	}
 
 	@Override
