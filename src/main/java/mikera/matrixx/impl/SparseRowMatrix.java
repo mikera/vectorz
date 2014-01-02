@@ -12,6 +12,7 @@ import mikera.vectorz.Vectorz;
  * This format is especially efficient for:
  * - innerProduct() with another matrix
  * - access via getRow() operation
+ * - transpose into SparseColumnMatrix
  * 
  * @author Mike
  *

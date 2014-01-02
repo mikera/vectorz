@@ -15,6 +15,7 @@ import mikera.vectorz.util.VectorzException;
  * This format is especially efficient for:
  * - transposeInnerProduct() with another matrix
  * - access via getColumn() operation
+ * - transpose into SparseRowMatrix
  * 
  * @author Mike
  *
