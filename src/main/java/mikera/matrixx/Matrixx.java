@@ -13,6 +13,7 @@ import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -75,9 +76,9 @@ public class Matrixx {
 		int rc = m.rowCount();
 		AVector[] rows = new AVector[rc];
 		for (int i = 0; i < rc; i++) {
-			rows[i] = SparseIndexedVector.createFromRow(m, i);
+			rows[i] = Vectorz.createSparse(m.getRow(i));
 		}
-		return VectorMatrixMN.wrap(rows);
+		return SparseRowMatrix.wrap(rows);
 	}
 
 	/**

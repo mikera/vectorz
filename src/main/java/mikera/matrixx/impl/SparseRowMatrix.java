@@ -55,13 +55,22 @@ public class SparseRowMatrix extends VectorMatrixMN implements ISparse {
 		return true;
 	}
 	
-	public static AMatrix create(AVector... rows) {
+	public static SparseRowMatrix create(AVector... rows) {
 		int rc=rows.length;
 		int cc=rows[0].length();
 		for (int i=1; i<rc; i++) {
 			if (rows[i].length()!=cc) throw new IllegalArgumentException("Mismatched column count at row: "+i);
 		}
-		return new SparseRowMatrix(rows.clone());
+		return new SparseRowMatrix(rows.clone(),rc,cc);
+	}
+	
+	public static SparseRowMatrix wrap(AVector[] rows) {
+		int rc=rows.length;
+		int cc=rows[0].length();
+		for (int i=1; i<rc; i++) {
+			if (rows[i].length()!=cc) throw new IllegalArgumentException("Mismatched column count at row: "+i);
+		}
+		return new SparseRowMatrix(rows,rc,cc);
 	}
 	
 	@Override 
