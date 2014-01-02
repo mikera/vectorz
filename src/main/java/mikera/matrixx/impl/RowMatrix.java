@@ -12,7 +12,7 @@ import mikera.vectorz.util.ErrorMessages;
  * Matrix class that wraps a vector as a 1-row matrix
  * @author Mike
  */
-public class RowMatrix extends AMatrix {
+public class RowMatrix extends AMatrix implements IFastRows {
 	private final AVector vector;
 	
 	public RowMatrix(AVector v) {
@@ -98,6 +98,11 @@ public class RowMatrix extends AMatrix {
 	@Override
 	public void unsafeSet(int row, int column, double value) {
 		vector.unsafeSet(column,value);
+	}
+	
+	public AVector getRow(int i) {
+		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
+		return vector;
 	}
 	
 	@Override

@@ -13,7 +13,7 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Lightweight immutable zero matrix class
  */
-public final class ZeroMatrix extends ABooleanMatrix {
+public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFastColumns {
 	private final int inputDimensions;
 	private final int outputDimensions;
 

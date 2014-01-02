@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.IMatrix;
+import mikera.vectorz.AVector;
 
 /**
  * Marker interface for matrices with fast column access
@@ -9,6 +10,6 @@ import mikera.matrixx.IMatrix;
  */
 public interface IFastColumns extends IMatrix {
 	
-	public int getColumn(int i);
+	public AVector getColumn(int i);
 
 }
