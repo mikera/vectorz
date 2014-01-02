@@ -34,7 +34,7 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 		this.columnCount=columnCount;
 	}
 	
-	public static AMatrix create(AVector... columns) {
+	public static SparseColumnMatrix create(AVector... columns) {
 		int cc=columns.length;
 		int rc=columns[0].length();
 		for (int i=1; i<cc; i++) {
@@ -43,7 +43,7 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 		return new SparseColumnMatrix(columns.clone(),rc,cc);
 	}
 	
-	public static AMatrix wrap(AVector... columns) {
+	public static SparseColumnMatrix wrap(AVector... columns) {
 		int cc=columns.length;
 		int rc=columns[0].length();
 		for (int i=1; i<cc; i++) {
