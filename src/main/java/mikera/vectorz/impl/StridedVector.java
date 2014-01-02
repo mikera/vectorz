@@ -68,6 +68,15 @@ public final class StridedVector extends AStridedVector {
 	}
 	
 	@Override
+	public double dotProduct(double[] ds, int off) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i*stride]*ds[i+off];
+		}
+		return result;
+	}
+	
+	@Override
 	public void set(AVector v) {
 		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
 		for (int i=0; i<length; i++) {

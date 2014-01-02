@@ -734,7 +734,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Fast dot product with a double[] array.
+	 * Fast dot product with a double[] array. Performs no bounds checking.
 
 	 * @param data
 	 * @param offset
