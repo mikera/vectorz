@@ -100,6 +100,11 @@ public final class BitVector extends ABitVector {
 	}
 	
 	@Override
+	public double magnitudeSquared() {
+		return elementSum();
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		long result=0;
 		for (int i=0; i<data.length; i++) {
