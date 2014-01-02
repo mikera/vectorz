@@ -36,6 +36,10 @@ public abstract class AAffineTransform extends ATransform {
 		return new MatrixTransform(getMatrix());
 	}
 	
+	public AVector getTranslationVector() {
+		return getTranslation().getTranslationVector();
+	}
+	
 	@Override 
 	public boolean isIdentity() {
 		return getMatrix().isIdentity()

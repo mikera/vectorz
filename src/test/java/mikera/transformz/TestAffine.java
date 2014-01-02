@@ -68,6 +68,8 @@ public class TestAffine {
 		AVector r2=t.clone().transform(z);
 		assertTrue(r1.epsilonEquals(r2));	
 		
+		assertEquals(t.getTranslationVector(),t.copyOfTranslationVector());
+		
 		assertEquals(t,t.clone());
 	}
 	
