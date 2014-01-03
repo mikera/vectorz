@@ -11,11 +11,10 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Hashed sparse vector. Mutable in all elements, but performance will be reduced if density is high.
+ * Hashed sparse vector, intended for large vectors with a few randomly positioned non-zero elements. 
  * 
- * In general, if density is more than about 10% then a dense Vector is likely to be better.
- * 
- * Index must be distinct and sorted.
+ * Mutable in all elements, but performance will be reduced if density is high. In general, if density 
+ * is more than about 10% then a dense Vector is likely to be better.
  * 
  * @author Mike
  *
@@ -30,7 +29,7 @@ public class SparseHashedVector extends ASparseVector {
 		this(length, new HashMap<Integer,Double>());
 	}
 	
-	public SparseHashedVector(int length, HashMap<Integer, Double> hashMap) {
+	private SparseHashedVector(int length, HashMap<Integer, Double> hashMap) {
 		hash=hashMap;
 		this.length=length;
 	}
@@ -41,12 +40,12 @@ public class SparseHashedVector extends ASparseVector {
 	 */
 	public static SparseHashedVector create(AVector v) {
 		int n=v.length();
-		SparseHashedVector sv=new SparseHashedVector(n);
+		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
 		for (int i=0; i<n; i++) {
 			double val=v.unsafeGet(i);
-			if (val!=0) sv.set(i,val);
+			if (val!=0) hm.put(i,val);
 		}
-		return sv;
+		return new SparseHashedVector(n,hm);
 	}
 	
 	public static SparseHashedVector createLength(int length) {
