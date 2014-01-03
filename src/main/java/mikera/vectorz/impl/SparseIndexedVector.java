@@ -55,6 +55,10 @@ public class SparseIndexedVector extends ASparseVector {
 		return new SparseIndexedVector(length, index,data);
 	}
 	
+	/**
+	 * Creates a SparseIndexedVector using the given sorted Index to identify the indexes of non-zero values,
+	 * and a double[] array to specify all the non-zero element values
+	 */
 	public static SparseIndexedVector create(int length, Index index, double[] data) {
 		if (!index.isDistinctSorted()) {
 			throw new VectorzException("Index must be sorted and distinct");
@@ -65,13 +69,20 @@ public class SparseIndexedVector extends ASparseVector {
 		return new SparseIndexedVector(length, index,data);
 	}
 	
+	/**
+	 * Creates a SparseIndexedVector using the given sorted Index to identify the indexes of non-zero values,
+	 * and a dense vector to specify all the non-zero element values
+	 */
 	public static SparseIndexedVector create(int length, Index index, AVector data) {
 		SparseIndexedVector sv= create(length, index, new double[index.length()]);
 		data.getElements(sv.data, 0);
 		return sv;
 	}
 	
-	/** Creates a SparseIndexedVector from the given vector, ignoring the zeros */
+	/** 
+	 * Creates a SparseIndexedVector from the given vector, ignoring the zeros in the source.
+	 * 
+	 */
 	public static SparseIndexedVector create(AVector source) {
 		int vlen = source.length();
 		int len=0;
