@@ -127,6 +127,13 @@ public class Vectorz {
 		}
 	}
 	
+	/**
+	 * Creates a sparse vector from the data in the given vector. Selects the appropriate sparse
+	 * vector type based on analysis of the element values.
+	 * 
+	 * @param v Vector containing sparse element data
+	 * @return
+	 */
 	public static AVector createSparse(AVector v) {
 		int len=v.length();
 		long n=v.nonZeroCount();
@@ -151,6 +158,11 @@ public class Vectorz {
 		}
 	}
 
+	/**
+	 * Creates a new zero-filled vector of the same size as the given Vector.
+	 * @param v
+	 * @return
+	 */
 	public static AVector createSameSize(AVector v) {
 		return newVector(v.length());
 	}
@@ -397,6 +409,11 @@ public class Vectorz {
 		return Math.sqrt(averageSquaredDifference(a,b));
 	}
 
+	/**
+	 * Fills a vector with uniform random numbers in the range [0..1)
+	 * 
+	 * @param v
+	 */
 	public static void fillRandom(AVector v) {
 		int len=v.length();
 		for (int i=0; i<len; i++) {
