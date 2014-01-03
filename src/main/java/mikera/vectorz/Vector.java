@@ -38,7 +38,7 @@ public final class Vector extends AArrayVector {
 	}
 
 	Vector(int length) {
-		data = new double[length];
+		this(new double[length]);
 	}
 
 	/**
@@ -47,9 +47,7 @@ public final class Vector extends AArrayVector {
 	 * @param source
 	 */
 	public Vector(AVector source) {
-		int length = source.length();
-		data = new double[length];
-		source.getElements(this.data, 0);
+		this(source.toDoubleArray());
 	}
 	
 	/**
@@ -61,12 +59,31 @@ public final class Vector extends AArrayVector {
 		return new Vector(source);
 	}
 	
+	/**
+	 * Creates a new Vector from the given double[] data. Takes a defensive copy.
+	 */
 	public static Vector create(double[] data) {
 		return wrap(data.clone());
 	}
 	
+	/**
+	 * Creates a new Vector from the given double[] data. Takes a defensive copy.
+	 */
 	public static Vector create(double[] data, int start, int length) {
 		return wrap(DoubleArrays.copyOf(data,start,length));
+	}
+	
+	/**
+	 * Creates a new vector using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new vector
+	 * @param data
+	 * @return
+	 */
+	public static Vector createFromVector(AVector source, int length) {
+		Vector v=Vector.createLength(length);
+		int n=Math.min(length, source.length());
+		source.copyTo(0, v.data, 0, n);
+		return v;
 	}
 	
 	/**
@@ -76,10 +93,7 @@ public final class Vector extends AArrayVector {
 	 * @return
 	 */
 	public static Vector of(double... values) {
-		int length = values.length;
-		double[] data = new double[length];
-		System.arraycopy(values, 0, data, 0, length);
-		return Vector.wrap(data);
+		return create(values);
 	}
 	
 	/**
@@ -92,13 +106,7 @@ public final class Vector extends AArrayVector {
 	}
 
 	public static Vector create(AVector a) {
-		if (a instanceof Vector) {
-			return ((Vector) a).clone();
-		}
-		int n=a.length();
-		Vector v=createLength(n);
-		a.copyTo(v.data);
-		return v;
+		return new Vector(a.toDoubleArray());
 	}
 	
 	public static Vector create(AIndex a) {
@@ -528,18 +536,5 @@ public final class Vector extends AArrayVector {
 	@Override
 	public double[] asDoubleArray() {
 		return data;
-	}
-
-	/**
-	 * Creates a new vector using the elements in the specified vector.
-	 * Truncates or zero-pads the data as required to fill the new vector
-	 * @param data
-	 * @return
-	 */
-	public static Vector createFromVector(AVector source, int length) {
-		Vector v=Vector.createLength(length);
-		int n=Math.min(length, source.length());
-		source.copyTo(0, v.data, 0, n);
-		return v;
 	}
 }
