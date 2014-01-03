@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.Iterator;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
@@ -86,6 +88,11 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	@Override
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException(this.getClass().toString()+" is not mutable");
+	}
+	
+	@Override
+	public Iterator<Double> iterator() {
+		return new RepeatedElementIterator(length,value);
 	}
 	
 	@Override

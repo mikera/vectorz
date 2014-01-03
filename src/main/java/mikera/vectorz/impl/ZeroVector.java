@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import java.io.ObjectStreamException;
+import java.util.Iterator;
 
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -20,6 +21,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	private static final int ZERO_VECTOR_CACHE=30;
 	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE];
+	private static final Double ZERO_DOUBLE=0.0;
 	
 	private static ZeroVector last=new ZeroVector(ZERO_VECTOR_CACHE);
 	
@@ -137,6 +139,11 @@ public final class ZeroVector extends ASparseVector {
 	public final ImmutableScalar slice(int i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return ImmutableScalar.ZERO;
+	}
+	
+	@Override
+	public Iterator<Double> iterator() {
+		return new RepeatedElementIterator(length,ZERO_DOUBLE);
 	}
 	
 	@Override
