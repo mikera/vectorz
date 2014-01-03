@@ -9,6 +9,7 @@ import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.SingleElementVector;
+import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
@@ -153,6 +154,8 @@ public class Vectorz {
 			throw new VectorzException("non-zero element not found!!");
 		} else if (n>(len/2)) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
+		} else if (n<(len/30)) {
+			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
 		}
