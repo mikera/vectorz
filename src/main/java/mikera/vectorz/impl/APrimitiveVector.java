@@ -42,6 +42,11 @@ public abstract class APrimitiveVector extends AVector {
 	}
 	
 	@Override
+	public APrimitiveVector sparse() {
+		return this;
+	}
+	
+	@Override
 	public APrimitiveVector toNormal() {
 		APrimitiveVector v= this.exactClone();
 		v.normalise();

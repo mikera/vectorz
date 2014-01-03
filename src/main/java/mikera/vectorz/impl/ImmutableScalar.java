@@ -72,6 +72,11 @@ public final class ImmutableScalar extends AScalar {
 	public Scalar mutable() {
 		return Scalar.create(value);
 	}
+	
+	@Override
+	public AScalar sparse() {
+		return this;
+	}
 
 	@Override
 	public ImmutableScalar immutable() {
