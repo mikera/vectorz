@@ -1,12 +1,14 @@
 package mikera.matrixx.impl;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.RepeatedElementIterator;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -239,6 +241,11 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	@Override
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		return ZeroMatrix.create(rows, cols);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new RepeatedElementIterator(inputDimensions*outputDimensions,0.0);
 	}
 	
 	@Override
