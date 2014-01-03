@@ -11,8 +11,8 @@ import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 
 public class SparseMatrix {
-	private static int SIZE=32000;
-	private static int DSIZE=100; // dense elements per row
+	private static int SIZE=32000; // size of large NxN matrix
+	private static int DSIZE=100; // dense elements per row in large matrix
 	private static int CSIZE=20; // dense elements per row for target matrix
 	private static long start=0;
 	
