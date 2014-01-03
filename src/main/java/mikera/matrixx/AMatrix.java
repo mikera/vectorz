@@ -167,6 +167,22 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return 2;
 	}
 	
+	/**
+	 * Returns the number of dimensions required for input vectors
+	 * @return
+	 */
+	public final int inputDimensions() {
+		return columnCount();
+	}
+	
+	/**
+	 * Returns the number of dimensions required for output vectors
+	 * @return
+	 */
+	public final int outputDimensions() {
+		return rowCount();
+	}
+	
 	@Override
 	public long elementCount() {
 		return ((long)rowCount())*columnCount();
