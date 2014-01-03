@@ -33,7 +33,7 @@ See the [Vectorz Wiki](https://github.com/mikera/vectorz/wiki)
 ### Key features
 
  - Supports **double** typed vectors of arbitrary size
- - Vector values are **mutable**, enabling high performance algorithms
+ - Both **mutable** and **immutable** vectors are supported, enabling high performance algorithms
  - Support for **any size** matrices, including **higher dimensional** (NDArray) matrices
  - Ability to create lightweight **view** vectors (e.g. to access subranges of other vectors)
  - Library of useful **mathematical functions** on vectors
@@ -47,7 +47,8 @@ Vectorz is deigned to allow the maximum performance possible for vector maths on
 
 This focus has driven a number of important design decisions:
 
- - Specialised primitive-backed small vectors (1,2,3 and 4 dimensions) and matrices (2x2, 3x3 and M*3)
+ - Support for sparse vectors and other specialised array types
+ - Specialised primitive-backed small vectors (1,2,3 and 4 dimensions) and matrices (1x1, 2x2, 3x3 and M*3)
  - Abstract base classes preferred over interfaces to allow more efficient method dispatch
  - Multiple types of vector are provided for optimised performance in special cases
  - Hard-coded fast paths for most common 2D and 3D operations
