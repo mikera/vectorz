@@ -10,6 +10,14 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * Immutable dense matrix class
+ * 
+ * This is the immutable equivalent of mikera.matrixx.Matrix
+ * 
+ * @author Mike
+ *
+ */
 public final class ImmutableMatrix extends AMatrix {
 	private double[] data;
 	private int rows;
@@ -27,6 +35,11 @@ public final class ImmutableMatrix extends AMatrix {
 		data=m.toDoubleArray();
 	}
 	
+	/**
+	 * Creates a new ImmutableMatrix wrapping the data array of a given Matrix
+	 * 
+	 * WARNING: does not take a defensive copy.
+	 */
 	public static ImmutableMatrix wrap(Matrix source) {
 		double[] data=source.data;
 		return new ImmutableMatrix(source.rowCount(), source.columnCount(), data);
