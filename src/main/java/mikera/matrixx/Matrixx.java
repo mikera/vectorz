@@ -339,8 +339,11 @@ public class Matrixx {
 	 * @return
 	 */
 	public static AMatrix newMatrix(int rows, int columns) {
-		if (rows == 2 && columns == 2) return new Matrix22();
-		if (rows == 3 && columns == 3) return new Matrix33();
+		if (rows==columns) {
+			if (rows == 1) return new Matrix11();
+			if (rows == 2) return new Matrix22();
+			if (rows == 3) return new Matrix33();
+		}
 		return Matrix.create(rows, columns);
 	}
 
