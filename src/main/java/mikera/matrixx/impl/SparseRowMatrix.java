@@ -1,5 +1,8 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+import java.util.List;
+
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -63,6 +66,19 @@ public class SparseRowMatrix extends VectorMatrixMN implements ISparse {
 			if (rows[i].length()!=cc) throw new IllegalArgumentException("Mismatched column count at row: "+i);
 		}
 		return new SparseRowMatrix(rows.clone(),rc,cc);
+	}
+	
+	public static VectorMatrixMN create(List<AVector> rows) {
+		int rc=rows.size();
+		AVector[] rs=new AVector[rc];
+		for (int i=0; i<rc; i++) {
+			rs[i]=rows.get(i);
+		}
+		return create(rs);
+	}
+	
+	public static VectorMatrixMN create(Object... vs) {
+		return create(Arrays.asList(vs));
 	}
 	
 	public static SparseRowMatrix wrap(AVector[] rows) {

@@ -544,4 +544,10 @@ public interface INDArray extends Cloneable {
 	 * Coerces this INDArray to a fully mutable format. May return the same INDArray if already mutable
 	 */
 	public INDArray mutable();
+	
+	/**
+	 * Coerces this INDArray to a sparse format. May return the same INDArray if already sparse.
+	 * The returned sparse array may not be fully mutable in all elements
+	 */
+	public INDArray sparse();
 }

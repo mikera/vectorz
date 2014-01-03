@@ -9,8 +9,10 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.ISparse;
 import mikera.arrayz.NDArray;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.util.Maths;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
@@ -813,6 +815,26 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public INDArray mutable() {
 		if (isFullyMutable()) return this;
 		return clone();
+	}
+	
+	@Override
+	public INDArray sparse() {
+		int dims=dimensionality();
+		if (dims==0) return this;
+		if (dims==1) {
+			if (this instanceof ISparse) return this;
+			return Vectorz.createSparse(this.asVector());
+		}
+		if (dims==2) {
+			if (this instanceof ISparse) return this;
+			return Matrixx.createSparse(this.getSliceViews());
+		}
+		int n=this.sliceCount();
+		List<INDArray> sls=this.getSliceViews();
+		for (int i=0; i<n; i++) {
+			sls.set(i,sls.get(i).sparse());
+		}
+		return SliceArray.create(sls);
 	}
 	
 	@Override

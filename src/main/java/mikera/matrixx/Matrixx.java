@@ -7,6 +7,7 @@ import java.util.List;
 import us.bpsm.edn.parser.Parseable;
 import us.bpsm.edn.parser.Parser;
 import us.bpsm.edn.parser.Parsers;
+import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
@@ -24,6 +25,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SparseIndexedVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -512,6 +514,16 @@ public class Matrixx {
 			} 
 		}
 		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);
+	}
+
+	public static AMatrix createSparse(List<INDArray> slices) {
+		int cc=slices.get(0).sliceCount();
+		ArrayList<AVector> al=new ArrayList<AVector>();
+		for (INDArray a:slices) {
+			if ((a.dimensionality()!=1)||(a.sliceCount()!=cc)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a)); 
+			al.add(a.sparse().asVector());
+		}
+		return SparseRowMatrix.create(al);
 	}
 
 }

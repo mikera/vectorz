@@ -270,6 +270,7 @@ public class TestArrays {
 	private void testEquals(INDArray a) {
 		assertEquals(a, a.exactClone());
 		assertEquals(a, a.clone());
+		assertEquals(a, a.sparse());
 
 		assertTrue(a.epsilonEquals(a.exactClone()));
 
