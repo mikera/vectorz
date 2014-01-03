@@ -13,7 +13,12 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Indexed sparse vector. Mutable only in the elements included in the index.
+ * Indexed sparse vector.
+ * 
+ * Efficient for mostly sparse vector.
+ * 
+ * WARNING: updates of non-indexed vectors are O(n) in the number of non-sparse elements. You should not normally
+ * perform arbitrary mutation on a SparseIndexedVector if performance is a concern
  * 
  * Index must be distinct and sorted.
  * 
@@ -188,10 +193,11 @@ public class SparseIndexedVector extends ASparseVector {
 	@Override
 	public void applyOp(Op op) {
 		int dlen=data.length;
-		if ((dlen<length())&&(op.apply(0.0)!=0.0)) {
-			throw new UnsupportedOperationException("Can't change sparse elements of SparseIndexedVector");
+		if ((dlen<length())&&(op.isStochastic()||(op.apply(0.0)!=0.0))) {
+			super.applyOp(op);
+		} else {
+			op.applyTo(data);
 		}
-		op.applyTo(data);
 	}
 	
 	@Override
@@ -218,12 +224,12 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public boolean isFullyMutable() {
-		return false;
+		return true;
 	}
 	
 	@Override
 	public boolean isMutable() {
-		return index.length()>0;
+		return length>0;
 	}
 	
 	@Override
@@ -263,17 +269,21 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
+		int aOffset=arrayOffset-offset;
+		
 		int start=index.seekPosition(offset);
 		for (int i=start; i<data.length; i++) {
 			int di=index.data[i];
+			// if (di<offset) continue; not needed because of seekPosition!
 			if (di>=(offset+length)) return;
-			array[di+arrayOffset]+=factor*data[i];
+			array[di+aOffset]+=factor*data[i];
 		}
 	}
 	
 	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		assert((offset>=0)&&(offset+length<=this.length));
+		
 		
 		int start=index.seekPosition(offset);
 		for (int j=start; j<data.length; j++) {
@@ -354,8 +364,9 @@ public class SparseIndexedVector extends ASparseVector {
 		int ip=index.indexPosition(i);
 		if (ip<0) {
 			unsafeSet(i,value);
+		} else {
+			data[ip]+=value;
 		}
-		data[ip]+=value;
 	}
 
 	@Override
