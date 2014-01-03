@@ -386,6 +386,14 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 			return Scalar.create(get());
 		}
 	}
+	
+	@Override
+	public AScalar sparse() {
+		double v=get();
+		if (v==0.0) return ImmutableScalar.ZERO;
+		if (v==1.0) return ImmutableScalar.ONE;
+		return this;
+	}
 
 	@Override
 	public AScalar immutable() {
