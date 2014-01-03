@@ -27,7 +27,6 @@ public class SparseIndexedVector extends ASparseVector {
 	private final Index index;
 	private final double[] data;
 	
-	
 	private SparseIndexedVector(int length, Index index) {
 		this(length,index,new double[index.length()]);
 	}
@@ -345,7 +344,7 @@ public class SparseIndexedVector extends ASparseVector {
 	public void addAt(int i, double value) {
 		int ip=index.indexPosition(i);
 		if (ip<0) {
-			throw new VectorzException("Can't set SparseIndexedVector at non-indexed position: "+i);
+			unsafeSet(i,value);
 		}
 		data[ip]+=value;
 	}

@@ -546,8 +546,13 @@ public interface INDArray extends Cloneable {
 	public INDArray mutable();
 	
 	/**
-	 * Coerces this INDArray to a sparse format. May return the same INDArray if already sparse.
-	 * The returned sparse array may not be fully mutable in all elements
+	 * Coerces this INDArray to a sparse format, without changing its element values.
+	 * 
+	 * May return the same INDArray if already sparse. May also mutate the internal structure of the original 
+	 * NDArray, or create a view over parts of the original INDArray. You should take a defensive copy of the original
+	 * NDArray if any of this concerns you.
+	 * 
+	 * The returned sparse array may not be fully mutable in all elements.
 	 */
 	public INDArray sparse();
 }
