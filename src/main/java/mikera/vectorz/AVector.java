@@ -9,6 +9,7 @@ import java.util.List;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.ISparse;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.indexz.Index;
@@ -1249,6 +1250,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		} else {
 			return clone();
 		}
+	}
+	
+	@Override
+	public AVector sparse() {
+		if (this instanceof ISparse) return this;
+		return Vectorz.createSparse(this);
 	}
 	
 	/**
