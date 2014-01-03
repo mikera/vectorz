@@ -217,4 +217,13 @@ public class IntArrays {
 		}
 		return true;
 	}
+
+	public static int[] insert(int[] data, int position, int value) {
+		int len=data.length;
+		int[] nas=new int[len+1];
+		System.arraycopy(data, 0, nas, 0, position);
+		nas[position]=value;
+		System.arraycopy(data, position, nas, position+1, len-position);
+		return nas;
+	}
 }

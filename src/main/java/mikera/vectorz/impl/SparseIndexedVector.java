@@ -24,8 +24,8 @@ public class SparseIndexedVector extends ASparseVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
 	private final int length;
-	private final Index index;
-	private final double[] data;
+	private Index index;
+	private double[] data;
 	
 	private SparseIndexedVector(int length, Index index) {
 		this(length,index,new double[index.length()]);
@@ -66,6 +66,10 @@ public class SparseIndexedVector extends ASparseVector {
 			throw new VectorzException("Length of index: mismatch woth data");			
 		}
 		return new SparseIndexedVector(length, index,data);
+	}
+	
+	public static SparseIndexedVector createLength(int length) {
+		return new SparseIndexedVector(length, Index.EMPTY,DoubleArrays.EMPTY);
 	}
 	
 	/**
@@ -315,7 +319,8 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	public void copySparseValuesTo(double[] array, int offset) {
 		for (int i=0; i<data.length; i++) {
-			array[offset+index.data[i]]=data[i];
+			int di=index.data[i];
+			array[offset+di]=data[i];
 		}	
 	}
 	
@@ -335,9 +340,13 @@ public class SparseIndexedVector extends ASparseVector {
 		int ip=index.indexPosition(i);
 		if (ip<0) {
 			if (value==0.0) return;
-			throw new VectorzException("Can't set SparseIndexedVector at non-indexed position: "+i);
+			if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+			int npos=index.seekPosition(i);
+			data=DoubleArrays.insert(data,npos,value);
+			index=index.insert(npos,i);
+		} else {
+			data[ip]=value;
 		}
-		data[ip]=value;
 	}
 	
 	@Override
@@ -377,6 +386,15 @@ public class SparseIndexedVector extends ASparseVector {
 	public SparseIndexedVector exactClone() {
 		return new SparseIndexedVector(length,index.clone(),data.clone());
 	}
+	
+	@Override
+	public void validate() {
+		if (index.length()!=data.length) throw new VectorzException("Inconsistent data and index!");
+		if (!index.isDistinctSorted()) throw new VectorzException("Invalid index: "+index);
+		super.validate();
+	}
+
+	
 
 
 }

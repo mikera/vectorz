@@ -10,7 +10,7 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ASparseVector extends AConstrainedVector implements ISparse {
+public abstract class ASparseVector extends AVector implements ISparse {
 
 	/**
 	 * Returns the number of non-sparse elements in the sparse vector.

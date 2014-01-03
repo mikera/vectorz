@@ -345,6 +345,13 @@ public final class Index extends AIndex {
 		}
 		return -1;
 	}
+	
+	/**
+	 * Returns a new Index with a value inserted at the specified position
+	 */
+	public Index insert(int position, int value) {
+		return new Index(IntArrays.insert(data,position,value));
+	}
 
 	/**
 	 * Finds the position a value would take assuming a sorted index. Uses a binary search.

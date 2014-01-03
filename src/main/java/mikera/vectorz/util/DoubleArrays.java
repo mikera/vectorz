@@ -358,6 +358,15 @@ public final class DoubleArrays {
 		}
 		return true;
 	}
+	
+	public static double[] insert(double[] data, int position, double value) {
+		int len=data.length;
+		double[] nas=new double[len+1];
+		System.arraycopy(data, 0, nas, 0, position);
+		nas[position]=value;
+		System.arraycopy(data, position, nas, position+1, len-position);
+		return nas;
+	}
 
 	/**
 	 * Fast double array copy operation. 
