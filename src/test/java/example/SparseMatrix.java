@@ -10,6 +10,12 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 
+/**
+ * Demonstration class showing usage of sparse matrix functionality.
+ * 
+ * @author Mike
+ *
+ */
 public class SparseMatrix {
 	private static int SIZE=32000; // size of large NxN matrix
 	private static int DSIZE=100; // dense elements per row in large matrix
@@ -19,13 +25,20 @@ public class SparseMatrix {
 	private static void printTime(String msg) {
 		long now=System.currentTimeMillis();
 		System.out.println(msg+(now-start)+"ms");
-		start=now;
+		startTimer();
+	}
+	
+	private static void startTimer() {
+		start=System.currentTimeMillis();
 	}
 	
 	public static void main(String[] args) {
+		// We want a SparseRowMatrix, because we are going to multiply it with a second dense matrix
+		// This means that a row-oriented sparse format is better for the first matrix
 		SparseRowMatrix m=new SparseRowMatrix(0,SIZE);
 		
-		start=System.currentTimeMillis();
+		// First task is to construct the large sparse matrix
+		startTimer();
 		
 		for (int i=0; i<SIZE; i++) {
 			double[] data=new double[DSIZE];
@@ -39,6 +52,11 @@ public class SparseMatrix {
 		printTime("Construct sparse matrix: ");
 		
 		// System.out.println("First row sum = "+m.getRow(0).elementSum());
+		
+		// Now we normalise each row to element sum = 1.0
+		// This demonstrates both the mutability of rows and the setRow functionality
+		
+		startTimer();
 		
 		for (int i=0; i<SIZE; i++) {
 			AVector row=m.getRow(i);
@@ -54,14 +72,26 @@ public class SparseMatrix {
 
 		//System.out.println("First row sum = "+m.getRow(0).elementSum());
 		
+		// We construct a dense matrix for later multiplication
+		
+		startTimer();
+		
 		AMatrix t=Matrixx.createRandomMatrix(SIZE, CSIZE);
 		printTime("Construct dense matrix: ");
+		
 		System.out.println("Dense element sum = "+t.elementSum());
 
+		// Finally compute the innerProduct (matrix multiplication) of 
+		// sparse matrix with dense matrix
+		
+		startTimer();
+		
 		AMatrix result=m.innerProduct(t);
 		
 		printTime("Multiply with dense matrix: ");
 		
 		System.out.println("Result element sum = "+result.elementSum());
+		// if this demo is working, the element sum should be roughly the same before and after transformation
+		// (modulo some small numerical errors)
 	}
 }
