@@ -11,7 +11,9 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Hashed sparse vector. Mutable in all elements, but performance will be reduced if denisty is high.
+ * Hashed sparse vector. Mutable in all elements, but performance will be reduced if density is high.
+ * 
+ * In general, if density is more than about 10% then a dense Vector is likely to be better.
  * 
  * Index must be distinct and sorted.
  * 
