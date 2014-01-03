@@ -8,16 +8,16 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 @SuppressWarnings("serial")
-abstract class BasedIndexedVector extends AVector {
+abstract class BaseIndexedVector extends AVector {
 	protected final int[] indexes;
 	protected final int length;
 
-	protected BasedIndexedVector(int length) {
+	protected BaseIndexedVector(int length) {
 		indexes=new int[length];
 		this.length=length;
 	}
 	
-	public BasedIndexedVector(int[] indexes) {
+	public BaseIndexedVector(int[] indexes) {
 		this.indexes=indexes;
 		this.length=indexes.length;
 	}
