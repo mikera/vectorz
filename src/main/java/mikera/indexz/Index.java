@@ -3,6 +3,8 @@ package mikera.indexz;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.Collections;
+import java.util.Set;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.IndexVector;
@@ -47,6 +49,13 @@ public final class Index extends AIndex {
 			ind.data[i]=v.get(i);
 		}
 		return ind;
+	}
+
+	public static Index createSorted(Set<Integer> keySet) {
+		ArrayList<Integer> al=new ArrayList<Integer>();
+		al.addAll(keySet);
+		Collections.sort(al);
+		return create(al);
 	}
 	
 	/**
@@ -398,5 +407,6 @@ public final class Index extends AIndex {
 		}
 		return true;
 	}
+
 
 }

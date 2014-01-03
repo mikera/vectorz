@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import mikera.indexz.AIndex;
@@ -64,6 +65,16 @@ public final class Vector extends AArrayVector {
 	 */
 	public static Vector create(double[] data) {
 		return wrap(data.clone());
+	}
+	
+
+	public static Vector create(ArrayList<Double> al) {
+		int n=al.size();
+		Vector v=Vector.createLength(n);
+		for (int i=0; i<n; i++) {
+			v.unsafeSet(i,al.get(i));
+		}
+		return v;
 	}
 	
 	/**
@@ -537,4 +548,5 @@ public final class Vector extends AArrayVector {
 	public double[] asDoubleArray() {
 		return data;
 	}
+
 }

@@ -24,6 +24,7 @@ import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
+import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
@@ -873,6 +874,8 @@ public class TestVectors {
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
+		
+		doGenericTests(SparseHashedVector.create(Vector.of(0,1,-1.5,0,2)));
 		
 		doGenericTests(new Scalar(1.0).asVector());
 		doGenericTests(Vector.of(1,2,3).slice(1).asVector());
