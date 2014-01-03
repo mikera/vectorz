@@ -47,7 +47,7 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	 * @param rows
 	 * @return
 	 */
-	public static VectorMatrixMN create(List<Object> rows) {
+	public static VectorMatrixMN create(List<AVector> rows) {
 		int rc = rows.size();
 		AVector[] vs = new AVector[rc];
 		for (int i = 0; i < rc; i++) {
