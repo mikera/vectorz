@@ -110,6 +110,18 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public double elementMax(){
+		double ldv=getLeadingDiagonal().elementMax();
+		if (dimensions>1) return Math.max(0, ldv); else return ldv;
+	}
+	
+	@Override
+	public double elementMin(){
+		double ldv=getLeadingDiagonal().elementMin();
+		if (dimensions>1) return Math.min(0, ldv); else return ldv;
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+dimensions,0.0);
 		dest[destOffset+row]=unsafeGetDiagonalValue(row);
@@ -244,6 +256,9 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	public void set(int row, int column, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 	}
+	
+	@Override 
+	public abstract AVector getLeadingDiagonal();
 
 	public double getDiagonalValue(int i) {
 		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException();
