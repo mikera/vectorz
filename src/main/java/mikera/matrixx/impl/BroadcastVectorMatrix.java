@@ -2,40 +2,33 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised class representing the broadcasting of a vector to a matrix shape
  * @author Mike
  *
  */
-public final class BroadcastVectorMatrix extends AVectorMatrix<AVector> {
-	private final int rows;
-	private final int cols;
+public final class BroadcastVectorMatrix extends ARectangularMatrix implements IFastRows {
 	private final AVector vector;
 	
 	private BroadcastVectorMatrix(AVector v, int rows) {
-		this.rows=rows;
-		this.cols=v.length();
+		super(rows,v.length());
 		this.vector=v;
 	}
 	
 	@Override
 	public boolean isFullyMutable() {
-		return (rows==1)&&vector.isFullyMutable();
+		return false;
 	}
 	
 	@Override
 	public boolean isMutable() {
-		return vector.isMutable();
+		return false;
 	}
 	
 	public static BroadcastVectorMatrix wrap(AVector v, int rows) {
 		return new BroadcastVectorMatrix(v,rows);
-	}
-	
-	@Override
-	public void appendRow(AVector row) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -58,23 +51,22 @@ public final class BroadcastVectorMatrix extends AVectorMatrix<AVector> {
 	}
 
 	@Override
-	public int rowCount() {
-		return rows;
-	}
-
-	@Override
-	public int columnCount() {
-		return cols;
-	}
-
-	@Override
 	public AMatrix exactClone() {
 		return BroadcastVectorMatrix.wrap(vector.exactClone(),rows);
 	}
 
 	@Override
-	public void replaceRow(int i, AVector row) {
-		throw new UnsupportedOperationException("Broadcasted matrix does not support replaceRow");
+	public double get(int row, int column) {
+		return getRow(row).get(column);
+	}
+	
+	@Override
+	public double unsafeGet(int row, int column) {
+		return vector.unsafeGet(column);
 	}
 
+	@Override
+	public void set(int row, int column, double value) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
 }

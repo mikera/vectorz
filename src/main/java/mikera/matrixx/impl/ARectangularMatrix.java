@@ -25,4 +25,9 @@ public abstract class ARectangularMatrix extends AMatrix {
 	public final int columnCount() {
 		return cols;
 	}
+	
+	@Override
+	public final long elementCount() {
+		return ((long)rows)*cols;
+	}
 }
