@@ -11,7 +11,11 @@ import mikera.vectorz.util.ErrorMessages;
  */
 @SuppressWarnings("serial")
 public abstract class ASizedVector extends AVector {
-	protected int length;
+	protected final int length;
+	
+	protected ASizedVector(int length) {
+		this.length=length;
+	}
 	
 	@Override
 	public final int length() {

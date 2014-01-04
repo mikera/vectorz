@@ -12,20 +12,19 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class JoinedVector extends AVector {
+public final class JoinedVector extends ASizedVector {
 	private static final long serialVersionUID = -5535850407701653222L;
 	
 	private final AVector left;
 	private final AVector right;
 	
 	private final int split;
-	private final int length;
 	
 	private JoinedVector(AVector left, AVector right) {
+		super(left.length()+right.length());
 		this.left=left;
 		this.right=right;
 		this.split=left.length();
-		this.length=split+right.length();
 	}
 	
 	/**
@@ -51,11 +50,6 @@ public final class JoinedVector extends AVector {
 			ll=left.length(); rl=right.length();
 		} 
 		return new JoinedVector(left,right);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override
