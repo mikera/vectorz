@@ -1,6 +1,5 @@
 package mikera.matrixx.impl;
 
-import mikera.matrixx.AMatrix;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -11,23 +10,12 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public abstract class AArrayMatrix extends AMatrix {
-	protected final int rows;
-	protected final int cols;
+public abstract class AArrayMatrix extends ARectangularMatrix {
 	public final double[] data;
 
 	protected AArrayMatrix(double[] data, int rows, int cols ) {
-		this.rows=rows;
-		this.cols=cols;
+		super(rows,cols);
 		this.data=data;
-	}
-	
-	public final int rowCount() {
-		return rows;
-	}
-	
-	public final int columnCount() {
-		return cols;
 	}
 	
 	@Override
