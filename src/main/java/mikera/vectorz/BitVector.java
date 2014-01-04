@@ -102,6 +102,12 @@ public final class BitVector extends ABitVector {
 	}
 	
 	@Override
+	public double elementMax() {
+		if (length<1) return -Double.MAX_VALUE;
+		return isZero()?0.0:1.0;
+	}
+	
+	@Override
 	public double magnitudeSquared() {
 		return elementSum();
 	}
