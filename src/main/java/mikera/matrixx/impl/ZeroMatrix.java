@@ -15,18 +15,14 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Lightweight immutable zero matrix class
  */
-public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFastColumns {
-	private final int inputDimensions;
-	private final int outputDimensions;
-
+public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns {
 	@Override public 
 	boolean isFullyMutable() {
 		return false;
 	}
 	
 	private ZeroMatrix(int rows, int columns) {
-		outputDimensions=rows;
-		inputDimensions=columns;
+		super(rows,columns);
 	}
 	
 	public static ZeroMatrix create(int rows, int columns) {
@@ -35,7 +31,7 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	
 	@Override
 	public boolean isSquare() {
-		return inputDimensions==outputDimensions;
+		return cols==rows;
 	}
 	
 	@Override
@@ -85,12 +81,12 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	
 	@Override
 	public ZeroVector getRow(int row) {
-		return ZeroVector.create(inputDimensions);
+		return ZeroVector.create(cols);
 	}
 	
 	@Override
 	public ZeroVector getColumn(int col) {
-		return ZeroVector.create(outputDimensions);
+		return ZeroVector.create(rows);
 	}
 	
 	@Override
@@ -109,16 +105,6 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	}
 
 	@Override
-	public int rowCount() {
-		return outputDimensions;
-	}
-
-	@Override
-	public int columnCount() {
-		return inputDimensions;
-	}
-	
-	@Override
 	public double determinant() {
 		if(isSquare()) throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
 		return 0.0;
@@ -132,13 +118,13 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	@Override
 	public double calculateElement(int i, AVector v) {
 		assert(i>=0);
-		assert(i<outputDimensions);
+		assert(i<rows);
 		return 0.0;
 	}
 
 	@Override
 	public double get(int row, int column) {
-		if ((row<0)||(row>=outputDimensions)||(column<0)||(column>=inputDimensions)) {
+		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 		return 0.0;
@@ -161,7 +147,7 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	
 	@Override
 	public AMatrix clone() {
-		return Matrixx.newMatrix(outputDimensions, inputDimensions);
+		return Matrixx.newMatrix(rows, cols);
 	}
 	
 	@Override
@@ -192,12 +178,12 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	
 	@Override 
 	public int hashCode() {
-		return Hash.zeroVectorHash(inputDimensions*outputDimensions);
+		return Hash.zeroVectorHash(cols*rows);
 	}
 	
 	@Override
 	public void transform(AVector input, AVector output) {
-		assert(output.length()==outputDimensions);
+		assert(output.length()==rows);
 		output.fill(0.0);
 	}
 	
@@ -208,13 +194,13 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	
 	@Override
 	public AVector asVector() {
-		return ZeroVector.create(inputDimensions*outputDimensions);
+		return ZeroVector.create(cols*rows);
 	}
 	
 	@Override
 	public AMatrix innerProduct(AMatrix m) {
 		assert(columnCount()==m.rowCount());
-		return ZeroMatrix.create(outputDimensions, m.columnCount());
+		return ZeroMatrix.create(rows, m.columnCount());
 	}
 	
 	@Override 
@@ -229,8 +215,8 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	
 	@Override
 	public ZeroMatrix getTranspose() {
-		if (inputDimensions==outputDimensions) return this;
-		return ZeroMatrix.create(inputDimensions, outputDimensions);
+		if (cols==rows) return this;
+		return ZeroMatrix.create(cols, rows);
 	}
 	
 	@Override
@@ -245,7 +231,7 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		return ZeroVector.create(inputDimensions);
+		return ZeroVector.create(cols);
 	}
 	
 	@Override
@@ -255,11 +241,11 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	
 	@Override
 	public Iterator<Double> elementIterator() {
-		return new RepeatedElementIterator(inputDimensions*outputDimensions,0.0);
+		return new RepeatedElementIterator(cols*rows,0.0);
 	}
 	
 	@Override
 	public ZeroMatrix exactClone() {
-		return new ZeroMatrix(outputDimensions,inputDimensions);
+		return new ZeroMatrix(rows,cols);
 	}
 }
