@@ -19,17 +19,17 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	public int[] getShape() {
+	public final int[] getShape() {
 		return new int[] {length};
 	}
 	
 	@Override
-	public int[] getShapeClone() {
+	public final int[] getShapeClone() {
 		return new int[] {length};
 	}
 	
 	@Override
-	public int getShape(int dim) {
+	public final int getShape(int dim) {
 		if (dim==0) {
 			return length;
 		} else {
