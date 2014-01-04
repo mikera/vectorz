@@ -2,7 +2,6 @@ package mikera.vectorz.util;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.ArraySubVector;
 
 /**
@@ -11,7 +10,7 @@ import mikera.vectorz.impl.ArraySubVector;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public class VectorBuilder extends AArrayVector {
+public class VectorBuilder extends AVector {
 	private double[] data;
 	int length=0;
 	
@@ -89,16 +88,6 @@ public class VectorBuilder extends AArrayVector {
 	@Override
 	public void unsafeSet(int i, double value) {
 		data[i]=value;		
-	}
-
-	@Override
-	public double[] getArray() {
-		return data;
-	}
-
-	@Override
-	public int getArrayOffset() {
-		return 0;
 	}
 
 	@Override

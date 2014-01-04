@@ -8,7 +8,6 @@ import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -19,7 +18,11 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public abstract class AStridedVector extends AVector implements IStridedArray {
+public abstract class AStridedVector extends ASizedVector implements IStridedArray {
+	protected AStridedVector(int length) {
+		super(length);
+	}
+
 	private static final long serialVersionUID = -7239429584755803950L;
 
 	public abstract double[] getArray();

@@ -27,13 +27,14 @@ public final class Vector extends AArrayVector {
 	public final double[] data;
 
 	Vector(double... values) {
+		super(values.length);
 		data = values;
 	}
 	
 	Vector(Object... values) {
-		int len=values.length;
-		data=new double[len];
-		for (int i=0; i<len; i++) {
+		super(values.length);
+		data=new double[length];
+		for (int i=0; i<length; i++) {
 			data[i]=Tools.toDouble(values[i]);
 		}
 	}
@@ -127,11 +128,6 @@ public final class Vector extends AArrayVector {
 			v.unsafeSet(i,a.get(i));
 		}
 		return v;
-	}
-	
-	@Override
-	public int length() {
-		return data.length;
 	}
 
 	@Override

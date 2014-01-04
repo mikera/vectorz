@@ -8,11 +8,11 @@ public final class StridedVector extends AStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
 	private final double[] data;
-	private final int length;
 	private final int offset;
 	private final int stride;
 	
 	private StridedVector(double[] data, int offset, int length, int stride) {
+		super(length);
 		if ((offset<0)) throw new IndexOutOfBoundsException();
 		if (length>0) {
 			// check last element is in the array
@@ -21,7 +21,6 @@ public final class StridedVector extends AStridedVector {
 		}
 		this.data=data;
 		this.offset=offset;
-		this.length=length;
 		this.stride=stride;
 	}
 	
@@ -31,11 +30,6 @@ public final class StridedVector extends AStridedVector {
 
 	public static StridedVector wrap(double[] data, int offset, int length, int stride) {
 		return wrapStrided(data,offset,length,stride);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 	
 	@Override
