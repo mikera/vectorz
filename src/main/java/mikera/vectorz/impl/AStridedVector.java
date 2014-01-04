@@ -44,6 +44,47 @@ public abstract class AStridedVector extends AVector implements IStridedArray {
 	}
 	
 	@Override
+	public double elementSum() {
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			result+=array[offset+i*stride];
+		}		
+		return result;
+	}
+	
+	@Override
+	public double elementMax(){
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		double max = -Double.MAX_VALUE;
+		for (int i=0; i<len; i++) {
+			double d=array[offset+i*stride];
+			if (d>max) max=d;
+		}
+		return max;
+	}
+	
+	@Override
+	public double elementMin(){
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		double min = Double.MAX_VALUE;
+		for (int i=0; i<len; i++) {
+			double d=array[offset+i*stride];
+			if (d<min) min=d;
+		}
+		return min;
+	}
+	
+	@Override
 	public INDArray broadcast(int... shape) {
 		int dims=shape.length;
 		if (dims==0) {

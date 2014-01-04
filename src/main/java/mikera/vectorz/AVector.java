@@ -845,6 +845,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Returns the sum of all elements in a vector
 	 * @return
 	 */
+	@Override
 	public double elementSum() {
 		int len=length();
 		double result=0.0;
