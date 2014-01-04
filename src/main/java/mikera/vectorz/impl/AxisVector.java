@@ -78,6 +78,16 @@ public class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementMax(){
+		return 1.0;
+	}
+	
+	@Override
+	public double elementMin(){
+		return (length>1)?0.0:1.0;
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return 1;
 	}

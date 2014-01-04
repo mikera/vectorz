@@ -53,6 +53,16 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementMax(){
+		return (dimensions>1)?Math.max(0.0, value):value;
+	}
+	
+	@Override
+	public double elementMin(){
+		return (dimensions>1)?Math.min(0.0, value):value;
+	}
+	
+	@Override
 	public double magnitudeSquared() {
 		return value*value;
 	}
