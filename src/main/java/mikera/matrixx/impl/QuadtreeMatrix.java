@@ -22,7 +22,7 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	private final int rowSplit;
 	private final int columnSplit;
 	private final int rows;
-	private final int columns;
+	private final int cols;
 	
 	private QuadtreeMatrix(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
 		this.c00=c00;
@@ -32,7 +32,7 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 		this.rowSplit= c00.rowCount();
 		this.columnSplit=c00.columnCount();
 		this.rows=rowSplit+c10.rowCount();
-		this.columns=rowSplit+c01.columnCount();
+		this.cols=columnSplit+c01.columnCount();
 	}
 	
 	public static QuadtreeMatrix create(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
@@ -71,12 +71,12 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 
 	@Override
 	public int columnCount() {
-		return columns;
+		return cols;
 	}
 
 	@Override
 	public double get(int row, int column) {
-		if ((row<0)||(row>=rows)||(column<0)||(column>=columns)) {
+		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 		return unsafeGet(row,column);
@@ -84,7 +84,7 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 
 	@Override
 	public void set(int row, int column, double value) {
-		if ((row<0)||(row>=rows)||(column<0)||(column>=columns)) {
+		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 		unsafeSet(row,column,value);
@@ -208,7 +208,7 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	@Override
 	public void add(AVector v) {
 		AVector v0=v.subVector(0, columnSplit);
-		AVector v1=v.subVector(columnSplit,columns-columnSplit);
+		AVector v1=v.subVector(columnSplit,cols-columnSplit);
 		c00.add(v0);
 		c01.add(v1);
 		c10.add(v0);
@@ -242,7 +242,7 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 
 	@Override
 	public double density() {
-		return ((double)nonZeroCount())/((long)rows*(long)columns);
+		return ((double)nonZeroCount())/((long)rows*(long)cols);
 	}
 
 	@Override
@@ -267,7 +267,7 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 
 	@Override
 	public int getBlockColumnCount(int colBlock) {
-		return (colBlock==0)?columnSplit:(columns-columnSplit);
+		return (colBlock==0)?columnSplit:(cols-columnSplit);
 	}
 
 	@Override
