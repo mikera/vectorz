@@ -187,6 +187,16 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data);
+	}
+	
+	@Override
 	public void abs() {
 		DoubleArrays.abs(data);
 	}

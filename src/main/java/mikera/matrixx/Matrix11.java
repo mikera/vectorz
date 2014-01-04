@@ -41,6 +41,16 @@ public final class Matrix11 extends APrimitiveMatrix {
 	}
 	
 	@Override
+	public double elementMax(){
+		return value;
+	}
+	
+	@Override
+	public double elementMin(){
+		return value;
+	}
+	
+	@Override
 	public double elementSquaredSum() {
 		return value*value;
 	}

@@ -200,7 +200,17 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 
 	@Override
 	public double elementSum() {
-		return DoubleArrays.elementSum(data, 0, data.length);
+		return DoubleArrays.elementSum(data);
+	}
+	
+	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data);
 	}
 
 	@Override
