@@ -8,6 +8,7 @@ import mikera.util.Rand;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
@@ -479,6 +480,11 @@ public class Vectorz {
 			v.unsafeSet(i,i);
 		}
 		return v;
+	}
+	
+	public static AVector createRepeatedElement(int length,double value) {
+		if (length==0) return Vector0.INSTANCE;
+		return RepeatedElementVector.create(length, value);
 	}
 
 	

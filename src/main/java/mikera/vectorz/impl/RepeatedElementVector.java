@@ -19,14 +19,14 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	private final int length;
 	private final double value;
 	
-	public RepeatedElementVector(int dims, double value) {
-		this.length=dims;
+	public RepeatedElementVector(int length, double value) {
+		this.length=length;
 		this.value=value;
+		if (length<1) throw new IllegalArgumentException("RepeatedElementVector must have at least one element");
 	}
 	
 	public static RepeatedElementVector create(int dims, double value) {
-		RepeatedElementVector r=new RepeatedElementVector(dims,value);
-		return r;
+		return new RepeatedElementVector(dims,value);
 	}
 
 	@Override
@@ -58,6 +58,16 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	@Override
 	public double elementSum() {
 		return length*value;
+	}
+	
+	@Override
+	public double elementMax(){
+		return value;
+	}
+	
+	@Override
+	public double elementMin(){
+		return value;
 	}
 	
 	@Override

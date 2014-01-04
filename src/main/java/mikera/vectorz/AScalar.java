@@ -10,6 +10,7 @@ import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedScalarVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -316,6 +317,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 			return this;
 		} else {
 			int n=targetShape[tdims-1];
+			if (n==0) return Vector0.INSTANCE;
 			AVector v=new RepeatedElementVector(n,get());
 			return v.broadcast(targetShape);
 		}
