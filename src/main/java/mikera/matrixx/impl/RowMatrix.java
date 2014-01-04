@@ -74,6 +74,16 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	}
 	
 	@Override 
+	public double elementMin() {
+		return vector.elementMin();
+	}
+	
+	@Override 
+	public double elementMax() {
+		return vector.elementMax();
+	}
+	
+	@Override 
 	public long nonZeroCount() {
 		return vector.nonZeroCount();
 	}

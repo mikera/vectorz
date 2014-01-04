@@ -89,6 +89,16 @@ abstract class ADelegatedMatrix extends AMatrix {
 		return source.elementSum();
 	}
 	
+	@Override 
+	public double elementMin() {
+		return source.elementMin();
+	}
+	
+	@Override 
+	public double elementMax() {
+		return source.elementMax();
+	}
+	
 	@Override
 	public long nonZeroCount() {
 		return source.nonZeroCount();

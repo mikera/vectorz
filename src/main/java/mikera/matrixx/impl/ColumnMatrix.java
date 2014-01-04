@@ -83,6 +83,16 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	}
 	
 	@Override 
+	public double elementMin() {
+		return vector.elementMin();
+	}
+	
+	@Override 
+	public double elementMax() {
+		return vector.elementMax();
+	}
+	
+	@Override 
 	public long nonZeroCount() {
 		return vector.nonZeroCount();
 	}

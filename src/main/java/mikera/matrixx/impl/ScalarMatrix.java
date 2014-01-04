@@ -17,6 +17,7 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	public ScalarMatrix(int dimensions, double scale) {
 		super(dimensions);
 		this.scale=scale;
+		if (dimensions<1) throw new IllegalArgumentException("ScalarMatrix must have one or more dimensions");
 	}
 	
 	@Override
