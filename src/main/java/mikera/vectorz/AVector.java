@@ -147,7 +147,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (dim==0) {
 			return length();
 		} else {
-			throw new IndexOutOfBoundsException("Vector does not have dimension: "+dim);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		}
 	}
 

@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract base class for vectors using a fixed final size
@@ -14,6 +15,26 @@ public abstract class ASizedVector extends AVector {
 	
 	@Override
 	public final int length() {
-		return length();
+		return length;
 	}
+	
+	@Override
+	public int[] getShape() {
+		return new int[] {length};
+	}
+	
+	@Override
+	public int[] getShapeClone() {
+		return new int[] {length};
+	}
+	
+	@Override
+	public int getShape(int dim) {
+		if (dim==0) {
+			return length;
+		} else {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		}
+	}
+
 }
