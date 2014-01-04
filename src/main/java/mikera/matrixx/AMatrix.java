@@ -260,7 +260,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		} else if (dim==1) {
 			return columnCount();
 		} else {
-			throw new IndexOutOfBoundsException("Matrix does not have dimension: "+dim);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		}
 	}	
 	
