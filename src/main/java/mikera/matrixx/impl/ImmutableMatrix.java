@@ -18,20 +18,16 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class ImmutableMatrix extends AMatrix {
+public final class ImmutableMatrix extends ARectangularMatrix {
 	private double[] data;
-	private int rows;
-	private int cols;
 	
 	private ImmutableMatrix(int rows, int cols, double[] data) {
-		this.rows=rows;
-		this.cols=cols;
+		super(rows,cols);
 		this.data=data;
 	}
 	
 	public ImmutableMatrix(AMatrix m) {
-		rows=m.rowCount();
-		cols=m.columnCount();
+		super(m.rowCount(),m.columnCount());
 		data=m.toDoubleArray();
 	}
 	
@@ -47,16 +43,6 @@ public final class ImmutableMatrix extends AMatrix {
 	
 	public static ImmutableMatrix wrap(int rows, int cols, double[] data) {
 		return new ImmutableMatrix(rows,cols, data);
-	}
-
-	@Override
-	public int rowCount() {
-		return rows;
-	}
-
-	@Override
-	public int columnCount() {
-		return cols;
 	}
 	
 	@Override
