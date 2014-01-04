@@ -309,13 +309,7 @@ public class Vectorz {
 	 * @return
 	 */
 	public static double minValue(AVector v) {
-		int len=v.length();
-		double min = Double.MAX_VALUE;
-		for (int i=0; i<len; i++) {
-			double d=v.get(i);
-			if (d<min) min=d;
-		}
-		return min;
+		return v.elementMin();
 	}
 	
 	/**
@@ -338,13 +332,7 @@ public class Vectorz {
 	}
 	
 	public static double maxValue(AVector v) {
-		int len=v.length();
-		double max = -Double.MAX_VALUE;
-		for (int i=0; i<len; i++) {
-			double d=v.unsafeGet(i);
-			if (d>max) max=d;
-		}
-		return max;
+		return v.elementMax();
 	}
 	
 	public static int indexOfMaxValue(AVector v) {

@@ -176,6 +176,16 @@ public final class ZeroMatrix extends ABooleanMatrix implements IFastRows, IFast
 	}
 	
 	@Override
+	public double elementMax(){
+		return 0.0;
+	}
+	
+	@Override
+	public double elementMin(){
+		return 0.0;
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return 0;
 	}

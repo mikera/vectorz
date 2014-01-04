@@ -100,6 +100,10 @@ public class TestArrays {
 		AVector v = a.asVector();
 		assertTrue(v.length() >= 0);
 		assertEquals(a.elementCount(), v.length());
+		assertEquals(a.elementSum(), v.elementSum(),0.0001);
+		assertEquals(a.elementMax(), v.elementMax(),0.0);
+		assertEquals(a.elementMin(), v.elementMin(),0.0);
+		
 		if (a.isMutable() && (v.length() > 0)) {
 			assertTrue(v.isMutable());
 			// assertTrue((a==v)||(v.isView())); not always...

@@ -294,6 +294,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		return get();
 	}
 	
+	@Override
+	public double elementMax(){
+		return get();
+	}
+	
+	@Override
+	public double elementMin(){
+		return get();
+	}
+	
 	@Override public final double elementSquaredSum() {
 		double value=get();
 		return value*value;

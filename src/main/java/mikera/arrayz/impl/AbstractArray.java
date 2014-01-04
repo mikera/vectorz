@@ -537,6 +537,34 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public double elementMax(){
+		if (dimensionality()==0) {
+			return get();
+		}
+		double result=-Double.MAX_VALUE;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			double v=slice(i).elementMax();
+			if (v>result) result=v;
+		}
+		return result;	
+	}
+	
+	@Override
+	public double elementMin(){
+		if (dimensionality()==0) {
+			return get();
+		}
+		double result=Double.MAX_VALUE;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			double v=slice(i).elementMin();
+			if (v<result) result=v;
+		}
+		return result;
+	}
+	
+	@Override
 	public double elementSquaredSum() {
 		if (dimensionality()==0) {
 			double value=get();

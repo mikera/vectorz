@@ -265,6 +265,18 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public double elementSum();
+	
+	/**
+	 * Returns the maximum element value in this array.
+	 * @return
+	 */
+	public double elementMax();
+	
+	/**
+	 * Returns the maximum element value in this array.
+	 * @return
+	 */
+	public double elementMin();
 
 	/**
 	 * Returns the total sum of elements in this array.
