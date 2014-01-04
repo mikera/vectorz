@@ -870,7 +870,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		double min = Double.MAX_VALUE;
 		for (int i=0; i<len; i++) {
-			double d=get(i);
+			double d=unsafeGet(i);
 			if (d<min) min=d;
 		}
 		return min;
