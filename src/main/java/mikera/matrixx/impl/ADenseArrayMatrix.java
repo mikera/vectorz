@@ -6,7 +6,7 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Abstract base class for matrices wrapping  a dense (rows*cols) subset of a double[] array
+ * Abstract base class for matrices wrapping a dense (rows*cols) subset of a double[] array
  * @author Mike
  *
  */

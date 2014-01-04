@@ -107,9 +107,9 @@ public class SparseRowMatrix extends VectorMatrixMN implements ISparse {
 	}
 	
 	public AMatrix innerProduct(SparseColumnMatrix a) {
-		Matrix r=Matrix.create(rowCount, a.columnCount);
+		Matrix r=Matrix.create(rowCount, a.cols);
 		for (int i=0; i<rowCount; i++) {
-			for (int j=0; j<a.columnCount; j++) {
+			for (int j=0; j<a.cols; j++) {
 				r.unsafeSet(i,j,rows[i].dotProduct(a.getColumn(j)));
 			}
 		}

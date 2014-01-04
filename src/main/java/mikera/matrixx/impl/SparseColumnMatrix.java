@@ -20,19 +20,16 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class SparseColumnMatrix extends AMatrix implements ISparse {
-	protected final int rowCount;	
-	protected int columnCount;	
-	protected AVector[] cols;
+public class SparseColumnMatrix extends ARectangularMatrix implements ISparse {
+	protected AVector[] columns;
 
 	public SparseColumnMatrix(AVector... columns) {
 		this(columns,columns[0].length(),columns.length);
 	}
 
 	protected SparseColumnMatrix(AVector[] columns, int rowCount, int columnCount) {
-		cols=columns;
-		this.rowCount=rowCount;
-		this.columnCount=columnCount;
+		super(rowCount,columnCount);
+		this.columns=columns;
 	}
 	
 	public static SparseColumnMatrix create(AVector... columns) {
@@ -63,20 +60,9 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 	}
 
 	@Override
-	public int rowCount() {
-		return rowCount;
-	}
-
-	@Override
-	public int columnCount() {
-		return columnCount;
-	}
-	
-
-	@Override
 	public boolean isMutable() {
-		for (int i=0; i<columnCount; i++) {
-			AVector v=cols[i];
+		for (int i=0; i<cols; i++) {
+			AVector v=columns[i];
 			if (v.isMutable()) return true;
 		}
 		return false;
@@ -84,8 +70,8 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public boolean isFullyMutable() {
-		for (int i=0; i<columnCount; i++) {
-			AVector v=cols[i];
+		for (int i=0; i<cols; i++) {
+			AVector v=columns[i];
 			if (!v.isFullyMutable()) return false;
 		}
 		return true;
@@ -93,8 +79,8 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 	
 	@Override
 	public boolean isZero() {
-		for (int i=0; i<columnCount; i++) {
-			AVector v=cols[i];
+		for (int i=0; i<cols; i++) {
+			AVector v=columns[i];
 			if (!v.isZero()) return false;
 		}
 		return true;
@@ -102,97 +88,97 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public double get(int row, int column) {
-		if ((column<0)||(column>=columnCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		return cols[column].get(row);
+		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
+		return columns[column].get(row);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		if ((column<0)||(column>=columnCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		cols[column].set(row,value);
+		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
+		columns[column].set(row,value);
 	}
 	
 	@Override
 	public void addAt(int i, int j, double d) {
-		cols[j].addAt(i, d);
+		columns[j].addAt(i, d);
 	}
 	
 	@Override
 	public AVector getColumn(int i) {
-		return cols[i];
+		return columns[i];
 	}
 	
 	@Override
 	public void copyColumnTo(int i, double[] data, int offset) {
-		cols[i].getElements(data, offset);
+		columns[i].getElements(data, offset);
 	}
 	
 	@Override
 	public double unsafeGet(int row, int column) {
-		return cols[column].get(row);
+		return columns[column].get(row);
 	}
 
 	@Override
 	public void unsafeSet(int row, int column, double value) {
-		cols[column].set(row,value);
+		columns[column].set(row,value);
 	}
 	
 	@Override
 	public long nonZeroCount() {
-		int cc=columnCount;
+		int cc=cols;
 		long result=0;
 		for (int i=0; i<cc; i++) {
-			result+=cols[i].nonZeroCount();
+			result+=columns[i].nonZeroCount();
 		}
 		return result;
 	}	
 	
 	@Override
 	public double elementSum() {
-		int cc=columnCount;
+		int cc=cols;
 		double result=0;
 		for (int i=0; i<cc; i++) {
-			result+=cols[i].elementSum();
+			result+=columns[i].elementSum();
 		}
 		return result;
 	}	
 
 	@Override
 	public double elementSquaredSum() {
-		int cc=columnCount;
+		int cc=cols;
 		double result=0;
 		for (int i=0; i<cc; i++) {
-			result+=cols[i].elementSquaredSum();
+			result+=columns[i].elementSquaredSum();
 		}
 		return result;
 	}	
 
 	@Override
 	public SparseColumnMatrix exactClone() {
-		SparseColumnMatrix a=new SparseColumnMatrix(cols.clone());
-		for (int i=0; i<columnCount; i++) {
-			cols[i]=cols[i].exactClone();
+		SparseColumnMatrix a=new SparseColumnMatrix(columns.clone());
+		for (int i=0; i<cols; i++) {
+			columns[i]=columns[i].exactClone();
 		}
 		return a;
 	}
 	
 	@Override
 	public SparseRowMatrix getTranspose() {
-		return new SparseRowMatrix(cols,columnCount,rowCount);
+		return new SparseRowMatrix(columns,cols,rows);
 	}
 	
 	@Override
 	public void applyOp(Op op) {
-		for (int i=0; i<columnCount; i++) {
-			cols[i].applyOp(op);
+		for (int i=0; i<cols; i++) {
+			columns[i].applyOp(op);
 		}
 	}
 	
 	@Override
 	public Matrix toMatrixTranspose() {
-		Matrix m=Matrix.create(columnCount, rowCount);
-		for (int i=0; i<columnCount; i++) {
-			cols[i].getElements(m.data, rowCount*i);
+		Matrix m=Matrix.create(cols, rows);
+		for (int i=0; i<cols; i++) {
+			columns[i].getElements(m.data, rows*i);
 		}
 		return m;
 	}
@@ -205,7 +191,7 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 		
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
-				r.unsafeSet(i,j,cols[i].dotProduct(a.getColumn(j)));
+				r.unsafeSet(i,j,columns[i].dotProduct(a.getColumn(j)));
 			}
 		}
 		return r;		
@@ -214,8 +200,8 @@ public class SparseColumnMatrix extends AMatrix implements ISparse {
 	@Override
 	public void validate() {
 		super.validate();
-		for (int i=0; i<columnCount; i++) {
-			if (cols[i].length()!=rowCount) throw new VectorzException("Invalid row count at column: "+i);
+		for (int i=0; i<cols; i++) {
+			if (columns[i].length()!=rows) throw new VectorzException("Invalid row count at column: "+i);
 		}
 	}
 
