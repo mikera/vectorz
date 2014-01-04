@@ -327,6 +327,16 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public double elementMax() {
+		return Math.max(left.elementMax(),right.elementMax());
+	}
+	
+	@Override
+	public double elementMin() {
+		return Math.min(left.elementMin(),right.elementMin());
+	}
+	
+	@Override
 	public double magnitudeSquared() {
 		return left.magnitudeSquared()+right.magnitudeSquared();
 	}
