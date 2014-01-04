@@ -45,6 +45,21 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public double elementSum() {
+		return DoubleArrays.elementSum(data,getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data,getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data,getArrayOffset(), rows*cols);
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		System.arraycopy(data, row*cols, dest, destOffset, cols);
 	}
