@@ -107,6 +107,21 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 	
 	@Override
+	public double elementSum() {
+		return m00+m01+m10+m11;
+	}
+	
+	@Override
+	public double elementMin() {
+		return Math.min(Math.min(m00, m01), Math.min(m10, m11));
+	}
+	
+	@Override
+	public double elementMax() {
+		return Math.max(Math.max(m00, m01), Math.max(m10, m11));
+	}
+	
+	@Override
 	public double trace() {
 		return m00+m11;
 	}
