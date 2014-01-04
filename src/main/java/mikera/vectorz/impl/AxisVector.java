@@ -18,22 +18,16 @@ public class AxisVector extends ASparseVector {
 	private static final long serialVersionUID = 6767495113060894804L;
 	
 	private final int axis;
-	private final int length;
 	
 	public AxisVector(int axisIndex, int length) {
+		super(length);
 		assert(length>=1);
 		assert((axisIndex>=0)&&(axisIndex<length));
 		this.axis=axisIndex;
-		this.length=length;
 	}
 	
 	public static AxisVector create(int axisIndex, int dimensions) {
 		return new AxisVector(axisIndex,dimensions);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 	
 	@Override

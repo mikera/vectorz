@@ -17,8 +17,6 @@ import mikera.vectorz.util.ErrorMessages;
 public final class ZeroVector extends ASparseVector {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
-	private final int length;
-	
 	private static final int ZERO_VECTOR_CACHE=30;
 	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE];
 	private static final Double ZERO_DOUBLE=0.0;
@@ -32,7 +30,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	private ZeroVector(int dimensions) {
-		length=dimensions;
+		super(dimensions);
 	}
 	
 	public static ZeroVector create(int dimensions) {
@@ -52,11 +50,6 @@ public final class ZeroVector extends ASparseVector {
 		return null;
 	}
 
-	@Override
-	public int length() {
-		return length;
-	}
-	
 	@Override
 	public double dotProduct(AVector v) {
 		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));

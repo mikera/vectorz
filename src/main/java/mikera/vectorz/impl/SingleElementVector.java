@@ -16,7 +16,6 @@ import mikera.vectorz.util.VectorzException;
  */
 @SuppressWarnings("serial")
 public final class SingleElementVector extends ASparseVector {
-	private final int dimensions;
 	private final int index;
 	private double value;
 	
@@ -25,21 +24,17 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	public SingleElementVector(int componentIndex, int dimensions, double value) {
+		super(dimensions);
+		
 		if (dimensions<=0) throw new IllegalArgumentException("SingleElementVEctor must have >= 1 dimensions");
 		if (componentIndex<0||componentIndex>=dimensions) throw new IllegalArgumentException("Invalid non-zero component index: "+componentIndex);
 		
-		this.dimensions=dimensions;
 		this.index=componentIndex;
 		this.value=value;
 	}
 	
 	public static AVector create(double val, int i, int len) {
 		return new SingleElementVector(i,len,val);
-	}
-
-	@Override
-	public int length() {
-		return dimensions;
 	}
 
 	@Override
@@ -54,12 +49,12 @@ public final class SingleElementVector extends ASparseVector {
 	
 	@Override
 	public double elementMax(){
-		return (dimensions>1)?Math.max(0.0, value):value;
+		return (length>1)?Math.max(0.0, value):value;
 	}
 	
 	@Override
 	public double elementMin(){
-		return (dimensions>1)?Math.min(0.0, value):value;
+		return (length>1)?Math.min(0.0, value):value;
 	}
 	
 	@Override
@@ -85,12 +80,12 @@ public final class SingleElementVector extends ASparseVector {
 	
 	@Override
 	public boolean isFullyMutable() {
-		return (dimensions<=1);
+		return (length<=1);
 	}
 	
 	@Override
 	public boolean isElementConstrained() {
-		return (dimensions>1);
+		return (length>1);
 	}
 	
 	@Override
@@ -105,7 +100,7 @@ public final class SingleElementVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
-		if(!((i>=0)&&(i<dimensions))) throw new IndexOutOfBoundsException();
+		if(!((i>=0)&&(i<length))) throw new IndexOutOfBoundsException();
 		return (i==index)?value:0.0;
 	}
 	
@@ -117,7 +112,7 @@ public final class SingleElementVector extends ASparseVector {
 
 	@Override
 	public void set(int i, double value) {
-		if(!((i>=0)&&(i<dimensions))) throw new IndexOutOfBoundsException();
+		if(!((i>=0)&&(i<length))) throw new IndexOutOfBoundsException();
 		if (i==index) {
 			this.value=value;
 		} else { 
@@ -128,7 +123,7 @@ public final class SingleElementVector extends ASparseVector {
 	@Override
 	public final AScalar slice(int i) {
 		if (i==index) return VectorIndexScalar.wrap(this, i);
-		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return ImmutableScalar.ZERO;
 	}
 	
@@ -144,7 +139,7 @@ public final class SingleElementVector extends ASparseVector {
 	
 	@Override
 	public SingleElementVector exactClone() {
-		return new SingleElementVector(index,dimensions,value);
+		return new SingleElementVector(index,length,value);
 	}
 
 	@Override
