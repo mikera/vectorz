@@ -20,11 +20,12 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	
 	private IdentityMatrix(int dimensions) {
 		super(dimensions);
+		if (dimensions<1) throw new IllegalArgumentException("IdentityMatrix must have at least one dimension");
 	}
 	
 	private static final  IdentityMatrix[] INSTANCES=new IdentityMatrix[INSTANCE_COUNT];
 	static {
-		for (int i=0; i<INSTANCE_COUNT; i++) {
+		for (int i=1; i<INSTANCE_COUNT; i++) {
 			INSTANCES[i]=new IdentityMatrix(i);
 		}
 	}
@@ -145,6 +146,16 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	public double elementSum() {
 		return dimensions;
 	}	
+	
+	@Override
+	public double elementMin() {
+		return (dimensions>1)?1.0:0.0;
+	}
+	
+	@Override
+	public double elementMax() {
+		return 1.0;
+	}
 	
 	@Override
 	public double trace() {

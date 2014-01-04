@@ -175,6 +175,20 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	}
 	
 	@Override
+	public double elementMin() {
+		return Math.min(
+				Math.min(c00.elementMin(), c01.elementMin()), 
+				Math.min(c10.elementMin(), c11.elementMin()));
+	}
+	
+	@Override
+	public double elementMax() {
+		return Math.max(
+				Math.max(c00.elementMax(), c01.elementMax()), 
+				Math.max(c10.elementMax(), c11.elementMax()));
+	}
+	
+	@Override
 	public void fill(double v) {
 		c00.fill(v);
 		c01.fill(v);
