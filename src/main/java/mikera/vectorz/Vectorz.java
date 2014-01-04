@@ -328,7 +328,7 @@ public class Vectorz {
 		double min = v.get(0);
 		int ind=0;
 		for (int i=1; i<len; i++) {
-			double d=v.get(i);
+			double d=v.unsafeGet(i);
 			if (d<min) {
 				min=d;
 				ind=i;
@@ -341,7 +341,7 @@ public class Vectorz {
 		int len=v.length();
 		double max = -Double.MAX_VALUE;
 		for (int i=0; i<len; i++) {
-			double d=v.get(i);
+			double d=v.unsafeGet(i);
 			if (d>max) max=d;
 		}
 		return max;
@@ -349,7 +349,7 @@ public class Vectorz {
 	
 	public static int indexOfMaxValue(AVector v) {
 		int len=v.length();
-		double max = v.get(0);
+		double max = v.unsafeGet(0);
 		int ind=0;
 		for (int i=1; i<len; i++) {
 			double d=v.get(i);
@@ -365,7 +365,7 @@ public class Vectorz {
 		if (v instanceof Vector) {invSqrt((Vector) v); return;}
 		int len=v.length();
 		for (int i=0; i<len; i++) {
-			double d=1.0/Math.sqrt(v.get(i));
+			double d=1.0/Math.sqrt(v.unsafeGet(i));
 			v.set(i,d);
 		}		
 	}
@@ -383,7 +383,7 @@ public class Vectorz {
 		double result=0.0;
 		
 		for (int i=0; i<len; i++) {
-			result+=v.get(i);
+			result+=v.unsafeGet(i);
 		}
 		return result;
 	}
@@ -392,7 +392,7 @@ public class Vectorz {
 		int len=v.length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=v.get(i);
+			result+=v.unsafeGet(i);
 		}
 		return result/len;
 	}
