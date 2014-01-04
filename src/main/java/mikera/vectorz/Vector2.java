@@ -172,6 +172,16 @@ public final class Vector2 extends APrimitiveVector {
 		return x+y;
 	}
 	
+	@Override
+	public double elementMax(){
+		return Math.max(x, y);
+	}
+	
+	@Override
+	public double elementMin(){
+		return Math.min(x, y);
+	}
+	
 	@Override 
 	public double magnitudeSquared() {
 		return (x*x)+(y*y);

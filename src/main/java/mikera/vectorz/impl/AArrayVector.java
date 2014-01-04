@@ -329,6 +329,16 @@ public abstract class AArrayVector extends AStridedVector {
 	public double elementSum() {
 		return DoubleArrays.elementSum(getArray(), getArrayOffset(), length());
 	}
+	
+	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(getArray(), getArrayOffset(), length());
+	}
 
 	@Override
 	public long nonZeroCount() {

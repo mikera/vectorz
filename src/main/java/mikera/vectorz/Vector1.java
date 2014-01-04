@@ -62,6 +62,16 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double elementMax(){
+		return x;
+	}
+	
+	@Override
+	public double elementMin(){
+		return x;
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		x=op.apply(x);
 	}
