@@ -22,6 +22,32 @@ public final class DoubleArrays {
 		return result;
 	}
 	
+	public static final double elementMin(double[] data, int offset, int length) {
+		double result = Double.MAX_VALUE;
+		for (int i=0; i<length; i++) {
+			double v=data[offset+i];
+			if (v<result) result=v;
+		}
+		return result;
+	}
+	
+	public static final double elementMax(double[] data, int offset, int length) {
+		double result = -Double.MAX_VALUE;
+		for (int i=0; i<length; i++) {
+			double v=data[offset+i];
+			if (v>result) result=v;
+		}
+		return result;
+	}
+	
+	public static final double elementMin(double[] data) {
+		return elementMin(data,0,data.length);
+	}
+	
+	public static final double elementMax(double[] data) {
+		return elementMax(data,0,data.length);
+	}
+	
 	public static double elementSquaredSum(double[] data) {
 		double result = 0.0;
 		for (int i=0; i<data.length; i++) {

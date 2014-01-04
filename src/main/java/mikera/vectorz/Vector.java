@@ -221,6 +221,16 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return DoubleArrays.nonZeroCount(data);
 	}	
