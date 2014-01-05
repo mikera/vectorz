@@ -5,6 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.util.VectorzException;
 
 /** 
@@ -151,21 +152,16 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse {
 	 *
 	 */
 	@SuppressWarnings("serial")
-	private final class BandedMatrixRow extends AVector {
+	private final class BandedMatrixRow extends ASizedVector {
 		final int row;
-		final int length;
 		final int lower;
 		final int upper;
+		
 		public BandedMatrixRow(int row) {
+			super(columnCount());
 			this.row=row;
-			this.length=columnCount();
 			this.lower=-lowerBandwidthLimit();
 			this.upper=upperBandwidthLimit();
-		}
-
-		@Override
-		public int length() {
-			return length;
 		}
 
 		@Override
