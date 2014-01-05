@@ -16,17 +16,16 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class JoinedArrayVector extends AVector {
+public final class JoinedArrayVector extends ASizedVector {
 	private static final long serialVersionUID = -8470277860344236392L;
 
-	private final int length; // total length
 	private final int numArrays; // number of joined arrays
 	private final double[][] data; // source arrays
 	private final int[] offsets; // offsets into source arrays
 	private final int[] pos; // position of each array within vector. contains one extra element
 	
 	private JoinedArrayVector(int length, double[][] newData,int[] offsets, int[] pos) {
-		this.length=length;
+		super(length);
 		this.numArrays=newData.length;
 		this.offsets=offsets;
 		this.pos=pos;
@@ -83,11 +82,6 @@ public final class JoinedArrayVector extends AVector {
 			al.add(subArrayVector(i));
 		}
 		return al;
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 	
 	@Override
