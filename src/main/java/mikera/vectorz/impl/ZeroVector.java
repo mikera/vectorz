@@ -129,6 +129,11 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		// do nothing!
+	}
+	
+	@Override
 	public final ImmutableScalar slice(int i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return ImmutableScalar.ZERO;

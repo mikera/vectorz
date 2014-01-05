@@ -154,6 +154,13 @@ public class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		if (axis<offset) return;
+		if (axis>=offset+length) return;
+		array[arrayOffset-offset+axis]+=1;
+	}
+	
+	@Override
 	public final ImmutableScalar slice(int i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		if (i==getAxis()) return ImmutableScalar.ONE;
