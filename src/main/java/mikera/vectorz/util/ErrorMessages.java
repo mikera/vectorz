@@ -78,7 +78,7 @@ public class ErrorMessages {
 	}
 
 	public static String illegalSize(int... shape) {
-		return "Illegal shape" +shape(shape);
+		return "Illegal shape: " +shape(shape);
 	}
 
 	public static String immutable(Object a) {
