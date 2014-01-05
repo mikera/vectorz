@@ -158,7 +158,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public final long elementCount() {
+	public long elementCount() {
 		return length();
 	}
 	
@@ -1573,7 +1573,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
 		}
 	}
-
 
 	@Override
 	public void validate() {

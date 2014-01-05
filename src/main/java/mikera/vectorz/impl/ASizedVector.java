@@ -23,6 +23,16 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
+	public final long elementCount() {
+		return length();
+	}
+	
+	@Override
+	public final int sliceCount() {
+		return length;
+	}
+	
+	@Override
 	public final int[] getShape() {
 		return new int[] {length};
 	}
