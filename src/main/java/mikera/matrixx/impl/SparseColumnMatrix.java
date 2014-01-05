@@ -21,7 +21,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public class SparseColumnMatrix extends ARectangularMatrix implements ISparse {
-	protected AVector[] columns;
+	protected final AVector[] columns;
 
 	public SparseColumnMatrix(AVector... columns) {
 		this(columns,columns[0].length(),columns.length);
