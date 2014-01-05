@@ -5,7 +5,7 @@ import java.util.Iterator;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
-public final class WrappedSubVector extends AWrappedVector<AVector> {
+public final class WrappedSubVector extends ASizedVector {
 	private static final long serialVersionUID = 2323553136938665228L;
 
 	private final AVector wrapped;
@@ -13,6 +13,7 @@ public final class WrappedSubVector extends AWrappedVector<AVector> {
 	private final int length;
 	
 	public WrappedSubVector(AVector source, int offset, int length) {
+		super(length);
 		if (source instanceof WrappedSubVector) {
 			// avoid stacking WrappedSubVectors by using underlying vector
 			WrappedSubVector v=(WrappedSubVector)source;
@@ -29,11 +30,6 @@ public final class WrappedSubVector extends AWrappedVector<AVector> {
 	@Override 
 	public Iterator<Double> iterator() {
 		return new VectorIterator(wrapped,offset,length);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 	
 	@Override
@@ -101,10 +97,5 @@ public final class WrappedSubVector extends AWrappedVector<AVector> {
 	@Override
 	public WrappedSubVector exactClone() {
 		return new WrappedSubVector(wrapped.exactClone(),offset,length);
-	}
-
-	@Override
-	public AVector getWrappedObject() {
-		return wrapped;
 	}
 }
