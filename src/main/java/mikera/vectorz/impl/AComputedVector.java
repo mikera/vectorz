@@ -9,10 +9,11 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AComputedVector extends AConstrainedVector {
+public abstract class AComputedVector extends ASizedVector {
 
-	@Override
-	public abstract int length();
+	protected AComputedVector(int length) {
+		super(length);
+	}
 
 	@Override
 	public abstract double get(int i);

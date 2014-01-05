@@ -13,21 +13,15 @@ public class RangeVector extends AComputedVector {
 	private static final long serialVersionUID = 2068299118332621781L;
 
 	private final int start;
-	private final int length;
 	
 	private RangeVector(int start, int length) {
+		super(length);
 		this.start=start;
-		this.length=length;
 	}
 	
 	public static RangeVector create(int start, int length) {
 		if (length<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(length));
 		return new RangeVector(start,length);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override
