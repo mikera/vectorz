@@ -40,6 +40,16 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return scalar.isBoolean();
+	}
+	
+	@Override
+	public boolean isZero() {
+		return scalar.isZero();
+	}
+	
+	@Override
 	public double unsafeGet(int i) {
 		return scalar.get();
 	}
@@ -48,6 +58,21 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	public void set(int i, double value) {
 		if (i!=0) throw new IndexOutOfBoundsException();
 		scalar.set(value);
+	}
+	
+	@Override
+	public double elementSum() {
+		return scalar.get();
+	}
+	
+	@Override
+	public double elementMax(){
+		return scalar.get();
+	}
+	
+	@Override
+	public double elementMin(){
+		return scalar.get();
 	}
 	
 	@Override
