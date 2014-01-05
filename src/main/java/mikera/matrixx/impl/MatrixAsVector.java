@@ -26,11 +26,6 @@ public class MatrixAsVector extends AMatrixViewVector {
 	}
 
 	@Override
-	public int length() {
-		return length;
-	}
-	
-	@Override
 	public double get(int i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return source.unsafeGet(i/columns, i%columns);

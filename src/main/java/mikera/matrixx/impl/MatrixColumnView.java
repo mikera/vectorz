@@ -17,11 +17,6 @@ public class MatrixColumnView extends AMatrixViewVector {
 	}
 
 	@Override
-	public int length() {
-		return length;
-	}
-
-	@Override
 	public double get(int i) {
 		return source.get(i, column);
 	}

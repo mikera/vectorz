@@ -17,11 +17,6 @@ public class MatrixRowView extends AMatrixViewVector {
 	}
 
 	@Override
-	public int length() {
-		return source.columnCount();
-	}
-
-	@Override
 	public double get(int i) {
 		return source.get(row, i);
 	}
