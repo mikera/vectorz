@@ -87,5 +87,18 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 			dest.unsafeSet(i,source.dotProduct(data, offset+ i*cols));
 		}
 	}
+	
+	@Override
+	public void add(AVector v) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+
+		for (int i=0; i<rc; i++) {
+			v.addToArray(data, offset+i*cc);
+		}		
+	}
 
 }
