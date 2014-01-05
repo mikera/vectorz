@@ -10,13 +10,12 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public class IndexVector extends AConstrainedVector {
+public class IndexVector extends ASizedVector {
 	private final Index index; 
-	private final int length;
 	
 	private IndexVector(Index index) {
+		super(index.length());
 		this.index=index;
-		length=index.length();
 	}
 
 	public static IndexVector of(int... values) {
@@ -29,11 +28,6 @@ public class IndexVector extends AConstrainedVector {
 	
 	public static IndexVector wrap(Index a) {
 		return new IndexVector(a);		
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override
@@ -60,6 +54,16 @@ public class IndexVector extends AConstrainedVector {
 	public void unsafeSet(int i, double value) {
 		int v=(int)value;
 		index.set(i, v);
+	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return true;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return false;
 	}
 	
 	@Override

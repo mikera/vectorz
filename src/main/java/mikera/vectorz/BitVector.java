@@ -17,27 +17,13 @@ public final class BitVector extends ABitVector {
 	public static final double BIT_ON=1.0;
 	public static final double BIT_OFF=0.0;
 	public static final double BIT_THRESHOLD=0.0;
-
-	private final int length;
+	
 	private final long[] data;
 	
 	public BitVector(int length) {
-		this.length=length;
+		super(length);
 		data=new long[requiredArraySize(length)];
 		
-	}
-	
-	private int requiredArraySize(int length) {
-		assert(length>=0);
-		return (length+63)/64;
-	}
-	
-	public static BitVector createLength(int length) {
-		return new BitVector(length);
-	}
-	
-	public static BitVector create(AVector source) {
-		return new BitVector(source);
 	}
 
 	private BitVector(AVector source) {
@@ -50,13 +36,22 @@ public final class BitVector extends ABitVector {
 	}
 
 	private BitVector(long[] data, int length) {
-		this.length=length;
+		super(length);
 		this.data=data;
 	}
-
-	@Override
-	public int length() {
-		return length;
+	
+	
+	private int requiredArraySize(int length) {
+		assert(length>=0);
+		return (length+63)/64;
+	}
+	
+	public static BitVector createLength(int length) {
+		return new BitVector(length);
+	}
+	
+	public static BitVector create(AVector source) {
+		return new BitVector(source);
 	}
 	
 	private final boolean getBit(int i) {
