@@ -16,12 +16,11 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class ImmutableVector extends AVector {
+public class ImmutableVector extends ASizedVector {
 	private static final long serialVersionUID = -3679147880242779555L;
 
 	private double[] data;
 	public int offset;
-	public int length;
 		
 	private ImmutableVector(double[] data) {
 		this(data,0,data.length);
@@ -32,8 +31,8 @@ public class ImmutableVector extends AVector {
 	}
 	
 	private ImmutableVector(double[] data, int offset, int length) {
+		super(length);
 		this.data=data;
-		this.length=length;
 		this.offset=offset;
 	}
 	
@@ -167,11 +166,6 @@ public class ImmutableVector extends AVector {
 	@Override
 	public void addAt(int i, double v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));		
-	}
-
-	@Override
-	public int length() {
-		return length;
 	}
 	
 	@Override
