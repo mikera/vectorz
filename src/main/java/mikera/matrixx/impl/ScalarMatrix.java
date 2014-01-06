@@ -7,12 +7,12 @@ import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Scalar matrix class - i.e. multiplies every component by a constant factor
+ * Immutable scalar matrix class - i.e. multiplies every component by a constant factor
  * @author Mike
  */
 public class ScalarMatrix extends ADiagonalMatrix {
 	
-	private double scale;
+	private final double scale;
 
 	public ScalarMatrix(int dimensions, double scale) {
 		super(dimensions);
