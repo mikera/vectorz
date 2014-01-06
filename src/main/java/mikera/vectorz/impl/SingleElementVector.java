@@ -6,10 +6,9 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
-import mikera.vectorz.util.VectorzException;
 
 /**
- * A sparse mutable vector that has a only one element that can be non-zero.
+ * A sparse immutable vector that has a only one element that can be non-zero.
  * All other components are forced to remain at zero, setting them to a non-zero value results in an exception.
  * @author Mike
  *
@@ -17,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
 @SuppressWarnings("serial")
 public final class SingleElementVector extends ASparseVector {
 	private final int index;
-	private double value;
+	private final double value;
 	
 	public SingleElementVector(int componentIndex, int dimensions) {
 		this(componentIndex,dimensions,0.0);
@@ -62,35 +61,20 @@ public final class SingleElementVector extends ASparseVector {
 		return value*value;
 	}
 	
-	@Override 
-	public void square() {
-		value=value*value;
-	}
-	
-	@Override
-	public double normalise() {
-		double ret=value;
-		if (value>0) {
-			value=1.0;
-		} else if (value<0) {
-			value=-1.0;
-		} 
-		return ret;
-	}
-	
 	@Override
 	public boolean isFullyMutable() {
-		return (length<=1);
+		return false;
 	}
+	
+	@Override
+	public boolean isMutable() {
+		return false;
+	}
+	
 	
 	@Override
 	public boolean isElementConstrained() {
-		return (length>1);
-	}
-	
-	@Override
-	public void multiply(double factor) {
-		value*=factor;
+		return true;
 	}
 	
 	@Override
@@ -112,12 +96,7 @@ public final class SingleElementVector extends ASparseVector {
 
 	@Override
 	public void set(int i, double value) {
-		if(!((i>=0)&&(i<length))) throw new IndexOutOfBoundsException();
-		if (i==index) {
-			this.value=value;
-		} else { 
-			if (value!=0.0) throw new VectorzException("SingleElementVector not mutable at position: "+i);
-		}
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
