@@ -9,6 +9,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public final class Matrix11 extends APrimitiveMatrix {
+	private static final long serialVersionUID = -1961422159148368299L;
+
 	private double value;
 	
 	public Matrix11() {

@@ -17,6 +17,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public class VectorMatrixMN extends AVectorMatrix<AVector> {
+	private static final long serialVersionUID = -3660730676103956050L;
+
 	protected int rowCount;	
 	protected final int columnCount;	
 	protected AVector[] rows;

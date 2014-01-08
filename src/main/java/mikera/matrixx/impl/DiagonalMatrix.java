@@ -15,6 +15,8 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 public final class DiagonalMatrix extends ADiagonalMatrix {
+	private static final long serialVersionUID = -6721785163444613243L;
+
 	final double[] data;
 	
 	public DiagonalMatrix(int dimensions) {

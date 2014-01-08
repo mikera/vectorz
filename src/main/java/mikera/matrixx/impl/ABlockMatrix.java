@@ -9,6 +9,8 @@ import mikera.matrixx.AMatrix;
  *
  */
 public abstract class ABlockMatrix extends AMatrix {
+	private static final long serialVersionUID = 5047577000801031158L;
+
 	public abstract AMatrix getBlock(int rowBlock, int colBlock);
 	
 	public abstract int getBlockColumnCount(int colBlock);

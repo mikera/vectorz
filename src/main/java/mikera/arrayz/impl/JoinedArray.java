@@ -5,6 +5,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
 public class JoinedArray extends AbstractArray<INDArray> {
+	private static final long serialVersionUID = 4929988077055768422L;
 
 	final int[] shape;
 	final INDArray left;

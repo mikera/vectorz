@@ -7,6 +7,8 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public class VectorIndexScalar extends AScalar {
+	private static final long serialVersionUID = -5999714886554631904L;
+
 	final AVector vector;
 	final int index;
 	

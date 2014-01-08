@@ -12,6 +12,8 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public class MatrixIndexScalar extends AScalar {
+	private static final long serialVersionUID = -4023138233113585392L;
+
 	final AMatrix matrix;
 	final int row;
 	final int col;

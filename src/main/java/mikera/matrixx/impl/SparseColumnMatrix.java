@@ -21,6 +21,8 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public class SparseColumnMatrix extends ARectangularMatrix implements ISparse {
+	private static final long serialVersionUID = -5994473197711276621L;
+
 	protected final AVector[] columns;
 
 	public SparseColumnMatrix(AVector... columns) {

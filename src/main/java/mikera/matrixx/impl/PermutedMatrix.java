@@ -13,6 +13,8 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 public class PermutedMatrix extends ARectangularMatrix {
+	private static final long serialVersionUID = -4237549899714650293L;
+
 	private final AMatrix source;
 	private final Index rowPermutations;
 	private final Index columnPermutations;

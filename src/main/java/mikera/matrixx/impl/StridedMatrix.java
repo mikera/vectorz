@@ -13,6 +13,8 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class StridedMatrix extends AStridedMatrix {
+	private static final long serialVersionUID = -7928115802247422177L;
+
 	private final int rowStride;
 	private final int colStride;
 	private final int offset;

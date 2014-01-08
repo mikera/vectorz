@@ -31,7 +31,8 @@ import mikera.vectorz.util.LongArrays;
  * @param <T> The type of array slices
  */
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
-	
+	private static final long serialVersionUID = -958234961396539071L;
+
 	public abstract double get();
 	
 	public abstract double get(int x);

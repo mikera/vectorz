@@ -15,7 +15,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
-	
+	private static final long serialVersionUID = -7267626771473908891L;
+
 	// Quadtree subcompoents
 	private final AMatrix c00, c01, c10, c11;
 	

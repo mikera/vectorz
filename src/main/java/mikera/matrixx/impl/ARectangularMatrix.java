@@ -10,6 +10,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public abstract class ARectangularMatrix extends AMatrix {
+	private static final long serialVersionUID = 6429003789294676974L;
+
 	protected final int rows;
 	protected final int cols;
 	

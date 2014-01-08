@@ -13,6 +13,8 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  */
 public class RowMatrix extends AMatrix implements IFastRows {
+	private static final long serialVersionUID = 2636365975400418264L;
+
 	private final AVector vector;
 	
 	public RowMatrix(AVector v) {

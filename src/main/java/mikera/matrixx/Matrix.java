@@ -29,7 +29,8 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 public final class Matrix extends ADenseArrayMatrix {
-	
+	private static final long serialVersionUID = -3260581688928230431L;
+
 	private Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
 	}

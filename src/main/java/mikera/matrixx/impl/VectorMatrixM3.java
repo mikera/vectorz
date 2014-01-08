@@ -12,6 +12,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISpecialisedTransform  {
+	private static final long serialVersionUID = -8148184725377519520L;
+
 	private int rowCount;	
 	private Vector3[] rows;
 	

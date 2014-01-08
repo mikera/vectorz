@@ -19,10 +19,12 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public abstract class AVectorMatrix<T extends AVector> extends AMatrix implements IFastRows {
+	private static final long serialVersionUID = -6838429336358726743L;
+
 	/* ================================
 	 * Abstract interface
 	 */
-	
+
 	/**
 	 * Appends a row to this matrix in-place. The row must be of a type allowed by the matrix.
 	 * @param row

@@ -11,6 +11,8 @@ import mikera.vectorz.util.IntArrays;
  *
  */
 public abstract class BaseNDArray extends AbstractArray<INDArray> implements IStridedArray { 
+	private static final long serialVersionUID = -4221161437647016169L;
+
 	protected final int dimensions;
 	protected final int[] shape;
 	protected int offset; // not final, in case we want to do "sliding window" trick :-)

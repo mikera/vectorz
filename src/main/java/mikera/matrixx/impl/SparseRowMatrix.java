@@ -21,6 +21,7 @@ import mikera.vectorz.Vectorz;
  *
  */
 public class SparseRowMatrix extends VectorMatrixMN implements ISparse {
+	private static final long serialVersionUID = 8646257152425415773L;
 
 	protected SparseRowMatrix(AVector... vectors) {
 		super(vectors);

@@ -11,6 +11,8 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public class BandedMatrix extends ABandedMatrix {
+	private static final long serialVersionUID = -4014060138907872914L;
+
 	private final int minBand;
 	private final int maxBand;
 	

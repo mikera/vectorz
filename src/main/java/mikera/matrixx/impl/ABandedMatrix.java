@@ -20,7 +20,8 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public abstract class ABandedMatrix extends AMatrix implements ISparse {
-	
+	private static final long serialVersionUID = -229314208418131186L;
+
 	@Override
 	public abstract int upperBandwidthLimit();
 	

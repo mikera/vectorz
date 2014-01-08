@@ -11,6 +11,7 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows {
+	private static final long serialVersionUID = -2144964424833585026L;
 
 	protected ADenseArrayMatrix(double[] data, int rows, int cols) {
 		super(data, rows, cols);

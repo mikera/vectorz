@@ -31,6 +31,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public final class NDArray extends BaseNDArray {
+	private static final long serialVersionUID = -262272579159731240L;
 
 	NDArray(int... shape) {
 		super(new double[(int)IntArrays.arrayProduct(shape)],

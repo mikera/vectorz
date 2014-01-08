@@ -16,6 +16,7 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastColumns {
+	private static final long serialVersionUID = 6273459476168581549L;
 	private static final int INSTANCE_COUNT=6;
 	
 	private IdentityMatrix(int dimensions) {

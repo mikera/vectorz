@@ -1,5 +1,6 @@
 package mikera.arrayz;
 
+import java.io.Serializable;
 import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +14,7 @@ import mikera.vectorz.Vector;
  * Interface for general multi-dimensional arrays of doubles
  * @author Mike
  */
-public interface INDArray extends Cloneable {
+public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the dimensionality of the array (number of dimensions in the array shape)

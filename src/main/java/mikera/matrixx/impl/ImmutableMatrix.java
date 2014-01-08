@@ -19,6 +19,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public final class ImmutableMatrix extends ARectangularMatrix {
+	private static final long serialVersionUID = 2848013010449128820L;
+
 	private double[] data;
 	
 	private ImmutableMatrix(int rows, int cols, double[] data) {

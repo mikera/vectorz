@@ -19,6 +19,8 @@ import mikera.vectorz.util.IntArrays;
  *
  */
 public class ImmutableArray extends BaseNDArray {
+	private static final long serialVersionUID = 2078025371733533775L;
+
 	private ImmutableArray(int dims, int[] shape, int[] strides) {
 		this(new double[(int)IntArrays.arrayProduct(shape)],shape.length,0,shape,strides);
 	}

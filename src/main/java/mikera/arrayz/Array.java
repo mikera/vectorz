@@ -32,6 +32,8 @@ import mikera.vectorz.util.VectorzException;
  * 
  */
 public final class Array extends AbstractArray<INDArray> implements IStridedArray {
+	private static final long serialVersionUID = -8636720562647069034L;
+
 	private final int dimensions;
 	private final int[] shape;
 	private final int[] strides;

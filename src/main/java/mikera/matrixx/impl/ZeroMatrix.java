@@ -16,6 +16,8 @@ import mikera.vectorz.util.ErrorMessages;
  * Lightweight immutable zero matrix class
  */
 public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns {
+	private static final long serialVersionUID = 875833013123277805L;
+
 	@Override public 
 	boolean isFullyMutable() {
 		return false;

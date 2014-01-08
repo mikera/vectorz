@@ -14,6 +14,8 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class PermutationMatrix extends ABooleanMatrix implements IFastRows, IFastColumns, ISparse  {
+	private static final long serialVersionUID = 8098287603508120428L;
+
 	private final Index perm;
 	private final int size;
 	

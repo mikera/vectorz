@@ -3,6 +3,8 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 
 public abstract class ABooleanMatrix extends AMatrix {
+	private static final long serialVersionUID = 1599922421314660198L;
+
 	@Override
 	public boolean isBoolean() {
 		return true;

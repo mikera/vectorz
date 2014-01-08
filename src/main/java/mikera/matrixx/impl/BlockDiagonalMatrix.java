@@ -15,6 +15,8 @@ import mikera.vectorz.util.IntArrays;
  *
  */
 public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
+	private static final long serialVersionUID = -8569790012901451992L;
+
 	private final AMatrix[] mats;
 	private final int[] sizes;
 	private final int[] offsets;

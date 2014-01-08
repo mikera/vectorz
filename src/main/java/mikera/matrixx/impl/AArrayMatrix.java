@@ -11,6 +11,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public abstract class AArrayMatrix extends ARectangularMatrix {
+	private static final long serialVersionUID = 7423448070352281717L;
+
 	public final double[] data;
 
 	protected AArrayMatrix(double[] data, int rows, int cols ) {

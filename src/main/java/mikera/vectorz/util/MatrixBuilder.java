@@ -11,6 +11,8 @@ import mikera.vectorz.Vectorz;
  * @author Mike
  */
 public class MatrixBuilder extends AVectorMatrix<AVector> {
+	private static final long serialVersionUID = -5875133722867126330L;
+
 	private AVector[] data=new AVector[4];
 	
 	int length=0;

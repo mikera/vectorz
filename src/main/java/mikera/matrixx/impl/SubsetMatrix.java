@@ -14,6 +14,8 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  */
 public final class SubsetMatrix extends ABooleanMatrix implements ISparse, IFastRows {
+	private static final long serialVersionUID = 4937375232646236833L;
+
 	private int inputDims;
 	private Index components;
 

@@ -52,6 +52,7 @@ import mikera.vectorz.util.VectorzException;
 public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix {
 	// ==============================================
 	// Abstract interface
+	private static final long serialVersionUID = 4854869374064155441L;
 
 	/**
 	 * Returns the number of rows in the matrix

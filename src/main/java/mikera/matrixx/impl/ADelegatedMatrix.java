@@ -11,6 +11,7 @@ import mikera.vectorz.Op;
  * @author Mike
  */
 abstract class ADelegatedMatrix extends AMatrix {
+	private static final long serialVersionUID = 7424713597425793457L;
 
 	protected final AMatrix source;
 	

@@ -11,7 +11,8 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  */
 public class ScalarMatrix extends ADiagonalMatrix {
-	
+	private static final long serialVersionUID = 3777724453035425881L;
+
 	private final double scale;
 
 	public ScalarMatrix(int dimensions, double scale) {

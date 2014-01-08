@@ -1,6 +1,5 @@
 package mikera.vectorz;
 
-import java.io.Serializable;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +40,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AVector extends AbstractArray<Double> implements IVector, Comparable<AVector>, Serializable {
+public abstract class AVector extends AbstractArray<Double> implements IVector, Comparable<AVector> {
 	
 	// ================================================
 	// Abstract interface

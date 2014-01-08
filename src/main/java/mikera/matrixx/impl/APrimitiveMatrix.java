@@ -8,7 +8,8 @@ import mikera.matrixx.AMatrix;
  *
  */
 public abstract class APrimitiveMatrix extends AMatrix {
-	
+	private static final long serialVersionUID = -6061660451592522674L;
+
 	@Override
 	public boolean isSquare() {
 		return true;

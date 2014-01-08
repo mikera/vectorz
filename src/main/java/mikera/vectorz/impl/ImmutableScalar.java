@@ -14,6 +14,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public final class ImmutableScalar extends AScalar {
+	private static final long serialVersionUID = 5798046998232751158L;
+
 	public static final ImmutableScalar ONE = new ImmutableScalar(1.0);
 	public static final ImmutableScalar ZERO = new ImmutableScalar(0.0);
 	

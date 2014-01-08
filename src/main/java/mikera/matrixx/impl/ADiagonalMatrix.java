@@ -18,6 +18,8 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public abstract class ADiagonalMatrix extends ASingleBandMatrix {
+	private static final long serialVersionUID = -6770867175103162837L;
+
 	protected final int dimensions;
 	
 	public ADiagonalMatrix(int dimensions) {

@@ -13,6 +13,7 @@ import mikera.vectorz.impl.ZeroVector;
  *
  */
 public abstract class ASingleBandMatrix extends ABandedMatrix {
+	private static final long serialVersionUID = -213068993524224396L;
 
 	/**
 	 * Override to specify which band of the matrix is nonzero

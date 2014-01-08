@@ -10,6 +10,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public final class BroadcastVectorMatrix extends ARectangularMatrix implements IFastRows {
+	private static final long serialVersionUID = 8586152718389477791L;
+
 	private final AVector vector;
 	
 	private BroadcastVectorMatrix(AVector v, int rows) {

@@ -8,6 +8,8 @@ import mikera.vectorz.impl.ImmutableScalar;
  * @author Mike
  */
 public final class Scalar extends AScalar {
+	private static final long serialVersionUID = 8975126510371645366L;
+
 	public double value;
 
 	public Scalar(double value) {

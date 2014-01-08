@@ -22,6 +22,8 @@ import mikera.vectorz.util.VectorzException;
  * @param <T>
  */
 public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
+	private static final long serialVersionUID = -2343678749417219155L;
+
 	private final int[] shape;
 	private final long[] longShape;
 	private final T[] slices;

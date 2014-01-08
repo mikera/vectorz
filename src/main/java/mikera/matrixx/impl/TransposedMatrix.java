@@ -12,6 +12,7 @@ import mikera.vectorz.AVector;
  * 
  */
 public class TransposedMatrix extends ADelegatedMatrix {
+	private static final long serialVersionUID = 4350297037540121584L;
 
 	private TransposedMatrix(AMatrix source) {
 		super(source);

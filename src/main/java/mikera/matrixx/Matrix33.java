@@ -14,6 +14,8 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTransform {
+	private static final long serialVersionUID = 238200620223028897L;
+
 	public double m00,m01,m02,
 	              m10,m11,m12,
 	              m20,m21,m22;
