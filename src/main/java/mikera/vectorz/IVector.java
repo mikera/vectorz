@@ -12,6 +12,13 @@ import mikera.arrayz.INDArray;
  */
 public interface IVector extends INDArray {
 
+	/**
+	 * Returns the length of a vector, in terms of the number of elements.
+	 * 
+	 * For Euclidean length, use magnitude() instead
+	 * 
+	 * @return
+	 */
 	public int length();
 
 	public double get(int i);

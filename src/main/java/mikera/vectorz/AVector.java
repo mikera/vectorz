@@ -45,6 +45,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	// ================================================
 	// Abstract interface
+
 	@Override
 	public abstract int length();
 
