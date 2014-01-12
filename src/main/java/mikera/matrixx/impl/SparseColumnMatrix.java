@@ -110,6 +110,11 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse {
 		return columns[i];
 	}
 	
+	public void replaceColumn(int i, AVector col) {
+		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
+		columns[i]=col;
+	}
+	
 	@Override
 	public void copyColumnTo(int i, double[] data, int offset) {
 		columns[i].getElements(data, offset);
