@@ -35,7 +35,7 @@ public class SparseMatrix {
 	public static void main(String[] args) {
 		// We want a SparseRowMatrix, because we are going to multiply it with a second dense matrix
 		// This means that a row-oriented sparse format is better for the first matrix
-		SparseRowMatrix m=new SparseRowMatrix(0,SIZE);
+		SparseRowMatrix m=SparseRowMatrix.create(SIZE,SIZE);
 		
 		// First task is to construct the large sparse matrix
 		startTimer();
@@ -46,7 +46,7 @@ public class SparseMatrix {
 				data[j]=Rand.nextDouble();
 			}
 			Index indy=Indexz.createRandomChoice(DSIZE, SIZE);
-			m.appendRow(SparseIndexedVector.create(SIZE, indy, data));
+			m.replaceRow(i,SparseIndexedVector.create(SIZE, indy, data));
 		}
 		
 		printTime("Construct sparse matrix: ");

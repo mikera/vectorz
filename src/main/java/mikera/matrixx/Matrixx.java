@@ -76,12 +76,7 @@ public class Matrixx {
 	 * Creates a sparse matrix from the given matrix, ignoring zeros
 	 */
 	public static AMatrix createSparse(AMatrix m) {
-		int rc = m.rowCount();
-		AVector[] rows = new AVector[rc];
-		for (int i = 0; i < rc; i++) {
-			rows[i] = Vectorz.createSparse(m.getRow(i));
-		}
-		return SparseRowMatrix.wrap(rows);
+		return SparseRowMatrix.create(m);
 	}
 	
 	/**
@@ -100,12 +95,7 @@ public class Matrixx {
 	 * Creates a SparseRowMatrix matrix from the given matrix, ignoring zeros
 	 */
 	public static SparseRowMatrix createSparseRows(AMatrix m) {
-		int rc = m.rowCount();
-		AVector[] rows = new AVector[rc];
-		for (int i = 0; i < rc; i++) {
-			rows[i] = Vectorz.createSparse(m.getRow(i));
-		}
-		return SparseRowMatrix.wrap(rows);
+		return SparseRowMatrix.create(m);
 	}
 
 	/**

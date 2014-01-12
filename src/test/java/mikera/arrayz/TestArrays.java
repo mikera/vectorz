@@ -533,6 +533,7 @@ public class TestArrays {
 
 	public void testArray(INDArray a) {
 		a.validate();
+		testTranspose(a);
 		testAsVector(a);
 		testToArray(a);
 		testMultiply(a);
@@ -545,7 +546,6 @@ public class TestArrays {
 		testEquals(a);
 		testIndexedAccess(a);
 		testMathsFunctions(a);
-		testTranspose(a);
 		testSetElements(a);
 		testGetElements(a);
 		testBroadcast(a);

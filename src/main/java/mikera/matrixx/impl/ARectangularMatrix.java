@@ -19,7 +19,7 @@ public abstract class ARectangularMatrix extends AMatrix {
 		this.rows=rows;
 		this.cols=cols;
 	}
-	
+		
 	@Override
 	public final int rowCount() {
 		return rows;
