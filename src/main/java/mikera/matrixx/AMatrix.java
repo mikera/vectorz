@@ -1714,14 +1714,27 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 	
+	/**
+	 * Sets a row in a matrix. 
+	 * 
+	 * @param i
+	 * @param row
+	 */
 	public void setRow(int i, AVector row) {
 		getRow(i).set(row);
 	}
 	
+	/**
+	 * Sets a column in a matrix. 
+	 * 
+	 * @param i
+	 * @param row
+	 */
 	public void setColumn(int i, AVector col) {
 		getColumn(i).set(col);
 	}
 
+	@Override
 	public abstract AMatrix exactClone();
 	
 	@Override
