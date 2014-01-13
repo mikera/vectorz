@@ -448,6 +448,7 @@ public class Matrixx {
 	 * @param ednString
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static AMatrix parse(String ednString) {
 		Parser p = Parsers.newParser(getMatrixParserConfig());
 		Parseable ps = Parsers.newParseable(ednString);

@@ -6,7 +6,6 @@ import mikera.vectorz.Vector;
 
 import org.junit.Test;
 
-@SuppressWarnings("unused")
 public class TestFFT {
 	@Test public void testFFT() {
 		double[] d=new double[2];

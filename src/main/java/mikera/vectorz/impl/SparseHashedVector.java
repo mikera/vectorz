@@ -242,6 +242,7 @@ public class SparseHashedVector extends ASparseVector {
 		return v;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public SparseHashedVector exactClone() {
 		return new SparseHashedVector(length,(HashMap<Integer, Double>) hash.clone());
