@@ -15,5 +15,6 @@ public class TestSparseRowMatrix {
 		
 		m.replaceRow(1, v);
 		assertTrue(v==m.getRow(1)); // identical objects
+		assertEquals(Vector.of(0,2,0),m.getColumn(1));
 	}
 }
