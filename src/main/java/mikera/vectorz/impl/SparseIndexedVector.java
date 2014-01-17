@@ -338,6 +338,24 @@ public class SparseIndexedVector extends ASparseVector {
 			v.unsafeSet(offset+index.data[i],data[i]);
 		}	
 	}
+	
+	@Override
+	public void set(AVector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		
+		int nz=(int) v.nonZeroCount();
+		data=new double[nz];
+		index=Index.createLength(nz);
+		int di=0;
+		for (int i=0; i<length; i++) {
+			double val=v.unsafeGet(i);
+			if (val!=0) {
+				data[di]=val;
+				index.set(di, i);
+				di++;
+			}
+		}
+	}
 
 	@Override
 	public void set(int i, double value) {
