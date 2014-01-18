@@ -270,5 +270,4 @@ public class AxisVector extends ASparseVector {
 		return axis;
 	}
 
-
 }

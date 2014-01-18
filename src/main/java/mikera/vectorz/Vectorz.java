@@ -166,7 +166,7 @@ public class Vectorz {
 		int len=v.length();
 		long n=v.nonZeroCount();
 		
-		if ((n<20)||(n>(len/2))) {
+		if ((len<20)||(n>(len/2))) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
 		} else if (n<(len/30)) {
 			return SparseHashedVector.create(v);

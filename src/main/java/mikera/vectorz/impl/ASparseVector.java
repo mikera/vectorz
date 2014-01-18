@@ -50,4 +50,31 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 
 	public abstract void add(ASparseVector v);
+	
+	public boolean equals(ASparseVector v) {
+		if (v==this) return true;
+		if (v.length!=length) return false;
+		
+		Index ni=nonSparseIndexes();
+		for (int i=0; i<ni.length(); i++) {
+			int ii=ni.get(i);
+			if (unsafeGet(ii)!=v.unsafeGet(ii)) return false;
+		}
+		
+		Index ri=v.nonSparseIndexes();
+		for (int i=0; i<ri.length(); i++) {
+			int ii=ri.get(i);
+			if (unsafeGet(ii)!=v.unsafeGet(ii)) return false;
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v instanceof ASparseVector) {
+			return equals((ASparseVector)v);
+		}
+		return super.equals(v);
+	}
 }

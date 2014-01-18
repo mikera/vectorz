@@ -426,6 +426,18 @@ public class SparseHashedVector extends ASparseVector {
 	public boolean includesIndex(int i) {
 		return hash.containsKey(i);
 	}
+
+	@Override
+	public void add(ASparseVector v) {
+		Index ind=v.nonSparseIndexes();
+		int n=ind.length();
+		for (int i=0; i<n; i++) {
+			int ii=ind.get(i);
+			addAt(ii,v.unsafeGet(ii));
+		}
+	}
+
+	
 	
 	@Override
 	public Vector clone() {
@@ -455,15 +467,4 @@ public class SparseHashedVector extends ASparseVector {
 		}
 		super.validate();
 	}
-
-	@Override
-	public void add(ASparseVector v) {
-		Index ind=v.nonSparseIndexes();
-		int n=ind.length();
-		for (int i=0; i<n; i++) {
-			int ii=ind.get(i);
-			addAt(ii,v.unsafeGet(ii));
-		}
-	}
-
 }
