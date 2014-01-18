@@ -230,6 +230,7 @@ public abstract class AArrayVector extends AStridedVector {
 
 	@Override
 	public void addProduct(AVector a, AVector b, double factor) {
+		if (factor==0) return;
 		int len = length();
 		assert (len == a.length());
 		assert (len == b.length());
@@ -245,6 +246,7 @@ public abstract class AArrayVector extends AStridedVector {
 	@Override
 	public void addMultipleToArray(double factor, int offset, double[] array,
 			int arrayOffset, int length) {
+		if (factor==0) return;
 		double[] data = getArray();
 		int dataOffset = getArrayOffset() + offset;
 
@@ -256,6 +258,7 @@ public abstract class AArrayVector extends AStridedVector {
 	@Override
 	public void addProductToArray(double factor, int offset, AVector other,
 			int otherOffset, double[] array, int arrayOffset, int length) {
+		if (factor==0) return;
 		if (other instanceof AArrayVector) {
 			addProductToArray(factor, offset, (AArrayVector) other,
 					otherOffset, array, arrayOffset, length);
@@ -275,6 +278,7 @@ public abstract class AArrayVector extends AStridedVector {
 	public void addProductToArray(double factor, int offset,
 			AArrayVector other, int otherOffset, double[] array,
 			int arrayOffset, int length) {
+		if (factor==0) return;
 		assert (offset >= 0);
 		assert (offset + length <= length());
 		double[] otherArray = other.getArray();
