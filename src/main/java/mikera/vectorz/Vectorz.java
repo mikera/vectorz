@@ -140,7 +140,7 @@ public class Vectorz {
 		int len=v.length();
 		long n=v.nonZeroCount();
 		if (n==0) {
-			return ZeroVector.create(len);
+			return createZeroVector(len);
 		} else if (n==1) {
 			for (int i=0; i<len; i++) {
 				double val=v.unsafeGet(i);
@@ -154,6 +154,19 @@ public class Vectorz {
 			}
 			throw new VectorzException("non-zero element not found!!");
 		} else if (n>(len/2)) {
+			return Vector.create(v); // not enough sparsity to make worthwhile
+		} else if (n<(len/30)) {
+			return SparseHashedVector.create(v);
+		} else {
+			return SparseIndexedVector.create(v);
+		}
+	}
+	
+	public static AVector createSparseMutable(AVector v) {
+		int len=v.length();
+		long n=v.nonZeroCount();
+		
+		if ((n<20)||(n>(len/2))) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
 		} else if (n<(len/30)) {
 			return SparseHashedVector.create(v);

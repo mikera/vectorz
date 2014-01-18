@@ -68,6 +68,12 @@ public final class Vector0 extends APrimitiveVector {
 		// i.e is immutable
 		return false;
 	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		// i.e there are no immutable elements!
+		return true;
+	}
 
 	@Override
 	public int hashCode() {

@@ -8,6 +8,7 @@ import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -508,6 +509,11 @@ public class SparseIndexedVector extends ASparseVector {
 			v.unsafeSet(index.data[i],data[i]);
 		}	
 		return v;
+	}
+	
+	@Override
+	public SparseIndexedVector sparseClone() {
+		return exactClone();
 	}
 	
 	@Override

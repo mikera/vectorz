@@ -566,6 +566,10 @@ public class TestVectors {
 	
 	private void testSparseOps(AVector v) {
 		assertTrue(v.nonZeroCount()<=v.nonSparseIndexes().length());
+		
+		AVector sc=v.sparseClone();
+		assertTrue("clone = "+sc.getClass(), sc.isFullyMutable());
+		assertEquals(sc,v);
 	}
 
 	private void testNormalise(AVector v) {

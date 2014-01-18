@@ -1085,6 +1085,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Vector.create(this);
 	}
 	
+	/**
+	 * Clones the vector into a sparse mutable format
+	 * @return
+	 */
+	public AVector sparseClone() {
+		return Vectorz.createSparseMutable(this);
+	}
+	
 	@Override
 	public final AVector asVector() {
 		return this;

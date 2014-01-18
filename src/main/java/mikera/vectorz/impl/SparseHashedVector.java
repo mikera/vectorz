@@ -441,6 +441,11 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
+	public SparseHashedVector sparseClone() {
+		return exactClone();
+	}
+	
+	@Override
 	public void validate() {
 		if (length<=0) throw new VectorzException("Illegal length: "+length);
 		for (Entry<Integer, Double> e:hash.entrySet()) {

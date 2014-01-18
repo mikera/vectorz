@@ -10,7 +10,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Specialised immuatble vector containing nothing but zeros.
+ * Specialised immutable vector containing nothing but zeros.
  * 
  * @author Mike
  */
@@ -24,7 +24,7 @@ public final class ZeroVector extends ASparseVector {
 	private static ZeroVector last=new ZeroVector(ZERO_VECTOR_CACHE);
 	
 	static {
-		for (int i=0; i<ZERO_VECTOR_CACHE; i++) {
+		for (int i=1; i<ZERO_VECTOR_CACHE; i++) {
 			ZERO_VECTORS[i]=new ZeroVector(i);
 		}
 	}
@@ -34,6 +34,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	public static ZeroVector create(int dimensions) {
+		if (dimensions==0) throw new IllegalArgumentException("Can't create length 0 ZeroVector. Use Vector0 instead");
 		ZeroVector zv=tryCreate(dimensions);
 		if (zv!=null) return zv;
 		zv= new ZeroVector(dimensions);
@@ -159,6 +160,11 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return false;
+	}
+	
+	@Override
 	public boolean isUnitLengthVector() {
 		return false;
 	}
@@ -215,10 +221,6 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	public ZeroVector join(ZeroVector a) {
-		if (length==0) return a;
-		
-		int alen=a.length;
-		if (alen==0) return this;
 		return ZeroVector.create(length+a.length);
 	}
 	
