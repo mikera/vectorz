@@ -9,6 +9,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -100,6 +101,23 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public long nonZeroCount() {
 		return hash.size();
+	}
+	
+	@Override
+	public void multiply (double d) {
+		if (d==1.0) return;
+		if (d==0.0) {
+			hash=new HashMap<Integer, Double>();
+			return;
+		}
+		for (Integer i: hash.keySet()) {
+			double r=hash.get(i)*d;
+			if (r!=0) {
+				hash.put(i, r);
+			} else {
+				hash.remove(i);
+			}
+		}
 	}
 	
 	@Override

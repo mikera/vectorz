@@ -127,7 +127,6 @@ public class SparseIndexedVector extends ASparseVector {
 		DoubleArrays.multiply(data, d);
 	}
 	
-	
 	@Override
 	public void multiply (AVector v) {
 		if (v instanceof AArrayVector) {
