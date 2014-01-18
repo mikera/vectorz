@@ -343,6 +343,26 @@ public abstract class AArrayVector extends AStridedVector {
 	public double elementMin(){
 		return DoubleArrays.elementMin(getArray(), getArrayOffset(), length());
 	}
+	
+	@Override
+	public double maxAbsElement(){
+		return DoubleArrays.elementMaxAbs(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
+	public int minElementIndex(){
+		return DoubleArrays.elementMinIndex(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
+	public int maxElementIndex(){
+		return DoubleArrays.elementMaxIndex(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
+	public int maxAbsElementIndex(){
+		return DoubleArrays.elementMaxAbsIndex(getArray(), getArrayOffset(), length());
+	}
 
 	@Override
 	public long nonZeroCount() {

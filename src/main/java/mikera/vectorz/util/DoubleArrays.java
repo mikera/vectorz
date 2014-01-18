@@ -40,12 +40,70 @@ public final class DoubleArrays {
 		return result;
 	}
 	
+	public static double elementMaxAbs(double[] data, int offset, int length) {
+		double result = 0.0;
+		for (int i=0; i<length; i++) {
+			double v=Math.abs(data[offset+i]);
+			if (v>result) {
+				result=v;
+			}
+		}
+		return result;
+	}
+	
 	public static final double elementMin(double[] data) {
 		return elementMin(data,0,data.length);
 	}
 	
 	public static final double elementMax(double[] data) {
 		return elementMax(data,0,data.length);
+	}
+	
+	public static final double elementMaxAbs(double[] data) {
+		return elementMaxAbs(data,0,data.length);
+	}
+	
+
+	public static int elementMaxIndex(double[] data, int offset, int length) {
+		if (length==0) throw new IllegalArgumentException("Can't get max index for length 0 array");
+		double result = data[offset];
+		int ind=0;
+		for (int i=1; i<length; i++) {
+			double v=data[offset+i];
+			if (v>result) {
+				ind=i;
+				result=v;
+			}
+		}
+		return ind;
+	}
+
+	public static int elementMinIndex(double[] data, int offset, int length) {
+		if (length==0) throw new IllegalArgumentException("Can't get min index for length 0 array");
+		double result = data[offset];
+		int ind=0;
+		for (int i=1; i<length; i++) {
+			double v=data[offset+i];
+			if (v<result) {
+				ind=i;
+				result=v;
+			}
+		}
+		return ind;
+	}
+
+	public static int elementMaxAbsIndex(double[] data, int offset, int length) {
+		if (length==0) throw new IllegalArgumentException("Can't get max abs index for length 0 array");
+		double result = Math.abs(data[offset]);
+		int ind=0;
+		for (int i=1; i<length; i++) {
+			double v=Math.abs(data[offset+i]);
+			if (v>result) {
+				ind=i;
+				result=v;
+			}
+		}
+		return ind;
 	}
 	
 	public static double elementSquaredSum(double[] data) {
@@ -413,6 +471,5 @@ public final class DoubleArrays {
 		System.arraycopy(data, start, rs, 0, length);
 		return rs;
 	}
-
 
 }
