@@ -104,6 +104,36 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementMax(){
+		return 0.0;
+	}
+	
+	@Override
+	public double elementMin(){
+		return 0.0;
+	}
+	
+	@Override
+	public int maxElementIndex(){
+		return 0;
+	}
+	
+	@Override
+	public double maxAbsElement(){
+		return 09.0;
+	}
+	
+	@Override
+	public int maxAbsElementIndex(){
+		return 0;
+	}
+	
+	@Override
+	public int minElementIndex(){
+		return 0;
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return 0;
 	}

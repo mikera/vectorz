@@ -88,6 +88,11 @@ public class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public double maxAbsElement(){
+		return 1.0;
+	}
+	
+	@Override
 	public int maxAbsElementIndex(){
 		return axis;
 	}
