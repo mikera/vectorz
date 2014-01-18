@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -226,6 +227,41 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	public AMatrix clone() {
 		if (this.elementCount()<SPARSE_ELEMENT_THRESHOLD) return super.clone();
 		return exactClone();
+	}
+	
+	@Override
+	public boolean equals(AMatrix m) {
+		if (m instanceof SparseRowMatrix) {
+			return equals((SparseRowMatrix)m);
+		}
+		return super.equals(m);
+	}
+	
+	public boolean equals(SparseRowMatrix m) {
+		if (m==this) return true;
+		if ((this.rows!=m.rows)||(this.cols!=m.cols)) return false;
+		HashSet<Integer> checked=new HashSet<Integer>();
+		
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			Integer i=e.getKey();
+			AVector v=e.getValue();
+			AVector ov=m.data.get(i);
+			if (ov==null) {
+				if (!v.isZero()) return false;
+			} else {
+				if (!v.equals(ov)) return false;
+				checked.add(i);
+			}
+		}
+		
+		// check remaining rows from m, these must be zero for equality to hold
+		for (Entry<Integer,AVector> e:m.data.entrySet()) {
+			Integer i=e.getKey();
+			if (checked.contains(i)) continue; // already checked
+			AVector v=e.getValue();
+			if (!v.isZero()) return false;
+		}
+		return true;
 	}
 
 }
