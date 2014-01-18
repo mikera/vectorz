@@ -267,6 +267,7 @@ public class TestVectors {
 	private void testMinMax(AVector v) {
 		if (v.length()==0) return;
 		assertEquals(v.maxAbsElement(),Math.abs(v.get(v.maxAbsElementIndex())),0.0);
+		assertEquals(v.maxElement(),v.get(v.maxElementIndex()),0.0);
 	}
 	
 	private void testAddMultipleIndexed(AVector v) {
