@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.IndexVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Class to represent a mutable list of integer indexes, typically used for indexing into
@@ -56,6 +61,16 @@ public final class Index extends AIndex {
 		al.addAll(keySet);
 		Collections.sort(al);
 		return create(al);
+	}
+	
+	public static Index createSorted(SortedSet<Integer> keySet) {
+		int[] rs=new int[keySet.size()];
+		int i=0;
+		for (Integer x:keySet) {
+			rs[i++]=x;
+		}
+		if (i!=rs.length) throw new VectorzException(ErrorMessages.impossible());
+		return new Index(rs);
 	}
 	
 	/**
@@ -171,6 +186,38 @@ public final class Index extends AIndex {
 		return true;
 	}
 	
+	public Index includeSorted(Set<Integer> is) {
+		TreeSet<Integer> ss=new TreeSet<Integer>(this.toSet());
+		for (Integer i:is) {
+			ss.add(i);
+		}
+		return createSorted(ss);
+	}
+	
+	public Index includeSorted(Index ind) {
+		TreeSet<Integer> ss=new TreeSet<Integer>(this.toSet());
+		for (Integer i:ind) {
+			ss.add(i);
+		}
+		return createSorted(ss);
+	}
+	
+	public Set<Integer> toSet() {
+		TreeSet<Integer> ss=new TreeSet<Integer>();
+		for (int i=0; i<data.length; i++) {
+			ss.add(data[i]);
+		}
+		return ss;
+	}
+	
+	public SortedSet<Integer> toSortedSet() {
+		TreeSet<Integer> ss=new TreeSet<Integer>();
+		for (int i=0; i<data.length; i++) {
+			ss.add(data[i]);
+		}
+		return ss;
+	}
+
 	/**
 	 * Counts the number of swaps required to create this permutation.
 	 * 

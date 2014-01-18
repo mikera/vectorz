@@ -3,6 +3,7 @@ package mikera.indexz;
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import mikera.vectorz.Vector;
 
@@ -37,6 +38,13 @@ public class TestIndexz {
 			hs.add(ind);
 		}
 		assertEquals(24,hs.size());
+	}
+	
+	@Test public void testSetCreate() {
+		Index ind=Index.of(1,3,3,3,5);
+		Set<Integer> s=ind.toSet();
+		assertEquals(3,s.size());
+		assertEquals(Index.createSorted(ind.toSet()),Index.of(1).includeSorted(s));
 	}
 	
 	@Test public void testIntegerChoice() {
