@@ -213,6 +213,20 @@ public abstract class AArrayVector extends AStridedVector {
 			array[i + arrayOffset] += data[i + dataOffset];
 		}
 	}
+	
+	@Override
+	public void addProduct(AVector a, AVector b) {
+		int len = length();
+		assert (len == a.length());
+		assert (len == b.length());
+		double[] array = getArray();
+		int offset = getArrayOffset();
+		if (b instanceof AArrayVector) {
+			a.addProductToArray(1.0, 0, (AArrayVector)b, 0, array, offset, len);
+		} else {
+			a.addProductToArray(1.0, 0, b, 0, array, offset, len);			
+		}
+	}	
 
 	@Override
 	public void addProduct(AVector a, AVector b, double factor) {
@@ -221,7 +235,11 @@ public abstract class AArrayVector extends AStridedVector {
 		assert (len == b.length());
 		double[] array = getArray();
 		int offset = getArrayOffset();
-		a.addProductToArray(factor, 0, b, 0, array, offset, len);
+		if (b instanceof AArrayVector) {
+			a.addProductToArray(factor, 0, (AArrayVector)b, 0, array, offset, len);
+		} else {
+			a.addProductToArray(factor, 0, b, 0, array, offset, len);			
+		}
 	}
 
 	@Override

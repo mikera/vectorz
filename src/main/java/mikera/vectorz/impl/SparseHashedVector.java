@@ -52,12 +52,16 @@ public class SparseHashedVector extends ASparseVector {
 		return new SparseHashedVector(n,hm);
 	}
 	
-	public static SparseHashedVector create(int length, Index index, Vector vals) {
+	/**
+	 * Create a SparseHashedVector with specified non-zero indexes and values.
+	 */
+	public static SparseHashedVector create(int length, Index index, Vector values) {
 		int n=index.length();
-		if (vals.length()!=n) throw new IllegalArgumentException("Mismatched values length: "+vals.length());
+		if (values.length()!=n) throw new IllegalArgumentException("Mismatched values length: "+values.length());
 		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
 		for (int i=0; i<n; i++) {
-			hm.put(index.get(i), vals.get(i));
+			double v=values.get(i);
+			if (v!=0.0) hm.put(index.get(i), v);
 		}
 		
 		return new SparseHashedVector(length, hm);
@@ -196,13 +200,14 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		int aOffset=arrayOffset-offset;
-		int oOffset=otherOffset-offset;
-
+		int oArrayOffset=other.getArrayOffset()+otherOffset-offset;
+		double[] oArray=other.getArray();
+		
 		for (Entry<Integer,Double> e: hash.entrySet()) {
 			Integer io=e.getKey();
 			int i=io;
 			if ((i<offset)||(i>=(offset+length))) continue;
-			double ov=other.get(i+oOffset);
+			double ov=oArray[i+oArrayOffset];
 			if (ov!=0.0) array[aOffset+i]+=factor*e.getValue()*ov;
 		}
 	}
@@ -213,8 +218,9 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	public void copySparseValuesTo(double[] array, int offset) {
-		for (int i: hash.keySet()) {
-			array[offset+i]=hash.get(i);
+		for (Entry<Integer,Double> e: hash.entrySet()) {
+			int i=e.getKey();
+			array[offset+i]=e.getValue();
 		}
 	}
 	
@@ -224,8 +230,9 @@ public class SparseHashedVector extends ASparseVector {
 			getElements(av.getArray(),av.getArrayOffset()+offset);
 		}
 		v.fillRange(offset,length,0.0);
-		for (int i: hash.keySet()) {
-			v.unsafeSet(offset+i,hash.get(i));
+		for (Entry<Integer,Double> e: hash.entrySet()) {
+			int i=e.getKey();
+			v.unsafeSet(offset+i,e.getValue());
 		}
 	}
 
@@ -242,12 +249,12 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public void set(AVector v) {
 		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		hash=new HashMap<Integer, Double>();
-		
 		if (v instanceof SparseHashedVector) {
 			set((SparseHashedVector) v);
 			return;
 		}
+		
+		hash=new HashMap<Integer, Double>();
 		
 		for (int i=0; i<length; i++) {
 			double val=v.unsafeGet(i);
