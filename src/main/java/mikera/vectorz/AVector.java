@@ -84,6 +84,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return get(i);
 	}
 	
+	protected void unsafeSetInteger(Integer i,double value) {
+		unsafeSet((int)i,value);
+	}
+	
+	protected double unsafeGetInteger(Integer i) {
+		return unsafeGet((int)i);
+	}
+	
 	@Override
 	public double get(int x, int y) {
 		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, x,y));
