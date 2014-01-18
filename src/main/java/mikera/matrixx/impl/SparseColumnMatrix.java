@@ -275,6 +275,10 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 		return exactClone();
 	}
 	
+	@Override
+	public SparseColumnMatrix sparse() {
+		return this;
+	}
 	
 	@Override
 	public void validate() {

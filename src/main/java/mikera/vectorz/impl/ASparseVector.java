@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
+import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.vectorz.AVector;
 
 /**
@@ -62,6 +63,11 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 
 	public abstract void add(ASparseVector v);
+	
+	@Override
+	public ASparseVector sparse() {
+		return this;
+	}
 	
 	public boolean equals(ASparseVector v) {
 		if (v==this) return true;

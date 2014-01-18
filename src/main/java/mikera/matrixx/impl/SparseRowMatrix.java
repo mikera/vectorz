@@ -254,6 +254,11 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public AMatrix sparse() {
+		return this;
+	}
+	
+	@Override
 	public AMatrix clone() {
 		if (this.elementCount()<SPARSE_ELEMENT_THRESHOLD) return super.clone();
 		return exactClone();

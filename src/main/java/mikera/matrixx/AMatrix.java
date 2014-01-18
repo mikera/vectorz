@@ -9,6 +9,7 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.ISparse;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
@@ -1768,9 +1769,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public INDArray mutable() {
+	public AMatrix mutable() {
 		if (isFullyMutable()) return this;
 		return clone();
+	}
+	
+	@Override
+	public AMatrix sparse() {
+		if (this instanceof ISparse) return this;
+		return Matrixx.createSparse(this);
 	}
 	
 	@Override 
