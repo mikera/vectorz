@@ -91,6 +91,7 @@ public class SparseIndexedVector extends ASparseVector {
 	 * 
 	 */
 	public static SparseIndexedVector create(AVector source) {
+		if (source instanceof ASparseVector) return create((ASparseVector) source);
 		int length = source.length();
 		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
 		int len=0;
@@ -109,6 +110,18 @@ public class SparseIndexedVector extends ASparseVector {
 			}
 		}
 		return wrap(length,Index.wrap(indexes),vals);
+	}
+	
+	public static SparseIndexedVector create(ASparseVector source) {
+		int length = source.length();
+		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
+		Index ixs=source.nonSparseIndexes();
+		int n=ixs.length();
+		double[] vals=new double[n];
+		for (int i=0; i<n; i++) {
+			vals[i]=source.unsafeGet(ixs.get(i));
+		}
+		return wrap(length,ixs,vals);
 	}
 	
 	/** Creates a SparseIndexedVector from a row of an existing matrix */
