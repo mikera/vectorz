@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import mikera.indexz.AIndex;
@@ -13,9 +14,9 @@ import mikera.vectorz.util.VectorzException;
 
 
 /**
- * General purpose vector of arbitrary length, backed by an internal double[] array.
+ * General purpose vector of arbitrary length, backed by an densely packed double[] array.
  * 
- * This is the most efficient Vectorz type for 1D vectors.
+ * This is the most efficient type for general purpose 1D vectors.
  * 
  * @author Mike
  *
@@ -26,19 +27,20 @@ public final class Vector extends AArrayVector {
 	public final double[] data;
 
 	Vector(double... values) {
+		super(values.length);
 		data = values;
 	}
 	
 	Vector(Object... values) {
-		int len=values.length;
-		data=new double[len];
-		for (int i=0; i<len; i++) {
+		super(values.length);
+		data=new double[length];
+		for (int i=0; i<length; i++) {
 			data[i]=Tools.toDouble(values[i]);
 		}
 	}
 
 	Vector(int length) {
-		data = new double[length];
+		this(new double[length]);
 	}
 
 	/**
@@ -47,9 +49,7 @@ public final class Vector extends AArrayVector {
 	 * @param source
 	 */
 	public Vector(AVector source) {
-		int length = source.length();
-		data = new double[length];
-		source.getElements(this.data, 0);
+		this(source.toDoubleArray());
 	}
 	
 	/**
@@ -61,8 +61,41 @@ public final class Vector extends AArrayVector {
 		return new Vector(source);
 	}
 	
+	/**
+	 * Creates a new Vector from the given double[] data. Takes a defensive copy.
+	 */
 	public static Vector create(double[] data) {
 		return wrap(data.clone());
+	}
+	
+
+	public static Vector create(ArrayList<Double> al) {
+		int n=al.size();
+		Vector v=Vector.createLength(n);
+		for (int i=0; i<n; i++) {
+			v.unsafeSet(i,al.get(i));
+		}
+		return v;
+	}
+	
+	/**
+	 * Creates a new Vector from the given double[] data. Takes a defensive copy.
+	 */
+	public static Vector create(double[] data, int start, int length) {
+		return wrap(DoubleArrays.copyOf(data,start,length));
+	}
+	
+	/**
+	 * Creates a new vector using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new vector
+	 * @param data
+	 * @return
+	 */
+	public static Vector createFromVector(AVector source, int length) {
+		Vector v=Vector.createLength(length);
+		int n=Math.min(length, source.length());
+		source.copyTo(0, v.data, 0, n);
+		return v;
 	}
 	
 	/**
@@ -72,10 +105,7 @@ public final class Vector extends AArrayVector {
 	 * @return
 	 */
 	public static Vector of(double... values) {
-		int length = values.length;
-		double[] data = new double[length];
-		System.arraycopy(values, 0, data, 0, length);
-		return Vector.wrap(data);
+		return create(values);
 	}
 	
 	/**
@@ -88,13 +118,7 @@ public final class Vector extends AArrayVector {
 	}
 
 	public static Vector create(AVector a) {
-		if (a instanceof Vector) {
-			return ((Vector) a).clone();
-		}
-		int n=a.length();
-		Vector v=createLength(n);
-		a.copyTo(v.data);
-		return v;
+		return new Vector(a.toDoubleArray());
 	}
 	
 	public static Vector create(AIndex a) {
@@ -104,11 +128,6 @@ public final class Vector extends AArrayVector {
 			v.unsafeSet(i,a.get(i));
 		}
 		return v;
-	}
-	
-	@Override
-	public int length() {
-		return data.length;
 	}
 
 	@Override
@@ -198,6 +217,16 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return DoubleArrays.nonZeroCount(data);
 	}	
@@ -237,14 +266,8 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if (v instanceof AArrayVector) {
-			add(((AArrayVector)v),0); return;
-		}
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		for (int i = 0; i < length; i++) {
-			data[i] += v.unsafeGet(i);
-		}
+		if(length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.addToArray(data, 0);
 	}
 	
 	@Override
@@ -487,7 +510,7 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public Vector clone() {
-		return Vector.wrap(DoubleArrays.copyOf(data));
+		return Vector.wrap(data.clone());
 	}
 	
 	@Override
@@ -530,19 +553,6 @@ public final class Vector extends AArrayVector {
 	@Override
 	public double[] asDoubleArray() {
 		return data;
-	}
-
-	/**
-	 * Creates a new vector using the elements in the specified vector.
-	 * Truncates or zero-pads the data as required to fill the new vector
-	 * @param data
-	 * @return
-	 */
-	public static Vector createFromVector(AVector source, int length) {
-		Vector v=Vector.createLength(length);
-		int n=Math.min(length, source.length());
-		source.copyTo(0, v.data, 0, n);
-		return v;
 	}
 
 }

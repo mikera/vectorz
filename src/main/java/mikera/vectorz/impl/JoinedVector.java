@@ -12,20 +12,19 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class JoinedVector extends AVector {
+public final class JoinedVector extends ASizedVector {
 	private static final long serialVersionUID = -5535850407701653222L;
 	
 	private final AVector left;
 	private final AVector right;
 	
 	private final int split;
-	private final int length;
 	
 	private JoinedVector(AVector left, AVector right) {
+		super(left.length()+right.length());
 		this.left=left;
 		this.right=right;
 		this.split=left.length();
-		this.length=split+right.length();
 	}
 	
 	/**
@@ -35,8 +34,8 @@ public final class JoinedVector extends AVector {
 	 * @return
 	 */
 	public static AVector joinVectors(AVector left, AVector right) {
-		int ll=left.length(); // if (ll==0) return right;
-		int rl=right.length(); // if (rl==0) return left;
+		int ll=left.length(); if (ll==0) return right;
+		int rl=right.length(); if (rl==0) return left;
 		// balancing in case of nested joined vectors
 		while ((ll>rl*2)&&(left instanceof JoinedVector)) {
 			JoinedVector bigLeft=((JoinedVector)left);
@@ -51,11 +50,6 @@ public final class JoinedVector extends AVector {
 			ll=left.length(); rl=right.length();
 		} 
 		return new JoinedVector(left,right);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override
@@ -146,7 +140,7 @@ public final class JoinedVector extends AVector {
 		if ((start<0)||(end>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
 		}
-		if ((start==0)&&(length==this.length)) return this;
+		if (length==this.length) return this;
 		if (start>=split) return right.subVector(start-split, length);
 		if (end<=split) return left.subVector(start, length);
 		
@@ -324,6 +318,21 @@ public final class JoinedVector extends AVector {
 	@Override
 	public double elementSum() {
 		return left.elementSum()+right.elementSum();
+	}
+	
+	@Override
+	public double elementMax() {
+		return Math.max(left.elementMax(),right.elementMax());
+	}
+	
+	@Override
+	public double elementMin() {
+		return Math.min(left.elementMin(),right.elementMin());
+	}
+	
+	@Override
+	public double magnitudeSquared() {
+		return left.magnitudeSquared()+right.magnitudeSquared();
 	}
 	
 	@Override

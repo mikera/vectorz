@@ -9,16 +9,19 @@ import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A matrix implemented as a composition of M length N vectors
  * @author Mike
  *
  */
-public final class VectorMatrixMN extends AVectorMatrix<AVector> {
-	private int rowCount;	
-	private final int columnCount;	
-	private AVector[] rows;
+public class VectorMatrixMN extends AVectorMatrix<AVector> {
+	private static final long serialVersionUID = -3660730676103956050L;
+
+	protected int rowCount;	
+	protected final int columnCount;	
+	protected AVector[] rows;
 	
 	public VectorMatrixMN(int rowCount, int columnCount) {
 		this.rows=new AVector[rowCount];
@@ -29,20 +32,24 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 		}
 	}
 	
-	private VectorMatrixMN(AVector[] rows, int rowCount, int columnCount) {
+	protected VectorMatrixMN(AVector[] rows, int rowCount, int columnCount) {
 		if (rows.length<rowCount) throw new IllegalArgumentException("Insufficient rows provided!");
 		this.rows=rows;
 		this.rowCount=rowCount;
 		this.columnCount=columnCount;
 	}
 	
+	protected VectorMatrixMN(AVector[] rows) {
+		this(rows,rows.length,rows[0].length());
+	}
+
 	/**
 	 * Create a matrix from a list of rows
 	 * 
 	 * @param rows
 	 * @return
 	 */
-	public static VectorMatrixMN create(List<Object> rows) {
+	public static VectorMatrixMN create(List<AVector> rows) {
 		int rc = rows.size();
 		AVector[] vs = new AVector[rc];
 		for (int i = 0; i < rc; i++) {
@@ -75,13 +82,26 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 		}
 	}
 	
-	public VectorMatrixMN(AMatrix source) {
-		this(source.rowCount(),source.columnCount());
-		for (int i=0; i<rowCount; i++) {
-			for (int j=0; j<columnCount; j++) {
-				set(i,j,source.get(i, j));
+	public static VectorMatrixMN create(AMatrix source) {
+		int rc=source.rowCount();
+		int cc=source.columnCount();
+		VectorMatrixMN m=new VectorMatrixMN(source.rowCount(),source.columnCount());
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<cc; j++) {
+				m.unsafeSet(i,j,source.unsafeGet(i, j));
 			}
 		}
+		return m;
+	}
+	
+	public static VectorMatrixMN wrap(AMatrix source) {
+		int rc=source.rowCount();
+		int cc=source.columnCount();
+		AVector[] rows=new AVector[rc];
+		for (int i=0; i<rc; i++) {
+			rows[i]=source.getRow(i);
+		}
+		return new VectorMatrixMN(rows,rc,cc);
 	}
 	
 	private void ensureRowCapacity(int size) {
@@ -96,6 +116,12 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 	public void appendRow(AVector row) {
 		ensureRowCapacity(rowCount+1);
 		rows[rowCount++]=row;
+	}
+	
+	@Override 
+	public void replaceRow(int i, AVector row) {
+		if ((i<0)||(i>=rowCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
+		rows[i]=row;
 	}
 	
 	@Override
@@ -125,26 +151,31 @@ public final class VectorMatrixMN extends AVectorMatrix<AVector> {
 	
 	@Override
 	public double get(int row, int column) {
+		if ((column<0)||(column>=columnCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		if (row>=rowCount) throw new IndexOutOfBoundsException("Row: "+row);
-		return rows[row].get(column);
+		return rows[row].unsafeGet(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
+		if ((column<0)||(column>=columnCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		if (row>=rowCount) throw new IndexOutOfBoundsException("Row: "+row);
-		rows[row].set(column,value);
+		rows[row].unsafeSet(column,value);
 	}
 	
 	@Override
 	public double unsafeGet(int row, int column) {
-		assert(row<rowCount);
 		return rows[row].unsafeGet(column);
 	}
 
 	@Override
 	public void unsafeSet(int row, int column, double value) {
-		assert(row<rowCount);
 		rows[row].unsafeSet(column,value);
+	}
+	
+	@Override
+	public void addAt(int i, int j, double d) {
+		rows[i].addAt(j, d);
 	}
 	
 	@Override

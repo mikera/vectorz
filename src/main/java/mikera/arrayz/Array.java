@@ -6,9 +6,11 @@ import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.ImmutableArray;
+import mikera.indexz.Index;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
@@ -21,7 +23,7 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose mutable packed N-dimensional array
+ * General purpose mutable dense N-dimensional array
  * 
  * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
  * most efficient storage type for 3D+ arrays
@@ -30,6 +32,8 @@ import mikera.vectorz.util.VectorzException;
  * 
  */
 public final class Array extends AbstractArray<INDArray> implements IStridedArray {
+	private static final long serialVersionUID = -8636720562647069034L;
+
 	private final int dimensions;
 	private final int[] shape;
 	private final int[] strides;
@@ -94,6 +98,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	public int[] getShape() {
 		return shape;
 	}
+	
+	@Override
+	public int[] getShapeClone() {
+		return shape.clone();
+	}
 
 	@Override
 	public long[] getLongShape() {
@@ -153,9 +162,32 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 		}
 
 		int offset = index * getStride(dimension);
-		return new NDArray(data, offset,
-				IntArrays.removeIndex(shape, dimension), IntArrays.removeIndex(
-						strides, dimension));
+		return new NDArray(
+				data, 
+				offset,
+				IntArrays.removeIndex(shape, dimension), 
+				IntArrays.removeIndex(strides, dimension));
+	}
+	
+	@Override
+	public INDArray subArray(int[] offsets, int[] shape) {
+		int n=dimensions;
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		if (IntArrays.equals(shape, this.shape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		int[] strides=IntArrays.calcStrides(this.shape);
+		return new NDArray(data,
+				IntArrays.dotProduct(offsets, strides),
+				IntArrays.copyOf(shape),
+				strides);
 	}
 
 	@Override
@@ -170,7 +202,17 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 
 	@Override
 	public double elementSum() {
-		return DoubleArrays.elementSum(data, 0, data.length);
+		return DoubleArrays.elementSum(data);
+	}
+	
+	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data);
 	}
 
 	@Override
@@ -229,7 +271,7 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		if (op instanceof Op) {
 			((Op) op).applyTo(data);
 		} else {
@@ -358,6 +400,38 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public boolean isZero() {
 		return DoubleArrays.isZero(data,0,data.length);
+	}
+
+	@Override
+	public INDArray immutable() {
+		return ImmutableArray.wrap(DoubleArrays.copyOf(data), this.shape);
+	}
+
+	@Override
+	public double get() {
+		if (dimensions==0) {
+			return data[0];
+		} else {
+			throw new IllegalArgumentException("O-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
+	}
+
+	@Override
+	public double get(int x) {
+		if (dimensions==1) {
+			return data[x];
+		} else {
+			throw new IllegalArgumentException("1-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
+	}
+
+	@Override
+	public double get(int x, int y) {
+		if (dimensions==2) {
+			return data[x*strides[0]+y];
+		} else {
+			throw new IllegalArgumentException("2-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
 	}
 
 }

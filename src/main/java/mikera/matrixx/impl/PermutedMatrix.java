@@ -12,7 +12,9 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public class PermutedMatrix extends AMatrix{
+public class PermutedMatrix extends ARectangularMatrix {
+	private static final long serialVersionUID = -4237549899714650293L;
+
 	private final AMatrix source;
 	private final Index rowPermutations;
 	private final Index columnPermutations;
@@ -22,6 +24,7 @@ public class PermutedMatrix extends AMatrix{
 	}	
 	
 	public PermutedMatrix(AMatrix source, Index rowPermutations, Index columnPermutations) {
+		super(rowPermutations.length(),columnPermutations.length());
 		if (source instanceof PermutedMatrix) {
 			PermutedMatrix pm=(PermutedMatrix)source;
 			
@@ -43,18 +46,18 @@ public class PermutedMatrix extends AMatrix{
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return source.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return source.isMutable();
+	}
+	
+	@Override
 	public boolean isZero() {
 		return source.isZero();
-	}
-
-	@Override
-	public int rowCount() {
-		return source.rowCount();
-	}
-
-	@Override
-	public int columnCount() {
-		return source.columnCount();
 	}
 
 	@Override

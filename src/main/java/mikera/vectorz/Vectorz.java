@@ -8,6 +8,10 @@ import mikera.util.Rand;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SingleElementVector;
+import mikera.vectorz.impl.SparseHashedVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
@@ -68,8 +72,14 @@ public class Vectorz {
 		return v;
 	}
 	
+	/**
+	 * Creates an immutable zero vector of the specified length.
+	 * @param length
+	 * @return
+	 */
 	public static AVector createZeroVector(int length) {
-		return newVector(length);
+		if (length==0) return Vector0.INSTANCE;
+		return ZeroVector.create(length);
 	}
 	
 	public static Vector wrap(double[] data) {
@@ -102,7 +112,7 @@ public class Vectorz {
 	}
 
 	/**
-	 * Returns a vector filled with zeros of the specified length.
+	 * Returns a new mutable vector filled with zeros of the specified length.
 	 * 
 	 * Attempts to select the most efficient mutable concrete Vector type for any given length.
 	 * @param length
@@ -115,22 +125,81 @@ public class Vectorz {
 			case 2: return new Vector2();
 			case 3: return new Vector3();
 			case 4: return new Vector4();
-			default: return new Vector(length);
+			default: return Vector.createLength(length);
+		}
+	}
+	
+	/**
+	 * Creates a sparse vector from the data in the given vector. Selects the appropriate sparse
+	 * vector type based on analysis of the element values.
+	 * 
+	 * @param v Vector containing sparse element data
+	 * @return
+	 */
+	public static AVector createSparse(AVector v) {
+		int len=v.length();
+		long n=v.nonZeroCount();
+		if (n==0) {
+			return createZeroVector(len);
+		} else if (n==1) {
+			for (int i=0; i<len; i++) {
+				double val=v.unsafeGet(i);
+				if (val!=0.0) {
+					if (val==1) {
+						return AxisVector.create(i, len);
+					} else {
+						return SingleElementVector.create(val,i,len);
+					}
+				}
+			}
+			throw new VectorzException("non-zero element not found!!");
+		} else if (n>(len/2)) {
+			return Vector.create(v); // not enough sparsity to make worthwhile
+		} else if (n<(len/30)) {
+			return SparseHashedVector.create(v);
+		} else {
+			return SparseIndexedVector.create(v);
+		}
+	}
+	
+	public static AVector createSparseMutable(AVector v) {
+		int len=v.length();
+		long n=v.nonZeroCount();
+		
+		if ((len<20)||(n>(len/2))) {
+			return Vector.create(v); // not enough sparsity to make worthwhile
+		} else if (n<(len/30)) {
+			return SparseHashedVector.create(v);
+		} else {
+			return SparseIndexedVector.create(v);
 		}
 	}
 
+	/**
+	 * Creates a new zero-filled vector of the same size as the given Vector.
+	 * @param v
+	 * @return
+	 */
 	public static AVector createSameSize(AVector v) {
 		return newVector(v.length());
 	}
 
-	public static Vector create(AVector vector) {
-		return Vector.create(vector);
+	/**
+	 * Creates a mutable clone of a given vector
+	 * @param vector
+	 * @return
+	 */
+	public static AVector create(AVector vector) {
+		return vector.clone();
 	}	
 	
+	/**
+	 * Creates a mutable clone of a given vector
+	 * @param vector
+	 * @return
+	 */
 	public static AVector create(IVector vector) {
-		AVector nv=newVector(vector.length());
-		nv.set(vector);
-		return nv;
+		return (AVector)vector.clone();
 	}	
 
 	public static Scalar createScalar(double value) {
@@ -149,20 +218,9 @@ public class Vectorz {
 		return v;
 	}
 
-	public static AVector createMutableVector(AVector t) {
-		AVector v=newVector(t.length());
-		v.set(t);
-		return v;
+	public static AVector createMutableVector(AVector v) {
+		return v.clone();
 	}
-	
-	private static final AVector[] ZERO_VECTORS = new AVector[] {
-		Vector0.INSTANCE,
-		new ZeroVector(1),
-		new ZeroVector(2),
-		new ZeroVector(3),
-		new ZeroVector(4)
-	};
-	
 	
 	/**
 	 * Returns an immutable vector of zeros
@@ -170,8 +228,7 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector immutableZeroVector(int dimensions) {
-		if (dimensions>=ZERO_VECTORS.length) return new ZeroVector(dimensions);
-		return ZERO_VECTORS[dimensions];
+		return ZeroVector.create(dimensions);
 	}
 	
 	// ====================================
@@ -196,7 +253,7 @@ public class Vectorz {
 							} else {
 								throw new VectorzException("Cannot parse double value from class: "+o.getClass());
 							}
-							b.add(d);
+							b.append(d);
 						}
 
 						@Override
@@ -266,13 +323,7 @@ public class Vectorz {
 	 * @return
 	 */
 	public static double minValue(AVector v) {
-		int len=v.length();
-		double min = Double.MAX_VALUE;
-		for (int i=0; i<len; i++) {
-			double d=v.get(i);
-			if (d<min) min=d;
-		}
-		return min;
+		return v.elementMin();
 	}
 	
 	/**
@@ -285,7 +336,7 @@ public class Vectorz {
 		double min = v.get(0);
 		int ind=0;
 		for (int i=1; i<len; i++) {
-			double d=v.get(i);
+			double d=v.unsafeGet(i);
 			if (d<min) {
 				min=d;
 				ind=i;
@@ -295,18 +346,12 @@ public class Vectorz {
 	}
 	
 	public static double maxValue(AVector v) {
-		int len=v.length();
-		double max = -Double.MAX_VALUE;
-		for (int i=0; i<len; i++) {
-			double d=v.get(i);
-			if (d>max) max=d;
-		}
-		return max;
+		return v.elementMax();
 	}
 	
 	public static int indexOfMaxValue(AVector v) {
 		int len=v.length();
-		double max = v.get(0);
+		double max = v.unsafeGet(0);
 		int ind=0;
 		for (int i=1; i<len; i++) {
 			double d=v.get(i);
@@ -322,7 +367,7 @@ public class Vectorz {
 		if (v instanceof Vector) {invSqrt((Vector) v); return;}
 		int len=v.length();
 		for (int i=0; i<len; i++) {
-			double d=1.0/Math.sqrt(v.get(i));
+			double d=1.0/Math.sqrt(v.unsafeGet(i));
 			v.set(i,d);
 		}		
 	}
@@ -340,7 +385,7 @@ public class Vectorz {
 		double result=0.0;
 		
 		for (int i=0; i<len; i++) {
-			result+=v.get(i);
+			result+=v.unsafeGet(i);
 		}
 		return result;
 	}
@@ -349,7 +394,7 @@ public class Vectorz {
 		int len=v.length();
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=v.get(i);
+			result+=v.unsafeGet(i);
 		}
 		return result/len;
 	}
@@ -369,6 +414,11 @@ public class Vectorz {
 		return Math.sqrt(averageSquaredDifference(a,b));
 	}
 
+	/**
+	 * Fills a vector with uniform random numbers in the range [0..1)
+	 * 
+	 * @param v
+	 */
 	public static void fillRandom(AVector v) {
 		int len=v.length();
 		for (int i=0; i<len; i++) {
@@ -443,6 +493,11 @@ public class Vectorz {
 			v.unsafeSet(i,i);
 		}
 		return v;
+	}
+	
+	public static AVector createRepeatedElement(int length,double value) {
+		if (length==0) return Vector0.INSTANCE;
+		return RepeatedElementVector.create(length, value);
 	}
 
 	

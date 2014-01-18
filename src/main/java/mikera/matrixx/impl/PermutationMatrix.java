@@ -13,7 +13,9 @@ import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
-public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
+public final class PermutationMatrix extends ABooleanMatrix implements IFastRows, IFastColumns, ISparse  {
+	private static final long serialVersionUID = 8098287603508120428L;
+
 	private final Index perm;
 	private final int size;
 	
@@ -87,13 +89,18 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	}
 	
 	@Override
-	public boolean hassOrthonormalRows() {
+	public boolean hasOrthonormalRows() {
 		return true;
 	}
 	
 	@Override
 	public boolean isDiagonal() {
 		return isIdentity();
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		return true;
 	}
 	
 	@Override
@@ -174,7 +181,6 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 
 	@Override
 	public void set(int row, int column, double value) {
-		if (get(row,column)==value) return;
 		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this,row,column));
 	}
 	

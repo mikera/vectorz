@@ -4,28 +4,47 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract base class for matrices that use a collection of Vectors 
  * as storage for the matrix rows.
  * 
- * Vector matrices may support appending with new rows - this functionality can be useful
- * e.g. when building a matrix to represent a data set.
+ * Vector matrices can support appending / replacing with new rows - 
+ * - this functionality can be useful e.g. when building a matrix to represent a data set.
  * 
  * @author Mike
  *
  */
-public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
+public abstract class AVectorMatrix<T extends AVector> extends AMatrix implements IFastRows {
+	private static final long serialVersionUID = -6838429336358726743L;
+
 	/* ================================
 	 * Abstract interface
 	 */
-	
+
+	/**
+	 * Appends a row to this matrix in-place. The row must be of a type allowed by the matrix.
+	 * @param row
+	 */
 	public abstract void appendRow(AVector row);
 	
 	/**
-	 * Gets a row of the matrix. Should be guaranteed to be an existing vector by all
-	 * descendents of VectorMatrix.
+	 * Replaces a row in this matrix. The row must be of a type allowed by the matrix.
+	 * 
+	 * Detaches the current row: this will invalidate views over the matrix that include the original row.
+	 * @param i
+	 * @param row
+	 */
+	@Override
+	public abstract void replaceRow(int i, AVector row);
+	
+	/**
+	 * Gets a row of the matrix. 
+	 * 
+	 * Guaranteed to be an existing vector by all descendants of VectorMatrix.
 	 */
 	@Override
 	public abstract T getRow(int row);
@@ -54,6 +73,14 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			getRow(i).set(value);
+		}
+	}
+	
+	@Override 
+	public void fill(double value) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRow(i).fill(value);
 		}
 	}
 
@@ -96,10 +123,9 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}
 	
 	@Override
-	public final void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int row, double[] dest, int destOffset) {
 		getRow(row).getElements(dest, destOffset);
 	}
-	
 	
 	@Override
 	public final void getElements(double[] dest, int destOffset) {
@@ -129,6 +155,15 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			if (!getRow(i).isZero()) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).isBoolean()) return false;
 		}
 		return true;
 	}
@@ -164,8 +199,26 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix {
 	}	
 	
 	@Override
+	public AVector asVector() {
+		int rc = rowCount();
+		if (rc == 0) return Vector0.INSTANCE;
+		if (rc == 1) return getRow(0);
+		
+		int cc= columnCount();
+		if (cc==1) return getColumn(0);
+
+		AVector v = getRow(0);
+		for (int i = 1; i < rc; i++) {
+			v = Vectorz.join(v, getRow(i));
+		}
+		return v;
+	}
+	
+	@Override
 	public AMatrix clone() {
 		AMatrix avm= super.clone();
 		return avm;
 	}
+
+
 }

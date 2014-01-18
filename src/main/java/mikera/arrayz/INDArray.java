@@ -1,11 +1,12 @@
 package mikera.arrayz;
 
+import java.io.Serializable;
 import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 
@@ -13,7 +14,7 @@ import mikera.vectorz.Vector;
  * Interface for general multi-dimensional arrays of doubles
  * @author Mike
  */
-public interface INDArray extends Cloneable {
+public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the dimensionality of the array (number of dimensions in the array shape)
@@ -27,6 +28,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public int[] getShape();
+	
+	/**
+	 * Returns the shape of the array as an array of ints, guaranteed to be a new array
+	 * @return
+	 */
+	public int[] getShapeClone();
 	
 	/**
 	 * Returns the dimension size for a specific dimension in the array's shape
@@ -168,6 +175,12 @@ public interface INDArray extends Cloneable {
 	public INDArray reshape(int... shape);
 
 	/**
+	 * Returns rotated view of this array
+	 * @return
+	 */
+	public INDArray rotateView(int dimension, int shift);
+	
+	/**
 	 * Returns a view of this array broadcasted up to a larger shape
 	 * @param shape
 	 * @return
@@ -194,6 +207,13 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray slice(int majorSlice);
+	
+	/**
+	 * Joins an array with another array along a specified dimension
+	 * @param majorSlice
+	 * @return
+	 */
+	public INDArray join(INDArray a, int dimension);
 
 	/**
 	 * Returns a slice view of this array along the specified dimension
@@ -201,6 +221,13 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public INDArray slice(int dimension, int index);
+	
+	/**
+	 * Returns a subarray view of a larger array
+	 * @param majorSlice
+	 * @return
+	 */
+	public INDArray subArray(int[] offsets, int[] shape);
 	
 	/**
 	 * Returns the transpose of this array. A transpose of an array is equivalent to 
@@ -239,6 +266,18 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public double elementSum();
+	
+	/**
+	 * Returns the maximum element value in this array.
+	 * @return
+	 */
+	public double elementMax();
+	
+	/**
+	 * Returns the maximum element value in this array.
+	 * @return
+	 */
+	public double elementMin();
 
 	/**
 	 * Returns the total sum of elements in this array.
@@ -342,7 +381,7 @@ public interface INDArray extends Cloneable {
 	 * Applies a unary operator to all elements of the array (in-place)
 	 * @param op
 	 */
-	void applyOp(IOp op);
+	void applyOp(IOperator op);
 	
 	/**
 	 * Returns true if the two arrays are exactly equal in value and shape
@@ -418,6 +457,12 @@ public interface INDArray extends Cloneable {
 	 * @return
 	 */
 	public List<?> getSlices();
+	
+	/**
+	 * Returns a list of all slices of this array along a given dimension
+	 * @return
+	 */
+	public List<?> getSlices(int dimension);
 	
 	/**
 	 * Validates the internal data structure of the INDArray. Throws an exception on failure.
@@ -502,6 +547,25 @@ public interface INDArray extends Cloneable {
 	 * Computes the function e^x (in-place) for all array elements
 	 */
 	public void exp();
+	
+	/**
+	 * Returns an immutable version of this INDArray's data
+	 */
+	public INDArray immutable();
 
-
+	/**
+	 * Coerces this INDArray to a fully mutable format. May return the same INDArray if already mutable
+	 */
+	public INDArray mutable();
+	
+	/**
+	 * Coerces this INDArray to a sparse format, without changing its element values.
+	 * 
+	 * May return the same INDArray if already sparse. May also mutate the internal structure of the original 
+	 * NDArray, or create a view over parts of the original INDArray. You should take a defensive copy of the original
+	 * NDArray if any of this concerns you.
+	 * 
+	 * The returned sparse array may not be fully mutable in all elements.
+	 */
+	public INDArray sparse();
 }

@@ -13,6 +13,8 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class StridedMatrix extends AStridedMatrix {
+	private static final long serialVersionUID = -7928115802247422177L;
+
 	private final int rowStride;
 	private final int colStride;
 	private final int offset;
@@ -29,7 +31,17 @@ public final class StridedMatrix extends AStridedMatrix {
 		double[] data = new double[rowCount * columnCount];
 		return new StridedMatrix(data, rowCount, columnCount, 0, columnCount, 1);
 	}
-
+	
+	@Override
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return true;
+	}
+	
 	@Override
 	public AStridedVector getRow(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
@@ -130,7 +142,7 @@ public final class StridedMatrix extends AStridedMatrix {
 	public double get(int row, int column) {
 		if ((row < 0) || (column < 0) || (row >= rows)
 				|| (column >= cols))
-			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		return data[index(row,column)];
 	}
 	

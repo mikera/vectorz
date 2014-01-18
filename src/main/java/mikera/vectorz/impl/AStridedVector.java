@@ -8,7 +8,6 @@ import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -19,7 +18,11 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public abstract class AStridedVector extends AVector implements IStridedArray {
+public abstract class AStridedVector extends ASizedVector implements IStridedArray {
+	protected AStridedVector(int length) {
+		super(length);
+	}
+
 	private static final long serialVersionUID = -7239429584755803950L;
 
 	public abstract double[] getArray();
@@ -41,6 +44,47 @@ public abstract class AStridedVector extends AVector implements IStridedArray {
 			result+=array[i*stride+thisOffset]*data[i+offset];
 		}
 		return result;
+	}
+	
+	@Override
+	public double elementSum() {
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			result+=array[offset+i*stride];
+		}		
+		return result;
+	}
+	
+	@Override
+	public double elementMax(){
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		double max = -Double.MAX_VALUE;
+		for (int i=0; i<len; i++) {
+			double d=array[offset+i*stride];
+			if (d>max) max=d;
+		}
+		return max;
+	}
+	
+	@Override
+	public double elementMin(){
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		double min = Double.MAX_VALUE;
+		for (int i=0; i<len; i++) {
+			double d=array[offset+i*stride];
+			if (d<min) min=d;
+		}
+		return min;
 	}
 	
 	@Override

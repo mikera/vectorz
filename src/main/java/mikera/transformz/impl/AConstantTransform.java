@@ -40,7 +40,7 @@ public abstract class AConstantTransform extends AAffineTransform {
 	}
 	
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return Matrixx.createImmutableZeroMatrix(outputDimensions(), inputDimensions());
 	}
 

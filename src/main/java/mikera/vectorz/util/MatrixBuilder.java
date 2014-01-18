@@ -1,15 +1,18 @@
 package mikera.vectorz.util;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 /**
  * Utility class for efficiently building matrices by addition of vector rows
+ * 
  * @author Mike
  */
-public class MatrixBuilder {
+public class MatrixBuilder extends AVectorMatrix<AVector> {
+	private static final long serialVersionUID = -5875133722867126330L;
+
 	private AVector[] data=new AVector[4];
 	
 	int length=0;
@@ -22,29 +25,55 @@ public class MatrixBuilder {
 		}
 	}
 
-	public void add(Iterable<Object> d) {
+	public void append(Iterable<Object> d) {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(d);
 	}
 	
-	public void add(AVector v) {
+	public void append(AVector v) {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(v);
 	}
 
-	public void add(double[] ds) {
+	public void append(double[] ds) {
 		ensureSize(length+1);
 		data[length++]=Vectorz.create(ds);
 	}
 
-	/**
-	 * Builds a matrix using a copy of the data in this MatrixBuilder
-	 * @return
-	 */
-	public AMatrix toMatrix() {
-		AVector[] nd=new AVector[length];
-		System.arraycopy(data, 0, nd, 0, length);
-		return Matrixx.createFromVectors(nd);
+	@Override
+	public void appendRow(AVector row) {
+		append(row);
+	}
+
+	@Override
+	public void replaceRow(int i, AVector row) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		data[i]=row;
+	}
+
+	@Override
+	public AVector getRow(int row) {
+		if ((row<0)||(row>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row));
+		return data[row];
+	}
+
+	@Override
+	public int rowCount() {
+		return length;
+	}
+
+	@Override
+	public int columnCount() {
+		return data[0].length();
+	}
+
+	@Override
+	public AMatrix exactClone() {
+		MatrixBuilder mb=new MatrixBuilder();
+		for (int i=0; i<length; i++) {
+			mb.append(data[i].exactClone());
+		}
+		return mb;
 	}
 
 

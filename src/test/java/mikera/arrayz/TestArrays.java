@@ -7,7 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.ImmutableArray;
+import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -19,6 +22,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -53,6 +57,24 @@ public class TestArrays {
 
 		assertEquals(a, a.reshape(shape));
 	}
+	
+	private void testSubArray(INDArray a) {
+		int n=a.dimensionality();
+		INDArray a2=a.subArray(new int[n], a.getShape());
+		
+		assertEquals(a,a2);
+	}
+	
+	private void testRotateView(INDArray a) {
+		int n=a.dimensionality();
+		if (n==0) return;
+		
+		for (int i=0; i<n; i++) {
+			int size=a.getShape(i);
+			assertEquals(a,a.rotateView(i, 0));
+			assertEquals(a,a.rotateView(i, 1).rotateView(i, size-1));
+		}
+	}
 
 	private void testSlices(INDArray a) {
 		if ((a.elementCount() == 0) || (a.dimensionality() == 0)) return;
@@ -70,12 +92,18 @@ public class TestArrays {
 
 		List<?> slices = a.getSlices();
 		assertEquals(a, Arrayz.create(slices));
+		
+		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
 	}
 
 	private void testAsVector(INDArray a) {
 		AVector v = a.asVector();
 		assertTrue(v.length() >= 0);
 		assertEquals(a.elementCount(), v.length());
+		assertEquals(a.elementSum(), v.elementSum(),0.0001);
+		assertEquals(a.elementMax(), v.elementMax(),0.0);
+		assertEquals(a.elementMin(), v.elementMin(),0.0);
+		
 		if (a.isMutable() && (v.length() > 0)) {
 			assertTrue(v.isMutable());
 			// assertTrue((a==v)||(v.isView())); not always...
@@ -144,8 +172,6 @@ public class TestArrays {
 	}
 
 	private void testGetElements(INDArray a) {
-		if (!a.isFullyMutable()) return;
-
 		int ecount = (int) a.elementCount();
 		double[] data = new double[ecount + 1];
 		Arrays.fill(data, Double.NaN);
@@ -155,6 +181,14 @@ public class TestArrays {
 		for (int i = 1; i < data.length; i++) {
 			assertFalse(Double.isNaN(data[i]));
 		}
+		
+		double[] data2=new double[ecount+1];
+		data[0]=13;
+		data2[0]=13;
+		a.asVector().getElements(data2, 1);
+		assertTrue(DoubleArrays.equals(data, data2));
+		
+		if (!a.isFullyMutable()) return;
 
 		INDArray b = a.exactClone();
 		b.fill(Double.NaN);
@@ -219,6 +253,18 @@ public class TestArrays {
 		
 		INDArray b=a.ensureMutable();
 		assertTrue(mikera.vectorz.util.Testing.validateFullyMutable(b));
+		
+		if ((!a.isMutable())&&(a.elementCount()>0)) {
+			try {
+				a.asVector().set(0,Math.PI);
+				// System.out.println(a.getClass());
+				fail("Set on immutable array succeeded!");
+			} catch (UnsupportedOperationException t) {
+				// OK
+			} catch (VectorzException t) {
+				// Also OK
+			}
+		}
 	}
 
 	private void testHash(INDArray a) {
@@ -228,6 +274,7 @@ public class TestArrays {
 	private void testEquals(INDArray a) {
 		assertEquals(a, a.exactClone());
 		assertEquals(a, a.clone());
+		assertEquals(a, a.sparse());
 
 		assertTrue(a.epsilonEquals(a.exactClone()));
 
@@ -400,23 +447,26 @@ public class TestArrays {
 		int dims=m.dimensionality();
 		int[] shape=m.getShape();
 		int[] strides=m.getStrides();
-		double[] data=m.getArray();
-		for (int i=0; i<dims; i++) {
-			assertEquals(m.getStride(i),strides[i]);
-		}
-		
-		if (m.isPackedArray()) {
-			assertNotNull(m.asDoubleArray());
-			assertTrue(m.asDoubleArray()==m.getArray());
-		} else {
-			assertNull(m.asDoubleArray());
-		}
 		
 		if (m.elementCount()==0) return;
 		
-		int[] ix = IntArrays.rand(shape);
-		int off=m.getArrayOffset()+IntArrays.dotProduct(strides,ix);
-		assertEquals(data[off],m.get(ix),0.0);
+		if (mm.isMutable()) {
+			double[] data=m.getArray();
+			for (int i=0; i<dims; i++) {
+				assertEquals(m.getStride(i),strides[i]);
+			}
+			
+			if (m.isPackedArray()) {
+				assertNotNull(m.asDoubleArray());
+				assertTrue(m.asDoubleArray()==m.getArray());
+			} else {
+				assertNull(m.asDoubleArray());
+			}
+			
+			int[] ix = IntArrays.rand(shape);
+			int off=m.getArrayOffset()+IntArrays.dotProduct(strides,ix);
+			assertEquals(data[off],m.get(ix),0.0);
+		}	
 	}
 
 	private void testMathsFunctions(INDArray a) {
@@ -483,6 +533,7 @@ public class TestArrays {
 
 	public void testArray(INDArray a) {
 		a.validate();
+		testTranspose(a);
 		testAsVector(a);
 		testToArray(a);
 		testMultiply(a);
@@ -495,7 +546,6 @@ public class TestArrays {
 		testEquals(a);
 		testIndexedAccess(a);
 		testMathsFunctions(a);
-		testTranspose(a);
 		testSetElements(a);
 		testGetElements(a);
 		testBroadcast(a);
@@ -507,6 +557,8 @@ public class TestArrays {
 		testClone(a);
 		testMutability(a);
 		testSlices(a);
+		testSubArray(a);
+		testRotateView(a);
 		testParserRoundTrip(a);
 		testBufferRoundTrip(a);
 	}
@@ -539,5 +591,14 @@ public class TestArrays {
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
+		
+		testArray(JoinedArray.join(Vector.of(1,2),Vector.of(1,2,3,4,5),0));
+		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 3),1));
+		
+		// immutable array tests
+		testArray(nd3.immutable());
+		testArray(ImmutableArray.create(Matrixx.createRandomMatrix(4, 5)));
+		testArray(ImmutableArray.create(Vectorz.createUniformRandomVector(4)));
+		testArray(ImmutableArray.create(Scalar.create(4)));
 	}
 }

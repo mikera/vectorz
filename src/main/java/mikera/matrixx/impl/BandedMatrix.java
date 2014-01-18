@@ -1,10 +1,8 @@
 package mikera.matrixx.impl;
 
-import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ZeroVector;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -13,6 +11,8 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public class BandedMatrix extends ABandedMatrix {
+	private static final long serialVersionUID = -4014060138907872914L;
+
 	private final int minBand;
 	private final int maxBand;
 	
@@ -132,7 +132,7 @@ public class BandedMatrix extends ABandedMatrix {
 	
 	@Override
 	public void transform(Vector source, Vector dest) {
-		Vector t=(Vector)dest;
+		Vector t=dest;
 		t.fill(0.0);
 		for (int i=minBand; i<=maxBand; i++) {
 			AVector b=getBand(i);
@@ -145,5 +145,4 @@ public class BandedMatrix extends ABandedMatrix {
 		if (minBand!=-lowerBandwidthLimit()) throw new VectorzException("Mismatched lower limit: "+minBand);
 		if (maxBand!=upperBandwidthLimit()) throw new VectorzException("Mismatched upper limit: "+maxBand);
 	}
-	
 }

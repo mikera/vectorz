@@ -2,7 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 
 /**
@@ -11,6 +11,7 @@ import mikera.vectorz.Op;
  * @author Mike
  */
 abstract class ADelegatedMatrix extends AMatrix {
+	private static final long serialVersionUID = 7424713597425793457L;
 
 	protected final AMatrix source;
 	
@@ -59,7 +60,7 @@ abstract class ADelegatedMatrix extends AMatrix {
 	}
 	
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		source.applyOp(op);
 	}
 	
@@ -87,6 +88,16 @@ abstract class ADelegatedMatrix extends AMatrix {
 	@Override
 	public double elementSum() {
 		return source.elementSum();
+	}
+	
+	@Override 
+	public double elementMin() {
+		return source.elementMin();
+	}
+	
+	@Override 
+	public double elementMax() {
+		return source.elementMax();
 	}
 	
 	@Override

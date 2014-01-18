@@ -303,6 +303,15 @@ public final class Vector3 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public double unsafeGet(int i) {
+		switch (i) {
+		case 0: return x;
+		case 1: return y;
+		default: return z;
+		}
+	}
+	
 	@Override 
 	public void set(AVector v) {
 		if (v.length()!=3) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
@@ -329,12 +338,20 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void unsafeSet(int i, double value) {
+		switch (i) {
+		case 0: x=value; return;
+		case 1: y=value; return;
+		default: z=value; return;
+		}
+	}
+	
+	@Override
 	public void addAt(int i, double value) {
 		switch (i) {
 		case 0: x+=value; return;
 		case 1: y+=value; return;
-		case 2: z+=value; return;
-		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		default: z+=value; return;
 		}
 	}
 	

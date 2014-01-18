@@ -12,6 +12,7 @@ import mikera.vectorz.AVector;
  * 
  */
 public class TransposedMatrix extends ADelegatedMatrix {
+	private static final long serialVersionUID = 4350297037540121584L;
 
 	private TransposedMatrix(AMatrix source) {
 		super(source);
@@ -30,6 +31,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	@Override
 	public int columnCount() {
 		return source.rowCount();
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return source.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return source.isMutable();
 	}
 
 	@Override
@@ -55,11 +66,6 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	@Override
 	public AVector getRow(int row) {
 		return source.getColumn(row);
-	}
-
-	@Override
-	public AVector slice(int rowNumber) {
-		return source.getColumn(rowNumber);
 	}
 
 	@Override
@@ -148,8 +154,19 @@ public class TransposedMatrix extends ADelegatedMatrix {
 		return source.innerProduct(s);
 	}
 
+	@Override
 	public Matrix transposeInnerProduct(Matrix s) {
 		return source.innerProduct(s);
+	}
+	
+	@Override
+	public AMatrix innerProduct(AMatrix s) {
+		return source.transposeInnerProduct(s);
+	}
+
+	@Override
+	public Matrix innerProduct(Matrix s) {
+		return source.transposeInnerProduct(s);
 	}
 
 	@Override

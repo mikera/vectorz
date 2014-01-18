@@ -163,6 +163,25 @@ public class IntArrays {
 		}
 		return result;
 	}
+	
+	/**
+	 * Finds the position of a value in a sorted index, or -1 if before the array.
+	 */
+	public static final int indexLookup(int[] data, int i) {
+		if (i<data[0]) return -1;
+		int min=0; int max=data.length-1;
+		while (min<max) {
+			int mid=(min+max+1)>>1;
+			int mi=data[mid];
+			if (i==mi) return mid;
+			if (i<mi) {
+				max=mid-1;
+			} else {
+				min=mid;
+			}
+		}
+		return min;
+	}
 
 	public static int[] decrementAll(int[] xs) {
 		int len=xs.length;
@@ -190,5 +209,21 @@ public class IntArrays {
 
 	public static final int[] copyOf(int[] data) {
 		return Arrays.copyOf(data, data.length);
+	}
+
+	public static boolean isZero(int[] as) {
+		for (int i=0; i<as.length; i++) {
+			if (as[i]!=0) return false;
+		}
+		return true;
+	}
+
+	public static int[] insert(int[] data, int position, int value) {
+		int len=data.length;
+		int[] nas=new int[len+1];
+		System.arraycopy(data, 0, nas, 0, position);
+		nas[position]=value;
+		System.arraycopy(data, position, nas, position+1, len-position);
+		return nas;
 	}
 }

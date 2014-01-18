@@ -4,7 +4,6 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.impl.ConstantTransform;
 import mikera.transformz.impl.ConstantTransform3;

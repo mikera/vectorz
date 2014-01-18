@@ -44,28 +44,28 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	public Affine34(AMatrix m, AVector v) {
-		assert(v.length()==3);
-		assert(m.inputDimensions()==3);
-		assert(m.outputDimensions()==3);
-		m00=m.get(0,0);
-		m01=m.get(0,1);
-		m02=m.get(0,2);
-		m10=m.get(1,0);
-		m11=m.get(1,1);
-		m12=m.get(1,2);
-		m20=m.get(2,0);
-		m21=m.get(2,1);
-		m22=m.get(2,2);
+		if ((v.length()!=3)||(m.columnCount()!=3)||(m.rowCount()!=3)) {
+			throw new IllegalArgumentException("Wrong source sizes for Affine34");
+		}
+		m00=m.unsafeGet(0,0);
+		m01=m.unsafeGet(0,1);
+		m02=m.unsafeGet(0,2);
+		m10=m.unsafeGet(1,0);
+		m11=m.unsafeGet(1,1);
+		m12=m.unsafeGet(1,2);
+		m20=m.unsafeGet(2,0);
+		m21=m.unsafeGet(2,1);
+		m22=m.unsafeGet(2,2);
 		
-		tr0=v.get(0);
-		tr1=v.get(1);
-		tr2=v.get(2);
+		tr0=v.unsafeGet(0);
+		tr1=v.unsafeGet(1);
+		tr2=v.unsafeGet(2);
 	}
 	
 	public Affine34(Matrix33 m, AVector v) {
 		assert(v.length()==3);
-		assert(m.inputDimensions()==3);
-		assert(m.outputDimensions()==3);
+		assert(m.columnCount()==3);
+		assert(m.rowCount()==3);
 		m00=m.m00;
 		m01=m.m01;
 		m02=m.m02;
@@ -82,12 +82,12 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	}
 
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return copyOfMatrix();
 	}
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return Transformz.createTranslation(copyOfTranslationVector());
 	}
 	
@@ -172,9 +172,6 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 	public void composeWith(ATransform a) {
 		if (a instanceof Affine34) {
 			composeWith((Affine34)a);
-			return;
-		} else if (a instanceof Matrix33) {
-			composeWith((Matrix33)a);
 			return;
 		} else if (a instanceof Translation3) {
 			composeWith((Translation3)a);

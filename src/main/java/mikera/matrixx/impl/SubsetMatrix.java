@@ -13,7 +13,9 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class SubsetMatrix extends ABooleanMatrix implements ISparse {
+public final class SubsetMatrix extends ABooleanMatrix implements ISparse, IFastRows {
+	private static final long serialVersionUID = 4937375232646236833L;
+
 	private int inputDims;
 	private Index components;
 
@@ -36,16 +38,6 @@ public final class SubsetMatrix extends ABooleanMatrix implements ISparse {
 	}
 
 	@Override
-	public int inputDimensions() {
-		return inputDims;
-	}
-
-	@Override
-	public int outputDimensions() {
-		return components.length();
-	}
-	
-	@Override
 	public double elementSum() {
 		return rowCount();
 	}
@@ -57,12 +49,12 @@ public final class SubsetMatrix extends ABooleanMatrix implements ISparse {
 
 	@Override
 	public int rowCount() {
-		return outputDimensions();
+		return components.length();
 	}
 
 	@Override
 	public int columnCount() {
-		return inputDimensions();
+		return inputDims;
 	}
 	
 	@Override

@@ -5,6 +5,12 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * A transform the represents the application of an operator to all elements of a vector
+ * 
+ * @author Mike
+ *
+ */
 public class AOpTransform extends ATransform  {
 	private final Op op;
 	private final int dims;

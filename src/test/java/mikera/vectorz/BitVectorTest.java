@@ -10,11 +10,19 @@ public class BitVectorTest {
 	public void testSet() {
 		BitVector b=new BitVector(3);
 		assertEquals(BitVector.of(0,0,0),b);
-		b.set(0,0.2);
+		b.set(0,-0.2);
 		b.set(1,0.5);
 		b.set(2,0.9);
 		assertEquals(BitVector.of(0,1,1),b);
+	}
+	
+	@Test
+	public void testSubVector() {
+		BitVector b=BitVector.of(0,1,0);
+		AVector sb=b.subVector(1, 1);
 		
+		assertEquals(Vector.of(1),sb);
+		assertTrue(sb.isView());
 	}
 	
 	@Test 
@@ -23,7 +31,7 @@ public class BitVectorTest {
 		assertEquals(BitVector.of(0,0,0),b);
 		assertEquals(Vector.of(0,0,0),b);
 	
-		assertEquals(Vector.of(1,0,1,0,1,0),BitVector.of(1,0,2,-3,0.51,0.49));
+		assertEquals(Vector.of(1,0,1,0,1,1),BitVector.of(1,0,2,-3,0.51,0.49));
 	}
 	
 	@Test
@@ -38,7 +46,9 @@ public class BitVectorTest {
 	
 	@Test 
 	public void testBigBitVector() {
-		BitVector b=BitVector.create(Vectorz.createUniformRandomVector(1000));
+		AVector rv=Vectorz.createUniformRandomVector(1000);
+		rv.sub(0.5);
+		BitVector b=BitVector.create(rv);
 		
 		AVector v=b.clone();
 		AVector v2=BitVector.create(b).clone();
@@ -52,5 +62,7 @@ public class BitVectorTest {
 		assertEquals(v,v2);
 		assertEquals(2.0,Vectorz.maxValue(v),0.0);
 		assertEquals(0.0,Vectorz.minValue(v),0.0);
+		
+		assertEquals(b.dotProduct(b),b.elementSquaredSum(),0.0);
 	}
 }

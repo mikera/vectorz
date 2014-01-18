@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -8,7 +9,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class IndexedSubVector extends AIndexedVector {
+public final class IndexedSubVector extends BaseIndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
 	private final AVector data;
@@ -43,10 +44,13 @@ public final class IndexedSubVector extends AIndexedVector {
 	}
 	
 	@Override
-	public IndexedSubVector subVector(int offset, int length) {
-		if (offset<0) throw new IndexOutOfBoundsException("Start Index: "+offset);
-		if ((offset+length)>this.length) throw new IndexOutOfBoundsException("End Index: "+(offset+length));
-
+	public AVector subVector(int offset, int length) {
+		if ((offset<0)||((offset+length)>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
+		if (length==0) return Vector0.INSTANCE;
+		if (length==this.length) return this;
+		
 		int[] newIndexes=new int[length];
 		for (int i=0; i<length; i++) {
 			newIndexes[i]=indexes[offset+i];

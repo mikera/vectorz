@@ -7,6 +7,8 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 public class ArrayIndexScalar extends AScalar implements IStridedArray {
+	private static final long serialVersionUID = 5928615452582152522L;
+
 	final double[] array;
 	final int index;
 

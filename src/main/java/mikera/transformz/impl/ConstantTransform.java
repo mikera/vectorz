@@ -45,7 +45,7 @@ public final class ConstantTransform extends AConstantTransform {
 
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return Transformz.createTranslation(constant);
 	}
 

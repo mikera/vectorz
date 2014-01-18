@@ -1,6 +1,5 @@
 package mikera.vectorz.impl;
 
-import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -8,28 +7,23 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 @SuppressWarnings("serial")
-abstract class AIndexedVector extends AVector {
+abstract class BaseIndexedVector extends ASizedVector {
 	protected final int[] indexes;
-	protected final int length;
 
-	protected AIndexedVector(int length) {
+	protected BaseIndexedVector(int length) {
+		super(length);
+		
 		indexes=new int[length];
-		this.length=length;
 	}
 	
-	public AIndexedVector(int[] indexes) {
+	public BaseIndexedVector(int[] indexes) {
+		super(indexes.length);
 		this.indexes=indexes;
-		this.length=indexes.length;
 	}
 	
 	@Override
 	public boolean isView() {
 		return true;
-	}
-
-	@Override
-	public int length() {
-		return length;
 	}
 	
 	@Override

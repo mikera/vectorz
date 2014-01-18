@@ -1,23 +1,22 @@
 package mikera.matrixx.impl;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
-import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
-import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.RepeatedElementIterator;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Lightweight immutable zero matrix class
  */
-public final class ZeroMatrix extends ABooleanMatrix {
-	private final int inputDimensions;
-	private final int outputDimensions;
+public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns {
+	private static final long serialVersionUID = 875833013123277805L;
 
 	@Override public 
 	boolean isFullyMutable() {
@@ -25,8 +24,7 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	private ZeroMatrix(int rows, int columns) {
-		outputDimensions=rows;
-		inputDimensions=columns;
+		super(rows,columns);
 	}
 	
 	public static ZeroMatrix create(int rows, int columns) {
@@ -34,13 +32,13 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
-	public boolean isMutable() {
-		return false;
+	public boolean isSquare() {
+		return cols==rows;
 	}
 	
 	@Override
-	public int inputDimensions() {
-		return inputDimensions;
+	public boolean isMutable() {
+		return false;
 	}
 	
 	@Override
@@ -69,8 +67,28 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
+	public int upperBandwidthLimit() {
+		return 0;
+	}
+	
+	@Override
+	public int lowerBandwidthLimit() {
+		return 0;
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		// no change - should maybe be an exception because immutable?
+	}
+	
+	@Override
+	public ZeroVector getRow(int row) {
+		return ZeroVector.create(cols);
+	}
+	
+	@Override
+	public ZeroVector getColumn(int col) {
+		return ZeroVector.create(rows);
 	}
 	
 	@Override
@@ -89,21 +107,6 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 
 	@Override
-	public int outputDimensions() {
-		return outputDimensions;
-	}
-
-	@Override
-	public int rowCount() {
-		return outputDimensions;
-	}
-
-	@Override
-	public int columnCount() {
-		return inputDimensions;
-	}
-	
-	@Override
 	public double determinant() {
 		if(isSquare()) throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
 		return 0.0;
@@ -117,13 +120,13 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	@Override
 	public double calculateElement(int i, AVector v) {
 		assert(i>=0);
-		assert(i<outputDimensions);
+		assert(i<rows);
 		return 0.0;
 	}
 
 	@Override
 	public double get(int row, int column) {
-		if ((row<0)||(row>=outputDimensions)||(column<0)||(column>=inputDimensions)) {
+		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 		return 0.0;
@@ -146,7 +149,7 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	
 	@Override
 	public AMatrix clone() {
-		return Matrixx.newMatrix(outputDimensions, inputDimensions);
+		return Matrixx.newMatrix(rows, cols);
 	}
 	
 	@Override
@@ -161,18 +164,28 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	}
 	
 	@Override
+	public double elementMax(){
+		return 0.0;
+	}
+	
+	@Override
+	public double elementMin(){
+		return 0.0;
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return 0;
 	}
 	
 	@Override 
 	public int hashCode() {
-		return Hash.zeroVectorHash(inputDimensions*outputDimensions);
+		return Hash.zeroVectorHash(cols*rows);
 	}
 	
 	@Override
 	public void transform(AVector input, AVector output) {
-		assert(output.length()==outputDimensions);
+		assert(output.length()==rows);
 		output.fill(0.0);
 	}
 	
@@ -183,29 +196,13 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	
 	@Override
 	public AVector asVector() {
-		return ZeroVector.create(inputDimensions*outputDimensions);
-	}
-	
-	@Override
-	public AMatrix compose(ATransform t) {
-		assert(inputDimensions()==t.outputDimensions());
-		return ZeroMatrix.create(outputDimensions, t.inputDimensions());
+		return ZeroVector.create(cols*rows);
 	}
 	
 	@Override
 	public AMatrix innerProduct(AMatrix m) {
-		assert(inputDimensions()==m.outputDimensions());
-		return ZeroMatrix.create(outputDimensions, m.inputDimensions());
-	}
-	
-	@Override
-	public void composeWith(ATransform t) {
-		assert(t.inputDimensions()==t.outputDimensions());
-	}
-	
-	@Override
-	public void composeWith(AMatrix t) {
-		assert(t.inputDimensions()==t.outputDimensions());
+		assert(columnCount()==m.rowCount());
+		return ZeroMatrix.create(rows, m.columnCount());
 	}
 	
 	@Override 
@@ -220,8 +217,8 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	
 	@Override
 	public ZeroMatrix getTranspose() {
-		if (inputDimensions==outputDimensions) return this;
-		return ZeroMatrix.create(inputDimensions, outputDimensions);
+		if (cols==rows) return this;
+		return ZeroMatrix.create(cols, rows);
 	}
 	
 	@Override
@@ -236,11 +233,21 @@ public final class ZeroMatrix extends ABooleanMatrix {
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		return RepeatedElementVector.create(inputDimensions, 0.0);
+		return ZeroVector.create(cols);
+	}
+	
+	@Override
+	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		return ZeroMatrix.create(rows, cols);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new RepeatedElementIterator(cols*rows,0.0);
 	}
 	
 	@Override
 	public ZeroMatrix exactClone() {
-		return new ZeroMatrix(outputDimensions,inputDimensions);
+		return new ZeroMatrix(rows,cols);
 	}
 }

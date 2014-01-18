@@ -4,8 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import mikera.arrayz.TestArrays;
+import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.IdentityMatrix;
 import mikera.vectorz.impl.DoubleScalar;
 import mikera.vectorz.impl.ImmutableScalar;
+import mikera.vectorz.impl.MatrixIndexScalar;
 
 @SuppressWarnings("deprecation")
 public class TestScalars {
@@ -69,6 +72,9 @@ public class TestScalars {
 		testScalar(ImmutableScalar.create(1.33));
 		testScalar(Vector.of(1, 2, 3).slice(1));
 		testScalar(Vector.of(1, 2, 3, 4, 5, 6).slice(1));
+		
+		testScalar(MatrixIndexScalar.wrap(IdentityMatrix.create(3),2,2));
+		testScalar(MatrixIndexScalar.wrap(Matrixx.createRandomMatrix(3, 3),0,2));
 	}
 
 }

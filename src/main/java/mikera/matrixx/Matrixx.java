@@ -2,17 +2,22 @@ package mikera.matrixx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import us.bpsm.edn.parser.Parseable;
 import us.bpsm.edn.parser.Parser;
 import us.bpsm.edn.parser.Parsers;
+import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.SparseColumnMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -22,6 +27,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SparseIndexedVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -72,12 +78,61 @@ public class Matrixx {
 	 * Creates a sparse matrix from the given matrix, ignoring zeros
 	 */
 	public static AMatrix createSparse(AMatrix m) {
-		int rc = m.rowCount();
-		AVector[] rows = new AVector[rc];
-		for (int i = 0; i < rc; i++) {
-			rows[i] = SparseIndexedVector.createFromRow(m, i);
+		return SparseRowMatrix.create(m);
+	}
+	
+	/**
+	 * Creates a sparse matrix from the given matrix, ignoring zeros. Uses row-based storage by default
+	 */
+	public static AMatrix createSparse(int rowCount, int columnCount) {
+		return SparseRowMatrix.create(rowCount,columnCount);
+	}
+	
+	/**
+	 * Creates a sparse matrix from the given matrix, ignoring zeros. Uses row-based storage by default
+	 */
+	public static AMatrix createSparseRows(Iterable<AVector> rows) {
+		Iterator<AVector> rowIterator=rows.iterator();
+		return createSparseRows(rowIterator);
+	}
+	
+	/**
+	 * Creates a sparse matrix from the given iterator. Each vector in the iterator will be copied to
+	 * a row in the new sparse matrix 
+	 */
+	public static AMatrix createSparseRows(Iterator<AVector> rowIterator) {
+		AVector r0=rowIterator.next();
+		int cc=r0.length();
+		HashMap<Integer,AVector> rowMap=new HashMap<Integer,AVector>();
+		rowMap.put(0, r0);
+		int ri=1;
+		while (rowIterator.hasNext()) {
+			AVector v=rowIterator.next();
+			if (!(v.isZero())) rowMap.put(ri, v.sparseClone());
+			ri++;
 		}
-		return VectorMatrixMN.wrap(rows);
+		int rc=ri;
+		SparseRowMatrix m=SparseRowMatrix.wrap(rowMap,rc,cc);
+		return m;
+	}
+
+	/**
+	 * Creates a SparseColumnMatrix from the given matrix, ignoring zeros
+	 */
+	public static SparseColumnMatrix createSparseColumns(AMatrix m) {
+		int cc = m.columnCount();
+		AVector[] cols = new AVector[cc];
+		for (int i = 0; i < cc; i++) {
+			cols[i] = Vectorz.createSparse(m.getColumn(i));
+		}
+		return SparseColumnMatrix.wrap(cols);
+	}
+	
+	/**
+	 * Creates a SparseRowMatrix matrix from the given matrix, ignoring zeros
+	 */
+	public static SparseRowMatrix createSparseRows(AMatrix m) {
+		return SparseRowMatrix.create(m);
 	}
 
 	/**
@@ -313,8 +368,11 @@ public class Matrixx {
 	 * @return
 	 */
 	public static AMatrix newMatrix(int rows, int columns) {
-		if (rows == 2 && columns == 2) return new Matrix22();
-		if (rows == 3 && columns == 3) return new Matrix33();
+		if (rows==columns) {
+			if (rows == 1) return new Matrix11();
+			if (rows == 2) return new Matrix22();
+			if (rows == 3) return new Matrix33();
+		}
 		return Matrix.create(rows, columns);
 	}
 
@@ -378,7 +436,7 @@ public class Matrixx {
 		AMatrix result = newMatrix(rows, columns);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				result.set(i, j, m.get(i, j));
+				result.unsafeSet(i, j, m.get(i, j));
 			}
 		}
 		return result;
@@ -394,10 +452,10 @@ public class Matrixx {
 		}
 	}
 
-	public static AMatrix createFromVectors(AVector... data) {
+	public static Matrix createFromVectors(AVector... data) {
 		int rc = data.length;
 		int cc = (rc == 0) ? 0 : data[0].length();
-		AMatrix m = newMatrix(rc, cc);
+		Matrix m = Matrix.create(rc, cc);
 		for (int i = 0; i < rc; i++) {
 			m.getRow(i).set(data[i]);
 		}
@@ -437,7 +495,7 @@ public class Matrixx {
 		AMatrix m = newMatrix(rc, cc);
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
-				m.set(i, j, Tools.toDouble(data.get(i).get(j)));
+				m.unsafeSet(i, j, Tools.toDouble(data.get(i).get(j)));
 			}
 		}
 		return m;
@@ -466,15 +524,7 @@ public class Matrixx {
 	}
 
 	public static Matrix create(double[][] data) {
-		int rows = data.length;
-		int cols = data[0].length;
-		Matrix m = Matrix.create(rows, cols);
-		for (int i = 0; i < rows; i++) {
-			double[] ds=data[i];
-			if (ds.length!=cols) throw new IllegalArgumentException("Array shape is not rectangular!");
-			System.arraycopy(ds, 0, m.data, i * cols, cols);
-		}
-		return m;
+		return Matrix.create(data);
 	}
 
 	/**
@@ -492,6 +542,16 @@ public class Matrixx {
 			} 
 		}
 		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);
+	}
+
+	public static AMatrix createSparse(List<INDArray> slices) {
+		int cc=slices.get(0).sliceCount();
+		ArrayList<AVector> al=new ArrayList<AVector>();
+		for (INDArray a:slices) {
+			if ((a.dimensionality()!=1)||(a.sliceCount()!=cc)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a)); 
+			al.add(a.sparse().asVector());
+		}
+		return SparseRowMatrix.create(al);
 	}
 
 }

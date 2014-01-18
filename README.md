@@ -1,6 +1,6 @@
 ![Vectorz Logo](https://raw.github.com/wiki/mikera/vectorz/images/vectorz.png)
 
-Fast double-precision vector and matrix maths library for Java.
+Fast double-precision vector and matrix maths library for Java, supporting arbitrary `n-dimensional` numerical arrays.
 
 This library is designed for use in games, simulations, raytracers, machine learning etc. 
 where fast vector maths is important. 
@@ -9,7 +9,7 @@ Vectorz can do over *1 billion* 3D vector operations per second on a single thre
 
 ### Status
 
-Vectorz is reasonably mature, battle tested and being used in production applications. The API is still evolving however as new features get added so you can expect a few minor changes.
+Vectorz is reasonably mature, battle tested and being used in production applications. The API is still evolving however as new features get added so you can expect a few minor changes, at least until version 1.0.0
 
 [![Build Status](https://secure.travis-ci.org/mikera/vectorz.png)](http://travis-ci.org/mikera/vectorz)
 
@@ -33,7 +33,7 @@ See the [Vectorz Wiki](https://github.com/mikera/vectorz/wiki)
 ### Key features
 
  - Supports **double** typed vectors of arbitrary size
- - Vector values are **mutable**, enabling high performance algorithms
+ - Both **mutable** and **immutable** vectors are supported, enabling high performance algorithms
  - Support for **any size** matrices, including **higher dimensional** (NDArray) matrices
  - Ability to create lightweight **view** vectors (e.g. to access subranges of other vectors)
  - Library of useful **mathematical functions** on vectors
@@ -47,7 +47,8 @@ Vectorz is deigned to allow the maximum performance possible for vector maths on
 
 This focus has driven a number of important design decisions:
 
- - Specialised primitive-backed small vectors (1,2,3 and 4 dimensions) and matrices (2x2, 3x3 and M*3)
+ - Support for sparse vectors and other specialised array types
+ - Specialised primitive-backed small vectors (1,2,3 and 4 dimensions) and matrices (1x1, 2x2, 3x3 and M*3)
  - Abstract base classes preferred over interfaces to allow more efficient method dispatch
  - Multiple types of vector are provided for optimised performance in special cases
  - Hard-coded fast paths for most common 2D and 3D operations

@@ -16,20 +16,23 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class ImmutableVector extends AVector {
-	private static final AVector EMPTY_IMMUTABLE_VECTOR = new ImmutableVector(DoubleArrays.EMPTY);
-	
+public class ImmutableVector extends ASizedVector {
+	private static final long serialVersionUID = -3679147880242779555L;
+
 	private double[] data;
 	public int offset;
-	public int length;
 		
 	private ImmutableVector(double[] data) {
 		this(data,0,data.length);
 	}
 	
+	public static ImmutableVector of(double... data) {
+		return wrap(data.clone());
+	}
+	
 	private ImmutableVector(double[] data, int offset, int length) {
+		super(length);
 		this.data=data;
-		this.length=length;
 		this.offset=offset;
 	}
 	
@@ -38,6 +41,15 @@ public class ImmutableVector extends AVector {
 		double[] data=new double[length];
 		v.getElements(data, 0);
 		return new ImmutableVector(data, 0,length);
+	}
+	
+	public static ImmutableVector wrap(double[] data) {
+		return new ImmutableVector(data,0,data.length);
+	}
+	
+	public static ImmutableVector wrap(Vector source) {
+		double[] data=source.data;
+		return new ImmutableVector(data,0,data.length);
 	}
 	
 	@Override
@@ -61,9 +73,14 @@ public class ImmutableVector extends AVector {
 	}
 	
 	@Override
+	public final ImmutableScalar slice(int i) {
+		return ImmutableScalar.create(get(i));
+	}
+	
+	@Override
 	public AVector subVector(int start, int length) {
 		if ((start<0)||(start+length>this.length)||(length<0)) throw new IllegalArgumentException("Illegal subvector with arguments start= "+start+", length= "+length);
-		if (length==0) return EMPTY_IMMUTABLE_VECTOR;
+		if (length==0) return Vector0.INSTANCE;
 		if (length==this.length) return this;
 		return new ImmutableVector(data,offset+start,length);
 	}
@@ -150,11 +167,6 @@ public class ImmutableVector extends AVector {
 	public void addAt(int i, double v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));		
 	}
-
-	@Override
-	public int length() {
-		return length;
-	}
 	
 	@Override
 	public Iterator<Double> iterator() {
@@ -209,5 +221,6 @@ public class ImmutableVector extends AVector {
 		if ((offset<0)||(offset+length>data.length)||(length<0)) throw new VectorzException("ImmutableVector data out of bounds");
 		super.validate();
 	}
+
 
 }

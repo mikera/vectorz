@@ -16,17 +16,16 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class JoinedArrayVector extends AVector {
+public final class JoinedArrayVector extends ASizedVector {
 	private static final long serialVersionUID = -8470277860344236392L;
 
-	private final int length; // total length
 	private final int numArrays; // number of joined arrays
 	private final double[][] data; // source arrays
 	private final int[] offsets; // offsets into source arrays
 	private final int[] pos; // position of each array within vector. contains one extra element
 	
 	private JoinedArrayVector(int length, double[][] newData,int[] offsets, int[] pos) {
-		this.length=length;
+		super(length);
 		this.numArrays=newData.length;
 		this.offsets=offsets;
 		this.pos=pos;
@@ -83,11 +82,6 @@ public final class JoinedArrayVector extends AVector {
 			al.add(subArrayVector(i));
 		}
 		return al;
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 	
 	@Override
@@ -436,15 +430,18 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		assert(start>=0);
-		assert((start+length)<=this.length);
+		if ((start<0)||(start+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==this.length) return this;
 		if (length==0) return Vector0.INSTANCE;
 		
 		int a=findArrayNum(start);
 		int b=findArrayNum(start+length-1);
 		int n=b-a+1;
 		
-		if (n==1) return Vectorz.wrap(data[a], start-pos[a], length);
+		// special case if start and end fall on same array
+		if (n==1) return Vectorz.wrap(data[a], offsets[a]+(start-pos[a]), length);
 		
 		double[][] newData=Arrays.copyOfRange(data, a, b+1);
 		int[] offs=new int[n];

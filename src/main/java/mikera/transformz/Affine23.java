@@ -36,36 +36,36 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 	}
 	
 	public Affine23(AMatrix m, AVector v) {
-		assert(v.length()==2);
-		assert(m.inputDimensions()==2);
-		assert(m.outputDimensions()==2);
-		m00=m.get(0,0);
-		m01=m.get(0,1);
-		m10=m.get(1,0);
-		m11=m.get(1,1);
-		tr0=v.get(0);
-		tr1=v.get(1);
+		if ((v.length()!=2)||(m.columnCount()!=2)||(m.rowCount()!=2)) {
+			throw new IllegalArgumentException("Wrong source sizes for Affine23");
+		}
+		m00=m.unsafeGet(0,0);
+		m01=m.unsafeGet(0,1);
+		m10=m.unsafeGet(1,0);
+		m11=m.unsafeGet(1,1);
+		tr0=v.unsafeGet(0);
+		tr1=v.unsafeGet(1);
 	}
 	
 	public Affine23(Matrix22 m, AVector v) {
-		assert(v.length()==3);
-		assert(m.inputDimensions()==3);
-		assert(m.outputDimensions()==3);
+		assert(v.length()==2);
+		assert(m.columnCount()==2);
+		assert(m.rowCount()==2);
 		m00=m.m00;
 		m01=m.m01;
 		m10=m.m10;
 		m11=m.m11;
-		tr0=v.get(0);
-		tr1=v.get(1);
+		tr0=v.unsafeGet(0);
+		tr1=v.unsafeGet(1);
 	}
 
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return copyOfMatrix();
 	}
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return Transformz.createTranslation(copyOfTranslationVector());
 	}
 	
@@ -85,7 +85,7 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 			transform((Vector2)source,(Vector2)dest);
 			return;
 		}
-		double x=source.get(0), y=source.get(1);
+		double x=source.unsafeGet(0), y=source.unsafeGet(1);
 		dest.set(0,((m00*x)+(m01*y)+tr0));
 		dest.set(1,((m10*x)+(m11*y)+tr1));
 	}
@@ -146,10 +146,7 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 		if (a instanceof Affine23) {
 			composeWith((Affine23)a);
 			return;
-		} else if (a instanceof Matrix22) {
-			composeWith((Matrix22)a);
-			return;
-		}
+		} 
 		super.composeWith(a);
 	}
 	

@@ -8,6 +8,7 @@ import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
 
 public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArray {
+	private static final long serialVersionUID = -8908577438753599161L;
 
 	protected AStridedMatrix(double[] data, int rows, int cols) {
 		super(data, rows, cols);

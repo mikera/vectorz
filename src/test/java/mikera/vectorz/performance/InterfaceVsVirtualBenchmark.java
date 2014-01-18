@@ -3,10 +3,6 @@ package mikera.vectorz.performance;
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
-import mikera.vectorz.AVector;
-import mikera.vectorz.IVector;
-import mikera.vectorz.Vector3;
-
 /**
  * Benchmark to test the difference between interface and virtual dispatch.
  * 

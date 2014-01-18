@@ -1,17 +1,18 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class StridedVector extends AStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
 	private final double[] data;
-	private final int length;
 	private final int offset;
 	private final int stride;
 	
 	private StridedVector(double[] data, int offset, int length, int stride) {
+		super(length);
 		if ((offset<0)) throw new IndexOutOfBoundsException();
 		if (length>0) {
 			// check last element is in the array
@@ -20,7 +21,6 @@ public final class StridedVector extends AStridedVector {
 		}
 		this.data=data;
 		this.offset=offset;
-		this.length=length;
 		this.stride=stride;
 	}
 	
@@ -30,11 +30,6 @@ public final class StridedVector extends AStridedVector {
 
 	public static StridedVector wrap(double[] data, int offset, int length, int stride) {
 		return wrapStrided(data,offset,length,stride);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 	
 	@Override
@@ -62,6 +57,15 @@ public final class StridedVector extends AStridedVector {
 		double result=0.0;
 		for (int i=0; i<length; i++) {
 			result+=data[offset+i*stride]*v.unsafeGet(i);
+		}
+		return result;
+	}
+	
+	@Override
+	public double dotProduct(double[] ds, int off) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i*stride]*ds[i+off];
 		}
 		return result;
 	}
@@ -104,15 +108,18 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		assert(start>=0);
-		assert((start+length)<=this.length);
+		int len=this.length();
+		if ((start<0)||(start+length>len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
+
+		if (length==0) return Vector0.INSTANCE;
+		if (length==len) return this;
+		
 		if (length==1) {
 			return ArraySubVector.wrap(data, offset+start*stride, 1);
-		} else if (length>0) {
-			return wrapStrided(data,offset+start*stride,length,stride);
-		} else {
-			return Vector0.INSTANCE;
-		}
+		} 
+		return wrapStrided(data,offset+start*stride,length,stride);
 	}
 	
 	@Override

@@ -1,24 +1,27 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.util.VectorzException;
 
 /** 
  * Abstract base class for banded matrices
  * 
  * Banded matrix implementations are assumed to store their data efficiently in diagonal bands,
- * so functions on banded matrices are designed to exploit this fact.
+ * so functions on banded matrices can be designed to exploit this fact.
  * 
  * May be either square or rectangular
  * 
  * @author Mike
  *
  */
-public abstract class ABandedMatrix extends AMatrix {
-	
+public abstract class ABandedMatrix extends AMatrix implements ISparse {
+	private static final long serialVersionUID = -229314208418131186L;
+
 	@Override
 	public abstract int upperBandwidthLimit();
 	
@@ -42,6 +45,15 @@ public abstract class ABandedMatrix extends AMatrix {
 			if (!(getBand(i).isZero())) return i;
 		}
 		return 0;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		int lb=lowerBandwidthLimit(), ub=upperBandwidthLimit();
+		for (int i=-lb; i<=ub; i++) {
+			if (getBand(i).isMutable()) return true;
+		}
+		return false;
 	}
 	
 	@Override
@@ -92,6 +104,11 @@ public abstract class ABandedMatrix extends AMatrix {
 		return t;
 	}
 	
+	@Override
+	public double trace() {
+		return getBand(0).elementSum();
+	}
+	
 	@Override 
 	public double elementSquaredSum() {
 		double t=0;
@@ -135,21 +152,17 @@ public abstract class ABandedMatrix extends AMatrix {
 	 * @author Mike
 	 *
 	 */
-	private final class BandedMatrixRow extends AVector {
+	@SuppressWarnings("serial")
+	private final class BandedMatrixRow extends ASizedVector {
 		final int row;
-		final int length;
 		final int lower;
 		final int upper;
+		
 		public BandedMatrixRow(int row) {
+			super(columnCount());
 			this.row=row;
-			this.length=columnCount();
 			this.lower=-lowerBandwidthLimit();
 			this.upper=upperBandwidthLimit();
-		}
-
-		@Override
-		public int length() {
-			return length;
 		}
 
 		@Override
@@ -206,7 +219,6 @@ public abstract class ABandedMatrix extends AMatrix {
 		}
 	}
 	
-	
 	@Override public void validate() {
 		super.validate();
 		if (lowerBandwidthLimit()<0) throw new VectorzException("Negative lower bandwidth limit?!?");
@@ -218,5 +230,10 @@ public abstract class ABandedMatrix extends AMatrix {
 			AVector v=getBand(i);
 			if (bandLength(i)!=v.length()) throw new VectorzException("Invalid band length: "+i);
 		}
+	}
+
+	@Override
+	public double density() {
+		return nonZeroCount()/((double)elementCount());
 	}
 }

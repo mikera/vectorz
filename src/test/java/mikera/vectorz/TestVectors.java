@@ -12,21 +12,25 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.MatrixAsVector;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
+import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
+import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Constant;
+import mikera.vectorz.util.VectorBuilder;
 
 import org.junit.Test;
 
@@ -119,12 +123,12 @@ public class TestVectors {
 		assertEquals(10,v.get(10),0.0);
 		assertTrue(v.isView());
 		
-		ArraySubVector v2=v.subVector(5, 90);
+		AVector v2=v.subVector(5, 90);
 		assertEquals(90,v2.length());
 		assertEquals(15,v2.get(10),0.0);
 		assertTrue(v2.isView());
 		
-		ArraySubVector v3=v2.subVector(5,80);
+		AVector v3=v2.subVector(5,80);
 		assertEquals(20,v3.get(10),0.0);
 		assertTrue(v3.isView());
 		
@@ -260,6 +264,13 @@ public class TestVectors {
 		assertEquals(res,v.elementSum(),0.00001);
 	}
 	
+	private void testMinMax(AVector v) {
+		if (v.length()==0) return;
+		assertEquals(v.maxAbsElement(),Math.abs(v.get(v.maxAbsElementIndex())),0.0);
+		assertEquals(v.maxElement(),v.get(v.maxElementIndex()),0.0);
+		assertEquals(v.minElement(),v.get(v.minElementIndex()),0.0);
+	}
+	
 	private void testAddMultipleIndexed(AVector v) {
 		v=v.exactClone();
 		if (v.isFullyMutable()) {
@@ -303,6 +314,15 @@ public class TestVectors {
 		
 		AVector v2=v.subVector(0, m).join(v.subVector(m, len-m));
 		assertEquals(v,v2);
+		
+		AVector zv=v.subVector(len/2, 0);
+		assertTrue(zv==Vector0.INSTANCE);
+		
+		// whole subvector should return same vector
+		if (len>0) {
+			AVector fv=v.subVector(0, len);
+			assertTrue(fv==v);
+		}
 	}
 	
 	private void testClone(AVector v) {
@@ -357,6 +377,15 @@ public class TestVectors {
 		} catch (Throwable t) {
 			// OK
 		}
+	}
+	
+	private void testJoining(AVector v) {
+		AVector vv=v.join(v);
+		assertEquals(vv,v.join(v,0));
+		
+		int n=v.length();
+		AVector v2=vv.subVector(n, n);
+		assertEquals(v,v2);
 	}
 	
 	private void testSetElements(AVector v) {
@@ -490,9 +519,8 @@ public class TestVectors {
 		}
 	}
 	public void testSubVectorMutability(AVector v) {
-		// defensive copy
-		v=v.clone();
-		assertTrue(!v.isView());
+		if (!v.isFullyMutable()) return;
+		v=v.exactClone();
 		
 		int vlen=v.length();
 		
@@ -500,9 +528,6 @@ public class TestVectors {
 		
 		AVector s1 = v.subVector(start, vlen-start);
 		AVector s2 = v.subVector(start, vlen-start);
-		
-		assertTrue(s1.isView());
-		assertNotSame(s1,s2);
 		
 		int len=s1.length();
 		for (int i=0; i<len; i++) {
@@ -539,6 +564,13 @@ public class TestVectors {
 		assertTrue(v.isZero());
 	}
 	
+	private void testSparseOps(AVector v) {
+		assertTrue(v.nonZeroCount()<=v.nonSparseIndexes().length());
+		
+		AVector sc=v.sparseClone();
+		assertTrue("clone = "+sc.getClass(), sc.isFullyMutable());
+		assertEquals(sc,v);
+	}
 
 	private void testNormalise(AVector v) {
 		if (!v.isFullyMutable()) return;
@@ -571,8 +603,8 @@ public class TestVectors {
 	private void testEquality(AVector v) {
 		assertEquals(v,v.clone());
 		assertNotEquals(v,v.join(Vector.of(1)));
+		assertEquals(v,Vectorz.createSparse(v));
 	}
-	
 	
 	private void testCopyTo(AVector v) {
 		int len=v.length();
@@ -709,8 +741,8 @@ public class TestVectors {
 	private void testSlicing(AVector v) {
 		for (int i=0; i<v.length(); i++) {
 			AScalar ss=v.slice(0, i);
-			assertTrue(ss.isView());
 			if (v.isFullyMutable()) {
+				assertTrue(ss.isView());
 				assertTrue(ss.isFullyMutable());
 			}
 		}	
@@ -728,6 +760,8 @@ public class TestVectors {
 		testUnsafeSet(v);
 		testOutOfBounds(v);
 		testSlicing(v);
+		testMinMax(v);
+		testJoining(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
@@ -736,6 +770,7 @@ public class TestVectors {
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
+		testSparseOps(v);
 		testSquare(v);
 		testSubvectors(v);
 		testParse(v);
@@ -827,12 +862,14 @@ public class TestVectors {
 		doGenericTests(m2.getRow(1));
 		doGenericTests(m2.getColumn(1));
 		doGenericTests(m2.getLeadingDiagonal());
+		doGenericTests(new MatrixAsVector(m2));
 
 		AMatrix m3=Matrixx.createRandomMatrix(4,5);
 		doGenericTests(m3.asVector());
 		doGenericTests(m3.getRow(2));
 		doGenericTests(m3.getColumn(2));
 		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
+		doGenericTests(new MatrixAsVector(m3));
 		
 		doGenericTests(new AxisVector(1,3));
 		doGenericTests(new AxisVector(0,1));
@@ -852,7 +889,14 @@ public class TestVectors {
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
+		doGenericTests(SparseIndexedVector.create(Vector.of(1,2,3,4,5))); // fully dense!
+		doGenericTests(SparseIndexedVector.create(Vector.of(-1,-2,-3))); // fully dense!
+
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
+		
+		doGenericTests(SparseHashedVector.create(Vector.of(0,1,-1.5,0,2)));
+		doGenericTests(SparseHashedVector.create(Vector.of(1,2,3,4,5))); // fully dense!
+		doGenericTests(SparseHashedVector.create(Vector.of(-1,-2,-3))); // fully dense!
 		
 		doGenericTests(new Scalar(1.0).asVector());
 		doGenericTests(Vector.of(1,2,3).slice(1).asVector());
@@ -870,5 +914,20 @@ public class TestVectors {
 		
 		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
 		doGenericTests(ImmutableVector.create(Vector.of()));
+		
+		doGenericTests(RangeVector.create(10,0));
+		doGenericTests(RangeVector.create(-10,3));
+		doGenericTests(RangeVector.create(0,7));
+		
+		// VectorBuilder as a Vector
+		VectorBuilder vbl=new VectorBuilder();
+		doGenericTests(vbl);
+		vbl.append(1.0);
+		doGenericTests(vbl);
+		vbl.append(2.0,3.0);
+		doGenericTests(vbl);
+		vbl.append(4,5,6);
+		doGenericTests(vbl);
+		
 	}
 }

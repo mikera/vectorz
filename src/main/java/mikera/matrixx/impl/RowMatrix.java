@@ -12,7 +12,9 @@ import mikera.vectorz.util.ErrorMessages;
  * Matrix class that wraps a vector as a 1-row matrix
  * @author Mike
  */
-public class RowMatrix extends AMatrix {
+public class RowMatrix extends AMatrix implements IFastRows {
+	private static final long serialVersionUID = 2636365975400418264L;
+
 	private final AVector vector;
 	
 	public RowMatrix(AVector v) {
@@ -26,6 +28,21 @@ public class RowMatrix extends AMatrix {
 	@Override
 	public int rowCount() {
 		return 1;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return vector.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return vector.isMutable();
+	}
+	
+	@Override
+	public boolean isZero() {
+		return vector.isZero();
 	}
 	
 	@Override
@@ -59,6 +76,16 @@ public class RowMatrix extends AMatrix {
 	}
 	
 	@Override 
+	public double elementMin() {
+		return vector.elementMin();
+	}
+	
+	@Override 
+	public double elementMax() {
+		return vector.elementMax();
+	}
+	
+	@Override 
 	public long nonZeroCount() {
 		return vector.nonZeroCount();
 	}
@@ -83,6 +110,17 @@ public class RowMatrix extends AMatrix {
 	@Override
 	public void unsafeSet(int row, int column, double value) {
 		vector.unsafeSet(column,value);
+	}
+	
+	public AVector getRow(int i) {
+		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
+		return vector;
+	}
+	
+	@Override
+	public void addAt(int i, int j, double d) {
+		assert(i==0);
+		vector.addAt(j,d);
 	}
 	
 	@Override

@@ -1,7 +1,5 @@
 package mikera.vectorz.impl;
 
-import mikera.vectorz.impl.AConstrainedVector;
-
 /**
  * Abstract base class for bit vectors 
  * 
@@ -11,10 +9,24 @@ import mikera.vectorz.impl.AConstrainedVector;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ABitVector extends AConstrainedVector {
+public abstract class ABitVector extends ASizedVector {
+
+	protected ABitVector(int length) {
+		super(length);
+	}
 
 	@Override
 	public boolean isBoolean() {
 		return true;
+	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return true;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return false;
 	}
 }

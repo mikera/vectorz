@@ -7,24 +7,32 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.AVectorMatrix;
 import mikera.matrixx.impl.BandedMatrix;
+import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
 import mikera.matrixx.impl.QuadtreeMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
+import mikera.matrixx.impl.SparseColumnMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.ATransform;
+import mikera.transformz.MatrixTransform;
 import mikera.transformz.TestTransformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.ops.Constant;
 
 import org.junit.Test;
@@ -43,11 +51,10 @@ public class TestMatrixx {
 		assertTrue(mimv.epsilonEquals(v));		
 		
 		// composition of matrix and its inverse should be an identity transform
-		ATransform id=m.compose(mi);
-		assertTrue(id instanceof AMatrix);
+		MatrixTransform mt=new MatrixTransform(m);
+		ATransform id=mt.compose(new MatrixTransform(mi));
 		AVector idv=id.transform(v);
 		assertTrue(idv.epsilonEquals(v));		
-		
 	}
 	
 	@Test
@@ -220,7 +227,7 @@ public class TestMatrixx {
 		
 		AMatrix m1=Matrixx.createScaleMatrix(3, 2.0);
 		AMatrix m2=Matrixx.createScaleMatrix(3, 1.5);
-		ATransform ct = m2.compose(m1);
+		ATransform ct = new MatrixTransform(m2).compose(new MatrixTransform(m1));
 		
 		assertTrue(Vector3.of(3,6,9).epsilonEquals(ct.transform(v)));
 	}
@@ -244,6 +251,10 @@ public class TestMatrixx {
 	private void doTransposeTest(AMatrix m) {
 		AMatrix m2=m.clone();
 		m2=m2.getTranspose();
+		
+		assertTrue(m.equalsTranspose(m2));
+		assertTrue(m2.equalsTranspose(m));
+		
 		assertEquals(m2, m.getTranspose());
 		assertEquals(m2, m.getTransposeView());
 		assertEquals(m2, m.toMatrixTranspose());
@@ -405,8 +416,8 @@ public class TestMatrixx {
 	}
 
 	private void doRowColumnTests(AMatrix m) {
-		assertEquals(m.rowCount(),m.outputDimensions());
-		assertEquals(m.columnCount(),m.inputDimensions());
+		assertEquals(m.rowCount(),new MatrixTransform(m).outputDimensions());
+		assertEquals(m.columnCount(),new MatrixTransform(m).inputDimensions());
 		
 		m=m.clone();
 		int rc=m.rowCount();
@@ -488,12 +499,12 @@ public class TestMatrixx {
 	}
 	
 	void doBigComposeTest(AMatrix m) {
-		AMatrix a=Matrixx.createRandomSquareMatrix(m.outputDimensions());
-		AMatrix b=Matrixx.createRandomSquareMatrix(m.inputDimensions());
+		AMatrix a=Matrixx.createRandomSquareMatrix(m.rowCount());
+		AMatrix b=Matrixx.createRandomSquareMatrix(m.columnCount());
 		AMatrix mb=m.compose(b);
 		AMatrix amb=a.compose(mb);
 		
-		AVector v=Vectorz.createUniformRandomVector(b.inputDimensions());
+		AVector v=Vectorz.createUniformRandomVector(b.columnCount());
 		
 		AVector ambv=a.transform(m.transform(b.transform(v)));
 		assertTrue(amb.transform(v).epsilonEquals(ambv));
@@ -523,6 +534,9 @@ public class TestMatrixx {
 	private void testSparseClone(AMatrix m) {
 		AMatrix s=Matrixx.createSparse(m);
 		assertEquals(m,s);
+		
+		AMatrix s2=Matrixx.createSparseRows((Iterable<AVector>)m);
+		assertEquals(m,s2);
 	}
 	
 	void doScaleTest(AMatrix m) {
@@ -594,6 +608,7 @@ public class TestMatrixx {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	void doGenericTests(AMatrix m) {
 		m.validate();
 		
@@ -620,7 +635,11 @@ public class TestMatrixx {
 		doBigComposeTest(m);
 		doSubMatrixTest(m);
 		
-		TestTransformz.doITransformTests(m);
+		if (m instanceof AVectorMatrix<?>) {
+			TestVectorMatrix.doVectorMatrixTests((AVectorMatrix<AVector>)m);
+		}
+		
+		TestTransformz.doITransformTests(new MatrixTransform(m));
 		
 		new TestArrays().testArray(m);
 	}
@@ -640,6 +659,10 @@ public class TestMatrixx {
 		Matrix22 m22=new Matrix22();
 		doGenericTests(m22);
 		
+		// specialised 1*1 matrix
+		Matrix22 m11=new Matrix22();
+		doGenericTests(m11);
+
 		// specialised Mx3 matrix
 		VectorMatrixM3 mm3=new VectorMatrixM3(10);
 		doGenericTests(mm3);
@@ -684,11 +707,13 @@ public class TestMatrixx {
 		doGenericTests(ScalarMatrix.create(5,0));
 		doGenericTests(ScalarMatrix.create(5,2.0).subMatrix(1, 3, 1, 3));
 		
+		// row and column matrices
 		doGenericTests(new RowMatrix(Vector.of(1,2,3,4)));
 		doGenericTests(new ColumnMatrix(Vector.of(1,2,3,4)));
 		doGenericTests(new RowMatrix(Vector3.of(1,2,3)));
 		doGenericTests(new ColumnMatrix(Vector3.of(1,2,3)));
 		
+		// strided matrices
 		StridedMatrix strm=StridedMatrix.create(1, 1);
 		doGenericTests(strm);
 		strm=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
@@ -698,7 +723,7 @@ public class TestMatrixx {
 		
 		doGenericTests(PermutationMatrix.create(0,1,2));
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
-		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(10)));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(8)));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(6)).subMatrix(1,3,2,4));
 		
 		doGenericTests(BandedMatrix.create(3, 3, -2, 2));
@@ -708,5 +733,17 @@ public class TestMatrixx {
 											,ZeroMatrix.create(2, 1)
 											,ZeroMatrix.create(1, 2)
 											,Matrixx.createScaleMatrix(1, 3)));
+		
+		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
+		doGenericTests(SparseRowMatrix.create(Matrixx.createRandomSquareMatrix(3)));
+		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
+		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(4)));
+		
+		// Immutable matrices
+		doGenericTests(new ImmutableMatrix(Matrixx.createRandomMatrix(4, 5)));
+		doGenericTests(new ImmutableMatrix(Matrixx.createRandomMatrix(3, 3)));
+		
+		// block diagonal matrices
+		doGenericTests(BlockDiagonalMatrix.create(IdentityMatrix.create(2),Matrixx.createRandomSquareMatrix(2)));
 	}
 }

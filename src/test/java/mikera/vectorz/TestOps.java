@@ -268,7 +268,7 @@ public class TestOps {
 		testTransforms(op);
 		testBounds(op);
 		testDerivative(op);
-		TestTransformz.doITransformTests(op);
+		TestTransformz.doITransformTests(op.getTransform(3));
 	}
 	
 	private void doComposeTest(Op op1, Op op2) {

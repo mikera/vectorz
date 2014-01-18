@@ -1,13 +1,17 @@
 package mikera.matrixx.impl;
 
+import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Abstract base class for matrices wrapping  a dense (rows*cols) subset of a double[] array
+ * Abstract base class for matrices wrapping a dense (rows*cols) subset of a double[] array
  * @author Mike
  *
  */
-public abstract class ADenseArrayMatrix extends AStridedMatrix {
+public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows {
+	private static final long serialVersionUID = -2144964424833585026L;
 
 	protected ADenseArrayMatrix(double[] data, int rows, int cols) {
 		super(data, rows, cols);
@@ -42,6 +46,21 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix {
 	}
 	
 	@Override
+	public double elementSum() {
+		return DoubleArrays.elementSum(data,getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data,getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data,getArrayOffset(), rows*cols);
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		System.arraycopy(data, row*cols, dest, destOffset, cols);
 	}
@@ -53,6 +72,34 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix {
 	
 	protected int index(int row, int col) {
 		return getArrayOffset()+(row*cols)+col;
+	}
+	
+	@Override
+	public void transform(AVector source, AVector dest) {
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
+		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<rows; i++) {
+			dest.unsafeSet(i,source.dotProduct(data, offset+ i*cols));
+		}
+	}
+	
+	@Override
+	public void add(AVector v) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+
+		for (int i=0; i<rc; i++) {
+			v.addToArray(data, offset+i*cc);
+		}		
 	}
 
 }

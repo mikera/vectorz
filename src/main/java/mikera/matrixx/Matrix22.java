@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.matrixx.impl.APrimitiveMatrix;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -12,7 +13,9 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
+public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTransform {
+	private static final long serialVersionUID = 2696617102233017028L;
+
 	public double m00,m01,
 	              m10,m11;
 	
@@ -101,6 +104,26 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public long elementCount() {
+		return 4;
+	}
+	
+	@Override
+	public double elementSum() {
+		return m00+m01+m10+m11;
+	}
+	
+	@Override
+	public double elementMin() {
+		return Math.min(Math.min(m00, m01), Math.min(m10, m11));
+	}
+	
+	@Override
+	public double elementMax() {
+		return Math.max(Math.max(m00, m01), Math.max(m10, m11));
+	}
+	
+	@Override
 	public double trace() {
 		return m00+m11;
 	}
@@ -123,6 +146,20 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 	public int columnCount() {
 		return 2;
 	}
+
+	@Override
+	public void add(AMatrix a) {
+		if (a instanceof Matrix22) {
+			add((Matrix22)a); return;
+		}
+		if ((a.rowCount()!=2)||(a.columnCount()!=2)) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+		m00+=a.unsafeGet(0, 0);
+		m01+=a.unsafeGet(0, 1);
+		m10+=a.unsafeGet(1, 0);
+		m11+=a.unsafeGet(1, 1);
+	}
 	
 	public void add(Matrix22 a) {
 		m00+=a.m00;
@@ -144,6 +181,17 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 			case 0: return Vector2.of(m00,m01);
 			case 1: return Vector2.of(m10,m11);
 			default: throw new IndexOutOfBoundsException("Row index = "+row);
+		}
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		if (row==0) {
+			dest[destOffset++]=m00;
+			dest[destOffset++]=m01;
+		} else {
+			dest[destOffset++]=m10;
+			dest[destOffset++]=m11;
 		}
 	}
 
@@ -247,12 +295,7 @@ public final class Matrix22 extends AMatrix implements ISpecialisedTransform {
 		double ty=((m10*s.x)+(m11*s.y));
 		s.x=tx; s.y=ty;
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return true;
-	}
-	
+		
 	@Override
 	public boolean isSymmetric() {
 		return m01==m10;

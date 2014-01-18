@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 
-import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -18,11 +17,18 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
+public abstract class ADiagonalMatrix extends ASingleBandMatrix {
+	private static final long serialVersionUID = -6770867175103162837L;
+
 	protected final int dimensions;
 	
 	public ADiagonalMatrix(int dimensions) {
 		this.dimensions=dimensions;
+	}
+	
+	@Override
+	public int nonZeroBand() {
+		return 0;
 	}
 
 	@Override
@@ -60,7 +66,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	
 	@Override
 	public boolean isFullyMutable() {
-		return false;
+		return (dimensions<=1)&&(getLeadingDiagonal().isFullyMutable());
 	}
 	
 	@Override
@@ -82,7 +88,11 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 			return ZeroVector.create(bandLength(band));
 		}
 	}
-
+	
+	@Override
+	public AVector getNonZeroBand() {
+		return getLeadingDiagonal();
+	}
 	
 	@Override
 	public double determinant() {
@@ -102,6 +112,18 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	}
 	
 	@Override
+	public double elementMax(){
+		double ldv=getLeadingDiagonal().elementMax();
+		if (dimensions>1) return Math.max(0, ldv); else return ldv;
+	}
+	
+	@Override
+	public double elementMin(){
+		double ldv=getLeadingDiagonal().elementMin();
+		if (dimensions>1) return Math.min(0, ldv); else return ldv;
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+dimensions,0.0);
 		dest[destOffset+row]=unsafeGetDiagonalValue(row);
@@ -113,7 +135,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		copyRowTo(col,dest,destOffset);
 	}
 	
-	public AMatrix innerProduct(ADiagonalMatrix a) {
+	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
 		int dims=this.dimensions;
 		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		DiagonalMatrix result=DiagonalMatrix.createDimensions(dims);
@@ -236,6 +258,9 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 	public void set(int row, int column, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 	}
+	
+	@Override 
+	public abstract AVector getLeadingDiagonal();
 
 	public double getDiagonalValue(int i) {
 		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException();
@@ -281,4 +306,7 @@ public abstract class ADiagonalMatrix extends ABandedMatrix implements ISparse {
 		
 		super.validate();
 	}
+	
+	@Override 
+	public abstract ADiagonalMatrix exactClone();
 }

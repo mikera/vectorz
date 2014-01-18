@@ -77,8 +77,8 @@ public abstract class ATranslation extends AAffineTransform {
 	
 	@Override
 	public boolean equals(AAffineTransform a) {
-		return this.equals(a.getTranslationComponent())&&
-				a.getMatrixComponent().isIdentity();
+		return this.equals(a.getTranslation())&&
+				a.getMatrix().isIdentity();
 	}
 	
 	@Override

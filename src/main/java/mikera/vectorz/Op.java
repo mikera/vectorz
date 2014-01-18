@@ -3,7 +3,6 @@ package mikera.vectorz;
 import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.transformz.ATransform;
-import mikera.transformz.ITransform;
 import mikera.transformz.impl.AOpTransform;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.ops.Composed;
@@ -18,7 +17,7 @@ import mikera.vectorz.ops.Sum;
  * 
  * @author Mike
  */
-public abstract class Op implements IOp, ITransform {
+public abstract class Op implements IOperator {
 	
 	
 
@@ -94,23 +93,6 @@ public abstract class Op implements IOp, ITransform {
 	@Override
 	public ATransform getTransform(int dims) {
 		return new AOpTransform(this,dims);
-	}
-	
-	@Override
-	public int inputDimensions() {
-		return 1;
-	}
-	
-	@Override
-	public int outputDimensions() {
-		return 1;
-	}
-	
-	@Override
-	public void transform(AVector source, AVector dest) {
-		assert(source.length()==1);
-		assert(dest.length()==1);
-		dest.set(0,apply(source.get(0)));
 	}
 	
 	@Override 

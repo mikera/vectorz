@@ -8,7 +8,6 @@ import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
-import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
@@ -16,7 +15,6 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.MatrixBandVector;
 import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
@@ -24,14 +22,15 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /** 
- * Standard MxN matrix class backed by a fully packed double[] array
+ * Standard MxN matrix class backed by a densely packed double[] array
  * 
  * This is the most efficient Vectorz type for 2D matrices.
  * 
  * @author Mike
  */
 public final class Matrix extends ADenseArrayMatrix {
-	
+	private static final long serialVersionUID = -3260581688928230431L;
+
 	private Matrix(int rowCount, int columnCount) {
 		this(rowCount,columnCount,new double[rowCount*columnCount]);
 	}
@@ -66,6 +65,25 @@ public final class Matrix extends ADenseArrayMatrix {
 	public static Matrix create(Object... rowVectors) {
 		AMatrix m=VectorMatrixMN.create(rowVectors);
 		return create(m);
+	}
+	
+	public static Matrix create(double[][] data) {
+		int rows = data.length;
+		int cols = data[0].length;
+		Matrix m = Matrix.create(rows, cols);
+		for (int i = 0; i < rows; i++) {
+			double[] drow=data[i];
+			if (drow.length!=cols) {
+				throw new IllegalArgumentException("Array shape is not rectangular! Row "+i+" has length "+drow.length);
+			}
+			System.arraycopy(drow, 0, m.data, i * cols, cols);
+		}
+		return m;
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return true;
 	}
 	
 	@Override
@@ -170,6 +188,16 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data);
+	}
+	
+	@Override
 	public void abs() {
 		DoubleArrays.abs(data);
 	}
@@ -201,7 +229,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix clone() {
-		return new Matrix(rows,cols,DoubleArrays.copyOf(data));
+		return new Matrix(rows,cols,data.clone());
 	}
 	
 	@Override
@@ -250,13 +278,8 @@ public final class Matrix extends ADenseArrayMatrix {
 		}
 		if(rows!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		if(cols!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
-		int index=0;
 		for (int i=0; i<rows; i++) {
-			double acc=0.0;
-			for (int j=0; j<cols; j++) {
-				acc+=data[index++]*source.unsafeGet(j);
-			}
-			dest.unsafeSet(i,acc);
+			dest.unsafeSet(i,source.dotProduct(data, i*cols));
 		}
 	}
 	
@@ -387,6 +410,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	public double unsafeGet(int row, int column) {
 		return data[(row*cols)+column];
 	}
+	
+	@Override
+	public void addAt(int i, int j, double d) {
+		data[(i*cols)+j]+=d;
+	}
 
 	@Override
 	public void set(int row, int column, double value) {
@@ -408,11 +436,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public void add(Matrix m) {
-		assert(rowCount()==m.rowCount());
-		assert(columnCount()==m.columnCount());
-		for (int i=0; i<data.length; i++) {
-			data[i]+=m.data[i];
-		}
+		if ((rowCount()!=m.rowCount())||(columnCount()!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		DoubleArrays.add(data, m.data);
 	}
 
 	@Override
@@ -440,7 +465,9 @@ public final class Matrix extends ADenseArrayMatrix {
 		if (m instanceof Matrix) {add((Matrix)m); return;}
 		int rc=rowCount();
 		int cc=columnCount();
-		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) {
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+		}
 
 		int di=0;
 		for (int i=0; i<rc; i++) {
@@ -459,10 +486,9 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public void set(AMatrix a) {
-		int rc = rowCount();
-		if (!(rc==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		int cc = columnCount();
-		if (!(cc==a.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		if ((rowCount()!=a.rowCount())||(columnCount()!=a.columnCount())) {
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		}
 		a.getElements(this.data, 0);
 	}
 	
@@ -544,5 +570,4 @@ public final class Matrix extends ADenseArrayMatrix {
 	public double[] getArray() {
 		return data;
 	}
-
 }

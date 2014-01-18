@@ -15,6 +15,8 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 public final class DiagonalMatrix extends ADiagonalMatrix {
+	private static final long serialVersionUID = -6721785163444613243L;
+
 	final double[] data;
 	
 	public DiagonalMatrix(int dimensions) {
@@ -216,8 +218,9 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return super.innerProduct(a);
 	}
 	
-	public DiagonalMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException("Matrix dimensions not compatible!");
+	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
+		if (!(a instanceof DiagonalMatrix)) return a.innerProduct(this);
+		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		for (int i=0; i<dimensions; i++) {
 			result.data[i]*=a.unsafeGetDiagonalValue(i);

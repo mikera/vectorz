@@ -14,15 +14,16 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public class QuadtreeMatrix extends AMatrix implements ISparse {
-	
+public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
+	private static final long serialVersionUID = -7267626771473908891L;
+
 	// Quadtree subcompoents
 	private final AMatrix c00, c01, c10, c11;
 	
 	private final int rowSplit;
 	private final int columnSplit;
 	private final int rows;
-	private final int columns;
+	private final int cols;
 	
 	private QuadtreeMatrix(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
 		this.c00=c00;
@@ -32,7 +33,7 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 		this.rowSplit= c00.rowCount();
 		this.columnSplit=c00.columnCount();
 		this.rows=rowSplit+c10.rowCount();
-		this.columns=rowSplit+c01.columnCount();
+		this.cols=columnSplit+c01.columnCount();
 	}
 	
 	public static QuadtreeMatrix create(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
@@ -47,6 +48,22 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 	public boolean isFullyMutable() {
 		return c00.isFullyMutable()&&c01.isFullyMutable()&&c10.isFullyMutable()&&(c11.isFullyMutable());
 	}
+	
+	@Override
+	public boolean isMutable() {
+		return (c00.isMutable())||(c01.isMutable())||(c10.isMutable())||(c11.isMutable());
+	}
+	
+	@Override
+	public boolean isZero() {
+		return c00.isZero()&&c01.isZero()&&c10.isZero()&&(c11.isZero());
+	}
+	
+	@Override
+	public boolean isDiagonal() {
+		if (!isSquare()) return false;
+		return (c01.isZero())&&(c10.isZero())&&(c00.isDiagonal())&&(c11.isDiagonal());
+	}
 
 	@Override
 	public int rowCount() {
@@ -55,12 +72,12 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public int columnCount() {
-		return columns;
+		return cols;
 	}
 
 	@Override
 	public double get(int row, int column) {
-		if ((row<0)||(row>=rows)||(column<0)||(column>=columns)) {
+		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 		return unsafeGet(row,column);
@@ -68,7 +85,7 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public void set(int row, int column, double value) {
-		if ((row<0)||(row>=rows)||(column<0)||(column>=columns)) {
+		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 		unsafeSet(row,column,value);
@@ -127,6 +144,28 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 	}
 	
 	@Override
+	public void copyRowTo(int row, double[] data, int offset) {
+		if (row<rowSplit) {
+			c00.copyRowTo(row, data, offset);
+			c01.copyRowTo(row, data, offset+columnSplit);
+		} else {
+			c10.copyRowTo(row-rowSplit, data, offset);
+			c11.copyRowTo(row-rowSplit, data, offset+columnSplit);
+		}
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] data, int offset) {
+		if (col<columnSplit) {
+			c00.copyRowTo(col, data, offset);
+			c10.copyRowTo(col, data, offset+rowSplit);
+		} else {
+			c01.copyRowTo(col-columnSplit, data, offset);
+			c11.copyRowTo(col-columnSplit, data, offset+rowSplit);
+		}
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return c00.nonZeroCount()+c01.nonZeroCount()+c10.nonZeroCount()+c11.nonZeroCount();
 	}
@@ -134,6 +173,20 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 	@Override
 	public double elementSum() {
 		return c00.elementSum()+c01.elementSum()+c10.elementSum()+c11.elementSum();
+	}
+	
+	@Override
+	public double elementMin() {
+		return Math.min(
+				Math.min(c00.elementMin(), c01.elementMin()), 
+				Math.min(c10.elementMin(), c11.elementMin()));
+	}
+	
+	@Override
+	public double elementMax() {
+		return Math.max(
+				Math.max(c00.elementMax(), c01.elementMax()), 
+				Math.max(c10.elementMax(), c11.elementMax()));
 	}
 	
 	@Override
@@ -151,6 +204,16 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 		c01.add(v);
 		c10.add(v);
 		c11.add(v);
+	}
+	
+	@Override
+	public void add(AVector v) {
+		AVector v0=v.subVector(0, columnSplit);
+		AVector v1=v.subVector(columnSplit,cols-columnSplit);
+		c00.add(v0);
+		c01.add(v1);
+		c10.add(v0);
+		c11.add(v1);
 	}
 	
 	@Override
@@ -180,6 +243,56 @@ public class QuadtreeMatrix extends AMatrix implements ISparse {
 
 	@Override
 	public double density() {
-		return ((double)nonZeroCount())/((long)rows*(long)columns);
+		return ((double)nonZeroCount())/((long)rows*(long)cols);
+	}
+
+	@Override
+	public AMatrix getBlock(int rowBlock, int colBlock) {
+		switch (rowBlock) {
+		case 0:
+			switch (colBlock) {
+			case 0: return c00;
+			case 1: return c01;
+			default: throw new IndexOutOfBoundsException("Column Block: "+colBlock);			
+			}
+		case 1:
+			switch (colBlock) {
+			case 0: return c10;
+			case 1: return c11;
+			default: throw new IndexOutOfBoundsException("Column Block: "+colBlock);			
+			}
+		
+		default: throw new IndexOutOfBoundsException("Row Block: "+rowBlock);
+		}
+	}
+
+	@Override
+	public int getBlockColumnCount(int colBlock) {
+		return (colBlock==0)?columnSplit:(cols-columnSplit);
+	}
+
+	@Override
+	public int getBlockRowCount(int rowBlock) {
+		return (rowBlock==0)?rowSplit:(rows-rowSplit);
+	}
+
+	@Override
+	public int getColumnBlockIndex(int col) {
+		return col<columnSplit?0:1;
+	}
+
+	@Override
+	public int getRowBlockIndex(int row) {
+		return row<rowSplit?0:1;
+	}
+
+	@Override
+	public int columnBlockCount() {
+		return 2;
+	}
+
+	@Override
+	public int rowBlockCount() {
+		return 2;
 	}
 }

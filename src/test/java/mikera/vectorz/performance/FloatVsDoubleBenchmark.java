@@ -3,10 +3,6 @@ package mikera.vectorz.performance;
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
-import mikera.vectorz.GrowableVector;
-import mikera.vectorz.Vector;
-import mikera.vectorz.Vectorz;
-
 /**
  * Caliper based benchmarks
  * 

@@ -3,8 +3,6 @@ package mikera.vectorz.impl;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import mikera.vectorz.AVector;
-
 /**
  * General purpose iterator for arbitrary vectors.
  * 

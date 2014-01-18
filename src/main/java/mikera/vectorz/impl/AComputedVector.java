@@ -9,10 +9,11 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AComputedVector extends AConstrainedVector {
+public abstract class AComputedVector extends ASizedVector {
 
-	@Override
-	public abstract int length();
+	protected AComputedVector(int length) {
+		super(length);
+	}
 
 	@Override
 	public abstract double get(int i);
@@ -23,8 +24,13 @@ public abstract class AComputedVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public ImmutableScalar slice(int i) {
+		return ImmutableScalar.create(get(i));
+	}
+	
+	@Override
 	public boolean isMutable() {
-		return false;
+		return false; // i.e. immutable
 	}
 	
 	@Override

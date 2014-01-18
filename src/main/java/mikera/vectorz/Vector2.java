@@ -172,6 +172,16 @@ public final class Vector2 extends APrimitiveVector {
 		return x+y;
 	}
 	
+	@Override
+	public double elementMax(){
+		return Math.max(x, y);
+	}
+	
+	@Override
+	public double elementMin(){
+		return Math.min(x, y);
+	}
+	
 	@Override 
 	public double magnitudeSquared() {
 		return (x*x)+(y*y);
@@ -189,6 +199,11 @@ public final class Vector2 extends APrimitiveVector {
 			case 1: return y;
 			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return (i==0)?x:y;
 	}
 	
 	@Override
@@ -215,6 +230,14 @@ public final class Vector2 extends APrimitiveVector {
 			case 0: x=value; return;
 			case 1: y=value; return;
 			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		}
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
+		switch (i) {
+		case 0: x=value; return;
+		default: y=value; return;
 		}
 	}
 	

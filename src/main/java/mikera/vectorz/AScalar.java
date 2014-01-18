@@ -10,7 +10,9 @@ import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedScalarVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
 import mikera.vectorz.util.VectorzException;
@@ -25,7 +27,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 public abstract class AScalar extends AbstractArray<Object> implements IScalar {
-	
+	private static final long serialVersionUID = -8285351135755012093L;
 	private static final int[] SCALAR_SHAPE=IntArrays.EMPTY_INT_ARRAY;
 	private static final long[] SCALAR_LONG_SHAPE=LongArrays.EMPTY_LONG_ARRAY;
 
@@ -33,6 +35,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	public void set(double value) {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public double get(int x) {
+		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, x));
+	}
+
+	@Override
+	public double get(int x, int y) {
+		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, x));
 	}
 	
 	@Override
@@ -80,6 +92,13 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		throw new UnsupportedOperationException("Can't slice a scalar!");
 	}
 	
+	@Override
+	public AScalar subArray(int[] offsets, int[] shape) {
+		if (offsets.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		return this;
+	}
+
 	@Override
 	public Iterator<Object> iterator() {
 		throw new UnsupportedOperationException("Can't slice a scalar!");
@@ -242,7 +261,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		set(op.apply(get()));
 	}
 	
@@ -276,6 +295,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		return get();
 	}
 	
+	@Override
+	public double elementMax(){
+		return get();
+	}
+	
+	@Override
+	public double elementMin(){
+		return get();
+	}
+	
 	@Override public final double elementSquaredSum() {
 		double value=get();
 		return value*value;
@@ -288,6 +317,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 			return this;
 		} else {
 			int n=targetShape[tdims-1];
+			if (n==0) return Vector0.INSTANCE;
 			AVector v=new RepeatedElementVector(n,get());
 			return v.broadcast(targetShape);
 		}
@@ -368,14 +398,18 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 			return Scalar.create(get());
 		}
 	}
+	
+	@Override
+	public AScalar sparse() {
+		double v=get();
+		if (v==0.0) return ImmutableScalar.ZERO;
+		if (v==1.0) return ImmutableScalar.ONE;
+		return this;
+	}
 
 	@Override
 	public AScalar immutable() {
-		if (isMutable()) {
-			return ImmutableScalar.create(get());
-		} else {
-			return this;
-		}
+		return ImmutableScalar.create(get());
 	}
 	
 	@Override

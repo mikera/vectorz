@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.matrixx.AMatrix;
-import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -11,13 +10,13 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public abstract class AMatrixViewVector extends AVector {
+@SuppressWarnings("serial")
+public abstract class AMatrixViewVector extends ASizedVector {
 	protected AMatrix source;
-	protected int length;
 	
 	protected AMatrixViewVector(AMatrix source, int length) {
+		super(length);
 		this.source=source;
-		this.length=length;
 	}
 
 	protected abstract int calcRow(int i);
@@ -50,7 +49,7 @@ public abstract class AMatrixViewVector extends AVector {
 	}
 	
 	@Override
-	public int length() {
-		return length;
+	public MatrixIndexScalar slice(int i) {
+		return MatrixIndexScalar.wrap(source, calcRow(i), calcCol(i));
 	}
 }

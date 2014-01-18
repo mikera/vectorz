@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 
 /**
  * Abstract base class for specialised primitive vectors
@@ -40,6 +39,16 @@ public abstract class APrimitiveVector extends AVector {
 	
 	public double getT() {
 		throw new IndexOutOfBoundsException("Cannot get t co-ordinate of "+this.getClass());
+	}
+	
+	@Override
+	public APrimitiveVector sparse() {
+		return this;
+	}
+	
+	@Override
+	public APrimitiveVector sparseClone() {
+		return this;
 	}
 	
 	@Override

@@ -62,6 +62,16 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double elementMax(){
+		return x;
+	}
+	
+	@Override
+	public double elementMin(){
+		return x;
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		x=op.apply(x);
 	}
@@ -73,6 +83,11 @@ public final class Vector1 extends APrimitiveVector {
 		}
 		throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return x;
+	}
 
 	@Override
 	public void set(int i, double value) {
@@ -83,6 +98,11 @@ public final class Vector1 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public void unsafeSet(int i, double value) {
+		x=value;
+	}
+	
 	@Override 
 	public void fill(double v) {
 		x=v;
@@ -91,6 +111,14 @@ public final class Vector1 extends APrimitiveVector {
 	@Override
 	public void getElements(double[] data, int offset) {
 		data[offset]=x;
+	}
+	
+	@Override
+	public void add(AVector v) {
+		if (v.length()!=1) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		}
+		x+=v.unsafeGet(0);
 	}
 	
 	@Override

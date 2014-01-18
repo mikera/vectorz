@@ -11,7 +11,9 @@ import mikera.vectorz.util.ErrorMessages;
  * Matrix class that wraps a vector as a 1-columns matrix
  * @author Mike
  */
-public class ColumnMatrix extends AMatrix {
+public class ColumnMatrix extends AMatrix implements IFastColumns {
+	private static final long serialVersionUID = -6040718921619985258L;
+
 	private final AVector vector;
 	
 	public ColumnMatrix(AVector v) {
@@ -34,12 +36,32 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return vector.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return vector.isMutable();
+	}
+	
+	@Override
+	public boolean isZero() {
+		return vector.isZero();
+	}
+	
+	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		if (col==0) {
 			vector.getElements(dest, destOffset);
 		} else {
 			throw new IndexOutOfBoundsException("Column out of range: "+col);
 		}
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		dest[destOffset]=vector.get(row);
 	}
 	
 	@Override
@@ -60,6 +82,16 @@ public class ColumnMatrix extends AMatrix {
 	@Override 
 	public double elementSum() {
 		return vector.elementSum();
+	}
+	
+	@Override 
+	public double elementMin() {
+		return vector.elementMin();
+	}
+	
+	@Override 
+	public double elementMax() {
+		return vector.elementMax();
 	}
 	
 	@Override 
@@ -90,8 +122,20 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void addAt(int i, int j, double d) {
+		assert(j==0);
+		vector.addAt(i,d);
+	}
+	
+	@Override
 	public RowMatrix getTranspose() {
 		return new RowMatrix(vector);
+	}
+	
+	@Override
+	public AVector getColumn(int i) {
+		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1,i));
+		return vector;
 	}
 	
 	@Override

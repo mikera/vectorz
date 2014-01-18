@@ -78,7 +78,7 @@ public class ErrorMessages {
 	}
 
 	public static String illegalSize(int... shape) {
-		return "Illegal shape" +shape(shape);
+		return "Illegal shape: " +shape(shape);
 	}
 
 	public static String immutable(Object a) {
@@ -106,8 +106,21 @@ public class ErrorMessages {
 		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice;
 	}
 
+	public static String invalidSlice(INDArray a, int dimension, int slice) {
+		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice +" on dimension "+dimension;
+	}
+	
 	public static String noSlices(INDArray a) {
 		return "Cannot access slices of 0-D "+a.getClass();
 	}
+
+	public static String insufficientElements(int length) {
+		return "Insufficient elements "+length;
+	}
+
+	public static String impossible() {
+		return "This error shouldn't be possible!!! Please report an issue with a stack trace at https://github.com/mikera/vectorz/issues";
+	}
+
 
 }
