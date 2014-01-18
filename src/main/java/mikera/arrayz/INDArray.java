@@ -484,4 +484,12 @@ public interface INDArray extends Cloneable, Serializable {
 	 * The returned sparse array may not be fully mutable in all elements.
 	 */
 	public INDArray sparse();
+	
+	/**
+	 * Coerces this INDArray to a fully mutable sparse format, without changing its element values.
+	 * 
+	 * May return the same INDArray if already sparse and fully mutable.
+	 */
+	public INDArray sparseClone();	
+	
 }

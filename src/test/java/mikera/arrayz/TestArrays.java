@@ -155,6 +155,10 @@ public class TestArrays {
 		assertEquals(a, ec);
 		assertEquals(c, ec);
 		assertEquals(a.getClass(), ec.getClass());
+		
+		assertEquals(a,a.sparseClone());
+		assertEquals(a,a.sparse());
+		assertEquals(a,a.immutable());
 	}
 
 	private void testSetElements(INDArray a) {

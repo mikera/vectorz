@@ -134,6 +134,23 @@ public class Matrixx {
 	public static SparseRowMatrix createSparseRows(AMatrix m) {
 		return SparseRowMatrix.create(m);
 	}
+	
+	/**
+	 * Creates a SparseRowMatrix matrix from the given INDArray, ignoring zeros
+	 */
+	public static SparseRowMatrix createSparseRows(INDArray a) {
+		if (!(a.dimensionality()==2)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a));
+		int rc=a.getShape(0);
+		int cc=a.getShape(1);
+		SparseRowMatrix m=SparseRowMatrix.create(rc,cc);
+		for (int i=0; i<rc; i++) {
+			AVector v=a.slice(i).asVector();
+			if (!v.isZero()) {
+				m.replaceRow(i, v.sparse());
+			}
+		}
+		return m;
+	}
 
 	/**
 	 * Creates an immutable zero-filled matrix

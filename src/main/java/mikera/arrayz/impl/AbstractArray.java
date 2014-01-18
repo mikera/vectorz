@@ -11,6 +11,7 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.arrayz.NDArray;
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.util.Maths;
@@ -862,6 +863,25 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		List<INDArray> sls=this.getSliceViews();
 		for (int i=0; i<n; i++) {
 			sls.set(i,sls.get(i).sparse());
+		}
+		return SliceArray.create(sls);
+	}
+	
+	@Override
+	public INDArray sparseClone() {
+		int dims=dimensionality();
+		if (dims==0) return this;
+		if (dims==1) {
+			return Vectorz.createSparseMutable(this.asVector());
+		}
+		if (dims==2) {
+			if (this instanceof AMatrix) return Matrixx.createSparseRows((AMatrix)this);
+			return Matrixx.createSparseRows(this);
+		}
+		int n=this.sliceCount();
+		List<INDArray> sls=this.getSliceViews();
+		for (int i=0; i<n; i++) {
+			sls.set(i,sls.get(i).sparseClone());
 		}
 		return SliceArray.create(sls);
 	}
