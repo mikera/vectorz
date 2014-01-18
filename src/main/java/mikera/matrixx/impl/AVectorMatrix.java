@@ -38,6 +38,7 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	 * @param i
 	 * @param row
 	 */
+	@Override
 	public abstract void replaceRow(int i, AVector row);
 	
 	/**

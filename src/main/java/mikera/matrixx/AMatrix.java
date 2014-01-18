@@ -1725,6 +1725,30 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
+	 * Replaces a row in a matrix, adding the row to the internal structure of the matrix.
+	 * 
+	 * Will throw UnsupportedOperationException if not possible for the given matrix type.
+	 * 
+	 * @param i
+	 * @param row
+	 */
+	public void replaceRow(int i, AVector row) {
+		throw new UnsupportedOperationException("replaceRow not supported for "+this.getClass()+". Consider using an AVectorMatrix or SparseRowMatrix instance instead.");
+	}
+	
+	/**
+	 * Replaces a column in a matrix, adding the column to the internal structure of the matrix.
+	 * 
+	 * Will throw UnsupportedOperationException if not possible for the given matrix type.
+	 * 
+	 * @param i
+	 * @param row
+	 */
+	public void replaceColumn(int i, AVector row) {
+		throw new UnsupportedOperationException("replaceColumn not supported for "+this.getClass()+". Consider using a SparseColumnMatrix instance instead.");
+	}
+	
+	/**
 	 * Sets a column in a matrix. 
 	 * 
 	 * @param i

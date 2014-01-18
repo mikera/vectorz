@@ -24,7 +24,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class SparseColumnMatrix extends ARectangularMatrix implements ISparse {
+public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, IFastColumns {
 	private static final long serialVersionUID = -5994473197711276621L;
 
 	protected final HashMap<Integer,AVector> data;
@@ -148,6 +148,7 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse {
 		return v;
 	}
 	
+	@Override
 	public void replaceColumn(int i, AVector col) {
 		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
 		if (col.length()!=rows) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(col));
