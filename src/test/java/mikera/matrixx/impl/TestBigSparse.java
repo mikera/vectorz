@@ -23,11 +23,15 @@ public class TestBigSparse {
 		testBigStats(m);
 		testBigStats(m.getTranspose());
 		
-		
 		m.set(3,4,7.0);
 		assertEquals(m,m.exactClone());
 		
 		AMatrix mt=m.getTranspose();
 		assertEquals(m.getTranspose(),mt);
 	}
+	
+	@Test public void testBigMultiply() {
+		// TODO
+	}
+
 }
