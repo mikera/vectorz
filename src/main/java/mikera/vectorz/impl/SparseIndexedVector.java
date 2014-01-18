@@ -92,6 +92,7 @@ public class SparseIndexedVector extends ASparseVector {
 	 */
 	public static SparseIndexedVector create(AVector source) {
 		int vlen = source.length();
+		if (vlen==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
 		int len=0;
 		for (int i=0; i<vlen; i++) {
 			if (source.get(i)!=0.0) len++;
@@ -176,6 +177,75 @@ public class SparseIndexedVector extends ASparseVector {
 		}
 		return result;
 	}
+	
+	@Override
+	public int maxElementIndex(){
+		if (data.length==0) return 0;
+		double result=data[0];
+		int di=0;
+		for (int i=1; i<data.length; i++) {
+			double d=data[i];
+			if (d>result) {
+				result=d; 
+				di=i;
+			}
+		}
+		if (result<0.0) { // need to find a sparse element
+			int ind=sparseElementIndex();
+			if (ind>0) return ind;
+		}
+		return index.get(di);
+	}
+	
+ 
+	@Override
+	public int maxAbsElementIndex(){
+		if (data.length==0) return 0;
+		double result=data[0];
+		int di=0;
+		for (int i=1; i<data.length; i++) {
+			double d=Math.abs(data[i]);
+			if (d>result) {
+				result=d; 
+				di=i;
+			}
+		}
+		return index.get(di);
+	}
+	
+	@Override
+	public int minElementIndex(){
+		if (data.length==0) return 0;
+		double result=data[0];
+		int di=0;
+		for (int i=1; i<data.length; i++) {
+			double d=data[i];
+			if (d<result) {
+				result=d; 
+				di=i;
+			}
+		}
+		if (result<0.0) { // need to find a sparse element
+			int ind=sparseElementIndex();
+			if (ind>0) return ind;
+		}
+		return index.get(di);
+	}
+	
+	/**
+	 * Return this index of a sparse zero element, or -1 if not sparse
+	 * @return
+	 */
+	private int sparseElementIndex() {
+		if (data.length==length) {
+			return -1;
+		}
+		for (int i=0; i<length; i++) {
+			if (!index.contains(i)) return i;
+		}
+		throw new VectorzException(ErrorMessages.impossible());
+	}
+
 	
 	@Override
 	public void negate() {

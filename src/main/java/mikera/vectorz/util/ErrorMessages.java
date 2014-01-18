@@ -118,5 +118,9 @@ public class ErrorMessages {
 		return "Insufficient elements "+length;
 	}
 
+	public static String impossible() {
+		return "This error shouldn't be possible!!! Please report an issue with a stack trace at https://github.com/mikera/vectorz/issues";
+	}
+
 
 }
