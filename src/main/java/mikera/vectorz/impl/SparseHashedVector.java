@@ -265,7 +265,8 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public void addAt(int i, double value) {
-		unsafeSet(i, value+unsafeGet(i));
+		Integer ind=i;
+		unsafeSetInteger(ind, value+unsafeGetInteger(ind));
 	}
 	
 	@Override
@@ -348,13 +349,13 @@ public class SparseHashedVector extends ASparseVector {
 
 	@Override
 	public Vector nonSparseValues() {
-		// TODO: much faster implementation needed!
-		ArrayList<Double> al=new ArrayList<Double>(); 	
-		for (int i=0; i<length; i++) {
-			double d=unsafeGet(i);
-			if (d!=0.0) al.add(d);
+		int n=hash.size();
+		double[] vs=new double[n];
+		Index index=Index.createSorted(hash.keySet());
+		for (int i=0; i<n; i++) {
+			vs[i]=hash.get(index.get(i));
 		}
-		return Vector.create(al);
+		return Vector.wrap(vs);
 	}
 	
 	@Override
