@@ -1213,6 +1213,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if((a.length()!=length)||(b.length()!=length)) {
 			throw new IllegalArgumentException("Unequal vector sizes for addProduct");
 		}
+		if (factor==0.0) return;
 		for (int i = 0; i < length; i++) {
 			addAt(i,(a.unsafeGet(i)*b.unsafeGet(i)*factor));
 		}
@@ -1234,6 +1235,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
 		if ((offset+length)>length()) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		if ((srcOffset<0)||(srcOffset+length>src.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(src, srcOffset, length));
+		if (factor==0.0) return;
 		for (int i = 0; i < length; i++) {
 			addAt(i+offset,src.unsafeGet(i+srcOffset)*factor);
 		}
