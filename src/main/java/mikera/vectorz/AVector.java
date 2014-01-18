@@ -887,7 +887,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Returns the minimum element of a vector. Synonym for elementMax()
-	 * @return
 	 */
 	public final double minElement() {
 		return elementMin();
@@ -895,7 +894,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Returns the index of the minimum element of a vector
-	 * @return
 	 */
 	public int minElementIndex() {
 		int len=length();
@@ -975,7 +973,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * 
 	 * Has no effect on a zero-length vector (i.e. it will remain zero)
 	 * 
-	 * @return
 	 */
 	public double normalise() {
 		double d=magnitude();
@@ -1049,8 +1046,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Set the vector equal to an offset into another vector
-	 * @param src
-	 * @param srcOffset
 	 */
 	public void set(AVector src, int srcOffset) {
 		int len=length();
@@ -1087,7 +1082,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Clones the vector into a sparse mutable format
-	 * @return
 	 */
 	public AVector sparseClone() {
 		return Vectorz.createSparseMutable(this);
@@ -1112,7 +1106,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Returns true if this vector is of a view type that references other vectors / data.
-	 * @return
 	 */
 	@Override
 	public boolean isView() {
@@ -1121,7 +1114,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Returns true if this vector is mutable.
-	 * @return
 	 */
 	@Override
 	public boolean isMutable() {
@@ -1136,7 +1128,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Returns true if this vector is fully mutable, i.e. can contain any unconstrained double values
-	 * @return
 	 */
 	@Override
 	public boolean isFullyMutable() {
@@ -1145,7 +1136,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Adds another vector to this one
-	 * @param v
 	 */
 	public void add(AVector v) {
 		int vlength=v.length();
