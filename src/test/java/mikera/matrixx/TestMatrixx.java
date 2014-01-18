@@ -534,6 +534,9 @@ public class TestMatrixx {
 	private void testSparseClone(AMatrix m) {
 		AMatrix s=Matrixx.createSparse(m);
 		assertEquals(m,s);
+		
+		AMatrix s2=Matrixx.createSparseRows((Iterable<AVector>)m);
+		assertEquals(m,s2);
 	}
 	
 	void doScaleTest(AMatrix m) {

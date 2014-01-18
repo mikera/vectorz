@@ -2,6 +2,8 @@ package mikera.matrixx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import us.bpsm.edn.parser.Parseable;
@@ -79,6 +81,41 @@ public class Matrixx {
 		return SparseRowMatrix.create(m);
 	}
 	
+	/**
+	 * Creates a sparse matrix from the given matrix, ignoring zeros. Uses row-based storage by default
+	 */
+	public static AMatrix createSparse(int rowCount, int columnCount) {
+		return SparseRowMatrix.create(rowCount,columnCount);
+	}
+	
+	/**
+	 * Creates a sparse matrix from the given matrix, ignoring zeros. Uses row-based storage by default
+	 */
+	public static AMatrix createSparseRows(Iterable<AVector> rows) {
+		Iterator<AVector> rowIterator=rows.iterator();
+		return createSparseRows(rowIterator);
+	}
+	
+	/**
+	 * Creates a sparse matrix from the given iterator. Each vector in the iterator will be copied to
+	 * a row in the new sparse matrix 
+	 */
+	public static AMatrix createSparseRows(Iterator<AVector> rowIterator) {
+		AVector r0=rowIterator.next();
+		int cc=r0.length();
+		HashMap<Integer,AVector> rowMap=new HashMap<Integer,AVector>();
+		rowMap.put(0, r0);
+		int ri=1;
+		while (rowIterator.hasNext()) {
+			AVector v=rowIterator.next();
+			if (!(v.isZero())) rowMap.put(ri, v.sparseClone());
+			ri++;
+		}
+		int rc=ri;
+		SparseRowMatrix m=SparseRowMatrix.wrap(rowMap,rc,cc);
+		return m;
+	}
+
 	/**
 	 * Creates a SparseColumnMatrix from the given matrix, ignoring zeros
 	 */
