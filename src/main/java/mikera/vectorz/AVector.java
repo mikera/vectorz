@@ -851,7 +851,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the maximum absolute element of a vector. Synonym for elementMax()
+	 * Returns the maximum element of a vector. Synonym for elementMax()
 	 * @return
 	 */
 	public final double maxElement() {
@@ -859,7 +859,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the index of the maximum absolute element of a vector
+	 * Returns the index of the maximum element of a vector
 	 * @return
 	 */
 	public int maxElementIndex() {
@@ -870,6 +870,33 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		for (int i=1; i<len; i++) {
 			double comp=unsafeGet(i);
 			if (comp>best) {
+				result=i;
+				best=comp;
+			} 
+		}		
+		return result;
+	}
+	
+	/**
+	 * Returns the minimum element of a vector. Synonym for elementMax()
+	 * @return
+	 */
+	public final double minElement() {
+		return elementMin();
+	}
+	
+	/**
+	 * Returns the index of the minimum element of a vector
+	 * @return
+	 */
+	public int minElementIndex() {
+		int len=length();
+		if (len==0) throw new IllegalArgumentException("Can't find minElementIndex of a 0-length vector");
+		int result=0;
+		double best=unsafeGet(0);
+		for (int i=1; i<len; i++) {
+			double comp=unsafeGet(i);
+			if (comp<best) {
 				result=i;
 				best=comp;
 			} 
