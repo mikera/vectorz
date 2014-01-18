@@ -106,13 +106,30 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	
 	@Override
 	public double elementSum() {
-		double result=0;
+		double result=0.0;
 		for (Entry<Integer,AVector> e:data.entrySet()) {
 			result+=e.getValue().elementSum();
 		}
 		return result;
 	}	
 	
+	@Override
+	public double elementSquaredSum() {
+		double result=0.0;
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			result+=e.getValue().elementSquaredSum();
+		}
+		return result;
+	}	
+	
+	@Override
+	public long nonZeroCount() {
+		long result=0;
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			result+=e.getValue().nonZeroCount();
+		}
+		return result;
+	}	
 
 	public static SparseRowMatrix create(List<AVector> rows) {
 		int rc=rows.size();
