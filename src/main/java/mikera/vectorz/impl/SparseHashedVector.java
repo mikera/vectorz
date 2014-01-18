@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -49,6 +50,17 @@ public class SparseHashedVector extends ASparseVector {
 			if (val!=0) hm.put(i,val);
 		}
 		return new SparseHashedVector(n,hm);
+	}
+	
+	public static SparseHashedVector create(int length, Index index, Vector vals) {
+		int n=index.length();
+		if (vals.length()!=n) throw new IllegalArgumentException("Mismatched values length: "+vals.length());
+		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
+		for (int i=0; i<n; i++) {
+			hm.put(index.get(i), vals.get(i));
+		}
+		
+		return new SparseHashedVector(length, hm);
 	}
 	
 	public static SparseHashedVector createLength(int length) {
@@ -102,7 +114,7 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public boolean isMutable() {
-		return length>0;
+		return true;
 	}
 	
 	@Override
@@ -171,10 +183,13 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		int aOffset=arrayOffset-offset;
+		int oOffset=otherOffset-offset;
 
-		for (int i: hash.keySet()) {
+		for (Entry<Integer,Double> e: hash.entrySet()) {
+			Integer io=e.getKey();
+			int i=io;
 			if ((i<offset)||(i>=(offset+length))) continue;
-			array[aOffset+i]+=factor*hash.get(i)*other.get(i+otherOffset);
+			array[aOffset+i]+=factor*e.getValue()*other.get(i+oOffset);
 		}
 	}
 	
@@ -183,10 +198,12 @@ public class SparseHashedVector extends ASparseVector {
 		int aOffset=arrayOffset-offset;
 		int oOffset=otherOffset-offset;
 
-		// TODO: faster array version
-		for (int i: hash.keySet()) {
+		for (Entry<Integer,Double> e: hash.entrySet()) {
+			Integer io=e.getKey();
+			int i=io;
 			if ((i<offset)||(i>=(offset+length))) continue;
-			array[aOffset+i]+=factor*hash.get(i)*other.get(i+oOffset);
+			double ov=other.get(i+oOffset);
+			if (ov!=0.0) array[aOffset+i]+=factor*e.getValue()*ov;
 		}
 	}
 	
@@ -225,6 +242,7 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public void set(AVector v) {
 		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		hash=new HashMap<Integer, Double>();
 		
 		if (v instanceof SparseHashedVector) {
 			set((SparseHashedVector) v);
@@ -351,7 +369,7 @@ public class SparseHashedVector extends ASparseVector {
 	public Vector nonSparseValues() {
 		int n=hash.size();
 		double[] vs=new double[n];
-		Index index=Index.createSorted(hash.keySet());
+		Index index=nonSparseIndexes();
 		for (int i=0; i<n; i++) {
 			vs[i]=hash.get(index.get(i));
 		}
@@ -380,6 +398,16 @@ public class SparseHashedVector extends ASparseVector {
 	public SparseHashedVector exactClone() {
 		return new SparseHashedVector(length,(HashMap<Integer, Double>) hash.clone());
 	}
-
+	
+	@Override
+	public void validate() {
+		if (length<=0) throw new VectorzException("Illegal length: "+length);
+		for (Entry<Integer, Double> e:hash.entrySet()) {
+			int i=e.getKey();
+			if ((i<0)||(i>=length)) throw new VectorzException(ErrorMessages.invalidIndex(this, i));
+			if (e.getValue()==0) throw new VectorzException("Unexpected zero at index: "+i);
+		}
+		super.validate();
+	}
 
 }
