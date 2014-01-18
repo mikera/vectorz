@@ -27,6 +27,8 @@ import mikera.vectorz.util.VectorzException;
 public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, IFastColumns {
 	private static final long serialVersionUID = -5994473197711276621L;
 
+	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
+
 	protected final HashMap<Integer,AVector> data;
 
 	protected SparseColumnMatrix(int rowCount, int columnCount) {
@@ -188,18 +190,6 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 	}	
 
 	@Override
-	public SparseColumnMatrix exactClone() {
-		SparseColumnMatrix result= new SparseColumnMatrix(rows,cols);
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			AVector col=e.getValue();
-			if (!col.isZero()) {
-				result.replaceColumn(e.getKey(), col.exactClone());
-			}
-		}
-		return result;
-	}
-	
-	@Override
 	public SparseRowMatrix getTranspose() {
 		return SparseRowMatrix.wrap(data,cols,rows);
 	}
@@ -241,6 +231,25 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 		}
 		return r;		
 	}
+	
+	@Override
+	public SparseColumnMatrix exactClone() {
+		SparseColumnMatrix result= new SparseColumnMatrix(rows,cols);
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			AVector col=e.getValue();
+			if (!col.isZero()) {
+				result.replaceColumn(e.getKey(), col.exactClone());
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public AMatrix clone() {
+		if (this.elementCount()<SPARSE_ELEMENT_THRESHOLD) return super.clone();
+		return exactClone();
+	}
+	
 	
 	@Override
 	public void validate() {

@@ -27,6 +27,8 @@ import mikera.vectorz.util.ErrorMessages;
 public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFastRows {
 	private static final long serialVersionUID = 8646257152425415773L;
 
+	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
+
 	protected final HashMap<Integer,AVector> data;
 	
 	protected SparseRowMatrix(AVector... vectors) {
@@ -174,18 +176,6 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	public SparseColumnMatrix getTranspose() {
 		return SparseColumnMatrix.wrap(data,cols,rows);
 	}
-	
-	@Override
-	public SparseRowMatrix exactClone() {
-		SparseRowMatrix result= new SparseRowMatrix(rows,cols);
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			AVector row=e.getValue();
-			if (!row.isZero()) {
-				result.replaceRow(e.getKey(), row.exactClone());
-			}
-		}
-		return result;
-	}
 
 	@Override
 	public void replaceRow(int i, AVector row) {
@@ -218,6 +208,24 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 			replaceRow(row,v);
 			v.set(column,value);
 		}
+	}
+	
+	@Override
+	public SparseRowMatrix exactClone() {
+		SparseRowMatrix result= new SparseRowMatrix(rows,cols);
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			AVector row=e.getValue();
+			if (!row.isZero()) {
+				result.replaceRow(e.getKey(), row.exactClone());
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public AMatrix clone() {
+		if (this.elementCount()<SPARSE_ELEMENT_THRESHOLD) return super.clone();
+		return exactClone();
 	}
 
 }
