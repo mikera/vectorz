@@ -15,10 +15,10 @@ import mikera.vectorz.util.VectorzException;
 /**
  * Indexed sparse vector.
  * 
- * Efficient for mostly sparse vector.
+ * Efficient for mostly sparse vectors. Maintains a indexed array of elements which may be non-zero. 
  * 
  * WARNING: updates of non-indexed vectors are O(n) in the number of non-sparse elements. You should not normally
- * perform arbitrary mutation on a SparseIndexedVector if performance is a concern
+ * perform element-wise mutation on a SparseIndexedVector if performance is a concern
  * 
  * Index must be distinct and sorted.
  * 
