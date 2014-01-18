@@ -13,9 +13,10 @@ public class TestBigSparse {
 		AMatrix m=Matrixx.createSparse(2000000000,2000000000);
 		
 		assertEquals(0,m.nonZeroCount());
-		
 		assertEquals(0.0,m.elementSum(),0.0);
 		assertEquals(0.0,m.elementSquaredSum(),0.0);
+		assertEquals(0.0,m.elementMax(),0.0);
+		assertEquals(0.0,m.elementMin(),0.0);
 		
 	}
 }

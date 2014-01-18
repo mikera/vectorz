@@ -126,6 +126,30 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	}	
 	
 	@Override
+	public double elementMin() {
+		if (data.size()==0) return 0.0;
+		double result=Double.MAX_VALUE;
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			double v=e.getValue().elementMin();
+			if (v<result) result=v;
+		}
+		if ((result>0)&&(data.size()<rowCount())) return 0.0;
+		return result;
+	}	
+	
+	@Override
+	public double elementMax() {
+		if (data.size()==0) return 0.0;
+		double result=-Double.MAX_VALUE;
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			double v=e.getValue().elementMax();
+			if (v>result) result=v;
+		}
+		if ((result<0)&&(data.size()<rowCount())) return 0.0;
+		return result;
+	}	
+	
+	@Override
 	public long nonZeroCount() {
 		long result=0;
 		for (Entry<Integer,AVector> e:data.entrySet()) {
