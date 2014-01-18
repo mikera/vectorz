@@ -31,7 +31,12 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testBigMultiply() {
-		// TODO
+		AMatrix m=Matrixx.createSparse(2000000000,2000000000);
+		m.set(3,4,7.0);
+		
+		AMatrix r=m.innerProduct(m.getTranspose());
+		assertEquals(49.0,r.get(3,3),0.0);
+		assertEquals(49.0,r.elementSum(),0.0);
 	}
 
 }

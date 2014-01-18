@@ -405,6 +405,26 @@ public class SparseHashedVector extends ASparseVector {
 		}
 		throw new VectorzException(ErrorMessages.impossible());
 	}
+	
+	@Override
+	public double elementSum() {
+		double result=0.0;
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			double d=e.getValue();
+			result+=d;
+		}
+		return result;
+	}
+	
+	@Override
+	public double magnitudeSquared() {
+		double result=0.0;
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			double d=e.getValue();
+			result+=d*d;
+		}
+		return result;
+	}
 
 	@Override
 	public Vector nonSparseValues() {

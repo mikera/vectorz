@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ZeroVector;
@@ -188,10 +189,15 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	}
 	
 	public AMatrix innerProduct(SparseColumnMatrix a) {
-		Matrix r=Matrix.create(rows, a.cols);
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<a.cols; j++) {
-				r.unsafeSet(i,j,getRow(i).dotProduct(a.getColumn(j)));
+		AMatrix r=Matrixx.createSparse(rows, a.cols);
+		
+		for (Entry<Integer,AVector> eRow:data.entrySet()) {
+			int i=eRow.getKey();
+			AVector row=eRow.getValue();
+			for (Entry<Integer,AVector> eCol:data.entrySet()) {
+				int j=eCol.getKey();
+				AVector acol=eCol.getValue();
+				r.unsafeSet(i,j,row.dotProduct(acol));
 			}
 		}
 		return r;

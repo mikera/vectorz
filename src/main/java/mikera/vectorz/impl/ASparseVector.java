@@ -45,6 +45,18 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	// standard implementations
 	
 	@Override
+	public double dotProduct(AVector v) {
+		double result=0.0;
+		Index ni=nonSparseIndexes();
+		for (int i=0; i<ni.length(); i++) {
+			int ii=ni.get(i);
+			result+=unsafeGet(ii)*v.unsafeGet(ii);
+		}		
+		return result;
+	}
+	
+	
+	@Override
 	public double density() {
 		return ((double)(nonSparseValues().length()))/length();
 	}
