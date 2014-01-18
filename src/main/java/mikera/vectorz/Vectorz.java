@@ -26,6 +26,12 @@ public class Vectorz {
 	 * Constant tolerance used for testing double values
 	 */
 	public static final double TEST_EPSILON = 0.0000001;
+	
+	/**
+	 * Specified the minimum length at which it is worthwhile creating sparse vectors rather than
+	 * dense vectors. This acts as a hint to modify the behaviour of sparse vector construction functions.
+	 */
+	public static final int MIN_SPARSE_LENGTH=50;
 
 	// ===========================
 	// Factory functions
@@ -166,7 +172,7 @@ public class Vectorz {
 		int len=v.length();
 		long n=v.nonZeroCount();
 		
-		if ((len<20)||(n>(len/2))) {
+		if ((len<MIN_SPARSE_LENGTH)||(n>(len/2))) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
 		} else if (n<(len/30)) {
 			return SparseHashedVector.create(v);

@@ -72,11 +72,13 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	
 	public static SparseRowMatrix create(AMatrix source) {
 		int rc=source.rowCount();
-		AVector[] rows=new AVector[rc];
+		int cc=source.columnCount();
+		SparseRowMatrix m=new SparseRowMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
-			rows[i]=Vectorz.createSparse(source.getRow(i));
+			AVector row=source.getRow(i);
+			if (!row.isZero()) m.replaceRow(i,Vectorz.createSparse(row));
 		}
-		return new SparseRowMatrix(rows);
+		return m;
 	}
 	
 	public static SparseRowMatrix create(AVector... rows) {

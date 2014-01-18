@@ -7,6 +7,8 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -186,17 +188,7 @@ public final class ZeroVector extends ASparseVector {
 	public Iterator<Double> iterator() {
 		return new RepeatedElementIterator(length,ZERO_DOUBLE);
 	}
-	
-	@Override
-	public int hashCode() {
-		return Hash.zeroVectorHash(length);
-	}
-	
-	@Override
-	public ZeroVector exactClone() {
-		return new ZeroVector(length);
-	}
-	
+
 	@Override
 	public double density() {
 		return 0.0;
@@ -253,6 +245,25 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public boolean includesIndex(int i) {
 		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Hash.zeroVectorHash(length);
+	}
+	
+	@Override
+	public ZeroVector exactClone() {
+		return new ZeroVector(length);
+	}
+	
+	@Override
+	public AVector sparseClone() {
+		if (length<Vectorz.MIN_SPARSE_LENGTH) {
+			return Vector.createLength(length);
+		} else {
+			return SparseIndexedVector.createLength(length);
+		}
 	}
 
 }
