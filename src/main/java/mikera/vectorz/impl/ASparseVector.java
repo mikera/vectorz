@@ -31,6 +31,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	/**
 	 * Returns the non-sparse indexes
 	 */
+	@Override
 	public abstract Index nonSparseIndexes();
 	
 	/**

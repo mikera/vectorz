@@ -564,6 +564,9 @@ public class TestVectors {
 		assertTrue(v.isZero());
 	}
 	
+	private void testSparseOps(AVector v) {
+		assertTrue(v.nonZeroCount()<=v.nonSparseIndexes().length());
+	}
 
 	private void testNormalise(AVector v) {
 		if (!v.isFullyMutable()) return;
@@ -763,6 +766,7 @@ public class TestVectors {
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
+		testSparseOps(v);
 		testSquare(v);
 		testSubvectors(v);
 		testParse(v);

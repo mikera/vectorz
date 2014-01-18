@@ -1662,4 +1662,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		super.validate();
 	}
 
+	/**
+	 * Returns an Index indicating which elements of this vector are defined as non-sparse.
+	 * 
+	 * A sparse index must be zero. A non-sparse element may be zero, but is expected be non-zero.
+	 * 
+	 * @return
+	 */
+	public Index nonSparseIndexes(){
+		int n=(int)nonZeroCount();
+		int length=length();
+		Index ind=Index.createLength(n);
+		int di=0;
+		for (int i=0; i<length; i++) {
+			double v=unsafeGet(i);
+			if (v!=0.0) {
+				ind.data[di++]=i;
+			}
+		}
+		return ind;
+	}
+
 }
