@@ -91,24 +91,24 @@ public class SparseIndexedVector extends ASparseVector {
 	 * 
 	 */
 	public static SparseIndexedVector create(AVector source) {
-		int vlen = source.length();
-		if (vlen==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
+		int length = source.length();
+		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
 		int len=0;
-		for (int i=0; i<vlen; i++) {
-			if (source.get(i)!=0.0) len++;
+		for (int i=0; i<length; i++) {
+			if (source.unsafeGet(i)!=0.0) len++;
 		}
 		int[] indexes=new int[len];
 		double[] vals=new double[len];
 		int pos=0;
-		for (int i=0; i<vlen; i++) {
-			double v=source.get(i);
+		for (int i=0; i<length; i++) {
+			double v=source.unsafeGet(i);
 			if (v!=0.0) {
 				indexes[pos]=i;
 				vals[pos]=v;
 				pos++;
 			}
 		}
-		return wrap(vlen,Index.wrap(indexes),vals);
+		return wrap(length,Index.wrap(indexes),vals);
 	}
 	
 	/** Creates a SparseIndexedVector from a row of an existing matrix */

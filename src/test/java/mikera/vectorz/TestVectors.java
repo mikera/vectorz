@@ -881,6 +881,7 @@ public class TestVectors {
 		
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
+		doGenericTests(SparseIndexedVector.create(Vector.of(1,2,3,4,5))); // fully dense!
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
 		
 		doGenericTests(SparseHashedVector.create(Vector.of(0,1,-1.5,0,2)));
