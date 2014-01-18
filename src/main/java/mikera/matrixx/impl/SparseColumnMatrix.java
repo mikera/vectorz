@@ -104,7 +104,7 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse {
 		if (v.isFullyMutable()) {
 			v.set(row,value);
 		} else {
-			v=v.mutable();
+			v=v.sparseClone();
 			replaceColumn(column,v);
 			v.set(row,value);
 		}
