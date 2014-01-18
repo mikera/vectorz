@@ -264,6 +264,11 @@ public class TestVectors {
 		assertEquals(res,v.elementSum(),0.00001);
 	}
 	
+	private void testMinMax(AVector v) {
+		if (v.length()==0) return;
+		assertEquals(v.maxAbsElement(),Math.abs(v.get(v.maxAbsElementIndex())),0.0);
+	}
+	
 	private void testAddMultipleIndexed(AVector v) {
 		v=v.exactClone();
 		if (v.isFullyMutable()) {
@@ -746,6 +751,7 @@ public class TestVectors {
 		testUnsafeSet(v);
 		testOutOfBounds(v);
 		testSlicing(v);
+		testMinMax(v);
 		testJoining(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);

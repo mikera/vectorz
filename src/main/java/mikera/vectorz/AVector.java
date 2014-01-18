@@ -832,6 +832,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Returns the index of the maximum absolute element of a vector
+	 * @return
+	 */
+	public int maxAbsElementIndex() {
+		int len=length();
+		if (len==0) throw new IllegalArgumentException("Can't find maxAbsElementIndex of a 0-length vector");
+		int result=0;
+		double best=Math.abs(unsafeGet(0));
+		for (int i=1; i<len; i++) {
+			double comp=Math.abs(unsafeGet(i));
+			if (comp>best) {
+				result=i;
+				best=comp;
+			} 
+		}		
+		return result;
+	}
+	
+	/**
 	 * Normalises so that the maximum absolute element is 1.0
 	 * Returns the previous maximum absolute element.
 	 */
