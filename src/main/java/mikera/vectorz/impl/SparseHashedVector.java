@@ -3,12 +3,14 @@ package mikera.vectorz.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Hashed sparse vector, intended for large vectors with a few randomly positioned non-zero elements. 
@@ -51,8 +53,6 @@ public class SparseHashedVector extends ASparseVector {
 	public static SparseHashedVector createLength(int length) {
 		return new SparseHashedVector(length);
 	}
-
-
 	
 	/** Creates a SparseIndexedVector from a row of an existing matrix */
 	public static AVector createFromRow(AMatrix m, int row) {
@@ -236,6 +236,84 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public void addAt(int i, double value) {
 		unsafeSet(i, value+unsafeGet(i));
+	}
+	
+	@Override
+	public double maxAbsElement() {
+		double result=0.0;
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			double d=Math.abs(e.getValue());
+			if (d>result) {
+				result=d; 
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public int maxElementIndex(){
+		if (hash.size()==0) return 0;
+		int ind=0;
+		double result=-Double.MAX_VALUE;
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			double d=e.getValue();
+			if (d>result) {
+				result=d; 
+				ind=e.getKey();
+			}
+		}
+		if ((result<0)&&(hash.size()<length)) {
+			return sparseElementIndex();
+		}
+		return ind;
+	}
+	
+ 
+	@Override
+	public int maxAbsElementIndex(){
+		if (hash.size()==0) return 0;
+		int ind=0;
+		double result=unsafeGet(0);
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			double d=Math.abs(e.getValue());
+			if (d>result) {
+				result=d; 
+				ind=e.getKey();
+			}
+		}
+		return ind;
+	}
+	
+	@Override
+	public int minElementIndex(){
+		if (hash.size()==0) return 0;
+		int ind=0;
+		double result=Double.MAX_VALUE;
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			double d=e.getValue();
+			if (d<result) {
+				result=d; 
+				ind=e.getKey();
+			}
+		}
+		if ((result>0)&&(hash.size()<length)) {
+			return sparseElementIndex();
+		}
+		return ind;
+	}
+	
+	/**
+	 * Return this index of a sparse zero element, or -1 if not sparse
+	 * @return
+	 */
+	private int sparseElementIndex() {
+		if (hash.size()==length) {
+			return -1;
+		}
+		for (int i=0; i<length; i++) {
+			if (!hash.containsKey(i)) return i;
+		}
+		throw new VectorzException(ErrorMessages.impossible());
 	}
 
 	@Override
