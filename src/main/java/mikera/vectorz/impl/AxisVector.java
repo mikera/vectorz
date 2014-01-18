@@ -27,6 +27,7 @@ public class AxisVector extends ASparseVector {
 	}
 	
 	public static AxisVector create(int axisIndex, int dimensions) {
+		if ((axisIndex<0)||(axisIndex>=dimensions)) throw new IllegalArgumentException("Axis out of range");
 		return new AxisVector(axisIndex,dimensions);
 	}
 	
@@ -80,6 +81,23 @@ public class AxisVector extends ASparseVector {
 	public double elementMin(){
 		return (length>1)?0.0:1.0;
 	}
+	
+	@Override
+	public int maxElementIndex(){
+		return axis;
+	}
+	
+	@Override
+	public int maxAbsElementIndex(){
+		return axis;
+	}
+	
+	@Override
+	public int minElementIndex(){
+		if (length==1) return 0;
+		return (axis==0)?1:0;
+	}
+
 	
 	@Override
 	public long nonZeroCount() {
