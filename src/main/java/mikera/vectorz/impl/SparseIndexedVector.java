@@ -136,6 +136,29 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public void add(AVector v) {
+		if (v instanceof ASparseVector) {
+			add((ASparseVector)v);
+			return;
+		}
+		super.add(v);
+	}
+	
+	@Override
+	public void add(ASparseVector v) {
+		Index ni=v.nonSparseIndexes();
+		ni=ni.includeSorted(index);
+		int n=ni.length();
+		double[] nv=new double[n];
+		for (int i=0; i<n; i++) {
+			int ii=ni.get(i);
+			nv[i]=unsafeGet(ii)+v.unsafeGet(ii);
+		}
+		index=ni;
+		data=nv;
+	}
+	
+	@Override
 	public void multiply (double d) {
 		DoubleArrays.multiply(data, d);
 	}

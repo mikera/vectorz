@@ -133,12 +133,12 @@ public class SparseHashedVector extends ASparseVector {
 	public void multiply (double d) {
 		if (d==1.0) return;
 		if (d==0.0) {
-			hash=new HashMap<Integer, Double>();
+			hash.clear();
 			return;
 		}
-		for (Integer i: hash.keySet()) {
-			double r=hash.get(i)*d;
-			unsafeSetInteger(i,r);
+		for (Entry<Integer,Double> e:hash.entrySet()) {
+			double r=e.getValue()*d;
+			e.setValue(r);
 		}
 	}
 	
@@ -310,6 +310,37 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementMax() {
+		double result=-Double.MAX_VALUE;
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			double d=e.getValue();
+			if (d>result) {
+				result=d; 
+			}
+		}
+		if ((result<0)&&(hash.size()<length)) {
+			return 0.0;
+		}
+		return result;
+	}
+	
+	
+	@Override
+	public double elementMin() {
+		double result=Double.MAX_VALUE;
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			double d=e.getValue();
+			if (d<result) {
+				result=d; 
+			}
+		}
+		if ((result>0)&&(hash.size()<length)) {
+			return 0.0;
+		}
+		return result;
+	}
+	
+	@Override
 	public int maxElementIndex(){
 		if (hash.size()==0) return 0;
 		int ind=0;
@@ -418,6 +449,16 @@ public class SparseHashedVector extends ASparseVector {
 			if (e.getValue()==0) throw new VectorzException("Unexpected zero at index: "+i);
 		}
 		super.validate();
+	}
+
+	@Override
+	public void add(ASparseVector v) {
+		Index ind=v.nonSparseIndexes();
+		int n=ind.length();
+		for (int i=0; i<n; i++) {
+			int ii=ind.get(i);
+			addAt(ii,v.unsafeGet(ii));
+		}
 	}
 
 }

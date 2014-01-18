@@ -250,6 +250,11 @@ public class AxisVector extends ASparseVector {
 	public Index nonSparseIndexes() {
 		return Index.of(getAxis());
 	}
+	
+	@Override
+	public void add(ASparseVector v) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
 
 	@Override
 	public boolean includesIndex(int i) {

@@ -47,4 +47,6 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public double density() {
 		return ((double)(nonSparseValues().length()))/length();
 	}
+
+	public abstract void add(ASparseVector v);
 }

@@ -89,6 +89,11 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public void add(ASparseVector v) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
 	public double magnitudeSquared() {
 		return 0.0;
 	}

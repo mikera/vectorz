@@ -5,6 +5,7 @@ import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.VectorzException;
 
 import org.junit.Test;
 
@@ -58,5 +59,23 @@ public class TestSparseHashedVector {
 		v3.subVector(5,5).addProduct(sv,1, vs,1,2.0);
 		assertEquals(Vector.of(0,0,0,0,0,3,0,18,0,0),v3);
 
+	}
+	
+	@Test public void testSparseOps() {
+		SparseHashedVector v=SparseHashedVector.create(2000000000,Index.of(10),Vector.of(13));
+		assertEquals(13,v.maxAbsElement(),0.0);
+		assertEquals(0,v.minElement(),0.0);
+		assertEquals(0,v.minElement(),0.0);
+		assertEquals(1,v.nonZeroCount());
+		
+		assertEquals(10,v.maxAbsElementIndex());
+		assertEquals(10,v.maxElementIndex());
+		// if (true) throw new VectorzException("Got here!");
+		
+		SparseHashedVector v2=v.exactClone();
+		v2.multiply(2);
+		assertEquals(26.0,v2.get(10),0.0);
+		v2.add(v);
+		assertEquals(39.0,v2.get(10),0.0);
 	}
 }

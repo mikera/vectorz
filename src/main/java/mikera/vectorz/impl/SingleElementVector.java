@@ -141,4 +141,9 @@ public final class SingleElementVector extends ASparseVector {
 		return (i==index);
 	}
 
+	@Override
+	public void add(ASparseVector v) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+
 }
