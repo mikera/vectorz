@@ -22,7 +22,7 @@ import mikera.vectorz.util.ErrorMessages;
 public class SparseHashedVector extends ASparseVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
-	private final HashMap<Integer,Double> hash;
+	private HashMap<Integer,Double> hash;
 	
 	private SparseHashedVector(int length) {
 		this(length, new HashMap<Integer,Double>());
@@ -39,6 +39,7 @@ public class SparseHashedVector extends ASparseVector {
 	 */
 	public static SparseHashedVector create(AVector v) {
 		int n=v.length();
+		if (n==0) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(v));
 		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
 		for (int i=0; i<n; i++) {
 			double val=v.unsafeGet(i);
@@ -199,6 +200,29 @@ public class SparseHashedVector extends ASparseVector {
 			hash.remove(i);
 		}
 	}
+	
+	@Override
+	public void set(AVector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		
+		if (v instanceof SparseHashedVector) {
+			set((SparseHashedVector) v);
+			return;
+		}
+		
+		for (int i=0; i<length; i++) {
+			double val=v.unsafeGet(i);
+			if (val!=0) {
+				hash.put(i, val);
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void set(SparseHashedVector v) {
+		hash=(HashMap<Integer, Double>) v.hash.clone();
+	}
+
 	
 	@Override
 	public void unsafeSet(int i, double value) {
