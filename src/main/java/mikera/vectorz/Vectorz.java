@@ -34,6 +34,10 @@ public class Vectorz {
 	public static final int MIN_SPARSE_LENGTH=50;
 	public static final int BIG_SPARSE_LENGTH=1000000;
 
+	private static final double SPARSE_DENSITY_THRESHOLD = 0.25;
+
+	private static final double SPARSE_HASHED_THRESHOLD = 0.03;
+
 	// ===========================
 	// Factory functions
 	
@@ -161,9 +165,9 @@ public class Vectorz {
 				}
 			}
 			throw new VectorzException("non-zero element not found!!");
-		} else if (n>(len/2)) {
+		} else if (n>(len*SPARSE_DENSITY_THRESHOLD)) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
-		} else if (n<(len/30)) {
+		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
 			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
@@ -182,9 +186,9 @@ public class Vectorz {
 		int len=v.length();
 		long n=v.nonZeroCount();
 		
-		if ((len<MIN_SPARSE_LENGTH)||(n>(len/2))) {
+		if ((len<MIN_SPARSE_LENGTH)||(n>(len*SPARSE_DENSITY_THRESHOLD))) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
-		} else if (n<(len/30)) {
+		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
 			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
