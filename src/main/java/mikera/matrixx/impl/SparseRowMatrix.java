@@ -238,16 +238,23 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		AVector v=getRow(row);
-		if (v.isFullyMutable()) {
-			v.set(column,value);
+	public void set(int i, int j, double value) {
+		if ((i<0)||(i>=rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		Integer io=i;
+		AVector v=data.get(io);
+		if (v==null) {
+			if (value==0.0) return;
+			v=Vectorz.createSparseMutable(cols);
+		} else if (v.isFullyMutable()) {
+			v.set(j,value);
+			return;
 		} else {
-			v=v.sparseClone();
-			replaceRow(row,v);
-			v.set(column,value);
+			v=v.sparseClone();			
 		}
+		data.put(io,v);
+		v.set(j,value);
 	}
+	
 	
 	@Override
 	public SparseRowMatrix exactClone() {

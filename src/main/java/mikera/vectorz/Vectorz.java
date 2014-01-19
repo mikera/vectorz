@@ -168,6 +168,14 @@ public class Vectorz {
 		}
 	}
 	
+	public static AVector createSparseMutable(int length) {
+		if (length<MIN_SPARSE_LENGTH) {
+			return Vector.createLength(length); // not enough sparsity to make worthwhile
+		} else  {
+			return SparseHashedVector.createLength(length);
+		} 
+	}
+	
 	public static AVector createSparseMutable(AVector v) {
 		int len=v.length();
 		long n=v.nonZeroCount();
@@ -505,6 +513,7 @@ public class Vectorz {
 		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length, value);
 	}
+
 
 	
 }

@@ -84,20 +84,26 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 
 	@Override
-	public double get(int row, int column) {
-		return getColumn(column).get(row);
+	public double get(int i, int j) {
+		return getColumn(j).get(i);
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		AVector v=getColumn(column);
-		if (v.isFullyMutable()) {
-			v.set(row,value);
+	public void set(int i, int j, double value) {
+		if ((j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		Integer io=j;
+		AVector v=data.get(io);
+		if (v==null) {
+			if (value==0.0) return;
+			v=Vectorz.createSparseMutable(rows);
+		} else if (v.isFullyMutable()) {
+			v.set(i,value);
+			return;
 		} else {
-			v=v.sparseClone();
-			replaceColumn(column,v);
-			v.set(row,value);
+			v=v.sparseClone();			
 		}
+		data.put(io,v);
+		v.set(i,value);
 	}
 	
 	
