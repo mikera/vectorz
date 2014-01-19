@@ -11,6 +11,8 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
@@ -136,46 +138,24 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 	
 	@Override
-	public double elementSum() {
-		double result=0.0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().elementSum();
+	public void applyOp(Op op) {
+		boolean stoch=op.isStochastic();
+		AVector rr=(stoch)?null:RepeatedElementVector.create(lineLength(), op.apply(0.0));
+
+		for (int i=0; i<lineCount(); i++) {
+			Integer io=i;
+			AVector v=data.get(io);
+			if (v==null) {
+				if (!stoch) {data.put(io,rr); continue;}
+				v=Vector.createLength(lineLength());
+				data.put(io, v);
+			} else if (!v.isFullyMutable()) {
+				v=v.sparseClone();
+				data.put(io, v);
+			}
+			v.applyOp(op);
 		}
-		return result;
-	}	
-	
-	@Override
-	public double elementSquaredSum() {
-		double result=0.0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().elementSquaredSum();
-		}
-		return result;
-	}	
-	
-	@Override
-	public double elementMin() {
-		if (data.size()==0) return 0.0;
-		double result=Double.MAX_VALUE;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			double v=e.getValue().elementMin();
-			if (v<result) result=v;
-		}
-		if ((result>0)&&(data.size()<rowCount())) return 0.0;
-		return result;
-	}	
-	
-	@Override
-	public double elementMax() {
-		if (data.size()==0) return 0.0;
-		double result=-Double.MAX_VALUE;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			double v=e.getValue().elementMax();
-			if (v>result) result=v;
-		}
-		if ((result<0)&&(data.size()<rowCount())) return 0.0;
-		return result;
-	}	
+	}
 
 	public static SparseRowMatrix create(List<AVector> rows) {
 		int rc=rows.size();
