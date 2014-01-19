@@ -9,6 +9,7 @@ import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -264,6 +265,18 @@ public final class ZeroVector extends ASparseVector {
 		} else {
 			return SparseIndexedVector.createLength(length);
 		}
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v==this) return true;
+		if (v.length()!=length) return false;
+		return v.isZero();
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.isZero(data, offset, length);
 	}
 
 }
