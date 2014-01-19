@@ -32,6 +32,7 @@ public class Vectorz {
 	 * dense vectors. This acts as a hint to modify the behaviour of sparse vector construction functions.
 	 */
 	public static final int MIN_SPARSE_LENGTH=50;
+	public static final int BIG_SPARSE_LENGTH=1000000;
 
 	// ===========================
 	// Factory functions
@@ -131,8 +132,9 @@ public class Vectorz {
 			case 2: return new Vector2();
 			case 3: return new Vector3();
 			case 4: return new Vector4();
-			default: return Vector.createLength(length);
 		}
+		if (length>=BIG_SPARSE_LENGTH) return createSparseMutable(length);
+		return Vector.createLength(length);
 	}
 	
 	/**
