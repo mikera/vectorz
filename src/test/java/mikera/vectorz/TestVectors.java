@@ -915,7 +915,6 @@ public class TestVectors {
 		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
 		doGenericTests(ImmutableVector.create(Vector.of()));
 		
-		doGenericTests(RangeVector.create(10,0));
 		doGenericTests(RangeVector.create(-10,3));
 		doGenericTests(RangeVector.create(0,7));
 		

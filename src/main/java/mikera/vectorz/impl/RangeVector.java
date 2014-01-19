@@ -6,6 +6,8 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Immutable vector type representing a consecutive, increasing range of integers.
  * 
+ * Must have length of 1 or more
+ * 
  * @author Mike
  *
  */
@@ -19,9 +21,28 @@ public class RangeVector extends AComputedVector {
 		this.start=start;
 	}
 	
-	public static RangeVector create(int start, int length) {
-		if (length<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(length));
+	public static AVector create(int start, int length) {
+		if (length==0) return Vector0.INSTANCE;
+		if (length<0) {
+			throw new IllegalArgumentException(ErrorMessages.illegalSize(length));
+		}
 		return new RangeVector(start,length);
+	}
+	
+	@Override
+	public double elementMin() {
+		return start;
+	}
+	
+	@Override
+	public double elementMax() {
+		return start+length-1;
+	}
+	
+	@Override
+	public double elementSum() {
+		// compute sum of arithmentic progression
+		return ((double)start*length) + ((length*(length-1))/2);
 	}
 
 	@Override
