@@ -256,6 +256,18 @@ public class AxisVector extends ASparseVector {
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		if (data[offset+axis]!=1.0) return false;
+		for (int i=0; i<axis; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		for (int i=axis+1; i<length; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		return true;
+	}
 
 	@Override
 	public AxisVector exactClone() {
