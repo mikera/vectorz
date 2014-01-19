@@ -143,7 +143,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void pow(double exponent) {
 		int len=rowCount();
 		for (int i = 0; i < len; i++) {
-			getRow(i).pow(exponent);
+			AVector v=getRow(i);
+			v.pow(exponent);
 		}
 	}
 	
@@ -593,7 +594,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public INDArray ensureMutable() {
+	public AMatrix sparseClone() {
+		return Matrixx.createSparse(this);
+	}
+	
+	@Override
+	public AMatrix ensureMutable() {
 		if (isFullyMutable()&&!isView()) return this;
 		return clone();
 	}

@@ -25,25 +25,21 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, IFastColumns {
+public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFastColumns {
 	private static final long serialVersionUID = -5994473197711276621L;
 
 	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
-
-	protected final HashMap<Integer,AVector> data;
 
 	protected SparseColumnMatrix(int rowCount, int columnCount) {
 		this(new HashMap<Integer,AVector>(),rowCount,columnCount);
 	}
 	
 	protected SparseColumnMatrix(HashMap<Integer,AVector> data, int rowCount, int columnCount) {
-		super(rowCount,columnCount);
-		this.data=data;
+		super(rowCount,columnCount,data);
 	}
 
 	protected SparseColumnMatrix(AVector[] columns, int rowCount, int columnCount) {
-		super(rowCount,columnCount);
-		data=new HashMap<Integer,AVector>();
+		super(rowCount,columnCount,new HashMap<Integer,AVector>());
 		for (int i=0; i<cols; i++) {
 			AVector v=columns[i];
 			if ((v!=null)&&(!v.isZero())) {
@@ -76,24 +72,15 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 	public static SparseColumnMatrix wrap(HashMap<Integer,AVector> cols, int rowCount, int columnCount) {
 		return new SparseColumnMatrix(cols,rowCount,columnCount);
 	}
-
-
-	@Override
-	public boolean isMutable() {
-		return true;
-	}
 	
 	@Override
-	public boolean isFullyMutable() {
-		return true;
+	protected int lineCount() {
+		return cols;
 	}
-	
+
 	@Override
-	public boolean isZero() {
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			if (!e.getValue().isZero()) return false;
-		}
-		return true;
+	protected int lineLength() {
+		return rows;
 	}
 
 	@Override
@@ -162,16 +149,7 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 	public void copyColumnTo(int i, double[] data, int offset) {
 		getColumn(i).getElements(data, offset);
 	}
-	
-	@Override
-	public long nonZeroCount() {
-		long result=0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().nonZeroCount();
-		}
-		return result;
-	}	
-	
+		
 	@Override
 	public double elementSum() {
 		double result=0;
@@ -322,5 +300,6 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 		}
 		return true;
 	}
+
 
 }

@@ -12,8 +12,10 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Matrix stored as a collection of sparse row vectors.
@@ -26,16 +28,13 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFastRows {
+public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRows {
 	private static final long serialVersionUID = 8646257152425415773L;
 
 	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
 
-	protected final HashMap<Integer,AVector> data;
-	
 	protected SparseRowMatrix(AVector... vectors) {
-		super(vectors.length,vectors[0].length());	
-		data=new HashMap<Integer,AVector>();
+		super(vectors.length,vectors[0].length(),new HashMap<Integer,AVector>());	
 		for (int i=0; i<rows; i++) {
 			AVector v=vectors[i];
 			if ((v!=null)&&(!v.isZero())) data.put(i, vectors[i]);
@@ -43,8 +42,7 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	}
 	
 	protected SparseRowMatrix(AVector[] vectors,int rowCount, int columnCount) {
-		super(rowCount,columnCount);	
-		data=new HashMap<Integer,AVector>();
+		super(rowCount,columnCount,new HashMap<Integer,AVector>());	
 		for (int i=0; i<rows; i++) {
 			AVector v=vectors[i];
 			if ((v!=null)&&(!v.isZero())) data.put(i, vectors[i]);
@@ -52,13 +50,11 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	}
 	
 	protected SparseRowMatrix(int rowCount, int columnCount) {
-		super(rowCount,columnCount);
-		data=new HashMap<Integer,AVector>();
+		super(rowCount,columnCount,new HashMap<Integer,AVector>());
 	}
 
 	protected SparseRowMatrix(HashMap<Integer, AVector> data, int rowCount, int columnCount) {
-		super(rowCount,columnCount);
-		this.data=data;
+		super(rowCount,columnCount,data);
 	}
 	
 	public static SparseRowMatrix wrap(HashMap<Integer, AVector> data,
@@ -98,16 +94,45 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	}
 	
 	@Override
-	public boolean isMutable() {
-		return true;
+	public void pow(double exponent) {
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			AVector v=e.getValue();
+			if (!v.isFullyMutable()) {
+				v=v.sparseClone();
+				data.put(e.getKey(), v);
+			}
+			v.pow(exponent);
+		}
 	}
 	
 	@Override
-	public boolean isFullyMutable() {
-		for (AVector v:getSlices()) {
-			if (!v.isFullyMutable()) return false;
+	public void square() {
+		for (Entry<Integer,AVector> e:data.entrySet()) {
+			AVector v=e.getValue();
+			if (!v.isFullyMutable()) {
+				v=v.sparseClone();
+				data.put(e.getKey(), v);
+			}
+			v.square();
 		}
-		return true;
+	}
+	
+	@Override
+	public void exp() {
+		AVector rr=RepeatedElementVector.create(lineLength(), 1.0);
+		for (int i=0; i<lineCount(); i++) {
+			Integer io=i;
+			AVector v=data.get(io);
+			if (v==null) {
+				data.put(io,rr);
+			} else {
+				if (!v.isFullyMutable()) {
+					v=v.sparseClone();
+					data.put(io, v);
+				}
+				v.exp();
+			}
+		}
 	}
 	
 	@Override
@@ -149,15 +174,6 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 			if (v>result) result=v;
 		}
 		if ((result<0)&&(data.size()<rowCount())) return 0.0;
-		return result;
-	}	
-	
-	@Override
-	public long nonZeroCount() {
-		long result=0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().nonZeroCount();
-		}
 		return result;
 	}	
 
@@ -208,6 +224,16 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 	@Override
 	public SparseColumnMatrix getTranspose() {
 		return SparseColumnMatrix.wrap(data,cols,rows);
+	}
+	
+	@Override
+	protected int lineCount() {
+		return rows;
+	}
+	
+	@Override
+	protected int lineLength() {
+		return cols;
 	}
 
 	@Override
@@ -279,7 +305,7 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 		if ((this.rows!=m.rows)||(this.cols!=m.cols)) return false;
 		HashSet<Integer> checked=new HashSet<Integer>();
 		
-		for (Entry<Integer,AVector> e:data.entrySet()) {
+		for (Entry<Integer,AVector> e : data.entrySet()) {
 			Integer i=e.getKey();
 			AVector v=e.getValue();
 			AVector ov=m.data.get(i);
@@ -292,7 +318,7 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 		}
 		
 		// check remaining rows from m, these must be zero for equality to hold
-		for (Entry<Integer,AVector> e:m.data.entrySet()) {
+		for (Entry<Integer,AVector> e : m.data.entrySet()) {
 			Integer i=e.getKey();
 			if (checked.contains(i)) continue; // already checked
 			AVector v=e.getValue();
@@ -300,5 +326,11 @@ public class SparseRowMatrix extends ARectangularMatrix implements ISparse, IFas
 		}
 		return true;
 	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+	}
+
 
 }

@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import mikera.vectorz.Ops;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.AxisVector;
 
 public class TestSparseRowMatrix {
 
@@ -16,5 +18,16 @@ public class TestSparseRowMatrix {
 		m.replaceRow(1, v);
 		assertTrue(v==m.getRow(1)); // identical objects
 		assertEquals(Vector.of(0,2,0),m.getColumn(1));
+	}
+	
+	@Test public void testOps() {
+		SparseRowMatrix m=SparseRowMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3));
+		
+		SparseRowMatrix m2=m.exactClone();
+		assertEquals(m,m2);
+		m.applyOp(Ops.EXP);
+		Ops.EXP.applyTo(m2);
+		
+		assertEquals(m,m2);
 	}
 }

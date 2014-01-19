@@ -232,13 +232,24 @@ public class TestArrays {
 				tmp[i] = x;
 			}
 			if (nan) continue; // TODO: compare NaNs properly
+			b.validate();
 			op.applyTo(b);
 			c.applyOp(op);
 			op.applyTo(v);
 			op.applyTo(ds);
 			op.applyTo(d.asVector());
 
-			assertEquals(b, c);
+			if (b.dimensionality()>0) for (int i=0; i<b.sliceCount(); i++) {
+				assertEquals(b.slice(i),c.slice(i));
+			}
+			if (!b.equals(c)) {
+				b=a.exactClone();
+				b.validate();
+				op.applyTo(b);
+				b.validate();
+				c.validate();
+				assertEquals(b, c);
+			}
 			assertEquals(b, d);
 			assertEquals(v, b.toVector());
 			assertEquals(v, Vector.wrap(ds));
