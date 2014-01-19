@@ -31,6 +31,10 @@ public class AxisVector extends ASparseVector {
 		return new AxisVector(axisIndex,dimensions);
 	}
 	
+	public int getAxis() {
+		return axis;
+	}
+	
 	@Override
 	public double magnitude() {
 		return 1.0;
@@ -215,25 +219,12 @@ public class AxisVector extends ASparseVector {
 			return Vectorz.createZeroVector(length);
 		}
 	}
-	
-	@Override
-	public AxisVector exactClone() {
-		// immutable, so return self
-		return this;
-	}
-	
+
 	@Override
 	public double density() {
 		return 1.0/length;
 	}
 	
-	@Override
-	public void validate() {
-		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
-		if ((getAxis()<0)||(getAxis()>length)) throw new VectorzException("Axis index out of bounds");
-		super.validate();
-	}
-
 	@Override
 	public int nonSparseElementCount() {
 		return 1;
@@ -266,8 +257,18 @@ public class AxisVector extends ASparseVector {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
-	public int getAxis() {
-		return axis;
+	@Override
+	public AxisVector exactClone() {
+		// immutable, so return self
+		return this;
+	}
+	
+	@Override
+	public void validate() {
+		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
+		if ((getAxis()<0)||(getAxis()>length)) throw new VectorzException("Axis index out of bounds");
+		super.validate();
 	}
 
+	
 }
