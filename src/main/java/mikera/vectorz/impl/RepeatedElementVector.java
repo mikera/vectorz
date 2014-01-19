@@ -119,4 +119,12 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	public RepeatedElementVector exactClone() {
 		return new RepeatedElementVector(length,value);
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=value) return false;
+		}
+		return true;
+	}
 }

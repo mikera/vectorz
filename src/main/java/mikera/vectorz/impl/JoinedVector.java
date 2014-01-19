@@ -445,6 +445,13 @@ public final class JoinedVector extends ASizedVector {
 		return depthCalc(this);
 	}
 	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		if (!left.equalsArray(data, offset)) return false;
+		if (!right.equalsArray(data, offset+split)) return false;
+		return true;
+	}
+	
 	@Override 
 	public JoinedVector exactClone() {
 		return new JoinedVector(left.exactClone(),right.exactClone());

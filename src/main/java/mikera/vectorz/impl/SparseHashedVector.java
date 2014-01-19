@@ -457,7 +457,19 @@ public class SparseHashedVector extends ASparseVector {
 		}
 	}
 
-	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			double v=data[offset+i];
+			if (v==0.0) {
+				if (hash.containsKey(i)) return false;
+			} else {
+				Double d=hash.get(i);
+				if ((d==null)||(d!=v)) return false;
+			}
+		}
+		return true;
+	}
 	
 	@Override
 	public Vector clone() {
