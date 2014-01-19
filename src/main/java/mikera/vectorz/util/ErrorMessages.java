@@ -56,6 +56,10 @@ public class ErrorMessages {
 	public static String incompatibleBroadcast(INDArray a, int... shape) {
 		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(shape);
 	}
+	
+	public static String incompatibleBroadcast(INDArray a, INDArray b) {
+		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(b);
+	}
 
 	public static String notFullyMutable(AMatrix m,	int row, int column) {
 		return "Can't mutate "+m.getClass()+ " at position: "+pos(row,column);
@@ -121,6 +125,7 @@ public class ErrorMessages {
 	public static String impossible() {
 		return "This error shouldn't be possible!!! Please report an issue with a stack trace at https://github.com/mikera/vectorz/issues";
 	}
+
 
 
 }

@@ -1482,7 +1482,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (rowCount()==target.rowCount()&&(columnCount()==target.columnCount())) {
 			return this;
 		} else {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}
 	}
 	

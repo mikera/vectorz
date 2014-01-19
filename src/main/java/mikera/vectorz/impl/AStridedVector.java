@@ -121,7 +121,7 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 		if (length()==target.columnCount()) {
 			return StridedMatrix.wrap(getArray(), target.rowCount(), length(), getArrayOffset(), 0, getStride());
 		} else {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}
 	}
 	

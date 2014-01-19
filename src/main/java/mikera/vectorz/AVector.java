@@ -1657,7 +1657,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (length()==target.columnCount()) {
 			return BroadcastVectorMatrix.wrap(this, target.rowCount());
 		} else {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}
 	}
 	
