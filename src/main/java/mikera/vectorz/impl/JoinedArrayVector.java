@@ -546,6 +546,14 @@ public final class JoinedArrayVector extends ASizedVector {
 	}
 	
 	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<numArrays; i++) {
+			if (!DoubleArrays.equals(data, offset, this.data[i], offsets[i], subLength(i)));
+		}
+		return true;
+	}
+	
+	@Override
 	public void validate() {
 		if (length!=pos[numArrays]) throw new VectorzException("End position incorrect!?!");
 		
