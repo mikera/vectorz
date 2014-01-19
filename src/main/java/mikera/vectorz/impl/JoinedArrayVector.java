@@ -548,7 +548,7 @@ public final class JoinedArrayVector extends ASizedVector {
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		for (int i=0; i<numArrays; i++) {
-			if (!DoubleArrays.equals(data, offset, this.data[i], offsets[i], subLength(i)));
+			if (!DoubleArrays.equals(data, offset+pos[i], this.data[i], offsets[i], subLength(i))) return false;
 		}
 		return true;
 	}
