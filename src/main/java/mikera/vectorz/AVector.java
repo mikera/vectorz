@@ -728,7 +728,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public double dotProduct(AVector v) {
 		if (v instanceof Vector) return dotProduct((Vector)v);
 		int len=length();
-		if(v.length()!=len) throw new IllegalArgumentException("Vector size mismatch");
+		if(v.length()!=len) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double total=0.0;
 		for (int i=0; i<len; i++) {
 			total+=unsafeGet(i)*v.unsafeGet(i);
@@ -737,13 +737,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public double dotProduct(Vector v) {
-		if(v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return dotProduct(v.data, 0);
 	}
 	
 	public double dotProduct(AVector v, Index ix) {
 		int vl=v.length();
-		if (v.length()!=ix.length()) throw new IllegalArgumentException("Mismtached source vector and index sizes");
+		if (vl!=ix.length()) throw new IllegalArgumentException("Mismatched source vector and index lengths. Index length should be "+vl);
 		double result=0.0;
 		for (int i=0; i<vl; i++) {
 			result+=unsafeGet(ix.get(i))*v.unsafeGet(i);
@@ -778,9 +778,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		double tx=y*z2-z*y2;
 		double ty=z*x2-x*z2;
 		double tz=x*y2-y*x2;			
-		set(0,tx);
-		set(1,ty);
-		set(2,tz);		
+		unsafeSet(0,tx);
+		unsafeSet(1,ty);
+		unsafeSet(2,tz);		
+	}
+	
+	public void crossProduct(Vector3 a) {
+		if(!(length()==3)) throw new IllegalArgumentException("Cross product requires length 3 vectors");
+		double x=unsafeGet(0);
+		double y=unsafeGet(1);
+		double z=unsafeGet(2);
+		double x2=a.x;
+		double y2=a.y;
+		double z2=a.z;
+		double tx=y*z2-z*y2;
+		double ty=z*x2-x*z2;
+		double tz=x*y2-y*x2;			
+		unsafeSet(0,tx);
+		unsafeSet(1,ty);
+		unsafeSet(2,tz);		
 	}
 	
 	/**
