@@ -91,7 +91,7 @@ public class Matrixx {
 	/**
 	 * Creates a sparse matrix from the given matrix, ignoring zeros. Uses row-based storage by default
 	 */
-	public static AMatrix createSparseRows(Iterable<AVector> rows) {
+	public static SparseRowMatrix createSparseRows(Iterable<AVector> rows) {
 		Iterator<AVector> rowIterator=rows.iterator();
 		return createSparseRows(rowIterator);
 	}
@@ -100,7 +100,7 @@ public class Matrixx {
 	 * Creates a sparse matrix from the given iterator. Each vector in the iterator will be copied to
 	 * a row in the new sparse matrix 
 	 */
-	public static AMatrix createSparseRows(Iterator<AVector> rowIterator) {
+	public static SparseRowMatrix createSparseRows(Iterator<AVector> rowIterator) {
 		AVector r0=rowIterator.next();
 		int cc=r0.length();
 		HashMap<Integer,AVector> rowMap=new HashMap<Integer,AVector>();
