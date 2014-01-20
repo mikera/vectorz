@@ -114,6 +114,7 @@ public final class Vector extends AArrayVector {
 	 * @return
 	 */
 	public static Vector createLength(int length) {
+		if (length<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(length));
 		return new Vector(length);
 	}
 
