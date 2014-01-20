@@ -116,19 +116,20 @@ public class Matrixx {
 		return m;
 	}
 	
-
-	public static AMatrix createSparse(int inputDims, Index[] indexes,
+	/**
+	 * Create a sparse array, given an Index of column positions and AVector of corresponding values for each row in the sparse array
+	 * Performs a defensive copy of underlying data.
+	 */
+	public static AMatrix createSparse(int columnCount, Index[] indexes,
 			AVector[] weights) {
-		int len = indexes.length;
-		if (len != weights.length)
-			throw new IllegalArgumentException("Length mismatch!" + len + " vs. "
-					+ weights.length);
-		AVector[] svs = new AVector[len];
-		for (int i = 0; i < len; i++) {
-			svs[i] = SparseIndexedVector.create(inputDims, indexes[i],
-					weights[i]);
+		int rowCount = indexes.length;
+		if (rowCount != weights.length)
+			throw new IllegalArgumentException("Length of indexes array must match length of weights array");
+		SparseRowMatrix sm=SparseRowMatrix.create(rowCount, columnCount);
+		for (int i = 0; i < rowCount; i++) {
+			sm.replaceRow(i, SparseIndexedVector.wrap(columnCount, indexes[i].clone(), weights[i].toDoubleArray()));;
 		}
-		return VectorMatrixMN.wrap(svs);
+		return sm;
 	}
 
 	/**
