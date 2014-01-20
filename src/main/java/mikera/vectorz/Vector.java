@@ -458,7 +458,7 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void addMultiple(Vector source, Index index, double factor) {
-		if (index.length()!=source.length()) throw new VectorzException("Index must match source vector");
+		if (index.length()!=source.length()) throw new VectorzException(ErrorMessages.incompatibleShapes(index, source));
 		int len=source.length();
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {

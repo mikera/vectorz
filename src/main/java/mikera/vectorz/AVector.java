@@ -1626,7 +1626,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Set a subrange of this vector from a double array
 	 */
 	public void setRange(int offset, double[] data, int dataOffset, int length) {
-		if ((offset<0)||(offset+length>this.length())) throw new IndexOutOfBoundsException("Offset: "+offset+" , Length: "+length +" on vector with total length "+length());
+		if ((offset<0)||(offset+length>this.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		for (int i=0; i<length; i++) {
 			unsafeSet(offset+i,data[dataOffset+i]);
 		}

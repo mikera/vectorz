@@ -14,6 +14,10 @@ public class ErrorMessages {
 		return Index.of(indexes).toString();
 	}
 	
+	private static String shape(Index index) {
+		return Index.wrap(index.getShape()).toString();
+	}
+	
 	private static String pos(int... indexes) {
 		return Index.of(indexes).toString();
 	}
@@ -43,8 +47,11 @@ public class ErrorMessages {
 	public static String incompatibleShape(INDArray m) {
 		return "Incompatible shape: "+shape(m);
 	}
-
 	
+	public static String incompatibleShapes(Index index, AVector v) {
+		return "Index shape: "+shape(index)+" must match vector shape: "+shape(v);
+	}
+
 	/**
 	 * Returns an error message indicating that a broadcast is not possible
 	 * 
@@ -129,6 +136,7 @@ public class ErrorMessages {
 	public static String tooManyElements(int... shape) {
 		return "Too many elements with shape: "+shape(shape);
 	}
+
 
 
 

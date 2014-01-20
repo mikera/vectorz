@@ -462,5 +462,9 @@ public final class Index extends AIndex {
 		return true;
 	}
 
+	public int[] getShape() {
+		return new int[length()];
+	}
+
 
 }
