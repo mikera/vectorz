@@ -115,6 +115,21 @@ public class Matrixx {
 		SparseRowMatrix m=SparseRowMatrix.wrap(rowMap,rc,cc);
 		return m;
 	}
+	
+
+	public static AMatrix createSparse(int inputDims, Index[] indexes,
+			AVector[] weights) {
+		int len = indexes.length;
+		if (len != weights.length)
+			throw new IllegalArgumentException("Length mismatch!" + len + " vs. "
+					+ weights.length);
+		AVector[] svs = new AVector[len];
+		for (int i = 0; i < len; i++) {
+			svs[i] = SparseIndexedVector.create(inputDims, indexes[i],
+					weights[i]);
+		}
+		return VectorMatrixMN.wrap(svs);
+	}
 
 	/**
 	 * Creates a SparseColumnMatrix from the given matrix, ignoring zeros
@@ -168,11 +183,18 @@ public class Matrixx {
 		return im;
 	}
 
+	
+	/**
+	 * Creates a scalar matrix with the given scale factor
+	 */
 	public static ADiagonalMatrix createScalarMatrix(int dimensions,
 			double factor) {
 		return (ADiagonalMatrix) ScalarMatrix.create(dimensions, factor);
 	}
 
+	/**
+	 * Creates an scale matrix with the given scale factors for each dimension
+	 */
 	public static DiagonalMatrix createScaleMatrix(double... scalingFactors) {
 		int dimensions = scalingFactors.length;
 		DiagonalMatrix im = new DiagonalMatrix(dimensions);
@@ -182,6 +204,27 @@ public class Matrixx {
 		return im;
 	}
 
+	/**
+	 * Creates a diagonal matrix, using the given diagonal values. Performs a defensive copy of the data.
+	 */
+	public static DiagonalMatrix createDiagonalMatrix(double... diagonalValues) {
+		int dimensions = diagonalValues.length;
+		DiagonalMatrix im = new DiagonalMatrix(dimensions);
+		im.getLeadingDiagonal().setValues(diagonalValues);
+		return im;
+	}
+	
+	/**
+	 * Creates a diagonal matrix using the given vector of values on the main diagonal.
+	 */
+	public static DiagonalMatrix createDiagonalMatrix(AVector diagonalValues) {
+		return DiagonalMatrix.wrap(diagonalValues.toDoubleArray());
+	}
+
+	/**
+	 * Creates a 3D rotation matrix for a given angle or rotation in radians around an axis vector.
+	 * The axis vector need not be normalised.
+	 */
 	public static Matrix33 createRotationMatrix(Vector3 axis, double angle) {
 		return createRotationMatrix(axis.x, axis.y, axis.z, angle);
 	}
@@ -189,10 +232,15 @@ public class Matrixx {
 	public static Matrix33 createRotationMatrix(double x, double y, double z,
 			double angle) {
 		double d = Math.sqrt(x * x + y * y + z * z);
-		double u = x / d;
-		double v = y / d;
-		double w = z / d;
+		if (d==0.0) return Matrix33.createIdentityMatrix();
 		double ca = Math.cos(angle);
+		double u=x, v=y, w=z;
+		if (d!=1.0) {
+			double s=1.0/d;
+			u = x *s;
+			v = y *s;
+			w = z *s;
+		}
 		double sa = Math.sin(angle);
 		return new Matrix33(u * u + (1 - u * u) * ca,
 				u * v * (1 - ca) - w * sa, u * w * (1 - ca) + v * sa, u * v
@@ -298,8 +346,8 @@ public class Matrixx {
 
 			permutations[col] = maxIndex;
 
-			if (data[(dims * col) + col] == 0.0) { throw new VectorzException(
-					"Matrix is singular, cannot compute inverse!"); }
+			if (data[(dims * col) + col] == 0.0) { throw new IllegalArgumentException(
+					ErrorMessages.singularMatrix()); }
 
 			// Scale lower diagonal matrix using values on diagonal
 			double diagonalValue = data[(dims * col) + col];
@@ -324,8 +372,8 @@ public class Matrixx {
 				maxValue = Math.max(maxValue, Math.abs(data[row * dims + col]));
 			}
 
-			if (maxValue == 0.0) { throw new VectorzException(
-					"Matrix is singular!"); }
+			if (maxValue == 0.0) { throw new IllegalArgumentException(
+					ErrorMessages.singularMatrix()); }
 
 			// scale factor for row should reduce maximum absolute value to 1.0
 			factorsOut[row] = 1.0 / maxValue;
@@ -522,19 +570,6 @@ public class Matrixx {
 		return create(m);
 	}
 
-	public static AMatrix createSparse(int inputDims, Index[] indexes,
-			AVector[] weights) {
-		int len = indexes.length;
-		if (len != weights.length)
-			throw new VectorzException("Length mismatch!" + len + " vs. "
-					+ weights.length);
-		AVector[] svs = new AVector[len];
-		for (int i = 0; i < len; i++) {
-			svs[i] = SparseIndexedVector.create(inputDims, indexes[i],
-					weights[i]);
-		}
-		return VectorMatrixMN.wrap(svs);
-	}
 
 	public static AMatrix create(Object... vs) {
 		return create(Arrays.asList(vs));

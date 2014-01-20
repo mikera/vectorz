@@ -137,6 +137,10 @@ public class ErrorMessages {
 		return "Too many elements with shape: "+shape(shape);
 	}
 
+	public static String singularMatrix() {
+		return "Matrix is singular!";
+	}
+
 
 
 
