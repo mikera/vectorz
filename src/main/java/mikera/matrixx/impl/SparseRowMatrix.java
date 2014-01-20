@@ -20,10 +20,10 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Matrix stored as a collection of sparse row vectors.
+ * Matrix stored as a sparse collection of sparse row vectors.
  * 
  * This format is especially efficient for:
- * - innerProduct() with another matrix
+ * - innerProduct() with another matrix, especially one with efficient column access like SparseColumnMatrix
  * - access via getRow() operation
  * - transpose into SparseColumnMatrix
  * 
@@ -178,7 +178,8 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		int cc=a.columnCount();
 		Matrix r=Matrix.create(rows, cc);
 		
-		for (int i=0; i<rows; i++) {
+		for (Entry<Integer,AVector> eRow:data.entrySet()) {
+			int i=eRow.getKey();
 			for (int j=0; j<cc; j++) {
 				r.unsafeSet(i,j,getRow(i).dotProduct(a.getColumn(j)));
 			}
