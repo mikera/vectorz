@@ -1226,9 +1226,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void addProduct(AVector a, AVector b, double factor) {
 		int length=length();
-		if((a.length()!=length)||(b.length()!=length)) {
-			throw new IllegalArgumentException("Unequal vector sizes for addProduct");
-		}
+		if(a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		if(b.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
 		if (factor==0.0) return;
 		for (int i = 0; i < length; i++) {
 			addAt(i,(a.unsafeGet(i)*b.unsafeGet(i)*factor));
@@ -1240,7 +1239,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param src
 	 */
 	public void addMultiple(AVector src, double factor) {
-		if (src.length()!=length()) throw new RuntimeException("Source vector has different size!" + src.length());
+		if (src.length()!=length()) throw new RuntimeException(ErrorMessages.incompatibleShapes(this, src));
 		addMultiple(src,0,factor);
 	}
 	
@@ -1423,7 +1422,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param factor
 	 */
 	public void addMultiple(Vector source, Index sourceToDest, double factor) {
-		if (sourceToDest.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
 		if (len!=sourceToDest.length()) throw new IllegalArgumentException("Index length must match source length.");
 		for (int i=0; i<len; i++) {
@@ -1439,7 +1437,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param factor
 	 */
 	public void addMultiple(AVector source, Index sourceToDest, double factor) {
-		if (sourceToDest.length()!=source.length()) throw new VectorzException("Index must match source vector");
 		int len=source.length();
 		if (len!=sourceToDest.length()) throw new IllegalArgumentException("Index length must match source length.");
 		for (int i=0; i<len; i++) {
@@ -1455,7 +1452,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param factor
 	 */
 	public void addMultiple(Index destToSource, Vector source, double factor) {
-		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
 		int len=this.length();
 		if (len!=destToSource.length()) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len; i++) {
@@ -1641,21 +1637,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int tdims=targetShape.length;
 		int len=this.length();
 		if (tdims<1) {
-			throw new IllegalArgumentException("Can't broadcast to a smaller shape!");
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 		} else if (tdims==1) {
 			if (targetShape[0]!=len) {
-				throw new IllegalArgumentException("Can't broadcast to different length: "+targetShape[0]);
+				throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 			}
 			return this;
 		} else if (tdims==2) {
 			int n=targetShape[0];
-			if (len!=targetShape[1]) throw new IllegalArgumentException("Can't broadcast to matrix with different length rows");
+			if (len!=targetShape[1]) throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 			AVector[] vs=new AVector[n];
 			for (int i=0; i<n; i++) {vs[i]=this;}
 			return Matrixx.createFromVectors(vs);
 		} else {
 			int n=targetShape[0];
-			if (len!=targetShape[tdims-1]) throw new IllegalArgumentException("Can't broadcast to matrix with different length rows");
+			if (len!=targetShape[tdims-1]) throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
 			return SliceArray.repeat(s,n);
 		}
