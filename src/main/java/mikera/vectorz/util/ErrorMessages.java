@@ -126,6 +126,10 @@ public class ErrorMessages {
 		return "This error shouldn't be possible!!! Please report an issue with a stack trace at https://github.com/mikera/vectorz/issues";
 	}
 
+	public static String tooManyElements(int... shape) {
+		return "Too many elements with shape: "+shape(shape);
+	}
+
 
 
 }

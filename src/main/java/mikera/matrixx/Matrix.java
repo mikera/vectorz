@@ -32,14 +32,14 @@ public final class Matrix extends ADenseArrayMatrix {
 	private static final long serialVersionUID = -3260581688928230431L;
 
 	private Matrix(int rowCount, int columnCount) {
-		this(rowCount,columnCount,new double[rowCount*columnCount]);
+		this(rowCount,columnCount,createStorage(rowCount,columnCount));
 	}
 	
 	/**
 	 * Creates a new zero-filled matrix of the specified shape.
 	 */
 	public static Matrix create(int rowCount, int columnCount) {
-		return new Matrix(rowCount,columnCount);
+		return new Matrix(rowCount,columnCount,createStorage(rowCount,columnCount));
 	}
 	
 	public static Matrix create(AMatrix m) {
@@ -53,11 +53,18 @@ public final class Matrix extends ADenseArrayMatrix {
 		set(m);
 	}
 	
+	private static double[] createStorage(int rowCount,int columnCount) {
+		long elementCount=((long)rowCount)*columnCount;
+		int ec=(int)elementCount;
+		if (ec!=elementCount) throw new IllegalArgumentException(ErrorMessages.tooManyElements(rowCount,columnCount));
+		return new double[ec];
+	}
+	
 	public static Matrix create(INDArray m) {
 		if (m.dimensionality()!=2) throw new IllegalArgumentException("Can only create matrix from 2D array");
 		int rows=m.getShape(0);
 		int cols=m.getShape(1);
-		double[] data=new double[rows*cols];
+		double[] data=createStorage(rows,cols);
 		m.getElements(data, 0);
 		return Matrix.wrap(rows, cols, data);		
 	}
