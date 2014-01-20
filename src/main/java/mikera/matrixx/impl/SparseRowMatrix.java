@@ -180,8 +180,9 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		
 		for (Entry<Integer,AVector> eRow:data.entrySet()) {
 			int i=eRow.getKey();
+			AVector row=eRow.getValue();
 			for (int j=0; j<cc; j++) {
-				r.unsafeSet(i,j,getRow(i).dotProduct(a.getColumn(j)));
+				r.unsafeSet(i,j,row.dotProduct(a.getColumn(j)));
 			}
 		}
 		return r;			
