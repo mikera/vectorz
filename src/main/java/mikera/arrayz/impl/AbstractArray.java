@@ -808,8 +808,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 	@Override
 	public double[] toDoubleArray() {
-		int n=(int)elementCount();
-		double[] result=new double[n];
+		double[] result=Array.createStorage(this.getShape());
 		getElements(result,0);
 		return result;
 	}

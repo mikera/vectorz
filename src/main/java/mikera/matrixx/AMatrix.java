@@ -1300,8 +1300,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public double[] toDoubleArray() {
-		int n=(int)elementCount();
-		double[] result=new double[n];
+		double[] result=Matrix.createStorage(rowCount(),columnCount());
 		getElements(result,0);
 		return result;
 	}

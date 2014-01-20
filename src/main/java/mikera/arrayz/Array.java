@@ -77,16 +77,24 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 
 	public static Array newArray(int... shape) {
-		int n = (int) IntArrays.arrayProduct(shape);
-		double[] data = new double[n];
-		return new Array(shape.length, shape, data);
+		return new Array(shape.length, shape, createStorage(shape));
 	}
 
 	public static Array create(INDArray a) {
-		int n = (int) a.elementCount();
-		double[] data = new double[n];
-		a.getElements(data, 0);
-		return new Array(a.dimensionality(), a.getShape(), data);
+		int[] shape=a.getShape();
+		return new Array(a.dimensionality(), shape, a.toDoubleArray());
+	}
+	
+	public static double[] createStorage(int... shape) {
+		long ec=1;
+		for (int i=0; i<shape.length; i++) {
+			int si=shape[i];
+			if ((ec*si)!=(((int)ec)*si)) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+			ec*=shape[i];
+		}
+		int n=(int)ec;
+		if (ec!=n) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+		return new double[n];
 	}
 
 	@Override
