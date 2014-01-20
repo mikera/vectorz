@@ -38,25 +38,35 @@ import mikera.vectorz.util.VectorzException;
 public class Matrixx {
 
 	/**
-	 * Creates an mutable identity matrix
+	 * Creates an identity matrix
 	 */
 	public static AMatrix createIdentityMatrix(int dimensions) {
+		return createImmutableIdentityMatrix(dimensions);
+	}
+
+	/**
+	 * Creates a sparse, immutable identity matrix. This is the most efficient format for identity matrices
+	 */
+	public static IdentityMatrix createImmutableIdentityMatrix(int dimensions) {
+		return IdentityMatrix.create(dimensions);
+	}
+	
+	/**
+	 * Creates a fully mutable identity matrix
+	 */
+	public static AMatrix createMutableIdentityMatrix(int dimensions) {
 		AMatrix m = newMatrix(dimensions, dimensions);
 		for (int i = 0; i < dimensions; i++) {
-			m.set(i, i, 1.0);
+			m.unsafeSet(i, i, 1.0);
 		}
 		return m;
 	}
 
 	/**
-	 * Creates an immutable identity matrix
-	 */
-	public static IdentityMatrix createImmutableIdentityMatrix(int dimensions) {
-		return IdentityMatrix.create(dimensions);
-	}
-
-	/**
-	 * Coerces to a matrix
+	 * Coerce an object to a matrix format, on a best effort basis.
+	 * 
+	 * Can handle:
+	 * - Existing matrices
 	 */
 	public static AMatrix toMatrix(Object o) {
 		if (o instanceof AMatrix) {
