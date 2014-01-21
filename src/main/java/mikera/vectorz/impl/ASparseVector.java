@@ -56,6 +56,10 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		return result;
 	}
 	
+	@Override
+	public final boolean isSparse() {
+		return true;
+	}
 	
 	@Override
 	public double density() {

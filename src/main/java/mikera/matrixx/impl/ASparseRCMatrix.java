@@ -17,6 +17,11 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public boolean isSparse() {
+		return true;
+	}
+	
+	@Override
 	public void reciprocal() {
 		AVector rr=RepeatedElementVector.create(lineLength(), 1.0/0.0);
 		for (int i=0; i<lineCount(); i++) {

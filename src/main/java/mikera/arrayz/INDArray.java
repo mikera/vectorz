@@ -272,6 +272,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean isBoolean();
 	
 	/**
+	 * Returns true if the array is in a sparse format
+	 */
+	public boolean isSparse();
+	
+	/**
 	 * If this method returns true, the INDArray is guaranteed to be fully mutable 
 	 * in all positions i.e. every position can store any valid double value
 	 */
