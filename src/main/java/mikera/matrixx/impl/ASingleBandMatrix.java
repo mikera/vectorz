@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.ISparse;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ZeroVector;
 
@@ -12,7 +13,7 @@ import mikera.vectorz.impl.ZeroVector;
  * @author Mike
  *
  */
-public abstract class ASingleBandMatrix extends ABandedMatrix {
+public abstract class ASingleBandMatrix extends ABandedMatrix implements ISparse {
 	private static final long serialVersionUID = -213068993524224396L;
 
 	/**
@@ -37,6 +38,11 @@ public abstract class ASingleBandMatrix extends ABandedMatrix {
 	@Override
 	public boolean isZero() {
 		return getNonZeroBand().isZero();
+	}
+	
+	@Override
+	public boolean isSparse() {
+		return true;
 	}
 	
 	@Override 

@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -15,7 +16,7 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Lightweight immutable zero matrix class
  */
-public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns {
+public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns, ISparse {
 	private static final long serialVersionUID = 875833013123277805L;
 
 	@Override public 
@@ -29,6 +30,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	public static ZeroMatrix create(int rows, int columns) {
 		return new ZeroMatrix(rows,columns);
+	}
+	
+	@Override
+	public boolean isSparse() {
+		return true;
 	}
 	
 	@Override
