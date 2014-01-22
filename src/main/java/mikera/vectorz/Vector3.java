@@ -412,5 +412,17 @@ public final class Vector3 extends APrimitiveVector {
 	public Vector3 exactClone() {
 		return clone();
 	}
-
+	
+	@Override 
+	public boolean equals(AVector v) {
+		if (v==this) return true;
+		if (v instanceof Vector3) {
+			return equals((Vector3)v);
+		}
+		return (v.length()==3)&&(x==v.unsafeGet(0))&&(y==v.unsafeGet(1))&&(z==v.unsafeGet(2));
+	}
+	
+	public boolean equals(Vector3 v) {
+		return (x==v.x)&&(y==v.y)&&(z==v.z);
+	}
 }
