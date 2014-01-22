@@ -204,12 +204,12 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 
 	@Override
-	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+	public void addToArray(int offset, double[] destData, int destOffset, int length) {
 		double[] data = getArray();
 		int dataOffset = getArrayOffset() + offset;
 
 		for (int i = 0; i < length; i++) {
-			array[i + arrayOffset] += data[i + dataOffset];
+			destData[i + destOffset] += data[i + dataOffset];
 		}
 	}
 	

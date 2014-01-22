@@ -267,6 +267,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public boolean equals(AVector v) {
 		if (this==v) return true;
+		if (v instanceof AArrayVector) {
+			return equals((AArrayVector)v);
+		}
 		int len=length();
 		if (len != v.length())
 			return false;
@@ -275,6 +278,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 				return false;
 		}
 		return true;
+	}
+	
+	public boolean equals(AArrayVector v) {
+		if (length()!=v.length()) return false;
+		return equalsArray(v.getArray(),v.getArrayOffset());
 	}
 	
 	@Override
@@ -737,7 +745,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public double dotProduct(AVector v) {
-		if (v instanceof Vector) return dotProduct((Vector)v);
+		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
 		int len=length();
 		if(v.length()!=len) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double total=0.0;
@@ -750,6 +758,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public double dotProduct(Vector v) {
 		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return dotProduct(v.data, 0);
+	}
+	
+	public double dotProduct(AArrayVector v) {
+		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		return dotProduct(v.getArray(), v.getArrayOffset());
 	}
 	
 	public double dotProduct(AVector v, Index ix) {
