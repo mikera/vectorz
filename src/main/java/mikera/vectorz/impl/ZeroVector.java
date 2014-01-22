@@ -260,11 +260,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector sparseClone() {
-		if (length<Vectorz.MIN_SPARSE_LENGTH) {
-			return Vector.createLength(length);
-		} else {
-			return SparseIndexedVector.createLength(length);
-		}
+		return Vectorz.createSparseMutable(length);
 	}
 	
 	@Override

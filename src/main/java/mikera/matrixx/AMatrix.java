@@ -1020,17 +1020,30 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public boolean epsilonEquals(INDArray a, double epsilon) {
-		if (a.dimensionality()!=2) {
+		if (a instanceof AMatrix) {
+			return epsilonEquals((AMatrix) a,epsilon);
+		} if (a.dimensionality()!=2) {
 			return false;
 		} else {
 			int sc=rowCount();
 			if (a.sliceCount()!=sc) return false;
 			for (int i=0; i<sc; i++) {
-				INDArray s=getRow(i);
+				AVector s=getRow(i);
 				if (!s.epsilonEquals(a.slice(i),epsilon)) return false;
 			}			
 			return true;
 		}
+	}
+	
+	public boolean epsilonEquals(AMatrix a, double epsilon) {
+		if (a==this) return true;
+		int sc=rowCount();
+		if (a.rowCount()!=sc) return false;
+		for (int i=0; i<sc; i++) {
+			AVector s=getRow(i);
+			if (!s.epsilonEquals(a.getRow(i),epsilon)) return false;
+		}			
+		return true;
 	}
 
 	@Override
@@ -1038,7 +1051,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (o instanceof AMatrix) return equals((AMatrix) o);
 		if (o instanceof INDArray) return equals((INDArray) o);
 		return false;
-		
 	}
 
 	public boolean equals(AMatrix a) {
