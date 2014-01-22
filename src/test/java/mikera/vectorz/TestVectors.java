@@ -871,9 +871,9 @@ public class TestVectors {
 		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
 		doGenericTests(new MatrixAsVector(m3));
 		
-		doGenericTests(new AxisVector(1,3));
-		doGenericTests(new AxisVector(0,1));
-		doGenericTests(new AxisVector(5,10));
+		doGenericTests(AxisVector.create(1,3));
+		doGenericTests(AxisVector.create(0,1));
+		doGenericTests(AxisVector.create(5,10));
 		
 		doGenericTests(new SingleElementVector(1,3));
 		doGenericTests(new SingleElementVector(0,1));

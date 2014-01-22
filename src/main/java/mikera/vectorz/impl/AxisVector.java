@@ -19,10 +19,8 @@ public class AxisVector extends ASparseVector {
 	
 	private final int axis;
 	
-	public AxisVector(int axisIndex, int length) {
+	private AxisVector(int axisIndex, int length) {
 		super(length);
-		assert(length>=1);
-		assert((axisIndex>=0)&&(axisIndex<length));
 		this.axis=axisIndex;
 	}
 	
