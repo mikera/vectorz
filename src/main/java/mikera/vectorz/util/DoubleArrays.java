@@ -443,6 +443,14 @@ public final class DoubleArrays {
 		return true;
 	}
 	
+	public static boolean elementsEqual(double[] data, int offset, int length,
+			double value) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=value) return false;
+		}
+		return true;
+	}
+	
 	public static double[] insert(double[] data, int position, double value) {
 		int len=data.length;
 		double[] nas=new double[len+1];
