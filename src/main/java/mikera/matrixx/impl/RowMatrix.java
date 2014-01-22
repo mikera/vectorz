@@ -112,9 +112,15 @@ public class RowMatrix extends AMatrix implements IFastRows {
 		vector.unsafeSet(column,value);
 	}
 	
+	@Override
 	public AVector getRow(int i) {
 		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
 		return vector;
+	}
+	
+	@Override
+	public AVector getColumn(int i) {
+		return vector.subVector(i, 1);
 	}
 	
 	@Override
@@ -138,7 +144,7 @@ public class RowMatrix extends AMatrix implements IFastRows {
 		if (row==0) {
 			vector.getElements(dest, destOffset);
 		} else {
-			throw new IndexOutOfBoundsException("Row out of range: "+row);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
 		}
 	}
 	

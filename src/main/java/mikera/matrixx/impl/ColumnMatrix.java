@@ -139,6 +139,11 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	}
 	
 	@Override
+	public AVector getRow(int i) {
+		return vector.subVector(i, 1);
+	}
+	
+	@Override
 	public Vector toVector() {
 		return vector.toVector();
 	}
