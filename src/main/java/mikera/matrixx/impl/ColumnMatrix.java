@@ -133,7 +133,7 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	}
 	
 	@Override
-	public AVector getColumnView(int i) {
+	public AVector getColumn(int i) {
 		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1,i));
 		return vector;
 	}

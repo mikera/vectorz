@@ -440,7 +440,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public List<INDArray> getSliceViews();
 
 	/**
-	 * Converts the array into a flattened vector
+	 * Converts the array into a flattened dense Vector
 	 */
 	public Vector toVector();
 	
