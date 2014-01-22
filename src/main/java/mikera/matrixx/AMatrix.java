@@ -135,7 +135,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void clamp(double min, double max) {
 		int len=rowCount();
 		for (int i = 0; i < len; i++) {
-			getRow(i).clamp(min, max);
+			getRowView(i).clamp(min, max);
 		}
 	}
 	
@@ -143,7 +143,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void pow(double exponent) {
 		int len=rowCount();
 		for (int i = 0; i < len; i++) {
-			AVector v=getRow(i);
+			AVector v=getRowView(i);
 			v.pow(exponent);
 		}
 	}
@@ -152,7 +152,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void square() {
 		int len=rowCount();
 		for (int i = 0; i < len; i++) {
-			getRow(i).square();
+			getRowView(i).square();
 		}
 	}
 	
@@ -233,7 +233,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			al.add(getRow(i));
+			al.add(getRowView(i));
 		}
 		return al;
 	}
@@ -349,7 +349,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		VectorMatrixMN vm=new VectorMatrixMN(0,cols);
 		for (int i=0; i<rows; i++) {
-			vm.appendRow(this.getRow(rowStart+i).subVector(colStart, cols));
+			vm.appendRow(this.getRowView(rowStart+i).subVector(colStart, cols));
 		}
 		return vm;	
 	}
@@ -849,7 +849,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void reciprocal() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).reciprocal();
+			getRowView(i).reciprocal();
 		}
 	}
 	
@@ -857,7 +857,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void abs() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).abs();
+			getRowView(i).abs();
 		}
 	}
 	
@@ -865,7 +865,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void sqrt() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).sqrt();
+			getRowView(i).sqrt();
 		}
 	}
 	
@@ -873,7 +873,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void log() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).log();
+			getRowView(i).log();
 		}
 	}
 	
@@ -881,7 +881,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void exp() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).exp();
+			getRowView(i).exp();
 		}
 	}
 	
@@ -889,7 +889,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void signum() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).signum();
+			getRowView(i).signum();
 		}
 	}
 	
@@ -938,7 +938,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * This is an elementary row operation
 	 */
 	public void multiplyRow(int i, double factor) {
-		getRow(i).multiply(factor);
+		getRowView(i).multiply(factor);
 	}
 	
 	/**
@@ -1161,10 +1161,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AVector asVector() {
 		int rc = rowCount();
 		if (rc == 0) return Vector0.INSTANCE;
-		if (rc == 1) return getRow(0);
+		if (rc == 1) return getRowView(0);
 		
 		int cc= columnCount();
-		if (cc==1) return getColumn(0);
+		if (cc==1) return getColumnView(0);
 
 		return new MatrixAsVector(this);
 	}

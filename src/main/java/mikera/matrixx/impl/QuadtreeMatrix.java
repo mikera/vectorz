@@ -217,22 +217,22 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	}
 	
 	@Override
-	public AVector getRow(int row) {
+	public AVector getRowView(int row) {
 		if (row<rowSplit) {
-			return c00.getRow(row).join(c01.getRow(row));
+			return c00.getRowView(row).join(c01.getRowView(row));
 		} else {
 			row-=rowSplit;
-			return c10.getRow(row).join(c11.getRow(row));
+			return c10.getRowView(row).join(c11.getRowView(row));
 		}
 	}
 	
 	@Override
-	public AVector getColumn(int col) {
+	public AVector getColumnView(int col) {
 		if (col<columnSplit) {
-			return c00.getColumn(col).join(c10.getColumn(col));
+			return c00.getColumnView(col).join(c10.getColumnView(col));
 		} else {
 			col-=columnSplit;
-			return c01.getColumn(col).join(c11.getColumn(col));
+			return c01.getColumnView(col).join(c11.getColumnView(col));
 		}
 	}
 
