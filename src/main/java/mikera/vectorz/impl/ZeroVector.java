@@ -22,14 +22,14 @@ import mikera.vectorz.util.ErrorMessages;
 public final class ZeroVector extends ASparseVector {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
-	private static final int ZERO_VECTOR_CACHE=30;
-	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE];
+	private static final int ZERO_VECTOR_CACHE_SIZE=30;
+	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE_SIZE];
 	private static final Double ZERO_DOUBLE=0.0;
 	
-	private static ZeroVector last=new ZeroVector(ZERO_VECTOR_CACHE);
+	private static ZeroVector last=new ZeroVector(ZERO_VECTOR_CACHE_SIZE);
 	
 	static {
-		for (int i=1; i<ZERO_VECTOR_CACHE; i++) {
+		for (int i=1; i<ZERO_VECTOR_CACHE_SIZE; i++) {
 			ZERO_VECTORS[i]=new ZeroVector(i);
 		}
 	}
@@ -39,7 +39,17 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	public static ZeroVector create(int dimensions) {
-		if (dimensions==0) throw new IllegalArgumentException("Can't create length 0 ZeroVector. Use Vector0 instead");
+		if (dimensions<=0) throw new IllegalArgumentException("Can't create length "+dimensions+" ZeroVector. Use Vector0 instead");
+		return new ZeroVector(dimensions);
+	}
+	
+	public static ZeroVector createNew(int dimensions) {
+		if (dimensions<=0) throw new IllegalArgumentException("Can't create length "+dimensions+" ZeroVector. Use Vector0 instead");
+		return new ZeroVector(dimensions);
+	}
+	
+	public static ZeroVector createCached(int dimensions) {
+		if (dimensions<=0) throw new IllegalArgumentException("Can't create length "+dimensions+" ZeroVector. Use Vector0 instead");
 		ZeroVector zv=tryCreate(dimensions);
 		if (zv!=null) return zv;
 		zv= new ZeroVector(dimensions);
@@ -48,8 +58,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	private static ZeroVector tryCreate(int dimensions) {
-		if (dimensions<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(dimensions));
-		if (dimensions<ZERO_VECTOR_CACHE) {
+		if (dimensions<ZERO_VECTOR_CACHE_SIZE) {
 			return ZERO_VECTORS[dimensions];
 		}
 		if (dimensions==last.length) return last;
