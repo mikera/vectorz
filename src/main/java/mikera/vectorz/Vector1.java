@@ -22,7 +22,7 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	public Vector1(double... values) {
-		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from values with length: "+values.length);
 		this.x=values[0];
 	}
 	

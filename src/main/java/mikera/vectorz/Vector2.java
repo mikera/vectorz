@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import java.nio.DoubleBuffer;
+import java.util.Arrays;
 
 import mikera.vectorz.impl.APrimitiveVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -35,7 +36,7 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	public static Vector2 of(double... values) {
-		if (values.length!=2) throw new IllegalArgumentException("Can't create Vector2 vector from: "+values);
+		if (values.length!=2) throw new IllegalArgumentException("Can't create Vector2 vector from: "+Arrays.toString(values));
 		return new Vector2(values);
 	}
 	

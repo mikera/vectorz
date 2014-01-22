@@ -525,34 +525,34 @@ public class TestArrays {
 		// 0d indexed access
 		try {
 			a.get();
-			fail("0d get should fail for array with shape: "+a.getShape());
+			fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
 		} catch (Throwable t) { /* OK */ }
 		
 		try {
 			a.set(1.0);
-			fail("0d set should fail for array with shape: "+a.getShape());
+			fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
 		} catch (Throwable t) { /* OK */ }
 
 		try {
 			a.get(IntArrays.EMPTY_INT_ARRAY);
-			fail("0d get should fail for array with shape: "+a.getShape());
+			fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
 		} catch (Throwable t) { /* OK */ }
 		
 		try {
 			a.set(IntArrays.EMPTY_INT_ARRAY,1.0);
-			fail("0d set should fail for array with shape: "+a.getShape());
+			fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
 		} catch (Throwable t) { /* OK */ }
 
 		// 1D indexed access
 		if (a.dimensionality()>1) {
 			try {
 				a.get(0);
-				fail("1d get should fail for array with shape: "+a.getShape());
+				fail("1d get should fail for array with shape: "+Arrays.toString(a.getShape()));
 			} catch (Throwable t) { /* OK */ }
 			
 			try {
 				a.set(0,1.0);
-				fail("1d set should fail for array with shape: "+a.getShape());
+				fail("1d set should fail for array with shape: "+Arrays.toString(a.getShape()));
 			} catch (Throwable t) { /* OK */ }
 		}
 	}

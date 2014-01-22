@@ -540,7 +540,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (a instanceof AVector) {for (AVector r:this) {r.set((AVector) a);} return;}
 		if (a instanceof AScalar) {set(a.get()); return;}
 		
-		throw new UnsupportedOperationException("Can't set matrix to array: "+a.getClass() +" with shape: "+a.getShape());
+		throw new UnsupportedOperationException("Can't set matrix to array: "+a.getClass() +" with shape: "+Arrays.toString(a.getShape()));
 	}
 	
 	public void set(Object o) {
