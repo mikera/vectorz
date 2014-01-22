@@ -852,6 +852,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public final INDArray mutableClone() {
+		return clone();
+	}
+	
+	@Override
 	public INDArray sparse() {
 		int dims=dimensionality();
 		if (dims==0) return this;
