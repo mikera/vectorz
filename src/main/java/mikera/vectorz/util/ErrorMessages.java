@@ -141,6 +141,10 @@ public class ErrorMessages {
 		return "Matrix is singular!";
 	}
 
+	public static String notYetImplemented() {
+		return "Not yet implemented!";
+	}
+
 
 
 

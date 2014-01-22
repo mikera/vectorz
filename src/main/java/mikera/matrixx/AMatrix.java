@@ -946,7 +946,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * This is an elementary row operation
 	 */
 	public void addRowMultiple(int src, int dst, double factor) {
-		getRow(dst).addMultiple(getRow(src), factor);
+		getRowView(dst).addMultiple(getRow(src), factor);
 	}
 	
 	/**
@@ -956,8 +956,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void swapRows(int i, int j) {
 		if (i == j)
 			return;
-		AVector a = getRow(i);
-		AVector b = getRow(j);
+		AVector a = getRowView(i);
+		AVector b = getRowView(j);
 		int cc = columnCount();
 		for (int k = 0; k < cc; k++) {
 			double t = a.unsafeGet(k);
@@ -972,8 +972,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void swapColumns(int i, int j) {
 		if (i == j)
 			return;
-		AVector a = getColumn(i);
-		AVector b = getColumn(j);
+		AVector a = getColumnView(i);
+		AVector b = getColumnView(j);
 		int rc = rowCount();
 		for (int k = 0; k < rc; k++) {
 			double t = a.unsafeGet(k);
@@ -1528,7 +1528,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if a matrix is positive definite
 	 */
 	public void isPositiveDefinite() {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException(ErrorMessages.notYetImplemented());
 	}
 	
 	/**
