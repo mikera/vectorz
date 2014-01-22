@@ -88,12 +88,12 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
-	public ZeroVector getRow(int row) {
+	public ZeroVector getRowView(int row) {
 		return ZeroVector.create(cols);
 	}
 	
 	@Override
-	public ZeroVector getColumn(int col) {
+	public ZeroVector getColumnView(int col) {
 		return ZeroVector.create(rows);
 	}
 	

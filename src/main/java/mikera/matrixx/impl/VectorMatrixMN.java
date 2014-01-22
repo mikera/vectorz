@@ -134,8 +134,8 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	}
 
 	@Override
-	public AVector getRow(int row) {
-		assert(row<rowCount);
+	public AVector getRowView(int row) {
+		if (row>=rowCount) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
 		return rows[row];
 	}
 

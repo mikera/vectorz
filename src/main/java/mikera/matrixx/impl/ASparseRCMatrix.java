@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector2;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -109,6 +111,15 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 		return true;
 	}
 	
+	@Override
+	public AVector getRowClone(int row) {
+		return getRowView(row).sparseClone();
+	}
+	
+	@Override
+	public AVector getColumnClone(int column) {
+		return getColumnView(column).sparseClone();
+	}
 	
 	@Override
 	public double elementSum() {

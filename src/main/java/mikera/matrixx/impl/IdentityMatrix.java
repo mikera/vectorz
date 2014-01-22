@@ -7,6 +7,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -63,12 +64,22 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override
-	public AxisVector getRow(int row) {
+	public AVector getRow(int row) {
 		return AxisVector.create(row,dimensions);
 	}
 	
 	@Override
-	public AxisVector getColumn(int column) {
+	public AVector getColumn(int column) {
+		return AxisVector.create(column,dimensions);
+	}
+	
+	@Override
+	public AxisVector getRowView(int row) {
+		return AxisVector.create(row,dimensions);
+	}
+	
+	@Override
+	public AxisVector getColumnView(int column) {
 		return AxisVector.create(column,dimensions);
 	}
 	

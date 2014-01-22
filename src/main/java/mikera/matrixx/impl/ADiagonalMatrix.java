@@ -8,6 +8,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -265,6 +266,16 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	public double getDiagonalValue(int i) {
 		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException();
 		return unsafeGet(i,i);
+	}
+	
+	@Override
+	public AVector getRow(int row) {
+		return SingleElementVector.create(getDiagonalValue(row), row, dimensions);
+	}
+	
+	@Override
+	public AVector getColumn(int col) {
+		return SingleElementVector.create(getDiagonalValue(col), col, dimensions);
 	}
 	
 	public double unsafeGetDiagonalValue(int i) {

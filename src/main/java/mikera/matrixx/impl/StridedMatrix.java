@@ -43,12 +43,12 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 	
 	@Override
-	public AStridedVector getRow(int i) {
+	public AStridedVector getRowView(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
 	}
 	
 	@Override
-	public AStridedVector getColumn(int i) {
+	public AStridedVector getColumnView(int i) {
 		return StridedVector.wrap(data, offset+i*colStride, rows, rowStride);
 	}
 	

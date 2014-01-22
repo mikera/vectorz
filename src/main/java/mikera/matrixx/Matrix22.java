@@ -185,6 +185,15 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 	
 	@Override
+	public Vector2 getColumnClone(int column) {
+		switch (column) {
+			case 0: return Vector2.of(m00,m10);
+			case 1: return Vector2.of(m01,m11);
+			default: throw new IndexOutOfBoundsException("Column index = "+column);
+		}
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		if (row==0) {
 			dest[destOffset++]=m00;

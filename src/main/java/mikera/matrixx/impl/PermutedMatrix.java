@@ -92,7 +92,7 @@ public class PermutedMatrix extends ARectangularMatrix {
 	 * Returns a row of the permuted matrix as a vector reference
 	 */
 	@Override
-	public AVector getRow(int row) {
+	public AVector getRowView(int row) {
 		return IndexedSubVector.wrap(source.getRow(rowPermutations.get(row)),columnPermutations.getData());
 	}
 
@@ -100,7 +100,7 @@ public class PermutedMatrix extends ARectangularMatrix {
 	 * Returns a column of the permuted  matrix as a vector reference
 	 */
 	@Override
-	public AVector getColumn(int column) {
+	public AVector getColumnView(int column) {
 		return IndexedSubVector.wrap(source.getColumn(columnPermutations.get(column)),rowPermutations.getData());
 	}
 	

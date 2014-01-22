@@ -47,7 +47,7 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	 * Guaranteed to be an existing vector by all descendants of VectorMatrix.
 	 */
 	@Override
-	public abstract T getRow(int row);
+	public abstract T getRowView(int row);
 
 	@Override
 	public double get(int row, int column) {
@@ -118,7 +118,7 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	
 	@Override
 	public double calculateElement(int i, AVector inputVector) {
-		T row=getRow(i);
+		T row=getRowView(i);
 		return row.dotProduct(inputVector);
 	}
 	
