@@ -189,7 +189,7 @@ public class Matrixx {
 			double factor) {
 		DiagonalMatrix im = new DiagonalMatrix(dimensions);
 		for (int i = 0; i < dimensions; i++) {
-			im.set(i, i, factor);
+			im.unsafeSet(i, i, factor);
 		}
 		return im;
 	}
@@ -210,7 +210,7 @@ public class Matrixx {
 		int dimensions = scalingFactors.length;
 		DiagonalMatrix im = new DiagonalMatrix(dimensions);
 		for (int i = 0; i < dimensions; i++) {
-			im.set(i, i, scalingFactors[i]);
+			im.unsafeSet(i, i, scalingFactors[i]);
 		}
 		return im;
 	}

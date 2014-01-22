@@ -233,7 +233,7 @@ public class Vectorz {
 	public static AVector createUniformRandomVector(int dimensions) {
 		AVector v=Vectorz.newVector(dimensions);
 		for (int i=0; i<dimensions; i++) {
-			v.set(i,Rand.nextDouble());
+			v.unsafeSet(i,Rand.nextDouble());
 		}
 		return v;
 	}
@@ -401,21 +401,12 @@ public class Vectorz {
 	}
 	
 	public static double totalValue(AVector v) {
-		int len=v.length();
-		double result=0.0;
-		
-		for (int i=0; i<len; i++) {
-			result+=v.unsafeGet(i);
-		}
-		return result;
+		return v.elementSum();
 	}
 	
 	public static double averageValue(AVector v) {
 		int len=v.length();
-		double result=0.0;
-		for (int i=0; i<len; i++) {
-			result+=v.unsafeGet(i);
-		}
+		double result=v.elementSum();
 		return result/len;
 	}
 	
