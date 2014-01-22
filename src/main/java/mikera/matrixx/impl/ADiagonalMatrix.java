@@ -38,6 +38,16 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return getLeadingDiagonal().isZero();
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		return getLeadingDiagonal().isBoolean();
+	}
+	
+	@Override
 	public boolean isSymmetric() {
 		return true;
 	}
@@ -122,6 +132,21 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	public double elementMin(){
 		double ldv=getLeadingDiagonal().elementMin();
 		if (dimensions>1) return Math.min(0, ldv); else return ldv;
+	}
+	
+	@Override
+	public double elementSum(){
+		return getLeadingDiagonal().elementSum();
+	}
+	
+	@Override
+	public double elementSquaredSum(){
+		return getLeadingDiagonal().elementSquaredSum();
+	}
+	
+	@Override
+	public long nonZeroCount(){
+		return getLeadingDiagonal().nonZeroCount();
 	}
 	
 	@Override
@@ -230,16 +255,6 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	public boolean isIdentity() {
 		for (int i=0; i<dimensions; i++ ) {
 			if (unsafeGet(i,i)!=1.0) return false;
-			
-		}
-		return true;
-	}
-	
-	
-	@Override
-	public boolean isBoolean() {
-		for (int i=0; i<dimensions; i++ ) {
-			if (!Tools.isBoolean(unsafeGet(i,i))) return false;
 			
 		}
 		return true;
