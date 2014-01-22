@@ -568,6 +568,7 @@ public abstract class AArrayVector extends AStridedVector {
 
 	@Override
 	public boolean equals(AVector v) {
+		if (v==this) return true;
 		int len = length();
 		if (v.length() != len) return false;
 		return v.equalsArray(getArray(), getArrayOffset());

@@ -1730,6 +1730,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public void validate() {
+		if (length()<0) throw new VectorzException("Illegal length! Length = "+length());
 		super.validate();
 	}
 
