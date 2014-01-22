@@ -133,8 +133,8 @@ public class TestArrays {
 	}
 
 	private void testClone(INDArray a) {
+		// regular clone
 		INDArray c = a.clone();
-		
 		assertTrue(c.isFullyMutable());
 		assertTrue(c.isSameShape(a));
 		
@@ -163,7 +163,8 @@ public class TestArrays {
 		assertEquals(a,sc);
 		
 		// sparse coercion
-		assertEquals(a,a.sparse());
+		INDArray sp=a.sparse();
+		assertEquals(a,sp);
 		
 		// immutable coercion
 		INDArray imma=a.immutable();
