@@ -16,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
 /**
  * General purpose vector of arbitrary length, backed by an densely packed double[] array.
  * 
- * This is the most efficient type for general purpose 1D vectors.
+ * This is the most efficient type for general purpose dense 1D vectors.
  * 
  * @author Mike
  *
@@ -275,8 +275,14 @@ public final class Vector extends AArrayVector {
 	public void add(Vector v) {
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		add(v.data,0);
+	}
+	
+	@Override
+	public void add(double[] srcData, int srcOffset) {
+		int length=length();
 		for (int i = 0; i < length; i++) {
-			data[i] += v.data[i];
+			data[i] += srcData[srcOffset + i];
 		}
 	}
 	

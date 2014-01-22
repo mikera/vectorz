@@ -1621,6 +1621,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	public void add(double[] data) {
+		add(data,0);
+	}
+	
 	/**
 	 * Returns an exact clone of this vector, i.e. of the same type
 	 * @return

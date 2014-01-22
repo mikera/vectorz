@@ -138,8 +138,8 @@ public abstract class AArrayVector extends AStridedVector {
 		src.addToArray(0, getArray(), getArrayOffset(), length);
 	}
 
+	@Override
 	public void add(AArrayVector v) {
-		assert (length() == v.length());
 		add(v, 0);
 	}
 
@@ -292,13 +292,22 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 
 	public void add(AArrayVector src, int srcOffset) {
-		int length = length();
+		if ((srcOffset<0)||((srcOffset+length)>src.length())) throw new IllegalArgumentException(ErrorMessages.invalidRange(src, srcOffset, length));
 		double[] vdata = src.getArray();
 		double[] data = getArray();
 		int offset = getArrayOffset();
 		int voffset = src.getArrayOffset() + srcOffset;
 		for (int i = 0; i < length; i++) {
 			data[offset + i] += vdata[voffset + i];
+		}
+	}
+	
+	@Override
+	public void add(double[] data, int offset) {
+		double[] tdata = getArray();
+		int toffset = getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			tdata[toffset + i] += data[offset + i];
 		}
 	}
 
