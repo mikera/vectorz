@@ -47,6 +47,11 @@ public class ImmutableVector extends ASizedVector {
 		return new ImmutableVector(data,0,data.length);
 	}
 	
+	public static ImmutableVector wrap(double[] data, int offset, int length) {
+		if ((offset<0)||(length<0)||((offset+length>data.length))) throw new IndexOutOfBoundsException();
+		return new ImmutableVector(data,offset,length);
+	}
+	
 	public static ImmutableVector wrap(Vector source) {
 		double[] data=source.data;
 		return new ImmutableVector(data,0,data.length);
@@ -221,6 +226,4 @@ public class ImmutableVector extends ASizedVector {
 		if ((offset<0)||(offset+length>data.length)||(length<0)) throw new VectorzException("ImmutableVector data out of bounds");
 		super.validate();
 	}
-
-
 }

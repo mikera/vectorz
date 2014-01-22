@@ -69,6 +69,31 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 
 	@Override
+	public AVector getColumn(int column) {
+		return source.getRow(column);
+	}
+	
+	@Override
+	public AVector getRowClone(int row) {
+		return source.getColumnClone(row);
+	}
+
+	@Override
+	public AVector getColumnClone(int column) {
+		return source.getRowClone(column);
+	}
+	
+	@Override
+	public AVector getRowView(int row) {
+		return source.getColumnView(row);
+	}
+
+	@Override
+	public AVector getColumnView(int column) {
+		return source.getRowView(column);
+	}
+
+	@Override
 	public int sliceCount() {
 		return source.columnCount();
 	}
@@ -83,10 +108,6 @@ public class TransposedMatrix extends ADelegatedMatrix {
 		return source.toMatrixTranspose();
 	}
 
-	@Override
-	public AVector getColumn(int column) {
-		return source.getRow(column);
-	}
 
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {

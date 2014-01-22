@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
@@ -58,5 +59,10 @@ public class MatrixRowView extends AMatrixViewVector {
 	@Override
 	protected int calcCol(int i) {
 		return i;
+	}
+	
+	@Override
+	public AVector clone() {
+		return source.getRowClone(row);
 	}
 }

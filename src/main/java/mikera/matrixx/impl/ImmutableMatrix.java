@@ -7,6 +7,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -83,6 +84,12 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}
 		return unsafeGet(row,column);
+	}
+	
+	@Override
+	public ImmutableVector getRowView(int row) {
+		if ((row<0)||(row>=rows)) throw new IllegalArgumentException(ErrorMessages.invalidSlice(this, row));
+		return ImmutableVector.wrap(data,row*cols,cols);
 	}
 	
 	@Override
