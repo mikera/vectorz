@@ -55,17 +55,17 @@ public class LU {
 
 				double s = 0.0;
 				for (int k = 0; k < kmax; k++) {
-					s += lu.get(i, k) * jcolumn.get(k);
+					s += lu.get(i, k) * jcolumn.unsafeGet(k);
 				}
 
-				jcolumn.set(i, jcolumn.get(i) - s);
-				lu.set(i, j, jcolumn.get(i));
+				jcolumn.set(i, jcolumn.unsafeGet(i) - s);
+				lu.set(i, j, jcolumn.unsafeGet(i));
 			}
 
 			int biggest = j;
 
 			for (int i = j + 1; i < n; i++) {
-				if (Math.abs(jcolumn.get(i)) > Math.abs(jcolumn.get(biggest)))
+				if (Math.abs(jcolumn.unsafeGet(i)) > Math.abs(jcolumn.unsafeGet(biggest)))
 					biggest = i;
 			}
 

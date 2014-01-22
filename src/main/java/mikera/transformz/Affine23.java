@@ -113,7 +113,7 @@ public final class Affine23 extends AAffineTransform  implements ISpecialisedTra
 			transformInPlace((Vector2)dest);
 			return;
 		}
-		double x=dest.get(0), y=dest.get(1);
+		double x=dest.unsafeGet(0), y=dest.get(1); // only last get needs to be safe
 		dest.set(0,((m00*x)+(m01*y)+tr0));
 		dest.set(1,((m10*x)+(m11*y)+tr1));
 	}

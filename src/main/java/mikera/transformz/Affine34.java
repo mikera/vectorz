@@ -107,7 +107,7 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 			transform((Vector3)source,(Vector3)dest);
 			return;
 		}
-		double x=source.get(0), y=source.get(1), z=source.get(2);
+		double x=source.unsafeGet(0), y=source.unsafeGet(1), z=source.get(2);
 		dest.set(0,((m00*x)+(m01*y)+(m02*z)+tr0));
 		dest.set(1,((m10*x)+(m11*y)+(m12*z)+tr1));
 		dest.set(2,((m20*x)+(m21*y)+(m22*z)+tr2));
@@ -137,7 +137,7 @@ public final class Affine34 extends AAffineTransform  implements ISpecialisedTra
 			transformInPlace((Vector3)dest);
 			return;
 		}
-		double x=dest.get(0), y=dest.get(1), z=dest.get(2);
+		double x=dest.unsafeGet(0), y=dest.unsafeGet(1), z=dest.get(2); // only last get needs to be safe
 		dest.set(0,((m00*x)+(m01*y)+(m02*z)+tr0));
 		dest.set(1,((m10*x)+(m11*y)+(m12*z)+tr1));
 		dest.set(2,((m20*x)+(m21*y)+(m22*z)+tr2));

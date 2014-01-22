@@ -238,7 +238,7 @@ public class TestArrays {
 
 			boolean nan=false;
 			for (int i = 0; i < n; i++) {
-				double x= op.apply(v.get(i));
+				double x= op.apply(v.unsafeGet(i));
 				if (Double.isNaN(x)) nan=true;
 				tmp[i] = x;
 			}

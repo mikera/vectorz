@@ -109,7 +109,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public double unsafeGet(int row, int column) {
-		return getColumn(column).get(row);
+		return getColumn(column).unsafeGet(row);
 	}
 
 	@Override
