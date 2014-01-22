@@ -253,11 +253,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override 
 	public boolean isIdentity() {
-		for (int i=0; i<dimensions; i++ ) {
-			if (unsafeGet(i,i)!=1.0) return false;
-			
-		}
-		return true;
+		return getLeadingDiagonal().elementsEqual(1.0);
 	}
 	
 	@Override

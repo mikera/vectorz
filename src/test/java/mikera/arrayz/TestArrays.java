@@ -135,6 +135,7 @@ public class TestArrays {
 	private void testClone(INDArray a) {
 		INDArray c = a.clone();
 		
+		assertTrue(c.isFullyMutable());
 		assertTrue(c.isSameShape(a));
 		
 		if (!(c instanceof VectorMatrixM3)) { // allowed to still be a view
@@ -156,9 +157,18 @@ public class TestArrays {
 		assertEquals(c, ec);
 		assertEquals(a.getClass(), ec.getClass());
 		
-		assertEquals(a,a.sparseClone());
+		// sparse clone
+		INDArray sc=a.sparseClone();
+		assertTrue("Should have fully mutable sparseClone: "+a.getClass(), sc.isFullyMutable());
+		assertEquals(a,sc);
+		
+		// sparse coercion
 		assertEquals(a,a.sparse());
-		assertEquals(a,a.immutable());
+		
+		// immutable coercion
+		INDArray imma=a.immutable();
+		assertFalse(imma.isMutable());
+		assertEquals(a,imma);
 	}
 
 	private void testSetElements(INDArray a) {

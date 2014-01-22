@@ -3,7 +3,9 @@ package mikera.arrayz.impl;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ImmutableVector;
@@ -179,6 +181,11 @@ public class ImmutableArray extends BaseNDArray {
 	@Override
 	public INDArray exactClone() {
 		return new ImmutableArray(data.clone(),dimensions,offset,shape.clone(),stride.clone());
+	}
+	
+	@Override
+	public INDArray sparseClone() {
+		return Arrayz.createSparse(this);
 	}
 	
 	@Override
