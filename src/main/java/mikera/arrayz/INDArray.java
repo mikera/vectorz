@@ -175,6 +175,9 @@ public interface INDArray extends Cloneable, Serializable {
 
 	/**
 	 * Returns the specified major slice of this array as a view (slice along dimension 0)
+	 * 
+	 * 0 dimensional slice results are permitted, but attempting to slice a 0 dimensional array
+	 * will result in an error.
 	 */
 	public INDArray slice(int majorSlice);
 	
@@ -195,7 +198,9 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the transpose of this array. A transpose of an array is equivalent to 
-	 * reversing the order of dimensions
+	 * reversing the order of dimensions. 
+	 * 
+	 * May or may not return a view depending on the array type.
 	 */
 	public INDArray getTranspose();
 	
@@ -241,7 +246,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public double elementSquaredSum();
 	
 	/**
-	 * Returns an iterator over all elements in this array.
+	 * Returns an iterator over all elements in this array, in row-major order
 	 */
 	public Iterator<Double> elementIterator();
 	
