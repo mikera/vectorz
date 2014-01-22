@@ -892,7 +892,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Divides this matrix in-place by another in an entrywise manner (Hadamard product).
+	 * Divides this matrix in-place by another in an entrywise manner.
 	 * @param m
 	 */
 	public void elementDiv(AMatrix m) {

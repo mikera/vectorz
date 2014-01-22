@@ -494,11 +494,22 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void multiply(AVector v) {
+		if (v instanceof AArrayVector) {
+			multiply((AArrayVector) v);
+			return;
+		}
 		int len=length();
 		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		
 		for (int i = 0; i < len; i++) {
 			unsafeSet(i,unsafeGet(i)*v.unsafeGet(i));
 		}	
+	}
+	
+	public void multiply(AArrayVector v) {
+		int len=length();
+		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		multiply(v.getArray(),v.getArrayOffset());
 	}
 	
 	public void multiply(double[] data, int offset) {
@@ -1156,14 +1167,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Adds another vector to this one
 	 */
 	public void add(AVector v) {
+		if (v instanceof AArrayVector) {
+			add((AArrayVector)v);
+			return;
+		}
 		int vlength=v.length();
 		int length=length();
 		if (vlength != length) {
-			throw new IllegalArgumentException("Source vector has different size: " + vlength);
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		}
 		for (int i = 0; i < length; i++) {
 			addAt(i,v.unsafeGet(i));
 		}
+	}
+	
+	public void add(AArrayVector v) {
+		if (length() != v.length()) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		}
+		add(v.getArray(),v.getArrayOffset());
 	}
 	
 	@Override
@@ -1584,6 +1606,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		for (int i=0; i<len; i++) {
 			addAt(i,constant);
+		}
+	}
+	
+	/**
+	 * Adds to this vector from a given double array.
+	 * @param data
+	 * @param offset
+	 */
+	public void add(double[] data, int offset) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			addAt(i,data[i+offset]);
 		}
 	}
 	
