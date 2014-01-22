@@ -1222,6 +1222,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	public void add(Vector v) {
+		add((AArrayVector)v);
+	}
+	
 	/**
 	 * Adds another vector into this one, at the specified offset
 	 * @param offset
@@ -1736,5 +1740,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		return ind;
 	}
+
 
 }

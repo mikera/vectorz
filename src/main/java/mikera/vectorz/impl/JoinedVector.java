@@ -221,6 +221,12 @@ public final class JoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public void add(double[] data,int offset) {
+		left.add(data,offset);
+		right.add(data,offset+split);
+	}
+	
+	@Override
 	public void add(int offset, AVector a) {
 		add(offset,a,0,a.length());
 	}

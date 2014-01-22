@@ -130,11 +130,23 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 		return Vector.create(this);
 	}
 	
+	@Override
 	public void add(Vector v) {
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			addAt(i,v.data[i]);
+		}
+	}
+	
+	@Override
+	public void add(double[] data, int offset) {
+		int stride=getStride();
+		double[] tdata=getArray();
+		int toffset=getArrayOffset();
+		int length=length();
+		for (int i = 0; i < length; i++) {
+			tdata[toffset+i*stride]+=data[offset+i];
 		}
 	}
 	
