@@ -92,13 +92,13 @@ public class RowMatrix extends AMatrix implements IFastRows {
 
 	@Override
 	public double get(int row, int column) {
-		if (row!=0) throw new IndexOutOfBoundsException("Row: "+row);
+		if (row!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		return vector.get(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		if (row!=0) throw new IndexOutOfBoundsException("Row: "+row);
+		if (row!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		vector.set(column,value);
 	}
 	
