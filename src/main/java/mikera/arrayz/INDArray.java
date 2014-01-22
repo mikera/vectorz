@@ -477,12 +477,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public void exp();
 	
 	/**
-	 * Returns an immutable version of this INDArray's data
+	 * Returns an immutable version of this INDArray's data. May return the same array if already immutable.
 	 */
 	public INDArray immutable();
 
 	/**
-	 * Coerces this INDArray to a fully mutable format. May return the same INDArray if already mutable
+	 * Coerces this INDArray to a fully mutable format. May return the same INDArray if already fully mutable
 	 */
 	public INDArray mutable();
 	
@@ -503,9 +503,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray sparse();
 	
 	/**
-	 * Coerces this INDArray to a fully mutable sparse format, without changing its element values.
-	 * 
-	 * May return the same INDArray if already sparse and fully mutable.
+	 * Creates a fully mutable clone of this array. Will use a sparse format if possible.
 	 */
 	public INDArray sparseClone();	
 	
