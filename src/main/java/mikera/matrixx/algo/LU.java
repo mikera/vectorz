@@ -74,7 +74,7 @@ public class LU {
 				p.swapRows(biggest, j);
 			}
 
-			if ((j < n) & lu.get(j, j) != 0.0) {
+			if ((j < n) && (lu.get(j, j) != 0.0)) {
 				for (int i = j + 1; i < n; i++) {
 					lu.set(i, j, lu.get(i, j) / lu.get(j, j));
 				}

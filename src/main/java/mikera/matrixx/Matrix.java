@@ -1,6 +1,8 @@
 package mikera.matrixx;
 
+import java.util.List;
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -13,6 +15,7 @@ import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedElementIterator;
@@ -70,7 +73,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public static Matrix create(Object... rowVectors) {
-		AMatrix m=VectorMatrixMN.create(rowVectors);
+		List<AVector> vs=new ArrayList<AVector>();
+		for (Object o:rowVectors) {
+			vs.add(Vectorz.create(o));
+		}
+		AMatrix m=VectorMatrixMN.create(vs);
 		return create(m);
 	}
 	

@@ -202,7 +202,7 @@ public final class StridedMatrix extends AStridedMatrix {
 	@Override
 	public void validate() {
 		super.validate();
-		if (!equals(this)) throw new VectorzException("Universe destroyed: thing not equal to itself");
+		if (!equals(this.exactClone())) throw new VectorzException("Thing not equal to itself");
 		if (offset<0) throw new VectorzException("Negative offset! ["+offset+"]");
 		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
 	}

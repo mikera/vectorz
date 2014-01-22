@@ -194,10 +194,6 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		return create(rs);
 	}
 
-	public static VectorMatrixMN create(Object... vs) {
-		return create(Arrays.asList(vs));
-	}
-
 	@Override
 	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof SparseColumnMatrix) {

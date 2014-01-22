@@ -57,11 +57,7 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 		}
 		return VectorMatrixMN.wrap(vs);
 	}
-	
-	public static VectorMatrixMN create(Object... vs) {
-		return create(Arrays.asList(vs));
-	}
-	
+		
 	public static VectorMatrixMN wrap(AVector[] rows) {
 		int rc=rows.length;
 		int cc=(rc==0)?0:rows[0].length();
