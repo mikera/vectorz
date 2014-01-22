@@ -111,6 +111,16 @@ abstract class ADelegatedMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void signum() {
+		source.signum();
+	}
+	
+	@Override
+	public void negate() {
+		source.negate();
+	}
+	
+	@Override
 	public void log() {
 		source.log();
 	}
