@@ -112,7 +112,7 @@ public class ImmutableVector extends ASizedVector {
 
 	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
+		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		DoubleArrays.add(data, offset+this.offset, array, arrayOffset, length);
 	}
 	

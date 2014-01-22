@@ -75,6 +75,11 @@ public final class WrappedSubVector extends ASizedVector {
 	}
 	
 	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		wrapped.addToArray(this.offset+offset, array, arrayOffset, length);
+	}
+	
+	@Override
 	public AVector subVector(int offset, int length) {
 		if ((offset<0)||(offset+length>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));

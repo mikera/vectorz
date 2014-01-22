@@ -134,8 +134,7 @@ public abstract class AArrayVector extends AStridedVector {
 			add((AArrayVector) src, 0);
 			return;
 		}
-		int length = length();
-		src.addToArray(0, getArray(), getArrayOffset(), length);
+		src.addToArray(0, getArray(), getArrayOffset(), length());
 	}
 
 	@Override

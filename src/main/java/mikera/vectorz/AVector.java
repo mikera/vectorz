@@ -1523,7 +1523,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
+		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		for (int i=0; i<length; i++) {
 			array[i+arrayOffset]+=unsafeGet(i+offset);
 		}
