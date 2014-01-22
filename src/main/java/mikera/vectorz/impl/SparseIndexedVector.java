@@ -384,7 +384,6 @@ public class SparseIndexedVector extends ASparseVector {
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		assert((offset>=0)&&(offset+length<=this.length));
 		
-		
 		int start=index.seekPosition(offset);
 		for (int j=start; j<data.length; j++) {
 			int di=index.data[j]-offset; // index relative to offset
