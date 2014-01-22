@@ -878,10 +878,10 @@ public class TestVectors {
 		doGenericTests(new SingleElementVector(1,3));
 		doGenericTests(new SingleElementVector(0,1));
 
-		doGenericTests(new RepeatedElementVector(1,1.0));
-		doGenericTests(new RepeatedElementVector(4,0.0));
-		doGenericTests(new RepeatedElementVector(10,1.0));
-		doGenericTests(new RepeatedElementVector(10,1.0).subVector(2, 5));
+		doGenericTests(RepeatedElementVector.create(1,1.0));
+		doGenericTests(RepeatedElementVector.create(4,0.0));
+		doGenericTests(RepeatedElementVector.create(10,1.0));
+		doGenericTests(RepeatedElementVector.create(10,1.0).subVector(2, 5));
 		
 		doGenericTests(IndexVector.of(1,2,3));
 		doGenericTests(IndexVector.of(1));

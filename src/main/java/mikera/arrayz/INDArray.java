@@ -337,6 +337,11 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns true if the two arrays are exactly equal in value and shape
 	 */
 	public boolean equals(INDArray a);
+	
+	/**
+	 * Returns true if all elements are equal to a specific value
+	 */
+	public boolean elementsEqual(double value);
 
 	/**
 	 * Returns an exact deep clone of an array (i.e. of the same class as the original).

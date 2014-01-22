@@ -266,6 +266,11 @@ public class AxisVector extends ASparseVector {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		return false;
+	}
 
 	@Override
 	public AxisVector exactClone() {

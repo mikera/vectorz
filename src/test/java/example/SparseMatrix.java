@@ -64,7 +64,7 @@ public class SparseMatrix {
 			if (sum>0) {
 				row.divide(sum);
 			} else {
-				m.setRow(i, new RepeatedElementVector(SIZE,1.0/SIZE));
+				m.setRow(i, RepeatedElementVector.create(SIZE,1.0/SIZE));
 			}
 		}
 		

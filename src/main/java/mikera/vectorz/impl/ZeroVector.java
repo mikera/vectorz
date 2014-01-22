@@ -283,5 +283,10 @@ public final class ZeroVector extends ASparseVector {
 	public boolean equalsArray(double[] data, int offset) {
 		return DoubleArrays.isZero(data, offset, length);
 	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		return value==0.0;
+	}
 
 }

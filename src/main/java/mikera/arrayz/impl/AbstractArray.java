@@ -558,6 +558,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public boolean elementsEqual(double value) {
+		if (dimensionality()==0) {
+			return get()==value;
+		}
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			if (!slice(i).elementsEqual(value)) return false;
+		}
+		return true;			
+	}
+	
+	@Override
 	public double elementMin(){
 		if (dimensionality()==0) {
 			return get();

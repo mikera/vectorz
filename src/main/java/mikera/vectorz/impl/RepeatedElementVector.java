@@ -19,14 +19,14 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	private final int length;
 	private final double value;
 	
-	public RepeatedElementVector(int length, double value) {
+	private RepeatedElementVector(int length, double value) {
 		this.length=length;
 		this.value=value;
-		if (length<1) throw new IllegalArgumentException("RepeatedElementVector must have at least one element");
 	}
 	
-	public static RepeatedElementVector create(int dims, double value) {
-		return new RepeatedElementVector(dims,value);
+	public static RepeatedElementVector create(int length, double value) {
+		if (length<1) throw new IllegalArgumentException("RepeatedElementVector must have at least one element");
+		return new RepeatedElementVector(length,value);
 	}
 
 	@Override
@@ -126,5 +126,10 @@ public final class RepeatedElementVector extends AConstrainedVector {
 			if (data[offset+i]!=value) return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		return this.value==value;
 	}
 }

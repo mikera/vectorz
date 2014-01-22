@@ -318,7 +318,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		} else {
 			int n=targetShape[tdims-1];
 			if (n==0) return Vector0.INSTANCE;
-			AVector v=new RepeatedElementVector(n,get());
+			AVector v=RepeatedElementVector.create(n,get());
 			return v.broadcast(targetShape);
 		}
 	}
@@ -400,6 +400,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public boolean elementsEqual(double value) {
+		return get()==value;		
+	}
+	
+	@Override
 	public AScalar sparse() {
 		double v=get();
 		if (v==0.0) return ImmutableScalar.ZERO;
@@ -418,8 +423,8 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		super.validate();
 	}
 
+	@Override
 	public void abs() {
-		// TODO Auto-generated method stub
-		
+		set(Math.abs(get()));
 	}
 }

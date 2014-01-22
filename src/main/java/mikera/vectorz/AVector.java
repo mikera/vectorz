@@ -1662,6 +1662,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return true;
 	}
 	
+	@Override
+	public boolean elementsEqual(double value) {
+		int length=length();
+		for (int i=0; i<length; i++) {
+			if (unsafeGet(i)!=value) return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Returns true if this vector exactly matches the elements in double[] array, starting
 	 * from the specified offset
