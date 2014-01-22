@@ -113,13 +113,13 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	}
 	
 	@Override
-	public AVector getRow(int i) {
+	public AVector getRowView(int i) {
 		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
 		return vector;
 	}
 	
 	@Override
-	public AVector getColumn(int i) {
+	public AVector getColumnView(int i) {
 		return vector.subVector(i, 1);
 	}
 	

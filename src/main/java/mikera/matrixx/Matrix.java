@@ -308,12 +308,12 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
-	public ArraySubVector getRow(int row) {
+	public ArraySubVector getRowView(int row) {
 		return ArraySubVector.wrap(data,row*cols,cols);
 	}
 	
 	@Override
-	public AStridedVector getColumn(int col) {
+	public AStridedVector getColumnView(int col) {
 		if (cols==1) {
 			if (col!=0) throw new IndexOutOfBoundsException("Column does not exist: "+col);
 			return Vector.wrap(data);

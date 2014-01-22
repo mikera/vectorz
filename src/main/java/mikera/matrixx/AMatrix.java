@@ -475,17 +475,51 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 
 	/**
-	 * Returns a row of the matrix as a vector view
+	 * Returns a row of the matrix. May or may not be a view, depending on matrix type.
 	 */
 	public AVector getRow(int row) {
+		return getRowView(row);
+	}
+
+	/**
+	 * Returns a column of the matrix. . May or may not be a view, depending on matrix type.
+	 */
+	public AVector getColumn(int column) {
+		return getColumnView(column);
+	}
+	
+	/**
+	 * Returns a row of the matrix as a vector view
+	 */
+	public AVector getRowView(int row) {
 		return new MatrixRowView(this, row);
 	}
 
 	/**
 	 * Returns a column of the matrix as a vector view
 	 */
-	public AVector getColumn(int column) {
+	public AVector getColumnView(int column) {
 		return new MatrixColumnView(this, column);
+	}
+	
+	/**
+	 * Returns a row of the matrix as a new cloned vector
+	 */
+	public AVector getRowClone(int row) {
+		int cc=this.columnCount();
+		Vector v=Vector.createLength(cc);
+		copyRowTo(row,v.data,0);
+		return v;
+	}
+
+	/**
+	 * Returns a column of the matrix as a new cloned vector
+	 */
+	public AVector getColumnClone(int column) {
+		int rc=this.rowCount();
+		Vector v=Vector.createLength(rc);
+		copyColumnTo(column,v.data,0);
+		return v;
 	}
 
 	/**
