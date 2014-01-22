@@ -176,7 +176,7 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 	
 	@Override
-	public Vector2 cloneRow(int row) {
+	public Vector2 getRowClone(int row) {
 		switch (row) {
 			case 0: return Vector2.of(m00,m01);
 			case 1: return Vector2.of(m10,m11);

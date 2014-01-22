@@ -240,14 +240,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
-	public Vector cloneRow(int row) {
-		int cc = columnCount();
-		Vector v = Vector.createLength(cc);
-		copyRowTo(row,v.data,0);
-		return v;
-	}
-	
-	@Override
 	public final void copyRowTo(int row, double[] dest, int destOffset) {
 		int srcOffset=row*cols;
 		System.arraycopy(data, srcOffset, dest, destOffset, cols);
