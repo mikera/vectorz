@@ -19,7 +19,12 @@ public abstract class AComputedVector extends ASizedVector {
 	public abstract double get(int i);
 
 	@Override
-	public void set(int i, double value) {
+	public final void set(int i, double value) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public final void unsafeSet(int i, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
