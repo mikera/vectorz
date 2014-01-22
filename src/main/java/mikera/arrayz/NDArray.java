@@ -25,7 +25,9 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose NDArray class
+ * General purpose NDArray class.
+ * 
+ * Allows arbitrary strided access over a dense double[] array.
  * 
  * @author Mike
  *

@@ -12,6 +12,9 @@ import mikera.vectorz.Vector;
 
 /**
  * Interface for general multi-dimensional arrays of doubles
+ * 
+ * All Vectorz array types (including all vectors and matrices) must implement this interface.
+ * 
  * @author Mike
  */
 public interface INDArray extends Cloneable, Serializable {
@@ -29,11 +32,13 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the shape of the array as an array of ints, guaranteed to be a new array
+	 * i.e. will perform a defensive copy of the shape array if required.
 	 */
 	public int[] getShapeClone();
 	
 	/**
 	 * Returns the dimension size for a specific dimension in the array's shape
+	 * Throws an error if the dimension does not exist.
 	 */
 	public int getShape(int dim);
 	
@@ -103,7 +108,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void sub(INDArray a);
 	
 	/**
-	 * Fills the array with asingle double value
+	 * Fills the array with a single double value
 	 */
 	public void fill(double value);
 	
@@ -196,17 +201,17 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns a transposed view of the array. May throw UnsupportedOperationException 
-	 * if the array does not support this capability
+	 * if the array type does not support this capability
 	 */
 	public INDArray getTransposeView();
 	
 	/**
-	 * Returns a transposed copy of the array. 
+	 * Returns a transposed copy of the array. Guarantees a new mutable defensive copy.
 	 */
 	public INDArray getTransposeCopy();
 
 	/**
-	 * returns the number of major slices in this array.
+	 * Returns the number of major slices in this array (i.e. the size of dimension 0)
 	 */
 	public int sliceCount();
 	
@@ -216,7 +221,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public long elementCount();
 	
 	/**
-	 * Returns the total sum of elements in this array.
+	 * Returns the sum of all elements in this array.
 	 */
 	public double elementSum();
 	
@@ -231,7 +236,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public double elementMin();
 
 	/**
-	 * Returns the total sum of elements in this array.
+	 * Returns the sum of squared elements in this array.
 	 */
 	public double elementSquaredSum();
 	
@@ -241,7 +246,9 @@ public interface INDArray extends Cloneable, Serializable {
 	public Iterator<Double> elementIterator();
 	
 	/**
-	 * Multiplies all elements by the equivalent elements in a second array
+	 * Multiplies all elements by the equivalent elements in a second array, i.e. performs elementwise multiplication.
+	 * 
+	 * If matrix-style multiplication is required, use innerProduct instead.
 	 */
 	public void multiply(INDArray a);
 	

@@ -26,7 +26,7 @@ import mikera.vectorz.util.VectorzException;
  * General purpose mutable dense N-dimensional array
  * 
  * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
- * most efficient storage type for 3D+ arrays
+ * most efficient storage type for dense 3D+ arrays
  * 
  * @author Mike
  * 

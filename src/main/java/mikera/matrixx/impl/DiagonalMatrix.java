@@ -9,7 +9,8 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Specialised diagonal matrix class
+ * Specialised diagonal matrix class, with dense double[] array storage for the leading diagonal only.
+ * 
  * Not fully mutable - only the diagonal values can be changed
  * 
  * @author Mike
