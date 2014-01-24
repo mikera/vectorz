@@ -265,6 +265,23 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 		default: throw new IndexOutOfBoundsException("Row Block: "+rowBlock);
 		}
 	}
+	
+	public int getBlockColumnStart(int colBlock) {
+		switch (colBlock) {
+		case 0: return 0;
+		case 1: return columnSplit;
+		default: throw new IndexOutOfBoundsException("Column Block: "+colBlock);			
+		}
+	}
+	
+	public int getBlockRowStart(int rowBlock) {
+		switch (rowBlock) {
+		case 0: return 0;
+		case 1: return rowSplit;
+		default: throw new IndexOutOfBoundsException("Row Block: "+rowBlock);			
+		}
+	}
+
 
 	@Override
 	public int getBlockColumnCount(int colBlock) {

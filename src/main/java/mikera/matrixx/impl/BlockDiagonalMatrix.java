@@ -61,7 +61,15 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 		if (rowBlock!=colBlock) return ZeroMatrix.create(getBlockRowCount(rowBlock), getBlockColumnCount(colBlock));
 		return mats[rowBlock];
 	}
-
+	
+	public int getBlockColumnStart(int colBlock) {
+		return offsets[colBlock];
+	}
+	
+	public int getBlockRowStart(int rowBlock) {
+		return offsets[rowBlock];
+	}
+	
 	@Override
 	public int getBlockColumnCount(int colBlock) {
 		return sizes[colBlock];

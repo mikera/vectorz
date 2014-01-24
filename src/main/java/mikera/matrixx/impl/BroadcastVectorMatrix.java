@@ -34,7 +34,7 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 	}
 
 	@Override
-	public AVector getRow(int row) {
+	public AVector getRowView(int row) {
 		if (row<0 ||(row>=rows)) throw new IndexOutOfBoundsException("Row: "+row);
 		return vector;
 	}
