@@ -156,4 +156,13 @@ public class MatrixAsVector extends AMatrixViewVector {
 	protected int calcCol(int i) {
 		return i%columns;
 	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		int row=calcRow(start);
+		if (row==calcRow(start+length-1)) {
+			return source.getRow(row).subVector(start-row*columns,length);
+		}
+		return super.subVector(start, length);
+	}
 }
