@@ -210,7 +210,7 @@ public abstract class AArrayVector extends AStridedVector implements IDense {
 		int dataOffset = getArrayOffset() + offset;
 
 		for (int i = 0; i < length; i++) {
-			destData[i + destOffset] += data[i + dataOffset];
+			destData[destOffset + i] += data[dataOffset + i];
 		}
 	}
 	
@@ -582,15 +582,13 @@ public abstract class AArrayVector extends AStridedVector implements IDense {
 
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
-		return DoubleArrays.equals(data, offset, getArray(), getArrayOffset(),
-				length());
+		return DoubleArrays.equals(data, offset, getArray(), getArrayOffset(), length);
 	}
 
 	@Override
 	public boolean equalsArray(double[] data) {
 		if (length() != data.length) return false;
-		return DoubleArrays.equals(data, 0, getArray(), getArrayOffset(),
-				length());
+		return DoubleArrays.equals(data, 0, getArray(), getArrayOffset(), length);
 	}
 	
 	@Override
