@@ -90,6 +90,16 @@ public final class WrappedSubVector extends ASizedVector {
 	}
 	
 	@Override
+	public void copyTo(int offset, AVector dest, int destOffset, int length) {
+		wrapped.copyTo(this.offset+offset,dest,destOffset,length);
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length) {
+		wrapped.copyTo(this.offset+offset,dest,destOffset,length);
+	}
+	
+	@Override
 	public AVector join(AVector a) {
 		if (a instanceof WrappedSubVector) return join((WrappedSubVector)a);
 		return super.join(a);

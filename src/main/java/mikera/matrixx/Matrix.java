@@ -65,9 +65,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		if (m.dimensionality()!=2) throw new IllegalArgumentException("Can only create matrix from 2D array");
 		int rows=m.getShape(0);
 		int cols=m.getShape(1);
-		double[] data=createStorage(rows,cols);
-		m.getElements(data, 0);
-		return Matrix.wrap(rows, cols, data);		
+		return Matrix.wrap(rows, cols, m.toDoubleArray());		
 	}
 	
 	public static Matrix create(Object... rowVectors) {
