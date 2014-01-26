@@ -100,6 +100,20 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		if (index<offset) return;
+		if (index>=offset+length) return;
+		array[arrayOffset-offset+index]+=value;
+	}
+	
+	@Override
+	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
+		if (index<offset) return;
+		if (index>=offset+length) return;
+		array[arrayOffset-offset+index]+=value*factor;
+	}
+	
+	@Override
 	public final AScalar slice(int i) {
 		if (i==index) return VectorIndexScalar.wrap(this, i);
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));

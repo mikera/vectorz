@@ -4,6 +4,10 @@ import mikera.arrayz.impl.IDense;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.AStridedVector;
+import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -48,8 +52,23 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public AArrayVector getRowView(int i) {
+		return Vectorz.wrap(data, getArrayOffset()+i*cols, cols);
+	}
+	
+	@Override
+	public AStridedVector getColumnView(int i) {
+		return Vectorz.wrapStrided(data, getArrayOffset()+i, rows, cols);
+	}
+	
+	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(data,getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return DoubleArrays.elementSquaredSum(data,getArrayOffset(), rows*cols);
 	}
 	
 	@Override

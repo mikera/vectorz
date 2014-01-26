@@ -145,26 +145,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix innerProduct(Matrix a) {
-		// TODO: detect large matrices and farm off to cache-efficient function
-		
-		int ic=this.columnCount();
-		if ((ic!=a.rowCount())) {
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		}
-		int rc=this.rowCount();
-		int cc=a.columnCount();
-		Matrix result=Matrix.create(rc,cc);
-		for (int i=0; i<rc; i++) {
-			int toffset=ic*i;
-			for (int j=0; j<cc; j++) {
-				double acc=0.0;
-				for (int k=0; k<ic; k++) {
-					acc+=data[toffset+k]*a.unsafeGet(k, j);
-				}
-				result.unsafeSet(i,j,acc);
-			}
-		}
-		return result;
+		return Multiplications.multiply(this, a);
 	}
 
 	@Override
@@ -197,6 +178,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(data);
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return DoubleArrays.elementSquaredSum(data);
 	}
 	
 	@Override
@@ -456,11 +442,8 @@ public final class Matrix extends ADenseArrayMatrix {
 		int cc=columnCount();
 		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
-		int di=0;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				data[di++]+=m.unsafeGet(i, j)*factor;
-			}
+			m.getRow(i).addMultipleToArray(factor, 0, data, i*cols, cc);
 		}
 	}
 	
@@ -478,11 +461,8 @@ public final class Matrix extends ADenseArrayMatrix {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 		}
 
-		int di=0;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				data[di++]+=m.unsafeGet(i, j);
-			}
+			m.getRow(i).addToArray(data, i*cols);
 		}
 	}
 	
