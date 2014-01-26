@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
@@ -100,6 +101,18 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		for (int i=0; i<rc; i++) {
 			v.addToArray(data, offset+i*cc);
 		}		
+	}
+	
+	@Override
+	public boolean equals(AMatrix a) {
+		if (a instanceof ADenseArrayMatrix) return equals((ADenseArrayMatrix)a);
+		return super.equals(a);
+	}
+	
+	public boolean equals(ADenseArrayMatrix m) {
+		if ((rows!=m.rows)||(cols!=m.cols)) return false;
+		
+		return DoubleArrays.equals(getArray(), getArrayOffset(), m.getArray(), m.getArrayOffset(), rows*cols);
 	}
 
 }

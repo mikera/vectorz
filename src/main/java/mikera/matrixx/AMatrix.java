@@ -14,6 +14,7 @@ import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
+import mikera.matrixx.impl.AArrayMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.MatrixBandView;
@@ -1061,12 +1062,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	public boolean equals(AMatrix a) {
 		if (a==this) return true;
+		if (a instanceof AArrayMatrix) return a.equals(this);
+		
 		int rc = rowCount();
-		if (rc != a.rowCount())
-			return false;
+		if (rc != a.rowCount()) return false;
 		int cc = columnCount();
-		if (cc != a.columnCount())
-			return false;
+		if (cc != a.columnCount()) return false;
 		for (int i = 0; i < rc; i++) {
 			for (int j = 0; j < cc; j++) {
 				if (unsafeGet(i, j) != a.unsafeGet(i, j))

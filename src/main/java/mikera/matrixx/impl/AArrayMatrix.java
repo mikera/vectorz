@@ -22,6 +22,10 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 		this.data=data;
 	}
 	
+	public double[] getArray() {
+		return data;
+	}
+	
 	@Override
 	public double get(int i, int j) {
 		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
@@ -69,7 +73,20 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	 */
 	protected abstract int index(int i, int j);
 
-	public double[] getArray() {
-		return data;
+	@Override
+	public boolean equals(AMatrix a) {
+		if (a==this) return true;
+		
+		int rc = rowCount();
+		if (rc != a.rowCount()) return false;
+		int cc = columnCount();
+		if (cc != a.columnCount()) return false;
+		for (int i = 0; i < rc; i++) {
+			for (int j = 0; j < cc; j++) {
+				if (data[index(i, j)] != a.unsafeGet(i, j))
+					return false;
+			}
+		}
+		return true;
 	}
 }
