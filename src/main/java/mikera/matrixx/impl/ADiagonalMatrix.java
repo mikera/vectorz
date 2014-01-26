@@ -323,6 +323,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return toMatrix().getArray();
+	}
+	
+	@Override
 	public final Matrix toMatrixTranspose() {
 		return toMatrix();
 	}

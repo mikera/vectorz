@@ -46,9 +46,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public static Matrix create(AMatrix m) {
-		Matrix nm=new Matrix(m.rowCount(),m.columnCount());
-		nm.set(m);
-		return nm;
+		return wrap(m.rowCount(),m.columnCount(),m.toDoubleArray());
 	}
 	
 	public Matrix(AMatrix m) {

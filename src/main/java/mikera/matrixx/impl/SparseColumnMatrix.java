@@ -29,6 +29,8 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	private static final long serialVersionUID = -5994473197711276621L;
 
 	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
+	
+	private AVector emptyColumn;
 
 	protected SparseColumnMatrix(int rowCount, int columnCount) {
 		this(new HashMap<Integer,AVector>(),rowCount,columnCount);
@@ -36,10 +38,11 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	protected SparseColumnMatrix(HashMap<Integer,AVector> data, int rowCount, int columnCount) {
 		super(rowCount,columnCount,data);
+		emptyColumn=Vectorz.createZeroVector(rowCount);
 	}
 
 	protected SparseColumnMatrix(AVector[] columns, int rowCount, int columnCount) {
-		super(rowCount,columnCount,new HashMap<Integer,AVector>());
+		this(new HashMap<Integer,AVector>(),rowCount,columnCount);
 		for (int i=0; i<cols; i++) {
 			AVector v=columns[i];
 			if ((v!=null)&&(!v.isZero())) {
@@ -140,7 +143,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public AVector getColumn(int i) {
 		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
 		AVector v= data.get(i);
-		if (v==null) return Vectorz.createZeroVector(rows);
+		if (v==null) return emptyColumn;
 		return v;
 	}
 	
@@ -183,6 +186,16 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 			getColumn(i).getElements(m.data, rows*i);
 		}
 		return m;
+	}
+
+	@Override
+	public double[] toDoubleArray() {
+		Matrix m=Matrix.create(rows, cols);
+		for (int i=0; i<cols; i++) {
+			AVector v=data.get(i);
+			if (v!=null) m.getColumn(i).set(v);
+		}
+		return m.getArray();
 	}
 	
 	@Override 
@@ -232,8 +245,20 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public boolean equals(AMatrix m) {
-		if (m instanceof SparseColumnMatrix) {
-			return equals((SparseColumnMatrix)m);
+		if (m instanceof IFastColumns) {
+			if (m instanceof SparseColumnMatrix) {
+				return equals((SparseColumnMatrix)m);
+			}
+			for (int i=0; i<cols; i++) {
+				AVector v=data.get(i);
+				if (v==null) {
+					if (!m.getColumn(i).isZero()) return false;
+				} else {
+					if (!v.equals(m.getColumn(i))) return false;
+				}
+				
+			}
+			return true;
 		}
 		return super.equals(m);
 	}

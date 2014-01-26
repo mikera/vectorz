@@ -235,6 +235,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return new double[rows*cols];
+	}
+	
+	@Override
 	public AMatrix sparseClone() {
 		return Matrixx.createSparse(rows, cols);
 	}

@@ -197,7 +197,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public final AVector slice(int row) {
-		return getRow(row);
+		return getRowView(row);
 	}
 	
 	@Override
@@ -1004,9 +1004,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)+(m.unsafeGet(i, j)*factor));
-			}
+			getRowView(i).addMultiple(m.getRow(i), factor);
 		}
 	}
 	
@@ -1369,11 +1367,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public void applyOp(Op op) {
 		int rc = rowCount();
-		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				unsafeSet(i,j,op.apply(unsafeGet(i,j)));
-			}
+			getRowView(i).applyOp(op);
 		}
 	}
 	
@@ -1381,11 +1376,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void applyOp(IOperator op) {
 		if (op instanceof Op) {applyOp((Op)op); return;}
 		int rc = rowCount();
-		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				unsafeSet(i,j,op.apply(unsafeGet(i,j)));
-			}
+			getRowView(i).applyOp(op);
 		}
 	}
 	

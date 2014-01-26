@@ -52,7 +52,7 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}	
 	
 	@Override
-	protected boolean sameShape(AMatrix m) {
+	protected final boolean sameShape(AMatrix m) {
 		return (rows==m.rowCount())&&(cols==m.columnCount());
 	}
 	
