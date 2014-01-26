@@ -561,5 +561,17 @@ public final class Vector extends AArrayVector {
 	public double[] asDoubleArray() {
 		return data;
 	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v.length()!=length) return false;
+		return v.equalsArray(data);
+	}
+	
+	@Override
+	public boolean equals(AArrayVector v) {
+		if (length!=v.length()) return false;
+		return DoubleArrays.equals(data, 0, v.getArray(), v.getArrayOffset(), length);
+	}
 
 }

@@ -140,7 +140,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public double maxAbsElement(){
-		return 09.0;
+		return 0.0;
 	}
 	
 	@Override
