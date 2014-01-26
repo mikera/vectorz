@@ -1431,6 +1431,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Vectorz.createSparse(this);
 	}
 	
+	@Override
+	public Vector dense() {
+		return Vector.wrap(this.toDoubleArray());
+	}
+	
 	/**
 	 * Creates a new mutable vector representing the normalised value of this vector
 	 * @return

@@ -814,6 +814,7 @@ public class TestVectors {
 		
 		// zero-length Vectors
 		doGenericTests(Vector.of());
+		doGenericTests(Vector.EMPTY);
 		doGenericTests(new GrowableVector(Vector.of()));
 		doGenericTests(Vector.wrap(new double[0]));
 		doGenericTests(new Vector3(1.0,2.0,3.0).subVector(2, 0));
@@ -822,7 +823,6 @@ public class TestVectors {
 			double[] data=new double[j];
 			for (int i=0; i<j; i++) data[i]=i;
 			doGenericTests(Vectorz.create(data));
-			doGenericTests(new Vector(data));
 		}
 		
 		double[] data=new double[100];
@@ -836,7 +836,7 @@ public class TestVectors {
 		doGenericTests(IndexedArrayVector.wrap(data,indexes));
 		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
 		
-		doGenericTests(new Vector(data).subVector(25, 50));
+		doGenericTests(Vector.create(data).subVector(25, 50));
 		doGenericTests(ArraySubVector.wrap(data).subVector(25, 50));
 		
 		AVector v3 = new Vector3(1.0,2.0,3.0);

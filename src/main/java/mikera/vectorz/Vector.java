@@ -25,14 +25,16 @@ import mikera.vectorz.util.VectorzException;
 public final class Vector extends AArrayVector {
 	private static final long serialVersionUID = 6283741614665875877L;
 
+	public static final Vector EMPTY = wrap(DoubleArrays.EMPTY);
+
 	public final double[] data;
 
-	Vector(double... values) {
+	private Vector(double... values) {
 		super(values.length);
 		data = values;
 	}
 	
-	Vector(Object... values) {
+	private Vector(Object... values) {
 		super(values.length);
 		data=new double[length];
 		for (int i=0; i<length; i++) {
@@ -40,7 +42,7 @@ public final class Vector extends AArrayVector {
 		}
 	}
 
-	Vector(int length) {
+	private Vector(int length) {
 		this(new double[length]);
 	}
 
@@ -66,6 +68,7 @@ public final class Vector extends AArrayVector {
 	 * Creates a new Vector from the given double[] data. Takes a defensive copy.
 	 */
 	public static Vector create(double[] data) {
+		if (data.length==0) return EMPTY;
 		return wrap(data.clone());
 	}
 	
@@ -115,7 +118,10 @@ public final class Vector extends AArrayVector {
 	 * @return
 	 */
 	public static Vector createLength(int length) {
-		if (length<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(length));
+		if (length<1) {
+		  if (length<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(length));
+		  return EMPTY;
+		}
 		return new Vector(length);
 	}
 
@@ -561,6 +567,11 @@ public final class Vector extends AArrayVector {
 	@Override
 	public double[] asDoubleArray() {
 		return data;
+	}
+	
+	@Override
+	public Vector dense() {
+		return this;
 	}
 	
 	@Override

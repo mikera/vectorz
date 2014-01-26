@@ -2,8 +2,10 @@ package mikera.vectorz.impl;
 
 import java.io.ObjectStreamException;
 
+import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -110,6 +112,11 @@ public final class Vector0 extends APrimitiveVector implements IDense {
 	@Override
 	public Vector0 immutable() {
 		return this;
+	}
+	
+	@Override
+	public Vector dense() {
+		return Vector.EMPTY;
 	}
 	
 	@Override

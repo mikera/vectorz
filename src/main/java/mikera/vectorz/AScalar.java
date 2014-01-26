@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
+import mikera.matrixx.Matrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -410,6 +411,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		double v=get();
 		if (v==0.0) return ImmutableScalar.ZERO;
 		if (v==1.0) return ImmutableScalar.ONE;
+		return this;
+	}
+	
+	@Override
+	public INDArray dense() {
 		return this;
 	}
 	

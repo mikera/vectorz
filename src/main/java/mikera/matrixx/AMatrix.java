@@ -11,6 +11,7 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
@@ -34,6 +35,7 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -1847,6 +1849,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AMatrix sparse() {
 		if (this instanceof ISparse) return this;
 		return Matrixx.createSparse(this);
+	}
+	
+	@Override
+	public INDArray dense() {
+		if (this instanceof IDense) return this;
+		return Matrix.create(this);
 	}
 	
 	@Override 
