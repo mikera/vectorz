@@ -16,6 +16,7 @@ import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.AArrayMatrix;
+import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.MatrixBandView;
@@ -719,9 +720,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc=columnCount();
 		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)+m.unsafeGet(i, j));
+		if ((cc>5)||(this instanceof IFastRows)) {
+			for (int i=0; i<rc; i++) {
+				getRowView(i).add(m.getRow(i));
+			}			
+		} else {
+			for (int i=0; i<rc; i++) {
+				for (int j=0; j<cc; j++) {
+					unsafeSet(i,j,unsafeGet(i,j)+m.unsafeGet(i, j));
+				}
 			}
 		}
 	}
@@ -735,9 +742,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
 
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)+v.unsafeGet(j));
-			}
+			getRowView(i).add(v);
 		}		
 	}
 	
@@ -747,9 +752,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				addAt(i,j,-v.unsafeGet(j));
-			}
+			getRowView(i).sub(v);
 		}		
 	}
 	
@@ -766,12 +769,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	public void multiply(double factor) {
 		int rc=rowCount();
-		int cc=columnCount();
 
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)*factor);
-			}
+			getRowView(i).multiply(factor);
 		}
 	}	
 
@@ -782,13 +782,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	public double elementSum() {
 		int rc=rowCount();
-		int cc=columnCount();
 		
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				result+=unsafeGet(i,j);
-			}
+			result+=getRowView(i).elementSum();
 		}
 		return result;
 	}
@@ -800,14 +797,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	public double elementSquaredSum() {
 		int rc=rowCount();
-		int cc=columnCount();
 		
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				double value=unsafeGet(i,j);
-				result+=value*value;
-			}
+			result+=getRowView(i).elementSquaredSum();
 		}
 		return result;
 	}
@@ -916,9 +909,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)*m.unsafeGet(i, j));
-			}
+			getRowView(i).multiply(m.getRow(i));
 		}
 	}
 	
@@ -1075,12 +1066,18 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (rc != a.rowCount()) return false;
 		int cc = columnCount();
 		if (cc != a.columnCount()) return false;
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				if (unsafeGet(i, j) != a.unsafeGet(i, j))
-					return false;
-			}
+		
+		if ((cc>10)||(this instanceof IFastRows)) {
+			return equalsByRows(a);		
+		} else {
+			for (int i = 0; i < rc; i++) {
+				for (int j = 0; j < cc; j++) {
+					if (unsafeGet(i, j) != a.unsafeGet(i, j))
+						return false;
+				}
+			}			
 		}
+
 		return true;
 	}
 	
@@ -1127,13 +1124,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc=columnCount();
 		if (cc != vs[1]) return false;
 		
-		int[] ind = new int[2];
 		for (int i = 0; i < rc; i++) {
-			ind[0]=i;
-			for (int j=0; j<cc; j++) {
-				ind[1]=j;
-				if (unsafeGet(i,j) != v.get(ind)) return false;
-			}
+			if (!getRow(i).equals(v.slice(i))) return false;
 		}
 		return true;
 	}
@@ -1164,8 +1156,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	protected boolean equalsByRows(AMatrix m) {
 		int rc = rowCount();
-		int cc = columnCount();
-		if ((rc != m.rowCount())||(cc!=m.columnCount())) return false;
 		for (int i=0; i<rc; i++) {
 			if (!getRow(i).equals(m.getRow(i))) return false;
 		}
