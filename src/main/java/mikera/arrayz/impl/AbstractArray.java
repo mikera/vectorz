@@ -101,6 +101,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public boolean isDense() {
+		return (this instanceof IDense);
+	}
+	
+	@Override
 	public boolean isMutable() {
 		int n=sliceCount();
 		for (int i=0; i<n; i++) {

@@ -289,6 +289,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean isSparse();
 	
 	/**
+	 * Returns true if the array is in a dense format
+	 */
+	public boolean isDense();
+	
+	/**
 	 * If this method returns true, the INDArray is guaranteed to be fully mutable 
 	 * in all positions i.e. every position can store any valid double value
 	 */
