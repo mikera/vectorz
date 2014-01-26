@@ -154,6 +154,6 @@ public final class ArraySubVector extends AArrayVector {
 
 	@Override 
 	public ArraySubVector exactClone() {
-		return new ArraySubVector(Arrays.copyOfRange(data, offset, offset+length),0,length);
+		return new ArraySubVector(data.clone(),offset,length);
 	}
 }
