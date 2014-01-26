@@ -976,6 +976,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	public double elementProduct() {
+		int len=length();
+		double result=1.0;
+		for (int i=0; i<len; i++) {
+			result*=unsafeGet(i);
+		}		
+		return result;
+	}
+	
 	@Override
 	public double elementMax(){
 		int len=length();

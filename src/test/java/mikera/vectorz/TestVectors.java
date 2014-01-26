@@ -253,16 +253,21 @@ public class TestVectors {
 	}
 	
 	private void testElementSum(AVector v) {
-		AVector cv=v.clone();
-		assertEquals(v.elementSum(),cv.elementSum(),0.00001);
-		
 		double res=0.0;
 		for (int i=0; i<v.length(); i++) {
 			res+=v.get(i);
 		}
-		
 		assertEquals(res,v.elementSum(),0.00001);
 	}
+	
+	private void testElementProduct(AVector v) {
+		double res=1.0;
+		for (int i=0; i<v.length(); i++) {
+			res*=v.get(i);
+		}
+		assertEquals(res,v.elementProduct(),0.00001);
+	}
+	
 	
 	private void testMinMax(AVector v) {
 		if (v.length()==0) return;
@@ -755,6 +760,7 @@ public class TestVectors {
 		testAddEquivalents(v);
 		testAddToArray(v);
 		testElementSum(v);
+		testElementProduct(v);
 		testAddAt(v);
 		testUnsafeGet(v);
 		testUnsafeSet(v);

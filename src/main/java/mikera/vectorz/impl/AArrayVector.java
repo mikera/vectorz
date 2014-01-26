@@ -365,6 +365,11 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return DoubleArrays.elementProduct(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
 	public double elementMax(){
 		return DoubleArrays.elementMax(getArray(), getArrayOffset(), length());
 	}
