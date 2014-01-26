@@ -266,6 +266,11 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return x*y*z;
+	}
+	
+	@Override
 	public void scaleAdd(double factor, double constant) {
 		x=(x*factor)+constant;
 		y=(y*factor)+constant;

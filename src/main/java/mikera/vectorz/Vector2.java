@@ -174,6 +174,11 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return x*y;
+	}
+	
+	@Override
 	public double elementMax(){
 		return Math.max(x, y);
 	}

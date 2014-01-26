@@ -62,6 +62,11 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return x;
+	}
+	
+	@Override
 	public double elementMax(){
 		return x;
 	}

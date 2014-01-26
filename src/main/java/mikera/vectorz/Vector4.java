@@ -155,6 +155,11 @@ public final class Vector4 extends APrimitiveVector {
 	public double elementSum() {
 		return x+y+z+t;
 	}
+	
+	@Override
+	public double elementProduct() {
+		return x*y*z*t;
+	}
 
 	@Override
 	public double get(int i) {
