@@ -9,6 +9,7 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementIterator;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -88,13 +89,13 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
-	public ZeroVector getRowView(int row) {
-		return ZeroVector.create(cols);
+	public AVector getRowView(int row) {
+		return Vectorz.createZeroVector(cols);
 	}
 	
 	@Override
-	public ZeroVector getColumnView(int col) {
-		return ZeroVector.create(rows);
+	public AVector getColumnView(int col) {
+		return Vectorz.createZeroVector(rows);
 	}
 	
 	@Override
@@ -231,6 +232,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	@Override
 	public Matrix toMatrix() {
 		return Matrix.create(rowCount(), columnCount());
+	}
+	
+	@Override
+	public AMatrix sparseClone() {
+		return Matrixx.createSparse(rows, cols);
 	}
 	
 	@Override

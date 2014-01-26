@@ -45,6 +45,7 @@ public class TestBigSparse {
 		assertTrue("Not fully sparse:" +m.getClass(), m.isFullyMutable());
 		m.set(3,4,7.0);
 	
+		assertEquals(1,m.nonZeroCount());
 	}
 
 }

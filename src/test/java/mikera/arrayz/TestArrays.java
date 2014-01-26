@@ -160,7 +160,7 @@ public class TestArrays {
 		
 		// sparse clone
 		INDArray sc=a.sparseClone();
-		assertTrue("Should have fully mutable sparseClone: "+a.getClass(), sc.isFullyMutable());
+		assertTrue("Should have fully mutable sparseClone: "+a.getClass(), (sc.elementCount()==0)||sc.isFullyMutable());
 		assertEquals(a,sc);
 		
 		// sparse coercion

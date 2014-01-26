@@ -88,6 +88,9 @@ public class Matrixx {
 	 * Creates a sparse matrix from the given matrix, ignoring zeros
 	 */
 	public static AMatrix createSparse(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		if ((rc==0)||(cc==0)) return ZeroMatrix.create(rc, cc);
 		return SparseRowMatrix.create(m);
 	}
 	

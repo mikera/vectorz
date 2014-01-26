@@ -289,7 +289,9 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean isSparse();
 	
 	/**
-	 * Returns true if the array is in a dense format
+	 * Returns true if the array is in a dense format. 
+	 * 
+	 * A dense format uses storage proportional to the number of elements
 	 */
 	public boolean isDense();
 	

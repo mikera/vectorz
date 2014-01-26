@@ -34,19 +34,15 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	private static final long serialVersionUID = 8646257152425415773L;
 
 	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
+	
+	private final AVector emptyRow;
 
 	protected SparseRowMatrix(AVector... vectors) {
-		super(vectors.length, vectors[0].length(),
-				new HashMap<Integer, AVector>());
-		for (int i = 0; i < rows; i++) {
-			AVector v = vectors[i];
-			if ((v != null) && (!v.isZero()))
-				data.put(i, vectors[i]);
-		}
+		this(vectors,vectors.length, vectors[0].length());
 	}
 
 	protected SparseRowMatrix(AVector[] vectors, int rowCount, int columnCount) {
-		super(rowCount, columnCount, new HashMap<Integer, AVector>());
+		this(new HashMap<Integer, AVector>(),rowCount, columnCount);
 		for (int i = 0; i < rows; i++) {
 			AVector v = vectors[i];
 			if ((v != null) && (!v.isZero()))
@@ -55,12 +51,13 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	}
 
 	protected SparseRowMatrix(int rowCount, int columnCount) {
-		super(rowCount, columnCount, new HashMap<Integer, AVector>());
+		this(new HashMap<Integer, AVector>(),rowCount, columnCount);
 	}
 
 	protected SparseRowMatrix(HashMap<Integer, AVector> data, int rowCount,
 			int columnCount) {
 		super(rowCount, columnCount, data);
+		emptyRow=Vectorz.createZeroVector(columnCount);
 	}
 
 	public static SparseRowMatrix wrap(HashMap<Integer, AVector> data,
@@ -98,8 +95,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	@Override
 	public AVector getRow(int i) {
 		AVector v = data.get(i);
-		if (v == null)
-			return Vectorz.createZeroVector(cols);
+		if (v == null) return emptyRow;
 		return v;
 	}
 
