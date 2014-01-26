@@ -273,6 +273,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return new long[] {rowCount(),columnCount()};
 	}
 	
+	protected boolean sameShape(AMatrix m) {
+		return (rowCount()==m.rowCount())&&(columnCount()==m.columnCount());
+	}
+	
 	@Override
 	public double get(int... indexes) {
 		assert(indexes.length==2);
