@@ -452,6 +452,20 @@ public final class JoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public boolean equals(AVector v) {
+		if (v instanceof JoinedVector) return equals((JoinedVector)v);
+		return super.equals(v);
+	}
+	
+	public boolean equals(JoinedVector v) {
+		if (split==v.split) {
+			return left.equals(v.left)&&right.equals(v.right);
+		} else {
+			return super.equals(v);		
+		}
+	}
+	
+	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		if (!left.equalsArray(data, offset)) return false;
 		if (!right.equalsArray(data, offset+split)) return false;
