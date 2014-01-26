@@ -676,33 +676,36 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	/**
-	 * Returns a transposed version of this matrix. May or may not be a view.
+	 * Returns the transpose of this matrix. 
+	 * 
+	 * Will be a transposed view by default, but specialised matrix type may override this if they are able to provide
+	 * a better implementation.
+	 * 
 	 * @return
 	 */
 	@Override
 	public AMatrix getTranspose() {
-		return TransposedMatrix.wrap(this);
+		return getTransposeView();
 	}
 	
+	/**
+	 * Returns a transposed view of the matrix. 
+	 */
 	@Override
 	public AMatrix getTransposeView() {
 		return TransposedMatrix.wrap(this);
 	}
 	
+	/**
+	 * Gets a mutable transposed clone of the matrix
+	 */
 	@Override
-	public Matrix getTransposeCopy() {
-		int rc=this.rowCount();
-		int cc=this.columnCount();
-		Matrix m=Matrix.create(cc,rc);
-		for (int j=0; j<cc; j++) {
-			this.copyColumnTo(j, m.data, j*rc);
-		}
-		return m;
+	public AMatrix getTransposeCopy() {
+		return getTranspose().clone();
 	}
 	
 	/**
 	 * Adds another matrix to this matrix. Matrices must be the same size.
-	 * @param m
 	 */
 	public void add(AMatrix m) {
 		int rc=rowCount();
@@ -716,6 +719,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	/**
+	 * Adds a vector to every row of this matrix.
+	 */
 	public void add(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();

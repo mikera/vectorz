@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -47,6 +49,17 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	 * @return
 	 */
 	public abstract boolean isPackedArray();
+	
+	@Override
+	public AMatrix getTransposeCopy() {
+		int rc=this.rowCount();
+		int cc=this.columnCount();
+		Matrix m=Matrix.create(cc,rc);
+		for (int j=0; j<cc; j++) {
+			this.copyColumnTo(j, m.data, j*rc);
+		}
+		return m;
+	}
 	
 	/**
 	 * Computes the index into the data array for a given position in the matrix
