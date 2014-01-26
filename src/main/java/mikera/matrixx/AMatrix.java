@@ -1155,6 +1155,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return a.getTranslation().isIdentity()
 				&& this.equals(a.getMatrix());
 	}
+	
+	protected boolean equalsByRows(AMatrix m) {
+		int rc = rowCount();
+		int cc = columnCount();
+		if ((rc != m.rowCount())||(cc!=m.columnCount())) return false;
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).equals(m.getRow(i))) return false;
+		}
+		return true;
+	}
 
 	@Override
 	public String toString() {

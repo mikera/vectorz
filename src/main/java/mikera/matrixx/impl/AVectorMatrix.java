@@ -215,6 +215,11 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	}
 	
 	@Override
+	public boolean equals(AMatrix m) {
+		return equalsByRows(m);
+	}
+	
+	@Override
 	public AMatrix clone() {
 		AMatrix avm= super.clone();
 		return avm;

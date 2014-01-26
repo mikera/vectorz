@@ -323,6 +323,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public boolean equalsTranspose(AMatrix m) {
+		return equals(m);
+	}
+	
+	@Override
 	public void validate() {
 		if (dimensions!=getLeadingDiagonal().length()) throw new VectorzException("dimension mismatch: "+dimensions);
 		

@@ -99,7 +99,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	public AVector getRow(int i) {
 		AVector v = data.get(i);
 		if (v == null)
-			return ZeroVector.create(cols);
+			return Vectorz.createZeroVector(cols);
 		return v;
 	}
 
@@ -322,7 +322,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		if (m instanceof SparseRowMatrix) {
 			return equals((SparseRowMatrix) m);
 		}
-		return super.equals(m);
+		return equalsByRows(m);
 	}
 
 	public boolean equals(SparseRowMatrix m) {
