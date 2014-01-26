@@ -9,7 +9,7 @@ import mikera.vectorz.impl.AMatrixViewVector;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public class MatrixColumnView extends AMatrixViewVector {
+public final class MatrixColumnView extends AMatrixViewVector {
 	private final int column;
 
 	public MatrixColumnView(AMatrix aMatrix, int column) {

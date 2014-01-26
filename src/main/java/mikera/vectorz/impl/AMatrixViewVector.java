@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -49,7 +50,24 @@ public abstract class AMatrixViewVector extends ASizedVector {
 	}
 	
 	@Override
+	public void getElements(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			data[offset+i]=source.unsafeGet(calcRow(i), calcCol(i));
+		}
+	}
+	
+	@Override
 	public MatrixIndexScalar slice(int i) {
 		return MatrixIndexScalar.wrap(source, calcRow(i), calcCol(i));
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v==this) return true;
+		if (v.length()!=length) return false;
+		for (int i=0; i<length; i++) {
+			if (v.unsafeGet(i)!=source.unsafeGet(calcRow(i), calcCol(i))) return false;
+		}
+		return true;
 	}
 }

@@ -9,7 +9,7 @@ import mikera.vectorz.impl.AMatrixViewVector;
  * @author Mike
  */
 @SuppressWarnings("serial") 
-public class MatrixRowView extends AMatrixViewVector {
+public final class MatrixRowView extends AMatrixViewVector {
 	private final int row;
 
 	public MatrixRowView(AMatrix aMatrix, int row) {
@@ -64,5 +64,15 @@ public class MatrixRowView extends AMatrixViewVector {
 	@Override
 	public AVector clone() {
 		return source.getRowClone(row);
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v==this) return true;
+		if (v.length()!=length) return false;
+		for (int i=0; i<length; i++) {
+			if (v.unsafeGet(i)!=source.unsafeGet(row,i)) return false;
+		}
+		return true;
 	}
 }
