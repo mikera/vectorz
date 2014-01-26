@@ -320,6 +320,16 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		}
 		return equalsByRows(m);
 	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		double[] ds=new double[rows*cols];
+		// we use adding to array, since rows themselves are likely to be sparse
+		for (Entry<Integer, AVector> e : data.entrySet()) {
+			e.getValue().addToArray(ds, e.getKey()*cols);
+		}
+		return ds;
+	}
 
 	public boolean equals(SparseRowMatrix m) {
 		if (m == this)
