@@ -6,6 +6,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -203,10 +204,15 @@ public class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		double[] data=new double[length];
+		data[axis]=1.0;
+		return data;
+	}
+	
+	@Override
 	public Vector toVector() {
-		Vector v=Vector.createLength(length);
-		v.data[getAxis()]=1.0;
-		return v;
+		return Vector.wrap(toDoubleArray());
 	}
 	
 	@Override

@@ -378,6 +378,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public final double[] toDoubleArray() {
+		return DoubleArrays.copyOf(data);
+	}
+	
+	@Override
 	public Matrix toMatrixTranspose() {
 		int rc = rowCount();
 		int cc = columnCount();

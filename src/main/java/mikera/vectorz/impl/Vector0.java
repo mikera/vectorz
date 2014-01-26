@@ -6,6 +6,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -117,6 +118,11 @@ public final class Vector0 extends APrimitiveVector implements IDense {
 	@Override
 	public Vector dense() {
 		return Vector.EMPTY;
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return DoubleArrays.EMPTY;
 	}
 	
 	@Override

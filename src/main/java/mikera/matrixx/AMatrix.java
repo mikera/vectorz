@@ -1327,9 +1327,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public Matrix toMatrix() {
 		int rc = rowCount();
 		int cc = columnCount();
-		Matrix m = Matrix.create(rc, cc);
-		this.getElements(m.data,0);
-		return m;
+		return Matrix.wrap(rc, cc, this.toDoubleArray());
 	}
 	
 	/**
@@ -1339,9 +1337,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public Matrix toMatrixTranspose() {
 		int rc = rowCount();
 		int cc = columnCount();
-		Matrix m = Matrix.create(cc, rc);
-		this.getTransposeView().getElements(m.data,0);
-		return m;
+		return Matrix.wrap(cc, rc,this.getTranspose().toDoubleArray());
 	}
 	
 	@Override
