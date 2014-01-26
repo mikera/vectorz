@@ -97,6 +97,11 @@ public class ImmutableVector extends ASizedVector implements IDense {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return DoubleArrays.copyOf(data,offset,length);
+	}
+	
+	@Override
 	public void getElements(double[] data, int offset) {
 		System.arraycopy(this.data, this.offset, data, offset, length());
 	}

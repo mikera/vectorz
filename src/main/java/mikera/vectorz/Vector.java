@@ -585,5 +585,15 @@ public final class Vector extends AArrayVector {
 		if (length!=v.length()) return false;
 		return DoubleArrays.equals(data, 0, v.getArray(), v.getArrayOffset(), length);
 	}
+	
+	@Override
+	public boolean equalsArray(double[] arr, int offset) {
+		return DoubleArrays.equals(data, 0, arr, offset, length);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] arr) {
+		return DoubleArrays.equals(data, arr, length);
+	}
 
 }
