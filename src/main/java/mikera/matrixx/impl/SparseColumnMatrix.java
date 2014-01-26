@@ -140,7 +140,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public AVector getColumn(int i) {
 		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
 		AVector v= data.get(i);
-		if (v==null) return ZeroVector.create(rows);
+		if (v==null) return Vectorz.createZeroVector(rows);
 		return v;
 	}
 	

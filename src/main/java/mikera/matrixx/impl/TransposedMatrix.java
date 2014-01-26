@@ -194,4 +194,9 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public TransposedMatrix exactClone() {
 		return new TransposedMatrix(source.exactClone());
 	}
+	
+	@Override
+	public boolean equals(AMatrix m) {
+		return m.equalsTranspose(source);
+	}
 }
