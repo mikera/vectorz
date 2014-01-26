@@ -124,6 +124,11 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return 0.0;
+	}
+	
+	@Override
 	public double elementMax(){
 		return 0.0;
 	}

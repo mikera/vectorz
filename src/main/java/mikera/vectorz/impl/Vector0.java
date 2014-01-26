@@ -40,6 +40,11 @@ public final class Vector0 extends APrimitiveVector {
 	public double elementSum() {
 		return 0.0;
 	}
+	
+	@Override
+	public double elementProduct() {
+		return 1.0;
+	}
 
 	@Override
 	public long nonZeroCount() {

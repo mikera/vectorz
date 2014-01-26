@@ -61,6 +61,11 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return Math.pow(value, length);
+	}
+	
+	@Override
 	public double elementMax(){
 		return value;
 	}

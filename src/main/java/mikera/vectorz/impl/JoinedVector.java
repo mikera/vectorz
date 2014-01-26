@@ -327,6 +327,11 @@ public final class JoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return left.elementProduct()*right.elementProduct();
+	}
+	
+	@Override
 	public double elementMax() {
 		return Math.max(left.elementMax(),right.elementMax());
 	}

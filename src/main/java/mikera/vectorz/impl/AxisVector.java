@@ -75,6 +75,11 @@ public class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return (length>1)?0.0:1.0;
+	}
+	
+	@Override
 	public double elementMax(){
 		return 1.0;
 	}
