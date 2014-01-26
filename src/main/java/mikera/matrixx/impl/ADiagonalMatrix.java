@@ -23,7 +23,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 
 	protected final int dimensions;
 	
-	public ADiagonalMatrix(int dimensions) {
+	protected ADiagonalMatrix(int dimensions) {
 		this.dimensions=dimensions;
 	}
 	
