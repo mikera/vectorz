@@ -123,6 +123,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	protected boolean sameShape(AMatrix m) {
+		return (dimensions==m.rowCount())&&(dimensions==m.columnCount());
+	}
+	
+	@Override
 	public double elementMax(){
 		double ldv=getLeadingDiagonal().elementMax();
 		if (dimensions>1) return Math.max(0, ldv); else return ldv;
