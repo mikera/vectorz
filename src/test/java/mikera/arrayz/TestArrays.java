@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
 import mikera.arrayz.impl.JoinedArray;
@@ -170,6 +171,11 @@ public class TestArrays {
 		INDArray imma=a.immutable();
 		assertFalse(imma.isMutable());
 		assertEquals(a,imma);
+		
+		// dense coercion
+		INDArray densa=a.dense();
+		assertTrue(densa instanceof IDense);
+		assertEquals(a,densa);
 	}
 
 	private void testSetElements(INDArray a) {

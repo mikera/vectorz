@@ -15,10 +15,12 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.util.Maths;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -892,7 +894,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public INDArray dense() {
 		if (this instanceof IDense) return this;
 		int dims=dimensionality();
-		if (dims==0) return this;
+		if (dims==0) {
+			if (this instanceof AScalar) return this;
+			return Scalar.create(get());
+		}
 		if (dims==1) {
 			return Vector.wrap(this.toDoubleArray());
 		}
