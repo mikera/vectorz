@@ -35,6 +35,11 @@ public final class SingleElementVector extends ASparseVector {
 	public static AVector create(double val, int i, int len) {
 		return new SingleElementVector(i,len,val);
 	}
+	
+	@Override
+	public boolean isZero() {
+		return value==0.0;
+	}
 
 	@Override
 	public double magnitude() {

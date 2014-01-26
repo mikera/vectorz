@@ -13,7 +13,7 @@ import mikera.vectorz.AVector;
 @SuppressWarnings("serial")
 public abstract class ASparseVector extends ASizedVector implements ISparse {
 
-	public ASparseVector(int length) {
+	protected ASparseVector(int length) {
 		super(length);
 	}
 
@@ -42,7 +42,17 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	 */
 	public abstract boolean includesIndex(int i);
 	
-	// ========================================
+	// ================================================
+	// Superclass methods that must be overridden
+	// (superclass implementation is bad for sparse arrays)
+	
+	@Override
+	public abstract void addToArray(int offset, double[] destData, int destOffset, int length);
+	
+	@Override
+	public abstract boolean isZero();
+		
+	// ================================================
 	// standard implementations
 	
 	@Override
@@ -90,6 +100,13 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		}
 		
 		return true;
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		double[] data=new double[length];
+		addToArray(data,0);
+		return data;
 	}
 	
 	@Override

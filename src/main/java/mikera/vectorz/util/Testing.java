@@ -18,7 +18,7 @@ public class Testing {
 		if (length<0) throw new IllegalArgumentException("Negative vector length!");
 		if (length==0) {
 			switch (r.nextInt(2)) {
-				case 0: return new Vector0();
+				case 0: return Vector0.INSTANCE;
 				case 1: return Vector.createLength(0);
 				default: return Vector0.INSTANCE;
 			}

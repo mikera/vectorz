@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.io.ObjectStreamException;
 
 import mikera.arrayz.INDArray;
+import mikera.arrayz.ISparse;
 import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -16,10 +17,10 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class Vector0 extends APrimitiveVector implements IDense {
+public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 	private static final long serialVersionUID = -8153360223054646075L;
 
-	public Vector0() {
+	private Vector0() {
 	}
 
 	public static Vector0 of() {
@@ -65,6 +66,11 @@ public final class Vector0 extends APrimitiveVector implements IDense {
 	public void set(int i, double value) {
 		throw new IndexOutOfBoundsException(
 				"Attempt to set on zero length vector!");
+	}
+	
+	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		// nothing to do
 	}
 
 	@Override
