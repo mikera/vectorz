@@ -15,6 +15,6 @@ import mikera.vectorz.AVector;
  */
 public interface IFastRows extends IMatrix {
 	
-	public AVector getColumn(int i);
+	public AVector getRow(int i);
 
 }

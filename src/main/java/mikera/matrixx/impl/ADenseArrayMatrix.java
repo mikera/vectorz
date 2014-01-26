@@ -62,7 +62,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
-		System.arraycopy(data, row*cols, dest, destOffset, cols);
+		System.arraycopy(data, getArrayOffset()+row*cols, dest, destOffset, cols);
 	}
 	
 	@Override

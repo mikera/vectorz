@@ -157,7 +157,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 
 	@Override
-	public SparseRowMatrix getTranspose() {
+	public SparseRowMatrix getTransposeView() {
 		return SparseRowMatrix.wrap(data,cols,rows);
 	}
 	
