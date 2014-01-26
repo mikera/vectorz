@@ -75,14 +75,11 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 
 	@Override
 	public boolean equals(AMatrix a) {
-		if (a==this) return true;
+		if (a==this) return true;	
+		if ((rows != a.rowCount())||(cols != a.columnCount())) return false;
 		
-		int rc = rowCount();
-		if (rc != a.rowCount()) return false;
-		int cc = columnCount();
-		if (cc != a.columnCount()) return false;
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				if (data[index(i, j)] != a.unsafeGet(i, j))
 					return false;
 			}

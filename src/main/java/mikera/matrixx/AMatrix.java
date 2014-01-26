@@ -1055,15 +1055,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public boolean equals(Object o) {
+		if (o==this) return true;
 		if (o instanceof AMatrix) return equals((AMatrix) o);
 		if (o instanceof INDArray) return equals((INDArray) o);
 		return false;
 	}
 
 	public boolean equals(AMatrix a) {
-		if (a==this) return true;
 		if (a instanceof AArrayMatrix) return a.equals(this);
 		
+		if (a==this) return true;
 		int rc = rowCount();
 		if (rc != a.rowCount()) return false;
 		int cc = columnCount();
@@ -1090,7 +1091,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Tests if this matrix ios exactly equal to the transpose of another matrix
+	 * Tests if this matrix is exactly equal to the transpose of another matrix
 	 * @param a
 	 * @return
 	 */
