@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -19,7 +20,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class AArrayVector extends AStridedVector {
+public abstract class AArrayVector extends AStridedVector implements IDense {
 	
 	protected AArrayVector(int length) {
 		super(length);

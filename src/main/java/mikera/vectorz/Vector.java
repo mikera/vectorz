@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import mikera.arrayz.impl.IDense;
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.randomz.Hash;

@@ -20,7 +20,7 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public class ImmutableArray extends BaseNDArray {
+public class ImmutableArray extends BaseNDArray implements IDense {
 	private static final long serialVersionUID = 2078025371733533775L;
 
 	private ImmutableArray(int dims, int[] shape, int[] strides) {

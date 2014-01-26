@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IDense;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -26,7 +27,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar extends AbstractArray<Object> implements IScalar {
+public abstract class AScalar extends AbstractArray<Object> implements IScalar, IDense {
 	private static final long serialVersionUID = -8285351135755012093L;
 	private static final int[] SCALAR_SHAPE=IntArrays.EMPTY_INT_ARRAY;
 	private static final long[] SCALAR_LONG_SHAPE=LongArrays.EMPTY_LONG_ARRAY;

@@ -889,6 +889,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray dense() {
+		if (this instanceof IDense) return this;
+		int dims=dimensionality();
+		if (dims==0) return this;
+		if (dims==1) {
+			return Vector.wrap(this.toDoubleArray());
+		}
+		if (dims==2) {
+			return Matrix.create(this);
+		}
+		return Array.create(this);
+	}
+	
+	@Override
 	public INDArray sparseClone() {
 		int dims=dimensionality();
 		if (dims==0) return this;

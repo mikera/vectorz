@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import java.io.ObjectStreamException;
 
+import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -12,7 +13,7 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class Vector0 extends APrimitiveVector {
+public final class Vector0 extends APrimitiveVector implements IDense {
 	private static final long serialVersionUID = -8153360223054646075L;
 
 	public Vector0() {

@@ -336,6 +336,7 @@ public class TestVectors {
 		assertEquals(v.length(), len);
 		assertFalse(cv.isView());
 		assertTrue((cv.length()==0)||cv.isMutable());		
+		assertTrue(cv.isFullyMutable());
 		assertEquals(v,cv);
 		
 		for (int i=0; i<len; i++) {
@@ -375,6 +376,7 @@ public class TestVectors {
 	
 	private void testImmutable(AVector v) {
 		AVector iv=v.immutable();
+		assertFalse(iv.isMutable());
 		
 		try {
 			iv.set(0,1.0);

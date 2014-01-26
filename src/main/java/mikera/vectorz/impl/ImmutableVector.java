@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.nio.DoubleBuffer;
 import java.util.Iterator;
 
+import mikera.arrayz.impl.IDense;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -16,7 +17,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class ImmutableVector extends ASizedVector {
+public class ImmutableVector extends ASizedVector implements IDense {
 	private static final long serialVersionUID = -3679147880242779555L;
 
 	private double[] data;

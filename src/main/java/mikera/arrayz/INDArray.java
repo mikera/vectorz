@@ -513,6 +513,17 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray sparse();
 	
 	/**
+	 * Coerces this INDArray to a dense format, without changing its element values.
+	 * 
+	 * May return the same INDArray if already dense. May also mutate the internal structure of the original 
+	 * NDArray, or create a view over parts of the original INDArray. You should take a defensive copy of the original
+	 * NDArray if any of this concerns you.
+	 * 
+	 * The returned dense array may not be fully mutable in all elements.
+	 */
+	public INDArray dense();
+	
+	/**
 	 * Creates a fully mutable clone of this array. Will use a sparse format if possible.
 	 */
 	public INDArray sparseClone();	
