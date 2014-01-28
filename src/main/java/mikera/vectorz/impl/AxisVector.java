@@ -15,7 +15,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public class AxisVector extends ASparseVector {
+public final class AxisVector extends ASparseVector {
 	private static final long serialVersionUID = 6767495113060894804L;
 	
 	private final int axis;
@@ -299,7 +299,7 @@ public class AxisVector extends ASparseVector {
 	@Override
 	public void validate() {
 		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
-		if ((getAxis()<0)||(getAxis()>length)) throw new VectorzException("Axis index out of bounds");
+		if ((getAxis()<0)||(getAxis()>=length)) throw new VectorzException("Axis index out of bounds");
 		super.validate();
 	}
 

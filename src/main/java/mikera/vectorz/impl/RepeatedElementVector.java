@@ -102,7 +102,7 @@ public final class RepeatedElementVector extends AConstrainedVector {
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException(this.getClass().toString()+" is not mutable");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
