@@ -361,6 +361,7 @@ public class SparseIndexedVector extends ASparseVector {
 		return result;
 	}
 	
+	@Override
 	public double dotProduct(AArrayVector v) {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
