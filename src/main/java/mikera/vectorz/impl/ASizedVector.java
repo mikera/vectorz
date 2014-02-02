@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -54,6 +55,12 @@ public abstract class ASizedVector extends AVector {
 		} else {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		}
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data) {
+		if (length!=data.length) return false;
+		return equalsArray(data,0);
 	}
 
 }

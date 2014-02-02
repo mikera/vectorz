@@ -1088,7 +1088,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		int rc = rowCount();
-		int cc=columnCount();
+		int cc = columnCount();
 		if (this instanceof IFastRows) {
 			for (int i = 0; i < rc; i++) {
 				if (!getRow(i).equalsArray(data,offset+i*cc)) return false;

@@ -366,6 +366,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		return (o.dimensionality()==0)&&(o.get(SCALAR_SHAPE)==get());
 	}
 	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return data[offset]==get();
+	}
+	
 	public boolean equals(AScalar o) {
 		return get()==o.get();
 	}

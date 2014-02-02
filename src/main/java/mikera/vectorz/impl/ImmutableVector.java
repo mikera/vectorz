@@ -209,12 +209,6 @@ public class ImmutableVector extends ASizedVector implements IDense {
 	}
 	
 	@Override
-	public boolean equalsArray(double[] data) {
-		if (length()!=data.length) return false;
-		return DoubleArrays.equals(data,0,this.data, this.offset,length());
-	}
-	
-	@Override
 	public Vector clone() {
 		return Vector.wrap(toDoubleArray());
 	}

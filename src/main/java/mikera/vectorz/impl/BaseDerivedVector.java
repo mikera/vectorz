@@ -64,5 +64,15 @@ public abstract class BaseDerivedVector extends AVector {
 	public boolean isMutable() {
 		return source.isMutable();
 	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		return source.equals(v);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return source.equalsArray(data, offset);
+	}
 
 }

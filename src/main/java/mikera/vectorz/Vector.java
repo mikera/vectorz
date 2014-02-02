@@ -592,7 +592,7 @@ public final class Vector extends AArrayVector {
 	@Override
 	public boolean equals(AVector v) {
 		if (v.length()!=length) return false;
-		return v.equalsArray(data);
+		return v.equalsArray(data,0);
 	}
 	
 	@Override

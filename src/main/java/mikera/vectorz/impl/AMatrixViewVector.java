@@ -70,4 +70,12 @@ public abstract class AMatrixViewVector extends ASizedVector {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			if (unsafeGet(i)!=data[offset++]) return false;
+		}
+		return true;
+	}
 }

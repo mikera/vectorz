@@ -234,9 +234,10 @@ public final class StridedMatrix extends AStridedMatrix {
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		for (int i = 0; i < rows; i++) {
+			int si=this.offset+i*rowStride;
 			for (int j = 0; j < cols; j++) {
-				if (this.data[index(i, j)] != data[offset++])
-					return false;
+				if (this.data[si] != data[offset++]) return false;
+				si+=colStride;
 			}
 		}
 		return true;
