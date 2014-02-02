@@ -35,6 +35,12 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	public boolean isMutable() {
 		return false;
 	}
+	
+	@Override
+	public AMatrix innerProduct(AMatrix m) {
+		if (dimensions!=m.rowCount()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		return m.innerProduct(scale);
+	}
 
 	@Override
 	public double get(int row, int column) {

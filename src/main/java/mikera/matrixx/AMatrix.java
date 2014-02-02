@@ -1240,6 +1240,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return r;
 	}
 	
+	@Override
+	public AMatrix innerProduct(double d) {
+		AMatrix r= clone();
+		r.scale(d);
+		return r;
+	}	
+	
 	public AMatrix transposeInnerProduct(AMatrix s) {
 		// this seems to be a sensible default strategy. Incurs an extra temp copy, 
 		// but probably worth it in most cases to take advantage of Matrix layout
