@@ -11,6 +11,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -174,6 +175,18 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		for (Entry<Integer,AVector> e:this.data.entrySet()) {
 			data[offset+e.getKey()]=e.getValue().unsafeGet(row);
 		}		
+	}
+	
+	@Override
+	public void fill(double value) {
+		if (value==0.0) {
+			data.clear();
+		} else {
+			RepeatedElementVector v=RepeatedElementVector.create(rows, value);
+			for (int i=0; i<cols; i++) {
+				data.put(i, v);
+			}
+		}
 	}
 
 	@Override

@@ -447,14 +447,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param value
 	 */
 	public void fill(double value) {
-		fillRange(0,length(),value);
+		int len=length();
+		for (int i=0; i<len; i++) {
+			unsafeSet(i,value);
+		}
 	}
 	
 	public void fillRange(int offset, int length, double value) {
-		if ((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
-		for (int i = 0; i < length; i++) {
-			unsafeSet(i+offset,value);
-		}
+		subVector(offset,length).fill(value);
 	}
 	
 	/**
@@ -1066,8 +1066,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public final void set(double a) {
-		throw new UnsupportedOperationException("0d set not supported for vectors - use fill instead?");
+	@Override
+	public void set(double a) {
+		fill(a);
 	}
 	
 	@Deprecated

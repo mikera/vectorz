@@ -375,6 +375,18 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	}
 	
 	@Override
+	public void fill(double value) {
+		if (value==0.0) {
+			data.clear();
+		} else {
+			RepeatedElementVector v=RepeatedElementVector.create(cols, value);
+			for (int i=0; i<rows; i++) {
+				data.put(i, v);
+			}
+		}
+	}
+	
+	@Override
 	public void copyColumnTo(int col, double[] data, int offset) {
 		Arrays.fill(data, offset, offset+rows, 0.0);
 		for (Entry<Integer,AVector> e:this.data.entrySet()) {

@@ -530,7 +530,7 @@ public abstract class AArrayVector extends AStridedVector implements IDense {
 	@Override
 	public void fill(double value) {
 		int offset = getArrayOffset();
-		Arrays.fill(getArray(), offset, offset + length(), value);
+		Arrays.fill(getArray(), offset, offset + length, value);
 	}
 
 	@Override

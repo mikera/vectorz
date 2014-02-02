@@ -206,6 +206,17 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 	}
 	
 	@Override
+	public void fill(double value) {
+		int stride=getStride();
+		double[] array=getArray();
+		int di=getArrayOffset();;
+		for (int i=0; i<length; i++) {
+			array[di]=value;
+			di+=stride;
+		}
+	}
+	
+	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		int stride=getStride();
 		double[] array=getArray();

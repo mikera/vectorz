@@ -53,11 +53,6 @@ public class MatrixAsVector extends AMatrixViewVector {
 	}
 	
 	@Override
-	public void fill(double v) {
-		source.fill(v);
-	}
-	
-	@Override
 	public boolean isFullyMutable() {
 		return source.isFullyMutable();
 	}
@@ -70,6 +65,11 @@ public class MatrixAsVector extends AMatrixViewVector {
 	@Override
 	public boolean isView() {
 		return true;
+	}
+	
+	@Override
+	public void set(double value) {
+		source.set(value);
 	}
 	
 	@Override
