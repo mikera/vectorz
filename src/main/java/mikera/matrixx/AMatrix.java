@@ -490,7 +490,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	/**
-	 * Returns a column of the matrix. . May or may not be a view, depending on matrix type.
+	 * Returns a column of the matrix. May or may not be a view, depending on matrix type.
 	 */
 	public AVector getColumn(int column) {
 		return getColumnView(column);

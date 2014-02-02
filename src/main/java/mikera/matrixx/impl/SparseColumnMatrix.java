@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -165,6 +166,14 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	@Override
 	public void copyColumnTo(int i, double[] data, int offset) {
 		getColumn(i).getElements(data, offset);
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] data, int offset) {
+		Arrays.fill(data, offset,offset+ cols,0.0);
+		for (Entry<Integer,AVector> e:this.data.entrySet()) {
+			data[offset+e.getKey()]=e.getValue().unsafeGet(row);
+		}		
 	}
 
 	@Override

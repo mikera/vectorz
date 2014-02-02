@@ -339,6 +339,24 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		}
 		return ds;
 	}
+	
+	@Override
+	public void copyRowTo(int i, double[] data, int offset) {
+		AVector v=this.data.get(i);
+		if (v!=null) {
+			v.getElements(data, offset);
+		} else {
+			Arrays.fill(data, offset, offset+cols, 0.0);			
+		}
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] data, int offset) {
+		Arrays.fill(data, offset, offset+rows, 0.0);
+		for (Entry<Integer,AVector> e:this.data.entrySet()) {
+			data[offset+e.getKey()]=e.getValue().unsafeGet(col);
+		}		
+	}
 
 	public boolean equals(SparseRowMatrix m) {
 		if (m == this)
