@@ -140,6 +140,14 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		for (Entry<Integer, AVector> e : this.data.entrySet()) {
+			AVector v = e.getValue();
+			v.addToArray(data, offset+e.getKey(),cols);
+		}
+	}
+	
+	@Override
 	public AVector getColumn(int i) {
 		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
 		AVector v= data.get(i);

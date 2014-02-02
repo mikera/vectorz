@@ -394,6 +394,13 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		for (int i=0; i<length; i++) {
+			dest[offset+index.data[i]*stride]+=data[i];
+		}
+	}
+	
+	@Override
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		if (other instanceof AArrayVector) {
 			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);

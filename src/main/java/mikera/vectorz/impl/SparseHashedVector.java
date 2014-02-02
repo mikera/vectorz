@@ -188,6 +188,14 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		for (Entry<Integer,Double> e: hash.entrySet()) {
+			int i=e.getKey();
+			dest[offset+i*stride]+=e.getValue();
+		}
+	}
+	
+	@Override
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		int aOffset=arrayOffset-offset;
 		int oOffset=otherOffset-offset;

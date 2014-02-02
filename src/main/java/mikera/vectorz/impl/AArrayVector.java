@@ -215,6 +215,16 @@ public abstract class AArrayVector extends AStridedVector implements IDense {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		double[] data = getArray();
+		int dataOffset = getArrayOffset();
+
+		for (int i = 0; i < length; i++) {
+			dest[offset + i*stride] += data[dataOffset + i];
+		}
+	}
+	
+	@Override
 	public void addProduct(AVector a, AVector b) {
 		int len = length();
 		assert (len == a.length());

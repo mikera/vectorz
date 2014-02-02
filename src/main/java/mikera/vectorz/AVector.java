@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
@@ -1541,8 +1542,19 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param array
 	 * @param offset
 	 */
+	@Override
 	public void addToArray(double[] array, int offset) {
 		addToArray(0,array,offset,length());
+	}
+	
+	/**
+	 * Adds this vector to a double[] array, using the specified offset and stride into the target array
+	 */
+	public void addToArray(double[] data, int offset, int stride) {
+		int n=length();
+		for (int i=0; i<n; i++) {
+			data[offset+i*stride]+=unsafeGet(i);
+		}
 	}
 
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {

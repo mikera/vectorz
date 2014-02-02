@@ -194,6 +194,11 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		// do nothing!
+	}
+	
+	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		// do nothing!
 	}
