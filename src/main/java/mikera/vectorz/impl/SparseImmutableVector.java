@@ -183,10 +183,8 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public boolean isZero() {
-		for (int i=0; i<dataLength; i++) {
-			if (data[i]!=0.0) return false;
-		}
-		return true;
+		// never zero, since we maintain invariant of always having one non-zero value
+		return false;
 	}
 	
 	@Override
@@ -201,7 +199,6 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public int maxElementIndex(){
-		if (data.length==0) return 0;
 		double result=data[0];
 		int di=0;
 		for (int i=1; i<dataLength; i++) {

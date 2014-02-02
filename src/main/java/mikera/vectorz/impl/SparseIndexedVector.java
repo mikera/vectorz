@@ -266,7 +266,7 @@ public class SparseIndexedVector extends ASparseVector {
 				di=i;
 			}
 		}
-		if (result<0.0) { // need to find a sparse element
+		if (result>0.0) { // need to find a sparse element
 			int ind=sparseElementIndex();
 			if (ind>0) return ind;
 		}
