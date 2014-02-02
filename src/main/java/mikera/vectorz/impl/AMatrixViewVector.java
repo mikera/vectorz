@@ -31,6 +31,13 @@ public abstract class AMatrixViewVector extends ASizedVector {
 		source.unsafeSet(calcRow(i),calcCol(i),value);
 	}
 	
+	@Override
+	public void addAt(int i, double v) {
+		int r=calcRow(i);
+		int c=calcCol(i);
+		source.unsafeSet(r,c,source.unsafeGet(r,c)+v);
+	}
+	
 	@Override 
 	public void unsafeSet(int i, double value) {
 		// we assume unsafe is OK, i.e. both i and calculations are correct
