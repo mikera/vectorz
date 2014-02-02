@@ -120,7 +120,7 @@ public class SparseIndexedVector extends ASparseVector {
 		int n=ixs.length();
 		double[] vals=new double[n];
 		for (int i=0; i<n; i++) {
-			vals[i]=source.unsafeGet(ixs.get(i));
+			vals[i]=source.unsafeGet(ixs.unsafeGet(i));
 		}
 		return wrap(length,ixs,vals);
 	}

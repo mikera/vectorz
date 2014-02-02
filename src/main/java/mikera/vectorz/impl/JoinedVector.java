@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import java.nio.DoubleBuffer;
+import java.util.Map.Entry;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -86,6 +87,12 @@ public final class JoinedVector extends ASizedVector {
 			left.addToArray(offset, array, arrayOffset, (split-offset));
 			right.addToArray(0, array, arrayOffset+(split-offset), length-(split-offset));		
 		}
+	}
+	
+	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		left.addToArray(dest, offset,stride);
+		right.addToArray(dest, offset+split*stride,stride);
 	}
 	
 	@Override

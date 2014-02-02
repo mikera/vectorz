@@ -161,6 +161,16 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int destOffset, int destStride) {
+		int stride=getStride();
+		double[] tdata=getArray();
+		int toffset=getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			dest[destOffset+i*destStride]+=tdata[toffset+i*stride];
+		}
+	}
+	
+	@Override
 	public double[] asDoubleArray() {
 		if (isPackedArray()) return getArray();
 		return null;

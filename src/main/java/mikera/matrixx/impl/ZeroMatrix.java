@@ -109,6 +109,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset) {
+		// do nothing
+	}
+	
+	@Override
 	public void getElements(double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+rowCount()*columnCount(),0.0);
 	}

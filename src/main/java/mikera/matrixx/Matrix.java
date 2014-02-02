@@ -54,7 +54,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		set(m);
 	}
 	
-	static double[] createStorage(int rowCount,int columnCount) {
+	public static double[] createStorage(int rowCount,int columnCount) {
 		long elementCount=((long)rowCount)*columnCount;
 		int ec=(int)elementCount;
 		if (ec!=elementCount) throw new IllegalArgumentException(ErrorMessages.tooManyElements(rowCount,columnCount));

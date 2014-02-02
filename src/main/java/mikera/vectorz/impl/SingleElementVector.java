@@ -112,6 +112,11 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(double[] array, int offset, int stride) {
+		array[offset+index*stride]+=value;
+	}
+	
+	@Override
 	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
 		if (index<offset) return;
 		if (index>=offset+length) return;

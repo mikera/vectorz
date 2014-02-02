@@ -188,7 +188,12 @@ public final class AxisVector extends ASparseVector {
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		if (axis<offset) return;
 		if (axis>=offset+length) return;
-		array[arrayOffset-offset+axis]+=1;
+		array[arrayOffset-offset+axis]+=1.0;
+	}
+	
+	@Override
+	public void addToArray(double[] array, int offset, int stride) {
+		array[offset+axis*stride]+=1.0;
 	}
 	
 	@Override

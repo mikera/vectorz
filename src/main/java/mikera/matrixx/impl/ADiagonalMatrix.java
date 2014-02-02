@@ -161,6 +161,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset) {
+		getLeadingDiagonal().addToArray(dest, offset, dimensions+1);
+	}
+	
+	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		// copying rows and columns is the same!
 		copyRowTo(col,dest,destOffset);
