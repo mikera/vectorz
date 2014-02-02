@@ -91,7 +91,7 @@ public class PermutedMatrix extends ADelegatedMatrix {
 	 */
 	@Override
 	public AVector getRowView(int row) {
-		return IndexedSubVector.wrap(source.getRow(rowPermutations.get(row)),columnPermutations.getData());
+		return IndexedSubVector.wrap(source.getRowView(rowPermutations.get(row)),columnPermutations.getData());
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class PermutedMatrix extends ADelegatedMatrix {
 	 */
 	@Override
 	public AVector getColumnView(int column) {
-		return IndexedSubVector.wrap(source.getColumn(columnPermutations.get(column)),rowPermutations.getData());
+		return IndexedSubVector.wrap(source.getColumnView(columnPermutations.get(column)),rowPermutations.getData());
 	}
 	
 	@Override
