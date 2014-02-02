@@ -17,7 +17,7 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Specialised immutable vector containing nothing but zeros.
  * 
- * Must have length 1 or more: use Vector0 instead for length 0 vectors.
+ * Must have length 1 or more: use Vector0 instead for immutable length 0 vectors.
  * 
  * @author Mike
  */

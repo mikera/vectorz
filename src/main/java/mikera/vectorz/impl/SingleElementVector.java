@@ -148,6 +148,18 @@ public final class SingleElementVector extends ASparseVector {
 	public SingleElementVector exactClone() {
 		return new SingleElementVector(index,length,value);
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		if (data[offset+index]!=value) return false;
+		for (int i=0; i<index; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		for (int i=index+1; i<length; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		return true;
+	}
 
 	@Override
 	public int nonSparseElementCount() {
