@@ -88,6 +88,11 @@ public class MatrixAsVector extends AMatrixViewVector {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		source.addToArray(data, offset);
+	}
+	
+	@Override
 	public void clamp(double min, double max) {
 		source.clamp(min, max);
 	}

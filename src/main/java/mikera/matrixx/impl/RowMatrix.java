@@ -130,6 +130,11 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		vector.addToArray(data, offset);
+	}
+	
+	@Override
 	public ColumnMatrix getTranspose() {
 		return new ColumnMatrix(vector);
 	}

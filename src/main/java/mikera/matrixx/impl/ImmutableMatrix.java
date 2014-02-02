@@ -190,6 +190,11 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		DoubleArrays.add(this.data, 0, data,offset,rows*cols);
+	}
+	
+	@Override
 	public Matrix clone() {
 		return Matrix.create(this);
 	}

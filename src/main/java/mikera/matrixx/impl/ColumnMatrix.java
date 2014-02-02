@@ -5,6 +5,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -125,6 +126,11 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	public void addAt(int i, int j, double d) {
 		assert(j==0);
 		vector.addAt(i,d);
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		vector.addToArray(data,offset);
 	}
 	
 	@Override
