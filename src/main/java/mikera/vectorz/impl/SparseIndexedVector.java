@@ -534,6 +534,11 @@ public class SparseIndexedVector extends ASparseVector {
 		if (!index.isDistinctSorted()) throw new VectorzException("Invalid index: "+index);
 		super.validate();
 	}
+	
+	@Override
+	public AVector immutable() {
+		return SparseImmutableVector.create(this);
+	}
 
 	@Override
 	public boolean equalsArray(double[] ds, int offset) {

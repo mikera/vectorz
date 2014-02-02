@@ -902,7 +902,6 @@ public class TestVectors {
 		doGenericTests(SparseIndexedVector.create(Vector.of(-1,-2,-3))); // fully dense!
 
 		doGenericTests(SparseImmutableVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
-		doGenericTests(SparseImmutableVector.create(10,Index.of(),Vector.of()));
 		doGenericTests(SparseImmutableVector.create(Vector.of(1,2,3,4,5))); // fully dense!
 		doGenericTests(SparseImmutableVector.create(Vector.of(-1,-2,-3))); // fully dense!
 

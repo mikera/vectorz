@@ -16,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
 /**
  * Indexed sparse immutable vector
  * 
- * Efficient for sparse vectors. Maintains a indexed array of elements which may be non-zero. 
+ * Efficient for sparse vectors. Maintains a indexed array of non-zero elements. 
  * 
  * @author Mike
  *
@@ -27,6 +27,7 @@ public class SparseImmutableVector extends ASparseVector {
 	private final Index index;
 	private final int[] ixs;
 	private final double[] data;
+	private final int dataLength;
 	
 	private SparseImmutableVector(int length, Index index) {
 		this(length,index,new double[index.length()]);
@@ -37,19 +38,17 @@ public class SparseImmutableVector extends ASparseVector {
 		this.index=index;
 		ixs=index.data;
 		this.data=data;
+		dataLength=data.length;
 	}
 	
 	private SparseImmutableVector(int length, Index index, AVector data) {
-		super(length);
-		this.index=index;
-		this.ixs=index.data;
-		this.data=new double[index.length()];
-		data.getElements(this.data, 0);
+		this(length,index,data.toDoubleArray());
 	}
 	
 	/**
-	 * Creates a SparseIndexedVector with the specified index and data values.
-	 * Performs no checking - Index must be distinct and sorted.
+	 * Creates a SparseImmutableVector with the specified index and data values.
+	 * 
+	 * WARNING: Performs no checking - Index must be distinct and sorted, and data must be non-zero.
 	 */
 	public static SparseImmutableVector wrap(int length, Index index, double[] data) {
 		assert(index.length()==data.length);
@@ -58,43 +57,53 @@ public class SparseImmutableVector extends ASparseVector {
 	}
 	
 	/**
-	 * Creates a SparseIndexedVector using the given sorted Index to identify the indexes of non-zero values,
+	 * Creates a SparseImmutableVector using the given sorted Index to identify the indexes of non-zero values,
 	 * and a double[] array to specify all the non-zero element values
 	 */
-	public static SparseImmutableVector create(int length, Index index, double[] data) {
+	public static AVector create(int length, Index index, double[] data) {
+		int dataLength=data.length;
 		if (!index.isDistinctSorted()) {
-			throw new VectorzException("Index must be sorted and distinct");
+			throw new IllegalArgumentException("Index must be sorted and distinct");
 		}
-		if (!(index.length()==data.length)) {
-			throw new VectorzException("Length of index: mismatch woth data");			
+		if (!(index.length()==dataLength)) {
+			throw new IllegalArgumentException("Length of index: mismatch woth data");			
 		}
-		return new SparseImmutableVector(length, index,data);
+		if (dataLength==0) return ZeroVector.create(length);
+		if (dataLength==length) return ImmutableVector.create(data);
+		return new SparseImmutableVector(length, index.clone(),DoubleArrays.copyOf(data));
 	}
 	
 	/**
-	 * Creates a SparseIndexedVector using the given sorted Index to identify the indexes of non-zero values,
+	 * Creates a SparseImmutableVector using the given sorted Index to identify the indexes of non-zero values,
 	 * and a dense vector to specify all the non-zero element values
 	 */
-	public static SparseImmutableVector create(int length, Index index, AVector data) {
-		SparseImmutableVector sv= create(length, index, new double[index.length()]);
-		data.getElements(sv.data, 0);
-		return sv;
+	public static AVector create(int length, Index index, AVector data) {
+		int dataLength=data.length();
+		if (!index.isDistinctSorted()) {
+			throw new IllegalArgumentException("Index must be sorted and distinct");
+		}
+		if (!(index.length()==dataLength)) {
+			throw new IllegalArgumentException("Length of index: mismatch woth data");			
+		}
+		if (dataLength==0) return ZeroVector.create(length);
+		if (dataLength==length) return ImmutableVector.create(data);
+		return wrap(length, index.clone(), data.toDoubleArray());
 	}
 	
 	/** 
 	 * Creates a SparseIndexedVector from the given vector, ignoring the zeros in the source.
 	 * 
 	 */
-	public static SparseImmutableVector create(AVector source) {
+	public static AVector create(AVector source) {
 		if (source instanceof ASparseVector) return create((ASparseVector) source);
 		int length = source.length();
-		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
-		int len=0;
-		for (int i=0; i<length; i++) {
-			if (source.unsafeGet(i)!=0.0) len++;
-		}
-		int[] indexes=new int[len];
-		double[] vals=new double[len];
+		if (length==0) return Vector0.INSTANCE;
+		int dataLength=(int) source.nonZeroCount();
+		if (dataLength==length) return ImmutableVector.create(source);
+		if (dataLength==0) return ZeroVector.create(length);
+		
+		int[] indexes=new int[dataLength];
+		double[] vals=new double[dataLength];
 		int pos=0;
 		for (int i=0; i<length; i++) {
 			double v=source.unsafeGet(i);
@@ -107,9 +116,13 @@ public class SparseImmutableVector extends ASparseVector {
 		return wrap(length,Index.wrap(indexes),vals);
 	}
 	
-	public static SparseImmutableVector create(ASparseVector source) {
+	public static AVector create(ASparseVector source) {
 		int length = source.length();
-		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
+		if (length==0) return Vector0.INSTANCE;
+		int dataLength=(int) source.nonZeroCount();
+		if (dataLength==length) return ImmutableVector.create(source);
+		if (dataLength==0) return ZeroVector.create(length);
+
 		Index ixs=source.nonSparseIndexes();
 		int n=ixs.length();
 		double[] vals=new double[n];
@@ -127,7 +140,7 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public int nonSparseElementCount() {
-		return data.length;
+		return dataLength;
 	}
 	
 	@Override
@@ -151,30 +164,22 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public void multiply (AVector v) {
-		if (v instanceof AArrayVector) {
-			multiply((AArrayVector)v);
-			return;
-		}
-		for (int i=0; i<data.length; i++) {
-			data[i]*=v.get(ixs[i]);
-		}
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	public void multiply(AArrayVector v) {
-		multiply(v.getArray(),v.getArrayOffset());
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
 	public void multiply(double[] array, int offset) {
-		for (int i=0; i<data.length; i++) {
-			data[i]*=array[offset+ixs[i]];
-		}
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
 	public double magnitudeSquared() {
 		double result=0.0;
-		for (int i=0; i<data.length; i++) {
+		for (int i=0; i<dataLength; i++) {
 			double d=data[i];
 			result+=d*d;
 		}
@@ -183,7 +188,7 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public boolean isZero() {
-		for (int i=0; i<data.length; i++) {
+		for (int i=0; i<dataLength; i++) {
 			if (data[i]!=0.0) return false;
 		}
 		return true;
@@ -192,7 +197,7 @@ public class SparseImmutableVector extends ASparseVector {
 	@Override
 	public double maxAbsElement() {
 		double result=0.0;
-		for (int i=0; i<data.length; i++) {
+		for (int i=0; i<dataLength; i++) {
 			double d=Math.abs(data[i]);
 			if (d>result) result=d; 
 		}
@@ -204,7 +209,7 @@ public class SparseImmutableVector extends ASparseVector {
 		if (data.length==0) return 0;
 		double result=data[0];
 		int di=0;
-		for (int i=1; i<data.length; i++) {
+		for (int i=1; i<dataLength; i++) {
 			double d=data[i];
 			if (d>result) {
 				result=d; 
@@ -221,10 +226,9 @@ public class SparseImmutableVector extends ASparseVector {
  
 	@Override
 	public int maxAbsElementIndex(){
-		if (data.length==0) return 0;
 		double result=data[0];
 		int di=0;
-		for (int i=1; i<data.length; i++) {
+		for (int i=1; i<dataLength; i++) {
 			double d=Math.abs(data[i]);
 			if (d>result) {
 				result=d; 
@@ -236,10 +240,9 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public int minElementIndex(){
-		if (data.length==0) return 0;
 		double result=data[0];
 		int di=0;
-		for (int i=1; i<data.length; i++) {
+		for (int i=1; i<dataLength; i++) {
 			double d=data[i];
 			if (d<result) {
 				result=d; 
@@ -258,9 +261,6 @@ public class SparseImmutableVector extends ASparseVector {
 	 * @return
 	 */
 	private int sparseElementIndex() {
-		if (data.length==length) {
-			return -1;
-		}
 		for (int i=0; i<length; i++) {
 			if (!index.contains(i)) return i;
 		}
@@ -270,26 +270,17 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public void negate() {
-		for (int i=0; i<data.length; i++) {
-			data[i]=-data[i]; 
-		}
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
 	public void applyOp(Op op) {
-		int dlen=data.length;
-		if ((dlen<length())&&(op.isStochastic()||(op.apply(0.0)!=0.0))) {
-			super.applyOp(op);
-		} else {
-			op.applyTo(data);
-		}
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
 	public void abs() {
-		for (int i=0; i<data.length; i++) {
-			data[i]=Math.abs(data[i]); 
-		}
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
 	@Override
@@ -324,14 +315,14 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public long nonZeroCount() {
-		return DoubleArrays.nonZeroCount(data);
+		return dataLength;
 	}
 	
 	@Override
 	public double dotProduct(AVector v) {
 		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
 		double result=0.0;
-		for (int j=0; j<data.length; j++) {
+		for (int j=0; j<dataLength; j++) {
 			result+=data[j]*v.unsafeGet(ixs[j]);
 		}
 		return result;
@@ -340,7 +331,7 @@ public class SparseImmutableVector extends ASparseVector {
 	@Override
 	public double dotProduct(double[] data, int offset) {
 		double result=0.0;
-		for (int j=0; j<this.data.length; j++) {
+		for (int j=0; j<dataLength; j++) {
 			result+=this.data[j]*data[offset+ixs[j]];
 		}
 		return result;
@@ -358,8 +349,8 @@ public class SparseImmutableVector extends ASparseVector {
 		int aOffset=arrayOffset-offset;
 		
 		int start=index.seekPosition(offset);
-		for (int i=start; i<data.length; i++) {
-			int di=index.data[i];
+		for (int i=start; i<dataLength; i++) {
+			int di=ixs[i];
 			// if (di<offset) continue; not needed because of seekPosition!
 			if (di>=(offset+length)) return;
 			array[di+aOffset]+=factor*data[i];
@@ -371,8 +362,8 @@ public class SparseImmutableVector extends ASparseVector {
 		assert((offset>=0)&&(offset+length<=this.length));
 		
 		int start=index.seekPosition(offset);
-		for (int j=start; j<data.length; j++) {
-			int di=index.data[j]-offset; // index relative to offset
+		for (int j=start; j<dataLength; j++) {
+			int di=ixs[j]-offset; // index relative to offset
 			if (di>=length) return;
 			array[arrayOffset+di]+=data[j];
 		}
@@ -380,7 +371,7 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public void addToArray(double[] dest, int offset, int stride) {
-		for (int i=0; i<length; i++) {
+		for (int i=0; i<dataLength; i++) {
 			dest[offset+ixs[i]*stride]+=data[i];
 		}
 	}
@@ -393,7 +384,7 @@ public class SparseImmutableVector extends ASparseVector {
 		}
 		assert(offset>=0);
 		assert(offset+length<=length());
-		for (int j=index.seekPosition(offset); j<data.length; j++) {
+		for (int j=index.seekPosition(offset); j<dataLength; j++) {
 			int i =ixs[j]-offset; // index relative to offset
 			if (i>=length) return;
 			array[i+arrayOffset]+=factor*data[j]*other.get(i+otherOffset);
@@ -407,7 +398,7 @@ public class SparseImmutableVector extends ASparseVector {
 		double[] otherArray=other.getArray();
 		otherOffset+=other.getArrayOffset();
 		
-		for (int j=index.seekPosition(offset); j<data.length; j++) {
+		for (int j=index.seekPosition(offset); j<dataLength; j++) {
 			int i =ixs[j]-offset; // index relative to offset
 			if (i>=length) return;
 			array[i+arrayOffset]+=factor*data[j]*otherArray[i+otherOffset];
@@ -420,7 +411,7 @@ public class SparseImmutableVector extends ASparseVector {
 	}
 	
 	public void copySparseValuesTo(double[] array, int offset) {
-		for (int i=0; i<data.length; i++) {
+		for (int i=0; i<dataLength; i++) {
 			int di=ixs[i];
 			array[offset+di]=data[i];
 		}	
@@ -432,8 +423,8 @@ public class SparseImmutableVector extends ASparseVector {
 			getElements(av.getArray(),av.getArrayOffset()+offset);
 		}
 		v.fillRange(offset,length,0.0);
-		for (int i=0; i<data.length; i++) {
-			v.unsafeSet(offset+index.data[i],data[i]);
+		for (int i=0; i<dataLength; i++) {
+			v.unsafeSet(offset+ixs[i],data[i]);
 		}	
 	}
 	
@@ -472,7 +463,7 @@ public class SparseImmutableVector extends ASparseVector {
 	@Override
 	public Vector clone() {
 		Vector v=Vector.createLength(length);
-		for (int i=0; i<data.length; i++) {
+		for (int i=0; i<dataLength; i++) {
 			v.unsafeSet(ixs[i],data[i]);
 		}	
 		return v;
@@ -490,6 +481,7 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public void validate() {
+		if (data.length==0) throw new VectorzException("SparseImmutableVector must have some non-zero values");
 		if (index.length()!=data.length) throw new VectorzException("Inconsistent data and index!");
 		if (!index.isDistinctSorted()) throw new VectorzException("Invalid index: "+index);
 		super.validate();
@@ -497,8 +489,7 @@ public class SparseImmutableVector extends ASparseVector {
 
 	@Override
 	public boolean equalsArray(double[] ds, int offset) {
-		int n=data.length;
-		if (n==0) return DoubleArrays.isZero(ds, offset, length);
+		int n=dataLength;
 		int di=0;
 		int i=0;
 		while (di<n) {

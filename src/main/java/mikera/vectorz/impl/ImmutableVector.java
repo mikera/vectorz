@@ -37,6 +37,10 @@ public class ImmutableVector extends ASizedVector implements IDense {
 		this.offset=offset;
 	}
 	
+	public static ImmutableVector create(double[] data) {
+		return wrap(DoubleArrays.copyOf(data));
+	}
+	
 	public static ImmutableVector create(AVector v) {
 		int length=v.length();
 		double[] data=new double[length];
@@ -232,4 +236,5 @@ public class ImmutableVector extends ASizedVector implements IDense {
 		if ((offset<0)||(offset+length>data.length)||(length<0)) throw new VectorzException("ImmutableVector data out of bounds");
 		super.validate();
 	}
+
 }
