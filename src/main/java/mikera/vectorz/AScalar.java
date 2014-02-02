@@ -363,7 +363,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	@Override
 	public boolean equals(INDArray o) {
-		return (o.dimensionality()==0)&&(o.get(SCALAR_SHAPE)==get());
+		return (o.dimensionality()==0)&&(o.get()==get());
 	}
 	
 	@Override

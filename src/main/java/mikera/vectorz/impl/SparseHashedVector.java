@@ -447,7 +447,15 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public Index nonSparseIndexes() {
-		return Index.createSorted(hash.keySet());
+		int n=hash.size();
+		int[] in=new int[n];
+		int di=0;
+		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
+			in[di++]=e.getKey();
+		}
+		Index result=Index.wrap(in);
+		result.sort();
+		return result;
 	}
 
 	@Override

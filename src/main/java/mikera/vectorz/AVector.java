@@ -278,17 +278,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
 		if (o instanceof AVector) return equals((AVector)o);
 		if (o instanceof INDArray) return equals((INDArray)o);
 		return false;
 	}
 	
+	@Override
 	public boolean equals(AVector v) {
-		if (this==v) return true;
 		if (v instanceof AArrayVector) {
 			return equals((AArrayVector)v);
 		}
+		if (this==v) return true;
 		int len=length();
 		if (len != v.length())
 			return false;
@@ -309,12 +309,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (v instanceof AVector) return equals((AVector)v);
 		if (v.dimensionality()!=1) return false;
 		int len=length();
-		if (len != v.getShape()[0]) return false;
+		if (len != v.getShape(0)) return false;
 		
-		int[] ind = new int[1];
 		for (int i = 0; i < len; i++) {
-			ind[0]=i;
-			if (unsafeGet(i) != v.get(ind))
+			if (unsafeGet(i) != v.get(i))
 				return false;
 		}
 		return true;

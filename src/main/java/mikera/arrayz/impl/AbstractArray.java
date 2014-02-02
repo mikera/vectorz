@@ -436,12 +436,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (dims==0) {
 			return (get()==a.get());
 		} else if (dims==1) {
-			return asVector().equals(a.asVector());
+			return equals(a.asVector());
 		} else {
 			int sc=sliceCount();
 			for (int i=0; i<sc; i++) {
 				if (!slice(i).equals(a.slice(i))) return false;
 			}
+		}
+		return true;
+	}
+	
+	public boolean equals(AVector a) {
+		if (dimensionality()!=1) return false;
+		int sc=sliceCount();
+		if (a.length()!=sc) return false;
+		for (int i=0; i<sc; i++) {
+			if (!(get(i)==a.unsafeGet(i))) return false;
 		}
 		return true;
 	}

@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
@@ -572,6 +573,15 @@ public abstract class AArrayVector extends AStridedVector implements IDense {
 
 	public JoinedArrayVector join(JoinedArrayVector v) {
 		return JoinedArrayVector.wrap(this).join(v);
+	}
+	
+	@Override
+	public boolean equals(INDArray v) {
+		if (v.dimensionality()!=1) return false;
+		int len=length();
+		if (len != v.getShape(0)) return false;
+		
+		return v.equalsArray(getArray(), getArrayOffset());
 	}
 
 	@Override
