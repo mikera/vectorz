@@ -125,7 +125,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public void add(AMatrix a) {
-		if (!sameShape(a)) {
+		if (!isSameShape(a)) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		}
 		a.addToArray(getArray(), getArrayOffset());

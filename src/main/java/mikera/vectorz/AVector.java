@@ -28,6 +28,7 @@ import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.VectorIterator;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Logistic;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -181,6 +182,23 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			if (unsafeGet(i)!=0.0) result++;
 		}
 		return result;
+	}
+	
+	protected double[] nonZeroValues() {
+		int len=length();
+		int n=(int)nonZeroCount();
+		if (n==0) return DoubleArrays.EMPTY;
+		double[] vs=new double[n];
+		
+		int vi=0;
+		for (int i=0; i<len; i++) {
+			double d=unsafeGet(i);
+			if (d!=0.0) {
+				vs[vi++]=d;
+				if (vi>=n) return vs;
+			}
+		}
+		return vs;
 	}
 	
 	@Override

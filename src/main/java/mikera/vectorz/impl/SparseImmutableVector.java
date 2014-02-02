@@ -112,7 +112,7 @@ public class SparseImmutableVector extends ASparseVector {
 				pos++;
 			}
 		}
-		return wrap(length,Index.wrap(indexes),vals);
+		return wrap(length,Index.wrap(indexes),vals); 
 	}
 	
 	/** Creates a SparseIndexedVector from a row of an existing matrix */
@@ -432,6 +432,11 @@ public class SparseImmutableVector extends ASparseVector {
 	@Override
 	public Vector nonSparseValues() {
 		return Vector.wrap(data);
+	}
+	
+	@Override
+	protected double[] nonZeroValues() {
+		return DoubleArrays.copyOf(data);
 	}
 	
 	@Override

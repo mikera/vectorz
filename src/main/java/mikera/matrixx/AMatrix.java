@@ -276,10 +276,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return new long[] {rowCount(),columnCount()};
 	}
 	
-	protected boolean sameShape(AMatrix m) {
-		return (rowCount()==m.rowCount())&&(columnCount()==m.columnCount());
-	}
-	
 	@Override
 	public double get(int... indexes) {
 		assert(indexes.length==2);
@@ -1059,7 +1055,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public boolean equals(Object o) {
-		if (o==this) return true;
 		if (o instanceof AMatrix) return equals((AMatrix) o);
 		if (o instanceof INDArray) return equals((INDArray) o);
 		return false;
@@ -1549,14 +1544,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
 	public boolean isZero() {
-		int rc = rowCount();
-		int cc = columnCount();
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				if (unsafeGet(i,j)!=0.0) return false;
-			}
-		}
-		return true;
+		return elementsEqual(0.0);
 	}
 	
 	/**

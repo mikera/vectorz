@@ -123,7 +123,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	protected boolean sameShape(AMatrix m) {
+	public boolean isSameShape(AMatrix m) {
 		return (dimensions==m.rowCount())&&(dimensions==m.columnCount());
 	}
 	

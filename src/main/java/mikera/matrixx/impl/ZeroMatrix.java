@@ -224,7 +224,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 
 	@Override
 	public boolean equals(AMatrix m) {
-		if (!sameShape(m)) return false;
+		if (!isSameShape(m)) return false;
 		return m.isZero();
 	}
 
