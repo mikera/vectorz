@@ -52,6 +52,25 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public void set(AVector v) {
+		int rc=rowCount();
+		if (v.length()!=cols) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<rc; i++) {
+			v.getElements(data, offset+i*cols);
+		}
+	}
+	
+	@Override
+	public void set(AMatrix m) {
+		if (!isSameShape(m)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		m.getElements(data, offset);
+	}
+	
+	@Override
 	public AArrayVector getRowView(int i) {
 		return Vectorz.wrap(data, getArrayOffset()+i*cols, cols);
 	}
