@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.arrayz.impl.IDense;
+import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -16,7 +17,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows, IDense {
+public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows, IDenseArray {
 	private static final long serialVersionUID = -2144964424833585026L;
 
 	protected ADenseArrayMatrix(double[] data, int rows, int cols) {

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDense;
+import mikera.arrayz.impl.IDenseArray;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -21,7 +22,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class AArrayVector extends AStridedVector implements IDense {
+public abstract class AArrayVector extends AStridedVector implements IDenseArray {
 	
 	protected AArrayVector(int length, double[] data) {
 		super(length,data);

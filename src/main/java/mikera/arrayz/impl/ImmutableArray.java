@@ -21,7 +21,7 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public class ImmutableArray extends BaseNDArray implements IDense {
+public class ImmutableArray extends BaseNDArray implements IDenseArray {
 	private static final long serialVersionUID = 2078025371733533775L;
 
 	private ImmutableArray(int dims, int[] shape, int[] strides) {
@@ -85,10 +85,6 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 		long[] lshape = new long[dimensions];
 		IntArrays.copyIntsToLongs(shape, lshape);
 		return lshape;
-	}
-
-	public int getStride(int dim) {
-		return stride[dim];
 	}
 
 	@Override

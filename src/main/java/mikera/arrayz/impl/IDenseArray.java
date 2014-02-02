@@ -8,7 +8,7 @@ package mikera.arrayz.impl;
  */
 public interface IDenseArray extends IDense {
 	
-	public double[] getarray();
+	public double[] getArray();
 	
 	public int getArrayOffset();
 }

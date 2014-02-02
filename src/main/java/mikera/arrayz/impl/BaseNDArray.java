@@ -42,12 +42,13 @@ public abstract class BaseNDArray extends AbstractArray<INDArray> implements ISt
 		return shape.clone();
 	}
 	
-	public int getStride(int dim) {
+	@Override
+	public final int getStride(int dim) {
 		return stride[dim];
 	}
 	
 	@Override
-	public int getShape(int dim) {
+	public final int getShape(int dim) {
 		return shape[dim];
 	}
 

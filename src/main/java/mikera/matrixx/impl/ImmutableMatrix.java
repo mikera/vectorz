@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import java.nio.DoubleBuffer;
 
 import mikera.arrayz.INDArray;
+import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -19,7 +20,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class ImmutableMatrix extends ARectangularMatrix {
+public final class ImmutableMatrix extends ARectangularMatrix implements IDenseArray {
 	private static final long serialVersionUID = 2848013010449128820L;
 
 	private double[] data;
@@ -233,5 +234,15 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 		double[] data = new double[n];
 		a.getElements(data,0);
 		return ImmutableMatrix.wrap(rows,cols,data);
+	}
+
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return 0;
 	}
 }

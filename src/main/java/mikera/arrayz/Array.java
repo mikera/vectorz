@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
+import mikera.arrayz.impl.IDenseArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
 import mikera.indexz.Index;
@@ -32,7 +33,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  * 
  */
-public final class Array extends AbstractArray<INDArray> implements IStridedArray, IDense {
+public final class Array extends AbstractArray<INDArray> implements IStridedArray, IDenseArray {
 	private static final long serialVersionUID = -8636720562647069034L;
 
 	private final int dimensions;
