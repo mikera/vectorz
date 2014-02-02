@@ -61,6 +61,15 @@ public final class Matrix extends ADenseArrayMatrix {
 		return new double[ec];
 	}
 	
+	public static Matrix createRandom(int rows, int cols) {
+		Matrix m=create(rows,cols);
+		double[] d=m.data;
+		for (int i=0; i<d.length; i++) {
+			d[i]=Math.random();
+		}
+		return m;
+	}
+	
 	public static Matrix create(INDArray m) {
 		if (m.dimensionality()!=2) throw new IllegalArgumentException("Can only create matrix from 2D array");
 		int rows=m.getShape(0);
@@ -554,4 +563,5 @@ public final class Matrix extends ADenseArrayMatrix {
 	public double[] getArray() {
 		return data;
 	}
+
 }

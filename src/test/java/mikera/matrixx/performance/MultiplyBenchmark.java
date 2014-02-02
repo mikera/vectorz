@@ -14,7 +14,7 @@ import mikera.matrixx.algo.Multiplications;
  */
 
 public class MultiplyBenchmark extends SimpleBenchmark {
-	public static final int MATRIX_SIZE=100;
+	public static final int MATRIX_SIZE=10;
 
 	
 	public void timeBlockedMultiply(int runs) {
@@ -44,12 +44,21 @@ public class MultiplyBenchmark extends SimpleBenchmark {
 		}		
 	}
 	
-	public void timeDirectMultiply(int runs) {
+	public void timeInnerProductMultiply(int runs) {
 		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
 		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
 
 		for (int i=0; i<runs; i++) {
 			m1.innerProduct(m2);
+		}		
+	}
+	
+	public void timeDirectMultiply(int runs) {
+		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+
+		for (int i=0; i<runs; i++) {
+			Multiplications.directMultiply(m1, m2);
 		}		
 	}
 	

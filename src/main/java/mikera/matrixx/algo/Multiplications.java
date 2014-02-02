@@ -8,8 +8,8 @@ import mikera.vectorz.util.ErrorMessages;
 
 public class Multiplications {
 	// target number of elements in working set group
-	// aim for around 8-10kb => fits comfortably in L1 cache in modern machines
-	protected static final int WORKING_SET_TARGET=1024;
+	// aim for around 200kb => fits comfortably in L2 cache in modern machines
+	protected static final int WORKING_SET_TARGET=8192;
 	
 	/** 
 	 * General purpose matrix multiplication, with smart selection of algorithm based
@@ -128,6 +128,31 @@ public class Multiplications {
 			}
 		}
 		return result;
+	}
+	
+	public static Matrix directMultiply(Matrix a, AMatrix b) {
+		int rc=a.rowCount();
+		int cc=b.columnCount();
+		int ic=a.columnCount();
+		
+		if ((ic!=b.rowCount())) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a,b));
+		}
+
+		Matrix result=Matrix.create(rc,cc);
+		double[] tmp=new double[ic];
+		for (int j=0; j<cc; j++) {
+			b.copyColumnTo(j, tmp, 0);
+			
+			for (int i=0; i<rc; i++) {
+				double acc=0.0;
+				for (int k=0; k<ic; k++) {
+					acc+=a.unsafeGet(i, k)*tmp[k];
+				}
+				result.unsafeSet(i,j,acc);
+			}
+		}
+		return result;		
 	}
 	
 	public static AMatrix naiveMultiply(AMatrix a, AMatrix b) {
