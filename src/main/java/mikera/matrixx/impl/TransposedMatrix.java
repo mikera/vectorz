@@ -128,6 +128,11 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public boolean isSymmetric() {
 		return source.isSymmetric();
 	}
+
+	@Override
+	public boolean isSparse() {
+		return source.isSparse();
+	}
 	
 	@Override
 	public boolean isZero() {

@@ -41,6 +41,14 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
+	public AStridedVector getBand(int i) {
+		int cs=columnStride();
+		int rs=rowStride();
+		if ((i>=cols)||(i<=-rows)) return null;
+		return Vectorz.wrapStrided(data, getArrayOffset()+bandStartColumn(i)*cs+bandStartRow(i)*rs, bandLength(i), rs+cs);
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		int cc=columnCount();
 		for (int i=0; i<cc; i++) {

@@ -56,7 +56,7 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 		if (col==0) {
 			vector.getElements(dest, destOffset);
 		} else {
-			throw new IndexOutOfBoundsException("Column out of range: "+col);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, col));
 		}
 	}
 	

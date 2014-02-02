@@ -21,7 +21,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public abstract class ABandedMatrix extends AMatrix implements ISparse {
+public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBands {
 	private static final long serialVersionUID = -229314208418131186L;
 
 	@Override
