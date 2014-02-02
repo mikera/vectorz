@@ -953,6 +953,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		getRowView(dst).addMultiple(getRow(src), factor);
 	}
 	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		int cc=columnCount();
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRow(i).addToArray(data, offset+i*cc);
+		}
+	}
+	
 	/**
 	 * Swaps two rows of the matrix in place
 	 * This is an elementary row operation

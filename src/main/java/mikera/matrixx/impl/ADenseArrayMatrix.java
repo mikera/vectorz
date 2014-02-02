@@ -124,6 +124,19 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public void add(AMatrix a) {
+		if (!sameShape(a)) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+		a.addToArray(getArray(), getArrayOffset());
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		DoubleArrays.add(getArray(), getArrayOffset(), data, offset, rows*cols);
+	}
+	
+	@Override
 	public boolean equals(AMatrix a) {
 		if (a instanceof ADenseArrayMatrix) return equals((ADenseArrayMatrix)a);
 		return super.equals(a);

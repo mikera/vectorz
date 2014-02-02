@@ -16,6 +16,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -154,6 +155,14 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 				}
 				v.exp();
 			}
+		}
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		for (Entry<Integer, AVector> e : this.data.entrySet()) {
+			AVector v = e.getValue();
+			v.addToArray(data, offset+cols*e.getKey());
 		}
 	}
 

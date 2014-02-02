@@ -93,6 +93,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public void add(double a);
 	
 	/**
+	 * Adds all the elements of this array to a double array, in row-major order
+	 */
+	public void addToArray(double[] data, int offset);
+	
+	/**
 	 * Subtracts a double value from all elements in this array
 	 */
 	public void sub(double a);

@@ -132,6 +132,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		set(get()+d);
 	}
 	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		data[offset]+=get();
+	}
+	
 	public void sub(double d) {
 		set(get()-d);
 	}
