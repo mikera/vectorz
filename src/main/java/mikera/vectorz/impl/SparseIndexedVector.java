@@ -70,7 +70,7 @@ public class SparseIndexedVector extends ASparseVector {
 		if (!(index.length()==data.length)) {
 			throw new VectorzException("Length of index: mismatch woth data");			
 		}
-		return new SparseIndexedVector(length, index,data);
+		return new SparseIndexedVector(length, index.clone(),DoubleArrays.copyOf(data));
 	}
 	
 	public static SparseIndexedVector createLength(int length) {
@@ -202,6 +202,11 @@ public class SparseIndexedVector extends ASparseVector {
 			if (data[i]!=0.0) return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean isView() {
+		return false;
 	}
 	
 	@Override

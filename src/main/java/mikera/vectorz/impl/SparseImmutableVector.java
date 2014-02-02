@@ -178,12 +178,7 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public double magnitudeSquared() {
-		double result=0.0;
-		for (int i=0; i<dataLength; i++) {
-			double d=data[i];
-			result+=d*d;
-		}
-		return result;
+		return DoubleArrays.elementSquaredSum(data);
 	}
 	
 	@Override
@@ -461,12 +456,20 @@ public class SparseImmutableVector extends ASparseVector {
 	}
 	
 	@Override
-	public Vector clone() {
+	public Vector dense() {
 		Vector v=Vector.createLength(length);
-		for (int i=0; i<dataLength; i++) {
-			v.unsafeSet(ixs[i],data[i]);
-		}	
+		addToArray(v.data,0);
 		return v;
+	}
+	
+	@Override
+	public SparseIndexedVector mutable() {
+		return SparseIndexedVector.create(length, index, data);
+	}
+	
+	@Override
+	public SparseIndexedVector clone() {
+		return SparseIndexedVector.create(length, index, data);
 	}
 	
 	@Override
