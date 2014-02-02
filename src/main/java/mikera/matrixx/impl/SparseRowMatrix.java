@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
+import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -215,6 +216,15 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 			}
 		}
 		return r;
+	}
+	
+	@Override
+	public INDArray innerProduct(double a) {
+		HashMap<Integer,AVector> ndata=new HashMap<Integer,AVector>();
+		for (Entry<Integer, AVector> eRow : data.entrySet()) {
+			ndata.put(eRow.getKey(), eRow.getValue().innerProduct(a));
+		}
+		return wrap(ndata,rows,cols);
 	}
 
 	public AMatrix innerProduct(SparseColumnMatrix a) {

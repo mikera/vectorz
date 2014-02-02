@@ -223,6 +223,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return result;
 	}
 	
+	@Override
 	public INDArray innerProduct(INDArray a) {
 		int dims=dimensionality();
 		switch (dims) {
@@ -246,6 +247,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return SliceArray.create(sips);
 	}
 	
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (Object s:this) {
