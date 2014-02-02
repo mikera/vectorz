@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector2;
@@ -178,6 +179,23 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 		double[] result=Matrix.createStorage(rowCount(),columnCount());
 		addToArray(result,0);
 		return result;
+	}
+	
+	@Override
+	public Matrix dense() {
+		return toMatrix();
+	}
+	
+	@Override
+	public Matrix toMatrix() {
+		Matrix m=Matrix.create(rows, cols);
+		addToArray(m.data,0);
+		return m;
+	}
+	
+	@Override
+	public AMatrix sparse() {
+		return this;
 	}
 	
 	protected abstract int lineCount();
