@@ -78,7 +78,12 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	@Override
 	public boolean equals(AMatrix a) {
 		if (a==this) return true;	
-		if ((rows != a.rowCount())||(cols != a.columnCount())) return false;
+		if (a instanceof ADenseArrayMatrix) {
+			return equals((ADenseArrayMatrix)a);
+		}
+
+		if (!isSameShape(a)) return false;
+		
 		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
@@ -87,5 +92,10 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 			}
 		}
 		return true;
+	}
+	
+	public boolean equals(ADenseArrayMatrix a) {
+		if (!isSameShape(a)) return false;
+		return equalsArray(a.getArray(),a.getArrayOffset());
 	}
 }

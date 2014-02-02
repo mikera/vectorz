@@ -166,8 +166,9 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		return DoubleArrays.equals(getArray(), getArrayOffset(), data, offset, rows*cols);
 	}
 	
+	@Override
 	public boolean equals(ADenseArrayMatrix m) {
-		if ((rows!=m.rows)||(cols!=m.cols)) return false;
+		if (!isSameShape(m)) return false;
 		
 		return DoubleArrays.equals(getArray(), getArrayOffset(), m.getArray(), m.getArrayOffset(), rows*cols);
 	}

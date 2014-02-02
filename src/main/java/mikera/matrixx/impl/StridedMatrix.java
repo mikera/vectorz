@@ -220,7 +220,9 @@ public final class StridedMatrix extends AStridedMatrix {
 	@Override
 	public boolean equals(AMatrix a) {
 		if (a==this) return true;	
-		if ((rows != a.rowCount())||(cols != a.columnCount())) return false;
+		if (a instanceof ADenseArrayMatrix) return equals((ADenseArrayMatrix)a);
+		
+		if (!isSameShape(a)) return false;
 		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {

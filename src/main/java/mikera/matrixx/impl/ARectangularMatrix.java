@@ -73,7 +73,6 @@ public abstract class ARectangularMatrix extends AMatrix {
 		return (rows==m.rows)&&(cols==m.cols);
 	}
 	
-	
 	@Override
 	public final long elementCount() {
 		return ((long)rows)*cols;
