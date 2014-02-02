@@ -157,8 +157,8 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 	
 	@Override
-	public Matrix getTransposeCopy() {
-		return source.toMatrix();
+	public AMatrix getTransposeCopy() {
+		return source.copy();
 	}
 	
 	@Override

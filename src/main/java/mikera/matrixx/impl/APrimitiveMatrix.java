@@ -19,4 +19,9 @@ public abstract class APrimitiveMatrix extends AMatrix {
 	public boolean isFullyMutable() {
 		return true;
 	}
+	
+	@Override
+	public AMatrix copy() {
+		return clone();
+	}
 }

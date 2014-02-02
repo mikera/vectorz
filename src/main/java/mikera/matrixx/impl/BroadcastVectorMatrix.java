@@ -51,6 +51,11 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 	public final void copyRowTo(int row, double[] dest, int destOffset) {
 		vector.getElements(dest,destOffset);
 	}
+	
+	@Override
+	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		return BroadcastVectorMatrix.wrap(vector.subVector(colStart, cols), rows);
+	}
 
 	@Override
 	public AMatrix exactClone() {
@@ -59,7 +64,8 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 
 	@Override
 	public double get(int row, int column) {
-		return getRow(row).get(column);
+		if (row<0 ||(row>=rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
+		return vector.get(column);
 	}
 	
 	@Override
