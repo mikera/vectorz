@@ -272,6 +272,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public AVector getBand(int band) {
+		return Vectorz.createZeroVector(bandLength(band));
+	}
+	
+	@Override
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		return ZeroMatrix.create(rows, cols);
 	}

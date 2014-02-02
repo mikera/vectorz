@@ -26,6 +26,8 @@ public interface IMatrix extends INDArray {
 	
 	public AVector getColumn(int column);
 
+	public AVector getBand(int band);
+
 	boolean isSquare();
 
 	boolean isInvertible();	
@@ -37,6 +39,7 @@ public interface IMatrix extends INDArray {
 	void transformInPlace(AVector v);
 
 	AMatrix inverse();
+
 
 
 }

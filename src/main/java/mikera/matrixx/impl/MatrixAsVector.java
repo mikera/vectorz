@@ -73,6 +73,11 @@ public class MatrixAsVector extends AMatrixViewVector {
 	}
 	
 	@Override
+	public boolean isSparse() {
+		return source.isSparse();
+	}
+	
+	@Override
 	public boolean isZero() {
 		return source.isZero();
 	}

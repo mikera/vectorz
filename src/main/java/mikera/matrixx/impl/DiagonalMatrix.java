@@ -45,6 +45,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return wrap(v.toDoubleArray());
 	}
 	
+	public static DiagonalMatrix create(AMatrix m) {
+		return wrap(m.getLeadingDiagonal().toDoubleArray());
+	}
+	
 	public static DiagonalMatrix wrap(double[] data) {
 		return new DiagonalMatrix(data);
 	}

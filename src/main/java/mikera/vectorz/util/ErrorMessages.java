@@ -145,6 +145,10 @@ public class ErrorMessages {
 		return "Not yet implemented!";
 	}
 
+	public static String invalidBand(AMatrix source, int band) {
+		return "Illegal band "+band+ " on matrix with shape: "+shape(source);
+	}
+
 
 
 

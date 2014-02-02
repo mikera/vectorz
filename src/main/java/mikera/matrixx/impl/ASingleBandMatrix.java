@@ -5,7 +5,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ZeroVector;
 
 /**
- * Abstract base class to represent matrices with a single non-zero band
+ * Abstract base class to represent sparse matrices with a single non-zero band
  * 
  * Unlike ADiagonalMatrix, this matrix need not be square, and may have non-zero values on
  * an arbitrary diagonal.
@@ -33,6 +33,11 @@ public abstract class ASingleBandMatrix extends ABandedMatrix implements ISparse
 		if (rowCount()!=columnCount()) return false;
 		if ((nonZeroBand()==0)||getNonZeroBand().isZero()) return true;
 		return false;
+	}
+	
+	@Override
+	public boolean isIdentity() {
+		return isSquare()&&(nonZeroBand()==0)&&(getNonZeroBand().elementsEqual(1.0));
 	}
 	
 	@Override

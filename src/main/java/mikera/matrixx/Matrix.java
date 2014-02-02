@@ -545,7 +545,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	public StridedVector getBand(int band) {
 		int cc=columnCount();
 		int rc=rowCount();
-		if ((band>=cc)||(band<=-rc)) return null;
+		if ((band>cc)||(band<-rc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidBand(this, band));
 		return StridedVector.wrap(data, (band>=0)?band:(-band)*cc, bandLength(band), cc+1);
 	}
 	

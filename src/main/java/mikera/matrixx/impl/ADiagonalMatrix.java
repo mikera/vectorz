@@ -7,6 +7,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.ZeroVector;
@@ -95,8 +96,8 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		if (band==0) {
 			return getLeadingDiagonal();
 		} else {
-			if ((band>=dimensions)||(band<=-dimensions)) return null;
-			return ZeroVector.create(bandLength(band));
+			if ((band>dimensions)||(band<-dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.invalidBand(this, band));
+			return Vectorz.createZeroVector(bandLength(band));
 		}
 	}
 	

@@ -1773,6 +1773,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param band
 	 * @return
 	 */
+	@Override
 	public AVector getBand(int band) {
 		return MatrixBandView.create(this,band);
 	}
@@ -1788,6 +1789,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 				result=result.join(getBand(si));
 			}
 		} else {
+			if (cc==0) return result;
 			int si=band%cc;
 			if (si<0) si+=cc;
 			for (;si>-rc; si-=cc) {

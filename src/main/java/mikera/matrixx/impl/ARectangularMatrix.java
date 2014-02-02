@@ -5,7 +5,9 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Abstract class for regular rectangular matrices that maintain a final fixed row and column count
+ * Abstract class for regular rectangular matrices that maintain a final fixed row and column count.
+ * 
+ * Most concrete matrix implementations should inherit from this.
  * 
  * @author Mike
  *

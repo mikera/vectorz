@@ -2,7 +2,9 @@ package mikera.matrixx.impl;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -69,8 +71,8 @@ public class BandedMatrix extends ABandedMatrix {
 	@Override
 	public AVector getBand(int band) {
 		if ((band>=minBand)&&(band<=maxBand)) return bands[band-minBand];
-		if ((band>-rowCount)&&(band<columnCount)) return ZeroVector.create(bandLength(band));
-		return null;
+		if ((band>=-rowCount)&&(band<=columnCount)) return Vectorz.createZeroVector(bandLength(band));
+		throw new IndexOutOfBoundsException(ErrorMessages.invalidBand(this, band));
 	}
 
 	@Override

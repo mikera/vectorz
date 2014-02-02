@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AMatrixViewVector;
 import mikera.vectorz.impl.MatrixIndexScalar;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -21,7 +22,10 @@ public final class MatrixBandView extends AMatrixViewVector {
 	}
 
 	public static AVector create(AMatrix source, int band) {
-		if ((band>=source.columnCount())||(band<=-source.rowCount())) return null;
+		int rc=source.rowCount();
+		int cc=source.columnCount();
+		if ((band>cc)||(band<-rc)) throw new IllegalArgumentException(ErrorMessages.invalidBand(source,band));
+		if ((band==cc)||(band==-rc)) return Vector0.INSTANCE;
 		return new MatrixBandView(source,band);
 	}
 	
