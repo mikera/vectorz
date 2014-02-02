@@ -412,11 +412,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += unsafeGet(row, column) * source.unsafeGet(column);
-			}
-			dest.unsafeSet(row, total);
+			dest.unsafeSet(row, getRow(row).dotProduct(source));
 		}
 	}
 	
