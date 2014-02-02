@@ -95,7 +95,6 @@ public class SparseImmutableVector extends ASparseVector {
 	 * 
 	 */
 	public static AVector create(AVector source) {
-		if (source instanceof ASparseVector) return create((ASparseVector) source);
 		int length = source.length();
 		if (length==0) return Vector0.INSTANCE;
 		int dataLength=(int) source.nonZeroCount();
@@ -114,22 +113,6 @@ public class SparseImmutableVector extends ASparseVector {
 			}
 		}
 		return wrap(length,Index.wrap(indexes),vals);
-	}
-	
-	public static AVector create(ASparseVector source) {
-		int length = source.length();
-		if (length==0) return Vector0.INSTANCE;
-		int dataLength=(int) source.nonZeroCount();
-		if (dataLength==length) return ImmutableVector.create(source);
-		if (dataLength==0) return ZeroVector.create(length);
-
-		Index ixs=source.nonSparseIndexes();
-		int n=ixs.length();
-		double[] vals=new double[n];
-		for (int i=0; i<n; i++) {
-			vals[i]=source.unsafeGet(ixs.unsafeGet(i));
-		}
-		return wrap(length,ixs,vals);
 	}
 	
 	/** Creates a SparseIndexedVector from a row of an existing matrix */
@@ -404,7 +387,8 @@ public class SparseImmutableVector extends ASparseVector {
 		}		
 	}
 	
-	@Override public void getElements(double[] array, int offset) {
+	@Override 
+	public void getElements(double[] array, int offset) {
 		Arrays.fill(array,offset,offset+length,0.0);
 		copySparseValuesTo(array,offset);
 	}
@@ -416,7 +400,8 @@ public class SparseImmutableVector extends ASparseVector {
 		}	
 	}
 	
-	@Override public void copyTo(AVector v, int offset) {
+	@Override 
+	public void copyTo(AVector v, int offset) {
 		if (v instanceof AArrayVector) {
 			AArrayVector av=(AArrayVector)v;
 			getElements(av.getArray(),av.getArrayOffset()+offset);

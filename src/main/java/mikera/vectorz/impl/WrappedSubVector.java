@@ -5,6 +5,11 @@ import java.util.Iterator;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * View class referencing a contiguous subvector of another vector. 
+ * @author Mike
+ *
+ */
 public final class WrappedSubVector extends ASizedVector {
 	private static final long serialVersionUID = 2323553136938665228L;
 
