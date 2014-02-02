@@ -157,8 +157,13 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public boolean equals(AMatrix a) {
-		if (a instanceof ADenseArrayMatrix) return equals((ADenseArrayMatrix)a);
-		return super.equals(a);
+		return a.equalsArray(getArray(), getArrayOffset());
+	}
+	
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(getArray(), getArrayOffset(), data, offset, rows*cols);
 	}
 	
 	public boolean equals(ADenseArrayMatrix m) {

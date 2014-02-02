@@ -443,4 +443,9 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 		}
 	}
 
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(this.data, 0, data, offset, data.length);
+	}
+
 }

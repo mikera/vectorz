@@ -386,6 +386,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (!(o instanceof INDArray)) return false;
 		return equals((INDArray)o);
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data) {
+		if (data.length!=elementCount()) return false;
+		return equalsArray(data,0);
+	}
 
 	@Override
 	public int hashCode() {
@@ -433,6 +439,23 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			int sc=sliceCount();
 			for (int i=0; i<sc; i++) {
 				if (!slice(i).equals(a.slice(i))) return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		int dims=dimensionality();
+		if (dims==0) {
+			return (data[offset]==get());
+		} else if (dims==1) {
+			return asVector().equalsArray(data, offset);
+		} else {
+			int sc=sliceCount();
+			int skip=(int) slice(0).elementCount();
+			for (int i=0; i<sc; i++) {
+				if (!slice(i).equalsArray(data,offset+i*skip)) return false;
 			}
 		}
 		return true;

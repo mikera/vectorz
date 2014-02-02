@@ -1693,6 +1693,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param data
 	 * @return
 	 */
+	@Override
 	public boolean equalsArray(double[] data) {
 		int len=length();
 		if (len!=data.length) return false;

@@ -557,6 +557,22 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Creates a fully mutable clone of this array. Will use a sparse format if possible.
 	 */
-	public INDArray sparseClone();	
+	public INDArray sparseClone();
+
+	/**
+	 * Returns true if the elements in this array exactly match the given array
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public boolean equalsArray(double[] data);	
+	
+	/**
+	 * Returns true if the elements in this array exactly match the given array
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public boolean equalsArray(double[] data, int offset);	
 	
 }

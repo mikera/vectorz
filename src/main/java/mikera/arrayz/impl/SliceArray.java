@@ -294,6 +294,15 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 			slices[i].setElements(values,offset+skip*i,skip);
 		}
 	}
+	
+	@Override
+	public boolean equalsArray(double[] values, int offset) {
+		int skip=(int)slice(0).elementCount();
+		for (int i=0; i<slices.length; i++) {
+			if (!slices[i].equalsArray(values,offset+skip*i)) return false;
+		}
+		return true;
+	}
 
 	@Override
 	public void validate() {

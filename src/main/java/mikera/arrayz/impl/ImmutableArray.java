@@ -9,6 +9,7 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ImmutableVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
@@ -196,6 +197,11 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 			dest.put(data[offset]);
 		}
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(this.data, offset, data, offset, (int)elementCount());
+	}
 
 	public static INDArray create(INDArray a) {
 		int[] shape=a.getShape();
@@ -207,6 +213,6 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 
 	@Override
 	public double[] getArray() {
-		throw new UnsupportedOperationException("Array access not supported by Immutablearray");
+		throw new UnsupportedOperationException("Array access not supported by ImmutableArray");
 	}
 }
