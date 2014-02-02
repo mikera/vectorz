@@ -11,6 +11,11 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * Abstract base class for matrices that store a sparse hashmap of rows or columns.
+ * @author Mike
+ *
+ */
 public abstract class ASparseRCMatrix extends ARectangularMatrix {
 
 	protected final HashMap<Integer,AVector> data;

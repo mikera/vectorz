@@ -12,12 +12,13 @@ import mikera.vectorz.Op;
  * 
  * @author Mike
  */
-abstract class ADelegatedMatrix extends AMatrix {
+abstract class ADelegatedMatrix extends ARectangularMatrix {
 	private static final long serialVersionUID = 7424713597425793457L;
 
 	protected final AMatrix source;
 	
-	protected ADelegatedMatrix(AMatrix source) {
+	protected ADelegatedMatrix(int rows, int cols,AMatrix source) {
+		super(rows,cols);
 		this.source=source;
 	}
 	
@@ -26,12 +27,6 @@ abstract class ADelegatedMatrix extends AMatrix {
 		return true;
 	}
 	
-	// we make the indexed abstract methods abstract to allow for shape transformations
-	
-	public abstract int rowCount();
-
-	public abstract int columnCount();
-
 	@Override
 	public abstract double get(int row, int column);
 	
@@ -68,11 +63,6 @@ abstract class ADelegatedMatrix extends AMatrix {
 	@Override
 	public AVector getLeadingDiagonal() {
 		return source.getLeadingDiagonal();
-	}
-	
-	@Override
-	public long elementCount() {
-		return source.elementCount();
 	}
 	
 	@Override

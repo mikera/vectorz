@@ -26,6 +26,24 @@ public final class MatrixBandView extends AMatrixViewVector {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		int r=source.bandStartRow(band);
+		int c=source.bandStartColumn(band);
+		for (int i=0; i<length; i++) {
+			data[offset+i]+=source.unsafeGet(r+i, c+i);
+		}
+	}
+	
+	@Override
+	public void getElements(double[] data, int offset) {
+		int r=source.bandStartRow(band);
+		int c=source.bandStartColumn(band);
+		for (int i=0; i<length; i++) {
+			data[offset+i]=source.unsafeGet(r+i, c+i);
+		}
+	}
+	
+	@Override
 	protected int calcRow(int i) {
 		return (band<0)?i-band:i;
 	}

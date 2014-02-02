@@ -15,22 +15,13 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	private static final long serialVersionUID = 4350297037540121584L;
 
 	private TransposedMatrix(AMatrix source) {
-		super(source);
+		super(source.columnCount(),source.rowCount(),source);
 	}
 
 	public static AMatrix wrap(AMatrix m) {
 		if (m instanceof TransposedMatrix)
 			return ((TransposedMatrix) m).source;
 		return new TransposedMatrix(m);
-	}
-
-	public int rowCount() {
-		return source.columnCount();
-	}
-
-	@Override
-	public int columnCount() {
-		return source.rowCount();
 	}
 	
 	@Override

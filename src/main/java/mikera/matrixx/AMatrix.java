@@ -1685,6 +1685,24 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return bandLength(rowCount(),columnCount(),band);
 	}
 	
+	/**
+	 * Returns the start row of a given band.
+	 * @param band
+	 * @return
+	 */
+	public final int bandStartRow(int band) {
+		return (band<0)?-band:0;
+	}
+	
+	/**
+	 * Returns the start column of a given band.
+	 * @param band
+	 * @return
+	 */
+	public final int bandStartColumn(int band) {
+		return (band>0)?band:0;
+	}
+	
 	protected final static int bandLength(int rc, int cc, int band) {
 		if (band>0) {
 			return (band<cc)?Math.min(rc, cc-band):0;

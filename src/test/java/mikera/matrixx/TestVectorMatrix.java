@@ -30,10 +30,7 @@ public class TestVectorMatrix {
 		
 		m.appendRow(Vector.of(1,0,0));
 		assertEquals(1,m.rowCount());
-		
-		// transpose should be a changing view
-		assertEquals(1,mt.columnCount());
-		
+				
 		m.appendRow(Vector3.of(0,1,0));
 		m.appendRow(Vectorz.join(Vector.of(0,0),Vector1.of(1)));
 		
@@ -50,10 +47,7 @@ public class TestVectorMatrix {
 		
 		m.appendRow(Vector.of(1,0,0));
 		assertEquals(1,m.rowCount());
-		
-		// transpose should be a changing view
-		assertEquals(1,mt.columnCount());
-		
+				
 		m.appendRow(Vector3.of(0,1,0));
 		m.appendRow(Vectorz.join(Vector.of(0,0),Vector1.of(1)));
 		
