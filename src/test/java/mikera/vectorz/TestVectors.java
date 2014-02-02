@@ -25,6 +25,7 @@ import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseHashedVector;
+import mikera.vectorz.impl.SparseImmutableVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
@@ -899,6 +900,11 @@ public class TestVectors {
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
 		doGenericTests(SparseIndexedVector.create(Vector.of(1,2,3,4,5))); // fully dense!
 		doGenericTests(SparseIndexedVector.create(Vector.of(-1,-2,-3))); // fully dense!
+
+		doGenericTests(SparseImmutableVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
+		doGenericTests(SparseImmutableVector.create(10,Index.of(),Vector.of()));
+		doGenericTests(SparseImmutableVector.create(Vector.of(1,2,3,4,5))); // fully dense!
+		doGenericTests(SparseImmutableVector.create(Vector.of(-1,-2,-3))); // fully dense!
 
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
 		
