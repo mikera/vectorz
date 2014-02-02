@@ -236,12 +236,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public double elementSum();
 	
 	/**
-	 * Returns the maximum element value in this array.
+	 * Returns the maximum element value in this array. Throws an error if there are no elements.
 	 */
 	public double elementMax();
 	
 	/**
-	 * Returns the maximum element value in this array.
+	 * Returns the maximum element value in this array. Throws an error if there are no elements.
 	 */
 	public double elementMin();
 
