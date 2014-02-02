@@ -76,7 +76,6 @@ public final class SingleElementVector extends ASparseVector {
 		return false;
 	}
 	
-	
 	@Override
 	public boolean isElementConstrained() {
 		return true;
@@ -138,6 +137,11 @@ public final class SingleElementVector extends ASparseVector {
 			return Vectorz.createZeroVector(length);
 		}
 		return super.subVector(offset, length);
+	}
+	
+	@Override
+	public AVector innerProduct(double d) {
+		return SingleElementVector.create(value*d,index,length);
 	}
 	
 	@Override

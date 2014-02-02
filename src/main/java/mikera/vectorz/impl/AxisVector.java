@@ -172,6 +172,11 @@ public final class AxisVector extends ASparseVector {
 			default: throw new IndexOutOfBoundsException();
 		}
 	}
+	
+	@Override
+	public AVector innerProduct(double d) {
+		return SingleElementVector.create(d,axis,length);
+	}
 
 	@Override
 	public double get(int i) {

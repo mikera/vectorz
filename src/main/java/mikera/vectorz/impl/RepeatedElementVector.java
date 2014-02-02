@@ -96,6 +96,16 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public AVector innerProduct(double d) {
+		return RepeatedElementVector.create(length,d*value);
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		DoubleArrays.add(data, offset, length, value);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return (value==0.0)?0:length;
 	}
