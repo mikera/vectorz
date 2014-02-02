@@ -9,17 +9,24 @@ public class BigMultiplyTest {
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		for (int i=0; i<30; i++) {
-			int size=i*100;
+		for (int i=1; i<=30; i++) {
+			long start,end;
+			int size=i*i*10;
 			Matrix a=Matrix.createRandom(size, size);
 			Matrix b=Matrix.createRandom(size, size);
-			long start=System.currentTimeMillis();
+			AMatrix r;
 			
-			Matrix r=Multiplications.directMultiply(a, b);
+			start=System.currentTimeMillis();
+			r=Multiplications.directMultiply(a, b);	
+			end=System.currentTimeMillis();		
+			System.out.println("Size: "+size +"    direct    timing = "+(end-start)*0.001);
+
+			start=System.currentTimeMillis();
+			r=Multiplications.blockedMultiply(a, b);	
+			end=System.currentTimeMillis();		
+			System.out.println("Size: "+size +"    blocked   timing = "+(end-start)*0.001);
 			
-			long end=System.currentTimeMillis();
-			
-			System.out.println("Size: "+size +"    timing = "+(end-start)*0.001);
+			System.out.println();
 		}
 
 	}

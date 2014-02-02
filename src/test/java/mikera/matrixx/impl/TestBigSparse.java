@@ -47,5 +47,13 @@ public class TestBigSparse {
 	
 		assertEquals(1,m.nonZeroCount());
 	}
+	
+	@Test public void testBigIdentity() {
+		AMatrix m=IdentityMatrix.create(2000000);
+		m=m.sparse();
+		
+		assertEquals(m,m.innerProduct(m));
+		assertEquals(m.rowCount(),m.nonZeroCount());
+	}
 
 }

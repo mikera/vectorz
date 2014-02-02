@@ -145,10 +145,11 @@ public class Multiplications {
 			b.copyColumnTo(j, tmp, 0);
 			
 			for (int i=0; i<rc; i++) {
-				double acc=0.0;
-				for (int k=0; k<ic; k++) {
-					acc+=a.unsafeGet(i, k)*tmp[k];
-				}
+//				double acc=0.0;
+//				for (int k=0; k<ic; k++) {
+//					acc+=a.unsafeGet(i, k)*tmp[k];
+//				}
+				double acc=DoubleArrays.dotProduct(a.data, i*ic, tmp, 0, ic);
 				result.unsafeSet(i,j,acc);
 			}
 		}

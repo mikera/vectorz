@@ -338,6 +338,14 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Clone should attempt to return the most efficient possible array type.
 	 */
 	public INDArray clone();
+	
+	/**
+	 * Returns a copy of the array data. 
+	 * 
+	 * May return the same array if the original was immutable, otherwise will return a defensive copy.
+	 */
+	public INDArray copy();
+
 
 	/**
 	 * Ensures the array is a fully mutable, efficient representation that is not 

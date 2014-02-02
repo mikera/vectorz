@@ -595,6 +595,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Matrixx.deepCopy(this);
 	}
 	
+	@Override
+	public AMatrix copy() {
+		if (isMutable()) return clone();
+		return this;
+	}
+	
 	public final AVector cloneRow(int row) {
 		return getRowClone(row);
 	}
