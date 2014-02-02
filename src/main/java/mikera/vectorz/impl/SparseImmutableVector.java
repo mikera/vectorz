@@ -189,8 +189,8 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public double maxAbsElement() {
-		double result=0.0;
-		for (int i=0; i<dataLength; i++) {
+		double result=data[0];
+		for (int i=1; i<dataLength; i++) {
 			double d=Math.abs(data[i]);
 			if (d>result) result=d; 
 		}

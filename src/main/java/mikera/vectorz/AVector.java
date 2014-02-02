@@ -984,24 +984,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public double elementMax(){
-		int len=length();
-		double max = -Double.MAX_VALUE;
-		for (int i=0; i<len; i++) {
-			double d=unsafeGet(i);
-			if (d>max) max=d;
-		}
-		return max;
+		return unsafeGet(maxElementIndex());
 	}
 	
 	@Override
 	public double elementMin(){
-		int len=length();
-		double min = Double.MAX_VALUE;
-		for (int i=0; i<len; i++) {
-			double d=unsafeGet(i);
-			if (d<min) min=d;
-		}
-		return min;
+		return unsafeGet(minElementIndex());
 	}
 	
 	@Override public final double elementSquaredSum() {
