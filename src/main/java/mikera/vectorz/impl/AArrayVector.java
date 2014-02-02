@@ -22,8 +22,8 @@ import mikera.vectorz.util.VectorzException;
 @SuppressWarnings("serial")
 public abstract class AArrayVector extends AStridedVector implements IDense {
 	
-	protected AArrayVector(int length) {
-		super(length);
+	protected AArrayVector(int length, double[] data) {
+		super(length,data);
 	}
 
 	/**

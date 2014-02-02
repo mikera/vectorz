@@ -117,8 +117,9 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 	@Override
 	public Vector transform (AVector a) {
 		Vector v=Vector.createLength(rows);
+		double[] vdata=v.getArray();
 		for (int i=0; i<rows; i++) {
-			v.data[i]=a.dotProduct(data, i*cols);
+			vdata[i]=a.dotProduct(data, i*cols);
 		}
 		return v;
 	}
@@ -130,13 +131,15 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		int di=0;
+		double[] sdata=source.getArray();
+		double[] ddata=source.getArray();
 		for (int row = 0; row < rc; row++) {
 			double total = 0.0;
 			for (int column = 0; column < cc; column++) {
-				total += data[di+column] * source.data[column];
+				total += data[di+column] * sdata[column];
 			}
 			di+=cc;
-			dest.data[row]=total;
+			ddata[row]=total;
 		}
 	}
 	

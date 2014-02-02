@@ -134,8 +134,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		int cc = rc;
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		double[] sdata=source.getArray();
+		double[] ddata=dest.getArray();
 		for (int i = 0; i < rc; i++) {
-			dest.data[i]=source.data[i]*this.data[i];
+			ddata[i]=sdata[i]*this.data[i];
 		}
 	}
 

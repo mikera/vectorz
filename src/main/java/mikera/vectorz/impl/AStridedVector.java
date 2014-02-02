@@ -20,13 +20,19 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  */
 public abstract class AStridedVector extends ASizedVector implements IStridedArray {
-	protected AStridedVector(int length) {
+	protected final double[] data;
+	
+	protected AStridedVector(int length, double[] data) {
 		super(length);
+		this.data=data;
 	}
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
-	public abstract double[] getArray();
+	public final double[] getArray() {
+		return data;
+	}
+	
 	public abstract int getArrayOffset();
 	public abstract int getStride();
 	

@@ -125,9 +125,10 @@ public class BandedMatrix extends ABandedMatrix {
 		} else {
 			Vector t=(Vector)dest;
 			t.fill(0.0);
+			double[] data=t.getArray();
 			for (int i=minBand; i<=maxBand; i++) {
 				AVector b=getBand(i);
-				b.addProductToArray(1.0, 0, source, Math.max(i, 0), t.data, Math.max(-i, 0), bandLength(i));
+				b.addProductToArray(1.0, 0, source, Math.max(i, 0), data, Math.max(-i, 0), bandLength(i));
 			}
 		}
 	}
@@ -136,9 +137,10 @@ public class BandedMatrix extends ABandedMatrix {
 	public void transform(Vector source, Vector dest) {
 		Vector t=dest;
 		t.fill(0.0);
+		double[] data=dest.getArray();
 		for (int i=minBand; i<=maxBand; i++) {
 			AVector b=getBand(i);
-			b.addProductToArray(1.0, 0, source, Math.max(i, 0), t.data, Math.max(-i, 0), bandLength(i));
+			b.addProductToArray(1.0, 0, source, Math.max(i, 0), data, Math.max(-i, 0), bandLength(i));
 		}		
 	}
 	

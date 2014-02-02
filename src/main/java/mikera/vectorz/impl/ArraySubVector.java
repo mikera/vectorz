@@ -15,8 +15,6 @@ import mikera.vectorz.util.ErrorMessages;
 public final class ArraySubVector extends AArrayVector {
 	private static final long serialVersionUID = 1262951505515197105L;
 
-	private final double[] data;
-
 	private final int offset;
 
 	public static ArraySubVector wrap(double[] values) {
@@ -28,15 +26,13 @@ public final class ArraySubVector extends AArrayVector {
 	}
 	
 	private ArraySubVector(double[] data, int offset, int length) {
-		super(length);
-		this.data=data;
+		super(length,data);
 		this.offset=offset;
 	}
 
 	public ArraySubVector(int length) {
-		super(length);
+		super(length,new double[length]);
 		offset = 0;
-		data = new double[length];
 	}
 	
 	public static ArraySubVector wrap(double[] data, int offset, int length) {
@@ -52,13 +48,12 @@ public final class ArraySubVector extends AArrayVector {
 	 * @param length
 	 */
 	public ArraySubVector(AArrayVector source, int offset, int length) {
-		super(length);
+		super(length,source.getArray());
 		int len=source.length();
 		if ((offset < 0)||(offset + length > len)) 
 			throw new IndexOutOfBoundsException(
 					ErrorMessages.invalidRange(source, offset, length));
 		this.offset = source.getArrayOffset() + offset;
-		this.data = source.getArray();
 	}
 
 	@Override
@@ -124,11 +119,6 @@ public final class ArraySubVector extends AArrayVector {
 			hashCode = 31 * hashCode + (Hash.hashCode(data[offset+i]));
 		}
 		return hashCode;
-	}
-
-	@Override
-	public double[] getArray() {
-		return data;
 	}
 
 	@Override

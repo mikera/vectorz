@@ -247,8 +247,10 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		int cc = rc;
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		double[] sdata=source.getArray();
+		double[] ddata=dest.getArray();
 		for (int row = 0; row < rc; row++) {
-			dest.data[row]=source.data[row]*unsafeGetDiagonalValue(row);
+			ddata[row]=sdata[row]*unsafeGetDiagonalValue(row);
 		}
 	}
 	

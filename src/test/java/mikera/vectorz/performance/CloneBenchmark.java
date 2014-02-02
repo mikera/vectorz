@@ -15,7 +15,7 @@ import com.google.caliper.SimpleBenchmark;
  * 
  * @author Mike
  */
-
+@SuppressWarnings("unused")
 public class CloneBenchmark extends SimpleBenchmark {
 	int result;
 	
@@ -25,8 +25,9 @@ public class CloneBenchmark extends SimpleBenchmark {
 		Vector v=Vector.createLength(LIST_SIZE);
 		
 		Vector res=v;
+		double[] data=v.getArray();
 		for (int i=0; i<runs; i++) {
-			res=Vector.wrap(res.data.clone());
+			res=Vector.wrap(data.clone());
 		}
 		result=v.length();
 	}
@@ -35,8 +36,9 @@ public class CloneBenchmark extends SimpleBenchmark {
 		Vector v=Vector.createLength(LIST_SIZE);
 		
 		Vector res=v;
+		double[] data=v.getArray();
 		for (int i=0; i<runs; i++) {
-			res=Vector.wrap(Arrays.copyOf(res.data, res.data.length));
+			res=Vector.wrap(Arrays.copyOf(data, data.length));
 		}
 		result=v.length();
 	}
@@ -45,8 +47,9 @@ public class CloneBenchmark extends SimpleBenchmark {
 		Vector v=Vector.createLength(LIST_SIZE);
 		
 		Vector res=v;
+		double[] data=v.getArray();
 		for (int i=0; i<runs; i++) {
-			res=Vector.wrap(DoubleArrays.copyOf(res.data));
+			res=Vector.wrap(DoubleArrays.copyOf(data));
 		}
 		result=v.length();
 	}
@@ -55,9 +58,10 @@ public class CloneBenchmark extends SimpleBenchmark {
 		Vector v=Vector.createLength(LIST_SIZE);
 		
 		Vector res=v;
+		double[] data=v.getArray();
 		for (int i=0; i<runs; i++) {
-			double[] ds=new double[res.data.length];
-			System.arraycopy(res.data, 0, ds, 0, res.data.length);
+			double[] ds=new double[data.length];
+			System.arraycopy(data, 0, ds, 0, data.length);
 			res=Vector.wrap(ds);
 		}
 		result=v.length();

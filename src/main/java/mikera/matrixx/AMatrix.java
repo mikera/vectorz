@@ -496,7 +496,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AVector getRowClone(int row) {
 		int cc=this.columnCount();
 		Vector v=Vector.createLength(cc);
-		copyRowTo(row,v.data,0);
+		copyRowTo(row,v.getArray(),0);
 		return v;
 	}
 
@@ -506,7 +506,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AVector getColumnClone(int column) {
 		int rc=this.rowCount();
 		Vector v=Vector.createLength(rc);
-		copyColumnTo(column,v.data,0);
+		copyColumnTo(column,v.getArray(),0);
 		return v;
 	}
 
@@ -1333,7 +1333,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc = rowCount();
 		int cc = columnCount();
 		Vector v = Vector.createLength(rc * cc);
-		this.getElements(v.data,0);
+		this.getElements(v.getArray(),0);
 		return v;
 	}
 	

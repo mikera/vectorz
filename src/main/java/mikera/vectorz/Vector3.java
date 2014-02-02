@@ -209,7 +209,8 @@ public final class Vector3 extends APrimitiveVector {
 	@Override
 	public double dotProduct(Vector v) {
 		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
-		return x*v.data[0]+y*v.data[1]+z*v.data[2];
+		double[] data=v.getArray();
+		return x*data[0]+y*data[1]+z*data[2];
 	}
 	
 	@Override

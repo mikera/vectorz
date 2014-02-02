@@ -57,7 +57,7 @@ public final class NDArray extends BaseNDArray {
 	}
 	
 	public static NDArray wrap(Vector v) {
-		return wrap(v.data,v.getShape());
+		return wrap(v.getArray(),v.getShape());
 	}
 
 	public static NDArray wrap(Matrix m) {

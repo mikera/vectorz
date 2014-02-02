@@ -726,9 +726,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	public Scalar innerProduct(Vector v) {
-		int vl=v.data.length;
+		double[] data=v.getArray();
+		int vl=data.length;
 		if (length()!=vl) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		return Scalar.create(dotProduct(v.data,0));
+		return Scalar.create(dotProduct(data,0));
 	}
 	
 	public AVector innerProduct(AMatrix m) {
@@ -784,7 +785,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public double dotProduct(Vector v) {
 		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		return dotProduct(v.data, 0);
+		return dotProduct(v.getArray(), 0);
 	}
 	
 	public double dotProduct(AArrayVector v) {
@@ -1488,9 +1489,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(Vector source, Index sourceToDest, double factor) {
 		int len=source.length();
 		if (len!=sourceToDest.length()) throw new IllegalArgumentException("Index length must match source length.");
+		double[] data=source.getArray();
 		for (int i=0; i<len; i++) {
 			int j=sourceToDest.data[i];
-			this.addAt(j,source.data[i]*factor);
+			this.addAt(j,data[i]*factor);
 		}
 	}
 	
@@ -1518,9 +1520,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(Index destToSource, Vector source, double factor) {
 		int len=this.length();
 		if (len!=destToSource.length()) throw new IllegalArgumentException("Index length must match this vector length.");
+		double[] data=source.getArray();
 		for (int i=0; i<len; i++) {
 			int j=destToSource.data[i];
-			this.addAt(i,source.data[j]*factor);
+			this.addAt(i,data[j]*factor);
 		}
 	}
 	

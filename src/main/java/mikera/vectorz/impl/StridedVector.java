@@ -12,7 +12,7 @@ public final class StridedVector extends AStridedVector {
 	private final int stride;
 	
 	private StridedVector(double[] data, int offset, int length, int stride) {
-		super(length);
+		super(length,data);
 		if ((offset<0)) throw new IndexOutOfBoundsException();
 		if (length>0) {
 			// check last element is in the array
@@ -94,11 +94,6 @@ public final class StridedVector extends AStridedVector {
 	@Override
 	public int getStride() {
 		return stride;
-	}
-	
-	@Override
-	public double[] getArray() {
-		return data;
 	}
 	
 	@Override

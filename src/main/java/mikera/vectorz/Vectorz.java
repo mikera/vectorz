@@ -321,7 +321,8 @@ public class Vectorz {
 	public static AVector create(DoubleBuffer d) {
 		int length=d.remaining();
 		Vector v=Vector.createLength(length);
-		d.get(v.data, 0, length);
+		double[] data=v.getArray();
+		d.get(data, 0, length);
 		return v;
 	}
 	
@@ -395,9 +396,10 @@ public class Vectorz {
 	
 	public static void invSqrt(Vector v) {
 		int len=v.length();
+		double[] data=v.getArray();
 		for (int i=0; i<len; i++) {
-			double d=1.0/Math.sqrt(v.data[i]);
-			v.data[i]=d;
+			double d=1.0/Math.sqrt(data[i]);
+			data[i]=d;
 		}		
 	}
 	

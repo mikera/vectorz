@@ -27,16 +27,12 @@ public final class Vector extends AArrayVector {
 
 	public static final Vector EMPTY = wrap(DoubleArrays.EMPTY);
 
-	public final double[] data;
-
 	private Vector(double... values) {
-		super(values.length);
-		data = values;
+		super(values.length,values);
 	}
 	
 	private Vector(Object... values) {
-		super(values.length);
-		data=new double[length];
+		super(values.length,new double[values.length]);
 		for (int i=0; i<length; i++) {
 			data[i]=Tools.toDouble(values[i]);
 		}
@@ -172,11 +168,6 @@ public final class Vector extends AArrayVector {
 		} else {
 			super.set(a);
 		}
-	}
-
-	@Override
-	public double[] getArray() {
-		return data;
 	}
 	
 	@Override
