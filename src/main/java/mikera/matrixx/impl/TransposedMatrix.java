@@ -143,6 +143,11 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public boolean isUpperTriangular() {
 		return source.isLowerTriangular();
 	}
+	
+	@Override
+	public AVector getBand(int i) {
+		return source.getBand(-i);
+	}
 
 	@Override
 	public boolean isLowerTriangular() {

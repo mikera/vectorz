@@ -206,6 +206,17 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 	public AMatrix exactClone() {
 		return new ImmutableMatrix(this);
 	}
+	
+	@Override
+	public boolean equals(AMatrix a) {
+		if (!isSameShape(a)) return false;
+		return a.equalsArray(data, 0);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(this.data, 0, data, offset, rows*cols);
+	}
 
 	/**
 	 * Unsafe method that returns the internal data array

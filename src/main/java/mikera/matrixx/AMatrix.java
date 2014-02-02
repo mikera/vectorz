@@ -16,6 +16,7 @@ import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.AArrayMatrix;
+import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
@@ -1062,7 +1063,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if this matrix is exactly equal to another matrix
 	 */
 	public boolean equals(AMatrix a) {
-		if (a instanceof AArrayMatrix) return a.equals(this);
+		if (a instanceof ADenseArrayMatrix) return a.equals(this);
 		
 		if (a==this) return true;
 		int rc = rowCount();

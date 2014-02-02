@@ -145,6 +145,11 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	}
 	
 	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return vector.equalsArray(data, offset);
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		if (row==0) {
 			vector.getElements(dest, destOffset);

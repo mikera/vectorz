@@ -163,6 +163,11 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	public ColumnMatrix exactClone() {
 		return new ColumnMatrix(vector.exactClone());
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return vector.equalsArray(data, offset);
+	}
 
 	@Override
 	public Matrix transposeInnerProduct(Matrix s) {

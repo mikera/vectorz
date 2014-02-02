@@ -216,4 +216,29 @@ public final class StridedMatrix extends AStridedMatrix {
 	public Matrix clone() {
 		return Matrix.create(this);
 	}
+
+	@Override
+	public boolean equals(AMatrix a) {
+		if (a==this) return true;	
+		if ((rows != a.rowCount())||(cols != a.columnCount())) return false;
+		
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (data[index(i, j)] != a.unsafeGet(i, j))
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (this.data[index(i, j)] != data[offset++])
+					return false;
+			}
+		}
+		return true;
+	}
 }

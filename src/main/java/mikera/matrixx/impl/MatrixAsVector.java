@@ -103,6 +103,11 @@ public class MatrixAsVector extends AMatrixViewVector {
 	}
 	
 	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return source.equalsArray(data, offset);
+	}
+	
+	@Override
 	public double elementSum() {
 		return source.elementSum();
 	}

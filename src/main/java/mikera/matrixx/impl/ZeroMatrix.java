@@ -13,6 +13,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementIterator;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -238,6 +239,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	public boolean equals(AMatrix m) {
 		if (!isSameShape(m)) return false;
 		return m.isZero();
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.isZero(data, offset, rows*cols);
 	}
 
 	@Override

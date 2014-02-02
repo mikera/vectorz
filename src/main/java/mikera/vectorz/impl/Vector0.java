@@ -132,6 +132,11 @@ public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 	}
 	
 	@Override
+	public boolean equals(AVector v) {
+		return v.length()==0;
+	}
+	
+	@Override
 	public Vector0 subVector(int start, int length) {
 		if ((start==0)&&(length==0)) return this;
 		throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));

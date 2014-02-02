@@ -293,7 +293,8 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public boolean equals(INDArray a) {
 		if (a instanceof Array) return equals((Array) a);
-		return super.equals(a);
+		if (!isSameShape(a)) return false;
+		return a.equalsArray(data, 0);
 	}
 
 	public boolean equals(Array a) {
