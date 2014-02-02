@@ -519,15 +519,7 @@ public abstract class AArrayVector extends AStridedVector implements IDense {
 
 	@Override
 	public double magnitudeSquared() {
-		int length = length();
-		double[] data = getArray();
-		int offset = getArrayOffset();
-		double result = 0.0;
-		for (int i = 0; i < length; i++) {
-			double v = data[offset + i];
-			result += v * v;
-		}
-		return result;
+		return DoubleArrays.elementSquaredSum(data, getArrayOffset(), length);
 	}
 
 	@Override
