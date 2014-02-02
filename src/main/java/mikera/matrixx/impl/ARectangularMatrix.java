@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -41,6 +42,11 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	@Override
+	public int bandLength(int band) {
+		return bandLength(rows,cols,band);
+	}
+	
+	@Override
 	public final int getShape(int dim) {
 		if (dim==0) {
 			return rows;
@@ -52,9 +58,19 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}	
 	
 	@Override
+	public final boolean isSameShape(INDArray m) {
+		return (m.dimensionality()==2)&&(rows==m.getShape(0))&&(cols==m.getShape(1));
+	}
+	
+	@Override
 	public final boolean isSameShape(AMatrix m) {
 		return (rows==m.rowCount())&&(cols==m.columnCount());
 	}
+	
+	public final boolean isSameShape(ARectangularMatrix m) {
+		return (rows==m.rows)&&(cols==m.cols);
+	}
+	
 	
 	@Override
 	public final long elementCount() {

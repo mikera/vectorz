@@ -138,6 +138,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray innerProduct(INDArray a);
 	
 	/**
+	 * Calculates the inner product of this array with a double value
+	 */
+	public INDArray innerProduct(double a);
+	
+	/**
 	 * Calculates the outer product of this array with another array.
 	 */
 	public INDArray outerProduct(INDArray a);

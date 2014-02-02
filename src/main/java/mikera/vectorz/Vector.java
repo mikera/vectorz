@@ -390,6 +390,16 @@ public final class Vector extends AArrayVector {
 		}
 	}
 	
+	@Override
+	public Vector innerProduct(double a) {
+		int n=length;
+		double[] result=new double[n];
+		for (int i=0; i<length; i++) {
+			result[i]=data[i]*a;
+		}
+		return wrap(result);
+	}
+	
 	@Override public Scalar innerProduct(AVector v) {
 		return Scalar.create(dotProduct(v));
 	}

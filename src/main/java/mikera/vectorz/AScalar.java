@@ -14,6 +14,7 @@ import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedScalarVector;
+import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
@@ -203,6 +204,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	public Scalar innerProduct(AScalar a) {
 		return Scalar.create(get()*a.get());
+	}
+	
+	@Override
+	public Scalar innerProduct(double a) {
+		return Scalar.create(get()*a);
 	}
 	
 	@Override

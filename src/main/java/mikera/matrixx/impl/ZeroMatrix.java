@@ -213,8 +213,13 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public AMatrix innerProduct(AMatrix m) {
-		assert(columnCount()==m.rowCount());
+		if (columnCount()!=m.rowCount()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		return ZeroMatrix.create(rows, m.columnCount());
+	}
+	
+	@Override
+	public ZeroMatrix innerProduct(double a) {
+		return this;
 	}
 	
 	@Override 
@@ -236,7 +241,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public Matrix toMatrix() {
-		return Matrix.create(rowCount(), columnCount());
+		return Matrix.create(rows, cols);
 	}
 	
 	@Override
@@ -251,12 +256,12 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public Matrix toMatrixTranspose() {
-		return Matrix.create(columnCount(), rowCount());
+		return Matrix.create(cols, rows);
 	}
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		return ZeroVector.create(cols);
+		return ZeroVector.create(Math.min(rows, cols));
 	}
 	
 	@Override

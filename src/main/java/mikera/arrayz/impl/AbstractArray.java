@@ -216,6 +216,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override
+	public INDArray innerProduct(double a) {
+		INDArray result=clone();
+		result.scale(a);
+		return result;
+	}
+	
 	public INDArray innerProduct(INDArray a) {
 		int dims=dimensionality();
 		switch (dims) {

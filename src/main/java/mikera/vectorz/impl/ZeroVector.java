@@ -6,7 +6,9 @@ import java.util.Iterator;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
@@ -80,6 +82,17 @@ public final class ZeroVector extends ASparseVector {
 	public AVector innerProduct(AMatrix m) {
 		if (m.rowCount()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		return ZeroVector.create(m.columnCount());
+	}
+	
+	@Override
+	public Scalar innerProduct(AVector a) {
+		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		return Scalar.create(0.0);
+	}
+	
+	@Override
+	public ZeroVector innerProduct(double a) {
+		return this;
 	}
 
 	@Override

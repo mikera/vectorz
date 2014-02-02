@@ -426,11 +426,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += unsafeGet(row, column) * source.unsafeGet(column);
-			}
-			dest.unsafeSet(row, total);
+			dest.unsafeSet(row, getRow(row).dotProduct(source));
 		}
 	}
 
@@ -448,11 +444,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			throw new UnsupportedOperationException(
 					"Cannot transform in place with a non-square transformation");
 		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += unsafeGet(row, column) * v.unsafeGet(column);
-			}
-			temp[row] = total;
+			temp[row] = getRow(row).dotProduct(v);
 		}
 		v.setElements(temp);
 	}
@@ -468,11 +460,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		double[] data=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += unsafeGet(row, column) * data[offset+column];
-			}
-			temp[row] = total;
+			temp[row] = getRow(row).dotProduct(data,offset);
 		}
 		v.setElements(temp);
 	}

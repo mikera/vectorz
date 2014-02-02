@@ -752,6 +752,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return v;
 	}
 	
+	@Override
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AVector) {
 			return Scalar.create(dotProduct((AVector)a));
@@ -761,6 +762,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			return innerProduct((AMatrix)a);
 		}
 		return super.innerProduct(a);
+	}
+	
+	@Override
+	public AVector innerProduct(double a) {
+		AVector result=clone();
+		result.scale(a);
+		return result;
 	}
 	
 	public double dotProduct(AVector v) {
