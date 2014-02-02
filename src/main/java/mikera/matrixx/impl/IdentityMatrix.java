@@ -175,8 +175,8 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override
-	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
-		return a.exactClone();
+	public AMatrix innerProduct(ADiagonalMatrix a) {
+		return a.copy();
 	}
 	
 	@Override 

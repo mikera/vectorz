@@ -171,7 +171,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		copyRowTo(col,dest,destOffset);
 	}
 	
-	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
+	public AMatrix innerProduct(ADiagonalMatrix a) {
 		int dims=this.dimensions;
 		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		DiagonalMatrix result=DiagonalMatrix.createDimensions(dims);

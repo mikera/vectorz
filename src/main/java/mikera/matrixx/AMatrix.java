@@ -1050,6 +1050,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return false;
 	}
 
+	/**
+	 * Returns true if this matrix is exactly equal to another matrix
+	 */
 	public boolean equals(AMatrix a) {
 		if (a instanceof AArrayMatrix) return a.equals(this);
 		

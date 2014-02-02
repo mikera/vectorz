@@ -219,7 +219,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return super.innerProduct(a);
 	}
 	
-	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
+	public AMatrix innerProduct(ADiagonalMatrix a) {
 		if (!(a instanceof DiagonalMatrix)) return a.innerProduct(this);
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);

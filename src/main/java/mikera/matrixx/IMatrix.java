@@ -14,15 +14,21 @@ import mikera.vectorz.AVector;
  */
 public interface IMatrix extends INDArray {
 	
-	public abstract int rowCount();
+	public int rowCount();
 
-	public abstract int columnCount();
+	public int columnCount();
 
-	public abstract double get(int row, int column);
+	public double get(int row, int column);
 
-	public abstract void set(int row, int column, double value);
+	public void set(int row, int column, double value);
+	
+	public AVector getRow(int row);
+	
+	public AVector getColumn(int column);
 
 	boolean isSquare();
+
+	boolean isInvertible();	
 
 	AVector transform(AVector source);
 
@@ -32,6 +38,5 @@ public interface IMatrix extends INDArray {
 
 	AMatrix inverse();
 
-	boolean isInvertible();	
 
 }
