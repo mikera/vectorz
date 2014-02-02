@@ -5,6 +5,7 @@ import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
@@ -141,6 +142,11 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Calculates the inner product of this array with a double value
 	 */
 	public INDArray innerProduct(double a);
+	
+	/**
+	 * Calculates the inner product of this array with a scalar
+	 */
+	public INDArray innerProduct(AScalar a);
 	
 	/**
 	 * Calculates the outer product of this array with another array.

@@ -695,7 +695,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	@Override
 	public AMatrix getTransposeCopy() {
-		return getTranspose().clone();
+		return copy().getTranspose();
 	}
 	
 	/**
@@ -1079,10 +1079,17 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public boolean elementsEqual(double value) {
 		int rc = rowCount();
-		int cc = columnCount();
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				if (unsafeGet(i, j) != value) return false;
+		
+		if (this instanceof IFastRows) {
+			for (int i = 0; i < rc; i++) {
+				if (!getRow(i).elementsEqual(value)) return false;
+			}
+		} else {
+			int cc = columnCount();
+			for (int i = 0; i < rc; i++) {
+				for (int j = 0; j < cc; j++) {
+					if (unsafeGet(i, j) != value) return false;
+				}
 			}
 		}
 		return true;
@@ -1131,10 +1138,17 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc = columnCount();
 		if ((rc != a.rowCount())||(cc!=a.columnCount()))
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				if (!Tools.epsilonEquals(unsafeGet(i, j), a.unsafeGet(i, j)))
-					return false;
+		
+		if ((this instanceof IFastRows)&&(a instanceof IFastRows)) {
+			for (int i = 0; i < rc; i++) {
+				if (!getRow(i).epsilonEquals(a.getRow(i))) return false;	
+			}
+		} else {
+			for (int i = 0; i < rc; i++) {
+				for (int j = 0; j < cc; j++) {
+					if (!Tools.epsilonEquals(unsafeGet(i, j), a.unsafeGet(i, j)))
+						return false;
+				}
 			}
 		}
 		return true;
@@ -1234,10 +1248,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	@Override
 	public AMatrix innerProduct(AScalar s) {
-		Matrix r= toMatrix();
-		r.scale(s.get());
-		return r;
+		return innerProduct(s.get());
 	}
 	
 	@Override
@@ -1287,9 +1300,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 	
+	/**
+	 * Computes the trace of a matrix
+	 * 
+	 * @return
+	 */
 	public double trace() {
-		int rc=rowCount();
-		assert(rc==columnCount());
+		int rc=Math.min(rowCount(), columnCount());
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
 			result+=unsafeGet(i,i);
