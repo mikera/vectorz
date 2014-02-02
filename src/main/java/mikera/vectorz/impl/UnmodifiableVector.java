@@ -34,4 +34,9 @@ public class UnmodifiableVector extends BaseDerivedVector {
 	public UnmodifiableVector exactClone() {
 		return new UnmodifiableVector(source.exactClone());
 	}
+	
+	@Override
+	public AVector sparse() {
+		return SparseImmutableVector.create(this);
+	}
 }

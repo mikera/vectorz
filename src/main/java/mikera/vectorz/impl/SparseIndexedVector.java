@@ -391,7 +391,8 @@ public class SparseIndexedVector extends ASparseVector {
 		assert((offset>=0)&&(offset+length<=this.length));
 		
 		int start=index.seekPosition(offset);
-		for (int j=start; j<data.length; j++) {
+		int dataLength=data.length;
+		for (int j=start; j<dataLength; j++) {
 			int di=index.data[j]-offset; // index relative to offset
 			if (di>=length) return;
 			array[arrayOffset+di]+=data[j];
@@ -399,8 +400,17 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset) {
+		int dataLength=data.length;
+		for (int i=0; i<dataLength; i++) {
+			dest[offset+index.data[i]]+=data[i];
+		}
+	}
+	
+	@Override
 	public void addToArray(double[] dest, int offset, int stride) {
-		for (int i=0; i<length; i++) {
+		int dataLength=data.length;
+		for (int i=0; i<dataLength; i++) {
 			dest[offset+index.data[i]*stride]+=data[i];
 		}
 	}
@@ -413,7 +423,8 @@ public class SparseIndexedVector extends ASparseVector {
 		}
 		assert(offset>=0);
 		assert(offset+length<=length());
-		for (int j=index.seekPosition(offset); j<data.length; j++) {
+		int dataLength=data.length;
+		for (int j=index.seekPosition(offset); j<dataLength; j++) {
 			int i =index.data[j]-offset; // index relative to offset
 			if (i>=length) return;
 			array[i+arrayOffset]+=factor*data[j]*other.get(i+otherOffset);
@@ -427,7 +438,9 @@ public class SparseIndexedVector extends ASparseVector {
 		double[] otherArray=other.getArray();
 		otherOffset+=other.getArrayOffset();
 		
-		for (int j=index.seekPosition(offset); j<data.length; j++) {
+		double[] data=this.data;
+		int dataLength=data.length;
+		for (int j=index.seekPosition(offset); j<dataLength; j++) {
 			int i =index.data[j]-offset; // index relative to offset
 			if (i>=length) return;
 			array[i+arrayOffset]+=factor*data[j]*otherArray[i+otherOffset];
@@ -440,6 +453,7 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	public void copySparseValuesTo(double[] array, int offset) {
+		double[] data=this.data;
 		for (int i=0; i<data.length; i++) {
 			int di=index.data[i];
 			array[offset+di]=data[i];
@@ -452,6 +466,7 @@ public class SparseIndexedVector extends ASparseVector {
 			getElements(av.getArray(),av.getArrayOffset()+offset);
 		}
 		v.fillRange(offset,length,0.0);
+		double[] data=this.data;
 		for (int i=0; i<data.length; i++) {
 			v.unsafeSet(offset+index.data[i],data[i]);
 		}	

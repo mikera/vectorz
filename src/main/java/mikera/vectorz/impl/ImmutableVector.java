@@ -220,6 +220,11 @@ public class ImmutableVector extends ASizedVector implements IDense {
 		v.set(this);
 		return v;
 	}
+	
+	@Override
+	public AVector sparse() {
+		return SparseImmutableVector.create(this);
+	}
 
 	@Override
 	public AVector exactClone() {

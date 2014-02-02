@@ -365,6 +365,13 @@ public class SparseImmutableVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset) {
+		for (int i=0; i<dataLength; i++) {
+			dest[offset+ixs[i]]+=data[i];
+		}
+	}
+	
+	@Override
 	public void addToArray(double[] dest, int offset, int stride) {
 		for (int i=0; i<dataLength; i++) {
 			dest[offset+ixs[i]*stride]+=data[i];
