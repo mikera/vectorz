@@ -297,7 +297,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public boolean elementsEqual(double value) {
-		return false;
+		return (value==1.0)&&(length==1);
 	}
 
 	@Override

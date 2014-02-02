@@ -216,9 +216,7 @@ public class ImmutableVector extends ASizedVector implements IDense {
 	
 	@Override
 	public Vector clone() {
-		Vector v=Vector.createLength(length);
-		v.set(this);
-		return v;
+		return Vector.wrap(toDoubleArray());
 	}
 	
 	@Override
