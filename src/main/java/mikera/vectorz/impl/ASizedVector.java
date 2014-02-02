@@ -38,6 +38,11 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
+	public boolean isSameShape(AVector a) {
+		return length==a.length();
+	}
+	
+	@Override
 	public final int[] getShapeClone() {
 		return new int[] {length};
 	}

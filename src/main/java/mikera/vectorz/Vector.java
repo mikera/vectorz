@@ -504,9 +504,7 @@ public final class Vector extends AArrayVector {
 		if (v instanceof Vector) {multiply(((Vector)v)); return;}
 		int len=length();
 		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		for (int i = 0; i < len; i++) {
-			unsafeSet(i,unsafeGet(i)*v.unsafeGet(i));
-		}	
+		v.multiplyTo(data, 0);	
 	}
 	
 	public void multiply(Vector v) {
@@ -518,13 +516,29 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
+	public void divide(AVector v) {
+		if (v instanceof Vector) {divide(((Vector)v)); return;}
+		int len=length();
+		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.divideTo(data, 0);	
+	}
+	
+	public void divide(Vector v) {
+		int len=length();
+		assert(len==v.length());
+		for (int i = 0; i < len; i++) {
+			data[i]=(data[i]/v.data[i]);
+		}	
+	}
+	
+	@Override
 	public boolean isView() {
 		return false;
 	}
 	
 	@Override
 	public Vector clone() {
-		return Vector.wrap(data.clone());
+		return Vector.wrap(DoubleArrays.copyOf(data));
 	}
 	
 	@Override
