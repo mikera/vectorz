@@ -22,6 +22,20 @@ public final class IndexedSubVector extends BaseIndexedVector {
 	public static IndexedSubVector wrap(AVector source, int[] indexes) {
 		return new IndexedSubVector(source,indexes);
 	}
+	
+	@Override
+	public void addToArray(double[] dest, int offset) {
+		for (int i=0; i<length; i++) {
+			dest[offset+i]+=data.unsafeGet(indexes[i]);
+		}
+	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		for (int i=0; i<length; i++) {
+			dest[offset+i]=data.unsafeGet(indexes[i]);
+		}
+	}
 
 	@Override
 	public double get(int i) {
