@@ -170,8 +170,10 @@ public class SparseIndexedVector extends ASparseVector {
 			multiply((AArrayVector)v);
 			return;
 		}
+		double[] data=this.data;
+		int[] ixs=index.data;
 		for (int i=0; i<data.length; i++) {
-			data[i]*=v.get(index.data[i]);
+			data[i]*=v.get(ixs[i]);
 		}
 	}
 	
@@ -181,13 +183,16 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void multiply(double[] array, int offset) {
+		double[] data=this.data;
+		int[] ixs=index.data;
 		for (int i=0; i<data.length; i++) {
-			data[i]*=array[offset+index.data[i]];
+			data[i]*=array[offset+ixs[i]];
 		}
 	}
 	
 	@Override
 	public double magnitudeSquared() {
+		double[] data=this.data;
 		double result=0.0;
 		for (int i=0; i<data.length; i++) {
 			double d=data[i];
@@ -211,6 +216,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public double maxAbsElement() {
+		double[] data=this.data;
 		double result=0.0;
 		for (int i=0; i<data.length; i++) {
 			double d=Math.abs(data[i]);
@@ -221,6 +227,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public int maxElementIndex(){
+		double[] data=this.data;
 		if (data.length==0) return 0;
 		double result=data[0];
 		int di=0;
@@ -241,6 +248,7 @@ public class SparseIndexedVector extends ASparseVector {
  
 	@Override
 	public int maxAbsElementIndex(){
+		double[] data=this.data;
 		if (data.length==0) return 0;
 		double result=data[0];
 		int di=0;
@@ -256,6 +264,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public int minElementIndex(){
+		double[] data=this.data;
 		if (data.length==0) return 0;
 		double result=data[0];
 		int di=0;
