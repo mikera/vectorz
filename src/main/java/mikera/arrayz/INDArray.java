@@ -16,6 +16,10 @@ import mikera.vectorz.Vector;
  * 
  * All Vectorz array types (including all vectors and matrices) must implement this interface.
  * 
+ * Arrays have the following properties:
+ * - They behave as an indexed, multi-dimensional array of doubles
+ * - The may sometimes have size 0 dimensions, but not all array types support this.
+ * 
  * @author Mike
  */
 public interface INDArray extends Cloneable, Serializable {
