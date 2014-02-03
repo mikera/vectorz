@@ -19,15 +19,24 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	private static final long serialVersionUID = -6721785163444613243L;
 
 	final double[] data;
+	private final Vector lead;
 	
 	public DiagonalMatrix(int dimensions) {
 		super(dimensions);
 		data=new double[dimensions];
+		lead=Vector.wrap(data);
 	}
 	
 	private DiagonalMatrix(double... values) {
 		super(values.length);
 		data=values;
+		lead=Vector.wrap(data);
+	}
+	
+	private DiagonalMatrix(Vector values) {
+		super(values.length());
+		data=values.getArray();
+		lead=values;
 	}
 	
 	public static DiagonalMatrix createDimensions(int dims) {
@@ -53,6 +62,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return new DiagonalMatrix(data);
 	}
 	
+	public static DiagonalMatrix wrap(Vector data) {
+		return new DiagonalMatrix(data);
+	}
+	
 	@Override
 	public double trace() {
 		double result=0.0;
@@ -64,12 +77,12 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double elementSum() {
-		return DoubleArrays.elementSum(data, 0, dimensions);
+		return lead.elementSum();
 	}	
 	
 	@Override
 	public long nonZeroCount() {
-		return DoubleArrays.nonZeroCount(data, 0, dimensions);
+		return lead.nonZeroCount();
 	}	
 
 	@Override
@@ -113,9 +126,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public void multiply(double factor) {
-		for (int i=0; i<data.length; i++) {
-			data[i]*=factor;
-		}
+		lead.multiply(factor);
 	}
 	
 	@Override
@@ -186,11 +197,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double determinant() {
-		double det=1.0;
-		for (int i=0; i<dimensions; i++) {
-			det*=data[i];
-		}
-		return det;
+		return DoubleArrays.elementProduct(data, 0, dimensions);
 	}
 	
 	@Override
@@ -214,7 +221,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public Vector getLeadingDiagonal() {
-		return Vector.wrap(data);
+		return lead;
 	}
 
 	@Override
@@ -229,9 +236,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		if (!(a instanceof DiagonalMatrix)) return a.innerProduct(this);
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
-		for (int i=0; i<dimensions; i++) {
-			result.data[i]*=a.unsafeGetDiagonalValue(i);
-		}
+		result.lead.multiply(a.getLeadingDiagonal());
 		return result;
 	}
 	

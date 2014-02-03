@@ -350,7 +350,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray clone();
 	
 	/**
-	 * Returns a copy of the array data. 
+	 * Returns a defensive copy of the array data. 
 	 * 
 	 * May return the same array if the original was immutable, otherwise will return a defensive copy.
 	 */

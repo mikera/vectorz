@@ -332,7 +332,9 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override
 	public double[] toDoubleArray() {
-		return toMatrix().getArray();
+		double[] data=new double[dimensions*dimensions];
+		getLeadingDiagonal().addToArray(data, 0, dimensions+1);
+		return data;
 	}
 	
 	@Override
