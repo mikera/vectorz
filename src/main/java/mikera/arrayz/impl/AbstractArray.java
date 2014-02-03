@@ -908,7 +908,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public double[] toDoubleArray() {
 		double[] result=Array.createStorage(this.getShape());
-		getElements(result,0);
+		if (this.isSparse()) {
+			addToArray(result,0);
+		} else {
+			getElements(result,0);
+		}
 		return result;
 	}
 	
@@ -979,7 +983,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			return Scalar.create(get());
 		}
 		if (dims==1) {
-			return Vector.wrap(this.toDoubleArray());
+			return Vector.create(this);
 		}
 		if (dims==2) {
 			return Matrix.create(this);

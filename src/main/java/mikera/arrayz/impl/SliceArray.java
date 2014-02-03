@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.matrixx.Matrix;
@@ -293,6 +294,21 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		for (int i=0; i<slices.length; i++) {
 			slices[i].setElements(values,offset+skip*i,skip);
 		}
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		double[] result=Array.createStorage(this.getShape());
+		int skip=(int)slice(0).elementCount();
+		for (int i=0; i<slices.length; i++) {
+			INDArray s=slices[i];
+			if (s.isSparse()) {
+				s.addToArray(result,skip*i);				
+			} else {
+				s.getElements(result,skip*i);
+			}
+		}
+		return result;
 	}
 	
 	@Override

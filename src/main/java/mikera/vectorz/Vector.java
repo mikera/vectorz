@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDense;
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
@@ -122,6 +123,10 @@ public final class Vector extends AArrayVector {
 	}
 
 	public static Vector create(AVector a) {
+		return new Vector(a.toDoubleArray());
+	}
+	
+	public static Vector create(INDArray a) {
 		return new Vector(a.toDoubleArray());
 	}
 	
