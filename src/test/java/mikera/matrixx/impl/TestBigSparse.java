@@ -28,6 +28,8 @@ public class TestBigSparse {
 		
 		AMatrix mt=m.getTranspose();
 		assertEquals(m.getTranspose(),mt);
+		
+		assertTrue(m.density()<0.0001);
 	}
 	
 	@Test public void testBigMultiply() {
