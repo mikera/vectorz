@@ -340,6 +340,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return DoubleArrays.copyOf(data);
+	}
+	
+	@Override
 	public double[] asDoubleArray() {
 		return data;
 	}

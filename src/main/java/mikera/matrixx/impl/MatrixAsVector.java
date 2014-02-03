@@ -174,9 +174,14 @@ public class MatrixAsVector extends AMatrixViewVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		int row=calcRow(start);
-		if (row==calcRow(start+length-1)) {
-			return source.getRowView(row).subVector(start-row*columns,length);
+		int startRow=calcRow(start);
+		int endRow=calcRow(start+length-1); 
+		if (startRow==endRow) {
+			return source.getRowView(startRow).subVector(start-startRow*columns,length);
+		} else if ((startRow==endRow-1)&&(source instanceof IFastRows)) {
+			int split=endRow*columns;
+			return source.getRowView(startRow).subVector(start-startRow*columns,split-start)
+					.join(source.getRowView(endRow).subVector(0, start+length-split));
 		}
 		return super.subVector(start, length);
 	}
