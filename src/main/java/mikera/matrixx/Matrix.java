@@ -130,7 +130,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public static Matrix wrap(int rowCount, int columnCount, double[] data) {
-		if (data.length!=rowCount*columnCount) throw new VectorzException("data array is of wrong size: "+data.length);
+		if (data.length!=rowCount*columnCount) throw new IllegalArgumentException("data array is of wrong size: "+data.length);
 		return new Matrix(rowCount,columnCount,data);
 	}
 	
@@ -138,7 +138,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	public AStridedMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		if ((rowStart<0)||(rowStart>=this.rows)||(colStart<0)||(colStart>=this.cols)) throw new IndexOutOfBoundsException("Invalid submatrix start position");
 		if ((rowStart+rows>this.rows)||(colStart+cols>this.cols)) throw new IndexOutOfBoundsException("Invalid submatrix end position");
-		if ((rows<1)||(cols<1)) throw new IllegalArgumentException("Submatrix has no elements");
 		return StridedMatrix.wrap(data, rows, cols, 
 				rowStart*rowStride()+colStart*columnStride(), 
 				rowStride(), columnStride());
