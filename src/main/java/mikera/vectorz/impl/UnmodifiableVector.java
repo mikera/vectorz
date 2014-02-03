@@ -6,8 +6,12 @@ import mikera.vectorz.util.ErrorMessages;
 public class UnmodifiableVector extends BaseDerivedVector {
 	private static final long serialVersionUID = 2709404707262677811L;
 
-	public UnmodifiableVector(AVector source) {
+	private UnmodifiableVector(AVector source) {
 		super(source);
+	}
+	
+	public UnmodifiableVector wrap(AVector v) {
+		return new UnmodifiableVector(v);
 	}
 
 	@Override
@@ -37,6 +41,6 @@ public class UnmodifiableVector extends BaseDerivedVector {
 	
 	@Override
 	public AVector sparse() {
-		return SparseImmutableVector.create(this);
+		return SparseImmutableVector.create(source);
 	}
 }
