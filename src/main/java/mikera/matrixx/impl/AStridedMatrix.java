@@ -49,20 +49,10 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
-	public void copyRowTo(int row, double[] dest, int destOffset) {
-		int cc=columnCount();
-		for (int i=0; i<cc; i++) {
-			dest[i+destOffset]=unsafeGet(row,i);
-		}
-	}
+	public abstract void copyRowTo(int row, double[] dest, int destOffset);
 	
 	@Override
-	public void copyColumnTo(int col, double[] dest, int destOffset) {
-		int rc=rowCount();
-		for (int i=0; i<rc; i++) {
-			dest[i+destOffset]=unsafeGet(i,col);
-		}
-	}
+	public abstract void copyColumnTo(int col, double[] dest, int destOffset);
 	
 	@Override
 	public int[] getStrides() {
@@ -76,6 +66,11 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		case 1: return columnStride();
 		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		}
+	}
+	
+	@Override
+	public AMatrix getTranspose() {
+		return getTransposeView();
 	}
 	
 	@Override
