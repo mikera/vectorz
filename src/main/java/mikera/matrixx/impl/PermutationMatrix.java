@@ -54,6 +54,13 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		for (int i=0; i<size; i++) {
+			data[offset+(i*size)+perm.get(i)]+=1.0;
+		}
+	}
+	
+	@Override
 	public boolean isMutable() {
 		// PermutationMatrix is mutable (rows can be swapped, etc.)
 		return true;

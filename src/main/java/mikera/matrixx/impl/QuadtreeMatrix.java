@@ -62,7 +62,11 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	@Override
 	public boolean isDiagonal() {
 		if (!isSquare()) return false;
-		return (c01.isZero())&&(c10.isZero())&&(c00.isDiagonal())&&(c11.isDiagonal());
+		if (columnSplit==rowSplit) {
+			return (c01.isZero())&&(c10.isZero())&&(c00.isDiagonal())&&(c11.isDiagonal());
+		} else {
+			return super.isDiagonal();
+		}
 	}
 
 	@Override
