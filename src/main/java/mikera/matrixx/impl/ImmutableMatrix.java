@@ -20,7 +20,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class ImmutableMatrix extends ARectangularMatrix implements IDenseArray {
+public final class ImmutableMatrix extends ARectangularMatrix implements IDenseArray, IFastRows {
 	private static final long serialVersionUID = 2848013010449128820L;
 
 	private double[] data;

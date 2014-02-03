@@ -7,7 +7,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Vector referring to an offset into a double[] array
+ * Vector referring to a fixed offset into a double[] array
  * 
  * @author Mike
  * 
