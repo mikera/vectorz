@@ -171,7 +171,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 
 	@Override
 	public double get(int row, int column) {
-		if (column<0||(column>=size)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
+		if (column<0||(column>=size)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,row,column));
 		return (perm.get(row)==column)?1.0:0.0;
 	}
 
@@ -235,8 +235,8 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 			transform ((Vector)source, (Vector)dest);
 			return;
 		}
-		if(rowCount()!=dest.length()) throw new IllegalArgumentException("Wrong dest vector length");
-		if(columnCount()!=source.length()) throw new IllegalArgumentException("Wrong source vector length");
+		if(rowCount()!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		if(columnCount()!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(dest));
 		for (int i=0; i<size; i++) {
 			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
 		}
@@ -272,9 +272,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 		for (int i=0; i<size; i++) {
 			int dstIndex=i*cc;
 			int srcRow=perm.get(i);
-			for (int j=0; j<cc; j++) {
-				result.data[dstIndex+j]=a.unsafeGet(srcRow,j);
-			}
+			a.copyRowTo(srcRow, result.data, dstIndex);
 		}
 		return result;
 	}
