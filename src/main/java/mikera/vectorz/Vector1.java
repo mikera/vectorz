@@ -150,6 +150,11 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x};
+	}
+	
+	@Override
 	public double getX() {
 		return x;
 	}

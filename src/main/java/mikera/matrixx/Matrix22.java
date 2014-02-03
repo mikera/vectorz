@@ -354,5 +354,10 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	public Matrix22 exactClone() {
 		return new Matrix22(this);
 	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {m00,m01,m10,m11};
+	}
 
 }

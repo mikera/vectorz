@@ -42,16 +42,15 @@ public final class Matrix extends ADenseArrayMatrix {
 	 * Creates a new zero-filled matrix of the specified shape.
 	 */
 	public static Matrix create(int rowCount, int columnCount) {
-		return new Matrix(rowCount,columnCount,createStorage(rowCount,columnCount));
+		return new Matrix(rowCount,columnCount);
 	}
 	
 	public static Matrix create(AMatrix m) {
-		return wrap(m.rowCount(),m.columnCount(),m.toDoubleArray());
+		return new Matrix(m.rowCount(),m.columnCount(),m.toDoubleArray());
 	}
 	
 	public Matrix(AMatrix m) {
-		this(m.rowCount(),m.columnCount());
-		set(m);
+		this(m.rowCount(),m.columnCount(),m.toDoubleArray());
 	}
 	
 	public static double[] createStorage(int rowCount,int columnCount) {
@@ -233,7 +232,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix clone() {
-		return new Matrix(rows,cols,data.clone());
+		return new Matrix(rows,cols,DoubleArrays.copyOf(data));
 	}
 	
 	@Override

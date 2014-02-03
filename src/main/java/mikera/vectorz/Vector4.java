@@ -218,6 +218,11 @@ public final class Vector4 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x,y,z,t};
+	}
+	
+	@Override
 	public Vector4 clone() {
 		return new Vector4(x,y,z,t);	
 	}

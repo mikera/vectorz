@@ -226,6 +226,11 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x,y};
+	}
+	
+	@Override
 	public Vector2 toNormal() {
 		double d=this.magnitude();
 		return (d==0)?new Vector2():new Vector2(x/d,y/d);

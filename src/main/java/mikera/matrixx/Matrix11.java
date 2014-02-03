@@ -161,5 +161,10 @@ public final class Matrix11 extends APrimitiveMatrix {
 	public boolean equalsArray(double[] data, int offset) {
 		return data[offset]==value;
 	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {value};
+	}
 
 }

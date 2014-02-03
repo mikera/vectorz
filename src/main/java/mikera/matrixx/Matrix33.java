@@ -328,6 +328,11 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return new double[] {m00,m01,m02,m10,m11,m12,m20,m21,m22};
+	}
+	
+	@Override
 	public Matrix33 exactClone() {
 		return new Matrix33(this);
 	}

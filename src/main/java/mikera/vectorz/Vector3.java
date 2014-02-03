@@ -389,6 +389,11 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x,y,z};
+	}
+	
+	@Override
 	public Vector3 toNormal() {
 		double d=this.magnitude();
 		return (d==0)?new Vector3():new Vector3(x/d,y/d,z/d);
