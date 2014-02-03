@@ -472,6 +472,8 @@ public class TestMatrixx {
 			
 			assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
 		}
+		
+		assertEquals(m,BandedMatrix.create(m));
 	}
 	
 	private void doVectorTest(AMatrix m) {

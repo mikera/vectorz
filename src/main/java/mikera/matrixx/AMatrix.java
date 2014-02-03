@@ -1772,11 +1772,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @return
 	 */
 	public int upperBandwidth() {
-		for (int band=upperBandwidthLimit(); band>0; band--) {
-			int bandLen=bandLength(band);
-			for (int i=0; i<bandLen; i++) {
-				if (unsafeGet(band+i,i)!=0.0) return band;
-			}
+		for (int w=upperBandwidthLimit(); w>0; w--) {
+			if (!getBand(w).isZero()) return w;
 		}
 		return 0;
 	}
@@ -1786,11 +1783,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @return
 	 */
 	public int lowerBandwidth() {
-		for (int band=lowerBandwidthLimit(); band>0; band--) {
-			int bandLen=bandLength(-band);
-			for (int i=0; i<bandLen; i++) {
-				if (unsafeGet(i,band+i)!=0.0) return band;
-			}
+		for (int w=lowerBandwidthLimit(); w>0; w--) {
+			if (!getBand(-w).isZero()) return w;
 		}
 		return 0;
 	}

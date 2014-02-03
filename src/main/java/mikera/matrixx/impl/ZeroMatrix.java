@@ -35,6 +35,10 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 		return new ZeroMatrix(rows,columns);
 	}
 	
+	public static ZeroMatrix createSameShape(AMatrix a) {
+		return new ZeroMatrix(a.rowCount(),a.columnCount());
+	}
+	
 	@Override
 	public boolean isSparse() {
 		return true;
