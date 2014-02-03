@@ -139,6 +139,11 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	}
 	
 	@Override
+	public RowMatrix getTransposeView() {
+		return new RowMatrix(vector);
+	}
+	
+	@Override
 	public AVector getColumn(int i) {
 		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1,i));
 		return vector;

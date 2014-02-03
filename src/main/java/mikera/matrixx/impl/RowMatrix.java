@@ -138,6 +138,11 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	public ColumnMatrix getTranspose() {
 		return new ColumnMatrix(vector);
 	}
+	
+	@Override
+	public ColumnMatrix getTransposeView() {
+		return new ColumnMatrix(vector);
+	}
 
 	@Override
 	public RowMatrix exactClone() {
