@@ -25,7 +25,6 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	public AStridedMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		if ((rowStart<0)||(rowStart>=rows)||(colStart<0)||(colStart>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart,colStart));
 		if ((rowStart+rows>this.rows)||(colStart+cols>this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart+rows,colStart+cols));
-		if ((rows<1)||(cols<1)) throw new IllegalArgumentException(ErrorMessages.illegalSize(rows,cols));
 		return StridedMatrix.wrap(data, rows, cols, 
 				getArrayOffset()+rowStart*rowStride()+colStart*columnStride(), this.rowStride(), this.columnStride());
 	}

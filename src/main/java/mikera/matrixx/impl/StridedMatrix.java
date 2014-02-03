@@ -95,7 +95,6 @@ public final class StridedMatrix extends AStridedMatrix {
 	public AStridedMatrix subMatrix(int rowStart, int rowCount, int colStart, int colCount) {
 		if ((rowStart<0)||(rowStart>=this.rows)||(colStart<0)||(colStart>=this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart,colStart));
 		if ((rowStart+rowCount>this.rows)||(colStart+colCount>this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart+rowCount,colStart+colCount));
-		if ((rowCount<1)||(colCount<1)) throw new IllegalArgumentException(ErrorMessages.illegalSize(rowCount,colCount));
 		return new StridedMatrix(data, rowCount, colCount, offset+rowStart*rowStride+colStart*colStride, rowStride, colStride);
 	}
 
