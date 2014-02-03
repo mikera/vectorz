@@ -160,7 +160,8 @@ public class Matrixx {
 	/**
 	 * Creates a SparseRowMatrix matrix from the given matrix, ignoring zeros
 	 */
-	public static SparseRowMatrix createSparseRows(AMatrix m) {
+	public static AMatrix createSparseRows(AMatrix m) {
+		if (m.rowCount()==0) return ZeroMatrix.create(0, m.columnCount());
 		return SparseRowMatrix.create(m);
 	}
 	

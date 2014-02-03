@@ -330,6 +330,7 @@ public class TestArrays {
 
 	private void testParserRoundTrip(INDArray a) {
 		String s = a.toString();
+		if (a.elementCount()==0) return;
 		assertEquals(a, Arrayz.load(new StringReader(s)));
 		assertEquals(a, Arrayz.parse(s));
 	}

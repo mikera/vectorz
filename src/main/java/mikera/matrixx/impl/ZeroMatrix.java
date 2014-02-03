@@ -216,7 +216,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public AVector asVector() {
-		return ZeroVector.create(cols*rows);
+		return Vectorz.createZeroVector(cols*rows);
 	}
 	
 	@Override
@@ -274,7 +274,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		return ZeroVector.create(Math.min(rows, cols));
+		return Vectorz.createZeroVector(Math.min(rows, cols));
 	}
 	
 	@Override
