@@ -785,7 +785,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> getSlices() {
+	public List<?> getSlices() {
 		return (List<T>)getSlices(0);
 	}
 	
