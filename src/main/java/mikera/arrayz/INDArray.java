@@ -473,6 +473,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public double[] toDoubleArray();
 	
 	/**
+	 * Copies the slices of this array to a new INDArray[]
+	 */
+	public INDArray[] toSliceArray();
+	
+	/**
 	 * Returns the underlying double array representing the packed elements of this array
 	 * Returns nil if there is no such underlying array
 	 */

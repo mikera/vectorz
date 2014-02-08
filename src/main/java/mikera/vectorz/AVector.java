@@ -397,6 +397,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public INDArray[] toSliceArray() {
+		int n=sliceCount();
+		INDArray[] al=new INDArray[n];
+		for (int i=0; i<n; i++) {
+			al[i]=slice(i);
+		}
+		return al;
+	}
+	
+	@Override
 	public double[] asDoubleArray() {
 		return null;
 	}

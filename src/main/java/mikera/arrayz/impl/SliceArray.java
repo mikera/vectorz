@@ -39,7 +39,12 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		}
 	}
 	
-	public static <T extends INDArray>  SliceArray<T> create(T... slices) {
+	@SuppressWarnings("unchecked")
+	public static <T extends INDArray>  SliceArray<T> create(INDArray a) {
+		return new SliceArray<T>(a.getShape(),(T[]) a.toSliceArray());
+	}
+	
+	public static <T extends INDArray>  SliceArray<T> of(T... slices) {
 		return new SliceArray<T>(IntArrays.consArray(slices.length,slices[0].getShape()),slices.clone());
 	}
 	
@@ -280,10 +285,27 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public List<T> getSlices() {
-		ArrayList<T> al=new ArrayList<T>();
+	public List<?> getSlices() {
+		ArrayList<Object> al=new ArrayList<Object>();
+		if (dimensionality()==1) {
+			int n=sliceCount();
+			for (int i=0; i<n ; i++) {
+				al.add(Double.valueOf(slices[i].get()));
+			}
+			return al;
+		}
 		for (T sl:this) {
 			al.add(sl);
+		}
+		return al;
+	}
+	
+	@Override
+	public INDArray[] toSliceArray() {
+		int n=sliceCount();
+		INDArray[] al=new INDArray[n];
+		for (int i=0; i<n; i++) {
+			al[i]=slice(i);
 		}
 		return al;
 	}

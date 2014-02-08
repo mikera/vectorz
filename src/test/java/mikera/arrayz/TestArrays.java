@@ -407,13 +407,13 @@ public class TestArrays {
 	}
 	
 	private void testBroadcastLike(INDArray a) {
-		INDArray up=SliceArray.create(a,a);		
+		INDArray up=SliceArray.of(a,a);		
 		INDArray b=a.broadcastLike(up);		
 		assertEquals(up,b);
 		assertEquals(a,up.slice(0));
 		assertEquals(a,up.slice(1));
 		
-		INDArray up2=Arrayz.create(SliceArray.create(a));		
+		INDArray up2=Arrayz.create(SliceArray.of(a));		
 		INDArray b2=a.broadcastLike(up2);		
 		assertEquals(up2,b2);
 		
@@ -599,7 +599,7 @@ public class TestArrays {
 
 	@Test
 	public void genericTests() {
-		SliceArray<AVector> sa = SliceArray.create(
+		SliceArray<AVector> sa = SliceArray.of(
 				Vectorz.createUniformRandomVector(10),
 				Vectorz.createUniformRandomVector(10));
 		testArray(sa);

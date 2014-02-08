@@ -782,15 +782,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public INDArray reshape(int... targetShape) {
 		return Arrayz.createFromVector(asVector(), targetShape);
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<?> getSlices() {
-		return (List<T>)getSlices(0);
-	}
+
 	
 	@Override
-	public List<INDArray> getSlices(int dimension) {
+	public List<?> getSlices(int dimension) {
 		int l=getShape(dimension);
 		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
 		for (int i=0; i<l; i++) {
@@ -800,10 +795,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public List<?> getSlices() {
+		int n=sliceCount();
+		ArrayList<Object> al=new ArrayList<Object>(n);
+		for (int i=0; i<n; i++) {
+			al.add(slice(i));
+		}
+		return al;
+	}
+	
+	@Override
 	public List<INDArray> getSliceViews() {
-		int l=sliceCount();
-		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
-		for (int i=0; i<l; i++) {
+		int n=sliceCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
+		for (int i=0; i<n; i++) {
 			al.add(slice(i));
 		}
 		return al;
@@ -919,6 +924,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public double[] asDoubleArray() {
 		return null;
+	}
+	
+	@Override
+	public INDArray[] toSliceArray() {
+		int n=sliceCount();
+		INDArray[] al=new INDArray[n];
+		for (int i=0; i<n; i++) {
+			al[i]=slice(i);
+		}
+		return al;
 	}
 	
 	@Override

@@ -334,7 +334,7 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 
 	@Override
 	public List<?> getSlices() {
-		if (dimensions==0) return (List<?>)Lists.newArrayList(elementIterator());
+		if (dimensions==1) return (List<?>)Lists.newArrayList(elementIterator());
 		return super.getSliceViews();
 	}
 
