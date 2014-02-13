@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
-import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.vectorz.AVector;
 
 /**

@@ -7,7 +7,6 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.RepeatedElementVector;
-import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**

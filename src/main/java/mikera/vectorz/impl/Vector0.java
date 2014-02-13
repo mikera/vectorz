@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import java.io.ObjectStreamException;
 
-import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AVector;

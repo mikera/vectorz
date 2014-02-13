@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import us.bpsm.edn.parser.Parseable;
-import us.bpsm.edn.parser.Parser;
-import us.bpsm.edn.parser.Parsers;
-import mikera.arrayz.impl.BaseNDArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -25,6 +21,9 @@ import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
+import us.bpsm.edn.parser.Parseable;
+import us.bpsm.edn.parser.Parser;
+import us.bpsm.edn.parser.Parsers;
 
 /**
  * Static function class for array operations

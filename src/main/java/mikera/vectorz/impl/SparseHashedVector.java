@@ -1,6 +1,5 @@
 package mikera.vectorz.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +9,6 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -275,7 +273,6 @@ public class SparseHashedVector extends ASparseVector {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void set(SparseHashedVector v) {
 		hash=(HashMap<Integer, Double>) v.hash.clone();
 	}
@@ -494,7 +491,6 @@ public class SparseHashedVector extends ASparseVector {
 		return v;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public SparseHashedVector exactClone() {
 		return new SparseHashedVector(length,(HashMap<Integer, Double>) hash.clone());

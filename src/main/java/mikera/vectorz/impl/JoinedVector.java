@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import java.nio.DoubleBuffer;
-import java.util.Map.Entry;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;

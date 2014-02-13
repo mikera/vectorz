@@ -264,7 +264,6 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public SliceArray<T> exactClone() {
 		T[] newSlices=slices.clone();

@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
-import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;

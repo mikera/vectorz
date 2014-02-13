@@ -1,7 +1,5 @@
 package mikera.matrixx.impl;
 
-import java.util.HashMap;
-
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;

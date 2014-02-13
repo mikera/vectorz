@@ -1,10 +1,10 @@
 package mikera.matrixx;
 
-import java.util.List;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Multiplications;
@@ -22,7 +22,6 @@ import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
-import mikera.vectorz.util.VectorzException;
 
 /** 
  * Standard MxN matrix class backed by a densely packed double[] array

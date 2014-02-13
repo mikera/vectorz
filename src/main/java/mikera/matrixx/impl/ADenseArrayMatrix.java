@@ -1,6 +1,5 @@
 package mikera.matrixx.impl;
 
-import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
@@ -8,7 +7,6 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.AStridedVector;
-import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 

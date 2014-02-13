@@ -3,12 +3,9 @@ package mikera.matrixx.impl;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector2;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -18,6 +15,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public abstract class ASparseRCMatrix extends ARectangularMatrix {
+	private static final long serialVersionUID = -4153075712517555814L;
 
 	protected final HashMap<Integer,AVector> data;
 

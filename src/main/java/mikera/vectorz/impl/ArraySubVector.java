@@ -1,7 +1,5 @@
 package mikera.vectorz.impl;
 
-import java.util.Arrays;
-
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;

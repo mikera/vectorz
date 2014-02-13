@@ -4,7 +4,6 @@ import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 import mikera.arrayz.INDArray;
-import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;

@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
-import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -16,10 +15,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
-import mikera.vectorz.impl.ZeroVector;
-import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
-import mikera.vectorz.util.VectorzException;
 
 /**
  * Matrix stored as a sparse collection of sparse row vectors.

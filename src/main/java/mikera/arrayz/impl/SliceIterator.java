@@ -31,7 +31,6 @@ public class SliceIterator<T> implements Iterator<T> {
 		return pos<maxPos;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public T next() {
 		assert(pos<maxPos);

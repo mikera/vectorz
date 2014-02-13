@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
@@ -89,11 +88,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	protected void unsafeSetInteger(Integer i,double value) {
-		unsafeSet((int)i,value);
+		unsafeSet(i,value);
 	}
 	
 	protected double unsafeGetInteger(Integer i) {
-		return unsafeGet((int)i);
+		return unsafeGet(i);
 	}
 	
 	@Override

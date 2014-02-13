@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
-import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ImmutableVector;

@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import us.bpsm.edn.parser.Parseable;
-import us.bpsm.edn.parser.Parser;
-import us.bpsm.edn.parser.Parsers;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
@@ -19,7 +16,6 @@ import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.util.Rand;
 import mikera.vectorz.AVector;
@@ -29,6 +25,9 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
+import us.bpsm.edn.parser.Parseable;
+import us.bpsm.edn.parser.Parser;
+import us.bpsm.edn.parser.Parsers;
 
 /**
  * Static method class for matrices
@@ -140,7 +139,7 @@ public class Matrixx {
 			throw new IllegalArgumentException("Length of indexes array must match length of weights array");
 		SparseRowMatrix sm=SparseRowMatrix.create(rowCount, columnCount);
 		for (int i = 0; i < rowCount; i++) {
-			sm.replaceRow(i, SparseIndexedVector.wrap(columnCount, indexes[i].clone(), weights[i].toDoubleArray()));;
+			sm.replaceRow(i, SparseIndexedVector.wrap(columnCount, indexes[i].clone(), weights[i].toDoubleArray()));
 		}
 		return sm;
 	}
@@ -567,7 +566,6 @@ public class Matrixx {
 	 * @param ednString
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static AMatrix parse(String ednString) {
 		Parser p = Parsers.newParser(getMatrixParserConfig());
 		Parseable ps = Parsers.newParseable(ednString);
