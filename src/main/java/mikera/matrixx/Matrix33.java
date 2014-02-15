@@ -274,7 +274,7 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	 * Returns a row of the matrix as a cloned vector
 	 */
 	@Override
-	public Vector3 cloneRow(int row) {
+	public Vector3 getRowClone(int row) {
 		switch (row) {
 			case 0: return Vector3.of(m00,m01,m02);
 			case 1: return Vector3.of(m10,m11,m12);
@@ -325,6 +325,11 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	@Override
 	public Matrix33 clone() {
 		return new Matrix33(this);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {m00,m01,m02,m10,m11,m12,m20,m21,m22};
 	}
 	
 	@Override

@@ -1,8 +1,10 @@
 package mikera.matrixx.impl;
 
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -26,6 +28,18 @@ public class BandedMatrix extends ABandedMatrix {
 		this.bands=bands;
 		this.minBand=minBand;
 		this.maxBand=minBand+bands.length-1;
+	}
+	
+	public static BandedMatrix create(AMatrix m) {
+		int rowCount=m.rowCount();
+		int columnCount=m.columnCount();
+		int minBand=-m.lowerBandwidth();
+		int maxBand=m.upperBandwidth();
+		AVector[] bands=new AVector[maxBand-minBand+1];
+		for (int i=minBand; i<=maxBand; i++) {
+			bands[i-minBand]=m.getBand(i).clone();
+		}
+		return new BandedMatrix(rowCount,columnCount,minBand,bands);
 	}
 	
 	public static BandedMatrix create(int rowCount, int columnCount, int minBand, int maxBand) {
@@ -69,8 +83,8 @@ public class BandedMatrix extends ABandedMatrix {
 	@Override
 	public AVector getBand(int band) {
 		if ((band>=minBand)&&(band<=maxBand)) return bands[band-minBand];
-		if ((band>-rowCount)&&(band<columnCount)) return ZeroVector.create(bandLength(band));
-		return null;
+		if ((band>=-rowCount)&&(band<=columnCount)) return Vectorz.createZeroVector(bandLength(band));
+		throw new IndexOutOfBoundsException(ErrorMessages.invalidBand(this, band));
 	}
 
 	@Override
@@ -123,9 +137,10 @@ public class BandedMatrix extends ABandedMatrix {
 		} else {
 			Vector t=(Vector)dest;
 			t.fill(0.0);
+			double[] data=t.getArray();
 			for (int i=minBand; i<=maxBand; i++) {
 				AVector b=getBand(i);
-				b.addProductToArray(1.0, 0, source, Math.max(i, 0), t.data, Math.max(-i, 0), bandLength(i));
+				b.addProductToArray(1.0, 0, source, Math.max(i, 0), data, Math.max(-i, 0), bandLength(i));
 			}
 		}
 	}
@@ -134,9 +149,10 @@ public class BandedMatrix extends ABandedMatrix {
 	public void transform(Vector source, Vector dest) {
 		Vector t=dest;
 		t.fill(0.0);
+		double[] data=dest.getArray();
 		for (int i=minBand; i<=maxBand; i++) {
 			AVector b=getBand(i);
-			b.addProductToArray(1.0, 0, source, Math.max(i, 0), t.data, Math.max(-i, 0), bandLength(i));
+			b.addProductToArray(1.0, 0, source, Math.max(i, 0), data, Math.max(-i, 0), bandLength(i));
 		}		
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
 import mikera.arrayz.impl.JoinedArray;
@@ -98,11 +99,12 @@ public class TestArrays {
 
 	private void testAsVector(INDArray a) {
 		AVector v = a.asVector();
-		assertTrue(v.length() >= 0);
+		int n=v.length();
+		assertTrue(n >= 0);
 		assertEquals(a.elementCount(), v.length());
 		assertEquals(a.elementSum(), v.elementSum(),0.0001);
-		assertEquals(a.elementMax(), v.elementMax(),0.0);
-		assertEquals(a.elementMin(), v.elementMin(),0.0);
+		if (n>0) assertEquals(a.elementMax(), v.elementMax(),0.0);
+		if (n>0) assertEquals(a.elementMin(), v.elementMin(),0.0);
 		
 		if (a.isMutable() && (v.length() > 0)) {
 			assertTrue(v.isMutable());
@@ -133,8 +135,9 @@ public class TestArrays {
 	}
 
 	private void testClone(INDArray a) {
+		// regular clone
 		INDArray c = a.clone();
-		
+		assertTrue(c.isFullyMutable());
 		assertTrue(c.isSameShape(a));
 		
 		if (!(c instanceof VectorMatrixM3)) { // allowed to still be a view
@@ -155,6 +158,36 @@ public class TestArrays {
 		assertEquals(a, ec);
 		assertEquals(c, ec);
 		assertEquals(a.getClass(), ec.getClass());
+		
+		// sparse clone
+		INDArray sc=a.sparseClone();
+		assertTrue("Should have fully mutable sparseClone: "+a.getClass(), (sc.elementCount()==0)||sc.isFullyMutable());
+		assertEquals(a,sc);
+		
+		// sparse coercion
+		INDArray sp=a.sparse();
+		assertEquals(a,sp);
+		
+		// immutable coercion
+		INDArray imma=a.immutable();
+		assertFalse(imma.isMutable());
+		assertEquals(a,imma);
+		try {
+			imma.fill(2.0);
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+		
+		// mutable coercion
+		INDArray muta=a.exactClone().mutable();
+		assertTrue(muta.isFullyMutable());
+		muta.fill(2.0);
+		
+		// dense coercion
+		INDArray densa=a.dense();
+		assertTrue(densa instanceof IDense);
+		assertEquals(a,densa);
 	}
 
 	private void testSetElements(INDArray a) {
@@ -223,18 +256,29 @@ public class TestArrays {
 
 			boolean nan=false;
 			for (int i = 0; i < n; i++) {
-				double x= op.apply(v.get(i));
+				double x= op.apply(v.unsafeGet(i));
 				if (Double.isNaN(x)) nan=true;
 				tmp[i] = x;
 			}
 			if (nan) continue; // TODO: compare NaNs properly
+			b.validate();
 			op.applyTo(b);
 			c.applyOp(op);
 			op.applyTo(v);
 			op.applyTo(ds);
 			op.applyTo(d.asVector());
 
-			assertEquals(b, c);
+			if (b.dimensionality()>0) for (int i=0; i<b.sliceCount(); i++) {
+				assertEquals(b.slice(i),c.slice(i));
+			}
+			if (!b.equals(c)) {
+				b=a.exactClone();
+				b.validate();
+				op.applyTo(b);
+				b.validate();
+				c.validate();
+				assertEquals(b, c);
+			}
 			assertEquals(b, d);
 			assertEquals(v, b.toVector());
 			assertEquals(v, Vector.wrap(ds));
@@ -297,6 +341,7 @@ public class TestArrays {
 
 	private void testParserRoundTrip(INDArray a) {
 		String s = a.toString();
+		if (a.elementCount()==0) return;
 		assertEquals(a, Arrayz.load(new StringReader(s)));
 		assertEquals(a, Arrayz.parse(s));
 	}
@@ -499,34 +544,34 @@ public class TestArrays {
 		// 0d indexed access
 		try {
 			a.get();
-			fail("0d get should fail for array with shape: "+a.getShape());
+			fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
 		} catch (Throwable t) { /* OK */ }
 		
 		try {
 			a.set(1.0);
-			fail("0d set should fail for array with shape: "+a.getShape());
+			fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
 		} catch (Throwable t) { /* OK */ }
 
 		try {
 			a.get(IntArrays.EMPTY_INT_ARRAY);
-			fail("0d get should fail for array with shape: "+a.getShape());
+			fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
 		} catch (Throwable t) { /* OK */ }
 		
 		try {
 			a.set(IntArrays.EMPTY_INT_ARRAY,1.0);
-			fail("0d set should fail for array with shape: "+a.getShape());
+			fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
 		} catch (Throwable t) { /* OK */ }
 
 		// 1D indexed access
 		if (a.dimensionality()>1) {
 			try {
 				a.get(0);
-				fail("1d get should fail for array with shape: "+a.getShape());
+				fail("1d get should fail for array with shape: "+Arrays.toString(a.getShape()));
 			} catch (Throwable t) { /* OK */ }
 			
 			try {
 				a.set(0,1.0);
-				fail("1d set should fail for array with shape: "+a.getShape());
+				fail("1d set should fail for array with shape: "+Arrays.toString(a.getShape()));
 			} catch (Throwable t) { /* OK */ }
 		}
 	}

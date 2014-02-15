@@ -3,6 +3,8 @@ package mikera.vectorz.impl;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
+import mikera.arrayz.impl.IDenseArray;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -19,10 +21,10 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class AArrayVector extends AStridedVector {
+public abstract class AArrayVector extends AStridedVector implements IDenseArray {
 	
-	protected AArrayVector(int length) {
-		super(length);
+	protected AArrayVector(int length, double[] data) {
+		super(length,data);
 	}
 
 	/**
@@ -134,12 +136,11 @@ public abstract class AArrayVector extends AStridedVector {
 			add((AArrayVector) src, 0);
 			return;
 		}
-		int length = length();
-		src.addToArray(0, getArray(), getArrayOffset(), length);
+		src.addToArray(0, getArray(), getArrayOffset(), length());
 	}
 
+	@Override
 	public void add(AArrayVector v) {
-		assert (length() == v.length());
 		add(v, 0);
 	}
 
@@ -205,12 +206,22 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 
 	@Override
-	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+	public void addToArray(int offset, double[] destData, int destOffset, int length) {
 		double[] data = getArray();
 		int dataOffset = getArrayOffset() + offset;
 
 		for (int i = 0; i < length; i++) {
-			array[i + arrayOffset] += data[i + dataOffset];
+			destData[destOffset + i] += data[dataOffset + i];
+		}
+	}
+	
+	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		double[] data = getArray();
+		int dataOffset = getArrayOffset();
+
+		for (int i = 0; i < length; i++) {
+			dest[offset + i*stride] += data[dataOffset + i];
 		}
 	}
 	
@@ -292,13 +303,22 @@ public abstract class AArrayVector extends AStridedVector {
 	}
 
 	public void add(AArrayVector src, int srcOffset) {
-		int length = length();
+		if ((srcOffset<0)||((srcOffset+length)>src.length())) throw new IllegalArgumentException(ErrorMessages.invalidRange(src, srcOffset, length));
 		double[] vdata = src.getArray();
 		double[] data = getArray();
 		int offset = getArrayOffset();
 		int voffset = src.getArrayOffset() + srcOffset;
 		for (int i = 0; i < length; i++) {
 			data[offset + i] += vdata[voffset + i];
+		}
+	}
+	
+	@Override
+	public void add(double[] data, int offset) {
+		double[] tdata = getArray();
+		int toffset = getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			tdata[toffset + i] += data[offset + i];
 		}
 	}
 
@@ -354,6 +374,11 @@ public abstract class AArrayVector extends AStridedVector {
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
+	public double elementProduct() {
+		return DoubleArrays.elementProduct(getArray(), getArrayOffset(), length());
 	}
 	
 	@Override
@@ -495,15 +520,7 @@ public abstract class AArrayVector extends AStridedVector {
 
 	@Override
 	public double magnitudeSquared() {
-		int length = length();
-		double[] data = getArray();
-		int offset = getArrayOffset();
-		double result = 0.0;
-		for (int i = 0; i < length; i++) {
-			double v = data[offset + i];
-			result += v * v;
-		}
-		return result;
+		return DoubleArrays.elementSquaredSum(data, getArrayOffset(), length);
 	}
 
 	@Override
@@ -514,7 +531,7 @@ public abstract class AArrayVector extends AStridedVector {
 	@Override
 	public void fill(double value) {
 		int offset = getArrayOffset();
-		Arrays.fill(getArray(), offset, offset + length(), value);
+		Arrays.fill(getArray(), offset, offset + length, value);
 	}
 
 	@Override
@@ -557,9 +574,19 @@ public abstract class AArrayVector extends AStridedVector {
 	public JoinedArrayVector join(JoinedArrayVector v) {
 		return JoinedArrayVector.wrap(this).join(v);
 	}
+	
+	@Override
+	public boolean equals(INDArray v) {
+		if (v.dimensionality()!=1) return false;
+		int len=length();
+		if (len != v.getShape(0)) return false;
+		
+		return v.equalsArray(getArray(), getArrayOffset());
+	}
 
 	@Override
 	public boolean equals(AVector v) {
+		if (v==this) return true;
 		int len = length();
 		if (v.length() != len) return false;
 		return v.equalsArray(getArray(), getArrayOffset());
@@ -567,15 +594,21 @@ public abstract class AArrayVector extends AStridedVector {
 
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
-		return DoubleArrays.equals(data, offset, getArray(), getArrayOffset(),
-				length());
+		return DoubleArrays.equals(data, offset, getArray(), getArrayOffset(), length);
 	}
 
 	@Override
 	public boolean equalsArray(double[] data) {
 		if (length() != data.length) return false;
-		return DoubleArrays.equals(data, 0, getArray(), getArrayOffset(),
-				length());
+		return equalsArray(data,0);
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		int length=length();
+		double[] data = getArray();
+		int offset = getArrayOffset();
+		return DoubleArrays.elementsEqual(data,offset,length,value);
 	}
 
 	@Override

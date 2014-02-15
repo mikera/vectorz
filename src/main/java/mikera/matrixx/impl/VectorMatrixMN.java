@@ -1,6 +1,5 @@
 package mikera.matrixx.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import mikera.matrixx.AMatrix;
@@ -57,11 +56,7 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 		}
 		return VectorMatrixMN.wrap(vs);
 	}
-	
-	public static VectorMatrixMN create(Object... vs) {
-		return create(Arrays.asList(vs));
-	}
-	
+		
 	public static VectorMatrixMN wrap(AVector[] rows) {
 		int rc=rows.length;
 		int cc=(rc==0)?0:rows[0].length();
@@ -134,8 +129,8 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	}
 
 	@Override
-	public AVector getRow(int row) {
-		assert(row<rowCount);
+	public AVector getRowView(int row) {
+		if (row>=rowCount) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
 		return rows[row];
 	}
 

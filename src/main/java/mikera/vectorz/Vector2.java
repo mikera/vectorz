@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import java.nio.DoubleBuffer;
+import java.util.Arrays;
 
 import mikera.vectorz.impl.APrimitiveVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -35,7 +36,7 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	public static Vector2 of(double... values) {
-		if (values.length!=2) throw new IllegalArgumentException("Can't create Vector2 vector from: "+values);
+		if (values.length!=2) throw new IllegalArgumentException("Can't create Vector2 vector from: "+Arrays.toString(values));
 		return new Vector2(values);
 	}
 	
@@ -85,7 +86,8 @@ public final class Vector2 extends APrimitiveVector {
 	@Override
 	public double dotProduct(Vector v) {
 		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
-		return x*v.data[0]+y*v.data[1];
+		double[] data=v.getArray();
+		return x*data[0]+y*data[1];
 	}
 	
 	@Override
@@ -173,6 +175,11 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return x*y;
+	}
+	
+	@Override
 	public double elementMax(){
 		return Math.max(x, y);
 	}
@@ -216,6 +223,11 @@ public final class Vector2 extends APrimitiveVector {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(x);
 		dest.put(y);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x,y};
 	}
 	
 	@Override
@@ -292,6 +304,19 @@ public final class Vector2 extends APrimitiveVector {
 	@Override 
 	public Vector2 exactClone() {
 		return clone();
+	}
+	
+	@Override 
+	public boolean equals(AVector v) {
+		if (v==this) return true;
+		if (v instanceof Vector2) {
+			return equals((Vector2)v);
+		}
+		return (v.length()==2)&&(x==v.unsafeGet(0))&&(y==v.unsafeGet(1));
+	}
+	
+	public boolean equals(Vector2 v) {
+		return (x==v.x)&&(y==v.y);
 	}
 
 

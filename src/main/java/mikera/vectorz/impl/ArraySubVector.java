@@ -1,21 +1,17 @@
 package mikera.vectorz.impl;
 
-import java.util.Arrays;
-
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Vector referring to an offset into a double[] array
+ * Vector referring to a fixed offset into a double[] array
  * 
  * @author Mike
  * 
  */
 public final class ArraySubVector extends AArrayVector {
 	private static final long serialVersionUID = 1262951505515197105L;
-
-	private final double[] data;
 
 	private final int offset;
 
@@ -28,15 +24,13 @@ public final class ArraySubVector extends AArrayVector {
 	}
 	
 	private ArraySubVector(double[] data, int offset, int length) {
-		super(length);
-		this.data=data;
+		super(length,data);
 		this.offset=offset;
 	}
 
 	public ArraySubVector(int length) {
-		super(length);
+		super(length,new double[length]);
 		offset = 0;
-		data = new double[length];
 	}
 	
 	public static ArraySubVector wrap(double[] data, int offset, int length) {
@@ -52,13 +46,12 @@ public final class ArraySubVector extends AArrayVector {
 	 * @param length
 	 */
 	public ArraySubVector(AArrayVector source, int offset, int length) {
-		super(length);
+		super(length,source.getArray());
 		int len=source.length();
 		if ((offset < 0)||(offset + length > len)) 
 			throw new IndexOutOfBoundsException(
 					ErrorMessages.invalidRange(source, offset, length));
 		this.offset = source.getArrayOffset() + offset;
-		this.data = source.getArray();
 	}
 
 	@Override
@@ -127,11 +120,6 @@ public final class ArraySubVector extends AArrayVector {
 	}
 
 	@Override
-	public double[] getArray() {
-		return data;
-	}
-
-	@Override
 	public int getArrayOffset() {
 		return offset;
 	}
@@ -154,6 +142,6 @@ public final class ArraySubVector extends AArrayVector {
 
 	@Override 
 	public ArraySubVector exactClone() {
-		return new ArraySubVector(Arrays.copyOfRange(data, offset, offset+length),0,length);
+		return new ArraySubVector(data.clone(),offset,length);
 	}
 }

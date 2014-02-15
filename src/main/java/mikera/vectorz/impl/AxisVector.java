@@ -14,21 +14,23 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public class AxisVector extends ASparseVector {
+public final class AxisVector extends ASparseVector {
 	private static final long serialVersionUID = 6767495113060894804L;
 	
 	private final int axis;
 	
-	public AxisVector(int axisIndex, int length) {
+	private AxisVector(int axisIndex, int length) {
 		super(length);
-		assert(length>=1);
-		assert((axisIndex>=0)&&(axisIndex<length));
 		this.axis=axisIndex;
 	}
 	
 	public static AxisVector create(int axisIndex, int dimensions) {
 		if ((axisIndex<0)||(axisIndex>=dimensions)) throw new IllegalArgumentException("Axis out of range");
 		return new AxisVector(axisIndex,dimensions);
+	}
+	
+	public int getAxis() {
+		return axis;
 	}
 	
 	@Override
@@ -70,6 +72,11 @@ public class AxisVector extends ASparseVector {
 	@Override
 	public double elementSum() {
 		return 1.0;
+	}
+	
+	@Override
+	public double elementProduct() {
+		return (length>1)?0.0:1.0;
 	}
 	
 	@Override
@@ -164,6 +171,11 @@ public class AxisVector extends ASparseVector {
 			default: throw new IndexOutOfBoundsException();
 		}
 	}
+	
+	@Override
+	public AVector innerProduct(double d) {
+		return SingleElementVector.create(d,axis,length);
+	}
 
 	@Override
 	public double get(int i) {
@@ -180,7 +192,19 @@ public class AxisVector extends ASparseVector {
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		if (axis<offset) return;
 		if (axis>=offset+length) return;
-		array[arrayOffset-offset+axis]+=1;
+		array[arrayOffset-offset+axis]+=1.0;
+	}
+	
+	@Override
+	public void addToArray(double[] array, int offset, int stride) {
+		array[offset+axis*stride]+=1.0;
+	}
+	
+	@Override
+	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
+		if (axis<offset) return;
+		if (axis>=offset+length) return;
+		array[arrayOffset-offset+axis]+=factor;
 	}
 	
 	@Override
@@ -196,10 +220,15 @@ public class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		double[] data=new double[length];
+		data[axis]=1.0;
+		return data;
+	}
+	
+	@Override
 	public Vector toVector() {
-		Vector v=Vector.createLength(length);
-		v.data[getAxis()]=1.0;
-		return v;
+		return Vector.wrap(toDoubleArray());
 	}
 	
 	@Override
@@ -215,25 +244,12 @@ public class AxisVector extends ASparseVector {
 			return Vectorz.createZeroVector(length);
 		}
 	}
-	
-	@Override
-	public AxisVector exactClone() {
-		// immutable, so return self
-		return this;
-	}
-	
+
 	@Override
 	public double density() {
 		return 1.0/length;
 	}
 	
-	@Override
-	public void validate() {
-		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
-		if ((getAxis()<0)||(getAxis()>length)) throw new VectorzException("Axis index out of bounds");
-		super.validate();
-	}
-
 	@Override
 	public int nonSparseElementCount() {
 		return 1;
@@ -265,9 +281,36 @@ public class AxisVector extends ASparseVector {
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
-
-	public int getAxis() {
-		return axis;
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		if (data[offset+axis]!=1.0) return false;
+		for (int i=0; i<axis; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		for (int i=axis+1; i<length; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		return (value==1.0)&&(length==1);
 	}
 
+	@Override
+	public AxisVector exactClone() {
+		// immutable, so return self
+		return this;
+	}
+	
+	@Override
+	public void validate() {
+		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
+		if ((getAxis()<0)||(getAxis()>=length)) throw new VectorzException("Axis index out of bounds");
+		super.validate();
+	}
+
+	
 }

@@ -63,7 +63,7 @@ public final class SubsetMatrix extends ABooleanMatrix implements ISparse, IFast
 	}
 	
 	@Override
-	public AxisVector getRow(int i) {
+	public AxisVector getRowView(int i) {
 		return AxisVector.create(components.get(i), inputDims);
 	}
 	

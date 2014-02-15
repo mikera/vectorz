@@ -19,14 +19,14 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	private final int length;
 	private final double value;
 	
-	public RepeatedElementVector(int length, double value) {
+	private RepeatedElementVector(int length, double value) {
 		this.length=length;
 		this.value=value;
-		if (length<1) throw new IllegalArgumentException("RepeatedElementVector must have at least one element");
 	}
 	
-	public static RepeatedElementVector create(int dims, double value) {
-		return new RepeatedElementVector(dims,value);
+	public static RepeatedElementVector create(int length, double value) {
+		if (length<1) throw new IllegalArgumentException("RepeatedElementVector must have at least one element");
+		return new RepeatedElementVector(length,value);
 	}
 
 	@Override
@@ -61,6 +61,11 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return Math.pow(value, length);
+	}
+	
+	@Override
 	public double elementMax(){
 		return value;
 	}
@@ -91,13 +96,23 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public AVector innerProduct(double d) {
+		return RepeatedElementVector.create(length,d*value);
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		DoubleArrays.add(data, offset, length, value);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return (value==0.0)?0:length;
 	}
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException(this.getClass().toString()+" is not mutable");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
@@ -118,5 +133,18 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	@Override 
 	public RepeatedElementVector exactClone() {
 		return new RepeatedElementVector(length,value);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=value) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		return this.value==value;
 	}
 }

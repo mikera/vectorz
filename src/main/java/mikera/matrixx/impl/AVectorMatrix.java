@@ -47,7 +47,7 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	 * Guaranteed to be an existing vector by all descendants of VectorMatrix.
 	 */
 	@Override
-	public abstract T getRow(int row);
+	public abstract T getRowView(int row);
 
 	@Override
 	public double get(int row, int column) {
@@ -63,7 +63,7 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	public boolean isFullyMutable() {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			if (!getRow(i).isFullyMutable()) return false;
+			if (!getRowView(i).isFullyMutable()) return false;
 		}
 		return true;
 	}
@@ -72,7 +72,7 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	public void set(double value) {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			getRow(i).set(value);
+			getRowView(i).set(value);
 		}
 	}
 	
@@ -80,18 +80,18 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	public void fill(double value) {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			getRow(i).fill(value);
+			getRowView(i).fill(value);
 		}
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		getRow(row).set(column,value);
+		getRowView(row).set(column,value);
 	}
 	
 	@Override
 	public void unsafeSet(int row, int column, double value) {
-		getRow(row).unsafeSet(column,value);
+		getRowView(row).unsafeSet(column,value);
 	}
 	
 	@Override
@@ -118,7 +118,7 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	
 	@Override
 	public double calculateElement(int i, AVector inputVector) {
-		T row=getRow(i);
+		T row=getRowView(i);
 		return row.dotProduct(inputVector);
 	}
 	
@@ -141,7 +141,7 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	public void applyOp(Op op) {
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
-			getRow(i).applyOp(op);
+			getRowView(i).applyOp(op);
 		}
 	}
 	
@@ -202,16 +202,21 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	public AVector asVector() {
 		int rc = rowCount();
 		if (rc == 0) return Vector0.INSTANCE;
-		if (rc == 1) return getRow(0);
+		if (rc == 1) return getRowView(0);
 		
 		int cc= columnCount();
 		if (cc==1) return getColumn(0);
 
-		AVector v = getRow(0);
+		AVector v = getRowView(0);
 		for (int i = 1; i < rc; i++) {
-			v = Vectorz.join(v, getRow(i));
+			v = Vectorz.join(v, getRowView(i));
 		}
 		return v;
+	}
+	
+	@Override
+	public boolean equals(AMatrix m) {
+		return equalsByRows(m);
 	}
 	
 	@Override

@@ -53,11 +53,6 @@ public class MatrixAsVector extends AMatrixViewVector {
 	}
 	
 	@Override
-	public void fill(double v) {
-		source.fill(v);
-	}
-	
-	@Override
 	public boolean isFullyMutable() {
 		return source.isFullyMutable();
 	}
@@ -70,6 +65,16 @@ public class MatrixAsVector extends AMatrixViewVector {
 	@Override
 	public boolean isView() {
 		return true;
+	}
+	
+	@Override
+	public void set(double value) {
+		source.set(value);
+	}
+	
+	@Override
+	public boolean isSparse() {
+		return source.isSparse();
 	}
 	
 	@Override
@@ -88,8 +93,18 @@ public class MatrixAsVector extends AMatrixViewVector {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		source.addToArray(data, offset);
+	}
+	
+	@Override
 	public void clamp(double min, double max) {
 		source.clamp(min, max);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return source.equalsArray(data, offset);
 	}
 	
 	@Override
@@ -155,5 +170,19 @@ public class MatrixAsVector extends AMatrixViewVector {
 	@Override
 	protected int calcCol(int i) {
 		return i%columns;
+	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		int startRow=calcRow(start);
+		int endRow=calcRow(start+length-1); 
+		if (startRow==endRow) {
+			return source.getRowView(startRow).subVector(start-startRow*columns,length);
+		} else if ((startRow==endRow-1)&&(source instanceof IFastRows)) {
+			int split=endRow*columns;
+			return source.getRowView(startRow).subVector(start-startRow*columns,split-start)
+					.join(source.getRowView(endRow).subVector(0, start+length-split));
+		}
+		return super.subVector(start, length);
 	}
 }

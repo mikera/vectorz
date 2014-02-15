@@ -5,10 +5,10 @@ import java.util.Arrays;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AArrayVector;
-import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -22,7 +22,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 
 	protected final int dimensions;
 	
-	public ADiagonalMatrix(int dimensions) {
+	protected ADiagonalMatrix(int dimensions) {
 		this.dimensions=dimensions;
 	}
 	
@@ -34,6 +34,16 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	@Override
 	public boolean isSquare() {
 		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return getLeadingDiagonal().isZero();
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		return getLeadingDiagonal().isBoolean();
 	}
 	
 	@Override
@@ -84,8 +94,8 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		if (band==0) {
 			return getLeadingDiagonal();
 		} else {
-			if ((band>=dimensions)||(band<=-dimensions)) return null;
-			return ZeroVector.create(bandLength(band));
+			if ((band>dimensions)||(band<-dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.invalidBand(this, band));
+			return Vectorz.createZeroVector(bandLength(band));
 		}
 	}
 	
@@ -112,6 +122,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public boolean isSameShape(AMatrix m) {
+		return (dimensions==m.rowCount())&&(dimensions==m.columnCount());
+	}
+	
+	@Override
 	public double elementMax(){
 		double ldv=getLeadingDiagonal().elementMax();
 		if (dimensions>1) return Math.max(0, ldv); else return ldv;
@@ -124,9 +139,29 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public double elementSum(){
+		return getLeadingDiagonal().elementSum();
+	}
+	
+	@Override
+	public double elementSquaredSum(){
+		return getLeadingDiagonal().elementSquaredSum();
+	}
+	
+	@Override
+	public long nonZeroCount(){
+		return getLeadingDiagonal().nonZeroCount();
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+dimensions,0.0);
 		dest[destOffset+row]=unsafeGetDiagonalValue(row);
+	}
+	
+	@Override
+	public void addToArray(double[] dest, int offset) {
+		getLeadingDiagonal().addToArray(dest, offset, dimensions+1);
 	}
 	
 	@Override
@@ -135,7 +170,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		copyRowTo(col,dest,destOffset);
 	}
 	
-	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
+	public AMatrix innerProduct(ADiagonalMatrix a) {
 		int dims=this.dimensions;
 		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		DiagonalMatrix result=DiagonalMatrix.createDimensions(dims);
@@ -210,8 +245,10 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		int cc = rc;
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		double[] sdata=source.getArray();
+		double[] ddata=dest.getArray();
 		for (int row = 0; row < rc; row++) {
-			dest.data[row]=source.data[row]*unsafeGetDiagonalValue(row);
+			ddata[row]=sdata[row]*unsafeGetDiagonalValue(row);
 		}
 	}
 	
@@ -227,21 +264,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override 
 	public boolean isIdentity() {
-		for (int i=0; i<dimensions; i++ ) {
-			if (unsafeGet(i,i)!=1.0) return false;
-			
-		}
-		return true;
-	}
-	
-	
-	@Override
-	public boolean isBoolean() {
-		for (int i=0; i<dimensions; i++ ) {
-			if (!Tools.isBoolean(unsafeGet(i,i))) return false;
-			
-		}
-		return true;
+		return getLeadingDiagonal().elementsEqual(1.0);
 	}
 	
 	@Override
@@ -265,6 +288,16 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	public double getDiagonalValue(int i) {
 		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException();
 		return unsafeGet(i,i);
+	}
+	
+	@Override
+	public AVector getRow(int row) {
+		return SingleElementVector.create(getDiagonalValue(row), row, dimensions);
+	}
+	
+	@Override
+	public AVector getColumn(int col) {
+		return SingleElementVector.create(getDiagonalValue(col), col, dimensions);
 	}
 	
 	public double unsafeGetDiagonalValue(int i) {
@@ -296,8 +329,20 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		double[] data=new double[dimensions*dimensions];
+		getLeadingDiagonal().addToArray(data, 0, dimensions+1);
+		return data;
+	}
+	
+	@Override
 	public final Matrix toMatrixTranspose() {
 		return toMatrix();
+	}
+	
+	@Override
+	public boolean equalsTranspose(AMatrix m) {
+		return equals(m);
 	}
 	
 	@Override

@@ -21,39 +21,31 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	public abstract int columnStride();	
 	
 	@Override
-	public AStridedMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
-		if ((rowStart<0)||(rowStart>=rows)||(colStart<0)||(colStart>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart,colStart));
-		if ((rowStart+rows>this.rows)||(colStart+cols>this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart+rows,colStart+cols));
-		if ((rows<1)||(cols<1)) throw new IllegalArgumentException(ErrorMessages.illegalSize(rows,cols));
-		return StridedMatrix.wrap(data, rows, cols, 
-				getArrayOffset()+rowStart*rowStride()+colStart*columnStride(), this.rowStride(), this.columnStride());
-	}
+	public abstract AStridedMatrix subMatrix(int rowStart, int rows, int colStart, int cols);
 	
 	@Override
-	public AStridedVector getRow(int i) {
+	public AStridedVector getRowView(int i) {
 		return Vectorz.wrapStrided(data, getArrayOffset()+i*rowStride(), cols, columnStride());
 	}
 	
 	@Override
-	public AStridedVector getColumn(int i) {
+	public AStridedVector getColumnView(int i) {
 		return Vectorz.wrapStrided(data, getArrayOffset()+i*columnStride(), rows, rowStride());
 	}
 	
 	@Override
-	public void copyRowTo(int row, double[] dest, int destOffset) {
-		int cc=columnCount();
-		for (int i=0; i<cc; i++) {
-			dest[i+destOffset]=unsafeGet(row,i);
-		}
+	public AStridedVector getBand(int i) {
+		int cs=columnStride();
+		int rs=rowStride();
+		if ((i>cols)||(i<-rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidBand(this, i));
+		return Vectorz.wrapStrided(data, getArrayOffset()+bandStartColumn(i)*cs+bandStartRow(i)*rs, bandLength(i), rs+cs);
 	}
 	
 	@Override
-	public void copyColumnTo(int col, double[] dest, int destOffset) {
-		int rc=rowCount();
-		for (int i=0; i<rc; i++) {
-			dest[i+destOffset]=unsafeGet(i,col);
-		}
-	}
+	public abstract void copyRowTo(int row, double[] dest, int destOffset);
+	
+	@Override
+	public abstract void copyColumnTo(int col, double[] dest, int destOffset);
 	
 	@Override
 	public int[] getStrides() {
@@ -67,6 +59,11 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		case 1: return columnStride();
 		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		}
+	}
+	
+	@Override
+	public AMatrix getTranspose() {
+		return getTransposeView();
 	}
 	
 	@Override

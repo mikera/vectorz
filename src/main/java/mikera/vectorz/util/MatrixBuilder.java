@@ -47,13 +47,13 @@ public class MatrixBuilder extends AVectorMatrix<AVector> {
 
 	@Override
 	public void replaceRow(int i, AVector row) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
 		data[i]=row;
 	}
 
 	@Override
-	public AVector getRow(int row) {
-		if ((row<0)||(row>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row));
+	public AVector getRowView(int row) {
+		if ((row<0)||(row>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
 		return data[row];
 	}
 

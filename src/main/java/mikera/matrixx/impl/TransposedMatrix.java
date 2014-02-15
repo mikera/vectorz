@@ -15,22 +15,13 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	private static final long serialVersionUID = 4350297037540121584L;
 
 	private TransposedMatrix(AMatrix source) {
-		super(source);
+		super(source.columnCount(),source.rowCount(),source);
 	}
 
 	public static AMatrix wrap(AMatrix m) {
 		if (m instanceof TransposedMatrix)
 			return ((TransposedMatrix) m).source;
 		return new TransposedMatrix(m);
-	}
-
-	public int rowCount() {
-		return source.columnCount();
-	}
-
-	@Override
-	public int columnCount() {
-		return source.rowCount();
 	}
 	
 	@Override
@@ -69,6 +60,31 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 
 	@Override
+	public AVector getColumn(int column) {
+		return source.getRow(column);
+	}
+	
+	@Override
+	public AVector getRowClone(int row) {
+		return source.getColumnClone(row);
+	}
+
+	@Override
+	public AVector getColumnClone(int column) {
+		return source.getRowClone(column);
+	}
+	
+	@Override
+	public AVector getRowView(int row) {
+		return source.getColumnView(row);
+	}
+
+	@Override
+	public AVector getColumnView(int column) {
+		return source.getRowView(column);
+	}
+
+	@Override
 	public int sliceCount() {
 		return source.columnCount();
 	}
@@ -83,10 +99,6 @@ public class TransposedMatrix extends ADelegatedMatrix {
 		return source.toMatrixTranspose();
 	}
 
-	@Override
-	public AVector getColumn(int column) {
-		return source.getRow(column);
-	}
 
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
@@ -116,6 +128,11 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public boolean isSymmetric() {
 		return source.isSymmetric();
 	}
+
+	@Override
+	public boolean isSparse() {
+		return source.isSparse();
+	}
 	
 	@Override
 	public boolean isZero() {
@@ -125,6 +142,11 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	@Override
 	public boolean isUpperTriangular() {
 		return source.isLowerTriangular();
+	}
+	
+	@Override
+	public AVector getBand(int i) {
+		return source.getBand(-i);
 	}
 
 	@Override
@@ -145,8 +167,8 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 	
 	@Override
-	public Matrix getTransposeCopy() {
-		return source.toMatrix();
+	public AMatrix getTransposeCopy() {
+		return source.copy();
 	}
 	
 	@Override
@@ -172,5 +194,10 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	@Override
 	public TransposedMatrix exactClone() {
 		return new TransposedMatrix(source.exactClone());
+	}
+	
+	@Override
+	public boolean equals(AMatrix m) {
+		return m.equalsTranspose(source);
 	}
 }

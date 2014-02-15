@@ -19,7 +19,12 @@ public abstract class AComputedVector extends ASizedVector {
 	public abstract double get(int i);
 
 	@Override
-	public void set(int i, double value) {
+	public final void set(int i, double value) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public final void unsafeSet(int i, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
@@ -36,5 +41,13 @@ public abstract class AComputedVector extends ASizedVector {
 	@Override
 	public AComputedVector exactClone() {
 		return this;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=unsafeGet(i)) return false;
+		}
+		return true;
 	}
 }

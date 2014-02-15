@@ -1,7 +1,12 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.impl.IDenseArray;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -10,7 +15,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows {
+public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows, IDenseArray {
 	private static final long serialVersionUID = -2144964424833585026L;
 
 	protected ADenseArrayMatrix(double[] data, int rows, int cols) {
@@ -46,8 +51,42 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public void set(AVector v) {
+		int rc=rowCount();
+		if (v.length()!=cols) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<rc; i++) {
+			v.getElements(data, offset+i*cols);
+		}
+	}
+	
+	@Override
+	public void set(AMatrix m) {
+		if (!isSameShape(m)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		m.getElements(data, offset);
+	}
+	
+	@Override
+	public AArrayVector getRowView(int i) {
+		return Vectorz.wrap(data, getArrayOffset()+i*cols, cols);
+	}
+	
+	@Override
+	public AStridedVector getColumnView(int i) {
+		return Vectorz.wrapStrided(data, getArrayOffset()+i, rows, cols);
+	}
+	
+	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(data,getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return DoubleArrays.elementSquaredSum(data,getArrayOffset(), rows*cols);
 	}
 	
 	@Override
@@ -62,7 +101,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
-		System.arraycopy(data, row*cols, dest, destOffset, cols);
+		System.arraycopy(data, getArrayOffset()+row*cols, dest, destOffset, cols);
 	}
 	
 	@Override
@@ -100,6 +139,37 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		for (int i=0; i<rc; i++) {
 			v.addToArray(data, offset+i*cc);
 		}		
+	}
+	
+	@Override
+	public void add(AMatrix a) {
+		if (!isSameShape(a)) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+		a.addToArray(getArray(), getArrayOffset());
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		DoubleArrays.add(getArray(), getArrayOffset(), data, offset, rows*cols);
+	}
+	
+	@Override
+	public boolean equals(AMatrix a) {
+		if (!isSameShape(a)) return false;
+		return a.equalsArray(getArray(), getArrayOffset());
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(getArray(), getArrayOffset(), data, offset, rows*cols);
+	}
+	
+	@Override
+	public boolean equals(ADenseArrayMatrix m) {
+		if (!isSameShape(m)) return false;
+		
+		return DoubleArrays.equals(getArray(), getArrayOffset(), m.getArray(), m.getArrayOffset(), rows*cols);
 	}
 
 }

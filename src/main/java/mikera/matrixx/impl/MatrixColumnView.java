@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
@@ -8,7 +9,7 @@ import mikera.vectorz.impl.AMatrixViewVector;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public class MatrixColumnView extends AMatrixViewVector {
+public final class MatrixColumnView extends AMatrixViewVector {
 	private final int column;
 
 	public MatrixColumnView(AMatrix aMatrix, int column) {
@@ -58,5 +59,10 @@ public class MatrixColumnView extends AMatrixViewVector {
 	@Override
 	protected int calcCol(int i) {
 		return column;
+	}
+	
+	@Override
+	public AVector clone() {
+		return source.getColumnClone(column);
 	}
 }

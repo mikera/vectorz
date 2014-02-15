@@ -3,10 +3,12 @@ package mikera.arrayz.impl;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
+import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ImmutableVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
@@ -18,7 +20,7 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public class ImmutableArray extends BaseNDArray {
+public class ImmutableArray extends BaseNDArray implements IDense {
 	private static final long serialVersionUID = 2078025371733533775L;
 
 	private ImmutableArray(int dims, int[] shape, int[] strides) {
@@ -82,10 +84,6 @@ public class ImmutableArray extends BaseNDArray {
 		long[] lshape = new long[dimensions];
 		IntArrays.copyIntsToLongs(shape, lshape);
 		return lshape;
-	}
-
-	public int getStride(int dim) {
-		return stride[dim];
 	}
 
 	@Override
@@ -182,12 +180,22 @@ public class ImmutableArray extends BaseNDArray {
 	}
 	
 	@Override
+	public INDArray sparseClone() {
+		return Arrayz.createSparse(this);
+	}
+	
+	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		if (dimensions>0) {
 			super.toDoubleBuffer(dest);
 		} else {
 			dest.put(data[offset]);
 		}
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(this.data, offset, data, offset, (int)elementCount());
 	}
 
 	public static INDArray create(INDArray a) {
@@ -200,6 +208,6 @@ public class ImmutableArray extends BaseNDArray {
 
 	@Override
 	public double[] getArray() {
-		throw new UnsupportedOperationException("Array access not supported by Immutablearray");
+		throw new UnsupportedOperationException("Array access not supported by ImmutableArray");
 	}
 }

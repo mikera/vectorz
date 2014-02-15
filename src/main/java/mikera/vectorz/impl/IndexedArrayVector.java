@@ -33,6 +33,11 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	}
 	
 	@Override
+	public void addAt(int i, double value) {
+		data[indexes[i]]+=value;
+	}
+	
+	@Override
 	public AVector subVector(int offset, int length) {
 		if ((offset<0)||((offset+length)>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));

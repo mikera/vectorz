@@ -3,19 +3,22 @@ package mikera.matrixx.impl;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementIterator;
-import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Lightweight immutable zero matrix class
  */
-public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns {
+public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns, ISparse {
 	private static final long serialVersionUID = 875833013123277805L;
 
 	@Override public 
@@ -29,6 +32,15 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	public static ZeroMatrix create(int rows, int columns) {
 		return new ZeroMatrix(rows,columns);
+	}
+	
+	public static ZeroMatrix createSameShape(AMatrix a) {
+		return new ZeroMatrix(a.rowCount(),a.columnCount());
+	}
+	
+	@Override
+	public boolean isSparse() {
+		return true;
 	}
 	
 	@Override
@@ -82,13 +94,13 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
-	public ZeroVector getRow(int row) {
-		return ZeroVector.create(cols);
+	public AVector getRowView(int row) {
+		return Vectorz.createZeroVector(cols);
 	}
 	
 	@Override
-	public ZeroVector getColumn(int col) {
-		return ZeroVector.create(rows);
+	public AVector getColumnView(int col) {
+		return Vectorz.createZeroVector(rows);
 	}
 	
 	@Override
@@ -99,6 +111,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+rowCount(),0.0);
+	}
+	
+	@Override
+	public void addToArray(double[] dest, int offset) {
+		// do nothing
 	}
 	
 	@Override
@@ -190,19 +207,30 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public void transform(Vector input, Vector output) {
+		assert(output.length()==rows);
+		output.fill(0.0);
+	}
+	
+	@Override
 	public boolean isInvertible() {
 		return false;
 	}
 	
 	@Override
 	public AVector asVector() {
-		return ZeroVector.create(cols*rows);
+		return Vectorz.createZeroVector(cols*rows);
 	}
 	
 	@Override
 	public AMatrix innerProduct(AMatrix m) {
-		assert(columnCount()==m.rowCount());
+		if (columnCount()!=m.rowCount()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		return ZeroMatrix.create(rows, m.columnCount());
+	}
+	
+	@Override
+	public ZeroMatrix innerProduct(double a) {
+		return this;
 	}
 	
 	@Override 
@@ -212,9 +240,15 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 
 	@Override
 	public boolean equals(AMatrix m) {
+		if (!isSameShape(m)) return false;
 		return m.isZero();
 	}
 	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.isZero(data, offset, rows*cols);
+	}
+
 	@Override
 	public ZeroMatrix getTranspose() {
 		if (cols==rows) return this;
@@ -223,17 +257,32 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public Matrix toMatrix() {
-		return Matrix.create(rowCount(), columnCount());
+		return Matrix.create(rows, cols);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[rows*cols];
+	}
+	
+	@Override
+	public AMatrix sparseClone() {
+		return Matrixx.createSparse(rows, cols);
 	}
 	
 	@Override
 	public Matrix toMatrixTranspose() {
-		return Matrix.create(columnCount(), rowCount());
+		return Matrix.create(cols, rows);
 	}
 	
 	@Override
 	public AVector getLeadingDiagonal() {
-		return ZeroVector.create(cols);
+		return Vectorz.createZeroVector(Math.min(rows, cols));
+	}
+	
+	@Override
+	public AVector getBand(int band) {
+		return Vectorz.createZeroVector(bandLength(band));
 	}
 	
 	@Override

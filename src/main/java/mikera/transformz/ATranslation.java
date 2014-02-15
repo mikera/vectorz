@@ -30,11 +30,11 @@ public abstract class ATranslation extends AAffineTransform {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return v.get(i)+getTranslationComponent(i);
+		return v.unsafeGet(i)+getTranslationComponent(i);
 	}
 	
 	public double getTranslationComponent(int i) {
-		return getTranslationVector().get(i);
+		return getTranslationVector().unsafeGet(i);
 	}
 	
 	@Override

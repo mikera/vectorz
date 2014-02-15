@@ -22,7 +22,7 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	public Vector1(double... values) {
-		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from values with length: "+values.length);
 		this.x=values[0];
 	}
 	
@@ -43,7 +43,8 @@ public final class Vector1 extends APrimitiveVector {
 	@Override
 	public double dotProduct(Vector v) {
 		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
-		return x*v.data[0];
+		double[] data=v.getArray();
+		return x*data[0];
 	}
 	
 	@Override
@@ -58,6 +59,11 @@ public final class Vector1 extends APrimitiveVector {
 	
 	@Override
 	public double elementSum() {
+		return x;
+	}
+	
+	@Override
+	public double elementProduct() {
 		return x;
 	}
 	
@@ -141,6 +147,11 @@ public final class Vector1 extends APrimitiveVector {
 	@Override
 	public Vector1 clone() {
 		return new Vector1(x);	
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x};
 	}
 	
 	@Override

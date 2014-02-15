@@ -25,7 +25,9 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose NDArray class
+ * General purpose NDArray class.
+ * 
+ * Allows arbitrary strided access over a dense double[] array.
  * 
  * @author Mike
  *
@@ -55,7 +57,7 @@ public final class NDArray extends BaseNDArray {
 	}
 	
 	public static NDArray wrap(Vector v) {
-		return wrap(v.data,v.getShape());
+		return wrap(v.getArray(),v.getShape());
 	}
 
 	public static NDArray wrap(Matrix m) {
@@ -185,17 +187,17 @@ public final class NDArray extends BaseNDArray {
 
 	@Override
 	public INDArray slice(int majorSlice) {
+		// if ((majorSlice<0)||(majorSlice>=shape[0])) throw new IllegalArgumentException(ErrorMessages.invalidSlice(this,majorSlice));
 		if (dimensions==0) {
 			throw new IllegalArgumentException("Can't slice a 0-d NDArray");
 		} else if (dimensions==1) {
 			return new ArrayIndexScalar(data,offset+majorSlice*getStride(0));
 		} else if (dimensions==2) {
-			if ((majorSlice<0)||(majorSlice>shape[0])) throw new IllegalArgumentException(ErrorMessages.invalidSlice(this,majorSlice));
 			int st=stride[1];
 			if (st==1) {
 				return Vectorz.wrap(data, offset+majorSlice*getStride(0), getShape(1));
 			} else {
-				return StridedVector.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
+				return Vectorz.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
 			}
 		} else {
 			return new NDArray(data,

@@ -2,7 +2,11 @@ package mikera.vectorz.impl;
 
 import java.io.ObjectStreamException;
 
+import mikera.arrayz.ISparse;
+import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -12,10 +16,10 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public final class Vector0 extends APrimitiveVector {
+public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 	private static final long serialVersionUID = -8153360223054646075L;
 
-	public Vector0() {
+	private Vector0() {
 	}
 
 	public static Vector0 of() {
@@ -40,6 +44,11 @@ public final class Vector0 extends APrimitiveVector {
 	public double elementSum() {
 		return 0.0;
 	}
+	
+	@Override
+	public double elementProduct() {
+		return 1.0;
+	}
 
 	@Override
 	public long nonZeroCount() {
@@ -56,6 +65,11 @@ public final class Vector0 extends APrimitiveVector {
 	public void set(int i, double value) {
 		throw new IndexOutOfBoundsException(
 				"Attempt to set on zero length vector!");
+	}
+	
+	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		// nothing to do
 	}
 
 	@Override
@@ -104,6 +118,26 @@ public final class Vector0 extends APrimitiveVector {
 	@Override
 	public Vector0 immutable() {
 		return this;
+	}
+	
+	@Override
+	public Vector dense() {
+		return Vector.EMPTY;
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return DoubleArrays.EMPTY;
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		return v.length()==0;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return true;
 	}
 	
 	@Override

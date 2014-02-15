@@ -9,7 +9,8 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Specialised diagonal matrix class
+ * Specialised diagonal matrix class, with dense double[] array storage for the leading diagonal only.
+ * 
  * Not fully mutable - only the diagonal values can be changed
  * 
  * @author Mike
@@ -18,15 +19,24 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	private static final long serialVersionUID = -6721785163444613243L;
 
 	final double[] data;
+	private final Vector lead;
 	
 	public DiagonalMatrix(int dimensions) {
 		super(dimensions);
 		data=new double[dimensions];
+		lead=Vector.wrap(data);
 	}
 	
 	private DiagonalMatrix(double... values) {
 		super(values.length);
 		data=values;
+		lead=Vector.wrap(data);
+	}
+	
+	private DiagonalMatrix(Vector values) {
+		super(values.length());
+		data=values.getArray();
+		lead=values;
 	}
 	
 	public static DiagonalMatrix createDimensions(int dims) {
@@ -44,7 +54,15 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return wrap(v.toDoubleArray());
 	}
 	
+	public static DiagonalMatrix create(AMatrix m) {
+		return wrap(m.getLeadingDiagonal().toDoubleArray());
+	}
+	
 	public static DiagonalMatrix wrap(double[] data) {
+		return new DiagonalMatrix(data);
+	}
+	
+	public static DiagonalMatrix wrap(Vector data) {
 		return new DiagonalMatrix(data);
 	}
 	
@@ -59,12 +77,12 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double elementSum() {
-		return DoubleArrays.elementSum(data, 0, dimensions);
+		return lead.elementSum();
 	}	
 	
 	@Override
 	public long nonZeroCount() {
-		return DoubleArrays.nonZeroCount(data, 0, dimensions);
+		return lead.nonZeroCount();
 	}	
 
 	@Override
@@ -108,9 +126,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public void multiply(double factor) {
-		for (int i=0; i<data.length; i++) {
-			data[i]*=factor;
-		}
+		lead.multiply(factor);
 	}
 	
 	@Override
@@ -129,8 +145,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		int cc = rc;
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		double[] sdata=source.getArray();
+		double[] ddata=dest.getArray();
 		for (int i = 0; i < rc; i++) {
-			dest.data[i]=source.data[i]*this.data[i];
+			ddata[i]=sdata[i]*this.data[i];
 		}
 	}
 
@@ -179,11 +197,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double determinant() {
-		double det=1.0;
-		for (int i=0; i<dimensions; i++) {
-			det*=data[i];
-		}
-		return det;
+		return DoubleArrays.elementProduct(data, 0, dimensions);
 	}
 	
 	@Override
@@ -207,7 +221,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public Vector getLeadingDiagonal() {
-		return Vector.wrap(data);
+		return lead;
 	}
 
 	@Override
@@ -218,13 +232,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return super.innerProduct(a);
 	}
 	
-	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
+	public AMatrix innerProduct(ADiagonalMatrix a) {
 		if (!(a instanceof DiagonalMatrix)) return a.innerProduct(this);
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
-		for (int i=0; i<dimensions; i++) {
-			result.data[i]*=a.unsafeGetDiagonalValue(i);
-		}
+		result.lead.multiply(a.getLeadingDiagonal());
 		return result;
 	}
 	

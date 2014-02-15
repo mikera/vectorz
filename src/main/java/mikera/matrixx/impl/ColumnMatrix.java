@@ -55,7 +55,7 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 		if (col==0) {
 			vector.getElements(dest, destOffset);
 		} else {
-			throw new IndexOutOfBoundsException("Column out of range: "+col);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, col));
 		}
 	}
 	
@@ -128,7 +128,17 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		vector.addToArray(data,offset);
+	}
+	
+	@Override
 	public RowMatrix getTranspose() {
+		return new RowMatrix(vector);
+	}
+	
+	@Override
+	public RowMatrix getTransposeView() {
 		return new RowMatrix(vector);
 	}
 	
@@ -136,6 +146,11 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	public AVector getColumn(int i) {
 		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1,i));
 		return vector;
+	}
+	
+	@Override
+	public AVector getRowView(int i) {
+		return vector.subVector(i, 1);
 	}
 	
 	@Override
@@ -151,6 +166,11 @@ public class ColumnMatrix extends AMatrix implements IFastColumns {
 	@Override
 	public ColumnMatrix exactClone() {
 		return new ColumnMatrix(vector.exactClone());
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return vector.equalsArray(data, offset);
 	}
 
 	@Override

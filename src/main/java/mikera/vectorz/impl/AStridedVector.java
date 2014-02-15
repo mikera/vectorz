@@ -19,13 +19,19 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  */
 public abstract class AStridedVector extends ASizedVector implements IStridedArray {
-	protected AStridedVector(int length) {
+	protected final double[] data;
+	
+	protected AStridedVector(int length, double[] data) {
 		super(length);
+		this.data=data;
 	}
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
-	public abstract double[] getArray();
+	public final double[] getArray() {
+		return data;
+	}
+	
 	public abstract int getArrayOffset();
 	public abstract int getStride();
 	
@@ -120,7 +126,7 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 		if (length()==target.columnCount()) {
 			return StridedMatrix.wrap(getArray(), target.rowCount(), length(), getArrayOffset(), 0, getStride());
 		} else {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}
 	}
 	
@@ -129,11 +135,43 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 		return Vector.create(this);
 	}
 	
+	@Override
 	public void add(Vector v) {
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			addAt(i,v.data[i]);
+		}
+	}
+	
+	@Override
+	public void add(double[] data, int offset) {
+		int stride=getStride();
+		double[] tdata=getArray();
+		int toffset=getArrayOffset();
+		int length=length();
+		for (int i = 0; i < length; i++) {
+			tdata[toffset+i*stride]+=data[offset+i];
+		}
+	}
+	
+	@Override
+	public void addToArray(int offset, double[] destData, int destOffset,int length) {
+		int stride=getStride();
+		double[] tdata=getArray();
+		int toffset=getArrayOffset()+offset*stride;
+		for (int i = 0; i < length; i++) {
+			destData[destOffset+i]+=tdata[toffset+i*stride];
+		}
+	}
+	
+	@Override
+	public void addToArray(double[] dest, int destOffset, int destStride) {
+		int stride=getStride();
+		double[] tdata=getArray();
+		int toffset=getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			dest[destOffset+i*destStride]+=tdata[toffset+i*stride];
 		}
 	}
 	
@@ -164,5 +202,28 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 		case 0: return getStride();
 		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		}
+	}
+	
+	@Override
+	public void fill(double value) {
+		int stride=getStride();
+		double[] array=getArray();
+		int di=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			array[di]=value;
+			di+=stride;
+		}
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		int stride=getStride();
+		double[] array=getArray();
+		int di=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=array[di]) return false;
+			di+=stride;
+		}
+		return true;
 	}
 }

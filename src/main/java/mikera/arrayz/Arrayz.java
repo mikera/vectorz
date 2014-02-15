@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import us.bpsm.edn.parser.Parseable;
-import us.bpsm.edn.parser.Parser;
-import us.bpsm.edn.parser.Parsers;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -24,6 +21,9 @@ import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
+import us.bpsm.edn.parser.Parseable;
+import us.bpsm.edn.parser.Parser;
+import us.bpsm.edn.parser.Parsers;
 
 /**
  * Static function class for array operations
@@ -235,5 +235,23 @@ public class Arrayz {
 			st*=shape[i];
 		}
 		return true;
+	}
+
+	public static INDArray createSparse(INDArray a) {
+		int dims=a.dimensionality();
+		if (dims==0) {
+			return Scalar.create(a.get());
+		} else if (dims==1) {
+			return Vectorz.createSparse(a.asVector());
+		} else if (dims==2) {
+			return Matrixx.createSparse(Matrixx.toMatrix(a));
+		} else {
+			int n=a.sliceCount();
+			List<INDArray> slices=a.getSliceViews();
+			for (int i=0; i<n; i++) {
+				slices.set(i, slices.get(i).sparseClone());
+			}
+			return SliceArray.create(slices);	
+		}
 	}
 }

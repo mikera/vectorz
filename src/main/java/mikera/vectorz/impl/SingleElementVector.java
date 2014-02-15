@@ -35,6 +35,11 @@ public final class SingleElementVector extends ASparseVector {
 	public static AVector create(double val, int i, int len) {
 		return new SingleElementVector(i,len,val);
 	}
+	
+	@Override
+	public boolean isZero() {
+		return value==0.0;
+	}
 
 	@Override
 	public double magnitude() {
@@ -71,7 +76,6 @@ public final class SingleElementVector extends ASparseVector {
 		return false;
 	}
 	
-	
 	@Override
 	public boolean isElementConstrained() {
 		return true;
@@ -100,6 +104,25 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		if (index<offset) return;
+		if (index>=offset+length) return;
+		array[arrayOffset-offset+index]+=value;
+	}
+	
+	@Override
+	public void addToArray(double[] array, int offset, int stride) {
+		array[offset+index*stride]+=value;
+	}
+	
+	@Override
+	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
+		if (index<offset) return;
+		if (index>=offset+length) return;
+		array[arrayOffset-offset+index]+=value*factor;
+	}
+	
+	@Override
 	public final AScalar slice(int i) {
 		if (i==index) return VectorIndexScalar.wrap(this, i);
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
@@ -117,8 +140,25 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector innerProduct(double d) {
+		return SingleElementVector.create(value*d,index,length);
+	}
+	
+	@Override
 	public SingleElementVector exactClone() {
 		return new SingleElementVector(index,length,value);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		if (data[offset+index]!=value) return false;
+		for (int i=0; i<index; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		for (int i=index+1; i<length; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		return true;
 	}
 
 	@Override

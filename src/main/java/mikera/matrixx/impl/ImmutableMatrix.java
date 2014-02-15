@@ -3,10 +3,12 @@ package mikera.matrixx.impl;
 import java.nio.DoubleBuffer;
 
 import mikera.arrayz.INDArray;
+import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -18,7 +20,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class ImmutableMatrix extends ARectangularMatrix {
+public final class ImmutableMatrix extends ARectangularMatrix implements IDenseArray, IFastRows {
 	private static final long serialVersionUID = 2848013010449128820L;
 
 	private double[] data;
@@ -86,6 +88,12 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public ImmutableVector getRowView(int row) {
+		if ((row<0)||(row>=rows)) throw new IllegalArgumentException(ErrorMessages.invalidSlice(this, row));
+		return ImmutableVector.wrap(data,row*cols,cols);
+	}
+	
+	@Override
 	public double unsafeGet(int i, int j) {
 		return data[i*cols+j];
 	}
@@ -110,8 +118,9 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 	@Override
 	public Vector transform (AVector a) {
 		Vector v=Vector.createLength(rows);
+		double[] vdata=v.getArray();
 		for (int i=0; i<rows; i++) {
-			v.data[i]=a.dotProduct(data, i*cols);
+			vdata[i]=a.dotProduct(data, i*cols);
 		}
 		return v;
 	}
@@ -123,13 +132,15 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		int di=0;
+		double[] sdata=source.getArray();
+		double[] ddata=source.getArray();
 		for (int row = 0; row < rc; row++) {
 			double total = 0.0;
 			for (int column = 0; column < cc; column++) {
-				total += data[di+column] * source.data[column];
+				total += data[di+column] * sdata[column];
 			}
 			di+=cc;
-			dest.data[row]=total;
+			ddata[row]=total;
 		}
 	}
 	
@@ -183,6 +194,11 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		DoubleArrays.add(this.data, 0, data,offset,rows*cols);
+	}
+	
+	@Override
 	public Matrix clone() {
 		return Matrix.create(this);
 	}
@@ -190,6 +206,17 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 	@Override
 	public AMatrix exactClone() {
 		return new ImmutableMatrix(this);
+	}
+	
+	@Override
+	public boolean equals(AMatrix a) {
+		if (!isSameShape(a)) return false;
+		return a.equalsArray(data, 0);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(this.data, 0, data, offset, rows*cols);
 	}
 
 	/**
@@ -207,5 +234,15 @@ public final class ImmutableMatrix extends ARectangularMatrix {
 		double[] data = new double[n];
 		a.getElements(data,0);
 		return ImmutableMatrix.wrap(rows,cols,data);
+	}
+
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return 0;
 	}
 }

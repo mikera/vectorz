@@ -5,7 +5,6 @@ import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.util.VectorzException;
 
 import org.junit.Test;
 

@@ -1,6 +1,7 @@
 package mikera.matrixx;
 
 import mikera.matrixx.impl.APrimitiveMatrix;
+import mikera.vectorz.Vector1;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -110,6 +111,22 @@ public final class Matrix11 extends APrimitiveMatrix {
 	}
 	
 	@Override
+	public Vector1 getRowClone(int row) {
+		switch (row) {
+			case 0: return Vector1.of(value);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
+		}
+	}
+	
+	@Override
+	public Vector1 getColumnClone(int column) {
+		switch (column) {
+			case 0: return Vector1.of(value);
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, column));
+		}
+	}
+	
+	@Override
 	public double unsafeGet(int row, int column) {
 		return value;
 	}
@@ -137,6 +154,16 @@ public final class Matrix11 extends APrimitiveMatrix {
 	@Override
 	public AMatrix exactClone() {
 		return new Matrix11(value);
+	}
+
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return data[offset]==value;
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {value};
 	}
 
 }

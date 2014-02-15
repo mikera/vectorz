@@ -8,14 +8,13 @@ import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Reference matrix class representing a permutation of a matrix
+ * Matrix class representing a permuted view of a matrix
  * 
  * @author Mike
  */
-public class PermutedMatrix extends ARectangularMatrix {
+public class PermutedMatrix extends ADelegatedMatrix {
 	private static final long serialVersionUID = -4237549899714650293L;
 
-	private final AMatrix source;
 	private final Index rowPermutations;
 	private final Index columnPermutations;
 	
@@ -24,7 +23,7 @@ public class PermutedMatrix extends ARectangularMatrix {
 	}	
 	
 	public PermutedMatrix(AMatrix source, Index rowPermutations, Index columnPermutations) {
-		super(rowPermutations.length(),columnPermutations.length());
+		super(rowPermutations.length(),columnPermutations.length(),source);
 		if (source instanceof PermutedMatrix) {
 			PermutedMatrix pm=(PermutedMatrix)source;
 			
@@ -42,7 +41,6 @@ public class PermutedMatrix extends ARectangularMatrix {
 		if (source.columnCount()!=columnPermutations.length()) throw new VectorzException("Incorrect column permutation count: "+columnPermutations.length());
 		this.rowPermutations=rowPermutations;
 		this.columnPermutations=columnPermutations;
-		this.source=source;
 	}
 	
 	@Override
@@ -92,16 +90,16 @@ public class PermutedMatrix extends ARectangularMatrix {
 	 * Returns a row of the permuted matrix as a vector reference
 	 */
 	@Override
-	public AVector getRow(int row) {
-		return IndexedSubVector.wrap(source.getRow(rowPermutations.get(row)),columnPermutations.getData());
+	public AVector getRowView(int row) {
+		return IndexedSubVector.wrap(source.getRowView(rowPermutations.get(row)),columnPermutations.getData());
 	}
 
 	/**
 	 * Returns a column of the permuted  matrix as a vector reference
 	 */
 	@Override
-	public AVector getColumn(int column) {
-		return IndexedSubVector.wrap(source.getColumn(columnPermutations.get(column)),rowPermutations.getData());
+	public AVector getColumnView(int column) {
+		return IndexedSubVector.wrap(source.getColumnView(columnPermutations.get(column)),rowPermutations.getData());
 	}
 	
 	@Override

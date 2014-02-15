@@ -89,6 +89,12 @@ public final class JoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		left.addToArray(dest, offset,stride);
+		right.addToArray(dest, offset+split*stride,stride);
+	}
+	
+	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		assert(arrayOffset+length<=array.length);
 		assert(offset+length<=length());
@@ -221,6 +227,12 @@ public final class JoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public void add(double[] data,int offset) {
+		left.add(data,offset);
+		right.add(data,offset+split);
+	}
+	
+	@Override
 	public void add(int offset, AVector a) {
 		add(offset,a,0,a.length());
 	}
@@ -318,6 +330,11 @@ public final class JoinedVector extends ASizedVector {
 	@Override
 	public double elementSum() {
 		return left.elementSum()+right.elementSum();
+	}
+	
+	@Override
+	public double elementProduct() {
+		return left.elementProduct()*right.elementProduct();
 	}
 	
 	@Override
@@ -443,6 +460,35 @@ public final class JoinedVector extends ASizedVector {
 	
 	public int depth() {
 		return depthCalc(this);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		double[] data=new double[length];
+		left.getElements(data, 0);
+		right.getElements(data, split);
+		return data;
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v instanceof JoinedVector) return equals((JoinedVector)v);
+		return super.equals(v);
+	}
+	
+	public boolean equals(JoinedVector v) {
+		if (split==v.split) {
+			return left.equals(v.left)&&right.equals(v.right);
+		} else {
+			return super.equals(v);		
+		}
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		if (!left.equalsArray(data, offset)) return false;
+		if (!right.equalsArray(data, offset+split)) return false;
+		return true;
 	}
 	
 	@Override 

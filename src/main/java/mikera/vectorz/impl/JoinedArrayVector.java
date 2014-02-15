@@ -185,6 +185,13 @@ public final class JoinedArrayVector extends ASizedVector {
 	}
 	
 	@Override
+	public void add(double[] srcData, int srcOffset) {
+		for (int i=0; i<numArrays; i++) {
+			DoubleArrays.add(srcData, srcOffset+pos[i], this.data[i], offsets[i], subLength(i));
+		}
+	}
+		
+	@Override
 	public void add(int offset, AVector a) {
 		add(offset,a,0,a.length());
 	}
@@ -198,6 +205,19 @@ public final class JoinedArrayVector extends ASizedVector {
 			int len=Math.min(subLength(j)-segmentOffset, offset+alen-pos[j]);
 			if (len>0) {
 				a.addToArray(aOffset+pos[j]+segmentOffset-offset, data[j], offsets[j]+segmentOffset, len);
+			}
+		}
+	}
+	
+	@Override
+	public void addToArray(int offset, double[] a, int aOffset, int length) {
+		int alen=length;
+		for (int j=0; j<numArrays; j++) {
+			if (offset>=pos[j+1]) continue; // skip until adding at right place
+			int segmentOffset=Math.max(0,offset-pos[j]);
+			int len=Math.min(subLength(j)-segmentOffset, offset+alen-pos[j]);
+			if (len>0) {
+				DoubleArrays.add(data[j], offsets[j]+segmentOffset,a, aOffset+pos[j]+segmentOffset-offset, len);
 			}
 		}
 	}
@@ -543,6 +563,14 @@ public final class JoinedArrayVector extends ASizedVector {
 				new double[][] {a.getArray(),b.getArray()},
 				new int[] {a.getArrayOffset(),b.getArrayOffset()},
 				new int[] {0,alen,alen+blen});
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<numArrays; i++) {
+			if (!DoubleArrays.equals(data, offset+pos[i], this.data[i], offsets[i], subLength(i))) return false;
+		}
+		return true;
 	}
 	
 	@Override

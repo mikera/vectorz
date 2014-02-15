@@ -9,10 +9,14 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.ISparse;
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
+import mikera.matrixx.impl.ADenseArrayMatrix;
+import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.MatrixBandView;
@@ -134,7 +138,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void clamp(double min, double max) {
 		int len=rowCount();
 		for (int i = 0; i < len; i++) {
-			getRow(i).clamp(min, max);
+			getRowView(i).clamp(min, max);
 		}
 	}
 	
@@ -142,7 +146,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void pow(double exponent) {
 		int len=rowCount();
 		for (int i = 0; i < len; i++) {
-			getRow(i).pow(exponent);
+			AVector v=getRowView(i);
+			v.pow(exponent);
 		}
 	}
 	
@@ -150,7 +155,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void square() {
 		int len=rowCount();
 		for (int i = 0; i < len; i++) {
-			getRow(i).square();
+			getRowView(i).square();
 		}
 	}
 	
@@ -191,7 +196,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public final AVector slice(int row) {
-		return getRow(row);
+		return getRowView(row);
 	}
 	
 	@Override
@@ -231,7 +236,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			al.add(getRow(i));
+			al.add(getRowView(i));
 		}
 		return al;
 	}
@@ -347,7 +352,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		VectorMatrixMN vm=new VectorMatrixMN(0,cols);
 		for (int i=0; i<rows; i++) {
-			vm.appendRow(this.getRow(rowStart+i).subVector(colStart, cols));
+			vm.appendRow(this.getRowView(rowStart+i).subVector(colStart, cols));
 		}
 		return vm;	
 	}
@@ -406,11 +411,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += unsafeGet(row, column) * source.unsafeGet(column);
-			}
-			dest.unsafeSet(row, total);
+			dest.unsafeSet(row, getRow(row).dotProduct(source));
 		}
 	}
 	
@@ -420,11 +421,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += unsafeGet(row, column) * source.unsafeGet(column);
-			}
-			dest.unsafeSet(row, total);
+			dest.unsafeSet(row, getRow(row).dotProduct(source));
 		}
 	}
 
@@ -442,11 +439,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			throw new UnsupportedOperationException(
 					"Cannot transform in place with a non-square transformation");
 		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += unsafeGet(row, column) * v.unsafeGet(column);
-			}
-			temp[row] = total;
+			temp[row] = getRow(row).dotProduct(v);
 		}
 		v.setElements(temp);
 	}
@@ -462,51 +455,57 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		double[] data=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += unsafeGet(row, column) * data[offset+column];
-			}
-			temp[row] = total;
+			temp[row] = getRow(row).dotProduct(data,offset);
 		}
 		v.setElements(temp);
 	}
 
 
 	/**
-	 * Returns a row of the matrix as a vector view
+	 * Returns a row of the matrix. May or may not be a view, depending on matrix type.
 	 */
 	public AVector getRow(int row) {
+		return getRowView(row);
+	}
+
+	/**
+	 * Returns a column of the matrix. May or may not be a view, depending on matrix type.
+	 */
+	public AVector getColumn(int column) {
+		return getColumnView(column);
+	}
+	
+	/**
+	 * Returns a row of the matrix as a vector view
+	 */
+	public AVector getRowView(int row) {
 		return new MatrixRowView(this, row);
 	}
 
 	/**
 	 * Returns a column of the matrix as a vector view
 	 */
-	public AVector getColumn(int column) {
+	public AVector getColumnView(int column) {
 		return new MatrixColumnView(this, column);
-	}
-
-	/**
-	 * Creates a mutable vector that is the clone of a single row of this matrix
-	 * @param row
-	 * @return
-	 */
-	public AVector cloneRow(int row) {
-		int cc = columnCount();
-		Vector v = Vector.createLength(cc);
-		copyRowTo(row,v.data,0);
-		return v;
 	}
 	
 	/**
-	 * Creates a mutable vector that is the clone of a single column of this matrix
-	 * @param row
-	 * @return
+	 * Returns a row of the matrix as a new cloned vector
 	 */
-	public AVector cloneColumn(int row) {
-		int rc = rowCount();
-		Vector v = Vector.createLength(rc);
-		copyColumnTo(row,v.data,0);
+	public AVector getRowClone(int row) {
+		int cc=this.columnCount();
+		Vector v=Vector.createLength(cc);
+		copyRowTo(row,v.getArray(),0);
+		return v;
+	}
+
+	/**
+	 * Returns a column of the matrix as a new cloned vector
+	 */
+	public AVector getColumnClone(int column) {
+		int rc=this.rowCount();
+		Vector v=Vector.createLength(rc);
+		copyColumnTo(column,v.getArray(),0);
 		return v;
 	}
 
@@ -523,12 +522,20 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	@Override
 	public void set(INDArray a) {
 		if (a instanceof AMatrix) {set((AMatrix) a); return;}	
-		if (a instanceof AVector) {for (AVector r:this) {r.set((AVector) a);} return;}
+		if (a instanceof AVector) {set((AVector)a); return;}
 		if (a instanceof AScalar) {set(a.get()); return;}
 		
-		throw new UnsupportedOperationException("Can't set matrix to array: "+a.getClass() +" with shape: "+a.getShape());
+		throw new UnsupportedOperationException("Can't set matrix to array: "+a.getClass() +" with shape: "+Arrays.toString(a.getShape()));
+	}
+	
+	public void set(AVector v) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRowView(i).set(v);
+		}
 	}
 	
 	public void set(Object o) {
@@ -592,7 +599,26 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public INDArray ensureMutable() {
+	public AMatrix copy() {
+		if (isMutable()) return clone();
+		return this;
+	}
+	
+	public final AVector cloneRow(int row) {
+		return getRowClone(row);
+	}
+	
+	public final AVector cloneColumn(int column) {
+		return getColumnClone(column);
+	}
+	
+	@Override
+	public AMatrix sparseClone() {
+		return Matrixx.createSparse(this);
+	}
+	
+	@Override
+	public AMatrix ensureMutable() {
 		if (isFullyMutable()&&!isView()) return this;
 		return clone();
 	}
@@ -651,55 +677,65 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	/**
-	 * Returns a transposed version of this matrix. May or may not be a view.
+	 * Returns the transpose of this matrix. 
+	 * 
+	 * Will be a transposed view by default, but specialised matrix type may override this if they are able to provide
+	 * a better implementation.
+	 * 
 	 * @return
 	 */
 	@Override
 	public AMatrix getTranspose() {
-		return TransposedMatrix.wrap(this);
+		return getTransposeView();
 	}
 	
+	/**
+	 * Returns a transposed view of the matrix. 
+	 */
 	@Override
 	public AMatrix getTransposeView() {
 		return TransposedMatrix.wrap(this);
 	}
 	
+	/**
+	 * Gets a mutable transposed clone of the matrix
+	 */
 	@Override
-	public Matrix getTransposeCopy() {
-		int rc=this.rowCount();
-		int cc=this.columnCount();
-		Matrix m=Matrix.create(cc,rc);
-		for (int j=0; j<cc; j++) {
-			this.copyColumnTo(j, m.data, j*rc);
-		}
-		return m;
+	public AMatrix getTransposeCopy() {
+		return copy().getTranspose();
 	}
 	
 	/**
 	 * Adds another matrix to this matrix. Matrices must be the same size.
-	 * @param m
 	 */
 	public void add(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
 		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)+m.unsafeGet(i, j));
+		if ((cc>5)||(this instanceof IFastRows)) {
+			for (int i=0; i<rc; i++) {
+				getRowView(i).add(m.getRow(i));
+			}			
+		} else {
+			for (int i=0; i<rc; i++) {
+				for (int j=0; j<cc; j++) {
+					unsafeSet(i,j,unsafeGet(i,j)+m.unsafeGet(i, j));
+				}
 			}
 		}
 	}
 	
+	/**
+	 * Adds a vector to every row of this matrix.
+	 */
 	public void add(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();
 		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
 
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)+v.unsafeGet(j));
-			}
+			getRowView(i).add(v);
 		}		
 	}
 	
@@ -709,9 +745,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				addAt(i,j,-v.unsafeGet(j));
-			}
+			getRowView(i).sub(v);
 		}		
 	}
 	
@@ -728,12 +762,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	public void multiply(double factor) {
 		int rc=rowCount();
-		int cc=columnCount();
 
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)*factor);
-			}
+			getRowView(i).multiply(factor);
 		}
 	}	
 
@@ -744,13 +775,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	public double elementSum() {
 		int rc=rowCount();
-		int cc=columnCount();
 		
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				result+=unsafeGet(i,j);
-			}
+			result+=getRowView(i).elementSum();
 		}
 		return result;
 	}
@@ -762,14 +790,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	public double elementSquaredSum() {
 		int rc=rowCount();
-		int cc=columnCount();
 		
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				double value=unsafeGet(i,j);
-				result+=value*value;
-			}
+			result+=getRowView(i).elementSquaredSum();
 		}
 		return result;
 	}
@@ -824,7 +848,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void reciprocal() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).reciprocal();
+			getRowView(i).reciprocal();
 		}
 	}
 	
@@ -832,7 +856,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void abs() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).abs();
+			getRowView(i).abs();
 		}
 	}
 	
@@ -840,7 +864,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void sqrt() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).sqrt();
+			getRowView(i).sqrt();
 		}
 	}
 	
@@ -848,7 +872,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void log() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).log();
+			getRowView(i).log();
 		}
 	}
 	
@@ -856,7 +880,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void exp() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).exp();
+			getRowView(i).exp();
 		}
 	}
 	
@@ -864,7 +888,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void signum() {
 		int sc=rowCount();
 		for (int i=0; i<sc; i++) {
-			getRow(i).signum();
+			getRowView(i).signum();
 		}
 	}
 	
@@ -878,14 +902,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)*m.unsafeGet(i, j));
-			}
+			getRowView(i).multiply(m.getRow(i));
 		}
 	}
 	
 	/**
-	 * Divides this matrix in-place by another in an entrywise manner (Hadamard product).
+	 * Divides this matrix in-place by another in an entrywise manner.
 	 * @param m
 	 */
 	public void elementDiv(AMatrix m) {
@@ -913,7 +935,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * This is an elementary row operation
 	 */
 	public void multiplyRow(int i, double factor) {
-		getRow(i).multiply(factor);
+		getRowView(i).multiply(factor);
 	}
 	
 	/**
@@ -921,7 +943,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * This is an elementary row operation
 	 */
 	public void addRowMultiple(int src, int dst, double factor) {
-		getRow(dst).addMultiple(getRow(src), factor);
+		getRowView(dst).addMultiple(getRow(src), factor);
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		int cc=columnCount();
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRow(i).addToArray(data, offset+i*cc);
+		}
 	}
 	
 	/**
@@ -931,8 +962,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void swapRows(int i, int j) {
 		if (i == j)
 			return;
-		AVector a = getRow(i);
-		AVector b = getRow(j);
+		AVector a = getRowView(i);
+		AVector b = getRowView(j);
 		int cc = columnCount();
 		for (int k = 0; k < cc; k++) {
 			double t = a.unsafeGet(k);
@@ -947,8 +978,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void swapColumns(int i, int j) {
 		if (i == j)
 			return;
-		AVector a = getColumn(i);
-		AVector b = getColumn(j);
+		AVector a = getColumnView(i);
+		AVector b = getColumnView(j);
 		int rc = rowCount();
 		for (int k = 0; k < rc; k++) {
 			double t = a.unsafeGet(k);
@@ -975,9 +1006,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)+(m.unsafeGet(i, j)*factor));
-			}
+			getRowView(i).addMultiple(m.getRow(i), factor);
 		}
 	}
 	
@@ -995,17 +1024,30 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public boolean epsilonEquals(INDArray a, double epsilon) {
-		if (a.dimensionality()!=2) {
+		if (a instanceof AMatrix) {
+			return epsilonEquals((AMatrix) a,epsilon);
+		} if (a.dimensionality()!=2) {
 			return false;
 		} else {
 			int sc=rowCount();
 			if (a.sliceCount()!=sc) return false;
 			for (int i=0; i<sc; i++) {
-				INDArray s=getRow(i);
+				AVector s=getRow(i);
 				if (!s.epsilonEquals(a.slice(i),epsilon)) return false;
 			}			
 			return true;
 		}
+	}
+	
+	public boolean epsilonEquals(AMatrix a, double epsilon) {
+		if (a==this) return true;
+		int sc=rowCount();
+		if (a.rowCount()!=sc) return false;
+		for (int i=0; i<sc; i++) {
+			AVector s=getRow(i);
+			if (!s.epsilonEquals(a.getRow(i),epsilon)) return false;
+		}			
+		return true;
 	}
 
 	@Override
@@ -1013,28 +1055,74 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (o instanceof AMatrix) return equals((AMatrix) o);
 		if (o instanceof INDArray) return equals((INDArray) o);
 		return false;
-		
 	}
 
+	/**
+	 * Returns true if this matrix is exactly equal to another matrix
+	 */
 	public boolean equals(AMatrix a) {
+		if (a instanceof ADenseArrayMatrix) return a.equals(this);
+		
 		if (a==this) return true;
 		int rc = rowCount();
-		if (rc != a.rowCount())
-			return false;
+		if (rc != a.rowCount()) return false;
 		int cc = columnCount();
-		if (cc != a.columnCount())
-			return false;
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				if (unsafeGet(i, j) != a.unsafeGet(i, j))
-					return false;
+		if (cc != a.columnCount()) return false;
+		
+		if ((cc>10)||(this instanceof IFastRows)) {
+			return equalsByRows(a);		
+		} else {
+			for (int i = 0; i < rc; i++) {
+				for (int j = 0; j < cc; j++) {
+					if (unsafeGet(i, j) != a.unsafeGet(i, j))
+						return false;
+				}
+			}			
+		}
+
+		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		int rc = rowCount();
+		int cc = columnCount();
+		if (this instanceof IFastRows) {
+			for (int i = 0; i < rc; i++) {
+				if (!getRow(i).equalsArray(data,offset+i*cc)) return false;
+			}
+		} else {
+			int di=offset;
+			for (int i = 0; i < rc; i++) {
+				for (int j = 0; j < cc; j++) {
+					if (unsafeGet(i, j) != data[di++]) return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		int rc = rowCount();
+		
+		if (this instanceof IFastRows) {
+			for (int i = 0; i < rc; i++) {
+				if (!getRow(i).elementsEqual(value)) return false;
+			}
+		} else {
+			int cc = columnCount();
+			for (int i = 0; i < rc; i++) {
+				for (int j = 0; j < cc; j++) {
+					if (unsafeGet(i, j) != value) return false;
+				}
 			}
 		}
 		return true;
 	}
 	
 	/**
-	 * Tests if this matrix ios exactly equal to the transpose of another matrix
+	 * Tests if this matrix is exactly equal to the transpose of another matrix
 	 * @param a
 	 * @return
 	 */
@@ -1046,10 +1134,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (cc != a.rowCount())
 			return false;
 		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				if (unsafeGet(i, j) != a.unsafeGet(j, i))
-					return false;
-			}
+			if (!getRow(i).equals(a.getColumn(i))) return false;
 		}
 		return true;
 	}
@@ -1064,13 +1149,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc=columnCount();
 		if (cc != vs[1]) return false;
 		
-		int[] ind = new int[2];
 		for (int i = 0; i < rc; i++) {
-			ind[0]=i;
-			for (int j=0; j<cc; j++) {
-				ind[1]=j;
-				if (unsafeGet(i,j) != v.get(ind)) return false;
-			}
+			if (!getRow(i).equals(v.slice(i))) return false;
 		}
 		return true;
 	}
@@ -1084,10 +1164,17 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc = columnCount();
 		if ((rc != a.rowCount())||(cc!=a.columnCount()))
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				if (!Tools.epsilonEquals(unsafeGet(i, j), a.unsafeGet(i, j)))
-					return false;
+		
+		if ((this instanceof IFastRows)&&(a instanceof IFastRows)) {
+			for (int i = 0; i < rc; i++) {
+				if (!getRow(i).epsilonEquals(a.getRow(i))) return false;	
+			}
+		} else {
+			for (int i = 0; i < rc; i++) {
+				for (int j = 0; j < cc; j++) {
+					if (!Tools.epsilonEquals(unsafeGet(i, j), a.unsafeGet(i, j)))
+						return false;
+				}
 			}
 		}
 		return true;
@@ -1097,6 +1184,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 		return a.getTranslation().isIdentity()
 				&& this.equals(a.getMatrix());
+	}
+	
+	protected boolean equalsByRows(AMatrix m) {
+		int rc = rowCount();
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).equals(m.getRow(i))) return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -1136,10 +1231,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AVector asVector() {
 		int rc = rowCount();
 		if (rc == 0) return Vector0.INSTANCE;
-		if (rc == 1) return getRow(0);
+		if (rc == 1) return getRowView(0);
 		
 		int cc= columnCount();
-		if (cc==1) return getColumn(0);
+		if (cc==1) return getColumnView(0);
 
 		return new MatrixAsVector(this);
 	}
@@ -1179,18 +1274,28 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	@Override
 	public AMatrix innerProduct(AScalar s) {
-		Matrix r= toMatrix();
-		r.scale(s.get());
-		return r;
+		return innerProduct(s.get());
 	}
 	
+	@Override
+	public AMatrix innerProduct(double d) {
+		AMatrix r= clone();
+		r.scale(d);
+		return r;
+	}	
+	
 	public AMatrix transposeInnerProduct(AMatrix s) {
-		// this seems to be a sensible default strategy. Incurs an extra temp copy, 
-		// but probably worth it in most cases to take advantage of Matrix layout
-		// which is optimised for being the first term in an inner product
-		Matrix r= toMatrixTranspose();
-		return Multiplications.multiply(r, s);
+		if (s instanceof Matrix) return transposeInnerProduct((Matrix)s);
+		if (isSparse()) {
+			// TODO: any better approach?
+			Matrix r= toMatrixTranspose();
+			return Multiplications.multiply(r, s);
+		} else {
+			Matrix r= toMatrixTranspose();
+			return Multiplications.multiply(r, s);			
+		}
 	}
 	
 	public Matrix transposeInnerProduct(Matrix s) {
@@ -1225,9 +1330,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 	
+	/**
+	 * Computes the trace of a matrix
+	 * 
+	 * @return
+	 */
 	public double trace() {
-		int rc=rowCount();
-		assert(rc==columnCount());
+		int rc=Math.min(rowCount(), columnCount());
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
 			result+=unsafeGet(i,i);
@@ -1250,7 +1359,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc = rowCount();
 		int cc = columnCount();
 		Vector v = Vector.createLength(rc * cc);
-		this.getElements(v.data,0);
+		this.getElements(v.getArray(),0);
 		return v;
 	}
 	
@@ -1266,9 +1375,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public Matrix toMatrix() {
 		int rc = rowCount();
 		int cc = columnCount();
-		Matrix m = Matrix.create(rc, cc);
-		this.getElements(m.data,0);
-		return m;
+		return Matrix.wrap(rc, cc, this.toDoubleArray());
 	}
 	
 	/**
@@ -1278,9 +1385,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public Matrix toMatrixTranspose() {
 		int rc = rowCount();
 		int cc = columnCount();
-		Matrix m = Matrix.create(cc, rc);
-		this.getTransposeView().getElements(m.data,0);
-		return m;
+		return Matrix.wrap(cc, rc,this.getTranspose().toDoubleArray());
 	}
 	
 	@Override
@@ -1293,8 +1398,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public double[] toDoubleArray() {
-		int n=(int)elementCount();
-		double[] result=new double[n];
+		double[] result=Matrix.createStorage(rowCount(),columnCount());
 		getElements(result,0);
 		return result;
 	}
@@ -1307,11 +1411,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public void applyOp(Op op) {
 		int rc = rowCount();
-		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				unsafeSet(i,j,op.apply(unsafeGet(i,j)));
-			}
+			getRowView(i).applyOp(op);
 		}
 	}
 	
@@ -1319,14 +1420,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void applyOp(IOperator op) {
 		if (op instanceof Op) {applyOp((Op)op); return;}
 		int rc = rowCount();
-		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				unsafeSet(i,j,op.apply(unsafeGet(i,j)));
-			}
+			getRowView(i).applyOp(op);
 		}
 	}
 	
+	@Override
 	public void add(INDArray a) {
 		if (a instanceof AMatrix) {
 			add((AMatrix)a);
@@ -1475,7 +1574,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (rowCount()==target.rowCount()&&(columnCount()==target.columnCount())) {
 			return this;
 		} else {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, target));
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}
 	}
 	
@@ -1490,21 +1589,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
 	public boolean isZero() {
-		int rc = rowCount();
-		int cc = columnCount();
-		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				if (unsafeGet(i,j)!=0.0) return false;
-			}
-		}
-		return true;
+		return elementsEqual(0.0);
 	}
 	
 	/**
 	 * Returns true if a matrix is positive definite
 	 */
 	public void isPositiveDefinite() {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException(ErrorMessages.notYetImplemented());
 	}
 	
 	/**
@@ -1626,6 +1718,24 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return bandLength(rowCount(),columnCount(),band);
 	}
 	
+	/**
+	 * Returns the start row of a given band.
+	 * @param band
+	 * @return
+	 */
+	public final int bandStartRow(int band) {
+		return (band<0)?-band:0;
+	}
+	
+	/**
+	 * Returns the start column of a given band.
+	 * @param band
+	 * @return
+	 */
+	public final int bandStartColumn(int band) {
+		return (band>0)?band:0;
+	}
+	
 	protected final static int bandLength(int rc, int cc, int band) {
 		if (band>0) {
 			return (band<cc)?Math.min(rc, cc-band):0;
@@ -1660,11 +1770,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @return
 	 */
 	public int upperBandwidth() {
-		for (int band=upperBandwidthLimit(); band>0; band--) {
-			int bandLen=bandLength(band);
-			for (int i=0; i<bandLen; i++) {
-				if (unsafeGet(band+i,i)!=0.0) return band;
-			}
+		for (int w=upperBandwidthLimit(); w>0; w--) {
+			if (!getBand(w).isZero()) return w;
 		}
 		return 0;
 	}
@@ -1674,11 +1781,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @return
 	 */
 	public int lowerBandwidth() {
-		for (int band=lowerBandwidthLimit(); band>0; band--) {
-			int bandLen=bandLength(-band);
-			for (int i=0; i<bandLen; i++) {
-				if (unsafeGet(i,band+i)!=0.0) return band;
-			}
+		for (int w=lowerBandwidthLimit(); w>0; w--) {
+			if (!getBand(-w).isZero()) return w;
 		}
 		return 0;
 	}
@@ -1690,6 +1794,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param band
 	 * @return
 	 */
+	@Override
 	public AVector getBand(int band) {
 		return MatrixBandView.create(this,band);
 	}
@@ -1705,6 +1810,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 				result=result.join(getBand(si));
 			}
 		} else {
+			if (cc==0) return result;
 			int si=band%cc;
 			if (si<0) si+=cc;
 			for (;si>-rc; si-=cc) {
@@ -1768,9 +1874,21 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public INDArray mutable() {
+	public AMatrix mutable() {
 		if (isFullyMutable()) return this;
 		return clone();
+	}
+	
+	@Override
+	public AMatrix sparse() {
+		if (this instanceof ISparse) return this;
+		return Matrixx.createSparse(this);
+	}
+	
+	@Override
+	public INDArray dense() {
+		if (this instanceof IDense) return this;
+		return Matrix.create(this);
 	}
 	
 	@Override 

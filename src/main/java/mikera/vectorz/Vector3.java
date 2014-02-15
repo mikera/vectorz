@@ -50,7 +50,7 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	public Vector3(double... values) {
-		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from values with length: "+values.length);
 		this.x=values[0];
 		this.y=values[1];
 		this.z=values[2];
@@ -209,7 +209,8 @@ public final class Vector3 extends APrimitiveVector {
 	@Override
 	public double dotProduct(Vector v) {
 		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
-		return x*v.data[0]+y*v.data[1]+z*v.data[2];
+		double[] data=v.getArray();
+		return x*data[0]+y*data[1]+z*data[2];
 	}
 	
 	@Override
@@ -263,6 +264,11 @@ public final class Vector3 extends APrimitiveVector {
 	@Override
 	public double elementSum() {
 		return x+y+z;
+	}
+	
+	@Override
+	public double elementProduct() {
+		return x*y*z;
 	}
 	
 	@Override
@@ -383,6 +389,11 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x,y,z};
+	}
+	
+	@Override
 	public Vector3 toNormal() {
 		double d=this.magnitude();
 		return (d==0)?new Vector3():new Vector3(x/d,y/d,z/d);
@@ -412,5 +423,17 @@ public final class Vector3 extends APrimitiveVector {
 	public Vector3 exactClone() {
 		return clone();
 	}
-
+	
+	@Override 
+	public boolean equals(AVector v) {
+		if (v==this) return true;
+		if (v instanceof Vector3) {
+			return equals((Vector3)v);
+		}
+		return (v.length()==3)&&(x==v.unsafeGet(0))&&(y==v.unsafeGet(1))&&(z==v.unsafeGet(2));
+	}
+	
+	public boolean equals(Vector3 v) {
+		return (x==v.x)&&(y==v.y)&&(z==v.z);
+	}
 }

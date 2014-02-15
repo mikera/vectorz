@@ -37,7 +37,7 @@ public final class Vector4 extends APrimitiveVector {
 	}
 	
 	public Vector4(double... values) {
-		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from values of length: "+values.length);
 		this.x=values[0];
 		this.y=values[1];
 		this.z=values[2];
@@ -155,6 +155,11 @@ public final class Vector4 extends APrimitiveVector {
 	public double elementSum() {
 		return x+y+z+t;
 	}
+	
+	@Override
+	public double elementProduct() {
+		return x*y*z*t;
+	}
 
 	@Override
 	public double get(int i) {
@@ -210,6 +215,11 @@ public final class Vector4 extends APrimitiveVector {
 		dest.put(y);
 		dest.put(z);
 		dest.put(t);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x,y,z,t};
 	}
 	
 	@Override

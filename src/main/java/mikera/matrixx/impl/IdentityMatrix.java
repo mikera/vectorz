@@ -63,12 +63,22 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override
-	public AxisVector getRow(int row) {
+	public AVector getRow(int row) {
 		return AxisVector.create(row,dimensions);
 	}
 	
 	@Override
-	public AxisVector getColumn(int column) {
+	public AVector getColumn(int column) {
+		return AxisVector.create(column,dimensions);
+	}
+	
+	@Override
+	public AxisVector getRowView(int row) {
+		return AxisVector.create(row,dimensions);
+	}
+	
+	@Override
+	public AxisVector getColumnView(int column) {
 		return AxisVector.create(column,dimensions);
 	}
 	
@@ -164,14 +174,14 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override
-	public ADiagonalMatrix innerProduct(ADiagonalMatrix a) {
-		return a.exactClone();
+	public AMatrix innerProduct(ADiagonalMatrix a) {
+		return a.copy();
 	}
 	
 	@Override 
 	public AMatrix innerProduct(AMatrix a) {
 		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		return a.clone();
+		return a.copy(); 
 	}
 	
 	@Override 
@@ -194,5 +204,11 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	@Override
 	public IdentityMatrix exactClone() {
 		return create(dimensions);
+	}
+	
+	@Override
+	public AMatrix clone() {
+		if (dimensions<30) return super.clone();
+		return sparseClone();
 	}
 }

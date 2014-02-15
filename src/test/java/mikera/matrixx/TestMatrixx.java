@@ -458,11 +458,13 @@ public class TestMatrixx {
 	private void doBandTests(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();
-		int bandMin=1-m.rowCount();
-		int bandMax=m.columnCount()-1;
+		if ((cc==0)||(rc==0)) return; // bands are meaningless....
+		int bandMin=-m.rowCount();
+		int bandMax=m.columnCount();
 		
-		assertNull(m.getBand(bandMin-1));
-		assertNull(m.getBand(bandMax+1));
+		// TODO: what to do about out-of-range bands?
+		//assertNull(m.getBand(bandMin-1));
+		//assertNull(m.getBand(bandMax+1));
 		
 		for (int i=bandMin; i<=bandMax; i++) {
 			AVector b=m.getBand(i);
@@ -470,6 +472,8 @@ public class TestMatrixx {
 			
 			assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
 		}
+		
+		assertEquals(m,BandedMatrix.create(m));
 	}
 	
 	private void doVectorTest(AMatrix m) {
@@ -491,6 +495,7 @@ public class TestMatrixx {
 	}
 	
 	void doParseTest(AMatrix m) {
+		if (m.rowCount()==0) return;
 		assertEquals(m,Matrixx.parse(m.toString()));
 	}
 	
@@ -535,7 +540,7 @@ public class TestMatrixx {
 		AMatrix s=Matrixx.createSparse(m);
 		assertEquals(m,s);
 		
-		AMatrix s2=Matrixx.createSparseRows((Iterable<AVector>)m);
+		AMatrix s2=Matrixx.createSparseRows(m);
 		assertEquals(m,s2);
 	}
 	
@@ -650,6 +655,9 @@ public class TestMatrixx {
 		doGenericTests(Matrixx.createImmutableZeroMatrix(5, 5));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 3));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(1, 7));
+		doGenericTests(Matrixx.createImmutableZeroMatrix(1, 0));
+		doGenericTests(Matrixx.createImmutableZeroMatrix(0, 1));
+		doGenericTests(Matrixx.createImmutableZeroMatrix(0, 0));
 		
 		// specialised 3x3 matrix
 		Matrix33 m33=new Matrix33();

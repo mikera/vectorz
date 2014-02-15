@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mikera.util.Rand;
+import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
@@ -26,6 +27,17 @@ public class Vectorz {
 	 * Constant tolerance used for testing double values
 	 */
 	public static final double TEST_EPSILON = 0.0000001;
+	
+	/**
+	 * Specified the minimum length at which it is worthwhile creating sparse vectors rather than
+	 * dense vectors. This acts as a hint to modify the behaviour of sparse vector construction functions.
+	 */
+	public static final int MIN_SPARSE_LENGTH=50;
+	public static final int BIG_SPARSE_LENGTH=1000000;
+
+	private static final double SPARSE_DENSITY_THRESHOLD = 0.25;
+
+	private static final double SPARSE_HASHED_THRESHOLD = 0.03;
 
 	// ===========================
 	// Factory functions
@@ -96,7 +108,7 @@ public class Vectorz {
 		return v;
 	}
 	
-	public static AVector wrap(double[] data, int offset, int length) {
+	public static AArrayVector wrap(double[] data, int offset, int length) {
 		if ((offset==0)&&(length==data.length)) return wrap(data);
 		return ArraySubVector.wrap(data, offset, length);
 	}
@@ -125,8 +137,9 @@ public class Vectorz {
 			case 2: return new Vector2();
 			case 3: return new Vector3();
 			case 4: return new Vector4();
-			default: return Vector.createLength(length);
 		}
+		if (length>=BIG_SPARSE_LENGTH) return createSparseMutable(length);
+		return Vector.createLength(length);
 	}
 	
 	/**
@@ -153,22 +166,30 @@ public class Vectorz {
 				}
 			}
 			throw new VectorzException("non-zero element not found!!");
-		} else if (n>(len/2)) {
+		} else if (n>(len*SPARSE_DENSITY_THRESHOLD)) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
-		} else if (n<(len/30)) {
+		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
 			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
 		}
 	}
 	
+	public static AVector createSparseMutable(int length) {
+		if (length<MIN_SPARSE_LENGTH) {
+			return Vector.createLength(length); // not enough sparsity to make worthwhile
+		} else  {
+			return SparseHashedVector.createLength(length);
+		} 
+	}
+	
 	public static AVector createSparseMutable(AVector v) {
 		int len=v.length();
 		long n=v.nonZeroCount();
 		
-		if ((len<20)||(n>(len/2))) {
+		if ((len<MIN_SPARSE_LENGTH)||(n>(len*SPARSE_DENSITY_THRESHOLD))) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
-		} else if (n<(len/30)) {
+		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
 			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
@@ -213,7 +234,7 @@ public class Vectorz {
 	public static AVector createUniformRandomVector(int dimensions) {
 		AVector v=Vectorz.newVector(dimensions);
 		for (int i=0; i<dimensions; i++) {
-			v.set(i,Rand.nextDouble());
+			v.unsafeSet(i,Rand.nextDouble());
 		}
 		return v;
 	}
@@ -300,7 +321,8 @@ public class Vectorz {
 	public static AVector create(DoubleBuffer d) {
 		int length=d.remaining();
 		Vector v=Vector.createLength(length);
-		d.get(v.data, 0, length);
+		double[] data=v.getArray();
+		d.get(data, 0, length);
 		return v;
 	}
 	
@@ -374,28 +396,20 @@ public class Vectorz {
 	
 	public static void invSqrt(Vector v) {
 		int len=v.length();
+		double[] data=v.getArray();
 		for (int i=0; i<len; i++) {
-			double d=1.0/Math.sqrt(v.data[i]);
-			v.data[i]=d;
+			double d=1.0/Math.sqrt(data[i]);
+			data[i]=d;
 		}		
 	}
 	
 	public static double totalValue(AVector v) {
-		int len=v.length();
-		double result=0.0;
-		
-		for (int i=0; i<len; i++) {
-			result+=v.unsafeGet(i);
-		}
-		return result;
+		return v.elementSum();
 	}
 	
 	public static double averageValue(AVector v) {
 		int len=v.length();
-		double result=0.0;
-		for (int i=0; i<len; i++) {
-			result+=v.unsafeGet(i);
-		}
+		double result=v.elementSum();
 		return result/len;
 	}
 	
@@ -499,6 +513,7 @@ public class Vectorz {
 		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length, value);
 	}
+
 
 	
 }

@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -18,6 +20,10 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	protected AArrayMatrix(double[] data, int rows, int cols ) {
 		super(rows,cols);
 		this.data=data;
+	}
+	
+	public double[] getArray() {
+		return data;
 	}
 	
 	@Override
@@ -48,6 +54,17 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	 */
 	public abstract boolean isPackedArray();
 	
+	@Override
+	public AMatrix getTransposeCopy() {
+		int rc=this.rowCount();
+		int cc=this.columnCount();
+		Matrix m=Matrix.create(cc,rc);
+		for (int j=0; j<cc; j++) {
+			this.copyColumnTo(j, m.data, j*rc);
+		}
+		return m;
+	}
+	
 	/**
 	 * Computes the index into the data array for a given position in the matrix
 	 * @param i
@@ -56,7 +73,27 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	 */
 	protected abstract int index(int i, int j);
 
-	public double[] getArray() {
-		return data;
+	@Override
+	public boolean equals(AMatrix a) {
+		if (a==this) return true;	
+		if (a instanceof ADenseArrayMatrix) {
+			return equals((ADenseArrayMatrix)a);
+		}
+
+		if (!isSameShape(a)) return false;
+		
+		
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (data[index(i, j)] != a.unsafeGet(i, j))
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean equals(ADenseArrayMatrix a) {
+		if (!isSameShape(a)) return false;
+		return equalsArray(a.getArray(),a.getArrayOffset());
 	}
 }

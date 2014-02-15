@@ -43,12 +43,12 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 	
 	@Override
-	public AStridedVector getRow(int i) {
+	public AStridedVector getRowView(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
 	}
 	
 	@Override
-	public AStridedVector getColumn(int i) {
+	public AStridedVector getColumnView(int i) {
 		return StridedVector.wrap(data, offset+i*colStride, rows, rowStride);
 	}
 	
@@ -95,7 +95,6 @@ public final class StridedMatrix extends AStridedMatrix {
 	public AStridedMatrix subMatrix(int rowStart, int rowCount, int colStart, int colCount) {
 		if ((rowStart<0)||(rowStart>=this.rows)||(colStart<0)||(colStart>=this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart,colStart));
 		if ((rowStart+rowCount>this.rows)||(colStart+colCount>this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart+rowCount,colStart+colCount));
-		if ((rowCount<1)||(colCount<1)) throw new IllegalArgumentException(ErrorMessages.illegalSize(rowCount,colCount));
 		return new StridedMatrix(data, rowCount, colCount, offset+rowStart*rowStride+colStart*colStride, rowStride, colStride);
 	}
 
@@ -202,7 +201,7 @@ public final class StridedMatrix extends AStridedMatrix {
 	@Override
 	public void validate() {
 		super.validate();
-		if (!equals(this)) throw new VectorzException("Universe destroyed: thing not equal to itself");
+		if (!equals(this.exactClone())) throw new VectorzException("Thing not equal to itself");
 		if (offset<0) throw new VectorzException("Negative offset! ["+offset+"]");
 		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
 	}
@@ -215,5 +214,33 @@ public final class StridedMatrix extends AStridedMatrix {
 	@Override
 	public Matrix clone() {
 		return Matrix.create(this);
+	}
+
+	@Override
+	public boolean equals(AMatrix a) {
+		if (a==this) return true;	
+		if (a instanceof ADenseArrayMatrix) return equals((ADenseArrayMatrix)a);
+		
+		if (!isSameShape(a)) return false;
+		
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (data[index(i, j)] != a.unsafeGet(i, j))
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i = 0; i < rows; i++) {
+			int si=this.offset+i*rowStride;
+			for (int j = 0; j < cols; j++) {
+				if (this.data[si] != data[offset++]) return false;
+				si+=colStride;
+			}
+		}
+		return true;
 	}
 }

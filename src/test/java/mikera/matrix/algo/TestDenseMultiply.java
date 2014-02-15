@@ -33,6 +33,7 @@ public class TestDenseMultiply {
 		assertEquals(ip,Multiplications.multiply(m, mt));
 		assertEquals(ip,Multiplications.blockedMultiply(m, mt));
 		assertEquals(ip,Multiplications.naiveMultiply(m, mt));
+		assertEquals(ip,Multiplications.directMultiply(m, mt));
 	}
 	
 	@Test public void testTransposeMul() {

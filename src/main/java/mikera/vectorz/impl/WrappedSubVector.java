@@ -5,6 +5,11 @@ import java.util.Iterator;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * View class referencing a contiguous subvector of another vector. 
+ * @author Mike
+ *
+ */
 public final class WrappedSubVector extends ASizedVector {
 	private static final long serialVersionUID = 2323553136938665228L;
 
@@ -70,6 +75,16 @@ public final class WrappedSubVector extends ASizedVector {
 	}
 	
 	@Override
+	public void add(AVector src, int offset) {
+		wrapped.add(this.offset,src,offset,length);
+	}
+	
+	@Override
+	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
+		wrapped.addToArray(this.offset+offset, array, arrayOffset, length);
+	}
+	
+	@Override
 	public AVector subVector(int offset, int length) {
 		if ((offset<0)||(offset+length>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
@@ -77,6 +92,16 @@ public final class WrappedSubVector extends ASizedVector {
 		if (length==0) return Vector0.INSTANCE;
 		if (length==this.length) return this;
 		return wrapped.subVector(this.offset+offset, length);
+	}
+	
+	@Override
+	public void copyTo(int offset, AVector dest, int destOffset, int length) {
+		wrapped.copyTo(this.offset+offset,dest,destOffset,length);
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length) {
+		wrapped.copyTo(this.offset+offset,dest,destOffset,length);
 	}
 	
 	@Override

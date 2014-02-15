@@ -82,11 +82,7 @@ public class MatrixIndexScalar extends AScalar {
 
 	@Override
 	public AScalar immutable() {
-		if (matrix.isMutable()) {
-			return ImmutableScalar.create(get());
-		} else {
-			return this;
-		}
+		return ImmutableScalar.create(get());
 	}
 	
 	@Override

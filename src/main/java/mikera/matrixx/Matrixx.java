@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import us.bpsm.edn.parser.Parseable;
-import us.bpsm.edn.parser.Parser;
-import us.bpsm.edn.parser.Parsers;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
@@ -19,7 +16,6 @@ import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.util.Rand;
 import mikera.vectorz.AVector;
@@ -29,6 +25,9 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
+import us.bpsm.edn.parser.Parseable;
+import us.bpsm.edn.parser.Parser;
+import us.bpsm.edn.parser.Parsers;
 
 /**
  * Static method class for matrices
@@ -38,25 +37,35 @@ import mikera.vectorz.util.VectorzException;
 public class Matrixx {
 
 	/**
-	 * Creates an mutable identity matrix
+	 * Creates an identity matrix
 	 */
 	public static AMatrix createIdentityMatrix(int dimensions) {
+		return createImmutableIdentityMatrix(dimensions);
+	}
+
+	/**
+	 * Creates a sparse, immutable identity matrix. This is the most efficient format for identity matrices
+	 */
+	public static IdentityMatrix createImmutableIdentityMatrix(int dimensions) {
+		return IdentityMatrix.create(dimensions);
+	}
+	
+	/**
+	 * Creates a fully mutable identity matrix
+	 */
+	public static AMatrix createMutableIdentityMatrix(int dimensions) {
 		AMatrix m = newMatrix(dimensions, dimensions);
 		for (int i = 0; i < dimensions; i++) {
-			m.set(i, i, 1.0);
+			m.unsafeSet(i, i, 1.0);
 		}
 		return m;
 	}
 
 	/**
-	 * Creates an immutable identity matrix
-	 */
-	public static IdentityMatrix createImmutableIdentityMatrix(int dimensions) {
-		return IdentityMatrix.create(dimensions);
-	}
-
-	/**
-	 * Coerces to a matrix
+	 * Coerce an object to a matrix format, on a best effort basis.
+	 * 
+	 * Can handle:
+	 * - Existing matrices
 	 */
 	public static AMatrix toMatrix(Object o) {
 		if (o instanceof AMatrix) {
@@ -78,6 +87,9 @@ public class Matrixx {
 	 * Creates a sparse matrix from the given matrix, ignoring zeros
 	 */
 	public static AMatrix createSparse(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		if ((rc==0)||(cc==0)) return ZeroMatrix.create(rc, cc);
 		return SparseRowMatrix.create(m);
 	}
 	
@@ -91,7 +103,7 @@ public class Matrixx {
 	/**
 	 * Creates a sparse matrix from the given matrix, ignoring zeros. Uses row-based storage by default
 	 */
-	public static AMatrix createSparseRows(Iterable<AVector> rows) {
+	public static SparseRowMatrix createSparseRows(Iterable<AVector> rows) {
 		Iterator<AVector> rowIterator=rows.iterator();
 		return createSparseRows(rowIterator);
 	}
@@ -100,7 +112,7 @@ public class Matrixx {
 	 * Creates a sparse matrix from the given iterator. Each vector in the iterator will be copied to
 	 * a row in the new sparse matrix 
 	 */
-	public static AMatrix createSparseRows(Iterator<AVector> rowIterator) {
+	public static SparseRowMatrix createSparseRows(Iterator<AVector> rowIterator) {
 		AVector r0=rowIterator.next();
 		int cc=r0.length();
 		HashMap<Integer,AVector> rowMap=new HashMap<Integer,AVector>();
@@ -114,6 +126,22 @@ public class Matrixx {
 		int rc=ri;
 		SparseRowMatrix m=SparseRowMatrix.wrap(rowMap,rc,cc);
 		return m;
+	}
+	
+	/**
+	 * Create a sparse array, given an Index of column positions and AVector of corresponding values for each row in the sparse array
+	 * Performs a defensive copy of underlying data.
+	 */
+	public static AMatrix createSparse(int columnCount, Index[] indexes,
+			AVector[] weights) {
+		int rowCount = indexes.length;
+		if (rowCount != weights.length)
+			throw new IllegalArgumentException("Length of indexes array must match length of weights array");
+		SparseRowMatrix sm=SparseRowMatrix.create(rowCount, columnCount);
+		for (int i = 0; i < rowCount; i++) {
+			sm.replaceRow(i, SparseIndexedVector.wrap(columnCount, indexes[i].clone(), weights[i].toDoubleArray()));
+		}
+		return sm;
 	}
 
 	/**
@@ -131,8 +159,26 @@ public class Matrixx {
 	/**
 	 * Creates a SparseRowMatrix matrix from the given matrix, ignoring zeros
 	 */
-	public static SparseRowMatrix createSparseRows(AMatrix m) {
+	public static AMatrix createSparseRows(AMatrix m) {
+		if (m.rowCount()==0) return ZeroMatrix.create(0, m.columnCount());
 		return SparseRowMatrix.create(m);
+	}
+	
+	/**
+	 * Creates a SparseRowMatrix matrix from the given INDArray, ignoring zeros
+	 */
+	public static SparseRowMatrix createSparseRows(INDArray a) {
+		if (!(a.dimensionality()==2)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a));
+		int rc=a.getShape(0);
+		int cc=a.getShape(1);
+		SparseRowMatrix m=SparseRowMatrix.create(rc,cc);
+		for (int i=0; i<rc; i++) {
+			AVector v=a.slice(i).asVector();
+			if (!v.isZero()) {
+				m.replaceRow(i, v.sparse());
+			}
+		}
+		return m;
 	}
 
 	/**
@@ -146,25 +192,53 @@ public class Matrixx {
 			double factor) {
 		DiagonalMatrix im = new DiagonalMatrix(dimensions);
 		for (int i = 0; i < dimensions; i++) {
-			im.set(i, i, factor);
+			im.unsafeSet(i, i, factor);
 		}
 		return im;
 	}
 
+	
+	/**
+	 * Creates a scalar matrix with the given scale factor
+	 */
 	public static ADiagonalMatrix createScalarMatrix(int dimensions,
 			double factor) {
 		return (ADiagonalMatrix) ScalarMatrix.create(dimensions, factor);
 	}
 
+	/**
+	 * Creates an scale matrix with the given scale factors for each dimension
+	 */
 	public static DiagonalMatrix createScaleMatrix(double... scalingFactors) {
 		int dimensions = scalingFactors.length;
 		DiagonalMatrix im = new DiagonalMatrix(dimensions);
 		for (int i = 0; i < dimensions; i++) {
-			im.set(i, i, scalingFactors[i]);
+			im.unsafeSet(i, i, scalingFactors[i]);
 		}
 		return im;
 	}
 
+	/**
+	 * Creates a diagonal matrix, using the given diagonal values. Performs a defensive copy of the data.
+	 */
+	public static DiagonalMatrix createDiagonalMatrix(double... diagonalValues) {
+		int dimensions = diagonalValues.length;
+		DiagonalMatrix im = new DiagonalMatrix(dimensions);
+		im.getLeadingDiagonal().setValues(diagonalValues);
+		return im;
+	}
+	
+	/**
+	 * Creates a diagonal matrix using the given vector of values on the main diagonal.
+	 */
+	public static DiagonalMatrix createDiagonalMatrix(AVector diagonalValues) {
+		return DiagonalMatrix.wrap(diagonalValues.toDoubleArray());
+	}
+
+	/**
+	 * Creates a 3D rotation matrix for a given angle or rotation in radians around an axis vector.
+	 * The axis vector need not be normalised.
+	 */
 	public static Matrix33 createRotationMatrix(Vector3 axis, double angle) {
 		return createRotationMatrix(axis.x, axis.y, axis.z, angle);
 	}
@@ -172,10 +246,15 @@ public class Matrixx {
 	public static Matrix33 createRotationMatrix(double x, double y, double z,
 			double angle) {
 		double d = Math.sqrt(x * x + y * y + z * z);
-		double u = x / d;
-		double v = y / d;
-		double w = z / d;
+		if (d==0.0) return Matrix33.createIdentityMatrix();
 		double ca = Math.cos(angle);
+		double u=x, v=y, w=z;
+		if (d!=1.0) {
+			double s=1.0/d;
+			u = x *s;
+			v = y *s;
+			w = z *s;
+		}
 		double sa = Math.sin(angle);
 		return new Matrix33(u * u + (1 - u * u) * ca,
 				u * v * (1 - ca) - w * sa, u * w * (1 - ca) + v * sa, u * v
@@ -281,8 +360,8 @@ public class Matrixx {
 
 			permutations[col] = maxIndex;
 
-			if (data[(dims * col) + col] == 0.0) { throw new VectorzException(
-					"Matrix is singular, cannot compute inverse!"); }
+			if (data[(dims * col) + col] == 0.0) { throw new IllegalArgumentException(
+					ErrorMessages.singularMatrix()); }
 
 			// Scale lower diagonal matrix using values on diagonal
 			double diagonalValue = data[(dims * col) + col];
@@ -307,8 +386,8 @@ public class Matrixx {
 				maxValue = Math.max(maxValue, Math.abs(data[row * dims + col]));
 			}
 
-			if (maxValue == 0.0) { throw new VectorzException(
-					"Matrix is singular!"); }
+			if (maxValue == 0.0) { throw new IllegalArgumentException(
+					ErrorMessages.singularMatrix()); }
 
 			// scale factor for row should reduce maximum absolute value to 1.0
 			factorsOut[row] = 1.0 / maxValue;
@@ -456,8 +535,9 @@ public class Matrixx {
 		int rc = data.length;
 		int cc = (rc == 0) ? 0 : data[0].length();
 		Matrix m = Matrix.create(rc, cc);
+		// TODO: should use getElements?
 		for (int i = 0; i < rc; i++) {
-			m.getRow(i).set(data[i]);
+			m.getRowView(i).set(data[i]);
 		}
 		return m;
 	}
@@ -466,8 +546,9 @@ public class Matrixx {
 		int rc = data.size();
 		int cc = (rc == 0) ? 0 : data.get(0).length();
 		AMatrix m = newMatrix(rc, cc);
+		// TODO: should use getElements?
 		for (int i = 0; i < rc; i++) {
-			m.getRow(i).set(data.get(i));
+			m.getRowView(i).set(data.get(i));
 		}
 		return m;
 	}
@@ -485,7 +566,6 @@ public class Matrixx {
 	 * @param ednString
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static AMatrix parse(String ednString) {
 		Parser p = Parsers.newParser(getMatrixParserConfig());
 		Parseable ps = Parsers.newParseable(ednString);
@@ -505,19 +585,6 @@ public class Matrixx {
 		return create(m);
 	}
 
-	public static AMatrix createSparse(int inputDims, Index[] indexes,
-			AVector[] weights) {
-		int len = indexes.length;
-		if (len != weights.length)
-			throw new VectorzException("Length mismatch!" + len + " vs. "
-					+ weights.length);
-		AVector[] svs = new AVector[len];
-		for (int i = 0; i < len; i++) {
-			svs[i] = SparseIndexedVector.create(inputDims, indexes[i],
-					weights[i]);
-		}
-		return VectorMatrixMN.wrap(svs);
-	}
 
 	public static AMatrix create(Object... vs) {
 		return create(Arrays.asList(vs));

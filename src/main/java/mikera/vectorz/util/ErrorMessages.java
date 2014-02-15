@@ -14,6 +14,10 @@ public class ErrorMessages {
 		return Index.of(indexes).toString();
 	}
 	
+	private static String shape(Index index) {
+		return Index.wrap(index.getShape()).toString();
+	}
+	
 	private static String pos(int... indexes) {
 		return Index.of(indexes).toString();
 	}
@@ -43,8 +47,11 @@ public class ErrorMessages {
 	public static String incompatibleShape(INDArray m) {
 		return "Incompatible shape: "+shape(m);
 	}
-
 	
+	public static String incompatibleShapes(Index index, AVector v) {
+		return "Index shape: "+shape(index)+" must match vector shape: "+shape(v);
+	}
+
 	/**
 	 * Returns an error message indicating that a broadcast is not possible
 	 * 
@@ -55,6 +62,10 @@ public class ErrorMessages {
 	 */
 	public static String incompatibleBroadcast(INDArray a, int... shape) {
 		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(shape);
+	}
+	
+	public static String incompatibleBroadcast(INDArray a, INDArray b) {
+		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(b);
 	}
 
 	public static String notFullyMutable(AMatrix m,	int row, int column) {
@@ -121,6 +132,24 @@ public class ErrorMessages {
 	public static String impossible() {
 		return "This error shouldn't be possible!!! Please report an issue with a stack trace at https://github.com/mikera/vectorz/issues";
 	}
+
+	public static String tooManyElements(int... shape) {
+		return "Too many elements with shape: "+shape(shape);
+	}
+
+	public static String singularMatrix() {
+		return "Matrix is singular!";
+	}
+
+	public static String notYetImplemented() {
+		return "Not yet implemented!";
+	}
+
+	public static String invalidBand(AMatrix source, int band) {
+		return "Illegal band "+band+ " on matrix with shape: "+shape(source);
+	}
+
+
 
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IDense;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -26,7 +27,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar extends AbstractArray<Object> implements IScalar {
+public abstract class AScalar extends AbstractArray<Object> implements IScalar, IDense {
 	private static final long serialVersionUID = -8285351135755012093L;
 	private static final int[] SCALAR_SHAPE=IntArrays.EMPTY_INT_ARRAY;
 	private static final long[] SCALAR_LONG_SHAPE=LongArrays.EMPTY_LONG_ARRAY;
@@ -130,6 +131,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(get()+d);
 	}
 	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		data[offset]+=get();
+	}
+	
 	public void sub(double d) {
 		set(get()-d);
 	}
@@ -196,6 +202,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	public Scalar innerProduct(AScalar a) {
 		return Scalar.create(get()*a.get());
+	}
+	
+	@Override
+	public Scalar innerProduct(double a) {
+		return Scalar.create(get()*a);
 	}
 	
 	@Override
@@ -318,7 +329,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		} else {
 			int n=targetShape[tdims-1];
 			if (n==0) return Vector0.INSTANCE;
-			AVector v=new RepeatedElementVector(n,get());
+			AVector v=RepeatedElementVector.create(n,get());
 			return v.broadcast(targetShape);
 		}
 	}
@@ -350,7 +361,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	@Override
 	public boolean equals(INDArray o) {
-		return (o.dimensionality()==0)&&(o.get(SCALAR_SHAPE)==get());
+		return (o.dimensionality()==0)&&(o.get()==get());
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return data[offset]==get();
 	}
 	
 	public boolean equals(AScalar o) {
@@ -400,11 +416,26 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public boolean elementsEqual(double value) {
+		return get()==value;		
+	}
+	
+	@Override
 	public AScalar sparse() {
 		double v=get();
 		if (v==0.0) return ImmutableScalar.ZERO;
 		if (v==1.0) return ImmutableScalar.ONE;
 		return this;
+	}
+	
+	@Override
+	public INDArray dense() {
+		return this;
+	}
+	
+	@Override
+	public AScalar sparseClone() {
+		return Scalar.create(get());
 	}
 
 	@Override
@@ -418,8 +449,8 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		super.validate();
 	}
 
+	@Override
 	public void abs() {
-		// TODO Auto-generated method stub
-		
+		set(Math.abs(get()));
 	}
 }

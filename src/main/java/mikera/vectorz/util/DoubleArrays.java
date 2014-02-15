@@ -22,6 +22,14 @@ public final class DoubleArrays {
 		return result;
 	}
 	
+	public static final double elementProduct(double[] data, int offset, int length) {
+		double result = 1.0;
+		for (int i=0; i<length; i++) {
+			result*=data[offset+i];
+		}
+		return result;
+	}
+	
 	public static final double elementMin(double[] data, int offset, int length) {
 		double result = Double.MAX_VALUE;
 		for (int i=0; i<length; i++) {
@@ -393,8 +401,18 @@ public final class DoubleArrays {
 	}
 
 	public static boolean equals(double[] as, double[] bs) {
+		if (as==bs) return true;
 		int n=as.length;
 		if (n!=bs.length) return false;
+		for (int i=0; i<n; i++) {
+			if (as[i]!=bs[i]) return false;
+		}
+		return true;
+	}
+	
+	public static boolean equals(double[] as, double[] bs, int length) {
+		if (as==bs) return true;
+		int n=length;
 		for (int i=0; i<n; i++) {
 			if (as[i]!=bs[i]) return false;
 		}
@@ -409,6 +427,7 @@ public final class DoubleArrays {
 	}
 
 	public static boolean equals(double[] as, int aOffset, double[] bs, int bOffset, int length) {
+		if ((as==bs)&&(aOffset==bOffset)) return true;
 		for (int i=0; i<length; i++) {
 			if (as[i+aOffset]!=bs[i+bOffset]) return false;
 		}
@@ -439,6 +458,14 @@ public final class DoubleArrays {
 	public static boolean isZero(double[] data, int offset, int length) {
 		for (int i=0; i<length; i++) {
 			if (data[offset+i]!=0.0) return false;
+		}
+		return true;
+	}
+	
+	public static boolean elementsEqual(double[] data, int offset, int length,
+			double value) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=value) return false;
 		}
 		return true;
 	}

@@ -38,6 +38,11 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
+	public boolean isSameShape(AVector a) {
+		return length==a.length();
+	}
+	
+	@Override
 	public final int[] getShapeClone() {
 		return new int[] {length};
 	}
@@ -49,6 +54,12 @@ public abstract class ASizedVector extends AVector {
 		} else {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		}
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data) {
+		if (length!=data.length) return false;
+		return equalsArray(data,0);
 	}
 
 }

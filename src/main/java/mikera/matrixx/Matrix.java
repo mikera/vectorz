@@ -1,8 +1,10 @@
 package mikera.matrixx;
 
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Multiplications;
@@ -13,13 +15,13 @@ import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
-import mikera.vectorz.util.VectorzException;
 
 /** 
  * Standard MxN matrix class backed by a densely packed double[] array
@@ -32,7 +34,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	private static final long serialVersionUID = -3260581688928230431L;
 
 	private Matrix(int rowCount, int columnCount) {
-		this(rowCount,columnCount,new double[rowCount*columnCount]);
+		this(rowCount,columnCount,createStorage(rowCount,columnCount));
 	}
 	
 	/**
@@ -43,27 +45,42 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public static Matrix create(AMatrix m) {
-		Matrix nm=new Matrix(m.rowCount(),m.columnCount());
-		nm.set(m);
-		return nm;
+		return new Matrix(m.rowCount(),m.columnCount(),m.toDoubleArray());
 	}
 	
 	public Matrix(AMatrix m) {
-		this(m.rowCount(),m.columnCount());
-		set(m);
+		this(m.rowCount(),m.columnCount(),m.toDoubleArray());
+	}
+	
+	public static double[] createStorage(int rowCount,int columnCount) {
+		long elementCount=((long)rowCount)*columnCount;
+		int ec=(int)elementCount;
+		if (ec!=elementCount) throw new IllegalArgumentException(ErrorMessages.tooManyElements(rowCount,columnCount));
+		return new double[ec];
+	}
+	
+	public static Matrix createRandom(int rows, int cols) {
+		Matrix m=create(rows,cols);
+		double[] d=m.data;
+		for (int i=0; i<d.length; i++) {
+			d[i]=Math.random();
+		}
+		return m;
 	}
 	
 	public static Matrix create(INDArray m) {
 		if (m.dimensionality()!=2) throw new IllegalArgumentException("Can only create matrix from 2D array");
 		int rows=m.getShape(0);
 		int cols=m.getShape(1);
-		double[] data=new double[rows*cols];
-		m.getElements(data, 0);
-		return Matrix.wrap(rows, cols, data);		
+		return Matrix.wrap(rows, cols, m.toDoubleArray());		
 	}
 	
 	public static Matrix create(Object... rowVectors) {
-		AMatrix m=VectorMatrixMN.create(rowVectors);
+		List<AVector> vs=new ArrayList<AVector>();
+		for (Object o:rowVectors) {
+			vs.add(Vectorz.create(o));
+		}
+		AMatrix m=VectorMatrixMN.create(vs);
 		return create(m);
 	}
 	
@@ -111,7 +128,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public static Matrix wrap(int rowCount, int columnCount, double[] data) {
-		if (data.length!=rowCount*columnCount) throw new VectorzException("data array is of wrong size: "+data.length);
+		if (data.length!=rowCount*columnCount) throw new IllegalArgumentException("data array is of wrong size: "+data.length);
 		return new Matrix(rowCount,columnCount,data);
 	}
 	
@@ -119,7 +136,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	public AStridedMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		if ((rowStart<0)||(rowStart>=this.rows)||(colStart<0)||(colStart>=this.cols)) throw new IndexOutOfBoundsException("Invalid submatrix start position");
 		if ((rowStart+rows>this.rows)||(colStart+cols>this.cols)) throw new IndexOutOfBoundsException("Invalid submatrix end position");
-		if ((rows<1)||(cols<1)) throw new IllegalArgumentException("Submatrix has no elements");
 		return StridedMatrix.wrap(data, rows, cols, 
 				rowStart*rowStride()+colStart*columnStride(), 
 				rowStride(), columnStride());
@@ -133,26 +149,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix innerProduct(Matrix a) {
-		// TODO: detect large matrices and farm off to cache-efficient function
-		
-		int ic=this.columnCount();
-		if ((ic!=a.rowCount())) {
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		}
-		int rc=this.rowCount();
-		int cc=a.columnCount();
-		Matrix result=Matrix.create(rc,cc);
-		for (int i=0; i<rc; i++) {
-			int toffset=ic*i;
-			for (int j=0; j<cc; j++) {
-				double acc=0.0;
-				for (int k=0; k<ic; k++) {
-					acc+=data[toffset+k]*a.unsafeGet(k, j);
-				}
-				result.unsafeSet(i,j,acc);
-			}
-		}
-		return result;
+		return Multiplications.multiply(this, a);
 	}
 
 	@Override
@@ -185,6 +182,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(data);
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return DoubleArrays.elementSquaredSum(data);
 	}
 	
 	@Override
@@ -229,15 +231,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	
 	@Override
 	public Matrix clone() {
-		return new Matrix(rows,cols,data.clone());
-	}
-	
-	@Override
-	public Vector cloneRow(int row) {
-		int cc = columnCount();
-		Vector v = Vector.createLength(cc);
-		copyRowTo(row,v.data,0);
-		return v;
+		return new Matrix(rows,cols,DoubleArrays.copyOf(data));
 	}
 	
 	@Override
@@ -257,8 +251,9 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public Vector transform (AVector a) {
 		Vector v=Vector.createLength(rows);
+		double[] vdata=v.getArray();
 		for (int i=0; i<rows; i++) {
-			v.data[i]=a.dotProduct(data, i*cols);
+			vdata[i]=a.dotProduct(data, i*cols);
 		}
 		return v;
 	}
@@ -290,23 +285,25 @@ public final class Matrix extends ADenseArrayMatrix {
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		int di=0;
+		double[] sdata=source.getArray();
+		double[] ddata=dest.getArray();
 		for (int row = 0; row < rc; row++) {
 			double total = 0.0;
 			for (int column = 0; column < cc; column++) {
-				total += data[di+column] * source.data[column];
+				total += data[di+column] * sdata[column];
 			}
 			di+=cc;
-			dest.data[row]=total;
+			ddata[row]=total;
 		}
 	}
 	
 	@Override
-	public ArraySubVector getRow(int row) {
+	public ArraySubVector getRowView(int row) {
 		return ArraySubVector.wrap(data,row*cols,cols);
 	}
 	
 	@Override
-	public AStridedVector getColumn(int col) {
+	public AStridedVector getColumnView(int col) {
 		if (cols==1) {
 			if (col!=0) throw new IndexOutOfBoundsException("Column does not exist: "+col);
 			return Vector.wrap(data);
@@ -371,6 +368,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public final Matrix toMatrix() {
 		return this;
+	}
+	
+	@Override
+	public final double[] toDoubleArray() {
+		return DoubleArrays.copyOf(data);
 	}
 	
 	@Override
@@ -447,11 +449,8 @@ public final class Matrix extends ADenseArrayMatrix {
 		int cc=columnCount();
 		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 
-		int di=0;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				data[di++]+=m.unsafeGet(i, j)*factor;
-			}
+			m.getRow(i).addMultipleToArray(factor, 0, data, i*cols, cc);
 		}
 	}
 	
@@ -468,13 +467,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		if (!((rc==m.rowCount())&&(cc==m.columnCount()))) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 		}
-
-		int di=0;
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				data[di++]+=m.unsafeGet(i, j);
-			}
-		}
+		m.addToArray(data,0);
 	}
 	
 	@Override
@@ -552,7 +545,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	public StridedVector getBand(int band) {
 		int cc=columnCount();
 		int rc=rowCount();
-		if ((band>=cc)||(band<=-rc)) return null;
+		if ((band>cc)||(band<-rc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidBand(this, band));
 		return StridedVector.wrap(data, (band>=0)?band:(-band)*cc, bandLength(band), cc+1);
 	}
 	
@@ -570,4 +563,5 @@ public final class Matrix extends ADenseArrayMatrix {
 	public double[] getArray() {
 		return data;
 	}
+
 }

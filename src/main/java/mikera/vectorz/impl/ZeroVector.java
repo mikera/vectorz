@@ -7,26 +7,29 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Scalar;
+import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised immutable vector containing nothing but zeros.
  * 
- * Must have length 1 or more: use Vector0 instead for length 0 vectors.
+ * Must have length 1 or more: use Vector0 instead for immutable length 0 vectors.
  * 
  * @author Mike
  */
 public final class ZeroVector extends ASparseVector {
 	private static final long serialVersionUID = -7928191943246067239L;
 	
-	private static final int ZERO_VECTOR_CACHE=30;
-	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE];
+	private static final int ZERO_VECTOR_CACHE_SIZE=30;
+	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE_SIZE];
 	private static final Double ZERO_DOUBLE=0.0;
 	
-	private static ZeroVector last=new ZeroVector(ZERO_VECTOR_CACHE);
+	private static ZeroVector last=new ZeroVector(ZERO_VECTOR_CACHE_SIZE);
 	
 	static {
-		for (int i=1; i<ZERO_VECTOR_CACHE; i++) {
+		for (int i=1; i<ZERO_VECTOR_CACHE_SIZE; i++) {
 			ZERO_VECTORS[i]=new ZeroVector(i);
 		}
 	}
@@ -36,7 +39,17 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	public static ZeroVector create(int dimensions) {
-		if (dimensions==0) throw new IllegalArgumentException("Can't create length 0 ZeroVector. Use Vector0 instead");
+		if (dimensions<=0) throw new IllegalArgumentException("Can't create length "+dimensions+" ZeroVector. Use Vector0 instead");
+		return new ZeroVector(dimensions);
+	}
+	
+	public static ZeroVector createNew(int dimensions) {
+		if (dimensions<=0) throw new IllegalArgumentException("Can't create length "+dimensions+" ZeroVector. Use Vector0 instead");
+		return new ZeroVector(dimensions);
+	}
+	
+	public static ZeroVector createCached(int dimensions) {
+		if (dimensions<=0) throw new IllegalArgumentException("Can't create length "+dimensions+" ZeroVector. Use Vector0 instead");
 		ZeroVector zv=tryCreate(dimensions);
 		if (zv!=null) return zv;
 		zv= new ZeroVector(dimensions);
@@ -45,8 +58,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	private static ZeroVector tryCreate(int dimensions) {
-		if (dimensions<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(dimensions));
-		if (dimensions<ZERO_VECTOR_CACHE) {
+		if (dimensions<ZERO_VECTOR_CACHE_SIZE) {
 			return ZERO_VECTORS[dimensions];
 		}
 		if (dimensions==last.length) return last;
@@ -68,6 +80,17 @@ public final class ZeroVector extends ASparseVector {
 	public AVector innerProduct(AMatrix m) {
 		if (m.rowCount()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		return ZeroVector.create(m.columnCount());
+	}
+	
+	@Override
+	public Scalar innerProduct(AVector a) {
+		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		return Scalar.create(0.0);
+	}
+	
+	@Override
+	public ZeroVector innerProduct(double a) {
+		return this;
 	}
 
 	@Override
@@ -112,6 +135,11 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return 0.0;
+	}
+	
+	@Override
 	public double elementMax(){
 		return 0.0;
 	}
@@ -128,7 +156,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public double maxAbsElement(){
-		return 09.0;
+		return 0.0;
 	}
 	
 	@Override
@@ -177,6 +205,16 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		// do nothing!
+	}
+	
+	@Override
+	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
+		// do nothing!
+	}
+	
+	@Override
 	public final ImmutableScalar slice(int i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return ImmutableScalar.ZERO;
@@ -186,17 +224,7 @@ public final class ZeroVector extends ASparseVector {
 	public Iterator<Double> iterator() {
 		return new RepeatedElementIterator(length,ZERO_DOUBLE);
 	}
-	
-	@Override
-	public int hashCode() {
-		return Hash.zeroVectorHash(length);
-	}
-	
-	@Override
-	public ZeroVector exactClone() {
-		return new ZeroVector(length);
-	}
-	
+
 	@Override
 	public double density() {
 		return 0.0;
@@ -253,6 +281,42 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public boolean includesIndex(int i) {
 		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Hash.zeroVectorHash(length);
+	}
+	
+	@Override
+	public ZeroVector exactClone() {
+		return new ZeroVector(length);
+	}
+	
+	@Override
+	public AVector sparseClone() {
+		return Vectorz.createSparseMutable(length);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[length];
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v.length()!=length) return false;
+		return v.isZero();
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.isZero(data, offset, length);
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		return value==0.0;
 	}
 
 }

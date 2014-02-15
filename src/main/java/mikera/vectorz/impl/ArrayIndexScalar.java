@@ -1,12 +1,13 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.impl.IDenseArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
-public class ArrayIndexScalar extends AScalar implements IStridedArray {
+public class ArrayIndexScalar extends AScalar implements IStridedArray, IDenseArray {
 	private static final long serialVersionUID = 5928615452582152522L;
 
 	final double[] array;

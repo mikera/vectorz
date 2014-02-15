@@ -25,6 +25,7 @@ import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseHashedVector;
+import mikera.vectorz.impl.SparseImmutableVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
@@ -253,16 +254,21 @@ public class TestVectors {
 	}
 	
 	private void testElementSum(AVector v) {
-		AVector cv=v.clone();
-		assertEquals(v.elementSum(),cv.elementSum(),0.00001);
-		
 		double res=0.0;
 		for (int i=0; i<v.length(); i++) {
 			res+=v.get(i);
 		}
-		
 		assertEquals(res,v.elementSum(),0.00001);
 	}
+	
+	private void testElementProduct(AVector v) {
+		double res=1.0;
+		for (int i=0; i<v.length(); i++) {
+			res*=v.get(i);
+		}
+		assertEquals(res,v.elementProduct(),0.00001);
+	}
+	
 	
 	private void testMinMax(AVector v) {
 		if (v.length()==0) return;
@@ -331,6 +337,7 @@ public class TestVectors {
 		assertEquals(v.length(), len);
 		assertFalse(cv.isView());
 		assertTrue((cv.length()==0)||cv.isMutable());		
+		assertTrue(cv.isFullyMutable());
 		assertEquals(v,cv);
 		
 		for (int i=0; i<len; i++) {
@@ -370,6 +377,7 @@ public class TestVectors {
 	
 	private void testImmutable(AVector v) {
 		AVector iv=v.immutable();
+		assertFalse(iv.isMutable());
 		
 		try {
 			iv.set(0,1.0);
@@ -755,6 +763,7 @@ public class TestVectors {
 		testAddEquivalents(v);
 		testAddToArray(v);
 		testElementSum(v);
+		testElementProduct(v);
 		testAddAt(v);
 		testUnsafeGet(v);
 		testUnsafeSet(v);
@@ -806,6 +815,7 @@ public class TestVectors {
 		
 		// zero-length Vectors
 		doGenericTests(Vector.of());
+		doGenericTests(Vector.EMPTY);
 		doGenericTests(new GrowableVector(Vector.of()));
 		doGenericTests(Vector.wrap(new double[0]));
 		doGenericTests(new Vector3(1.0,2.0,3.0).subVector(2, 0));
@@ -814,7 +824,6 @@ public class TestVectors {
 			double[] data=new double[j];
 			for (int i=0; i<j; i++) data[i]=i;
 			doGenericTests(Vectorz.create(data));
-			doGenericTests(new Vector(data));
 		}
 		
 		double[] data=new double[100];
@@ -828,7 +837,7 @@ public class TestVectors {
 		doGenericTests(IndexedArrayVector.wrap(data,indexes));
 		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
 		
-		doGenericTests(new Vector(data).subVector(25, 50));
+		doGenericTests(Vector.create(data).subVector(25, 50));
 		doGenericTests(ArraySubVector.wrap(data).subVector(25, 50));
 		
 		AVector v3 = new Vector3(1.0,2.0,3.0);
@@ -871,17 +880,17 @@ public class TestVectors {
 		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
 		doGenericTests(new MatrixAsVector(m3));
 		
-		doGenericTests(new AxisVector(1,3));
-		doGenericTests(new AxisVector(0,1));
-		doGenericTests(new AxisVector(5,10));
+		doGenericTests(AxisVector.create(1,3));
+		doGenericTests(AxisVector.create(0,1));
+		doGenericTests(AxisVector.create(5,10));
 		
 		doGenericTests(new SingleElementVector(1,3));
 		doGenericTests(new SingleElementVector(0,1));
 
-		doGenericTests(new RepeatedElementVector(1,1.0));
-		doGenericTests(new RepeatedElementVector(4,0.0));
-		doGenericTests(new RepeatedElementVector(10,1.0));
-		doGenericTests(new RepeatedElementVector(10,1.0).subVector(2, 5));
+		doGenericTests(RepeatedElementVector.create(1,1.0));
+		doGenericTests(RepeatedElementVector.create(4,0.0));
+		doGenericTests(RepeatedElementVector.create(10,1.0));
+		doGenericTests(RepeatedElementVector.create(10,1.0).subVector(2, 5));
 		
 		doGenericTests(IndexVector.of(1,2,3));
 		doGenericTests(IndexVector.of(1));
@@ -891,6 +900,10 @@ public class TestVectors {
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
 		doGenericTests(SparseIndexedVector.create(Vector.of(1,2,3,4,5))); // fully dense!
 		doGenericTests(SparseIndexedVector.create(Vector.of(-1,-2,-3))); // fully dense!
+
+		doGenericTests(SparseImmutableVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
+		doGenericTests(SparseImmutableVector.create(Vector.of(1,2,3,4,5))); // fully dense!
+		doGenericTests(SparseImmutableVector.create(Vector.of(-1,-2,-3))); // fully dense!
 
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
 		
@@ -915,7 +928,6 @@ public class TestVectors {
 		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
 		doGenericTests(ImmutableVector.create(Vector.of()));
 		
-		doGenericTests(RangeVector.create(10,0));
 		doGenericTests(RangeVector.create(-10,3));
 		doGenericTests(RangeVector.create(0,7));
 		

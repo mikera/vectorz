@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -10,7 +11,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -25,25 +26,24 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, IFastColumns {
+public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFastColumns {
 	private static final long serialVersionUID = -5994473197711276621L;
 
 	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
-
-	protected final HashMap<Integer,AVector> data;
+	
+	private AVector emptyColumn;
 
 	protected SparseColumnMatrix(int rowCount, int columnCount) {
 		this(new HashMap<Integer,AVector>(),rowCount,columnCount);
 	}
 	
 	protected SparseColumnMatrix(HashMap<Integer,AVector> data, int rowCount, int columnCount) {
-		super(rowCount,columnCount);
-		this.data=data;
+		super(rowCount,columnCount,data);
+		emptyColumn=Vectorz.createZeroVector(rowCount);
 	}
 
 	protected SparseColumnMatrix(AVector[] columns, int rowCount, int columnCount) {
-		super(rowCount,columnCount);
-		data=new HashMap<Integer,AVector>();
+		this(new HashMap<Integer,AVector>(),rowCount,columnCount);
 		for (int i=0; i<cols; i++) {
 			AVector v=columns[i];
 			if ((v!=null)&&(!v.isZero())) {
@@ -76,47 +76,44 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 	public static SparseColumnMatrix wrap(HashMap<Integer,AVector> cols, int rowCount, int columnCount) {
 		return new SparseColumnMatrix(cols,rowCount,columnCount);
 	}
-
-
-	@Override
-	public boolean isMutable() {
-		return true;
-	}
 	
 	@Override
-	public boolean isFullyMutable() {
-		return true;
-	}
-	
-	@Override
-	public boolean isZero() {
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			if (!e.getValue().isZero()) return false;
-		}
-		return true;
+	protected int lineCount() {
+		return cols;
 	}
 
 	@Override
-	public double get(int row, int column) {
-		return getColumn(column).get(row);
+	protected int lineLength() {
+		return rows;
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		AVector v=getColumn(column);
-		if (v.isFullyMutable()) {
-			v.set(row,value);
+	public double get(int i, int j) {
+		return getColumn(j).get(i);
+	}
+
+	@Override
+	public void set(int i, int j, double value) {
+		if ((j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		Integer io=j;
+		AVector v=data.get(io);
+		if (v==null) {
+			if (value==0.0) return;
+			v=Vectorz.createSparseMutable(rows);
+		} else if (v.isFullyMutable()) {
+			v.set(i,value);
+			return;
 		} else {
-			v=v.sparseClone();
-			replaceColumn(column,v);
-			v.set(row,value);
+			v=v.sparseClone();			
 		}
+		data.put(io,v);
+		v.set(i,value);
 	}
 	
 	
 	@Override
 	public double unsafeGet(int row, int column) {
-		return getColumn(column).get(row);
+		return getColumn(column).unsafeGet(row);
 	}
 
 	@Override
@@ -144,10 +141,18 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		for (Entry<Integer, AVector> e : this.data.entrySet()) {
+			AVector v = e.getValue();
+			v.addToArray(data, offset+e.getKey(),cols);
+		}
+	}
+	
+	@Override
 	public AVector getColumn(int i) {
 		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
 		AVector v= data.get(i);
-		if (v==null) return ZeroVector.create(rows);
+		if (v==null) return emptyColumn;
 		return v;
 	}
 	
@@ -164,58 +169,27 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 	}
 	
 	@Override
-	public long nonZeroCount() {
-		long result=0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().nonZeroCount();
-		}
-		return result;
-	}	
+	public void copyRowTo(int row, double[] data, int offset) {
+		Arrays.fill(data, offset,offset+ cols,0.0);
+		for (Entry<Integer,AVector> e:this.data.entrySet()) {
+			data[offset+e.getKey()]=e.getValue().unsafeGet(row);
+		}		
+	}
 	
 	@Override
-	public double elementSum() {
-		double result=0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().elementSum();
+	public void fill(double value) {
+		if (value==0.0) {
+			data.clear();
+		} else {
+			RepeatedElementVector v=RepeatedElementVector.create(rows, value);
+			for (int i=0; i<cols; i++) {
+				data.put(i, v);
+			}
 		}
-		return result;
-	}	
+	}
 
 	@Override
-	public double elementSquaredSum() {
-		double result=0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().elementSquaredSum();
-		}
-		return result;
-	}	
-	
-	@Override
-	public double elementMin() {
-		if (data.size()==0) return 0.0;
-		double result=Double.MAX_VALUE;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			double v=e.getValue().elementMin();
-			if (v<result) result=v;
-		}
-		if ((result>0)&&(data.size()<columnCount())) return 0.0;
-		return result;
-	}	
-	
-	@Override
-	public double elementMax() {
-		if (data.size()==0) return 0.0;
-		double result=-Double.MAX_VALUE;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			double v=e.getValue().elementMax();
-			if (v>result) result=v;
-		}
-		if ((result<0)&&(data.size()<columnCount())) return 0.0;
-		return result;
-	}	
-
-	@Override
-	public SparseRowMatrix getTranspose() {
+	public SparseRowMatrix getTransposeView() {
 		return SparseRowMatrix.wrap(data,cols,rows);
 	}
 	
@@ -241,6 +215,16 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 			getColumn(i).getElements(m.data, rows*i);
 		}
 		return m;
+	}
+
+	@Override
+	public double[] toDoubleArray() {
+		Matrix m=Matrix.create(rows, cols);
+		for (int i=0; i<cols; i++) {
+			AVector v=data.get(i);
+			if (v!=null) m.getColumn(i).set(v);
+		}
+		return m.getArray();
 	}
 	
 	@Override 
@@ -275,6 +259,10 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 		return exactClone();
 	}
 	
+	@Override
+	public SparseColumnMatrix sparse() {
+		return this;
+	}
 	
 	@Override
 	public void validate() {
@@ -286,8 +274,20 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 	
 	@Override
 	public boolean equals(AMatrix m) {
-		if (m instanceof SparseColumnMatrix) {
-			return equals((SparseColumnMatrix)m);
+		if (m instanceof IFastColumns) {
+			if (m instanceof SparseColumnMatrix) {
+				return equals((SparseColumnMatrix)m);
+			}
+			for (int i=0; i<cols; i++) {
+				AVector v=data.get(i);
+				if (v==null) {
+					if (!m.getColumn(i).isZero()) return false;
+				} else {
+					if (!v.equals(m.getColumn(i))) return false;
+				}
+				
+			}
+			return true;
 		}
 		return super.equals(m);
 	}
@@ -318,5 +318,6 @@ public class SparseColumnMatrix extends ARectangularMatrix implements ISparse, I
 		}
 		return true;
 	}
+
 
 }

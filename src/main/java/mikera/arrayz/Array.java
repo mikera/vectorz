@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IDenseArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
 import mikera.indexz.Index;
@@ -26,12 +27,12 @@ import mikera.vectorz.util.VectorzException;
  * General purpose mutable dense N-dimensional array
  * 
  * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
- * most efficient storage type for 3D+ arrays
+ * most efficient storage type for dense 3D+ arrays
  * 
  * @author Mike
  * 
  */
-public final class Array extends AbstractArray<INDArray> implements IStridedArray {
+public final class Array extends AbstractArray<INDArray> implements IStridedArray, IDenseArray {
 	private static final long serialVersionUID = -8636720562647069034L;
 
 	private final int dimensions;
@@ -77,16 +78,24 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 
 	public static Array newArray(int... shape) {
-		int n = (int) IntArrays.arrayProduct(shape);
-		double[] data = new double[n];
-		return new Array(shape.length, shape, data);
+		return new Array(shape.length, shape, createStorage(shape));
 	}
 
 	public static Array create(INDArray a) {
-		int n = (int) a.elementCount();
-		double[] data = new double[n];
-		a.getElements(data, 0);
-		return new Array(a.dimensionality(), a.getShape(), data);
+		int[] shape=a.getShape();
+		return new Array(a.dimensionality(), shape, a.toDoubleArray());
+	}
+	
+	public static double[] createStorage(int... shape) {
+		long ec=1;
+		for (int i=0; i<shape.length; i++) {
+			int si=shape[i];
+			if ((ec*si)!=(((int)ec)*si)) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+			ec*=shape[i];
+		}
+		int n=(int)ec;
+		if (ec!=n) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+		return new double[n];
 	}
 
 	@Override
@@ -284,7 +293,8 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public boolean equals(INDArray a) {
 		if (a instanceof Array) return equals((Array) a);
-		return super.equals(a);
+		if (!isSameShape(a)) return false;
+		return a.equalsArray(data, 0);
 	}
 
 	public boolean equals(Array a) {
@@ -326,6 +336,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return DoubleArrays.copyOf(data);
 	}
 	
 	@Override
@@ -432,6 +447,11 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 		} else {
 			throw new IllegalArgumentException("2-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
 		}
+	}
+
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(this.data, 0, data, offset, data.length);
 	}
 
 }

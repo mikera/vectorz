@@ -6,16 +6,19 @@ import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 
 /**
- * Abstract base class that delegates certain methods to a source matrix
+ * Abstract base class that delegates certain elementwise methods to a source matrix.
+ * 
+ * Suitable for implementing transposes and reshaping views that preserve all elements with a 1-1 mapping.
  * 
  * @author Mike
  */
-abstract class ADelegatedMatrix extends AMatrix {
+abstract class ADelegatedMatrix extends ARectangularMatrix {
 	private static final long serialVersionUID = 7424713597425793457L;
 
 	protected final AMatrix source;
 	
-	protected ADelegatedMatrix(AMatrix source) {
+	protected ADelegatedMatrix(int rows, int cols,AMatrix source) {
+		super(rows,cols);
 		this.source=source;
 	}
 	
@@ -25,34 +28,16 @@ abstract class ADelegatedMatrix extends AMatrix {
 	}
 	
 	@Override
-	public int rowCount() {
-		return source.rowCount();
-	}
-
-	@Override
-	public int columnCount() {
-		return source.columnCount();
-	}
-
-	@Override
-	public double get(int row, int column) {
-		return source.get(row,column);
-	}
-
-	@Override
-	public void set(int row, int column, double value) {
-		source.set(row,column,value);
-	}
+	public abstract double get(int row, int column);
 	
 	@Override
-	public double unsafeGet(int row, int column) {
-		return source.unsafeGet(row,column);
-	}
+	public abstract void set(int row, int column, double value);
+	
+	@Override
+	public abstract double unsafeGet(int row, int column);
 
 	@Override
-	public void unsafeSet(int row, int column, double value) {
-		source.unsafeSet(row,column,value);
-	}
+	public abstract void unsafeSet(int row, int column, double value);
 	
 	@Override
 	public void applyOp(Op op) {
@@ -81,11 +66,6 @@ abstract class ADelegatedMatrix extends AMatrix {
 	}
 	
 	@Override
-	public long elementCount() {
-		return source.elementCount();
-	}
-	
-	@Override
 	public double elementSum() {
 		return source.elementSum();
 	}
@@ -103,6 +83,51 @@ abstract class ADelegatedMatrix extends AMatrix {
 	@Override
 	public long nonZeroCount() {
 		return source.nonZeroCount();
+	}
+	
+	@Override
+	public void abs() {
+		source.abs();
+	}
+	
+	@Override
+	public void square() {
+		source.square();
+	}
+	
+	@Override
+	public void sqrt() {
+		source.sqrt();
+	}
+	
+	@Override
+	public void signum() {
+		source.signum();
+	}
+	
+	@Override
+	public void negate() {
+		source.negate();
+	}
+	
+	@Override
+	public void log() {
+		source.log();
+	}
+	
+	@Override
+	public void exp() {
+		source.exp();
+	}
+	
+	@Override
+	public void reciprocal() {
+		source.reciprocal();
+	}
+	
+	@Override
+	public void fill(double value) {
+		source.fill(value);
 	}
 
 

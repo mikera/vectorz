@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.nio.DoubleBuffer;
 import java.util.Iterator;
 
+import mikera.arrayz.impl.IDense;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -16,7 +17,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class ImmutableVector extends ASizedVector {
+public class ImmutableVector extends ASizedVector implements IDense {
 	private static final long serialVersionUID = -3679147880242779555L;
 
 	private double[] data;
@@ -36,6 +37,10 @@ public class ImmutableVector extends ASizedVector {
 		this.offset=offset;
 	}
 	
+	public static ImmutableVector create(double[] data) {
+		return wrap(DoubleArrays.copyOf(data));
+	}
+	
 	public static ImmutableVector create(AVector v) {
 		int length=v.length();
 		double[] data=new double[length];
@@ -45,6 +50,11 @@ public class ImmutableVector extends ASizedVector {
 	
 	public static ImmutableVector wrap(double[] data) {
 		return new ImmutableVector(data,0,data.length);
+	}
+	
+	public static ImmutableVector wrap(double[] data, int offset, int length) {
+		if ((offset<0)||(length<0)||((offset+length>data.length))) throw new IndexOutOfBoundsException();
+		return new ImmutableVector(data,offset,length);
 	}
 	
 	public static ImmutableVector wrap(Vector source) {
@@ -91,6 +101,11 @@ public class ImmutableVector extends ASizedVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return DoubleArrays.copyOf(data,offset,length);
+	}
+	
+	@Override
 	public void getElements(double[] data, int offset) {
 		System.arraycopy(this.data, this.offset, data, offset, length());
 	}
@@ -112,7 +127,7 @@ public class ImmutableVector extends ASizedVector {
 
 	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
+		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		DoubleArrays.add(data, offset+this.offset, array, arrayOffset, length);
 	}
 	
@@ -194,16 +209,13 @@ public class ImmutableVector extends ASizedVector {
 	}
 	
 	@Override
-	public boolean equalsArray(double[] data) {
-		if (length()!=data.length) return false;
-		return DoubleArrays.equals(data,0,this.data, this.offset,length());
+	public Vector clone() {
+		return Vector.wrap(toDoubleArray());
 	}
 	
 	@Override
-	public Vector clone() {
-		Vector v=Vector.createLength(length);
-		v.set(this);
-		return v;
+	public AVector sparse() {
+		return SparseImmutableVector.create(this);
 	}
 
 	@Override
@@ -221,6 +233,5 @@ public class ImmutableVector extends ASizedVector {
 		if ((offset<0)||(offset+length>data.length)||(length<0)) throw new VectorzException("ImmutableVector data out of bounds");
 		super.validate();
 	}
-
 
 }

@@ -92,13 +92,13 @@ public class RowMatrix extends AMatrix implements IFastRows {
 
 	@Override
 	public double get(int row, int column) {
-		if (row!=0) throw new IndexOutOfBoundsException("Row: "+row);
+		if (row!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		return vector.get(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		if (row!=0) throw new IndexOutOfBoundsException("Row: "+row);
+		if (row!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		vector.set(column,value);
 	}
 	
@@ -112,9 +112,15 @@ public class RowMatrix extends AMatrix implements IFastRows {
 		vector.unsafeSet(column,value);
 	}
 	
-	public AVector getRow(int i) {
+	@Override
+	public AVector getRowView(int i) {
 		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
 		return vector;
+	}
+	
+	@Override
+	public AVector getColumnView(int i) {
+		return vector.subVector(i, 1);
 	}
 	
 	@Override
@@ -124,7 +130,17 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		vector.addToArray(data, offset);
+	}
+	
+	@Override
 	public ColumnMatrix getTranspose() {
+		return new ColumnMatrix(vector);
+	}
+	
+	@Override
+	public ColumnMatrix getTransposeView() {
 		return new ColumnMatrix(vector);
 	}
 
@@ -134,11 +150,16 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	}
 	
 	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return vector.equalsArray(data, offset);
+	}
+	
+	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		if (row==0) {
 			vector.getElements(dest, destOffset);
 		} else {
-			throw new IndexOutOfBoundsException("Row out of range: "+row);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
 		}
 	}
 	
