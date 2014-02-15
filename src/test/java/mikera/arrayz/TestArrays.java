@@ -172,6 +172,17 @@ public class TestArrays {
 		INDArray imma=a.immutable();
 		assertFalse(imma.isMutable());
 		assertEquals(a,imma);
+		try {
+			imma.fill(2.0);
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+		
+		// mutable coercion
+		INDArray muta=a.exactClone().mutable();
+		assertTrue(muta.isFullyMutable());
+		muta.fill(2.0);
 		
 		// dense coercion
 		INDArray densa=a.dense();
