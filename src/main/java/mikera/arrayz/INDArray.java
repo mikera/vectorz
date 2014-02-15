@@ -342,7 +342,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean isZero();
 	
 	/**
-	 * Returns a clone of the array, as a new array which will be fully mutable
+	 * Returns a clone of the array data, as a new array which will be fully mutable
 	 * and may be of a different class to the original.
 	 * 
 	 * Clone should attempt to return the most efficient possible array type.
@@ -559,7 +559,9 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray dense();
 	
 	/**
-	 * Creates a fully mutable clone of this array. Will use a sparse format if possible.
+	 * Creates a fully mutable clone of this array. 
+	 * 
+	 * Will use a sparse format if possible.
 	 */
 	public INDArray sparseClone();
 
