@@ -443,6 +443,18 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
+	public int[] nonZeroIndices() {
+		int n=hash.size();
+		int[] ret=new int[n];
+		int di=0;
+		for (Entry<Integer,Double> e: hash.entrySet()) {
+			ret[di++]=e.getKey();
+		}
+		Arrays.sort(ret);
+		return ret;
+	}
+	
+	@Override
 	public Index nonSparseIndexes() {
 		int n=hash.size();
 		int[] in=new int[n];

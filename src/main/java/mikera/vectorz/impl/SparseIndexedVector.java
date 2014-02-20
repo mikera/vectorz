@@ -356,6 +356,18 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public int[] nonZeroIndices() {
+		int n=(int)nonZeroCount();
+		int[] ret=new int[n];
+		int di=0;
+		for (int i=0; i<data.length; i++) {
+			if (data[i]!=0.0) ret[di++]=index.get(i);
+		}
+		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
+		return ret;
+	}
+	
+	@Override
 	public double dotProduct(AVector v) {
 		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
 		double result=0.0;
