@@ -392,6 +392,12 @@ public final class Index extends AIndex {
 		return -1;
 	}
 	
+	@Override
+	public boolean containsSorted(int index) {
+		return indexPosition(index)>=0;
+	}
+	
+	
 	/**
 	 * Returns a new Index with a value inserted at the specified position
 	 */

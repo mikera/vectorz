@@ -389,12 +389,22 @@ public class TestVectors {
 	
 	
 	private void testNonZero(AVector v) {
+		int len=v.length();
 		int n=(int)v.nonZeroCount();
 		int[] nzi = v.nonZeroIndices();
+		Index ind=Index.of(nzi);
 		assertEquals(n,nzi.length);
 		
 		for (int i=0; i<nzi.length; i++) {
 			assertTrue(v.unsafeGet(nzi[i])!=0.0);
+		}
+		
+		for (int i=0; i<len; i++) {
+			if (v.unsafeGet(i)==0.0) {
+				assertFalse(ind.containsSorted(i));
+			} else {
+				assertTrue(ind.containsSorted(i));				
+			}
 		}
 	}
 	
