@@ -387,6 +387,17 @@ public class TestVectors {
 		}
 	}
 	
+	
+	private void testNonZero(AVector v) {
+		int n=(int)v.nonZeroCount();
+		int[] nzi = v.nonZeroIndices();
+		assertEquals(n,nzi.length);
+		
+		for (int i=0; i<nzi.length; i++) {
+			assertTrue(v.unsafeGet(nzi[i])!=0.0);
+		}
+	}
+	
 	private void testJoining(AVector v) {
 		AVector vv=v.join(v);
 		assertEquals(vv,v.join(v,0));
@@ -771,6 +782,7 @@ public class TestVectors {
 		testSlicing(v);
 		testMinMax(v);
 		testJoining(v);
+		testNonZero(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
