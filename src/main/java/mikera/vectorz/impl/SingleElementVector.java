@@ -6,6 +6,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * A sparse immutable vector that has a only one element that can be non-zero.
@@ -174,6 +175,15 @@ public final class SingleElementVector extends ASparseVector {
 	@Override
 	public Index nonSparseIndexes() {
 		return Index.of(index);
+	}
+	
+	@Override
+	public int[] nonZeroIndices() {
+		if (value==0.0) {
+			return IntArrays.EMPTY_INT_ARRAY;
+		} else {
+			return new int[]{index};
+		}
 	}
 
 	@Override
