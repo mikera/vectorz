@@ -11,6 +11,7 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * Specialised immutable vector containing nothing but zeros.
@@ -276,6 +277,11 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public Index nonSparseIndexes() {
 		return Index.EMPTY;
+	}
+	
+	@Override
+	public int[] nonZeroIndices() {
+		return IntArrays.EMPTY_INT_ARRAY;
 	}
 
 	@Override
