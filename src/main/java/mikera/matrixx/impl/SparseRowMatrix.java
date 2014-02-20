@@ -208,7 +208,8 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 			int i = eRow.getKey();
 			AVector row = eRow.getValue();
 			for (int j = 0; j < cc; j++) {
-				r.unsafeSet(i, j, row.dotProduct(a.getColumn(j)));
+				double d= row.dotProduct(a.getColumn(j));
+				if (d!=0) r.unsafeSet(i, j, d);
 			}
 		}
 		return r;
