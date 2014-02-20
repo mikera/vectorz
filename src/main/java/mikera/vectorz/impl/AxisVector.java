@@ -268,6 +268,11 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public int[] nonZeroIndices() {
+		return new int[] {axis};
+	}
+	
+	@Override
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
