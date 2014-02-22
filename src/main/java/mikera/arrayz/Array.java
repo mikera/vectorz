@@ -1,31 +1,40 @@
 package mikera.arrayz;
 
 import java.nio.DoubleBuffer;
+import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IDenseArray;
+import mikera.arrayz.impl.IStridedArray;
+import mikera.arrayz.impl.ImmutableArray;
+import mikera.indexz.Index;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
+import mikera.vectorz.impl.StridedElementIterator;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose mutable backed N-dimensional array
+ * General purpose mutable dense N-dimensional array
  * 
- * This is the general multi-dimensional equivalent of Matrix and Vector
+ * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
+ * most efficient storage type for dense 3D+ arrays
  * 
  * @author Mike
  * 
  */
-public final class Array extends AbstractArray<INDArray> {
+public final class Array extends AbstractArray<INDArray> implements IStridedArray, IDenseArray {
+	private static final long serialVersionUID = -8636720562647069034L;
+
 	private final int dimensions;
 	private final int[] shape;
 	private final int[] strides;
@@ -38,9 +47,19 @@ public final class Array extends AbstractArray<INDArray> {
 		int n = (int) IntArrays.arrayProduct(shape);
 		this.data = new double[n];
 	}
+	
+	private Array(int[] shape, double[] data) {
+		this(shape.length, shape, IntArrays.calcStrides(shape), data);
+	}
 
 	private Array(int dims, int[] shape, double[] data) {
 		this(dims, shape, IntArrays.calcStrides(shape), data);
+	}
+	
+	public static INDArray wrap(double[] data, int[] shape) {
+		long ec=IntArrays.arrayProduct(shape);
+		if (data.length!=ec) throw new IllegalArgumentException("Data array does not have correct number of elements, expected: "+ec);
+		return new Array(shape.length,shape,data);
 	}
 
 	private Array(int dims, int[] shape, int[] strides, double[] data) {
@@ -49,18 +68,34 @@ public final class Array extends AbstractArray<INDArray> {
 		this.strides = strides;
 		this.data = data;
 	}
+	
+	public static Array wrap(Vector v) {
+		return new Array(v.getShape(),v.getArray());
+	}
+	
+	public static Array wrap(Matrix m) {
+		return new Array(m.getShape(),m.getArray());
+	}
 
 	public static Array newArray(int... shape) {
-		int n = (int) IntArrays.arrayProduct(shape);
-		double[] data = new double[n];
-		return new Array(shape.length, shape, data);
+		return new Array(shape.length, shape, createStorage(shape));
 	}
 
 	public static Array create(INDArray a) {
-		int n = (int) a.elementCount();
-		double[] data = new double[n];
-		a.getElements(data, 0);
-		return new Array(a.dimensionality(), a.getShape(), data);
+		int[] shape=a.getShape();
+		return new Array(a.dimensionality(), shape, a.toDoubleArray());
+	}
+	
+	public static double[] createStorage(int... shape) {
+		long ec=1;
+		for (int i=0; i<shape.length; i++) {
+			int si=shape[i];
+			if ((ec*si)!=(((int)ec)*si)) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+			ec*=shape[i];
+		}
+		int n=(int)ec;
+		if (ec!=n) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+		return new double[n];
 	}
 
 	@Override
@@ -71,6 +106,11 @@ public final class Array extends AbstractArray<INDArray> {
 	@Override
 	public int[] getShape() {
 		return shape;
+	}
+	
+	@Override
+	public int[] getShapeClone() {
+		return shape.clone();
 	}
 
 	@Override
@@ -131,9 +171,32 @@ public final class Array extends AbstractArray<INDArray> {
 		}
 
 		int offset = index * getStride(dimension);
-		return new NDArray(data, offset,
-				IntArrays.removeIndex(shape, dimension), IntArrays.removeIndex(
-						strides, dimension));
+		return new NDArray(
+				data, 
+				offset,
+				IntArrays.removeIndex(shape, dimension), 
+				IntArrays.removeIndex(strides, dimension));
+	}
+	
+	@Override
+	public INDArray subArray(int[] offsets, int[] shape) {
+		int n=dimensions;
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		if (IntArrays.equals(shape, this.shape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		int[] strides=IntArrays.calcStrides(this.shape);
+		return new NDArray(data,
+				IntArrays.dotProduct(offsets, strides),
+				IntArrays.copyOf(shape),
+				strides);
 	}
 
 	@Override
@@ -148,7 +211,17 @@ public final class Array extends AbstractArray<INDArray> {
 
 	@Override
 	public double elementSum() {
-		return DoubleArrays.elementSum(data, 0, data.length);
+		return DoubleArrays.elementSum(data);
+	}
+	
+	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data);
 	}
 
 	@Override
@@ -207,7 +280,7 @@ public final class Array extends AbstractArray<INDArray> {
 	}
 
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		if (op instanceof Op) {
 			((Op) op).applyTo(data);
 		} else {
@@ -220,7 +293,8 @@ public final class Array extends AbstractArray<INDArray> {
 	@Override
 	public boolean equals(INDArray a) {
 		if (a instanceof Array) return equals((Array) a);
-		return super.equals(a);
+		if (!isSameShape(a)) return false;
+		return a.equalsArray(data, 0);
 	}
 
 	public boolean equals(Array a) {
@@ -238,6 +312,16 @@ public final class Array extends AbstractArray<INDArray> {
 	public void setElements(double[] values, int offset, int length) {
 		System.arraycopy(values, offset, data, 0, length);
 	}
+	
+	@Override
+	public void getElements(double[] values, int offset) {
+		System.arraycopy(data, 0, values, offset, data.length);
+	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new StridedElementIterator(data,0,(int)elementCount(),1);
+	}
 
 	@Override
 	public void multiply(double factor) {
@@ -253,18 +337,29 @@ public final class Array extends AbstractArray<INDArray> {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return DoubleArrays.copyOf(data);
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return data;
+	}
 
 	@Override
 	public INDArray clone() {
+		// always return the efficient type for each dimensionality
 		switch (dimensions) {
 		case 0:
 			return Scalar.create(data[0]);
 		case 1:
 			return Vector.create(data);
 		case 2:
-			return Matrix.wrap(shape[0], shape[1], data.clone());
+			return Matrix.wrap(shape[0], shape[1], DoubleArrays.copyOf(data));
 		default:
-			return new Array(dimensions, shape, data.clone());
+			return Array.wrap(DoubleArrays.copyOf(data),shape);
 		}
 	}
 
@@ -296,4 +391,67 @@ public final class Array extends AbstractArray<INDArray> {
 		a.copyTo(0, m.data, 0, n);
 		return m;
 	}
+
+	@Override
+	public double[] getArray() {
+		return data;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return 0;
+	}
+
+	@Override
+	public int[] getStrides() {
+		return strides;
+	}
+
+	@Override
+	public boolean isPackedArray() {
+		return true;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data,0,data.length);
+	}
+
+	@Override
+	public INDArray immutable() {
+		return ImmutableArray.wrap(DoubleArrays.copyOf(data), this.shape);
+	}
+
+	@Override
+	public double get() {
+		if (dimensions==0) {
+			return data[0];
+		} else {
+			throw new IllegalArgumentException("O-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
+	}
+
+	@Override
+	public double get(int x) {
+		if (dimensions==1) {
+			return data[x];
+		} else {
+			throw new IllegalArgumentException("1-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
+	}
+
+	@Override
+	public double get(int x, int y) {
+		if (dimensions==2) {
+			return data[x*strides[0]+y];
+		} else {
+			throw new IllegalArgumentException("2-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
+		}
+	}
+
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(this.data, 0, data, offset, data.length);
+	}
+
 }

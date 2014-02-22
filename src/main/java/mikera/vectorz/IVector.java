@@ -12,9 +12,32 @@ import mikera.arrayz.INDArray;
  */
 public interface IVector extends INDArray {
 
+	/**
+	 * Returns the length of a vector, in terms of the number of elements.
+	 * 
+	 * For Euclidean length, use magnitude() instead
+	 * 
+	 * @return
+	 */
 	public int length();
 
+	/**
+	 * Gets a specified element from a vector.
+	 */
 	public double get(int i);
 	
+	/**
+	 * Set a specified element in a vector
+	 */
 	public void set(int i, double value);
+
+	/**
+	 * Convert a vector to an immutable format
+	 */
+	AVector immutable();
+
+	/**
+	 * Convert a vector to a mutable format
+	 */
+	AVector mutable();
 }

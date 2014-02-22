@@ -18,7 +18,7 @@ public abstract class ALinearTransform extends AAffineTransform {
 	}
 
 	@Override
-	public IdentityTranslation getTranslationComponent() {
+	public IdentityTranslation getTranslation() {
 		return Transformz.identityTranslation(outputDimensions());
 	}
 }

@@ -62,7 +62,7 @@ public class InterfacePerformanceBenchmark extends SimpleBenchmark {
 		new InterfacePerformanceBenchmark().run();
 	}
 
-	private void run() {
+	void run() {
 		Runner runner=new Runner();
 		runner.run(new String[] {this.getClass().getCanonicalName()});
 	}

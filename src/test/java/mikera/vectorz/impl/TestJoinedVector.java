@@ -54,7 +54,7 @@ public class TestJoinedVector {
 			j=j.join(Vector.of(0,0));
 		}
 		assertEquals(22,j.length());
-		assertTrue(j.isZeroVector());
+		assertTrue(j.isZero());
 		
 		Vector d=Vector.createLength(j.length());
 		Vectorz.fillIndexes(d);

@@ -1,6 +1,7 @@
 package mikera.vectorz.ops;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.DoubleArrays;
 
 public final class Tanh extends ABoundedOp {
 	
@@ -17,10 +18,13 @@ public final class Tanh extends ABoundedOp {
 	}
 	
 	@Override
+	public void applyTo(double[] data) {
+		DoubleArrays.tanh(data);
+	}
+	
+	@Override
 	public void applyTo(double[] data, int start,int length) {
-		for (int i=0; i<length; i++) {
-			data[i+start]=Math.tanh(data[i+start]);
-		}	
+		DoubleArrays.tanh(data, start, length);
 	}
 	
 	@Override

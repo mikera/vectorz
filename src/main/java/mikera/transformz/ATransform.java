@@ -99,20 +99,30 @@ public abstract class ATransform implements Cloneable, ITransform {
 	 * @param v
 	 * @return
 	 */
-	public Vector transform(AVector v) {
+	public AVector transform(AVector v) {
 		Vector temp=Vector.createLength(outputDimensions());
 		transform(v,temp);
 		return temp;
 	}
 	
-
+	/**
+	 * Transforms a vector, returning a new transformed vector
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public Vector transform(Vector v) {
+		Vector temp=Vector.createLength(outputDimensions());
+		transform(v,temp);
+		return temp;
+	}
 	
 	/**
 	 * Calculates a single element of the output. 
 	 * Not necessarily faster than calculating full output, but can be in some circumstances.
 	 */
 	public double calculateElement(int i, AVector inputVector) {
-		Vector r=transform(inputVector);
+		AVector r=transform(inputVector);
 		return r.unsafeGet(i);
 	}
 	

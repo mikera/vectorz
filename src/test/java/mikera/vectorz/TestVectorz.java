@@ -14,15 +14,15 @@ public class TestVectorz {
 		VectorBuilder vb=new VectorBuilder();
 		
 		assertEquals(Vector0.INSTANCE,vb.toVector());
-		vb.add(1.0);
+		vb.append(1.0);
 		assertEquals(Vector1.of(1.0),vb.toVector());
-		vb.add(2.0);
+		vb.append(2.0);
 		assertEquals(Vector2.of(1.0,2.0),vb.toVector());
-		vb.add(3.0);
+		vb.append(3.0);
 		assertEquals(Vector3.of(1.0,2.0,3.0),vb.toVector());
-		vb.add(4.0);
+		vb.append(4.0);
 		assertEquals(Vector4.of(1.0,2.0,3.0,4.0),vb.toVector());
-		vb.add(5.0);
+		vb.append(5.0);
 		assertEquals(Vector.of(1.0,2.0,3.0,4.0,5.0),vb.toVector());
 	}
 	
@@ -59,6 +59,13 @@ public class TestVectorz {
 	public void testAxisVector() {
 		AVector v = Vectorz.axisVector(1, 3);
 		assertEquals(Vector.of(0,1,0),v);
+		
+		try {
+			v.set(0,2);
+			fail("set on AxisVector succeeded!!");
+		} catch (UnsupportedOperationException t) {
+			// OK
+		}
 	}
 	
 	@Test

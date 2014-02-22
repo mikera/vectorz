@@ -1,5 +1,6 @@
 package mikera.matrixx;
 
+import mikera.matrixx.impl.APrimitiveMatrix;
 import mikera.transformz.Affine34;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
@@ -12,7 +13,9 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
+public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTransform {
+	private static final long serialVersionUID = 238200620223028897L;
+
 	public double m00,m01,m02,
 	              m10,m11,m12,
 	              m20,m21,m22;
@@ -44,23 +47,29 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 
 	public Matrix33(AMatrix m) {
-		assert(m.rowCount()==3);
-		assert(m.columnCount()==3);
-		m00=m.get(0,0);
-		m01=m.get(0,1);
-		m02=m.get(0,2);
-		m10=m.get(1,0);
-		m11=m.get(1,1);
-		m12=m.get(1,2);
-		m20=m.get(2,0);
-		m21=m.get(2,1);
-		m22=m.get(2,2);
+		if((m.rowCount()==3)||(m.columnCount()!=3)) {
+			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+		}
+		m00=m.unsafeGet(0,0);
+		m01=m.unsafeGet(0,1);
+		m02=m.unsafeGet(0,2);
+		m10=m.unsafeGet(1,0);
+		m11=m.unsafeGet(1,1);
+		m12=m.unsafeGet(1,2);
+		m20=m.unsafeGet(2,0);
+		m21=m.unsafeGet(2,1);
+		m22=m.unsafeGet(2,2);
 	}
 
 	@Override
 	public double determinant() {
 		return (m00*m11*m22)+(m01*m12*m20)+(m02*m10*m21)
 		      -(m00*m12*m21)-(m01*m10*m22)-(m02*m11*m20);
+	}
+	
+	@Override
+	public long elementCount() {
+		return 9;
 	}
 	
 	@Override
@@ -180,10 +189,11 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	
 	public void transform(Vector3 source, AVector dest) {
 		if (dest instanceof Vector3) {transform(source,(Vector3)dest); return;}
+		if (dest.length()!=3) throw new IllegalArgumentException(ErrorMessages.mismatch(source,dest));
 		Vector3 s=source;
-		dest.set(0,(m00*s.x)+(m01*s.y)+(m02*s.z));
-		dest.set(1,(m10*s.x)+(m11*s.y)+(m12*s.z));
-		dest.set(2,(m20*s.x)+(m21*s.y)+(m22*s.z));
+		dest.unsafeSet(0,(m00*s.x)+(m01*s.y)+(m02*s.z));
+		dest.unsafeSet(1,(m10*s.x)+(m11*s.y)+(m12*s.z));
+		dest.unsafeSet(2,(m20*s.x)+(m21*s.y)+(m22*s.z));
 	}
 	
 	public void transform(Vector3 source, Vector3 dest) {
@@ -193,7 +203,6 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 		dest.z=((m20*x)+(m21*y)+(m22*z));
 	}
 	
-	@Override
 	public void transformNormal(AVector source, AVector dest) {
 		if ((source instanceof Vector3)&&(dest instanceof Vector3)) {
 			transformNormal((Vector3)source,(Vector3)dest);
@@ -241,10 +250,10 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 		double tz=((m20*s.x)+(m21*s.y)+(m22*s.z));
 		s.x=tx; s.y=ty; s.z=tz;
 	}
-	
+		
 	@Override
-	public boolean isSquare() {
-		return true;
+	public boolean isSymmetric() {
+		return (m01==m10)&&(m20==m02)&&(m21==m12);
 	}
 
 	@Override
@@ -265,12 +274,29 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	 * Returns a row of the matrix as a cloned vector
 	 */
 	@Override
-	public Vector3 cloneRow(int row) {
+	public Vector3 getRowClone(int row) {
 		switch (row) {
 			case 0: return Vector3.of(m00,m01,m02);
 			case 1: return Vector3.of(m10,m11,m12);
 			case 2: return Vector3.of(m20,m21,m22);
 			default: throw new IndexOutOfBoundsException("Row index = "+row);
+		}
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		if (row==0) {
+			dest[destOffset++]=m00;
+			dest[destOffset++]=m01;
+			dest[destOffset++]=m02;
+		} else if (row==1) {
+			dest[destOffset++]=m10;
+			dest[destOffset++]=m11;
+			dest[destOffset++]=m12;
+		} else {
+			dest[destOffset++]=m20;
+			dest[destOffset++]=m21;
+			dest[destOffset++]=m22;
 		}
 	}
 	
@@ -302,8 +328,26 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		return new double[] {m00,m01,m02,m10,m11,m12,m20,m21,m22};
+	}
+	
+	@Override
 	public Matrix33 exactClone() {
 		return new Matrix33(this);
+	}
+	
+	@Override
+	public void getElements(double[] data, int offset) {
+		data[offset++]=m00;
+		data[offset++]=m01;
+		data[offset++]=m02;
+		data[offset++]=m10;
+		data[offset++]=m11;
+		data[offset++]=m12;
+		data[offset++]=m20;
+		data[offset++]=m21;
+		data[offset++]=m22;
 	}
 	
 	@Override
@@ -332,5 +376,9 @@ public final class Matrix33 extends AMatrix implements ISpecialisedTransform {
 				1.0,0.0,0.0,
 				0.0,1.0,0.0,
 				0.0,0.0,1.0);
+	}
+
+	public static Matrix33 createScaleMatrix(double d) {
+		return new Matrix33(d,0,0,0,d,0,0,0,d);
 	}
 }

@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
-import mikera.vectorz.AVector;
 
 /**
  * A length 1 vector, as a view wrapping a single AScalar
@@ -10,13 +9,23 @@ import mikera.vectorz.AVector;
  * 
  * @author Mike
  */
-public class WrappedScalarVector extends AVector {
+public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	private static final long serialVersionUID = 1912695454407729415L;
 	
 	public final AScalar scalar;
 	
 	public WrappedScalarVector(AScalar s) {
 		this.scalar=s;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return scalar.isMutable();
+	}
+	
+	@Override
+	public boolean isFullyMutable() {
+		return scalar.isFullyMutable();
 	}
 
 	@Override
@@ -31,6 +40,16 @@ public class WrappedScalarVector extends AVector {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		return scalar.isBoolean();
+	}
+	
+	@Override
+	public boolean isZero() {
+		return scalar.isZero();
+	}
+	
+	@Override
 	public double unsafeGet(int i) {
 		return scalar.get();
 	}
@@ -42,7 +61,27 @@ public class WrappedScalarVector extends AVector {
 	}
 	
 	@Override
+	public double elementSum() {
+		return scalar.get();
+	}
+	
+	@Override
+	public double elementMax(){
+		return scalar.get();
+	}
+	
+	@Override
+	public double elementMin(){
+		return scalar.get();
+	}
+	
+	@Override
 	public WrappedScalarVector exactClone() {
 		return new WrappedScalarVector(scalar.exactClone());
+	}
+
+	@Override
+	public AScalar getWrappedObject() {
+		return scalar;
 	}
 }

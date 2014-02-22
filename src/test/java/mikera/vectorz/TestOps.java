@@ -152,8 +152,8 @@ public class TestOps {
 
 		double[] d1=new double[10];
 		double[] d2=new double[10];
-		sv.copyTo(d1, 0);
-		sv.copyTo(d2, 0);
+		sv.getElements(d1, 0);
+		sv.getElements(d2, 0);
 		op.applyTo(d1);
 		op.applyTo(d2,0,d2.length);
 		assertTrue(v2.equalsArray(d2));
@@ -268,7 +268,7 @@ public class TestOps {
 		testTransforms(op);
 		testBounds(op);
 		testDerivative(op);
-		TestTransformz.doITransformTests(op);
+		TestTransformz.doITransformTests(op.getTransform(3));
 	}
 	
 	private void doComposeTest(Op op1, Op op2) {

@@ -1,6 +1,8 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract class for a Matrix backed with a single double[] data array
@@ -10,34 +12,29 @@ import mikera.matrixx.AMatrix;
  * @author Mike
  *
  */
-public abstract class AArrayMatrix extends AMatrix {
-	protected final int rows;
-	protected final int cols;
+public abstract class AArrayMatrix extends ARectangularMatrix {
+	private static final long serialVersionUID = 7423448070352281717L;
+
 	public final double[] data;
 
 	protected AArrayMatrix(double[] data, int rows, int cols ) {
-		this.rows=rows;
-		this.cols=cols;
+		super(rows,cols);
 		this.data=data;
 	}
 	
-	public final int rowCount() {
-		return rows;
-	}
-	
-	public final int columnCount() {
-		return cols;
+	public double[] getArray() {
+		return data;
 	}
 	
 	@Override
 	public double get(int i, int j) {
-		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException();
+		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
 		return data[index(i,j)];
 	}
 	
 	@Override
 	public void set(int i, int j,double value) {
-		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException();
+		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
 		data[index(i,j)]=value;
 	}
 	
@@ -57,6 +54,17 @@ public abstract class AArrayMatrix extends AMatrix {
 	 */
 	public abstract boolean isPackedArray();
 	
+	@Override
+	public AMatrix getTransposeCopy() {
+		int rc=this.rowCount();
+		int cc=this.columnCount();
+		Matrix m=Matrix.create(cc,rc);
+		for (int j=0; j<cc; j++) {
+			this.copyColumnTo(j, m.data, j*rc);
+		}
+		return m;
+	}
+	
 	/**
 	 * Computes the index into the data array for a given position in the matrix
 	 * @param i
@@ -64,4 +72,28 @@ public abstract class AArrayMatrix extends AMatrix {
 	 * @return
 	 */
 	protected abstract int index(int i, int j);
+
+	@Override
+	public boolean equals(AMatrix a) {
+		if (a==this) return true;	
+		if (a instanceof ADenseArrayMatrix) {
+			return equals((ADenseArrayMatrix)a);
+		}
+
+		if (!isSameShape(a)) return false;
+		
+		
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (data[index(i, j)] != a.unsafeGet(i, j))
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean equals(ADenseArrayMatrix a) {
+		if (!isSameShape(a)) return false;
+		return equalsArray(a.getArray(),a.getArrayOffset());
+	}
 }

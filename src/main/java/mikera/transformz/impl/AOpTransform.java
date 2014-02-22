@@ -3,7 +3,14 @@ package mikera.transformz.impl;
 import mikera.transformz.ATransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * A transform the represents the application of an operator to all elements of a vector
+ * 
+ * @author Mike
+ *
+ */
 public class AOpTransform extends ATransform  {
 	private final Op op;
 	private final int dims;
@@ -15,10 +22,10 @@ public class AOpTransform extends ATransform  {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
-		assert(source.length()==dims);
-		assert(dest.length()==dims);
+		if ((source.length()!=dims)) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if ((dest.length()!=dims)) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(source));
 		for (int i=0; i<dims; i++) {
-			dest.set(i, op.apply(source.get(i)));
+			dest.unsafeSet(i, op.apply(source.unsafeGet(i)));
 		}
 	}
 	

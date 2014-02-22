@@ -73,7 +73,7 @@ public class TestIndex {
 		AIndex index2=index.clone();
 		assertEquals(index,index2);
 		
-		Index index3=Indexz.createCopy(index);
+		Index index3=Indexz.create(index);
 		assertEquals(index,index3);
 		
 		Index index4=Indexz.create(index.toList());
@@ -97,13 +97,27 @@ public class TestIndex {
 		assertTrue(index.isDistinctSorted() == (index.isSorted() & index.isDistinct()));
 	}
 
-	
 	private void doTests(AIndex index) {
 		doCloneTest(index);
 		doDistinctSortedTest(index);
 		doRandomSubsetTest(index);
 	}
+	
+	@Test public void testPermutations() {
+		Index a=Indexz.createRandomPermutation(100);
+		assertTrue(a.isPermutation());
 
+		Index b=Indexz.createRandomPermutation(10);
+		assertTrue(b.isPermutation());
+		
+		Index c0=Indexz.createRandomPermutation(62);
+		assertTrue(c0.isPermutation());
+		Index c1=Indexz.createRandomPermutation(63);
+		assertTrue(c1.isPermutation());
+		Index c2=Indexz.createRandomPermutation(64);
+		assertTrue(c2.isPermutation());
+
+	}
 
 	@SuppressWarnings("serial")
 	@Test public void genericTests() {
@@ -143,7 +157,11 @@ public class TestIndex {
 		assertEquals(3,ind.swapCount());
 		ind.swap(8, 9);
 		assertEquals(2,ind.swapCount());
-
+		
+		Index ind2=Indexz.createSequence(100);
+		assertEquals(0,ind2.swapCount());
+		ind2.reverse();
+		assertEquals(50,ind2.swapCount());
 	}
 
 

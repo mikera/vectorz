@@ -12,9 +12,9 @@ public class TestVectorBuilder {
 		VectorBuilder vb=new VectorBuilder(10);
 		assertEquals(0,vb.toVector().length());
 		
-		vb.add(1);
-		vb.add(2);
-		vb.add(3);
+		vb.append(1);
+		vb.append(2);
+		vb.append(3);
 		
 		AVector v=vb.toVector();
 		AVector wv=vb.toWrappingWector();

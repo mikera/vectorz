@@ -2,15 +2,19 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class StridedMatrix extends AStridedMatrix {
+	private static final long serialVersionUID = -7928115802247422177L;
+
 	private final int rowStride;
 	private final int colStride;
 	private final int offset;
@@ -27,15 +31,41 @@ public final class StridedMatrix extends AStridedMatrix {
 		double[] data = new double[rowCount * columnCount];
 		return new StridedMatrix(data, rowCount, columnCount, 0, columnCount, 1);
 	}
-
+	
 	@Override
-	public AVector getRow(int i) {
+	public boolean isFullyMutable() {
+		return true;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return true;
+	}
+	
+	@Override
+	public AStridedVector getRowView(int i) {
 		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
 	}
 	
 	@Override
-	public AVector getColumn(int i) {
+	public AStridedVector getColumnView(int i) {
 		return StridedVector.wrap(data, offset+i*colStride, rows, rowStride);
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		int rowOffset=offset+row*rowStride;
+		for (int i=0;i<cols; i++) {
+			dest[destOffset+i]=data[rowOffset+i*colStride];
+		}
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		int colOffset=offset+col*colStride;
+		for (int i=0;i<rows; i++) {
+			dest[destOffset+i]=data[colOffset+i*rowStride];
+		}
 	}
 	
 	@Override
@@ -65,7 +95,6 @@ public final class StridedMatrix extends AStridedMatrix {
 	public AStridedMatrix subMatrix(int rowStart, int rowCount, int colStart, int colCount) {
 		if ((rowStart<0)||(rowStart>=this.rows)||(colStart<0)||(colStart>=this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart,colStart));
 		if ((rowStart+rowCount>this.rows)||(colStart+colCount>this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart+rowCount,colStart+colCount));
-		if ((rowCount<1)||(colCount<1)) throw new IllegalArgumentException(ErrorMessages.illegalSize(rowCount,colCount));
 		return new StridedMatrix(data, rowCount, colCount, offset+rowStart*rowStride+colStart*colStride, rowStride, colStride);
 	}
 
@@ -97,8 +126,14 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public StridedMatrix getTranspose() {
-		return StridedMatrix.wrap(data, cols, rows, offset,
+	public AMatrix getTranspose() {
+		return Matrixx.wrapStrided(data, cols, rows, offset,
+				colStride, rowStride);
+	}
+	
+	@Override
+	public AMatrix getTransposeView() {
+		return Matrixx.wrapStrided(data, cols, rows, offset,
 				colStride, rowStride);
 	}
 
@@ -106,7 +141,7 @@ public final class StridedMatrix extends AStridedMatrix {
 	public double get(int row, int column) {
 		if ((row < 0) || (column < 0) || (row >= rows)
 				|| (column >= cols))
-			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		return data[index(row,column)];
 	}
 	
@@ -166,7 +201,7 @@ public final class StridedMatrix extends AStridedMatrix {
 	@Override
 	public void validate() {
 		super.validate();
-		if (!equals(this)) throw new VectorzException("Universe destroyed: thing not equal to itself");
+		if (!equals(this.exactClone())) throw new VectorzException("Thing not equal to itself");
 		if (offset<0) throw new VectorzException("Negative offset! ["+offset+"]");
 		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
 	}
@@ -179,5 +214,33 @@ public final class StridedMatrix extends AStridedMatrix {
 	@Override
 	public Matrix clone() {
 		return Matrix.create(this);
+	}
+
+	@Override
+	public boolean equals(AMatrix a) {
+		if (a==this) return true;	
+		if (a instanceof ADenseArrayMatrix) return equals((ADenseArrayMatrix)a);
+		
+		if (!isSameShape(a)) return false;
+		
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (data[index(i, j)] != a.unsafeGet(i, j))
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i = 0; i < rows; i++) {
+			int si=this.offset+i*rowStride;
+			for (int j = 0; j < cols; j++) {
+				if (this.data[si] != data[offset++]) return false;
+				si+=colStride;
+			}
+		}
+		return true;
 	}
 }

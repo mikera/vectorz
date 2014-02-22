@@ -1,22 +1,27 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
-public class UnmodifiableVector extends ADerivedVector {
+public class UnmodifiableVector extends BaseDerivedVector {
 	private static final long serialVersionUID = 2709404707262677811L;
 
-	public UnmodifiableVector(AVector source) {
+	private UnmodifiableVector(AVector source) {
 		super(source);
+	}
+	
+	public UnmodifiableVector wrap(AVector v) {
+		return new UnmodifiableVector(v);
 	}
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException("UnmodifiableVector is immutable!");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
 	public void unsafeSet(int i, double value) {
-		throw new UnsupportedOperationException("UnmodifiableVector is immutable!");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
@@ -31,6 +36,11 @@ public class UnmodifiableVector extends ADerivedVector {
 	
 	@Override
 	public UnmodifiableVector exactClone() {
-		return new UnmodifiableVector(source);
+		return new UnmodifiableVector(source.exactClone());
+	}
+	
+	@Override
+	public AVector sparse() {
+		return SparseImmutableVector.create(source);
 	}
 }

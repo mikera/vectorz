@@ -4,6 +4,8 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.ops.Logistic;
 
 public final class DoubleArrays {
+	public static final double[] EMPTY = new double[0];
+
 	public static final double elementSum(double[] data) {
 		double result = 0.0;
 		for (int i=0; i<data.length; i++) {
@@ -18,6 +20,98 @@ public final class DoubleArrays {
 			result+=data[offset+i];
 		}
 		return result;
+	}
+	
+	public static final double elementProduct(double[] data, int offset, int length) {
+		double result = 1.0;
+		for (int i=0; i<length; i++) {
+			result*=data[offset+i];
+		}
+		return result;
+	}
+	
+	public static final double elementMin(double[] data, int offset, int length) {
+		double result = Double.MAX_VALUE;
+		for (int i=0; i<length; i++) {
+			double v=data[offset+i];
+			if (v<result) result=v;
+		}
+		return result;
+	}
+	
+	public static final double elementMax(double[] data, int offset, int length) {
+		double result = -Double.MAX_VALUE;
+		for (int i=0; i<length; i++) {
+			double v=data[offset+i];
+			if (v>result) result=v;
+		}
+		return result;
+	}
+	
+	public static double elementMaxAbs(double[] data, int offset, int length) {
+		double result = 0.0;
+		for (int i=0; i<length; i++) {
+			double v=Math.abs(data[offset+i]);
+			if (v>result) {
+				result=v;
+			}
+		}
+		return result;
+	}
+	
+	public static final double elementMin(double[] data) {
+		return elementMin(data,0,data.length);
+	}
+	
+	public static final double elementMax(double[] data) {
+		return elementMax(data,0,data.length);
+	}
+	
+	public static final double elementMaxAbs(double[] data) {
+		return elementMaxAbs(data,0,data.length);
+	}
+	
+
+	public static int elementMaxIndex(double[] data, int offset, int length) {
+		if (length==0) throw new IllegalArgumentException("Can't get max index for length 0 array");
+		double result = data[offset];
+		int ind=0;
+		for (int i=1; i<length; i++) {
+			double v=data[offset+i];
+			if (v>result) {
+				ind=i;
+				result=v;
+			}
+		}
+		return ind;
+	}
+
+	public static int elementMinIndex(double[] data, int offset, int length) {
+		if (length==0) throw new IllegalArgumentException("Can't get min index for length 0 array");
+		double result = data[offset];
+		int ind=0;
+		for (int i=1; i<length; i++) {
+			double v=data[offset+i];
+			if (v<result) {
+				ind=i;
+				result=v;
+			}
+		}
+		return ind;
+	}
+
+	public static int elementMaxAbsIndex(double[] data, int offset, int length) {
+		if (length==0) throw new IllegalArgumentException("Can't get max abs index for length 0 array");
+		double result = Math.abs(data[offset]);
+		int ind=0;
+		for (int i=1; i<length; i++) {
+			double v=Math.abs(data[offset+i]);
+			if (v>result) {
+				ind=i;
+				result=v;
+			}
+		}
+		return ind;
 	}
 	
 	public static double elementSquaredSum(double[] data) {
@@ -59,6 +153,13 @@ public final class DoubleArrays {
 			data[offset+i]*=value;
 		}
 	}
+	
+	public static void multiply(double[] data, double value) {
+		for (int i=0; i<data.length; i++) {
+			data[i]*=value;
+		}
+	}
+
 	
 	public static void square(double[] ds) {
 		for (int i=0; i<ds.length; i++) {
@@ -120,6 +221,12 @@ public final class DoubleArrays {
 		}
 	}
 	
+	public static void add(double[] data, double value) {
+		for (int i=0; i<data.length; i++) {
+			data[i]+=value;
+		}
+	}
+	
 	public static void addMultiple(double[] dest, int offset, double[] src, int srcOffset, int length, double factor) {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]+=factor*src[srcOffset+i];
@@ -159,7 +266,8 @@ public final class DoubleArrays {
 	public static double dotProduct(double[] a, int aOffset, double[] b, int bOffset, int length) {
 		double result=0.0;
 		for (int i=0; i<length; i++) {
-			result+=a[aOffset+i]*b[bOffset+i];
+			double bval=b[bOffset+i];
+			result+=a[aOffset+i]*bval;
 		}
 		return result;
 	}
@@ -293,10 +401,35 @@ public final class DoubleArrays {
 	}
 
 	public static boolean equals(double[] as, double[] bs) {
+		if (as==bs) return true;
 		int n=as.length;
 		if (n!=bs.length) return false;
 		for (int i=0; i<n; i++) {
 			if (as[i]!=bs[i]) return false;
+		}
+		return true;
+	}
+	
+	public static boolean equals(double[] as, double[] bs, int length) {
+		if (as==bs) return true;
+		int n=length;
+		for (int i=0; i<n; i++) {
+			if (as[i]!=bs[i]) return false;
+		}
+		return true;
+	}
+
+	public static void add(double[] dest, double[] src) {
+		int n=src.length;
+		for (int i=0; i<n; i++) {
+			dest[i]+=src[i];
+		}
+	}
+
+	public static boolean equals(double[] as, int aOffset, double[] bs, int bOffset, int length) {
+		if ((as==bs)&&(aOffset==bOffset)) return true;
+		for (int i=0; i<length; i++) {
+			if (as[i+aOffset]!=bs[i+bOffset]) return false;
 		}
 		return true;
 	}
@@ -313,6 +446,57 @@ public final class DoubleArrays {
 			if (!Tools.isBoolean(data[offset+i])) return false;
 		}
 		return true;
+	}
+	
+	public static boolean isZero(double[] data) {
+		for (int i=0; i<data.length; i++) {
+			if (data[i]!=0) return false;
+		}
+		return true;
+	}
+	
+	public static boolean isZero(double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=0.0) return false;
+		}
+		return true;
+	}
+	
+	public static boolean elementsEqual(double[] data, int offset, int length,
+			double value) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=value) return false;
+		}
+		return true;
+	}
+	
+	public static double[] insert(double[] data, int position, double value) {
+		int len=data.length;
+		double[] nas=new double[len+1];
+		System.arraycopy(data, 0, nas, 0, position);
+		nas[position]=value;
+		System.arraycopy(data, position, nas, position+1, len-position);
+		return nas;
+	}
+
+	/**
+	 * Fast double array copy operation. 
+	 * 
+	 * Appears to be faster than data.clone() 
+	 * ?? this is debatable, needs more rigorous benchmarking
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static final double[] copyOf(double[] data) {
+		return data.clone();
+		//return Arrays.copyOf(data, data.length);
+	}
+
+	public static double[] copyOf(double[] data, int start, int length) {
+		double[] rs=new double[length];
+		System.arraycopy(data, start, rs, 0, length);
+		return rs;
 	}
 
 }

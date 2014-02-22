@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AArrayVector;
@@ -14,16 +15,18 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public class IdentityMatrix extends ADiagonalMatrix {
+public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastColumns {
+	private static final long serialVersionUID = 6273459476168581549L;
 	private static final int INSTANCE_COUNT=6;
 	
 	private IdentityMatrix(int dimensions) {
 		super(dimensions);
+		if (dimensions<1) throw new IllegalArgumentException("IdentityMatrix must have at least one dimension");
 	}
 	
 	private static final  IdentityMatrix[] INSTANCES=new IdentityMatrix[INSTANCE_COUNT];
 	static {
-		for (int i=0; i<INSTANCE_COUNT; i++) {
+		for (int i=1; i<INSTANCE_COUNT; i++) {
 			INSTANCES[i]=new IdentityMatrix(i);
 		}
 	}
@@ -60,17 +63,33 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public AxisVector getRow(int row) {
+	public AVector getRow(int row) {
 		return AxisVector.create(row,dimensions);
 	}
 	
 	@Override
-	public AxisVector getColumn(int column) {
+	public AVector getColumn(int column) {
 		return AxisVector.create(column,dimensions);
 	}
 	
+	@Override
+	public AxisVector getRowView(int row) {
+		return AxisVector.create(row,dimensions);
+	}
+	
+	@Override
+	public AxisVector getColumnView(int column) {
+		return AxisVector.create(column,dimensions);
+	}
+	
+	@Override
 	public double getDiagonalValue(int i) {
 		if ((i<0)||(i>=dimensions)) throw new IndexOutOfBoundsException("Getting diagonal value out of bounds: "+i);
+		return 1.0;
+	}
+	
+	@Override
+	public double unsafeGetDiagonalValue(int i) {
 		return 1.0;
 	}
 
@@ -87,6 +106,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	@Override
 	public Vector transform(AVector source) {
 		return source.toVector();		
+	}
+	
+	@Override
+	public Vector transform(Vector source) {
+		return source.clone();		
 	}
 	
 	@Override
@@ -135,14 +159,41 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	}	
 	
 	@Override
+	public double elementMin() {
+		return (dimensions>1)?1.0:0.0;
+	}
+	
+	@Override
+	public double elementMax() {
+		return 1.0;
+	}
+	
+	@Override
 	public double trace() {
 		return dimensions;
 	}
 	
+	@Override
+	public AMatrix innerProduct(ADiagonalMatrix a) {
+		return a.copy();
+	}
+	
 	@Override 
 	public AMatrix innerProduct(AMatrix a) {
-		assert(a.rowCount()==this.dimensions);
+		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		return a.copy(); 
+	}
+	
+	@Override 
+	public Matrix innerProduct(Matrix a) {
+		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		return a.clone();
+	}
+	
+	@Override 
+	public Vector innerProduct(AVector v) {
+		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+		return v.toVector();
 	}
 	
 	@Override 
@@ -153,5 +204,11 @@ public class IdentityMatrix extends ADiagonalMatrix {
 	@Override
 	public IdentityMatrix exactClone() {
 		return create(dimensions);
+	}
+	
+	@Override
+	public AMatrix clone() {
+		if (dimensions<30) return super.clone();
+		return sparseClone();
 	}
 }

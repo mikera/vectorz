@@ -40,4 +40,29 @@ public abstract class APrimitiveVector extends AVector {
 	public double getT() {
 		throw new IndexOutOfBoundsException("Cannot get t co-ordinate of "+this.getClass());
 	}
+	
+	@Override
+	public APrimitiveVector sparse() {
+		return this;
+	}
+	
+	@Override
+	public APrimitiveVector sparseClone() {
+		return this;
+	}
+	
+	@Override
+	public APrimitiveVector toNormal() {
+		APrimitiveVector v= this.exactClone();
+		v.normalise();
+		return v;
+	}
+	
+	// any clones of primitive vectors should themselves be primitive vectors
+	
+	@Override
+	public abstract APrimitiveVector exactClone();
+	
+	@Override
+	public abstract APrimitiveVector clone();
 }

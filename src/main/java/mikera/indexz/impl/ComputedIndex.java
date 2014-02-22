@@ -28,4 +28,9 @@ public abstract class ComputedIndex extends AIndex {
 	public final int length() {
 		return length;
 	}
+	
+	@Override
+	public void set(int i, int value) {
+		throw new UnsupportedOperationException();
+	}
 }

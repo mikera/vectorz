@@ -6,9 +6,6 @@ import mikera.vectorz.Vector3;
 
 public class BasicVectorUsage {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		Vector3 v=Vector3.of(1.0,2.0,3.0);		
 		System.out.println(v);

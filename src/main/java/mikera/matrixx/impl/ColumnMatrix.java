@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -10,7 +11,9 @@ import mikera.vectorz.util.ErrorMessages;
  * Matrix class that wraps a vector as a 1-columns matrix
  * @author Mike
  */
-public class ColumnMatrix extends AMatrix {
+public class ColumnMatrix extends AMatrix implements IFastColumns {
+	private static final long serialVersionUID = -6040718921619985258L;
+
 	private final AVector vector;
 	
 	public ColumnMatrix(AVector v) {
@@ -33,6 +36,40 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isFullyMutable() {
+		return vector.isFullyMutable();
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return vector.isMutable();
+	}
+	
+	@Override
+	public boolean isZero() {
+		return vector.isZero();
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		if (col==0) {
+			vector.getElements(dest, destOffset);
+		} else {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, col));
+		}
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		dest[destOffset]=vector.get(row);
+	}
+	
+	@Override
+	public void getElements(double[] data, int offset) {
+		vector.getElements(data, offset);
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		vector.applyOp(op);
 	}
@@ -45,6 +82,16 @@ public class ColumnMatrix extends AMatrix {
 	@Override 
 	public double elementSum() {
 		return vector.elementSum();
+	}
+	
+	@Override 
+	public double elementMin() {
+		return vector.elementMin();
+	}
+	
+	@Override 
+	public double elementMax() {
+		return vector.elementMax();
 	}
 	
 	@Override 
@@ -65,8 +112,45 @@ public class ColumnMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return vector.unsafeGet(row);
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		vector.unsafeSet(row,value);
+	}
+	
+	@Override
+	public void addAt(int i, int j, double d) {
+		assert(j==0);
+		vector.addAt(i,d);
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		vector.addToArray(data,offset);
+	}
+	
+	@Override
 	public RowMatrix getTranspose() {
 		return new RowMatrix(vector);
+	}
+	
+	@Override
+	public RowMatrix getTransposeView() {
+		return new RowMatrix(vector);
+	}
+	
+	@Override
+	public AVector getColumn(int i) {
+		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1,i));
+		return vector;
+	}
+	
+	@Override
+	public AVector getRowView(int i) {
+		return vector.subVector(i, 1);
 	}
 	
 	@Override
@@ -82,6 +166,17 @@ public class ColumnMatrix extends AMatrix {
 	@Override
 	public ColumnMatrix exactClone() {
 		return new ColumnMatrix(vector.exactClone());
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return vector.equalsArray(data, offset);
+	}
+
+	@Override
+	public Matrix transposeInnerProduct(Matrix s) {
+		Vector v=vector.innerProduct(s).toVector();
+		return Matrix.wrap(1, s.columnCount(), v.asDoubleArray());
 	}
 
 }

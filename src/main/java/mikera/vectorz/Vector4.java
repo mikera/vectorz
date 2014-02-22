@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 
 import mikera.vectorz.impl.APrimitiveVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised 4D vector
@@ -36,7 +37,7 @@ public final class Vector4 extends APrimitiveVector {
 	}
 	
 	public Vector4(double... values) {
-		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from values of length: "+values.length);
 		this.x=values[0];
 		this.y=values[1];
 		this.z=values[2];
@@ -64,6 +65,17 @@ public final class Vector4 extends APrimitiveVector {
 		y+=dy;
 		z+=dz;
 		t+=dt;
+	}
+	
+	@Override
+	public void add(AVector v) {
+		if (v.length()!=4) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		}
+		x+=v.unsafeGet(0);
+		y+=v.unsafeGet(1);
+		z+=v.unsafeGet(2);
+		t+=v.unsafeGet(3);
 	}
 	
 	public void add(Vector4 a) {
@@ -100,7 +112,7 @@ public final class Vector4 extends APrimitiveVector {
 		if (v instanceof Vector4) {
 			addMultiple((Vector4)v,factor);
 		} else {
-			if (v.length()!=4) throw new IllegalArgumentException("Mismatched vector sizes");
+			if (v.length()!=4) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
 			x+=v.unsafeGet(0)*factor;
 			y+=v.unsafeGet(1)*factor;
 			z+=v.unsafeGet(2)*factor;
@@ -143,6 +155,11 @@ public final class Vector4 extends APrimitiveVector {
 	public double elementSum() {
 		return x+y+z+t;
 	}
+	
+	@Override
+	public double elementProduct() {
+		return x*y*z*t;
+	}
 
 	@Override
 	public double get(int i) {
@@ -151,7 +168,7 @@ public final class Vector4 extends APrimitiveVector {
 		case 1: return y;
 		case 2: return z;
 		case 3: return t;
-		default: throw new IndexOutOfBoundsException("Index: "+i);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 
@@ -162,7 +179,7 @@ public final class Vector4 extends APrimitiveVector {
 		case 1: y=value; return;
 		case 2: z=value; return;
 		case 3: t=value; return;
-		default: throw new IndexOutOfBoundsException("Index: "+i);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	
@@ -173,7 +190,7 @@ public final class Vector4 extends APrimitiveVector {
 		case 1: y+=value; return;
 		case 2: z+=value; return;
 		case 3: t+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: "+i);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	
@@ -185,7 +202,7 @@ public final class Vector4 extends APrimitiveVector {
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
+	public void getElements(double[] data, int offset) {
 		data[offset]=x;
 		data[offset+1]=y;
 		data[offset+2]=z;
@@ -198,6 +215,11 @@ public final class Vector4 extends APrimitiveVector {
 		dest.put(y);
 		dest.put(z);
 		dest.put(t);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x,y,z,t};
 	}
 	
 	@Override

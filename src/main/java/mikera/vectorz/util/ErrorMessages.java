@@ -14,6 +14,10 @@ public class ErrorMessages {
 		return Index.of(indexes).toString();
 	}
 	
+	private static String shape(Index index) {
+		return Index.wrap(index.getShape()).toString();
+	}
+	
 	private static String pos(int... indexes) {
 		return Index.of(indexes).toString();
 	}
@@ -43,8 +47,11 @@ public class ErrorMessages {
 	public static String incompatibleShape(INDArray m) {
 		return "Incompatible shape: "+shape(m);
 	}
-
 	
+	public static String incompatibleShapes(Index index, AVector v) {
+		return "Index shape: "+shape(index)+" must match vector shape: "+shape(v);
+	}
+
 	/**
 	 * Returns an error message indicating that a broadcast is not possible
 	 * 
@@ -55,6 +62,10 @@ public class ErrorMessages {
 	 */
 	public static String incompatibleBroadcast(INDArray a, int... shape) {
 		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(shape);
+	}
+	
+	public static String incompatibleBroadcast(INDArray a, INDArray b) {
+		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(b);
 	}
 
 	public static String notFullyMutable(AMatrix m,	int row, int column) {
@@ -78,7 +89,7 @@ public class ErrorMessages {
 	}
 
 	public static String illegalSize(int... shape) {
-		return "Illegal shape" +shape(shape);
+		return "Illegal shape: " +shape(shape);
 	}
 
 	public static String immutable(Object a) {
@@ -97,13 +108,48 @@ public class ErrorMessages {
 			return "Access at position "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
 		}
 	}
+	
+	public static String invalidRange(AVector v, int start, int length) {
+		return "Subrange {start="+start+", length="+length+"} not valid on vector with length "+v.length();
+	}
 
 	public static String invalidSlice(INDArray a, int slice) {
 		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice;
 	}
 
+	public static String invalidSlice(INDArray a, int dimension, int slice) {
+		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice +" on dimension "+dimension;
+	}
+	
 	public static String noSlices(INDArray a) {
 		return "Cannot access slices of 0-D "+a.getClass();
 	}
+
+	public static String insufficientElements(int length) {
+		return "Insufficient elements "+length;
+	}
+
+	public static String impossible() {
+		return "This error shouldn't be possible!!! Please report an issue with a stack trace at https://github.com/mikera/vectorz/issues";
+	}
+
+	public static String tooManyElements(int... shape) {
+		return "Too many elements with shape: "+shape(shape);
+	}
+
+	public static String singularMatrix() {
+		return "Matrix is singular!";
+	}
+
+	public static String notYetImplemented() {
+		return "Not yet implemented!";
+	}
+
+	public static String invalidBand(AMatrix source, int band) {
+		return "Illegal band "+band+ " on matrix with shape: "+shape(source);
+	}
+
+
+
 
 }

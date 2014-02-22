@@ -56,7 +56,7 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 	}
 
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return copyOfMatrix();
 	}
 	
@@ -71,7 +71,7 @@ public final class Translation3 extends ATranslation  implements ISpecialisedTra
 	}
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return this;
 	}
 

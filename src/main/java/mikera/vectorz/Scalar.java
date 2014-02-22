@@ -1,11 +1,15 @@
 package mikera.vectorz;
 
+import mikera.vectorz.impl.ImmutableScalar;
+
 /**
  * Basic Scalar class containing a single mutable double value
  * 
  * @author Mike
  */
 public final class Scalar extends AScalar {
+	private static final long serialVersionUID = 8975126510371645366L;
+
 	public double value;
 
 	public Scalar(double value) {
@@ -69,10 +73,10 @@ public final class Scalar extends AScalar {
 	public boolean isView() {
 		return false;
 	}
-
+	
 	@Override
-	public Scalar clone() {
-		return new Scalar(value);
+	public boolean isZero() {
+		return value==0.0;
 	}
 
 	@Override
@@ -97,4 +101,13 @@ public final class Scalar extends AScalar {
 		return new Scalar(data.length()>0?data.get(0):0.0);
 	}
 
+	@Override
+	public Scalar mutable() {
+		return this;
+	}
+
+	@Override
+	public ImmutableScalar immutable() {
+		return ImmutableScalar.create(value);
+	}
 }

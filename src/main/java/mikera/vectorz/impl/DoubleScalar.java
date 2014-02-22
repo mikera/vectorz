@@ -15,6 +15,8 @@ import mikera.vectorz.AVector;
  */
 @Deprecated
 public final class DoubleScalar extends AScalar {
+	private static final long serialVersionUID = -8968335296175000888L;
+
 	public double value;
 
 	public DoubleScalar(double value) {
@@ -80,18 +82,13 @@ public final class DoubleScalar extends AScalar {
 	}
 
 	@Override
-	public DoubleScalar clone() {
-		return new DoubleScalar(value);
-	}
-
-	@Override
 	public void getElements(double[] dest, int offset) {
 		dest[offset] = value;
 	}
 
 	@Override
 	public DoubleScalar exactClone() {
-		return clone();
+		return new DoubleScalar(value);
 	}
 
 	/**

@@ -73,7 +73,7 @@ public final class ConstantTransform3 extends AConstantTransform implements ISpe
 
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return new Translation3(x,y,z);
 	}
 

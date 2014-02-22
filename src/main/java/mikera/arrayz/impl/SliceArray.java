@@ -1,13 +1,15 @@
-package mikera.arrayz;
+package mikera.arrayz.impl;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.Array;
+import mikera.arrayz.Arrayz;
+import mikera.arrayz.INDArray;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.IOp;
+import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.IntArrays;
@@ -21,6 +23,8 @@ import mikera.vectorz.util.VectorzException;
  * @param <T>
  */
 public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
+	private static final long serialVersionUID = -2343678749417219155L;
+
 	private final int[] shape;
 	private final long[] longShape;
 	private final T[] slices;
@@ -39,19 +43,19 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return new SliceArray<T>(IntArrays.consArray(slices.length,slices[0].getShape()),slices.clone());
 	}
 	
-	public static <T extends INDArray> SliceArray<T> repeat (T s, int n) {
-		ArrayList<T> al=new ArrayList<T>();
+	public static SliceArray<INDArray> repeat (INDArray s, int n) {
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (int i=0; i<n; i++) {
 			al.add(s);
 		}
 		return SliceArray.create(al);
 	}
 	
-	public static <T extends INDArray>  SliceArray<T> create(List<T> slices) {
+	public static SliceArray<INDArray> create(List<INDArray> slices) {
 		int slen=slices.size();
 		if (slen==0) throw new VectorzException("Empty list of slices provided to SliceArray");
-		T[] arr=(T[]) Array.newInstance(slices.get(0).getClass(),slen);
-		return new SliceArray<T>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
+		INDArray[] arr=new INDArray[slen];
+		return new SliceArray<INDArray>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
 	}
 	
 	@Override
@@ -154,6 +158,21 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	public INDArray innerProduct(INDArray a) {
+		int dims=dimensionality();
+		switch (dims) {
+			case 0: {
+				a=a.clone();
+				a.scale(get());
+				return a;
+			}
+			case 1: {
+				return this.toVector().innerProduct(a);
+			}
+			case 2: {
+				return Matrix.create(this).innerProduct(a);
+			}
+		}
+		
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (INDArray s:this) {
 			al.add(s.innerProduct(a));
@@ -186,6 +205,15 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 	
 	@Override
+	public boolean isZero() {
+		for (INDArray a:slices) {
+			if (!a.isZero()) return false;
+		}
+		return true;
+	}
+
+	
+	@Override
 	public boolean isBoolean() {
 		for (INDArray a:slices) {
 			if (!a.isBoolean()) return false;
@@ -214,7 +242,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		for (INDArray a:slices) {
 			a.applyOp(op);
 		}
@@ -234,11 +262,6 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 			if (!slices[i].equals(a.slice(i))) return false;
 		}
 		return true;
-	}
-
-	@Override
-	public SliceArray<T> clone() {
-		return exactClone();
 	}
 
 	@Override
@@ -271,6 +294,32 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 			slices[i].setElements(values,offset+skip*i,skip);
 		}
 	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		double[] result=Array.createStorage(this.getShape());
+		int skip=(int)slice(0).elementCount();
+		for (int i=0; i<slices.length; i++) {
+			INDArray s=slices[i];
+			if (s.isSparse()) {
+				s.addToArray(result,skip*i);				
+			} else {
+				s.getElements(result,skip*i);
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] values, int offset) {
+		int skip=(int)slice(0).elementCount();
+		int di=offset;
+		for (int i=0; i<slices.length; i++) {
+			if (!slices[i].equalsArray(values,di)) return false;
+			di+=skip;
+		}
+		return true;
+	}
 
 	@Override
 	public void validate() {
@@ -289,5 +338,20 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		if (ec!=elementCount()) throw new VectorzException("Element count mismatch");
 		
 		super.validate();
+	}
+
+	@Override
+	public double get() {
+		throw new IllegalArgumentException("0d get not supported on "+getClass());
+	}
+
+	@Override
+	public double get(int x) {
+		return slices[x].get();
+	}
+
+	@Override
+	public double get(int x, int y) {
+		return slices[x].get(y);
 	}
 }

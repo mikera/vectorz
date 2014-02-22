@@ -1,10 +1,13 @@
 package mikera.vectorz;
 
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
+import mikera.randomz.Hash;
 import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -12,7 +15,9 @@ import mikera.vectorz.util.VectorzException;
 
 
 /**
- * General purpose vector of arbitrary length, backed by an internal double[] array
+ * General purpose vector of arbitrary length, backed by an densely packed double[] array.
+ * 
+ * This is the most efficient type for general purpose dense 1D vectors.
  * 
  * @author Mike
  *
@@ -20,22 +25,21 @@ import mikera.vectorz.util.VectorzException;
 public final class Vector extends AArrayVector {
 	private static final long serialVersionUID = 6283741614665875877L;
 
-	public final double[] data;
+	public static final Vector EMPTY = wrap(DoubleArrays.EMPTY);
 
-	Vector(double... values) {
-		data = values;
+	private Vector(double... values) {
+		super(values.length,values);
 	}
 	
-	Vector(Object... values) {
-		int len=values.length;
-		data=new double[len];
-		for (int i=0; i<len; i++) {
+	private Vector(Object... values) {
+		super(values.length,new double[values.length]);
+		for (int i=0; i<length; i++) {
 			data[i]=Tools.toDouble(values[i]);
 		}
 	}
 
-	Vector(int length) {
-		data = new double[length];
+	private Vector(int length) {
+		this(new double[length]);
 	}
 
 	/**
@@ -44,9 +48,7 @@ public final class Vector extends AArrayVector {
 	 * @param source
 	 */
 	public Vector(AVector source) {
-		int length = source.length();
-		data = new double[length];
-		source.copyTo(this.data, 0);
+		this(source.toDoubleArray());
 	}
 	
 	/**
@@ -58,8 +60,42 @@ public final class Vector extends AArrayVector {
 		return new Vector(source);
 	}
 	
+	/**
+	 * Creates a new Vector from the given double[] data. Takes a defensive copy.
+	 */
 	public static Vector create(double[] data) {
+		if (data.length==0) return EMPTY;
 		return wrap(data.clone());
+	}
+	
+
+	public static Vector create(ArrayList<Double> al) {
+		int n=al.size();
+		Vector v=Vector.createLength(n);
+		for (int i=0; i<n; i++) {
+			v.unsafeSet(i,al.get(i));
+		}
+		return v;
+	}
+	
+	/**
+	 * Creates a new Vector from the given double[] data. Takes a defensive copy.
+	 */
+	public static Vector create(double[] data, int start, int length) {
+		return wrap(DoubleArrays.copyOf(data,start,length));
+	}
+	
+	/**
+	 * Creates a new vector using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new vector
+	 * @param data
+	 * @return
+	 */
+	public static Vector createFromVector(AVector source, int length) {
+		Vector v=Vector.createLength(length);
+		int n=Math.min(length, source.length());
+		source.copyTo(0, v.data, 0, n);
+		return v;
 	}
 	
 	/**
@@ -69,10 +105,7 @@ public final class Vector extends AArrayVector {
 	 * @return
 	 */
 	public static Vector of(double... values) {
-		int length = values.length;
-		double[] data = new double[length];
-		System.arraycopy(values, 0, data, 0, length);
-		return Vector.wrap(data);
+		return create(values);
 	}
 	
 	/**
@@ -81,14 +114,19 @@ public final class Vector extends AArrayVector {
 	 * @return
 	 */
 	public static Vector createLength(int length) {
+		if (length<1) {
+		  if (length<0) throw new IllegalArgumentException(ErrorMessages.illegalSize(length));
+		  return EMPTY;
+		}
 		return new Vector(length);
 	}
 
 	public static Vector create(AVector a) {
-		int n=a.length();
-		Vector v=createLength(n);
-		a.copyTo(v.data);
-		return v;
+		return new Vector(a.toDoubleArray());
+	}
+	
+	public static Vector create(INDArray a) {
+		return new Vector(a.toDoubleArray());
 	}
 	
 	public static Vector create(AIndex a) {
@@ -98,11 +136,6 @@ public final class Vector extends AArrayVector {
 			v.unsafeSet(i,a.get(i));
 		}
 		return v;
-	}
-	
-	@Override
-	public int length() {
-		return data.length;
 	}
 
 	@Override
@@ -126,7 +159,7 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public void set(int offset, double[] data, int dataOffset, int length) {
+	public void setRange(int offset, double[] data, int dataOffset, int length) {
 		System.arraycopy(data, dataOffset, this.data, offset, length);
 	}
 	
@@ -139,11 +172,6 @@ public final class Vector extends AArrayVector {
 		} else {
 			super.set(a);
 		}
-	}
-
-	@Override
-	public double[] getArray() {
-		return data;
 	}
 	
 	@Override
@@ -192,6 +220,16 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
+	public double elementMax(){
+		return DoubleArrays.elementMax(data);
+	}
+	
+	@Override
+	public double elementMin(){
+		return DoubleArrays.elementMin(data);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return DoubleArrays.nonZeroCount(data);
 	}	
@@ -231,22 +269,22 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if (v instanceof AArrayVector) {
-			add(((AArrayVector)v),0); return;
-		}
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		for (int i = 0; i < length; i++) {
-			data[i] += v.unsafeGet(i);
-		}
+		if(length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.addToArray(data, 0);
 	}
 	
 	@Override
 	public void add(Vector v) {
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		add(v.data,0);
+	}
+	
+	@Override
+	public void add(double[] srcData, int srcOffset) {
+		int length=length();
 		for (int i = 0; i < length; i++) {
-			data[i] += v.data[i];
+			data[i] += srcData[srcOffset + i];
 		}
 	}
 	
@@ -297,7 +335,7 @@ public final class Vector extends AArrayVector {
 	public void sub(AVector v) {
 		if (v instanceof AArrayVector) {sub(((AArrayVector)v)); return;}
 		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
 			data[i] -= v.unsafeGet(i);
 		}
@@ -328,20 +366,46 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public double dotProduct(AVector v) {
-		if ((v instanceof Vector)) return dotProduct((Vector)v);
+	public double dotProduct(double[] data, int offset) {
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
 		double result=0.0;
 		for (int i=0; i<len; i++) {
-			result+=data[i]*v.unsafeGet(i);
+			result+=this.data[i]*data[offset+i];
 		}
 		return result;
 	}
 	
+	@Override
+	public double dotProduct(AVector v) {
+		if ((v instanceof Vector)) {
+			return dotProduct((Vector)v);
+		} else {
+			if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+			return v.dotProduct(data,0);
+		}
+	}
+	
+	@Override
+	public Vector innerProduct(double a) {
+		int n=length;
+		double[] result=new double[n];
+		for (int i=0; i<length; i++) {
+			result[i]=data[i]*a;
+		}
+		return wrap(result);
+	}
+	
+	@Override public Scalar innerProduct(AVector v) {
+		return Scalar.create(dotProduct(v));
+	}
+	
+	@Override public Scalar innerProduct(Vector v) {
+		return Scalar.create(dotProduct(v));
+	}
+	
 	public double dotProduct(Vector v) {
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException("Mismatched vector sizes");
+		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			result+=data[i]*v.data[i];
@@ -412,7 +476,7 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void addMultiple(Vector source, Index index, double factor) {
-		if (index.length()!=source.length()) throw new VectorzException("Index must match source vector");
+		if (index.length()!=source.length()) throw new VectorzException(ErrorMessages.incompatibleShapes(index, source));
 		int len=source.length();
 		assert(len==index.length());
 		for (int i=0; i<len; i++) {
@@ -445,9 +509,7 @@ public final class Vector extends AArrayVector {
 		if (v instanceof Vector) {multiply(((Vector)v)); return;}
 		int len=length();
 		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		for (int i = 0; i < len; i++) {
-			unsafeSet(i,unsafeGet(i)*v.unsafeGet(i));
-		}	
+		v.multiplyTo(data, 0);	
 	}
 	
 	public void multiply(Vector v) {
@@ -459,13 +521,39 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
+	public void divide(AVector v) {
+		if (v instanceof Vector) {divide(((Vector)v)); return;}
+		int len=length();
+		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.divideTo(data, 0);	
+	}
+	
+	public void divide(Vector v) {
+		int len=length();
+		assert(len==v.length());
+		for (int i = 0; i < len; i++) {
+			data[i]=(data[i]/v.data[i]);
+		}	
+	}
+	
+	@Override
 	public boolean isView() {
 		return false;
 	}
 	
 	@Override
 	public Vector clone() {
-		return new Vector(this);
+		return Vector.wrap(DoubleArrays.copyOf(data));
+	}
+	
+	@Override
+	public int hashCode() {
+		int hashCode = 1;
+		int len=length();
+		for (int i = 0; i < len; i++) {
+			hashCode = 31 * hashCode + (Hash.hashCode(data[i]));
+		}
+		return hashCode;
 	}
 	
 	@Override
@@ -487,18 +575,44 @@ public final class Vector extends AArrayVector {
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
-
-	/**
-	 * Creates a new vector using the elements in the specified vector.
-	 * Truncates or zero-pads the data as required to fill the new vector
-	 * @param data
-	 * @return
-	 */
-	public static Vector createFromVector(AVector source, int length) {
-		Vector v=Vector.createLength(length);
-		int n=Math.min(length, source.length());
-		source.copyTo(0, v.data, 0, n);
+	
+	@Override
+	public Vector toNormal() {
+		Vector v= Vector.create(this);
+		v.normalise();
 		return v;
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return data;
+	}
+	
+	@Override
+	public Vector dense() {
+		return this;
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v.length()!=length) return false;
+		return v.equalsArray(data,0);
+	}
+	
+	@Override
+	public boolean equals(AArrayVector v) {
+		if (length!=v.length()) return false;
+		return DoubleArrays.equals(data, 0, v.getArray(), v.getArrayOffset(), length);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] arr, int offset) {
+		return DoubleArrays.equals(data, 0, arr, offset, length);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] arr) {
+		return DoubleArrays.equals(data, arr, length);
 	}
 
 }
