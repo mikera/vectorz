@@ -1,6 +1,5 @@
 package mikera.vectorz;
 
-import mikera.vectorz.impl.AArrayVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -13,7 +12,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class GrowableVector extends AArrayVector {
+public final class GrowableVector extends AVector {
 	private static final long serialVersionUID = -4560854157937758671L;
 
 	private double[] data;
@@ -42,21 +41,6 @@ public final class GrowableVector extends AArrayVector {
 	private GrowableVector(double[] array, int length) {
 		this.data=array;
 		this.length=length;
-	}
-	
-	/**
-	 * Gets the current underlying array of the GrowableVector. Since this array
-	 * may be discarded by the GrowableVector, it is not safe to assume that
-	 * it will continue to be a valid reference if the GrowableVector is changed. 
-	 */
-	@Override
-	public double[] getArray() {
-		return data;
-	}
-
-	@Override
-	public int getArrayOffset() {
-		return 0;
 	}
 
 	@Override
@@ -113,7 +97,7 @@ public final class GrowableVector extends AArrayVector {
 	public void append(AVector v) {
 		int vl=v.length();
 		ensureCapacity(length+vl);
-		v.copyTo(data, length);
+		v.getElements(data, length);
 		length+=vl;
 	}
 	

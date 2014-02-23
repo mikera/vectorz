@@ -1,8 +1,18 @@
 package mikera.indexz;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
+import java.util.Collections;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.IndexVector;
+import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Class to represent a mutable list of integer indexes, typically used for indexing into
@@ -16,14 +26,88 @@ import mikera.vectorz.AVector;
 public final class Index extends AIndex {
 	private static final long serialVersionUID = 8698831088064498284L;
 
+	public static final Index EMPTY = new Index(0);
+
 	public final int[] data;
 	
 	public Index(int length) {
-		data=new int[length];
+		this(new int[length]);
 	}
 	
 	private Index(int[] indexes) {
 		data=indexes;
+	}
+	
+	/**
+	 * Creates an Index using the values from the given ArrayList.
+	 * 
+	 * Values are cast to integers as needed, according to the semantics of (int)value
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static Index create(ArrayList<Integer> v) {
+		int n=v.size();
+		Index ind=new Index(n);
+		for (int i=0; i<n ; i++) {
+			ind.data[i]=v.get(i);
+		}
+		return ind;
+	}
+
+	public static Index createSorted(Set<Integer> keySet) {
+		ArrayList<Integer> al=new ArrayList<Integer>();
+		al.addAll(keySet);
+		Collections.sort(al);
+		return create(al);
+	}
+	
+	public static Index createSorted(SortedSet<Integer> keySet) {
+		int[] rs=new int[keySet.size()];
+		int i=0;
+		for (Integer x:keySet) {
+			rs[i++]=x;
+		}
+		if (i!=rs.length) throw new VectorzException(ErrorMessages.impossible());
+		return new Index(rs);
+	}
+	
+	/**
+	 * Creates an Index using the values from the given AVector.
+	 * 
+	 * Values are cast to integers as needed, according to the semantics of (int)value
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static Index create(AVector v) {
+		int n=v.length();
+		Index ind=new Index(n);
+		for (int i=0; i<n ; i++) {
+			ind.data[i]=(int)v.unsafeGet(i);
+		}
+		return ind;
+	}
+	
+	/**
+	 * Creates a new Index, wrapping the provided index array
+	 */
+	public static Index wrap(int[] indexes) {
+		return new Index(indexes);
+	}
+	
+	/**
+	 * Creates a new Index, using the specified index values
+	 */
+	public static Index of(int... indexes) {
+		return new Index(indexes.clone());
+	}
+	
+	/**
+	 * Create a new zero-filled Index with the specified length
+	 */
+	public static Index createLength(int len) {
+		return new Index(len);
 	}
 	
 	/**
@@ -69,10 +153,30 @@ public final class Index extends AIndex {
 	@Override
 	public boolean isPermutation() {
 		int n=length();
+		if (n>=64) {
+			return isLongPermutation();
+		} else {
+			return isShortPermutation();
+		}
+	}
+	
+	private boolean isShortPermutation() {
+		int n=length();
+		long chk=0;
+		for (int i=0; i<n; i++) {
+			int v=data[i];
+			if ((v<0)||(v>=n)) return false;			
+			chk=chk|(1L<<v);
+		}
+		return (chk+1)==(1L<<n);
+	}
+	
+	private boolean isLongPermutation() {
+		int n=length();
 		boolean[] chk=new boolean[n];
 		for (int i=0; i<n; i++) {
 			int v=data[i];
-			if (chk[v]) return false;
+			if ((v<0)||(v>=n)||chk[v]) return false;
 			chk[v]=true;
 		}
 		for (int i=0; i<n; i++) {
@@ -81,19 +185,78 @@ public final class Index extends AIndex {
 		return true;
 	}
 	
+	public Index includeSorted(Set<Integer> is) {
+		TreeSet<Integer> ss=new TreeSet<Integer>(this.toSet());
+		for (Integer i:is) {
+			ss.add(i);
+		}
+		return createSorted(ss);
+	}
+	
+	public Index includeSorted(Index ind) {
+		TreeSet<Integer> ss=new TreeSet<Integer>(this.toSet());
+		for (Integer i:ind) {
+			ss.add(i);
+		}
+		return createSorted(ss);
+	}
+	
+	public Set<Integer> toSet() {
+		TreeSet<Integer> ss=new TreeSet<Integer>();
+		for (int i=0; i<data.length; i++) {
+			ss.add(data[i]);
+		}
+		return ss;
+	}
+	
+	public SortedSet<Integer> toSortedSet() {
+		TreeSet<Integer> ss=new TreeSet<Integer>();
+		for (int i=0; i<data.length; i++) {
+			ss.add(data[i]);
+		}
+		return ss;
+	}
+
 	/**
-	 * Counts the number of swaps required to create this permutation
+	 * Counts the number of swaps required to create this permutation.
+	 * 
+	 * The index must represent a permutation, or the behaviour is undefined.
+	 * 
 	 * @return
 	 */
 	public int swapCount() {
+		if (length()<=64) {
+			return swapCountSmall();
+		} else {
+			return swapCountLong();
+		}
+	}
+	
+	private int swapCountLong() {
 		int n=length();
 		int swaps=0;
-		boolean[] seen=new boolean[n];
+		BitSet seen=new BitSet(n);
 		for (int i=0; i<n; i++) {
-			if (seen[i]) continue;
-			seen[i]=true;
-			for(int j=data[i]; !seen[j]; j=data[j]) {
-				seen[j]=true;
+			if (seen.get(i)) continue;
+			seen.set(i);
+			for(int j=data[i]; !seen.get(j); j=data[j]) {
+				seen.set(j);
+				swaps++;
+			}		
+		}
+		return swaps;
+	}
+	
+	private int swapCountSmall() {
+		int n=length();
+		int swaps=0;
+		long seen=0;
+		for (int i=0; i<n; i++) {
+			long mask=(1L<<i);
+			if ((seen&mask)!=0) continue;
+			seen|=mask;
+			for(int j=data[i]; (seen&(1L<<j))==0; j=data[j]) {
+				seen|=(1L<<j);
 				swaps++;
 			}		
 		}
@@ -106,33 +269,6 @@ public final class Index extends AIndex {
 	
 	public boolean isEvenPermutation() {
 		return (swapCount()&1)==0;
-	}
-	
-	/**
-	 * Creates a new Index, wrapping the provided index array
-	 */
-	public static Index wrap(int[] indexes) {
-		return new Index(indexes);
-	}
-	
-	/**
-	 * Creates a new Index, using the specified index values
-	 */
-	public static Index of(int... indexes) {
-		return new Index(indexes.clone());
-	}
-	
-	public static Index createLength(int len) {
-		return new Index(len);
-	}
-	
-	public static Index create(AVector v) {
-		int len=v.length(); 
-		Index a=Index.createLength(len); 
-		for (int i=0; i<len; i++) {
-			a.data[i]=(int) v.unsafeGet(i);
-		}
-		return a;
 	}
 	
 	@Override
@@ -156,7 +292,7 @@ public final class Index extends AIndex {
 	
 	@Override
 	public Index clone() {
-		return new Index(data.clone());
+		return new Index(IntArrays.copyOf(data));
 	}
 	
 	/**
@@ -178,6 +314,10 @@ public final class Index extends AIndex {
 	@Override
 	public void sort() {
 		Arrays.sort(data);
+	}
+	
+	public AVector asVector() {
+		return IndexVector.wrap(this);
 	}
 
 	@Override
@@ -251,6 +391,19 @@ public final class Index extends AIndex {
 		}
 		return -1;
 	}
+	
+	@Override
+	public boolean containsSorted(int index) {
+		return indexPosition(index)>=0;
+	}
+	
+	
+	/**
+	 * Returns a new Index with a value inserted at the specified position
+	 */
+	public Index insert(int position, int value) {
+		return new Index(IntArrays.insert(data,position,value));
+	}
 
 	/**
 	 * Finds the position a value would take assuming a sorted index. Uses a binary search.
@@ -313,5 +466,10 @@ public final class Index extends AIndex {
 		}
 		return true;
 	}
+
+	public int[] getShape() {
+		return new int[length()];
+	}
+
 
 }

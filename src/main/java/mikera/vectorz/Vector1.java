@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import mikera.vectorz.impl.APrimitiveVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised 1D vector
@@ -21,7 +22,7 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	public Vector1(double... values) {
-		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from: "+values);
+		if (values.length!=length()) throw new IllegalArgumentException("Can't create "+length()+"D vector from values with length: "+values.length);
 		this.x=values[0];
 	}
 	
@@ -35,14 +36,15 @@ public final class Vector1 extends APrimitiveVector {
 	
 	@Override
 	public double dotProduct(AVector a) {
-		if (a.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
+		if (a.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		return x*a.unsafeGet(0);
 	}
 	
 	@Override
 	public double dotProduct(Vector v) {
-		if (v.length()!=length()) throw new IllegalArgumentException("Vector size mismatch");
-		return x*v.data[0];
+		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
+		double[] data=v.getArray();
+		return x*data[0];
 	}
 	
 	@Override
@@ -61,6 +63,21 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return x;
+	}
+	
+	@Override
+	public double elementMax(){
+		return x;
+	}
+	
+	@Override
+	public double elementMin(){
+		return x;
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		x=op.apply(x);
 	}
@@ -70,7 +87,12 @@ public final class Vector1 extends APrimitiveVector {
 		if (i==0) {
 			return x;
 		}
-		throw new IndexOutOfBoundsException("Index: "+i);
+		throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return x;
 	}
 
 	@Override
@@ -78,8 +100,13 @@ public final class Vector1 extends APrimitiveVector {
 		if (i==0) {
 			x=value;
 		} else {
-			throw new IndexOutOfBoundsException("Index: "+i);
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
+		x=value;
 	}
 	
 	@Override 
@@ -88,15 +115,23 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
+	public void getElements(double[] data, int offset) {
 		data[offset]=x;
+	}
+	
+	@Override
+	public void add(AVector v) {
+		if (v.length()!=1) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		}
+		x+=v.unsafeGet(0);
 	}
 	
 	@Override
 	public void addAt(int i, double value) {
 		switch (i) {
 		case 0: x+=value; return;
-		default: throw new IndexOutOfBoundsException("Index: "+i);
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		}
 	}
 	
@@ -112,6 +147,11 @@ public final class Vector1 extends APrimitiveVector {
 	@Override
 	public Vector1 clone() {
 		return new Vector1(x);	
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {x};
 	}
 	
 	@Override

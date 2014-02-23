@@ -9,36 +9,58 @@ import java.util.List;
 import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.ISparse;
 import mikera.arrayz.NDArray;
-import mikera.arrayz.SliceArray;
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
+import mikera.vectorz.AVector;
+import mikera.vectorz.IOperator;
+import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.LongArrays;
 /**
  * Abstract base class for INDArray implementations
  * @author Mike
  * @param <T> The type of array slices
  */
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
-	public double get() {
-		return get(IntArrays.EMPTY_INT_ARRAY);
-	}
-	public double get(int x) {
-		return get(new int[] {x});
-	}
-	public double get(int x, int y) {
-		return get(new int[] {x,y});
-	}
+	private static final long serialVersionUID = -958234961396539071L;
+
+	public abstract double get();
+	
+	public abstract double get(int x);
+	
+	public abstract double get(int x, int y);
 	
 	@Override
 	public int getShape(int dim) {
 		return getShape()[dim];
+	}
+	
+	@Override
+	public int[] getShapeClone() {
+		int n=dimensionality();
+		int[] sh=new int[n];
+		for (int i=0; i<n; i++) {
+			sh[i]=getShape(i);
+		}
+		return sh;
+	}
+	
+	
+	@Override
+	public long[] getLongShape() {
+		return LongArrays.copyOf(getShape());
 	}
 	
 	@Override
@@ -74,6 +96,112 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public boolean isSparse() {
+		return (this instanceof ISparse);
+	}
+	
+	@Override
+	public boolean isDense() {
+		return (this instanceof IDense);
+	}
+	
+	@Override
+	public boolean isMutable() {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			if (slice(i).isMutable()) return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isFullyMutable() {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			if (!slice(i).isFullyMutable()) return false;
+		}
+		return true;	
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).applyOp(op);
+		}
+	}
+
+	@Override
+	public void applyOp(IOperator op) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).applyOp(op);
+		}
+	}
+	
+
+	@Override
+	public void multiply(double d) {
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			slice(i).multiply(d);
+		}
+	}
+
+	@Override
+	public boolean isElementConstrained() {
+		int n=sliceCount(); 
+		for (int i=0; i<n; i++) {
+			if (slice(i).isElementConstrained()) return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isSameShape(INDArray a) {
+		int dims=dimensionality();
+		if (dims!=a.dimensionality()) return false;
+		for (int i=0; i<dims; i++) {
+			if (getShape(i)!=a.getShape(i)) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public AVector asVector() {
+		if (this instanceof IDenseArray) {
+			IDenseArray a=(IDenseArray) this;
+			return Vectorz.wrap(a.getArray(), a.getArrayOffset(), (int)elementCount());
+		}
+		int n=sliceCount();
+		AVector result=slice(0).asVector();
+		for (int i=1; i<n; i++) {
+			result=result.join(slice(i).asVector());
+		}
+		return result;
+	}
+	
+	@Override
+	public void setElements(double[] values, int offset, int length) {
+		int n=sliceCount();
+		int ss=(int)(slice(0).elementCount());
+		for (int i=0; i<n; i++) {
+			slice(i).setElements(values, offset+i*ss, ss);
+		}
+	}
+	
+	@Override
+	public boolean isZero() {
+		if (dimensionality()==0) return get()==0.0;
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			INDArray s=slice(i);
+			if (!s.isZero()) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public INDArray ensureMutable() {
 		if (isFullyMutable()&&!isView()) return this;
 		return clone();
@@ -92,15 +220,43 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
-	public INDArray innerProduct(INDArray a) {
-		if (a instanceof AScalar) {
-			INDArray c=clone();
-			c.scale(((AScalar)a).get());
-			return c;
-		}
-		throw new UnsupportedOperationException();
+	@Override
+	public INDArray innerProduct(double a) {
+		INDArray result=clone();
+		result.scale(a);
+		return result;
 	}
 	
+	@Override
+	public INDArray innerProduct(INDArray a) {
+		int dims=dimensionality();
+		switch (dims) {
+			case 0: {
+				a=a.clone();
+				a.scale(get());
+				return a;
+			}
+			case 1: {
+				return toVector().innerProduct(a);
+			}
+			case 2: {
+				return Matrix.create(this).innerProduct(a);
+			}
+		}
+		int sc=sliceCount();
+		ArrayList<INDArray> sips=new ArrayList<INDArray>();
+		for (int i=0; i<sc; i++) {
+			sips.add(slice(i).innerProduct(a));
+		}
+		return SliceArray.create(sips);
+	}
+	
+	@Override
+	public INDArray innerProduct(AScalar s) {
+		return innerProduct(s.get());
+	}
+	
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (Object s:this) {
@@ -126,6 +282,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public INDArray getTransposeView() {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public INDArray getTransposeCopy() {
+		return getTranspose().clone();
 	}
 	
 	public final void scale(double d) {
@@ -229,6 +390,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (!(o instanceof INDArray)) return false;
 		return equals((INDArray)o);
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data) {
+		if (data.length!=elementCount()) return false;
+		return equalsArray(data,0);
+	}
 
 	@Override
 	public int hashCode() {
@@ -255,12 +422,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return sb.toString();
 	}
 	
+	@Override
 	public INDArray clone() {
-		try {
-			return (AbstractArray<?>)super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("AbstractArray clone failed!?!");
-		}
+		return Arrayz.create(this);
+	}
+	
+	@Override
+	public INDArray copy() {
+		if (!isMutable()) return this;
+		return clone();
 	}
 	
 	@Override
@@ -269,10 +439,39 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (a.dimensionality()!=dims) return false;
 		if (dims==0) {
 			return (get()==a.get());
+		} else if (dims==1) {
+			return equals(a.asVector());
 		} else {
 			int sc=sliceCount();
 			for (int i=0; i<sc; i++) {
 				if (!slice(i).equals(a.slice(i))) return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean equals(AVector a) {
+		if (dimensionality()!=1) return false;
+		int sc=sliceCount();
+		if (a.length()!=sc) return false;
+		for (int i=0; i<sc; i++) {
+			if (!(get(i)==a.unsafeGet(i))) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		int dims=dimensionality();
+		if (dims==0) {
+			return (data[offset]==get());
+		} else if (dims==1) {
+			return asVector().equalsArray(data, offset);
+		} else {
+			int sc=sliceCount();
+			int skip=(int) slice(0).elementCount();
+			for (int i=0; i<sc; i++) {
+				if (!slice(i).equalsArray(data,offset+i*skip)) return false;
 			}
 		}
 		return true;
@@ -307,6 +506,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				slice(i).add(a);
+			}	
+		}
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		int dims=dimensionality();
+		if (dims ==0) {
+			data[offset]+=get();
+		} else {
+			int n=sliceCount();
+			INDArray s0=slice(0);
+			int ec=(int) s0.elementCount();
+			s0.addToArray(data, offset);
+			for (int i=1; i<n; i++) {
+				slice(i).addToArray(data, offset+i*ec);
 			}	
 		}
 	}
@@ -353,6 +568,34 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void divide(INDArray a) {
+		int dims=dimensionality();
+		if (dims==0) {set(get()/a.get()); return;}
+		int adims=a.dimensionality();
+		if (adims==0) {scale(1.0/a.get()); return;}
+		
+		int n=sliceCount();
+		int na=a.sliceCount();
+		if (dims==adims) {
+			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			for (int i=0; i<n; i++) {
+				slice(i).divide(a.slice(i));
+			}
+		} else if (adims<dims) {
+			for (int i=0; i<n; i++) {
+				slice(i).divide(a);
+			}	
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+	}
+	
+	@Override
+	public void divide(double factor) {
+		multiply(1.0/factor);
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		if (dimensionality()==0) {
 			return (get()==0.0)?0:1;
@@ -365,6 +608,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return result;
 	}
 	
+	public double density() {
+		return ((double)nonZeroCount())/elementCount();
+	}
+	
 	@Override
 	public double elementSum() {
 		if (dimensionality()==0) {
@@ -374,6 +621,46 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int n=sliceCount();
 		for (int i=0; i<n; i++) {
 			result+=slice(i).elementSum();
+		}
+		return result;
+	}
+	
+	@Override
+	public double elementMax(){
+		if (dimensionality()==0) {
+			return get();
+		}
+		double result=-Double.MAX_VALUE;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			double v=slice(i).elementMax();
+			if (v>result) result=v;
+		}
+		return result;	
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		if (dimensionality()==0) {
+			return get()==value;
+		}
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			if (!slice(i).elementsEqual(value)) return false;
+		}
+		return true;			
+	}
+	
+	@Override
+	public double elementMin(){
+		if (dimensionality()==0) {
+			return get();
+		}
+		double result=Double.MAX_VALUE;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			double v=slice(i).elementMin();
+			if (v<result) result=v;
 		}
 		return result;
 	}
@@ -496,8 +783,21 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return Arrayz.createFromVector(asVector(), targetShape);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public abstract List<T> getSlices();
+	public List<T> getSlices() {
+		return (List<T>)getSlices(0);
+	}
+	
+	@Override
+	public List<INDArray> getSlices(int dimension) {
+		int l=getShape(dimension);
+		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
+		for (int i=0; i<l; i++) {
+			al.add(slice(dimension,i));
+		}
+		return al;	
+	}
 	
 	@Override
 	public List<INDArray> getSliceViews() {
@@ -507,6 +807,55 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			al.add(slice(i));
 		}
 		return al;
+	}
+	
+	@Override
+	public INDArray subArray(int[] offsets, int[] shape) {
+		int n=dimensionality();
+		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		
+		int[] thisShape=this.getShape();
+		if (IntArrays.equals(shape, thisShape)) {
+			if (IntArrays.isZero(offsets)) {
+				return this;
+			} else {
+				throw new IllegalArgumentException("Invalid subArray offsets");
+			}
+		}
+		
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		int endIndex=offsets[0]+shape[0];
+		int[] zzoffsets=IntArrays.removeIndex(offsets, 0);
+		int[] zzshape=IntArrays.removeIndex(shape, 0);
+		for (int i=offsets[0]; i<endIndex; i++) {
+			al.add(slice(i).subArray(zzoffsets, zzshape));
+		}
+		return SliceArray.create(al);
+	}
+	
+	@Override
+	public INDArray join(INDArray a, int dimension) {
+		return JoinedArray.join(this,a,dimension);
+	}
+	
+	@Override
+	public INDArray rotateView(int dimension, int shift) {
+		int dlen=getShape(dimension);
+		int n=dimensionality();
+		
+		shift = Maths.mod(shift,dlen);
+		if (shift==0) return this;
+		
+		int[] off=new int[n];
+		int[] shp=getShapeClone();
+		
+		shp[dimension]=shift;
+		INDArray right=subArray(off,shp);
+		shp[dimension]=dlen-shift;
+		off[dimension]=shift;
+		INDArray left=subArray(off,shp);
+		return left.join(right,dimension);
 	}
 	
 	@Override
@@ -558,10 +907,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 	@Override
 	public double[] toDoubleArray() {
-		int n=(int)elementCount();
-		double[] result=new double[n];
-		getElements(result,0);
+		double[] result=Array.createStorage(this.getShape());
+		if (this.isSparse()) {
+			addToArray(result,0);
+		} else {
+			getElements(result,0);
+		}
 		return result;
+	}
+	
+	@Override
+	public double[] asDoubleArray() {
+		return null;
 	}
 	
 	@Override
@@ -571,7 +928,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (tdims<dims) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 		} else if (dims==tdims) {
-			return this;
+			if (IntArrays.equals(targetShape, this.getShape())) return this;
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 		} else {
 			int n=targetShape[0];
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
@@ -580,7 +938,93 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray immutable() {
+		if (!isMutable()) return this;
+		return ImmutableArray.create(this);
+	}
+	
+	@Override
+	public INDArray mutable() {
+		if (isFullyMutable()) return this;
+		return clone();
+	}
+	
+	@Override
+	public final INDArray mutableClone() {
+		return clone();
+	}
+	
+	@Override
+	public INDArray sparse() {
+		int dims=dimensionality();
+		if (dims==0) return this;
+		if (dims==1) {
+			if (this instanceof ISparse) return this;
+			return Vectorz.createSparse(this.asVector());
+		}
+		if (dims==2) {
+			if (this instanceof ISparse) return this;
+			return Matrixx.createSparse(this.getSliceViews());
+		}
+		int n=this.sliceCount();
+		List<INDArray> sls=this.getSliceViews();
+		for (int i=0; i<n; i++) {
+			sls.set(i,sls.get(i).sparse());
+		}
+		return SliceArray.create(sls);
+	}
+	
+	@Override
+	public INDArray dense() {
+		if (this instanceof IDense) return this;
+		int dims=dimensionality();
+		if (dims==0) {
+			if (this instanceof AScalar) return this;
+			return Scalar.create(get());
+		}
+		if (dims==1) {
+			return Vector.create(this);
+		}
+		if (dims==2) {
+			return Matrix.create(this);
+		}
+		return Array.create(this);
+	}
+	
+	@Override
+	public INDArray sparseClone() {
+		int dims=dimensionality();
+		if (dims==0) return this;
+		if (dims==1) {
+			return Vectorz.createSparseMutable(this.asVector());
+		}
+		if (dims==2) {
+			if (this instanceof AMatrix) return Matrixx.createSparseRows((AMatrix)this);
+			return Matrixx.createSparseRows(this);
+		}
+		int n=this.sliceCount();
+		List<INDArray> sls=this.getSliceViews();
+		for (int i=0; i<n; i++) {
+			sls.set(i,sls.get(i).sparseClone());
+		}
+		return SliceArray.create(sls);
+	}
+	
+	@Override
+	public INDArray broadcastLike(INDArray target) {
+		return broadcast(target.getShape());
+	}
+	
+	@Override
+	public INDArray broadcastCloneLike(INDArray target) {
+		INDArray r=this;
+		if (r.dimensionality()<target.dimensionality()) r=r.broadcastLike(target);
+		return r.clone();
+	}
+	
+	@Override
 	public void validate() {
 		// TODO: any generic validation?
 	}
+
 }

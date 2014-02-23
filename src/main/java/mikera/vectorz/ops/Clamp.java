@@ -1,6 +1,7 @@
 package mikera.vectorz.ops;
 
 import mikera.arrayz.INDArray;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**
@@ -33,6 +34,11 @@ public final class Clamp extends ABoundedOp {
 	
 	@Override
 	public void applyTo(AVector v) {
+		v.clamp(min, max);
+	}
+	
+	@Override
+	public void applyTo(AMatrix v) {
 		v.clamp(min, max);
 	}
 	

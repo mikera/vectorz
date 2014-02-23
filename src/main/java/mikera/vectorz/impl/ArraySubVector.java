@@ -1,12 +1,11 @@
 package mikera.vectorz.impl;
 
-import java.util.Arrays;
-
 import mikera.randomz.Hash;
+import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Vector referring to an offset into a double[] array
+ * Vector referring to a fixed offset into a double[] array
  * 
  * @author Mike
  * 
@@ -14,10 +13,7 @@ import mikera.vectorz.util.ErrorMessages;
 public final class ArraySubVector extends AArrayVector {
 	private static final long serialVersionUID = 1262951505515197105L;
 
-	private final double[] data;
-
 	private final int offset;
-	private final int length;
 
 	public static ArraySubVector wrap(double[] values) {
 		return new ArraySubVector(values);
@@ -28,23 +24,13 @@ public final class ArraySubVector extends AArrayVector {
 	}
 	
 	private ArraySubVector(double[] data, int offset, int length) {
-		this.data=data;
+		super(length,data);
 		this.offset=offset;
-		this.length=length;
 	}
-
 
 	public ArraySubVector(int length) {
-		this.length = length;
+		super(length,new double[length]);
 		offset = 0;
-		data = new double[length];
-	}
-
-	public ArraySubVector(ArraySubVector source) {
-		length = source.length;
-		this.offset = 0;
-		data = new double[length];
-		System.arraycopy(source.data, source.offset, this.data, 0, length);
 	}
 	
 	public static ArraySubVector wrap(double[] data, int offset, int length) {
@@ -60,28 +46,13 @@ public final class ArraySubVector extends AArrayVector {
 	 * @param length
 	 */
 	public ArraySubVector(AArrayVector source, int offset, int length) {
+		super(length,source.getArray());
 		int len=source.length();
-		if (offset < 0) {
-			throw new IndexOutOfBoundsException("Negative offset for Vector: "
-					+ offset);
-		}
-		if (offset + length > len) {
+		if ((offset < 0)||(offset + length > len)) 
 			throw new IndexOutOfBoundsException(
-					"Beyond bounds of parent vector with offset: " + offset
-							+ " and length: " + length);
-		}
-		this.length = length;
+					ErrorMessages.invalidRange(source, offset, length));
 		this.offset = source.getArrayOffset() + offset;
-		this.data = source.getArray();
 	}
-
-
-	@Override
-	public int length() {
-		return length;
-	}
-
-	
 
 	@Override
 	public double get(int i) {
@@ -106,7 +77,6 @@ public final class ArraySubVector extends AArrayVector {
 	public void unsafeSet(int i, double value) {
 		data[offset + i] = value;
 	}
-
 
 	@Override
 	public void add(AArrayVector v) {
@@ -150,11 +120,6 @@ public final class ArraySubVector extends AArrayVector {
 	}
 
 	@Override
-	public double[] getArray() {
-		return data;
-	}
-
-	@Override
 	public int getArrayOffset() {
 		return offset;
 	}
@@ -163,9 +128,20 @@ public final class ArraySubVector extends AArrayVector {
 	public boolean isView() {
 		return true;
 	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		int len=length();
+		if ((start<0)||(start+length>len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==0) return Vector0.INSTANCE;
+		if (len==length) return this;
+		return ArraySubVector.wrap(data, offset+start, length);
+	}
 
 	@Override 
 	public ArraySubVector exactClone() {
-		return new ArraySubVector(Arrays.copyOfRange(data, offset, offset+length),0,length);
+		return new ArraySubVector(data.clone(),offset,length);
 	}
 }

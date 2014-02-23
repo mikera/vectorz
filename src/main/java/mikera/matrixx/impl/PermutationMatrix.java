@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
@@ -11,7 +13,9 @@ import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
-public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
+public final class PermutationMatrix extends ABooleanMatrix implements IFastRows, IFastColumns, ISparse  {
+	private static final long serialVersionUID = 8098287603508120428L;
+
 	private final Index perm;
 	private final int size;
 	
@@ -50,6 +54,13 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		for (int i=0; i<size; i++) {
+			data[offset+(i*size)+perm.get(i)]+=1.0;
+		}
+	}
+	
+	@Override
 	public boolean isMutable() {
 		// PermutationMatrix is mutable (rows can be swapped, etc.)
 		return true;
@@ -85,13 +96,18 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	}
 	
 	@Override
-	public boolean hassOrthonormalRows() {
+	public boolean hasOrthonormalRows() {
 		return true;
 	}
 	
 	@Override
 	public boolean isDiagonal() {
 		return isIdentity();
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		return true;
 	}
 	
 	@Override
@@ -155,7 +171,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 
 	@Override
 	public double get(int row, int column) {
-		if (column<0||(column>=size)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
+		if (column<0||(column>=size)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,row,column));
 		return (perm.get(row)==column)?1.0:0.0;
 	}
 
@@ -172,7 +188,6 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 
 	@Override
 	public void set(int row, int column, double value) {
-		if (get(row,column)==value) return;
 		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this,row,column));
 	}
 	
@@ -184,6 +199,18 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	@Override
 	public AxisVector getColumn(int j) {
 		return AxisVector.create(perm.find(j), size);
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+size,0.0);
+		dest[destOffset+perm.get(row)]=1.0;
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		Arrays.fill(dest, destOffset,destOffset+size,0.0);
+		dest[destOffset+perm.find(col)]=1.0;
 	}
 	
 	@Override
@@ -204,8 +231,23 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
-		if(rowCount()!=dest.length()) throw new IllegalArgumentException("Wrong dest vector length");
-		if(columnCount()!=source.length()) throw new IllegalArgumentException("Wrong source vector length");
+		if ((source instanceof Vector )&&(dest instanceof Vector)) {
+			transform ((Vector)source, (Vector)dest);
+			return;
+		}
+		if(rowCount()!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
+		if(columnCount()!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(dest));
+		for (int i=0; i<size; i++) {
+			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
+		}
+	}
+	
+	@Override	
+	public void transform(Vector source, Vector dest) {
+		int rc = rowCount();
+		int cc = columnCount();
+		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
+		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		for (int i=0; i<size; i++) {
 			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
 		}
@@ -230,9 +272,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 		for (int i=0; i<size; i++) {
 			int dstIndex=i*cc;
 			int srcRow=perm.get(i);
-			for (int j=0; j<cc; j++) {
-				result.data[dstIndex+j]=a.unsafeGet(srcRow,j);
-			}
+			a.copyRowTo(srcRow, result.data, dstIndex);
 		}
 		return result;
 	}
@@ -248,6 +288,11 @@ public final class PermutationMatrix extends ABooleanMatrix implements ISparse {
 			System.arraycopy(a.data,srcIndex,result.data,dstIndex,cc);
 		}
 		return result;
+	}
+	
+	@Override
+	public Matrix transposeInnerProduct(Matrix s) {
+		return getTranspose().innerProduct(s);
 	}
 	
 	@Override

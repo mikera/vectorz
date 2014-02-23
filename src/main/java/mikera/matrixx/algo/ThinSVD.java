@@ -81,7 +81,7 @@ public class ThinSVD {
 
 			for (int j = k + 1; j < cc; j++) {
 
-				if ((k < nct) & (Math.abs(s.get(k, k)) > Decompositions.EPS)) {
+				if ((k < nct) && (Math.abs(s.get(k, k)) > Decompositions.EPS)) {
 
 					double t = 0;
 
@@ -131,7 +131,7 @@ public class ThinSVD {
 
 				e.set(k, -e.get(k));
 
-				if ((k + 1 < rc) & (Math.abs(e.get(k)) > Decompositions.EPS)) {
+				if ((k + 1 < rc) && (Math.abs(e.get(k)) > Decompositions.EPS)) {
 
 					for (int j = k + 1; j < cc; j++) {
 						for (int i = k + 1; i < rc; i++) {

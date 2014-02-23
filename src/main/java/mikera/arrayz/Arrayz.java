@@ -3,14 +3,13 @@ package mikera.arrayz;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import us.bpsm.edn.parser.Parseable;
-import us.bpsm.edn.parser.Parser;
-import us.bpsm.edn.parser.Parsers;
-
+import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
@@ -19,8 +18,12 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
+import us.bpsm.edn.parser.Parseable;
+import us.bpsm.edn.parser.Parser;
+import us.bpsm.edn.parser.Parsers;
 
 /**
  * Static function class for array operations
@@ -30,12 +33,15 @@ import mikera.vectorz.util.VectorzException;
 public class Arrayz {
 	/**
 	 * Creates an array from the given data
+	 * 
+	 * Handles double arrays, INDArray instances, and lists
+	 * 
 	 * @param object
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static INDArray create(Object object) {
-		if (object instanceof INDArray) return ((INDArray)object).clone();
+		if (object instanceof INDArray) return create((INDArray)object);
 		
 		if (object instanceof double[]) return Vector.of((double[])object);
 		if (object instanceof List<?>) {
@@ -59,9 +65,19 @@ public class Arrayz {
 		
 		if (object instanceof Number) return Scalar.create(((Number)object).doubleValue());
 		
+		if (object.getClass().isArray()) {
+			return create(Arrays.asList((Object[])object));
+		}
+		
 		throw new VectorzException("Don't know how to create array from: "+object.getClass());
 	}
 	
+	/**
+	 * Create a new array instance with the given shape. New array will be filled with zeroes.
+	 * 
+	 * @param shape
+	 * @return
+	 */
 	public static INDArray newArray(int... shape) {
 		int dims=shape.length;
 		
@@ -73,23 +89,47 @@ public class Arrayz {
 		}
 	}
 	
-	public static INDArray create(Object... data) {
-		int n=data.length;
-		INDArray[] as=new INDArray[n];
-		for (int i=0; i<n; i++) {
-			as[i]=create((Object)data);
+	public static INDArray create(INDArray a) {
+		int dims=a.dimensionality();
+		switch (dims) {
+		case 0:
+			return Scalar.create(a.get());
+		case 1:
+			return Vector.wrap(a.toDoubleArray());
+		case 2:
+			return Matrix.wrap(a.getShape(0), a.getShape(1), a.toDoubleArray());
+		default:
+			return Array.wrap(a.toDoubleArray(),a.getShape());
 		}
-		return SliceArray.create(as);
 	}
 	
+	/**
+	 * Creates an array using the given data as slices.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static INDArray create(Object... data) {
+		return create((Object)data);
+	}
+	
+	/**
+	 * Creates an INDArray instance wrapping the given double data, with the provided shape.
+	 * 
+	 * @param data
+	 * @param shape
+	 * @return
+	 */
 	public static INDArray wrap(double[] data, int[] shape) {
+		int dlength=data.length;
 		switch (shape.length) {
 			case 0:
 				return ArrayIndexScalar.wrap(data,0);
 				
 			case 1:
 				int n=shape[0];
-				if (n==data.length) {
+				if (dlength<n) throw new IllegalArgumentException(ErrorMessages.insufficientElements(dlength));
+				if (n==dlength) {
 					return Vector.wrap(data); 
 				} else {
 					return ArraySubVector.wrap(data, 0, n);
@@ -97,14 +137,22 @@ public class Arrayz {
 				
 			case 2:
 				int rc=shape[0], cc=shape[1];
-				if (rc*cc==data.length) {
+				int ec=rc*cc;
+				if (dlength<ec) throw new IllegalArgumentException(ErrorMessages.insufficientElements(dlength));
+				if (ec==dlength) {
 					return Matrix.wrap(rc,cc, data);
 				} else {
-					return NDArray.wrap(data, shape);
+					return StridedMatrix.wrap(data, shape[0], shape[1], 0, shape[1], 1);
 				}
 		
 			default:
-				return NDArray.wrap(data, shape);
+				long eec=IntArrays.arrayProduct(shape);
+				if (dlength<eec) throw new IllegalArgumentException(ErrorMessages.insufficientElements(dlength));
+				if (eec==dlength) {
+					return Array.wrap(data, shape);
+				} else {
+					return NDArray.wrap(data, shape);
+				}
 		}
 	}
 
@@ -135,11 +183,75 @@ public class Arrayz {
 		return Arrayz.create(p.nextValue(pbr));
 	}
 	
+	/**
+	 * Parse an array from a String. String should be in edn format
+	 * 
+	 * @param ednString
+	 * @return
+	 */
 	public static INDArray parse(String ednString) {
 		return load(new StringReader(ednString));	
 	}
 
-	public static long elementCount(int[] shape) {
-		return IntArrays.arrayProduct(shape);
+	public static INDArray wrapStrided(double[] data, int offset, int[] shape, int[] strides) {
+		int dims=shape.length;
+		if (dims==0) {
+			return ArrayIndexScalar.wrap(data, offset);
+		} else if (dims==1) {
+			return Vectorz.wrapStrided(data, offset, shape[0], strides[0]);
+		} else if (dims==2) {
+			return Matrixx.wrapStrided(data, shape[0],shape[1], offset, strides[0],strides[1]);
+		} else {
+			if (isPackedLayout(data,offset,shape,strides)) {
+				return Array.wrap(data, shape);
+			} else {
+				return NDArray.wrapStrided(data,offset,shape,strides);
+			}
+		}
+	}
+	
+	public static boolean isPackedLayout(double[] data, int offset, int[] shape, int[] strides) {
+		if (offset!=0) return false;
+		int dims=shape.length;
+		int st=1;
+		for (int i=dims-1; i>=0; i--) {
+			if (strides[i]!=st) return false;
+			st*=shape[i];
+		}
+		return (st==data.length);
+	}
+
+	/**
+	 * Checks if the given set of strides represents a fully packed, row major layout for the given shape
+	 * @param shape
+	 * @param strides
+	 * @return
+	 */
+	public static boolean isPackedStrides(int[] shape, int[] strides) {
+		int dims=shape.length;
+		int st=1;
+		for (int i=dims-1; i>=0; i--) {
+			if (strides[i]!=st) return false;
+			st*=shape[i];
+		}
+		return true;
+	}
+
+	public static INDArray createSparse(INDArray a) {
+		int dims=a.dimensionality();
+		if (dims==0) {
+			return Scalar.create(a.get());
+		} else if (dims==1) {
+			return Vectorz.createSparse(a.asVector());
+		} else if (dims==2) {
+			return Matrixx.createSparse(Matrixx.toMatrix(a));
+		} else {
+			int n=a.sliceCount();
+			List<INDArray> slices=a.getSliceViews();
+			for (int i=0; i<n; i++) {
+				slices.set(i, slices.get(i).sparseClone());
+			}
+			return SliceArray.create(slices);	
+		}
 	}
 }

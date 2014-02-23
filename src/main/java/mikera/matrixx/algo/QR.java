@@ -68,13 +68,13 @@ public class QR {
 					double summand = 0.0;
 
 					for (int i = k; i < rc; i++) {
-						summand += qr.get(i, k) * qr.get(i, j);
+						summand += qr.unsafeGet(i, k) * qr.unsafeGet(i, j);
 					}
 
 					summand = -summand / qr.get(k, k);
 
 					for (int i = k; i < rc; i++) {
-						qr.addAt(i, j,summand * qr.get(i, k));
+						qr.addAt(i, j,summand * qr.unsafeGet(i, k));
 					}
 				}
 			}
@@ -90,18 +90,18 @@ public class QR {
 
 			for (int j = k; j < cc; j++) {
 
-				if (Math.abs(qr.get(k, k)) > Decompositions.EPS) {
+				if (Math.abs(qr.unsafeGet(k, k)) > Decompositions.EPS) {
 
 					double summand = 0.0;
 
 					for (int i = k; i < rc; i++) {
-						summand += qr.get(i, k) * q.get(i, j);
+						summand += qr.get(i, k) * q.unsafeGet(i, j);
 					}
 
-					summand = -summand / qr.get(k, k);
+					summand = -summand / qr.unsafeGet(k, k);
 
 					for (int i = k; i < rc; i++) {
-						q.addAt(i, j,summand * qr.get(i, k));
+						q.addAt(i, j,summand * qr.unsafeGet(i, k));
 					}
 				}
 			}
@@ -113,9 +113,9 @@ public class QR {
 		for (int i = 0; i < cc; i++) {
 			for (int j = i; j < cc; j++) {
 				if (i < j) {
-					r.set(i, j, qr.get(i, j));
+					r.set(i, j, qr.unsafeGet(i, j));
 				} else if (i == j) {
-					r.set(i, j, rdiag.get(i));
+					r.set(i, j, rdiag.unsafeGet(i));
 				}
 			}
 		}

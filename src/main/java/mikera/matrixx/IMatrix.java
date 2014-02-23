@@ -1,6 +1,7 @@
 package mikera.matrixx;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.AVector;
 
 /**
  * Interface for fundamental matrix access operations.
@@ -13,12 +14,32 @@ import mikera.arrayz.INDArray;
  */
 public interface IMatrix extends INDArray {
 	
-	public abstract int rowCount();
+	public int rowCount();
 
-	public abstract int columnCount();
+	public int columnCount();
 
-	public abstract double get(int row, int column);
+	public double get(int row, int column);
 
-	public abstract void set(int row, int column, double value);	
+	public void set(int row, int column, double value);
+	
+	public AVector getRow(int row);
+	
+	public AVector getColumn(int column);
+
+	public AVector getBand(int band);
+
+	boolean isSquare();
+
+	boolean isInvertible();	
+
+	AVector transform(AVector source);
+
+	void transform(AVector source, AVector dest);
+
+	void transformInPlace(AVector v);
+
+	AMatrix inverse();
+
+
 
 }

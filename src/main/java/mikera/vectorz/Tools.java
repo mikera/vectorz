@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.util.ArrayList;
+import java.util.List;
 import mikera.arrayz.INDArray;
 
 public final class Tools {
@@ -36,6 +38,65 @@ public final class Tools {
 	public static int hashCode(long l) {
 		return (int) (l ^ (l >>> 32));
 	}
+	
+	public static <E> List<E> toList(Iterable<E> iter) {
+	    List<E> list = new ArrayList<E>();
+	    for (E item : iter) {
+	        list.add(item);
+	    }
+	    return list;
+	}
+	
+
+	/**
+	 * Converts an numerical object to a primitive double
+	 * Handles numbers and scalars
+	 */
+	public static int toInt(Object object) {
+		if (object instanceof Number) {
+			if (object instanceof Integer) {
+				return ((Integer)object);
+			} else if (object instanceof Long) {
+				return toInt((Long)object);
+			}
+			double d= ((Number)object).doubleValue();
+			return toInt(d);
+		} else if (object instanceof AScalar) {
+			return toInt(((AScalar)object).get());
+		} else {
+			throw new IllegalArgumentException("Cannot convert to int: "+object.toString());
+		}
+	}
+	
+	public static int toInt(long d) {
+		int r=(int)d; 
+		if (r!=d) throw new IllegalArgumentException("Out of range when converting to int");
+		return r;
+	}
+	
+	/**
+	 * Convenience overload to convert a Double to a primitive double
+	 */
+	public static int toInt(double d) {
+		long n=Math.round(d);
+		if (n!=d) throw new IllegalArgumentException("Cannot convert to int: "+d);
+		return toInt(n);
+	}
+	
+	/**
+	 * Convenience overload to convert an int to a primitive int
+	 */
+	public static int toInt(int d) {
+		return d;
+	}
+	
+	/**
+	 * Convenience overload to convert a Number to a primitive int
+	 */
+	public static int toInt(Number d) {
+		return toInt(d.doubleValue());
+	}
+
 
 	/**
 	 * Converts an numerical object to a primitive double

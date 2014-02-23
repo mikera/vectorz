@@ -36,12 +36,12 @@ public final class IdentityTranslation extends ATranslation {
 	}
 
 	@Override
-	public AMatrix getMatrixComponent() {
+	public AMatrix getMatrix() {
 		return Matrixx.createImmutableIdentityMatrix(dimensions);
 	}
 
 	@Override
-	public ATranslation getTranslationComponent() {
+	public ATranslation getTranslation() {
 		return this;
 	}
 

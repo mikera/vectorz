@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A vector that represents the concatenation of two vectors.
@@ -11,20 +12,19 @@ import mikera.vectorz.Op;
  * @author Mike
  *
  */
-public final class JoinedVector extends AVector {
+public final class JoinedVector extends ASizedVector {
 	private static final long serialVersionUID = -5535850407701653222L;
 	
 	private final AVector left;
 	private final AVector right;
 	
 	private final int split;
-	private final int length;
 	
 	private JoinedVector(AVector left, AVector right) {
+		super(left.length()+right.length());
 		this.left=left;
 		this.right=right;
 		this.split=left.length();
-		this.length=split+right.length();
 	}
 	
 	/**
@@ -34,23 +34,22 @@ public final class JoinedVector extends AVector {
 	 * @return
 	 */
 	public static AVector joinVectors(AVector left, AVector right) {
+		int ll=left.length(); if (ll==0) return right;
+		int rl=right.length(); if (rl==0) return left;
 		// balancing in case of nested joined vectors
-		while ((left.length()>right.length()*2)&&(left instanceof JoinedVector)) {
+		while ((ll>rl*2)&&(left instanceof JoinedVector)) {
 			JoinedVector bigLeft=((JoinedVector)left);
 			left=bigLeft.left;
 			right=joinVectors(bigLeft.right,right);
+			ll=left.length(); rl=right.length();
 		}
-		while ((left.length()*2<right.length())&&(right instanceof JoinedVector)) {
+		while ((ll*2<rl)&&(right instanceof JoinedVector)) {
 			JoinedVector bigRight=((JoinedVector)right);
 			left=joinVectors(left,bigRight.left);
 			right=bigRight.right;
+			ll=left.length(); rl=right.length();
 		} 
 		return new JoinedVector(left,right);
-	}
-	
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override
@@ -90,6 +89,12 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int offset, int stride) {
+		left.addToArray(dest, offset,stride);
+		right.addToArray(dest, offset+split*stride,stride);
+	}
+	
+	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		assert(arrayOffset+length<=array.length);
 		assert(offset+length<=length());
@@ -113,9 +118,9 @@ public final class JoinedVector extends AVector {
 	}
 	
 	@Override
-	public void copyTo(double[] data, int offset) {
-		left.copyTo(data, offset);
-		right.copyTo(data, offset+split);
+	public void getElements(double[] data, int offset) {
+		left.getElements(data, offset);
+		right.getElements(data, offset+split);
 	}
 	
 	@Override
@@ -134,19 +139,20 @@ public final class JoinedVector extends AVector {
 	public void copyTo(int start, AVector dest, int destOffset, int length) {
 		subVector(start,length).copyTo(dest, destOffset);
 	}
-
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		assert(start>=0);
-		assert((start+length)<=this.length);
-		if ((start==0)&&(length==this.length)) return this;
+		int end=start+length;
+		if ((start<0)||(end>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==this.length) return this;
 		if (start>=split) return right.subVector(start-split, length);
-		if ((start+length)<=split) return left.subVector(start, length);
+		if (end<=split) return left.subVector(start, length);
 		
 		AVector v1=left.subVector(start, split-start);
 		AVector v2=right.subVector(0, length-(split-start));
-		return new JoinedVector(v1,v2);
+		return v1.join(v2);
 	}
 	
 	@Override
@@ -218,6 +224,12 @@ public final class JoinedVector extends AVector {
 	public void add(AVector a,int aOffset) {
 		left.add(a,aOffset);
 		right.add(a,aOffset+split);
+	}
+	
+	@Override
+	public void add(double[] data,int offset) {
+		left.add(data,offset);
+		right.add(data,offset+split);
 	}
 	
 	@Override
@@ -318,6 +330,26 @@ public final class JoinedVector extends AVector {
 	@Override
 	public double elementSum() {
 		return left.elementSum()+right.elementSum();
+	}
+	
+	@Override
+	public double elementProduct() {
+		return left.elementProduct()*right.elementProduct();
+	}
+	
+	@Override
+	public double elementMax() {
+		return Math.max(left.elementMax(),right.elementMax());
+	}
+	
+	@Override
+	public double elementMin() {
+		return Math.min(left.elementMin(),right.elementMin());
+	}
+	
+	@Override
+	public double magnitudeSquared() {
+		return left.magnitudeSquared()+right.magnitudeSquared();
 	}
 	
 	@Override
@@ -428,6 +460,35 @@ public final class JoinedVector extends AVector {
 	
 	public int depth() {
 		return depthCalc(this);
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		double[] data=new double[length];
+		left.getElements(data, 0);
+		right.getElements(data, split);
+		return data;
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v instanceof JoinedVector) return equals((JoinedVector)v);
+		return super.equals(v);
+	}
+	
+	public boolean equals(JoinedVector v) {
+		if (split==v.split) {
+			return left.equals(v.left)&&right.equals(v.right);
+		} else {
+			return super.equals(v);		
+		}
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		if (!left.equalsArray(data, offset)) return false;
+		if (!right.equalsArray(data, offset+split)) return false;
+		return true;
 	}
 	
 	@Override 

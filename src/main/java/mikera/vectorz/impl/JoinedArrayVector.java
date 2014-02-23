@@ -16,17 +16,16 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class JoinedArrayVector extends AVector {
+public final class JoinedArrayVector extends ASizedVector {
 	private static final long serialVersionUID = -8470277860344236392L;
 
-	private final int length; // total length
 	private final int numArrays; // number of joined arrays
 	private final double[][] data; // source arrays
 	private final int[] offsets; // offsets into source arrays
 	private final int[] pos; // position of each array within vector. contains one extra element
 	
 	private JoinedArrayVector(int length, double[][] newData,int[] offsets, int[] pos) {
-		this.length=length;
+		super(length);
 		this.numArrays=newData.length;
 		this.offsets=offsets;
 		this.pos=pos;
@@ -37,7 +36,7 @@ public final class JoinedArrayVector extends AVector {
 		int length=v.length();
 		double[][] data=new double[1][];
 		data[0]=new double[length];
-		v.copyTo(data[0], 0);
+		v.getElements(data[0], 0);
 		JoinedArrayVector jav=new JoinedArrayVector(length,data,new int[1],new int[] {0,length});
 		return jav;
 	}
@@ -86,11 +85,6 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
-	public int length() {
-		return length;
-	}
-	
-	@Override
 	public boolean isView() {
 		return true;
 	}
@@ -135,7 +129,7 @@ public final class JoinedArrayVector extends AVector {
 	@Override
 	public void copyTo(AVector dest, int offset) {
 		for (int j=0; j<numArrays; j++) {
-			dest.set(pos[j]+offset,data[j],offsets[j],subLength(j));
+			dest.setRange(pos[j]+offset,data[j],offsets[j],subLength(j));
 		}
 	}
 
@@ -191,6 +185,13 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
+	public void add(double[] srcData, int srcOffset) {
+		for (int i=0; i<numArrays; i++) {
+			DoubleArrays.add(srcData, srcOffset+pos[i], this.data[i], offsets[i], subLength(i));
+		}
+	}
+		
+	@Override
 	public void add(int offset, AVector a) {
 		add(offset,a,0,a.length());
 	}
@@ -204,6 +205,19 @@ public final class JoinedArrayVector extends AVector {
 			int len=Math.min(subLength(j)-segmentOffset, offset+alen-pos[j]);
 			if (len>0) {
 				a.addToArray(aOffset+pos[j]+segmentOffset-offset, data[j], offsets[j]+segmentOffset, len);
+			}
+		}
+	}
+	
+	@Override
+	public void addToArray(int offset, double[] a, int aOffset, int length) {
+		int alen=length;
+		for (int j=0; j<numArrays; j++) {
+			if (offset>=pos[j+1]) continue; // skip until adding at right place
+			int segmentOffset=Math.max(0,offset-pos[j]);
+			int len=Math.min(subLength(j)-segmentOffset, offset+alen-pos[j]);
+			if (len>0) {
+				DoubleArrays.add(data[j], offsets[j]+segmentOffset,a, aOffset+pos[j]+segmentOffset-offset, len);
 			}
 		}
 	}
@@ -278,7 +292,7 @@ public final class JoinedArrayVector extends AVector {
 	}
 	
 	@Override
-	public void copyTo(double[] destArray, int offset) {
+	public void getElements(double[] destArray, int offset) {
 		for (int j=0; j<numArrays; j++) {
 			System.arraycopy(this.data[j],offsets[j],destArray,offset+pos[j],subLength(j));
 		}
@@ -436,15 +450,18 @@ public final class JoinedArrayVector extends AVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		assert(start>=0);
-		assert((start+length)<=this.length);
+		if ((start<0)||(start+length>this.length)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
+		}
+		if (length==this.length) return this;
 		if (length==0) return Vector0.INSTANCE;
 		
 		int a=findArrayNum(start);
 		int b=findArrayNum(start+length-1);
 		int n=b-a+1;
 		
-		if (n==1) return Vectorz.wrap(data[a], start-pos[a], length);
+		// special case if start and end fall on same array
+		if (n==1) return Vectorz.wrap(data[a], offsets[a]+(start-pos[a]), length);
 		
 		double[][] newData=Arrays.copyOfRange(data, a, b+1);
 		int[] offs=new int[n];
@@ -546,6 +563,14 @@ public final class JoinedArrayVector extends AVector {
 				new double[][] {a.getArray(),b.getArray()},
 				new int[] {a.getArrayOffset(),b.getArrayOffset()},
 				new int[] {0,alen,alen+blen});
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<numArrays; i++) {
+			if (!DoubleArrays.equals(data, offset+pos[i], this.data[i], offsets[i], subLength(i))) return false;
+		}
+		return true;
 	}
 	
 	@Override

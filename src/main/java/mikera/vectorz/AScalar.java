@@ -6,10 +6,14 @@ import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.IDense;
 import mikera.randomz.Hash;
+import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
+import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedScalarVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
 import mikera.vectorz.util.VectorzException;
@@ -23,8 +27,8 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public abstract class AScalar extends AbstractArray<Object> implements IScalar {
-	
+public abstract class AScalar extends AbstractArray<Object> implements IScalar, IDense {
+	private static final long serialVersionUID = -8285351135755012093L;
 	private static final int[] SCALAR_SHAPE=IntArrays.EMPTY_INT_ARRAY;
 	private static final long[] SCALAR_LONG_SHAPE=LongArrays.EMPTY_LONG_ARRAY;
 
@@ -32,6 +36,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	public void set(double value) {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public double get(int x) {
+		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, x));
+	}
+
+	@Override
+	public double get(int x, int y) {
+		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, x));
 	}
 	
 	@Override
@@ -80,6 +94,13 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public AScalar subArray(int[] offsets, int[] shape) {
+		if (offsets.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		if (shape.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
+		return this;
+	}
+
+	@Override
 	public Iterator<Object> iterator() {
 		throw new UnsupportedOperationException("Can't slice a scalar!");
 	}
@@ -100,8 +121,19 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		return false;
 	}
 	
+	@Override
+	public boolean isZero() {
+		return get()==0.0;
+	}
+
+	
 	public void add(double d) {
 		set(get()+d);
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		data[offset]+=get();
 	}
 	
 	public void sub(double d) {
@@ -114,7 +146,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	@Override
 	public void add(INDArray a) {
-		if (a instanceof AScalar) {
+		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
 			add(a.get());
 		} else {
 			super.add(a);
@@ -123,7 +155,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	@Override
 	public void sub(INDArray a) {
-		if (a instanceof AScalar) {
+		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
 			sub(a.get());
 		} else {
 			super.sub(a);
@@ -168,6 +200,15 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		return a;
 	}
 	
+	public Scalar innerProduct(AScalar a) {
+		return Scalar.create(get()*a.get());
+	}
+	
+	@Override
+	public Scalar innerProduct(double a) {
+		return Scalar.create(get()*a);
+	}
+	
 	@Override
 	public INDArray outerProduct(INDArray a) {
 		a=a.clone();
@@ -206,7 +247,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public long elementCount() {
+	public final long elementCount() {
 		return 1;
 	}
 	
@@ -231,7 +272,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public void applyOp(IOp op) {
+	public void applyOp(IOperator op) {
 		set(op.apply(get()));
 	}
 	
@@ -241,8 +282,8 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public AScalar clone() {
-		return (AScalar) super.clone();
+	public Scalar clone() {
+		return Scalar.create(get());
 	}
 	
 	@Override 
@@ -250,6 +291,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		set(factor*get());
 	}
 	
+	@Override
+	public void divide(double factor) {
+		set(get()/factor);
+	}
 	
 	@Override 
 	public void multiply(INDArray a) {
@@ -257,7 +302,17 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
-	public double elementSum() {
+	public final double elementSum() {
+		return get();
+	}
+	
+	@Override
+	public double elementMax(){
+		return get();
+	}
+	
+	@Override
+	public double elementMin(){
 		return get();
 	}
 	
@@ -273,7 +328,8 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 			return this;
 		} else {
 			int n=targetShape[tdims-1];
-			AVector v=new RepeatedElementVector(n,get());
+			if (n==0) return Vector0.INSTANCE;
+			AVector v=RepeatedElementVector.create(n,get());
 			return v.broadcast(targetShape);
 		}
 	}
@@ -305,7 +361,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	
 	@Override
 	public boolean equals(INDArray o) {
-		return (o.dimensionality()==0)&&(o.get(SCALAR_SHAPE)==get());
+		return (o.dimensionality()==0)&&(o.get()==get());
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return data[offset]==get();
 	}
 	
 	public boolean equals(AScalar o) {
@@ -333,7 +394,54 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 	}
 	
 	@Override
+	public double[] asDoubleArray() {
+		return null;
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		return new double[] {get()};
+	}
+	
+	@Override
 	public abstract AScalar exactClone();
+	
+	@Override
+	public AScalar mutable() {
+		if (isFullyMutable()) {
+			return this;
+		} else {
+			return Scalar.create(get());
+		}
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		return get()==value;		
+	}
+	
+	@Override
+	public AScalar sparse() {
+		double v=get();
+		if (v==0.0) return ImmutableScalar.ZERO;
+		if (v==1.0) return ImmutableScalar.ONE;
+		return this;
+	}
+	
+	@Override
+	public INDArray dense() {
+		return this;
+	}
+	
+	@Override
+	public AScalar sparseClone() {
+		return Scalar.create(get());
+	}
+
+	@Override
+	public AScalar immutable() {
+		return ImmutableScalar.create(get());
+	}
 	
 	@Override
 	public void validate() {
@@ -341,8 +449,8 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar {
 		super.validate();
 	}
 
+	@Override
 	public void abs() {
-		// TODO Auto-generated method stub
-		
+		set(Math.abs(get()));
 	}
 }

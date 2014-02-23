@@ -2,7 +2,7 @@ package mikera.vectorz;
 
 import static org.junit.Assert.*;
 
-import mikera.vectorz.impl.ComputedVector;
+import mikera.vectorz.impl.AComputedVector;
 import org.junit.Test;
 
 /**
@@ -61,8 +61,7 @@ public class Test3DVectors {
 		Vector1.of(1).join(Vector1.of(2)).join(Vector1.of(3)),
 		new Vector(Vector3.of(1,2,3)),
 		Vector.of(0,1,2,3,4).subVector(1, 3),
-		new ComputedVector() {
-			@Override public int length() {return 3;}
+		new AComputedVector(3) {
 			@Override public double get(int i) {return i+1.0;}		
 		},
 		grownVector

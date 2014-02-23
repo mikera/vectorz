@@ -8,6 +8,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
+import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -62,6 +63,12 @@ public class TestMatrices {
 		assertFalse(Matrixx.createRandomSquareMatrix(3).isSymmetric());
 	}
 	
+	@Test public void testRowMatrix() {
+		RowMatrix rm=RowMatrix.wrap(Vector.of(1,2,3));
+		
+		assertEquals(rm.transposeInnerProduct(rm.toMatrix()),rm.getTranspose().innerProduct(rm));
+	}
+	
 	@Test public void testTriangular() {
 		AMatrix m1=Matrixx.createRandomSquareMatrix(3);
 		assertTrue(!m1.isUpperTriangular());
@@ -88,12 +95,25 @@ public class TestMatrices {
 		assertEquals(new Matrix22(1,4,3,8),m.compose(d));
 	}
 	
+	@Test public void testMatrixFromDoubles() {
+		Matrix m=Matrix.create(new double[][] {{1,0},{0,1}});
+		assertTrue(m.isIdentity());
+	}
+	
+	@Test public void testJoin() {
+		DiagonalMatrix d1=DiagonalMatrix.create(1,2);
+		DiagonalMatrix d2=DiagonalMatrix.create(3,4);
+		assertEquals(Vector.of(0,2,0,4),d1.join(d2, 1).slice(1));
+	}
+	
 	@Test public void testStridedMatrix() {
-		StridedMatrix m=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
-		m=m.getTranspose();
+		AMatrix om=Matrixx.createRandomMatrix(3, 4);
+		StridedMatrix sm=StridedMatrix.create(om);
+		AMatrix m=sm.getTranspose();
 		assertEquals(m.clone(),m);
 		assertEquals(m.getRow(1),m.clone().getRow(1));
 		assertEquals(m.getTranspose(),m.getTranspose().clone());
+		assertTrue(m.getTranspose() instanceof Matrix);
 	}
 	
 	@Test public void testPermutationMatrix() {

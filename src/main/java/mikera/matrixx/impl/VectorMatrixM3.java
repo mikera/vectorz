@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised N*3 Matrix with Vector3 row components
@@ -11,6 +12,8 @@ import mikera.vectorz.Vector3;
  *
  */
 public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISpecialisedTransform  {
+	private static final long serialVersionUID = -8148184725377519520L;
+
 	private int rowCount;	
 	private Vector3[] rows;
 	
@@ -44,6 +47,16 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 		} else {
 			appendRow(new Vector3(row));
 		}
+	}
+	
+	@Override
+	public void replaceRow(int i, AVector row) {
+		replaceRow(i,(Vector3)row);
+	}
+	
+	public void replaceRow(int i, Vector3 row) {
+		if ((i<0)||(i>=rowCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
+		rows[i]=row;
 	}
 	
 	public void appendRow(Vector3 row) {
@@ -87,7 +100,7 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	@Override
-	public Vector3 getRow(int row) {
+	public Vector3 getRowView(int row) {
 		return  rows[row];
 	}
 	

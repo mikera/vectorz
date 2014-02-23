@@ -10,7 +10,11 @@ import mikera.vectorz.AVector;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ASparseVector extends AConstrainedVector implements ISparse {
+public abstract class ASparseVector extends ASizedVector implements ISparse {
+
+	protected ASparseVector(int length) {
+		super(length);
+	}
 
 	/**
 	 * Returns the number of non-sparse elements in the sparse vector.
@@ -27,6 +31,7 @@ public abstract class ASparseVector extends AConstrainedVector implements ISpars
 	/**
 	 * Returns the non-sparse indexes
 	 */
+	@Override
 	public abstract Index nonSparseIndexes();
 	
 	/**
@@ -36,11 +41,73 @@ public abstract class ASparseVector extends AConstrainedVector implements ISpars
 	 */
 	public abstract boolean includesIndex(int i);
 	
-	// ========================================
+	// ================================================
+	// Superclass methods that must be overridden
+	// (superclass implementation is bad for sparse arrays)
+	
+	@Override
+	public abstract void addToArray(int offset, double[] destData, int destOffset, int length);
+	
+	@Override
+	public abstract boolean isZero();
+		
+	// ================================================
 	// standard implementations
 	
 	@Override
-	public double density() {
-		return ((double)(nonSparseValues().length()))/length();
+	public double dotProduct(AVector v) {
+		double result=0.0;
+		Index ni=nonSparseIndexes();
+		for (int i=0; i<ni.length(); i++) {
+			int ii=ni.get(i);
+			result+=unsafeGet(ii)*v.unsafeGet(ii);
+		}		
+		return result;
+	}
+	
+	@Override
+	public final boolean isSparse() {
+		return true;
+	}
+
+	public abstract void add(ASparseVector v);
+	
+	@Override
+	public ASparseVector sparse() {
+		return this;
+	}
+	
+	public boolean equals(ASparseVector v) {
+		if (v==this) return true;
+		if (v.length!=length) return false;
+		
+		Index ni=nonSparseIndexes();
+		for (int i=0; i<ni.length(); i++) {
+			int ii=ni.get(i);
+			if (unsafeGet(ii)!=v.unsafeGet(ii)) return false;
+		}
+		
+		Index ri=v.nonSparseIndexes();
+		for (int i=0; i<ri.length(); i++) {
+			int ii=ri.get(i);
+			if (unsafeGet(ii)!=v.unsafeGet(ii)) return false;
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		double[] data=new double[length];
+		addToArray(data,0);
+		return data;
+	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v instanceof ASparseVector) {
+			return equals((ASparseVector)v);
+		}
+		return super.equals(v);
 	}
 }
