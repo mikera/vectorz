@@ -34,7 +34,7 @@ import mikera.matrixx.ops.CommonOps;
  * 
  * @author Peter Abeles
  */
-public class HouseholderColumnQR implements IQR<Matrix> {
+public class HouseholderColumnQR implements IQR {
 
   /**
    * Where the Q and R matrices are stored. R is stored in the upper triangular
@@ -90,30 +90,14 @@ public class HouseholderColumnQR implements IQR<Matrix> {
    * operation requires about 4(m<sup>2</sup>n-mn<sup>2</sup>+n<sup>3</sup>/3)
    * flops.
    * 
-   * @param Q The orthogonal Q matrix.
    */
   @Override
-  public Matrix getQ(Matrix Q, boolean compact) {
+  public Matrix getQ(boolean compact) {
+    Matrix Q;
     if (compact) {
-      if (Q == null) {
-        Q = CommonOps.identity(numRows, minLength);
-      } else {
-        if (Q.rowCount() != numRows || Q.columnCount() != minLength) {
-          throw new IllegalArgumentException("Unexpected matrix dimension.");
-        } else {
-          CommonOps.setIdentity(Q);
-        }
-      }
+      Q = CommonOps.identity(numRows, minLength);
     } else {
-      if (Q == null) {
-        Q = CommonOps.identity(numRows);
-      } else {
-        if (Q.rowCount() != numRows || Q.columnCount() != numRows) {
-          throw new IllegalArgumentException("Unexpected matrix dimension.");
-        } else {
-          CommonOps.setIdentity(Q);
-        }
-      }
+      Q = CommonOps.identity(numRows);
     }
 
     for (int j = minLength - 1; j >= 0; j--) {
@@ -131,33 +115,15 @@ public class HouseholderColumnQR implements IQR<Matrix> {
   /**
    * Returns an upper triangular matrix which is the R in the QR decomposition.
    * 
-   * @param R An upper triangular matrix.
    * @param compact
    */
   @Override
-  public Matrix getR(Matrix R, boolean compact) {
-    if (R == null) {
-      if (compact) {
-        R = Matrix.create(minLength, numCols);
-      } else
-        R = Matrix.create(numRows, numCols);
+  public Matrix getR(boolean compact) {
+    Matrix R;
+    if (compact) {
+      R = Matrix.create(minLength, numCols);
     } else {
-      if (compact) {
-        if (R.columnCount() != numCols || R.rowCount() != minLength)
-          throw new IllegalArgumentException("Unexpected dimensions: found( "
-              + R.rowCount() + " " + R.columnCount() + " ) expected( "
-              + minLength + " " + numCols + " )");
-      } else {
-        if (R.columnCount() != numCols || R.rowCount() != numRows)
-          throw new IllegalArgumentException("Unexpected dimensions");
-      }
-
-      for (int i = 0; i < R.rowCount(); i++) {
-        int min = Math.min(i, R.columnCount());
-        for (int j = 0; j < min; j++) {
-          R.set(i, j, 0);
-        }
-      }
+      R = Matrix.create(numRows, numCols);
     }
 
     for (int j = 0; j < numCols; j++) {

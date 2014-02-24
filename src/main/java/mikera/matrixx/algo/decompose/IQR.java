@@ -18,7 +18,7 @@
 
 package mikera.matrixx.algo.decompose;
 
-import mikera.matrixx.IMatrix;
+import mikera.matrixx.Matrix;
 
 /**
  * <p>
@@ -51,11 +51,11 @@ import mikera.matrixx.IMatrix;
  * 
  * @author Peter Abeles
  */
-public interface IQR<T extends IMatrix> extends IDecompose<T> {
+public interface IQR extends IDecompose {
   /**
    * <p>
    * Returns the Q matrix from the decomposition. Should only be called after
-   * {@link #decompose(mikera.matrixx.IMatrix)} has been called.
+   * {@link #decompose(mikera.matrixx.Matrix)} has been called.
    * </p>
    * 
    * <p>
@@ -63,16 +63,15 @@ public interface IQR<T extends IMatrix> extends IDecompose<T> {
    * Otherwise a new matrix is created.
    * </p>
    * 
-   * @param Q If not null then the Q matrix is written to it. Modified.
    * @param compact If true an m by n matrix is created, otherwise n by n.
    * @return The Q matrix.
    */
-  public T getQ(T Q, boolean compact);
+  public Matrix getQ(boolean compact);
 
   /**
    * <p>
    * Returns the R matrix from the decomposition. Should only be called after
-   * {@link #decompose(mikera.matrixx.IMatrix)} has been.
+   * {@link #decompose(mikera.matrixx.Matrix)} has been.
    * </p>
    * <p>
    * If setZeros is true then an n &times; m matrix is required and all the
@@ -85,9 +84,8 @@ public interface IQR<T extends IMatrix> extends IDecompose<T> {
    * Otherwise a new matrix is created.
    * </p>
    * 
-   * @param R If not null then the R matrix is written to it. Modified.
    * @param compact If true only the upper triangular elements are set
    * @return The R matrix.
    */
-  public T getR(T R, boolean compact);
+  public Matrix getR(boolean compact);
 }

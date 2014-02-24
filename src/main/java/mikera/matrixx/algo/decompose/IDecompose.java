@@ -19,6 +19,7 @@
 package mikera.matrixx.algo.decompose;
 
 import mikera.matrixx.IMatrix;
+import mikera.matrixx.Matrix;
 
 /**
  * <p>
@@ -41,7 +42,7 @@ import mikera.matrixx.IMatrix;
  * 
  * @author Peter Abeles
  */
-public interface IDecompose<T extends IMatrix> {
+public interface IDecompose {
 
   /**
    * Computes the decomposition of the input matrix. Depending on the
@@ -54,10 +55,10 @@ public interface IDecompose<T extends IMatrix> {
    *          implementation dependent.
    * @return Returns if it was able to decompose the matrix.
    */
-  public boolean decompose(T orig);
+  public boolean decompose(Matrix orig);
 
   /**
-   * Is the input matrix to {@link #decompose(mikera.matrixx.IMatrix)} is
+   * Is the input matrix to {@link #decompose(mikera.matrixx.Matrix)} is
    * modified during the decomposition process.
    * 
    * @return true if the input matrix to decompose() is modified.

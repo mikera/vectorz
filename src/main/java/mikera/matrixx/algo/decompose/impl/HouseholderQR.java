@@ -18,6 +18,7 @@
 
 package mikera.matrixx.algo.decompose.impl;
 
+import mikera.matrixx.IMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.IQR;
 import mikera.matrixx.ops.CommonOps;
@@ -51,7 +52,7 @@ import mikera.matrixx.ops.CommonOps;
  * 
  * @author Peter Abeles
  */
-public class HouseholderQR implements IQR<Matrix> {
+public class HouseholderQR implements IQR {
 
   /**
    * Where the Q and R matrices are stored. R is stored in the upper triangular
@@ -83,14 +84,11 @@ public class HouseholderQR implements IQR<Matrix> {
     int maxLength = Math.max(numRows, numCols);
 
     if (QR == null) {
-      QR = Matrix.create(numRows, numCols);
       u = new double[maxLength];
       v = new double[maxLength];
       gammas = new double[minLength];
-    } else {
-      // FIXME
-      // QR.reshape(numRows,numCols,false);
     }
+    QR = Matrix.create(numRows,numCols);
 
     dataQR = QR.data;
 
@@ -119,30 +117,16 @@ public class HouseholderQR implements IQR<Matrix> {
    * operation requires about 4(m<sup>2</sup>n-mn<sup>2</sup>+n<sup>3</sup>/3)
    * flops.
    * 
-   * @param Q The orthogonal Q matrix.
+   * @param compact If true an m by n matrix is created, otherwise n by n.
+   * @return The Q matrix.
    */
   @Override
-  public Matrix getQ(Matrix Q, boolean compact) {
+  public Matrix getQ(boolean compact) {
+    Matrix Q;
     if (compact) {
-      if (Q == null) {
-        Q = CommonOps.identity(numRows, minLength);
-      } else {
-        if (Q.rowCount() != numRows || Q.columnCount() != minLength) {
-          throw new IllegalArgumentException("Unexpected matrix dimension.");
-        } else {
-          CommonOps.setIdentity(Q);
-        }
-      }
+      Q = CommonOps.identity(numRows, minLength);
     } else {
-      if (Q == null) {
-        Q = CommonOps.identity(numRows);
-      } else {
-        if (Q.rowCount() != numRows || Q.columnCount() != numRows) {
-          throw new IllegalArgumentException("Unexpected matrix dimension.");
-        } else {
-          CommonOps.setIdentity(Q);
-        }
-      }
+      Q = CommonOps.identity(numRows);
     }
 
     for (int j = minLength - 1; j >= 0; j--) {
@@ -163,27 +147,12 @@ public class HouseholderQR implements IQR<Matrix> {
    * @param compact
    */
   @Override
-  public Matrix getR(Matrix R, boolean compact) {
-    if (R == null) {
-      if (compact) {
-        R = Matrix.create(minLength, numCols);
-      } else
-        R = Matrix.create(numRows, numCols);
+  public Matrix getR(boolean compact) {
+    Matrix R;
+    if (compact) {
+      R = Matrix.create(minLength, numCols);
     } else {
-      if (compact) {
-        if (R.columnCount() != numCols || R.rowCount() != minLength)
-          throw new IllegalArgumentException("Unexpected dimensions");
-      } else {
-        if (R.columnCount() != numCols || R.rowCount() != numRows)
-          throw new IllegalArgumentException("Unexpected dimensions");
-      }
-
-      for (int i = 0; i < R.rowCount(); i++) {
-        int min = Math.min(i, R.columnCount());
-        for (int j = 0; j < min; j++) {
-          R.set(i, j, 0);
-        }
-      }
+      R = Matrix.create(numRows, numCols);
     }
 
     for (int i = 0; i < minLength; i++) {
