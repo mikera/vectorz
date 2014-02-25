@@ -179,6 +179,16 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 	
 	@Override
+	public INDArray getTranspose() {
+		return getTransposeView();
+	}
+	
+	@Override
+	public INDArray getTransposeView() {
+		return NDArray.wrapStrided(data, 0, IntArrays.reverse(shape), IntArrays.reverse(strides));
+	}
+	
+	@Override
 	public INDArray subArray(int[] offsets, int[] shape) {
 		int n=dimensions;
 		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));

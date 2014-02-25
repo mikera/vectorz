@@ -10,7 +10,6 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
-import mikera.arrayz.NDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -274,9 +273,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray getTranspose() {
-		NDArray nd=NDArray.newArray(this.getShape());
-		nd.set(this);
-		return nd.getTransposeView();
+		return getTransposeCopy();
 	}
 	
 	@Override
@@ -286,7 +283,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray getTransposeCopy() {
-		return getTranspose().clone();
+		Array nd=Array.create(this);
+		return nd.getTransposeView();
 	}
 	
 	public final void scale(double d) {
