@@ -12,9 +12,10 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Class representing a join of one or more array subvectors
+ * Class representing a join of one or more AArrayVectors, i.e. the vector is constructed 
+ * from a sequence of fixed chunks of double[] arrays
+ * 
  * @author Mike
- *
  */
 public final class JoinedArrayVector extends ASizedVector {
 	private static final long serialVersionUID = -8470277860344236392L;

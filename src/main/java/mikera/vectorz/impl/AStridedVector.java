@@ -28,7 +28,7 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
-	public final double[] getArray() {
+	public double[] getArray() {
 		return data;
 	}
 	
