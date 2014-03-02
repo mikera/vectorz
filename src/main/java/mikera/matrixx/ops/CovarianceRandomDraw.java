@@ -39,28 +39,32 @@ public class CovarianceRandomDraw {
    *          saved.
    * @param cov The covariance of the stribution. Not modified.
    */
-  // FIMXE
-  /*
-   * public CovarianceRandomDraw( Random rand , Matrix cov ) { r =
-   * Matrix.create(cov.rowCount(),1); CholeskyDecompositionInner_D64 choleky =
-   * new CholeskyDecompositionInner_D64( true);
-   * 
-   * if( choleky.inputModified() ) cov = cov.copy(); if( !choleky.decompose(cov)
-   * ) throw new RuntimeException("Decomposition failed!");
-   * 
-   * A = choleky.getT(); this.rand = rand; }
-   */
+
+  public CovarianceRandomDraw(Random rand, Matrix cov) {
+    r = Matrix.create(cov.rowCount(), 1);
+    CholeskyDecompositionInner_D64 choleky =
+        new CholeskyDecompositionInner_D64(true);
+
+    if (choleky.inputModified())
+      cov = cov.copy();
+    if (!choleky.decompose(cov))
+      throw new RuntimeException("Decomposition failed!");
+
+    A = choleky.getT();
+    this.rand = rand;
+  }
 
   /**
    * Makes a draw on the distribution. The results are added to parameter 'x'
    */
-  // FIXME
-  /*
-   * public void next( Matrix x ) { for( int i = 0; i < r.rowCount(); i++ ) {
-   * r.set(i,0,rand.nextGaussian()); }
-   * 
-   * CommonOps.multAdd(A,r,x); }
-   */
+
+  public void next(Matrix x) {
+    for (int i = 0; i < r.rowCount(); i++) {
+      r.set(i, 0, rand.nextGaussian());
+    }
+
+    CommonOps.multAdd(A, r, x);
+  }
 
   /**
    * Computes the likelihood of the random draw

@@ -19,6 +19,7 @@
 package mikera.matrixx.ops;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.UtilEjml;
 
 /**
  * <p>
@@ -72,16 +73,18 @@ public class NormOps {
    * 
    * @param A The matrix that is to be normalized.
    */
-  // FIXME
-  /*
-   * public static void normalizeF( Matrix A ) { double val = normF(A);
-   * 
-   * if( val == 0 ) return;
-   * 
-   * long size = A.elementCount();
-   * 
-   * for( int i = 0; i < size; i++) { A.div(i , val); } }
-   */
+  public static void normalizeF(Matrix A) {
+    double val = normF(A);
+
+    if (val == 0)
+      return;
+
+    long size = A.elementCount();
+
+    for (int i = 0; i < size; i++) {
+      A.divideAt(i, val);
+    }
+  }
 
   /**
    * <p>
@@ -100,22 +103,25 @@ public class NormOps {
    * @param p p-norm
    * @return The condition number.
    */
-  // FIXME
-  /*
-   * public static double conditionP( Matrix A , double p ) { if( p == 2 ) {
-   * return conditionP2(A); } else if( A.rowCount() == A.columnCount() ){ //
-   * square matrices are the typical case
-   * 
-   * Matrix A_inv = Matrix.create(A.rowCount(),A.columnCount());
-   * 
-   * if( !CommonOps.invert(A,A_inv) ) throw new
-   * IllegalArgumentException("A can't be inverted.");
-   * 
-   * return normP(A,p) * normP(A_inv,p); } else { Matrix pinv =
-   * Matrix.create(A.columnCount(),A.rowCount()); CommonOps.pinv(A,pinv);
-   * 
-   * return normP(A,p) * normP(pinv,p); } }
-   */
+  public static double conditionP(Matrix A, double p) {
+    if (p == 2) {
+      return conditionP2(A);
+    } else if (A.rowCount() == A.columnCount()) {
+      // square matrices are the typical case
+
+      Matrix A_inv = Matrix.create(A.rowCount(), A.columnCount());
+
+      if (!CommonOps.invert(A, A_inv))
+        throw new IllegalArgumentException("A can't be inverted.");
+
+      return normP(A, p) * normP(A_inv, p);
+    } else {
+      Matrix pinv = Matrix.create(A.columnCount(), A.rowCount());
+      CommonOps.pinv(A, pinv);
+
+      return normP(A, p) * normP(pinv, p);
+    }
+  }
 
   /**
    * <p>
@@ -132,27 +138,32 @@ public class NormOps {
    * @param A The matrix.
    * @return The condition number.
    */
-  // FIXME
-  /*
-   * public static double conditionP2( Matrix A ) {
-   * SingularValueDecomposition<DenseMatrix64F> svd =
-   * DecompositionFactory.svd(A.numRows,A.numCols,false,false,true);
-   * 
-   * svd.decompose(A);
-   * 
-   * double[] singularValues = svd.getSingularValues();
-   * 
-   * int n = SingularOps.rank(svd, 1e-12);
-   * 
-   * if( n == 0 ) return 0;
-   * 
-   * double smallest = Double.MAX_VALUE; double largest = Double.MIN_VALUE;
-   * 
-   * for( double s : singularValues ) { if( s < smallest ) smallest = s; if( s >
-   * largest ) largest = s; }
-   * 
-   * return largest/smallest; }
-   */
+  public static double conditionP2(Matrix A) {
+    SingularValueDecomposition<Matrix> svd =
+        DecompositionFactory.svd(A.rowCount(), A.columnCount(), false, false,
+            true);
+
+    svd.decompose(A);
+
+    double[] singularValues = svd.getSingularValues();
+
+    int n = SingularOps.rank(svd, 1e-12);
+
+    if (n == 0)
+      return 0;
+
+    double smallest = Double.MAX_VALUE;
+    double largest = Double.MIN_VALUE;
+
+    for (double s : singularValues) {
+      if (s < smallest)
+        smallest = s;
+      if (s > largest)
+        largest = s;
+    }
+
+    return largest / smallest;
+  }
 
   /**
    * <p>
@@ -287,14 +298,20 @@ public class NormOps {
    * @param p The p value of the p-norm.
    * @return The computed norm.
    */
-  // FIXME
-  /*
-   * public static double normP(Matrix A, double p) { if (p == 1) { return
-   * normP1(A); } else if (p == 2) { return normP2(A); } else if
-   * (Double.isInfinite(p)) { return normPInf(A); } if
-   * (MatrixFeatures.isVector(A)) { return elementP(A, p); } else { throw new
-   * IllegalArgumentException("Doesn't support induced norms yet."); } }
-   */
+  public static double normP(Matrix A, double p) {
+    if (p == 1) {
+      return normP1(A);
+    } else if (p == 2) {
+      return normP2(A);
+    } else if (Double.isInfinite(p)) {
+      return normPInf(A);
+    }
+    if (MatrixFeatures.isVector(A)) {
+      return elementP(A, p);
+    } else {
+      throw new IllegalArgumentException("Doesn't support induced norms yet.");
+    }
+  }
 
   /**
    * An unsafe but faster version of {@link #normP} that calls routines which
@@ -304,14 +321,20 @@ public class NormOps {
    * @param p The p value of the p-norm.
    * @return The computed norm.
    */
-  // FIXME
-  /*
-   * public static double fastNormP(Matrix A, double p) { if (p == 1) { return
-   * normP1(A); } else if (p == 2) { return fastNormP2(A); } else if
-   * (Double.isInfinite(p)) { return normPInf(A); } if
-   * (MatrixFeatures.isVector(A)) { return fastElementP(A, p); } else { throw
-   * new IllegalArgumentException("Doesn't support induced norms yet."); } }
-   */
+  public static double fastNormP(Matrix A, double p) {
+    if (p == 1) {
+      return normP1(A);
+    } else if (p == 2) {
+      return fastNormP2(A);
+    } else if (Double.isInfinite(p)) {
+      return normPInf(A);
+    }
+    if (MatrixFeatures.isVector(A)) {
+      return fastElementP(A, p);
+    } else {
+      throw new IllegalArgumentException("Doesn't support induced norms yet.");
+    }
+  }
 
   /**
    * Computes the p=1 norm. If A is a matrix then the induced norm is computed.
@@ -333,11 +356,13 @@ public class NormOps {
    * @param A Matrix or vector.
    * @return The norm.
    */
-  // FIXME
-  /*
-   * public static double normP2(Matrix A) { if (MatrixFeatures.isVector(A)) {
-   * return normF(A); } else { return inducedP2(A); } }
-   */
+  public static double normP2(Matrix A) {
+    if (MatrixFeatures.isVector(A)) {
+      return normF(A);
+    } else {
+      return inducedP2(A);
+    }
+  }
 
   /**
    * Computes the p=2 norm. If A is a matrix then the induced norm is computed.
@@ -347,11 +372,13 @@ public class NormOps {
    * @param A Matrix or vector.
    * @return The norm.
    */
-  // FIXME
-  /*
-   * public static double fastNormP2(Matrix A) { if (MatrixFeatures.isVector(A))
-   * { return fastNormF(A); } else { return inducedP2(A); } }
-   */
+  public static double fastNormP2(Matrix A) {
+    if (MatrixFeatures.isVector(A)) {
+      return fastNormF(A);
+    } else {
+      return inducedP2(A);
+    }
+  }
 
   /**
    * Computes the p=&#8734; norm. If A is a matrix then the induced norm is
@@ -406,19 +433,19 @@ public class NormOps {
    * @param A Matrix. Not modified.
    * @return The norm.
    */
-  // FIXME
-  /*
-   * public static double inducedP2( Matrix A ) {
-   * SingularValueDecomposition<DenseMatrix64F> svd =
-   * DecompositionFactory.svd(A.numRows,A.numCols,false,false,true);
-   * 
-   * if( !svd.decompose(A) ) throw new RuntimeException("Decomposition failed");
-   * 
-   * double[] singularValues = svd.getSingularValues();
-   * 
-   * // the largest singular value is the induced p2 norm return
-   * UtilEjml.max(singularValues,0,singularValues.length); }
-   */
+  public static double inducedP2(Matrix A) {
+    SingularValueDecomposition<Matrix> svd =
+        DecompositionFactory.svd(A.rowCount(), A.columnCount(), false, false,
+            true);
+
+    if (!svd.decompose(A))
+      throw new RuntimeException("Decomposition failed");
+
+    double[] singularValues = svd.getSingularValues();
+
+    // the largest singular value is the induced p2 norm
+    return UtilEjml.max(singularValues, 0, singularValues.length);
+  }
 
   /**
    * <p>

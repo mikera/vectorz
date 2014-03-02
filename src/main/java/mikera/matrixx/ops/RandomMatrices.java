@@ -21,6 +21,7 @@ package mikera.matrixx.ops;
 import java.util.Random;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.mult.VectorVectorMult;
 
 /**
  * Contains a list of functions for creating random matrices and vectors with
@@ -51,38 +52,51 @@ public class RandomMatrices {
    * @return Array of N random orthogonal vectors of unit length.
    */
   // is there a faster algorithm out there? This one is a bit sluggish
-  // FIXME
-  /*
-   * public static Matrix[] createSpan(int dimen, int numVectors, Random rand) {
-   * if (dimen < numVectors) throw new IllegalArgumentException(
-   * "The number of vectors must be less than or equal to the dimension");
-   * 
-   * Matrix u[] = new Matrix[numVectors];
-   * 
-   * u[0] = createRandom(dimen, 1, -1, 1, rand); NormOps.normalizeF(u[0]);
-   * 
-   * for (int i = 1; i < numVectors; i++) { // System.out.println(" i = "+i);
-   * Matrix a = new Matrix(dimen, 1); Matrix r = null;
-   * 
-   * for (int j = 0; j < i; j++) { // System.out.println("j = "+j); if (j == 0)
-   * r = createRandom(dimen, 1, -1, 1, rand);
-   * 
-   * // find a vector that is normal to vector j // u[i] = (1/2)*(r + Q[j]*r)
-   * a.set(r); VectorVectorMult.householder(-2.0, u[j], r, a); CommonOps.add(r,
-   * a, a); CommonOps.scale(0.5, a);
-   * 
-   * // UtilEjml.print(a);
-   * 
-   * Matrix t = a; a = r; r = t;
-   * 
-   * // normalize it so it doesn't get too small double val = NormOps.normF(r);
-   * if (val == 0 || Double.isNaN(val) || Double.isInfinite(val)) throw new
-   * RuntimeException("Failed sanity check"); CommonOps.divide(val, r); }
-   * 
-   * u[i] = r; }
-   * 
-   * return u; }
-   */
+  public static Matrix[] createSpan(int dimen, int numVectors, Random rand) {
+    if (dimen < numVectors)
+      throw new IllegalArgumentException(
+          "The number of vectors must be less than or equal to the dimension");
+
+    Matrix u[] = new Matrix[numVectors];
+
+    u[0] = RandomMatrices.createRandom(dimen, 1, -1, 1, rand);
+    NormOps.normalizeF(u[0]);
+
+    for (int i = 1; i < numVectors; i++) {
+      // System.out.println(" i = "+i);
+      Matrix a = Matrix.create(dimen, 1);
+      Matrix r = null;
+
+      for (int j = 0; j < i; j++) {
+        // System.out.println("j = "+j);
+        if (j == 0)
+          r = RandomMatrices.createRandom(dimen, 1, -1, 1, rand);
+
+        // find a vector that is normal to vector j
+        // u[i] = (1/2)*(r + Q[j]*r)
+        a.set(r);
+        VectorVectorMult.householder(-2.0, u[j], r, a);
+        CommonOps.add(r, a, a);
+        CommonOps.scale(0.5, a);
+
+        // UtilEjml.print(a);
+
+        Matrix t = a;
+        a = r;
+        r = t;
+
+        // normalize it so it doesn't get too small
+        double val = NormOps.normF(r);
+        if (val == 0 || Double.isNaN(val) || Double.isInfinite(val))
+          throw new RuntimeException("Failed sanity check");
+        CommonOps.divide(val, r);
+      }
+
+      u[i] = r;
+    }
+
+    return u;
+  }
 
   /**
    * Creates a random vector that is inside the specified span.
@@ -91,22 +105,23 @@ public class RandomMatrices {
    * @param rand RNG
    * @return A random vector within the specified span.
    */
-  // FIXME
-  /*
-   * public static Matrix createInSpan(Matrix[] span, double min, double max,
-   * Random rand) { Matrix A = Matrix.create(span.length, 1);
-   * 
-   * Matrix B = Matrix.create(span[0].elementCount(), 1);
-   * 
-   * for (int i = 0; i < span.length; i++) { B.set(span[i]); double val =
-   * rand.nextDouble() * (max - min) + min; CommonOps.scale(val, B);
-   * 
-   * CommonOps.add(A, B, A);
-   * 
-   * }
-   * 
-   * return A; }
-   */
+  public static Matrix createInSpan(Matrix[] span, double min, double max,
+      Random rand) {
+    Matrix A = Matrix.create(span.length, 1);
+
+    Matrix B = Matrix.create(span[0].elementCount(), 1);
+
+    for (int i = 0; i < span.length; i++) {
+      B.set(span[i]);
+      double val = rand.nextDouble() * (max - min) + min;
+      CommonOps.scale(val, B);
+
+      CommonOps.add(A, B, A);
+
+    }
+
+    return A;
+  }
 
   /**
    * <p>
@@ -120,20 +135,21 @@ public class RandomMatrices {
    * @param rand Random number generator used to create matrices.
    * @return A new isometric matrix.
    */
-  // FIXME
-  /*
-   * public static Matrix createOrthogonal(int numRows, int numCols, Random
-   * rand) { if (numRows < numCols) { throw new IllegalArgumentException(
-   * "The number of rows must be more than or equal to the number of columns");
-   * }
-   * 
-   * Matrix u[] = createSpan(numRows, numCols, rand);
-   * 
-   * Matrix ret = Matrix.create(numRows, numCols); for (int i = 0; i < numCols;
-   * i++) { SubmatrixOps.setSubMatrix(u[i], ret, 0, 0, 0, i, numRows, 1); }
-   * 
-   * return ret; }
-   */
+  public static Matrix createOrthogonal(int numRows, int numCols, Random rand) {
+    if (numRows < numCols) {
+      throw new IllegalArgumentException(
+          "The number of rows must be more than or equal to the number of columns");
+    }
+
+    Matrix u[] = createSpan(numRows, numCols, rand);
+
+    Matrix ret = Matrix.create(numRows, numCols);
+    for (int i = 0; i < numCols; i++) {
+      SubmatrixOps.setSubMatrix(u[i], ret, 0, 0, 0, i, numRows, 1);
+    }
+
+    return ret;
+  }
 
   /**
    * Creates a random diagonal matrix where the diagonal elements are selected
@@ -193,23 +209,26 @@ public class RandomMatrices {
    * @param sv Singular values of the matrix.
    * @return A new matrix with the specified singular values.
    */
-  // FIXME
-  /*
-   * public static Matrix createSingularValues(int numRows, int numCols, Random
-   * rand, double... sv) { Matrix U = createOrthogonal(numRows, numRows, rand);
-   * Matrix V = createOrthogonal(numCols, numCols, rand);
-   * 
-   * Matrix S = Matrix.create(numRows, numCols);
-   * 
-   * int min = Math.min(numRows, numCols); min = Math.min(min, sv.length);
-   * 
-   * for (int i = 0; i < min; i++) { S.set(i, i, sv[i]); }
-   * 
-   * Matrix tmp = Matrix.create(numRows, numCols); CommonOps.mult(U, S, tmp);
-   * CommonOps.multTransB(tmp, V, S);
-   * 
-   * return S; }
-   */
+  public static Matrix createSingularValues(int numRows, int numCols,
+      Random rand, double... sv) {
+    Matrix U = RandomMatrices.createOrthogonal(numRows, numRows, rand);
+    Matrix V = RandomMatrices.createOrthogonal(numCols, numCols, rand);
+
+    Matrix S = Matrix.create(numRows, numCols);
+
+    int min = Math.min(numRows, numCols);
+    min = Math.min(min, sv.length);
+
+    for (int i = 0; i < min; i++) {
+      S.set(i, i, sv[i]);
+    }
+
+    Matrix tmp = Matrix.create(numRows, numCols);
+    CommonOps.mult(U, S, tmp);
+    CommonOps.multTransB(tmp, V, S);
+
+    return S;
+  }
 
   /**
    * Creates a new random symmetric matrix that will have the specified real
@@ -220,18 +239,18 @@ public class RandomMatrices {
    * @param eigenvalues Set of real eigenvalues that the matrix will have.
    * @return A random matrix with the specified eigenvalues.
    */
-  // FIXME
-  /*
-   * public static Matrix createEigenvaluesSymm(int num, Random rand, double...
-   * eigenvalues) { Matrix V = createOrthogonal(num, num, rand); Matrix D =
-   * CommonOps.diag(eigenvalues);
-   * 
-   * Matrix temp = Matrix.create(num, num);
-   * 
-   * CommonOps.mult(V, D, temp); CommonOps.multTransB(temp, V, D);
-   * 
-   * return D; }
-   */
+  public static Matrix createEigenvaluesSymm(int num, Random rand,
+      double... eigenvalues) {
+    Matrix V = RandomMatrices.createOrthogonal(num, num, rand);
+    Matrix D = CommonOps.diag(eigenvalues);
+
+    Matrix temp = Matrix.create(num, num);
+
+    CommonOps.mult(V, D, temp);
+    CommonOps.multTransB(temp, V, D);
+
+    return D;
+  }
 
   /**
    * Returns a matrix where all the elements are selected independently from a
@@ -338,20 +357,23 @@ public class RandomMatrices {
    * @param rand Random number generator used to make the matrix.
    * @return The random symmetric positive definite matrix.
    */
-  // FIXME
-  /*
-   * public static Matrix createSymmPosDef(int width, Random rand) { // This is
-   * not formally proven to work. It just seems to work. Matrix a =
-   * Matrix.create(width, 1); Matrix b = Matrix.create(width, width);
-   * 
-   * for (int i = 0; i < width; i++) { a.set(i, 0, rand.nextDouble()); }
-   * 
-   * CommonOps.multTransB(a, a, b);
-   * 
-   * for (int i = 0; i < width; i++) { b.add(i, i, 1); }
-   * 
-   * return b; }
-   */
+  public static Matrix createSymmPosDef(int width, Random rand) {
+    // This is not formally proven to work. It just seems to work.
+    Matrix a = Matrix.create(width, 1);
+    Matrix b = Matrix.create(width, width);
+
+    for (int i = 0; i < width; i++) {
+      a.set(i, 0, rand.nextDouble());
+    }
+
+    CommonOps.multTransB(a, a, b);
+
+    for (int i = 0; i < width; i++) {
+      b.add(i, i, 1);
+    }
+
+    return b;
+  }
 
   /**
    * Creates a random symmetric matrix whose values are selected from an uniform

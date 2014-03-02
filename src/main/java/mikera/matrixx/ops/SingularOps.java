@@ -217,38 +217,50 @@ public class SingularOps {
    * @param tol Threshold for selecting singular values. Try UtilEjml.EPS.
    * @return The null space.
    */
-  // FIXME
-  /*
-   * public static Matrix nullSpace( SingularValueDecomposition<Matrix> svd ,
-   * Matrix nullSpace , double tol ) { int N = svd.numberOfSingularValues();
-   * double s[] = svd.getSingularValues();
-   * 
-   * Matrix V = svd.getV(null,true);
-   * 
-   * if( V.rowCount() != svd.columnCount() ) { throw new
-   * IllegalArgumentException
-   * ("Can't compute the null space using a compact SVD for a matrix of this size."
-   * ); }
-   * 
-   * // first determine the size of the null space int numVectors =
-   * svd.columnCount()-N;
-   * 
-   * for( int i = 0; i < N; i++ ) { if( s[i] <= tol ) { numVectors++; } }
-   * 
-   * // declare output data if( nullSpace == null ) { nullSpace = new
-   * Matrix(numVectors,svd.columnCount()); } else {
-   * nullSpace.reshape(numVectors,svd.columnCount()); }
-   * 
-   * // now extract the vectors int count = 0; for( int i = 0; i < N; i++ ) {
-   * if( s[i] <= tol ) { CommonOps.extract(V, i,i+1,0,
-   * V.columnCount(),nullSpace,count++,0); } } for( int i = N; i <
-   * svd.columnCount(); i++ ) { CommonOps.extract(V, i,i+1,0,
-   * V.columnCount(),nullSpace,count++,0); }
-   * 
-   * CommonOps.transpose(nullSpace);
-   * 
-   * return nullSpace; }
-   */
+  public static Matrix nullSpace(SingularValueDecomposition<Matrix> svd,
+      Matrix nullSpace, double tol) {
+    int N = svd.numberOfSingularValues();
+    double s[] = svd.getSingularValues();
+
+    Matrix V = svd.getV(null, true);
+
+    if (V.rowCount() != svd.numCols()) {
+      throw new IllegalArgumentException(
+          "Can't compute the null space using a compact SVD for a matrix of this size.");
+    }
+
+    // first determine the size of the null space
+    int numVectors = svd.numCols() - N;
+
+    for (int i = 0; i < N; i++) {
+      if (s[i] <= tol) {
+        numVectors++;
+      }
+    }
+
+    // declare output data
+    if (nullSpace == null) {
+      nullSpace = Matrix.create(numVectors, svd.numCols());
+    } else {
+      nullSpace.reshape(numVectors, svd.numCols());
+    }
+
+    // now extract the vectors
+    int count = 0;
+    for (int i = 0; i < N; i++) {
+      if (s[i] <= tol) {
+        CommonOps.extract(V, i, i + 1, 0, V.columnCount(), nullSpace, count++,
+            0);
+      }
+    }
+    for (int i = N; i < svd.numCols(); i++) {
+      CommonOps.extract(V, i, i + 1, 0, V.columnCount(), nullSpace, count++, 0);
+    }
+
+    CommonOps.transpose(nullSpace);
+
+    return nullSpace;
+  }
 
   /**
    * <p>
@@ -264,44 +276,61 @@ public class SingularOps {
    *          Modified.
    * @return Vector in V associated with smallest singular value..
    */
-  // FIXME
-  /*
-   * public static Matrix nullVector( SingularValueDecomposition<Matrix> svd ,
-   * boolean isRight , Matrix nullVector ) { int N =
-   * svd.numberOfSingularValues(); double s[] = svd.getSingularValues();
-   * 
-   * Matrix A = isRight ? svd.getV(null,true) : svd.getU(null,false);
-   * 
-   * if( isRight ) { if( A.rowCount() != svd.columnCount() ) { throw new
-   * IllegalArgumentException
-   * ("Can't compute the null space using a compact SVD for a matrix of this size."
-   * ); }
-   * 
-   * if( nullVector == null ) { nullVector = new Matrix(svd.columnCount(),1); }
-   * } else { if( A.columnCount() != svd.rowCount() ) { throw new
-   * IllegalArgumentException
-   * ("Can't compute the null space using a compact SVD for a matrix of this size."
-   * ); }
-   * 
-   * if( nullVector == null ) { nullVector = new Matrix(svd.rowCount(),1); } }
-   * 
-   * int smallestIndex = -1;
-   * 
-   * if( isRight && svd.columnCount() > svd.rowCount()) smallestIndex =
-   * svd.columnCount()-1; else if( !isRight && svd.columnCount() <
-   * svd.rowCount()) smallestIndex = svd.rowCount()-1; else { // find the
-   * smallest singular value double smallestValue = Double.MAX_VALUE;
-   * 
-   * for( int i = 0; i < N; i++ ) { if( s[i] < smallestValue ) { smallestValue =
-   * s[i]; smallestIndex = i; } } }
-   * 
-   * // extract the null space if( isRight ) SpecializedOps.subvector(A,
-   * smallestIndex, 0, A.rowCount(), true, 0, nullVector); else
-   * SpecializedOps.subvector(A, 0, smallestIndex, A.rowCount(), false, 0,
-   * nullVector);
-   * 
-   * return nullVector; }
-   */
+  public static Matrix nullVector(SingularValueDecomposition<Matrix> svd,
+      boolean isRight, Matrix nullVector) {
+    int N = svd.numberOfSingularValues();
+    double s[] = svd.getSingularValues();
+
+    Matrix A = isRight ? svd.getV(null, true) : svd.getU(null, false);
+
+    if (isRight) {
+      if (A.rowCount() != svd.numCols()) {
+        throw new IllegalArgumentException(
+            "Can't compute the null space using a compact SVD for a matrix of this size.");
+      }
+
+      if (nullVector == null) {
+        nullVector = Matrix.create(svd.numCols(), 1);
+      }
+    } else {
+      if (A.rowCount() != svd.numRows()) {
+        throw new IllegalArgumentException(
+            "Can't compute the null space using a compact SVD for a matrix of this size.");
+      }
+
+      if (nullVector == null) {
+        nullVector = Matrix.create(svd.numRows(), 1);
+      }
+    }
+
+    int smallestIndex = -1;
+
+    if (isRight && svd.numCols() > svd.numRows())
+      smallestIndex = svd.numCols() - 1;
+    else if (!isRight && svd.numCols() < svd.numRows())
+      smallestIndex = svd.numRows() - 1;
+    else {
+      // find the smallest singular value
+      double smallestValue = Double.MAX_VALUE;
+
+      for (int i = 0; i < N; i++) {
+        if (s[i] < smallestValue) {
+          smallestValue = s[i];
+          smallestIndex = i;
+        }
+      }
+    }
+
+    // extract the null space
+    if (isRight)
+      SpecializedOps.subvector(A, smallestIndex, 0, A.rowCount(), true, 0,
+          nullVector);
+    else
+      SpecializedOps.subvector(A, 0, smallestIndex, A.rowCount(), false, 0,
+          nullVector);
+
+    return nullVector;
+  }
 
   /**
    * Extracts the rank of a matrix using a preexisting decomposition.
@@ -311,19 +340,20 @@ public class SingularOps {
    *          singular.
    * @return The rank of the decomposed matrix.
    */
-  // FIXME
-  /*
-   * public static int rank(SingularValueDecomposition svd, double threshold) {
-   * int numRank = 0;
-   * 
-   * double w[] = svd.getSingularValues();
-   * 
-   * int N = svd.numberOfSingularValues();
-   * 
-   * for (int j = 0; j < N; j++) { if (w[j] > threshold) numRank++; }
-   * 
-   * return numRank; }
-   */
+  public static int rank(SingularValueDecomposition svd, double threshold) {
+    int numRank = 0;
+
+    double w[] = svd.getSingularValues();
+
+    int N = svd.numberOfSingularValues();
+
+    for (int j = 0; j < N; j++) {
+      if (w[j] > threshold)
+        numRank++;
+    }
+
+    return numRank;
+  }
 
   /**
    * Extracts the nullity of a matrix using a preexisting decomposition.
@@ -333,18 +363,19 @@ public class SingularOps {
    *          singular.
    * @return The nullity of the decomposed matrix.
    */
-  // FIXME
-  /*
-   * public static int nullity( SingularValueDecomposition svd , double
-   * threshold ) { int ret = 0;
-   * 
-   * double w[]= svd.getSingularValues();
-   * 
-   * int N = svd.numberOfSingularValues();
-   * 
-   * int numCol = svd.columnCount()();
-   * 
-   * for( int j = 0; j < N; j++ ) { if( w[j] <= threshold) ret++; } return ret +
-   * numCol-N; }
-   */
+  public static int nullity(SingularValueDecomposition svd, double threshold) {
+    int ret = 0;
+
+    double w[] = svd.getSingularValues();
+
+    int N = svd.numberOfSingularValues();
+
+    int numCol = svd.numCols();
+
+    for (int j = 0; j < N; j++) {
+      if (w[j] <= threshold)
+        ret++;
+    }
+    return ret + numCol - N;
+  }
 }

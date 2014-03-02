@@ -45,19 +45,18 @@ public class SpecializedOps {
    * @param u A vector. Not modified.
    * @return An orthogonal reflector.
    */
-  // FIXME
-  /*
-   * public static Matrix createReflector(Matrix u) { if
-   * (!MatrixFeatures.isVector(u)) throw new
-   * IllegalArgumentException("u must be a vector");
-   * 
-   * double norm = NormOps.fastNormF(u); double gamma = -2.0 / (norm * norm);
-   * 
-   * Matrix Q = CommonOps.identity((int) u.elementCount());
-   * CommonOps.multAddTransB(gamma, u, u, Q);
-   * 
-   * return Q; }
-   */
+  public static Matrix createReflector(Matrix u) {
+    if (!MatrixFeatures.isVector(u))
+      throw new IllegalArgumentException("u must be a vector");
+
+    double norm = NormOps.fastNormF(u);
+    double gamma = -2.0 / (norm * norm);
+
+    Matrix Q = CommonOps.identity((int) u.elementCount());
+    CommonOps.multAddTransB(gamma, u, u, Q);
+
+    return Q;
+  }
 
   /**
    * <p>
@@ -77,17 +76,15 @@ public class SpecializedOps {
    * @param gamma To produce a reflector gamma needs to be equal to 2/||u||.
    * @return An orthogonal reflector.
    */
-  // FIXME
-  /*
-   * public static Matrix createReflector(Matrix u, double gamma) { if
-   * (!MatrixFeatures.isVector(u)) throw new
-   * IllegalArgumentException("u must be a vector");
-   * 
-   * Matrix Q = CommonOps.identity((int) u.elementCount());
-   * CommonOps.multAddTransB(-gamma, u, u, Q);
-   * 
-   * return Q; }
-   */
+  public static Matrix createReflector(Matrix u, double gamma) {
+    if (!MatrixFeatures.isVector(u))
+      throw new IllegalArgumentException("u must be a vector");
+
+    Matrix Q = CommonOps.identity((int) u.elementCount());
+    CommonOps.multAddTransB(-gamma, u, u, Q);
+
+    return Q;
+  }
 
   /**
    * Creates a copy of a matrix but swaps the rows as specified by the order

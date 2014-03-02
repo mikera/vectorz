@@ -422,6 +422,10 @@ public final class Matrix extends ADenseArrayMatrix {
     data[i] += d;
   }
 
+  public void divideAt(int i, double d) {
+    data[i] /= d;
+  }
+
   @Override
 	public void set(int row, int column, double value) {
 		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException();

@@ -19,6 +19,7 @@
 package mikera.matrixx.ops;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.UtilEjml;
 
 /**
  * <p>
@@ -92,17 +93,17 @@ public class MatrixFeatures {
    * 
    * @return True if it is positive definite and false if it is not.
    */
-  // FIXME
-  /*
-   * public static boolean isPositiveDefinite( Matrix A ) { if( !isSquare(A))
-   * return false;
-   * 
-   * CholeskyDecompositionInner_D64 chol = new
-   * CholeskyDecompositionInner_D64(true); if( chol.inputModified() ) A =
-   * A.copy();
-   * 
-   * return chol.decompose(A); }
-   */
+  public static boolean isPositiveDefinite(Matrix A) {
+    if (!isSquare(A))
+      return false;
+
+    CholeskyDecompositionInner_D64 chol =
+        new CholeskyDecompositionInner_D64(true);
+    if (chol.inputModified())
+      A = A.copy();
+
+    return chol.decompose(A);
+  }
 
   /**
    * <p>
@@ -117,21 +118,25 @@ public class MatrixFeatures {
    * 
    * @return True if it is positive semidefinite and false if it is not.
    */
-  // FIXME
-  /*
-   * public static boolean isPositiveSemidefinite( DenseMatrix64F A ) { if(
-   * !isSquare(A)) return false;
-   * 
-   * EigenDecomposition<DenseMatrix64F> eig =
-   * DecompositionFactory.eig(A.numCols,false); if( eig.inputModified() ) A =
-   * A.copy(); eig.decompose(A);
-   * 
-   * for( int i = 0; i < A.numRows; i++ ) { Complex64F v = eig.getEigenvalue(i);
-   * 
-   * if( v.getReal() < 0 ) return false; }
-   * 
-   * return true; }
-   */
+  public static boolean isPositiveSemidefinite(Matrix A) {
+    if (!isSquare(A))
+      return false;
+
+    EigenDecomposition<DenseMatrix64F> eig =
+        DecompositionFactory.eig(A.numCols, false);
+    if (eig.inputModified())
+      A = A.copy();
+    eig.decompose(A);
+
+    for (int i = 0; i < A.numRows; i++) {
+      Complex64F v = eig.getEigenvalue(i);
+
+      if (v.getReal() < 0)
+        return false;
+    }
+
+    return true;
+  }
 
   /**
    * Checks to see if it is a square matrix. A square matrix has the same number
@@ -435,24 +440,27 @@ public class MatrixFeatures {
    * @param tol Tolerance.
    * @return True if it passes the test.
    */
-  // FIXME
-  /*
-   * public static boolean isOrthogonal( Matrix Q , double tol ) { if(
-   * Q.rowCount() < Q.columnCount() ) { throw new IllegalArgumentException(
-   * "The number of rows must be more than or equal to the number of columns");
-   * }
-   * 
-   * Matrix u[] = CommonOps.columnsToVector(Q, null);
-   * 
-   * for( int i = 0; i < u.length; i++ ) { Matrix a = u[i];
-   * 
-   * for( int j = i+1; j < u.length; j++ ) { double val =
-   * VectorVectorMult.innerProd(a,u[j]);
-   * 
-   * if( !(Math.abs(val) <= tol)) return false; } }
-   * 
-   * return true; }
-   */
+  public static boolean isOrthogonal(Matrix Q, double tol) {
+    if (Q.rowCount() < Q.columnCount()) {
+      throw new IllegalArgumentException(
+          "The number of rows must be more than or equal to the number of columns");
+    }
+
+    Matrix u[] = CommonOps.columnsToVector(Q, null);
+
+    for (int i = 0; i < u.length; i++) {
+      Matrix a = u[i];
+
+      for (int j = i + 1; j < u.length; j++) {
+        double val = VectorVectorMult.innerProd(a, u[j]);
+
+        if (!(Math.abs(val) <= tol))
+          return false;
+      }
+    }
+
+    return true;
+  }
 
   /**
    * Checks to see if the rows of the provided matrix are linearly independent.
@@ -460,18 +468,19 @@ public class MatrixFeatures {
    * @param A Matrix whose rows are being tested for linear independence.
    * @return true if linearly independent and false otherwise.
    */
-  // FIXME
-  /*
-   * public static boolean isRowsLinearIndependent( Matrix A ) { // LU
-   * decomposition LUDecomposition<DenseMatrix64F> lu =
-   * DecompositionFactory.lu(A.rowCount(),A.columnCount()); if(
-   * lu.inputModified() ) A = A.copy();
-   * 
-   * if( !lu.decompose(A)) throw new RuntimeException("Decompositon failed?");
-   * 
-   * // if they are linearly independent it should not be singular return
-   * !lu.isSingular(); }
-   */
+  public static boolean isRowsLinearIndependent(Matrix A) {
+    // LU decomposition
+    LUDecomposition<Matrix> lu =
+        DecompositionFactory.lu(A.rowCount(), A.columnCount());
+    if (lu.inputModified())
+      A = A.copy();
+
+    if (!lu.decompose(A))
+      throw new RuntimeException("Decompositon failed?");
+
+    // if they are linearly independent it should not be singular
+    return !lu.isSingular();
+  }
 
   /**
    * Checks to see if the provided matrix is within tolerance to an identity
@@ -601,10 +610,9 @@ public class MatrixFeatures {
    * @param A Matrix whose rank is to be calculated. Not modified.
    * @return The matrix's rank.
    */
-  // FIXME
-  /*
-   * public static int rank( Matrix A ) { return rank(A, UtilEjml.EPS*100); }
-   */
+  public static int rank( Matrix A ) {
+    return rank(A, UtilEjml.EPS*100);
+  }
 
   /**
    * Computes the rank of a matrix using the specified tolerance.
@@ -614,18 +622,17 @@ public class MatrixFeatures {
    *          value.
    * @return The matrix's rank.
    */
-  // FIXME
-  /*
-   * public static int rank( Matrix A , double threshold ) {
-   * SingularValueDecomposition<DenseMatrix64F> svd =
-   * DecompositionFactory.svd(A.numRows,A.numCols,false,false,true);
-   * 
-   * if( svd.inputModified() ) A = A.copy();
-   * 
-   * if( !svd.decompose(A) ) throw new RuntimeException("Decomposition failed");
-   * 
-   * return SingularOps.rank(svd, threshold); }
-   */
+  public static int rank( Matrix A , double threshold ) {
+    SingularValueDecomposition<Matrix> svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
+
+    if( svd.inputModified() )
+      A = A.copy();
+
+    if( !svd.decompose(A) )
+      throw new RuntimeException("Decomposition failed");
+
+    return SingularOps.rank(svd, threshold);
+  }
 
   /**
    * Computes the nullity of a matrix using the default tolerance.
@@ -633,11 +640,9 @@ public class MatrixFeatures {
    * @param A Matrix whose rank is to be calculated. Not modified.
    * @return The matrix's nullity.
    */
-  // FIXME
-  /*
-   * public static int nullity( Matrix A ) { return nullity(A,
-   * UtilEjml.EPS*100); }
-   */
+  public static int nullity( Matrix A ) {
+    return nullity(A, UtilEjml.EPS*100);
+  }
 
   /**
    * Computes the nullity of a matrix using the specified tolerance.
@@ -647,16 +652,15 @@ public class MatrixFeatures {
    *          value.
    * @return The matrix's nullity.
    */
-  // FIXME
-  /*
-   * public static int nullity( Matrix A , double threshold ) {
-   * SingularValueDecomposition<DenseMatrix64F> svd =
-   * DecompositionFactory.svd(A.numRows,A.numCols,false,false,true);
-   * 
-   * if( svd.inputModified() ) A = A.copy();
-   * 
-   * if( !svd.decompose(A) ) throw new RuntimeException("Decomposition failed");
-   * 
-   * return SingularOps.nullity(svd, threshold); }
-   */
+  public static int nullity( Matrix A , double threshold ) {
+    SingularValueDecomposition<Matrix> svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
+
+    if( svd.inputModified() )
+      A = A.copy();
+
+    if( !svd.decompose(A) )
+      throw new RuntimeException("Decomposition failed");
+
+    return SingularOps.nullity(svd,threshold);
+  }
 }

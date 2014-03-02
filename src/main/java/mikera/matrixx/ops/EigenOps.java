@@ -19,6 +19,8 @@
 package mikera.matrixx.ops;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.UtilEjml;
+import mikera.matrixx.algo.mult.VectorVectorMult;
 
 /**
  * Additional functions related to eigenvalues and eigenvectors of a matrix.
@@ -39,14 +41,13 @@ public class EigenOps {
    * @param eigenVector An eigen vector of A. Not modified.
    * @return The corresponding eigen value.
    */
-  // FIXME
-  /*
-   * public static double computeEigenValue( Matrix A , Matrix eigenVector ) {
-   * double bottom = VectorVectorMult.innerProd(eigenVector,eigenVector); double
-   * top = VectorVectorMult.innerProdA(eigenVector,A,eigenVector);
-   * 
-   * return top/bottom; }
-   */
+
+  public static double computeEigenValue(Matrix A, Matrix eigenVector) {
+    double bottom = VectorVectorMult.innerProd(eigenVector, eigenVector);
+    double top = VectorVectorMult.innerProdA(eigenVector, A, eigenVector);
+
+    return top / bottom;
+  }
 
   /**
    * <p>
@@ -67,73 +68,100 @@ public class EigenOps {
    * @param eigenvalue The eigenvalue in the eigen pair.
    * @return The eigenvector or null if none could be found.
    */
-  // FIXME
-  /*
-   * public static Eigenpair computeEigenVector( Matrix A , double eigenvalue )
-   * { if( A.rowCount() != A.columnCount() ) throw new
-   * IllegalArgumentException("Must be a square matrix.");
-   * 
-   * Matrix M = Matrix.create(A.rowCount(),A.columnCount());
-   * 
-   * Matrix x = Matrix.create(A.rowCount(),1); Matrix b =
-   * Matrix.create(A.rowCount(),1);
-   * 
-   * CommonOps.fill(b, 1);
-   * 
-   * // perturb the eigenvalue slightly so that its not an exact solution the
-   * first time // eigenvalue -= eigenvalue*UtilEjml.EPS*10;
-   * 
-   * double origEigenvalue = eigenvalue;
-   * 
-   * SpecializedOps.addIdentity(A, M, -eigenvalue);
-   * 
-   * double threshold = NormOps.normPInf(A)*UtilEjml.EPS;
-   * 
-   * double prevError = Double.MAX_VALUE; boolean hasWorked = false;
-   * 
-   * LinearSolver<DenseMatrix64F> solver =
-   * LinearSolverFactory.linear(M.numRows);
-   * 
-   * double perp = 0.0001;
-   * 
-   * for( int i = 0; i < 200; i++ ) { boolean failed = false; // if the matrix
-   * is singular then the eigenvalue is within machine precision // of the true
-   * value, meaning that x must also be. if( !solver.setA(M) ) { failed = true;
-   * } else { solver.solve(b,x); }
-   * 
-   * // see if solve silently failed if( MatrixFeatures.hasUncountable(x)) {
-   * failed = true; }
-   * 
-   * if( failed ) { if( !hasWorked ) { // if it failed on the first trial try
-   * perturbing it some more double val = i % 2 == 0 ? 1.0-perp : 1.0 + perp; //
-   * maybe this should be turn into a parameter allowing the user // to
-   * configure the wise of each step
-   * 
-   * eigenvalue = origEigenvalue * Math.pow(val,i/2+1);
-   * SpecializedOps.addIdentity(A, M, -eigenvalue); } else { // otherwise assume
-   * that it was so accurate that the matrix was singular // and return that
-   * result return new Eigenpair(eigenvalue,b); } } else { hasWorked = true;
-   * 
-   * b.set(x); NormOps.normalizeF(b);
-   * 
-   * // compute the residual CommonOps.mult(M,b,x); double error =
-   * NormOps.normPInf(x);
-   * 
-   * if( error-prevError > UtilEjml.EPS*10) { // if the error increased it is
-   * probably converging towards a different // eigenvalue //
-   * CommonOps.set(b,1); prevError = Double.MAX_VALUE; hasWorked = false; double
-   * val = i % 2 == 0 ? 1.0-perp : 1.0 + perp; eigenvalue = origEigenvalue *
-   * Math.pow(val,1); } else { // see if it has converged if(error <= threshold
-   * || Math.abs(prevError-error) <= UtilEjml.EPS) return new
-   * Eigenpair(eigenvalue,b);
-   * 
-   * // update everything prevError = error; eigenvalue =
-   * VectorVectorMult.innerProdA(b,A,b); }
-   * 
-   * SpecializedOps.addIdentity(A, M, -eigenvalue); } }
-   * 
-   * return null; }
-   */
+  public static Eigenpair computeEigenVector(Matrix A, double eigenvalue) {
+    if (A.rowCount() != A.columnCount())
+      throw new IllegalArgumentException("Must be a square matrix.");
+
+    Matrix M = Matrix.create(A.rowCount(), A.columnCount());
+
+    Matrix x = Matrix.create(A.rowCount(), 1);
+    Matrix b = Matrix.create(A.rowCount(), 1);
+
+    CommonOps.fill(b, 1);
+
+    // perturb the eigenvalue slightly so that its not an exact solution the
+    // first time
+    // eigenvalue -= eigenvalue*UtilEjml.EPS*10;
+
+    double origEigenvalue = eigenvalue;
+
+    SpecializedOps.addIdentity(A, M, -eigenvalue);
+
+    double threshold = NormOps.normPInf(A) * UtilEjml.EPS;
+
+    double prevError = Double.MAX_VALUE;
+    boolean hasWorked = false;
+
+    LinearSolver<Matrix> solver = LinearSolverFactory.linear(M.rowCount());
+
+    double perp = 0.0001;
+
+    for (int i = 0; i < 200; i++) {
+      boolean failed = false;
+      // if the matrix is singular then the eigenvalue is within machine
+      // precision
+      // of the true value, meaning that x must also be.
+      if (!solver.setA(M)) {
+        failed = true;
+      } else {
+        solver.solve(b, x);
+      }
+
+      // see if solve silently failed
+      if (MatrixFeatures.hasUncountable(x)) {
+        failed = true;
+      }
+
+      if (failed) {
+        if (!hasWorked) {
+          // if it failed on the first trial try perturbing it some more
+          double val = i % 2 == 0 ? 1.0 - perp : 1.0 + perp;
+          // maybe this should be turn into a parameter allowing the user
+          // to configure the wise of each step
+
+          eigenvalue = origEigenvalue * Math.pow(val, i / 2 + 1);
+          SpecializedOps.addIdentity(A, M, -eigenvalue);
+        } else {
+          // otherwise assume that it was so accurate that the matrix was
+          // singular
+          // and return that result
+          return new Eigenpair(eigenvalue, b);
+        }
+      } else {
+        hasWorked = true;
+
+        b.set(x);
+        NormOps.normalizeF(b);
+
+        // compute the residual
+        CommonOps.mult(M, b, x);
+        double error = NormOps.normPInf(x);
+
+        if (error - prevError > UtilEjml.EPS * 10) {
+          // if the error increased it is probably converging towards a
+          // different
+          // eigenvalue
+          // CommonOps.set(b,1);
+          prevError = Double.MAX_VALUE;
+          hasWorked = false;
+          double val = i % 2 == 0 ? 1.0 - perp : 1.0 + perp;
+          eigenvalue = origEigenvalue * Math.pow(val, 1);
+        } else {
+          // see if it has converged
+          if (error <= threshold || Math.abs(prevError - error) <= UtilEjml.EPS)
+            return new Eigenpair(eigenvalue, b);
+
+          // update everything
+          prevError = error;
+          eigenvalue = VectorVectorMult.innerProdA(b, A, b);
+        }
+
+        SpecializedOps.addIdentity(A, M, -eigenvalue);
+      }
+    }
+
+    return null;
+  }
 
   /**
    * <p>
@@ -151,17 +179,17 @@ public class EigenOps {
    */
   // TODO maybe do the regular power method, estimate the eigenvalue, then shift
   // invert?
-  // FIXME
-  /*
-   * public static Eigenpair dominantEigenpair( DenseMatrix64F A ) {
-   * 
-   * EigenPowerMethod power = new EigenPowerMethod(A.numRows);
-   * 
-   * // eh maybe 0.1 is a good value. who knows. if(
-   * !power.computeShiftInvert(A,0.1) ) return null;
-   * 
-   * return null;//power.getEigenVector(); }
-   */
+
+  public static Eigenpair dominantEigenpair(Matrix A) {
+
+    EigenPowerMethod power = new EigenPowerMethod(A.rowCount());
+
+    // eh maybe 0.1 is a good value. who knows.
+    if (!power.computeShiftInvert(A, 0.1))
+      return null;
+
+    return null;
+  }
 
   /**
    * <p>
@@ -228,19 +256,22 @@ public class EigenOps {
    *          matrix.
    * @return A diagonal matrix containing the eigenvalues.
    */
-  // FIXME
-  /*
-   * public static Matrix createMatrixD( EigenDecomposition eig ) { int N =
-   * eig.getNumberOfEigenvalues();
-   * 
-   * DenseMatrix64F D = new DenseMatrix64F( N , N );
-   * 
-   * for( int i = 0; i < N; i++ ) { Complex64F c = eig.getEigenvalue(i);
-   * 
-   * if( c.isReal() ) { D.set(i,i,c.real); } }
-   * 
-   * return D; }
-   */
+
+  public static Matrix createMatrixD(EigenDecomposition eig) {
+    int N = eig.getNumberOfEigenvalues();
+
+    Matrix D = Matrix.create(N, N);
+
+    for (int i = 0; i < N; i++) {
+      Complex64F c = eig.getEigenvalue(i);
+
+      if (c.isReal()) {
+        D.set(i, i, c.real);
+      }
+    }
+
+    return D;
+  }
 
   /**
    * <p>
@@ -253,20 +284,27 @@ public class EigenOps {
    *          matrix.
    * @return An m by m matrix containing eigenvectors in its columns.
    */
-  // FIXME
-  /*
-   * public static Matrix createMatrixV( EigenDecomposition<Matrix> eig ) { int
-   * N = eig.getNumberOfEigenvalues();
-   * 
-   * DenseMatrix64F V = new DenseMatrix64F( N , N );
-   * 
-   * for( int i = 0; i < N; i++ ) { Complex64F c = eig.getEigenvalue(i);
-   * 
-   * if( c.isReal() ) { DenseMatrix64F v = eig.getEigenVector(i);
-   * 
-   * if( v != null ) { for( int j = 0; j < N; j++ ) { V.set(j,i,v.get(j,0)); } }
-   * } }
-   * 
-   * return V; }
-   */
+
+  public static Matrix createMatrixV(EigenDecomposition<Matrix> eig) {
+    int N = eig.getNumberOfEigenvalues();
+
+    Matrix V = Matrix.create(N, N);
+
+    for (int i = 0; i < N; i++) {
+      Complex64F c = eig.getEigenvalue(i);
+
+      if (c.isReal()) {
+        Matrix v = eig.getEigenVector(i);
+
+        if (v != null) {
+          for (int j = 0; j < N; j++) {
+            V.set(j, i, v.get(j, 0));
+          }
+        }
+      }
+    }
+
+    return V;
+  }
+
 }
