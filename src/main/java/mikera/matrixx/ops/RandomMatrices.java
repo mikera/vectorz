@@ -369,7 +369,7 @@ public class RandomMatrices {
     CommonOps.multTransB(a, a, b);
 
     for (int i = 0; i < width; i++) {
-      b.add(i, i, 1);
+      b.addAt(i, i, 1);
     }
 
     return b;

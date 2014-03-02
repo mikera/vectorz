@@ -20,6 +20,9 @@ package mikera.matrixx.ops;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.UtilEjml;
+import mikera.matrixx.algo.decompose.chol.impl.InnerCholesky;
+import mikera.matrixx.algo.decompose.svd.ISVD;
+import mikera.matrixx.algo.mult.VectorVectorMult;
 
 /**
  * <p>
@@ -97,10 +100,10 @@ public class MatrixFeatures {
     if (!isSquare(A))
       return false;
 
-    CholeskyDecompositionInner_D64 chol =
-        new CholeskyDecompositionInner_D64(true);
+    InnerCholesky chol =
+        new InnerCholesky(true);
     if (chol.inputModified())
-      A = A.copy();
+      A = A.clone();
 
     return chol.decompose(A);
   }
@@ -122,13 +125,13 @@ public class MatrixFeatures {
     if (!isSquare(A))
       return false;
 
-    EigenDecomposition<DenseMatrix64F> eig =
-        DecompositionFactory.eig(A.numCols, false);
+    EigenDecomposition<Matrix> eig =
+        DecompositionFactory.eig(A.columnCount(), false);
     if (eig.inputModified())
-      A = A.copy();
+      A = A.clone();
     eig.decompose(A);
 
-    for (int i = 0; i < A.numRows; i++) {
+    for (int i = 0; i < A.rowCount(); i++) {
       Complex64F v = eig.getEigenvalue(i);
 
       if (v.getReal() < 0)
@@ -473,7 +476,7 @@ public class MatrixFeatures {
     LUDecomposition<Matrix> lu =
         DecompositionFactory.lu(A.rowCount(), A.columnCount());
     if (lu.inputModified())
-      A = A.copy();
+      A = A.clone();
 
     if (!lu.decompose(A))
       throw new RuntimeException("Decompositon failed?");
@@ -623,10 +626,10 @@ public class MatrixFeatures {
    * @return The matrix's rank.
    */
   public static int rank( Matrix A , double threshold ) {
-    SingularValueDecomposition<Matrix> svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
+    ISVD svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
 
     if( svd.inputModified() )
-      A = A.copy();
+      A = A.clone();
 
     if( !svd.decompose(A) )
       throw new RuntimeException("Decomposition failed");
@@ -653,10 +656,10 @@ public class MatrixFeatures {
    * @return The matrix's nullity.
    */
   public static int nullity( Matrix A , double threshold ) {
-    SingularValueDecomposition<Matrix> svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
+    ISVD svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
 
     if( svd.inputModified() )
-      A = A.copy();
+      A = A.clone();
 
     if( !svd.decompose(A) )
       throw new RuntimeException("Decomposition failed");

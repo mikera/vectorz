@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.algo.decompose.impl;
+package mikera.matrixx.algo.decompose.qr.impl;
 
 import mikera.matrixx.IMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.IQR;
+import mikera.matrixx.algo.decompose.qr.impl.QrHelperFunctions;
+import mikera.matrixx.algo.decompose.qr.IQR;
 import mikera.matrixx.ops.CommonOps;
 
 /**

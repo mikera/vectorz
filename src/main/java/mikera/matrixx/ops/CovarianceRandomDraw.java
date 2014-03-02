@@ -19,6 +19,7 @@
 package mikera.matrixx.ops;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.chol.impl.InnerCholesky;
 
 import java.util.Random;
 
@@ -42,11 +43,11 @@ public class CovarianceRandomDraw {
 
   public CovarianceRandomDraw(Random rand, Matrix cov) {
     r = Matrix.create(cov.rowCount(), 1);
-    CholeskyDecompositionInner_D64 choleky =
-        new CholeskyDecompositionInner_D64(true);
+    InnerCholesky choleky =
+        new InnerCholesky(true);
 
     if (choleky.inputModified())
-      cov = cov.copy();
+      cov = cov.clone();
     if (!choleky.decompose(cov))
       throw new RuntimeException("Decomposition failed!");
 

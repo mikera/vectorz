@@ -113,7 +113,7 @@ public class CovarianceOps {
   /**
    * Sets vector to a random value based upon a zero-mean multivariate Gaussian
    * distribution with covariance 'cov'. If repeat calls are made to this class,
-   * consider using {@link org.ejml.ops.CovarianceRandomDraw} instead.
+   * consider using {@link CovarianceRandomDraw} instead.
    * 
    * @param cov The distirbutions covariance. Not modified.
    * @param vector The random vector. Modified.

@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.algo.decompose;
+package mikera.matrixx.algo.decompose.qr;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.IDecompose;
 
 /**
  * <p>
@@ -46,8 +47,8 @@ import mikera.matrixx.Matrix;
  * </ul>
  * </p>
  *
- * @see mikera.matrixx.algo.decompose.impl.HouseholderQR
- * @see mikera.matrixx.algo.decompose.impl.HouseholderColumnQR
+ * @see mikera.matrixx.algo.decompose.qr.impl.HouseholderQR
+ * @see mikera.matrixx.algo.decompose.qr.impl.HouseholderColumnQR
  * 
  * @author Peter Abeles
  */

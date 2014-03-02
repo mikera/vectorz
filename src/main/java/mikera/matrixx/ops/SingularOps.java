@@ -19,6 +19,7 @@
 package mikera.matrixx.ops;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.svd.ISVD;
 
 /**
  * Operations related to singular value decomposition.
@@ -217,8 +218,7 @@ public class SingularOps {
    * @param tol Threshold for selecting singular values. Try UtilEjml.EPS.
    * @return The null space.
    */
-  public static Matrix nullSpace(SingularValueDecomposition<Matrix> svd,
-      Matrix nullSpace, double tol) {
+  public static Matrix nullSpace(ISVD svd, Matrix nullSpace, double tol) {
     int N = svd.numberOfSingularValues();
     double s[] = svd.getSingularValues();
 
@@ -276,8 +276,7 @@ public class SingularOps {
    *          Modified.
    * @return Vector in V associated with smallest singular value..
    */
-  public static Matrix nullVector(SingularValueDecomposition<Matrix> svd,
-      boolean isRight, Matrix nullVector) {
+  public static Matrix nullVector(ISVD svd, boolean isRight, Matrix nullVector) {
     int N = svd.numberOfSingularValues();
     double s[] = svd.getSingularValues();
 
@@ -340,7 +339,7 @@ public class SingularOps {
    *          singular.
    * @return The rank of the decomposed matrix.
    */
-  public static int rank(SingularValueDecomposition svd, double threshold) {
+  public static int rank(ISVD svd, double threshold) {
     int numRank = 0;
 
     double w[] = svd.getSingularValues();
@@ -363,7 +362,7 @@ public class SingularOps {
    *          singular.
    * @return The nullity of the decomposed matrix.
    */
-  public static int nullity(SingularValueDecomposition svd, double threshold) {
+  public static int nullity(ISVD svd, double threshold) {
     int ret = 0;
 
     double w[] = svd.getSingularValues();

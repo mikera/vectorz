@@ -1,6 +1,7 @@
-package mikera.matrixx.algo.decompose.impl;
+package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.qr.impl.HouseholderQR;
 import mikera.matrixx.ops.CommonOps;
 import org.junit.Test;
 

@@ -20,6 +20,7 @@ package mikera.matrixx.ops;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.UtilEjml;
+import mikera.matrixx.algo.decompose.svd.ISVD;
 
 /**
  * <p>
@@ -139,7 +140,7 @@ public class NormOps {
    * @return The condition number.
    */
   public static double conditionP2(Matrix A) {
-    SingularValueDecomposition<Matrix> svd =
+    ISVD svd =
         DecompositionFactory.svd(A.rowCount(), A.columnCount(), false, false,
             true);
 
@@ -434,7 +435,7 @@ public class NormOps {
    * @return The norm.
    */
   public static double inducedP2(Matrix A) {
-    SingularValueDecomposition<Matrix> svd =
+    ISVD svd =
         DecompositionFactory.svd(A.rowCount(), A.columnCount(), false, false,
             true);
 

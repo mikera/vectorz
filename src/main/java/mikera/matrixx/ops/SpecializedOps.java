@@ -37,7 +37,7 @@ public class SpecializedOps {
    * 
    * <p>
    * In practice
-   * {@link org.ejml.alg.dense.mult.VectorVectorMult#householder(double, org.ejml.data.D1Matrix64F, org.ejml.data.D1Matrix64F, org.ejml.data.D1Matrix64F)}
+   * {@link mikera.matrixx.algo.mult.VectorVectorMult#householder(double, Matrix, Matrix, Matrix)}
    * multHouseholder} should be used for performance reasons since there is no
    * need to calculate Q explicitly.
    * </p>
@@ -67,7 +67,7 @@ public class SpecializedOps {
    * 
    * <p>
    * In practice
-   * {@link org.ejml.alg.dense.mult.VectorVectorMult#householder(double, org.ejml.data.D1Matrix64F, org.ejml.data.D1Matrix64F, org.ejml.data.D1Matrix64F)}
+   * {@link mikera.matrixx.algo.mult.VectorVectorMult#householder(double, Matrix, Matrix, Matrix)}
    * multHouseholder} should be used for performance reasons since there is no
    * need to calculate Q explicitly.
    * </p>

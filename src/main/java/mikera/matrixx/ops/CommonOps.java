@@ -634,7 +634,7 @@ public class CommonOps {
             LUDecompositionAlt_D64 alg = new LUDecompositionAlt_D64();
 
             if( alg.inputModified() ) {
-                mat = mat.copy();
+                mat = mat.clone();
             }
 
             if( !alg.decompose(mat) )
@@ -722,7 +722,7 @@ public class CommonOps {
             LinearSolverLu solver = new LinearSolverLu(alg);
 
             if( solver.modifiesA() )
-                mat = mat.copy();
+                mat = mat.clone();
 
             if( !solver.setA(mat))
                 return false;
@@ -751,7 +751,7 @@ public class CommonOps {
     {
         LinearSolver<Matrix> solver = LinearSolverFactory.pseudoInverse(true);
         if( solver.modifiesA())
-            A = A.copy();
+            A = A.clone();
 
         if( !solver.setA(A) )
             throw new IllegalArgumentException("Invert failed, maybe a bug?");
