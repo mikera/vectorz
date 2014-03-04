@@ -21,6 +21,7 @@ package mikera.matrixx.ops;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.UtilEjml;
 import mikera.matrixx.algo.decompose.svd.ISVD;
+import mikera.matrixx.algo.decompose.svd.impl.ImplicitSVD;
 
 /**
  * <p>
@@ -140,9 +141,7 @@ public class NormOps {
    * @return The condition number.
    */
   public static double conditionP2(Matrix A) {
-    ISVD svd =
-        DecompositionFactory.svd(A.rowCount(), A.columnCount(), false, false,
-            true);
+    ISVD svd = new ImplicitSVD(true, false, false, false);
 
     svd.decompose(A);
 
@@ -435,9 +434,7 @@ public class NormOps {
    * @return The norm.
    */
   public static double inducedP2(Matrix A) {
-    ISVD svd =
-        DecompositionFactory.svd(A.rowCount(), A.columnCount(), false, false,
-            true);
+    ISVD svd = new ImplicitSVD(true, false, false, false);
 
     if (!svd.decompose(A))
       throw new RuntimeException("Decomposition failed");

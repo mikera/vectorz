@@ -21,7 +21,10 @@ package mikera.matrixx.ops;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.UtilEjml;
 import mikera.matrixx.algo.decompose.chol.impl.InnerCholesky;
+import mikera.matrixx.algo.decompose.lu.ILU;
+import mikera.matrixx.algo.decompose.lu.impl.AltLU;
 import mikera.matrixx.algo.decompose.svd.ISVD;
+import mikera.matrixx.algo.decompose.svd.impl.ImplicitSVD;
 import mikera.matrixx.algo.mult.VectorVectorMult;
 
 /**
@@ -100,8 +103,7 @@ public class MatrixFeatures {
     if (!isSquare(A))
       return false;
 
-    InnerCholesky chol =
-        new InnerCholesky(true);
+    InnerCholesky chol = new InnerCholesky(true);
     if (chol.inputModified())
       A = A.clone();
 
@@ -473,8 +475,7 @@ public class MatrixFeatures {
    */
   public static boolean isRowsLinearIndependent(Matrix A) {
     // LU decomposition
-    LUDecomposition<Matrix> lu =
-        DecompositionFactory.lu(A.rowCount(), A.columnCount());
+    ILU lu = new AltLU();
     if (lu.inputModified())
       A = A.clone();
 
@@ -613,8 +614,8 @@ public class MatrixFeatures {
    * @param A Matrix whose rank is to be calculated. Not modified.
    * @return The matrix's rank.
    */
-  public static int rank( Matrix A ) {
-    return rank(A, UtilEjml.EPS*100);
+  public static int rank(Matrix A) {
+    return rank(A, UtilEjml.EPS * 100);
   }
 
   /**
@@ -625,13 +626,12 @@ public class MatrixFeatures {
    *          value.
    * @return The matrix's rank.
    */
-  public static int rank( Matrix A , double threshold ) {
-    ISVD svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
-
-    if( svd.inputModified() )
+  public static int rank(Matrix A, double threshold) {
+    ISVD svd = new ImplicitSVD(true, false, false, false);
+    if (svd.inputModified())
       A = A.clone();
 
-    if( !svd.decompose(A) )
+    if (!svd.decompose(A))
       throw new RuntimeException("Decomposition failed");
 
     return SingularOps.rank(svd, threshold);
@@ -643,8 +643,8 @@ public class MatrixFeatures {
    * @param A Matrix whose rank is to be calculated. Not modified.
    * @return The matrix's nullity.
    */
-  public static int nullity( Matrix A ) {
-    return nullity(A, UtilEjml.EPS*100);
+  public static int nullity(Matrix A) {
+    return nullity(A, UtilEjml.EPS * 100);
   }
 
   /**
@@ -655,15 +655,15 @@ public class MatrixFeatures {
    *          value.
    * @return The matrix's nullity.
    */
-  public static int nullity( Matrix A , double threshold ) {
-    ISVD svd = DecompositionFactory.svd(A.rowCount(),A.columnCount(),false,false,true);
+  public static int nullity(Matrix A, double threshold) {
+    ISVD svd = new ImplicitSVD(true, false, false, false);
 
-    if( svd.inputModified() )
+    if (svd.inputModified())
       A = A.clone();
 
-    if( !svd.decompose(A) )
+    if (!svd.decompose(A))
       throw new RuntimeException("Decomposition failed");
 
-    return SingularOps.nullity(svd,threshold);
+    return SingularOps.nullity(svd, threshold);
   }
 }

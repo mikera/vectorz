@@ -21,6 +21,11 @@ package mikera.matrixx.ops;
 import java.util.Random;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.chol.impl.ACholesky;
+import mikera.matrixx.algo.decompose.chol.impl.InnerCholesky;
+import mikera.matrixx.algo.linsol.ILinearSolver;
+import mikera.matrixx.algo.linsol.impl.CholLinearSolver;
+import mikera.matrixx.algo.linsol.impl.SafeLinearSolver;
 
 /**
  * Contains operations specific to covariance matrices.
@@ -98,11 +103,11 @@ public class CovarianceOps {
         cov_inv.data[0] = 1.0 / cov_inv.data[0];
 
     } else {
-      LinearSolver<Matrix> solver =
-          LinearSolverFactory.symmPosDef(cov.rowCount()); // wrap it to make
+      ACholesky decomp = new InnerCholesky(true);
+      ILinearSolver solver = new CholLinearSolver(decomp);// wrap it to make
                                                           // sure the covariance
                                                           // is not modified.
-      solver = new LinearSolverSafe<Matrix>(solver);
+      solver = new SafeLinearSolver(solver);
       if (!solver.setA(cov))
         return false;
       solver.invert(cov_inv);

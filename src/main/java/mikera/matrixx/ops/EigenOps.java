@@ -20,6 +20,7 @@ package mikera.matrixx.ops;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.UtilEjml;
+import mikera.matrixx.algo.linsol.ILinearSolver;
 import mikera.matrixx.algo.mult.VectorVectorMult;
 
 /**
@@ -92,7 +93,7 @@ public class EigenOps {
     double prevError = Double.MAX_VALUE;
     boolean hasWorked = false;
 
-    LinearSolver<Matrix> solver = LinearSolverFactory.linear(M.rowCount());
+    ILinearSolver solver = LinearSolverFactory.linear(M.rowCount());
 
     double perp = 0.0001;
 

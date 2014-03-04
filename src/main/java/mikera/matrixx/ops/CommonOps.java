@@ -542,7 +542,7 @@ public class CommonOps {
         } else {
             Matrix b = Matrix.create(mat.columnCount(),mat.rowCount());
             transpose(mat,b);
-            mat.setReshape(b);
+            mat.reshape(b.rowCount(), b.columnCount());
         }
     }
 
