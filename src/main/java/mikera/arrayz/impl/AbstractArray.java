@@ -791,12 +791,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public INDArray reorder(int dim, int[] order) {
 		if ((dim<0)||(dim>dimensionality())) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
-		if (dim!=0) throw new UnsupportedOperationException("TODO: reorder on non-major dimension not yet supported");
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (int i : order) {
 			al.add(slice(dim,i));
 		}
-		return SliceArray.create(al);
+		if (dim==0) {
+			return SliceArray.create(al);
+		} else {
+			int n=al.size();
+			int[] shp=this.getShapeClone();
+			shp[dim]=n;
+			Array a=Array.newArray(shp);
+			for (int i=0; i<n; i++) {
+				a.slice(dim, i).set(al.get(i));
+			}
+			return a;
+		}
 	}	
 	
 	@Override
