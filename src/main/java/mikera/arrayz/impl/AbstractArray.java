@@ -797,8 +797,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			al.add(slice(dim,i));
 		}
 		return SliceArray.create(al);
-		
 	}	
+	
 	@Override
 	public INDArray reorder(int[] order) {
 		return reorder(0,order);

@@ -1165,6 +1165,19 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
+	public AVector reorder(int[] order) {
+		return reorder(0,order);
+	}	
+	
+	@Override
+	public AVector reorder(int dim, int[] order) {
+		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		Vector result=Vector.createLength(order.length);
+		result.set(this, order);
+		return result;
+	}	
+	
 	/**
 	 * Returns true if this vector is of a view type that references other vectors / data.
 	 */
@@ -1547,11 +1560,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * sets the vector using values indexed from another vector
 	 */
-	public void set(AVector v, Index indexes) {
+	public final void set(AVector v, Index indexes) {
+		set(v,indexes.data);
+	}
+	
+	/**
+	 * sets the vector using values indexed from another vector
+	 */
+	public void set(AVector v, int[] indexes) {
 		int len=length();
-		if (len!=indexes.length()) throw new IllegalArgumentException("Index length must match this vector length.");
+		if (len!=indexes.length) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len ; i++) {
-			unsafeSet(i, v.get(indexes.unsafeGet(i)));
+			unsafeSet(i, v.get(indexes[i]));
 		}
 	}
 	

@@ -13,4 +13,10 @@ public class TestVector {
 		AVector sv2=v.subVector(5, 5);
 		assertEquals(v.getClass(),sv1.join(sv2).getClass());
 	}
+	
+	@Test public void testReorder() {
+		Vector v=Vector.of(1,2,3,4,5);
+		AVector r=v.reorder(new int[] {1,3,4});
+		assertEquals(Vector.of(2,4,5),r);
+	}
 }
