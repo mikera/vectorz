@@ -349,6 +349,18 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Matrixx.createFromVector(asVector(), rows, cols);
 	}
 	
+	@Override
+	public AMatrix reorder(int[] order) {
+		return reorder(0,order);
+	}	
+	
+	@Override
+	public AMatrix reorder(int dim, int[] order) {
+		INDArray o=super.reorder(dim,order);
+		if (o instanceof AMatrix) return (AMatrix)o;
+		return Matrixx.toMatrix(o);
+	}	
+	
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		VectorMatrixMN vm=new VectorMatrixMN(0,cols);
 		for (int i=0; i<rows; i++) {
