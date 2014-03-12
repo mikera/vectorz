@@ -113,6 +113,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public void add(INDArray a);
 	
 	/**
+	 * Adds to a mutable array, indexed by element position. 
+	 * This is an unsafe operation: bounds are not checked
+	 */
+	public void addAt(int i, double v);
+	
+	/**
 	 * Subtracts all the elements of another array from this array, in an elementwise order.
 	 */
 	public void sub(INDArray a);
