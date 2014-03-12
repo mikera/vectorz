@@ -101,6 +101,19 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public AVector reorder(int dim, int[] order) {
+		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		return reorder(order);
+	}	
+	
+	@Override
+	public AVector reorder(int[] order) {
+		int n=order.length;
+		if (n==length) return this;
+		return create(n,value);
+	}	
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		DoubleArrays.add(data, offset, length, value);
 	}
