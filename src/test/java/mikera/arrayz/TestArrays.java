@@ -11,6 +11,7 @@ import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.indexz.Indexz;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
@@ -57,6 +58,15 @@ public class TestArrays {
 		assertEquals(v.length(), r);
 
 		assertEquals(a, a.reshape(shape));
+	}
+	
+	private void testReorder(INDArray a) {
+		if (a.dimensionality()==0) return;
+		INDArray c=a.copy();
+		
+		assertEquals(c,a.reorder(Indexz.createSequence(a.sliceCount()).toArray()));
+		
+		assertEquals(c,a);
 	}
 	
 	private void testSubArray(INDArray a) {
@@ -589,6 +599,7 @@ public class TestArrays {
 		testBoolean(a);
 		testSums(a);
 		testEquals(a);
+		testReorder(a);
 		testIndexedAccess(a);
 		testMathsFunctions(a);
 		testSetElements(a);

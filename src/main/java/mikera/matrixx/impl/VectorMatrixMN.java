@@ -41,26 +41,41 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	protected VectorMatrixMN(AVector[] rows) {
 		this(rows,rows.length,rows[0].length());
 	}
-
+	
 	/**
 	 * Create a matrix from a list of rows
 	 * 
 	 * @param rows
 	 * @return
 	 */
-	public static VectorMatrixMN create(List<AVector> rows) {
+	public static VectorMatrixMN create(List<?> rows) {
 		int rc = rows.size();
 		AVector[] vs = new AVector[rc];
 		for (int i = 0; i < rc; i++) {
-			vs[i] = Vectorz.create(rows.get(i));
+			vs[i] = Vectorz.toVector(rows.get(i));
 		}
 		return VectorMatrixMN.wrap(vs);
+	}
+	
+	public static VectorMatrixMN create(List<?> rows, int[] shape) {
+		int rc = rows.size();
+		AVector[] vs = new AVector[rc];
+		for (int i = 0; i < rc; i++) {
+			vs[i] = Vectorz.toVector(rows.get(i));
+		}
+		return VectorMatrixMN.wrap(vs,shape);
 	}
 		
 	public static VectorMatrixMN wrap(AVector[] rows) {
 		int rc=rows.length;
-		int cc=(rc==0)?0:rows[0].length();
+		int cc=rows[0].length();
 		return new VectorMatrixMN(rows,rc,cc);
+	}
+	
+	public static VectorMatrixMN wrap(AVector[] rows, int[] shape) {
+		int rc=shape[0];
+		if (rows.length!=rc) throw new IllegalArgumentException("Inconsistent row count!");
+		return new VectorMatrixMN(rows,rc,shape[1]);
 	}
 	
 	@Override

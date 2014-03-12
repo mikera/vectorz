@@ -58,6 +58,12 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return new SliceArray<INDArray>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
 	}
 	
+	public static SliceArray<INDArray> create(List<INDArray> slices, int[] shape) {
+		int slen=slices.size();
+		INDArray[] arr=new INDArray[slen];
+		return new SliceArray<INDArray>(shape,slices.toArray(arr));
+	}
+	
 	@Override
 	public int dimensionality() {
 		return shape.length;

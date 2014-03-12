@@ -13,6 +13,7 @@ import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
@@ -790,17 +791,24 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray reorder(int dim, int[] order) {
-		if ((dim<0)||(dim>dimensionality())) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		int dims=dimensionality();
+		if ((dim<0)||(dim>=dims)) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (int i : order) {
 			al.add(slice(dim,i));
 		}
+		int n=al.size();
+		int[] shp=this.getShapeClone();
+		shp[dim]=n;
+
+		if (dims==2) {
+			if (dim==0) {
+				return VectorMatrixMN.create(al,shp);
+			}
+		}
 		if (dim==0) {
-			return SliceArray.create(al);
+			return SliceArray.create(al,shp);
 		} else {
-			int n=al.size();
-			int[] shp=this.getShapeClone();
-			shp[dim]=n;
 			Array a=Array.newArray(shp);
 			for (int i=0; i<n; i++) {
 				a.slice(dim, i).set(al.get(i));
