@@ -678,7 +678,7 @@ public class TestMatrixx {
 		// zero matrices
 		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 2));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(5, 5));
-		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 3));
+		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 3).reorder(new int[] {2,0,1}));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(1, 7));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(1, 0));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(0, 1));
