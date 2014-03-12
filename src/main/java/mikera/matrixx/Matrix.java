@@ -418,7 +418,23 @@ public final class Matrix extends ADenseArrayMatrix {
 		data[(i*cols)+j]+=d;
 	}
 
-	@Override
+  public void addAt(int i, double d) {
+    data[i] += d;
+  }
+
+  public void minusAt(int i, double d) {
+    data[i] -= d;
+  }
+
+  public void divideAt(int i, double d) {
+    data[i] /= d;
+  }
+
+  public void multiplyAt(int i, double d) {
+    data[i] *= d;
+  }
+
+  @Override
 	public void set(int row, int column, double value) {
 		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException();
 		data[(row*cols)+column]=value;
