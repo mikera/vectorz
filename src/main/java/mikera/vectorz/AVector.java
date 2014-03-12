@@ -1340,6 +1340,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		add(-d);
 	}
 	
+	public void subAt(int i, double v) {
+		addAt(i,-v);
+	}
+	
 	/**
 	 * Returns true if this vector is a zero vector (all components zero)
 	 * @return
