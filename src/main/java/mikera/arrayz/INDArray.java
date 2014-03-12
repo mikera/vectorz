@@ -180,6 +180,17 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray reshape(int... shape);
 
 	/**
+	 * Returns a re-ordered array by taking the specified order of slices along a given dimension
+	 */
+	public INDArray reorder(int dimension, int[] order);
+	
+	/**
+	 * Returns a re-ordered array by taking the specified order of slices along dimension 0
+	 */
+	public INDArray reorder(int[] order);
+
+	
+	/**
 	 * Returns rotated view of this array
 	 */
 	public INDArray rotateView(int dimension, int shift);
