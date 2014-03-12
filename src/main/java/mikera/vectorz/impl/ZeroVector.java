@@ -255,6 +255,17 @@ public final class ZeroVector extends ASparseVector {
 		return ZeroVector.create(length+a.length);
 	}
 	
+	@Override
+	public AVector reorder(int[] order) {
+		return createNew(order.length);
+	}	
+	
+	@Override
+	public AVector reorder(int dim, int[] order) {
+		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		return createNew(order.length);
+	}	
+	
 	/**
 	 * readResolve method to ensure we always use the singleton
 	 */
