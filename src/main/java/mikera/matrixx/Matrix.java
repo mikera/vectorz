@@ -422,7 +422,7 @@ public final class Matrix extends ADenseArrayMatrix {
     data[i] += d;
   }
 
-  public void minusAt(int i, double d) {
+  public void subAt(int i, double d) {
     data[i] -= d;
   }
 

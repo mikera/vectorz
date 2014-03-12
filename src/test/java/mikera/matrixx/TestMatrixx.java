@@ -243,7 +243,7 @@ public class TestMatrixx {
 
     m.set(0, 1, 3);
     assertEquals(m.get(0, 1), 3, 0.0);
-    m.minusAt(1, 2);
+    m.subAt(1, 2);
     assertEquals(m.get(0, 1), 1, 0.0);
 
     m.set(1, 1, 4);
