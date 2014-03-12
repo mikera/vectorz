@@ -257,13 +257,15 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector reorder(int[] order) {
-		return createNew(order.length);
+		int n=order.length;
+		if (n==length) return this;
+		return createNew(n);
 	}	
 	
 	@Override
 	public AVector reorder(int dim, int[] order) {
 		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
-		return createNew(order.length);
+		return reorder(order);
 	}	
 	
 	/**
