@@ -10,6 +10,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -191,6 +192,20 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	@Override
 	public SparseRowMatrix getTransposeView() {
 		return SparseRowMatrix.wrap(data,cols,rows);
+	}
+	
+	@Override
+	public AVector innerProduct(AVector a) {
+		return transform(a);
+	}
+	
+	@Override
+	public AVector transform(AVector a) {
+		Vector r=Vector.createLength(rows);
+		for (int i=0; i<cols; i++) {
+			getColumn(i).addMultipleToArray(a.get(i), 0, r.getArray(), 0, rows);
+		}
+		return r;
 	}
 	
 	@Override
