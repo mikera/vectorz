@@ -216,6 +216,24 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	}
 	
 	@Override
+	public AVector innerProduct(AVector a) {
+		AVector r=Vector.createLength(rows);
+		for (int i=0; i<rows; i++) {
+			r.set(i,getRow(i).dotProduct(a));
+		}
+		return r;
+	}
+	
+	@Override
+	public AVector transform(AVector a) {
+		AVector r=Vector.createLength(rows);
+		for (int i=0; i<rows; i++) {
+			r.set(i,getRow(i).dotProduct(a));
+		}
+		return r;
+	}
+	
+	@Override
 	public AMatrix innerProduct(double a) {
 		HashMap<Integer,AVector> ndata=new HashMap<Integer,AVector>();
 		for (Entry<Integer, AVector> eRow : data.entrySet()) {
