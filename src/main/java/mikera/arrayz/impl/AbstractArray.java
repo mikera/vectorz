@@ -257,6 +257,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray innerProduct(AVector a) {
+		return innerProduct((INDArray) a);
+	}
+	
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (Object s:this) {

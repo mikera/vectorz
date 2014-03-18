@@ -216,6 +216,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public AVector innerProduct(AVector a) {
+		return a.innerProduct(get());
+	}
+	
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		a=a.clone();
 		a.scale(get());

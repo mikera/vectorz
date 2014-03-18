@@ -1278,6 +1278,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Multiplications.multiply(this, a);
 	}
 	
+	@Override
 	public AVector innerProduct(AVector v) {
 		if (v instanceof Vector) {
 			return transform((Vector)v);

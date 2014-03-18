@@ -596,6 +596,13 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param data
 	 * @return
 	 */
-	public boolean equalsArray(double[] data, int offset);	
+	public boolean equalsArray(double[] data, int offset);
+
+	/**
+	 * Computes the inner product of this array with a vector
+	 * @param v
+	 * @return
+	 */
+	public INDArray innerProduct(AVector v);	
 	
 }
