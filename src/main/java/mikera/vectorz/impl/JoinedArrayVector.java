@@ -12,7 +12,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Class representing a join of one or more AArrayVectors, i.e. the vector is constructed 
+ * Class representing a join of one or more array segments, i.e. the vector is constructed 
  * from a sequence of fixed chunks of double[] arrays
  * 
  * @author Mike

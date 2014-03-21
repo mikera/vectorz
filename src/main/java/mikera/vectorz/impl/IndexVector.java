@@ -7,6 +7,7 @@ import mikera.vectorz.util.VectorzException;
 
 /**
  * A constrained vector implementation wrapping an integer Index
+ * 
  * @author Mike
  */
 @SuppressWarnings("serial")
