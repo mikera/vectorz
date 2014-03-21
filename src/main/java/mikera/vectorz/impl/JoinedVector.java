@@ -37,19 +37,7 @@ public final class JoinedVector extends AJoinedVector {
 	public static AVector joinVectors(AVector left, AVector right) {
 		int ll=left.length(); if (ll==0) return right;
 		int rl=right.length(); if (rl==0) return left;
-		// balancing in case of nested joined vectors
-		while ((ll>rl*2)&&(left instanceof JoinedVector)) {
-			JoinedVector bigLeft=((JoinedVector)left);
-			left=bigLeft.left;
-			right=joinVectors(bigLeft.right,right);
-			ll=left.length(); rl=right.length();
-		}
-		while ((ll*2<rl)&&(right instanceof JoinedVector)) {
-			JoinedVector bigRight=((JoinedVector)right);
-			left=joinVectors(left,bigRight.left);
-			right=bigRight.right;
-			ll=left.length(); rl=right.length();
-		} 
+
 		return new JoinedVector(left,right);
 	}
 
@@ -152,9 +140,20 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	@Override
-	public AVector join(AVector second) {
-		if (second.length()==0) return this;
-		return JoinedMultiVector.wrap(new AVector[] {left,right,second});
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof JoinedVector) {
+			return join((JoinedVector)a);
+		}
+		return super.tryEfficientJoin(a);
+	}
+	
+	public AVector join(JoinedVector a) {
+		AVector ej=right.tryEfficientJoin(a.left);
+		if (ej==null) {
+			return JoinedMultiVector.wrap(new AVector[] {left,right,a.left,a.right});
+		} else {
+			return JoinedMultiVector.wrap(new AVector[] {left,ej,a.right});
+		}
 	}
 	
 	@Override
