@@ -16,8 +16,8 @@ import mikera.vectorz.util.IntArrays;
  */
 @SuppressWarnings("serial")
 public final class SingleElementVector extends ASparseVector {
-	private final int index;
-	private final double value;
+	final int index;
+	final double value;
 	
 	public SingleElementVector(int componentIndex, int dimensions) {
 		this(componentIndex,dimensions,0.0);
@@ -138,6 +138,14 @@ public final class SingleElementVector extends ASparseVector {
 			return Vectorz.createZeroVector(length);
 		}
 		return super.subVector(offset, length);
+	}
+	
+	@Override
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof ZeroVector) {
+			return SingleElementVector.create(value, index, length+a.length());
+		}
+		return null;
 	}
 	
 	@Override

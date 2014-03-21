@@ -251,6 +251,9 @@ public final class ZeroVector extends ASparseVector {
 		} else if (a instanceof AxisVector) {
 			AxisVector av=(AxisVector)a;
 			return AxisVector.create(av.getAxis()+length, av.length()+length);
+		} else if (a instanceof SingleElementVector) {
+			SingleElementVector sev=(SingleElementVector)a;
+			return SingleElementVector.create(sev.value, length+sev.index, sev.length+length);
 		}
 		return null;
 	}
