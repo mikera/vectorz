@@ -156,6 +156,12 @@ public final class JoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public AVector join(AVector second) {
+		if (second.length()==0) return this;
+		return JoinedMultiVector.wrap(new AVector[] {left,right,second});
+	}
+	
+	@Override
 	public void add(AVector a) {
 		assert(length()==a.length());
 		if (a instanceof JoinedVector) {

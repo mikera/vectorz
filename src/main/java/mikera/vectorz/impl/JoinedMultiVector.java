@@ -541,6 +541,10 @@ public final class JoinedMultiVector extends ASizedVector {
 		}
 		return new JoinedMultiVector(nvecs);
 	}
+	
+	public static AVector wrap(AVector... vecs) {
+		return new JoinedMultiVector(vecs);
+	}
 
 	public static AVector create(AVector... vecs) {
 		return new JoinedMultiVector(vecs.clone());
