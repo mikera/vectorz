@@ -15,23 +15,17 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 @SuppressWarnings("serial")
-public final class RepeatedElementVector extends AConstrainedVector {
-	private final int length;
+public final class RepeatedElementVector extends ASizedVector {
 	private final double value;
 	
 	private RepeatedElementVector(int length, double value) {
-		this.length=length;
+		super(length);
 		this.value=value;
 	}
 	
 	public static RepeatedElementVector create(int length, double value) {
 		if (length<1) throw new IllegalArgumentException("RepeatedElementVector must have at least one element");
 		return new RepeatedElementVector(length,value);
-	}
-
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override
@@ -42,6 +36,11 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	@Override
 	public boolean isMutable() {
 		return false;
+	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return true;
 	}
 	
 	@Override
