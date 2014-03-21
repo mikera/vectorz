@@ -141,6 +141,15 @@ public final class RepeatedElementVector extends ASizedVector {
 		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length,value);
 	}
+	
+	@Override
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof RepeatedElementVector) {
+			RepeatedElementVector ra=(RepeatedElementVector) a;
+			if (ra.value==this.value) return RepeatedElementVector.create(length+ra.length, value);
+		}
+		return null;
+	}
 
 	@Override 
 	public RepeatedElementVector exactClone() {
