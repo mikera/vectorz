@@ -246,7 +246,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public AVector join(AVector second) {
+		AVector ej=tryEfficientJoin(second);
+		if (ej!=null) return ej;
 		return JoinedVector.joinVectors(this,second);
+	}
+	
+	/**
+	 * Attempts to perform an efficient join with a second vector.
+	 * If possible, returns the joined vector. If not, returns null
+	 */
+	public AVector tryEfficientJoin(AVector second) {
+		return null;
 	}
 	
 	@Override

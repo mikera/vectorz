@@ -5,6 +5,7 @@ import java.nio.DoubleBuffer;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * A vector that represents the concatenation of two vectors.
@@ -500,6 +501,12 @@ public final class JoinedVector extends ASizedVector {
 	@Override 
 	public JoinedVector exactClone() {
 		return new JoinedVector(left.exactClone(),right.exactClone());
+	}
+	
+	@Override
+	public void validate() {
+		if (left.tryEfficientJoin(right)!=null) throw new VectorzException("Should have used efficient join!");
+		super.validate();
 	}
 
 }
