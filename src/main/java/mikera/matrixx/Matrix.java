@@ -162,6 +162,12 @@ public final class Matrix extends ADenseArrayMatrix {
 	public Matrix innerProduct(Matrix a) {
 		return Multiplications.multiply(this, a);
 	}
+	
+	@Override
+	public Matrix transposeInnerProduct(Matrix s) {
+		Matrix r= toMatrixTranspose();
+		return Multiplications.multiply(r, s);
+	}
 
 	@Override
 	public Matrix innerProduct(AMatrix a) {

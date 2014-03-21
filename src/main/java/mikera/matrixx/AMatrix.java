@@ -1274,7 +1274,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return transform(v);
 	}
 	
-	public Matrix innerProduct(Matrix a) {
+	public AMatrix innerProduct(Matrix a) {
 		return Multiplications.multiply(this, a);
 	}
 	
@@ -1311,7 +1311,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
-	public Matrix transposeInnerProduct(Matrix s) {
+	public AMatrix transposeInnerProduct(Matrix s) {
 		Matrix r= toMatrixTranspose();
 		return Multiplications.multiply(r, s);
 	}
