@@ -10,6 +10,8 @@ import mikera.vectorz.util.VectorzException;
 /**
  * A vector that represents the concatenation of two vectors.
  * 
+ * Should only be used if the two vectors cannot otherwise be efficiently joined.
+ * 
  * @author Mike
  *
  */
