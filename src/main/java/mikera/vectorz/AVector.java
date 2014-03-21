@@ -237,7 +237,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (length==0) return Vector0.INSTANCE;
 		if (length==len) return this;
 		
-		return new WrappedSubVector(this,offset,length);
+		return WrappedSubVector.wrap(this,offset,length);
 	}
 
 	/**

@@ -16,7 +16,7 @@ public final class WrappedSubVector extends ASizedVector {
 	private final AVector wrapped;
 	private final int offset;
 	
-	public WrappedSubVector(AVector source, int offset, int length) {
+	private WrappedSubVector(AVector source, int offset, int length) {
 		super(length);
 		if (source instanceof WrappedSubVector) {
 			// avoid stacking WrappedSubVectors by using underlying vector
@@ -27,6 +27,10 @@ public final class WrappedSubVector extends ASizedVector {
 			wrapped=source;
 			this.offset=offset;
 		}
+	}
+	
+	public static WrappedSubVector wrap(AVector source, int offset, int length) {
+		return new WrappedSubVector(source,offset,length);
 	}
 	
 	@Override 

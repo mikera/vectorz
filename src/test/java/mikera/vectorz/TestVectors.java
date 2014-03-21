@@ -865,7 +865,7 @@ public class TestVectors {
 		
 		AVector v3 = new Vector3(1.0,2.0,3.0);
 		doGenericTests(v3.subVector(1, 2));
-		doGenericTests(new WrappedSubVector(v3,1,2));
+		doGenericTests(WrappedSubVector.wrap(v3,1,2));
 
 		AVector joined = Vectorz.join(v3, Vectorz.create(data));
 		doGenericTests(joined);
