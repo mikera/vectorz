@@ -13,7 +13,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class JoinedVector extends ASizedVector {
+public final class JoinedVector extends AJoinedVector {
 	private static final long serialVersionUID = -5535850407701653222L;
 	
 	private final AVector left;

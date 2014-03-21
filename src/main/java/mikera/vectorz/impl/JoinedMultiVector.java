@@ -13,7 +13,7 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public final class JoinedMultiVector extends ASizedVector {
+public final class JoinedMultiVector extends AJoinedVector {
 	private static final long serialVersionUID = 6226205676178066609L;
 	
 	private final int n;
