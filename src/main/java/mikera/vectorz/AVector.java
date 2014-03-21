@@ -241,7 +241,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	/**
-	 * Returns a new vector that refers to this vector joined to a second vector
+	 * Returns a new vector that refers to this vector joined to a second vector.
+	 * 
+	 * Optimises the type of the returned vector to be as efficient as possible.
+	 * 
 	 * @param second
 	 * @return
 	 */
@@ -253,7 +256,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Attempts to perform an efficient join with a second vector.
+	 * Attempts to perform an efficient join with a second vector. An efficient join is guaranteed 
+	 * to be better than a simple JoinedVectr(left,right) 
+	 * 
 	 * If possible, returns the joined vector. If not, returns null
 	 */
 	public AVector tryEfficientJoin(AVector second) {
