@@ -48,11 +48,6 @@ public class IndexVector extends ASizedVector {
 	}
 	
 	@Override
-	public void unsafeSet(int i, double value) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
-	
-	@Override
 	public boolean isElementConstrained() {
 		return true;
 	}
