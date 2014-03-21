@@ -18,6 +18,7 @@ import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
+import mikera.vectorz.impl.JoinedMultiVector;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
@@ -935,6 +936,9 @@ public class TestVectors {
 		
 		doGenericTests(new Scalar(1.0).asVector());
 		doGenericTests(Vector.of(1,2,3).slice(1).asVector());
+		
+		AVector jmv1=JoinedMultiVector.create(v4,j5);
+		doGenericTests(jmv1);
 		
 		AVector jav1=JoinedArrayVector.create(v4);
 		AVector jav2=JoinedArrayVector.create(j5);
