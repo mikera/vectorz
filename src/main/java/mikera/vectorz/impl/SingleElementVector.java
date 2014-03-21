@@ -10,7 +10,7 @@ import mikera.vectorz.util.IntArrays;
 
 /**
  * A sparse immutable vector that has a only one element that can be non-zero.
- * All other components are forced to remain at zero, setting them to a non-zero value results in an exception.
+ * 
  * @author Mike
  *
  */
