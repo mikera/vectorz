@@ -280,7 +280,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		if (len!=a.length()) throw new IllegalArgumentException("Vectors must be same length for comparison");
 		for (int i=0; i<len; i++) {
-			double diff=get(i)-a.get(i);
+			double diff=unsafeGet(i)-a.unsafeGet(i);
 			if (diff<0.0) return -1;
 			if (diff>0.0) return 1;
 		}
