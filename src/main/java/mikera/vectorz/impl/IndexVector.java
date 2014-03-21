@@ -2,11 +2,12 @@ package mikera.vectorz.impl;
 
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * A constrained vector implementation wrapping an integer Index
+ * A constrained immutable vector implementation wrapping an integer Index
  * 
  * @author Mike
  */
@@ -43,18 +44,12 @@ public class IndexVector extends ASizedVector {
 
 	@Override
 	public void set(int i, double value) {
-		int v=(int)value;
-		if (v==value) {
-			index.set(i, v);
-		} else {
-			throw new IllegalArgumentException("Can't convert to an integer index value: "+value);
-		}
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
 	public void unsafeSet(int i, double value) {
-		int v=(int)value;
-		index.set(i, v);
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
@@ -64,6 +59,11 @@ public class IndexVector extends ASizedVector {
 	
 	@Override
 	public boolean isFullyMutable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isMutable() {
 		return false;
 	}
 	
