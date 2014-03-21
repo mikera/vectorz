@@ -360,9 +360,9 @@ public final class JoinedMultiVector extends ASizedVector {
 	
 	@Override
 	public double elementMin() {
-		double result=vecs[0].elementMax();
+		double result=vecs[0].elementMin();
 		for (int i=0; i<n; i++) {
-			double m=vecs[i].elementMax();
+			double m=vecs[i].elementMin();
 			if (m<result) result=m;
 		}
 		return result;
