@@ -15,7 +15,6 @@ public final class WrappedSubVector extends ASizedVector {
 
 	private final AVector wrapped;
 	private final int offset;
-	private final int length;
 	
 	public WrappedSubVector(AVector source, int offset, int length) {
 		super(length);
@@ -24,11 +23,9 @@ public final class WrappedSubVector extends ASizedVector {
 			WrappedSubVector v=(WrappedSubVector)source;
 			this.wrapped=v.wrapped;
 			this.offset=offset+v.offset;
-			this.length=length;
 		} else {
 			wrapped=source;
 			this.offset=offset;
-			this.length=length;
 		}
 	}
 	
