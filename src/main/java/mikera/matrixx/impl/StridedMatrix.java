@@ -44,7 +44,7 @@ public final class StridedMatrix extends AStridedMatrix {
 	
 	@Override
 	public AStridedVector getRowView(int i) {
-		return StridedVector.wrap(data, offset+i*rowStride, cols, colStride);
+		return Vectorz.wrapStrided(data, offset+i*rowStride, cols, colStride);
 	}
 	
 	@Override
