@@ -76,6 +76,14 @@ public class IntArrays {
 		return dst;
 	}
 	
+	public static double[] copyIntsToDoubles(int[] src, int srcOffset, double[] dst,
+			int dstOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dst[dstOffset+i]=src[srcOffset+i];
+		}
+		return dst;
+	}
+	
 	public static long[] copyIntsToLongs(int[] src) {
 		long[] dst=new long[src.length];
 		return copyIntsToLongs(src,dst);
@@ -226,4 +234,6 @@ public class IntArrays {
 		System.arraycopy(data, position, nas, position+1, len-position);
 		return nas;
 	}
+
+
 }

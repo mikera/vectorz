@@ -28,6 +28,13 @@ public class IndexVector extends ASizedVector {
 		return new IndexVector(Index.wrap(IntArrays.create(values)));
 	}
 	
+	/**
+	 * Creates an IndexVector wrapping the given immutable index
+	 * 
+	 * WARNING: Index will be used as internal storage for the IndexVector
+	 * @param a
+	 * @return
+	 */
 	public static IndexVector wrap(Index a) {
 		return new IndexVector(a);		
 	}
@@ -58,15 +65,13 @@ public class IndexVector extends ASizedVector {
 	}
 	
 	@Override
-	public boolean isMutable() {
-		return false;
+	public void getElements(double[] data, int offset) {
+		IntArrays.copyIntsToDoubles(index.data,0,data,offset,length);
 	}
 	
 	@Override
-	public void getElements(double[] data, int offset) {
-		for (int i=0; i<length; i++) {
-			data[offset+i]=index.unsafeGet(i);
-		}
+	public boolean isMutable() {
+		return false;
 	}
 
 	@Override
