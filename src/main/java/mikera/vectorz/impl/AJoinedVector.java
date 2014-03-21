@@ -7,4 +7,8 @@ public abstract class AJoinedVector extends ASizedVector {
 		super(length);
 	}
 
+	@Override
+	public boolean isView() {
+		return true;
+	}
 }

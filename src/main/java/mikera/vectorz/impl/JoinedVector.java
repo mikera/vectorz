@@ -54,11 +54,6 @@ public final class JoinedVector extends AJoinedVector {
 	}
 
 	@Override
-	public boolean isView() {
-		return true;
-	}
-
-	@Override
 	public boolean isFullyMutable() {
 		return left.isFullyMutable() && right.isFullyMutable();
 	}

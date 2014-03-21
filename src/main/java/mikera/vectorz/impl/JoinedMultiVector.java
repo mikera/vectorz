@@ -42,11 +42,6 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 
 	@Override
-	public boolean isView() {
-		return true;
-	}
-
-	@Override
 	public boolean isFullyMutable() {
 		for (AVector v:vecs) {
 			if (!(v.isFullyMutable())) return false;
