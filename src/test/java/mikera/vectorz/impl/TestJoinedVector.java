@@ -93,6 +93,12 @@ public class TestJoinedVector {
 		assertEquals(JoinedMultiVector.class, Vectorz.join(Matrixx.createIdentityMatrix(4).getSlices()).getClass());
 		assertEquals(ZeroVector.class, Vectorz.join(ZeroMatrix.create(3, 4).getSlices()).getClass());
 	}
+	
+	@Test public void testJoinedOptimisations() {
+		assertEquals(RangeVector.class, RangeVector.create(1, 3).join(RangeVector.create(4, 7)).getClass());
+		assertEquals(RangeVector.class, RangeVector.create(1, 3).join(RangeVector.create(2, 0)).getClass());
+		assertEquals(RepeatedElementVector.class, RepeatedElementVector.create(1, 2.3).join(RepeatedElementVector.create(2, 2.3)).getClass());
+	}
 
 	
 	@Test public void testJoinedViews() {
