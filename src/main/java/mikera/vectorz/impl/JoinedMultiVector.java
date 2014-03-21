@@ -164,9 +164,31 @@ public final class JoinedMultiVector extends ASizedVector {
 		AVector[] nvecs=new AVector[nn];
 		nvecs[0]=vecs[i1].subVector(start-splits[i1], splits[i1+1]-start);
 		nvecs[nn-1]=vecs[i2].subVector(0, end-splits[i2]);
-		for (int i=1; i<i2; i++) {
+		for (int i=1; i<(i2-i1); i++) {
 			nvecs[i]=vecs[i1+i];
 		}
+		return new JoinedMultiVector(nvecs);
+	}
+	
+	@Override
+	public AVector join(AVector v) {
+		int vl=v.length();
+		if (vl==0) return this;
+		
+		if (v instanceof JoinedMultiVector) return join((JoinedMultiVector)v);
+		
+		AVector[] nvecs=new AVector[n+1];
+		System.arraycopy(vecs, 0, nvecs, 0, n);
+		nvecs[n]=v;
+		
+		return new JoinedMultiVector(nvecs);
+	}
+	
+	public AVector join(JoinedMultiVector v) {
+		AVector[] nvecs=new AVector[n+v.n];
+		System.arraycopy(vecs, 0, nvecs, 0, n);
+		System.arraycopy(v.vecs, 0, nvecs, n, v.n);
+		
 		return new JoinedMultiVector(nvecs);
 	}
 	
