@@ -2,6 +2,10 @@ package mikera.vectorz.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.AVector;
@@ -94,10 +98,21 @@ public class TestJoinedVector {
 		assertEquals(ZeroVector.class, Vectorz.join(ZeroMatrix.create(3, 4).getSlices()).getClass());
 	}
 	
+	@Test public void testMatrixRowJoining() {
+		AMatrix m=Matrixx.createRandomMatrix(5, 5);
+		AMatrix sm=m.subMatrix(1,3,0,5);
+		List<AVector> slices=sm.getSlices();
+		AVector jr=Vectorz.join(slices);
+		assertEquals(ArraySubVector.class, jr.getClass());
+	}
+	
 	@Test public void testJoinedOptimisations() {
 		assertEquals(RangeVector.class, RangeVector.create(1, 3).join(RangeVector.create(4, 7)).getClass());
 		assertEquals(RangeVector.class, RangeVector.create(1, 3).join(RangeVector.create(2, 0)).getClass());
 		assertEquals(RepeatedElementVector.class, RepeatedElementVector.create(1, 2.3).join(RepeatedElementVector.create(2, 2.3)).getClass());
+		assertEquals(JoinedArrayVector.class, Vector.of(1,2).join(Vector.of(3,4)).getClass());
+		assertEquals(Vector0.class, Vector0.INSTANCE.join(Vector0.INSTANCE).getClass());
+		assertEquals(Vector.class, Vector.of(1,2,3).join(Vector0.INSTANCE).getClass());
 	}
 
 	
