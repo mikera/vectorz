@@ -166,17 +166,21 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 	
 	@Override
-	public AVector join(AVector v) {
-		int vl=v.length();
-		if (vl==0) return this;
-		
+	public AVector tryEfficientJoin(AVector v) {
 		if (v instanceof JoinedMultiVector) return join((JoinedMultiVector)v);
+		if (v instanceof JoinedVector) return join((JoinedVector)v);
 		
-		AVector[] nvecs=new AVector[n+1];
-		System.arraycopy(vecs, 0, nvecs, 0, n);
-		nvecs[n]=v;
-		
-		return new JoinedMultiVector(nvecs);
+		AVector ej=vecs[n-1].tryEfficientJoin(v);
+		if (ej!=null) {
+			AVector[] nvecs=vecs.clone();
+			nvecs[n-1]=ej;		
+			return new JoinedMultiVector(nvecs);
+		} else {		
+			AVector[] nvecs=new AVector[n+1];
+			System.arraycopy(vecs, 0, nvecs, 0, n);
+			nvecs[n]=v;	
+			return new JoinedMultiVector(nvecs);
+		}
 	}
 	
 	public AVector join(JoinedMultiVector v) {
@@ -185,6 +189,23 @@ public final class JoinedMultiVector extends AJoinedVector {
 		System.arraycopy(v.vecs, 0, nvecs, n, v.n);
 		
 		return new JoinedMultiVector(nvecs);
+	}
+	
+	public AVector join(JoinedVector v) {
+		AVector ej=vecs[n-1].tryEfficientJoin(v.left);
+		if (ej!=null) {
+			AVector[] nvecs=new AVector[n+1];
+			System.arraycopy(vecs, 0, nvecs, 0, n);
+			nvecs[n-1]=ej;
+			nvecs[n]=v.right;
+			return new JoinedMultiVector(nvecs);
+		} else {
+			AVector[] nvecs=new AVector[n+2];
+			System.arraycopy(vecs, 0, nvecs, 0, n);
+			nvecs[n]=v.left;
+			nvecs[n+1]=v.right;
+			return new JoinedMultiVector(nvecs);
+		}
 	}
 	
 	@Override

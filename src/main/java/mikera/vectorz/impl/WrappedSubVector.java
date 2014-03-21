@@ -105,18 +105,18 @@ public final class WrappedSubVector extends ASizedVector {
 	}
 	
 	@Override
-	public AVector join(AVector a) {
-		if (a instanceof WrappedSubVector) return join((WrappedSubVector)a);
-		return super.join(a);
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof WrappedSubVector) return tryEfficientJoin((WrappedSubVector)a);
+		return null;
 	}
 	
-	public AVector join(WrappedSubVector a) {
+	private AVector tryEfficientJoin(WrappedSubVector a) {
 		if ((a.wrapped==this.wrapped)&&(a.offset==(this.offset+this.length))) {
 			int newLength=this.length+a.length;
 			if ((offset==0)&&(newLength==wrapped.length())) return wrapped;
 			return new WrappedSubVector(wrapped,offset,newLength);
 		}
-		return super.join(a);
+		return null;
 	}
 	
 	@Override

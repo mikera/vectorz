@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
