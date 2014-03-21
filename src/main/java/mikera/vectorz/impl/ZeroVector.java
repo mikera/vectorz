@@ -256,6 +256,14 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof ZeroVector) {
+			return join(a);
+		}
+		return null;
+	}
+	
+	@Override
 	public AVector reorder(int[] order) {
 		int n=order.length;
 		if (n==length) return this;
