@@ -2,6 +2,8 @@ package mikera.vectorz.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
@@ -84,6 +86,11 @@ public class TestJoinedVector {
 		assertEquals(Vector.of(1,2,3,0,0,0,0,0,0,0),t);
 		t.addMultiple(5, v, 2);
 		assertEquals(Vector.of(1,2,3,0,0,2,4,6,0,0),t);
+	}
+	
+	@Test public void testJoinedRows() {
+		assertEquals(Vector.class, Vectorz.join(Matrixx.createRandomMatrix(5, 5).getSlices()).getClass());
+		assertEquals(JoinedMultiVector.class, Vectorz.join(Matrixx.createIdentityMatrix(4).getSlices()).getClass());
 	}
 
 	

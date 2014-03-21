@@ -143,10 +143,15 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public AVector tryEfficientJoin(AVector a) {
+		// efficient join always succeeds
+		
 		if (a instanceof JoinedVector) {
 			return join((JoinedVector)a);
 		}
-		return super.tryEfficientJoin(a);
+		AVector ej=right.tryEfficientJoin(a);
+		if (ej!=null) return new JoinedVector(left,ej);
+		
+		return JoinedMultiVector.wrap(new AVector[] {left,right,a});
 	}
 	
 	public AVector join(JoinedVector a) {

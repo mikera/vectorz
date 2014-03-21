@@ -478,10 +478,10 @@ public final class JoinedArrayVector extends ASizedVector {
 	}
 	
 	@Override
-	public AVector join(AVector v) {
+	public AVector tryEfficientJoin(AVector v) {
 		if (v instanceof JoinedArrayVector) return joinVectors(this,(JoinedArrayVector) v);
 		if (v instanceof AArrayVector) return join((AArrayVector) v);
-		return super.join(v);
+		return super.tryEfficientJoin(v);
 	}
 	
 	public JoinedArrayVector join(AArrayVector v) {
