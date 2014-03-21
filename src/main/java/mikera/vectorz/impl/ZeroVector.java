@@ -240,17 +240,6 @@ public final class ZeroVector extends ASparseVector {
 		return ZeroVector.create(length);
 	}
 	
-	@Override 
-	public AVector join(AVector a) {
-		if (a instanceof ZeroVector) {
-			return join((ZeroVector)a);
-		} else if (a instanceof AxisVector) {
-			AxisVector av=(AxisVector)a;
-			return AxisVector.create(av.getAxis()+length, av.length()+length);
-		}
-		return super.join(a);
-	}
-	
 	public ZeroVector join(ZeroVector a) {
 		return ZeroVector.create(length+a.length);
 	}
@@ -258,7 +247,10 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public AVector tryEfficientJoin(AVector a) {
 		if (a instanceof ZeroVector) {
-			return join(a);
+			return join((ZeroVector)a);
+		} else if (a instanceof AxisVector) {
+			AxisVector av=(AxisVector)a;
+			return AxisVector.create(av.getAxis()+length, av.length()+length);
 		}
 		return null;
 	}

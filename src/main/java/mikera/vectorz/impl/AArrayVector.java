@@ -558,10 +558,10 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 	}
 
 	@Override
-	public AVector join(AVector v) {
+	public AVector tryEfficientJoin(AVector v) {
 		if (v instanceof AArrayVector) return join((AArrayVector) v);
 		if (v instanceof JoinedArrayVector) return join((JoinedArrayVector) v);
-		return super.join(v);
+		return null;
 	}
 
 	public AVector join(AArrayVector v) {
