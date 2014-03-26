@@ -785,6 +785,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	/**
+	 * Returns the dot product of this vector with another vector
+	 * 
+	 * @param v
+	 * @return
+	 */
 	public double dotProduct(AVector v) {
 		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
 		int len=length();
@@ -796,6 +802,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return total;
 	}
 	
+	/**
+	 * Returns the dot product of this vector with a target Vector.
+	 * 
+	 * @param v
+	 * @return
+	 */
 	public double dotProduct(Vector v) {
 		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return dotProduct(v.getArray(), 0);
@@ -806,6 +818,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return dotProduct(v.getArray(), v.getArrayOffset());
 	}
 	
+	/**
+	 * Returns the dotProduct of this vector with the elements of another vector mapped to specified indexes in this vector.
+	 * 
+	 * @param v
+	 * @param ix
+	 * @return
+	 */
 	public double dotProduct(AVector v, Index ix) {
 		int vl=v.length();
 		if (vl!=ix.length()) throw new IllegalArgumentException("Mismatched source vector and index lengths. Index length should be "+vl);
@@ -817,7 +836,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Fast dot product with a double[] array. Performs no bounds checking.
+	 * Fast dot product with a double[] array. Performs no bounds checking. 
+	 * 
+	 * Likely to be faster than other dot product operations
 	 */
 	public double dotProduct(double[] data, int offset) {
 		int len=length();
@@ -828,6 +849,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	/**
+	 * Computes the crossProduct of this vector with another vector, and stores the result in this vector.
+	 * 
+	 * Both vectors must have length 3.
+	 * 
+	 * @param a
+	 */
 	public void crossProduct(AVector a) {
 		if(!((length()==3)&&(a.length()==3))) throw new IllegalArgumentException("Cross product requires length 3 vectors");
 		double x=unsafeGet(0);
@@ -844,6 +872,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		unsafeSet(2,tz);		
 	}
 	
+	/**
+	 * Computes the crossProduct of this vector with another vector, and stores the result in this vector.
+	 * 
+	 * Both vectors must have length 3.
+	 * 
+	 * @param a
+	 */
 	public void crossProduct(Vector3 a) {
 		if(!(length()==3)) throw new IllegalArgumentException("Cross product requires length 3 vectors");
 		double x=unsafeGet(0);
@@ -868,6 +903,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Math.sqrt(magnitudeSquared());
 	}
 	
+	/**
+	 * Returns the squared Euclidean distance to another vector.
+	 * @param v
+	 * @return
+	 */
 	public double distanceSquared(AVector v) {
 		int len=length();
 		double total=0.0;
@@ -878,10 +918,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return total;
 	}
 	
+	/**
+	 * Returns the Euclidean distance to another vector.
+	 * @param v
+	 * @return
+	 */
 	public double distance(AVector v) {
 		return Math.sqrt(distanceSquared(v));
 	}
 	
+	/**
+	 * Returns the distance from this vector to another vector according to the L1 (Taxicab) norm.
+	 * 
+	 * @param v
+	 * @return
+	 */
 	public double distanceL1(AVector v) {
 		int len=length();
 		double total=0.0;
@@ -903,7 +954,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the maximum absolute element of a vector
+	 * Returns the maximum absolute element value of a vector
 	 * @return
 	 */
 	public double maxAbsElement() {
@@ -938,7 +989,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the maximum element of a vector. Synonym for elementMax()
+	 * Returns the maximum element value in a vector. Synonym for elementMax()
 	 * @return
 	 */
 	public final double maxElement() {
@@ -965,7 +1016,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the minimum element of a vector. Synonym for elementMax()
+	 * Returns the minimum element value in a vector. Synonym for elementMin()
 	 */
 	public final double minElement() {
 		return elementMin();
