@@ -1,9 +1,13 @@
 package mikera.arrayz.impl;
 
+import java.util.ArrayList;
+
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
+import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ZeroMatrix;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.DoubleArrays;
@@ -135,6 +139,23 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	@Override
 	public INDArray clone() {
 		return Arrayz.newArray(shape);
+	}
+	
+	@Override
+	public INDArray sparseClone() {
+		switch (dimensionality()) {
+			case 0: return ImmutableScalar.ZERO;
+			case 1: return Vectorz.createSparseMutable(shape[0]);
+			case 2: return Matrixx.createSparseRows(this);
+			default: {
+				ArrayList<INDArray> al=new ArrayList<INDArray>();
+				int n=sliceCount();
+				for (int i=0; i<n; i++) {
+					al.add(slice(i).sparseClone());
+				}
+				return SliceArray.create(al);
+			}
+		}
 	}
 	
 	@Override
