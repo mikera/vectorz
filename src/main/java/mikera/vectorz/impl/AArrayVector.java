@@ -14,7 +14,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Base class for vectors backed by a double[] array with a fixed stride of 1
+ * Base class for mutable dense vectors backed by a double[] array with a fixed stride of 1
  * 
  * The double array can be directly accessed for performance purposes
  * 
