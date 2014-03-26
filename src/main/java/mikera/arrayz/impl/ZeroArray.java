@@ -9,6 +9,12 @@ import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
+/**
+ * Class representing an immutable array filled entirely with zeros.
+ * 
+ * @author Mike
+ *
+ */
 public final class ZeroArray extends AbstractArray<INDArray> implements ISparse {
 	private static final long serialVersionUID = 7355257027343666183L;
 
@@ -95,11 +101,6 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	}
 
 	@Override
-	public INDArray exactClone() {
-		return ZeroArray.create(shape);
-	}
-
-	@Override
 	public double get() {
 		if (shape.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this));
 		return 0.0;
@@ -118,6 +119,21 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 		if ((x<0)||(x>=shape[0])) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
 		if ((y<0)||(y>=shape[1])) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
 		return 0.0;
+	}
+	
+	@Override
+	public ZeroArray getTranspose() {
+		return ZeroArray.wrap(IntArrays.reverse(shape));
+	}
+	
+	@Override
+	public INDArray clone() {
+		return Arrayz.newArray(shape);
+	}
+	
+	@Override
+	public ZeroArray exactClone() {
+		return create(shape);
 	}
 
 }
