@@ -280,5 +280,14 @@ public class IntArrays {
 		return rs;
 	}
 
+	public static boolean validIndex(int[] as, int[] shape) {
+		if (as.length!=shape.length) return false;
+		for (int i=0; i<shape.length; i++) {
+			int a=as[i];
+			if ((a<0)||(a>=shape[i])) return false;
+		}
+		return true;
+	}
+
 
 }

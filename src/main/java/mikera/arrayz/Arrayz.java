@@ -7,9 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import mikera.arrayz.impl.SliceArray;
+import mikera.arrayz.impl.ZeroArray;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.StridedMatrix;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
@@ -17,7 +19,9 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
@@ -252,6 +256,21 @@ public class Arrayz {
 				slices.set(i, slices.get(i).sparseClone());
 			}
 			return SliceArray.create(slices);	
+		}
+	}
+
+	/**
+	 * Creates an immutable zero-filled array of the given shape
+	 * 
+	 * @param shape
+	 * @return
+	 */
+	public static INDArray createZeroArray(int... shape) {
+		switch (shape.length) {
+			case 0: return ImmutableScalar.ZERO;
+			case 1: return ZeroVector.create(shape[0]);
+			case 2: return ZeroMatrix.create(shape[0],shape[1]);
+			default: return ZeroArray.create(shape);
 		}
 	}
 }

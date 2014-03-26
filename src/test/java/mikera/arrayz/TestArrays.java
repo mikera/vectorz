@@ -656,5 +656,13 @@ public class TestArrays {
 		testArray(ImmutableArray.create(Matrixx.createRandomMatrix(4, 5)));
 		testArray(ImmutableArray.create(Vectorz.createUniformRandomVector(4)));
 		testArray(ImmutableArray.create(Scalar.create(4)));
+		
+		// zero array tests
+		testArray(Arrayz.createZeroArray());
+		testArray(Arrayz.createZeroArray(2));
+		testArray(Arrayz.createZeroArray(2,3));
+		testArray(Arrayz.createZeroArray(1,2,3));
+		testArray(Arrayz.createZeroArray(1,2,4,1));
+
 	}
 }
