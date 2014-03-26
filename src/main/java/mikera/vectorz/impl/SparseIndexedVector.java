@@ -675,6 +675,28 @@ public class SparseIndexedVector extends ASparseVector {
 		index=Index.wrap(nixs);
 	}
 	
+	/**
+	 * Include additional indices in the non-sparse index set of this vector.
+	 * 
+	 * Useful to improve performance if subsequent operations will access these indices.
+	 * 
+	 * @param ixs
+	 */
+	public void includeIndices(Index ixs) {
+		includeIndices(ixs.data);
+	}
+	
+	/**
+	 * Include additional indices in the non-sparse index set of this vector.
+	 * 
+	 * Useful to improve performance if subsequent operations will access these indices.
+	 * 
+	 * @param ixs
+	 */
+	public void includeIndices(AVector v) {
+		includeIndices(v.nonSparseIndexes());
+	}
+	
 	public SparseIndexedVector cloneIncludingIndices(int [] ixs) {
 		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
 		int nl=nixs.length;
