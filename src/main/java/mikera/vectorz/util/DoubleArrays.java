@@ -143,7 +143,8 @@ public final class DoubleArrays {
 	public static int nonZeroCount(double[] data, int offset, int length) {
 		int result = 0;
 		for (int i=0; i<length; i++) {
-			if (data[offset+i]!=0.0) result++;
+			if (data[offset+i]==0.0) continue;
+			result++;
 		}
 		return result;
 	}

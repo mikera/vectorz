@@ -510,11 +510,31 @@ public class SparseIndexedVector extends ASparseVector {
 		data=new double[nz];
 		int di=0;
 		for (int i=0; i<length; i++) {
-			double x=array[i];
-			if (x!=0.0) {
-				ixs[di]=i;
-				data[di++]=x;
-			}
+			double x=array[offset+i];
+			if (x==0.0) continue;
+			ixs[di]=i;
+			data[di]=x;
+			di++;
+		}
+		index=Index.wrap(ixs);
+	}
+	
+	@Override public void setElements(double[] array, int offset, int length) {
+		if (length>=this.length) {
+			setElements(array,offset);
+			return;
+		}
+		
+		int nz=DoubleArrays.nonZeroCount(array, offset, length);
+		int[] ixs=new int[nz];
+		data=new double[nz];
+		int di=0;
+		for (int i=0; i<length; i++) {
+			double x=array[offset+i];
+			if (x==0.0) continue;
+			ixs[di]=i;
+			data[di]=x;
+			di++;
 		}
 		index=Index.wrap(ixs);
 	}
