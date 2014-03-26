@@ -500,4 +500,14 @@ public final class DoubleArrays {
 		return rs;
 	}
 
+	public static int[] nonZeroIndices(double[] data, int offset, int length) {
+		int n=DoubleArrays.nonZeroCount(data, offset, length);
+		int[] rs=new int[n];
+		int di=0;
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=0.0) rs[di++]=i;
+		}
+		return rs;
+	}
+
 }
