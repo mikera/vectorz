@@ -30,6 +30,12 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
 /**
  * Abstract base class for INDArray implementations
+ * 
+ * Contains generic implementations for most INDArray operations, enabling new INDArray implementations
+ * to inherit these (at least until more optimised implementations can be written).
+ * 
+ * Most INDArray instances should ultimately inherit from AbstractArray
+ * 
  * @author Mike
  * @param <T> The type of array slices
  */
