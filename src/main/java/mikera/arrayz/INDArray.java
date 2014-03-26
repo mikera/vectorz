@@ -451,6 +451,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public void square();
 	
 	/**
+	 * Squares all elements of the array, returning a new array
+	 */
+	public INDArray squareCopy();
+	
+	/**
 	 * Computes the square root of all elements in the array
 	 */
 	public void sqrt();
