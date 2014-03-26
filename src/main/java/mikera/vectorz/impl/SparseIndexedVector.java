@@ -165,30 +165,32 @@ public class SparseIndexedVector extends ASparseVector {
 			add((ASparseVector)v);
 			return;
 		}
-		super.add(v);
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]+=v.unsafeGet(index.get(i));
+		}
 	}
 	
 	@Override
 	public void add(ASparseVector v) {
-		Index ni=v.nonSparseIndexes();
-		ni=ni.includeSorted(index);
-		int n=ni.length();
-		double[] nv=new double[n];
-		for (int i=0; i<n; i++) {
-			int ii=ni.get(i);
-			nv[i]=unsafeGet(ii)+v.unsafeGet(ii);
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]+=v.unsafeGet(index.get(i));
 		}
-		index=ni;
-		data=nv;
 	}
 	
 	@Override
 	public void multiply (double d) {
-		DoubleArrays.multiply(data, d);
+		if (d==0.0) {
+			data=DoubleArrays.EMPTY;
+			index=Index.EMPTY;
+		} else {
+			DoubleArrays.multiply(data, d);
+		}
 	}
 	
 	@Override
-	public void multiply (AVector v) {
+	public void multiply(AVector v) {
 		if (v instanceof ADenseArrayVector) {
 			multiply((ADenseArrayVector)v);
 			return;
@@ -403,7 +405,7 @@ public class SparseIndexedVector extends ASparseVector {
 		double result=0.0;
 		double[] tdata=this.data;
 		int[] ixs=index.data;
-		for (int j=0; j<this.data.length; j++) {
+		for (int j=0; j<tdata.length; j++) {
 			result+=tdata[j]*data[offset+ixs[j]];
 		}
 		return result;
