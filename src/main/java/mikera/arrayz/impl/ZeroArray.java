@@ -2,13 +2,14 @@ package mikera.arrayz.impl;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.arrayz.ISparse;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
-public final class ZeroArray extends AbstractArray<INDArray> {
+public final class ZeroArray extends AbstractArray<INDArray> implements ISparse {
 	private static final long serialVersionUID = 7355257027343666183L;
 
 	private final int[] shape; 
@@ -28,6 +29,11 @@ public final class ZeroArray extends AbstractArray<INDArray> {
 	@Override
 	public int dimensionality() {
 		return shape.length;
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		return 0;
 	}
 
 	@Override
