@@ -233,12 +233,13 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		if ((start<0)||(start+length>this.length)) {
+		int end=start+length;
+		if ((start<0)||(end>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
 		}
 		if (length==this.length) return this;
 		
-		if ((start<=getAxis())&&(start+length>getAxis())) {
+		if ((start<=getAxis())&&(end>getAxis())) {
 			return AxisVector.create(getAxis()-start,length);
 		} else {
 			return Vectorz.createZeroVector(length);
