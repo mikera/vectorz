@@ -6,6 +6,7 @@ import mikera.arrayz.ISparse;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
@@ -50,6 +51,27 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	@Override
 	public double get(int... indexes) {
 		if (!IntArrays.validIndex(indexes,shape)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, indexes));
+		return 0.0;
+	}
+
+	@Override
+	public double get() {
+		if (shape.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this));
+		return 0.0;
+	}
+
+	@Override
+	public double get(int x) {
+		if (shape.length!=1) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this));
+		if ((x<0)||(x>=shape[0])) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x));
+		return 0.0;
+	}
+
+	@Override
+	public double get(int x, int y) {
+		if (shape.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this));
+		if ((x<0)||(x>=shape[0])) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
+		if ((y<0)||(y>=shape[1])) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
 		return 0.0;
 	}
 
@@ -99,31 +121,15 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	public boolean isZero() {
 		return true;
 	}
-
-	@Override
-	public double get() {
-		if (shape.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this));
-		return 0.0;
-	}
-
-	@Override
-	public double get(int x) {
-		if (shape.length!=1) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this));
-		if ((x<0)||(x>=shape[0])) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x));
-		return 0.0;
-	}
-
-	@Override
-	public double get(int x, int y) {
-		if (shape.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this));
-		if ((x<0)||(x>=shape[0])) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
-		if ((y<0)||(y>=shape[1])) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
-		return 0.0;
-	}
 	
 	@Override
 	public ZeroArray getTranspose() {
 		return ZeroArray.wrap(IntArrays.reverse(shape));
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.isZero(data, offset, (int)elementCount());
 	}
 	
 	@Override

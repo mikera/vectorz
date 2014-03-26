@@ -256,6 +256,12 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public ZeroMatrix getTransposeView() {
+		if (cols==rows) return this;
+		return ZeroMatrix.create(cols, rows);
+	}
+	
+	@Override
 	public Matrix toMatrix() {
 		return Matrix.create(rows, cols);
 	}
