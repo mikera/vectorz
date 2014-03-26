@@ -416,7 +416,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void setElements(double[] values, int offset);
 	
 	/**
-	 * Sets all elements in an array using the given double values
+	 * Sets elements in an array using the given double values
 	 */
 	public void setElements(double[] values, int offset, int length);
 
@@ -426,27 +426,27 @@ public interface INDArray extends Cloneable, Serializable {
 	public void getElements(double[] dest, int offset);
 	
 	/**
-	 * Scales all elements of the array by a given double value
+	 * Scales all elements of the array in place by a given double value
 	 */
 	public void scale(double d);
 	
 	/**
-	 * Scales all elements of the array by a given double value and adds a constant vale
+	 * Scales all elements of the array by a given double value and adds a constant value
 	 */
 	public void scaleAdd(double factor, double constant);
 	
 	/**
-	 * Multiplies all elements of the array by a given double value
+	 * Multiplies all elements of the array in place by a given double value
 	 */
 	public void multiply(double d);
 	
 	/**
-	 * Raises all elements of the array to a specified power
+	 * Raises all elements of the array to a specified power in place
 	 */
 	public void pow(double exponent);
 	
 	/**
-	 * Squares all elements of the array
+	 * Squares all elements of the array in place
 	 */
 	public void square();
 	
