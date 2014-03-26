@@ -1149,10 +1149,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		setElements(data,0,length());
 	}
 	
+	@Override
 	public void setElements(double[] data,int offset) {
 		setElements(data,offset,length());
 	}
 	
+	@Override
 	public void set(INDArray a) {
 		if (a instanceof AVector) {set((AVector)a); return;}
 		if (a.dimensionality()==1) {

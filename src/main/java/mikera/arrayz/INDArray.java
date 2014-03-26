@@ -413,6 +413,11 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Sets all elements in an array using the given double values
 	 */
+	public void setElements(double[] values, int offset);
+	
+	/**
+	 * Sets all elements in an array using the given double values
+	 */
 	public void setElements(double[] values, int offset, int length);
 
 	/**

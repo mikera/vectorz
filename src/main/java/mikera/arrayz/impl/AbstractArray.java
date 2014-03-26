@@ -182,6 +182,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void setElements(double[] values, int offset) {
+		setElements(values,offset,(int)elementCount());
+	}
+	
+	@Override
 	public void setElements(double[] values, int offset, int length) {
 		int n=sliceCount();
 		int ss=(int)(slice(0).elementCount());
