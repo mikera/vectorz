@@ -136,6 +136,18 @@ public class SparseIndexedVector extends ASparseVector {
 		return wrap(length,ixs,vals);
 	}
 	
+	public static SparseIndexedVector create(SparseHashedVector source) {
+		int length = source.length();
+		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
+		Index ixs=source.nonSparseIndexes();
+		int n=ixs.length();
+		double[] vals=new double[n];
+		for (int i=0; i<n; i++) {
+			vals[i]=source.unsafeGet(ixs.unsafeGet(i));
+		}
+		return wrap(length,ixs,vals);
+	}
+	
 	/** Creates a SparseIndexedVector from a row of an existing matrix */
 	public static AVector createFromRow(AMatrix m, int row) {
 		if (m instanceof AVectorMatrix) return create(m.getRow(row));
