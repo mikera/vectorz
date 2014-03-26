@@ -644,6 +644,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}		
 	}
 	
+	@Override
+	public AVector squareCopy() {
+		AVector r=clone();
+		r.square();
+		return r;
+	}
+	
 	public void tanh() {
 		int len=length();
 		for (int i=0; i<len; i++) {

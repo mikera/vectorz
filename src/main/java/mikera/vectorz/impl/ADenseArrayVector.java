@@ -8,6 +8,7 @@ import mikera.arrayz.impl.IDenseArray;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -420,6 +421,13 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	@Override
 	public void square() {
 		DoubleArrays.square(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
+	public Vector squareCopy() {
+		double[] ds=toDoubleArray();
+		DoubleArrays.square(ds);
+		return Vector.wrap(ds);
 	}
 
 	@Override

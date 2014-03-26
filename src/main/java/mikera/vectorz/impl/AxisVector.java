@@ -55,6 +55,11 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector squareCopy() {
+		return this;
+	}
+	
+	@Override
 	public void abs() {
 		// no effect
 	}

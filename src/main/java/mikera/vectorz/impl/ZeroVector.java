@@ -299,6 +299,11 @@ public final class ZeroVector extends ASparseVector {
 	public int[] nonZeroIndices() {
 		return IntArrays.EMPTY_INT_ARRAY;
 	}
+	
+	@Override
+	public AVector squareCopy() {
+		return this;
+	}
 
 	@Override
 	public boolean includesIndex(int i) {
