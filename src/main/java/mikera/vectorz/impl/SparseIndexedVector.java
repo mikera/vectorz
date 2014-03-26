@@ -499,12 +499,14 @@ public class SparseIndexedVector extends ASparseVector {
 		}		
 	}
 	
-	@Override public void getElements(double[] array, int offset) {
+	@Override 
+	public void getElements(double[] array, int offset) {
 		Arrays.fill(array,offset,offset+length,0.0);
 		copySparseValuesTo(array,offset);
 	}
 	
-	@Override public void setElements(double[] array, int offset) {
+	@Override 
+	public void setElements(double[] array, int offset) {
 		int nz=DoubleArrays.nonZeroCount(array, offset, length);
 		int[] ixs=new int[nz];
 		data=new double[nz];
@@ -519,7 +521,8 @@ public class SparseIndexedVector extends ASparseVector {
 		index=Index.wrap(ixs);
 	}
 	
-	@Override public void setElements(double[] array, int offset, int length) {
+	@Override 
+	public void setElements(double[] array, int offset, int length) {
 		if (length>=this.length) {
 			setElements(array,offset);
 			return;
@@ -565,6 +568,11 @@ public class SparseIndexedVector extends ASparseVector {
 	public void set(AVector v) {
 		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		
+		if (v instanceof ADenseArrayVector) {
+			set((ADenseArrayVector)v);
+			return;
+		}
+		
 		int nz=(int) v.nonZeroCount();
 		if (nz!=data.length) {
 			data=new double[nz];
@@ -579,6 +587,12 @@ public class SparseIndexedVector extends ASparseVector {
 				di++;
 			}
 		}
+	}
+	
+	@Override
+	public void set(ADenseArrayVector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		setElements(v.getArray(),v.getArrayOffset());
 	}
 
 	@Override

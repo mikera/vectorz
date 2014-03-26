@@ -1134,11 +1134,24 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Sets the vector to equal the value of another vector
 	 */
 	public void set(AVector src) {
-		int len=length();
-		if (src.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+src.length());
-		for (int i=0; i<len; i++) {
-			unsafeSet(i,src.unsafeGet(i));
+		if (src instanceof ADenseArrayVector) {
+			set((ADenseArrayVector)src);
+		} else {
+			int len=length();
+			if (src.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+src.length());
+			for (int i=0; i<len; i++) {
+				unsafeSet(i,src.unsafeGet(i));
+			}
 		}
+	}
+	
+	/**
+	 * Sets the vector equal to the value of an ADenseArrayVector
+	 * @param v
+	 */
+	public void set(ADenseArrayVector v) {
+		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		setElements(v.getArray(),v.getArrayOffset());
 	}
 	
 	@Override
