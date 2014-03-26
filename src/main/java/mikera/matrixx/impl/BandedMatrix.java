@@ -9,6 +9,9 @@ import mikera.vectorz.util.VectorzException;
 
 /**
  * Sparse banded matrix implementation.
+ * 
+ * Composed of a list of diagonal bands.
+ * 
  * @author Mike
  *
  */
@@ -130,6 +133,7 @@ public class BandedMatrix extends ABandedMatrix {
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
+		// fast transform is possible!
 		if (!(dest instanceof Vector)) {
 			super.transform(source, dest);
 		} else if ((source instanceof Vector )) {
@@ -147,6 +151,7 @@ public class BandedMatrix extends ABandedMatrix {
 	
 	@Override
 	public void transform(Vector source, Vector dest) {
+		// fast transform is possible!
 		Vector t=dest;
 		t.fill(0.0);
 		double[] data=dest.getArray();
