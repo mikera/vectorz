@@ -498,7 +498,7 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public AVector clone() {
-		return exactClone();
+		return sparseClone();
 	}
 	
 	@Override
@@ -507,8 +507,9 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
-	public SparseHashedVector sparseClone() {
-		return exactClone();
+	public SparseIndexedVector sparseClone() {
+		// by default switch to SparsIndexedVector: will normally be faster
+		return SparseIndexedVector.create(this);
 	}
 	
 	@Override
