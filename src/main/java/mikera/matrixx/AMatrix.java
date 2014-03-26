@@ -39,7 +39,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -439,8 +439,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof AArrayVector) {
-			transformInPlace((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			transformInPlace((ADenseArrayVector)v);
 			return;
 		}
 		double[] temp = new double[v.length()];
@@ -456,7 +456,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		v.setElements(temp);
 	}
 	
-	public void transformInPlace(AArrayVector v) {
+	public void transformInPlace(ADenseArrayVector v) {
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();

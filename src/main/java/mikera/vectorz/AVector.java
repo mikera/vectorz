@@ -18,7 +18,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BroadcastVectorMatrix;
 import mikera.randomz.Hash;
 import mikera.util.Maths;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
@@ -300,8 +300,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public boolean equals(AVector v) {
-		if (v instanceof AArrayVector) {
-			return equals((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			return equals((ADenseArrayVector)v);
 		}
 		if (this==v) return true;
 		int len=length();
@@ -314,7 +314,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return true;
 	}
 	
-	public boolean equals(AArrayVector v) {
+	public boolean equals(ADenseArrayVector v) {
 		if (length()!=v.length()) return false;
 		return equalsArray(v.getArray(),v.getArrayOffset());
 	}
@@ -428,8 +428,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
 	public void copyTo(AVector dest, int destOffset) {
-		if (dest instanceof AArrayVector) {
-			copyTo((AArrayVector) dest,destOffset);
+		if (dest instanceof ADenseArrayVector) {
+			copyTo((ADenseArrayVector) dest,destOffset);
 			return;
 		}
 		int len = length();
@@ -442,7 +442,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
-	public void copyTo(AArrayVector dest, int destOffset) {
+	public void copyTo(ADenseArrayVector dest, int destOffset) {
 		getElements(dest.getArray(),dest.getArrayOffset()+destOffset);
 	}
 	
@@ -534,8 +534,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void multiply(AVector v) {
-		if (v instanceof AArrayVector) {
-			multiply((AArrayVector) v);
+		if (v instanceof ADenseArrayVector) {
+			multiply((ADenseArrayVector) v);
 			return;
 		}
 		int len=length();
@@ -546,7 +546,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
-	public void multiply(AArrayVector v) {
+	public void multiply(ADenseArrayVector v) {
 		int len=length();
 		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		multiply(v.getArray(),v.getArrayOffset());
@@ -786,7 +786,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public double dotProduct(AVector v) {
-		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
 		int len=length();
 		if(v.length()!=len) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double total=0.0;
@@ -801,7 +801,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return dotProduct(v.getArray(), 0);
 	}
 	
-	public double dotProduct(AArrayVector v) {
+	public double dotProduct(ADenseArrayVector v) {
 		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return dotProduct(v.getArray(), v.getArrayOffset());
 	}
@@ -1232,8 +1232,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Adds another vector to this one
 	 */
 	public void add(AVector v) {
-		if (v instanceof AArrayVector) {
-			add((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			add((ADenseArrayVector)v);
 			return;
 		}
 		int vlength=v.length();
@@ -1246,7 +1246,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public void add(AArrayVector v) {
+	public void add(ADenseArrayVector v) {
 		if (length() != v.length()) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		}
@@ -1288,7 +1288,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void add(Vector v) {
-		add((AArrayVector)v);
+		add((ADenseArrayVector)v);
 	}
 	
 	/**
@@ -1631,8 +1631,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof AArrayVector) {
-			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);
+		if (other instanceof ADenseArrayVector) {
+			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
 		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
@@ -1641,7 +1641,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}		
 	}
 	
-	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
 		double[] otherArray=other.getArray();
 		otherOffset+=other.getArrayOffset();

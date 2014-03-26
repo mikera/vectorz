@@ -165,8 +165,8 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void multiply (AVector v) {
-		if (v instanceof AArrayVector) {
-			multiply((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			multiply((ADenseArrayVector)v);
 			return;
 		}
 		double[] data=this.data;
@@ -176,7 +176,7 @@ public class SparseIndexedVector extends ASparseVector {
 		}
 	}
 	
-	public void multiply(AArrayVector v) {
+	public void multiply(ADenseArrayVector v) {
 		multiply(v.getArray(),v.getArrayOffset());
 	}
 	
@@ -369,7 +369,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
 		double result=0.0;
 		double[] data=this.data;
 		int[] ixs=index.data;
@@ -391,7 +391,7 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public double dotProduct(AArrayVector v) {
+	public double dotProduct(ADenseArrayVector v) {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
 		return dotProduct(array,offset);
@@ -447,8 +447,8 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof AArrayVector) {
-			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);
+		if (other instanceof ADenseArrayVector) {
+			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
 		assert(offset>=0);
@@ -464,7 +464,7 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		assert(offset>=0);
 		assert(offset+length<=length());
 		double[] otherArray=other.getArray();
@@ -495,8 +495,8 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override public void copyTo(AVector v, int offset) {
-		if (v instanceof AArrayVector) {
-			AArrayVector av=(AArrayVector)v;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector av=(ADenseArrayVector)v;
 			getElements(av.getArray(),av.getArrayOffset()+offset);
 		}
 		v.fillRange(offset,length,0.0);

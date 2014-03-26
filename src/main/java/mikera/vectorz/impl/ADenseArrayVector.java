@@ -21,9 +21,9 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 @SuppressWarnings("serial")
-public abstract class AArrayVector extends AStridedVector implements IDenseArray {
+public abstract class ADenseArrayVector extends AStridedVector implements IDenseArray {
 	
-	protected AArrayVector(int length, double[] data) {
+	protected ADenseArrayVector(int length, double[] data) {
 		super(length,data);
 	}
 
@@ -132,22 +132,22 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 
 	@Override
 	public void add(AVector src) {
-		if (src instanceof AArrayVector) {
-			add((AArrayVector) src, 0);
+		if (src instanceof ADenseArrayVector) {
+			add((ADenseArrayVector) src, 0);
 			return;
 		}
 		src.addToArray(0, getArray(), getArrayOffset(), length());
 	}
 
 	@Override
-	public void add(AArrayVector v) {
+	public void add(ADenseArrayVector v) {
 		add(v, 0);
 	}
 
 	@Override
 	public void add(AVector src, int srcOffset) {
-		if (src instanceof AArrayVector) {
-			add((AArrayVector) src, srcOffset);
+		if (src instanceof ADenseArrayVector) {
+			add((ADenseArrayVector) src, srcOffset);
 			return;
 		}
 		int length = length();
@@ -156,29 +156,29 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 
 	@Override
 	public void add(int offset, AVector src) {
-		if (src instanceof AArrayVector) {
-			add(offset, (AArrayVector) src);
+		if (src instanceof ADenseArrayVector) {
+			add(offset, (ADenseArrayVector) src);
 			return;
 		}
 		int length = src.length();
 		src.addToArray(0, getArray(), getArrayOffset() + offset, length);
 	}
 
-	public void add(int offset, AArrayVector src) {
+	public void add(int offset, ADenseArrayVector src) {
 		int length = src.length();
 		DoubleArrays.add(src.getArray(), src.getArrayOffset(), getArray(),
 				offset + getArrayOffset(), length);
 	}
 
-	public void add(int offset, AArrayVector src, int srcOffset, int length) {
+	public void add(int offset, ADenseArrayVector src, int srcOffset, int length) {
 		DoubleArrays.add(src.getArray(), src.getArrayOffset() + srcOffset,
 				getArray(), offset + getArrayOffset(), length);
 	}
 
 	@Override
 	public void addMultiple(AVector v, double factor) {
-		if (v instanceof AArrayVector) {
-			addMultiple((AArrayVector) v, factor);
+		if (v instanceof ADenseArrayVector) {
+			addMultiple((ADenseArrayVector) v, factor);
 			return;
 		}
 		int length = length();
@@ -232,8 +232,8 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 		assert (len == b.length());
 		double[] array = getArray();
 		int offset = getArrayOffset();
-		if (b instanceof AArrayVector) {
-			a.addProductToArray(1.0, 0, (AArrayVector)b, 0, array, offset, len);
+		if (b instanceof ADenseArrayVector) {
+			a.addProductToArray(1.0, 0, (ADenseArrayVector)b, 0, array, offset, len);
 		} else {
 			a.addProductToArray(1.0, 0, b, 0, array, offset, len);			
 		}
@@ -247,8 +247,8 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 		assert (len == b.length());
 		double[] array = getArray();
 		int offset = getArrayOffset();
-		if (b instanceof AArrayVector) {
-			a.addProductToArray(factor, 0, (AArrayVector)b, 0, array, offset, len);
+		if (b instanceof ADenseArrayVector) {
+			a.addProductToArray(factor, 0, (ADenseArrayVector)b, 0, array, offset, len);
 		} else {
 			a.addProductToArray(factor, 0, b, 0, array, offset, len);			
 		}
@@ -270,8 +270,8 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 	public void addProductToArray(double factor, int offset, AVector other,
 			int otherOffset, double[] array, int arrayOffset, int length) {
 		if (factor==0) return;
-		if (other instanceof AArrayVector) {
-			addProductToArray(factor, offset, (AArrayVector) other,
+		if (other instanceof ADenseArrayVector) {
+			addProductToArray(factor, offset, (ADenseArrayVector) other,
 					otherOffset, array, arrayOffset, length);
 			return;
 		}
@@ -287,7 +287,7 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 
 	@Override
 	public void addProductToArray(double factor, int offset,
-			AArrayVector other, int otherOffset, double[] array,
+			ADenseArrayVector other, int otherOffset, double[] array,
 			int arrayOffset, int length) {
 		if (factor==0) return;
 		assert (offset >= 0);
@@ -302,7 +302,7 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 		}
 	}
 
-	public void add(AArrayVector src, int srcOffset) {
+	public void add(ADenseArrayVector src, int srcOffset) {
 		if ((srcOffset<0)||((srcOffset+length)>src.length())) throw new IllegalArgumentException(ErrorMessages.invalidRange(src, srcOffset, length));
 		double[] vdata = src.getArray();
 		double[] data = getArray();
@@ -342,8 +342,8 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 			throw new IllegalArgumentException(
 					ErrorMessages.incompatibleShapes(this, v));
 		}
-		if (v instanceof AArrayVector) {
-			AArrayVector vv = (AArrayVector) v;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector vv = (ADenseArrayVector) v;
 			return DoubleArrays.dotProduct(getArray(), getArrayOffset(),
 					vv.getArray(), vv.getArrayOffset(), length);
 		} else {
@@ -478,8 +478,8 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 
 	@Override
 	public void copyTo(int start, AVector dest, int destOffset, int length) {
-		if (dest instanceof AArrayVector) {
-			copyTo(start, (AArrayVector) dest, destOffset, length);
+		if (dest instanceof ADenseArrayVector) {
+			copyTo(start, (ADenseArrayVector) dest, destOffset, length);
 			return;
 		}
 		double[] src = getArray();
@@ -489,7 +489,7 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 		}
 	}
 
-	public void copyTo(int offset, AArrayVector dest, int destOffset, int length) {
+	public void copyTo(int offset, ADenseArrayVector dest, int destOffset, int length) {
 		double[] src = getArray();
 		int off = getArrayOffset();
 		double[] dst = dest.getArray();
@@ -504,7 +504,7 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 		System.arraycopy(src, off + offset, dest, destOffset, length);
 	}
 
-	public void addMultiple(AArrayVector v, double factor) {
+	public void addMultiple(ADenseArrayVector v, double factor) {
 		int vlength = v.length();
 		int length = length();
 		if (vlength != length) { throw new IllegalArgumentException(
@@ -559,12 +559,12 @@ public abstract class AArrayVector extends AStridedVector implements IDenseArray
 
 	@Override
 	public AVector tryEfficientJoin(AVector v) {
-		if (v instanceof AArrayVector) return join((AArrayVector) v);
+		if (v instanceof ADenseArrayVector) return join((ADenseArrayVector) v);
 		if (v instanceof JoinedArrayVector) return join((JoinedArrayVector) v);
 		return null;
 	}
 
-	public AVector join(AArrayVector v) {
+	public AVector join(ADenseArrayVector v) {
 		if ((v.getArray() == getArray())
 				&& ((getArrayOffset() + length()) == v.getArrayOffset())) { 
 			return Vectorz.wrap(getArray(), getArrayOffset(), length() + v.length()); 

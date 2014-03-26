@@ -42,7 +42,7 @@ public final class JoinedArrayVector extends ASizedVector {
 		return jav;
 	}
 	
-	public static JoinedArrayVector wrap(AArrayVector v) {
+	public static JoinedArrayVector wrap(ADenseArrayVector v) {
 		return new JoinedArrayVector(v.length(),
 				new double[][] {v.getArray()},
 				new int[] {v.getArrayOffset()},
@@ -77,8 +77,8 @@ public final class JoinedArrayVector extends ASizedVector {
 		return ArraySubVector.wrap(data[j], offsets[j], subLength(j));
 	}
 	
-	public List<AArrayVector> toSubArrays() {
-		ArrayList<AArrayVector> al=new ArrayList<AArrayVector>();
+	public List<ADenseArrayVector> toSubArrays() {
+		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>();
 		for (int i=0; i<numArrays; i++) {
 			al.add(subArrayVector(i));
 		}
@@ -154,14 +154,14 @@ public final class JoinedArrayVector extends ASizedVector {
 	
 	@Override
 	public double dotProduct (AVector v) {
-		if (v instanceof AArrayVector) {
-			AArrayVector av=(AArrayVector)v;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector av=(ADenseArrayVector)v;
 			return dotProduct(av);
 		}
 		return super.dotProduct(v);
 	}
 	
-	public double dotProduct (AArrayVector v) {
+	public double dotProduct (ADenseArrayVector v) {
 		double result=0.0;
 		double[] arr=v.getArray();
 		int ao=v.getArrayOffset();
@@ -480,11 +480,11 @@ public final class JoinedArrayVector extends ASizedVector {
 	@Override
 	public AVector tryEfficientJoin(AVector v) {
 		if (v instanceof JoinedArrayVector) return joinVectors(this,(JoinedArrayVector) v);
-		if (v instanceof AArrayVector) return join((AArrayVector) v);
+		if (v instanceof ADenseArrayVector) return join((ADenseArrayVector) v);
 		return super.tryEfficientJoin(v);
 	}
 	
-	public JoinedArrayVector join(AArrayVector v) {
+	public JoinedArrayVector join(ADenseArrayVector v) {
 		int newLen=length+v.length();
 		
 		int[] newOffsets=new int[numArrays+1];
@@ -550,7 +550,7 @@ public final class JoinedArrayVector extends ASizedVector {
 		}
 	}
 
-	public static AVector joinVectors(AArrayVector a, AArrayVector b) {
+	public static AVector joinVectors(ADenseArrayVector a, ADenseArrayVector b) {
 		if (a.getArray()==b.getArray()) {
 			if ((a.getArrayOffset()+a.length())==b.getArrayOffset()) {
 				return Vectorz.wrap(a.getArray(),a.getArrayOffset(),a.length()+b.length());

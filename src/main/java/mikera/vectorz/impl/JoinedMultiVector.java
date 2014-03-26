@@ -258,8 +258,8 @@ public final class JoinedMultiVector extends AJoinedVector {
 	
 	@Override
 	public double dotProduct (AVector v) {
-		if (v instanceof AArrayVector) {
-			AArrayVector av=(AArrayVector)v;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector av=(ADenseArrayVector)v;
 			return dotProduct(av.getArray(),av.getArrayOffset());
 		}
 		return super.dotProduct(v);
@@ -525,8 +525,8 @@ public final class JoinedMultiVector extends AJoinedVector {
 	@Override
 	public boolean equals(AVector v) {
 		if (v instanceof JoinedMultiVector) return equals((JoinedMultiVector)v);
-		if (v instanceof AArrayVector) {
-			AArrayVector av=(AArrayVector) v;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector av=(ADenseArrayVector) v;
 			return equalsArray(av.getArray(),av.getArrayOffset());
 		}
 		return super.equals(v);

@@ -7,7 +7,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -220,8 +220,8 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof AArrayVector) {
-			transformInPlace((AArrayVector) v);
+		if (v instanceof ADenseArrayVector) {
+			transformInPlace((ADenseArrayVector) v);
 			return;
 		}
 		if (v.length()!=dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
@@ -231,7 +231,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	public void transformInPlace(AArrayVector v) {
+	public void transformInPlace(ADenseArrayVector v) {
 		double[] data=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int i=0; i<dimensions; i++) {

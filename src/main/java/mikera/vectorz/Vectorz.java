@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mikera.util.Rand;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
@@ -108,7 +108,7 @@ public class Vectorz {
 		return v;
 	}
 	
-	public static AArrayVector wrap(double[] data, int offset, int length) {
+	public static ADenseArrayVector wrap(double[] data, int offset, int length) {
 		if ((offset==0)&&(length==data.length)) return wrap(data);
 		return ArraySubVector.wrap(data, offset, length);
 	}
