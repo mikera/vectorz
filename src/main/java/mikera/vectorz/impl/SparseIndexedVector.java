@@ -221,11 +221,6 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public boolean isView() {
-		return false;
-	}
-	
-	@Override
 	public double maxAbsElement() {
 		double[] data=this.data;
 		double result=0.0;

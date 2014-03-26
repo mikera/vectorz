@@ -50,6 +50,11 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	
 	@Override
 	public abstract boolean isZero();
+	
+	@Override
+	public boolean isView() {
+		return false;
+	}
 		
 	// ================================================
 	// standard implementations

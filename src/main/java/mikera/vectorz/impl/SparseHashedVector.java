@@ -497,10 +497,8 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
-	public Vector clone() {
-		Vector v=Vector.createLength(length);
-		this.copySparseValuesTo(v.data, 0);
-		return v;
+	public AVector clone() {
+		return exactClone();
 	}
 	
 	@Override
