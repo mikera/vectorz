@@ -1910,6 +1910,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	public void copyRowTo(int row, double[] dest, int destOffset) {
+		// note: using getRow() may be faster when overriding
 		int cc=columnCount();
 		for (int i=0; i<cc; i++) {
 			dest[i+destOffset]=unsafeGet(row,i);
@@ -1917,6 +1918,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		// note: using getColumn() may be faster when overriding
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			dest[i+destOffset]=unsafeGet(i,col);
@@ -1924,7 +1926,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	/**
-	 * Adds to a specific position in a matrix, indexed by element position
+	 * Adds to a specific position in a matrix, indexed by element position.
+	 * 
+	 * Unsafe operation - may not prform bounds checking.
+	 * 
 	 * @param i
 	 * @param d
 	 */
