@@ -18,12 +18,9 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public abstract class AStridedVector extends ASizedVector implements IStridedArray {
-	protected final double[] data;
-	
+public abstract class AStridedVector extends AArrayVector implements IStridedArray {
 	protected AStridedVector(int length, double[] data) {
-		super(length);
-		this.data=data;
+		super(length,data);
 	}
 
 	private static final long serialVersionUID = -7239429584755803950L;
