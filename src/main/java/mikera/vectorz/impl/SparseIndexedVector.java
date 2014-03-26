@@ -650,6 +650,31 @@ public class SparseIndexedVector extends ASparseVector {
 		return exactClone();
 	}
 	
+	/**
+	 * Include additional indices in the non-sparse index set of this vector.
+	 * 
+	 * Useful to improve performance if subsequent operations will access these indices.
+	 * 
+	 * @param ixs
+	 */
+	public void includeIndices(int[] ixs) {
+		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
+		if (nixs.length==index.length()) return;
+		int nl=nixs.length;
+		double[] ndata=new double[nl];
+		int si=0;
+		for (int i=0; i<nl; i++) {
+			int z=index.data[si];
+			if (z==nixs[i]) {
+				ndata[i]=data[si];
+				si++; 
+				if (si>=data.length) break;
+			}
+		}
+		data=ndata;
+		index=Index.wrap(nixs);
+	}
+	
 	public SparseIndexedVector cloneIncludingIndices(int [] ixs) {
 		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
 		int nl=nixs.length;
