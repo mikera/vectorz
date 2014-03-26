@@ -518,7 +518,7 @@ public class SparseHashedVector extends ASparseVector {
 		for (Entry<Integer, Double> e:hash.entrySet()) {
 			int i=e.getKey();
 			if ((i<0)||(i>=length)) throw new VectorzException(ErrorMessages.invalidIndex(this, i));
-			if (e.getValue()==0) throw new VectorzException("Unexpected zero at index: "+i);
+			if (e.getValue()==0.0) throw new VectorzException("Unexpected zero at index: "+i);
 		}
 		super.validate();
 	}

@@ -504,6 +504,21 @@ public class SparseIndexedVector extends ASparseVector {
 		copySparseValuesTo(array,offset);
 	}
 	
+	@Override public void setElements(double[] array, int offset) {
+		int nz=DoubleArrays.nonZeroCount(array, offset, length);
+		int[] ixs=new int[nz];
+		data=new double[nz];
+		int di=0;
+		for (int i=0; i<length; i++) {
+			double x=array[i];
+			if (x!=0.0) {
+				ixs[di]=i;
+				data[di++]=x;
+			}
+		}
+		index=Index.wrap(ixs);
+	}
+	
 	public void copySparseValuesTo(double[] array, int offset) {
 		double[] data=this.data;
 		int[] ixs=index.data;
