@@ -20,8 +20,8 @@ import mikera.vectorz.util.VectorzException;
 public class ImmutableVector extends ASizedVector implements IDense {
 	private static final long serialVersionUID = -3679147880242779555L;
 
-	private double[] data;
-	public int offset;
+	private final double[] data;
+	public final int offset;
 		
 	private ImmutableVector(double[] data) {
 		this(data,0,data.length);
