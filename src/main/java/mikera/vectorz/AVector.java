@@ -1107,6 +1107,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return d;
 	}
 	
+	/**
+	 * Negates all emlements of this vector in place.
+	 */
+	@Override
 	public void negate() {
 		multiply(-1.0);
 	}
