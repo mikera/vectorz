@@ -10,6 +10,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -53,6 +54,17 @@ public class SparseIndexedVector extends ASparseVector {
 	 * Performs no checking - Index must be distinct and sorted.
 	 */
 	public static SparseIndexedVector wrap(int length, Index index, double[] data) {
+		assert(index.length()==data.length);
+		assert(index.isDistinctSorted());
+		return new SparseIndexedVector(length, index,data);
+	}
+	
+	/**
+	 * Creates a SparseIndexedVector with the specified index and data values.
+	 * Performs no checking - Index must be distinct and sorted.
+	 */
+	public static SparseIndexedVector wrap(int length, int[] indices, double[] data) {
+		Index index=Index.wrap(indices);
 		assert(index.length()==data.length);
 		assert(index.isDistinctSorted());
 		return new SparseIndexedVector(length, index,data);
@@ -567,7 +579,7 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public Vector clone() {
+	public Vector toVector() {
 		Vector v=Vector.createLength(length);
 		double[] data=this.data;
 		int[] ixs=index.data;
@@ -575,6 +587,27 @@ public class SparseIndexedVector extends ASparseVector {
 			v.unsafeSet(ixs[i],data[i]);
 		}	
 		return v;
+	}
+	
+	@Override
+	public SparseIndexedVector clone() {
+		return exactClone();
+	}
+	
+	public SparseIndexedVector cloneIncludingIndices(int [] ixs) {
+		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
+		int nl=nixs.length;
+		double[] ndata=new double[nl];
+		int si=0;
+		for (int i=0; i<nl; i++) {
+			int z=index.data[si];
+			if (z==nixs[i]) {
+				ndata[i]=data[si];
+				si++; 
+				if (si>=data.length) break;
+			}
+		}
+		return SparseIndexedVector.wrap(length, nixs, ndata);
 	}
 	
 	@Override

@@ -234,6 +234,51 @@ public class IntArrays {
 		System.arraycopy(data, position, nas, position+1, len-position);
 		return nas;
 	}
+	
+	private static int countMatches(int[] xs, int[] ys) {
+		int res=0;
+		int xi=0;
+		int yi=0;
+		while ((xi<xs.length)&&(yi<ys.length)) {
+			int x=xs[xi];
+			int y=ys[yi];
+			if (x==y) {
+				res++;
+				xi++;
+				yi++;
+			} else if (x<y) {
+				xi++;
+			} else {
+				yi++;
+			}
+		}
+		return res;
+	}
+
+	public static int[] mergeSorted(int[] xs, int[] ys) {
+		int xl=xs.length; if (xl==0) return ys.clone();
+		int yl=ys.length; if (yl==0) return xs.clone();
+		int ms = countMatches(xs,ys);
+		int[] rs=new int[xl+yl-ms];
+		int xi=0;
+		int yi=0;
+		for (int i=0; i<rs.length; i++) {
+			int x=(xi<xl)?xs[xi]:Integer.MAX_VALUE;
+			int y=(yi<yl)?ys[yi]:Integer.MAX_VALUE;
+			if (x==y) {
+				rs[i]=x;
+				xi++;
+				yi++;
+			} else if (x<y) {
+				rs[i]=x;
+				xi++;
+			} else {
+				rs[i]=y;
+				yi++;
+			}
+		}
+		return rs;
+	}
 
 
 }

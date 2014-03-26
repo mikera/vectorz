@@ -26,6 +26,16 @@ public class TestSparseIndexedVector {
 		SparseIndexedVector.create(10, Index.of(10,3,6), Vector.of(1.0,2.0,3.0));
 	}
 	
+	@Test public void testCloneIncluding() {
+		SparseIndexedVector sv=SparseIndexedVector.create(10, Index.of(1,3,6), Vector.of(1.0,2.0,3.0));		
+		assertEquals(sv,sv.sparseClone());
+		
+		assertEquals(sv,sv.cloneIncludingIndices(new int[] {0}));
+		assertEquals(sv,sv.cloneIncludingIndices(new int[] {3}));
+		assertEquals(sv,sv.cloneIncludingIndices(new int[] {4}));
+		assertEquals(sv,sv.cloneIncludingIndices(new int[] {9}));
+	}
+	
 	@Test public void testAddProduct() {
 		SparseIndexedVector sv=SparseIndexedVector.create(10, Index.of(1,3,6), Vector.of(1.0,2.0,3.0));
 		
