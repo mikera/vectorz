@@ -83,6 +83,16 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	public boolean isView() {
 		return false;
 	}
+	
+	@Override
+	public boolean isMutable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return true;
+	}
 
 	@Override
 	public INDArray exactClone() {
