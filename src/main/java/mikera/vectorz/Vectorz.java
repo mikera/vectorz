@@ -35,9 +35,11 @@ public class Vectorz {
 	public static final int MIN_SPARSE_LENGTH=50;
 	public static final int BIG_SPARSE_LENGTH=1000000;
 
-	private static final double SPARSE_DENSITY_THRESHOLD = 0.25;
+	// threshold below which it is worthwhile making big vectors sparse
+	private static final double SPARSE_DENSITY_THRESHOLD = 0.2;
 
-	private static final double SPARSE_HASHED_THRESHOLD = 0.03;
+	// default: don't create hashed sparse vectors
+	private static final double SPARSE_HASHED_THRESHOLD = 0.0;
 
 	// ===========================
 	// Factory functions
@@ -188,7 +190,7 @@ public class Vectorz {
 		long n=v.nonZeroCount();
 		
 		if ((len<MIN_SPARSE_LENGTH)||(n>(len*SPARSE_DENSITY_THRESHOLD))) {
-			return Vector.create(v); // not enough sparsity to make worthwhile
+			return Vector.create(v); // not enough sparsity to make worthwhile, just copy
 		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
 			return SparseHashedVector.create(v);
 		} else {
