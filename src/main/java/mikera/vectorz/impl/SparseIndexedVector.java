@@ -104,24 +104,15 @@ public class SparseIndexedVector extends ASparseVector {
 	 */
 	public static SparseIndexedVector create(AVector source) {
 		if (source instanceof ASparseVector) return create((ASparseVector) source);
-		int length = source.length();
-		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
-		int len=0;
-		for (int i=0; i<length; i++) {
-			if (source.unsafeGet(i)!=0.0) len++;
-		}
-		int[] indexes=new int[len];
+		int srcLength = source.length();
+		if (srcLength==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
+		int[] indexes=source.nonZeroIndices();
+		int len=indexes.length;
 		double[] vals=new double[len];
-		int pos=0;
-		for (int i=0; i<length; i++) {
-			double v=source.unsafeGet(i);
-			if (v!=0.0) {
-				indexes[pos]=i;
-				vals[pos]=v;
-				pos++;
-			}
+		for (int i=0; i<len; i++) {
+			vals[i]=source.unsafeGet(indexes[i]);
 		}
-		return wrap(length,Index.wrap(indexes),vals);
+		return wrap(srcLength,Index.wrap(indexes),vals);
 	}
 	
 	public static SparseIndexedVector create(ASparseVector source) {
