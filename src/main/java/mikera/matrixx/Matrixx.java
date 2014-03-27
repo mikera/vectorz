@@ -173,9 +173,9 @@ public class Matrixx {
 		int cc=a.getShape(1);
 		SparseRowMatrix m=SparseRowMatrix.create(rc,cc);
 		for (int i=0; i<rc; i++) {
-			AVector v=a.slice(i).asVector();
+			AVector v=a.slice(i).sparseClone().asVector();
 			if (!v.isZero()) {
-				m.replaceRow(i, v.sparse());
+				m.replaceRow(i, v);
 			}
 		}
 		return m;
