@@ -42,4 +42,6 @@ public interface IVector extends INDArray {
 	AVector mutable();
 
 	AVector addCopy(AVector a);
+
+	AVector subCopy(AVector a);
 }

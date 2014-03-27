@@ -580,6 +580,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray subCopy(INDArray a) {
+		INDArray r=this.clone();
+		r.sub(a);
+		return r;
+	}
+	
+	@Override
 	public void multiply(INDArray a) {
 		int dims=dimensionality();
 		if (dims==0) {set(get()*a.get()); return;}
@@ -1094,5 +1101,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void validate() {
 		// TODO: any generic validation?
 	}
+
 
 }

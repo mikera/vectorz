@@ -116,6 +116,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public void sub(double a);
 	
 	/**
+	 * Creates a new array equal to the subtraction of another array from this array
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public INDArray subCopy(INDArray a);
+	
+	/**
 	 * Adds all the elements of another array to this array, in an elementwise order.
 	 */
 	public void add(INDArray a);
