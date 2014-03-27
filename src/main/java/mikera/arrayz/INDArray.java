@@ -363,6 +363,8 @@ public interface INDArray extends Cloneable, Serializable {
 	 * and may be of a different class to the original.
 	 * 
 	 * Clone should attempt to return the most efficient possible array type.
+	 * 
+	 * Clone should preserve sparsity property where possible, but this is not guaranteed.
 	 */
 	public INDArray clone();
 	
@@ -394,7 +396,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns true if the two arrays are exactly equal in value and shape
 	 */
 	public boolean equals(INDArray a);
-	
+
 	/**
 	 * Returns true if all elements are equal to a specific value
 	 */
