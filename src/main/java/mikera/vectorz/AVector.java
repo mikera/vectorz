@@ -1342,6 +1342,26 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public INDArray addCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return addCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			return addCopy(a.asVector());
+		} else {
+			return addCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public AVector addCopy(AVector a) {
+		// clone ensures mutability
+		AVector r=this.clone();
+		r.add(a);
+		return r;
+	}
+	
+	@Override
 	public void sub(INDArray a) {
 		if (a instanceof AVector) {
 			sub((AVector)a);

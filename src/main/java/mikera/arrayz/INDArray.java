@@ -98,6 +98,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public void add(double a);
 	
 	/**
+	 * Creates a new array equal to the sum of this array with another array.
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public INDArray addCopy(INDArray a);	
+	
+	/**
 	 * Adds all the elements of this array to a double array, in row-major order
 	 */
 	public void addToArray(double[] data, int offset);
@@ -615,6 +623,8 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param v
 	 * @return
 	 */
-	public INDArray innerProduct(AVector v);	
+	public INDArray innerProduct(AVector v);
+
+
 	
 }

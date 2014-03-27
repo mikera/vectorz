@@ -106,6 +106,15 @@ public class TestArrays {
 		
 		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
 	}
+	
+	private void testAdd(INDArray a) {
+		INDArray v = a.clone();
+		v.add(1.0);
+		INDArray v2=v.addCopy(Scalar.create(-1.0));
+		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
+		assertTrue(v2.epsilonEquals(a,1.0));
+	}
+
 
 	private void testAsVector(INDArray a) {
 		AVector v = a.asVector();
@@ -590,6 +599,7 @@ public class TestArrays {
 		a.validate();
 		testTranspose(a);
 		testAsVector(a);
+		testAdd(a);
 		testToArray(a);
 		testMultiply(a);
 		testApplyOp(a);
