@@ -1,6 +1,8 @@
 package mikera.arrayz.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
@@ -99,6 +101,18 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	public INDArray slice(int dimension, int index) {
 		if (dimension==0) return slice(index);
 		return Arrayz.createZeroArray(IntArrays.removeIndex(shape, dimension));
+	}
+	
+	@Override
+	public List<INDArray> getSlices() {
+		int sc=sliceCount();
+		if (sc==0) return Collections.EMPTY_LIST;
+		ArrayList<INDArray> al=new ArrayList<INDArray>(sc);
+		INDArray z=slice(0);
+		for (int i=0; i<sc; i++) {
+			al.add(z);
+		}
+		return al;
 	}
 
 	@Override
