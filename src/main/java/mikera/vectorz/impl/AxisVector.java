@@ -282,6 +282,22 @@ public final class AxisVector extends ASparseVector {
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
+	
+	@Override
+	public AVector addCopy(AVector v) {
+		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		AVector r=v.clone();
+		r.addAt(axis, 1.0);
+		return r;
+	}
+	
+	@Override
+	public AVector subCopy(AVector v) {
+		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		AVector r=v.clone();
+		r.addAt(axis, -1.0);
+		return r;
+	}
 
 	@Override
 	public boolean includesIndex(int i) {

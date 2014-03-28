@@ -194,6 +194,13 @@ public final class JoinedArrayVector extends ASizedVector {
 	}
 	
 	@Override
+	public Vector subCopy(AVector a) {
+		Vector r=this.toVector();
+		r.sub(a);
+		return r;
+	}
+	
+	@Override
 	public void add(double[] srcData, int srcOffset) {
 		for (int i=0; i<numArrays; i++) {
 			DoubleArrays.add(srcData, srcOffset+pos[i], this.data[i], offsets[i], subLength(i));
