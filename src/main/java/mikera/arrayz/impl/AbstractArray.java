@@ -560,6 +560,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray multiplyCopy(INDArray a) {
+		INDArray r=this.clone();
+		r.multiply(a);
+		return r;
+	}
+	
+	@Override
+	public INDArray divideCopy(INDArray a) {
+		INDArray r=this.clone();
+		r.divide(a);
+		return r;
+	}
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		int dims=dimensionality();
 		if (dims ==0) {

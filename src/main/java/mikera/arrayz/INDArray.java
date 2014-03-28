@@ -316,9 +316,23 @@ public interface INDArray extends Cloneable, Serializable {
 	public void multiply(INDArray a);
 	
 	/**
-	 * Divides all elements by the equivalent elements in a second array
+	 * Multiplies all elements by the equivalent elements in a second array, i.e. performs elementwise multiplication.
+	 * Returns a new array.
+	 * 
+	 * If matrix-style multiplication is required, use innerProduct instead.
+	 */
+	public INDArray multiplyCopy(INDArray a);
+	
+	/**
+	 * Divides all elements in place by the equivalent elements in a second array
 	 */
 	public void divide(INDArray a);
+	
+	/**
+	 * Divides all elements by the equivalent elements in a second array. Returns a new array.
+	 */
+	public INDArray divideCopy(INDArray a);
+
 	
 	/**
 	 * Divides all elements by a given factor
