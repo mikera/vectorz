@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.arrayz.impl.IStridedArray;
@@ -343,8 +341,16 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 
 	@Override
 	public List<?> getSlices() {
-		if (dimensions==1) return (List<?>)Lists.newArrayList(elementIterator());
-		return super.getSliceViews();
+		if (dimensions==1) {
+			int n=sliceCount();
+			ArrayList<Double> al=new ArrayList<Double>(n);
+			for (int i=0; i<n; i++) {
+				al.add(get(i));
+			}
+			return al;
+		} else {
+			return super.getSliceViews();
+		}
 	}
 
 	@Override
