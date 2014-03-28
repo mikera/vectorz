@@ -106,7 +106,7 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	@Override
 	public List<INDArray> getSlices() {
 		int sc=sliceCount();
-		if (sc==0) return Collections.EMPTY_LIST;
+		if (sc==0) return Collections.emptyList();
 		ArrayList<INDArray> al=new ArrayList<INDArray>(sc);
 		INDArray z=slice(0);
 		for (int i=0; i<sc; i++) {
