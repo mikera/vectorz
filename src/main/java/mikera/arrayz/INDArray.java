@@ -440,13 +440,15 @@ public interface INDArray extends Cloneable, Serializable {
 
 	/**
 	 * Returns a list of all major slices of this array.
+	 * 
+	 * Returns a list of Double values if a 1-dimensional array is sliced, otherwise a list of INDArray instances
 	 */
 	public List<?> getSlices();
 	
 	/**
 	 * Returns a list of all slices of this array along a given dimension.
 	 * 
-	 * Returns a list of Double values if a 1-dimensional array is sliced.
+	 * Returns a list of Double values if a 1-dimensional array is sliced, otherwise a list of INDArray instances
 	 */
 	public List<?> getSlices(int dimension);
 	
