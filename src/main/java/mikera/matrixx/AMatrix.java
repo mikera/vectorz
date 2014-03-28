@@ -15,7 +15,6 @@ import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
-import mikera.matrixx.impl.AArrayMatrix;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -37,11 +36,10 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
-import mikera.vectorz.Scalar;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -351,6 +349,18 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Matrixx.createFromVector(asVector(), rows, cols);
 	}
 	
+	@Override
+	public AMatrix reorder(int[] order) {
+		return reorder(0,order);
+	}	
+	
+	@Override
+	public AMatrix reorder(int dim, int[] order) {
+		INDArray o=super.reorder(dim,order);
+		if (o instanceof AMatrix) return (AMatrix)o;
+		return Matrixx.toMatrix(o);
+	}	
+	
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		VectorMatrixMN vm=new VectorMatrixMN(0,cols);
 		for (int i=0; i<rows; i++) {
@@ -429,8 +439,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof AArrayVector) {
-			transformInPlace((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			transformInPlace((ADenseArrayVector)v);
 			return;
 		}
 		double[] temp = new double[v.length()];
@@ -446,7 +456,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		v.setElements(temp);
 	}
 	
-	public void transformInPlace(AArrayVector v) {
+	public void transformInPlace(ADenseArrayVector v) {
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();
@@ -1264,10 +1274,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return transform(v);
 	}
 	
-	public Matrix innerProduct(Matrix a) {
+	public AMatrix innerProduct(Matrix a) {
 		return Multiplications.multiply(this, a);
 	}
 	
+	@Override
 	public AVector innerProduct(AVector v) {
 		if (v instanceof Vector) {
 			return transform((Vector)v);
@@ -1300,7 +1311,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
-	public Matrix transposeInnerProduct(Matrix s) {
+	public AMatrix transposeInnerProduct(Matrix s) {
 		Matrix r= toMatrixTranspose();
 		return Multiplications.multiply(r, s);
 	}
@@ -1909,6 +1920,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	public void copyRowTo(int row, double[] dest, int destOffset) {
+		// note: using getRow() may be faster when overriding
 		int cc=columnCount();
 		for (int i=0; i<cc; i++) {
 			dest[i+destOffset]=unsafeGet(row,i);
@@ -1916,9 +1928,57 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		// note: using getColumn() may be faster when overriding
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			dest[i+destOffset]=unsafeGet(i,col);
 		}
+	}
+
+	/**
+	 * Adds to a specific position in a matrix, indexed by element position.
+	 * 
+	 * Unsafe operation - may not prform bounds checking.
+	 * 
+	 * @param i
+	 * @param d
+	 */
+	public void addAt(int i, double d) {
+		int cc=columnCount();
+		addAt(i/cc,i%cc,d);
+	}
+
+	/**
+	 * Subtracts from a specific position in a matrix, indexed by element position
+	 * @param i
+	 * @param d
+	 */
+	public void subAt(int i, double d) {
+		int cc=columnCount();
+		addAt(i/cc,i%cc,-d);
+	}
+
+	/**
+	 * Divides a specific position in a matrix, indexed by element position
+	 * @param i
+	 * @param d
+	 */
+	public void divideAt(int i, double d) {
+		int cc=columnCount();
+		int y=i/cc;
+		int x=i%cc;
+		unsafeSet(y,x,unsafeGet(y,x)/d);
+	}
+
+	/**
+	 * Multiplies a specific position in a matrix, indexed by element position
+	 * @param i
+	 * @param d
+	 */
+	public void multiplyAt(int i, double d) {
+		int cc=columnCount();
+		int y=i/cc;
+		int x=i%cc;
+		unsafeSet(y,x,unsafeGet(y,x)*d);
 	}
 }

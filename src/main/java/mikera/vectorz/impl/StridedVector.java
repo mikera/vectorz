@@ -7,7 +7,6 @@ import mikera.vectorz.util.VectorzException;
 public final class StridedVector extends AStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
-	private final double[] data;
 	private final int offset;
 	private final int stride;
 	
@@ -19,7 +18,6 @@ public final class StridedVector extends AStridedVector {
 			int lastOffset=(offset+(length-1)*stride);
 			if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException();
 		}
-		this.data=data;
 		this.offset=offset;
 		this.stride=stride;
 	}
@@ -50,8 +48,8 @@ public final class StridedVector extends AStridedVector {
 	@Override
 	public double dotProduct(AVector v) {
 		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
-		if (v instanceof AArrayVector) {
-			AArrayVector av=(AArrayVector) v;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector av=(ADenseArrayVector) v;
 			return dotProduct(av.getArray(),av.getArrayOffset());
 		}
 		double result=0.0;

@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;

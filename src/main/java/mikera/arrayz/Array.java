@@ -8,7 +8,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import mikera.arrayz.impl.AbstractArray;
-import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
@@ -180,6 +179,16 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 				offset,
 				IntArrays.removeIndex(shape, dimension), 
 				IntArrays.removeIndex(strides, dimension));
+	}
+	
+	@Override
+	public INDArray getTranspose() {
+		return getTransposeView();
+	}
+	
+	@Override
+	public INDArray getTransposeView() {
+		return NDArray.wrapStrided(data, 0, IntArrays.reverse(shape), IntArrays.reverse(strides));
 	}
 	
 	@Override

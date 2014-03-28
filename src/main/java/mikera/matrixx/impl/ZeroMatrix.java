@@ -12,7 +12,6 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementIterator;
-import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -252,6 +251,12 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 
 	@Override
 	public ZeroMatrix getTranspose() {
+		if (cols==rows) return this;
+		return ZeroMatrix.create(cols, rows);
+	}
+	
+	@Override
+	public ZeroMatrix getTransposeView() {
 		if (cols==rows) return this;
 		return ZeroMatrix.create(cols, rows);
 	}

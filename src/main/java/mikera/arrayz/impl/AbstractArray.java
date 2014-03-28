@@ -10,10 +10,10 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
-import mikera.arrayz.NDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
@@ -30,6 +30,12 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
 /**
  * Abstract base class for INDArray implementations
+ * 
+ * Contains generic implementations for most INDArray operations, enabling new INDArray implementations
+ * to inherit these (at least until more optimised implementations can be written).
+ * 
+ * Most INDArray instances should ultimately inherit from AbstractArray
+ * 
  * @author Mike
  * @param <T> The type of array slices
  */
@@ -182,6 +188,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void setElements(double[] values, int offset) {
+		setElements(values,offset,(int)elementCount());
+	}
+	
+	@Override
 	public void setElements(double[] values, int offset, int length) {
 		int n=sliceCount();
 		int ss=(int)(slice(0).elementCount());
@@ -257,6 +268,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray innerProduct(AVector a) {
+		return innerProduct((INDArray) a);
+	}
+	
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (Object s:this) {
@@ -274,9 +290,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray getTranspose() {
-		NDArray nd=NDArray.newArray(this.getShape());
-		nd.set(this);
-		return nd.getTransposeView();
+		return getTransposeCopy();
 	}
 	
 	@Override
@@ -286,7 +300,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray getTransposeCopy() {
-		return getTranspose().clone();
+		Array nd=Array.create(this);
+		return nd.getTransposeView();
 	}
 	
 	public final void scale(double d) {
@@ -372,6 +387,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		applyOp(Ops.SQUARE);
 	}
 	
+	public INDArray squareCopy() {
+		INDArray r=clone();
+		r.square();
+		return r;
+	}
+	
 	@Override
 	public Iterator<T> iterator() {
 		return new SliceIterator<T>(this);
@@ -431,6 +452,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public INDArray copy() {
 		if (!isMutable()) return this;
 		return clone();
+	}
+	
+	@Override
+	public INDArray scaleCopy(double d) {
+		INDArray r=clone();
+		r.scale(d);
+		return r;
+	}
+	
+	@Override
+	public INDArray negateCopy() {
+		INDArray r=clone();
+		r.negate();
+		return r;
 	}
 	
 	@Override
@@ -511,6 +546,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void addAt(int i, double v) {
+		int ss=(int)(elementCount()/sliceCount());
+		int s=i/ss;
+		slice(s).addAt(i-s*ss, v);
+	}
+	
+	@Override
+	public INDArray addCopy(INDArray a) {
+		INDArray r=this.clone();
+		r.add(a);
+		return r;
+	}
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		int dims=dimensionality();
 		if (dims ==0) {
@@ -542,6 +591,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public void sub(double a) {
 		add(-a);
+	}
+	
+	@Override
+	public INDArray subCopy(INDArray a) {
+		INDArray r=this.clone();
+		r.sub(a);
+		return r;
 	}
 	
 	@Override
@@ -781,6 +837,39 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public INDArray reshape(int... targetShape) {
 		return Arrayz.createFromVector(asVector(), targetShape);
+	}
+	
+	@Override
+	public INDArray reorder(int dim, int[] order) {
+		int dims=dimensionality();
+		if ((dim<0)||(dim>=dims)) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		for (int i : order) {
+			al.add(slice(dim,i));
+		}
+		int n=al.size();
+		int[] shp=this.getShapeClone();
+		shp[dim]=n;
+
+		if (dims==2) {
+			if (dim==0) {
+				return VectorMatrixMN.create(al,shp);
+			}
+		}
+		if (dim==0) {
+			return SliceArray.create(al,shp);
+		} else {
+			Array a=Array.newArray(shp);
+			for (int i=0; i<n; i++) {
+				a.slice(dim, i).set(al.get(i));
+			}
+			return a;
+		}
+	}	
+	
+	@Override
+	public INDArray reorder(int[] order) {
+		return reorder(0,order);
 	}
 
 	
@@ -1041,5 +1130,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void validate() {
 		// TODO: any generic validation?
 	}
+
 
 }

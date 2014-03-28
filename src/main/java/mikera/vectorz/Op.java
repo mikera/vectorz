@@ -4,7 +4,7 @@ import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.transformz.ATransform;
 import mikera.transformz.impl.AOpTransform;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.ops.Composed;
 import mikera.vectorz.ops.Derivative;
 import mikera.vectorz.ops.Division;
@@ -36,8 +36,8 @@ public abstract class Op implements IOperator {
 	
 	@Override
 	public void applyTo(AVector v) {
-		if (v instanceof AArrayVector) {
-			applyTo((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			applyTo((ADenseArrayVector)v);
 		} else {
 			v.applyOp(this);
 		}
@@ -61,7 +61,7 @@ public abstract class Op implements IOperator {
 		s.set(apply(s.get()));
 	}
 	
-	public void applyTo(AArrayVector v) {
+	public void applyTo(ADenseArrayVector v) {
 		applyTo(v.getArray(), v.getArrayOffset(),v.length());
 	}
 	

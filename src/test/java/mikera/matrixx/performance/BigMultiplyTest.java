@@ -2,7 +2,6 @@ package mikera.matrixx.performance;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.Matrixx;
 import mikera.matrixx.algo.Multiplications;
 
 public class BigMultiplyTest {

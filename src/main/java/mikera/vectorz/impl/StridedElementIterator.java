@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * General purpose iterator for arbitrary vectors.
+ * Iterator for elements stored in strided arrays.
  * 
  * @author Mike
  */

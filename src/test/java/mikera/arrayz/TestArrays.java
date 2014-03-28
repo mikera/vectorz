@@ -11,6 +11,7 @@ import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.indexz.Indexz;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.vectorz.AVector;
@@ -59,6 +60,15 @@ public class TestArrays {
 		assertEquals(a, a.reshape(shape));
 	}
 	
+	private void testReorder(INDArray a) {
+		if (a.dimensionality()==0) return;
+		INDArray c=a.copy();
+		
+		assertEquals(c,a.reorder(Indexz.createSequence(a.sliceCount()).toArray()));
+		
+		assertEquals(c,a);
+	}
+	
 	private void testSubArray(INDArray a) {
 		int n=a.dimensionality();
 		INDArray a2=a.subArray(new int[n], a.getShape());
@@ -96,6 +106,23 @@ public class TestArrays {
 		
 		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
 	}
+	
+	private void testAdd(INDArray a) {
+		INDArray v = a.clone();
+		v.add(1.0);
+		INDArray v2=v.addCopy(Scalar.create(-1.0));
+		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
+		assertTrue(v2.epsilonEquals(a,1.0));
+	}
+	
+	private void testSub(INDArray a) {
+		INDArray v = a.clone();
+		v.sub(1.0);
+		INDArray v2=v.subCopy(Scalar.create(-1.0));
+		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
+		assertTrue(v2.epsilonEquals(a,1.0));
+	}
+
 
 	private void testAsVector(INDArray a) {
 		AVector v = a.asVector();
@@ -172,6 +199,17 @@ public class TestArrays {
 		INDArray imma=a.immutable();
 		assertFalse(imma.isMutable());
 		assertEquals(a,imma);
+		try {
+			imma.fill(2.0);
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+		
+		// mutable coercion
+		INDArray muta=a.exactClone().mutable();
+		assertTrue(muta.isFullyMutable());
+		muta.fill(2.0);
 		
 		// dense coercion
 		INDArray densa=a.dense();
@@ -569,6 +607,8 @@ public class TestArrays {
 		a.validate();
 		testTranspose(a);
 		testAsVector(a);
+		testAdd(a);
+		testSub(a);
 		testToArray(a);
 		testMultiply(a);
 		testApplyOp(a);
@@ -578,6 +618,7 @@ public class TestArrays {
 		testBoolean(a);
 		testSums(a);
 		testEquals(a);
+		testReorder(a);
 		testIndexedAccess(a);
 		testMathsFunctions(a);
 		testSetElements(a);
@@ -634,5 +675,13 @@ public class TestArrays {
 		testArray(ImmutableArray.create(Matrixx.createRandomMatrix(4, 5)));
 		testArray(ImmutableArray.create(Vectorz.createUniformRandomVector(4)));
 		testArray(ImmutableArray.create(Scalar.create(4)));
+		
+		// zero array tests
+		testArray(Arrayz.createZeroArray());
+		testArray(Arrayz.createZeroArray(2));
+		testArray(Arrayz.createZeroArray(2,3));
+		testArray(Arrayz.createZeroArray(1,2,3));
+		testArray(Arrayz.createZeroArray(1,2,4,1));
+
 	}
 }

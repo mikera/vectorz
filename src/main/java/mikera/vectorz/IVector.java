@@ -40,4 +40,8 @@ public interface IVector extends INDArray {
 	 * Convert a vector to a mutable format
 	 */
 	AVector mutable();
+
+	AVector addCopy(AVector a);
+
+	AVector subCopy(AVector a);
 }

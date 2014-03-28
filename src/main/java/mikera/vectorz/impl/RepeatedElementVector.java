@@ -15,23 +15,17 @@ import mikera.vectorz.util.ErrorMessages;
  *
  */
 @SuppressWarnings("serial")
-public final class RepeatedElementVector extends AConstrainedVector {
-	private final int length;
+public final class RepeatedElementVector extends ASizedVector {
 	private final double value;
 	
 	private RepeatedElementVector(int length, double value) {
-		this.length=length;
+		super(length);
 		this.value=value;
 	}
 	
 	public static RepeatedElementVector create(int length, double value) {
 		if (length<1) throw new IllegalArgumentException("RepeatedElementVector must have at least one element");
 		return new RepeatedElementVector(length,value);
-	}
-
-	@Override
-	public int length() {
-		return length;
 	}
 
 	@Override
@@ -42,6 +36,11 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	@Override
 	public boolean isMutable() {
 		return false;
+	}
+	
+	@Override
+	public boolean isElementConstrained() {
+		return true;
 	}
 	
 	@Override
@@ -101,6 +100,19 @@ public final class RepeatedElementVector extends AConstrainedVector {
 	}
 	
 	@Override
+	public AVector reorder(int dim, int[] order) {
+		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		return reorder(order);
+	}	
+	
+	@Override
+	public AVector reorder(int[] order) {
+		int n=order.length;
+		if (n==length) return this;
+		return create(n,value);
+	}	
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		DoubleArrays.add(data, offset, length, value);
 	}
@@ -128,6 +140,15 @@ public final class RepeatedElementVector extends AConstrainedVector {
 		if (length==this.length) return this;
 		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length,value);
+	}
+	
+	@Override
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof RepeatedElementVector) {
+			RepeatedElementVector ra=(RepeatedElementVector) a;
+			if (ra.value==this.value) return RepeatedElementVector.create(length+ra.length, value);
+		}
+		return null;
 	}
 
 	@Override 

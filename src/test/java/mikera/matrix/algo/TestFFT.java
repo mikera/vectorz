@@ -2,7 +2,6 @@ package mikera.matrix.algo;
 
 import static org.junit.Assert.assertEquals;
 import mikera.matrixx.algo.FFT;
-import mikera.vectorz.Vector;
 
 import org.junit.Test;
 

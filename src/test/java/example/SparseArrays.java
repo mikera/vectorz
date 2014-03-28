@@ -2,7 +2,6 @@ package example;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
-import mikera.util.Rand;
 import mikera.util.Random;
 import mikera.vectorz.impl.SparseHashedVector;
 

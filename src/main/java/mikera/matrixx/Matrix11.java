@@ -2,7 +2,6 @@ package mikera.matrixx;
 
 import mikera.matrixx.impl.APrimitiveMatrix;
 import mikera.vectorz.Vector1;
-import mikera.vectorz.Vector2;
 import mikera.vectorz.util.ErrorMessages;
 
 /**

@@ -7,14 +7,12 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
-import mikera.matrixx.Matrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedScalarVector;
-import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
@@ -132,6 +130,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	public void add(double d) {
 		set(get()+d);
 	}
+
+	@Override
+	public void addAt(int i, double v) {
+		// Note: this is an unsafe operation, so ignore the index
+		add(v);
+	}
 	
 	@Override
 	public void addToArray(double[] data, int offset) {
@@ -209,6 +213,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	@Override
 	public Scalar innerProduct(double a) {
 		return Scalar.create(get()*a);
+	}
+	
+	@Override
+	public AVector innerProduct(AVector a) {
+		return a.innerProduct(get());
 	}
 	
 	@Override

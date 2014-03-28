@@ -6,7 +6,6 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -53,6 +52,11 @@ public final class AxisVector extends ASparseVector {
 	@Override 
 	public void square() {
 		// no effect
+	}
+	
+	@Override
+	public AVector squareCopy() {
+		return this;
 	}
 	
 	@Override
@@ -234,12 +238,13 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		if ((start<0)||(start+length>this.length)) {
+		int end=start+length;
+		if ((start<0)||(end>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
 		}
 		if (length==this.length) return this;
 		
-		if ((start<=getAxis())&&(start+length>getAxis())) {
+		if ((start<=getAxis())&&(end>getAxis())) {
 			return AxisVector.create(getAxis()-start,length);
 		} else {
 			return Vectorz.createZeroVector(length);
@@ -269,8 +274,29 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public int[] nonZeroIndices() {
+		return new int[] {axis};
+	}
+	
+	@Override
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public AVector addCopy(AVector v) {
+		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		AVector r=v.clone();
+		r.addAt(axis, 1.0);
+		return r;
+	}
+	
+	@Override
+	public AVector subCopy(AVector v) {
+		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		AVector r=v.clone();
+		r.addAt(axis, -1.0);
+		return r;
 	}
 
 	@Override

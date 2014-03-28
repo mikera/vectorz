@@ -1,6 +1,5 @@
 package mikera.vectorz.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +9,6 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -161,7 +159,7 @@ public class SparseHashedVector extends ASparseVector {
 		return result;
 	}
 	
-	public double dotProduct(AArrayVector v) {
+	public double dotProduct(ADenseArrayVector v) {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
 		return dotProduct(array,offset);
@@ -209,7 +207,7 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
-	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		int aOffset=arrayOffset-offset;
 		int oArrayOffset=other.getArrayOffset()+otherOffset-offset;
 		double[] oArray=other.getArray();
@@ -236,8 +234,8 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override public void copyTo(AVector v, int offset) {
-		if (v instanceof AArrayVector) {
-			AArrayVector av=(AArrayVector)v;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector av=(ADenseArrayVector)v;
 			getElements(av.getArray(),av.getArrayOffset()+offset);
 		}
 		v.fillRange(offset,length,0.0);
@@ -275,7 +273,6 @@ public class SparseHashedVector extends ASparseVector {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void set(SparseHashedVector v) {
 		hash=(HashMap<Integer, Double>) v.hash.clone();
 	}
@@ -446,6 +443,18 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
+	public int[] nonZeroIndices() {
+		int n=hash.size();
+		int[] ret=new int[n];
+		int di=0;
+		for (Entry<Integer,Double> e: hash.entrySet()) {
+			ret[di++]=e.getKey();
+		}
+		Arrays.sort(ret);
+		return ret;
+	}
+	
+	@Override
 	public Index nonSparseIndexes() {
 		int n=hash.size();
 		int[] in=new int[n];
@@ -488,21 +497,19 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
-	public Vector clone() {
-		Vector v=Vector.createLength(length);
-		this.copySparseValuesTo(v.data, 0);
-		return v;
+	public AVector clone() {
+		return sparseClone();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public SparseHashedVector exactClone() {
 		return new SparseHashedVector(length,(HashMap<Integer, Double>) hash.clone());
 	}
 	
 	@Override
-	public SparseHashedVector sparseClone() {
-		return exactClone();
+	public SparseIndexedVector sparseClone() {
+		// by default switch to SparsIndexedVector: will normally be faster
+		return SparseIndexedVector.create(this);
 	}
 	
 	@Override
@@ -511,7 +518,7 @@ public class SparseHashedVector extends ASparseVector {
 		for (Entry<Integer, Double> e:hash.entrySet()) {
 			int i=e.getKey();
 			if ((i<0)||(i>=length)) throw new VectorzException(ErrorMessages.invalidIndex(this, i));
-			if (e.getValue()==0) throw new VectorzException("Unexpected zero at index: "+i);
+			if (e.getValue()==0.0) throw new VectorzException("Unexpected zero at index: "+i);
 		}
 		super.validate();
 	}

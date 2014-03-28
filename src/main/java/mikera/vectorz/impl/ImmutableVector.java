@@ -17,11 +17,10 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class ImmutableVector extends ASizedVector implements IDense {
+public class ImmutableVector extends AArrayVector implements IDense {
 	private static final long serialVersionUID = -3679147880242779555L;
 
-	private double[] data;
-	public int offset;
+	public final int offset;
 		
 	private ImmutableVector(double[] data) {
 		this(data,0,data.length);
@@ -32,8 +31,7 @@ public class ImmutableVector extends ASizedVector implements IDense {
 	}
 	
 	private ImmutableVector(double[] data, int offset, int length) {
-		super(length);
-		this.data=data;
+		super(length,data);
 		this.offset=offset;
 	}
 	

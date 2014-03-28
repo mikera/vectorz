@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -392,6 +391,12 @@ public final class Index extends AIndex {
 		}
 		return -1;
 	}
+	
+	@Override
+	public boolean containsSorted(int index) {
+		return indexPosition(index)>=0;
+	}
+	
 	
 	/**
 	 * Returns a new Index with a value inserted at the specified position

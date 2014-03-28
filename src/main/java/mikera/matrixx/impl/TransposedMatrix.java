@@ -177,7 +177,7 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 
 	@Override
-	public Matrix transposeInnerProduct(Matrix s) {
+	public AMatrix transposeInnerProduct(Matrix s) {
 		return source.innerProduct(s);
 	}
 	
@@ -187,7 +187,7 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 
 	@Override
-	public Matrix innerProduct(Matrix s) {
+	public AMatrix innerProduct(Matrix s) {
 		return source.transposeInnerProduct(s);
 	}
 

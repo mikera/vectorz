@@ -98,6 +98,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public void add(double a);
 	
 	/**
+	 * Creates a new array equal to the sum of this array with another array.
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public INDArray addCopy(INDArray a);	
+	
+	/**
 	 * Adds all the elements of this array to a double array, in row-major order
 	 */
 	public void addToArray(double[] data, int offset);
@@ -108,9 +116,23 @@ public interface INDArray extends Cloneable, Serializable {
 	public void sub(double a);
 	
 	/**
+	 * Creates a new array equal to the subtraction of another array from this array
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public INDArray subCopy(INDArray a);
+	
+	/**
 	 * Adds all the elements of another array to this array, in an elementwise order.
 	 */
 	public void add(INDArray a);
+	
+	/**
+	 * Adds to a mutable array, indexed by element position. 
+	 * This is an unsafe operation: bounds are not checked
+	 */
+	public void addAt(int i, double v);
 	
 	/**
 	 * Subtracts all the elements of another array from this array, in an elementwise order.
@@ -123,9 +145,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public void fill(double value);
 	
 	/**
-	 * Negates all elements in the array
+	 * Negates all elements in the array in place
 	 */
 	public void negate();
+	
+	/**
+	 * Negates all elements in the array, returning a new array
+	 */
+	public INDArray negateCopy();
 	
 	/**
 	 * Replaces all elements in the array with their reciprocal
@@ -173,6 +200,17 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray reshape(int... shape);
 
+	/**
+	 * Returns a re-ordered array by taking the specified order of slices along a given dimension
+	 */
+	public INDArray reorder(int dimension, int[] order);
+	
+	/**
+	 * Returns a re-ordered array by taking the specified order of slices along dimension 0
+	 */
+	public INDArray reorder(int[] order);
+
+	
 	/**
 	 * Returns rotated view of this array
 	 */
@@ -342,10 +380,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean isZero();
 	
 	/**
-	 * Returns a clone of the array, as a new array which will be fully mutable
+	 * Returns a clone of the array data, as a new array which will be fully mutable
 	 * and may be of a different class to the original.
 	 * 
 	 * Clone should attempt to return the most efficient possible array type.
+	 * 
+	 * Clone should preserve sparsity property where possible, but this is not guaranteed.
 	 */
 	public INDArray clone();
 	
@@ -377,7 +417,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns true if the two arrays are exactly equal in value and shape
 	 */
 	public boolean equals(INDArray a);
-	
+
 	/**
 	 * Returns true if all elements are equal to a specific value
 	 */
@@ -396,6 +436,11 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Sets all elements in an array using the given double values
 	 */
+	public void setElements(double[] values, int offset);
+	
+	/**
+	 * Sets elements in an array using the given double values
+	 */
 	public void setElements(double[] values, int offset, int length);
 
 	/**
@@ -404,29 +449,39 @@ public interface INDArray extends Cloneable, Serializable {
 	public void getElements(double[] dest, int offset);
 	
 	/**
-	 * Scales all elements of the array by a given double value
+	 * Scales all elements of the array in place by a given double value
 	 */
 	public void scale(double d);
 	
 	/**
-	 * Scales all elements of the array by a given double value and adds a constant vale
+	 * Scales all elements of the array by a given double value, returning a new array
+	 */
+	public INDArray scaleCopy(double d);
+	
+	/**
+	 * Scales all elements of the array by a given double value and adds a constant value
 	 */
 	public void scaleAdd(double factor, double constant);
 	
 	/**
-	 * Multiplies all elements of the array by a given double value
+	 * Multiplies all elements of the array in place by a given double value
 	 */
 	public void multiply(double d);
 	
 	/**
-	 * Raises all elements of the array to a specified power
+	 * Raises all elements of the array to a specified power in place
 	 */
 	public void pow(double exponent);
 	
 	/**
-	 * Squares all elements of the array
+	 * Squares all elements of the array in place
 	 */
 	public void square();
+	
+	/**
+	 * Squares all elements of the array, returning a new array
+	 */
+	public INDArray squareCopy();
 	
 	/**
 	 * Computes the square root of all elements in the array
@@ -568,7 +623,9 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray dense();
 	
 	/**
-	 * Creates a fully mutable clone of this array. Will use a sparse format if possible.
+	 * Creates a fully mutable clone of this array. 
+	 * 
+	 * Will use a sparse format if possible.
 	 */
 	public INDArray sparseClone();
 
@@ -586,6 +643,15 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param data
 	 * @return
 	 */
-	public boolean equalsArray(double[] data, int offset);	
+	public boolean equalsArray(double[] data, int offset);
+
+	/**
+	 * Computes the inner product of this array with a vector
+	 * @param v
+	 * @return
+	 */
+	public INDArray innerProduct(AVector v);
+
+
 	
 }

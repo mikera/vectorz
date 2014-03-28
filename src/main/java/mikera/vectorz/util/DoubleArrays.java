@@ -143,7 +143,8 @@ public final class DoubleArrays {
 	public static int nonZeroCount(double[] data, int offset, int length) {
 		int result = 0;
 		for (int i=0; i<length; i++) {
-			if (data[offset+i]!=0.0) result++;
+			if (data[offset+i]==0.0) continue;
+			result++;
 		}
 		return result;
 	}
@@ -496,6 +497,16 @@ public final class DoubleArrays {
 	public static double[] copyOf(double[] data, int start, int length) {
 		double[] rs=new double[length];
 		System.arraycopy(data, start, rs, 0, length);
+		return rs;
+	}
+
+	public static int[] nonZeroIndices(double[] data, int offset, int length) {
+		int n=DoubleArrays.nonZeroCount(data, offset, length);
+		int[] rs=new int[n];
+		int di=0;
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=0.0) rs[di++]=i;
+		}
 		return rs;
 	}
 

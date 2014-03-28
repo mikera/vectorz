@@ -7,6 +7,12 @@ import mikera.arrayz.INDArray;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
+/**
+ * Array created by joining two arrays along a specific dimension
+ * 
+ * @author Mike
+ *
+ */
 public class JoinedArray extends AbstractArray<INDArray> {
 	private static final long serialVersionUID = 4929988077055768422L;
 

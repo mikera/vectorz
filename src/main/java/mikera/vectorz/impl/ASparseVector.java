@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
-import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.vectorz.AVector;
 
 /**
@@ -51,6 +50,11 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	
 	@Override
 	public abstract boolean isZero();
+	
+	@Override
+	public boolean isView() {
+		return false;
+	}
 		
 	// ================================================
 	// standard implementations

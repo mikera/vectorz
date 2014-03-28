@@ -5,9 +5,11 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Vector that addresses elements indexed into another source vector
+ * Vector that addresses elements indexed into another source vector.
+ * 
+ * Indexed elements are not necessarily distinct: two elements n the vector can refer to the same source element.
+ * 
  * @author Mike
- *
  */
 public final class IndexedSubVector extends BaseIndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;

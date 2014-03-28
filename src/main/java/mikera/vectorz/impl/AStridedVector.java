@@ -9,7 +9,6 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.Vector;
-import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -19,17 +18,14 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public abstract class AStridedVector extends ASizedVector implements IStridedArray {
-	protected final double[] data;
-	
+public abstract class AStridedVector extends AArrayVector implements IStridedArray {
 	protected AStridedVector(int length, double[] data) {
-		super(length);
-		this.data=data;
+		super(length,data);
 	}
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
-	public final double[] getArray() {
+	public double[] getArray() {
 		return data;
 	}
 	
@@ -209,7 +205,7 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 	public void fill(double value) {
 		int stride=getStride();
 		double[] array=getArray();
-		int di=getArrayOffset();;
+		int di=getArrayOffset();
 		for (int i=0; i<length; i++) {
 			array[di]=value;
 			di+=stride;
@@ -220,7 +216,7 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 	public boolean equalsArray(double[] data, int offset) {
 		int stride=getStride();
 		double[] array=getArray();
-		int di=getArrayOffset();;
+		int di=getArrayOffset();
 		for (int i=0; i<length; i++) {
 			if (data[offset+i]!=array[di]) return false;
 			di+=stride;
