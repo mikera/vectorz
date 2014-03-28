@@ -173,6 +173,13 @@ public final class JoinedVector extends AJoinedVector {
 		}
 	}
 	
+	@Override
+	public AVector addCopy(AVector a) {
+		AVector lsum = left.addCopy(a.subVector(0, split));
+		AVector rsum = right.addCopy(a.subVector(split, length-split));
+		return lsum.join(rsum);
+	}
+	
 	public void add(JoinedVector a) {
 		if (split==a.split) {
 			left.add(a.left);
