@@ -1122,6 +1122,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		multiply(-1.0);
 	}
 	
+	public AVector negateCopy() {
+		AVector r=clone();
+		r.negate();
+		return r;
+	}
+	
 	@Override
 	public void pow(double exponent) {
 		int len=length();

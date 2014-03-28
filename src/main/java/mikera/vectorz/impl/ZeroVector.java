@@ -127,6 +127,12 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector subCopy(AVector a) {
+		if (length!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		return a.negateCopy();
+	}
+	
+	@Override
 	public double magnitudeSquared() {
 		return 0.0;
 	}

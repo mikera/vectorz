@@ -269,13 +269,12 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if(length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		v.addToArray(data, 0);
 	}
 	
 	@Override
 	public void add(Vector v) {
-		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		add(v.data,0);
 	}
