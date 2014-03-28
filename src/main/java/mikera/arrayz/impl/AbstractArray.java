@@ -455,6 +455,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray scaleCopy(double d) {
+		INDArray r=clone();
+		r.scale(d);
+		return r;
+	}
+	
+	@Override
+	public INDArray negateCopy() {
+		INDArray r=clone();
+		r.negate();
+		return r;
+	}
+	
+	@Override
 	public boolean equals(INDArray a) {
 		int dims=dimensionality();
 		if (a.dimensionality()!=dims) return false;

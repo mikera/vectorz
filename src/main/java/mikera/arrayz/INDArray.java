@@ -145,9 +145,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public void fill(double value);
 	
 	/**
-	 * Negates all elements in the array
+	 * Negates all elements in the array in place
 	 */
 	public void negate();
+	
+	/**
+	 * Negates all elements in the array, returning a new array
+	 */
+	public INDArray negateCopy();
 	
 	/**
 	 * Replaces all elements in the array with their reciprocal
@@ -447,6 +452,11 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Scales all elements of the array in place by a given double value
 	 */
 	public void scale(double d);
+	
+	/**
+	 * Scales all elements of the array by a given double value, returning a new array
+	 */
+	public INDArray scaleCopy(double d);
 	
 	/**
 	 * Scales all elements of the array by a given double value and adds a constant value
