@@ -6,6 +6,7 @@ import java.util.List;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -183,6 +184,13 @@ public final class JoinedArrayVector extends ASizedVector {
 	@Override
 	public void add(AVector a) {
 		add(0,a,0,length);
+	}
+	
+	@Override
+	public Vector addCopy(AVector a) {
+		Vector r=this.toVector();
+		r.add(a);
+		return r;
 	}
 	
 	@Override

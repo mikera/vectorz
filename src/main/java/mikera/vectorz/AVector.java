@@ -1238,6 +1238,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Vector.create(this);
 	}
 	
+	@Override
+	public AVector copy() {
+		if (!isMutable()) return this;
+		return clone();
+	}
+	
 	/**
 	 * Clones the vector into a sparse mutable format
 	 */
