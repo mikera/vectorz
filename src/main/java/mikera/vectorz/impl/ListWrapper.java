@@ -25,7 +25,7 @@ public final class ListWrapper extends AbstractList<Double> {
 	@Override
 	public Double get(int index) {
 		double v=wrappedVector.get(index);
-		if (v==0.0) return ZERO;
+		if (v==0.0) return ZERO; // saves boxing with sparse arrays
 		return v;
 	}
 	
