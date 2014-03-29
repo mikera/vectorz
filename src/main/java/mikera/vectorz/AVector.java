@@ -611,9 +611,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
-	/**
-	 * Sets each component of the vector to its absolute value
-	 */
+	@Override
 	public void abs() {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -631,9 +629,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	/**
-	 * Sets each component of the vector to its sign value (-1, 0 or 1)
-	 */
 	@Override
 	public void signum() {
 		int len=length();
@@ -642,9 +637,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	/**
-	 * Squares all elements of the vector
-	 */
 	@Override
 	public void square() {
 		int len=length();
