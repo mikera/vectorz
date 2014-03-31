@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 
-import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
