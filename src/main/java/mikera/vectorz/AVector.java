@@ -169,6 +169,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public boolean sameShape(INDArray a) {
+		return (a.dimensionality()==1)&&(a.getShape(0)==this.length());
+	}
+	
+	@Override
+	public boolean sameShape(AVector a) {
+		return (a.length()==this.length());
+	}
+	
+	@Override
 	public long elementCount() {
 		return length();
 	}
