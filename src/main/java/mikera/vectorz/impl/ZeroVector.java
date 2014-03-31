@@ -344,7 +344,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public boolean equals(AVector v) {
-		if (v.length()!=length) return false;
+		if (!isSameShape(v)) return false;
 		return v.isZero();
 	}
 	

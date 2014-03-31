@@ -75,6 +75,20 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public AxisVector absCopy() {
+		return this;
+	}	
+	
+	@Override
+	public AxisVector signumCopy() {
+		return this;
+	}
+	
+	public AxisVector sqrtCopy() {
+		return this;
+	}
+	
+	@Override
 	public double elementSum() {
 		return 1.0;
 	}
