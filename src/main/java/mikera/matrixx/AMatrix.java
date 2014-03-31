@@ -1971,4 +1971,22 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int x=i%cc;
 		unsafeSet(y,x,unsafeGet(y,x)*d);
 	}
+	
+	@Override
+	public INDArray addCopy(INDArray a) {
+		if (a instanceof AMatrix) {
+			return addCopy((AMatrix)a);
+		} else {
+			AMatrix m=this.clone();
+			m.add(a);
+			return m;
+		}
+	}
+
+	@Override
+	public AMatrix addCopy(AMatrix a) {
+		AMatrix m=this.clone();
+		m.add(a);
+		return m;
+	}
 }

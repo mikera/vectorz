@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -162,6 +163,17 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	@Override
 	public void addToArray(double[] dest, int offset) {
 		getLeadingDiagonal().addToArray(dest, offset, dimensions+1);
+	}
+	
+	@Override
+	public AMatrix addCopy(AMatrix a) {
+		if (a.isDiagonal()) {
+			DiagonalMatrix m=DiagonalMatrix.create(this.getLeadingDiagonal());
+			a.getLeadingDiagonal().addToArray(m.data,0);
+			return m;
+		} else {
+			return super.addCopy(a);
+		}
 	}
 	
 	@Override

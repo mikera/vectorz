@@ -40,6 +40,8 @@ public interface IMatrix extends INDArray {
 
 	AMatrix inverse();
 
+	AMatrix addCopy(AMatrix a);
+
 
 
 }
