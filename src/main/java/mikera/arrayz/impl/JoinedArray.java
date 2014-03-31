@@ -1,8 +1,5 @@
 package mikera.arrayz.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mikera.arrayz.INDArray;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;

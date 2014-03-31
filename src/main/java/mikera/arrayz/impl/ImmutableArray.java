@@ -2,7 +2,6 @@ package mikera.arrayz.impl;
 
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
-import java.util.List;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
