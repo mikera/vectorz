@@ -167,18 +167,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public long[] getLongShape() {
 		return new long[] {length()};
 	}
-	
-	@Override
-	public boolean sameShape(INDArray a) {
-		if (a instanceof AVector) return sameShape((AVector)a);
-		return (a.dimensionality()==1)&&(a.getShape(0)==this.length());
-	}
-	
-	@Override
-	public boolean sameShape(AVector a) {
-		return (a.length()==this.length());
-	}
-	
+		
 	@Override
 	public long elementCount() {
 		return length();
@@ -1547,7 +1536,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public boolean isSameShape(INDArray a) {
+	public final boolean isSameShape(INDArray a) {
 		if (a instanceof AVector) return isSameShape((AVector)a);
 		if (a.dimensionality()!=1) return false;
 		return length()==a.getShape(0);

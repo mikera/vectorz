@@ -276,11 +276,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public boolean sameShape(AMatrix m) {
-		return (columnCount()==m.columnCount())&&(rowCount()==m.rowCount());
-	}
-	
-	@Override
 	public double get(int... indexes) {
 		assert(indexes.length==2);
 		return get(indexes[0],indexes[1]);

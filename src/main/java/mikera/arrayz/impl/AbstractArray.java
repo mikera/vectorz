@@ -64,18 +64,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public boolean sameShape(INDArray a) {
-		int n=dimensionality();
-		if (a.dimensionality()!=n) return false;
-		for (int i=0; i<n; i++) {
-			if (getShape(i)!=a.getShape(i)) return false;
-		}
-		return true;
-	}
-
-	
-	
-	@Override
 	public long[] getLongShape() {
 		return LongArrays.copyOf(getShape());
 	}

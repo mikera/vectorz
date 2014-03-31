@@ -42,13 +42,6 @@ public interface IMatrix extends INDArray {
 
 	AMatrix addCopy(AMatrix a);
 
-	/**
-	 * Returns true if this matrix has the exact same shape as another matrix
-	 * @param m
-	 * @return
-	 */
-	boolean sameShape(AMatrix m);
-
 
 
 }

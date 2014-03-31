@@ -120,7 +120,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public AMatrix addCopy(AMatrix a) {
-		if (!sameShape(a)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		if (!isSameShape(a)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		return a.copy();
 	}
 	

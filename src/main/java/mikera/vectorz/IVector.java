@@ -44,6 +44,4 @@ public interface IVector extends INDArray {
 	AVector addCopy(AVector a);
 
 	AVector subCopy(AVector a);
-
-	boolean sameShape(AVector a);
 }
