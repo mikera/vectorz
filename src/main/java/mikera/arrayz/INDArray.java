@@ -53,6 +53,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public long[] getLongShape();
 	
 	/**
+	 * returns true if this array has the exact same shape as another array
+	 */
+	public boolean sameShape(INDArray a);
+	
+	/**
 	 * Returns the double value of a scalar array
 	 */
 	public double get();
