@@ -171,7 +171,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 			a.getLeadingDiagonal().addToArray(m.data,0);
 			return m;
 		} else {
-			return super.addCopy(a);
+			return a.addCopy(this);
 		}
 	}
 	
