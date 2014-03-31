@@ -1,5 +1,8 @@
 package mikera.arrayz.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mikera.arrayz.INDArray;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -167,4 +170,5 @@ public class JoinedArray extends AbstractArray<INDArray> {
 	public boolean equalsArray(double[] data, int offset) {
 		return left.equalsArray(data, offset)&&right.equalsArray(data,(int) (offset+left.elementCount()));
 	}
+
 }

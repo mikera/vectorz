@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import static org.junit.Assert.*;
+import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -31,6 +32,11 @@ public class TestMiscArrayOps {
 		AVector v2=v.clone();
 		v2.square();
 		assertEquals(v2,m.getLeadingDiagonal());
+	}
+	
+	@Test public void testDoubleSlice() {
+		assertEquals(new Double(2.0),Array.create(Vector.of(1,2,3)).getSlices().get(1));
+		assertEquals(new Double(2.0),SliceArray.create(Vector.of(1,2,3)).getSlices().get(1));
 	}
 	
 	@Test public void testParse() {

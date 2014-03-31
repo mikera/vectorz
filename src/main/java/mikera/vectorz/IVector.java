@@ -44,4 +44,8 @@ public interface IVector extends INDArray {
 	AVector addCopy(AVector a);
 
 	AVector subCopy(AVector a);
+
+	AVector multiplyCopy(AVector a);
+
+	AVector divideCopy(AVector a);
 }

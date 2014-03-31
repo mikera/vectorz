@@ -316,9 +316,23 @@ public interface INDArray extends Cloneable, Serializable {
 	public void multiply(INDArray a);
 	
 	/**
-	 * Divides all elements by the equivalent elements in a second array
+	 * Multiplies all elements by the equivalent elements in a second array, i.e. performs elementwise multiplication.
+	 * Returns a new array.
+	 * 
+	 * If matrix-style multiplication is required, use innerProduct instead.
+	 */
+	public INDArray multiplyCopy(INDArray a);
+	
+	/**
+	 * Divides all elements in place by the equivalent elements in a second array
 	 */
 	public void divide(INDArray a);
+	
+	/**
+	 * Divides all elements by the equivalent elements in a second array. Returns a new array.
+	 */
+	public INDArray divideCopy(INDArray a);
+
 	
 	/**
 	 * Divides all elements by a given factor
@@ -495,11 +509,15 @@ public interface INDArray extends Cloneable, Serializable {
 
 	/**
 	 * Returns a list of all major slices of this array.
+	 * 
+	 * Returns a list of Double values if a 1-dimensional array is sliced, otherwise a list of INDArray instances
 	 */
 	public List<?> getSlices();
 	
 	/**
-	 * Returns a list of all slices of this array along a given dimension
+	 * Returns a list of all slices of this array along a given dimension.
+	 * 
+	 * Returns a list of Double values if a 1-dimensional array is sliced, otherwise a list of INDArray instances
 	 */
 	public List<?> getSlices(int dimension);
 	
@@ -524,6 +542,11 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Copies the elements of this INDArray to a new double array
 	 */
 	public double[] toDoubleArray();
+	
+	/**
+	 * Copies the slices of this array to a new INDArray[]
+	 */
+	public INDArray[] toSliceArray();
 	
 	/**
 	 * Returns the underlying double array representing the packed elements of this array

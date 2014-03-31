@@ -1,5 +1,8 @@
 package mikera.vectorz.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
@@ -76,6 +79,13 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 
 	public abstract void add(ASparseVector v);
+	
+	@Override
+	public List<Double> getSlices() {
+		// we prefer a ListWrapper for sparse vectors since it is O(1) to create.
+		// downside: causes boxing on individual element accesses
+		return new ListWrapper(this);
+	}
 	
 	@Override
 	public ASparseVector sparse() {

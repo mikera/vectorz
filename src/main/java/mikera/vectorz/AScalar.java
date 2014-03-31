@@ -415,6 +415,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public INDArray[] toSliceArray() {
+		throw new UnsupportedOperationException(ErrorMessages.noSlices(this));
+	}
+	
+	@Override
 	public abstract AScalar exactClone();
 	
 	@Override

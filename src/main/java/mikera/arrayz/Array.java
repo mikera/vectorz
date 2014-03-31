@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -339,8 +340,17 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 
 	@Override
-	public List<INDArray> getSlices() {
-		return super.getSliceViews();
+	public List<?> getSlices() {
+		if (dimensions==1) {
+			int n=sliceCount();
+			ArrayList<Double> al=new ArrayList<Double>(n);
+			for (int i=0; i<n; i++) {
+				al.add(get(i));
+			}
+			return al;
+		} else {
+			return super.getSliceViews();
+		}
 	}
 
 	@Override

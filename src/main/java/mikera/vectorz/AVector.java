@@ -412,6 +412,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public INDArray[] toSliceArray() {
+		int n=sliceCount();
+		INDArray[] al=new INDArray[n];
+		for (int i=0; i<n; i++) {
+			al[i]=slice(i);
+		}
+		return al;
+	}
+	
+	@Override
 	public double[] asDoubleArray() {
 		return null;
 	}
@@ -601,9 +611,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
-	/**
-	 * Sets each component of the vector to its absolute value
-	 */
+	@Override
 	public void abs() {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -621,9 +629,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	/**
-	 * Sets each component of the vector to its sign value (-1, 0 or 1)
-	 */
 	@Override
 	public void signum() {
 		int len=length();
@@ -632,9 +637,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	/**
-	 * Squares all elements of the vector
-	 */
 	@Override
 	public void square() {
 		int len=length();
@@ -1398,6 +1400,44 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		// clone ensures mutability
 		AVector r=this.clone();
 		r.sub(a);
+		return r;
+	}
+	
+	@Override
+	public INDArray multiplyCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return multiplyCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			return multiplyCopy(a.asVector());
+		} else {
+			return multiplyCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public INDArray divideCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return divideCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			return divideCopy(a.asVector());
+		} else {
+			return divideCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public AVector multiplyCopy(AVector a) {
+		AVector r=this.clone();
+		r.multiply(a);
+		return r;
+	}
+	
+	@Override
+	public AVector divideCopy(AVector a) {
+		AVector r=this.clone();
+		r.divide(a);
 		return r;
 	}
 	
