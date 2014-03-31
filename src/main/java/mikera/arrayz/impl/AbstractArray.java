@@ -386,9 +386,24 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		applyOp(Ops.SQUARE);
 	}
 	
+	@Override
 	public INDArray squareCopy() {
 		INDArray r=clone();
 		r.square();
+		return r;
+	}
+	
+	@Override
+	public INDArray absCopy() {
+		INDArray r=clone();
+		r.abs();
+		return r;
+	}
+	
+	@Override
+	public INDArray signumCopy() {
+		INDArray r=clone();
+		r.signum();
 		return r;
 	}
 	

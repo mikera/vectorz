@@ -143,7 +143,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override 
 	public double dotProduct(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException("Mismatched vector sizes");
+		if (!isSameShape(v)) throw new IllegalArgumentException("Mismatched vector sizes");
 		return v.unsafeGet(getAxis());
 	}
 	
@@ -285,7 +285,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector addCopy(AVector v) {
-		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		if (!isSameShape(v)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		AVector r=v.clone();
 		r.addAt(axis, 1.0);
 		return r;
@@ -293,7 +293,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector subCopy(AVector v) {
-		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		if (!isSameShape(v)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		AVector r=v.clone();
 		r.addAt(axis, -1.0);
 		return r;

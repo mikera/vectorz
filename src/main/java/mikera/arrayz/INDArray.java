@@ -666,6 +666,10 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray innerProduct(AVector v);
 
+	INDArray absCopy();
+
+	INDArray signumCopy();
+
 
 	
 }
