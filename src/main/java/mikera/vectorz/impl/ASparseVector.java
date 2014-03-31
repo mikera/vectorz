@@ -1,6 +1,5 @@
 package mikera.vectorz.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import mikera.arrayz.ISparse;

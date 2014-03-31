@@ -39,7 +39,6 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static <T extends INDArray>  SliceArray<T> create(INDArray a) {
 		return new SliceArray<T>(a.getShape(),(T[]) a.toSliceArray());
 	}
@@ -275,7 +274,6 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public SliceArray<T> exactClone() {
 		T[] newSlices=slices.clone();
