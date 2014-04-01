@@ -4,6 +4,9 @@ import mikera.matrixx.AMatrix;
 
 /**
  * Abstract base class for matrices limited to boolean 0/1 values
+ * 
+ * Such matrices allow for various efficient representations
+ * 
  * @author Mike
  *
  */
