@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Abstract base class for matrices limited to boolean 0/1 values
@@ -42,5 +43,13 @@ public abstract class ABooleanMatrix extends AMatrix {
 	@Override
 	public AMatrix absCopy() {
 		return copy();
+	}
+	
+	@Override
+	public void validate() {
+		if (!clone().isBoolean()) {
+			throw new VectorzException("Clone of boolean matrix should be boolean!");
+		}
+		super.validate();
 	}
 }
