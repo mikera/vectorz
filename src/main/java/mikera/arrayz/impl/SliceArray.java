@@ -44,7 +44,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 		return new SliceArray<T>(a.getShape(),(T[]) a.toSliceArray());
 	}
 	
-	@SafeVarargs
+	@SuppressWarnings("unchecked")
 	public static <T extends INDArray>  SliceArray<T> of(T... slices) {
 		return new SliceArray<T>(IntArrays.consArray(slices.length,slices[0].getShape()),slices.clone());
 	}
