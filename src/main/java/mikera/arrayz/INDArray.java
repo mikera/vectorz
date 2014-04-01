@@ -77,8 +77,28 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public void set(double value);
 	
+	/**
+	 * Sets a value at a given position in a mutable 1D array
+	 *
+	 * @param i
+	 * @param value
+	 */
 	public void set(int i, double value);
+	
+	/**
+	 * Sets a value at a given position in a mutable 2D array
+	 *
+	 * @param i
+	 * @param value
+	 */
 	public void set(int i, int j, double value);
+	
+	/**
+	 * Sets a value at a given indexed position in a mutable array
+	 *
+	 * @param i
+	 * @param value
+	 */
 	public void set(int[] indexes, double value);
 	
 	/**
@@ -666,9 +686,9 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray innerProduct(AVector v);
 
-	INDArray absCopy();
+	public INDArray absCopy();
 
-	INDArray signumCopy();
+	public INDArray signumCopy();
 
 
 	
