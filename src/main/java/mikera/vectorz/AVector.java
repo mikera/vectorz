@@ -19,6 +19,7 @@ import mikera.matrixx.impl.BroadcastVectorMatrix;
 import mikera.randomz.Hash;
 import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
+import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
@@ -648,6 +649,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector squareCopy() {
+		AVector r=clone();
+		r.square();
+		return r;
+	}
+	
+	@Override
+	public AVector sqrtCopy() {
 		AVector r=clone();
 		r.square();
 		return r;

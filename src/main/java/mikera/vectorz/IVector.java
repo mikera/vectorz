@@ -1,6 +1,7 @@
 package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.impl.AxisVector;
 
 /**
  * Basic interface for a Vector
@@ -48,4 +49,6 @@ public interface IVector extends INDArray {
 	AVector multiplyCopy(AVector a);
 
 	AVector divideCopy(AVector a);
+
+	AVector sqrtCopy();
 }

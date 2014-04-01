@@ -65,8 +65,18 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public AxisVector absCopy() {
+		return this;
+	}	
+	
+	@Override
 	public void sqrt() {
 		// no effect
+	}
+	
+	@Override
+	public AxisVector sqrtCopy() {
+		return this;
 	}
 	
 	@Override
@@ -75,18 +85,10 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
-	public AxisVector absCopy() {
-		return this;
-	}	
-	
-	@Override
 	public AxisVector signumCopy() {
 		return this;
 	}
-	
-	public AxisVector sqrtCopy() {
-		return this;
-	}
+
 	
 	@Override
 	public double elementSum() {
