@@ -569,6 +569,7 @@ public class Matrixx {
 	public static AMatrix parse(String ednString) {
 		Parser p = Parsers.newParser(getMatrixParserConfig());
 		Parseable ps = Parsers.newParseable(ednString);
+		@SuppressWarnings("unchecked")
 		List<List<Object>> data = (List<List<Object>>) p.nextValue(ps);
 		int rc = data.size();
 		int cc = (rc == 0) ? 0 : data.get(0).size();
