@@ -1,7 +1,6 @@
 package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
-import mikera.vectorz.impl.AxisVector;
 
 /**
  * Basic interface for a Vector
