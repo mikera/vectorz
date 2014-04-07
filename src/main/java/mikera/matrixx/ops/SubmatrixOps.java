@@ -18,7 +18,7 @@
 
 package mikera.matrixx.ops;
 
-import mikera.matrixx.Matrix;
+import mikera.matrixx.AMatrix;
 
 /**
  * Operations that are performed on a submatrix inside a larger matrix.
@@ -27,7 +27,7 @@ import mikera.matrixx.Matrix;
  */
 public class SubmatrixOps {
 
-  public static void setSubMatrix(Matrix src, Matrix dst, int srcRow,
+  public static void setSubMatrix(AMatrix src, AMatrix dst, int srcRow,
       int srcCol, int dstRow, int dstCol, int numSubRows, int numSubCols) {
     for (int i = 0; i < numSubRows; i++) {
       for (int j = 0; j < numSubCols; j++) {

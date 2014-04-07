@@ -18,7 +18,7 @@
 
 package mikera.matrixx.ops;
 
-import mikera.matrixx.Matrix;
+import mikera.matrixx.AMatrix;
 
 /**
  * Contains various functions related to unit testing matrix operations.
@@ -33,7 +33,7 @@ public class EjmlUnitTests {
    * 
    * @param A Matrix
    */
-  public static void assertCountable(Matrix A) {
+  public static void assertCountable(AMatrix A) {
     for (int i = 0; i < A.rowCount(); i++) {
       for (int j = 0; j < A.columnCount(); j++) {
         assertTrue(!Double.isNaN(A.get(i, j)), "NaN found at " + i + " " + j);
@@ -51,7 +51,7 @@ public class EjmlUnitTests {
    * @param A Matrix
    * @param B Matrix
    */
-  public static void assertShape(Matrix A, Matrix B) {
+  public static void assertShape(AMatrix A, AMatrix B) {
     assertTrue(A.rowCount() == B.rowCount(), "Number of rows do not match");
     assertTrue(A.columnCount() == B.columnCount(),
         "Number of columns do not match");
@@ -66,7 +66,7 @@ public class EjmlUnitTests {
    * @param numRows expected number of rows in the matrix
    * @param numCols expected number of columns in the matrix
    */
-  public static void assertShape(Matrix A, int numRows, int numCols) {
+  public static void assertShape(AMatrix A, int numRows, int numCols) {
     assertTrue(A.rowCount() == numRows, "Unexpected number of rows.");
     assertTrue(A.columnCount() == numCols, "Unexpected number of columns.");
   }
@@ -91,7 +91,7 @@ public class EjmlUnitTests {
    * @param B Matrix B
    * @param tol Tolerance
    */
-  public static void assertEqualsUncountable(Matrix A, Matrix B, double tol) {
+  public static void assertEqualsUncountable(AMatrix A, AMatrix B, double tol) {
     assertShape(A, B);
 
     for (int i = 0; i < A.rowCount(); i++) {
@@ -133,7 +133,7 @@ public class EjmlUnitTests {
    * @param B Matrix B
    * @param tol Tolerance
    */
-  public static void assertEquals(Matrix A, Matrix B, double tol) {
+  public static void assertEquals(AMatrix A, AMatrix B, double tol) {
     assertShape(A, B);
 
     for (int i = 0; i < A.rowCount(); i++) {
@@ -168,7 +168,7 @@ public class EjmlUnitTests {
    * @param B Matrix B
    * @param tol Tolerance
    */
-  public static void assertEqualsTrans(Matrix A, Matrix B, double tol) {
+  public static void assertEqualsTrans(AMatrix A, AMatrix B, double tol) {
     assertShape(A, B.columnCount(), B.rowCount());
 
     for (int i = 0; i < A.rowCount(); i++) {
