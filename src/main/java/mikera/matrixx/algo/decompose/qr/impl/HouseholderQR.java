@@ -146,9 +146,9 @@ public class HouseholderQR implements IQR {
   protected Matrix computeQ(boolean compact) {
     Matrix Q;
     if (compact) {
-      Q = Matrix.identity(numRows, minLength);
+      Q = Matrix.createIdentity(numRows, minLength);
     } else {
-      Q = Matrix.identity(numRows);
+      Q = Matrix.createIdentity(numRows);
     }
 
     for (int j = minLength - 1; j >= 0; j--) {

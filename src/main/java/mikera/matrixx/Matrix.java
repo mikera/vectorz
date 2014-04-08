@@ -631,7 +631,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	   * @param numCols NUmber of columns in the matrix.
 	   * @return A matrix with diagonal elements equal to one.
 	   */
-	  public static Matrix identity(int numRows, int numCols) {
+	  public static Matrix createIdentity(int numRows, int numCols) {
 	    Matrix ret = create(numRows, numCols);
 	
 	    int small = numRows < numCols ? numRows : numCols;
@@ -654,7 +654,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	   * @param width The width and height of the identity matrix.
 	   * @return A new instance of an identity matrix.
 	   */
-	  public static Matrix identity(int width) {
+	  public static Matrix createIdentity(int width) {
 	    Matrix ret = create(width, width);
 	
 	    for (int i = 0; i < width; i++) {
