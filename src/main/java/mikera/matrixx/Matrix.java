@@ -624,4 +624,44 @@ public final class Matrix extends ADenseArrayMatrix {
 		return data;
 	}
 
+	/**
+	   * Creates a rectangular matrix which is zero except along the diagonals.
+	   *
+	   * @param numRows Number of rows in the matrix.
+	   * @param numCols NUmber of columns in the matrix.
+	   * @return A matrix with diagonal elements equal to one.
+	   */
+	  public static Matrix identity(int numRows, int numCols) {
+	    Matrix ret = create(numRows, numCols);
+	
+	    int small = numRows < numCols ? numRows : numCols;
+	
+	    for (int i = 0; i < small; i++) {
+	      ret.set(i, i, 1.0);
+	    }
+	
+	    return ret;
+	  }
+
+	/**
+	   * <p>
+	   * Creates an identity matrix of the specified size.<br>
+	   * <br>
+	   * a<sub>ij</sub> = 0 if i &ne; j<br>
+	   * a<sub>ij</sub> = 1 if i = j<br>
+	   * </p>
+	   *
+	   * @param width The width and height of the identity matrix.
+	   * @return A new instance of an identity matrix.
+	   */
+	  public static Matrix identity(int width) {
+	    Matrix ret = create(width, width);
+	
+	    for (int i = 0; i < width; i++) {
+	      ret.set(i, i, 1.0);
+	    }
+	
+	    return ret;
+	  }
+
 }

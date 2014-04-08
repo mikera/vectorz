@@ -20,7 +20,6 @@ package mikera.matrixx.algo.decompose.qr.impl;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.qr.IQR;
-import mikera.matrixx.ops.CommonOps;
 
 /**
  * <p>
@@ -147,9 +146,9 @@ public class HouseholderQR implements IQR {
   protected Matrix computeQ(boolean compact) {
     Matrix Q;
     if (compact) {
-      Q = CommonOps.identity(numRows, minLength);
+      Q = Matrix.identity(numRows, minLength);
     } else {
-      Q = CommonOps.identity(numRows);
+      Q = Matrix.identity(numRows);
     }
 
     for (int j = minLength - 1; j >= 0; j--) {
