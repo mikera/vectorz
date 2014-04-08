@@ -34,6 +34,17 @@ public class TestMiscArrayOps {
 		assertEquals(v2,m.getLeadingDiagonal());
 	}
 	
+	@Test public void testInnerProducts() {
+		INDArray a=Array.newArray(1,1,1);
+		INDArray b=Array.newArray(1,1,1);
+		a.fill(2);
+		b.fill(3);
+		INDArray c=a.innerProduct(b);
+		assertEquals(1,c.elementCount());
+		assertEquals(4,c.dimensionality());
+		assertEquals(6.0,c.get(0,0,0,0),0.0);
+	}
+	
 	@Test public void testDoubleSlice() {
 		assertEquals(new Double(2.0),Array.create(Vector.of(1,2,3)).getSlices().get(1));
 		assertEquals(new Double(2.0),SliceArray.create(Vector.of(1,2,3)).getSlices().get(1));

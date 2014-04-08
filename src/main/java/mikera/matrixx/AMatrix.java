@@ -1326,7 +1326,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		} else if (a.dimensionality()<=2) {
 			return innerProduct(Arrayz.create(a)); // convert to most efficient format
 		}
-		return Array.create(this).innerProduct(a);
+		List<AVector> al=getSlices();
+		List<INDArray> rl=new ArrayList<INDArray>();
+		for (AVector v: al ) {
+			rl.add(v.innerProduct(a));
+		}
+		return SliceArray.create(rl);
 	}
 
 	public INDArray outerProduct(INDArray a) {

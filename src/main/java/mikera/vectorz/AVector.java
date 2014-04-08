@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
@@ -790,8 +791,19 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			return innerProduct((AScalar)a);
 		} else if (a instanceof AMatrix) {
 			return innerProduct((AMatrix)a);
+		} else if (a.dimensionality()<=2) {
+			return innerProduct(Array.create(a));
 		}
-		return super.innerProduct(a);
+		int len=length();
+		if (len!=a.sliceCount()) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+		List<INDArray> al=a.getSliceViews();
+		INDArray result=Arrayz.newArray(al.get(0).getShape());
+		for (int i=0; i<len; i++) {
+			result.add(al.get(i).innerProduct(get(i)));
+		}
+		return result;
 	}
 	
 	@Override
