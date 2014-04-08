@@ -25,9 +25,9 @@ import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Standard MxN matrix class backed by a densely packed double[] array
- * 
+ *
  * This is the most efficient Vectorz type for 2D matrices.
- * 
+ *
  * @author Mike
  */
 public final class Matrix extends ADenseArrayMatrix {
@@ -162,7 +162,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	public Matrix innerProduct(Matrix a) {
 		return Multiplications.multiply(this, a);
 	}
-	
+
 	@Override
 	public Matrix transposeInnerProduct(Matrix s) {
 		Matrix r= toMatrixTranspose();
@@ -625,43 +625,43 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	/**
-	   * Creates a Matrix which contains ones along the main diagonal
-	   * and zeros everywhere else. If square, is equal to the identity matrix.
-	   *
-	   * @param numRows Number of rows in the matrix.
-	   * @param numCols NUmber of columns in the matrix.
-	   * @return A matrix with diagonal elements equal to one.
-	   */
-	  public static Matrix createIdentity(int numRows, int numCols) {
-	    Matrix ret = create(numRows, numCols);
-	
-	    int small = numRows < numCols ? numRows : numCols;
-	
-	    for (int i = 0; i < small; i++) {
-	      ret.set(i, i, 1.0);
-	    }
-	
-	    return ret;
+	 * Creates a Matrix which contains ones along the main diagonal
+	 * and zeros everywhere else. If square, is equal to the identity matrix.
+	 *
+	 * @param numRows Number of rows in the matrix.
+	 * @param numCols NUmber of columns in the matrix.
+	 * @return A matrix with diagonal elements equal to one.
+	 */
+	public static Matrix createIdentity(int numRows, int numCols) {
+	  Matrix ret = create(numRows, numCols);
+
+	  int small = numRows < numCols ? numRows : numCols;
+
+	  for (int i = 0; i < small; i++) {
+	    ret.set(i, i, 1.0);
 	  }
 
+	  return ret;
+	}
+
 	/**
-	   * <p>
-	   * Creates a square identity Matrix of the specified size.<br>
-	   * <br>
-	   * a<sub>ij</sub> = 0 if i &ne; j<br>
-	   * a<sub>ij</sub> = 1 if i = j<br>
-	   * </p>
-	   *
-	   * @return A new instance of an identity matrix.
-	   */
-	  public static Matrix createIdentity(int width) {
-	    Matrix ret = create(width, width);
-	
-	    for (int i = 0; i < width; i++) {
-	      ret.set(i, i, 1.0);
-	    }
-	
-	    return ret;
+	 * <p>
+	 * Creates a square identity Matrix of the specified size.<br>
+	 * <br>
+	 * a<sub>ij</sub> = 0 if i &ne; j<br>
+	 * a<sub>ij</sub> = 1 if i = j<br>
+	 * </p>
+	 *
+	 * @return A new instance of an identity matrix.
+	 */
+	public static Matrix createIdentity(int width) {
+	  Matrix ret = create(width, width);
+
+	  for (int i = 0; i < width; i++) {
+	    ret.set(i, i, 1.0);
 	  }
+
+	  return ret;
+	}
 
 }
