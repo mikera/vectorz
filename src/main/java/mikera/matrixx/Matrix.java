@@ -625,7 +625,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	/**
-	   * Creates a rectangular matrix which is zero except along the diagonals.
+	   * Creates a rectangular matrix which is contains ones along the main diagonal
+	   * and zeros everywhere else. If square, is equal to the identity matrix.
 	   *
 	   * @param numRows Number of rows in the matrix.
 	   * @param numCols NUmber of columns in the matrix.
@@ -645,7 +646,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	/**
 	   * <p>
-	   * Creates an identity matrix of the specified size.<br>
+	   * Creates a mutable dense identity matrix of the specified size.<br>
 	   * <br>
 	   * a<sub>ij</sub> = 0 if i &ne; j<br>
 	   * a<sub>ij</sub> = 1 if i = j<br>
