@@ -801,6 +801,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		List<INDArray> al=a.getSliceViews();
 		INDArray result=Arrayz.newArray(al.get(0).getShape());
 		for (int i=0; i<len; i++) {
+			// TODO: make faster with addMultiple?
 			result.add(al.get(i).innerProduct(get(i)));
 		}
 		return result;
