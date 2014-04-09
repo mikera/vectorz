@@ -323,6 +323,11 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 	
 	@Override
+	public double diagonalProduct() {
+		return m00*m11*m22;
+	}
+	
+	@Override
 	public Matrix33 clone() {
 		return new Matrix33(this);
 	}
