@@ -18,8 +18,10 @@
 
 package mikera.matrixx.algo.decompose.lu.impl;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.lu.ILU;
+import mikera.matrixx.algo.decompose.lu.ILUP;
+import mikera.matrixx.impl.PermutationMatrix;
 
 /**
  * <p>
@@ -30,7 +32,7 @@ import mikera.matrixx.algo.decompose.lu.ILU;
  *
  * @author Peter Abeles
  */
-public class AltLU implements ILU {
+public class AltLU implements ILUP {
 
   // it can decompose a matrix up to this size
   protected int maxWidth = -1;
@@ -53,8 +55,8 @@ public class AltLU implements ILU {
 
   protected boolean singular;
 
-  public AltLU(Matrix A) {
-    decompose(A);
+  public AltLU(AMatrix a) {
+    decompose(a.toMatrix());
     L = computeL();
     U = computeU();
     singular = computeSingular();
@@ -259,4 +261,10 @@ public class AltLU implements ILU {
       }
     }
   }
+
+@Override
+public AMatrix getP() {
+	throw new UnsupportedOperationException("TODO: figure out right pivot matrix?");
+	// idea: return Matrixx.createSignedPivot(pivot,pivsign);
+}
 }

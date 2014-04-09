@@ -2,12 +2,13 @@ package mikera.matrixx.algo.decompose.lu.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.matrixx.algo.decompose.lu.ILU;
+import mikera.matrixx.algo.decompose.lu.ILUP;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class TestAltLU {
 
@@ -27,5 +28,17 @@ public class TestAltLU {
     assertArrayEquals(U.getElements(), exceptU.data, 1e-5);
 
     assertFalse(((AltLU) alg).isSingular());
+  }
+
+  @Test public void testRandomDecompose() {
+	  AMatrix a=Matrixx.createRandomMatrix(4, 4);
+	  ILUP r=SimpleLUP.decompose(a);
+	  
+	  AMatrix lu=r.getL().innerProduct(r.getU());
+	  AMatrix pa=r.getP().innerProduct(a);
+	  
+	  if(!lu.epsilonEquals(pa)) {
+		  fail("L="+r.getL()+"\n"+"U="+r.getU()+"\n"+"LU="+lu+"\n"+"PA="+pa+"\n");
+	  }
   }
 }
