@@ -349,7 +349,9 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public double elementProduct() {
-		return left.elementProduct()*right.elementProduct();
+		double r=left.elementProduct();
+		if (r==0.0) return 0.0;
+		return r*right.elementProduct();
 	}
 	
 	@Override
