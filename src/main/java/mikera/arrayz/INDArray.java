@@ -260,6 +260,13 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray slice(int majorSlice);
 	
 	/**
+	 * Returns the value of a major slice of this array (slice along dimension 0
+	 * 
+	 * Like 'slice', except returns a Double value for slices of 1D vectors
+	 */
+	public Object sliceValue(int majorSlice);
+	
+	/**
 	 * Joins an array with another array along a specified dimension
 	 */
 	public INDArray join(INDArray a, int dimension);

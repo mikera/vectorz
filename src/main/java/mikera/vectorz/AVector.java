@@ -123,6 +123,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public Object sliceValue(int i) {
+		return get(i);
+	}
+	
+	@Override
 	public AScalar slice(int dimension, int index) {
 		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		return slice(index);	

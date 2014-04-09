@@ -1054,6 +1054,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public Object sliceValue(int i) {
+		if (dimensionality()==1) {
+			return get(i);
+		}
+		return slice(i);
+	}
+	
+	@Override
 	public INDArray broadcast(int... targetShape) {
 		int dims=dimensionality();
 		int tdims=targetShape.length;
