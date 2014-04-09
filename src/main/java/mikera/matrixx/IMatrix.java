@@ -42,6 +42,8 @@ public interface IMatrix extends INDArray {
 
 	AMatrix addCopy(AMatrix a);
 
+	double diagonalProduct();
+
 
 
 }

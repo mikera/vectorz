@@ -1376,6 +1376,21 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 	
+	/**
+	 * Computes the product of entries on the main diagonal of a matrix
+	 * 
+	 * @return
+	 */
+	@Override
+	public double diagonalProduct() {
+		int rc=Math.min(rowCount(), columnCount());
+		double result=1.0;
+		for (int i=0; i<rc; i++) {
+			result*=unsafeGet(i,i);
+		}
+		return result;
+	}
+	
 	@Override
 	public boolean isInvertible() {
 		return isSquare()&&(determinant()!=0.0);
