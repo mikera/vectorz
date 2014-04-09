@@ -568,21 +568,21 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray addCopy(INDArray a) {
-		INDArray r=this.clone();
+		INDArray r=this.broadcastCloneLike(a);
 		r.add(a);
 		return r;
 	}
 	
 	@Override
 	public INDArray multiplyCopy(INDArray a) {
-		INDArray r=this.clone();
+		INDArray r=this.broadcastCloneLike(a);
 		r.multiply(a);
 		return r;
 	}
 	
 	@Override
 	public INDArray divideCopy(INDArray a) {
-		INDArray r=this.clone();
+		INDArray r=this.broadcastCloneLike(a);
 		r.divide(a);
 		return r;
 	}
