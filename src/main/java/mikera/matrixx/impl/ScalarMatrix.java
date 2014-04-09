@@ -71,6 +71,11 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public double diagonalProduct() {
+		return Math.pow(scale,dimensions);
+	}
+	
+	@Override
 	public void transformInPlace(AVector v) {
 		v.multiply(scale);
 	}
