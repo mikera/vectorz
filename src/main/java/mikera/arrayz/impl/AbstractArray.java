@@ -998,6 +998,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return asVector().asElementList();
 	}
 
+	@Override
+	public double[] getElements() {
+		int n=(int)elementCount();
+		double[] data=new double[n];
+		getElements(data,0);
+		return data;
+	}
 	
 	@Override
 	public void getElements(double[] dest, int offset) {

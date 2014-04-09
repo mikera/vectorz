@@ -697,6 +697,8 @@ public interface INDArray extends Cloneable, Serializable {
 
 	public INDArray signumCopy();
 
+	double[] getElements();
+
 
 	
 }
