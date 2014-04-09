@@ -1,12 +1,10 @@
-package mikera.matrixx.ops;
+package mikera.matrixx;
 
-import mikera.matrixx.Matrix;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestCommonOps {
-
+public class TestMatrix {
   @Test
   public void testIdentity() {
     Matrix A = Matrix.createIdentity(4);
