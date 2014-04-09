@@ -88,6 +88,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public int sliceCount() {
 		return source.columnCount();
 	}
+	
+	@Override
+	public double trace() {
+		return source.trace();
+	}
+	
+	@Override
+	public double diagonalProduct() {
+		return source.diagonalProduct();
+	}
 
 	@Override
 	public Matrix toMatrixTranspose() {
