@@ -318,6 +318,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public final double elementProduct() {
+		return get();
+	}
+	
+	@Override
 	public double elementMax(){
 		return get();
 	}

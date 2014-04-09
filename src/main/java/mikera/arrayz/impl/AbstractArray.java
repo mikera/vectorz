@@ -710,6 +710,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public double elementProduct() {
+		if (dimensionality()==0) {
+			return get();
+		}
+		double result=1.0;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			result*=slice(i).elementProduct();
+			if (result==0.0) return 0.0;
+		}
+		return result;
+	}
+	
+	@Override
 	public double elementMax(){
 		if (dimensionality()==0) {
 			return get();
