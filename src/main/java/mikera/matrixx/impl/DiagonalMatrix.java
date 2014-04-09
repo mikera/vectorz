@@ -76,6 +76,15 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public double diagonalProduct() {
+		double result=1.0;
+		for (int i=0; i<dimensions; i++) {
+			result*=data[i];
+		}
+		return result;
+	}
+	
+	@Override
 	public double elementSum() {
 		return lead.elementSum();
 	}	

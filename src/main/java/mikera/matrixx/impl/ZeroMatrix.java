@@ -141,6 +141,12 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public double diagonalProduct() {
+		int n=Math.min(rowCount(), columnCount());
+		return (n>0)?0.0:1.0;
+	}
+	
+	@Override
 	public double calculateElement(int i, AVector v) {
 		assert(i>=0);
 		assert(i<rows);
