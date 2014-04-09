@@ -21,6 +21,8 @@ package mikera.matrixx.algo.decompose.lu;
 import mikera.matrixx.AMatrix;
 
 /**
+ * Interface for results of LU decomposition
+ * 
  * <p>
  * LU Decomposition refactors the original matrix such that:<br>
  * <div align=center> *L*U = A</div> where L

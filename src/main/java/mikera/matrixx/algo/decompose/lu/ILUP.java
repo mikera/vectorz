@@ -3,6 +3,8 @@ package mikera.matrixx.algo.decompose.lu;
 import mikera.matrixx.AMatrix;
 
 /**
+ * Interface for results of LUP decomposition
+
  * <p>
  * LUP Decomposition refactors the original matrix such that:<br>
  * <div align=center> P<sup>T</sup>*L*U = A</div> where P is a pivot matrix, L
