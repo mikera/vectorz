@@ -88,6 +88,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public int sliceCount() {
 		return source.columnCount();
 	}
+	
+	@Override
+	public double trace() {
+		return source.trace();
+	}
+	
+	@Override
+	public double diagonalProduct() {
+		return source.diagonalProduct();
+	}
 
 	@Override
 	public Matrix toMatrixTranspose() {
@@ -177,7 +187,7 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 
 	@Override
-	public Matrix transposeInnerProduct(Matrix s) {
+	public AMatrix transposeInnerProduct(Matrix s) {
 		return source.innerProduct(s);
 	}
 	
@@ -187,7 +197,7 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 
 	@Override
-	public Matrix innerProduct(Matrix s) {
+	public AMatrix innerProduct(Matrix s) {
 		return source.transposeInnerProduct(s);
 	}
 

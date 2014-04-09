@@ -34,7 +34,7 @@ public class TestSparseHashedVector {
 		AVector vz=Vectorz.newVector(10);
 		AVector vs=Vector.of(0,1,2,3,4,5,6,7,8,9);
 		
-		assertTrue(vz instanceof AArrayVector);
+		assertTrue(vz instanceof ADenseArrayVector);
 		
 		AVector v=vz.exactClone();
 		v.addProduct(sv, vs);

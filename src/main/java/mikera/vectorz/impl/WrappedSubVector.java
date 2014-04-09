@@ -15,21 +15,22 @@ public final class WrappedSubVector extends ASizedVector {
 
 	private final AVector wrapped;
 	private final int offset;
-	private final int length;
 	
-	public WrappedSubVector(AVector source, int offset, int length) {
+	private WrappedSubVector(AVector source, int offset, int length) {
 		super(length);
 		if (source instanceof WrappedSubVector) {
 			// avoid stacking WrappedSubVectors by using underlying vector
 			WrappedSubVector v=(WrappedSubVector)source;
 			this.wrapped=v.wrapped;
 			this.offset=offset+v.offset;
-			this.length=length;
 		} else {
 			wrapped=source;
 			this.offset=offset;
-			this.length=length;
 		}
+	}
+	
+	public static WrappedSubVector wrap(AVector source, int offset, int length) {
+		return new WrappedSubVector(source,offset,length);
 	}
 	
 	@Override 
@@ -105,18 +106,18 @@ public final class WrappedSubVector extends ASizedVector {
 	}
 	
 	@Override
-	public AVector join(AVector a) {
-		if (a instanceof WrappedSubVector) return join((WrappedSubVector)a);
-		return super.join(a);
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof WrappedSubVector) return tryEfficientJoin((WrappedSubVector)a);
+		return null;
 	}
 	
-	public AVector join(WrappedSubVector a) {
+	private AVector tryEfficientJoin(WrappedSubVector a) {
 		if ((a.wrapped==this.wrapped)&&(a.offset==(this.offset+this.length))) {
 			int newLength=this.length+a.length;
 			if ((offset==0)&&(newLength==wrapped.length())) return wrapped;
 			return new WrappedSubVector(wrapped,offset,newLength);
 		}
-		return super.join(a);
+		return null;
 	}
 	
 	@Override

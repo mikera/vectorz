@@ -13,6 +13,12 @@ import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * Class representing a square permutation matrix
+ * i.e. has single 1.0 in every row and column
+ * @author Mike
+ *
+ */
 public final class PermutationMatrix extends ABooleanMatrix implements IFastRows, IFastColumns, ISparse  {
 	private static final long serialVersionUID = 8098287603508120428L;
 

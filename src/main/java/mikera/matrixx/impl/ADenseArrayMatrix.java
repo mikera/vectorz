@@ -5,7 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -70,7 +70,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
-	public AArrayVector getRowView(int i) {
+	public ADenseArrayVector getRowView(int i) {
 		return Vectorz.wrap(data, getArrayOffset()+i*cols, cols);
 	}
 	

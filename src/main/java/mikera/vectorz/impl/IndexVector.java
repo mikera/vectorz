@@ -2,11 +2,13 @@ package mikera.vectorz.impl;
 
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * A constrained vector implementation wrapping an integer Index
+ * A constrained immutable vector implementation wrapping an integer Index
+ * 
  * @author Mike
  */
 @SuppressWarnings("serial")
@@ -26,6 +28,13 @@ public class IndexVector extends ASizedVector {
 		return new IndexVector(Index.wrap(IntArrays.create(values)));
 	}
 	
+	/**
+	 * Creates an IndexVector wrapping the given immutable index
+	 * 
+	 * WARNING: Index will be used as internal storage for the IndexVector
+	 * @param a
+	 * @return
+	 */
 	public static IndexVector wrap(Index a) {
 		return new IndexVector(a);		
 	}
@@ -42,18 +51,7 @@ public class IndexVector extends ASizedVector {
 
 	@Override
 	public void set(int i, double value) {
-		int v=(int)value;
-		if (v==value) {
-			index.set(i, v);
-		} else {
-			throw new IllegalArgumentException("Can't convert to an integer index value: "+value);
-		}
-	}
-	
-	@Override
-	public void unsafeSet(int i, double value) {
-		int v=(int)value;
-		index.set(i, v);
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
@@ -68,9 +66,12 @@ public class IndexVector extends ASizedVector {
 	
 	@Override
 	public void getElements(double[] data, int offset) {
-		for (int i=0; i<length; i++) {
-			data[offset+i]=index.unsafeGet(i);
-		}
+		IntArrays.copyIntsToDoubles(index.data,0,data,offset,length);
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return false;
 	}
 
 	@Override

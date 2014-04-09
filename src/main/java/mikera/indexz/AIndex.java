@@ -165,6 +165,12 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 		return true;
 	}
 
+	/**
+	 * Returns true if the index contains a specific value.
+	 * Performs a full scan of the index (need not be in sorted order)
+	 * @param index
+	 * @return
+	 */
 	public boolean contains(int index) {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -173,6 +179,16 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 		return false;
 	}
 	
+	/**
+	 * Returns true if the index contains a specific value.
+	 * Assumes the index is in sorted order.
+	 * @param index
+	 * @return
+	 */
+	public boolean containsSorted(int index) {
+		return contains(index);
+	}
+
 	public boolean contains(Index inds) {
 		int len=inds.length();
 		for (int i=0; i<len; i++) {
@@ -266,4 +282,5 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 		}
 		return r;
 	}
+
 }

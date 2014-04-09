@@ -11,6 +11,7 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * Specialised immutable vector containing nothing but zeros.
@@ -117,6 +118,18 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public AVector addCopy(AVector a) {
+		if (length!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		return a.copy();
+	}
+	
+	@Override
+	public AVector subCopy(AVector a) {
+		if (length!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		return a.negateCopy();
 	}
 	
 	@Override
@@ -239,20 +252,36 @@ public final class ZeroVector extends ASparseVector {
 		return ZeroVector.create(length);
 	}
 	
-	@Override 
-	public AVector join(AVector a) {
+	public ZeroVector join(ZeroVector a) {
+		return ZeroVector.create(length+a.length);
+	}
+	
+	@Override
+	public AVector tryEfficientJoin(AVector a) {
 		if (a instanceof ZeroVector) {
 			return join((ZeroVector)a);
 		} else if (a instanceof AxisVector) {
 			AxisVector av=(AxisVector)a;
 			return AxisVector.create(av.getAxis()+length, av.length()+length);
+		} else if (a instanceof SingleElementVector) {
+			SingleElementVector sev=(SingleElementVector)a;
+			return SingleElementVector.create(sev.value, length+sev.index, sev.length+length);
 		}
-		return super.join(a);
+		return null;
 	}
 	
-	public ZeroVector join(ZeroVector a) {
-		return ZeroVector.create(length+a.length);
-	}
+	@Override
+	public AVector reorder(int[] order) {
+		int n=order.length;
+		if (n==length) return this;
+		return createNew(n);
+	}	
+	
+	@Override
+	public AVector reorder(int dim, int[] order) {
+		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		return reorder(order);
+	}	
 	
 	/**
 	 * readResolve method to ensure we always use the singleton
@@ -276,6 +305,16 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public Index nonSparseIndexes() {
 		return Index.EMPTY;
+	}
+	
+	@Override
+	public int[] nonZeroIndices() {
+		return IntArrays.EMPTY_INT_ARRAY;
+	}
+	
+	@Override
+	public AVector squareCopy() {
+		return this;
 	}
 
 	@Override
@@ -305,7 +344,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public boolean equals(AVector v) {
-		if (v.length()!=length) return false;
+		if (!isSameShape(v)) return false;
 		return v.isZero();
 	}
 	

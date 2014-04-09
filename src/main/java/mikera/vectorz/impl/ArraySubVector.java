@@ -10,7 +10,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  * 
  */
-public final class ArraySubVector extends AArrayVector {
+public final class ArraySubVector extends ADenseArrayVector {
 	private static final long serialVersionUID = 1262951505515197105L;
 
 	private final int offset;
@@ -45,7 +45,7 @@ public final class ArraySubVector extends AArrayVector {
 	 * @param offset
 	 * @param length
 	 */
-	public ArraySubVector(AArrayVector source, int offset, int length) {
+	public ArraySubVector(ADenseArrayVector source, int offset, int length) {
 		super(length,source.getArray());
 		int len=source.length();
 		if ((offset < 0)||(offset + length > len)) 
@@ -79,7 +79,7 @@ public final class ArraySubVector extends AArrayVector {
 	}
 
 	@Override
-	public void add(AArrayVector v) {
+	public void add(ADenseArrayVector v) {
 		int vlength=v.length();
 		if (vlength != length) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
@@ -92,7 +92,7 @@ public final class ArraySubVector extends AArrayVector {
 	}
 	
 	@Override
-	public void addMultiple(AArrayVector v, double factor) {
+	public void addMultiple(ADenseArrayVector v, double factor) {
 		assert (v.length() == length);
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();

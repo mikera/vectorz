@@ -130,6 +130,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	public void add(double d) {
 		set(get()+d);
 	}
+
+	@Override
+	public void addAt(int i, double v) {
+		// Note: this is an unsafe operation, so ignore the index
+		add(v);
+	}
 	
 	@Override
 	public void addToArray(double[] data, int offset) {
@@ -207,6 +213,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	@Override
 	public Scalar innerProduct(double a) {
 		return Scalar.create(get()*a);
+	}
+	
+	@Override
+	public AVector innerProduct(AVector a) {
+		return a.innerProduct(get());
 	}
 	
 	@Override
@@ -307,6 +318,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public final double elementProduct() {
+		return get();
+	}
+	
+	@Override
 	public double elementMax(){
 		return get();
 	}
@@ -401,6 +417,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	@Override
 	public double[] toDoubleArray() {
 		return new double[] {get()};
+	}
+	
+	@Override
+	public INDArray[] toSliceArray() {
+		throw new UnsupportedOperationException(ErrorMessages.noSlices(this));
 	}
 	
 	@Override

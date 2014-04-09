@@ -231,6 +231,31 @@ public class TestMatrixx {
 		
 		assertTrue(Vector3.of(3,6,9).epsilonEquals(ct.transform(v)));
 	}
+
+  @Test
+  public void testBasicCalculation() {
+    Matrix m = Matrix.create(2, 3);
+
+    m.set(0, 0, 1);
+    assertEquals(m.get(0, 0), 1, 0.0);
+    m.addAt(0, 2);
+    assertEquals(m.get(0, 0), 3, 0.0);
+
+    m.set(0, 1, 3);
+    assertEquals(m.get(0, 1), 3, 0.0);
+    m.subAt(1, 2);
+    assertEquals(m.get(0, 1), 1, 0.0);
+
+    m.set(1, 1, 4);
+    assertEquals(m.get(1, 1), 4, 0.0);
+    m.divideAt(4, 2);
+    assertEquals(m.get(1, 1), 2, 0.0);
+
+    m.set(1, 2, 5);
+    assertEquals(m.get(1, 2), 5, 0.0);
+    m.multiplyAt(5, 2);
+    assertEquals(m.get(1, 2), 10, 0.0);
+  }
 	
 	void doMutationTest(AMatrix m) {
 		if (!m.isFullyMutable()) return;
@@ -502,7 +527,7 @@ public class TestMatrixx {
 	void doHashTest(AMatrix m) {
 		assertEquals(m.hashCode(),m.toVector().hashCode());
 	}
-	
+
 	void doBigComposeTest(AMatrix m) {
 		AMatrix a=Matrixx.createRandomSquareMatrix(m.rowCount());
 		AMatrix b=Matrixx.createRandomSquareMatrix(m.columnCount());
@@ -514,7 +539,7 @@ public class TestMatrixx {
 		AVector ambv=a.transform(m.transform(b.transform(v)));
 		assertTrue(amb.transform(v).epsilonEquals(ambv));
 	}
-	
+
 	private void testApplyOp(AMatrix m) {
 		if (!m.isFullyMutable()) return;
 		AMatrix c=m.exactClone();
@@ -653,7 +678,7 @@ public class TestMatrixx {
 		// zero matrices
 		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 2));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(5, 5));
-		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 3));
+		doGenericTests(Matrixx.createImmutableZeroMatrix(3, 3).reorder(new int[] {2,0,1}));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(1, 7));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(1, 0));
 		doGenericTests(Matrixx.createImmutableZeroMatrix(0, 1));

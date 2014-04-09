@@ -131,6 +131,10 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 				IntArrays.removeIndex(stride,index));	
 	}	
 	
+	@Override
+	public int sliceCount() {
+		return shape[0];
+	}
 	
 	@Override
 	public ImmutableArray subArray(int[] offsets, int[] shape) {
@@ -151,11 +155,6 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 				offset+IntArrays.dotProduct(offsets, stride),
 				IntArrays.copyOf(shape),
 				stride);
-	}
-
-	@Override
-	public int sliceCount() {
-		return shape[0];
 	}
 
 	@Override

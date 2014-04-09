@@ -109,6 +109,11 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 		return getBand(0).elementSum();
 	}
 	
+	@Override
+	public double diagonalProduct() {
+		return getBand(0).elementProduct();
+	}
+	
 	@Override 
 	public double elementSquaredSum() {
 		double t=0;

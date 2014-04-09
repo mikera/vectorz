@@ -7,7 +7,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -165,6 +165,17 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public AMatrix addCopy(AMatrix a) {
+		if (a.isDiagonal()) {
+			DiagonalMatrix m=DiagonalMatrix.create(this.getLeadingDiagonal());
+			a.getLeadingDiagonal().addToArray(m.data,0);
+			return m;
+		} else {
+			return a.addCopy(this);
+		}
+	}
+	
+	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
 		// copying rows and columns is the same!
 		copyRowTo(col,dest,destOffset);
@@ -220,8 +231,8 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof AArrayVector) {
-			transformInPlace((AArrayVector) v);
+		if (v instanceof ADenseArrayVector) {
+			transformInPlace((ADenseArrayVector) v);
 			return;
 		}
 		if (v.length()!=dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
@@ -231,7 +242,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	public void transformInPlace(AArrayVector v) {
+	public void transformInPlace(ADenseArrayVector v) {
 		double[] data=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int i=0; i<dimensions; i++) {
@@ -326,6 +337,16 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 			m.data[i*(dimensions+1)]=unsafeGetDiagonalValue(i);
 		}
 		return m;
+	}
+	
+	@Override
+	public double trace() {
+		return getLeadingDiagonal().elementSum();
+	}
+	
+	@Override
+	public double diagonalProduct() {
+		return getLeadingDiagonal().elementProduct();
 	}
 	
 	@Override

@@ -47,7 +47,7 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 
 	public Matrix33(AMatrix m) {
-		if((m.rowCount()==3)||(m.columnCount()!=3)) {
+		if((m.rowCount()!=3)||(m.columnCount()!=3)) {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
 		}
 		m00=m.unsafeGet(0,0);
@@ -320,6 +320,11 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	@Override
 	public double trace() {
 		return m00+m11+m22;
+	}
+	
+	@Override
+	public double diagonalProduct() {
+		return m00*m11*m22;
 	}
 	
 	@Override

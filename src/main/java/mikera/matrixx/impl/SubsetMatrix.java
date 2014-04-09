@@ -6,6 +6,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Matrix that transforms to a selection of specific elements of the source vector
@@ -102,6 +103,12 @@ public final class SubsetMatrix extends ABooleanMatrix implements ISparse, IFast
 	
 	@Override
 	public void validate() {
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int i=0; i<rc; i++) {
+			int s=components.get(i);
+			if ((s<0)||(s>=cc)) throw new VectorzException("Component out of range at row "+i);
+		}
 		super.validate();
 	}
 }

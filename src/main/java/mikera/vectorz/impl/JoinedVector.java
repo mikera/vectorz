@@ -5,18 +5,21 @@ import java.nio.DoubleBuffer;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * A vector that represents the concatenation of two vectors.
  * 
+ * Should only be used if the two vectors cannot otherwise be efficiently joined.
+ * 
  * @author Mike
  *
  */
-public final class JoinedVector extends ASizedVector {
+public final class JoinedVector extends AJoinedVector {
 	private static final long serialVersionUID = -5535850407701653222L;
 	
-	private final AVector left;
-	private final AVector right;
+	final AVector left;
+	final AVector right;
 	
 	private final int split;
 	
@@ -36,25 +39,8 @@ public final class JoinedVector extends ASizedVector {
 	public static AVector joinVectors(AVector left, AVector right) {
 		int ll=left.length(); if (ll==0) return right;
 		int rl=right.length(); if (rl==0) return left;
-		// balancing in case of nested joined vectors
-		while ((ll>rl*2)&&(left instanceof JoinedVector)) {
-			JoinedVector bigLeft=((JoinedVector)left);
-			left=bigLeft.left;
-			right=joinVectors(bigLeft.right,right);
-			ll=left.length(); rl=right.length();
-		}
-		while ((ll*2<rl)&&(right instanceof JoinedVector)) {
-			JoinedVector bigRight=((JoinedVector)right);
-			left=joinVectors(left,bigRight.left);
-			right=bigRight.right;
-			ll=left.length(); rl=right.length();
-		} 
-		return new JoinedVector(left,right);
-	}
 
-	@Override
-	public boolean isView() {
-		return true;
+		return new JoinedVector(left,right);
 	}
 
 	@Override
@@ -156,6 +142,28 @@ public final class JoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public AVector tryEfficientJoin(AVector a) {
+		// efficient join always succeeds
+		
+		if (a instanceof JoinedVector) {
+			return join((JoinedVector)a);
+		}
+		AVector ej=right.tryEfficientJoin(a);
+		if (ej!=null) return new JoinedVector(left,ej);
+		
+		return JoinedMultiVector.wrap(new AVector[] {left,right,a});
+	}
+	
+	public AVector join(JoinedVector a) {
+		AVector ej=right.tryEfficientJoin(a.left);
+		if (ej==null) {
+			return JoinedMultiVector.wrap(new AVector[] {left,right,a.left,a.right});
+		} else {
+			return JoinedMultiVector.wrap(new AVector[] {left,ej,a.right});
+		}
+	}
+	
+	@Override
 	public void add(AVector a) {
 		assert(length()==a.length());
 		if (a instanceof JoinedVector) {
@@ -163,6 +171,13 @@ public final class JoinedVector extends ASizedVector {
 		} else {
 			add(a,0);
 		}
+	}
+	
+	@Override
+	public AVector addCopy(AVector a) {
+		AVector lsum = left.addCopy(a.subVector(0, split));
+		AVector rsum = right.addCopy(a.subVector(split, length-split));
+		return lsum.join(rsum);
 	}
 	
 	public void add(JoinedVector a) {
@@ -334,7 +349,9 @@ public final class JoinedVector extends ASizedVector {
 	
 	@Override
 	public double elementProduct() {
-		return left.elementProduct()*right.elementProduct();
+		double r=left.elementProduct();
+		if (r==0.0) return 0.0;
+		return r*right.elementProduct();
 	}
 	
 	@Override
@@ -494,6 +511,12 @@ public final class JoinedVector extends ASizedVector {
 	@Override 
 	public JoinedVector exactClone() {
 		return new JoinedVector(left.exactClone(),right.exactClone());
+	}
+	
+	@Override
+	public void validate() {
+		if (left.tryEfficientJoin(right)!=null) throw new VectorzException("Should have used efficient join!");
+		super.validate();
 	}
 
 }

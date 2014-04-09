@@ -6,17 +6,18 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * A sparse immutable vector that has a only one element that can be non-zero.
- * All other components are forced to remain at zero, setting them to a non-zero value results in an exception.
+ * 
  * @author Mike
  *
  */
 @SuppressWarnings("serial")
 public final class SingleElementVector extends ASparseVector {
-	private final int index;
-	private final double value;
+	final int index;
+	final double value;
 	
 	public SingleElementVector(int componentIndex, int dimensions) {
 		this(componentIndex,dimensions,0.0);
@@ -49,6 +50,11 @@ public final class SingleElementVector extends ASparseVector {
 	@Override
 	public double elementSum() {
 		return value;
+	}
+	
+	@Override
+	public double elementProduct() {
+		return (length>1)?0.0:value;
 	}
 	
 	@Override
@@ -140,6 +146,14 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof ZeroVector) {
+			return SingleElementVector.create(value, index, length+a.length());
+		}
+		return null;
+	}
+	
+	@Override
 	public AVector innerProduct(double d) {
 		return SingleElementVector.create(value*d,index,length);
 	}
@@ -174,6 +188,15 @@ public final class SingleElementVector extends ASparseVector {
 	@Override
 	public Index nonSparseIndexes() {
 		return Index.of(index);
+	}
+	
+	@Override
+	public int[] nonZeroIndices() {
+		if (value==0.0) {
+			return IntArrays.EMPTY_INT_ARRAY;
+		} else {
+			return new int[]{index};
+		}
 	}
 
 	@Override

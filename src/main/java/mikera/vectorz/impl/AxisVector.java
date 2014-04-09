@@ -55,9 +55,19 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector squareCopy() {
+		return this;
+	}
+	
+	@Override
 	public void abs() {
 		// no effect
 	}
+	
+	@Override
+	public AxisVector absCopy() {
+		return this;
+	}	
 	
 	@Override
 	public void sqrt() {
@@ -65,9 +75,20 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public AxisVector sqrtCopy() {
+		return this;
+	}
+	
+	@Override
 	public void signum() {
 		// no effect
 	}
+	
+	@Override
+	public AxisVector signumCopy() {
+		return this;
+	}
+
 	
 	@Override
 	public double elementSum() {
@@ -138,7 +159,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override 
 	public double dotProduct(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException("Mismatched vector sizes");
+		if (!isSameShape(v)) throw new IllegalArgumentException("Mismatched vector sizes");
 		return v.unsafeGet(getAxis());
 	}
 	
@@ -233,12 +254,13 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		if ((start<0)||(start+length>this.length)) {
+		int end=start+length;
+		if ((start<0)||(end>this.length)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
 		}
 		if (length==this.length) return this;
 		
-		if ((start<=getAxis())&&(start+length>getAxis())) {
+		if ((start<=getAxis())&&(end>getAxis())) {
 			return AxisVector.create(getAxis()-start,length);
 		} else {
 			return Vectorz.createZeroVector(length);
@@ -268,8 +290,29 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public int[] nonZeroIndices() {
+		return new int[] {axis};
+	}
+	
+	@Override
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public AVector addCopy(AVector v) {
+		if (!isSameShape(v)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		AVector r=v.clone();
+		r.addAt(axis, 1.0);
+		return r;
+	}
+	
+	@Override
+	public AVector subCopy(AVector v) {
+		if (!isSameShape(v)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		AVector r=v.clone();
+		r.addAt(axis, -1.0);
+		return r;
 	}
 
 	@Override

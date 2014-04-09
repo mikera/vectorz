@@ -149,7 +149,7 @@ public class SparseImmutableVector extends ASparseVector {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
-	public void multiply(AArrayVector v) {
+	public void multiply(ADenseArrayVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
@@ -294,7 +294,7 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
 		double result=0.0;
 		for (int j=0; j<dataLength; j++) {
 			result+=data[j]*v.unsafeGet(ixs[j]);
@@ -312,7 +312,7 @@ public class SparseImmutableVector extends ASparseVector {
 	}
 	
 	@Override
-	public double dotProduct(AArrayVector v) {
+	public double dotProduct(ADenseArrayVector v) {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
 		return dotProduct(array,offset);
@@ -359,8 +359,8 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof AArrayVector) {
-			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);
+		if (other instanceof ADenseArrayVector) {
+			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
 		assert(offset>=0);
@@ -373,7 +373,7 @@ public class SparseImmutableVector extends ASparseVector {
 	}
 	
 	@Override
-	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		assert(offset>=0);
 		assert(offset+length<=length());
 		double[] otherArray=other.getArray();
@@ -401,8 +401,8 @@ public class SparseImmutableVector extends ASparseVector {
 	
 	@Override 
 	public void copyTo(AVector v, int offset) {
-		if (v instanceof AArrayVector) {
-			AArrayVector av=(AArrayVector)v;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector av=(ADenseArrayVector)v;
 			getElements(av.getArray(),av.getArrayOffset()+offset);
 		}
 		v.fillRange(offset,length,0.0);

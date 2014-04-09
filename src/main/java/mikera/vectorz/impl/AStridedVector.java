@@ -18,17 +18,14 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public abstract class AStridedVector extends ASizedVector implements IStridedArray {
-	protected final double[] data;
-	
+public abstract class AStridedVector extends AArrayVector implements IStridedArray {
 	protected AStridedVector(int length, double[] data) {
-		super(length);
-		this.data=data;
+		super(length,data);
 	}
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
-	public final double[] getArray() {
+	public double[] getArray() {
 		return data;
 	}
 	
@@ -61,6 +58,19 @@ public abstract class AStridedVector extends ASizedVector implements IStridedArr
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			result+=array[offset+i*stride];
+		}		
+		return result;
+	}
+	
+	@Override
+	public double elementProduct() {
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		double result=1.0;
+		for (int i=0; i<len; i++) {
+			result*=array[offset+i*stride];
 		}		
 		return result;
 	}

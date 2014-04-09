@@ -29,6 +29,34 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
+	public double diagonalProduct() {
+		int n=Math.min(rowCount(), columnCount());
+		int offset=getArrayOffset();
+		int st=rowStride()+columnStride();
+		double[] data=getArray();
+		double result=1.0;
+		for (int i=0; i<n; i++) {
+			result*=data[offset];
+			offset+=st;
+		}
+		return result;
+	}
+	
+	@Override
+	public double trace() {
+		int n=Math.min(rowCount(), columnCount());
+		int offset=getArrayOffset();
+		int st=rowStride()+columnStride();
+		double[] data=getArray();
+		double result=0.0;
+		for (int i=0; i<n; i++) {
+			result+=data[offset];
+			offset+=st;
+		}
+		return result;
+	}
+	
+	@Override
 	public AStridedVector getColumnView(int i) {
 		return Vectorz.wrapStrided(data, getArrayOffset()+i*columnStride(), rows, rowStride());
 	}

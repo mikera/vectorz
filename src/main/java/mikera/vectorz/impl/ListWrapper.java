@@ -14,6 +14,8 @@ import mikera.vectorz.util.ErrorMessages;
 public final class ListWrapper extends AbstractList<Double> {
 	private final AVector wrappedVector;
 	private final int length;
+	
+	private static final Double ZERO=0.0;
 			
 	public ListWrapper(AVector v) {
 		this.wrappedVector=v;
@@ -22,8 +24,9 @@ public final class ListWrapper extends AbstractList<Double> {
 	
 	@Override
 	public Double get(int index) {
-		if ((index<0)||(index>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(wrappedVector, index));
-		return wrappedVector.unsafeGet(index);
+		double v=wrappedVector.get(index);
+		if (v==0.0) return ZERO; // saves boxing with sparse arrays
+		return v;
 	}
 	
 	@Override

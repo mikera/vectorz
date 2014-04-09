@@ -76,6 +76,14 @@ public class IntArrays {
 		return dst;
 	}
 	
+	public static double[] copyIntsToDoubles(int[] src, int srcOffset, double[] dst,
+			int dstOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dst[dstOffset+i]=src[srcOffset+i];
+		}
+		return dst;
+	}
+	
 	public static long[] copyIntsToLongs(int[] src) {
 		long[] dst=new long[src.length];
 		return copyIntsToLongs(src,dst);
@@ -226,4 +234,60 @@ public class IntArrays {
 		System.arraycopy(data, position, nas, position+1, len-position);
 		return nas;
 	}
+	
+	private static int countMatches(int[] xs, int[] ys) {
+		int res=0;
+		int xi=0;
+		int yi=0;
+		while ((xi<xs.length)&&(yi<ys.length)) {
+			int x=xs[xi];
+			int y=ys[yi];
+			if (x==y) {
+				res++;
+				xi++;
+				yi++;
+			} else if (x<y) {
+				xi++;
+			} else {
+				yi++;
+			}
+		}
+		return res;
+	}
+
+	public static int[] mergeSorted(int[] xs, int[] ys) {
+		int xl=xs.length; if (xl==0) return ys.clone();
+		int yl=ys.length; if (yl==0) return xs.clone();
+		int ms = countMatches(xs,ys);
+		int[] rs=new int[xl+yl-ms];
+		int xi=0;
+		int yi=0;
+		for (int i=0; i<rs.length; i++) {
+			int x=(xi<xl)?xs[xi]:Integer.MAX_VALUE;
+			int y=(yi<yl)?ys[yi]:Integer.MAX_VALUE;
+			if (x==y) {
+				rs[i]=x;
+				xi++;
+				yi++;
+			} else if (x<y) {
+				rs[i]=x;
+				xi++;
+			} else {
+				rs[i]=y;
+				yi++;
+			}
+		}
+		return rs;
+	}
+
+	public static boolean validIndex(int[] as, int[] shape) {
+		if (as.length!=shape.length) return false;
+		for (int i=0; i<shape.length; i++) {
+			int a=as[i];
+			if ((a<0)||(a>=shape[i])) return false;
+		}
+		return true;
+	}
+
+
 }

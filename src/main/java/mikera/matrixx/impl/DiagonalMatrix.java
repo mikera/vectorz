@@ -3,7 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -71,6 +71,15 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		double result=0.0;
 		for (int i=0; i<dimensions; i++) {
 			result+=data[i];
+		}
+		return result;
+	}
+	
+	@Override
+	public double diagonalProduct() {
+		double result=1.0;
+		for (int i=0; i<dimensions; i++) {
+			result*=data[i];
 		}
 		return result;
 	}
@@ -154,8 +163,8 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof AArrayVector) {
-			transformInPlace((AArrayVector) v);
+		if (v instanceof ADenseArrayVector) {
+			transformInPlace((ADenseArrayVector) v);
 			return;
 		}
 		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong length vector: "+v.length());
@@ -165,7 +174,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public void transformInPlace(AArrayVector v) {
+	public void transformInPlace(ADenseArrayVector v) {
 		double[] dest=v.getArray();
 		int offset=v.getArrayOffset();
 		DoubleArrays.arraymultiply(data, 0, dest, offset, dimensions);

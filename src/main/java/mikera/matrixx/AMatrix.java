@@ -39,7 +39,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -349,6 +349,18 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Matrixx.createFromVector(asVector(), rows, cols);
 	}
 	
+	@Override
+	public AMatrix reorder(int[] order) {
+		return reorder(0,order);
+	}	
+	
+	@Override
+	public AMatrix reorder(int dim, int[] order) {
+		INDArray o=super.reorder(dim,order);
+		if (o instanceof AMatrix) return (AMatrix)o;
+		return Matrixx.toMatrix(o);
+	}	
+	
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		VectorMatrixMN vm=new VectorMatrixMN(0,cols);
 		for (int i=0; i<rows; i++) {
@@ -427,8 +439,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof AArrayVector) {
-			transformInPlace((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			transformInPlace((ADenseArrayVector)v);
 			return;
 		}
 		double[] temp = new double[v.length()];
@@ -444,7 +456,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		v.setElements(temp);
 	}
 	
-	public void transformInPlace(AArrayVector v) {
+	public void transformInPlace(ADenseArrayVector v) {
 		double[] temp = new double[v.length()];
 		int rc = rowCount();
 		int cc = columnCount();
@@ -627,10 +639,23 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Calculates the determinant of the matrix.
 	 */
 	public double determinant() {
-		if (!isSquare())
+		int rc = rowCount();
+		int cc = columnCount();
+		if (rc!=cc)
 			throw new UnsupportedOperationException(
 					"Cannot take determinant of non-square matrix!");
 
+		if (rc==1) return unsafeGet(0,0);
+		if (rc==2) return unsafeGet(0,0)*unsafeGet(1,1)-unsafeGet(1,0)*unsafeGet(0,1);
+		if (rc==3) {
+			return new Matrix33(this).determinant();
+		}
+		
+		return naiveDeterminant();
+
+	}
+	
+	private double naiveDeterminant() {
 		int rc = rowCount();
 		int[] inds = new int[rc];
 		for (int i = 0; i < rc; i++) {
@@ -1262,10 +1287,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return transform(v);
 	}
 	
-	public Matrix innerProduct(Matrix a) {
+	public AMatrix innerProduct(Matrix a) {
 		return Multiplications.multiply(this, a);
 	}
 	
+	@Override
 	public AVector innerProduct(AVector v) {
 		if (v instanceof Vector) {
 			return transform((Vector)v);
@@ -1298,7 +1324,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
-	public Matrix transposeInnerProduct(Matrix s) {
+	public AMatrix transposeInnerProduct(Matrix s) {
 		Matrix r= toMatrixTranspose();
 		return Multiplications.multiply(r, s);
 	}
@@ -1313,7 +1339,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		} else if (a.dimensionality()<=2) {
 			return innerProduct(Arrayz.create(a)); // convert to most efficient format
 		}
-		return Array.create(this).innerProduct(a);
+		// TODO: figure out a faster approach?
+		List<AVector> al=getSlices();
+		List<INDArray> rl=new ArrayList<INDArray>();
+		for (AVector v: al ) {
+			rl.add(v.innerProduct(a));
+		}
+		return SliceArray.create(rl);
 	}
 
 	public INDArray outerProduct(INDArray a) {
@@ -1340,6 +1372,21 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
 			result+=unsafeGet(i,i);
+		}
+		return result;
+	}
+	
+	/**
+	 * Computes the product of entries on the main diagonal of a matrix
+	 * 
+	 * @return
+	 */
+	@Override
+	public double diagonalProduct() {
+		int rc=Math.min(rowCount(), columnCount());
+		double result=1.0;
+		for (int i=0; i<rc; i++) {
+			result*=unsafeGet(i,i);
 		}
 		return result;
 	}
@@ -1401,6 +1448,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		double[] result=Matrix.createStorage(rowCount(),columnCount());
 		getElements(result,0);
 		return result;
+	}
+	
+	@Override
+	public INDArray[] toSliceArray() {
+		int n=sliceCount();
+		INDArray[] al=new INDArray[n];
+		for (int i=0; i<n; i++) {
+			al[i]=slice(i);
+		}
+		return al;
 	}
 	
 	@Override
@@ -1897,6 +1954,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	public void copyRowTo(int row, double[] dest, int destOffset) {
+		// note: using getRow() may be faster when overriding
 		int cc=columnCount();
 		for (int i=0; i<cc; i++) {
 			dest[i+destOffset]=unsafeGet(row,i);
@@ -1904,9 +1962,75 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		// note: using getColumn() may be faster when overriding
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			dest[i+destOffset]=unsafeGet(i,col);
 		}
+	}
+
+	/**
+	 * Adds to a specific position in a matrix, indexed by element position.
+	 * 
+	 * Unsafe operation - may not prform bounds checking.
+	 * 
+	 * @param i
+	 * @param d
+	 */
+	public void addAt(int i, double d) {
+		int cc=columnCount();
+		addAt(i/cc,i%cc,d);
+	}
+
+	/**
+	 * Subtracts from a specific position in a matrix, indexed by element position
+	 * @param i
+	 * @param d
+	 */
+	public void subAt(int i, double d) {
+		int cc=columnCount();
+		addAt(i/cc,i%cc,-d);
+	}
+
+	/**
+	 * Divides a specific position in a matrix, indexed by element position
+	 * @param i
+	 * @param d
+	 */
+	public void divideAt(int i, double d) {
+		int cc=columnCount();
+		int y=i/cc;
+		int x=i%cc;
+		unsafeSet(y,x,unsafeGet(y,x)/d);
+	}
+
+	/**
+	 * Multiplies a specific position in a matrix, indexed by element position
+	 * @param i
+	 * @param d
+	 */
+	public void multiplyAt(int i, double d) {
+		int cc=columnCount();
+		int y=i/cc;
+		int x=i%cc;
+		unsafeSet(y,x,unsafeGet(y,x)*d);
+	}
+	
+	@Override
+	public INDArray addCopy(INDArray a) {
+		if (a instanceof AMatrix) {
+			return addCopy((AMatrix)a);
+		} else {
+			AMatrix m=this.clone();
+			m.add(a);
+			return m;
+		}
+	}
+
+	@Override
+	public AMatrix addCopy(AMatrix a) {
+		AMatrix m=this.clone();
+		m.add(a);
+		return m;
 	}
 }

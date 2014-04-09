@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
@@ -18,7 +19,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BroadcastVectorMatrix;
 import mikera.randomz.Hash;
 import mikera.util.Maths;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
@@ -122,6 +123,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public Object sliceValue(int i) {
+		return get(i);
+	}
+	
+	@Override
 	public AScalar slice(int dimension, int index) {
 		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		return slice(index);	
@@ -167,7 +173,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public long[] getLongShape() {
 		return new long[] {length()};
 	}
-	
+		
 	@Override
 	public long elementCount() {
 		return length();
@@ -237,16 +243,32 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (length==0) return Vector0.INSTANCE;
 		if (length==len) return this;
 		
-		return new WrappedSubVector(this,offset,length);
+		return WrappedSubVector.wrap(this,offset,length);
 	}
 
 	/**
-	 * Returns a new vector that refers to this vector joined to a second vector
+	 * Returns a new vector that refers to this vector joined to a second vector.
+	 * 
+	 * Optimises the type of the returned vector to be as efficient as possible.
+	 * 
 	 * @param second
 	 * @return
 	 */
 	public AVector join(AVector second) {
+		if (second.length()==0) return this;
+		AVector ej=tryEfficientJoin(second);
+		if (ej!=null) return ej;
 		return JoinedVector.joinVectors(this,second);
+	}
+	
+	/**
+	 * Attempts to perform an efficient join with a second vector. An efficient join is guaranteed 
+	 * to be better than a simple JoinedVectr(left,right) 
+	 * 
+	 * If possible, returns the joined vector. If not, returns null
+	 */
+	public AVector tryEfficientJoin(AVector second) {
+		return null;
 	}
 	
 	@Override
@@ -264,7 +286,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		if (len!=a.length()) throw new IllegalArgumentException("Vectors must be same length for comparison");
 		for (int i=0; i<len; i++) {
-			double diff=get(i)-a.get(i);
+			double diff=unsafeGet(i)-a.unsafeGet(i);
 			if (diff<0.0) return -1;
 			if (diff>0.0) return 1;
 		}
@@ -284,8 +306,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public boolean equals(AVector v) {
-		if (v instanceof AArrayVector) {
-			return equals((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			return equals((ADenseArrayVector)v);
 		}
 		if (this==v) return true;
 		int len=length();
@@ -298,7 +320,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return true;
 	}
 	
-	public boolean equals(AArrayVector v) {
+	public boolean equals(ADenseArrayVector v) {
 		if (length()!=v.length()) return false;
 		return equalsArray(v.getArray(),v.getArrayOffset());
 	}
@@ -396,6 +418,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public INDArray[] toSliceArray() {
+		int n=sliceCount();
+		INDArray[] al=new INDArray[n];
+		for (int i=0; i<n; i++) {
+			al[i]=slice(i);
+		}
+		return al;
+	}
+	
+	@Override
 	public double[] asDoubleArray() {
 		return null;
 	}
@@ -412,8 +444,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
 	public void copyTo(AVector dest, int destOffset) {
-		if (dest instanceof AArrayVector) {
-			copyTo((AArrayVector) dest,destOffset);
+		if (dest instanceof ADenseArrayVector) {
+			copyTo((ADenseArrayVector) dest,destOffset);
 			return;
 		}
 		int len = length();
@@ -426,7 +458,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
-	public void copyTo(AArrayVector dest, int destOffset) {
+	public void copyTo(ADenseArrayVector dest, int destOffset) {
 		getElements(dest.getArray(),dest.getArrayOffset()+destOffset);
 	}
 	
@@ -518,8 +550,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void multiply(AVector v) {
-		if (v instanceof AArrayVector) {
-			multiply((AArrayVector) v);
+		if (v instanceof ADenseArrayVector) {
+			multiply((ADenseArrayVector) v);
 			return;
 		}
 		int len=length();
@@ -530,7 +562,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
-	public void multiply(AArrayVector v) {
+	public void multiply(ADenseArrayVector v) {
 		int len=length();
 		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		multiply(v.getArray(),v.getArrayOffset());
@@ -585,9 +617,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
-	/**
-	 * Sets each component of the vector to its absolute value
-	 */
+	@Override
 	public void abs() {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -605,9 +635,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	/**
-	 * Sets each component of the vector to its sign value (-1, 0 or 1)
-	 */
 	@Override
 	public void signum() {
 		int len=length();
@@ -616,9 +643,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	/**
-	 * Squares all elements of the vector
-	 */
 	@Override
 	public void square() {
 		int len=length();
@@ -626,6 +650,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			double x=unsafeGet(i);
 			unsafeSet(i,x*x);
 		}		
+	}
+	
+	@Override
+	public AVector squareCopy() {
+		AVector r=clone();
+		r.square();
+		return r;
+	}
+	
+	@Override
+	public AVector sqrtCopy() {
+		AVector r=clone();
+		r.square();
+		return r;
 	}
 	
 	public void tanh() {
@@ -758,8 +796,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			return innerProduct((AScalar)a);
 		} else if (a instanceof AMatrix) {
 			return innerProduct((AMatrix)a);
+		} else if (a.dimensionality()<=2) {
+			return innerProduct(Array.create(a));
 		}
-		return super.innerProduct(a);
+		int len=length();
+		if (len!=a.sliceCount()) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+		List<INDArray> al=a.getSliceViews();
+		INDArray result=Arrayz.newArray(al.get(0).getShape());
+		for (int i=0; i<len; i++) {
+			// TODO: make faster with addMultiple?
+			result.add(al.get(i).innerProduct(get(i)));
+		}
+		return result;
 	}
 	
 	@Override
@@ -769,8 +819,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	/**
+	 * Returns the dot product of this vector with another vector
+	 * 
+	 * @param v
+	 * @return
+	 */
 	public double dotProduct(AVector v) {
-		if (v instanceof AArrayVector) return dotProduct((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
 		int len=length();
 		if(v.length()!=len) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double total=0.0;
@@ -780,16 +836,29 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return total;
 	}
 	
+	/**
+	 * Returns the dot product of this vector with a target Vector.
+	 * 
+	 * @param v
+	 * @return
+	 */
 	public double dotProduct(Vector v) {
 		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return dotProduct(v.getArray(), 0);
 	}
 	
-	public double dotProduct(AArrayVector v) {
+	public double dotProduct(ADenseArrayVector v) {
 		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return dotProduct(v.getArray(), v.getArrayOffset());
 	}
 	
+	/**
+	 * Returns the dotProduct of this vector with the elements of another vector mapped to specified indexes in this vector.
+	 * 
+	 * @param v
+	 * @param ix
+	 * @return
+	 */
 	public double dotProduct(AVector v, Index ix) {
 		int vl=v.length();
 		if (vl!=ix.length()) throw new IllegalArgumentException("Mismatched source vector and index lengths. Index length should be "+vl);
@@ -801,7 +870,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Fast dot product with a double[] array. Performs no bounds checking.
+	 * Fast dot product with a double[] array. Performs no bounds checking. 
+	 * 
+	 * Likely to be faster than other dot product operations
 	 */
 	public double dotProduct(double[] data, int offset) {
 		int len=length();
@@ -812,6 +883,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	/**
+	 * Computes the crossProduct of this vector with another vector, and stores the result in this vector.
+	 * 
+	 * Both vectors must have length 3.
+	 * 
+	 * @param a
+	 */
 	public void crossProduct(AVector a) {
 		if(!((length()==3)&&(a.length()==3))) throw new IllegalArgumentException("Cross product requires length 3 vectors");
 		double x=unsafeGet(0);
@@ -828,6 +906,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		unsafeSet(2,tz);		
 	}
 	
+	/**
+	 * Computes the crossProduct of this vector with another vector, and stores the result in this vector.
+	 * 
+	 * Both vectors must have length 3.
+	 * 
+	 * @param a
+	 */
 	public void crossProduct(Vector3 a) {
 		if(!(length()==3)) throw new IllegalArgumentException("Cross product requires length 3 vectors");
 		double x=unsafeGet(0);
@@ -852,6 +937,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Math.sqrt(magnitudeSquared());
 	}
 	
+	/**
+	 * Returns the squared Euclidean distance to another vector.
+	 * @param v
+	 * @return
+	 */
 	public double distanceSquared(AVector v) {
 		int len=length();
 		double total=0.0;
@@ -862,10 +952,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return total;
 	}
 	
+	/**
+	 * Returns the Euclidean distance to another vector.
+	 * @param v
+	 * @return
+	 */
 	public double distance(AVector v) {
 		return Math.sqrt(distanceSquared(v));
 	}
 	
+	/**
+	 * Returns the distance from this vector to another vector according to the L1 (Taxicab) norm.
+	 * 
+	 * @param v
+	 * @return
+	 */
 	public double distanceL1(AVector v) {
 		int len=length();
 		double total=0.0;
@@ -887,7 +988,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the maximum absolute element of a vector
+	 * Returns the maximum absolute element value of a vector
 	 * @return
 	 */
 	public double maxAbsElement() {
@@ -922,7 +1023,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the maximum element of a vector. Synonym for elementMax()
+	 * Returns the maximum element value in a vector. Synonym for elementMax()
 	 * @return
 	 */
 	public final double maxElement() {
@@ -949,7 +1050,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the minimum element of a vector. Synonym for elementMax()
+	 * Returns the minimum element value in a vector. Synonym for elementMin()
 	 */
 	public final double minElement() {
 		return elementMin();
@@ -1040,8 +1141,26 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return d;
 	}
 	
+	/**
+	 * Negates all emlements of this vector in place.
+	 */
+	@Override
 	public void negate() {
 		multiply(-1.0);
+	}
+	
+	@Override
+	public AVector negateCopy() {
+		AVector r=clone();
+		r.negate();
+		return r;
+	}
+	
+	@Override
+	public AVector scaleCopy(double d) {
+		AVector r=clone();
+		r.scale(d);
+		return r;
 	}
 	
 	@Override
@@ -1056,11 +1175,24 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Sets the vector to equal the value of another vector
 	 */
 	public void set(AVector src) {
-		int len=length();
-		if (src.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+src.length());
-		for (int i=0; i<len; i++) {
-			unsafeSet(i,src.unsafeGet(i));
+		if (src instanceof ADenseArrayVector) {
+			set((ADenseArrayVector)src);
+		} else {
+			int len=length();
+			if (src.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+src.length());
+			for (int i=0; i<len; i++) {
+				unsafeSet(i,src.unsafeGet(i));
+			}
 		}
+	}
+	
+	/**
+	 * Sets the vector equal to the value of an ADenseArrayVector
+	 * @param v
+	 */
+	public void set(ADenseArrayVector v) {
+		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		setElements(v.getArray(),v.getArrayOffset());
 	}
 	
 	@Override
@@ -1078,6 +1210,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		setElements(data,0,length());
 	}
 	
+	@Override
+	public void setElements(double[] data,int offset) {
+		setElements(data,offset,length());
+	}
+	
+	@Override
 	public void set(INDArray a) {
 		if (a instanceof AVector) {set((AVector)a); return;}
 		if (a.dimensionality()==1) {
@@ -1141,6 +1279,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Vector.create(this);
 	}
 	
+	@Override
+	public AVector copy() {
+		if (!isMutable()) return this;
+		return clone();
+	}
+	
 	/**
 	 * Clones the vector into a sparse mutable format
 	 */
@@ -1164,6 +1308,19 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			return Arrayz.createFromVector(this,dimensions);
 		}
 	}
+	
+	@Override
+	public AVector reorder(int[] order) {
+		return reorder(0,order);
+	}	
+	
+	@Override
+	public AVector reorder(int dim, int[] order) {
+		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		Vector result=Vector.createLength(order.length);
+		result.set(this, order);
+		return result;
+	}	
 	
 	/**
 	 * Returns true if this vector is of a view type that references other vectors / data.
@@ -1199,8 +1356,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Adds another vector to this one
 	 */
 	public void add(AVector v) {
-		if (v instanceof AArrayVector) {
-			add((AArrayVector)v);
+		if (v instanceof ADenseArrayVector) {
+			add((ADenseArrayVector)v);
 			return;
 		}
 		int vlength=v.length();
@@ -1213,7 +1370,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public void add(AArrayVector v) {
+	public void add(ADenseArrayVector v) {
 		if (length() != v.length()) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		}
@@ -1229,6 +1386,84 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}else {
 			super.add(a);
 		}
+	}
+	
+	@Override
+	public INDArray addCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return addCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			return addCopy(a.asVector());
+		} else {
+			return addCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public AVector addCopy(AVector a) {
+		// clone ensures mutability
+		AVector r=this.clone();
+		r.add(a);
+		return r;
+	}
+	
+	@Override
+	public INDArray subCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return subCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			return subCopy(a.asVector());
+		} else {
+			return subCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public AVector subCopy(AVector a) {
+		// clone ensures mutability
+		AVector r=this.clone();
+		r.sub(a);
+		return r;
+	}
+	
+	@Override
+	public INDArray multiplyCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return multiplyCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			return multiplyCopy(a.asVector());
+		} else {
+			return multiplyCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public INDArray divideCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return divideCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			return divideCopy(a.asVector());
+		} else {
+			return divideCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public AVector multiplyCopy(AVector a) {
+		AVector r=this.clone();
+		r.multiply(a);
+		return r;
+	}
+	
+	@Override
+	public AVector divideCopy(AVector a) {
+		AVector r=this.clone();
+		r.divide(a);
+		return r;
 	}
 	
 	@Override
@@ -1255,7 +1490,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void add(Vector v) {
-		add((AArrayVector)v);
+		add((ADenseArrayVector)v);
 	}
 	
 	/**
@@ -1340,6 +1575,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		add(-d);
 	}
 	
+	public void subAt(int i, double v) {
+		addAt(i,-v);
+	}
+	
 	/**
 	 * Returns true if this vector is a zero vector (all components zero)
 	 * @return
@@ -1362,7 +1601,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public boolean isSameShape(INDArray a) {
+	public final boolean isSameShape(INDArray a) {
 		if (a instanceof AVector) return isSameShape((AVector)a);
 		if (a.dimensionality()!=1) return false;
 		return length()==a.getShape(0);
@@ -1543,11 +1782,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * sets the vector using values indexed from another vector
 	 */
-	public void set(AVector v, Index indexes) {
+	public final void set(AVector v, Index indexes) {
+		set(v,indexes.data);
+	}
+	
+	/**
+	 * sets the vector using values indexed from another vector
+	 */
+	public void set(AVector v, int[] indexes) {
 		int len=length();
-		if (len!=indexes.length()) throw new IllegalArgumentException("Index length must match this vector length.");
+		if (len!=indexes.length) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len ; i++) {
-			unsafeSet(i, v.get(indexes.unsafeGet(i)));
+			unsafeSet(i, v.get(indexes[i]));
 		}
 	}
 	
@@ -1587,8 +1833,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof AArrayVector) {
-			addProductToArray(factor,offset,(AArrayVector)other,otherOffset,array,arrayOffset,length);
+		if (other instanceof ADenseArrayVector) {
+			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
 		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
@@ -1597,7 +1843,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}		
 	}
 	
-	public void addProductToArray(double factor, int offset, AArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
+	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
 		double[] otherArray=other.getArray();
 		otherOffset+=other.getArrayOffset();
@@ -1796,6 +2042,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			}
 		}
 		return ind;
+	}
+	
+	public int[] nonZeroIndices() {
+		int n=(int)nonZeroCount();
+		int[] ret=new int[n];
+		int length=length();
+		int di=0;
+		for (int i=0; i<length; i++) {
+			if (unsafeGet(i)!=0.0) ret[di++]=i;
+		}
+		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
+		return ret;
 	}
 
 

@@ -119,6 +119,12 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public AMatrix addCopy(AMatrix a) {
+		if (!isSameShape(a)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		return a.copy();
+	}
+	
+	@Override
 	public void getElements(double[] dest, int destOffset) {
 		Arrays.fill(dest, destOffset,destOffset+rowCount()*columnCount(),0.0);
 	}
@@ -132,6 +138,12 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	@Override
 	public double trace() {
 		return 0.0;
+	}
+	
+	@Override
+	public double diagonalProduct() {
+		int n=Math.min(rowCount(), columnCount());
+		return (n>0)?0.0:1.0;
 	}
 	
 	@Override
@@ -251,6 +263,12 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 
 	@Override
 	public ZeroMatrix getTranspose() {
+		if (cols==rows) return this;
+		return ZeroMatrix.create(cols, rows);
+	}
+	
+	@Override
+	public ZeroMatrix getTransposeView() {
 		if (cols==rows) return this;
 		return ZeroMatrix.create(cols, rows);
 	}

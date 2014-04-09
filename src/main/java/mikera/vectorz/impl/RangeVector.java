@@ -75,4 +75,13 @@ public class RangeVector extends AComputedVector {
 		
 		return create(this.start+start,length);
 	}
+	
+	@Override
+	public AVector tryEfficientJoin(AVector a) {
+		if (a instanceof RangeVector) {
+			RangeVector ra=(RangeVector) a;
+			if (ra.start==this.start+this.length) return RangeVector.create(start,length+ra.length);
+		}
+		return null;
+	}
 }

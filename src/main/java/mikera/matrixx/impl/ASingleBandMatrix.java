@@ -1,7 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.Vectorz;
 
 /**
  * Abstract base class to represent sparse matrices with a single non-zero band
@@ -59,7 +59,7 @@ public abstract class ASingleBandMatrix extends ABandedMatrix {
 		if (band==nonZeroBand()) {
 			return getNonZeroBand();
 		} else {
-			return ZeroVector.create(bandLength(band));
+			return Vectorz.createZeroVector(bandLength(band));
 		}
 	}
 	

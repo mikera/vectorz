@@ -1,6 +1,7 @@
 package mikera.arrayz;
 
 import static org.junit.Assert.*;
+import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -33,8 +34,30 @@ public class TestMiscArrayOps {
 		assertEquals(v2,m.getLeadingDiagonal());
 	}
 	
+	@Test public void testInnerProducts() {
+		INDArray a=Array.newArray(1,1,1);
+		INDArray b=Array.newArray(1,1,1);
+		a.fill(2);
+		b.fill(3);
+		INDArray c=a.innerProduct(b);
+		assertEquals(1,c.elementCount());
+		assertEquals(4,c.dimensionality());
+		assertEquals(6.0,c.get(0,0,0,0),0.0);
+	}
+	
+	@Test public void testDoubleSlice() {
+		assertEquals(new Double(2.0),Array.create(Vector.of(1,2,3)).getSlices().get(1));
+		assertEquals(new Double(2.0),SliceArray.create(Vector.of(1,2,3)).getSlices().get(1));
+	}
+	
 	@Test public void testParse() {
 		assertEquals(Vector.of(4,5),Arrayz.parse("[[1, 2], [4, 5], [7, 8]]").slice(1));
+	}
+	
+	@Test public void testTranspose() {
+		INDArray m=Arrayz.parse("[[[1.0,2.0],[0.0,0.0]],[[0.0,0.0],[0.0,1.0]]]");
+		INDArray n=Arrayz.parse("[[[1.0,0.0],[0.0,0.0]],[[2.0,0.0],[0.0,1.0]]]");
+		assertEquals(m,n.getTranspose());
 	}
 	
 	@Test public void testNonZeroCount() {

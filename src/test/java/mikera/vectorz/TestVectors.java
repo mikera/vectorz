@@ -18,6 +18,7 @@ import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
+import mikera.vectorz.impl.JoinedMultiVector;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
@@ -384,6 +385,27 @@ public class TestVectors {
 			fail();
 		} catch (Throwable t) {
 			// OK
+		}
+	}
+	
+	
+	private void testNonZero(AVector v) {
+		int len=v.length();
+		int n=(int)v.nonZeroCount();
+		int[] nzi = v.nonZeroIndices();
+		Index ind=Index.of(nzi);
+		assertEquals(n,nzi.length);
+		
+		for (int i=0; i<nzi.length; i++) {
+			assertTrue(v.unsafeGet(nzi[i])!=0.0);
+		}
+		
+		for (int i=0; i<len; i++) {
+			if (v.unsafeGet(i)==0.0) {
+				assertFalse(ind.containsSorted(i));
+			} else {
+				assertTrue(ind.containsSorted(i));				
+			}
 		}
 	}
 	
@@ -771,6 +793,7 @@ public class TestVectors {
 		testSlicing(v);
 		testMinMax(v);
 		testJoining(v);
+		testNonZero(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
 		testApplyOp(v);
@@ -842,7 +865,7 @@ public class TestVectors {
 		
 		AVector v3 = new Vector3(1.0,2.0,3.0);
 		doGenericTests(v3.subVector(1, 2));
-		doGenericTests(new WrappedSubVector(v3,1,2));
+		doGenericTests(WrappedSubVector.wrap(v3,1,2));
 
 		AVector joined = Vectorz.join(v3, Vectorz.create(data));
 		doGenericTests(joined);
@@ -913,6 +936,9 @@ public class TestVectors {
 		
 		doGenericTests(new Scalar(1.0).asVector());
 		doGenericTests(Vector.of(1,2,3).slice(1).asVector());
+		
+		doGenericTests(JoinedMultiVector.create(v4,j5));
+		doGenericTests(JoinedMultiVector.create(Vectorz.createRange(3)));
 		
 		AVector jav1=JoinedArrayVector.create(v4);
 		AVector jav2=JoinedArrayVector.create(j5);

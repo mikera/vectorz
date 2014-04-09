@@ -1,33 +1,21 @@
 package mikera.vectorz.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import java.util.List;
 
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.Vector1;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 
+import org.junit.Test;
+
 public class TestJoinedVector {
-	@Test public void testDepth() {
-		Vector1 v=Vector1.of(1);
-		
-		AVector j=v;
-		
-		for (int i=0; i<10; i++) {
-			j=j.join(v);
-		}
-		assertEquals(11,j.length());
-		assertEquals(1.0, j.get(10),0.0);
-		
-		assertTrue(j instanceof JoinedVector);
-		assertTrue(((JoinedVector)j).depth()<7);
-		// mutable throughout
-		v.set(0,2.0);
-		assertEquals(2.0, j.get(10),0.0);	
-	}
 	
 	@Test public void testJoinedArrays() {
 		Vector v=Vector.of(1);
@@ -102,6 +90,29 @@ public class TestJoinedVector {
 		assertEquals(Vector.of(1,2,3,0,0,0,0,0,0,0),t);
 		t.addMultiple(5, v, 2);
 		assertEquals(Vector.of(1,2,3,0,0,2,4,6,0,0),t);
+	}
+	
+	@Test public void testJoinedRows() {
+		assertEquals(Vector.class, Vectorz.join(Matrixx.createRandomMatrix(5, 5).getSlices()).getClass());
+		assertEquals(JoinedMultiVector.class, Vectorz.join(Matrixx.createIdentityMatrix(4).getSlices()).getClass());
+		assertEquals(ZeroVector.class, Vectorz.join(ZeroMatrix.create(3, 4).getSlices()).getClass());
+	}
+	
+	@Test public void testMatrixRowJoining() {
+		AMatrix m=Matrixx.createRandomMatrix(5, 5);
+		AMatrix sm=m.subMatrix(1,3,0,5);
+		List<AVector> slices=sm.getSlices();
+		AVector jr=Vectorz.join(slices);
+		assertEquals(ArraySubVector.class, jr.getClass());
+	}
+	
+	@Test public void testJoinedOptimisations() {
+		assertEquals(RangeVector.class, RangeVector.create(1, 3).join(RangeVector.create(4, 7)).getClass());
+		assertEquals(RangeVector.class, RangeVector.create(1, 3).join(RangeVector.create(2, 0)).getClass());
+		assertEquals(RepeatedElementVector.class, RepeatedElementVector.create(1, 2.3).join(RepeatedElementVector.create(2, 2.3)).getClass());
+		assertEquals(JoinedArrayVector.class, Vector.of(1,2).join(Vector.of(3,4)).getClass());
+		assertEquals(Vector0.class, Vector0.INSTANCE.join(Vector0.INSTANCE).getClass());
+		assertEquals(Vector.class, Vector.of(1,2,3).join(Vector0.INSTANCE).getClass());
 	}
 
 	

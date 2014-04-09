@@ -8,7 +8,7 @@ import mikera.arrayz.INDArray;
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.randomz.Hash;
-import mikera.vectorz.impl.AArrayVector;
+import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -22,7 +22,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public final class Vector extends AArrayVector {
+public final class Vector extends ADenseArrayVector {
 	private static final long serialVersionUID = 6283741614665875877L;
 
 	public static final Vector EMPTY = wrap(DoubleArrays.EMPTY);
@@ -245,7 +245,7 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public void add(AArrayVector src, int srcOffset) {
+	public void add(ADenseArrayVector src, int srcOffset) {
 		int length=length();
 		assert(srcOffset>=0);
 		assert(srcOffset+length<=src.length());
@@ -257,7 +257,7 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public void addMultiple(AArrayVector v, double factor) {
+	public void addMultiple(ADenseArrayVector v, double factor) {
 		int length=length();
 		assert(length==v.length());
 		double[] vdata=v.getArray();
@@ -269,13 +269,12 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if(length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		v.addToArray(data, 0);
 	}
 	
 	@Override
 	public void add(Vector v) {
-		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		add(v.data,0);
 	}
@@ -333,7 +332,7 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void sub(AVector v) {
-		if (v instanceof AArrayVector) {sub(((AArrayVector)v)); return;}
+		if (v instanceof ADenseArrayVector) {sub(((ADenseArrayVector)v)); return;}
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
@@ -434,11 +433,11 @@ public final class Vector extends AArrayVector {
 		return super.distance(v);
 	}
 	
-	public void sub(AArrayVector v) {
+	public void sub(ADenseArrayVector v) {
 		sub(v,0);
 	}
 	
-	public void sub(AArrayVector src,int srcOffset) {
+	public void sub(ADenseArrayVector src,int srcOffset) {
 		int length=length();
 		assert(length==src.length());
 		double[] srcData=src.getArray();
@@ -450,13 +449,13 @@ public final class Vector extends AArrayVector {
 	
 	@Override
 	public void addMultiple(AVector v, double factor) {
-		if (v instanceof AArrayVector) {addMultiple(((AArrayVector)v),factor); return;}
+		if (v instanceof ADenseArrayVector) {addMultiple(((ADenseArrayVector)v),factor); return;}
 		v.addMultipleToArray(factor, 0, data, 0, length());
 	}
 	
 	@Override
 	public void addWeighted(AVector v, double factor) {
-		if (v instanceof AArrayVector) {addWeighted(((AArrayVector)v),factor); return;}
+		if (v instanceof ADenseArrayVector) {addWeighted(((ADenseArrayVector)v),factor); return;}
 		int length=length();
 		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		for (int i = 0; i < length; i++) {
@@ -464,7 +463,7 @@ public final class Vector extends AArrayVector {
 		}
 	}
 	
-	public void addWeighted(AArrayVector v, double factor) {
+	public void addWeighted(ADenseArrayVector v, double factor) {
 		int length=length();
 		assert(length==v.length());
 		double[] arr=v.getArray();
@@ -600,7 +599,7 @@ public final class Vector extends AArrayVector {
 	}
 	
 	@Override
-	public boolean equals(AArrayVector v) {
+	public boolean equals(ADenseArrayVector v) {
 		if (length!=v.length()) return false;
 		return DoubleArrays.equals(data, 0, v.getArray(), v.getArrayOffset(), length);
 	}

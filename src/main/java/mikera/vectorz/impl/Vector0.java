@@ -8,6 +8,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * Special singleton zero length vector class.
@@ -53,6 +54,11 @@ public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 	@Override
 	public long nonZeroCount() {
 		return 0;
+	}
+	
+	@Override
+	public int[] nonZeroIndices() {
+		return IntArrays.EMPTY_INT_ARRAY;
 	}
 
 	@Override
