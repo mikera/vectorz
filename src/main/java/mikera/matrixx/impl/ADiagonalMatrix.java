@@ -340,6 +340,16 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public double trace() {
+		return getLeadingDiagonal().elementSum();
+	}
+	
+	@Override
+	public double diagonalProduct() {
+		return getLeadingDiagonal().elementProduct();
+	}
+	
+	@Override
 	public double[] toDoubleArray() {
 		double[] data=new double[dimensions*dimensions];
 		getLeadingDiagonal().addToArray(data, 0, dimensions+1);
