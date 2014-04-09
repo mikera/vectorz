@@ -18,7 +18,7 @@
 
 package mikera.matrixx.algo.decompose.lu;
 
-import mikera.matrixx.Matrix;
+import mikera.matrixx.AMatrix;
 
 /**
  * <p>
@@ -47,7 +47,7 @@ public interface ILU {
    *
    * @return The L matrix.
    */
-  public Matrix getL();
+  public AMatrix getL();
 
   /**
    * <p>
@@ -57,5 +57,5 @@ public interface ILU {
    *
    * @return The U matrix.
    */
-  public Matrix getU();
+  public AMatrix getU();
 }

@@ -1,6 +1,6 @@
 package mikera.matrixx.algo.decompose.lu;
 
-import mikera.matrixx.Matrix;
+import mikera.matrixx.AMatrix;
 
 /**
  * <p>
@@ -29,6 +29,6 @@ public interface ILUP extends ILU {
 	   *
 	   * @return The P matrix.
 	   */
-	  public Matrix getP();
+	  public AMatrix getP();
 
 }
