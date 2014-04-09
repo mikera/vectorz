@@ -53,6 +53,11 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementProduct() {
+		return (length>1)?0.0:value;
+	}
+	
+	@Override
 	public double elementMax(){
 		return (length>1)?Math.max(0.0, value):value;
 	}
