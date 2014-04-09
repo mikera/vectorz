@@ -639,10 +639,23 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Calculates the determinant of the matrix.
 	 */
 	public double determinant() {
-		if (!isSquare())
+		int rc = rowCount();
+		int cc = columnCount();
+		if (rc!=cc)
 			throw new UnsupportedOperationException(
 					"Cannot take determinant of non-square matrix!");
 
+		if (rc==1) return unsafeGet(0,0);
+		if (rc==2) return unsafeGet(0,0)*unsafeGet(1,1)-unsafeGet(1,0)*unsafeGet(0,1);
+		if (rc==3) {
+			return new Matrix33(this).determinant();
+		}
+		
+		return naiveDeterminant();
+
+	}
+	
+	private double naiveDeterminant() {
 		int rc = rowCount();
 		int[] inds = new int[rc];
 		for (int i = 0; i < rc; i++) {
