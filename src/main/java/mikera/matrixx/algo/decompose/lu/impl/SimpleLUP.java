@@ -19,7 +19,7 @@
  * 
  */
 
-package mikera.matrixx.algo;
+package mikera.matrixx.algo.decompose.lu.impl;
 
 import mikera.vectorz.Vector;
 
@@ -27,7 +27,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.PermutationMatrix;
 
-public class LU {
+public class SimpleLUP {
 
 	public static AMatrix[] decomposeLUP(AMatrix matrix) {
 		return decomposeLUPInternal(Matrix.create(matrix));

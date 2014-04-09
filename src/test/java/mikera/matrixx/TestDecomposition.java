@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import mikera.matrixx.algo.Cholesky;
-import mikera.matrixx.algo.LU;
 import mikera.matrixx.algo.QR;
 import mikera.matrixx.algo.ThinSVD;
+import mikera.matrixx.algo.decompose.lu.impl.SimpleLUP;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.vectorz.Vector;
@@ -27,7 +27,7 @@ public class TestDecomposition {
 		
 		AMatrix a=Matrixx.create(new double[][] {{4,3},{6,3}});
 		
-		AMatrix[] ms=LU.decomposeLUP(a);
+		AMatrix[] ms=SimpleLUP.decomposeLUP(a);
 		AMatrix lu=ms[0].innerProduct(ms[1]);
 		
 		assertEquals(ms[2].innerProduct(a),lu);
@@ -36,13 +36,13 @@ public class TestDecomposition {
 		//assertEquals(Matrixx.create(new double[][] {{4,3},{0,-1.5}}),lu[1]);
 
 		a=Matrixx.createRandomSquareMatrix(4);
-		ms=LU.decomposeLUP(a);
+		ms=SimpleLUP.decomposeLUP(a);
 		lu=ms[0].innerProduct(ms[1]);
 		assertTrue(ms[2].innerProduct(a).epsilonEquals(lu));
 
 		
 		a=PermutationMatrix.create(0, 2,1,3);
-		ms=LU.decomposeLUP(a);
+		ms=SimpleLUP.decomposeLUP(a);
 		lu=ms[0].innerProduct(ms[1]);
 		assertTrue(ms[2].innerProduct(a).epsilonEquals(lu));
 		assertEquals(IdentityMatrix.create(4),ms[0]);
