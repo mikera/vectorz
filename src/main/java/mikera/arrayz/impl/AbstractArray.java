@@ -999,11 +999,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 
 	@Override
-	public double[] getElements() {
-		int n=(int)elementCount();
-		double[] data=new double[n];
-		getElements(data,0);
-		return data;
+	public final double[] getElements() {
+		return toDoubleArray();
 	}
 	
 	@Override
