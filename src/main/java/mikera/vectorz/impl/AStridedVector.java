@@ -63,6 +63,19 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public double elementProduct() {
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		double result=1.0;
+		for (int i=0; i<len; i++) {
+			result*=array[offset+i*stride];
+		}		
+		return result;
+	}
+	
+	@Override
 	public double elementMax(){
 		int len=length();
 		double[] array=getArray();
