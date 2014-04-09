@@ -23,7 +23,7 @@ import mikera.matrixx.Matrix;
 /**
  * <p>
  * LU Decomposition refactors the original matrix such that:<br>
- * <div align=center> P<sup>T</sup>*L*U = A</div> where P is a pivot matrix, L
+ * <div align=center> *L*U = A</div> where L
  * is a lower triangular matrix, U is an upper triangular matrix and A is the
  * original matrix.
  * </p>
@@ -33,13 +33,6 @@ import mikera.matrixx.Matrix;
  * linear equations can be quickly solved and the original matrix A inverted.
  * Different algorithms can be selected to perform the decomposition, all will
  * have the same end result.
- * </p>
- * <p>
- * To use this class first specify the size of the matrix that will be
- * decomposed by it in the constructor. Only square m by m matrices can be
- * decomposed. If it encounters any problems an exception will be thrown.
- * After that all the other functions will be available for solving and
- * inverting matrices.
  * </p>
  *
  * @author Peter Abeles
