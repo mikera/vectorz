@@ -2056,5 +2056,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return ret;
 	}
 
+	public AVector multiplyCopy(double d) {
+		AVector r= clone();
+		r.multiply(d);
+		return r;
+	}
+
 
 }

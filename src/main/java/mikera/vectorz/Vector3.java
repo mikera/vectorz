@@ -128,6 +128,18 @@ public final class Vector3 extends APrimitiveVector {
 		this.z=a.z;
 	}
 	
+	@Override
+	public void multiply(double d){
+		x*=d;
+		y*=d;
+		z*=d;
+	}
+	
+	@Override
+	public Vector3 multiplyCopy(double d){
+		return new Vector3(x*d,y*d,z*d);
+	}
+	
 	public void addMultiple(double dx, double dy, double dz, double factor) {
 		x+=dx*factor;
 		y+=dy*factor;
