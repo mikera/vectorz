@@ -139,6 +139,13 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public DiagonalMatrix multiplyCopy(double factor) {
+		double[] newData=DoubleArrays.copyOf(data);
+		DoubleArrays.multiply(newData, factor);
+		return wrap(newData);
+	}	
+	
+	@Override
 	public double calculateElement(int i, AVector v) {
 		return data[i]*v.unsafeGet(i);
 	}
