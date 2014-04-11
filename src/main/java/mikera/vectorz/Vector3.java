@@ -180,6 +180,17 @@ public final class Vector3 extends APrimitiveVector {
 		}
 	}
 	
+	@Override
+	public Vector3 addCopy(AVector v) {
+		if (v instanceof Vector3) return addCopy((Vector3)v);
+		if (v.length()!=3) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		return new Vector3(x+v.unsafeGet(0),y+v.unsafeGet(1),z+v.unsafeGet(2));
+	}
+	
+	public Vector3 addCopy(Vector3 v) {
+		return new Vector3(x+v.x,y+v.y,z+v.z);
+	}
+	
 	public void add(Vector3 v) {
 		x+=v.x;
 		y+=v.y;
@@ -372,6 +383,11 @@ public final class Vector3 extends APrimitiveVector {
 		x=-x;
 		y=-y;
 		z=-z;
+	}
+	
+	@Override
+	public Vector3 negateCopy() {
+		return new Vector3(-x,-y,-z);
 	}
 	
 	@Override
