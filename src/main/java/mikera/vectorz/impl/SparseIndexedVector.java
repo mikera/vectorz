@@ -604,6 +604,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void addAt(int i, double value) {
+		if (value==0.0) return;
 		int ip=index.indexPosition(i);
 		if (ip<0) {
 			unsafeSet(i,value);

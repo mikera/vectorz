@@ -1531,8 +1531,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public void addProduct(AVector a, AVector b, double factor) {
 		int length=length();
-		if(a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
-		if(b.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		if (b.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
 		if (factor==0.0) return;
 		
 		if (a.isSparse()||b.isSparse()) {
@@ -1540,7 +1540,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			addMultiple(t,factor);
 		} else {
 			for (int i = 0; i < length; i++) {
-				addAt(i,(a.unsafeGet(i)*b.unsafeGet(i)*factor));
+				double t= a.unsafeGet(i)*b.unsafeGet(i);
+				addAt(i,(t*factor));
 			}
 		}
 	}
