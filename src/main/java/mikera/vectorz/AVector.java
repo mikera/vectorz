@@ -1536,6 +1536,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addMultiple(src,0,factor);
 	}
 	
+	public AVector addMultipleCopy(AVector src, double factor) {
+		AVector r=clone();
+		r.addMultiple(src, factor);
+		return r;
+	}
+	
 	public void addMultiple(AVector src, int srcOffset, double factor) {
 		addMultiple(0,src,srcOffset,length(),factor);
 	}
