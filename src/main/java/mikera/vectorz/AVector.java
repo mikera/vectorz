@@ -1534,8 +1534,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if(a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		if(b.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
 		if (factor==0.0) return;
-		for (int i = 0; i < length; i++) {
-			addAt(i,(a.unsafeGet(i)*b.unsafeGet(i)*factor));
+		
+		if (a.isSparse()||b.isSparse()) {
+			AVector t=a.multiplyCopy(b);
+			addMultiple(t,factor);
+		} else {
+			for (int i = 0; i < length; i++) {
+				addAt(i,(a.unsafeGet(i)*b.unsafeGet(i)*factor));
+			}
 		}
 	}
 	
