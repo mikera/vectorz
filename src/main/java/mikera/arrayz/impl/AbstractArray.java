@@ -152,6 +152,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			slice(i).multiply(d);
 		}
 	}
+	
+	@Override
+	public INDArray multiplyCopy(double d) {
+		INDArray r=clone();
+		r.multiply(d);
+		return r;
+	}
 
 	@Override
 	public boolean isElementConstrained() {

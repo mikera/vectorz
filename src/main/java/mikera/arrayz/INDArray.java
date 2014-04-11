@@ -701,6 +701,8 @@ public interface INDArray extends Cloneable, Serializable {
 
 	public double elementProduct();
 
+	public INDArray multiplyCopy(double d);
+
 
 	
 }
