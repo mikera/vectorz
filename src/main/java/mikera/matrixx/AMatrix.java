@@ -785,12 +785,20 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		add(constant);
 	}
 	
+	@Override
 	public void multiply(double factor) {
 		int rc=rowCount();
 
 		for (int i=0; i<rc; i++) {
 			getRowView(i).multiply(factor);
 		}
+	}	
+	
+	@Override
+	public AMatrix multiplyCopy(double factor) {
+		AMatrix r=clone();
+		r.multiply(factor);
+		return r;
 	}	
 
 	/**

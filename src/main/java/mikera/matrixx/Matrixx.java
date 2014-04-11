@@ -199,7 +199,8 @@ public class Matrixx {
 
 	
 	/**
-	 * Creates a scalar matrix with the given scale factor
+	 * Creates a scalar matrix with the given scale factor. Scalar matrices are efficient,
+	 * lightweight and immutable.
 	 */
 	public static ADiagonalMatrix createScalarMatrix(int dimensions,
 			double factor) {
@@ -208,7 +209,7 @@ public class Matrixx {
 	}
 
 	/**
-	 * Creates an scale matrix with the given scale factors for each dimension
+	 * Creates a diagonal scaling matrix with the given scale factors for each dimension
 	 */
 	public static DiagonalMatrix createScaleMatrix(double... scalingFactors) {
 		int dimensions = scalingFactors.length;
