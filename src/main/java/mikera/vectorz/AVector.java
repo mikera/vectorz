@@ -1517,6 +1517,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addProduct(a,b,1.0);
 	}
 	
+	public AVector addProductCopy(AVector a, AVector b) {
+		AVector r=clone();
+		r.addProduct(a,b);
+		return r;
+	}
+	
+	public AVector addProductCopy(AVector a, AVector b, double factor) {
+		AVector r=clone();
+		r.addProduct(a,b,factor);
+		return r;
+	}
+	
 	public void addProduct(AVector a, AVector b, double factor) {
 		int length=length();
 		if(a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
