@@ -421,6 +421,11 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public Vector3 copy() {
+		return clone();	
+	}
+	
+	@Override
 	public double getX() {
 		return x;
 	}
