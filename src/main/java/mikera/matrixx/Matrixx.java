@@ -203,7 +203,8 @@ public class Matrixx {
 	 */
 	public static ADiagonalMatrix createScalarMatrix(int dimensions,
 			double factor) {
-		return (ADiagonalMatrix) ScalarMatrix.create(dimensions, factor);
+		if (factor==1.0) return IdentityMatrix.create(dimensions);
+		return ScalarMatrix.create(dimensions, factor);
 	}
 
 	/**

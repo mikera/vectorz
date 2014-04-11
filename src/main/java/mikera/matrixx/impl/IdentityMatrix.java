@@ -1,6 +1,5 @@
 package mikera.matrixx.impl;
 
-import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -203,7 +202,7 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override
-	public INDArray multiplyCopy(double d) {
+	public ScalarMatrix multiplyCopy(double d) {
 		return ScalarMatrix.create(dimensions, d);
 	}
 	
