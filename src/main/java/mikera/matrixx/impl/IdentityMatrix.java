@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -199,6 +200,27 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	public Vector innerProduct(AVector v) {
 		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
 		return v.toVector();
+	}
+	
+	@Override
+	public INDArray multiplyCopy(double d) {
+		return ScalarMatrix.create(dimensions, d);
+	}
+	
+	@Override
+	public AMatrix addCopy(AMatrix m) {
+		if (!isSameShape(m))throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		
+		AMatrix r=m.clone();
+		if (r instanceof ADenseArrayMatrix) {
+			ADenseArrayMatrix ar=(ADenseArrayMatrix) r;
+			this.addToArray(ar.getArray(),ar.getArrayOffset());
+		} else {
+			for (int i=0; i<dimensions; i++) {
+				r.addAt(i, i,1.0);
+			}
+		}
+		return r;
 	}
 	
 	@Override 

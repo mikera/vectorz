@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ADenseArrayVector;
@@ -73,6 +74,11 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	@Override
 	public double diagonalProduct() {
 		return Math.pow(scale,dimensions);
+	}
+	
+	@Override
+	public INDArray multiplyCopy(double d) {
+		return ScalarMatrix.create(dimensions, d*scale);
 	}
 	
 	@Override
