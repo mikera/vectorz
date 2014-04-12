@@ -24,8 +24,6 @@ import mikera.vectorz.util.VectorzException;
  * 
  * Can be a view into another vector/matrix/array
  * 
- * TODO: override methods in AScalar
- * 
  * @author Mike
  */
 public abstract class AScalar extends AbstractArray<Object> implements IScalar, IDense {
@@ -127,7 +125,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		return get()==0.0;
 	}
 
-	
+	@Override
 	public void add(double d) {
 		set(get()+d);
 	}
@@ -143,6 +141,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		data[offset]+=get();
 	}
 	
+	@Override
 	public void sub(double d) {
 		set(get()-d);
 	}
@@ -356,18 +355,18 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		int dims=v.dimensionality();
 		if (dims==0) return this;
 		int lastShape=v.getShape(dims-1);
-		AVector rv=(lastShape==0)?Vector0.INSTANCE:RepeatedElementVector.create(lastShape,get());
+		AVector rv=Vectorz.createRepeatedElement(lastShape,get());
 		return rv.broadcastLike(v);
 	}
 	
 	@Override
 	public AVector broadcastLike(AVector v) {
-		return RepeatedElementVector.create(v.length(), get());
+		return Vectorz.createRepeatedElement(v.length(), get());
 	}
 	
 	@Override
 	public AMatrix broadcastLike(AMatrix v) {
-		return RepeatedElementVector.create(v.columnCount(), get()).broadcastLike(v);
+		return Vectorz.createRepeatedElement(v.columnCount(), get()).broadcastLike(v);
 	}
 	
 	@Override
