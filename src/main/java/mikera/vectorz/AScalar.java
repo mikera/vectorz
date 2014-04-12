@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
+import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -361,6 +362,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	public AVector broadcastLike(AVector v) {
 		return RepeatedElementVector.create(v.length(), get());
+	}
+	
+	@Override
+	public AMatrix broadcastLike(AMatrix v) {
+		return RepeatedElementVector.create(v.columnCount(), get()).broadcastLike(v);
 	}
 	
 	@Override
