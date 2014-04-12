@@ -42,12 +42,4 @@ public abstract class AComputedVector extends ASizedVector {
 	public AComputedVector exactClone() {
 		return this;
 	}
-	
-	@Override
-	public boolean equalsArray(double[] data, int offset) {
-		for (int i=0; i<length; i++) {
-			if (data[offset+i]!=unsafeGet(i)) return false;
-		}
-		return true;
-	}
 }
