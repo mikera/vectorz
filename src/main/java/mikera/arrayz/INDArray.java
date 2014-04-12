@@ -706,6 +706,8 @@ public interface INDArray extends Cloneable, Serializable {
 
 	AMatrix broadcastLike(AMatrix target);
 
+	AVector broadcastLike(AVector target);
+
 
 	
 }

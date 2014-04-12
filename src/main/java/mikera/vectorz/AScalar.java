@@ -360,6 +360,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		return rv.broadcastLike(v);
 	}
 	
+	@Override
 	public AVector broadcastLike(AVector v) {
 		return RepeatedElementVector.create(v.length(), get());
 	}
