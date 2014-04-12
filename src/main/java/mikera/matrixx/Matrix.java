@@ -594,7 +594,7 @@ public final class Matrix extends ADenseArrayMatrix {
 			throw new IllegalArgumentException(ErrorMessages.mismatch(
 					this.getColumn(j), col));
 		for (int i = 0; i < rc; i++) {
-			data[index(i, j)] = col.unsafeGet(j);
+			data[index(i, j)] = col.unsafeGet(i);
 		}
 	}
 
