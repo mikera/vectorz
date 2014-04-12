@@ -1181,6 +1181,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public AMatrix broadcastLike(AMatrix target) {
+		return Matrixx.toMatrix(broadcast(target.getShape()));
+	}
+	
+	@Override
 	public INDArray broadcastCloneLike(INDArray target) {
 		INDArray r=this;
 		if (r.dimensionality()<target.dimensionality()) r=r.broadcastLike(target);

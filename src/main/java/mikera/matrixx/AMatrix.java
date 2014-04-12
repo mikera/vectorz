@@ -1635,7 +1635,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return broadcast(target.getShape());
 	}
 	
-	public INDArray broadcastLike(AMatrix target) {
+	@Override
+	public AMatrix broadcastLike(AMatrix target) {
 		if (rowCount()==target.rowCount()&&(columnCount()==target.columnCount())) {
 			return this;
 		} else {

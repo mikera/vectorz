@@ -5,6 +5,7 @@ import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
@@ -702,6 +703,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public double elementProduct();
 
 	public INDArray multiplyCopy(double d);
+
+	AMatrix broadcastLike(AMatrix target);
 
 
 	
