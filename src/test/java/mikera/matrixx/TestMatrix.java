@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import mikera.vectorz.Vector;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -18,5 +20,14 @@ public class TestMatrix {
     assertEquals(6, A.columnCount());
 
     assertEquals(4, A.elementSum(), 0);
+  }
+  
+  @Test 
+  public void testSetColumn() {
+	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
+	  
+	  m.setColumn(1, Vector.of(7,8));
+	  
+	  assertEquals(Matrix.create(new double[][] {{1,7},{3,8}}),m);
   }
 }
