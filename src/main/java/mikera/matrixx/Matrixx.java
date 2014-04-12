@@ -36,7 +36,7 @@ import us.bpsm.edn.parser.Parsers;
  */
 public class Matrixx {
 
-	private static final long SPARSE_ELEMENT_THRESHOLD = 30000;
+	private static final long SPARSE_ELEMENT_THRESHOLD = 100000;
 
 	/**
 	 * Creates an identity matrix
