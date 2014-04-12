@@ -219,9 +219,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	@Override
 	public DiagonalMatrix inverse() {
 		double[] newData=new double[dimensions];
-		for (int i=0; i<dimensions; i++) {
-			newData[i]=1.0/data[i];
-		}
+		DoubleArrays.reciprocal(newData);
 		return new DiagonalMatrix(newData);
 	}
 	
