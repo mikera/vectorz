@@ -36,6 +36,8 @@ import us.bpsm.edn.parser.Parsers;
  */
 public class Matrixx {
 
+	private static final long SPARSE_ELEMENT_THRESHOLD = 30000;
+
 	/**
 	 * Creates an identity matrix
 	 */
@@ -94,7 +96,7 @@ public class Matrixx {
 	}
 	
 	/**
-	 * Creates a sparse matrix from the given matrix, ignoring zeros. Uses row-based storage by default
+	 * Creates a sparse matrix of the given size, initially zero-filled. Uses row-based storage by default
 	 */
 	public static AMatrix createSparse(int rowCount, int columnCount) {
 		return SparseRowMatrix.create(rowCount,columnCount);
@@ -454,6 +456,7 @@ public class Matrixx {
 			if (rows == 2) return new Matrix22();
 			if (rows == 3) return new Matrix33();
 		}
+		if (rows*((long)columns)>SPARSE_ELEMENT_THRESHOLD) return createSparse(rows,columns);
 		return Matrix.create(rows, columns);
 	}
 
