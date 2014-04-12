@@ -14,9 +14,8 @@ import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.matrixx.algo.Determinant;
 import mikera.matrixx.algo.Multiplications;
-import mikera.matrixx.algo.decompose.lu.ILUP;
-import mikera.matrixx.algo.decompose.lu.impl.SimpleLUP;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -45,7 +44,6 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
-import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -641,53 +639,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Calculates the determinant of the matrix.
 	 */
 	public double determinant() {
-		int rc = rowCount();
-		int cc = columnCount();
-		if (rc!=cc)
-			throw new UnsupportedOperationException(
-					"Cannot take determinant of non-square matrix!");
-
-		if (rc==1) return unsafeGet(0,0);
-		if (rc==2) return unsafeGet(0,0)*unsafeGet(1,1)-unsafeGet(1,0)*unsafeGet(0,1);
-		if (rc==3) {
-			return new Matrix33(this).determinant();
-		}
-		
-		return smartDeterminant();
+		return Determinant.calc(this);
 
 	}
 
-	private double smartDeterminant() {
-		ILUP lup=SimpleLUP.decompose(this);
-		double det=lup.getL().diagonalProduct()*lup.getU().diagonalProduct()*lup.getP().determinant();
-		return det;
-	}
-	
-	@SuppressWarnings("unused")
-	private double naiveDeterminant() {
-		int rc = rowCount();
-		int[] inds = new int[rc];
-		for (int i = 0; i < rc; i++) {
-			inds[i] = i;
-		}
-		return calcDeterminant(inds, 0);
-	}
 
-	private double calcDeterminant(int[] inds, int offset) {
-		int rc = rowCount();
-		if (offset == (rc - 1))
-			return unsafeGet(offset, inds[offset]);
-
-		double det = unsafeGet(offset, inds[offset])
-				* calcDeterminant(inds, offset + 1);
-		for (int i = 1; i < (rc - offset); i++) {
-			IntArrays.swap(inds, offset, offset + i);
-			det -= unsafeGet(offset, inds[offset])
-					* calcDeterminant(inds, offset + 1);
-			IntArrays.swap(inds, offset, offset + i);
-		}
-		return det;
-	}
 
 	/**
 	 * Creates a fully mutable deep copy of this matrix

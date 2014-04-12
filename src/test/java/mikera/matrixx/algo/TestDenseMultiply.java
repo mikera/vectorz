@@ -1,4 +1,4 @@
-package mikera.matrix.algo;
+package mikera.matrixx.algo;
 
 import static org.junit.Assert.*;
 import mikera.matrixx.Matrix;
