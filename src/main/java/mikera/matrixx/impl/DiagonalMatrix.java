@@ -55,6 +55,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	public static DiagonalMatrix create(AMatrix m) {
+		if (!m.isDiagonal()) throw new IllegalArgumentException("Source is not a diagonal matrix!");
 		return wrap(m.getLeadingDiagonal().toDoubleArray());
 	}
 	
