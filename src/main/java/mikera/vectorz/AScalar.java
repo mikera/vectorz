@@ -351,6 +351,19 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public INDArray broadcastLike(INDArray v) {
+		int dims=v.dimensionality();
+		if (dims==0) return this;
+		int lastShape=v.getShape(dims-1);
+		AVector rv=(lastShape==0)?Vector0.INSTANCE:RepeatedElementVector.create(lastShape,get());
+		return rv.broadcastLike(v);
+	}
+	
+	public AVector broadcastLike(AVector v) {
+		return RepeatedElementVector.create(v.length(), get());
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof AScalar) {
 			return equals((AScalar)o);
