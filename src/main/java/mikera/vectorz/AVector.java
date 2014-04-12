@@ -2044,6 +2044,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
 	public AMatrix broadcastLike(AMatrix target) {
 		if (length()==target.columnCount()) {
 			return BroadcastVectorMatrix.wrap(this, target.rowCount());
