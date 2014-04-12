@@ -21,6 +21,7 @@ package mikera.matrixx.algo.decompose.lu.impl;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.lu.ILUP;
+import mikera.matrixx.impl.PermutationMatrix;
 
 /**
  * <p>
@@ -262,7 +263,7 @@ public class AltLU implements ILUP {
   }
 
 @Override
-public AMatrix getP() {
+public PermutationMatrix getP() {
 	throw new UnsupportedOperationException("TODO: figure out right pivot matrix?");
 	// idea: return Matrixx.createSignedPivot(pivot,pivsign);
 }

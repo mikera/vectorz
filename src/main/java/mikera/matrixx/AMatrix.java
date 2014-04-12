@@ -15,6 +15,8 @@ import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Multiplications;
+import mikera.matrixx.algo.decompose.lu.ILUP;
+import mikera.matrixx.algo.decompose.lu.impl.SimpleLUP;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -651,10 +653,17 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			return new Matrix33(this).determinant();
 		}
 		
-		return naiveDeterminant();
+		return smartDeterminant();
 
 	}
+
+	private double smartDeterminant() {
+		ILUP lup=SimpleLUP.decompose(this);
+		double det=lup.getL().diagonalProduct()*lup.getU().diagonalProduct()*lup.getP().determinant();
+		return det;
+	}
 	
+	@SuppressWarnings("unused")
 	private double naiveDeterminant() {
 		int rc = rowCount();
 		int[] inds = new int[rc];

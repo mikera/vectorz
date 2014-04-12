@@ -35,7 +35,7 @@ public class SimpleLUP {
 	
 	public static LUPResult decompose(AMatrix matrix) {
 		AMatrix[] lup= decomposeLUPInternal(Matrix.create(matrix));
-		return new LUPResult(lup[0],lup[1],lup[2]);
+		return new LUPResult(lup[0],lup[1],(PermutationMatrix)lup[2]);
 	}
 
 	public static AMatrix[] decomposeLUP(Matrix matrix) {
