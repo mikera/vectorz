@@ -2028,13 +2028,23 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public INDArray broadcastLike(INDArray target) {
-		if (target instanceof AMatrix) {
+		if (target instanceof AVector) {
+			return broadcastLike((AVector)target);
+		} else if (target instanceof AMatrix) {
 			return broadcastLike((AMatrix)target);
 		}
 		return broadcast(target.getShape());
 	}
 	
-	public INDArray broadcastLike(AMatrix target) {
+	public AVector broadcastLike(AVector target) {
+		if (this.length()==target.length()) {
+			return this;
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
+		}
+	}
+	
+	public AMatrix broadcastLike(AMatrix target) {
 		if (length()==target.columnCount()) {
 			return BroadcastVectorMatrix.wrap(this, target.rowCount());
 		} else {
