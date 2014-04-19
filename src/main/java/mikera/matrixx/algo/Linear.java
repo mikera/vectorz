@@ -26,7 +26,9 @@ public class Linear {
 	
 	public static AVector solveSquare(AMatrix a, AVector b) {
 		if (!a.isSquare()) throw new IllegalArgumentException("matrix must be square");
-		throw new UnsupportedOperationException("Not yet implemented");
+		AMatrix m=a.inverse();
+		if (m==null) return null;
+		return m.transform(b);
 	}
 
 }
