@@ -6,9 +6,17 @@ import mikera.matrixx.algo.decompose.lu.ILUP;
 import mikera.matrixx.algo.decompose.lu.impl.SimpleLUP;
 import mikera.vectorz.util.IntArrays;
 
+/**
+ * Static function class for determinant calculation.
+ * 
+ * Use Determinant.calculate(m) to compute the determinant of a matrix.
+ * 
+ * @author Mike
+ *
+ */
 public class Determinant {
 
-	public static double calc(AMatrix m) {
+	public static double calculate(AMatrix m) {
 		int rc = m.rowCount();
 		int cc = m.columnCount();
 		if (rc!=cc)
