@@ -19,12 +19,12 @@ public class Linear {
 	 * @param b
 	 * @return
 	 */
-	public AVector solve(AMatrix a, AVector b) {
+	public static AVector solve(AMatrix a, AVector b) {
 		if (a.isSquare()) return solveSquare(a,b);
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 	
-	public AVector solveSquare(AMatrix a, AVector b) {
+	public static AVector solveSquare(AMatrix a, AVector b) {
 		if (!a.isSquare()) throw new IllegalArgumentException("matrix must be square");
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
