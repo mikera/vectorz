@@ -1,12 +1,16 @@
 ![Vectorz Logo](https://raw.github.com/wiki/mikera/vectorz/images/vectorz.png)
 
-Fast double-precision vector and matrix maths library for Java, supporting arbitrary `n-dimensional` numerical arrays.
+Fast double-precision vector and matrix maths library for Java
 
 This library is designed for use in games, simulations, raytracers, machine learning etc. 
 where fast vector maths is important. 
 
-Vectorz can do over *1 billion* 3D vector operations per second on a single thread.
-
+Some highlights:
+ 
+ - Vectorz can do over *1 billion* 3D vector operations per second on a single thread.
+ - Specialised matrix types for efficient optimised operations (identity, diagonal, sparse etc.).
+ - Support for arbitrary `n-dimensional` numerical arrays.
+ 
 ### Status
 
 Vectorz is reasonably mature, battle tested and being used in production applications. The API is still evolving however as new features get added so you can expect a few minor changes, at least until version 1.0.0
