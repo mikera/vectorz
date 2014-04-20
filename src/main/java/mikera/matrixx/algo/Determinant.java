@@ -54,12 +54,16 @@ public class Determinant {
 		if (offset == (rc - 1))
 			return m.unsafeGet(offset, inds[offset]);
 
-		double det = m.unsafeGet(offset, inds[offset])
-				* calcDeterminant(m,inds, offset + 1);
+		// multiple of first submatrix
+		double v0=m.unsafeGet(offset, inds[offset]);
+		double det = (v0==0)? 0: v0* calcDeterminant(m,inds, offset + 1);
+		
 		for (int i = 1; i < (rc - offset); i++) {
 			IntArrays.swap(inds, offset, offset + i);
-			det -= m.unsafeGet(offset, inds[offset])
-					* calcDeterminant(m,inds, offset + 1);
+			double v=m.unsafeGet(offset, inds[offset]);
+			if (v!=0) {
+				det -= v * calcDeterminant(m,inds, offset + 1);
+			}
 			IntArrays.swap(inds, offset, offset + i);
 		}
 		return det;
