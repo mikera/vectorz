@@ -30,6 +30,10 @@ public final class UpperTriangularMatrix extends AArrayMatrix implements IFastCo
 		this (new double[(cols*(cols+1))>>1],rows,cols);
 	}
 	
+	static UpperTriangularMatrix wrap(double[] data, int rows, int cols) {
+		return new UpperTriangularMatrix(data,rows,cols);
+	}
+	
 	public static UpperTriangularMatrix createFrom(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();

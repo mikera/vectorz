@@ -30,6 +30,10 @@ public final class LowerTriangularMatrix extends AArrayMatrix implements IFastRo
 		this (new double[(rows*(rows+1))>>1],rows,cols);
 	}
 	
+	static LowerTriangularMatrix wrap(double[] data, int rows, int cols) {
+		return new LowerTriangularMatrix(data,rows,cols);
+	}
+	
 	public static LowerTriangularMatrix createFrom(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();
