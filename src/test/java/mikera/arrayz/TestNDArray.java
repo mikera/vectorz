@@ -62,7 +62,7 @@ public class TestNDArray {
 		a=a.slice(0); 
 		assertTrue(a.isView()); // should be a view
 		
-		a=a.ensureMutable();
+		a=a.mutable();
 		assertFalse(a.isView()); // should be fully packed again
 	}
 	

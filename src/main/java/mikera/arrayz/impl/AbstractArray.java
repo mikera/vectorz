@@ -1120,7 +1120,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray mutable() {
-		if (isFullyMutable()) return this;
+		if (isFullyMutable()&&(!isView())) return this;
 		return clone();
 	}
 	

@@ -337,7 +337,7 @@ public class TestArrays {
 			assertFalse(a.isFullyMutable());
 		}
 		
-		INDArray b=a.ensureMutable();
+		INDArray b=a.mutable();
 		assertTrue(mikera.vectorz.util.Testing.validateFullyMutable(b));
 		
 		if ((!a.isMutable())&&(a.elementCount()>0)) {
