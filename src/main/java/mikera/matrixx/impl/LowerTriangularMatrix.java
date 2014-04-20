@@ -14,8 +14,6 @@ import mikera.vectorz.util.ErrorMessages;
  * Mostly useful for space efficiency when storing triangular matrices, but is also optimised
  * for certain common operations on triangular matrices.
  * 
- * May not be square, but must have columnCount() >= rowCount()
- * 
  * @author Mike
  *
  */
