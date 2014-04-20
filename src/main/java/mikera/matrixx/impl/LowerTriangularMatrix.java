@@ -52,6 +52,16 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	}
 	
 	@Override
+	public int upperBandwidthLimit() {
+		return 0;
+	}
+	
+	@Override
+	public int upperBandwidth() {
+		return 0;
+	}
+	
+	@Override
 	protected int index(int i, int j) {
 		if (i<=j) return internalIndex(i,j);
 		throw new IndexOutOfBoundsException("Can't compute array index for sparse entry!");

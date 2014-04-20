@@ -48,6 +48,16 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	public boolean isUpperTriangular() {
 		return true;
 	}
+	
+	@Override
+	public int lowerBandwidthLimit() {
+		return 0;
+	}
+	
+	@Override
+	public int lowerBandwidth() {
+		return 0;
+	}
 
 	@Override
 	protected int index(int i, int j) {
