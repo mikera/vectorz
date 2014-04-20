@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.algo.decompose.lu.ILUP;
 import mikera.matrixx.algo.decompose.lu.impl.SimpleLUP;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
 /**
@@ -19,9 +20,9 @@ public class Determinant {
 	public static double calculate(AMatrix m) {
 		int rc = m.rowCount();
 		int cc = m.columnCount();
-		if (rc!=cc)
-			throw new UnsupportedOperationException(
-					"Cannot take determinant of non-square matrix!");
+		if (rc!=cc) {
+			throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(m));
+		}
 
 		if (rc==1) return m.unsafeGet(0,0);
 		if (rc==2) return m.unsafeGet(0,0)*m.unsafeGet(1,1)-m.unsafeGet(1,0)*m.unsafeGet(0,1);

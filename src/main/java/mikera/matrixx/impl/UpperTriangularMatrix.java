@@ -92,6 +92,13 @@ public final class UpperTriangularMatrix extends AArrayMatrix implements IFastCo
 	}
 	
 	@Override
+	public double determinant() {
+		if (rows!=cols) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
+		return this.diagonalProduct();
+		
+	}
+	
+	@Override
 	public boolean equals(AMatrix a) {
 		if (a==this) return true;	
 		if (a instanceof ADenseArrayMatrix) {

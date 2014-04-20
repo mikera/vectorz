@@ -149,6 +149,10 @@ public class ErrorMessages {
 		return "Illegal band "+band+ " on matrix with shape: "+shape(source);
 	}
 
+	public static String nonSquareMatrix(AMatrix a) {
+		return "Matrix should be square but has shape: "+shape(a);
+	}
+
 
 
 
