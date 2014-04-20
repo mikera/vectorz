@@ -37,10 +37,9 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	public static UpperTriangularMatrix createFrom(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();
-		if (rc<cc) throw new IllegalArgumentException("Insufficient rows in source matrix");
 		UpperTriangularMatrix r = new UpperTriangularMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
-			for (int j=i; j<rc; j++) {
+			for (int j=i; j<cc; j++) {
 				r.unsafeSet(i, j, m.unsafeGet(i, j));
 			}
 		}
@@ -77,7 +76,8 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	
 	@Override
 	public AVector getColumn(int j) {
-		return ArraySubVector.wrap(data, (j*(j+1))>>1, j+1).join(Vectorz.createZeroVector(cols-j-1));
+		int end=Math.min(j+1, rows);
+		return ArraySubVector.wrap(data, (j*(j+1))>>1, end).join(Vectorz.createZeroVector(rows-end));
 	}
 	
 	@Override
@@ -94,13 +94,14 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 
 		if (!isSameShape(a)) return false;
 		
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < i; j++) {
-				if (a.unsafeGet(i, j)!=0.0) return false;
+		for (int j = 0; j < cols; j++) {
+			int end=Math.min(j,rows-1);
+			for (int i = 0; i <= end; i++) {
+				if (data[internalIndex(i, j)] != a.unsafeGet(i, j)) return false;
 			}
 			
-			for (int j = i; j < cols; j++) {
-				if (data[internalIndex(i, j)] != a.unsafeGet(i, j)) return false;
+			for (int i = j+1; i < rows; i++) {
+				if (a.unsafeGet(i, j)!=0.0) return false;
 			}
 		}
 		return true;

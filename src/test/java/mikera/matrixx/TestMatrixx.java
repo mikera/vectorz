@@ -784,7 +784,11 @@ public class TestMatrixx {
 		// triangular matrices
 		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(1)));
 		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(4)));
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomMatrix(4,3)));
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomMatrix(2,3)));
 		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(1)));
 		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(4)));
+		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomMatrix(4,3)));
+		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomMatrix(2,3)));
 	}
 }

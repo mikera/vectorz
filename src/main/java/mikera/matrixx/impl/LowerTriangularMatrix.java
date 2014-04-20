@@ -37,10 +37,9 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	public static LowerTriangularMatrix createFrom(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();
-		if (cc<rc) throw new IllegalArgumentException("Insufficient columns in source matrix");
 		LowerTriangularMatrix r = new LowerTriangularMatrix(rc,cc);
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<=i; j++) {
+		for (int j=0; j<cc; j++) {
+			for (int i=j; i<rc; i++) {
 				r.unsafeSet(i, j, m.unsafeGet(i, j));
 			}
 		}
@@ -77,7 +76,8 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	
 	@Override
 	public AVector getRow(int i) {
-		return ArraySubVector.wrap(data, (i*(i+1))>>1, i+1).join(Vectorz.createZeroVector(rows-i-1));
+		int end=Math.min(i+1, cols);
+		return ArraySubVector.wrap(data, (i*(i+1))>>1, end).join(Vectorz.createZeroVector(cols-end));
 	}
 	
 	@Override
@@ -95,7 +95,8 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 		if (!isSameShape(a)) return false;
 		
 		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j <= i; j++) {
+			int end=Math.min(i,cols-1);
+			for (int j = 0; j <= end; j++) {
 				if (data[internalIndex(i, j)] != a.unsafeGet(i, j)) return false;
 			}
 			
