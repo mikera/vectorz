@@ -155,6 +155,26 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 	
 	@Override
+	public int lowerBandwidthLimit() {
+		return source.upperBandwidthLimit();
+	}
+	
+	@Override
+	public int lowerBandwidth() {
+		return source.upperBandwidth();
+	}
+	
+	@Override
+	public int upperBandwidthLimit() {
+		return source.lowerBandwidthLimit();
+	}
+	
+	@Override
+	public int upperBandwidth() {
+		return source.lowerBandwidth();
+	}
+	
+	@Override
 	public AVector getBand(int i) {
 		return source.getBand(-i);
 	}
