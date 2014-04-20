@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
@@ -53,7 +55,7 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	private int internalIndex(int i, int j) {
 		return j + ((i*(i+1))>>1);
 	}
-	
+
 	@Override
 	public double get(int i, int j) {
 		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
@@ -76,6 +78,13 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	public AVector getRow(int i) {
 		int end=Math.min(i+1, cols);
 		return ArraySubVector.wrap(data, (i*(i+1))>>1, end).join(Vectorz.createZeroVector(cols-end));
+	}
+	
+	@Override
+	public void copyRowTo(int i, double[] dest, int offset) {
+		int nn=Math.min(i+1,cols);
+		System.arraycopy(data, internalIndex(i,0), dest, offset, nn);
+		if (nn<cols) Arrays.fill(dest, offset+nn, offset+cols, 0.0);
 	}
 	
 	@Override
