@@ -215,6 +215,10 @@ public class TestArrays {
 		INDArray densa=a.dense();
 		assertTrue(densa instanceof IDense);
 		assertEquals(a,densa);
+		
+		INDArray densc=a.denseClone();
+		assertTrue(densc.isDense());
+		assertEquals(a,densc);
 	}
 
 	private void testSetElements(INDArray a) {
