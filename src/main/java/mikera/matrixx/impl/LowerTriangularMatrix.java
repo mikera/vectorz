@@ -47,6 +47,11 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	}
 	
 	@Override
+	public boolean isLowerTriangular() {
+		return true;
+	}
+	
+	@Override
 	protected int index(int i, int j) {
 		if (i<=j) return internalIndex(i,j);
 		throw new IndexOutOfBoundsException("Can't compute array index for sparse entry!");
@@ -77,7 +82,7 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	@Override
 	public AVector getRow(int i) {
 		int end=Math.min(i+1, cols);
-		return ArraySubVector.wrap(data, (i*(i+1))>>1, end).join(Vectorz.createZeroVector(cols-end));
+		return ArraySubVector.wrap(data, internalIndex(i,0), end).join(Vectorz.createZeroVector(cols-end));
 	}
 	
 	@Override

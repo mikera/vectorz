@@ -43,6 +43,11 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 		}
 		return r;
 	}
+	
+	@Override
+	public boolean isUpperTriangular() {
+		return true;
+	}
 
 	@Override
 	protected int index(int i, int j) {
@@ -75,7 +80,7 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	@Override
 	public AVector getColumn(int j) {
 		int end=Math.min(j+1, rows);
-		return ArraySubVector.wrap(data, (j*(j+1))>>1, end).join(Vectorz.createZeroVector(rows-end));
+		return ArraySubVector.wrap(data, internalIndex(0,j), end).join(Vectorz.createZeroVector(rows-end));
 	}
 	
 	@Override
