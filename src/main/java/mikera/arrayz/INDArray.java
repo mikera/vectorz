@@ -391,7 +391,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Returns true if the array is in a dense format. 
 	 * 
-	 * A dense format uses storage proportional to the number of elements
+	 * A dense format uses efficient storage proportional to the number of elements
 	 */
 	public boolean isDense();
 	
@@ -674,7 +674,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Creates a fully mutable clone of this array. 
 	 * 
-	 * Will use a dense format.
+	 * Will always use a dense format.
 	 */
 	public INDArray denseClone();
 
