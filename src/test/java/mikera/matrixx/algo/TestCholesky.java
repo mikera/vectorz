@@ -13,9 +13,9 @@ public class TestCholesky {
 		AMatrix z = Matrixx.createRandomMatrix(3, 2);
 		AMatrix a = z.innerProduct(z.getTranspose()); // should get a symmetric positive definite matrix!
 		
-		System.out.println(a.toString());
+		//System.out.println(a.toString());
 		AMatrix l=Matrixx.extractLowerTriangular(Cholesky.decompose(a));
-		System.out.println(l.toString());
+		//System.out.println(l.toString());
 		assertTrue(l.isLowerTriangular());
 		
 		AMatrix a2=l.innerProduct(l.getTranspose());
