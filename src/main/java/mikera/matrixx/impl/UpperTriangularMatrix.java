@@ -19,7 +19,7 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class UpperTriangularMatrix extends AArrayMatrix implements IFastColumns {
+public final class UpperTriangularMatrix extends ATriangularMatrix implements IFastColumns {
 	private static final long serialVersionUID = 4438118586237354484L;
 
 	private UpperTriangularMatrix(double[] data, int rows, int cols) {
