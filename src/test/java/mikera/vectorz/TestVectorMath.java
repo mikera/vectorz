@@ -7,6 +7,10 @@ import mikera.indexz.Index;
 import org.junit.Test;
 
 public class TestVectorMath {
+	
+	@Test public void testBasicAddCopy() {
+		assertEquals(Vector.of(3.0),Vector1.of(1.0).addCopy(Vector1.of(2.0)));
+	}
 
 	@Test public void testIndexedDotProduct() {
 		Vector v1=Vector.of(0,1,2,3,4,5,6,7,8,9);

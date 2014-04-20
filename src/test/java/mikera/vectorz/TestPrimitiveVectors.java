@@ -1,13 +1,14 @@
 package mikera.vectorz;
 
 import static org.junit.Assert.*;
-
+import mikera.arrayz.TestArrays;
 import mikera.vectorz.impl.APrimitiveVector;
 
 import org.junit.Test;
 
 public class TestPrimitiveVectors {
-	@Test public void testSmallEquals() {
+	@Test 
+	public void testSmallEquals() {
 		assertEquals(Vectorz.create(0.0),Vector.of(0.0));
 		
 		assertEquals(Vector.of(1.0),Vector1.of(1.0));
@@ -15,7 +16,14 @@ public class TestPrimitiveVectors {
 		assertEquals(BitVector.of(2.0),Vector1.of(1.0));
 	}
 	
-	@Test public void testCompoenetGetters() {
+	@Test 
+	public void testEpsilonEquals() {
+		assertTrue(Vector1.of(1.0).epsilonEquals(Vector1.of(0.0),1.1));
+		new TestArrays().testAdd(Vector1.of(1.0));
+	}
+	
+	@Test 
+	public void testCompoenetGetters() {
 		APrimitiveVector v1=Vector1.of(1);
 		APrimitiveVector v2=Vector2.of(2,3);
 		APrimitiveVector v3=Vector3.of(4,5,6);

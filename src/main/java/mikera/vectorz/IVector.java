@@ -50,4 +50,6 @@ public interface IVector extends INDArray {
 	AVector divideCopy(AVector a);
 
 	AVector sqrtCopy();
+
+	boolean epsilonEquals(AVector v, double tolerance);
 }

@@ -535,10 +535,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void add(INDArray a) {
+		int dims=dimensionality();
+		if (dims==0) {
+			add(a.get());
+			return;
+		}
+		
+		int adims=a.dimensionality();
 		int n=sliceCount();
 		int na=a.sliceCount();
-		int dims=dimensionality();
-		int adims=a.dimensionality();
 		if (dims==adims) {
 			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			for (int i=0; i<n; i++) {

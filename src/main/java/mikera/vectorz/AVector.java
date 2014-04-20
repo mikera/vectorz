@@ -350,7 +350,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public boolean epsilonEquals(INDArray a, double tolerance) {
-		if (a instanceof AVector) return epsilonEquals((AVector)a);
+		if (a instanceof AVector) return epsilonEquals((AVector)a,tolerance);
 		if (a.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		int len=length();
 		if (len!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
@@ -369,6 +369,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return epsilonEquals(v,Vectorz.TEST_EPSILON);
 	}
 	
+	@Override
 	public boolean epsilonEquals(AVector v,double tolerance) {
 		if (this == v) return true;
 		int len=length();
