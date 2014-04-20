@@ -1937,8 +1937,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public INDArray dense() {
+	public AMatrix dense() {
 		if (this instanceof IDense) return this;
+		return Matrix.create(this);
+	}
+	
+	@Override
+	public final Matrix denseClone() {
 		return Matrix.create(this);
 	}
 	

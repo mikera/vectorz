@@ -85,6 +85,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public void getElements(double[] data, int offset) {
 		System.arraycopy(getArray(), getArrayOffset(), data, offset, length());
 	}
+	
+	@Override
+	public ADenseArrayVector dense() {
+		// we are already dense!
+		return this;
+	}
 
 	@Override
 	public void fillRange(int offset, int length, double value) {

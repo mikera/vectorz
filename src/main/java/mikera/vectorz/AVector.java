@@ -1706,10 +1706,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public Vector dense() {
+	public AVector dense() {
 		return denseClone();
 	}
 	
+	@Override
 	public final Vector denseClone() {
 		return Vector.wrap(this.toDoubleArray());
 	}

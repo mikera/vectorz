@@ -670,6 +670,13 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Will use a sparse format if possible.
 	 */
 	public INDArray sparseClone();
+	
+	/**
+	 * Creates a fully mutable clone of this array. 
+	 * 
+	 * Will use a dense format.
+	 */
+	public INDArray denseClone();
 
 	/**
 	 * Returns true if the elements in this array exactly match the given array

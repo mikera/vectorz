@@ -474,6 +474,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public final Scalar denseClone() {
+		return Scalar.create(get());
+	}
+	
+	@Override
 	public AScalar sparseClone() {
 		return Scalar.create(get());
 	}
