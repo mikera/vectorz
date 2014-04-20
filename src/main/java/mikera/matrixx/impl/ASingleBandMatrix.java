@@ -22,7 +22,7 @@ public abstract class ASingleBandMatrix extends ABandedMatrix {
 	public abstract int nonZeroBand();
 	
 	/**
-	 * Override to specify which band of the matrix is nonzero
+	 * Gets the non-zero band from the matrix
 	 * @return
 	 */
 	public abstract AVector getNonZeroBand();
