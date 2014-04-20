@@ -200,6 +200,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public AMatrix innerProduct(Matrix s) {
 		return source.transposeInnerProduct(s);
 	}
+	
+	@Override
+	public AMatrix sparseClone() {
+		if (source instanceof IFastColumns) {
+			return SparseRowMatrix.create(source.getColumns());
+		} else if (source instanceof IFastRows) {
+			return SparseColumnMatrix.create(source.getRows());
+		}
+		return SparseRowMatrix.create(source.getColumns());
+	}
 
 	@Override
 	public TransposedMatrix exactClone() {

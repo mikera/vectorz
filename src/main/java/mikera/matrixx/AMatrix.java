@@ -221,6 +221,21 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
+	public final List<AVector> getRows() {
+		return getSlices();
+	}
+	
+	@Override
+	public List<AVector> getColumns() {
+		ArrayList<AVector> al=new ArrayList<AVector>();
+		int cc=columnCount();
+		for (int i=0; i<cc; i++) {
+			al.add(getColumn(i));
+		}
+		return al;
+	}
+	
+	@Override
 	public List<INDArray> getSlices(int dimension) {
 		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		int l=getShape(dimension);
