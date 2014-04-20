@@ -310,8 +310,8 @@ public final class AxisVector extends ASparseVector {
 	@Override
 	public AVector subCopy(AVector v) {
 		if (!isSameShape(v)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		AVector r=v.clone();
-		r.addAt(axis, -1.0);
+		AVector r=v.negateCopy().mutable();
+		r.addAt(axis, 1.0);
 		return r;
 	}
 

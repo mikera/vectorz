@@ -792,9 +792,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 	@Override
 	public void sub(INDArray a) {
+		int dims=dimensionality();
+		if (dims==0) {
+			sub(a.get());
+			return;
+		}
+		
 		int n=sliceCount();
 		int na=a.sliceCount();
-		int dims=dimensionality();
 		int adims=a.dimensionality();
 		if (dims==adims) {
 			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));

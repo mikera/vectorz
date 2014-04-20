@@ -111,7 +111,7 @@ public class TestArrays {
 		INDArray v2=a.addCopy(Scalar.create(-1.0));
 		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
 		if (!v2.epsilonEquals(a,1.1)) {
-			System.out.println(a.getClass());
+			// System.out.println(a.getClass());
 			fail(v2 + " not equal to original " + a);
 		}
 		
@@ -121,11 +121,17 @@ public class TestArrays {
 	}
 	
 	private void testSub(INDArray a) {
-		INDArray v = a.clone();
-		v.sub(1.0);
-		INDArray v2=v.subCopy(Scalar.create(-1.0));
+		INDArray v2=a.subCopy(Scalar.create(-1.0));
 		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
-		assertTrue(v2.epsilonEquals(a,1.0));
+		assertTrue(v2.epsilonEquals(a,1.1));
+		
+		if (!a.isFullyMutable()) return;
+		INDArray v = a.exactClone();
+		v.sub(1.0);
+		if (!v.epsilonEquals(a,1.1)) {
+			// System.out.println(a.getClass());
+			fail(v + " not equal to original " + a);
+		}	
 	}
 
 
