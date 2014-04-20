@@ -48,11 +48,6 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	}
 	
 	@Override
-	public boolean isPackedArray() {
-		return false;
-	}
-
-	@Override
 	protected int index(int i, int j) {
 		if (i<=j) return internalIndex(i,j);
 		throw new IndexOutOfBoundsException("Can't compute array index for sparse entry!");
@@ -88,23 +83,6 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	@Override
 	public UpperTriangularMatrix getTranspose() {
 		return UpperTriangularMatrix.wrap(data, cols, rows);
-	}
-
-	@Override
-	public boolean isFullyMutable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isMutable() {
-		return true;
-	}
-	
-	@Override
-	public double determinant() {
-		if (rows!=cols) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
-		return this.diagonalProduct();
-		
 	}
 	
 	@Override

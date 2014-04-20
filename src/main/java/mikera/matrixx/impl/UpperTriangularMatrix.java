@@ -46,11 +46,6 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 		}
 		return r;
 	}
-	
-	@Override
-	public boolean isPackedArray() {
-		return false;
-	}
 
 	@Override
 	protected int index(int i, int j) {
@@ -88,23 +83,6 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	@Override
 	public LowerTriangularMatrix getTranspose() {
 		return LowerTriangularMatrix.wrap(data, cols, rows);
-	}
-
-	@Override
-	public boolean isFullyMutable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isMutable() {
-		return true;
-	}
-	
-	@Override
-	public double determinant() { 
-		if (rows!=cols) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
-		return this.diagonalProduct();
-		
 	}
 	
 	@Override
