@@ -169,14 +169,6 @@ public final class BitVector extends ABitVector {
 		data[p]=(data[p]&(~mask))|(value>BIT_THRESHOLD?mask:0L);
 	}
 
-	
-	@Override
-	public AVector clone() {
-		AVector v=Vectorz.newVector(length);
-		v.set(this);
-		return v;
-	}
-
 	public static BitVector of(double... values) {
 		int len=values.length;
 		BitVector b=new BitVector(len);
