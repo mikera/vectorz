@@ -7,9 +7,9 @@ import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Class for an upper triangular matrix packed densely by columns.
+ * Class for an lower triangular matrix packed densely by columns.
  * 
- * Mutable only in the upper triangular elements
+ * Mutable only in the lower triangular elements
  * 
  * Mostly useful for space efficiency when storing triangular matrices, but is also optimised
  * for certain common operations on triangular matrices.
@@ -19,24 +19,24 @@ import mikera.vectorz.util.ErrorMessages;
  * @author Mike
  *
  */
-public final class UpperTriangularMatrix extends AArrayMatrix implements IFastColumns {
-	private static final long serialVersionUID = 4438118586237354484L;
+public final class LowerTriangularMatrix extends AArrayMatrix implements IFastRows {
+	private static final long serialVersionUID = 8413148328738646551L;
 
-	private UpperTriangularMatrix(double[] data, int rows, int cols) {
+	private LowerTriangularMatrix(double[] data, int rows, int cols) {
 		super(data, rows, cols);
 	}
 	
-	private UpperTriangularMatrix(int rows, int cols) {
-		this (new double[(cols*(cols+1))>>1],rows,cols);
+	private LowerTriangularMatrix(int rows, int cols) {
+		this (new double[(rows*(rows+1))>>1],rows,cols);
 	}
 	
-	public static UpperTriangularMatrix createFrom(AMatrix m) {
+	public static LowerTriangularMatrix createFrom(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();
-		if (rc<cc) throw new IllegalArgumentException("Insufficient rows in source matrix");
-		UpperTriangularMatrix r = new UpperTriangularMatrix(rc,cc);
+		if (cc<rc) throw new IllegalArgumentException("Insufficient columns in source matrix");
+		LowerTriangularMatrix r = new LowerTriangularMatrix(rc,cc);
 		for (int i=0; i<rc; i++) {
-			for (int j=i; j<rc; j++) {
+			for (int j=0; j<=i; j++) {
 				r.unsafeSet(i, j, m.unsafeGet(i, j));
 			}
 		}
@@ -55,19 +55,19 @@ public final class UpperTriangularMatrix extends AArrayMatrix implements IFastCo
 	}
 	
 	private int internalIndex(int i, int j) {
-		return i + ((j*(j+1))>>1);
+		return j + ((i*(i+1))>>1);
 	}
 	
 	@Override
 	public double get(int i, int j) {
 		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
-		if (i>j) return 0.0;
+		if (j>i) return 0.0;
 		return data[internalIndex(i,j)];
 	}
 	
 	@Override
 	public double unsafeGet(int i, int j) {
-		if (i>j) return 0.0;
+		if (j>i) return 0.0;
 		return data[internalIndex(i,j)];
 	}
 	
@@ -77,8 +77,8 @@ public final class UpperTriangularMatrix extends AArrayMatrix implements IFastCo
 	}
 	
 	@Override
-	public AVector getColumn(int j) {
-		return ArraySubVector.wrap(data, (j*(j+1))>>1, j+1).join(Vectorz.createZeroVector(cols-j-1));
+	public AVector getRow(int i) {
+		return ArraySubVector.wrap(data, (i*(i+1))>>1, i+1).join(Vectorz.createZeroVector(rows-i-1));
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public final class UpperTriangularMatrix extends AArrayMatrix implements IFastCo
 	}
 	
 	@Override
-	public double determinant() { 
+	public double determinant() {
 		if (rows!=cols) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
 		return this.diagonalProduct();
 		
@@ -108,12 +108,12 @@ public final class UpperTriangularMatrix extends AArrayMatrix implements IFastCo
 		if (!isSameShape(a)) return false;
 		
 		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < i; j++) {
-				if (a.unsafeGet(i, j)!=0.0) return false;
+			for (int j = 0; j <= i; j++) {
+				if (data[internalIndex(i, j)] != a.unsafeGet(i, j)) return false;
 			}
 			
-			for (int j = i; j < cols; j++) {
-				if (data[internalIndex(i, j)] != a.unsafeGet(i, j)) return false;
+			for (int j = i+1; j < cols; j++) {
+				if (a.unsafeGet(i, j)!=0.0) return false;
 			}
 		}
 		return true;
@@ -121,7 +121,7 @@ public final class UpperTriangularMatrix extends AArrayMatrix implements IFastCo
 
 	@Override
 	public AMatrix exactClone() {
-		return new UpperTriangularMatrix(data.clone(),rows,cols);
+		return new LowerTriangularMatrix(data.clone(),rows,cols);
 	}
 
 }
