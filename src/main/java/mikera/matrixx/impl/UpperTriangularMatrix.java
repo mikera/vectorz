@@ -84,6 +84,11 @@ public final class UpperTriangularMatrix extends AArrayMatrix implements IFastCo
 	public AVector getColumn(int j) {
 		return ArraySubVector.wrap(data, (j*(j+1))>>1, j+1).join(Vectorz.createZeroVector(cols-j-1));
 	}
+	
+	@Override
+	public LowerTriangularMatrix getTranspose() {
+		return LowerTriangularMatrix.wrap(data, cols, rows);
+	}
 
 	@Override
 	public boolean isFullyMutable() {

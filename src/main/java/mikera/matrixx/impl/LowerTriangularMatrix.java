@@ -84,6 +84,11 @@ public final class LowerTriangularMatrix extends AArrayMatrix implements IFastRo
 	public AVector getRow(int i) {
 		return ArraySubVector.wrap(data, (i*(i+1))>>1, i+1).join(Vectorz.createZeroVector(rows-i-1));
 	}
+	
+	@Override
+	public UpperTriangularMatrix getTranspose() {
+		return UpperTriangularMatrix.wrap(data, cols, rows);
+	}
 
 	@Override
 	public boolean isFullyMutable() {
