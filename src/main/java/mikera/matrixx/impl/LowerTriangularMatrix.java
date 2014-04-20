@@ -7,7 +7,7 @@ import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Class for an lower triangular matrix packed densely by columns.
+ * Class for a lower triangular matrix packed densely by columns.
  * 
  * Mutable only in the lower triangular elements
  * 
