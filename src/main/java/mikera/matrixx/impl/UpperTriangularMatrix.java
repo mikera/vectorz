@@ -2,11 +2,14 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Class for an upper triangular matrix packed densely by columns.
+ * 
+ * Mutable only in the upper triangular elements
  * 
  * Mostly useful for space efficiency when storing triangular matrices, but is also optimised
  * for certain common operations on triangular matrices.
@@ -16,7 +19,7 @@ import mikera.vectorz.impl.ZeroVector;
  * @author Mike
  *
  */
-public class UpperTriangularMatrix extends AArrayMatrix implements IFastColumns {
+public final class UpperTriangularMatrix extends AArrayMatrix implements IFastColumns {
 	private static final long serialVersionUID = 4438118586237354484L;
 
 	private UpperTriangularMatrix(double[] data, int rows, int cols) {
@@ -24,7 +27,7 @@ public class UpperTriangularMatrix extends AArrayMatrix implements IFastColumns 
 	}
 	
 	private UpperTriangularMatrix(int rows, int cols) {
-		this (new double[(rows*(rows+1))>>1],rows,cols);
+		this (new double[(cols*(cols+1))>>1],rows,cols);
 	}
 	
 	public static UpperTriangularMatrix createFrom(AMatrix m) {
@@ -56,7 +59,15 @@ public class UpperTriangularMatrix extends AArrayMatrix implements IFastColumns 
 	}
 	
 	@Override
+	public double get(int i, int j) {
+		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		if (i>j) return 0.0;
+		return data[internalIndex(i,j)];
+	}
+	
+	@Override
 	public double unsafeGet(int i, int j) {
+		if (i>j) return 0.0;
 		return data[internalIndex(i,j)];
 	}
 	
@@ -67,12 +78,38 @@ public class UpperTriangularMatrix extends AArrayMatrix implements IFastColumns 
 	
 	@Override
 	public AVector getColumn(int j) {
-		return ArraySubVector.wrap(data, (j*(j+1))>>1, j+1).join(ZeroVector.create(cols-j-1));
+		return ArraySubVector.wrap(data, (j*(j+1))>>1, j+1).join(Vectorz.createZeroVector(cols-j-1));
 	}
 
 	@Override
 	public boolean isFullyMutable() {
 		return false;
+	}
+	
+	@Override
+	public boolean isMutable() {
+		return true;
+	}
+	
+	@Override
+	public boolean equals(AMatrix a) {
+		if (a==this) return true;	
+		if (a instanceof ADenseArrayMatrix) {
+			return equals((ADenseArrayMatrix)a);
+		}
+
+		if (!isSameShape(a)) return false;
+		
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < i; j++) {
+				if (a.unsafeGet(i, j)!=0.0) return false;
+			}
+			
+			for (int j = i; j < cols; j++) {
+				if (data[internalIndex(i, j)] != a.unsafeGet(i, j)) return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
