@@ -1696,6 +1696,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * Returns true if a matrix is upper triangular
+	 * 
+	 * An upper triangular matrix is defined as having all elements equal to 0.0 where i > j
 	 */
 	public boolean isUpperTriangular() {
 		int rc=rowCount();
@@ -1709,7 +1711,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Returns true if a matrix is lower triangular
+	 * Returns true if a matrix is lower triangular.
+	 * 
+	 * A lower triangular matrix is defined as having all elements equal to 0.0 where i < j
 	 */
 	public boolean isLowerTriangular() {
 		int rc=rowCount();
