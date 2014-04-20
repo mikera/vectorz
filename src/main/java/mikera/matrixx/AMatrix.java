@@ -1288,12 +1288,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AMatrix transposeInnerProduct(AMatrix s) {
 		if (s instanceof Matrix) return transposeInnerProduct((Matrix)s);
 		if (isSparse()) {
-			// TODO: any better approach?
-			Matrix r= toMatrixTranspose();
-			return Multiplications.multiply(r, s);
+			// TODO: should revisit: is there a better way?
+			AMatrix t= getTranspose();
+			if (t instanceof TransposedMatrix) t=t.sparseClone();
+			return t.innerProduct(s);
 		} else {
-			Matrix r= toMatrixTranspose();
-			return Multiplications.multiply(r, s);			
+			Matrix t= toMatrixTranspose();
+			return t.innerProduct(s);			
 		}
 	}
 	
