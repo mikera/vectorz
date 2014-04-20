@@ -483,6 +483,36 @@ public class Matrixx {
 	private static Matrix createSquareMatrix(int dimensions) {
 		return Matrix.create(dimensions, dimensions);
 	}
+	
+	/**
+	 * Extracts a lower triangular matrix from a matrix 
+	 */
+	public static AMatrix extractLowerTriangular(AMatrix a) {
+		int rc=a.rowCount();
+		if (rc>a.columnCount()) throw new IllegalArgumentException("Too few columns in matrix");
+		AMatrix r=Matrixx.newMatrix(rc,rc);
+		for (int i=0; i<rc; i++) {
+			for (int j=0; j<=i; j++) {
+				r.unsafeSet(i, j, a.unsafeGet(i, j));
+			}
+		}
+		return r;
+	}
+	
+	/**
+	 * Extracts an upper triangular matrix from a matrix 
+	 */
+	public static AMatrix extractUpperTriangular(AMatrix a) {
+		int cc=a.rowCount();
+		if (cc>a.rowCount()) throw new IllegalArgumentException("Too few rows in matrix");
+		AMatrix r=Matrixx.newMatrix(cc,cc);
+		for (int i=0; i<cc; i++) {
+			for (int j=i; j<cc; j++) {
+				r.unsafeSet(i, j, a.unsafeGet(i, j));
+			}
+		}
+		return r;
+	}
 
 	/**
 	 * Creates a mutable deep copy of a matrix

@@ -24,7 +24,7 @@ public class Cholesky {
 	 * Decompose a matrix according the the Cholesky decomposition A = L.L*
 	 * 
 	 * @param a Any symmetric, positive definite matrix
-	 * @return The lower triangular decomposition result L
+	 * @return The decomposition result
 	 */
 	public static final Matrix decompose(AMatrix a) {
 		return decompose(Matrix.create(a));
