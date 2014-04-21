@@ -459,12 +459,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public void multiply(double[] data, int offset) {
+	public void multiply(double[] src, int srcOffset) {
 		int len = length();
 		double[] cdata = getArray();
 		int coffset = getArrayOffset();
 		for (int i = 0; i < len; i++) {
-			data[i + offset] = cdata[i + coffset] * data[i + offset];
+			cdata[i + coffset] *= src[i + srcOffset];
 		}
 	}
 

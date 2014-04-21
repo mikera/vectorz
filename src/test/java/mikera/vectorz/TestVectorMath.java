@@ -1,8 +1,8 @@
 package mikera.vectorz;
 
 import static org.junit.Assert.*;
-
 import mikera.indexz.Index;
+import mikera.vectorz.impl.ArraySubVector;
 
 import org.junit.Test;
 
@@ -36,6 +36,15 @@ public class TestVectorMath {
 		v1.multiply(v2);
 		assertEquals(Vector.of(2,6,12,20,30),v1);
 		assertEquals(Vector.of(2,3,4,5,6),v2);
+	}
+	
+	@Test public void testSubVectorMultiply2() {
+		Vector v1=Vector.of(1,2,3);
+		AVector v2=Vector.of(1,2,3,4,5).subVector(1, 3);
+		
+		v1.multiply(v2);
+		assertEquals(Vector.of(2,6,12),v1);
+		assertEquals(Vector.of(2,3,4),v2);
 	}
 	
 	@Test public void testDotProduct() {
