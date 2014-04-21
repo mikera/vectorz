@@ -31,6 +31,11 @@ public class TestVectorMath {
 		assertEquals(24.0,v1.get(3),0.0);
 		
 		assertEquals(Vector.of(5,6),b);
+		
+		v1=Vector.of(1,2,3,4,5);
+		v1.multiply(v2);
+		assertEquals(Vector.of(2,6,12,20,30),v1);
+		assertEquals(Vector.of(2,3,4,5,6),v2);
 	}
 	
 	@Test public void testDotProduct() {
