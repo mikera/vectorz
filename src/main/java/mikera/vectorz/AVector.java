@@ -350,7 +350,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public boolean epsilonEquals(INDArray a, double tolerance) {
-		if (a instanceof AVector) return epsilonEquals((AVector)a);
+		if (a instanceof AVector) return epsilonEquals((AVector)a,tolerance);
 		if (a.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		int len=length();
 		if (len!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
@@ -369,6 +369,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return epsilonEquals(v,Vectorz.TEST_EPSILON);
 	}
 	
+	@Override
 	public boolean epsilonEquals(AVector v,double tolerance) {
 		if (this == v) return true;
 		int len=length();
@@ -1517,13 +1518,32 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addProduct(a,b,1.0);
 	}
 	
+	public AVector addProductCopy(AVector a, AVector b) {
+		AVector r=clone();
+		r.addProduct(a,b);
+		return r;
+	}
+	
+	public AVector addProductCopy(AVector a, AVector b, double factor) {
+		AVector r=clone();
+		r.addProduct(a,b,factor);
+		return r;
+	}
+	
 	public void addProduct(AVector a, AVector b, double factor) {
 		int length=length();
-		if(a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
-		if(b.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		if (b.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
 		if (factor==0.0) return;
-		for (int i = 0; i < length; i++) {
-			addAt(i,(a.unsafeGet(i)*b.unsafeGet(i)*factor));
+		
+		if (a.isSparse()||b.isSparse()) {
+			AVector t=a.multiplyCopy(b);
+			addMultiple(t,factor);
+		} else {
+			for (int i = 0; i < length; i++) {
+				double t= a.unsafeGet(i)*b.unsafeGet(i);
+				addAt(i,(t*factor));
+			}
 		}
 	}
 	
@@ -1534,6 +1554,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void addMultiple(AVector src, double factor) {
 		if (src.length()!=length()) throw new RuntimeException(ErrorMessages.incompatibleShapes(this, src));
 		addMultiple(src,0,factor);
+	}
+	
+	public AVector addMultipleCopy(AVector src, double factor) {
+		AVector r=clone();
+		r.addMultiple(src, factor);
+		return r;
 	}
 	
 	public void addMultiple(AVector src, int srcOffset, double factor) {
@@ -1681,7 +1707,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public Vector dense() {
+	public AVector dense() {
+		return denseClone();
+	}
+	
+	@Override
+	public final Vector denseClone() {
 		return Vector.wrap(this.toDoubleArray());
 	}
 	
@@ -2003,13 +2034,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public INDArray broadcastLike(INDArray target) {
-		if (target instanceof AMatrix) {
+		if (target instanceof AVector) {
+			return broadcastLike((AVector)target);
+		} else if (target instanceof AMatrix) {
 			return broadcastLike((AMatrix)target);
 		}
 		return broadcast(target.getShape());
 	}
 	
-	public INDArray broadcastLike(AMatrix target) {
+	@Override
+	public AVector broadcastLike(AVector target) {
+		if (this.length()==target.length()) {
+			return this;
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
+		}
+	}
+	
+	@Override
+	public AMatrix broadcastLike(AMatrix target) {
 		if (length()==target.columnCount()) {
 			return BroadcastVectorMatrix.wrap(this, target.rowCount());
 		} else {
@@ -2054,6 +2097,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
 		return ret;
+	}
+
+	@Override
+	public AVector multiplyCopy(double d) {
+		AVector r= clone();
+		r.multiply(d);
+		return r;
 	}
 
 

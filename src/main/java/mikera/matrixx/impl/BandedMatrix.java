@@ -46,6 +46,8 @@ public class BandedMatrix extends ABandedMatrix {
 	}
 	
 	public static BandedMatrix create(int rowCount, int columnCount, int minBand, int maxBand) {
+		if (-minBand>=rowCount) minBand=-(rowCount-1);
+		if (maxBand>=columnCount) maxBand=columnCount-1;
 		AVector[] bands=new AVector[maxBand-minBand+1];
 		for (int i=minBand; i<=maxBand; i++) {
 			bands[i-minBand]=Vector.createLength(bandLength(rowCount,columnCount,i));

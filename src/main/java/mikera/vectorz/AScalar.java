@@ -7,6 +7,7 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
+import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -22,8 +23,6 @@ import mikera.vectorz.util.VectorzException;
  * Class to represent a wrapped 0-d scalar value.
  * 
  * Can be a view into another vector/matrix/array
- * 
- * TODO: override methods in AScalar
  * 
  * @author Mike
  */
@@ -126,7 +125,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		return get()==0.0;
 	}
 
-	
+	@Override
 	public void add(double d) {
 		set(get()+d);
 	}
@@ -142,6 +141,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		data[offset]+=get();
 	}
 	
+	@Override
 	public void sub(double d) {
 		set(get()-d);
 	}
@@ -351,6 +351,25 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public INDArray broadcastLike(INDArray v) {
+		int dims=v.dimensionality();
+		if (dims==0) return this;
+		int lastShape=v.getShape(dims-1);
+		AVector rv=Vectorz.createRepeatedElement(lastShape,get());
+		return rv.broadcastLike(v);
+	}
+	
+	@Override
+	public AVector broadcastLike(AVector v) {
+		return Vectorz.createRepeatedElement(v.length(), get());
+	}
+	
+	@Override
+	public AMatrix broadcastLike(AMatrix v) {
+		return Vectorz.createRepeatedElement(v.columnCount(), get()).broadcastLike(v);
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof AScalar) {
 			return equals((AScalar)o);
@@ -452,6 +471,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	@Override
 	public INDArray dense() {
 		return this;
+	}
+	
+	@Override
+	public final Scalar denseClone() {
+		return Scalar.create(get());
 	}
 	
 	@Override

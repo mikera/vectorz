@@ -1,12 +1,16 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import mikera.indexz.Index;
 
 import org.junit.Test;
 
 public class TestVectorMath {
+	
+	@Test public void testBasicAddCopy() {
+		assertEquals(Vector.of(3.0),Vector1.of(1.0).addCopy(Vector1.of(2.0)));
+	}
 
 	@Test public void testIndexedDotProduct() {
 		Vector v1=Vector.of(0,1,2,3,4,5,6,7,8,9);
@@ -14,6 +18,33 @@ public class TestVectorMath {
 		Index ix=Index.of (2,7,4);
 		
 		assertEquals((1*2)+(2*7)+(3*4),v1.dotProduct(v2,ix),0.0);
+	}
+	
+	@Test public void testSubVectorMultiply() {
+		Vector v1=Vector.of(1,2,3,4,5);
+		Vector v2=Vector.of(2,3,4,5,6);
+		
+		AVector a=v1.subVector(2, 2);
+		AVector b=v2.subVector(3, 2);
+		a.multiply(b);
+		assertEquals(15.0,v1.get(2),0.0);
+		assertEquals(24.0,v1.get(3),0.0);
+		
+		assertEquals(Vector.of(5,6),b);
+		
+		v1=Vector.of(1,2,3,4,5);
+		v1.multiply(v2);
+		assertEquals(Vector.of(2,6,12,20,30),v1);
+		assertEquals(Vector.of(2,3,4,5,6),v2);
+	}
+	
+	@Test public void testSubVectorMultiply2() {
+		Vector v1=Vector.of(1,2,3);
+		AVector v2=Vector.of(1,2,3,4,5).subVector(1, 3);
+		
+		v1.multiply(v2);
+		assertEquals(Vector.of(2,6,12),v1);
+		assertEquals(Vector.of(2,3,4),v2);
 	}
 	
 	@Test public void testDotProduct() {

@@ -85,6 +85,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public void getElements(double[] data, int offset) {
 		System.arraycopy(getArray(), getArrayOffset(), data, offset, length());
 	}
+	
+	@Override
+	public ADenseArrayVector dense() {
+		// we are already dense!
+		return this;
+	}
 
 	@Override
 	public void fillRange(int offset, int length, double value) {
@@ -453,18 +459,18 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public void multiply(double[] data, int offset) {
+	public void multiply(double[] src, int srcOffset) {
 		int len = length();
 		double[] cdata = getArray();
 		int coffset = getArrayOffset();
 		for (int i = 0; i < len; i++) {
-			data[i + offset] = cdata[i + coffset] * data[i + offset];
+			cdata[i + coffset] *= src[i + srcOffset];
 		}
 	}
 
 	@Override
-	public void multiplyTo(double[] data, int offset) {
-		DoubleArrays.arraymultiply(getArray(), getArrayOffset(), data, offset,
+	public void multiplyTo(double[] dest, int destOffset) {
+		DoubleArrays.arraymultiply(getArray(), getArrayOffset(), dest, destOffset,
 				length());
 	}
 

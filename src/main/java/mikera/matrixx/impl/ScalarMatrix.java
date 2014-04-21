@@ -61,7 +61,7 @@ public class ScalarMatrix extends ADiagonalMatrix {
 		return RepeatedElementVector.create(dimensions, scale);
 	}
 
-	public static AMatrix create(int dimensions, double scale) {
+	public static ScalarMatrix create(int dimensions, double scale) {
 		return new ScalarMatrix(dimensions, scale);
 	}
 	
@@ -73,6 +73,11 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	@Override
 	public double diagonalProduct() {
 		return Math.pow(scale,dimensions);
+	}
+	
+	@Override
+	public AMatrix multiplyCopy(double d) {
+		return ScalarMatrix.create(dimensions, d*scale);
 	}
 	
 	@Override

@@ -14,6 +14,7 @@ import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.matrixx.algo.Determinant;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.IFastRows;
@@ -43,7 +44,6 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
-import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -216,6 +216,21 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			al.add(getRow(i));
+		}
+		return al;
+	}
+	
+	@Override
+	public final List<AVector> getRows() {
+		return getSlices();
+	}
+	
+	@Override
+	public List<AVector> getColumns() {
+		ArrayList<AVector> al=new ArrayList<AVector>();
+		int cc=columnCount();
+		for (int i=0; i<cc; i++) {
+			al.add(getColumn(i));
 		}
 		return al;
 	}
@@ -639,46 +654,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Calculates the determinant of the matrix.
 	 */
 	public double determinant() {
-		int rc = rowCount();
-		int cc = columnCount();
-		if (rc!=cc)
-			throw new UnsupportedOperationException(
-					"Cannot take determinant of non-square matrix!");
-
-		if (rc==1) return unsafeGet(0,0);
-		if (rc==2) return unsafeGet(0,0)*unsafeGet(1,1)-unsafeGet(1,0)*unsafeGet(0,1);
-		if (rc==3) {
-			return new Matrix33(this).determinant();
-		}
-		
-		return naiveDeterminant();
+		return Determinant.calculate(this);
 
 	}
-	
-	private double naiveDeterminant() {
-		int rc = rowCount();
-		int[] inds = new int[rc];
-		for (int i = 0; i < rc; i++) {
-			inds[i] = i;
-		}
-		return calcDeterminant(inds, 0);
-	}
 
-	private double calcDeterminant(int[] inds, int offset) {
-		int rc = rowCount();
-		if (offset == (rc - 1))
-			return unsafeGet(offset, inds[offset]);
 
-		double det = unsafeGet(offset, inds[offset])
-				* calcDeterminant(inds, offset + 1);
-		for (int i = 1; i < (rc - offset); i++) {
-			IntArrays.swap(inds, offset, offset + i);
-			det -= unsafeGet(offset, inds[offset])
-					* calcDeterminant(inds, offset + 1);
-			IntArrays.swap(inds, offset, offset + i);
-		}
-		return det;
-	}
 
 	/**
 	 * Creates a fully mutable deep copy of this matrix
@@ -785,12 +765,20 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		add(constant);
 	}
 	
+	@Override
 	public void multiply(double factor) {
 		int rc=rowCount();
 
 		for (int i=0; i<rc; i++) {
 			getRowView(i).multiply(factor);
 		}
+	}	
+	
+	@Override
+	public AMatrix multiplyCopy(double factor) {
+		AMatrix r=clone();
+		r.multiply(factor);
+		return r;
 	}	
 
 	/**
@@ -1315,12 +1303,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AMatrix transposeInnerProduct(AMatrix s) {
 		if (s instanceof Matrix) return transposeInnerProduct((Matrix)s);
 		if (isSparse()) {
-			// TODO: any better approach?
-			Matrix r= toMatrixTranspose();
-			return Multiplications.multiply(r, s);
+			// TODO: should revisit: is there a better way?
+			AMatrix t= getTranspose();
+			if (t instanceof TransposedMatrix) t=t.sparseClone();
+			return t.innerProduct(s);
 		} else {
-			Matrix r= toMatrixTranspose();
-			return Multiplications.multiply(r, s);			
+			Matrix t= toMatrixTranspose();
+			return t.innerProduct(s);			
 		}
 	}
 	
@@ -1627,7 +1616,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return broadcast(target.getShape());
 	}
 	
-	public INDArray broadcastLike(AMatrix target) {
+	@Override
+	public AMatrix broadcastLike(AMatrix target) {
 		if (rowCount()==target.rowCount()&&(columnCount()==target.columnCount())) {
 			return this;
 		} else {
@@ -1722,6 +1712,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * Returns true if a matrix is upper triangular
+	 * 
+	 * An upper triangular matrix is defined as having all elements equal to 0.0 where i > j
 	 */
 	public boolean isUpperTriangular() {
 		int rc=rowCount();
@@ -1735,7 +1727,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Returns true if a matrix is lower triangular
+	 * Returns true if a matrix is lower triangular.
+	 * 
+	 * A lower triangular matrix is defined as having all elements equal to 0.0 where i < j
 	 */
 	public boolean isLowerTriangular() {
 		int rc=rowCount();
@@ -1943,8 +1937,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public INDArray dense() {
+	public AMatrix dense() {
 		if (this instanceof IDense) return this;
+		return Matrix.create(this);
+	}
+	
+	@Override
+	public final Matrix denseClone() {
 		return Matrix.create(this);
 	}
 	

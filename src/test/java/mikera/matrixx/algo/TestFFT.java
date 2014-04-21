@@ -1,4 +1,4 @@
-package mikera.matrix.algo;
+package mikera.matrixx.algo;
 
 import static org.junit.Assert.assertEquals;
 import mikera.matrixx.algo.FFT;

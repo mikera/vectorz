@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 
 import mikera.arrayz.ISparse;
@@ -55,6 +56,15 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	public static SparseColumnMatrix create(AVector... columns) {
 		return wrap(columns);
+	}
+	
+	public static SparseColumnMatrix create(List<AVector> columns) {
+		int cc = columns.size();
+		AVector[] rs = new AVector[cc];
+		for (int i = 0; i < cc; i++) {
+			rs[i] = columns.get(i);
+		}
+		return create(rs);
 	}
 	
 	public static SparseColumnMatrix wrap(AVector... columns) {

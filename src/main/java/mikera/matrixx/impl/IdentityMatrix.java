@@ -201,6 +201,27 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 		return v.toVector();
 	}
 	
+	@Override
+	public ScalarMatrix multiplyCopy(double d) {
+		return ScalarMatrix.create(dimensions, d);
+	}
+	
+	@Override
+	public AMatrix addCopy(AMatrix m) {
+		if (!isSameShape(m))throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		
+		AMatrix r=m.clone();
+		if (r instanceof ADenseArrayMatrix) {
+			ADenseArrayMatrix ar=(ADenseArrayMatrix) r;
+			this.addToArray(ar.getArray(),ar.getArrayOffset());
+		} else {
+			for (int i=0; i<dimensions; i++) {
+				r.addAt(i, i,1.0);
+			}
+		}
+		return r;
+	}
+	
 	@Override 
 	public IdentityMatrix getTransposeView() {
 		return this;

@@ -6,6 +6,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * A vector that represents the concatenation of many vectors.
@@ -19,6 +20,7 @@ public final class JoinedMultiVector extends AJoinedVector {
 	private final int n;
 	private final AVector[] vecs;
 	
+	// array of split positions [0, ...... , length] with length n+1
 	private final int[] splits;
 	
 	private static final int sumOfLengths(AVector[] vs) {
@@ -564,6 +566,12 @@ public final class JoinedMultiVector extends AJoinedVector {
 
 	public static AVector create(AVector... vecs) {
 		return new JoinedMultiVector(vecs.clone());
+	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+		if (splits[n]!=length) throw new VectorzException("Unexpected final slit position - not equal to JoinedMultVector length");
 	}
 
 }

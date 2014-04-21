@@ -107,20 +107,31 @@ public class TestArrays {
 		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
 	}
 	
-	private void testAdd(INDArray a) {
-		INDArray v = a.clone();
-		v.add(1.0);
-		INDArray v2=v.addCopy(Scalar.create(-1.0));
+	public void testAdd(INDArray a) {
+		INDArray v2=a.addCopy(Scalar.create(-1.0));
 		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
-		assertTrue(v2.epsilonEquals(a,1.0));
+		if (!v2.epsilonEquals(a,1.1)) {
+			// System.out.println(a.getClass());
+			fail(v2 + " not equal to original " + a);
+		}
+		
+		if (!a.isFullyMutable()) return;
+		INDArray v = a.exactClone();
+		v.add(1.0);
 	}
 	
 	private void testSub(INDArray a) {
-		INDArray v = a.clone();
-		v.sub(1.0);
-		INDArray v2=v.subCopy(Scalar.create(-1.0));
+		INDArray v2=a.subCopy(Scalar.create(-1.0));
 		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
-		assertTrue(v2.epsilonEquals(a,1.0));
+		assertTrue(v2.epsilonEquals(a,1.1));
+		
+		if (!a.isFullyMutable()) return;
+		INDArray v = a.exactClone();
+		v.sub(1.0);
+		if (!v.epsilonEquals(a,1.1)) {
+			// System.out.println(a.getClass());
+			fail(v + " not equal to original " + a);
+		}	
 	}
 
 
@@ -215,6 +226,10 @@ public class TestArrays {
 		INDArray densa=a.dense();
 		assertTrue(densa instanceof IDense);
 		assertEquals(a,densa);
+		
+		INDArray densc=a.denseClone();
+		assertTrue(densc.isDense());
+		assertEquals(a,densc);
 	}
 
 	private void testSetElements(INDArray a) {
@@ -322,7 +337,7 @@ public class TestArrays {
 			assertFalse(a.isFullyMutable());
 		}
 		
-		INDArray b=a.ensureMutable();
+		INDArray b=a.mutable();
 		assertTrue(mikera.vectorz.util.Testing.validateFullyMutable(b));
 		
 		if ((!a.isMutable())&&(a.elementCount()>0)) {
@@ -386,6 +401,9 @@ public class TestArrays {
 	}
 
 	private void testMultiply(INDArray a) {
+		assertTrue(a.scaleCopy(0.0).isZero());
+		assertEquals(a, a.scaleCopy(1.0));
+
 		if (!a.isFullyMutable()) return;
 		INDArray m = a.exactClone();
 
@@ -403,7 +421,7 @@ public class TestArrays {
 		
 		m2.multiply(m1);
 		m2.divide(m1);
-		assertTrue(m2.epsilonEquals(a));
+		assertTrue(m2.epsilonEquals(a));	
 	}
 	
 	private void testBoolean(INDArray a) {

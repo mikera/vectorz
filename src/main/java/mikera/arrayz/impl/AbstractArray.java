@@ -152,6 +152,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			slice(i).multiply(d);
 		}
 	}
+	
+	@Override
+	public INDArray multiplyCopy(double d) {
+		INDArray r=clone();
+		r.multiply(d);
+		return r;
+	}
 
 	@Override
 	public boolean isElementConstrained() {
@@ -528,10 +535,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void add(INDArray a) {
+		int dims=dimensionality();
+		if (dims==0) {
+			add(a.get());
+			return;
+		}
+		
+		int adims=a.dimensionality();
 		int n=sliceCount();
 		int na=a.sliceCount();
-		int dims=dimensionality();
-		int adims=a.dimensionality();
 		if (dims==adims) {
 			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			for (int i=0; i<n; i++) {
@@ -568,21 +580,28 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray addCopy(INDArray a) {
-		INDArray r=this.clone();
+		INDArray r=this.broadcastCloneLike(a);
 		r.add(a);
 		return r;
 	}
 	
 	@Override
+	public INDArray subCopy(INDArray a) {
+		INDArray r=this.broadcastCloneLike(a);
+		r.sub(a);
+		return r;
+	}
+	
+	@Override
 	public INDArray multiplyCopy(INDArray a) {
-		INDArray r=this.clone();
+		INDArray r=this.broadcastCloneLike(a);
 		r.multiply(a);
 		return r;
 	}
 	
 	@Override
 	public INDArray divideCopy(INDArray a) {
-		INDArray r=this.clone();
+		INDArray r=this.broadcastCloneLike(a);
 		r.divide(a);
 		return r;
 	}
@@ -619,13 +638,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public void sub(double a) {
 		add(-a);
-	}
-	
-	@Override
-	public INDArray subCopy(INDArray a) {
-		INDArray r=this.clone();
-		r.sub(a);
-		return r;
 	}
 	
 	@Override
@@ -780,9 +792,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 	@Override
 	public void sub(INDArray a) {
+		int dims=dimensionality();
+		if (dims==0) {
+			sub(a.get());
+			return;
+		}
+		
 		int n=sliceCount();
 		int na=a.sliceCount();
-		int dims=dimensionality();
 		int adims=a.dimensionality();
 		if (dims==adims) {
 			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
@@ -1103,7 +1120,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray mutable() {
-		if (isFullyMutable()) return this;
+		if (isFullyMutable()&&(!isView())) return this;
 		return clone();
 	}
 	
@@ -1150,6 +1167,21 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray denseClone() {
+		int dims=dimensionality();
+		if (dims==0) {
+			return Scalar.create(get());
+		}
+		if (dims==1) {
+			return Vector.create(this);
+		}
+		if (dims==2) {
+			return Matrix.create(this);
+		}
+		return Array.create(this);
+	}
+	
+	@Override
 	public INDArray sparseClone() {
 		int dims=dimensionality();
 		if (dims==0) return this;
@@ -1171,6 +1203,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public INDArray broadcastLike(INDArray target) {
 		return broadcast(target.getShape());
+	}
+	
+	@Override
+	public AMatrix broadcastLike(AMatrix target) {
+		return Matrixx.toMatrix(broadcast(target.getShape()));
+	}
+	
+	@Override
+	public AVector broadcastLike(AVector target) {
+		return Vectorz.toVector(broadcast(target.getShape()));
 	}
 	
 	@Override

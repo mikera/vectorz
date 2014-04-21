@@ -5,6 +5,7 @@ import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
@@ -246,6 +247,10 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray broadcastLike(INDArray target);
 	
+	public AMatrix broadcastLike(AMatrix target);
+
+	public AVector broadcastLike(AVector target);
+	
 	/**
 	 * Creates a clone of the array, broadcasted if necessary to match the shape of the target
 	 */
@@ -390,7 +395,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Returns true if the array is in a dense format. 
 	 * 
-	 * A dense format uses storage proportional to the number of elements
+	 * A dense format uses efficient storage proportional to the number of elements
 	 */
 	public boolean isDense();
 	
@@ -442,6 +447,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Ensures the array is a fully mutable, efficient representation that is not 
 	 * a view. Returns either the same array or a new clone.
 	 */
+	@Deprecated
 	public INDArray ensureMutable();
 	
 	/**
@@ -669,6 +675,13 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Will use a sparse format if possible.
 	 */
 	public INDArray sparseClone();
+	
+	/**
+	 * Creates a fully mutable clone of this array. 
+	 * 
+	 * Will always use a dense format.
+	 */
+	public INDArray denseClone();
 
 	/**
 	 * Returns true if the elements in this array exactly match the given array
@@ -701,6 +714,7 @@ public interface INDArray extends Cloneable, Serializable {
 
 	public double elementProduct();
 
+	public INDArray multiplyCopy(double d);
 
 	
 }

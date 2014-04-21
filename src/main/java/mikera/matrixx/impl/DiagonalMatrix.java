@@ -55,6 +55,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	public static DiagonalMatrix create(AMatrix m) {
+		if (!m.isDiagonal()) throw new IllegalArgumentException("Source is not a diagonal matrix!");
 		return wrap(m.getLeadingDiagonal().toDoubleArray());
 	}
 	
@@ -139,6 +140,13 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public DiagonalMatrix multiplyCopy(double factor) {
+		double[] newData=DoubleArrays.copyOf(data);
+		DoubleArrays.multiply(newData, factor);
+		return wrap(newData);
+	}	
+	
+	@Override
 	public double calculateElement(int i, AVector v) {
 		return data[i]*v.unsafeGet(i);
 	}
@@ -212,9 +220,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	@Override
 	public DiagonalMatrix inverse() {
 		double[] newData=new double[dimensions];
-		for (int i=0; i<dimensions; i++) {
-			newData[i]=1.0/data[i];
-		}
+		DoubleArrays.reciprocal(newData);
 		return new DiagonalMatrix(newData);
 	}
 	

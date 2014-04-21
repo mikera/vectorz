@@ -155,6 +155,26 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	}
 	
 	@Override
+	public int lowerBandwidthLimit() {
+		return source.upperBandwidthLimit();
+	}
+	
+	@Override
+	public int lowerBandwidth() {
+		return source.upperBandwidth();
+	}
+	
+	@Override
+	public int upperBandwidthLimit() {
+		return source.lowerBandwidthLimit();
+	}
+	
+	@Override
+	public int upperBandwidth() {
+		return source.lowerBandwidth();
+	}
+	
+	@Override
 	public AVector getBand(int i) {
 		return source.getBand(-i);
 	}
@@ -199,6 +219,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	@Override
 	public AMatrix innerProduct(Matrix s) {
 		return source.transposeInnerProduct(s);
+	}
+	
+	@Override
+	public AMatrix sparseClone() {
+		if (source instanceof IFastColumns) {
+			return SparseRowMatrix.create(source.getColumns());
+		} else if (source instanceof IFastRows) {
+			return SparseColumnMatrix.create(source.getRows());
+		}
+		return SparseRowMatrix.create(source.getColumns());
 	}
 
 	@Override

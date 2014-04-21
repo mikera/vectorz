@@ -13,6 +13,7 @@ import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
+import mikera.matrixx.impl.LowerTriangularMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.PermutedMatrix;
 import mikera.matrixx.impl.QuadtreeMatrix;
@@ -22,6 +23,7 @@ import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
+import mikera.matrixx.impl.UpperTriangularMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -778,5 +780,15 @@ public class TestMatrixx {
 		
 		// block diagonal matrices
 		doGenericTests(BlockDiagonalMatrix.create(IdentityMatrix.create(2),Matrixx.createRandomSquareMatrix(2)));
+		
+		// triangular matrices
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(1)));
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(4)));
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomMatrix(4,3)));
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomMatrix(2,3)));
+		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(1)));
+		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(4)));
+		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomMatrix(4,3)));
+		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomMatrix(2,3)));
 	}
 }

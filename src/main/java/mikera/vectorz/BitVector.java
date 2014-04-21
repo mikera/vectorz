@@ -137,6 +137,22 @@ public final class BitVector extends ABitVector {
 	}
 	
 	@Override
+	public double dotProduct(AVector v) {
+		double result=0.0;
+		int offset=0;
+		for (int i=0; i<data.length; i++) {
+			long mask=this.data[i];
+			for (int j=0; j<64; j++) {
+				if (mask==0) break;
+				if ((mask&1L)!=0L) result+=v.unsafeGet(offset+j);
+				mask>>>=1;
+			}
+			offset+=64;
+		}
+		return result;
+	}
+	
+	@Override
 	public void getElements(double[] data, int offset) {
 		int len = length();
 		for (int i=0; i<len; i++) {
@@ -151,14 +167,6 @@ public final class BitVector extends ABitVector {
 		long mask = (1L<<bit);
 		int p=i>>>6;
 		data[p]=(data[p]&(~mask))|(value>BIT_THRESHOLD?mask:0L);
-	}
-
-	
-	@Override
-	public AVector clone() {
-		AVector v=Vectorz.newVector(length);
-		v.set(this);
-		return v;
 	}
 
 	public static BitVector of(double... values) {

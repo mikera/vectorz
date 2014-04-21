@@ -167,6 +167,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	@Override
 	public AMatrix addCopy(AMatrix a) {
 		if (a.isDiagonal()) {
+			if (a.rowCount()!=dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 			DiagonalMatrix m=DiagonalMatrix.create(this.getLeadingDiagonal());
 			a.getLeadingDiagonal().addToArray(m.data,0);
 			return m;

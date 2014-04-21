@@ -2,21 +2,21 @@ package mikera.matrixx.algo.decompose.lu.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.algo.decompose.lu.ILUP;
-import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.PermutationMatrix;
 
 public class LUPResult implements ILUP {
 	final AMatrix l;
 	final AMatrix u;
-	final AMatrix p;
+	final PermutationMatrix p;
 
-	public LUPResult(AMatrix l, AMatrix u, AMatrix p) {
+	public LUPResult(AMatrix l, AMatrix u, PermutationMatrix p) {
 		this.l=l;
 		this.u=u;
 		this.p=p;
 	}
 	
 	public LUPResult(AMatrix l, AMatrix u) {
-		this (l,u,IdentityMatrix.create(l.rowCount()));
+		this (l,u,PermutationMatrix.createIdentity(l.rowCount()));
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class LUPResult implements ILUP {
 	}
 
 	@Override
-	public AMatrix getP() {
+	public PermutationMatrix getP() {
 		return p;
 	}
 

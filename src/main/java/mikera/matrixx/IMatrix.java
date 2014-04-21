@@ -1,5 +1,7 @@
 package mikera.matrixx;
 
+import java.util.List;
+
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 
@@ -43,6 +45,10 @@ public interface IMatrix extends INDArray {
 	AMatrix addCopy(AMatrix a);
 
 	double diagonalProduct();
+
+	List<AVector> getRows();
+
+	List<AVector> getColumns();
 
 
 

@@ -1,6 +1,6 @@
 package mikera.matrixx.algo.decompose.lu;
 
-import mikera.matrixx.AMatrix;
+import mikera.matrixx.impl.PermutationMatrix;
 
 /**
  * Interface for results of LUP decomposition
@@ -31,6 +31,6 @@ public interface ILUP extends ILU {
 	   *
 	   * @return The P matrix.
 	   */
-	  public AMatrix getP();
+	  public PermutationMatrix getP();
 
 }

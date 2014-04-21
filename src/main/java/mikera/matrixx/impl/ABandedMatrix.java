@@ -42,7 +42,7 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 	@Override
 	public int lowerBandwidth() {
 		for (int i=-lowerBandwidthLimit(); i<0; i++) {
-			if (!(getBand(i).isZero())) return i;
+			if (!(getBand(i).isZero())) return -i;
 		}
 		return 0;
 	}

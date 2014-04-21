@@ -515,7 +515,7 @@ public final class Vector extends ADenseArrayVector {
 		int len=length();
 		assert(len==v.length());
 		for (int i = 0; i < len; i++) {
-			data[i]=(data[i]*v.data[i]);
+			data[i]*=v.data[i];
 		}	
 	}
 	

@@ -128,6 +128,18 @@ public final class Vector3 extends APrimitiveVector {
 		this.z=a.z;
 	}
 	
+	@Override
+	public void multiply(double d){
+		x*=d;
+		y*=d;
+		z*=d;
+	}
+	
+	@Override
+	public Vector3 multiplyCopy(double d){
+		return new Vector3(x*d,y*d,z*d);
+	}
+	
 	public void addMultiple(double dx, double dy, double dz, double factor) {
 		x+=dx*factor;
 		y+=dy*factor;
@@ -178,6 +190,17 @@ public final class Vector3 extends APrimitiveVector {
 			y+=v.unsafeGet(1);
 			z+=v.unsafeGet(2);
 		}
+	}
+	
+	@Override
+	public Vector3 addCopy(AVector v) {
+		if (v instanceof Vector3) return addCopy((Vector3)v);
+		if (v.length()!=3) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		return new Vector3(x+v.unsafeGet(0),y+v.unsafeGet(1),z+v.unsafeGet(2));
+	}
+	
+	public Vector3 addCopy(Vector3 v) {
+		return new Vector3(x+v.x,y+v.y,z+v.z);
 	}
 	
 	public void add(Vector3 v) {
@@ -375,6 +398,11 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public Vector3 negateCopy() {
+		return new Vector3(-x,-y,-z);
+	}
+	
+	@Override
 	public void getElements(double[] data, int offset) {
 		data[offset]=x;
 		data[offset+1]=y;
@@ -402,6 +430,11 @@ public final class Vector3 extends APrimitiveVector {
 	@Override
 	public Vector3 clone() {
 		return new Vector3(x,y,z);	
+	}
+	
+	@Override
+	public Vector3 copy() {
+		return clone();	
 	}
 	
 	@Override
