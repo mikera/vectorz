@@ -247,6 +247,12 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray broadcastLike(INDArray target);
 	
+	public AMatrix broadcastLike(AMatrix target);
+
+	public AVector broadcastLike(AVector target);
+
+
+	
 	/**
 	 * Creates a clone of the array, broadcasted if necessary to match the shape of the target
 	 */
@@ -711,11 +717,6 @@ public interface INDArray extends Cloneable, Serializable {
 	public double elementProduct();
 
 	public INDArray multiplyCopy(double d);
-
-	AMatrix broadcastLike(AMatrix target);
-
-	AVector broadcastLike(AVector target);
-
 
 	
 }
