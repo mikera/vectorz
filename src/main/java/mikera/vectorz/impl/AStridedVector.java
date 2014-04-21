@@ -124,14 +124,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public INDArray broadcastLike(INDArray target) {
-		if (target instanceof AMatrix) {
-			return broadcastLike((AMatrix)target);
-		}
-		return broadcast(target.getShape());
-	}
-	
-	@Override
 	public AMatrix broadcastLike(AMatrix target) {
 		if (length()==target.columnCount()) {
 			return StridedMatrix.wrap(getArray(), target.rowCount(), length(), getArrayOffset(), 0, getStride());

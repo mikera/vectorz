@@ -586,6 +586,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray subCopy(INDArray a) {
+		INDArray r=this.broadcastCloneLike(a);
+		r.sub(a);
+		return r;
+	}
+	
+	@Override
 	public INDArray multiplyCopy(INDArray a) {
 		INDArray r=this.broadcastCloneLike(a);
 		r.multiply(a);
@@ -631,13 +638,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public void sub(double a) {
 		add(-a);
-	}
-	
-	@Override
-	public INDArray subCopy(INDArray a) {
-		INDArray r=this.clone();
-		r.sub(a);
-		return r;
 	}
 	
 	@Override
