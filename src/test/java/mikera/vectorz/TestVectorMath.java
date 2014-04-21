@@ -1,8 +1,8 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import mikera.indexz.Index;
-import mikera.vectorz.impl.ArraySubVector;
 
 import org.junit.Test;
 
