@@ -250,8 +250,6 @@ public interface INDArray extends Cloneable, Serializable {
 	public AMatrix broadcastLike(AMatrix target);
 
 	public AVector broadcastLike(AVector target);
-
-
 	
 	/**
 	 * Creates a clone of the array, broadcasted if necessary to match the shape of the target
