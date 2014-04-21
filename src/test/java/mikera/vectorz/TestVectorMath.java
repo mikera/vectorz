@@ -20,6 +20,19 @@ public class TestVectorMath {
 		assertEquals((1*2)+(2*7)+(3*4),v1.dotProduct(v2,ix),0.0);
 	}
 	
+	@Test public void testSubVectorMultiply() {
+		Vector v1=Vector.of(1,2,3,4,5);
+		Vector v2=Vector.of(2,3,4,5,6);
+		
+		AVector a=v1.subVector(2, 2);
+		AVector b=v2.subVector(3, 2);
+		a.multiply(b);
+		assertEquals(15.0,v1.get(2),0.0);
+		assertEquals(24.0,v1.get(3),0.0);
+		
+		assertEquals(Vector.of(5,6),b);
+	}
+	
 	@Test public void testDotProduct() {
 		assertEquals(10.0,new Vector3(1,2,3).dotProduct(new Vector3(3,2,1)),0.000001);
 	}
