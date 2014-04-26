@@ -96,6 +96,15 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		if (v == null) return emptyRow;
 		return v;
 	}
+	
+	@Override
+	public boolean isUpperTriangular() {
+		int rc=rowCount();
+		for (int i=1; i<rc; i++) {
+			if (!getRow(i).isRangeZero(0, i)) return false;
+		}
+		return true;
+	}
 
 	@Override
 	public void swapRows(int i, int j) {
