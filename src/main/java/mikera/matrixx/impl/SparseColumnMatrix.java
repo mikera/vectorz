@@ -168,6 +168,15 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public boolean isLowerTriangular() {
+		int cc=columnCount();
+		for (int i=1; i<cc; i++) {
+			if (!getColumn(i).isRangeZero(0, i)) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public void replaceColumn(int i, AVector col) {
 		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
 		if (col.length()!=rows) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(col));
