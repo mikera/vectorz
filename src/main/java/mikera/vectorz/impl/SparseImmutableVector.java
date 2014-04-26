@@ -333,6 +333,9 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 		if (data.length==0) throw new VectorzException("SparseImmutableVector must have some non-zero values");
 		if (index.length()!=data.length) throw new VectorzException("Inconsistent data and index!");
 		if (!index.isDistinctSorted()) throw new VectorzException("Invalid index: "+index);
+		for (int i=0; i<data.length; i++) {
+			if (data[i]==0) throw new VectorzException("Should be no zero values in data array!");
+		}
 		super.validate();
 	}
 
