@@ -157,7 +157,7 @@ public class Vectorz {
 			for (int i=0; i<len; i++) {
 				double val=v.unsafeGet(i);
 				if (val!=0.0) {
-					if (val==1) {
+					if (val==1.0) {
 						return AxisVector.create(i, len);
 					} else {
 						return SingleElementVector.create(val,i,len);
