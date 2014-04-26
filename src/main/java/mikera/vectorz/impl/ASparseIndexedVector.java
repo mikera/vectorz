@@ -53,6 +53,11 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public double magnitudeSquared() {
+		return DoubleArrays.elementSquaredSum(internalData());
+	}
+	
+	@Override
 	public long nonZeroCount() {
 		return DoubleArrays.nonZeroCount(internalData());
 	}

@@ -157,11 +157,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
-		return DoubleArrays.elementSquaredSum(data);
-	}
-	
-	@Override
 	public boolean isZero() {
 		// never zero, since we maintain invariant of always having one non-zero value
 		return false;
@@ -198,7 +193,7 @@ public class SparseImmutableVector extends ASparseIndexedVector {
  
 	@Override
 	public int maxAbsElementIndex(){
-		double result=data[0];
+		double result=Math.abs(data[0]);
 		int di=0;
 		for (int i=1; i<dataLength; i++) {
 			double d=Math.abs(data[i]);
