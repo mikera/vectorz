@@ -20,7 +20,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class SparseImmutableVector extends ASparseVector {
+public class SparseImmutableVector extends ASparseIndexedVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
 	private final Index index;

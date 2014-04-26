@@ -26,7 +26,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class SparseIndexedVector extends ASparseVector {
+public class SparseIndexedVector extends ASparseIndexedVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
 	private Index index;
@@ -42,11 +42,8 @@ public class SparseIndexedVector extends ASparseVector {
 		this.data=data;
 	}
 	
-	private SparseIndexedVector(int length, Index index, AVector data) {
-		super(length);
-		this.index=index;
-		this.data=new double[index.length()];
-		data.getElements(this.data, 0);
+	private SparseIndexedVector(int length, Index index, AVector source) {
+		this(length,index,source.toDoubleArray());
 	}
 	
 	/**
