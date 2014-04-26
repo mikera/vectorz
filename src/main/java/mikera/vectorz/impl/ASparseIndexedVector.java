@@ -74,11 +74,11 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public double dotProduct(AVector v) {
+	public final double dotProduct(AVector v) {
 		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
 		double result=0.0;
 		double[] data=internalData();
-		int[] ixs=internalIndex().data;
+		int[] ixs=internalIndexArray();
 		for (int j=0; j<data.length; j++) {
 			result+=data[j]*v.unsafeGet(ixs[j]);
 		}

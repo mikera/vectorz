@@ -331,18 +331,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public double dotProduct(AVector v) {
-		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
-		double result=0.0;
-		double[] data=this.data;
-		int[] ixs=index.data;
-		for (int j=0; j<data.length; j++) {
-			result+=data[j]*v.unsafeGet(ixs[j]);
-		}
-		return result;
-	}
-	
-	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		int aOffset=arrayOffset-offset;
 		

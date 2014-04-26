@@ -53,6 +53,16 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 		return new SparseImmutableVector(length, index,data);
 	}
 	
+	@Override
+	double[] internalData() {
+		return data;
+	}
+
+	@Override
+	Index internalIndex() {
+		return index;
+	}
+	
 	/**
 	 * Creates a SparseImmutableVector using the given sorted Index to identify the indexes of non-zero values,
 	 * and a double[] array to specify all the non-zero element values
@@ -121,39 +131,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	@Override
 	public int nonSparseElementCount() {
 		return dataLength;
-	}
-	
-	@Override
-	public void add(AVector v) {
-		if (v instanceof ASparseVector) {
-			add((ASparseVector)v);
-			return;
-		}
-		super.add(v);
-	}
-	
-	@Override
-	public void add(ASparseVector v) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
-	
-	@Override
-	public void multiply (double d) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
-	
-	@Override
-	public void multiply (AVector v) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
-	
-	public void multiply(ADenseArrayVector v) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
-	
-	@Override
-	public void multiply(double[] array, int offset) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override
@@ -284,6 +261,11 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	public int[] nonZeroIndices() {
 		return index.data.clone();
 	}
+
+	@Override
+	public void add(ASparseVector v) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
 	
 	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
@@ -396,16 +378,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 		if (index.length()!=data.length) throw new VectorzException("Inconsistent data and index!");
 		if (!index.isDistinctSorted()) throw new VectorzException("Invalid index: "+index);
 		super.validate();
-	}
-
-	@Override
-	double[] internalData() {
-		return data;
-	}
-
-	@Override
-	Index internalIndex() {
-		return index;
 	}
 
 
