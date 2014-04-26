@@ -71,6 +71,11 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	}
 	
 	@Override
+	public ArrayIndexScalar slice(int i) {
+		return ArrayIndexScalar.wrap(data,indexes[i]);
+	}
+	
+	@Override
 	public void getElements(double[] dest, int offset) {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]=data[indexes[i]];
