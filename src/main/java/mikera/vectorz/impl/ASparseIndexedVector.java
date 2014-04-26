@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.indexz.Index;
+import mikera.vectorz.util.DoubleArrays;
 
 
 /**
@@ -18,6 +19,24 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	abstract double[] getInternalData();
 	
 	abstract Index getInternalIndex();
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(getInternalData());
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		int end=start+length;
+		Index index=getInternalIndex();
+		double[] data=getInternalData();
+		int si=index.seekPosition(start);
+		int di=index.seekPosition(end);
+		for (int i=si; i<di; i++) {
+			if (data[i]!=0.0) return false;
+		}
+		return true;
+	}
 	
 	@Override
 	public double dotProduct(double[] data, int offset) {
