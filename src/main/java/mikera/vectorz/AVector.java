@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
@@ -758,6 +757,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public Scalar innerProduct(AVector v) {
+		if (length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return Scalar.create(dotProduct(v));
 	}
 
@@ -771,14 +771,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public AVector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
 		int rc=m.rowCount();
-		if (rc!=length()) throw new VectorzException("Incompatible sizes for inner product: ["+length()+ "] x ["+rc+","+cc+"]");
+		if (rc!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		Vector r=Vector.createLength(cc);
 		for (int i=0; i<cc; i++) {
-			double y=0.0;
-			for (int j=0; j<rc; j++) {
-				y+=unsafeGet(j)*m.unsafeGet(j,i);
-			}
-			r.unsafeSet(i,y);
+			r.unsafeSet(i,dotProduct(m.getColumn(i)));
 		}
 		return r;
 	}
@@ -792,13 +788,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AVector) {
-			return Scalar.create(dotProduct((AVector)a));
+			return innerProduct((AVector)a);
 		} else if (a instanceof AScalar) {
 			return innerProduct((AScalar)a);
 		} else if (a instanceof AMatrix) {
 			return innerProduct((AMatrix)a);
 		} else if (a.dimensionality()<=2) {
-			return innerProduct(Array.create(a));
+			return innerProduct(Arrayz.create(a));
 		}
 		int len=length();
 		if (len!=a.sliceCount()) {

@@ -164,7 +164,6 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override 
 	public double dotProduct(AVector v) {
-		if (!isSameShape(v)) throw new IllegalArgumentException("Mismatched vector sizes");
 		return v.unsafeGet(getAxis());
 	}
 	
@@ -180,21 +179,17 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	public double dotProduct(Vector3 v) {
-		assert(length==3);
 		switch (getAxis()) {
 			case 0: return v.x;
 			case 1: return v.y;
-			case 2: return v.z;
-			default: throw new IndexOutOfBoundsException();
+			default: return v.z;
 		}
 	}
 	
 	public double dotProduct(Vector2 v) {
-		assert(length==2);
 		switch (getAxis()) {
 			case 0: return v.x;
-			case 1: return v.y;
-			default: throw new IndexOutOfBoundsException();
+			default: return v.y;
 		}
 	}
 	
