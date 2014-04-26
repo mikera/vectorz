@@ -1,7 +1,5 @@
 package mikera.vectorz.impl;
 
-import java.util.Arrays;
-
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
@@ -332,24 +330,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 			if (i>=length) return;
 			array[i+arrayOffset]+=factor*data[j]*otherArray[i+otherOffset];
 		}		
-	}
-	
-	@Override 
-	public void getElements(double[] array, int offset) {
-		Arrays.fill(array,offset,offset+length,0.0);
-		copySparseValuesTo(array,offset);
-	}
-	
-	@Override 
-	public void copyTo(AVector v, int offset) {
-		if (v instanceof ADenseArrayVector) {
-			ADenseArrayVector av=(ADenseArrayVector)v;
-			getElements(av.getArray(),av.getArrayOffset()+offset);
-		}
-		v.fillRange(offset,length,0.0);
-		for (int i=0; i<dataLength; i++) {
-			v.unsafeSet(offset+ixs[i],data[i]);
-		}	
 	}
 	
 	@Override
