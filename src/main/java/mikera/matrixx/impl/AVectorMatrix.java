@@ -160,6 +160,15 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	}
 	
 	@Override
+	public boolean isUpperTriangular() {
+		int rc=rowCount();
+		for (int i=1; i<rc; i++) {
+			if (!getRow(i).isRangeZero(0, i)) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean isBoolean() {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
