@@ -186,10 +186,11 @@ public class SparseIndexedVector extends ASparseVector {
 			multiply((ADenseArrayVector)v);
 			return;
 		}
+		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double[] data=this.data;
 		int[] ixs=index.data;
 		for (int i=0; i<data.length; i++) {
-			data[i]*=v.get(ixs[i]);
+			data[i]*=v.unsafeGet(ixs[i]);
 		}
 	}
 	
@@ -208,21 +209,12 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public double magnitudeSquared() {
-		double[] data=this.data;
-		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			double d=data[i];
-			result+=d*d;
-		}
-		return result;
+		return DoubleArrays.elementSquaredSum(data);
 	}
 	
 	@Override
 	public boolean isZero() {
-		for (int i=0; i<data.length; i++) {
-			if (data[i]!=0.0) return false;
-		}
-		return true;
+		return DoubleArrays.isZero(data);
 	}
 	
 	@Override
@@ -321,9 +313,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void negate() {
-		for (int i=0; i<data.length; i++) {
-			data[i]=-data[i]; 
-		}
+		DoubleArrays.negate(data);
 	}
 	
 	@Override
@@ -338,9 +328,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void abs() {
-		for (int i=0; i<data.length; i++) {
-			data[i]=Math.abs(data[i]); 
-		}
+		DoubleArrays.abs(data);
 	}
 
 	@Override
