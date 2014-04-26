@@ -229,6 +229,19 @@ public class TestVectors {
 		assertEquals(v.innerProduct(m),m.getTranspose().transform(v));
 	}
 	
+	private void testSelect(AVector v) {
+		int len=v.length();
+		if (len==0) return;
+		
+		AVector s0=v.select();
+		assertEquals(0,s0.length());
+		
+		AVector sv=v.select(0,len-1);
+		assertEquals(2,sv.length());
+		assertEquals(v.get(0),sv.get(0),0.0);
+		assertEquals(v.get(len-1),sv.get(1),0.0);		
+	}
+	
 	private void testAddMultipleToArray(AVector v) {
 		int len=v.length();
 		double[] ds=new double[len+10];
@@ -769,6 +782,7 @@ public class TestVectors {
 		testSubVectorMutability(v);
 		testSetElements(v);
 		testAddMultiple(v);
+		testSelect(v);
 		testAddMultipleIndexed(v);
 		testAddMultipleIndexed2(v);
 		testAddFromPosition(v);
