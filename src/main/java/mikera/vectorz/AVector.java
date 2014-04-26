@@ -738,17 +738,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public final AVector getTransposeView() {return this;}
 	
 	public AVector select(int... inds) {
-		if (inds==null) return this;
 		if (isMutable()) {
-			return IndexedSubVector.wrap(this, inds.clone());
+			return selectView(inds);
 		} else {
-			Vector v=Vector.createLength(inds.length);
-			double[] tdata=v.getArray();
-			for (int i=0; i<inds.length; i++) {
-				tdata[i]=get(inds[i]);
-			}
-			return v;
+			return selectClone(inds);
+		}		
+	}
+	
+	public AVector selectView(int... inds) {
+		return IndexedSubVector.wrap(this, inds.clone());
+	}
+	
+	
+	public AVector selectClone(int... inds) {
+		Vector v=Vector.createLength(inds.length);
+		double[] tdata=v.getArray();
+		for (int i=0; i<inds.length; i++) {
+			tdata[i]=get(inds[i]);
 		}
+		return v;
 	}
 	
 	public AMatrix outerProduct(AVector a) {
