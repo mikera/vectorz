@@ -660,6 +660,7 @@ public class SparseIndexedVector extends ASparseVector {
 		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
 		if (nixs.length==index.length()) return;
 		int nl=nixs.length;
+		double[] data=this.data;
 		double[] ndata=new double[nl];
 		int si=0;
 		for (int i=0; i<nl; i++) {
@@ -670,7 +671,7 @@ public class SparseIndexedVector extends ASparseVector {
 				if (si>=data.length) break;
 			}
 		}
-		data=ndata;
+		this.data=ndata;
 		index=Index.wrap(nixs);
 	}
 	
