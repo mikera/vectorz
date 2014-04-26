@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -64,8 +66,7 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 		if (length==0) return Vector0.INSTANCE;
 		if (length==this.length) return this;
 
-		int[] newIndexes=new int[length];
-		System.arraycopy(indexes, offset, newIndexes, 0, length);
+		int[] newIndexes=Arrays.copyOfRange(indexes, offset, offset+length);
 		return wrap(this.data,newIndexes);
 	}
 	
@@ -74,6 +75,29 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]=data[indexes[i]];
 		}
+	}
+	
+	@Override
+	public void addToArray(double[] dest, int offset) {
+		for (int i=0; i<length; i++) {
+			dest[offset+i]+=data[indexes[i]];
+		}
+	}
+	
+	@Override
+	public void addMultipleToArray(double factor, int offset, double[] dest, int destOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]+=data[indexes[offset+i]]*factor;
+		}
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=unsafeGet(i)*data[offset+i];
+		}
+		return result;
 	}
 
 	@Override 
