@@ -501,7 +501,8 @@ public class SparseIndexedVector extends ASparseVector {
 	public void setElements(double[] array, int offset) {
 		int nz=DoubleArrays.nonZeroCount(array, offset, length);
 		int[] ixs=new int[nz];
-		data=new double[nz];
+		double[] data=new double[nz];
+		this.data=data;
 		int di=0;
 		for (int i=0; i<length; i++) {
 			double x=array[offset+i];
@@ -522,7 +523,8 @@ public class SparseIndexedVector extends ASparseVector {
 		
 		int nz=DoubleArrays.nonZeroCount(array, offset, length);
 		int[] ixs=new int[nz];
-		data=new double[nz];
+		double[] data=new double[nz];
+		this.data=data;
 		int di=0;
 		for (int i=0; i<length; i++) {
 			double x=array[offset+i];
@@ -564,10 +566,11 @@ public class SparseIndexedVector extends ASparseVector {
 			set((ADenseArrayVector)v);
 			return;
 		}
-		
+		double[] data=this.data;
 		int nz=(int) v.nonZeroCount();
 		if (nz!=data.length) {
 			data=new double[nz];
+			this.data=data;
 			index=Index.createLength(nz);
 		}
 		int di=0;
