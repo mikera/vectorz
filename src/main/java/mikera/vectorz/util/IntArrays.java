@@ -298,5 +298,11 @@ public class IntArrays {
 		return r;
 	}
 
+	public static void add(int[] as, int v) {
+		for (int i=0; i<as.length; i++) {
+			as[i]+=v;
+		}
+	}
+
 
 }
