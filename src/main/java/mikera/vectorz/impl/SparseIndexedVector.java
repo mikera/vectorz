@@ -226,6 +226,17 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean isRangeZero(int start, int length) {
+		int end=start+length;
+		int si=index.seekPosition(start);
+		int di=index.seekPosition(end);
+		for (int i=si; i<di; i++) {
+			if (data[i]!=0.0) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public double maxAbsElement() {
 		double[] data=this.data;
 		double result=0.0;
