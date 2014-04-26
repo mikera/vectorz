@@ -754,5 +754,15 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		return DoubleArrays.isZero(ds, offset+i, length-i);
 	}
 
+	@Override
+	double[] getInternalData() {
+		return data;
+	}
+
+	@Override
+	Index getInternalIndex() {
+		return index;
+	}
+
 
 }

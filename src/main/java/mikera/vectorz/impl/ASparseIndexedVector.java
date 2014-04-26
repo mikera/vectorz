@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import mikera.indexz.Index;
+
 
 /**
  * Base class containing common implementations for sparse indexed vectors
@@ -12,4 +14,8 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	public ASparseIndexedVector(int length) {
 		super(length);
 	}
+	
+	abstract double[] getInternalData();
+	
+	abstract Index getInternalIndex();
 }

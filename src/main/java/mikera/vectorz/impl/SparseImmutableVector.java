@@ -414,7 +414,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	@Override
 	public void set(AVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-
 	}
 
 	@Override
@@ -500,6 +499,16 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 		}
 		// check any remaining segment of array
 		return DoubleArrays.isZero(ds, offset+i, length-i);
+	}
+
+	@Override
+	double[] getInternalData() {
+		return data;
+	}
+
+	@Override
+	Index getInternalIndex() {
+		return index;
 	}
 
 
