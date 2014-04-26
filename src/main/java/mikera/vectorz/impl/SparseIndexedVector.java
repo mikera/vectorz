@@ -330,56 +330,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		return length>0;
 	}
 	
-	@Override
-	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
-		int aOffset=arrayOffset-offset;
-		
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int start=index.seekPosition(offset);
-		for (int i=start; i<data.length; i++) {
-			int di=ixs[i];
-			// if (di<offset) continue; not needed because of seekPosition!
-			if (di>=(offset+length)) return;
-			array[di+aOffset]+=factor*data[i];
-		}
-	}
-	
-	@Override
-	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof ADenseArrayVector) {
-			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
-			return;
-		}
-		assert(offset>=0);
-		assert(offset+length<=length());
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int dataLength=data.length;
-		for (int j=index.seekPosition(offset); j<dataLength; j++) {
-			int i =ixs[j]-offset; // index relative to offset
-			if (i>=length) return;
-			array[i+arrayOffset]+=factor*data[j]*other.get(i+otherOffset);
-		}		
-	}
-	
-	@Override
-	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		assert(offset>=0);
-		assert(offset+length<=length());
-		double[] otherArray=other.getArray();
-		otherOffset+=other.getArrayOffset();
-		
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int dataLength=data.length;
-		for (int j=index.seekPosition(offset); j<dataLength; j++) {
-			int i =ixs[j]-offset; // index relative to offset
-			if (i>=length) return;
-			array[i+arrayOffset]+=factor*data[j]*otherArray[i+otherOffset];
-		}		
-	}
-	
 	@Override 
 	public void setElements(double[] array, int offset) {
 		int nz=DoubleArrays.nonZeroCount(array, offset, length);

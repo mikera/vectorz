@@ -22,7 +22,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
 	private final Index index;
-	private final int[] ixs;
 	private final double[] data;
 	private final int dataLength;
 	
@@ -33,7 +32,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	private SparseImmutableVector(int length, Index index, double[] data) {
 		super(length);
 		this.index=index;
-		ixs=index.data;
 		this.data=data;
 		dataLength=data.length;
 	}
@@ -265,48 +263,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	@Override
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
-	
-	@Override
-	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
-		int aOffset=arrayOffset-offset;
-		
-		int start=index.seekPosition(offset);
-		for (int i=start; i<dataLength; i++) {
-			int di=ixs[i];
-			// if (di<offset) continue; not needed because of seekPosition!
-			if (di>=(offset+length)) return;
-			array[di+aOffset]+=factor*data[i];
-		}
-	}
-	
-	@Override
-	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof ADenseArrayVector) {
-			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
-			return;
-		}
-		assert(offset>=0);
-		assert(offset+length<=length());
-		for (int j=index.seekPosition(offset); j<dataLength; j++) {
-			int i =ixs[j]-offset; // index relative to offset
-			if (i>=length) return;
-			array[i+arrayOffset]+=factor*data[j]*other.get(i+otherOffset);
-		}		
-	}
-	
-	@Override
-	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		assert(offset>=0);
-		assert(offset+length<=length());
-		double[] otherArray=other.getArray();
-		otherOffset+=other.getArrayOffset();
-		
-		for (int j=index.seekPosition(offset); j<dataLength; j++) {
-			int i =ixs[j]-offset; // index relative to offset
-			if (i>=length) return;
-			array[i+arrayOffset]+=factor*data[j]*otherArray[i+otherOffset];
-		}		
 	}
 	
 	@Override
