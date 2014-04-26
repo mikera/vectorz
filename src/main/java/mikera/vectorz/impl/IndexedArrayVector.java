@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * Vector that addresses elements indexed into double[] array
@@ -25,6 +26,12 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	@Override
 	public double get(int i) {
 		return data[indexes[i]];
+	}
+	
+	@Override
+	public IndexedArrayVector selectView(int... inds) {
+		int[] ci=IntArrays.select(indexes,inds);
+		return new IndexedArrayVector(data,ci);
 	}
 
 	@Override

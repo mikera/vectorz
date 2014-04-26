@@ -348,6 +348,16 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector selectClone(int... inds) {
+		return Vectorz.newVector(inds.length);
+	}
+	
+	@Override
+	public AVector selectView(int... inds) {
+		return Vectorz.createZeroVector(inds.length);
+	}
+	
+	@Override
 	public boolean equals(AVector v) {
 		if (!isSameShape(v)) return false;
 		return v.isZero();
