@@ -17,6 +17,7 @@ import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Determinant;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
+import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
@@ -1636,7 +1637,21 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
 	public boolean isZero() {
-		return elementsEqual(0.0);
+		if (this instanceof IFastRows) {
+			int rc=rowCount();
+			for (int i=0; i<rc; i++) {
+				if (!getRow(i).isZero()) return false;
+			}
+			return true;
+		} else if (this instanceof IFastColumns) {
+			int cc=columnCount();
+			for (int i=0; i<cc; i++) {
+				if (!getColumn(i).isZero()) return false;
+			}
+			return true;
+		} else {
+			return elementsEqual(0.0);
+		}
 	}
 	
 	/**
