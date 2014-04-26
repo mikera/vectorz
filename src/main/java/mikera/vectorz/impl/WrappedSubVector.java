@@ -52,6 +52,16 @@ public final class WrappedSubVector extends ASizedVector {
 	public boolean isView() {
 		return true;
 	}
+	
+	@Override
+	public boolean isZero() {
+		return wrapped.isRangeZero(this.offset, this.length);
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		return wrapped.isRangeZero(this.offset + start, length);
+	}
 
 	@Override
 	public double get(int i) {
