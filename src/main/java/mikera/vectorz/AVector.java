@@ -1610,11 +1610,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public boolean isZero() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			if (unsafeGet(i)!=0.0) return false;
-		}
-		return true;
+		return isRangeZero(0,length());
 	}
 	
 	/**
