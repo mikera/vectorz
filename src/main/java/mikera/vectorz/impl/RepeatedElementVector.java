@@ -39,6 +39,16 @@ public final class RepeatedElementVector extends ASizedVector {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return value==0.0;
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		return (length==0)||(value==0.0);
+	}
+	
+	@Override
 	public boolean isElementConstrained() {
 		return true;
 	}
