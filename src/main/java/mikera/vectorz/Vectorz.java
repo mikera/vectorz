@@ -38,9 +38,6 @@ public class Vectorz {
 	// threshold below which it is worthwhile making big vectors sparse
 	private static final double SPARSE_DENSITY_THRESHOLD = 0.2;
 
-	// default: don't create hashed sparse vectors
-	private static final double SPARSE_HASHED_THRESHOLD = 0.0;
-
 	// ===========================
 	// Factory functions
 	
@@ -170,8 +167,6 @@ public class Vectorz {
 			throw new VectorzException("non-zero element not found!!");
 		} else if (n>(len*SPARSE_DENSITY_THRESHOLD)) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
-		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
-			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
 		}
@@ -191,8 +186,6 @@ public class Vectorz {
 		
 		if ((len<MIN_SPARSE_LENGTH)||(n>(len*SPARSE_DENSITY_THRESHOLD))) {
 			return Vector.create(v); // not enough sparsity to make worthwhile, just copy
-		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
-			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
 		}
