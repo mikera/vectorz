@@ -388,17 +388,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public double dotProduct(double[] data, int offset) {
-		double result=0.0;
-		double[] tdata=this.data;
-		int[] ixs=index.data;
-		for (int j=0; j<tdata.length; j++) {
-			result+=tdata[j]*data[offset+ixs[j]];
-		}
-		return result;
-	}
-	
-	@Override
 	public double dotProduct(ADenseArrayVector v) {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();

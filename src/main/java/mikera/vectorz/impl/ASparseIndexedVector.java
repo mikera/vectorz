@@ -18,4 +18,15 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	abstract double[] getInternalData();
 	
 	abstract Index getInternalIndex();
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		double[] tdata=this.getInternalData();
+		int[] ixs=getInternalIndex().data;
+		for (int j=0; j<tdata.length; j++) {
+			result+=tdata[j]*data[offset+ixs[j]];
+		}
+		return result;
+	}
 }

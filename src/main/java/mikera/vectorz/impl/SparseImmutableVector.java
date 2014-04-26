@@ -303,15 +303,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public double dotProduct(double[] data, int offset) {
-		double result=0.0;
-		for (int j=0; j<dataLength; j++) {
-			result+=this.data[j]*data[offset+ixs[j]];
-		}
-		return result;
-	}
-	
-	@Override
 	public double dotProduct(ADenseArrayVector v) {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
