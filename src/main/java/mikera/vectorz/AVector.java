@@ -20,6 +20,7 @@ import mikera.randomz.Hash;
 import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ImmutableVector;
+import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.Vector0;
@@ -735,6 +736,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public final AVector getTransposeView() {return this;}
+	
+	public AVector select(int... inds) {
+		if (inds==null) return this;
+		if (isMutable()) {
+			return IndexedSubVector.wrap(this, inds.clone());
+		} else {
+			Vector v=Vector.createLength(inds.length);
+			double[] tdata=v.getArray();
+			for (int i=0; i<inds.length; i++) {
+				tdata[i]=get(inds[i]);
+			}
+			return v;
+		}
+	}
 	
 	public AMatrix outerProduct(AVector a) {
 		int rc=length();
