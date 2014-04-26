@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.VectorzException;
 
 
 /**
@@ -77,5 +78,19 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
 		return dotProduct(array,offset);
+	}
+	
+	@Override
+	public int[] nonZeroIndices() {
+		int n=(int)nonZeroCount();
+		double[] data=getInternalData();
+		Index index=getInternalIndex();
+		int[] ret=new int[n];
+		int di=0;
+		for (int i=0; i<data.length; i++) {
+			if (data[i]!=0.0) ret[di++]=index.get(i);
+		}
+		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
+		return ret;
 	}
 }
