@@ -1618,9 +1618,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns true if a sub-vector range is completely zero.
+	 * Returns true if a sub-vector range is completely zero. U
 	 * 
-	 * @param strt
+	 * Unsafe operation - does not perform bounds checking, results are undefined if sub-vector is out of range
+	 * 
+	 * @param start
 	 * @param length
 	 * @return
 	 */
