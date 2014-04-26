@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 
@@ -154,5 +155,42 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		}
 		// check any remaining segment of array
 		return DoubleArrays.isZero(ds, offset+i, length-i);
+	}
+	
+	/**
+	 * Create a clone of this sparse indexed vector including the new indexes specified
+	 * Intended to allow fast subsequent modification
+	 */
+	public final SparseIndexedVector cloneIncludingIndices(int [] ixs) {
+		Index index=internalIndex();
+		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
+		double[] data=internalData();
+		int nl=nixs.length;
+		double[] ndata=new double[nl];
+		int si=0;
+		for (int i=0; i<nl; i++) {
+			int z=index.data[si];
+			if (z==nixs[i]) {
+				ndata[i]=data[si];
+				si++; 
+				if (si>=data.length) break;
+			}
+		}
+		return SparseIndexedVector.wrap(length, nixs, ndata);
+	}
+	
+	/**
+	 * Copy only the sparse values in this vector to a target array. Other values in the target array are unchanged
+	 * @param array
+	 * @param offset
+	 */
+	protected final void copySparseValuesTo(double[] array, int offset) {
+		Index index=internalIndex();
+		int[] ixs = index.data;
+		double[] data=internalData();
+		for (int i=0; i<data.length; i++) {
+			int di=ixs[i];
+			array[offset+di]=data[i];
+		}	
 	}
 }

@@ -340,13 +340,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 		copySparseValuesTo(array,offset);
 	}
 	
-	public void copySparseValuesTo(double[] array, int offset) {
-		for (int i=0; i<dataLength; i++) {
-			int di=ixs[i];
-			array[offset+di]=data[i];
-		}	
-	}
-	
 	@Override 
 	public void copyTo(AVector v, int offset) {
 		if (v instanceof ADenseArrayVector) {

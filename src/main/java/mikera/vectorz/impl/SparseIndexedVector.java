@@ -444,15 +444,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		index=Index.wrap(ixs);
 	}
 	
-	public void copySparseValuesTo(double[] array, int offset) {
-		double[] data=this.data;
-		int[] ixs=index.data;
-		for (int i=0; i<data.length; i++) {
-			int di=ixs[i];
-			array[offset+di]=data[i];
-		}	
-	}
-	
 	@Override public void copyTo(AVector v, int offset) {
 		if (v instanceof ADenseArrayVector) {
 			ADenseArrayVector av=(ADenseArrayVector)v;
@@ -611,22 +602,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	
 	public void includeIndices(ASparseIndexedVector v) {
 		includeIndices(v.internalIndex());
-	}
-	
-	public SparseIndexedVector cloneIncludingIndices(int [] ixs) {
-		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
-		int nl=nixs.length;
-		double[] ndata=new double[nl];
-		int si=0;
-		for (int i=0; i<nl; i++) {
-			int z=index.data[si];
-			if (z==nixs[i]) {
-				ndata[i]=data[si];
-				si++; 
-				if (si>=data.length) break;
-			}
-		}
-		return SparseIndexedVector.wrap(length, nixs, ndata);
 	}
 	
 	@Override
