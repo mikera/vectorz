@@ -306,32 +306,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		assert((offset>=0)&&(offset+length<=this.length));
-		
-		int start=index.seekPosition(offset);
-		for (int j=start; j<dataLength; j++) {
-			int di=ixs[j]-offset; // index relative to offset
-			if (di>=length) return;
-			array[arrayOffset+di]+=data[j];
-		}
-	}
-	
-	@Override
-	public void addToArray(double[] dest, int offset) {
-		for (int i=0; i<dataLength; i++) {
-			dest[offset+ixs[i]]+=data[i];
-		}
-	}
-	
-	@Override
-	public void addToArray(double[] dest, int offset, int stride) {
-		for (int i=0; i<dataLength; i++) {
-			dest[offset+ixs[i]*stride]+=data[i];
-		}
-	}
-	
-	@Override
 	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
 		if (other instanceof ADenseArrayVector) {
 			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
@@ -476,12 +450,12 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	}
 
 	@Override
-	double[] getInternalData() {
+	double[] internalData() {
 		return data;
 	}
 
 	@Override
-	Index getInternalIndex() {
+	Index internalIndex() {
 		return index;
 	}
 
