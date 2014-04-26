@@ -193,6 +193,11 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean isRangeZero(int start, int length) {
+		return true;
+	}
+	
+	@Override
 	public boolean isBoolean() {
 		return true;
 	}
