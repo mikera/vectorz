@@ -81,6 +81,11 @@ public class ImmutableVector extends AArrayVector implements IDense {
 	}
 	
 	@Override
+	public boolean isRangeZero(int start, int length) {
+		return DoubleArrays.isZero(data, offset+start, length);
+	}
+	
+	@Override
 	public final ImmutableScalar slice(int i) {
 		return ImmutableScalar.create(get(i));
 	}
