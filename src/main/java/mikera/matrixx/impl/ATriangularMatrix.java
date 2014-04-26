@@ -2,6 +2,11 @@ package mikera.matrixx.impl;
 
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * Abstract base class for triangular matrices (upper and lower)
+ * 
+ * @author Mike
+ */
 public abstract class ATriangularMatrix extends AArrayMatrix {
 	private static final long serialVersionUID = -5557895922040729998L;
 
