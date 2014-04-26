@@ -31,6 +31,11 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	}
 	
 	@Override
+	public double unsafeGet(int i) {
+		return data[indexes[i]];
+	}
+	
+	@Override
 	public IndexedArrayVector selectView(int... inds) {
 		int[] ci=IntArrays.select(indexes,inds);
 		return new IndexedArrayVector(data,ci);
@@ -38,6 +43,11 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 
 	@Override
 	public void set(int i, double value) {
+		data[indexes[i]]=value;
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
 		data[indexes[i]]=value;
 	}
 	
