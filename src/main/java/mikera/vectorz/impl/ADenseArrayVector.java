@@ -75,6 +75,11 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public boolean isZero() {
 		return DoubleArrays.isZero(getArray(), getArrayOffset(), length());
 	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		return DoubleArrays.isZero(getArray(), getArrayOffset()+start, length);
+	}
 
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
