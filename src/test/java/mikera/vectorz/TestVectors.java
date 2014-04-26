@@ -240,6 +240,7 @@ public class TestVectors {
 		assertEquals(2,sv.length());
 		assertEquals(v.get(0),sv.get(0),0.0);
 		assertEquals(v.get(len-1),sv.get(1),0.0);		
+		assertEquals(v.get(len-1),sv.select(1).get(0),0.0);		
 	}
 	
 	private void testAddMultipleToArray(AVector v) {
