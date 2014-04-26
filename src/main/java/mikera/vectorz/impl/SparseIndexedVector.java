@@ -691,7 +691,15 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * @param ixs
 	 */
 	public void includeIndices(AVector v) {
-		includeIndices(v.nonSparseIndexes());
+		if (v instanceof ASparseIndexedVector) {
+			includeIndices((ASparseIndexedVector)v);
+		} else {
+			includeIndices(v.nonSparseIndexes());
+		}
+	}
+	
+	public void includeIndices(ASparseIndexedVector v) {
+		includeIndices(v.getInternalIndex());
 	}
 	
 	public SparseIndexedVector cloneIncludingIndices(int [] ixs) {
