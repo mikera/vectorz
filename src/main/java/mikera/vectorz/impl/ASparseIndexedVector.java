@@ -133,4 +133,26 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 			dest[offset+ixs[i]*stride]+=data[i];
 		}
 	}
+	
+	@Override
+	public boolean equalsArray(double[] ds, int offset) {
+		double[] data=internalData();
+		int[] ixs=internalIndexArray();
+		int n=data.length;
+		if (n==0) return DoubleArrays.isZero(ds, offset, length);
+		int di=0;
+		int i=0;
+		while (di<n) {
+			int t=ixs[di];
+			while (i<t) {
+				if (ds[offset+i]!=0.0) return false;
+				i++;
+			}
+			if (ds[offset+t]!=data[di]) return false;
+			i++;
+			di++;
+		}
+		// check any remaining segment of array
+		return DoubleArrays.isZero(ds, offset+i, length-i);
+	}
 }

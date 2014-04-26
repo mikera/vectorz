@@ -652,28 +652,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 
 	@Override
-	public boolean equalsArray(double[] ds, int offset) {
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int n=data.length;
-		if (n==0) return DoubleArrays.isZero(ds, offset, length);
-		int di=0;
-		int i=0;
-		while (di<n) {
-			int t=ixs[di];
-			while (i<t) {
-				if (ds[offset+i]!=0.0) return false;
-				i++;
-			}
-			if (ds[offset+t]!=data[di]) return false;
-			i++;
-			di++;
-		}
-		// check any remaining segment of array
-		return DoubleArrays.isZero(ds, offset+i, length-i);
-	}
-
-	@Override
 	double[] internalData() {
 		return data;
 	}

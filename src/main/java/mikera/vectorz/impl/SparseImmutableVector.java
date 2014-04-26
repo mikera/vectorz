@@ -431,25 +431,6 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	}
 
 	@Override
-	public boolean equalsArray(double[] ds, int offset) {
-		int n=dataLength;
-		int di=0;
-		int i=0;
-		while (di<n) {
-			int t=ixs[di];
-			while (i<t) {
-				if (ds[offset+i]!=0.0) return false;
-				i++;
-			}
-			if (ds[offset+t]!=data[di]) return false;
-			i++;
-			di++;
-		}
-		// check any remaining segment of array
-		return DoubleArrays.isZero(ds, offset+i, length-i);
-	}
-
-	@Override
 	double[] internalData() {
 		return data;
 	}
