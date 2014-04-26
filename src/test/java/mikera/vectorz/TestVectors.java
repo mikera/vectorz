@@ -393,6 +393,11 @@ public class TestVectors {
 		int len=v.length();
 		int n=(int)v.nonZeroCount();
 		int[] nzi = v.nonZeroIndices();
+		
+		if (n>0) { 
+			assertTrue(v.isRangeZero(0, nzi[0])); // check the leading part of the vector is all zero
+		}
+		
 		Index ind=Index.of(nzi);
 		assertEquals(n,nzi.length);
 		

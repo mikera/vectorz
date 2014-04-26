@@ -1618,6 +1618,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Returns true if a sub-vector range is completely zero.
+	 * 
+	 * @param strt
+	 * @param length
+	 * @return
+	 */
+	public boolean isRangeZero(int start, int length) {
+		for (int i=0; i<length; i++) {
+			if (unsafeGet(start+i)!=0.0) return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * Returns true if the vector has unit length
 	 * @return
 	 */
