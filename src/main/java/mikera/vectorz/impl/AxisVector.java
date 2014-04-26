@@ -143,6 +143,11 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean isRangeZero(int start, int length) {
+		return (start>axis)||(start+length<=axis);
+	}
+	
+	@Override
 	public boolean isMutable() {
 		return false;
 	}
