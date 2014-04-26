@@ -338,16 +338,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public double elementSum() {
-		return DoubleArrays.elementSum(data);
-	}
-	
-	@Override
-	public long nonZeroCount() {
-		return DoubleArrays.nonZeroCount(data);
-	}
-	
-	@Override
 	public int[] nonZeroIndices() {
 		int n=(int)nonZeroCount();
 		int[] ret=new int[n];

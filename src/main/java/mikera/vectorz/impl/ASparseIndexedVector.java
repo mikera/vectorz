@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.indexz.Index;
+import mikera.vectorz.AVector;
 import mikera.vectorz.util.DoubleArrays;
 
 
@@ -39,6 +40,16 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public double elementSum() {
+		return DoubleArrays.elementSum(getInternalData());
+	}
+	
+	@Override
+	public long nonZeroCount() {
+		return DoubleArrays.nonZeroCount(getInternalData());
+	}
+	
+	@Override
 	public double dotProduct(double[] data, int offset) {
 		double result=0.0;
 		double[] tdata=this.getInternalData();
@@ -47,5 +58,24 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 			result+=tdata[j]*data[offset+ixs[j]];
 		}
 		return result;
+	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
+		double result=0.0;
+		double[] data=getInternalData();
+		int[] ixs=getInternalIndex().data;
+		for (int j=0; j<data.length; j++) {
+			result+=data[j]*v.unsafeGet(ixs[j]);
+		}
+		return result;
+	}
+	
+	@Override
+	public double dotProduct(ADenseArrayVector v) {
+		double[] array=v.getArray();
+		int offset=v.getArrayOffset();
+		return dotProduct(array,offset);
 	}
 }

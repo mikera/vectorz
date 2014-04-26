@@ -283,30 +283,8 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public double elementSum() {
-		return DoubleArrays.elementSum(data);
-	}
-	
-	@Override
 	public long nonZeroCount() {
 		return dataLength;
-	}
-	
-	@Override
-	public double dotProduct(AVector v) {
-		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
-		double result=0.0;
-		for (int j=0; j<dataLength; j++) {
-			result+=data[j]*v.unsafeGet(ixs[j]);
-		}
-		return result;
-	}
-	
-	@Override
-	public double dotProduct(ADenseArrayVector v) {
-		double[] array=v.getArray();
-		int offset=v.getArrayOffset();
-		return dotProduct(array,offset);
 	}
 	
 	@Override
