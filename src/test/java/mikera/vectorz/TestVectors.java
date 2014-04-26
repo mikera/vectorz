@@ -366,14 +366,20 @@ public class TestVectors {
 	}
 	
 	private void testSet(AVector v) {
-		v= (v.isFullyMutable()) ? v.exactClone() : v.clone();
-		
 		int len=v.length();
+		if (len==0) return;
+		v= (v.isFullyMutable()) ? v.exactClone() : v.clone();
 		
 		for (int i=0; i<len; i++) {
 			v.set(i,i+0.5);
 			assertEquals(i+0.5,v.get(i),0.0);
 		}
+		assertFalse(v.isZero());
+		assertFalse(v.isRangeZero(0, len));
+		
+		v.fill(0.0);
+		assertTrue(v.isZero());
+		assertTrue(v.isRangeZero(0, len));
 	}
 	
 	private void testImmutable(AVector v) {
