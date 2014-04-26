@@ -463,6 +463,14 @@ public final class DoubleArrays {
 		return true;
 	}
 	
+	public static boolean isZero(double[] data, int offset, int length, int stride) {
+		for (int i=0; i<length; i++) {
+			if (data[offset]!=0.0) return false;
+			offset+=stride;
+		}
+		return true;
+	}
+	
 	public static boolean elementsEqual(double[] data, int offset, int length,
 			double value) {
 		for (int i=0; i<length; i++) {

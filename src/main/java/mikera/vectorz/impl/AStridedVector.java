@@ -9,6 +9,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -35,6 +36,13 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	@Override
 	public AStridedVector ensureMutable() {
 		return clone();
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		int stride=getStride();
+		int offset=getArrayOffset()+start*stride;
+		return DoubleArrays.isZero(data, offset, length,stride);
 	}
 	
 	@Override public double dotProduct(double[] data, int offset) {
