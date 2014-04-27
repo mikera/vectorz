@@ -15,6 +15,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -89,12 +90,29 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		}
 		return new SparseRowMatrix(rows.clone(), rc, cc);
 	}
+	
+	private AVector ensureMutableRow(int i) {
+		AVector v = data.get(i);
+		if (v ==null) {
+			AVector nv=SparseIndexedVector.createLength(cols);
+			return nv;
+		}
+		if (v.isFullyMutable()) return v;
+		AVector mv=v.mutable();
+		data.put(i, mv);
+		return mv;
+	}
 
 	@Override
 	public AVector getRow(int i) {
 		AVector v = data.get(i);
 		if (v == null) return emptyRow;
 		return v;
+	}
+	
+	@Override
+	public AVector getRowView(int i) {
+		return ensureMutableRow(i);
 	}
 	
 	@Override
@@ -256,7 +274,8 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 			for (Entry<Integer, AVector> eCol : data.entrySet()) {
 				int j = eCol.getKey();
 				AVector acol = eCol.getValue();
-				r.unsafeSet(i, j, row.dotProduct(acol));
+				double v= row.dotProduct(acol);
+				if (v!=0.0) r.unsafeSet(i, j, v);
 			}
 		}
 		return r;
