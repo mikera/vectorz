@@ -1,7 +1,9 @@
 package mikera.vectorz.impl;
 
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
@@ -196,6 +198,24 @@ public final class AxisVector extends ASparseVector {
 	@Override
 	public AVector innerProduct(double d) {
 		return SingleElementVector.create(d,axis,length);
+	}
+	
+	@Override
+	public Scalar innerProduct(Vector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		return Scalar.create(v.unsafeGet(axis));
+	}
+	
+	@Override
+	public Scalar innerProduct(AVector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		return Scalar.create(v.unsafeGet(axis));
+	}
+	
+	@Override
+	public AVector innerProduct(AMatrix m) {
+		if (length!=m.rowCount()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		return m.getRow(axis).copy();
 	}
 
 	@Override

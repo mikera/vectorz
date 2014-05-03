@@ -9,6 +9,7 @@ import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -98,6 +99,12 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public Scalar innerProduct(AVector a) {
 		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		return Scalar.create(0.0);
+	}
+	
+	@Override
+	public Scalar innerProduct(Vector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return Scalar.create(0.0);
 	}
 	
