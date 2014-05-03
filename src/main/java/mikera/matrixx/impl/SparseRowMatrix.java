@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import mikera.arrayz.ISparse;
@@ -184,10 +185,28 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	
 	@Override
 	public void add(AMatrix a) {
+		if (a instanceof SparseRowMatrix) {add((SparseRowMatrix)a); return;}
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
 			AVector cr=data.get(i);
 			AVector ar=a.getRow(i);
+			if (cr==null) {
+				if (!ar.isZero()) {
+					data.put(i,ar.copy());
+				}
+			} else if (cr.isMutable()) {
+				cr.add(ar);
+			} else {
+				data.put(i,cr.addCopy(ar));
+			}
+		}
+	}
+	
+	public void add(SparseRowMatrix a) {
+		for (Map.Entry<Integer,AVector> e: a.data.entrySet()) {
+			Integer i = e.getKey();
+			AVector cr=data.get(i);
+			AVector ar=e.getValue();
 			if (cr==null) {
 				if (!ar.isZero()) {
 					data.put(i,ar.copy());
