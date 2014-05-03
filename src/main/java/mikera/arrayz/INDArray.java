@@ -33,6 +33,9 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the shape of the array as an array of ints.
+	 * 
+	 * WARNING: May return the internal int[] array describing the shape. Modifying this may cause undefined behaviour.
+	 * If you want to guarantee a new int[] array that can be safely modified, use getShapeClone() instead
 	 */
 	public int[] getShape();
 	
