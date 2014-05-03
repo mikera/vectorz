@@ -9,6 +9,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ZeroMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ZeroVector;
@@ -158,6 +159,11 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		return DoubleArrays.isZero(data, offset, (int)elementCount());
+	}
+	
+	@Override
+	public AVector asVector() {
+		return ZeroVector.create((int)elementCount());
 	}
 	
 	@Override
