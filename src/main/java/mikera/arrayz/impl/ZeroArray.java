@@ -23,13 +23,11 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public final class ZeroArray extends AbstractArray<INDArray> implements ISparse {
+public final class ZeroArray extends BaseShapedArray implements ISparse {
 	private static final long serialVersionUID = 7355257027343666183L;
-
-	private final int[] shape; 
 	
 	private ZeroArray(int[] shape)  {
-		this.shape=shape;
+		super(shape);
 	}
 	
 	public static ZeroArray wrap(int... shape) {
@@ -39,22 +37,12 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	public static ZeroArray create(int... shape) {
 		return new ZeroArray(shape.clone());
 	}
-
-	@Override
-	public int dimensionality() {
-		return shape.length;
-	}
 	
 	@Override
 	public long nonZeroCount() {
 		return 0;
 	}
-
-	@Override
-	public int[] getShape() {
-		return shape;
-	}
-
+	
 	@Override
 	public double get(int... indexes) {
 		if (!IntArrays.validIndex(indexes,shape)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, indexes));
@@ -114,16 +102,6 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 			al.add(z);
 		}
 		return al;
-	}
-
-	@Override
-	public int sliceCount() {
-		return shape[0];
-	}
-
-	@Override
-	public long elementCount() {
-		return IntArrays.arrayProduct(shape);
 	}
 
 	@Override
