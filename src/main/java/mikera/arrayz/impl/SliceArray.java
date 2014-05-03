@@ -22,15 +22,14 @@ import mikera.vectorz.util.VectorzException;
  *
  * @param <T>
  */
-public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
+public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	private static final long serialVersionUID = -2343678749417219155L;
 
-	private final int[] shape;
 	private final long[] longShape;
 	private final T[] slices;
 	
 	private SliceArray(int[] shape, T[] slices) {
-		this.shape=shape;
+		super(shape);
 		this.slices=slices;
 		int dims=shape.length;
 		this.longShape=new long[dims];
@@ -74,16 +73,6 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	public int dimensionality() {
 		return shape.length;
 	}
-
-	@Override
-	public int[] getShape() {
-		return shape;
-	}
-	
-	@Override
-	public int getShape(int dim) {
-		return shape[dim];
-	}	
 	
 	@Override
 	public long[] getLongShape() {
@@ -287,11 +276,6 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 	}
 
 	@Override
-	public int sliceCount() {
-		return slices.length;
-	}
-
-	@Override
 	public List<?> getSlices() {
 		ArrayList<Object> al=new ArrayList<Object>();
 		if (dimensionality()==1) {
@@ -301,7 +285,7 @@ public final class SliceArray<T extends INDArray> extends AbstractArray<T> {
 			}
 			return al;
 		}
-		for (T sl:this) {
+		for (INDArray sl:this) {
 			al.add(sl);
 		}
 		return al;

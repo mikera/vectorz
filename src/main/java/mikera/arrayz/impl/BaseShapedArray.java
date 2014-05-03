@@ -31,6 +31,11 @@ public abstract class BaseShapedArray extends AbstractArray<INDArray> {
 	public int sliceCount() {
 		return shape[0];
 	}
+	
+	@Override
+	public int getShape(int dim) {
+		return shape[dim];
+	}	
 
 	@Override
 	public long elementCount() {
