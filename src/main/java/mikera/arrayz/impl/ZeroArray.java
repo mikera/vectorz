@@ -131,7 +131,7 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 	
 	@Override
 	public INDArray addCopy(INDArray a) {	
-		return a.broadcastLike(this).copy();
+		return a.broadcastCopyLike(this);
 	}
 	
 	@Override

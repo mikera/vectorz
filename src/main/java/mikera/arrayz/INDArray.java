@@ -255,9 +255,16 @@ public interface INDArray extends Cloneable, Serializable {
 	public AVector broadcastLike(AVector target);
 	
 	/**
-	 * Creates a mutabe clone of the array, broadcasted if necessary to match the shape of the target
+	 * Creates a mutable clone of the array, broadcasted if necessary to match the shape of the target
 	 */
 	public INDArray broadcastCloneLike(INDArray target);
+	
+	/**
+	 * Creates a copy of the array, broadcasted if necessary to match the shape of the target
+	 * Like broadCastCloneLike, but does not guarantee a mutable clone - hence may be faster
+	 * when used with immutable or specialised arrays
+	 */
+	public INDArray broadcastCopyLike(INDArray target);
 
 	/**
 	 * Returns the specified major slice of this array as a view (slice along dimension 0)
