@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -265,16 +264,11 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		if (a instanceof SparseColumnMatrix) {
 			return innerProduct((SparseColumnMatrix) a);
 		}
-		int cc = a.columnCount();
-		Matrix r = Matrix.create(rows, cc);
+		AMatrix r = Matrixx.createSparse(rows, a.columnCount());
 
 		for (Entry<Integer, AVector> eRow : data.entrySet()) {
 			int i = eRow.getKey();
-			AVector row = eRow.getValue();
-			for (int j = 0; j < cc; j++) {
-				double d= row.dotProduct(a.getColumn(j));
-				if (d!=0) r.unsafeSet(i, j, d);
-			}
+			r.replaceRow(i,getRow(i).innerProduct(a));
 		}
 		return r;
 	}
