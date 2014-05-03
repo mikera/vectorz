@@ -42,8 +42,14 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testSparseAdd() {
+		AMatrix m=Matrixx.createSparse(20000,20000);
+		m.add(ZeroMatrix.create(20000, 20000));
+		
+		assertTrue(m.isZero());
+	}
+	
+	@Test public void testSparseInnerProduct() {
 		AMatrix m=Matrixx.createSparse(200000,200000);
-		m.add(ZeroMatrix.create(200000, 200000));
 		
 		AMatrix mt=m.getTranspose();
 		AMatrix mmt = m.innerProduct(mt);

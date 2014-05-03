@@ -183,6 +183,24 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	}
 	
 	@Override
+	public void add(AMatrix a) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			AVector cr=data.get(i);
+			AVector ar=a.getRow(i);
+			if (cr==null) {
+				if (!ar.isZero()) {
+					data.put(i,ar.copy());
+				}
+			} else if (cr.isMutable()) {
+				cr.add(ar);
+			} else {
+				data.put(i,cr.addCopy(ar));
+			}
+		}
+	}
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		for (Entry<Integer, AVector> e : this.data.entrySet()) {
 			AVector v = e.getValue();
