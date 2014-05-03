@@ -509,6 +509,17 @@ public class Vectorz {
 		return RepeatedElementVector.create(length, value);
 	}
 
+	/**
+	 * Cast a long to an int value, and throws an exception if the result does not fit in an int
+	 * @param value
+	 * @return
+	 */
+	public static int safeLongToInt(long value) {
+		int result=(int)value;
+		if (result!=value) throw new IllegalArgumentException("Can't cast safely to int: "+value);
+		return result;
+	}
+
 
 	
 }

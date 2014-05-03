@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.io.ObjectStreamException;
 import java.util.Iterator;
 
+import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
@@ -57,6 +58,17 @@ public final class ZeroVector extends ASparseVector {
 		last=zv;
 		return zv;
 	}
+	
+	/**
+	 * Creates a ZeroVector with the same number of elements as the given array.
+	 * @param arraySize
+	 * @return
+	 */
+	public static AVector create(INDArray array) {
+		int n=Vectorz.safeLongToInt(array.elementCount());
+		return ZeroVector.create(n);
+	}
+
 	
 	private static ZeroVector tryCreate(int dimensions) {
 		if (dimensions<ZERO_VECTOR_CACHE_SIZE) {

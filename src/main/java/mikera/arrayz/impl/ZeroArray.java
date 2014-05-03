@@ -163,7 +163,7 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	
 	@Override
 	public AVector asVector() {
-		return ZeroVector.create((int)elementCount());
+		return ZeroVector.create(this);
 	}
 	
 	@Override
