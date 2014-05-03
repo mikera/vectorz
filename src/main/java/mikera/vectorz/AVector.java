@@ -797,15 +797,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (rc!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		Vector r=Vector.createLength(cc);
 		for (int i=0; i<cc; i++) {
-			r.unsafeSet(i,dotProduct(m.getColumn(i)));
+			r.unsafeSet(i,m.getColumn(i).dotProduct(this));
 		}
 		return r;
 	}
 	
 	public AVector innerProduct(AScalar s) {
-		Vector v=toVector();
-		v.scale(s.get());
-		return v;
+		return scaleCopy(s.get());
 	}
 	
 	@Override
