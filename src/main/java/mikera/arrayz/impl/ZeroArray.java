@@ -146,6 +146,16 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		// all done!
+	}
+	
+	@Override
+	public INDArray addCopy(INDArray a) {	
+		return a.broadcastLike(this).copy();
+	}
+	
+	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		return DoubleArrays.isZero(data, offset, (int)elementCount());
 	}

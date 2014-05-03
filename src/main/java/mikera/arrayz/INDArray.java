@@ -252,7 +252,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public AVector broadcastLike(AVector target);
 	
 	/**
-	 * Creates a clone of the array, broadcasted if necessary to match the shape of the target
+	 * Creates a mutabe clone of the array, broadcasted if necessary to match the shape of the target
 	 */
 	public INDArray broadcastCloneLike(INDArray target);
 
