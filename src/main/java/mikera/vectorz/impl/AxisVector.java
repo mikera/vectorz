@@ -133,7 +133,6 @@ public final class AxisVector extends ASparseVector {
 		return (axis==0)?1:0;
 	}
 
-	
 	@Override
 	public long nonZeroCount() {
 		return 1;

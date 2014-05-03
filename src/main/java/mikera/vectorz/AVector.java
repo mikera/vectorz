@@ -832,9 +832,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector innerProduct(double a) {
-		AVector result=clone();
-		result.scale(a);
-		return result;
+		return scaleCopy(a);
 	}
 	
 	/**

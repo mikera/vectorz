@@ -196,9 +196,9 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override 
-	public Vector innerProduct(AVector v) {
+	public AVector innerProduct(AVector v) {
 		if(v.length()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
-		return v.toVector();
+		return v.copy();
 	}
 	
 	@Override
