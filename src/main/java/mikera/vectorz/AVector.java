@@ -1411,6 +1411,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		} else if (a.dimensionality()==1) {
 			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			return addCopy(a.asVector());
+		} else if (a.dimensionality()==0) {
+			return addCopy(a.get());
 		} else {
 			return addCopy(a.broadcastLike(this));
 		}
@@ -1418,6 +1420,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector addCopy(AVector a) {
+		// clone ensures mutability
+		AVector r=this.clone();
+		r.add(a);
+		return r;
+	}
+	
+	public AVector addCopy(double a) {
 		// clone ensures mutability
 		AVector r=this.clone();
 		r.add(a);
