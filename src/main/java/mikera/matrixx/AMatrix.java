@@ -1323,6 +1323,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Multiplications.multiply(r, s);
 	}
 	
+	@Override
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AVector) {
 			return innerProduct((AVector)a);
@@ -1342,6 +1343,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return SliceArray.create(rl);
 	}
 
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (AVector s:this) {
@@ -1708,6 +1710,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Returns true if a matrix is symmetric
 	 */
+	@Override
 	public boolean isSymmetric() {
 		int rc=rowCount();
 		int cc=columnCount();
