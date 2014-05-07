@@ -1,7 +1,9 @@
 package mikera.vectorz.impl;
 
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
@@ -131,7 +133,6 @@ public final class AxisVector extends ASparseVector {
 		return (axis==0)?1:0;
 	}
 
-	
 	@Override
 	public long nonZeroCount() {
 		return 1;
@@ -140,6 +141,11 @@ public final class AxisVector extends ASparseVector {
 	@Override
 	public boolean isZero() {
 		return false;
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		return (start>axis)||(start+length<=axis);
 	}
 	
 	@Override
@@ -159,7 +165,6 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override 
 	public double dotProduct(AVector v) {
-		if (!isSameShape(v)) throw new IllegalArgumentException("Mismatched vector sizes");
 		return v.unsafeGet(getAxis());
 	}
 	
@@ -175,27 +180,41 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	public double dotProduct(Vector3 v) {
-		assert(length==3);
 		switch (getAxis()) {
 			case 0: return v.x;
 			case 1: return v.y;
-			case 2: return v.z;
-			default: throw new IndexOutOfBoundsException();
+			default: return v.z;
 		}
 	}
 	
 	public double dotProduct(Vector2 v) {
-		assert(length==2);
 		switch (getAxis()) {
 			case 0: return v.x;
-			case 1: return v.y;
-			default: throw new IndexOutOfBoundsException();
+			default: return v.y;
 		}
 	}
 	
 	@Override
 	public AVector innerProduct(double d) {
 		return SingleElementVector.create(d,axis,length);
+	}
+	
+	@Override
+	public Scalar innerProduct(Vector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		return Scalar.create(v.unsafeGet(axis));
+	}
+	
+	@Override
+	public Scalar innerProduct(AVector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		return Scalar.create(v.unsafeGet(axis));
+	}
+	
+	@Override
+	public AVector innerProduct(AMatrix m) {
+		if (length!=m.rowCount()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		return m.getRow(axis).copy();
 	}
 
 	@Override

@@ -3,11 +3,13 @@ package mikera.vectorz.impl;
 import java.io.ObjectStreamException;
 import java.util.Iterator;
 
+import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -58,6 +60,17 @@ public final class ZeroVector extends ASparseVector {
 		return zv;
 	}
 	
+	/**
+	 * Creates a ZeroVector with the same number of elements as the given array.
+	 * @param arraySize
+	 * @return
+	 */
+	public static AVector create(INDArray array) {
+		int n=Vectorz.safeLongToInt(array.elementCount());
+		return ZeroVector.create(n);
+	}
+
+	
 	private static ZeroVector tryCreate(int dimensions) {
 		if (dimensions<ZERO_VECTOR_CACHE_SIZE) {
 			return ZERO_VECTORS[dimensions];
@@ -86,6 +99,12 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public Scalar innerProduct(AVector a) {
 		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		return Scalar.create(0.0);
+	}
+	
+	@Override
+	public Scalar innerProduct(Vector v) {
+		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return Scalar.create(0.0);
 	}
 	
@@ -189,6 +208,11 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public boolean isZero() {
+		return true;
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
 		return true;
 	}
 	
@@ -340,6 +364,16 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public double[] toDoubleArray() {
 		return new double[length];
+	}
+	
+	@Override
+	public AVector selectClone(int... inds) {
+		return Vectorz.newVector(inds.length);
+	}
+	
+	@Override
+	public AVector selectView(int... inds) {
+		return Vectorz.createZeroVector(inds.length);
 	}
 	
 	@Override

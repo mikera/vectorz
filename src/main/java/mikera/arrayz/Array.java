@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.BaseShapedArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
@@ -33,17 +33,16 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  * 
  */
-public final class Array extends AbstractArray<INDArray> implements IStridedArray, IDenseArray {
+public final class Array extends BaseShapedArray implements IStridedArray, IDenseArray {
 	private static final long serialVersionUID = -8636720562647069034L;
 
 	private final int dimensions;
-	private final int[] shape;
 	private final int[] strides;
 	private final double[] data;
 
 	private Array(int dims, int[] shape, int[] strides) {
+		super(shape);
 		this.dimensions = dims;
-		this.shape = shape;
 		this.strides = strides;
 		int n = (int) IntArrays.arrayProduct(shape);
 		this.data = new double[n];
@@ -64,8 +63,8 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	}
 
 	private Array(int dims, int[] shape, int[] strides, double[] data) {
+		super(shape);
 		this.dimensions = dims;
-		this.shape = shape;
 		this.strides = strides;
 		this.data = data;
 	}
@@ -102,16 +101,6 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	@Override
 	public int dimensionality() {
 		return dimensions;
-	}
-
-	@Override
-	public int[] getShape() {
-		return shape;
-	}
-	
-	@Override
-	public int[] getShapeClone() {
-		return shape.clone();
 	}
 
 	@Override
@@ -208,11 +197,6 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 				IntArrays.dotProduct(offsets, strides),
 				IntArrays.copyOf(shape),
 				strides);
-	}
-
-	@Override
-	public int sliceCount() {
-		return shape[0];
 	}
 
 	@Override
@@ -434,7 +418,7 @@ public final class Array extends AbstractArray<INDArray> implements IStridedArra
 	
 	@Override
 	public boolean isZero() {
-		return DoubleArrays.isZero(data,0,data.length);
+		return DoubleArrays.isZero(data);
 	}
 
 	@Override

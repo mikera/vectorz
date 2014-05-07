@@ -229,6 +229,20 @@ public class TestVectors {
 		assertEquals(v.innerProduct(m),m.getTranspose().transform(v));
 	}
 	
+	private void testSelect(AVector v) {
+		int len=v.length();
+		if (len==0) return;
+		
+		AVector s0=v.select();
+		assertEquals(0,s0.length());
+		
+		AVector sv=v.select(0,len-1);
+		assertEquals(2,sv.length());
+		assertEquals(v.get(0),sv.get(0),0.0);
+		assertEquals(v.get(len-1),sv.get(1),0.0);		
+		assertEquals(v.get(len-1),sv.select(1).get(0),0.0);		
+	}
+	
 	private void testAddMultipleToArray(AVector v) {
 		int len=v.length();
 		double[] ds=new double[len+10];
@@ -366,14 +380,20 @@ public class TestVectors {
 	}
 	
 	private void testSet(AVector v) {
-		v= (v.isFullyMutable()) ? v.exactClone() : v.clone();
-		
 		int len=v.length();
+		if (len==0) return;
+		v= (v.isFullyMutable()) ? v.exactClone() : v.clone();
 		
 		for (int i=0; i<len; i++) {
 			v.set(i,i+0.5);
 			assertEquals(i+0.5,v.get(i),0.0);
 		}
+		assertFalse(v.isZero());
+		assertFalse(v.isRangeZero(0, len));
+		
+		v.fill(0.0);
+		assertTrue(v.isZero());
+		assertTrue(v.isRangeZero(0, len));
 	}
 	
 	private void testImmutable(AVector v) {
@@ -393,6 +413,11 @@ public class TestVectors {
 		int len=v.length();
 		int n=(int)v.nonZeroCount();
 		int[] nzi = v.nonZeroIndices();
+		
+		if (n>0) { 
+			assertTrue(v.isRangeZero(0, nzi[0])); // check the leading part of the vector is all zero
+		}
+		
 		Index ind=Index.of(nzi);
 		assertEquals(n,nzi.length);
 		
@@ -758,6 +783,7 @@ public class TestVectors {
 		testSubVectorMutability(v);
 		testSetElements(v);
 		testAddMultiple(v);
+		testSelect(v);
 		testAddMultipleIndexed(v);
 		testAddMultipleIndexed2(v);
 		testAddFromPosition(v);

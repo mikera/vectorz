@@ -9,6 +9,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ZeroMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ZeroVector;
@@ -22,13 +23,11 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public final class ZeroArray extends AbstractArray<INDArray> implements ISparse {
+public final class ZeroArray extends BaseShapedArray implements ISparse {
 	private static final long serialVersionUID = 7355257027343666183L;
-
-	private final int[] shape; 
 	
 	private ZeroArray(int[] shape)  {
-		this.shape=shape;
+		super(shape);
 	}
 	
 	public static ZeroArray wrap(int... shape) {
@@ -38,22 +37,12 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	public static ZeroArray create(int... shape) {
 		return new ZeroArray(shape.clone());
 	}
-
-	@Override
-	public int dimensionality() {
-		return shape.length;
-	}
 	
 	@Override
 	public long nonZeroCount() {
 		return 0;
 	}
-
-	@Override
-	public int[] getShape() {
-		return shape;
-	}
-
+	
 	@Override
 	public double get(int... indexes) {
 		if (!IntArrays.validIndex(indexes,shape)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, indexes));
@@ -116,16 +105,6 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	}
 
 	@Override
-	public int sliceCount() {
-		return shape[0];
-	}
-
-	@Override
-	public long elementCount() {
-		return IntArrays.arrayProduct(shape);
-	}
-
-	@Override
 	public boolean isView() {
 		return false;
 	}
@@ -146,8 +125,23 @@ public final class ZeroArray extends AbstractArray<INDArray> implements ISparse 
 	}
 	
 	@Override
+	public void addToArray(double[] data, int offset) {
+		// all done!
+	}
+	
+	@Override
+	public INDArray addCopy(INDArray a) {	
+		return a.broadcastCopyLike(this);
+	}
+	
+	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		return DoubleArrays.isZero(data, offset, (int)elementCount());
+	}
+	
+	@Override
+	public AVector asVector() {
+		return ZeroVector.create(this);
 	}
 	
 	@Override

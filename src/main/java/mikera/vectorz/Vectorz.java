@@ -38,9 +38,6 @@ public class Vectorz {
 	// threshold below which it is worthwhile making big vectors sparse
 	private static final double SPARSE_DENSITY_THRESHOLD = 0.2;
 
-	// default: don't create hashed sparse vectors
-	private static final double SPARSE_HASHED_THRESHOLD = 0.0;
-
 	// ===========================
 	// Factory functions
 	
@@ -160,7 +157,7 @@ public class Vectorz {
 			for (int i=0; i<len; i++) {
 				double val=v.unsafeGet(i);
 				if (val!=0.0) {
-					if (val==1) {
+					if (val==1.0) {
 						return AxisVector.create(i, len);
 					} else {
 						return SingleElementVector.create(val,i,len);
@@ -170,8 +167,6 @@ public class Vectorz {
 			throw new VectorzException("non-zero element not found!!");
 		} else if (n>(len*SPARSE_DENSITY_THRESHOLD)) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
-		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
-			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
 		}
@@ -191,8 +186,6 @@ public class Vectorz {
 		
 		if ((len<MIN_SPARSE_LENGTH)||(n>(len*SPARSE_DENSITY_THRESHOLD))) {
 			return Vector.create(v); // not enough sparsity to make worthwhile, just copy
-		} else if (n<(len*SPARSE_HASHED_THRESHOLD)) {
-			return SparseHashedVector.create(v);
 		} else {
 			return SparseIndexedVector.create(v);
 		}
@@ -514,6 +507,17 @@ public class Vectorz {
 	public static AVector createRepeatedElement(int length,double value) {
 		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length, value);
+	}
+
+	/**
+	 * Cast a long to an int value, and throws an exception if the result does not fit in an int
+	 * @param value
+	 * @return
+	 */
+	public static int safeLongToInt(long value) {
+		int result=(int)value;
+		if (result!=value) throw new IllegalArgumentException("Can't cast safely to int: "+value);
+		return result;
 	}
 
 

@@ -12,6 +12,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -60,6 +61,13 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 				ErrorMessages.invalidIndex(this, position)); }
 		return new ArrayIndexScalar(getArray(), getArrayOffset() + position);
 	}
+	
+	@Override
+	public AVector selectView(int... inds) {
+		inds=inds.clone();
+		IntArrays.add(inds,getArrayOffset());
+		return IndexedArrayVector.wrap(getArray(), inds);
+	}
 
 	public boolean isPackedArray() {
 		return (getArrayOffset() == 0) && (length() == getArray().length);
@@ -74,6 +82,11 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	@Override
 	public boolean isZero() {
 		return DoubleArrays.isZero(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		return DoubleArrays.isZero(getArray(), getArrayOffset()+start, length);
 	}
 
 	@Override

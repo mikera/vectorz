@@ -50,6 +50,8 @@ public interface IMatrix extends INDArray {
 
 	List<AVector> getColumns();
 
+	boolean isSymmetric();
+
 
 
 }

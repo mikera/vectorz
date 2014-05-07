@@ -1,6 +1,5 @@
 package mikera.arrayz.impl;
 
-import mikera.arrayz.INDArray;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
@@ -10,19 +9,18 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public abstract class BaseNDArray extends AbstractArray<INDArray> implements IStridedArray { 
+public abstract class BaseNDArray extends BaseShapedArray implements IStridedArray { 
 	private static final long serialVersionUID = -4221161437647016169L;
 
 	protected final int dimensions;
-	protected final int[] shape;
 	protected int offset; // not final, in case we want to do "sliding window" trick :-)
 	protected final double[] data;
 	protected final int[] stride;
 	
 	protected BaseNDArray(double[] data, int dimensions, int offset, int[] shape, int[] stride) {
+		super(shape);
 		this.data=data;
 		this.offset=offset;
-		this.shape=shape;
 		this.stride=stride;
 		this.dimensions=dimensions;
 	}
@@ -30,16 +28,6 @@ public abstract class BaseNDArray extends AbstractArray<INDArray> implements ISt
 	@Override
 	public int dimensionality() {
 		return dimensions;
-	}
-
-	@Override
-	public int[] getShape() {
-		return shape;
-	}
-	
-	@Override
-	public int[] getShapeClone() {
-		return shape.clone();
 	}
 	
 	@Override

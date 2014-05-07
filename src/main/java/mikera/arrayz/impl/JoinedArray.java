@@ -2,7 +2,6 @@ package mikera.arrayz.impl;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.util.ErrorMessages;
-import mikera.vectorz.util.IntArrays;
 
 /**
  * Array created by joining two arrays along a specific dimension
@@ -10,20 +9,19 @@ import mikera.vectorz.util.IntArrays;
  * @author Mike
  *
  */
-public class JoinedArray extends AbstractArray<INDArray> {
+public class JoinedArray extends BaseShapedArray {
 	private static final long serialVersionUID = 4929988077055768422L;
 
-	final int[] shape;
 	final INDArray left;
 	final INDArray right;
 	final int dimension;
 	final int split;
 	
 	private JoinedArray(INDArray left, INDArray right, int dim) {
+		super(left.getShapeClone());
 		this.left=left;
 		this.right=right;
 		dimension=dim;
-		shape=left.getShapeClone();
 		this.split=shape[dimension];
 		shape[dimension]+=right.getShape(dimension);
 	}
@@ -40,16 +38,6 @@ public class JoinedArray extends AbstractArray<INDArray> {
 		return new JoinedArray(a,b,dim);
 	}
 	
-	@Override
-	public int dimensionality() {
-		return shape.length;
-	}
-
-	@Override
-	public int[] getShape() {
-		return shape;
-	}
-
 	@Override
 	public double get(int... indexes) {
 		if (indexes.length!=dimensionality()) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, indexes));
@@ -94,16 +82,6 @@ public class JoinedArray extends AbstractArray<INDArray> {
 		} else {
 			return new JoinedArray(left.slice(dimension-1,index),right.slice(dimension-1,index),this.dimension-1);			
 		}
-	}
-
-	@Override
-	public int sliceCount() {
-		return shape[0];
-	}
-
-	@Override
-	public long elementCount() {
-		return IntArrays.arrayProduct(shape);
 	}
 
 	@Override

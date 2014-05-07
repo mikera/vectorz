@@ -1223,6 +1223,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray broadcastCopyLike(INDArray target) {
+		if (isMutable()) {
+			return broadcastCloneLike(target);
+		} else {
+			return broadcastLike(target);
+		}
+	}
+	
+	@Override
 	public void validate() {
 		// TODO: any generic validation?
 	}

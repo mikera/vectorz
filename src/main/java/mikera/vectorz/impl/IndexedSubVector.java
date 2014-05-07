@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -37,6 +38,12 @@ public final class IndexedSubVector extends BaseIndexedVector {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]=data.unsafeGet(indexes[i]);
 		}
+	}
+	
+	@Override
+	public AVector selectView(int... inds) {
+		int[] ci=IntArrays.select(indexes,inds);
+		return new IndexedSubVector(data,ci);
 	}
 
 	@Override

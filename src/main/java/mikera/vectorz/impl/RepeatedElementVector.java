@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.util.Iterator;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -36,6 +37,16 @@ public final class RepeatedElementVector extends ASizedVector {
 	@Override
 	public boolean isMutable() {
 		return false;
+	}
+	
+	@Override
+	public boolean isZero() {
+		return value==0.0;
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		return (length==0)||(value==0.0);
 	}
 	
 	@Override
@@ -100,6 +111,11 @@ public final class RepeatedElementVector extends ASizedVector {
 	}
 	
 	@Override
+	public Scalar innerProduct(AVector v) {
+		return Scalar.create(dotProduct(v));
+	}
+	
+	@Override
 	public AVector reorder(int dim, int[] order) {
 		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		return reorder(order);
@@ -111,6 +127,11 @@ public final class RepeatedElementVector extends ASizedVector {
 		if (n==length) return this;
 		return create(n,value);
 	}	
+	
+	@Override
+	public AVector addCopy(AVector v) {
+		return v.addCopy(value);
+	}
 	
 	@Override
 	public void addToArray(double[] data, int offset) {

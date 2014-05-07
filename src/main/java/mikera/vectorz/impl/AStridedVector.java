@@ -8,7 +8,9 @@ import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.StridedMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -35,6 +37,13 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	@Override
 	public AStridedVector ensureMutable() {
 		return clone();
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		int stride=getStride();
+		int offset=getArrayOffset()+start*stride;
+		return DoubleArrays.isZero(data, offset, length,stride);
 	}
 	
 	@Override public double dotProduct(double[] data, int offset) {
@@ -130,6 +139,19 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 		} else {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}
+	}
+	
+	
+	@Override
+	public AVector selectView(int... inds) {
+		int n=inds.length;
+		int[] ix=new int[n];
+		int off=getArrayOffset();
+		int stride=getStride();
+		for (int i=0; i<n; i++) {
+			ix[i]=off+stride*inds[i];
+		}
+		return IndexedArrayVector.wrap(getArray(), ix);
 	}
 	
 	@Override

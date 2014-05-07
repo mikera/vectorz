@@ -109,6 +109,22 @@ public class Indexz {
 		return createRandomSubset(Indexz.createSequence(length),probability);
 	}
 	
+	/**
+	 * Creates a random selection of given length from the numbers 0..maxValue-1
+	 * 
+	 * Results are not sorted. May contain duplicates
+	 * 
+	 * @param length
+	 * @param probability
+	 * @return
+	 */
+	public static Index createRandomSelection(int length, int maxValue) {
+		int[] sel=new int[length];
+		for (int i=0; i<length; i++) {
+			sel[i]=Rand.r(maxValue);
+		}
+		return new Index(length);
+	}
 
 	public static Index createLength(int length) {
 		return new Index(length);

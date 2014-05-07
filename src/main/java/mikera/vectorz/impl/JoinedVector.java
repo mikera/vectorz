@@ -49,6 +49,20 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return left.isZero()&&right.isZero();
+	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		int end=start+length;
+		if (start>=split) return right.isRangeZero(start-split,length);
+		if (end<=split) return left.isRangeZero(start,length);
+		int ll=split-start;
+		return left.isRangeZero(start, ll)&&right.isRangeZero(0, length-ll);
+	}
+	
+	@Override
 	public void copyTo(AVector dest, int offset) {
 		left.copyTo(dest, offset);
 		right.copyTo(dest, offset+split);

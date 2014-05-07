@@ -14,6 +14,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -159,12 +160,39 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		}
 	}
 	
+	
+	private AVector ensureMutableColumn(int i) {
+		AVector v = data.get(i);
+		if (v ==null) {
+			AVector nv=SparseIndexedVector.createLength(rows);
+			return nv;
+		}
+		if (v.isFullyMutable()) return v;
+		AVector mv=v.mutable();
+		data.put(i, mv);
+		return mv;
+	}
+	
 	@Override
 	public AVector getColumn(int i) {
 		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
 		AVector v= data.get(i);
 		if (v==null) return emptyColumn;
 		return v;
+	}
+	
+	@Override
+	public AVector getColumnView(int i) {
+		return ensureMutableColumn(i);
+	}
+	
+	@Override
+	public boolean isLowerTriangular() {
+		int cc=columnCount();
+		for (int i=1; i<cc; i++) {
+			if (!getColumn(i).isRangeZero(0, i)) return false;
+		}
+		return true;
 	}
 	
 	@Override

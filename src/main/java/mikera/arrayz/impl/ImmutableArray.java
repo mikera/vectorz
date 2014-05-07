@@ -111,6 +111,8 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 			throw new IllegalArgumentException("Can't slice a 0-d NDArray");
 		} else if (dimensions==1) {
 			return ImmutableScalar.create(get(majorSlice));
+		} else if ((dimensions==2)&&(stride[1]==1)) {
+			return ImmutableVector.wrap(data, offset+majorSlice*getStride(0), shape[1]);
 		} else {
 			return new ImmutableArray(data,
 					dimensions-1,

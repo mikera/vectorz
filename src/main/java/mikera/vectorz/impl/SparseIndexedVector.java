@@ -1,7 +1,5 @@
 package mikera.vectorz.impl;
 
-import java.util.Arrays;
-
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
@@ -18,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * Efficient for mostly sparse vectors. Maintains a indexed array of elements which may be non-zero. 
  * 
- * WARNING: updates of non-indexed vectors are O(n) in the number of non-sparse elements. You should not normally
+ * WARNING: individual updates of non-indexed elements are O(n) in the number of non-sparse elements. You should not normally
  * perform element-wise mutation on a SparseIndexedVector if performance is a concern
  * 
  * Index must be distinct and sorted.
@@ -26,7 +24,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class SparseIndexedVector extends ASparseVector {
+public class SparseIndexedVector extends ASparseIndexedVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
 	private Index index;
@@ -42,11 +40,8 @@ public class SparseIndexedVector extends ASparseVector {
 		this.data=data;
 	}
 	
-	private SparseIndexedVector(int length, Index index, AVector data) {
-		super(length);
-		this.index=index;
-		this.data=new double[index.length()];
-		data.getElements(this.data, 0);
+	private SparseIndexedVector(int length, Index index, AVector source) {
+		this(length,index,source.toDoubleArray());
 	}
 	
 	/**
@@ -186,10 +181,11 @@ public class SparseIndexedVector extends ASparseVector {
 			multiply((ADenseArrayVector)v);
 			return;
 		}
+		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		double[] data=this.data;
 		int[] ixs=index.data;
 		for (int i=0; i<data.length; i++) {
-			data[i]*=v.get(ixs[i]);
+			data[i]*=v.unsafeGet(ixs[i]);
 		}
 	}
 	
@@ -204,25 +200,6 @@ public class SparseIndexedVector extends ASparseVector {
 		for (int i=0; i<data.length; i++) {
 			data[i]*=array[offset+ixs[i]];
 		}
-	}
-	
-	@Override
-	public double magnitudeSquared() {
-		double[] data=this.data;
-		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			double d=data[i];
-			result+=d*d;
-		}
-		return result;
-	}
-	
-	@Override
-	public boolean isZero() {
-		for (int i=0; i<data.length; i++) {
-			if (data[i]!=0.0) return false;
-		}
-		return true;
 	}
 	
 	@Override
@@ -310,9 +287,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void negate() {
-		for (int i=0; i<data.length; i++) {
-			data[i]=-data[i]; 
-		}
+		DoubleArrays.negate(data);
 	}
 	
 	@Override
@@ -327,9 +302,7 @@ public class SparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public void abs() {
-		for (int i=0; i<data.length; i++) {
-			data[i]=Math.abs(data[i]); 
-		}
+		DoubleArrays.abs(data);
 	}
 
 	@Override
@@ -357,152 +330,12 @@ public class SparseIndexedVector extends ASparseVector {
 		return length>0;
 	}
 	
-	@Override
-	public double elementSum() {
-		return DoubleArrays.elementSum(data);
-	}
-	
-	@Override
-	public long nonZeroCount() {
-		return DoubleArrays.nonZeroCount(data);
-	}
-	
-	@Override
-	public int[] nonZeroIndices() {
-		int n=(int)nonZeroCount();
-		int[] ret=new int[n];
-		int di=0;
-		for (int i=0; i<data.length; i++) {
-			if (data[i]!=0.0) ret[di++]=index.get(i);
-		}
-		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
-		return ret;
-	}
-	
-	@Override
-	public double dotProduct(AVector v) {
-		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
-		double result=0.0;
-		double[] data=this.data;
-		int[] ixs=index.data;
-		for (int j=0; j<data.length; j++) {
-			result+=data[j]*v.unsafeGet(ixs[j]);
-		}
-		return result;
-	}
-	
-	@Override
-	public double dotProduct(double[] data, int offset) {
-		double result=0.0;
-		double[] tdata=this.data;
-		int[] ixs=index.data;
-		for (int j=0; j<tdata.length; j++) {
-			result+=tdata[j]*data[offset+ixs[j]];
-		}
-		return result;
-	}
-	
-	@Override
-	public double dotProduct(ADenseArrayVector v) {
-		double[] array=v.getArray();
-		int offset=v.getArrayOffset();
-		return dotProduct(array,offset);
-	}
-	
-	@Override
-	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
-		int aOffset=arrayOffset-offset;
-		
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int start=index.seekPosition(offset);
-		for (int i=start; i<data.length; i++) {
-			int di=ixs[i];
-			// if (di<offset) continue; not needed because of seekPosition!
-			if (di>=(offset+length)) return;
-			array[di+aOffset]+=factor*data[i];
-		}
-	}
-	
-	@Override
-	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		assert((offset>=0)&&(offset+length<=this.length));
-		
-		int start=index.seekPosition(offset);
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int dataLength=data.length;
-		for (int j=start; j<dataLength; j++) {
-			int di=ixs[j]-offset; // index relative to offset
-			if (di>=length) return;
-			array[arrayOffset+di]+=data[j];
-		}
-	}
-	
-	@Override
-	public void addToArray(double[] dest, int offset) {
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int dataLength=data.length;
-		for (int i=0; i<dataLength; i++) {
-			dest[offset+ixs[i]]+=data[i];
-		}
-	}
-	
-	@Override
-	public void addToArray(double[] dest, int offset, int stride) {
-		int dataLength=data.length;
-		for (int i=0; i<dataLength; i++) {
-			dest[offset+index.data[i]*stride]+=data[i];
-		}
-	}
-	
-	@Override
-	public void addProductToArray(double factor, int offset, AVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if (other instanceof ADenseArrayVector) {
-			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
-			return;
-		}
-		assert(offset>=0);
-		assert(offset+length<=length());
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int dataLength=data.length;
-		for (int j=index.seekPosition(offset); j<dataLength; j++) {
-			int i =ixs[j]-offset; // index relative to offset
-			if (i>=length) return;
-			array[i+arrayOffset]+=factor*data[j]*other.get(i+otherOffset);
-		}		
-	}
-	
-	@Override
-	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		assert(offset>=0);
-		assert(offset+length<=length());
-		double[] otherArray=other.getArray();
-		otherOffset+=other.getArrayOffset();
-		
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int dataLength=data.length;
-		for (int j=index.seekPosition(offset); j<dataLength; j++) {
-			int i =ixs[j]-offset; // index relative to offset
-			if (i>=length) return;
-			array[i+arrayOffset]+=factor*data[j]*otherArray[i+otherOffset];
-		}		
-	}
-	
-	@Override 
-	public void getElements(double[] array, int offset) {
-		Arrays.fill(array,offset,offset+length,0.0);
-		copySparseValuesTo(array,offset);
-	}
-	
 	@Override 
 	public void setElements(double[] array, int offset) {
 		int nz=DoubleArrays.nonZeroCount(array, offset, length);
 		int[] ixs=new int[nz];
-		data=new double[nz];
+		double[] data=new double[nz];
+		this.data=data;
 		int di=0;
 		for (int i=0; i<length; i++) {
 			double x=array[offset+i];
@@ -523,7 +356,8 @@ public class SparseIndexedVector extends ASparseVector {
 		
 		int nz=DoubleArrays.nonZeroCount(array, offset, length);
 		int[] ixs=new int[nz];
-		data=new double[nz];
+		double[] data=new double[nz];
+		this.data=data;
 		int di=0;
 		for (int i=0; i<length; i++) {
 			double x=array[offset+i];
@@ -535,28 +369,6 @@ public class SparseIndexedVector extends ASparseVector {
 		index=Index.wrap(ixs);
 	}
 	
-	public void copySparseValuesTo(double[] array, int offset) {
-		double[] data=this.data;
-		int[] ixs=index.data;
-		for (int i=0; i<data.length; i++) {
-			int di=ixs[i];
-			array[offset+di]=data[i];
-		}	
-	}
-	
-	@Override public void copyTo(AVector v, int offset) {
-		if (v instanceof ADenseArrayVector) {
-			ADenseArrayVector av=(ADenseArrayVector)v;
-			getElements(av.getArray(),av.getArrayOffset()+offset);
-		}
-		v.fillRange(offset,length,0.0);
-		double[] data=this.data;
-		int[] ixs=index.data;
-		for (int i=0; i<data.length; i++) {
-			v.unsafeSet(offset+ixs[i],data[i]);
-		}	
-	}
-	
 	@Override
 	public void set(AVector v) {
 		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
@@ -565,10 +377,11 @@ public class SparseIndexedVector extends ASparseVector {
 			set((ADenseArrayVector)v);
 			return;
 		}
-		
+		double[] data=this.data;
 		int nz=(int) v.nonZeroCount();
 		if (nz!=data.length) {
 			data=new double[nz];
+			this.data=data;
 			index=Index.createLength(nz);
 		}
 		int di=0;
@@ -658,6 +471,7 @@ public class SparseIndexedVector extends ASparseVector {
 		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
 		if (nixs.length==index.length()) return;
 		int nl=nixs.length;
+		double[] data=this.data;
 		double[] ndata=new double[nl];
 		int si=0;
 		for (int i=0; i<nl; i++) {
@@ -668,7 +482,7 @@ public class SparseIndexedVector extends ASparseVector {
 				if (si>=data.length) break;
 			}
 		}
-		data=ndata;
+		this.data=ndata;
 		index=Index.wrap(nixs);
 	}
 	
@@ -691,23 +505,15 @@ public class SparseIndexedVector extends ASparseVector {
 	 * @param ixs
 	 */
 	public void includeIndices(AVector v) {
-		includeIndices(v.nonSparseIndexes());
+		if (v instanceof ASparseIndexedVector) {
+			includeIndices((ASparseIndexedVector)v);
+		} else {
+			includeIndices(v.nonSparseIndexes());
+		}
 	}
 	
-	public SparseIndexedVector cloneIncludingIndices(int [] ixs) {
-		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
-		int nl=nixs.length;
-		double[] ndata=new double[nl];
-		int si=0;
-		for (int i=0; i<nl; i++) {
-			int z=index.data[si];
-			if (z==nixs[i]) {
-				ndata[i]=data[si];
-				si++; 
-				if (si>=data.length) break;
-			}
-		}
-		return SparseIndexedVector.wrap(length, nixs, ndata);
+	public void includeIndices(ASparseIndexedVector v) {
+		includeIndices(v.internalIndex());
 	}
 	
 	@Override
@@ -733,25 +539,13 @@ public class SparseIndexedVector extends ASparseVector {
 	}
 
 	@Override
-	public boolean equalsArray(double[] ds, int offset) {
-		double[] data=this.data;
-		int[] ixs=index.data;
-		int n=data.length;
-		if (n==0) return DoubleArrays.isZero(ds, offset, length);
-		int di=0;
-		int i=0;
-		while (di<n) {
-			int t=ixs[di];
-			while (i<t) {
-				if (ds[offset+i]!=0.0) return false;
-				i++;
-			}
-			if (ds[offset+t]!=data[di]) return false;
-			i++;
-			di++;
-		}
-		// check any remaining segment of array
-		return DoubleArrays.isZero(ds, offset+i, length-i);
+	double[] internalData() {
+		return data;
+	}
+
+	@Override
+	Index internalIndex() {
+		return index;
 	}
 
 

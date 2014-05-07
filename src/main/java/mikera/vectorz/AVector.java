@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
@@ -21,6 +20,7 @@ import mikera.randomz.Hash;
 import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ImmutableVector;
+import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
 import mikera.vectorz.impl.Vector0;
@@ -737,6 +737,28 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public final AVector getTransposeView() {return this;}
 	
+	public AVector select(int... inds) {
+		if (isMutable()) {
+			return selectView(inds);
+		} else {
+			return selectClone(inds);
+		}		
+	}
+	
+	public AVector selectView(int... inds) {
+		return IndexedSubVector.wrap(this, inds.clone());
+	}
+	
+	
+	public AVector selectClone(int... inds) {
+		Vector v=Vector.createLength(inds.length);
+		double[] tdata=v.getArray();
+		for (int i=0; i<inds.length; i++) {
+			tdata[i]=get(inds[i]);
+		}
+		return v;
+	}
+	
 	public AMatrix outerProduct(AVector a) {
 		int rc=length();
 		int cc=a.length();
@@ -758,6 +780,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public Scalar innerProduct(AVector v) {
+		if (length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return Scalar.create(dotProduct(v));
 	}
 
@@ -771,34 +794,28 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public AVector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
 		int rc=m.rowCount();
-		if (rc!=length()) throw new VectorzException("Incompatible sizes for inner product: ["+length()+ "] x ["+rc+","+cc+"]");
+		if (rc!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 		Vector r=Vector.createLength(cc);
 		for (int i=0; i<cc; i++) {
-			double y=0.0;
-			for (int j=0; j<rc; j++) {
-				y+=unsafeGet(j)*m.unsafeGet(j,i);
-			}
-			r.unsafeSet(i,y);
+			r.unsafeSet(i,m.getColumn(i).dotProduct(this));
 		}
 		return r;
 	}
 	
 	public AVector innerProduct(AScalar s) {
-		Vector v=toVector();
-		v.scale(s.get());
-		return v;
+		return scaleCopy(s.get());
 	}
 	
 	@Override
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AVector) {
-			return Scalar.create(dotProduct((AVector)a));
+			return innerProduct((AVector)a);
 		} else if (a instanceof AScalar) {
 			return innerProduct((AScalar)a);
 		} else if (a instanceof AMatrix) {
 			return innerProduct((AMatrix)a);
 		} else if (a.dimensionality()<=2) {
-			return innerProduct(Array.create(a));
+			return innerProduct(Arrayz.create(a));
 		}
 		int len=length();
 		if (len!=a.sliceCount()) {
@@ -815,9 +832,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector innerProduct(double a) {
-		AVector result=clone();
-		result.scale(a);
-		return result;
+		return scaleCopy(a);
 	}
 	
 	/**
@@ -1396,6 +1411,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		} else if (a.dimensionality()==1) {
 			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			return addCopy(a.asVector());
+		} else if (a.dimensionality()==0) {
+			return addCopy(a.get());
 		} else {
 			return addCopy(a.broadcastLike(this));
 		}
@@ -1403,6 +1420,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector addCopy(AVector a) {
+		// clone ensures mutability
+		AVector r=this.clone();
+		r.add(a);
+		return r;
+	}
+	
+	public AVector addCopy(double a) {
 		// clone ensures mutability
 		AVector r=this.clone();
 		r.add(a);
@@ -1610,9 +1634,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public boolean isZero() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			if (unsafeGet(i)!=0.0) return false;
+		return isRangeZero(0,length());
+	}
+	
+	/**
+	 * Returns true if a sub-vector range is completely zero.
+	 * 
+	 * Unsafe operation - does not perform bounds checking, results are undefined if sub-vector is out of range
+	 * 
+	 * @param start
+	 * @param length
+	 * @return
+	 */
+	public boolean isRangeZero(int start, int length) {
+		for (int i=0; i<length; i++) {
+			if (unsafeGet(start+i)!=0.0) return false;
 		}
 		return true;
 	}

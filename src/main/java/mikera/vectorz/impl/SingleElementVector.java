@@ -41,6 +41,12 @@ public final class SingleElementVector extends ASparseVector {
 	public boolean isZero() {
 		return value==0.0;
 	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		if (value==0.0) return true;
+		return (start>index)||(start+length<=index);
+	}
 
 	@Override
 	public double magnitude() {

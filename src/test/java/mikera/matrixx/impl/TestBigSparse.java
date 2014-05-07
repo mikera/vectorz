@@ -41,6 +41,22 @@ public class TestBigSparse {
 		assertEquals(49.0,r.elementSum(),0.0);
 	}
 	
+	@Test public void testSparseAdd() {
+		AMatrix m=Matrixx.createSparse(20000,20000);
+		m.add(ZeroMatrix.create(20000, 20000));
+		
+		assertTrue(m.isZero());
+	}
+	
+	@Test public void testSparseInnerProduct() {
+		AMatrix m=Matrixx.createSparse(200000,200000);
+		
+		AMatrix mt=m.getTranspose();
+		AMatrix mmt = m.innerProduct(mt);
+		
+		assertTrue(mmt.isSameShape(m));
+	}
+	
 	@Test public void testBigZeros() {
 		AMatrix m=ZeroMatrix.create(2000000, 2000000);
 		m=m.sparseClone();

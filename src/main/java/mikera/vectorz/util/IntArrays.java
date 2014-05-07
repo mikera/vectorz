@@ -289,5 +289,20 @@ public class IntArrays {
 		return true;
 	}
 
+	public static int[] select(int[] source, int... inds) {
+		int n=inds.length;
+		int[] r=new int[n];
+		for (int i=0; i<n; i++) {
+			r[i]=source[inds[i]];
+		}
+		return r;
+	}
+
+	public static void add(int[] as, int v) {
+		for (int i=0; i<as.length; i++) {
+			as[i]+=v;
+		}
+	}
+
 
 }

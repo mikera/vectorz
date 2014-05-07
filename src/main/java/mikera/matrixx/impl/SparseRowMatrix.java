@@ -4,17 +4,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -89,12 +90,38 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		}
 		return new SparseRowMatrix(rows.clone(), rc, cc);
 	}
+	
+	private AVector ensureMutableRow(int i) {
+		AVector v = data.get(i);
+		if (v ==null) {
+			AVector nv=SparseIndexedVector.createLength(cols);
+			return nv;
+		}
+		if (v.isFullyMutable()) return v;
+		AVector mv=v.mutable();
+		data.put(i, mv);
+		return mv;
+	}
 
 	@Override
 	public AVector getRow(int i) {
 		AVector v = data.get(i);
 		if (v == null) return emptyRow;
 		return v;
+	}
+	
+	@Override
+	public AVector getRowView(int i) {
+		return ensureMutableRow(i);
+	}
+	
+	@Override
+	public boolean isUpperTriangular() {
+		int rc=rowCount();
+		for (int i=1; i<rc; i++) {
+			if (!getRow(i).isRangeZero(0, i)) return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -156,6 +183,42 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	}
 	
 	@Override
+	public void add(AMatrix a) {
+		if (a instanceof SparseRowMatrix) {add((SparseRowMatrix)a); return;}
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			AVector cr=data.get(i);
+			AVector ar=a.getRow(i);
+			if (cr==null) {
+				if (!ar.isZero()) {
+					data.put(i,ar.copy());
+				}
+			} else if (cr.isMutable()) {
+				cr.add(ar);
+			} else {
+				data.put(i,cr.addCopy(ar));
+			}
+		}
+	}
+	
+	public void add(SparseRowMatrix a) {
+		for (Map.Entry<Integer,AVector> e: a.data.entrySet()) {
+			Integer i = e.getKey();
+			AVector cr=data.get(i);
+			AVector ar=e.getValue();
+			if (cr==null) {
+				if (!ar.isZero()) {
+					data.put(i,ar.copy());
+				}
+			} else if (cr.isMutable()) {
+				cr.add(ar);
+			} else {
+				data.put(i,cr.addCopy(ar));
+			}
+		}
+	}
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		for (Entry<Integer, AVector> e : this.data.entrySet()) {
 			AVector v = e.getValue();
@@ -201,16 +264,11 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		if (a instanceof SparseColumnMatrix) {
 			return innerProduct((SparseColumnMatrix) a);
 		}
-		int cc = a.columnCount();
-		Matrix r = Matrix.create(rows, cc);
+		AMatrix r = Matrixx.createSparse(rows, a.columnCount());
 
 		for (Entry<Integer, AVector> eRow : data.entrySet()) {
 			int i = eRow.getKey();
-			AVector row = eRow.getValue();
-			for (int j = 0; j < cc; j++) {
-				double d= row.dotProduct(a.getColumn(j));
-				if (d!=0) r.unsafeSet(i, j, d);
-			}
+			r.replaceRow(i,getRow(i).innerProduct(a));
 		}
 		return r;
 	}
@@ -247,7 +305,8 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 			for (Entry<Integer, AVector> eCol : data.entrySet()) {
 				int j = eCol.getKey();
 				AVector acol = eCol.getValue();
-				r.unsafeSet(i, j, row.dotProduct(acol));
+				double v= row.dotProduct(acol);
+				if (v!=0.0) r.unsafeSet(i, j, v);
 			}
 		}
 		return r;

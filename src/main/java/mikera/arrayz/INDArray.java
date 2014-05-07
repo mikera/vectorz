@@ -33,6 +33,9 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the shape of the array as an array of ints.
+	 * 
+	 * WARNING: May return the internal int[] array describing the shape. Modifying this may cause undefined behaviour.
+	 * If you want to guarantee a new int[] array that can be safely modified, use getShapeClone() instead
 	 */
 	public int[] getShape();
 	
@@ -252,9 +255,16 @@ public interface INDArray extends Cloneable, Serializable {
 	public AVector broadcastLike(AVector target);
 	
 	/**
-	 * Creates a clone of the array, broadcasted if necessary to match the shape of the target
+	 * Creates a mutable clone of the array, broadcasted if necessary to match the shape of the target
 	 */
 	public INDArray broadcastCloneLike(INDArray target);
+	
+	/**
+	 * Creates a copy of the array, broadcasted if necessary to match the shape of the target
+	 * Like broadCastCloneLike, but does not guarantee a mutable clone - hence may be faster
+	 * when used with immutable or specialised arrays
+	 */
+	public INDArray broadcastCopyLike(INDArray target);
 
 	/**
 	 * Returns the specified major slice of this array as a view (slice along dimension 0)

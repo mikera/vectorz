@@ -17,6 +17,7 @@ import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Determinant;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
+import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
@@ -716,12 +717,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void add(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
 
-		if ((cc>5)||(this instanceof IFastRows)) {
+		if ((cc>20)||(this instanceof IFastRows)) {
 			for (int i=0; i<rc; i++) {
 				getRowView(i).add(m.getRow(i));
 			}			
+		} else if ((this instanceof IFastColumns)&&(m instanceof IFastColumns)) {
+			for (int i=0; i<cc; i++) {
+				getColumnView(i).add(m.getColumn(i));
+			}	
 		} else {
 			for (int i=0; i<rc; i++) {
 				for (int j=0; j<cc; j++) {
@@ -1318,6 +1323,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Multiplications.multiply(r, s);
 	}
 	
+	@Override
 	public INDArray innerProduct(INDArray a) {
 		if (a instanceof AVector) {
 			return innerProduct((AVector)a);
@@ -1337,6 +1343,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return SliceArray.create(rl);
 	}
 
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (AVector s:this) {
@@ -1636,7 +1643,21 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
 	public boolean isZero() {
-		return elementsEqual(0.0);
+		if (this instanceof IFastRows) {
+			int rc=rowCount();
+			for (int i=0; i<rc; i++) {
+				if (!getRow(i).isZero()) return false;
+			}
+			return true;
+		} else if (this instanceof IFastColumns) {
+			int cc=columnCount();
+			for (int i=0; i<cc; i++) {
+				if (!getColumn(i).isZero()) return false;
+			}
+			return true;
+		} else {
+			return elementsEqual(0.0);
+		}
 	}
 	
 	/**
@@ -1689,6 +1710,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Returns true if a matrix is symmetric
 	 */
+	@Override
 	public boolean isSymmetric() {
 		int rc=rowCount();
 		int cc=columnCount();
