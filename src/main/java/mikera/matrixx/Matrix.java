@@ -171,26 +171,10 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public Matrix innerProduct(AMatrix a) {
-		// TODO: consider transposing a into packed arrays?
 		if (a instanceof Matrix) { return innerProduct((Matrix) a); }
 		if ((this.columnCount() != a.rowCount())) { throw new IllegalArgumentException(
 				ErrorMessages.mismatch(this, a)); }
 		return Multiplications.multiply(this, a);
-		// int rc=this.rowCount();
-		// int cc=a.columnCount();
-		// int ic=this.columnCount();
-		// Matrix result=Matrix.create(rc,cc);
-		// for (int i=0; i<rc; i++) {
-		// int toffset=ic*i;
-		// for (int j=0; j<cc; j++) {
-		// double acc=0.0;
-		// for (int k=0; k<ic; k++) {
-		// acc+=data[toffset+k]*a.unsafeGet(k, j);
-		// }
-		// result.unsafeSet(i,j,acc);
-		// }
-		// }
-		// return result;
 	}
 
 	@Override
