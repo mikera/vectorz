@@ -155,8 +155,7 @@ public abstract class CholCommon implements IChol {
             if( T.rowCount() != n || T.columnCount() != n )
                 throw new IllegalArgumentException("Unexpected matrix dimension for T.");
 
-            // Already filled with 0s..
-//            CommonOps.fill(T, 0);
+            T.fill(0);
         }
 
         // write the values to T
