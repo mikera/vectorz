@@ -34,6 +34,9 @@ public class Chol extends CholCommon {
     private Matrix B; // row rectangular matrix
 
     private CholHelper chol;
+    
+    // Default block width (taken from EjmlParameters.java)
+    public static int BLOCK_WIDTH = 60;
 
     /**
      * Creates a CholeksyDecomposition capable of decomposing a matrix that is
@@ -45,6 +48,17 @@ public class Chol extends CholCommon {
         super(true);
 
         this.blockWidth = blockWidth;
+
+    }
+    
+    /**
+     * Creates a CholeskyDecomposition capable of decomposing a matrix, taking
+     * default block width = 60
+     */
+    public Chol() {
+        super(true);
+
+        this.blockWidth = BLOCK_WIDTH;
 
     }
 
