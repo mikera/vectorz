@@ -83,6 +83,7 @@ public class Chol extends CholCommon {
         if( n < blockWidth)
 //            B.reshape(0,0, false);
         	B = Matrix.create(0, 0);
+        	
         else
 //            B.reshape(blockWidth,n-blockWidth, false);
         	B = Matrix.create(blockWidth, n-blockWidth);
@@ -110,12 +111,12 @@ public class Chol extends CholCommon {
                 int indexDst = (i+1)*blockWidth* T.columnCount() + i*blockWidth;
 
                 // B = L^(-1) * B
-                solveL_special(chol.getL().data, T,indexSrc,indexDst,B);
+                solveL_special(chol.getL().data, T,indexSrc,indexDst,B, b_numCols);
 
                 int indexL = (i+1)*blockWidth*n + (i+1)*blockWidth;
 
                 // c = c - a^T*a
-                symmRankTranA_sub(B, T,indexL);
+                symmRankTranA_sub(B, T,indexL, b_numCols);
             } else {
                 int width = remainder > 0 ? remainder : blockWidth;
                 if( !chol.decompose(T,(i*blockWidth)* T.columnCount() + i*blockWidth,width) )  return false;
@@ -137,7 +138,8 @@ public class Chol extends CholCommon {
     protected boolean decomposeUpper() {
         throw new RuntimeException("Not implemented.  Do a lower decomposition and transpose it...");
     }
-
+    
+    
     /**
      * This is a variation on the {@link org.ejml.alg.dense.decomposition.TriangularSolver#solveL} function.
      * It grabs the input from the top right row rectangle of the source matrix then writes the results
@@ -151,15 +153,115 @@ public class Chol extends CholCommon {
      * @param B
      */
     public static void solveL_special( final double L[] ,
+    		final Matrix b_src,
+    		final int indexSrc , final int indexDst ,
+    		final Matrix B )
+    {
+    	final double dataSrc[] = b_src.data;
+    	
+    	final double b[]= B.data;
+    	final int m = B.rowCount();
+    	final int n = B.columnCount();
+    	final int widthL = m;
+    	
+//        for( int j = 0; j < n; j++ ) {
+//            for( int i = 0; i < widthL; i++ ) {
+//                double sum = dataSrc[indexSrc+i*b_src.numCols+j];
+//                for( int k=0; k<i; k++ ) {
+//                    sum -= L[i*widthL+k]* b[k*n+j];
+//                }
+//                double val = sum / L[i*widthL+i];
+//                dataSrc[indexDst+j*b_src.numCols+i] = val;
+//                b[i*n+j] = val;
+//            }
+//        }
+    	
+    	for( int j = 0; j < n; j++ ) {
+    		int indexb = j;
+    		int rowL = 0;
+    		
+    		//for( int i = 0; i < widthL; i++
+    		for( int i = 0; i < widthL; i++ ,  indexb += n, rowL += widthL ) {
+    			double sum = dataSrc[indexSrc+i*b_src.columnCount()+j];
+    			
+    			int indexL = rowL;
+    			int endL = indexL + i;
+    			int indexB = j;
+    			//for( int k=0; k<i; k++ ) {
+    			for( ; indexL != endL; indexB += n) {
+    				sum -= L[indexL++]* b[indexB];
+    			}
+    			double val = sum / L[i*widthL+i];
+    			dataSrc[indexDst+j*b_src.columnCount()+i] = val;
+    			b[indexb] = val;
+    		}
+    	}
+    }
+    
+    /**
+     * <p>
+     * Performs this operation:<br>
+     * <br>
+     * c = c - a<sup>T</sup>a <br>
+     * where c is a submatrix.
+     * </p>
+     *
+     * Only the upper triangle is updated.
+     *
+     * @param a A matrix.
+     * @param c A matrix.
+     * @param startIndexC start of the submatrix in c.
+     */
+    public static void symmRankTranA_sub( Matrix a , Matrix c ,
+    		int startIndexC )
+    {
+    	// TODO update so that it doesn't modify/read parts that it shouldn't
+    	final double dataA[] = a.data;
+    	final double dataC[] = c.data;
+    	
+//        for( int i = 0; i < a.numCols; i++ ) {
+//            for( int k = 0; k < a.numRows; k++ ) {
+//                double valA = dataA[k*a.numCols+i];
+//
+//                for( int j = i; j < a.numCols; j++ ) {
+//                    dataC[startIndexC+i*c.numCols+j] -= valA * dataA[k*a.numCols+j];
+//                }
+//            }
+//        }
+    	
+    	final int strideC = c.columnCount() + 1;
+    	for( int i = 0; i < a.columnCount(); i++ ) {
+    		int indexA = i;
+    		int endR = a.columnCount();
+    		
+    		for( int k = 0; k < a.rowCount(); k++ , indexA += a.columnCount() , endR += a.columnCount()) {
+    			int indexC = startIndexC;
+    			final double valA = dataA[indexA];
+    			int indexR = indexA;
+    			
+    			while( indexR < endR ) {
+    				dataC[indexC++] -= valA * dataA[indexR++];
+    			}
+    		}
+    		startIndexC += strideC;
+    	}
+    	
+    }
+    
+    /*
+     * Private version of solveL_special that takes an argument, b_numCols which represents B.numCols
+     * field in DenseMatrix64F in the ejml code
+     */
+    private static void solveL_special( final double L[] ,
                                        final Matrix b_src,
                                        final int indexSrc , final int indexDst ,
-                                       final Matrix B )
+                                       final Matrix B, int b_numCols )
     {
         final double dataSrc[] = b_src.data;
 
         final double b[]= B.data;
         final int m = B.rowCount();
-        final int n = B.columnCount();
+        final int n = b_numCols;
         final int widthL = m;
 
 //        for( int j = 0; j < n; j++ ) {
@@ -196,22 +298,12 @@ public class Chol extends CholCommon {
         }
     }
 
-    /**
-     * <p>
-     * Performs this operation:<br>
-     * <br>
-     * c = c - a<sup>T</sup>a <br>
-     * where c is a submatrix.
-     * </p>
-     *
-     * Only the upper triangle is updated.
-     *
-     * @param a A matrix.
-     * @param c A matrix.
-     * @param startIndexC start of the submatrix in c.
+    /*
+     * Private version of symmRankTranA_sub that takes an argument, b_numCols which represents B.numCols
+     * field in DenseMatrix64F in the ejml code
      */
-    public static void symmRankTranA_sub( Matrix a , Matrix c ,
-                                          int startIndexC )
+    private static void symmRankTranA_sub( Matrix a , Matrix c ,
+                                          int startIndexC, int b_numCols )
     {
         // TODO update so that it doesn't modify/read parts that it shouldn't
         final double dataA[] = a.data;
@@ -228,11 +320,11 @@ public class Chol extends CholCommon {
 //        }
 
         final int strideC = c.columnCount() + 1;
-        for( int i = 0; i < a.columnCount(); i++ ) {
+        for( int i = 0; i < b_numCols; i++ ) {
             int indexA = i;
-            int endR = a.columnCount();
+            int endR = b_numCols;
 
-            for( int k = 0; k < a.rowCount(); k++ , indexA += a.columnCount() , endR += a.columnCount()) {
+            for( int k = 0; k < a.rowCount(); k++ , indexA += b_numCols , endR += b_numCols) {
                 int indexC = startIndexC;
                 final double valA = dataA[indexA];
                 int indexR = indexA;
@@ -245,4 +337,6 @@ public class Chol extends CholCommon {
         }
 
     }
+    
+    
 }
