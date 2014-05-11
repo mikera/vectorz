@@ -109,6 +109,9 @@ public class Chol extends CholCommon {
             numBlocks++;
         }
 
+        /*
+         * In Ejml, DenseMatrix64F has a mutable public field numcols. b_numCols is used here, in place of it.
+         */
 //        B.numCols = n;
         int b_numCols = n;
 
