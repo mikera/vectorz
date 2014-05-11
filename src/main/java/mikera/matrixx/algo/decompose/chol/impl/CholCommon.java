@@ -128,11 +128,6 @@ public abstract class CholCommon implements IChol {
         }
     }
 
-    @Override
-    public boolean inputModified() {
-        return true;
-    }
-
     /**
      * Performs an lower triangular decomposition.
      *

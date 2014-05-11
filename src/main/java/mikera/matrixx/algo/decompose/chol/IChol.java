@@ -77,12 +77,5 @@ public interface IChol {
      */
 	boolean decompose(AMatrix orig);
 	
-	/**
-     * Is the input matrix to {@link #decompose(org.ejml.data.Matrix64F)} is modified during
-     * the decomposition process.
-     *
-     * @return true if the input matrix to decompose() is modified.
-     */
-    public boolean inputModified();
 
 }
