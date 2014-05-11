@@ -18,6 +18,7 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 
 
@@ -56,8 +57,8 @@ class CholHelper {
      * @param n The width of the submatrix that is to be inverted.
      * @return True if it was able to finish the decomposition.
      */
-    public boolean decompose( Matrix mat , int indexStart , int n ) {
-        double m[] = mat.data;
+    public boolean decompose( AMatrix mat , int indexStart , int n ) {
+        double m[] = mat.toMatrix().data;
 
         double el_ii;
         double div_el_ii=0;
@@ -101,7 +102,7 @@ class CholHelper {
      *
      * @return A lower triangular matrix.
      */
-    public Matrix getL() {
+    public AMatrix getL() {
         return L;
     }
 }

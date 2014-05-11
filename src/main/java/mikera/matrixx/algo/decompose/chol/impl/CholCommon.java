@@ -19,6 +19,7 @@
 package mikera.matrixx.algo.decompose.chol.impl;
 
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.chol.IChol;
 
@@ -108,7 +109,7 @@ public abstract class CholCommon implements IChol {
      * @return True if it was able to finish the decomposition.
      */
     @Override
-    public boolean decompose( Matrix mat ) {
+    public boolean decompose( AMatrix mat ) {
         if( mat.rowCount() > maxWidth ) {
             setExpectedMaxSize(mat.rowCount(),mat.columnCount());
         } else if( mat.rowCount() != mat.columnCount() ) {
@@ -117,7 +118,7 @@ public abstract class CholCommon implements IChol {
 
         n = mat.rowCount();
 
-        T = mat;
+        T = mat.toMatrix();
         t = T.data;
 
         if(lower) {
@@ -147,7 +148,7 @@ public abstract class CholCommon implements IChol {
     protected abstract boolean decomposeUpper();
 
     @Override
-    public Matrix getT( Matrix T ) {
+    public AMatrix getT( AMatrix T ) {
         // see if it needs to declare a new matrix or not
         if( T == null ) {
             T = Matrix.create(n,n);
@@ -181,7 +182,7 @@ public abstract class CholCommon implements IChol {
      *
      * @return A lower or upper triangular matrix.
      */
-    public Matrix getT() {
+    public AMatrix getT() {
         return T;
     }
 

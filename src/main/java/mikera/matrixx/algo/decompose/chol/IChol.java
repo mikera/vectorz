@@ -64,7 +64,7 @@ public interface IChol {
      * @param T If not null then the decomposed matrix is written here.
      * @return A lower or upper triangular matrix.
      */
-    public Matrix getT( Matrix T  );
+    public AMatrix getT( AMatrix T  );
 
     /**
      * Computes the decomposition of the input matrix.  Depending on the implementation
@@ -75,7 +75,7 @@ public interface IChol {
      * @param orig The matrix which is being decomposed.  Modification is implementation dependent.
      * @return Returns if it was able to decompose the matrix.
      */
-	boolean decompose(Matrix orig);
+	boolean decompose(AMatrix orig);
 	
 	/**
      * Is the input matrix to {@link #decompose(org.ejml.data.Matrix64F)} is modified during

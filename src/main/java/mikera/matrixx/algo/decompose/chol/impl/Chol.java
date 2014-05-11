@@ -18,6 +18,7 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 
 
@@ -128,7 +129,7 @@ public class Chol extends CholCommon {
                 int indexDst = (i+1)*blockWidth* T.columnCount() + i*blockWidth;
 
                 // B = L^(-1) * B
-                solveL_special(chol.getL().data, T,indexSrc,indexDst,B, b_numCols);
+                solveL_special(chol.getL().toMatrix().data, T,indexSrc,indexDst,B, b_numCols);
 
                 int indexL = (i+1)*blockWidth*n + (i+1)*blockWidth;
 
@@ -170,13 +171,13 @@ public class Chol extends CholCommon {
      * @param B
      */
     public static void solveL_special( final double L[] ,
-    		final Matrix b_src,
+    		final AMatrix b_src,
     		final int indexSrc , final int indexDst ,
-    		final Matrix B )
+    		final AMatrix B )
     {
-    	final double dataSrc[] = b_src.data;
+    	final double dataSrc[] = b_src.toMatrix().data;
     	
-    	final double b[]= B.data;
+    	final double b[]= B.toMatrix().data;
     	final int m = B.rowCount();
     	final int n = B.columnCount();
     	final int widthL = m;
@@ -229,12 +230,12 @@ public class Chol extends CholCommon {
      * @param c A matrix.
      * @param startIndexC start of the submatrix in c.
      */
-    public static void symmRankTranA_sub( Matrix a , Matrix c ,
+    public static void symmRankTranA_sub( AMatrix a , AMatrix c ,
     		int startIndexC )
     {
     	// TODO update so that it doesn't modify/read parts that it shouldn't
-    	final double dataA[] = a.data;
-    	final double dataC[] = c.data;
+    	final double dataA[] = a.toMatrix().data;
+    	final double dataC[] = c.toMatrix().data;
     	
 //        for( int i = 0; i < a.numCols; i++ ) {
 //            for( int k = 0; k < a.numRows; k++ ) {

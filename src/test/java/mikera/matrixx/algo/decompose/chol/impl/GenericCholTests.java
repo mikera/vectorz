@@ -56,7 +56,7 @@ public abstract class GenericCholTests {
         IChol cholesky = create(true);
         assertTrue(cholesky.decompose(A));
 
-        Matrix foundL = cholesky.getT(null);
+        Matrix foundL = cholesky.getT(null).toMatrix();
 
 //        EjmlUnitTests.assertEquals(L,foundL,1e-8);
         assertArrayEquals(L.getElements(),foundL.getElements(), 1e-8);
@@ -79,7 +79,7 @@ public abstract class GenericCholTests {
         IChol cholesky = create(false);
         assertTrue(cholesky.decompose(A));
 
-        Matrix foundR = cholesky.getT(null);
+        Matrix foundR = cholesky.getT(null).toMatrix();
 
         assertArrayEquals(R.getElements(),foundR.getElements(),1e-8);
     }
@@ -112,7 +112,7 @@ public abstract class GenericCholTests {
 
         assertTrue(cholesky.decompose(A));
 
-        Matrix L_null = cholesky.getT(null);
+        Matrix L_null = cholesky.getT(null).toMatrix();
         Matrix L_provided = Matrix.createRandom(3, 3);
         assertTrue( L_provided == cholesky.getT(L_provided));
 
