@@ -37,7 +37,7 @@ public abstract class GenericCholTests {
     boolean canL = true;
     boolean canR = true;
 
-    public abstract IChol create( boolean lower );
+    public abstract CholCommon create( boolean lower );
 
     @Test
     public void testDecomposeL() {
@@ -53,10 +53,10 @@ public abstract class GenericCholTests {
 		        		  {4,5,7}};
         Matrix L = Matrix.create(dataL);
 
-        IChol cholesky = create(true);
-        assertTrue(cholesky.decompose(A));
+        CholCommon cholesky = create(true);
+        assertNotNull(cholesky.decompose(A));
 
-        Matrix foundL = cholesky.getT(null).toMatrix();
+        Matrix foundL = cholesky.getT().toMatrix();
 
 //        EjmlUnitTests.assertEquals(L,foundL,1e-8);
         assertArrayEquals(L.getElements(),foundL.getElements(), 1e-8);
@@ -76,10 +76,10 @@ public abstract class GenericCholTests {
 			      		  {0,0,7}};
         Matrix R = Matrix.create(dataR);
 
-        IChol cholesky = create(false);
-        assertTrue(cholesky.decompose(A));
-
-        Matrix foundR = cholesky.getT(null).toMatrix();
+        CholCommon cholesky = create(false);
+        
+        assertNotNull(cholesky.decompose(A));
+        Matrix foundR = cholesky.getT().toMatrix();
 
         assertArrayEquals(R.getElements(),foundR.getElements(),1e-8);
     }
@@ -93,30 +93,8 @@ public abstract class GenericCholTests {
     			         {-1,-2}};
         Matrix A = Matrix.create(dataA);
 
-        IChol alg = create(true);
-        assertFalse(alg.decompose(A));
-    }
-
-    /**
-     * The correctness of getT(null) has been tested else where effectively.  This
-     * checks to see if it handles the case where an input is provided correctly.
-     */
-    @Test
-    public void getT() {
-    	double[][] dataA = {{1, 2, 4}, 
-						 {2, 13, 23},
-						 {4, 23, 90}};
-    	Matrix A = Matrix.create(dataA);
-
-        IChol cholesky = create(true);
-
-        assertTrue(cholesky.decompose(A));
-
-        Matrix L_null = cholesky.getT(null).toMatrix();
-        Matrix L_provided = Matrix.createRandom(3, 3);
-        assertTrue( L_provided == cholesky.getT(L_provided));
-
-        assertArrayEquals(L_null.getElements(),L_provided.getElements(),1e-5);
+        CholCommon alg = create(true);
+        assertNull(alg.decompose(A));
     }
 
 }

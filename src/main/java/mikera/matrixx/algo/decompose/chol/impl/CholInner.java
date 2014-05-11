@@ -18,6 +18,8 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
+import mikera.matrixx.algo.decompose.chol.IChol;
+
 /**
  * <p>
  * This implementation of a Cholesky decomposition using the inner-product form.
@@ -39,7 +41,7 @@ public class CholInner extends CholCommon {
     }
 
     @Override
-    protected boolean decomposeLower() {
+    protected IChol decomposeLower() {
         double el_ii;
         double div_el_ii=0;
 
@@ -59,7 +61,7 @@ public class CholInner extends CholCommon {
                 if( i == j ) {
                     // is it positive-definite?
                     if( sum <= 0.0 )
-                        return false;
+                        return null;
 
                     el_ii = Math.sqrt(sum);
                     t[i*n+i] = el_ii;
@@ -77,11 +79,11 @@ public class CholInner extends CholCommon {
             }
         }
 
-        return true;
+        return this;
     }
 
     @Override
-    protected boolean decomposeUpper() {
+    protected IChol decomposeUpper() {
         double el_ii;
         double div_el_ii=0;
 
@@ -96,7 +98,7 @@ public class CholInner extends CholCommon {
                 if( i == j ) {
                     // is it positive-definite?
                     if( sum <= 0.0 )
-                        return false;
+                        return null;
 
                     // I suspect that the sqrt is slowing this down relative to MTJ
                     el_ii = Math.sqrt(sum);
@@ -114,6 +116,6 @@ public class CholInner extends CholCommon {
             }
         }
 
-        return true;
+        return this;
     }
 }

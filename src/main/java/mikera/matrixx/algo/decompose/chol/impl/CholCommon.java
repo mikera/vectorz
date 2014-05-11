@@ -108,8 +108,7 @@ public abstract class CholCommon implements IChol {
      * @param mat A symmetric positive definite matrix with n <= widthMax.
      * @return True if it was able to finish the decomposition.
      */
-    @Override
-    public boolean decompose( AMatrix mat ) {
+    public IChol decompose( AMatrix mat ) {
         if( mat.rowCount() > maxWidth ) {
             setExpectedMaxSize(mat.rowCount(),mat.columnCount());
         } else if( mat.rowCount() != mat.columnCount() ) {
@@ -133,44 +132,14 @@ public abstract class CholCommon implements IChol {
      *
      * @return true if the matrix was decomposed.
      */
-    protected abstract boolean decomposeLower();
+    protected abstract IChol decomposeLower();
 
     /**
      * Performs an upper triangular decomposition.
      *
      * @return true if the matrix was decomposed.
      */
-    protected abstract boolean decomposeUpper();
-
-    @Override
-    public AMatrix getT( AMatrix T ) {
-        // see if it needs to declare a new matrix or not
-        if( T == null ) {
-            T = Matrix.create(n,n);
-        } else {
-            if( T.rowCount() != n || T.columnCount() != n )
-                throw new IllegalArgumentException("Unexpected matrix dimension for T.");
-
-            T.fill(0);
-        }
-
-        // write the values to T
-        if( lower ) {
-            for( int i = 0; i < n; i++ ) {
-                for( int j = 0; j <= i; j++ ) {
-                    T.unsafeSet(i,j,this.T.unsafeGet(i,j));
-                }
-            }
-        } else {
-            for( int i = 0; i < n; i++ ) {
-                for( int j = i; j < n; j++ ) {
-                    T.unsafeSet(i,j,this.T.unsafeGet(i,j));
-                }
-            }
-        }
-
-        return T;
-    }
+    protected abstract IChol decomposeUpper();
 
     /**
      * Returns the triangular matrix from the decomposition.
@@ -178,7 +147,7 @@ public abstract class CholCommon implements IChol {
      * @return A lower or upper triangular matrix.
      */
     public AMatrix getT() {
-        return T;
+        return Matrix.create(T);
     }
 
     public double[] _getVV() {

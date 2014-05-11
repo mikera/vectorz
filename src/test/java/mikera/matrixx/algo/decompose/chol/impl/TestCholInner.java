@@ -27,7 +27,7 @@ import mikera.matrixx.algo.decompose.chol.IChol;
 public class TestCholInner extends GenericCholTests {
 
     @Override
-    public IChol create(boolean lower) {
+    public CholCommon create(boolean lower) {
         return new CholInner(lower);
     }
 

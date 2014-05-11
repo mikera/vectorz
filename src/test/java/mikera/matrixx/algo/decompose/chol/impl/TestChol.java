@@ -37,7 +37,7 @@ public class TestChol extends GenericCholTests {
     }
 
     @Override
-    public IChol create(boolean lower) {
+    public CholCommon create(boolean lower) {
         if( !lower )
             throw new IllegalArgumentException("Doesn't support upper form");
 

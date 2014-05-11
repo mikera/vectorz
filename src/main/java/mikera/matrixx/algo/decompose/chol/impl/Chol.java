@@ -20,6 +20,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.chol.IChol;
 
 
 
@@ -93,7 +94,7 @@ public class Chol extends CholCommon {
      * @return True if it was able to finish the decomposition.
      */
     @Override
-    protected boolean decomposeLower() {
+    protected IChol decomposeLower() {
 
         if( n < blockWidth)
 //            B.reshape(0,0, false);
@@ -123,7 +124,7 @@ public class Chol extends CholCommon {
 //            if( B.numCols > 0 ) {
             if( b_numCols > 0 ) {
                 // apply cholesky to the current block
-                if( !chol.decompose(T,(i*blockWidth)* T.columnCount() + i*blockWidth,blockWidth) )  return false;
+                if( !chol.decompose(T,(i*blockWidth)* T.columnCount() + i*blockWidth,blockWidth) )  return null;
 
                 int indexSrc = i*blockWidth* T.columnCount() + (i+1)*blockWidth;
                 int indexDst = (i+1)*blockWidth* T.columnCount() + i*blockWidth;
@@ -137,7 +138,7 @@ public class Chol extends CholCommon {
                 symmRankTranA_sub(B, T,indexL, b_numCols);
             } else {
                 int width = remainder > 0 ? remainder : blockWidth;
-                if( !chol.decompose(T,(i*blockWidth)* T.columnCount() + i*blockWidth,width) )  return false;
+                if( !chol.decompose(T,(i*blockWidth)* T.columnCount() + i*blockWidth,width) )  return null;
             }
         }
 
@@ -149,11 +150,11 @@ public class Chol extends CholCommon {
             }
         }
 
-        return true;
+        return this;
     }
 
     @Override
-    protected boolean decomposeUpper() {
+    protected IChol decomposeUpper() {
         throw new RuntimeException("Not implemented.  Do a lower decomposition and transpose it...");
     }
     

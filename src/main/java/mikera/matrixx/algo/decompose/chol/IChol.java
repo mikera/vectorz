@@ -55,27 +55,8 @@ public interface IChol {
      * <p>
      * Returns the triangular matrix from the decomposition.
      * </p>
-     *
-     * <p>
-     * If an input is provided that matrix is used to write the results to.
-     * Otherwise a new matrix is created and the results written to it.
-     * </p>
-     *
-     * @param T If not null then the decomposed matrix is written here.
      * @return A lower or upper triangular matrix.
      */
-    public AMatrix getT( AMatrix T  );
-
-    /**
-     * Computes the decomposition of the input matrix.  Depending on the implementation
-     * the input matrix might be stored internally or modified.  If it is modified then
-     * the function {@link #inputModified()} will return true and the matrix should not be
-     * modified until the decomposition is no longer needed.
-     *
-     * @param orig The matrix which is being decomposed.  Modification is implementation dependent.
-     * @return Returns if it was able to decompose the matrix.
-     */
-	boolean decompose(AMatrix orig);
-	
+    public AMatrix getT();
 
 }
