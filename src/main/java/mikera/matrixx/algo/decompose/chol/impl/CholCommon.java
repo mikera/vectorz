@@ -147,7 +147,7 @@ public abstract class CholCommon implements IChol {
      * @return A lower or upper triangular matrix.
      */
     public AMatrix getT() {
-        return Matrix.create(T);
+        return T;
     }
 
     public double[] _getVV() {
