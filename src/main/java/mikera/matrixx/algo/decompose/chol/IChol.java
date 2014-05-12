@@ -41,22 +41,21 @@ import mikera.matrixx.Matrix;
  * @author Peter Abeles
  */
 public interface IChol {
-
-    /**
-     * If true the decomposition was for a lower triangular matrix.
-     * If false it was for an upper triangular matrix.
-     *
-     * @return True if lower, false if upper.
-     */
-    public boolean isLower();
-
+	
+	/**
+	 * <p>
+	 * Returns the lower triangular matrix from the decomposition.
+	 * </p>
+	 * @return A lower triangular matrix.
+	 */
+	public AMatrix getL();
 
     /**
      * <p>
-     * Returns the triangular matrix from the decomposition.
+     * Returns the upper triangular matrix from the decomposition.
      * </p>
-     * @return A lower or upper triangular matrix.
+     * @return A upper triangular matrix.
      */
-    public AMatrix getT();
+    public AMatrix getU();
 
 }

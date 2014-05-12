@@ -33,11 +33,6 @@ import mikera.matrixx.algo.decompose.chol.IChol;
 public class CholInner extends CholCommon {
 
     public CholInner() {
-        super(true);
-    }
-
-    public CholInner( boolean lower) {
-        super(lower);
     }
 
     @Override
@@ -75,43 +70,6 @@ public class CholInner extends CholCommon {
         // zero the top right corner.
         for( int i = 0; i < n; i++ ) {
             for( int j = i+1; j < n; j++ ) {
-                t[i*n+j] = 0.0;
-            }
-        }
-
-        return this;
-    }
-
-    @Override
-    protected IChol decomposeUpper() {
-        double el_ii;
-        double div_el_ii=0;
-
-        for( int i = 0; i < n; i++ ) {
-            for( int j = i; j < n; j++ ) {
-                double sum = t[i*n+j];
-
-                for( int k = 0; k < i; k++ ) {
-                    sum -= t[k*n+i]* t[k*n+j];
-                }
-
-                if( i == j ) {
-                    // is it positive-definite?
-                    if( sum <= 0.0 )
-                        return null;
-
-                    // I suspect that the sqrt is slowing this down relative to MTJ
-                    el_ii = Math.sqrt(sum);
-                    t[i*n+i] = el_ii;
-                    div_el_ii = 1.0/el_ii;
-                } else {
-                    t[i*n+j] = sum*div_el_ii;
-                }
-            }
-        }
-        // zero the lower left corner.
-        for( int i = 0; i < n; i++ ) {
-            for( int j = 0; j < i; j++ ) {
                 t[i*n+j] = 0.0;
             }
         }

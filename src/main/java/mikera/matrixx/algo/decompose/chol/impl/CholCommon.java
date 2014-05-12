@@ -61,17 +61,11 @@ public abstract class CholCommon implements IChol {
     // tempoary variable used by various functions
     protected double vv[];
 
-    // is it a lower triangular matrix or an upper triangular matrix
-    protected boolean lower;
-
     /**
-     * Creates a CholeksyDecomposition capable of decompositong a matrix that is
+     * Creates a CholeksyDecomposition capable of decomposing a matrix that is
      * n by n, where n is the width.
-     *
-     * @param lower should a lower or upper triangular matrix be used.
      */
-    public CholCommon( boolean lower ) {
-        this.lower = lower;
+    public CholCommon() {
     }
 
     public void setExpectedMaxSize( int numRows , int numCols ) {
@@ -82,17 +76,6 @@ public abstract class CholCommon implements IChol {
         this.maxWidth = numCols;
 
         this.vv = new double[maxWidth];
-    }
-
-    /**
-     * If true the decomposition was for a lower triangular matrix.
-     * If false it was for an upper triangular matrix.
-     *
-     * @return True if lower, false if upper.
-     */
-    @Override
-    public boolean isLower() {
-        return lower;
     }
 
     /**
@@ -120,34 +103,30 @@ public abstract class CholCommon implements IChol {
         T = mat.toMatrix();
         t = T.data;
 
-        if(lower) {
-            return decomposeLower();
-        } else {
-            return decomposeUpper();
-        }
+        return decomposeLower();
     }
 
     /**
      * Performs an lower triangular decomposition.
-     *
-     * @return true if the matrix was decomposed.
      */
     protected abstract IChol decomposeLower();
 
     /**
-     * Performs an upper triangular decomposition.
+     * Returns the lower triangular matrix from the decomposition.
      *
-     * @return true if the matrix was decomposed.
+     * @return A lower triangular matrix.
      */
-    protected abstract IChol decomposeUpper();
+    public AMatrix getL() {
+    	return T;
+    }
 
     /**
-     * Returns the triangular matrix from the decomposition.
+     * Returns the upper triangular matrix from the decomposition.
      *
-     * @return A lower or upper triangular matrix.
+     * @return An upper triangular matrix.
      */
-    public AMatrix getT() {
-        return T;
+    public AMatrix getU() {
+        return T.getTranspose();
     }
 
     public double[] _getVV() {

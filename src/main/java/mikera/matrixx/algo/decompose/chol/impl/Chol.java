@@ -47,7 +47,7 @@ public class Chol extends CholCommon {
      * @param blockWidth The width of a block.
      */
     public Chol( int blockWidth ) {
-        super(true);
+        super();
 
         this.blockWidth = blockWidth;
 
@@ -58,7 +58,7 @@ public class Chol extends CholCommon {
      * default block width = 60
      */
     public Chol() {
-        super(true);
+        super();
 
         this.blockWidth = BLOCK_WIDTH;
 
@@ -152,12 +152,6 @@ public class Chol extends CholCommon {
 
         return this;
     }
-
-    @Override
-    protected IChol decomposeUpper() {
-        throw new RuntimeException("Not implemented.  Do a lower decomposition and transpose it...");
-    }
-    
     
     /**
      * This is a variation on the {@link org.ejml.alg.dense.decomposition.TriangularSolver#solveL} function.

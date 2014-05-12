@@ -37,7 +37,7 @@ public abstract class GenericCholTests {
     boolean canL = true;
     boolean canR = true;
 
-    public abstract CholCommon create( boolean lower );
+    public abstract CholCommon create();
 
     @Test
     public void testDecomposeL() {
@@ -53,10 +53,10 @@ public abstract class GenericCholTests {
 		        		  {4,5,7}};
         Matrix L = Matrix.create(dataL);
 
-        CholCommon cholesky = create(true);
+        CholCommon cholesky = create();
         assertNotNull(cholesky.decompose(A));
 
-        Matrix foundL = cholesky.getT().toMatrix();
+        Matrix foundL = cholesky.getL().toMatrix();
 
 //        EjmlUnitTests.assertEquals(L,foundL,1e-8);
         assertArrayEquals(L.getElements(),foundL.getElements(), 1e-8);
@@ -76,10 +76,10 @@ public abstract class GenericCholTests {
 			      		  {0,0,7}};
         Matrix R = Matrix.create(dataR);
 
-        CholCommon cholesky = create(false);
+        CholCommon cholesky = create();
         
         assertNotNull(cholesky.decompose(A));
-        Matrix foundR = cholesky.getT().toMatrix();
+        Matrix foundR = cholesky.getU().toMatrix();
 
         assertArrayEquals(R.getElements(),foundR.getElements(),1e-8);
     }
@@ -93,7 +93,7 @@ public abstract class GenericCholTests {
     			         {-1,-2}};
         Matrix A = Matrix.create(dataA);
 
-        CholCommon alg = create(true);
+        CholCommon alg = create();
         assertNull(alg.decompose(A));
     }
 
