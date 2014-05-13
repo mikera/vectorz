@@ -85,7 +85,7 @@ public abstract class CholeskyCommon implements ICholesky {
      *
      * <p>
      * If the matrix is not positive definite then this function will return
-     * false since it can't complete its computations.  Not all errors will be
+     * null since it can't complete its computations.  Not all errors will be
      * found.  This is an efficient way to check for positive definiteness.
      * </p>
      * @param mat A symmetric positive definite matrix with n <= widthMax.
