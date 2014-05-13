@@ -178,9 +178,6 @@ public class CholSolver {
      */
     public AMatrix invert() {
     	Matrix inv = Matrix.create(numRows, numCols);
-    	if( inv.rowCount() != n || inv.columnCount() != n ) {
-            throw new RuntimeException("Unexpected matrix dimension");
-        }
 
         double a[] = inv.data;
 
