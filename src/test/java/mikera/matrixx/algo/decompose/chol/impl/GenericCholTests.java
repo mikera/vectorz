@@ -54,9 +54,10 @@ public abstract class GenericCholTests {
         Matrix L = Matrix.create(dataL);
 
         CholCommon cholesky = create();
-        assertNotNull(cholesky.decompose(A));
+        IChol ans;
+        assertNotNull(ans = cholesky.decompose(A));
 
-        Matrix foundL = cholesky.getL().toMatrix();
+        Matrix foundL = ans.getL().toMatrix();
 
 //        EjmlUnitTests.assertEquals(L,foundL,1e-8);
         assertArrayEquals(L.getElements(),foundL.getElements(), 1e-8);
