@@ -141,7 +141,7 @@ public class CholSolver {
      * @param B A matrix that is n by m.  Not modified.
      * @param X An n by m matrix where the solution is writen to.  Modified.
      */
-    public AMatrix solve( AMatrix B) {
+    public AMatrix solve(AMatrix B) {
     	Matrix X = Matrix.create(B.rowCount(), B.columnCount());
         if( B.columnCount() != X.columnCount() && B.rowCount() != n && X.rowCount() != n) {
             throw new IllegalArgumentException("Unexpected matrix size");
@@ -178,6 +178,9 @@ public class CholSolver {
      */
     public AMatrix invert() {
     	Matrix inv = Matrix.create(numRows, numCols);
+    	if( inv.rowCount() != n || inv.columnCount() != n ) {
+            throw new RuntimeException("Unexpected matrix dimension");
+        }
 
         double a[] = inv.data;
 
