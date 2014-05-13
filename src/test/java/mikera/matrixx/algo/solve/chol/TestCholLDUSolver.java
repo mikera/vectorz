@@ -46,7 +46,7 @@ public class TestCholLDUSolver {
 //		Matrix x = Matrix.createRandom(3, 1);
 		Matrix x;
 
-        CholLDUSolver solver = new CholLDUSolver();
+        CholeskyLDUSolver solver = new CholeskyLDUSolver();
         assertTrue(solver.setA(A));
         Matrix A_inv_result = solver.invert().toMatrix();
         x = solver.solve(b).toMatrix();

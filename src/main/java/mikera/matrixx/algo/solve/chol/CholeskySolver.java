@@ -20,25 +20,25 @@ package mikera.matrixx.algo.solve.chol;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.impl.CholCommon;
+import mikera.matrixx.algo.decompose.chol.impl.CholeskyCommon;
 import mikera.matrixx.algo.decompose.TriangularSolver;
 
 
 /**
  * @author Peter Abeles
  */
-public class CholSolver {
+public class CholeskySolver {
 
 	protected Matrix A;
     protected int numRows;
     protected int numCols;
     
-    CholCommon decomp;
+    CholeskyCommon decomp;
     int n;
     double vv[];
     double t[];
 
-    public CholSolver( CholCommon decomp ) {
+    public CholeskySolver( CholeskyCommon decomp ) {
         this.decomp = decomp;
     }
 

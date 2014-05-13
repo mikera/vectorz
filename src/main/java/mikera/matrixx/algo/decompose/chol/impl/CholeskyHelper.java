@@ -30,7 +30,7 @@ import mikera.matrixx.Matrix;
  *
  * @author Peter Abeles
  */
-class CholHelper {
+class CholeskyHelper {
 
     // the decomposed matrix
     private Matrix L;
@@ -42,7 +42,7 @@ class CholHelper {
      *
      * @param widthMax The maximum width of a matrix that can be processed.
      */
-    public CholHelper(int widthMax ) {
+    public CholeskyHelper(int widthMax ) {
 
         this.L = Matrix.create(widthMax,widthMax);
         this.el = L.data;

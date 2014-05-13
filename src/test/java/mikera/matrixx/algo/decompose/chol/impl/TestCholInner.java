@@ -26,8 +26,8 @@ package mikera.matrixx.algo.decompose.chol.impl;
 public class TestCholInner extends GenericCholTests {
 
     @Override
-    public CholCommon create() {
-        return new CholInner();
+    public CholeskyCommon create() {
+        return new CholeskyInner();
     }
 
 }

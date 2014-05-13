@@ -18,7 +18,7 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
-import mikera.matrixx.algo.decompose.chol.IChol;
+import mikera.matrixx.algo.decompose.chol.ICholesky;
 
 /**
  * <p>
@@ -30,13 +30,13 @@ import mikera.matrixx.algo.decompose.chol.IChol;
  *
  * @author Peter Abeles
  */
-public class CholInner extends CholCommon {
+public class CholeskyInner extends CholeskyCommon {
 
-    public CholInner() {
+    public CholeskyInner() {
     }
 
     @Override
-    protected IChol decomposeLower() {
+    protected ICholesky decomposeLower() {
         double el_ii;
         double div_el_ii=0;
 

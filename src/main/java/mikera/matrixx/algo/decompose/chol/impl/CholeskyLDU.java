@@ -20,7 +20,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholLDU;
+import mikera.matrixx.algo.decompose.chol.ICholeskyLDU;
 import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 
@@ -42,7 +42,7 @@ import mikera.matrixx.impl.DiagonalMatrix;
  *
  * @author Peter Abeles
  */
-public class CholLDU implements ICholLDU {
+public class CholeskyLDU implements ICholeskyLDU {
 
     // it can decompose a matrix up to this width
     private int maxWidth;
@@ -86,7 +86,7 @@ public class CholLDU implements ICholLDU {
      * @param mat A symetric n by n positive definite matrix.
      * @return True if it was able to finish the decomposition.
      */
-    public ICholLDU decompose( AMatrix mat ) {
+    public ICholeskyLDU decompose( AMatrix mat ) {
         if( mat.rowCount() > maxWidth ) {
             setExpectedMaxSize(mat.rowCount(),mat.columnCount());
         } else if( mat.rowCount() != mat.columnCount() ) {

@@ -21,7 +21,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.IChol;
+import mikera.matrixx.algo.decompose.chol.ICholesky;
 
 /**
  *
@@ -46,7 +46,7 @@ import mikera.matrixx.algo.decompose.chol.IChol;
  *
  * @author Peter Abeles
  */
-public abstract class CholCommon implements IChol {
+public abstract class CholeskyCommon implements ICholesky {
 
     // it can decompose a matrix up to this width
     protected int maxWidth=-1;
@@ -65,7 +65,7 @@ public abstract class CholCommon implements IChol {
      * Creates a CholeksyDecomposition capable of decomposing a matrix that is
      * n by n, where n is the width.
      */
-    public CholCommon() {
+    public CholeskyCommon() {
     }
 
     public void setExpectedMaxSize( int numRows , int numCols ) {
@@ -91,7 +91,7 @@ public abstract class CholCommon implements IChol {
      * @param mat A symmetric positive definite matrix with n <= widthMax.
      * @return True if it was able to finish the decomposition.
      */
-    public IChol decompose( AMatrix mat ) {
+    public ICholesky decompose( AMatrix mat ) {
         if( mat.rowCount() > maxWidth ) {
             setExpectedMaxSize(mat.rowCount(),mat.columnCount());
         } else if( mat.rowCount() != mat.columnCount() ) {
@@ -109,7 +109,7 @@ public abstract class CholCommon implements IChol {
     /**
      * Performs an lower triangular decomposition.
      */
-    protected abstract IChol decomposeLower();
+    protected abstract ICholesky decomposeLower();
 
     /**
      * Returns the lower triangular matrix from the decomposition.

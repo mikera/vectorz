@@ -20,7 +20,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.IChol;
+import mikera.matrixx.algo.decompose.chol.ICholesky;
 
 
 
@@ -30,12 +30,12 @@ import mikera.matrixx.algo.decompose.chol.IChol;
  *
  * @author Peter Abeles
  */
-public class Chol extends CholCommon {
+public class Cholesky extends CholeskyCommon {
 
     private int blockWidth; // how wide the blocks should be
     private Matrix B; // row rectangular matrix
 
-    private CholHelper chol;
+    private CholeskyHelper chol;
     
     // Default block width (taken from EjmlParameters.java)
     public static int BLOCK_WIDTH = 60;
@@ -46,7 +46,7 @@ public class Chol extends CholCommon {
      *
      * @param blockWidth The width of a block.
      */
-    public Chol( int blockWidth ) {
+    public Cholesky( int blockWidth ) {
         super();
 
         this.blockWidth = blockWidth;
@@ -57,7 +57,7 @@ public class Chol extends CholCommon {
      * Creates a CholeskyDecomposition capable of decomposing a matrix, taking
      * default block width = 60
      */
-    public Chol() {
+    public Cholesky() {
         super();
 
         this.blockWidth = BLOCK_WIDTH;
@@ -78,7 +78,7 @@ public class Chol extends CholCommon {
         else
             B = Matrix.create(blockWidth,maxWidth);
 
-        chol = new CholHelper(blockWidth);
+        chol = new CholeskyHelper(blockWidth);
     }
 
     /**
@@ -94,7 +94,7 @@ public class Chol extends CholCommon {
      * @return True if it was able to finish the decomposition.
      */
     @Override
-    protected IChol decomposeLower() {
+    protected ICholesky decomposeLower() {
 
         if( n < blockWidth)
 //            B.reshape(0,0, false);

@@ -29,7 +29,7 @@ public class TestChol extends GenericCholTests {
     }
 
     @Override
-    public CholCommon create() {
-        return new Chol();
+    public CholeskyCommon create() {
+        return new Cholesky();
     }
 }
