@@ -21,7 +21,7 @@ package mikera.matrixx.algo.solve.chol;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.chol.impl.CholCommon;
-import mikera.matrixx.algo.decompose.TriangularSolver;;
+import mikera.matrixx.algo.decompose.TriangularSolver;
 
 
 /**

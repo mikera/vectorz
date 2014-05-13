@@ -18,8 +18,6 @@
 
 package mikera.matrixx.algo.solve.chol;
 
-import java.util.Arrays;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.TriangularSolver;

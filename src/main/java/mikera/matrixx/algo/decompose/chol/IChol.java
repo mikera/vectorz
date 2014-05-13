@@ -19,7 +19,6 @@
 package mikera.matrixx.algo.decompose.chol;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 
 
 /**

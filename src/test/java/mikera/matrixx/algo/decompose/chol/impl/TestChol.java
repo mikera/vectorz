@@ -18,14 +18,6 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
-import mikera.matrixx.algo.decompose.chol.IChol;
-
-import org.junit.Test;
-
-
-//import static org.ejml.alg.dense.decomposition.CheckDecompositionInterface.checkModifiedInput;
-import static org.junit.Assert.assertTrue;
-
 
 /**
  * @author Peter Abeles

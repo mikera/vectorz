@@ -18,7 +18,6 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
-import mikera.matrixx.algo.decompose.chol.IChol;
 
 
 /**
