@@ -71,8 +71,8 @@ public class Cholesky extends CholeskyCommon {
      * null since it can't complete its computations.  Not all errors will be
      * found.  This is an efficient way to check for positive definiteness.
      * </p>
-     * @param mat A symmetric positive definite matrix with n <= widthMax.
-     * @return True if it was able to finish the decomposition.
+     * @param mat A symmetric positive definite matrix
+     * @return CholeskyResult if decomposition is successful, null otherwise
      */
     @Override
     public CholeskyResult decompose( AMatrix mat ) {
@@ -103,10 +103,10 @@ public class Cholesky extends CholeskyCommon {
      *
      * <p>
      * If the matrix is not positive definite then this function will return
-     * false since it can't complete its computations.  Not all errors will be
+     * null since it can't complete its computations.  Not all errors will be
      * found.
      * </p>
-     * @return True if it was able to finish the decomposition.
+     * @return CholeskyResult if decomposition is successful, null otherwise
      */
     @Override
     protected CholeskyResult decomposeLower() {

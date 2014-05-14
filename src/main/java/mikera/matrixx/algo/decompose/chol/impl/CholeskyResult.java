@@ -21,16 +21,34 @@ public class CholeskyResult implements ICholeskyLDU {
 		this.U = U;
 	}
 
+	/**
+	 * <p>
+	 * Returns the lower triangular matrix from the decomposition.
+	 * </p>
+	 * @return A lower triangular matrix.
+	 */
 	@Override
 	public AMatrix getL() {
 		return L;
 	}
 
+	/**
+	 * <p>
+	 * Returns the upper triangular matrix from the decomposition.
+	 * </p>
+	 * @return An upper triangular matrix.
+	 */
 	@Override
 	public AMatrix getU() {
 		return U;
 	}
 
+	/**
+	 * <p>
+	 * Returns the diagonal matrix from the decomposition.
+	 * </p>
+	 * @return A diagonal matrix.
+	 */
 	@Override
 	public ADiagonalMatrix getD() {
 		return D;

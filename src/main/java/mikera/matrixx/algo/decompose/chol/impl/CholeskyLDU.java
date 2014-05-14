@@ -64,11 +64,11 @@ public class CholeskyLDU {
      *
      * <p>
      * If the matrix is not positive definite then this function will return
-     * false since it can't complete its computations.  Not all errors will be
+     * null since it can't complete its computations.  Not all errors will be
      * found.
      * </p>
      * @param mat A symetric n by n positive definite matrix.
-     * @return True if it was able to finish the decomposition.
+     * @return CholeskyResult if decomposition is successful, null otherwise.
      */
     public CholeskyResult decompose( AMatrix mat ) {
         if( mat.rowCount() != mat.columnCount() ) {
