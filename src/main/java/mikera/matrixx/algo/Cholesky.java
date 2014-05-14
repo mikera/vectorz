@@ -2,6 +2,9 @@ package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
+import mikera.matrixx.algo.decompose.chol.ICholesky;
+import mikera.matrixx.algo.decompose.chol.impl.CholeskyResult;
 import mikera.util.Maths;
 
 /**
@@ -26,11 +29,11 @@ public class Cholesky {
 	 * @param a Any symmetric, positive definite matrix
 	 * @return The decomposition result
 	 */
-	public static final Matrix decompose(AMatrix a) {
+	public static final ICholesky decompose(AMatrix a) {
 		return decompose(Matrix.create(a));
 	}
 	
-	public static final Matrix decompose(Matrix a) {
+	public static final ICholesky decompose(Matrix a) {
 		if (!a.isSquare()) throw new IllegalArgumentException("Matrix must be square for Cholesky decomposition");
 		int n=a.rowCount();
 		
@@ -56,6 +59,7 @@ public class Cholesky {
 			u.set(i,i,uii);
 		}
 		
-		return u;
+		AMatrix L = Matrixx.extractLowerTriangular(u);
+		return new CholeskyResult(L);
 	}
 }

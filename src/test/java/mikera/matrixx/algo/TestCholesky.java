@@ -14,7 +14,7 @@ public class TestCholesky {
 		AMatrix a = z.innerProduct(z.getTranspose()); // should get a symmetric positive definite matrix!
 		
 		//System.out.println(a.toString());
-		AMatrix l=Matrixx.extractLowerTriangular(Cholesky.decompose(a));
+		AMatrix l=Cholesky.decompose(a).getL();
 		//System.out.println(l.toString());
 		assertTrue(l.isLowerTriangular());
 		
