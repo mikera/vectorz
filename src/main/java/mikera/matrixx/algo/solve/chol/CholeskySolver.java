@@ -21,6 +21,7 @@ package mikera.matrixx.algo.solve.chol;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.chol.impl.CholeskyCommon;
+import mikera.matrixx.algo.decompose.chol.impl.CholeskyResult;
 import mikera.matrixx.algo.decompose.TriangularSolver;
 
 
@@ -33,10 +34,11 @@ public class CholeskySolver {
     protected int numRows;
     protected int numCols;
     
-    CholeskyCommon decomp;
-    int n;
-    double vv[];
-    double t[];
+    private CholeskyCommon decomp;
+    private CholeskyResult ans;
+    private int n;
+    private double vv[];
+    private double t[];
 
     public CholeskySolver( CholeskyCommon decomp ) {
         this.decomp = decomp;
@@ -50,11 +52,12 @@ public class CholeskySolver {
         this.A = Matrix.create(_A);
         this.numRows = A.rowCount();
         this.numCols = A.columnCount();
-
-        if( decomp.decompose(A) != null ){
+        
+        ans = decomp.decompose(A);
+        if( ans != null ){
             n = A.columnCount();
             vv = decomp._getVV();
-            t = decomp.getL().toMatrix().data;
+            t = ans.getL().toMatrix().data;
             return true;
         } else {
             return false;
@@ -68,7 +71,7 @@ public class CholeskySolver {
 //    }
 
     public double quality() {
-        return qualityTriangular(decomp.getL().toMatrix());
+        return qualityTriangular(ans.getL().toMatrix());
     }
     
     /**

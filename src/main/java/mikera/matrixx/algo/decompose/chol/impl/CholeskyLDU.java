@@ -20,7 +20,6 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholeskyLDU;
 import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 
@@ -42,10 +41,9 @@ import mikera.matrixx.impl.DiagonalMatrix;
  *
  * @author Peter Abeles
  */
-public class CholeskyLDU implements ICholeskyLDU {
+public class CholeskyLDU {
 
     // it can decompose a matrix up to this width
-    private int maxWidth;
     // width and height of the matrix
     private int n;
 
@@ -59,20 +57,6 @@ public class CholeskyLDU implements ICholeskyLDU {
     // tempoary variable used by various functions
     double vv[];
 
-    public void setExpectedMaxSize( int numRows , int numCols ) {
-        if( numRows != numCols ) {
-            throw new IllegalArgumentException("Can only decompose square matrices");
-        }
-
-        this.maxWidth = numRows;
-
-//        this.L = Matrix.create(maxWidth,maxWidth);
-//        this.el = L.data;
-
-        this.vv = new double[maxWidth];
-        this.d = new double[maxWidth];
-    }
-
     /**
      * <p>
      * Performs Choleksy decomposition on the provided matrix.
@@ -80,20 +64,19 @@ public class CholeskyLDU implements ICholeskyLDU {
      *
      * <p>
      * If the matrix is not positive definite then this function will return
-     * false since it can't complete its computations.  Not all errors will be
+     * null since it can't complete its computations.  Not all errors will be
      * found.
      * </p>
      * @param mat A symetric n by n positive definite matrix.
-     * @return True if it was able to finish the decomposition.
+     * @return CholeskyResult if decomposition is successful, null otherwise.
      */
-    public ICholeskyLDU decompose( AMatrix mat ) {
-        if( mat.rowCount() > maxWidth ) {
-            setExpectedMaxSize(mat.rowCount(),mat.columnCount());
-        } else if( mat.rowCount() != mat.columnCount() ) {
+    public CholeskyResult decompose( AMatrix mat ) {
+        if( mat.rowCount() != mat.columnCount() ) {
             throw new RuntimeException("Can only decompose square matrices");
         }
         n = mat.rowCount();
-
+        this.vv = new double[n];
+        this.d = new double[n];
         L = mat.toMatrix();
         this.el = L.data;
 
@@ -126,34 +109,10 @@ public class CholeskyLDU implements ICholeskyLDU {
             }
         }
 
-        return this;
-    }
-
-    /**
-     * Diagonal D matrix.
-     *
-     * @return diagonal matrix D
-     */
-    public ADiagonalMatrix getD() {
-        return DiagonalMatrix.create(d);
-    }
-
-    /**
-     * Returns L matrix from the decomposition.<br>
-     * L*D*L<sup>T</sup>=A
-     *
-     * @return A lower triangular matrix.
-     */
-    public AMatrix getL() {
-        return L;
+        return new CholeskyResult(L, DiagonalMatrix.create(d), L.getTranspose());
     }
 
     public double[] _getVV() {
         return vv;
     }
-
-	@Override
-	public AMatrix getU() {
-		return L.getTranspose();
-	}
 }
