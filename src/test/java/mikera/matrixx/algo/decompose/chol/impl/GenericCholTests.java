@@ -54,8 +54,8 @@ public abstract class GenericCholTests {
         Matrix L = Matrix.create(dataL);
 
         CholeskyCommon cholesky = create();
-        ICholesky ans;
-        assertNotNull(ans = cholesky.decompose(A));
+        CholeskyResult ans = cholesky.decompose(A);
+        assertNotNull(ans);
 
         Matrix foundL = ans.getL().toMatrix();
 
@@ -78,9 +78,9 @@ public abstract class GenericCholTests {
         Matrix R = Matrix.create(dataR);
 
         CholeskyCommon cholesky = create();
-        
-        assertNotNull(cholesky.decompose(A));
-        Matrix foundR = cholesky.getU().toMatrix();
+        CholeskyResult ans = cholesky.decompose(A);
+        assertNotNull(ans);
+        Matrix foundR = ans.getU().toMatrix();
 
         assertArrayEquals(R.getElements(),foundR.getElements(),1e-8);
     }
