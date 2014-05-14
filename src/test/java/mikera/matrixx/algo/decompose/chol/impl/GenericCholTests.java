@@ -18,7 +18,7 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
-import mikera.matrixx.algo.decompose.chol.IChol;
+import mikera.matrixx.algo.decompose.chol.ICholesky;
 import mikera.matrixx.Matrix;
 
 import org.junit.Test;
@@ -37,7 +37,7 @@ public abstract class GenericCholTests {
     boolean canL = true;
     boolean canR = true;
 
-    public abstract CholCommon create();
+    public abstract CholeskyCommon create();
 
     @Test
     public void testDecomposeL() {
@@ -53,8 +53,8 @@ public abstract class GenericCholTests {
 		        		  {4,5,7}};
         Matrix L = Matrix.create(dataL);
 
-        CholCommon cholesky = create();
-        IChol ans;
+        CholeskyCommon cholesky = create();
+        ICholesky ans;
         assertNotNull(ans = cholesky.decompose(A));
 
         Matrix foundL = ans.getL().toMatrix();
@@ -77,7 +77,7 @@ public abstract class GenericCholTests {
 			      		  {0,0,7}};
         Matrix R = Matrix.create(dataR);
 
-        CholCommon cholesky = create();
+        CholeskyCommon cholesky = create();
         
         assertNotNull(cholesky.decompose(A));
         Matrix foundR = cholesky.getU().toMatrix();
@@ -94,7 +94,7 @@ public abstract class GenericCholTests {
     			         {-1,-2}};
         Matrix A = Matrix.create(dataA);
 
-        CholCommon alg = create();
+        CholeskyCommon alg = create();
         assertNull(alg.decompose(A));
     }
 

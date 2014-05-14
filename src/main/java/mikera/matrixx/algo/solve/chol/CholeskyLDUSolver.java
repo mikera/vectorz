@@ -18,34 +18,32 @@
 
 package mikera.matrixx.algo.solve.chol;
 
-import java.util.Arrays;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.TriangularSolver;
-import mikera.matrixx.algo.decompose.chol.impl.CholLDU;
+import mikera.matrixx.algo.decompose.chol.impl.CholeskyLDU;
 
 /**
  * @author Peter Abeles
  */
-public class CholLDUSolver {
+public class CholeskyLDUSolver {
 	
 	protected Matrix A;
     protected int numRows;
     protected int numCols;
 
-    private CholLDU decomp;
+    private CholeskyLDU decomp;
     private int n;
     private double vv[];
     private double el[];
     private double d[];
 
-    public CholLDUSolver( CholLDU decomp ) {
+    public CholeskyLDUSolver( CholeskyLDU decomp ) {
         this.decomp = decomp;
     }
 
-    public CholLDUSolver() {
-        this.decomp = new CholLDU();
+    public CholeskyLDUSolver() {
+        this.decomp = new CholeskyLDU();
     }
 
     public boolean setA(AMatrix _A) {

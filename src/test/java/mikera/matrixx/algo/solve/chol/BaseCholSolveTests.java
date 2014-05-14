@@ -33,7 +33,7 @@ public class BaseCholSolveTests {
 
     Random rand = new Random(0x45);
 
-    public void standardTests( CholSolver solver ) {
+    public void standardTests( CholeskySolver solver ) {
 
         testSolve(solver);
         testInvert(solver);
@@ -41,7 +41,7 @@ public class BaseCholSolveTests {
         testQuality_scale(solver);
     }
 
-    public void testSolve( CholSolver solver ) {
+    public void testSolve( CholeskySolver solver ) {
     	double[][] dataA = {{1,2,4},
     						{2,13,23},
     						{4,23,90}};
@@ -65,7 +65,7 @@ public class BaseCholSolveTests {
         assertArrayEquals(x_expected.getElements(),x.getElements(),1e-5);
     }
 
-    public void testInvert( CholSolver solver ) {
+    public void testInvert( CholeskySolver solver ) {
     	double[][] dataA = {{1,2,4},
 							{2,13,23},
 							{4,23,90}};
@@ -84,7 +84,7 @@ public class BaseCholSolveTests {
         assertArrayEquals(A_inv.getElements(),found.getElements(),1e-5);
     }
 
-    public void testQuality( CholSolver solver ) {
+    public void testQuality( CholeskySolver solver ) {
     	Matrix A = DiagonalMatrix.create(3,2,1).toMatrix();
     	Matrix B = DiagonalMatrix.create(3,2,0.001).toMatrix();
 
@@ -97,7 +97,7 @@ public class BaseCholSolveTests {
         assertTrue(qualityB < qualityA);
     }
 
-    public void testQuality_scale( CholSolver solver ) {
+    public void testQuality_scale( CholeskySolver solver ) {
     	Matrix A = DiagonalMatrix.create(3,2,1).toMatrix();
     	Matrix B = Matrix.create(A);
     	B.multiply(0.001);

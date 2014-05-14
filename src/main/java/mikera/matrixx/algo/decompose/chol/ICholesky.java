@@ -19,7 +19,6 @@
 package mikera.matrixx.algo.decompose.chol;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 
 
 /**
@@ -40,7 +39,7 @@ import mikera.matrixx.Matrix;
  *
  * @author Peter Abeles
  */
-public interface IChol {
+public interface ICholesky {
 	
 	/**
 	 * <p>

@@ -18,7 +18,6 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
-import mikera.matrixx.algo.decompose.chol.IChol;
 
 
 /**
@@ -27,8 +26,8 @@ import mikera.matrixx.algo.decompose.chol.IChol;
 public class TestCholInner extends GenericCholTests {
 
     @Override
-    public CholCommon create() {
-        return new CholInner();
+    public CholeskyCommon create() {
+        return new CholeskyInner();
     }
 
 }
