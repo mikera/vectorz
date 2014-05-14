@@ -30,7 +30,7 @@ public class Cholesky {
 	 * @return The decomposition result
 	 */
 	public static final ICholesky decompose(AMatrix a) {
-		return decompose(Matrix.create(a));
+		return decompose(a.toMatrix());
 	}
 	
 	public static final ICholesky decompose(Matrix a) {
@@ -58,6 +58,8 @@ public class Cholesky {
 			double uii=Maths.sqrt(aii-squareSum);
 			u.set(i,i,uii);
 		}
+		
+		// TODO: should be null return for a failed decomposition?
 		
 		AMatrix L = Matrixx.extractLowerTriangular(u);
 		return new CholeskyResult(L);
