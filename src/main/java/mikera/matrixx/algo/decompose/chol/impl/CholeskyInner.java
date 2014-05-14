@@ -18,8 +18,6 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
-import mikera.matrixx.algo.decompose.chol.ICholesky;
-
 /**
  * <p>
  * This implementation of a Cholesky decomposition using the inner-product form.
@@ -36,7 +34,7 @@ public class CholeskyInner extends CholeskyCommon {
     }
 
     @Override
-    protected ICholesky decomposeLower() {
+    protected CholeskyResult decomposeLower() {
         double el_ii;
         double div_el_ii=0;
 
@@ -74,6 +72,6 @@ public class CholeskyInner extends CholeskyCommon {
             }
         }
 
-        return this;
+        return new CholeskyResult(T);
     }
 }

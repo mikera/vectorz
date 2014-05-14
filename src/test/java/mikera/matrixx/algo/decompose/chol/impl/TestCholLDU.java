@@ -52,7 +52,7 @@ public class TestCholLDU {
         double D[] = new double[]{1,3,7};
 
         CholeskyLDU cholesky = new CholeskyLDU();
-        ICholeskyLDU ans = cholesky.decompose(A);
+        CholeskyResult ans = cholesky.decompose(A);
         assertNotNull(ans);
 
         Matrix foundL = ans.getL().toMatrix();

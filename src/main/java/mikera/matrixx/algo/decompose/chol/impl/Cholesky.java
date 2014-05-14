@@ -20,9 +20,6 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholesky;
-
-
 
 /**
  * This is an implementation of Cholesky that processes internal submatrices as blocks.  This is
@@ -63,22 +60,40 @@ public class Cholesky extends CholeskyCommon {
         this.blockWidth = BLOCK_WIDTH;
 
     }
-
+    
     /**
-     * Declares additional internal data structures.
+     * <p>
+     * Performs Choleksy decomposition on the provided matrix.
+     * </p>
+     *
+     * <p>
+     * If the matrix is not positive definite then this function will return
+     * null since it can't complete its computations.  Not all errors will be
+     * found.  This is an efficient way to check for positive definiteness.
+     * </p>
+     * @param mat A symmetric positive definite matrix with n <= widthMax.
+     * @return True if it was able to finish the decomposition.
      */
     @Override
-    public void setExpectedMaxSize( int numRows , int numCols ) {
-        super.setExpectedMaxSize(numRows,numCols);
+    public CholeskyResult decompose( AMatrix mat ) {
+    	if( mat.rowCount() != mat.columnCount() ) {
+            throw new IllegalArgumentException("Must be a square matrix.");
+        }
 
-        // if the matrix that is being decomposed is smaller than the block we really don't
-        // see the B matrix.
-        if( numRows < blockWidth)
-            B = Matrix.create(0,0);
-        else
-            B = Matrix.create(blockWidth,maxWidth);
+        n = mat.rowCount();
+        this.vv = new double[n];
+        T = mat.toMatrix();
+        t = T.data;
+        
+        if(mat.rowCount() < blockWidth) {
+    		B = Matrix.create(0,0);
+    	}
+    	else {
+    		B = Matrix.create(blockWidth,n);
+    	}
+    	chol = new CholeskyHelper(blockWidth);
 
-        chol = new CholeskyHelper(blockWidth);
+        return decomposeLower();
     }
 
     /**
@@ -94,7 +109,7 @@ public class Cholesky extends CholeskyCommon {
      * @return True if it was able to finish the decomposition.
      */
     @Override
-    protected ICholesky decomposeLower() {
+    protected CholeskyResult decomposeLower() {
 
         if( n < blockWidth)
 //            B.reshape(0,0, false);
@@ -150,7 +165,7 @@ public class Cholesky extends CholeskyCommon {
             }
         }
 
-        return this;
+        return new CholeskyResult(T);
     }
     
     /**
