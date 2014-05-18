@@ -21,7 +21,6 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholesky;
 
 /**
  *
@@ -46,10 +45,7 @@ import mikera.matrixx.algo.decompose.chol.ICholesky;
  *
  * @author Peter Abeles
  */
-public abstract class CholeskyCommon implements ICholesky {
-
-    // it can decompose a matrix up to this width
-    protected int maxWidth=-1;
+public abstract class CholeskyCommon {
 
     // width and height of the matrix
     protected int n;
@@ -68,16 +64,6 @@ public abstract class CholeskyCommon implements ICholesky {
     public CholeskyCommon() {
     }
 
-    public void setExpectedMaxSize( int numRows , int numCols ) {
-        if( numRows != numCols ) {
-            throw new IllegalArgumentException("Can only decompose square matrices");
-        }
-
-        this.maxWidth = numCols;
-
-        this.vv = new double[maxWidth];
-    }
-
     /**
      * <p>
      * Performs Choleksy decomposition on the provided matrix.
@@ -88,18 +74,16 @@ public abstract class CholeskyCommon implements ICholesky {
      * null since it can't complete its computations.  Not all errors will be
      * found.  This is an efficient way to check for positive definiteness.
      * </p>
-     * @param mat A symmetric positive definite matrix with n <= widthMax.
-     * @return True if it was able to finish the decomposition.
+     * @param mat A symmetric positive definite matrix.
+     * @return CholeskyResult if decomposition is successful, null otherwise.
      */
-    public ICholesky decompose( AMatrix mat ) {
-        if( mat.rowCount() > maxWidth ) {
-            setExpectedMaxSize(mat.rowCount(),mat.columnCount());
-        } else if( mat.rowCount() != mat.columnCount() ) {
+    public CholeskyResult decompose( AMatrix mat ) {
+        if( mat.rowCount() != mat.columnCount() ) {
             throw new IllegalArgumentException("Must be a square matrix.");
         }
 
         n = mat.rowCount();
-
+        this.vv = new double[n];
         T = mat.toMatrix();
         t = T.data;
 
@@ -109,25 +93,7 @@ public abstract class CholeskyCommon implements ICholesky {
     /**
      * Performs an lower triangular decomposition.
      */
-    protected abstract ICholesky decomposeLower();
-
-    /**
-     * Returns the lower triangular matrix from the decomposition.
-     *
-     * @return A lower triangular matrix.
-     */
-    public AMatrix getL() {
-    	return T;
-    }
-
-    /**
-     * Returns the upper triangular matrix from the decomposition.
-     *
-     * @return An upper triangular matrix.
-     */
-    public AMatrix getU() {
-        return T.getTranspose();
-    }
+    protected abstract CholeskyResult decomposeLower();
 
     public double[] _getVV() {
         return vv;
