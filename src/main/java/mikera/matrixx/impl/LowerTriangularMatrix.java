@@ -66,7 +66,7 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	public AVector getBand(int band) {
 		int n=bandLength(band);
 		if ((n==0)||(band>0)) return Vectorz.createZeroVector(bandLength(band));
-		if (n==1) return ArraySubVector.wrap(data, index(-band,0), 1);
+		if (n==1) return ArraySubVector.wrap(data, internalIndex(-band,0), 1);
 		int[] ixs=new int[n];
 		for (int i=0; i<n; i++) {
 			ixs[i]=internalIndex(i-band,i);
