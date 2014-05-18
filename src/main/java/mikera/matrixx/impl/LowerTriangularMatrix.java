@@ -6,6 +6,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -62,8 +63,20 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	}
 	
 	@Override
+	public AVector getBand(int band) {
+		int n=bandLength(band);
+		if ((n==0)||(band>0)) return Vectorz.createZeroVector(bandLength(band));
+		if (n==1) return ArraySubVector.wrap(data, index(-band,0), 1);
+		int[] ixs=new int[n];
+		for (int i=0; i<n; i++) {
+			ixs[i]=internalIndex(i-band,i);
+		}
+		return IndexedArrayVector.wrap(data, ixs);
+	}
+	
+	@Override
 	protected int index(int i, int j) {
-		if (i<=j) return internalIndex(i,j);
+		if (i>=j) return internalIndex(i,j);
 		throw new IndexOutOfBoundsException("Can't compute array index for sparse entry!");
 	}
 	
