@@ -18,14 +18,15 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
-import mikera.matrixx.algo.decompose.chol.ICholesky;
-import mikera.matrixx.Matrix;
-
-import org.junit.Test;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import mikera.matrixx.Matrix;
+
+import org.junit.Test;
 
 
 /**

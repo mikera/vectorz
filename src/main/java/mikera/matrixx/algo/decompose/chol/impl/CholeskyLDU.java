@@ -20,7 +20,6 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 
 /**
