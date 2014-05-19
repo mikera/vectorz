@@ -55,7 +55,7 @@ public class BidiagonalRow {
      * @param A  The matrix that is being decomposed.  Not modified.
      * @return If it detects any errors or not.
      */
-    public boolean decompose( AMatrix A  )
+    public BidiagonalResult decompose( AMatrix A  )
     {
     	UBV = Matrix.create(A);
     	
@@ -81,7 +81,7 @@ public class BidiagonalRow {
 //          UBV.print();
 	    }
 	
-	    return true;
+	    return new BidiagonalRowResult(UBV, gammasU, gammasV, u, b);
     }
 
     /**
