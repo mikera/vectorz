@@ -56,7 +56,7 @@ public class BidiagonalRow {
      * @param A  The matrix that is being decomposed.  Not modified.
      * @return If it detects any errors or not.
      */
-	public BidiagonalRowResult decompose(AMatrix A) {
+	public BidiagonalResult decompose(AMatrix A) {
 		return decompose(A, false);
 	}
 
@@ -67,7 +67,7 @@ public class BidiagonalRow {
      * @param A  The matrix that is being decomposed.  Not modified.
      * @return If it detects any errors or not.
      */
-    public BidiagonalRowResult decompose(AMatrix A, boolean compact)
+    public BidiagonalResult decompose(AMatrix A, boolean compact)
     {
     	this.compact = compact;
     	UBV = Matrix.create(A);
@@ -94,7 +94,7 @@ public class BidiagonalRow {
 //          UBV.print();
 	    }
 	
-	    return new BidiagonalRowResult(getU(), getB(), getV(), gammasU, gammasV);
+	    return new BidiagonalRowResult(getU(), getB(), getV());
     }
 	
     /**

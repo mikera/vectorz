@@ -4,18 +4,14 @@ import mikera.matrixx.AMatrix;
 
 public class BidiagonalRowResult implements BidiagonalResult {
 	
-	private final double[] gammasU;
-	private final double[] gammasV;
 	private AMatrix B;
 	private AMatrix U;
 	private AMatrix V;
 	
-	public BidiagonalRowResult(AMatrix U, AMatrix B, AMatrix V, double[] gammasU, double[] gammasV) {
+	public BidiagonalRowResult(AMatrix U, AMatrix B, AMatrix V) {
 		this.U = U;
 		this.B = B;
 		this.V = V;
-		this.gammasU = gammasU;
-		this.gammasV = gammasV;
 	}
 	
 	/**
@@ -46,25 +42,6 @@ public class BidiagonalRowResult implements BidiagonalResult {
      */
     public AMatrix getV() {
     	return V;
-    }
-
-    /**
-     * Returns gammas from the householder operations for the U matrix.
-     *
-     * @return gammas for householder operations
-     */
-    public double[] getGammasU() {
-        return gammasU;
-    }
-
-    /**
-     * Returns gammas from the householder operations for the V matrix.
-     *
-     * @return gammas for householder operations
-     */
-    public double[] getGammasV() {
-        return gammasV;
-    }
-    
+    }   
     
 }
