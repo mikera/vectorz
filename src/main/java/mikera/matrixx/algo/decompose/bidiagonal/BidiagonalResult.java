@@ -13,7 +13,7 @@ public interface BidiagonalResult {
      * @param B If not null the results are stored here, if null a new matrix is created.
      * @return The bidiagonal matrix.
      */
-    public AMatrix getB( boolean compact );
+    public AMatrix getB();
     
     /**
      * Returns the orthogonal U matrix.
@@ -21,7 +21,7 @@ public interface BidiagonalResult {
      * @param U If not null then the results will be stored here.  Otherwise a new matrix will be created.
      * @return The extracted Q matrix.
      */
-    public AMatrix getU( boolean transpose , boolean compact );
+    public AMatrix getU();
     
     /**
      * Returns the orthogonal V matrix.
@@ -29,6 +29,6 @@ public interface BidiagonalResult {
      * @param V If not null then the results will be stored here.  Otherwise a new matrix will be created.
      * @return The extracted Q matrix.
      */
-    public AMatrix getV( boolean transpose , boolean compact );
+    public AMatrix getV();
     
 }

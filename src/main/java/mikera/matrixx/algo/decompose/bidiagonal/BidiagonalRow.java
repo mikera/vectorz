@@ -48,6 +48,18 @@ public class BidiagonalRow {
     private double b[];
     private double u[];
 
+	private boolean compact;
+	
+	/**
+     * Computes the decomposition of the provided matrix.
+     *
+     * @param A  The matrix that is being decomposed.  Not modified.
+     * @return If it detects any errors or not.
+     */
+	public BidiagonalRowResult decompose(AMatrix A) {
+		return decompose(A, false);
+	}
+
     /**
      * Computes the decomposition of the provided matrix.  If no errors are detected then true is returned,
      * false otherwise.
@@ -55,8 +67,9 @@ public class BidiagonalRow {
      * @param A  The matrix that is being decomposed.  Not modified.
      * @return If it detects any errors or not.
      */
-    public BidiagonalResult decompose( AMatrix A  )
+    public BidiagonalRowResult decompose(AMatrix A, boolean compact)
     {
+    	this.compact = compact;
     	UBV = Matrix.create(A);
     	
     	m = UBV.rowCount();
@@ -81,7 +94,104 @@ public class BidiagonalRow {
 //          UBV.print();
 	    }
 	
-	    return new BidiagonalRowResult(UBV, gammasU, gammasV, u, b);
+	    return new BidiagonalRowResult(getU(), getB(), getV(), gammasU, gammasV);
+    }
+	
+    /**
+     * Returns the bidiagonal matrix.
+     *
+     * @param B If not null the results are stored here, if null a new matrix is created.
+     * @return The bidiagonal matrix.
+     */
+    private AMatrix getB() {
+        Matrix B = handleB(m,n,min);
+
+        //System.arraycopy(UBV.data, 0, B.data, 0, UBV.getNumElements());
+
+        B.set(0,0,UBV.get(0,0));
+        for( int i = 1; i < min; i++ ) {
+            B.set(i,i, UBV.get(i,i));
+            B.set(i-1,i, UBV.get(i-1,i));
+        }
+        if( n > m )
+            B.set(min-1,min,UBV.get(min-1,min));
+
+        return B;
+    }
+
+    private Matrix handleB( int m , int n , int min ) {
+        int w = n > m ? min + 1 : min;
+
+        if( compact ) {
+            return Matrix.create(min,w);
+        } else {
+        	return Matrix.create(m,n);
+        }
+    }
+    
+    /**
+     * Returns the orthogonal U matrix.
+     *
+     * @param U If not null then the results will be stored here.  Otherwise a new matrix will be created.
+     * @return The extracted Q matrix.
+     */
+    private AMatrix getU() {
+        Matrix U = handleU(m,n,min);
+
+        for( int i = 0; i < m; i++ ) u[i] = 0;
+
+        for( int j = min-1; j >= 0; j-- ) {
+            u[j] = 1;
+            for( int i = j+1; i < m; i++ ) {
+                u[i] = UBV.get(i,j);
+            }
+            QRHelperFunctions.rank1UpdateMultR(U,u,gammasU[j],j,j,m,this.b);
+        }
+
+        return U;
+    }
+
+    private Matrix handleU( int m, int n , int min ) {
+        if( compact ){
+           	return Matrix.createIdentity(m, min);
+        } else  {
+        	return Matrix.createIdentity(m, m);
+        }
+    }
+    
+
+
+    /**
+     * Returns the orthogonal V matrix.
+     *
+     * @param V If not null then the results will be stored here.  Otherwise a new matrix will be created.
+     * @return The extracted Q matrix.
+     */
+    private AMatrix getV() {
+        Matrix V = handleV(m,n,min);
+
+//        UBV.print();
+
+        // todo the very first multiplication can be avoided by setting to the rank1update output
+        for( int j = min-1; j >= 0; j-- ) {
+            u[j+1] = 1;
+            for( int i = j+2; i < n; i++ ) {
+                u[i] = UBV.get(j,i);
+            }
+            QRHelperFunctions.rank1UpdateMultR(V,u,gammasV[j],j+1,j+1,n,this.b);
+        }
+
+        return V;
+    }
+
+    private Matrix handleV( int m , int n , int min ) {
+        int w = n > m ? min + 1 : min;
+
+        if( compact ) {
+           	return Matrix.createIdentity(n, w);
+        } else {
+        	return Matrix.createIdentity(n, n);
+        }
     }
 
     protected void computeU( int k) {
@@ -154,23 +264,5 @@ public class BidiagonalRow {
         } else {
             gammasV[k] = 0;
         }
-    }
-
-    /**
-     * Returns gammas from the householder operations for the U matrix.
-     *
-     * @return gammas for householder operations
-     */
-    public double[] getGammasU() {
-        return gammasU;
-    }
-
-    /**
-     * Returns gammas from the householder operations for the V matrix.
-     *
-     * @return gammas for householder operations
-     */
-    public double[] getGammasV() {
-        return gammasV;
     }
 }

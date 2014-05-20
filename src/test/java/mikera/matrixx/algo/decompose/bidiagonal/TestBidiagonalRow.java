@@ -52,7 +52,7 @@ public class TestBidiagonalRow {
                     assertNotNull(ans);
                     checkGeneric(A, ans);
                     
-                    BidiagonalResult ansCompact = decomp.decompose(A);
+                    BidiagonalResult ansCompact = decomp.decompose(A, true);
                     assertNotNull(ansCompact);
                     checkGenericCompact(A, ansCompact);
                 }
@@ -63,7 +63,7 @@ public class TestBidiagonalRow {
                     assertNotNull(ans);
                     checkGeneric(A, ans);
                     
-                    BidiagonalResult ansCompact = decomp.decompose(A);
+                    BidiagonalResult ansCompact = decomp.decompose(A, true);
                     assertNotNull(ansCompact);
                     checkGenericCompact(A, ansCompact);
                 }
@@ -81,7 +81,7 @@ public class TestBidiagonalRow {
         assertNotNull(ans);
         checkGeneric(A, ans);
         
-        BidiagonalResult ansCompact = decomp.decompose(A);
+        BidiagonalResult ansCompact = decomp.decompose(A, true);
         assertNotNull(ansCompact);
         checkGenericCompact(A, ansCompact);
         
@@ -97,7 +97,7 @@ public class TestBidiagonalRow {
         assertNotNull(ans);
         checkGeneric(A, ans);
         
-        BidiagonalResult ansCompact = decomp.decompose(A);
+        BidiagonalResult ansCompact = decomp.decompose(A, true);
         assertNotNull(ansCompact);
         checkGenericCompact(A, ansCompact);
     }
@@ -108,9 +108,9 @@ public class TestBidiagonalRow {
     protected void checkGeneric(Matrix a,
                                 BidiagonalResult ans) {
         // check the full version
-    	Matrix U = ans.getU(false,false).toMatrix();
-    	Matrix B = ans.getB(false).toMatrix();
-        Matrix V = ans.getV(false, false).toMatrix();
+    	Matrix U = ans.getU().toMatrix();
+    	Matrix B = ans.getB().toMatrix();
+        Matrix V = ans.getV().toMatrix();
         
         Matrix foundA = Multiplications.multiply(U, Multiplications.multiply(B, V.getTransposeCopy().toMatrix()));
 
@@ -119,9 +119,9 @@ public class TestBidiagonalRow {
     
     protected void checkGenericCompact(Matrix a, BidiagonalResult ans) {
         // now test compact
-        Matrix U = ans.getU(false,true).toMatrix();
-        Matrix B = ans.getB(true).toMatrix();
-        Matrix V = ans.getV(false,true).toMatrix();
+        Matrix U = ans.getU().toMatrix();
+        Matrix B = ans.getB().toMatrix();
+        Matrix V = ans.getV().toMatrix();
 
 //        U.print();
 //        V.print();
