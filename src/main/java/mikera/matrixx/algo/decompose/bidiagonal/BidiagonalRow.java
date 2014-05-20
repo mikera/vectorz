@@ -84,25 +84,6 @@ public class BidiagonalRow {
 	    return new BidiagonalRowResult(UBV, gammasU, gammasV, u, b);
     }
 
-    /**
-     * The raw UBV matrix that is stored internally.
-     *
-     * @return UBV matrix.
-     */
-    public AMatrix getUBV() {
-//    	TODO: Should this be here or in the Result?
-        return UBV;
-    }
-
-    public void getDiagonal(double[] diag, double[] off) {
-//    	TODO: change interface (or remove?)
-        diag[0] = UBV.get(0);
-        for( int i = 1; i < n; i++ ) {
-            diag[i] = UBV.unsafeGet(i,i);
-            off[i-1] = UBV.unsafeGet(i-1,i);
-        }
-    }
-
     protected void computeU( int k) {
         double b[] = UBV.data;
 
