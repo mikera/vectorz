@@ -47,17 +47,25 @@ public class TestBidiagonalRow {
             for( int N = 2;  N <= 10; N++ ) {
                 for( int tall = 0; tall <= 2; tall++ ) {
                     Matrix A = Matrix.createRandom(N+tall,N);
+                    
                     BidiagonalResult ans = decomp.decompose(A);
                     assertNotNull(ans);
-
                     checkGeneric(A, ans);
+                    
+                    BidiagonalResult ansCompact = decomp.decompose(A);
+                    assertNotNull(ansCompact);
+                    checkGenericCompact(A, ansCompact);
                 }
                 for( int wide = 1; wide <= 2; wide++ ) {
                     Matrix A = Matrix.createRandom(N,N+wide);
+                    
                     BidiagonalResult ans = decomp.decompose(A);
                     assertNotNull(ans);
-
                     checkGeneric(A, ans);
+                    
+                    BidiagonalResult ansCompact = decomp.decompose(A);
+                    assertNotNull(ansCompact);
+                    checkGenericCompact(A, ansCompact);
                 }
             }
         }
@@ -68,10 +76,15 @@ public class TestBidiagonalRow {
         Matrix A = Matrix.createIdentity(5);
 
         BidiagonalRow decomp = createQRDecomposition();
+        
         BidiagonalResult ans = decomp.decompose(A);
         assertNotNull(ans);
-
         checkGeneric(A, ans);
+        
+        BidiagonalResult ansCompact = decomp.decompose(A);
+        assertNotNull(ansCompact);
+        checkGenericCompact(A, ansCompact);
+        
     }
 
     @Test
@@ -79,10 +92,14 @@ public class TestBidiagonalRow {
         Matrix A = Matrix.create(5,5);
 
         BidiagonalRow decomp = createQRDecomposition();
+        
         BidiagonalResult ans = decomp.decompose(A);
         assertNotNull(ans);
-
         checkGeneric(A, ans);
+        
+        BidiagonalResult ansCompact = decomp.decompose(A);
+        assertNotNull(ansCompact);
+        checkGenericCompact(A, ansCompact);
     }
 
     /**
@@ -98,40 +115,21 @@ public class TestBidiagonalRow {
         Matrix foundA = Multiplications.multiply(U, Multiplications.multiply(B, V.getTransposeCopy().toMatrix()));
 
         assertTrue(a.epsilonEquals(foundA, 1e-8));
-
-        //       check with transpose
-        Matrix Ut = ans.getU(true,false).toMatrix();
-
-        assertTrue(U.getTranspose().toMatrix().epsilonEquals(Ut,1e-8));
-
-        Matrix Vt = ans.getV(true,false).toMatrix();
-
-        assertTrue(V.getTranspose().toMatrix().epsilonEquals(Vt,1e-8));
-
-//        U.print();
-//        V.print();
-//        B.print();
-//        System.out.println("------------------------");
-
+    }
+    
+    protected void checkGenericCompact(Matrix a, BidiagonalResult ans) {
         // now test compact
-        U = ans.getU(false,true).toMatrix();
-        B = ans.getB(true).toMatrix();
-        V = ans.getV(false,true).toMatrix();
+        Matrix U = ans.getU(false,true).toMatrix();
+        Matrix B = ans.getB(true).toMatrix();
+        Matrix V = ans.getV(false,true).toMatrix();
 
 //        U.print();
 //        V.print();
 //        B.print();
 
-        foundA = Multiplications.multiply(U, Multiplications.multiply(B, V.getTransposeCopy().toMatrix()));
+        Matrix foundA = Multiplications.multiply(U, Multiplications.multiply(B, V.getTransposeCopy().toMatrix()));
 
         assertTrue(a.epsilonEquals(foundA,1e-8));
-
-        //       check with transpose
-        Ut = ans.getU(true,true).toMatrix();
-        Vt = ans.getV(true,true).toMatrix();
-
-        assertTrue(U.getTranspose().toMatrix().epsilonEquals(Ut,1e-8));
-        assertTrue(V.getTranspose().toMatrix().epsilonEquals(Vt,1e-8));
     }
 
 }
