@@ -23,6 +23,7 @@ package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.impl.Constants;
 import mikera.vectorz.Vector;
 
 public class QR {
@@ -51,7 +52,7 @@ public class QR {
 				norm = Math.hypot(norm, qr.get(i, k));
 			}
 
-			if (Math.abs(norm) > Decompositions.EPS) {
+			if (Math.abs(norm) > Constants.EPS) {
 
 				if (qr.get(k, k) < 0.0) {
 					norm = -norm;
@@ -90,7 +91,7 @@ public class QR {
 
 			for (int j = k; j < cc; j++) {
 
-				if (Math.abs(qr.unsafeGet(k, k)) > Decompositions.EPS) {
+				if (Math.abs(qr.unsafeGet(k, k)) > Constants.EPS) {
 
 					double summand = 0.0;
 
