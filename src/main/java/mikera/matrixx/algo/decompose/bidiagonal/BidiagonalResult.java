@@ -2,7 +2,10 @@ package mikera.matrixx.algo.decompose.bidiagonal;
 
 import mikera.matrixx.AMatrix;
 
-public abstract class BidiagonalResult {
+/**
+ * @author prasant
+ */
+public interface BidiagonalResult {
 
 	/**
      * Returns the bidiagonal matrix.
@@ -10,7 +13,7 @@ public abstract class BidiagonalResult {
      * @param B If not null the results are stored here, if null a new matrix is created.
      * @return The bidiagonal matrix.
      */
-    public abstract AMatrix getB( boolean compact );
+    public AMatrix getB( boolean compact );
     
     /**
      * Returns the orthogonal U matrix.
@@ -18,7 +21,7 @@ public abstract class BidiagonalResult {
      * @param U If not null then the results will be stored here.  Otherwise a new matrix will be created.
      * @return The extracted Q matrix.
      */
-    public abstract AMatrix getU( boolean transpose , boolean compact );
+    public AMatrix getU( boolean transpose , boolean compact );
     
     /**
      * Returns the orthogonal V matrix.
@@ -26,6 +29,6 @@ public abstract class BidiagonalResult {
      * @param V If not null then the results will be stored here.  Otherwise a new matrix will be created.
      * @return The extracted Q matrix.
      */
-    public abstract AMatrix getV( boolean transpose , boolean compact );
+    public AMatrix getV( boolean transpose , boolean compact );
     
 }

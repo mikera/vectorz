@@ -4,7 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.qr.impl.QRHelperFunctions;
 
-public class BidiagonalRowResult extends BidiagonalResult {
+public class BidiagonalRowResult implements BidiagonalResult {
 	
 	private final Matrix UBV;
 	private int m;
