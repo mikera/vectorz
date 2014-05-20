@@ -26,7 +26,7 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Standard MxN matrix class backed by a densely packed double[] array
  *
- * This is the most efficient Vectorz type for 2D matrices.
+ * This is the most efficient Vectorz type for dense 2D matrices.
  *
  * @author Mike
  */

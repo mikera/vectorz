@@ -48,7 +48,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General abstract 2D matrix class.
+ * Abstract 2D matrix class. All Vectorz 2D matrices inherit from this class.
  * 
  * Implements generic version of most key matrix operations.
  * 
