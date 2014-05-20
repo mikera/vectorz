@@ -655,8 +655,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Calculates the determinant of the matrix.
 	 */
 	public double determinant() {
-		return Determinant.calculate(this);
-
+		return Determinant.calculate(this.toMatrix());
 	}
 
 
