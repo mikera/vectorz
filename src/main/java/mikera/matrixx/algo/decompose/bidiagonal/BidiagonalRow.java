@@ -65,6 +65,7 @@ public class BidiagonalRow {
      * false otherwise.
      *
      * @param A  The matrix that is being decomposed.  Not modified.
+     * @param compact If true, result matrices have zero-filled regions trimmed off
      * @return If it detects any errors or not.
      */
     public BidiagonalResult decompose(AMatrix A, boolean compact)
@@ -100,7 +101,6 @@ public class BidiagonalRow {
     /**
      * Returns the bidiagonal matrix.
      *
-     * @param B If not null the results are stored here, if null a new matrix is created.
      * @return The bidiagonal matrix.
      */
     private AMatrix getB() {
@@ -132,7 +132,6 @@ public class BidiagonalRow {
     /**
      * Returns the orthogonal U matrix.
      *
-     * @param U If not null then the results will be stored here.  Otherwise a new matrix will be created.
      * @return The extracted Q matrix.
      */
     private AMatrix getU() {
@@ -164,7 +163,6 @@ public class BidiagonalRow {
     /**
      * Returns the orthogonal V matrix.
      *
-     * @param V If not null then the results will be stored here.  Otherwise a new matrix will be created.
      * @return The extracted Q matrix.
      */
     private AMatrix getV() {
