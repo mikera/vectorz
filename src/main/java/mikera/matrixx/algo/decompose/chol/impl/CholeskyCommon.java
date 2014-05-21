@@ -95,8 +95,4 @@ public abstract class CholeskyCommon {
      * Performs an lower triangular decomposition.
      */
     protected abstract CholeskyResult decomposeLower();
-
-    public double[] _getVV() {
-        return vv;
-    }
 }

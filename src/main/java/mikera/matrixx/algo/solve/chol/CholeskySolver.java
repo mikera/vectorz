@@ -57,7 +57,8 @@ public class CholeskySolver {
         ans = decomp.decompose(A);
         if( ans != null ){
             n = A.columnCount();
-            vv = decomp._getVV();
+//            vv = decomp._getVV();
+            vv = new double[A.rowCount()];
             t = ans.getL().toMatrix().data;
             return true;
         } else {

@@ -60,7 +60,8 @@ public class CholeskyLDUSolver {
         ans = decomp.decompose(A);
         if( ans != null ){
             n = A.columnCount();
-            vv = decomp._getVV();
+//          vv = decomp._getVV();
+            vv = new double[A.rowCount()];
             el = ans.getL().toMatrix().data;
             d = ans.getD().getLeadingDiagonal().toDoubleArray();
             return true;

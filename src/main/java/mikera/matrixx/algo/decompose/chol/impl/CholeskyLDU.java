@@ -111,8 +111,4 @@ public class CholeskyLDU {
 
         return new CholeskyResult(L, DiagonalMatrix.create(d), L.getTranspose());
     }
-
-    public double[] _getVV() {
-        return vv;
-    }
 }
