@@ -50,14 +50,31 @@ public class BidiagonalRow {
 
 	private boolean compact;
 	
+	private BidiagonalRow() {
+		
+	}
+	
+	/**
+	 * Computes the decomposition of the provided matrix.
+	 *
+	 * @param A  The matrix that is being decomposed.  Not modified.
+	 * @return an IBidiagonalResult object
+	 */
+	public static IBidiagonalResult decompose(AMatrix A) {
+		BidiagonalRow temp = new BidiagonalRow();
+		return temp._decompose(A, false);
+	}
+	
 	/**
      * Computes the decomposition of the provided matrix.
      *
      * @param A  The matrix that is being decomposed.  Not modified.
-     * @return If it detects any errors or not.
+     * @param compact if true, result matrices have zero-filled regions trimmed off.
+     * @return an IBidiagonalResult object
      */
-	public IBidiagonalResult decompose(AMatrix A) {
-		return decompose(A, false);
+	public static IBidiagonalResult decompose(AMatrix A, boolean compact) {
+		BidiagonalRow temp = new BidiagonalRow();
+		return temp._decompose(A, compact);
 	}
 
     /**
@@ -68,7 +85,7 @@ public class BidiagonalRow {
      * @param compact If true, result matrices have zero-filled regions trimmed off
      * @return If it detects any errors or not.
      */
-    public IBidiagonalResult decompose(AMatrix A, boolean compact)
+    private IBidiagonalResult _decompose(AMatrix A, boolean compact)
     {
     	this.compact = compact;
     	UBV = Matrix.create(A);

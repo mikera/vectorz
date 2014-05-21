@@ -35,35 +35,30 @@ import static org.junit.Assert.assertTrue;
 public class TestBidiagonalRow {
     protected Random rand = new Random(0xff);
 
-    protected BidiagonalRow createQRDecomposition() {
-    	return new BidiagonalRow();
-    }
-
     @Test
     public void testRandomMatrices() {
-        BidiagonalRow decomp = createQRDecomposition();
 
         for( int i = 0; i < 10; i++ ) {
             for( int N = 2;  N <= 10; N++ ) {
                 for( int tall = 0; tall <= 2; tall++ ) {
                     Matrix A = Matrix.createRandom(N+tall,N);
                     
-                    IBidiagonalResult ans = decomp.decompose(A);
+                    IBidiagonalResult ans = BidiagonalRow.decompose(A);
                     assertNotNull(ans);
                     checkGeneric(A, ans);
                     
-                    IBidiagonalResult ansCompact = decomp.decompose(A, true);
+                    IBidiagonalResult ansCompact = BidiagonalRow.decompose(A, true);
                     assertNotNull(ansCompact);
                     checkGenericCompact(A, ansCompact);
                 }
                 for( int wide = 1; wide <= 2; wide++ ) {
                     Matrix A = Matrix.createRandom(N,N+wide);
                     
-                    IBidiagonalResult ans = decomp.decompose(A);
+                    IBidiagonalResult ans = BidiagonalRow.decompose(A);
                     assertNotNull(ans);
                     checkGeneric(A, ans);
                     
-                    IBidiagonalResult ansCompact = decomp.decompose(A, true);
+                    IBidiagonalResult ansCompact = BidiagonalRow.decompose(A, true);
                     assertNotNull(ansCompact);
                     checkGenericCompact(A, ansCompact);
                 }
@@ -75,13 +70,11 @@ public class TestBidiagonalRow {
     public void testIdentity() {
         Matrix A = Matrix.createIdentity(5);
 
-        BidiagonalRow decomp = createQRDecomposition();
-        
-        IBidiagonalResult ans = decomp.decompose(A);
+        IBidiagonalResult ans = BidiagonalRow.decompose(A);
         assertNotNull(ans);
         checkGeneric(A, ans);
         
-        IBidiagonalResult ansCompact = decomp.decompose(A, true);
+        IBidiagonalResult ansCompact = BidiagonalRow.decompose(A, true);
         assertNotNull(ansCompact);
         checkGenericCompact(A, ansCompact);
         
@@ -91,13 +84,11 @@ public class TestBidiagonalRow {
     public void testZero() {
         Matrix A = Matrix.create(5,5);
 
-        BidiagonalRow decomp = createQRDecomposition();
-        
-        IBidiagonalResult ans = decomp.decompose(A);
+        IBidiagonalResult ans = BidiagonalRow.decompose(A);
         assertNotNull(ans);
         checkGeneric(A, ans);
         
-        IBidiagonalResult ansCompact = decomp.decompose(A, true);
+        IBidiagonalResult ansCompact = BidiagonalRow.decompose(A, true);
         assertNotNull(ansCompact);
         checkGenericCompact(A, ansCompact);
     }
