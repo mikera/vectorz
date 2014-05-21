@@ -21,6 +21,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.chol.ICholesky;
 
 /**
  *
@@ -77,7 +78,7 @@ public abstract class CholeskyCommon {
      * @param mat A symmetric positive definite matrix.
      * @return CholeskyResult if decomposition is successful, null otherwise.
      */
-    public CholeskyResult decompose( AMatrix mat ) {
+    public ICholesky decompose( AMatrix mat ) {
         if( mat.rowCount() != mat.columnCount() ) {
             throw new IllegalArgumentException("Must be a square matrix.");
         }

@@ -21,6 +21,7 @@ package mikera.matrixx.algo.solve.chol;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.TriangularSolver;
+import mikera.matrixx.algo.decompose.chol.ICholeskyLDU;
 import mikera.matrixx.algo.decompose.chol.impl.CholeskyLDU;
 import mikera.matrixx.algo.decompose.chol.impl.CholeskyResult;
 
@@ -34,7 +35,7 @@ public class CholeskyLDUSolver {
     protected int numCols;
 
     private CholeskyLDU decomp;
-    private CholeskyResult ans;
+    private ICholeskyLDU ans;
     
     private int n;
     private double vv[];
