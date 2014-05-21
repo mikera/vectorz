@@ -2,7 +2,7 @@ package mikera.matrixx.algo.decompose.chol;
 
 import mikera.matrixx.impl.ADiagonalMatrix;
 
-public interface ICholeskyLDU extends ICholesky{
+public interface ICholeskyLDUResult extends ICholeskyResult{
 	
 	/**
 	 * Returns a Diagonal matrix from the decomposition

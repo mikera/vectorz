@@ -20,7 +20,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholesky;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
 
 /**
  * This is an implementation of Cholesky that processes internal submatrices as blocks.  This is
@@ -54,7 +54,7 @@ public class Cholesky extends CholeskyCommon {
      * @param mat A symmetric positive definite matrix
      * @return A Cholesky Decomposition Result
      */
-    public static ICholesky decompose(AMatrix mat) {
+    public static ICholeskyResult decompose(AMatrix mat) {
 		return decompose(mat, BLOCK_WIDTH);
 	}
     
@@ -71,7 +71,7 @@ public class Cholesky extends CholeskyCommon {
      * @param blockWidth The width of a block.
      * @return A Cholesky LDU Decomposition Result
      */
-    public static ICholesky decompose(AMatrix mat, int blockWidth) {
+    public static ICholeskyResult decompose(AMatrix mat, int blockWidth) {
 		CholeskyInner temp = new CholeskyInner();
 		return temp._decompose(mat);
 	}
@@ -91,7 +91,7 @@ public class Cholesky extends CholeskyCommon {
      * @return CholeskyResult if decomposition is successful, null otherwise
      */
     @Override
-    protected ICholesky _decompose( AMatrix mat ) {
+    protected ICholeskyResult _decompose( AMatrix mat ) {
     	if( mat.rowCount() != mat.columnCount() ) {
             throw new IllegalArgumentException("Must be a square matrix.");
         }

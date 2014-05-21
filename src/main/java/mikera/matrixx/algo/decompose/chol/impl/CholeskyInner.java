@@ -19,7 +19,7 @@
 package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.algo.decompose.chol.ICholesky;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
 
 /**
  * <p>
@@ -45,7 +45,7 @@ public class CholeskyInner extends CholeskyCommon {
      * @param mat A symmetric positive definite matrix
      * @return A Cholesky LDU Decomposition Result
      */
-	public static ICholesky decompose(AMatrix mat) {
+	public static ICholeskyResult decompose(AMatrix mat) {
 		CholeskyInner temp = new CholeskyInner();
 		return temp._decompose(mat);
 	}

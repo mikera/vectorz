@@ -20,7 +20,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholeskyLDU;
+import mikera.matrixx.algo.decompose.chol.ICholeskyLDUResult;
 import mikera.matrixx.impl.DiagonalMatrix;
 
 /**
@@ -57,7 +57,7 @@ public class CholeskyLDU {
     // tempoary variable used by various functions
     double vv[];
     
-    public static ICholeskyLDU decompose(AMatrix mat) {
+    public static ICholeskyLDUResult decompose(AMatrix mat) {
     	CholeskyLDU temp = new CholeskyLDU();
     	return temp._decompose(mat);
     }
@@ -75,7 +75,7 @@ public class CholeskyLDU {
      * @param mat A symetric n by n positive definite matrix.
      * @return CholeskyResult if decomposition is successful, null otherwise.
      */
-    private ICholeskyLDU _decompose( AMatrix mat ) {
+    private ICholeskyLDUResult _decompose( AMatrix mat ) {
         if( mat.rowCount() != mat.columnCount() ) {
             throw new RuntimeException("Can only decompose square matrices");
         }

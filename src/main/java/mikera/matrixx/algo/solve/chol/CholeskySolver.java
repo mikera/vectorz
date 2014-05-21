@@ -20,7 +20,7 @@ package mikera.matrixx.algo.solve.chol;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholesky;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
 import mikera.matrixx.algo.decompose.chol.impl.Cholesky;
 import mikera.matrixx.algo.decompose.TriangularSolver;
 
@@ -34,7 +34,7 @@ public class CholeskySolver {
     protected int numRows;
     protected int numCols;
     
-    private ICholesky ans;
+    private ICholeskyResult ans;
     private int n;
     private double vv[];
     private double t[];

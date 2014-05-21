@@ -25,7 +25,7 @@ import static org.junit.Assert.assertNull;
 import java.util.Random;
 
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholesky;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
 
 import org.junit.Test;
 
@@ -58,7 +58,7 @@ public class TestChol{
 		        		  {4,5,7}};
         Matrix L = Matrix.create(dataL);
 
-        ICholesky ans = Cholesky.decompose(A);
+        ICholeskyResult ans = Cholesky.decompose(A);
         assertNotNull(ans);
 
         Matrix foundL = ans.getL().toMatrix();
@@ -81,7 +81,7 @@ public class TestChol{
 			      		  {0,0,7}};
         Matrix R = Matrix.create(dataR);
 
-        ICholesky ans = Cholesky.decompose(A);
+        ICholeskyResult ans = Cholesky.decompose(A);
         assertNotNull(ans);
         Matrix foundR = ans.getU().toMatrix();
 
