@@ -23,7 +23,6 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.decompose.TriangularSolver;
 import mikera.matrixx.algo.decompose.chol.ICholeskyLDU;
 import mikera.matrixx.algo.decompose.chol.impl.CholeskyLDU;
-import mikera.matrixx.algo.decompose.chol.impl.CholeskyResult;
 
 /**
  * @author Peter Abeles
@@ -34,21 +33,12 @@ public class CholeskyLDUSolver {
     protected int numRows;
     protected int numCols;
 
-    private CholeskyLDU decomp;
     private ICholeskyLDU ans;
     
     private int n;
     private double vv[];
     private double el[];
     private double d[];
-
-    public CholeskyLDUSolver( CholeskyLDU decomp ) {
-        this.decomp = decomp;
-    }
-
-    public CholeskyLDUSolver() {
-        this.decomp = new CholeskyLDU();
-    }
 
     public boolean setA(AMatrix _A) {
 //        _setA(A);
@@ -57,7 +47,7 @@ public class CholeskyLDUSolver {
         this.numRows = A.rowCount();
         this.numCols = A.columnCount();
 
-        ans = decomp.decompose(A);
+        ans = CholeskyLDU.decompose(A);
         if( ans != null ){
             n = A.columnCount();
 //          vv = decomp._getVV();
