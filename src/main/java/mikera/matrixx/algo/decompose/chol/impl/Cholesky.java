@@ -36,21 +36,40 @@ public class Cholesky extends CholeskyCommon {
     private CholeskyHelper chol;
     
     // Default block width (taken from EjmlParameters.java)
-    public static int BLOCK_WIDTH = 60;
+    /**
+     * Default block width
+     */
+    public static final int BLOCK_WIDTH = 60;
     
     /**
-     * Creates a CholeskyDecomposition capable of decomposing a matrix, taking
-     * default block width = 60
+     * <p>
+     * Computes the Cholesky Decomposition (A = LU) of a matrix, taking
+     * default block width = 60.
+     * </p>
+     * <p>
+     * If the matrix is not positive definite then this function will return
+     * null since it can't complete its computations.  Not all errors will be
+     * found.  This is an efficient way to check for positive definiteness.
+     * </p>
+     * @param mat A symmetric positive definite matrix
+     * @return A Cholesky Decomposition Result
      */
     public static ICholesky decompose(AMatrix mat) {
 		return decompose(mat, BLOCK_WIDTH);
 	}
     
     /**
-     * Creates a CholeksyDecomposition capable of decomposing a matrix that is
-     * n by n, where n is the width.
-     *
+     * <p>
+     * Computes the Cholesky LDU Decomposition (A = LDU) of a matrix.
+     * </p>
+     * <p>
+     * If the matrix is not positive definite then this function will return
+     * null since it can't complete its computations.  Not all errors will be
+     * found.  This is an efficient way to check for positive definiteness.
+     * </p>
+     * @param mat A symmetric positive definite matrix
      * @param blockWidth The width of a block.
+     * @return A Cholesky LDU Decomposition Result
      */
     public static ICholesky decompose(AMatrix mat, int blockWidth) {
 		CholeskyInner temp = new CholeskyInner();
@@ -163,114 +182,6 @@ public class Cholesky extends CholeskyCommon {
         }
 
         return new CholeskyResult(T);
-    }
-    
-    /**
-     * This is a variation on the {@link org.ejml.alg.dense.decomposition.TriangularSolver#solveL} function.
-     * It grabs the input from the top right row rectangle of the source matrix then writes the results
-     * to the lower bottom column rectangle.  The rectangle matrices just matrices are submatrices
-     * of the matrix that is being decomposed.  The results are also written to B.
-     *
-     * @param L A lower triangular matrix.
-     * @param b_src matrix with the vectors that are to be solved for
-     * @param indexSrc First index of the submatrix where the inputs are coming from.
-     * @param indexDst First index of the submatrix where the results are going to.
-     * @param B
-     */
-    public static void solveL_special( final double L[] ,
-    		final AMatrix b_src,
-    		final int indexSrc , final int indexDst ,
-    		final AMatrix B )
-    {
-    	final double dataSrc[] = b_src.toMatrix().data;
-    	
-    	final double b[]= B.toMatrix().data;
-    	final int m = B.rowCount();
-    	final int n = B.columnCount();
-    	final int widthL = m;
-    	
-//        for( int j = 0; j < n; j++ ) {
-//            for( int i = 0; i < widthL; i++ ) {
-//                double sum = dataSrc[indexSrc+i*b_src.numCols+j];
-//                for( int k=0; k<i; k++ ) {
-//                    sum -= L[i*widthL+k]* b[k*n+j];
-//                }
-//                double val = sum / L[i*widthL+i];
-//                dataSrc[indexDst+j*b_src.numCols+i] = val;
-//                b[i*n+j] = val;
-//            }
-//        }
-    	
-    	for( int j = 0; j < n; j++ ) {
-    		int indexb = j;
-    		int rowL = 0;
-    		
-    		//for( int i = 0; i < widthL; i++
-    		for( int i = 0; i < widthL; i++ ,  indexb += n, rowL += widthL ) {
-    			double sum = dataSrc[indexSrc+i*b_src.columnCount()+j];
-    			
-    			int indexL = rowL;
-    			int endL = indexL + i;
-    			int indexB = j;
-    			//for( int k=0; k<i; k++ ) {
-    			for( ; indexL != endL; indexB += n) {
-    				sum -= L[indexL++]* b[indexB];
-    			}
-    			double val = sum / L[i*widthL+i];
-    			dataSrc[indexDst+j*b_src.columnCount()+i] = val;
-    			b[indexb] = val;
-    		}
-    	}
-    }
-    
-    /**
-     * <p>
-     * Performs this operation:<br>
-     * <br>
-     * c = c - a<sup>T</sup>a <br>
-     * where c is a submatrix.
-     * </p>
-     *
-     * Only the upper triangle is updated.
-     *
-     * @param a A matrix.
-     * @param c A matrix.
-     * @param startIndexC start of the submatrix in c.
-     */
-    public static void symmRankTranA_sub( AMatrix a , AMatrix c ,
-    		int startIndexC )
-    {
-    	// TODO update so that it doesn't modify/read parts that it shouldn't
-    	final double dataA[] = a.toMatrix().data;
-    	final double dataC[] = c.toMatrix().data;
-    	
-//        for( int i = 0; i < a.numCols; i++ ) {
-//            for( int k = 0; k < a.numRows; k++ ) {
-//                double valA = dataA[k*a.numCols+i];
-//
-//                for( int j = i; j < a.numCols; j++ ) {
-//                    dataC[startIndexC+i*c.numCols+j] -= valA * dataA[k*a.numCols+j];
-//                }
-//            }
-//        }
-    	
-    	final int strideC = c.columnCount() + 1;
-    	for( int i = 0; i < a.columnCount(); i++ ) {
-    		int indexA = i;
-    		int endR = a.columnCount();
-    		
-    		for( int k = 0; k < a.rowCount(); k++ , indexA += a.columnCount() , endR += a.columnCount()) {
-    			int indexC = startIndexC;
-    			final double valA = dataA[indexA];
-    			int indexR = indexA;
-    			
-    			while( indexR < endR ) {
-    				dataC[indexC++] -= valA * dataA[indexR++];
-    			}
-    		}
-    		startIndexC += strideC;
-    	}
-    	
     }
     
     /*

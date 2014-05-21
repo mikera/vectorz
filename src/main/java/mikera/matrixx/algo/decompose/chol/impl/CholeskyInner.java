@@ -33,6 +33,18 @@ import mikera.matrixx.algo.decompose.chol.ICholesky;
  */
 public class CholeskyInner extends CholeskyCommon {
 
+	/**
+     * <p>
+     * Computes the Cholesky LDU Decomposition (A = LDU) of a matrix.
+     * </p>
+     * <p>
+     * If the matrix is not positive definite then this function will return
+     * null since it can't complete its computations.  Not all errors will be
+     * found.  This is an efficient way to check for positive definiteness.
+     * </p>
+     * @param mat A symmetric positive definite matrix
+     * @return A Cholesky LDU Decomposition Result
+     */
 	public static ICholesky decompose(AMatrix mat) {
 		CholeskyInner temp = new CholeskyInner();
 		return temp._decompose(mat);
