@@ -62,7 +62,7 @@ public abstract class CholeskyCommon {
      * Creates a CholeksyDecomposition capable of decomposing a matrix that is
      * n by n, where n is the width.
      */
-    public CholeskyCommon() {
+    protected CholeskyCommon() {
     }
 
     /**
@@ -78,7 +78,7 @@ public abstract class CholeskyCommon {
      * @param mat A symmetric positive definite matrix.
      * @return CholeskyResult if decomposition is successful, null otherwise.
      */
-    public ICholesky decompose( AMatrix mat ) {
+    protected ICholesky _decompose( AMatrix mat ) {
         if( mat.rowCount() != mat.columnCount() ) {
             throw new IllegalArgumentException("Must be a square matrix.");
         }

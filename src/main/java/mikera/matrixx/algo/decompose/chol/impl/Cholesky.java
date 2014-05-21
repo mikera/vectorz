@@ -37,30 +37,26 @@ public class Cholesky extends CholeskyCommon {
     
     // Default block width (taken from EjmlParameters.java)
     public static int BLOCK_WIDTH = 60;
-
+    
+    /**
+     * Creates a CholeskyDecomposition capable of decomposing a matrix, taking
+     * default block width = 60
+     */
+    public static ICholesky decompose(AMatrix mat) {
+		return decompose(mat, BLOCK_WIDTH);
+	}
+    
     /**
      * Creates a CholeksyDecomposition capable of decomposing a matrix that is
      * n by n, where n is the width.
      *
      * @param blockWidth The width of a block.
      */
-    public Cholesky( int blockWidth ) {
-        super();
+    public static ICholesky decompose(AMatrix mat, int blockWidth) {
+		CholeskyInner temp = new CholeskyInner();
+		return temp._decompose(mat);
+	}
 
-        this.blockWidth = blockWidth;
-
-    }
-    
-    /**
-     * Creates a CholeskyDecomposition capable of decomposing a matrix, taking
-     * default block width = 60
-     */
-    public Cholesky() {
-        super();
-
-        this.blockWidth = BLOCK_WIDTH;
-
-    }
     
     /**
      * <p>
@@ -76,7 +72,7 @@ public class Cholesky extends CholeskyCommon {
      * @return CholeskyResult if decomposition is successful, null otherwise
      */
     @Override
-    public ICholesky decompose( AMatrix mat ) {
+    protected ICholesky _decompose( AMatrix mat ) {
     	if( mat.rowCount() != mat.columnCount() ) {
             throw new IllegalArgumentException("Must be a square matrix.");
         }
