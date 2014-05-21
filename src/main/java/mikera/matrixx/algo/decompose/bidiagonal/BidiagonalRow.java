@@ -56,7 +56,7 @@ public class BidiagonalRow {
      * @param A  The matrix that is being decomposed.  Not modified.
      * @return If it detects any errors or not.
      */
-	public BidiagonalResult decompose(AMatrix A) {
+	public IBidiagonalResult decompose(AMatrix A) {
 		return decompose(A, false);
 	}
 
@@ -68,7 +68,7 @@ public class BidiagonalRow {
      * @param compact If true, result matrices have zero-filled regions trimmed off
      * @return If it detects any errors or not.
      */
-    public BidiagonalResult decompose(AMatrix A, boolean compact)
+    public IBidiagonalResult decompose(AMatrix A, boolean compact)
     {
     	this.compact = compact;
     	UBV = Matrix.create(A);

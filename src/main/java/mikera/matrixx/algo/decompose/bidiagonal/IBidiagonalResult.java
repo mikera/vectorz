@@ -5,7 +5,7 @@ import mikera.matrixx.AMatrix;
 /**
  * @author prasant
  */
-public interface BidiagonalResult {
+public interface IBidiagonalResult {
 
 	/**
      * Returns the bidiagonal matrix.

@@ -2,7 +2,7 @@ package mikera.matrixx.algo.decompose.bidiagonal;
 
 import mikera.matrixx.AMatrix;
 
-public class BidiagonalRowResult implements BidiagonalResult {
+public class BidiagonalRowResult implements IBidiagonalResult {
 	
 	private AMatrix B;
 	private AMatrix U;
