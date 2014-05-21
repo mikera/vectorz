@@ -43,7 +43,7 @@ public class CholeskyInner extends CholeskyCommon {
      * found.  This is an efficient way to check for positive definiteness.
      * </p>
      * @param mat A symmetric positive definite matrix
-     * @return A Cholesky LDU Decomposition Result
+     * @return ICholeskyResult if decomposition is successful, null otherwise.
      */
 	public static ICholeskyResult decompose(AMatrix mat) {
 		CholeskyInner temp = new CholeskyInner();

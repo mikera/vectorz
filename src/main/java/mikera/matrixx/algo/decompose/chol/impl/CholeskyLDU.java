@@ -72,8 +72,8 @@ public class CholeskyLDU {
      * null since it can't complete its computations.  Not all errors will be
      * found.
      * </p>
-     * @param mat A symetric n by n positive definite matrix.
-     * @return CholeskyResult if decomposition is successful, null otherwise.
+     * @param mat A symmetric n by n positive definite matrix.
+     * @return ICholeskyLDUResult if decomposition is successful, null otherwise.
      */
     private ICholeskyLDUResult _decompose( AMatrix mat ) {
         if( mat.rowCount() != mat.columnCount() ) {

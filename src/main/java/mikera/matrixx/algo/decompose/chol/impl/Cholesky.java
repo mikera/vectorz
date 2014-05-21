@@ -69,7 +69,7 @@ public class Cholesky extends CholeskyCommon {
      * </p>
      * @param mat A symmetric positive definite matrix
      * @param blockWidth The width of a block.
-     * @return A Cholesky LDU Decomposition Result
+     * @return ICholeskyResult if decomposition is successful, null otherwise.
      */
     public static ICholeskyResult decompose(AMatrix mat, int blockWidth) {
 		CholeskyInner temp = new CholeskyInner();

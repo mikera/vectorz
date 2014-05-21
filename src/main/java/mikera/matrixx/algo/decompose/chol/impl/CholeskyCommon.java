@@ -76,7 +76,7 @@ public abstract class CholeskyCommon {
      * found.  This is an efficient way to check for positive definiteness.
      * </p>
      * @param mat A symmetric positive definite matrix.
-     * @return CholeskyResult if decomposition is successful, null otherwise.
+     * @return ICholeskyResult if decomposition is successful, null otherwise.
      */
     protected ICholeskyResult _decompose( AMatrix mat ) {
         if( mat.rowCount() != mat.columnCount() ) {
