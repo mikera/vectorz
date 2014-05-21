@@ -56,6 +56,11 @@ public class CholeskyLDU {
 
     // tempoary variable used by various functions
     double vv[];
+    
+    public static ICholeskyLDU decompose(AMatrix mat) {
+    	CholeskyLDU temp = new CholeskyLDU();
+    	return temp._decompose(mat);
+    }
 
     /**
      * <p>
@@ -70,7 +75,7 @@ public class CholeskyLDU {
      * @param mat A symetric n by n positive definite matrix.
      * @return CholeskyResult if decomposition is successful, null otherwise.
      */
-    public ICholeskyLDU decompose( AMatrix mat ) {
+    private ICholeskyLDU _decompose( AMatrix mat ) {
         if( mat.rowCount() != mat.columnCount() ) {
             throw new RuntimeException("Can only decompose square matrices");
         }
