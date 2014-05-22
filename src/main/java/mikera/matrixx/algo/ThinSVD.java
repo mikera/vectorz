@@ -22,6 +22,7 @@ package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.impl.Constants;
 import mikera.vectorz.Vector;
 
 public class ThinSVD {
@@ -63,7 +64,7 @@ public class ThinSVD {
 					s.set(k, k, Math.hypot(s.get(k, k), a.get(i, k)));
 				}
 
-				if (Math.abs(s.get(k, k)) > Decompositions.EPS) {
+				if (Math.abs(s.get(k, k)) > Constants.EPS) {
 
 					if (a.get(k, k) < 0.0) {
 						s.set(k, k, -s.get(k, k));
@@ -81,7 +82,7 @@ public class ThinSVD {
 
 			for (int j = k + 1; j < cc; j++) {
 
-				if ((k < nct) && (Math.abs(s.get(k, k)) > Decompositions.EPS)) {
+				if ((k < nct) && (Math.abs(s.get(k, k)) > Constants.EPS)) {
 
 					double t = 0;
 
@@ -115,7 +116,7 @@ public class ThinSVD {
 					e.set(k, Math.hypot(e.get(k), e.get(i)));
 				}
 
-				if (Math.abs(e.get(k)) > Decompositions.EPS) {
+				if (Math.abs(e.get(k)) > Constants.EPS) {
 
 					if (e.get(k + 1) < 0.0) {
 
@@ -131,7 +132,7 @@ public class ThinSVD {
 
 				e.set(k, -e.get(k));
 
-				if ((k + 1 < rc) && (Math.abs(e.get(k)) > Decompositions.EPS)) {
+				if ((k + 1 < rc) && (Math.abs(e.get(k)) > Constants.EPS)) {
 
 					for (int j = k + 1; j < cc; j++) {
 						for (int i = k + 1; i < rc; i++) {
@@ -182,7 +183,7 @@ public class ThinSVD {
 
 		for (int k = nct - 1; k >= 0; k--) {
 
-			if (Math.abs(s.get(k, k)) > Decompositions.EPS) {
+			if (Math.abs(s.get(k, k)) > Constants.EPS) {
 
 				for (int j = k + 1; j < n; j++) {
 
@@ -220,7 +221,7 @@ public class ThinSVD {
 
 		for (int k = n - 1; k >= 0; k--) {
 
-			if ((k < nrt) & (Math.abs(e.get(k)) > Decompositions.EPS)) {
+			if ((k < nrt) & (Math.abs(e.get(k)) > Constants.EPS)) {
 
 				for (int j = k + 1; j < n; j++) {
 

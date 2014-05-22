@@ -1,6 +1,7 @@
 package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.algo.decompose.lu.ILUP;
 import mikera.matrixx.algo.decompose.lu.impl.SimpleLUP;
@@ -16,8 +17,24 @@ import mikera.vectorz.util.IntArrays;
  *
  */
 public class Determinant {
-
+	
+	/**
+	 * Calculate the determinant of a Matrix. Equivalent to calling m.determinant();
+	 * 
+	 * @param m
+	 * @return
+	 */
 	public static double calculate(AMatrix m) {
+		return m.determinant();
+	}
+
+	/**
+	 * Calculate the determinant of a dense Matrix.
+	 * 
+	 * @param m
+	 * @return
+	 */
+	public static double calculate(Matrix m) {
 		int rc = m.rowCount();
 		int cc = m.columnCount();
 		if (rc!=cc) {
@@ -33,14 +50,14 @@ public class Determinant {
 		return smartDeterminant(m);		
 	}
 	
-	static double smartDeterminant(AMatrix m) {
+	static double smartDeterminant(Matrix m) {
 		ILUP lup=SimpleLUP.decompose(m);
 		double det=lup.getL().diagonalProduct()*lup.getU().diagonalProduct()*lup.getP().determinant();
 		return det;
 	}
 	
 	@SuppressWarnings("unused")
-	static double naiveDeterminant(AMatrix m) {
+	static double naiveDeterminant(Matrix m) {
 		int rc = m.rowCount();
 		int[] inds = new int[rc];
 		for (int i = 0; i < rc; i++) {
@@ -49,7 +66,7 @@ public class Determinant {
 		return calcDeterminant(m,inds, 0);
 	}
 
-	private static double calcDeterminant(AMatrix m, int[] inds, int offset) {
+	private static double calcDeterminant(Matrix m, int[] inds, int offset) {
 		int rc = m.rowCount();
 		if (offset == (rc - 1))
 			return m.unsafeGet(offset, inds[offset]);

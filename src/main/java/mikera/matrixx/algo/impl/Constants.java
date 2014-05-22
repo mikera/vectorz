@@ -1,6 +1,6 @@
-package mikera.matrixx.algo;
+package mikera.matrixx.algo.impl;
 
-public class Decompositions {
+public class Constants {
 
 	public static final double EPS;
 	
