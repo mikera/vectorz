@@ -2,8 +2,8 @@ package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
-import mikera.matrixx.algo.decompose.chol.impl.SimpleCholesky;
+import mikera.matrixx.decompose.chol.ICholeskyResult;
+import mikera.matrixx.decompose.chol.impl.SimpleCholesky;
 
 /**
  * Class implementing Cholesky decomposition
