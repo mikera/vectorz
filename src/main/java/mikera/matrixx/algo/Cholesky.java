@@ -2,7 +2,7 @@ package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.ICholesky;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
 import mikera.matrixx.algo.decompose.chol.impl.SimpleCholesky;
 
 /**
@@ -28,7 +28,7 @@ public class Cholesky {
 	 * @param a Any symmetric, positive definite matrix
 	 * @return The decomposition result, or null if not possible
 	 */
-	public static final ICholesky decompose(AMatrix a) {
+	public static final ICholeskyResult decompose(AMatrix a) {
 		return SimpleCholesky.decompose(a.toMatrix());
 	}
 	
@@ -38,7 +38,7 @@ public class Cholesky {
 	 * @param a Any symmetric, positive definite matrix
 	 * @return The decomposition result, or null if not possible
 	 */
-	public static final ICholesky decompose(Matrix a) {
+	public static final ICholeskyResult decompose(Matrix a) {
 		return SimpleCholesky.decompose(a);
 	}
 }

@@ -3,7 +3,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.algo.decompose.chol.ICholesky;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
 import mikera.util.Maths;
 
 /**
@@ -28,11 +28,11 @@ public class SimpleCholesky {
 	 * @param a Any symmetric, positive definite matrix
 	 * @return The decomposition result
 	 */
-	public static final ICholesky decompose(AMatrix a) {
+	public static final ICholeskyResult decompose(AMatrix a) {
 		return decompose(a.toMatrix());
 	}
 	
-	public static final ICholesky decompose(Matrix a) {
+	public static final ICholeskyResult decompose(Matrix a) {
 		if (!a.isSquare()) throw new IllegalArgumentException("Matrix must be square for Cholesky decomposition");
 		int n=a.rowCount();
 		

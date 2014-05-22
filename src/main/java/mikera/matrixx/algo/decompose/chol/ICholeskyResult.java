@@ -39,7 +39,7 @@ import mikera.matrixx.AMatrix;
  *
  * @author Peter Abeles
  */
-public interface ICholesky {
+public interface ICholeskyResult {
 	
 	/**
 	 * <p>

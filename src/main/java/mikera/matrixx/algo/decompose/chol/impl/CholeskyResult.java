@@ -1,11 +1,11 @@
 package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.algo.decompose.chol.ICholeskyLDU;
+import mikera.matrixx.algo.decompose.chol.ICholeskyLDUResult;
 import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 
-public class CholeskyResult implements ICholeskyLDU {
+public class CholeskyResult implements ICholeskyLDUResult {
 
 	private final AMatrix L;
 	private final ADiagonalMatrix D;

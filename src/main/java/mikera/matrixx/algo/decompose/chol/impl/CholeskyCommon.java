@@ -21,6 +21,7 @@ package mikera.matrixx.algo.decompose.chol.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
 
 /**
  *
@@ -61,7 +62,7 @@ public abstract class CholeskyCommon {
      * Creates a CholeksyDecomposition capable of decomposing a matrix that is
      * n by n, where n is the width.
      */
-    public CholeskyCommon() {
+    protected CholeskyCommon() {
     }
 
     /**
@@ -75,9 +76,9 @@ public abstract class CholeskyCommon {
      * found.  This is an efficient way to check for positive definiteness.
      * </p>
      * @param mat A symmetric positive definite matrix.
-     * @return CholeskyResult if decomposition is successful, null otherwise.
+     * @return ICholeskyResult if decomposition is successful, null otherwise.
      */
-    public CholeskyResult decompose( AMatrix mat ) {
+    protected ICholeskyResult _decompose( AMatrix mat ) {
         if( mat.rowCount() != mat.columnCount() ) {
             throw new IllegalArgumentException("Must be a square matrix.");
         }
@@ -94,8 +95,4 @@ public abstract class CholeskyCommon {
      * Performs an lower triangular decomposition.
      */
     protected abstract CholeskyResult decomposeLower();
-
-    public double[] _getVV() {
-        return vv;
-    }
 }

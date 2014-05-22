@@ -18,8 +18,6 @@
 
 package mikera.matrixx.algo.solve.chol;
 
-import mikera.matrixx.algo.decompose.chol.impl.CholeskyInner;
-
 import org.junit.Test;
 
 
@@ -31,8 +29,7 @@ public class TestCholSolver {
     @Test
     public void standardTests() {
 
-        CholeskyInner alg = new CholeskyInner();
-        CholeskySolver solver = new CholeskySolver(alg);
+        CholeskySolver solver = new CholeskySolver();
 
         BaseCholSolveTests tests = new BaseCholSolveTests();
         tests.standardTests(solver);

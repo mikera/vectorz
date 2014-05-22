@@ -18,6 +18,9 @@
 
 package mikera.matrixx.algo.decompose.chol.impl;
 
+import mikera.matrixx.AMatrix;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
+
 /**
  * <p>
  * This implementation of a Cholesky decomposition using the inner-product form.
@@ -30,9 +33,23 @@ package mikera.matrixx.algo.decompose.chol.impl;
  */
 public class CholeskyInner extends CholeskyCommon {
 
-    public CholeskyInner() {
-    }
-
+	/**
+     * <p>
+     * Computes the Cholesky LDU Decomposition (A = LDU) of a matrix.
+     * </p>
+     * <p>
+     * If the matrix is not positive definite then this function will return
+     * null since it can't complete its computations.  Not all errors will be
+     * found.  This is an efficient way to check for positive definiteness.
+     * </p>
+     * @param mat A symmetric positive definite matrix
+     * @return ICholeskyResult if decomposition is successful, null otherwise.
+     */
+	public static ICholeskyResult decompose(AMatrix mat) {
+		CholeskyInner temp = new CholeskyInner();
+		return temp._decompose(mat);
+	}
+	
     @Override
     protected CholeskyResult decomposeLower() {
         double el_ii;

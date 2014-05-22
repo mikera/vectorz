@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNull;
 import java.util.Random;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.algo.decompose.chol.ICholeskyLDUResult;
 
 import org.junit.Test;
 
@@ -50,8 +51,7 @@ public class TestCholLDU {
 
         double D[] = new double[]{1,3,7};
 
-        CholeskyLDU cholesky = new CholeskyLDU();
-        CholeskyResult ans = cholesky.decompose(A);
+        ICholeskyLDUResult ans = CholeskyLDU.decompose(A);
         assertNotNull(ans);
 
         Matrix foundL = ans.getL().toMatrix();
@@ -68,7 +68,6 @@ public class TestCholLDU {
     	double[][] dataA = {{1,-1},{-1,-2}};
     	Matrix A = Matrix.create(dataA);
     	
-        CholeskyLDU alg = new CholeskyLDU();
-        assertNull(alg.decompose(A));
+        assertNull(CholeskyLDU.decompose(A));
     }
 }

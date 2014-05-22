@@ -20,8 +20,8 @@ package mikera.matrixx.algo.solve.chol;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.decompose.chol.impl.CholeskyCommon;
-import mikera.matrixx.algo.decompose.chol.impl.CholeskyResult;
+import mikera.matrixx.algo.decompose.chol.ICholeskyResult;
+import mikera.matrixx.algo.decompose.chol.impl.Cholesky;
 import mikera.matrixx.algo.decompose.TriangularSolver;
 
 
@@ -34,15 +34,10 @@ public class CholeskySolver {
     protected int numRows;
     protected int numCols;
     
-    private CholeskyCommon decomp;
-    private CholeskyResult ans;
+    private ICholeskyResult ans;
     private int n;
     private double vv[];
     private double t[];
-
-    public CholeskySolver( CholeskyCommon decomp ) {
-        this.decomp = decomp;
-    }
 
     public boolean setA(AMatrix _A) {
 //    	copied code from _setA to setA and created a copy of input matrix
@@ -53,10 +48,11 @@ public class CholeskySolver {
         this.numRows = A.rowCount();
         this.numCols = A.columnCount();
         
-        ans = decomp.decompose(A);
+        ans = Cholesky.decompose(A);
         if( ans != null ){
             n = A.columnCount();
-            vv = decomp._getVV();
+//            vv = decomp._getVV();
+            vv = new double[A.rowCount()];
             t = ans.getL().toMatrix().data;
             return true;
         } else {
