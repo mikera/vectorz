@@ -3,8 +3,8 @@ package mikera.matrixx.algo;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix33;
-import mikera.matrixx.algo.decompose.lu.ILUP;
-import mikera.matrixx.algo.decompose.lu.impl.SimpleLUP;
+import mikera.matrixx.decompose.lu.ILUP;
+import mikera.matrixx.decompose.lu.impl.SimpleLUP;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
