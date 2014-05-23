@@ -1714,6 +1714,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return sb.toString();
 	}
 	
+	/**
+	 * Coerces this vector to the standard dense Vector format.
+	 * 
+	 * May return the same vector is thsis is already a dense Vector, otherwise returns a Vector
+	 * containing a new clone of the vector elements.
+	 */
 	@Override
 	public Vector toVector() {
 		return Vector.create(this);

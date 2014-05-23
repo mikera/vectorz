@@ -583,6 +583,11 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
+	public Vector toVector() {
+		return this;
+	}
+	
+	@Override
 	public double[] asDoubleArray() {
 		return data;
 	}
