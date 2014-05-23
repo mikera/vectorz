@@ -1158,6 +1158,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Returns a copy of this vector normalised to a Euclidean length of 1.0
+	 */
+	public AVector normaliseCopy() {
+		double d=magnitude();
+		if (d>0) return multiplyCopy(1.0/d);
+		return copy();
+	}
+	
+	/**
 	 * Negates all emlements of this vector in place.
 	 */
 	@Override
