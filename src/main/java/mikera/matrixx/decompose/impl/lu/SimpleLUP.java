@@ -43,17 +43,25 @@ public class SimpleLUP {
 		return decomposeLUPInternal(matrix.clone());
 	}
 
-	private static ILUPResult decomposeLUPInternal(Matrix lu) {
-		if (!lu.isSquare()) { throw new IllegalArgumentException(
-				"Wrong matrix size: " + "not square"); }
+	/**
+	 * Performs a LUP decomposition on the given matrix. 
+	 * 
+	 * Warning: Destructively modifies the source matrix
+	 * @param m
+	 * @return
+	 */
+	private static ILUPResult decomposeLUPInternal(Matrix m) {
+		if (!m.isSquare()) { 
+			throw new IllegalArgumentException("Wrong matrix size: " + "not square"); 
+		}
 
-		int n = lu.rowCount();
+		int n = m.rowCount();
 
 		PermutationMatrix p = PermutationMatrix.createIdentity(n);
 
 		for (int j = 0; j < n; j++) {
 
-			Vector jcolumn = lu.getColumn(j).toVector();
+			Vector jcolumn = m.getColumn(j).toVector();
 
 			for (int i = 0; i < n; i++) {
 
@@ -61,11 +69,11 @@ public class SimpleLUP {
 
 				double s = 0.0;
 				for (int k = 0; k < kmax; k++) {
-					s += lu.get(i, k) * jcolumn.unsafeGet(k);
+					s += m.get(i, k) * jcolumn.unsafeGet(k);
 				}
 
 				jcolumn.set(i, jcolumn.unsafeGet(i) - s);
-				lu.set(i, j, jcolumn.unsafeGet(i));
+				m.set(i, j, jcolumn.unsafeGet(i));
 			}
 
 			int biggest = j;
@@ -76,13 +84,13 @@ public class SimpleLUP {
 			}
 
 			if (biggest != j) {
-				lu.swapRows(biggest, j);
+				m.swapRows(biggest, j);
 				p.swapRows(biggest, j);
 			}
 
-			if ((j < n) && (lu.get(j, j) != 0.0)) {
+			if ((j < n) && (m.get(j, j) != 0.0)) {
 				for (int i = j + 1; i < n; i++) {
-					lu.set(i, j, lu.get(i, j) / lu.get(j, j));
+					m.set(i, j, m.get(i, j) / m.get(j, j));
 				}
 			}
 		}
@@ -91,13 +99,13 @@ public class SimpleLUP {
 
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < i; j++) {
-				l.set(i, j, lu.get(i, j));
+				l.set(i, j, m.get(i, j));
 			}
 			l.set(i, i, 1.0);
 		}
 
 		// clear low elements to ensure upper triangle only is populated
-		Matrix u = lu;
+		Matrix u = m;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < i; j++) {
 				u.set(i, j, 0.0);
