@@ -20,6 +20,7 @@ package mikera.matrixx.decompose.impl.qr;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.IQRResult;
+import mikera.vectorz.Vector;
 
 /**
  * <p>
@@ -41,375 +42,378 @@ import mikera.matrixx.decompose.IQRResult;
  * <p/>
  * <p>
  * For the most part this is a straight forward implementation. To improve
- * performance on large matrices a column is written to an array and the order of
- * some of the loops has been changed. This will degrade performance noticeably
- * on small matrices. Since it is unlikely that the QR decomposition would be a
- * bottle neck when small matrices are involved only one implementation is
- * provided.
+ * performance on large matrices a column is written to an array and the order
+ * of some of the loops has been changed. This will degrade performance
+ * noticeably on small matrices. Since it is unlikely that the QR decomposition
+ * would be a bottle neck when small matrices are involved only one
+ * implementation is provided.
  * </p>
- *
+ * 
  * @author Peter Abeles
  */
 public class HouseholderQR implements IQRResult {
 
-  /**
-   * Where the Q and R matrices are stored. R is stored in the upper triangular
-   * portion and Q on the lower bit. Lower columns are where u is stored. Q_k =
-   * (I - gamma_k*u_k*u_k^T).
-   */
-  protected Matrix QR;
-  // used internally to store temporary data
-  protected double u[], v[];
-  // dimension of the decomposed matrices
-  protected int numCols; // this is 'n'
-  protected int numRows; // this is 'm'
-  protected int minLength;
-  protected double dataQR[];
-  // the computed gamma for Q_k matrix
-  protected double gammas[];
-  // local variables
-  protected double gamma;
-  protected double tau;
-  // did it encounter an error?
-  protected boolean error;
+	/**
+	 * Where the Q and R matrices are stored. R is stored in the upper
+	 * triangular portion and Q on the lower bit. Lower columns are where u is
+	 * stored. Q_k = (I - gamma_k*u_k*u_k^T).
+	 */
+	protected Matrix QR;
+	// used internally to store temporary data
+	protected double u[], v[];
+	// dimension of the decomposed matrices
+	protected int numCols; // this is 'n'
+	protected int numRows; // this is 'm'
+	protected int minLength;
+	protected double dataQR[];
+	// the computed gamma for Q_k matrix
+	protected double gammas[];
+	// local variables
+	protected double gamma;
+	protected double tau;
+	// did it encounter an error?
+	protected boolean error;
 
-  private boolean compact;
-  private Matrix Q;
-  private Matrix R;
+	private boolean compact;
+	private Matrix Q;
+	private Matrix R;
 
-  public HouseholderQR(Matrix A, boolean compact) {
-	this.compact=compact;
-    decompose(A);
-  }
-
-  protected void setExpectedMaxSize(int numRows, int numCols) {
-    error = false;
-
-    this.numCols = numCols;
-    this.numRows = numRows;
-    minLength = Math.min(numRows, numCols);
-    int maxLength = Math.max(numRows, numCols);
-
-    if (QR == null) {
-      u = new double[maxLength];
-      v = new double[maxLength];
-      gammas = new double[minLength];
-    }
-    QR = Matrix.create(numRows, numCols);
-
-    dataQR = QR.data;
-
-    if (u.length < maxLength) {
-      u = new double[maxLength];
-      v = new double[maxLength];
-    }
-
-    if (gammas.length < minLength) {
-      gammas = new double[minLength];
-    }
-  }
-
-  /**
-   * Returns a single matrix which contains the combined values of Q and R. This
-   * is possible since Q is symmetric and R is upper triangular.
-   *
-   * @return The combined Q R matrix.
-   */
-  public Matrix getQR() {
-    return QR;
-  }
-
-  /**
-   * @return The Q matrix from the decomposition.
-   */
-  @Override
-  public Matrix getQ() {
-	if (Q==null) {
-		Q = computeQ(compact);
+	public HouseholderQR(Matrix A, boolean compact) {
+		this.compact = compact;
+		decompose(A);
 	}
-    return Q;
-  }
 
-  /**
-   * @return The R matrix from the decomposition.
-   */
-  @Override
-  public Matrix getR() {
-	if (R==null) {
-		R = computeR(compact);
+	protected void setExpectedMaxSize(int numRows, int numCols) {
+		error = false;
+
+		this.numCols = numCols;
+		this.numRows = numRows;
+		minLength = Math.min(numRows, numCols);
+		int maxLength = Math.max(numRows, numCols);
+
+		if (QR == null) {
+			u = new double[maxLength];
+			v = new double[maxLength];
+			gammas = new double[minLength];
+		}
+		QR = Matrix.create(numRows, numCols);
+
+		dataQR = QR.data;
+
+		if (u.length < maxLength) {
+			u = new double[maxLength];
+			v = new double[maxLength];
+		}
+
+		if (gammas.length < minLength) {
+			gammas = new double[minLength];
+		}
 	}
-    return R;
-  }
 
-  /**
-   * Computes the Q matrix from the information stored in the QR matrix. This
-   * operation requires about 4(m<sup>2</sup>n-mn<sup>2</sup>+n<sup>3</sup>/3)
-   * flops.
-   *
-   * @param compact If true an m by n matrix is created, otherwise n by n.
-   * @return The Q matrix.
-   */
-  protected Matrix computeQ(boolean compact) {
-    Matrix Q;
-    if (compact) {
-      Q = Matrix.createIdentity(numRows, minLength);
-    } else {
-      Q = Matrix.createIdentity(numRows);
-    }
+	/**
+	 * Returns a single matrix which contains the combined values of Q and R.
+	 * This is possible since Q is symmetric and R is upper triangular.
+	 * 
+	 * @return The combined Q R matrix.
+	 */
+	public Matrix getQR() {
+		return QR;
+	}
 
-    for (int j = minLength - 1; j >= 0; j--) {
-      u[j] = 1;
-      for (int i = j + 1; i < numRows; i++) {
-        u[i] = QR.get(i, j);
-      }
-      rank1UpdateMultR(Q, u, gammas[j], j, j, numRows, v);
-    }
+	/**
+	 * @return The Q matrix from the decomposition.
+	 */
+	@Override
+	public Matrix getQ() {
+		if (Q == null) {
+			Q = computeQ(compact);
+		}
+		return Q;
+	}
 
-    return Q;
-  }
+	/**
+	 * @return The R matrix from the decomposition.
+	 */
+	@Override
+	public Matrix getR() {
+		if (R == null) {
+			R = computeR(compact);
+		}
+		return R;
+	}
 
-  /**
-   * Returns an upper triangular matrix which is the R in the QR decomposition.
-   *
-   * @param compact
-   */
-  protected Matrix computeR(boolean compact) {
-    Matrix R;
-    if (compact) {
-      R = Matrix.create(minLength, numCols);
-    } else {
-      R = Matrix.create(numRows, numCols);
-    }
+	/**
+	 * Computes the Q matrix from the information stored in the QR matrix. This
+	 * operation requires about 4(m<sup>2</sup>n-mn<sup>2</sup>+n<sup>3</sup>/3)
+	 * flops.
+	 * 
+	 * @param compact
+	 *            If true an m by n matrix is created, otherwise n by n.
+	 * @return The Q matrix.
+	 */
+	protected Matrix computeQ(boolean compact) {
+		Matrix Q;
+		if (compact) {
+			Q = Matrix.createIdentity(numRows, minLength);
+		} else {
+			Q = Matrix.createIdentity(numRows);
+		}
 
-    for (int i = 0; i < minLength; i++) {
-      for (int j = i; j < numCols; j++) {
-        double val = QR.unsafeGet(i, j);
-        R.unsafeSet(i, j, val);
-      }
-    }
+		for (int j = minLength - 1; j >= 0; j--) {
+			u[j] = 1;
+			for (int i = j + 1; i < numRows; i++) {
+				u[i] = QR.get(i, j);
+			}
+			rank1UpdateMultR(Q, u, gammas[j], j, j, numRows, v);
+		}
 
-    return R;
-  }
+		return Q;
+	}
 
-  /**
-   * <p>
-   * In order to decompose the matrix 'A' it must have full rank. 'A' is a 'm'
-   * by 'n' matrix. It requires about 2n*m<sup>2</sup>-2m<sup>2</sup>/3 flops.
-   * </p>
-   * <p/>
-   * <p>
-   * The matrix provided here can be of different dimension than the one
-   * specified in the constructor. It just has to be smaller than or equal to
-   * it.
-   * </p>
-   */
-  protected boolean decompose(Matrix A) {
-    commonSetup(A);
+	/**
+	 * Returns an upper triangular matrix which is the R in the QR
+	 * decomposition.
+	 * 
+	 * @param compact
+	 */
+	protected Matrix computeR(boolean compact) {
+		Matrix R;
+		if (compact) {
+			R = Matrix.create(minLength, numCols);
+		} else {
+			R = Matrix.create(numRows, numCols);
+		}
 
-    for (int j = 0; j < minLength; j++) {
-      householder(j);
-      updateA(j);
-    }
+		for (int i = 0; i < minLength; i++) {
+			for (int j = i; j < numCols; j++) {
+				double val = QR.unsafeGet(i, j);
+				R.unsafeSet(i, j, val);
+			}
+		}
 
-    return !error;
-  }
+		return R;
+	}
 
-  /**
-   * <p>
-   * Computes the householder vector "u" for the first column of submatrix j.
-   * Note this is a specialized householder for this problem. There is some
-   * protection against overflow and underflow.
-   * </p>
-   * <p>
-   * Q = I - &gamma;uu<sup>T</sup>
-   * </p>
-   * <p>
-   * This function finds the values of 'u' and '&gamma;'.
-   * </p>
-   *
-   * @param j Which submatrix to work off of.
-   */
-  protected void householder(int j) {
-    // find the element with the largest absolute value in the column and make a
-    // copy
-    int index = j + j * numCols;
-    double max = 0;
-    for (int i = j; i < numRows; i++) {
+	/**
+	 * <p>
+	 * In order to decompose the matrix 'A' it must have full rank. 'A' is a 'm'
+	 * by 'n' matrix. It requires about 2n*m<sup>2</sup>-2m<sup>2</sup>/3 flops.
+	 * </p>
+	 * <p/>
+	 * <p>
+	 * The matrix provided here can be of different dimension than the one
+	 * specified in the constructor. It just has to be smaller than or equal to
+	 * it.
+	 * </p>
+	 */
+	protected boolean decompose(Matrix A) {
+		commonSetup(A);
 
-      double d = u[i] = dataQR[index];
+		for (int j = 0; j < minLength; j++) {
+			householder(j);
+			updateA(j);
+		}
 
-      // absolute value of d
-      if (d < 0)
-        d = -d;
-      if (max < d) {
-        max = d;
-      }
-      index += numCols;
-    }
+		return !error;
+	}
 
-    if (max == 0.0) {
-      gamma = 0;
-      error = true;
-    } else {
-      // compute the norm2 of the matrix, with each element
-      // normalized by the max value to avoid overflow problems
-      tau = 0;
-      for (int i = j; i < numRows; i++) {
-        u[i] /= max;
-        double d = u[i];
-        tau += d * d;
-      }
-      tau = Math.sqrt(tau);
+	/**
+	 * <p>
+	 * Computes the householder vector "u" for the first column of submatrix j.
+	 * Note this is a specialized householder for this problem. There is some
+	 * protection against overflow and underflow.
+	 * </p>
+	 * <p>
+	 * Q = I - &gamma;uu<sup>T</sup>
+	 * </p>
+	 * <p>
+	 * This function finds the values of 'u' and '&gamma;'.
+	 * </p>
+	 * 
+	 * @param j
+	 *            Which submatrix to work off of.
+	 */
+	protected void householder(int j) {
+		// find the element with the largest absolute value in the column and
+		// make a
+		// copy
+		int index = j + j * numCols;
+		double max = 0;
+		for (int i = j; i < numRows; i++) {
 
-      if (u[j] < 0)
-        tau = -tau;
+			double d = u[i] = dataQR[index];
 
-      double u_0 = u[j] + tau;
-      gamma = u_0 / tau;
-      for (int i = j + 1; i < numRows; i++) {
-        u[i] /= u_0;
-      }
-      u[j] = 1;
-      tau *= max;
-    }
+			// absolute value of d
+			if (d < 0) d = -d;
+			if (max < d) {
+				max = d;
+			}
+			index += numCols;
+		}
 
-    gammas[j] = gamma;
-  }
+		if (max == 0.0) {
+			gamma = 0;
+			error = true;
+		} else {
+			// compute the norm2 of the matrix, with each element
+			// normalized by the max value to avoid overflow problems
+			tau = 0;
+			for (int i = j; i < numRows; i++) {
+				u[i] /= max;
+				double d = u[i];
+				tau += d * d;
+			}
+			tau = Math.sqrt(tau);
 
-  /**
-   * <p>
-   * Takes the results from the householder computation and updates the 'A'
-   * matrix.<br>
-   * <br>
-   * A = (I - &gamma;*u*u<sup>T</sup>)A
-   * </p>
-   *
-   * @param w The submatrix.
-   */
-  protected void updateA(int w) {
-    // much of the code below is equivalent to the rank1Update function
-    // however, since &tau; has already been computed there is no need to
-    // recompute it, saving a few multiplication operations
-    // for( int i = w+1; i < numCols; i++ ) {
-    // double val = 0;
-    //
-    // for( int k = w; k < numRows; k++ ) {
-    // val += u[k]*dataQR[k*numCols +i];
-    // }
-    // v[i] = gamma*val;
-    // }
+			if (u[j] < 0) tau = -tau;
 
-    // This is functionally the same as the above code but the order has been
-    // changed
-    // to avoid jumping the cpu cache
-    for (int i = w + 1; i < numCols; i++) {
-      v[i] = u[w] * dataQR[w * numCols + i];
-    }
+			double u_0 = u[j] + tau;
+			gamma = u_0 / tau;
+			for (int i = j + 1; i < numRows; i++) {
+				u[i] /= u_0;
+			}
+			u[j] = 1;
+			tau *= max;
+		}
 
-    for (int k = w + 1; k < numRows; k++) {
-      int indexQR = k * numCols + w + 1;
-      for (int i = w + 1; i < numCols; i++) {
-        // v[i] += u[k]*dataQR[k*numCols +i];
-        v[i] += u[k] * dataQR[indexQR++];
-      }
-    }
+		gammas[j] = gamma;
+	}
 
-    for (int i = w + 1; i < numCols; i++) {
-      v[i] *= gamma;
-    }
+	/**
+	 * <p>
+	 * Takes the results from the householder computation and updates the 'A'
+	 * matrix.<br>
+	 * <br>
+	 * A = (I - &gamma;*u*u<sup>T</sup>)A
+	 * </p>
+	 * 
+	 * @param w
+	 *            The submatrix.
+	 */
+	protected void updateA(int w) {
+		// much of the code below is equivalent to the rank1Update function
+		// however, since &tau; has already been computed there is no need to
+		// recompute it, saving a few multiplication operations
+		// for( int i = w+1; i < numCols; i++ ) {
+		// double val = 0;
+		//
+		// for( int k = w; k < numRows; k++ ) {
+		// val += u[k]*dataQR[k*numCols +i];
+		// }
+		// v[i] = gamma*val;
+		// }
 
-    // end of reordered code
+		// This is functionally the same as the above code but the order has
+		// been
+		// changed
+		// to avoid jumping the cpu cache
+		for (int i = w + 1; i < numCols; i++) {
+			v[i] = u[w] * dataQR[w * numCols + i];
+		}
 
-    for (int i = w; i < numRows; i++) {
-      double valU = u[i];
+		for (int k = w + 1; k < numRows; k++) {
+			int indexQR = k * numCols + w + 1;
+			for (int i = w + 1; i < numCols; i++) {
+				// v[i] += u[k]*dataQR[k*numCols +i];
+				v[i] += u[k] * dataQR[indexQR++];
+			}
+		}
 
-      int indexQR = i * numCols + w + 1;
-      for (int j = w + 1; j < numCols; j++) {
-        // dataQR[i*numCols+j] -= valU*v[j];
-        dataQR[indexQR++] -= valU * v[j];
-      }
-    }
+		for (int i = w + 1; i < numCols; i++) {
+			v[i] *= gamma;
+		}
 
-    if (w < numCols) {
-      dataQR[w + w * numCols] = -tau;
-    }
+		// end of reordered code
 
-    // save the Q matrix in the lower portion of QR
-    for (int i = w + 1; i < numRows; i++) {
-      dataQR[w + i * numCols] = u[i];
-    }
-  }
+		for (int i = w; i < numRows; i++) {
+			double valU = u[i];
 
-  /**
-   * This function performs sanity check on the input for decompose and sets up
-   * the QR matrix.
-   *
-   * @param A
-   */
-  protected void commonSetup(Matrix A) {
-    setExpectedMaxSize(A.rowCount(), A.columnCount());
+			int indexQR = i * numCols + w + 1;
+			for (int j = w + 1; j < numCols; j++) {
+				// dataQR[i*numCols+j] -= valU*v[j];
+				dataQR[indexQR++] -= valU * v[j];
+			}
+		}
 
-    QR.set(A);
-  }
+		if (w < numCols) {
+			dataQR[w + w * numCols] = -tau;
+		}
 
-  /**
-   * <p>
-   * Performs a rank-1 update operation on the submatrix specified by w with the
-   * multiply on the right.<br>
-   * <br>
-   * A = (I - &gamma;*u*u<sup>T</sup>)*A<br>
-   * </p>
-   * <p>
-   * The order that matrix multiplies are performed has been carefully selected
-   * to minimize the number of operations.
-   * </p>
-   * <p/>
-   * <p>
-   * Before this can become a truly generic operation the submatrix
-   * specification needs to be made more generic.
-   * </p>
-   */
-  protected void rank1UpdateMultR(Matrix A, double u[], double gamma,
-                                  int colA0, int w0, int w1, double _temp[]) {
-    // for( int i = colA0; i < A.numCols; i++ ) {
-    // double val = 0;
-    //
-    // for( int k = w0; k < w1; k++ ) {
-    // val += u[k]*A.data[k*A.numCols +i];
-    // }
-    // _temp[i] = gamma*val;
-    // }
+		// save the Q matrix in the lower portion of QR
+		for (int i = w + 1; i < numRows; i++) {
+			dataQR[w + i * numCols] = u[i];
+		}
+	}
 
-    // reordered to reduce cpu cache issues
-    for (int i = colA0; i < A.columnCount(); i++) {
-      _temp[i] = u[w0] * A.data[w0 * A.columnCount() + i];
-    }
+	/**
+	 * This function performs sanity check on the input for decompose and sets
+	 * up the QR matrix.
+	 * 
+	 * @param A
+	 */
+	protected void commonSetup(Matrix A) {
+		setExpectedMaxSize(A.rowCount(), A.columnCount());
 
-    for (int k = w0 + 1; k < w1; k++) {
-      int indexA = k * A.columnCount() + colA0;
-      double valU = u[k];
-      for (int i = colA0; i < A.columnCount(); i++) {
-        _temp[i] += valU * A.data[indexA++];
-      }
-    }
-    for (int i = colA0; i < A.columnCount(); i++) {
-      _temp[i] *= gamma;
-    }
+		QR.set(A);
+	}
 
-    // end of reorder
+	/**
+	 * <p>
+	 * Performs a rank-1 update operation on the submatrix specified by w with
+	 * the multiply on the right.<br>
+	 * <br>
+	 * A = (I - &gamma;*u*u<sup>T</sup>)*A<br>
+	 * </p>
+	 * <p>
+	 * The order that matrix multiplies are performed has been carefully
+	 * selected to minimize the number of operations.
+	 * </p>
+	 * <p/>
+	 * <p>
+	 * Before this can become a truly generic operation the submatrix
+	 * specification needs to be made more generic.
+	 * </p>
+	 */
+	protected void rank1UpdateMultR(Matrix A, double u[], double gamma,
+			int colA0, int w0, int w1, double _temp[]) {
+		// for( int i = colA0; i < A.numCols; i++ ) {
+		// double val = 0;
+		//
+		// for( int k = w0; k < w1; k++ ) {
+		// val += u[k]*A.data[k*A.numCols +i];
+		// }
+		// _temp[i] = gamma*val;
+		// }
 
-    for (int i = w0; i < w1; i++) {
-      double valU = u[i];
+		// reordered to reduce cpu cache issues
+		for (int i = colA0; i < A.columnCount(); i++) {
+			_temp[i] = u[w0] * A.data[w0 * A.columnCount() + i];
+		}
 
-      int indexA = i * A.columnCount() + colA0;
-      for (int j = colA0; j < A.columnCount(); j++) {
-        A.data[indexA++] -= valU * _temp[j];
-      }
-    }
-  }
+		for (int k = w0 + 1; k < w1; k++) {
+			int indexA = k * A.columnCount() + colA0;
+			double valU = u[k];
+			for (int i = colA0; i < A.columnCount(); i++) {
+				_temp[i] += valU * A.data[indexA++];
+			}
+		}
+		for (int i = colA0; i < A.columnCount(); i++) {
+			_temp[i] *= gamma;
+		}
 
-  public double[] getGammas() {
-    return gammas;
-  }
+		// end of reorder
 
+		for (int i = w0; i < w1; i++) {
+			double valU = u[i];
+
+			int indexA = i * A.columnCount() + colA0;
+			for (int j = colA0; j < A.columnCount(); j++) {
+				A.data[indexA++] -= valU * _temp[j];
+			}
+		}
+	}
+
+	public Vector getGammas() {
+		return Vector.wrap(gammas);
+	}
 }
