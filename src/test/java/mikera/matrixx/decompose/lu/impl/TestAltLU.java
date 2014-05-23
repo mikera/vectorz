@@ -1,12 +1,12 @@
 package mikera.matrixx.decompose.lu.impl;
 
+import miker.matrixx.decompose.ILUPResult;
+import miker.matrixx.decompose.ILUResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.impl.lu.AltLU;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
-import mikera.matrixx.decompose.lu.ILU;
-import mikera.matrixx.decompose.lu.ILUP;
 
 import org.junit.Test;
 
@@ -18,7 +18,7 @@ public class TestAltLU {
   public void testDecompose() {
     double[][] dataA = {{5, 2, 3}, {1.5, -2, 8}, {-3, 4.7, -0.5}};
     Matrix A = Matrix.create(dataA);
-    ILU alg = new AltLU(A);
+    ILUResult alg = new AltLU(A);
     AMatrix L = alg.getL();
     AMatrix U = alg.getU();
 
@@ -34,7 +34,7 @@ public class TestAltLU {
 
   @Test public void testRandomDecompose() {
 	  AMatrix a=Matrixx.createRandomMatrix(4, 4);
-	  ILUP r=SimpleLUP.decompose(a);
+	  ILUPResult r=SimpleLUP.decompose(a);
 	  
 	  AMatrix lu=r.getL().innerProduct(r.getU());
 	  AMatrix pa=r.getP().innerProduct(a);

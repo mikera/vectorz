@@ -18,9 +18,9 @@
 
 package mikera.matrixx.decompose.impl.lu;
 
+import miker.matrixx.decompose.ILUPResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.decompose.lu.ILUP;
 import mikera.matrixx.impl.PermutationMatrix;
 
 /**
@@ -32,7 +32,7 @@ import mikera.matrixx.impl.PermutationMatrix;
  *
  * @author Peter Abeles
  */
-public class AltLU implements ILUP {
+public class AltLU implements ILUPResult {
 
   // it can decompose a matrix up to this size
   protected int maxWidth = -1;

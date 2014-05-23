@@ -1,10 +1,10 @@
 package mikera.matrixx.algo;
 
+import miker.matrixx.decompose.ILUPResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
-import mikera.matrixx.decompose.lu.ILUP;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
@@ -51,7 +51,7 @@ public class Determinant {
 	}
 	
 	static double smartDeterminant(Matrix m) {
-		ILUP lup=SimpleLUP.decompose(m);
+		ILUPResult lup=SimpleLUP.decompose(m);
 		double det=lup.getL().diagonalProduct()*lup.getU().diagonalProduct()*lup.getP().determinant();
 		return det;
 	}

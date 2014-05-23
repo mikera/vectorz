@@ -1,4 +1,4 @@
-package mikera.matrixx.decompose.lu;
+package miker.matrixx.decompose;
 
 import mikera.matrixx.impl.PermutationMatrix;
 
@@ -21,7 +21,7 @@ import mikera.matrixx.impl.PermutationMatrix;
  *
  * @author Peter Abeles
  */
-public interface ILUP extends ILU {
+public interface ILUPResult extends ILUResult {
 	
 	  /**
 	   * <p>

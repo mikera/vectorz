@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.decompose.lu;
+package miker.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
 
@@ -39,7 +39,7 @@ import mikera.matrixx.AMatrix;
  *
  * @author Peter Abeles
  */
-public interface ILU {
+public interface ILUResult {
 
   /**
    * <p>
