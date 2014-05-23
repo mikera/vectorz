@@ -48,4 +48,15 @@ public class TestHouseholderQR {
 	  
 	  assertTrue(r.isZero());
   }
+  
+  @Test
+  public void testZeroDecomposeSquare() {
+	  IQRResult qr=QR.decompose(ZeroMatrix.create(3, 3));
+	  AMatrix q=qr.getQ();
+	  AMatrix r=qr.getR();
+	  
+	  assertEquals(IdentityMatrix.create(3),q);
+	  
+	  assertTrue(r.isZero());
+  }
 }
