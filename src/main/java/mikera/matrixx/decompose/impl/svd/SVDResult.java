@@ -2,14 +2,15 @@ package mikera.matrixx.decompose.impl.svd;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.decompose.ISVDResult;
+import mikera.matrixx.impl.ADiagonalMatrix;
 
 public class SVDResult implements ISVDResult {
 
 	private final AMatrix u;
-	private final AMatrix s;
+	private final ADiagonalMatrix s;
 	private final AMatrix v;
 
-	public SVDResult(AMatrix u, AMatrix s, AMatrix v) {
+	public SVDResult(AMatrix u, ADiagonalMatrix s, AMatrix v) {
 		this.u=u;
 		this.s=s;
 		this.v=v;
@@ -21,7 +22,7 @@ public class SVDResult implements ISVDResult {
 	}
 
 	@Override
-	public AMatrix getS() {
+	public ADiagonalMatrix getS() {
 		return s;
 	}
 

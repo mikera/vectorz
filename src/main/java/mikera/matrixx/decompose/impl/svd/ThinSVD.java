@@ -24,6 +24,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.impl.Constants;
 import mikera.matrixx.decompose.ISVDResult;
+import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.vectorz.Vector;
 
 /**
@@ -53,7 +54,7 @@ public class ThinSVD {
 		int n = Math.min(rc, cc); // this should always be cc??
 
 		Matrix u = Matrix.create(rc, n);
-		Matrix s = Matrix.create(cc, cc);
+		Vector s = Vector.createLength(cc);
 		Matrix v = Matrix.create(cc, cc);
 
 		Vector e = Vector.createLength(cc);
@@ -67,28 +68,28 @@ public class ThinSVD {
 			if (k < nct) {
 
 				for (int i = k; i < rc; i++) {
-					s.set(k, k, Math.hypot(s.get(k, k), a.get(i, k)));
+					s.set(k, Math.hypot(s.get(k), a.get(i, k)));
 				}
 
-				if (Math.abs(s.get(k, k)) > Constants.EPS) {
+				if (Math.abs(s.get(k)) > Constants.EPS) {
 
 					if (a.get(k, k) < 0.0) {
-						s.set(k, k, -s.get(k, k));
+						s.set(k, -s.get(k));
 					}
 
 					for (int i = k; i < rc; i++) {
-						a.set(i, k, a.get(i, k) / (s.get(k, k)));
+						a.set(i, k, a.get(i, k) / (s.get(k)));
 					}
 
 					a.addAt(k, k, 1.0);
 				}
 
-				s.set(k, k, -s.get(k, k));
+				s.set(k, -s.get(k));
 			}
 
 			for (int j = k + 1; j < cc; j++) {
 
-				if ((k < nct) && (Math.abs(s.get(k, k)) > Constants.EPS)) {
+				if ((k < nct) && (Math.abs(s.get(k)) > Constants.EPS)) {
 
 					double t = 0;
 
@@ -165,11 +166,11 @@ public class ThinSVD {
 		int p = Math.min(cc, rc + 1);
 
 		if (nct < cc) {
-			s.set(nct, nct, a.get(nct, nct));
+			s.set(nct, a.get(nct, nct));
 		}
 
 		if (rc < p) {
-			s.set(p - 1, p - 1, 0.0);
+			s.set(p - 1, 0.0);
 		}
 
 		if (nrt + 1 < p) {
@@ -189,7 +190,7 @@ public class ThinSVD {
 
 		for (int k = nct - 1; k >= 0; k--) {
 
-			if (Math.abs(s.get(k, k)) > Constants.EPS) {
+			if (Math.abs(s.get(k)) > Constants.EPS) {
 
 				for (int j = k + 1; j < n; j++) {
 
@@ -266,8 +267,8 @@ public class ThinSVD {
 
 				if (Math.abs(e.get(k)) <= tiny
 						+ eps
-						* (Math.abs(s.get(k, k)) + Math
-								.abs(s.get(k + 1, k + 1)))) {
+						* (Math.abs(s.get(k)) + Math
+								.abs(s.get(k + 1)))) {
 					e.set(k, 0.0);
 					break;
 				}
@@ -288,8 +289,8 @@ public class ThinSVD {
 					double t = (ks != p ? Math.abs(e.get(ks)) : 0.)
 							+ (ks != k + 1 ? Math.abs(e.get(ks - 1)) : 0.);
 
-					if (Math.abs(s.get(ks, ks)) <= tiny + eps * t) {
-						s.set(ks, ks, 0.0);
+					if (Math.abs(s.get(ks)) <= tiny + eps * t) {
+						s.set(ks, 0.0);
 						break;
 					}
 				}
@@ -314,8 +315,9 @@ public class ThinSVD {
 
 				for (int j = p - 2; j >= k; j--) {
 
-					double t = Math.hypot(s.get(j, j), f);
-					double cs = s.get(j, j) / t;
+					double sj=s.unsafeGet(j);
+					double t = Math.hypot(sj, f);
+					double cs = sj / t;
 					double sn = f / t;
 
 					s.set(j, j, t);
@@ -341,8 +343,9 @@ public class ThinSVD {
 
 				for (int j = k; j < p; j++) {
 
-					double t = Math.hypot(s.get(j, j), f);
-					double cs = s.get(j, j) / t;
+					double sj=s.unsafeGet(j);
+					double t = Math.hypot(sj, f);
+					double cs = sj / t;
 					double sn = f / t;
 
 					s.set(j, j, t);
@@ -363,15 +366,15 @@ public class ThinSVD {
 
 				double scale = Math
 						.max(Math.max(Math.max(
-								Math.max(Math.abs(s.get(p - 1, p - 1)),
-										Math.abs(s.get(p - 2, p - 2))),
-								Math.abs(e.get(p - 2))), Math.abs(s.get(k, k))),
+								Math.max(Math.abs(s.get(p - 1)),
+										Math.abs(s.get(p - 2))),
+								Math.abs(e.get(p - 2))), Math.abs(s.get(k))),
 								Math.abs(e.get(k)));
 
-				double sp = s.get(p - 1, p - 1) / scale;
-				double spm1 = s.get(p - 2, p - 2) / scale;
+				double sp = s.get(p - 1) / scale;
+				double spm1 = s.get(p - 2) / scale;
 				double epm1 = e.get(p - 2) / scale;
-				double sk = s.get(k, k) / scale;
+				double sk = s.get(k) / scale;
 				double ek = e.get(k) / scale;
 				double b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
 				double c = (sp * epm1) * (sp * epm1);
@@ -396,11 +399,13 @@ public class ThinSVD {
 					if (j != k) {
 						e.set(j - 1, t);
 					}
+					
+					double sj=s.unsafeGet(j);
 
-					f = cs * s.get(j, j) + sn * e.get(j);
-					e.set(j, cs * e.get(j) - sn * s.get(j, j));
-					g = sn * s.get(j + 1, j + 1);
-					s.set(j + 1, j + 1, cs * s.get(j + 1, j + 1));
+					f = cs * sj + sn * e.get(j);
+					e.set(j, cs * e.get(j) - sn * sj);
+					g = sn * s.get(j + 1);
+					s.set(j + 1, cs * s.get(j + 1));
 
 					for (int i = 0; i < cc; i++) {
 						t = cs * v.get(i, j) + sn * v.get(i, j + 1);
@@ -412,10 +417,10 @@ public class ThinSVD {
 					t = Math.hypot(f, g);
 					cs = f / t;
 					sn = g / t;
-					s.set(j, j, t);
-					f = cs * e.get(j) + sn * s.get(j + 1, j + 1);
-					s.set(j + 1, j + 1,
-							-sn * e.get(j) + cs * s.get(j + 1, j + 1));
+					s.set(j, t);
+					f = cs * e.get(j) + sn * s.get(j + 1);
+					s.set(j + 1,
+							-sn * e.get(j) + cs * s.get(j + 1));
 					g = sn * e.get(j + 1);
 					e.set(j + 1, e.get(j + 1) * (cs));
 
@@ -435,9 +440,9 @@ public class ThinSVD {
 				break;
 
 			case 4: {
-				double skk = s.get(k, k);
-				if (s.get(k, k) <= 0.0) {
-					s.set(k, k, -skk);
+				double skk = s.get(k);
+				if (skk <= 0.0) {
+					s.set(k, -skk);
 					for (int i = 0; i <= pp; i++) {
 						v.set(i, k, -v.get(i, k));
 					}
@@ -445,13 +450,13 @@ public class ThinSVD {
 
 				while (k < pp) {
 
-					if (s.get(k, k) >= s.get(k + 1, k + 1)) {
+					if (s.get(k) >= s.get(k + 1)) {
 						break;
 					}
 
-					double t = s.get(k, k);
-					s.set(k, k, s.get(k + 1, k + 1));
-					s.set(k + 1, k + 1, t);
+					double t = s.get(k);
+					s.set(k, s.get(k + 1));
+					s.set(k + 1, t);
 
 					if (k < cc - 1) {
 						v.swapColumns(k, k + 1);
@@ -481,7 +486,7 @@ public class ThinSVD {
 			}
 		}
 
-		return new SVDResult (u, s, v );
+		return new SVDResult (u, DiagonalMatrix.wrap(s), v );
 	}
 
 }
