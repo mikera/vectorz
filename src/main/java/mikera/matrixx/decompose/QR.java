@@ -24,16 +24,17 @@ package mikera.matrixx.decompose;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.impl.Constants;
+import mikera.matrixx.decompose.impl.qr.QRResult;
 import mikera.vectorz.Vector;
 
 public class QR {
 
 
-	public static Matrix[] decompose(AMatrix matrix) {
+	public static IQRResult decompose(AMatrix matrix) {
 		return decompose(Matrix.create(matrix));
 	}
 	
-	public static Matrix[] decompose(Matrix matrix) {
+	public static IQRResult decompose(Matrix matrix) {
 		int rc = matrix.rowCount();
 		int cc = matrix.columnCount();
 
@@ -121,7 +122,7 @@ public class QR {
 			}
 		}
 
-		return new Matrix[] { q, r };
+		return new QRResult ( q, r );
 	}
 
 }

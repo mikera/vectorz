@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import mikera.matrixx.decompose.Cholesky;
+import mikera.matrixx.decompose.IQRResult;
 import mikera.matrixx.decompose.QR;
 import mikera.matrixx.decompose.ThinSVD;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
@@ -53,10 +54,10 @@ public class TestDecomposition {
 	@Test public void testQR() {
 		
 		AMatrix a=Matrixx.createRandomMatrix(5, 4);
-		AMatrix[] ms=QR.decompose(a);
+		IQRResult ms=QR.decompose(a);
 		
-		AMatrix q=ms[0];
-		AMatrix r=ms[1];
+		AMatrix q=ms.getQ();
+		AMatrix r=ms.getR();
 		
 		// we are testing that A = QR
 		assertTrue(q.innerProduct(r).epsilonEquals(a));
