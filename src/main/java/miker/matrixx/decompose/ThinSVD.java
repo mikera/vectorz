@@ -18,13 +18,18 @@
  * Contributor(s): Julia Kostyukova
  * 
  */
-package mikera.matrixx.algo;
+package miker.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.impl.Constants;
 import mikera.vectorz.Vector;
 
+/**
+ * This class implements a thin SVD decomposition of a matrix
+ * @author Mike
+ *
+ */
 public class ThinSVD {
 
 	public static AMatrix[] decompose(AMatrix a) {
