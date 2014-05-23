@@ -1,5 +1,6 @@
 package mikera.matrixx.decompose.qr.impl;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.IQRResult;
 import mikera.matrixx.decompose.impl.qr.HouseholderQR;
@@ -15,8 +16,8 @@ public class TestHouseholderQR {
     double[][] dataA = {{0, 3, 1}, {0, 4, -2}, {2, 1, 1}};
     Matrix A = Matrix.create(dataA);
     IQRResult alg = new HouseholderQR(A, false);
-    Matrix Q = alg.getQ();
-    Matrix R = alg.getR();
+    AMatrix Q = alg.getQ();
+    AMatrix R = alg.getR();
 
     double[][] exceptDataQ = {{0, -0.6, 0.8}, {0, -0.8, -0.6}, {-1, 0, 0}};
     double[][] exceptDataR = {{-2, -1, -1}, {0, -5, 1}, {0, 0, 2}};

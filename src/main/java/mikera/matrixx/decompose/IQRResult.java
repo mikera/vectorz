@@ -18,7 +18,7 @@
 
 package mikera.matrixx.decompose;
 
-import mikera.matrixx.Matrix;
+import mikera.matrixx.AMatrix;
 
 /**
  * <p>
@@ -54,7 +54,7 @@ public interface IQRResult {
    *
    * @return The Q matrix.
    */
-  public Matrix getQ();
+  public AMatrix getQ();
 
   /**
    * <p>
@@ -63,5 +63,5 @@ public interface IQRResult {
    *
    * @return The R matrix.
    */
-  public Matrix getR();
+  public AMatrix getR();
 }
