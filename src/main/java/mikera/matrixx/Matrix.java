@@ -48,6 +48,10 @@ public final class Matrix extends ADenseArrayMatrix {
 		return new Matrix(m.rowCount(), m.columnCount(), m.toDoubleArray());
 	}
 
+	/**
+	 * Creates a new Matrix with a copy of all data from the source matrix
+	 * @param m
+	 */
 	public Matrix(AMatrix m) {
 		this(m.rowCount(), m.columnCount(), m.toDoubleArray());
 	}
