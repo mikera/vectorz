@@ -19,7 +19,7 @@
  * 
  */
 
-package miker.matrixx.decompose;
+package mikera.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;

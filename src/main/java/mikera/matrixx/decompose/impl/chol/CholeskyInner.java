@@ -18,8 +18,8 @@
 
 package mikera.matrixx.decompose.impl.chol;
 
-import miker.matrixx.decompose.ICholeskyResult;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.decompose.ICholeskyResult;
 
 /**
  * <p>

@@ -24,8 +24,8 @@ import static org.junit.Assert.assertNull;
 
 import java.util.Random;
 
-import miker.matrixx.decompose.ICholeskyLDUResult;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.decompose.ICholeskyLDUResult;
 import mikera.matrixx.decompose.impl.chol.CholeskyLDU;
 
 import org.junit.Test;

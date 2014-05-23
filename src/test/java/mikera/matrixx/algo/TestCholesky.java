@@ -1,9 +1,9 @@
 package mikera.matrixx.algo;
 
 import static org.junit.Assert.*;
-import miker.matrixx.decompose.Cholesky;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.decompose.Cholesky;
 
 import org.junit.Test;
 

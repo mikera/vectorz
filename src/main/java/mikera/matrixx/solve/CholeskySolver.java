@@ -18,9 +18,9 @@
 
 package mikera.matrixx.solve;
 
-import miker.matrixx.decompose.ICholeskyResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.decompose.ICholeskyResult;
 import mikera.matrixx.decompose.impl.chol.Cholesky;
 
 

@@ -18,9 +18,9 @@
 
 package mikera.matrixx.decompose.impl.chol;
 
-import miker.matrixx.decompose.ICholeskyResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.decompose.ICholeskyResult;
 
 /**
  * This is an implementation of Cholesky that processes internal submatrices as blocks.  This is

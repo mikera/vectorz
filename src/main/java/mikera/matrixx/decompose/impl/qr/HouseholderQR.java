@@ -18,8 +18,8 @@
 
 package mikera.matrixx.decompose.impl.qr;
 
-import miker.matrixx.decompose.IQRResult;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.decompose.IQRResult;
 
 /**
  * <p>

@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import miker.matrixx.decompose.Cholesky;
-import miker.matrixx.decompose.QR;
-import miker.matrixx.decompose.ThinSVD;
+import mikera.matrixx.decompose.Cholesky;
+import mikera.matrixx.decompose.QR;
+import mikera.matrixx.decompose.ThinSVD;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.PermutationMatrix;

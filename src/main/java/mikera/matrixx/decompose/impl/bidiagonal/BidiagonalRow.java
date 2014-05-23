@@ -18,9 +18,9 @@
 
 package mikera.matrixx.decompose.impl.bidiagonal;
 
-import miker.matrixx.decompose.IBidiagonalResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.decompose.IBidiagonalResult;
 import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
 
 /**

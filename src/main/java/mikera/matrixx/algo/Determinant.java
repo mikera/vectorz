@@ -1,9 +1,9 @@
 package mikera.matrixx.algo;
 
-import miker.matrixx.decompose.ILUPResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix33;
+import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
