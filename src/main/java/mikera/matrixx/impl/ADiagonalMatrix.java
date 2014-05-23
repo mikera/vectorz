@@ -211,13 +211,10 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	@Override
 	public Matrix innerProduct(Matrix a) {
 		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		int acc=a.columnCount();
-		Matrix m=Matrix.create(dimensions, acc);
+		Matrix m=a.clone();
 		for (int i=0; i<dimensions; i++) {
 			double dv=unsafeGetDiagonalValue(i);
-			for (int j=0; j<acc; j++) {
-				m.unsafeSet(i, j, dv*a.unsafeGet(i,j));
-			}
+			m.multiplyRow(i, dv);
 		}
 		return m;
 	}
