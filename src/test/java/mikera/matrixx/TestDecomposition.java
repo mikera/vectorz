@@ -7,7 +7,7 @@ import org.junit.Test;
 import miker.matrixx.decompose.Cholesky;
 import miker.matrixx.decompose.QR;
 import miker.matrixx.decompose.ThinSVD;
-import mikera.matrixx.decompose.lu.impl.SimpleLUP;
+import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.vectorz.Vector;

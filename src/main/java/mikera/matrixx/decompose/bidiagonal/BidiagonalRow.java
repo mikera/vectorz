@@ -21,7 +21,7 @@ package mikera.matrixx.decompose.bidiagonal;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.bidiagonal.impl.BidiagonalRowResult;
-import mikera.matrixx.decompose.qr.impl.QRHelperFunctions;
+import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
 
 /**
  * <p>

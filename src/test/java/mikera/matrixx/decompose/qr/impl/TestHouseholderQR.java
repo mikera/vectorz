@@ -1,8 +1,8 @@
 package mikera.matrixx.decompose.qr.impl;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.decompose.impl.qr.HouseholderQR;
 import mikera.matrixx.decompose.qr.IQR;
-import mikera.matrixx.decompose.qr.impl.HouseholderQR;
 
 import org.junit.Test;
 

@@ -19,7 +19,7 @@
  * 
  */
 
-package mikera.matrixx.decompose.lu.impl;
+package mikera.matrixx.decompose.impl.lu;
 
 import mikera.vectorz.Vector;
 

@@ -3,7 +3,7 @@ package miker.matrixx.decompose;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.chol.ICholeskyResult;
-import mikera.matrixx.decompose.chol.impl.SimpleCholesky;
+import mikera.matrixx.decompose.impl.chol.SimpleCholesky;
 
 /**
  * Class implementing Cholesky decomposition

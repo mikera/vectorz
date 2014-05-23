@@ -3,10 +3,10 @@ package mikera.matrixx.decompose.lu.impl;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.decompose.impl.lu.AltLU;
+import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 import mikera.matrixx.decompose.lu.ILU;
 import mikera.matrixx.decompose.lu.ILUP;
-import mikera.matrixx.decompose.lu.impl.AltLU;
-import mikera.matrixx.decompose.lu.impl.SimpleLUP;
 
 import org.junit.Test;
 

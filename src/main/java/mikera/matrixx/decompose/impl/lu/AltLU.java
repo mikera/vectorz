@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.decompose.lu.impl;
+package mikera.matrixx.decompose.impl.lu;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;

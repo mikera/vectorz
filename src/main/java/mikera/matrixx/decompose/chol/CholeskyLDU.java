@@ -20,7 +20,7 @@ package mikera.matrixx.decompose.chol;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.decompose.chol.impl.CholeskyResult;
+import mikera.matrixx.decompose.impl.chol.CholeskyResult;
 import mikera.matrixx.impl.DiagonalMatrix;
 
 /**
