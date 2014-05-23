@@ -20,10 +20,10 @@ package mikera.matrixx.decompose.bidiagonal;
 
 import java.util.Random;
 
+import miker.matrixx.decompose.BidiagonalRow;
+import miker.matrixx.decompose.IBidiagonalResult;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
-import mikera.matrixx.decompose.bidiagonal.BidiagonalRow;
-import mikera.matrixx.decompose.bidiagonal.IBidiagonalResult;
 
 import org.junit.Test;
 

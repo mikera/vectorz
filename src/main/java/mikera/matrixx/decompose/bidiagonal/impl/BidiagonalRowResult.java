@@ -1,7 +1,7 @@
 package mikera.matrixx.decompose.bidiagonal.impl;
 
+import miker.matrixx.decompose.IBidiagonalResult;
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.decompose.bidiagonal.IBidiagonalResult;
 
 public class BidiagonalRowResult implements IBidiagonalResult {
 	
