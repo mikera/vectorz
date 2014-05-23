@@ -24,7 +24,7 @@ import mikera.matrixx.decompose.IQRResult;
 /**
  * <p>
  * This variation of QR decomposition uses reflections to compute the Q matrix.
- * Each reflection uses a householder operations, hence its name. To provide a
+ * Each reflection uses householder operations, hence its name. To provide a
  * meaningful solution the original matrix must have full rank. This is intended
  * for processing of small to medium matrices.
  * </p>
@@ -73,13 +73,13 @@ public class HouseholderQR implements IQRResult {
   // did it encounter an error?
   protected boolean error;
 
-  protected Matrix Q;
-  protected Matrix R;
+  private boolean compact;
+  private Matrix Q;
+  private Matrix R;
 
   public HouseholderQR(Matrix A, boolean compact) {
+	this.compact=compact;
     decompose(A);
-    Q = computeQ(compact);
-    R = computeR(compact);
   }
 
   protected void setExpectedMaxSize(int numRows, int numCols) {
@@ -124,6 +124,9 @@ public class HouseholderQR implements IQRResult {
    */
   @Override
   public Matrix getQ() {
+	if (Q==null) {
+		Q = computeQ(compact);
+	}
     return Q;
   }
 
@@ -132,11 +135,14 @@ public class HouseholderQR implements IQRResult {
    */
   @Override
   public Matrix getR() {
+	if (R==null) {
+		R = computeR(compact);
+	}
     return R;
   }
 
   /**
-   * Computes the Q matrix from the imformation stored in the QR matrix. This
+   * Computes the Q matrix from the information stored in the QR matrix. This
    * operation requires about 4(m<sup>2</sup>n-mn<sup>2</sup>+n<sup>3</sup>/3)
    * flops.
    *
@@ -177,8 +183,8 @@ public class HouseholderQR implements IQRResult {
 
     for (int i = 0; i < minLength; i++) {
       for (int j = i; j < numCols; j++) {
-        double val = QR.get(i, j);
-        R.set(i, j, val);
+        double val = QR.unsafeGet(i, j);
+        R.unsafeSet(i, j, val);
       }
     }
 
