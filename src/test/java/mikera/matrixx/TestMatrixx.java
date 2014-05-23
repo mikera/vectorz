@@ -488,6 +488,7 @@ public class TestMatrixx {
 		if ((cc==0)||(rc==0)) return; // bands are meaningless....
 		int bandMin=-m.rowCount();
 		int bandMax=m.columnCount();
+		Matrix mc=m.toMatrix();
 		
 		// TODO: what to do about out-of-range bands?
 		//assertNull(m.getBand(bandMin-1));
@@ -495,9 +496,9 @@ public class TestMatrixx {
 		
 		for (int i=bandMin; i<=bandMax; i++) {
 			AVector b=m.getBand(i);
-			assertEquals(b.length(),m.bandLength(i));
-			
+			assertEquals(b.length(),m.bandLength(i));		
 			assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
+			assertEquals(mc.getBand(i),b);
 		}
 		
 		assertEquals(m,BandedMatrix.create(m));
