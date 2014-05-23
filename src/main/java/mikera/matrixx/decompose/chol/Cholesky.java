@@ -36,11 +36,10 @@ public class Cholesky extends CholeskyCommon {
 
     private CholeskyHelper chol;
     
-    // Default block width (taken from EjmlParameters.java)
     /**
      * Default block width
      */
-    public static final int BLOCK_WIDTH = 60;
+    private static final int BLOCK_WIDTH = 60;
     
     /**
      * <p>
