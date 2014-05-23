@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-package miker.matrixx.decompose;
+package mikera.matrixx.decompose.impl.bidiagonal;
 
+import miker.matrixx.decompose.IBidiagonalResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.decompose.impl.bidiagonal.BidiagonalRowResult;
 import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
 
 /**
