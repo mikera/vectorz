@@ -20,7 +20,7 @@ package miker.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.decompose.bidiagonal.impl.BidiagonalRowResult;
+import mikera.matrixx.decompose.impl.bidiagonal.BidiagonalRowResult;
 import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
 
 /**

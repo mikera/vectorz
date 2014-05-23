@@ -1,4 +1,4 @@
-package mikera.matrixx.decompose.bidiagonal.impl;
+package mikera.matrixx.decompose.impl.bidiagonal;
 
 import miker.matrixx.decompose.IBidiagonalResult;
 import mikera.matrixx.AMatrix;
