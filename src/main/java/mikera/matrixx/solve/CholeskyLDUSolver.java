@@ -18,10 +18,10 @@
 
 package mikera.matrixx.solve;
 
+import miker.matrixx.decompose.ICholeskyLDUResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.decompose.chol.CholeskyLDU;
-import mikera.matrixx.decompose.chol.ICholeskyLDUResult;
+import mikera.matrixx.decompose.impl.chol.CholeskyLDU;
 
 /**
  * @author Peter Abeles

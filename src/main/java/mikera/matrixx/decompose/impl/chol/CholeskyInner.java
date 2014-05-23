@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.decompose.chol;
+package mikera.matrixx.decompose.impl.chol;
 
+import miker.matrixx.decompose.ICholeskyResult;
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.decompose.impl.chol.CholeskyResult;
 
 /**
  * <p>

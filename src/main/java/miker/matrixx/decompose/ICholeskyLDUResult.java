@@ -1,4 +1,4 @@
-package mikera.matrixx.decompose.chol;
+package miker.matrixx.decompose;
 
 import mikera.matrixx.impl.ADiagonalMatrix;
 

@@ -1,9 +1,9 @@
 package mikera.matrixx.decompose.impl.chol;
 
+import miker.matrixx.decompose.ICholeskyResult;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.decompose.chol.ICholeskyResult;
 import mikera.util.Maths;
 
 /**
