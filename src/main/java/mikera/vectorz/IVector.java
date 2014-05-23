@@ -52,4 +52,8 @@ public interface IVector extends INDArray {
 	AVector sqrtCopy();
 
 	boolean epsilonEquals(AVector v, double tolerance);
+
+	double normalise();
+
+	AVector normaliseCopy();
 }

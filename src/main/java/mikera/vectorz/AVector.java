@@ -1151,6 +1151,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Has no effect on a zero-length vector (i.e. it will remain zero)
 	 * 
 	 */
+	@Override
 	public double normalise() {
 		double d=magnitude();
 		if (d>0) multiply(1.0/d);
@@ -1160,6 +1161,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Returns a copy of this vector normalised to a Euclidean length of 1.0
 	 */
+	@Override
 	public AVector normaliseCopy() {
 		double d=magnitude();
 		if (d>0) return multiplyCopy(1.0/d);
