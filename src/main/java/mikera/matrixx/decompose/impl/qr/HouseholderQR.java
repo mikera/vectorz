@@ -18,8 +18,8 @@
 
 package mikera.matrixx.decompose.impl.qr;
 
+import miker.matrixx.decompose.IQRResult;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.decompose.qr.IQR;
 
 /**
  * <p>
@@ -50,7 +50,7 @@ import mikera.matrixx.decompose.qr.IQR;
  *
  * @author Peter Abeles
  */
-public class HouseholderQR implements IQR {
+public class HouseholderQR implements IQRResult {
 
   /**
    * Where the Q and R matrices are stored. R is stored in the upper triangular

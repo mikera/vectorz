@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.decompose.qr;
+package miker.matrixx.decompose;
 
 import mikera.matrixx.Matrix;
 
@@ -46,7 +46,7 @@ import mikera.matrixx.Matrix;
  *
  * @author Peter Abeles
  */
-public interface IQR {
+public interface IQRResult {
   /**
    * <p>
    * Returns the Q matrix from the decomposition.
