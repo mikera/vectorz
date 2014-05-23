@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import mikera.matrixx.decompose.Cholesky;
+import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.decompose.IQRResult;
 import mikera.matrixx.decompose.QR;
 import mikera.matrixx.decompose.ThinSVD;
@@ -28,27 +29,27 @@ public class TestDecomposition {
 		
 		AMatrix a=Matrixx.create(new double[][] {{4,3},{6,3}});
 		
-		AMatrix[] ms=SimpleLUP.decomposeLUP(a);
-		AMatrix lu=ms[0].innerProduct(ms[1]);
+		ILUPResult ms=SimpleLUP.decompose(a);
+		AMatrix lu=ms.getL().innerProduct(ms.getU());
 		
-		assertEquals(ms[2].innerProduct(a),lu);
+		assertEquals(ms.getP().innerProduct(a),lu);
 
 		//assertEquals(Matrixx.create(new double[][] {{1,0},{1.5,1}}),lu[0]);
 		//assertEquals(Matrixx.create(new double[][] {{4,3},{0,-1.5}}),lu[1]);
 
 		a=Matrixx.createRandomSquareMatrix(4);
-		ms=SimpleLUP.decomposeLUP(a);
-		lu=ms[0].innerProduct(ms[1]);
-		assertTrue(ms[2].innerProduct(a).epsilonEquals(lu));
+		ms=SimpleLUP.decompose(a);
+		lu=ms.getL().innerProduct(ms.getU());
+		assertTrue(ms.getP().innerProduct(a).epsilonEquals(lu));
 
 		
 		a=PermutationMatrix.create(0, 2,1,3);
-		ms=SimpleLUP.decomposeLUP(a);
-		lu=ms[0].innerProduct(ms[1]);
-		assertTrue(ms[2].innerProduct(a).epsilonEquals(lu));
-		assertEquals(IdentityMatrix.create(4),ms[0]);
-		assertEquals(IdentityMatrix.create(4),ms[1]);
-		assertEquals(a,ms[2].inverse());
+		ms=SimpleLUP.decompose(a);
+		lu=ms.getL().innerProduct(ms.getU());
+		assertTrue(ms.getP().innerProduct(a).epsilonEquals(lu));
+		assertEquals(IdentityMatrix.create(4),ms.getL());
+		assertEquals(IdentityMatrix.create(4),ms.getU());
+		assertEquals(a,ms.getP().inverse());
 	}
 	
 	@Test public void testQR() {

@@ -22,27 +22,28 @@
 package mikera.matrixx.decompose.impl.lu;
 
 import mikera.vectorz.Vector;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.impl.PermutationMatrix;
 
+/**
+ * Performs a standard LUP decomposition
+ * 
+ * @author Mike
+ *
+ */
 public class SimpleLUP {
-
-	public static AMatrix[] decomposeLUP(AMatrix matrix) {
+	
+	public static ILUPResult decompose(AMatrix matrix) {
 		return decomposeLUPInternal(Matrix.create(matrix));
 	}
-	
-	public static LUPResult decompose(AMatrix matrix) {
-		AMatrix[] lup= decomposeLUPInternal(Matrix.create(matrix));
-		return new LUPResult(lup[0],lup[1],(PermutationMatrix)lup[2]);
-	}
 
-	public static AMatrix[] decomposeLUP(Matrix matrix) {
+	public static ILUPResult decomposeLUP(Matrix matrix) {
 		return decomposeLUPInternal(matrix.clone());
 	}
 
-	private static AMatrix[] decomposeLUPInternal(Matrix lu) {
+	private static ILUPResult decomposeLUPInternal(Matrix lu) {
 		if (!lu.isSquare()) { throw new IllegalArgumentException(
 				"Wrong matrix size: " + "not square"); }
 
@@ -103,6 +104,6 @@ public class SimpleLUP {
 			}
 		}
 
-		return new AMatrix[] { l, u, p };
+		return new LUPResult (l, u, p );
 	}
 }
