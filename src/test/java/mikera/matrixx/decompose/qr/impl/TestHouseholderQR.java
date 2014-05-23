@@ -1,8 +1,8 @@
 package mikera.matrixx.decompose.qr.impl;
 
+import miker.matrixx.decompose.IQRResult;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.impl.qr.HouseholderQR;
-import mikera.matrixx.decompose.qr.IQR;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class TestHouseholderQR {
   public void testDecompose() {
     double[][] dataA = {{0, 3, 1}, {0, 4, -2}, {2, 1, 1}};
     Matrix A = Matrix.create(dataA);
-    IQR alg = new HouseholderQR(A, false);
+    IQRResult alg = new HouseholderQR(A, false);
     Matrix Q = alg.getQ();
     Matrix R = alg.getR();
 

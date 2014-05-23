@@ -1,4 +1,4 @@
-package mikera.matrixx.algo;
+package mikera.matrixx.solve;
 
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;

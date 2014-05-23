@@ -19,7 +19,7 @@
 package mikera.matrixx.solve.chol;
 
 import mikera.matrixx.Matrix;
-import mikera.matrixx.solve.chol.CholeskyLDUSolver;
+import mikera.matrixx.solve.CholeskyLDUSolver;
 
 import org.junit.Test;
 

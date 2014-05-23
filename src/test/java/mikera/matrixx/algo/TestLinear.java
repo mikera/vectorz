@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.solve.Linear;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 

@@ -16,11 +16,10 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.solve.chol;
+package mikera.matrixx.solve;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.TriangularSolver;
 import mikera.matrixx.decompose.chol.Cholesky;
 import mikera.matrixx.decompose.chol.ICholeskyResult;
 

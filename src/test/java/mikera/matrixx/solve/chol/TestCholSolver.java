@@ -18,7 +18,7 @@
 
 package mikera.matrixx.solve.chol;
 
-import mikera.matrixx.solve.chol.CholeskySolver;
+import mikera.matrixx.solve.CholeskySolver;
 
 import org.junit.Test;
 
