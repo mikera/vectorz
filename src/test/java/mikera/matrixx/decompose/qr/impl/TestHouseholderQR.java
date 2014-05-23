@@ -3,11 +3,14 @@ package mikera.matrixx.decompose.qr.impl;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.IQRResult;
+import mikera.matrixx.decompose.QR;
 import mikera.matrixx.decompose.impl.qr.HouseholderQR;
+import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.ZeroMatrix;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TestHouseholderQR {
 
@@ -33,5 +36,16 @@ public class TestHouseholderQR {
 
     assertEquals(Q, exceptQ);
     assertEquals(R, exceptR);
+  }
+  
+  @Test
+  public void testZeroDecompose() {
+	  IQRResult qr=QR.decompose(ZeroMatrix.create(4, 3));
+	  AMatrix q=qr.getQ();
+	  AMatrix r=qr.getR();
+	  
+	  assertEquals(IdentityMatrix.create(3),q.subMatrix(0, 3, 0, 3));
+	  
+	  assertTrue(r.isZero());
   }
 }
