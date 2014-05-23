@@ -18,11 +18,12 @@
  * Contributor(s): Julia Kostyukova
  * 
  */
-package mikera.matrixx.decompose;
+package mikera.matrixx.decompose.impl.svd;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.impl.Constants;
+import mikera.matrixx.decompose.ISVDResult;
 import mikera.vectorz.Vector;
 
 /**
@@ -32,15 +33,15 @@ import mikera.vectorz.Vector;
  */
 public class ThinSVD {
 
-	public static AMatrix[] decompose(AMatrix a) {
+	public static ISVDResult decompose(AMatrix a) {
 		return decompose(Matrix.create(a));
 	}
 
-	public static Matrix[] decompose(Matrix matrix) {
+	public static ISVDResult decompose(Matrix matrix) {
 		return decomposeInternal(matrix.clone());
 	}
 
-	public static Matrix[] decomposeInternal(Matrix a) {
+	public static ISVDResult decomposeInternal(Matrix a) {
 		int rc = a.rowCount();
 		int cc = a.columnCount();
 
@@ -480,7 +481,7 @@ public class ThinSVD {
 			}
 		}
 
-		return new Matrix[] { u, s, v };
+		return new SVDResult (u, s, v );
 	}
 
 }

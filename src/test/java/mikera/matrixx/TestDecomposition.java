@@ -7,9 +7,10 @@ import org.junit.Test;
 import mikera.matrixx.decompose.Cholesky;
 import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.decompose.IQRResult;
+import mikera.matrixx.decompose.ISVDResult;
 import mikera.matrixx.decompose.QR;
-import mikera.matrixx.decompose.ThinSVD;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
+import mikera.matrixx.decompose.impl.svd.ThinSVD;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.vectorz.Vector;
@@ -74,11 +75,11 @@ public class TestDecomposition {
 	@Test public void testSVD() {
 		
 		AMatrix a=Matrixx.createRandomMatrix(5, 3);
-		AMatrix[] ms=ThinSVD.decompose(a);
+		ISVDResult ms=ThinSVD.decompose(a);
 		
-		AMatrix u=ms[0];
-		AMatrix s=ms[1];
-		AMatrix v=ms[2];
+		AMatrix u=ms.getU();
+		AMatrix s=ms.getS();
+		AMatrix v=ms.getV();
 		
 		// we are testing that A = USV*
 		AMatrix usvt=u.innerProduct(s.innerProduct(v.getTranspose()));
