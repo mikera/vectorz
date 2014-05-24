@@ -1,4 +1,4 @@
-package mikera.matrixx.decompose.qr.impl;
+package mikera.matrixx.decompose.impl.qr;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
