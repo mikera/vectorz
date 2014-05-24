@@ -133,7 +133,12 @@ public class SvdImplicitQrAlgorithm {
     }
 
     public void setUt(AMatrix ut) {
-        Ut = ut.toMatrix();
+    	if (ut == null) {
+    		Ut = null;
+    	}
+    	else {
+    		Ut = ut.toMatrix();
+    	}
     }
 
     public AMatrix getVt() {
@@ -141,7 +146,12 @@ public class SvdImplicitQrAlgorithm {
     }
 
     public void setVt(AMatrix vt) {
-        Vt = vt.toMatrix();
+    	if (vt == null) {
+    		Vt = null;
+    	}
+    	else {
+    		Vt = vt.toMatrix();
+    	}
     }
 
     /**
@@ -152,6 +162,7 @@ public class SvdImplicitQrAlgorithm {
         this.diag = diag;
         this.off = off;
 
+//      Find largest value in diag U off
         maxValue = Math.abs(diag[0]);
         for( int i = 1; i < N; i++ ) {
             double a = Math.abs(diag[i]);

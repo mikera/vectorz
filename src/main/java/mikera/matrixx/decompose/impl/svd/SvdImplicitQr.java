@@ -153,8 +153,9 @@ public class SvdImplicitQr {
     	Matrix orig = _orig.copy().toMatrix();
         setup(orig);
 
-        if (bidiagonalization(orig))
+        if (bidiagonalization(orig)) {
             return false;
+        }
 
         if( computeUWV() )
             return false;
@@ -176,7 +177,7 @@ public class SvdImplicitQr {
             A_mod = orig;
         }
         bidiagResult = Bidiagonal.decompose(A_mod);
-        return bidiagResult != null;
+        return bidiagResult == null;
     }
 
     /**
