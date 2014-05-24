@@ -270,6 +270,7 @@ public class SvdImplicitQr {
         numSingular = qralg.getNumberOfSingularValues();
         singularValues = qralg.getSingularValues();
 
+        double[] UtData = Ut.asDoubleArray();
         for( int i = 0; i < numSingular; i++ ) {
             double val = qralg.getSingularValue(i);
 
@@ -283,7 +284,7 @@ public class SvdImplicitQr {
                     int stop = start+ Ut.columnCount();
 
                     for( int j = start; j < stop; j++ ) {
-                        Ut.set(j, 0.0d - Ut.get(j));
+                        UtData[j] = 0.0d - UtData[j];
                     }
                 }
             } else {
