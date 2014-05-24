@@ -408,12 +408,19 @@ public class SvdImplicitQrAlgorithm {
 //        Q.print();
 //        System.out.println();
         int endA = rowA + Q.columnCount();
+        double[] data = Q.asDoubleArray();
         for( ; rowA != endA; rowA++ , rowB++ ) {
-            double a = Q.get(rowA);
-            double b = Q.get(rowB);
-            Q.set(rowA, c*a + s*b);
-            Q.set(rowB, -s*a + c*b);
+        	double a = data[rowA];
+        	double b = data[rowB];
+        	data[rowA] = c*a + s*b;
+        	data[rowB] = -s*a + c*b;
         }
+//        for( ; rowA != endA; rowA++ , rowB++ ) {
+//            double a = Q.get(rowA);
+//            double b = Q.get(rowB);
+//            Q.set(rowA, c*a + s*b);
+//            Q.set(rowB, -s*a + c*b);
+//        }
     }
 
     private double computeBulgeScale() {
