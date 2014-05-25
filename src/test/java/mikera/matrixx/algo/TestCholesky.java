@@ -1,9 +1,11 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.Cholesky;
+import mikera.matrixx.decompose.ICholeskyResult;
+import mikera.matrixx.impl.ZeroMatrix;
 
 import org.junit.Test;
 
@@ -14,13 +16,26 @@ public class TestCholesky {
 		AMatrix z = Matrixx.createRandomMatrix(3, 2);
 		AMatrix a = z.innerProduct(z.getTranspose()); // should get a symmetric positive definite matrix!
 		
-		//System.out.println(a.toString());
-		AMatrix l=Cholesky.decompose(a).getL();
-		//System.out.println(l.toString());
-		assertTrue(l.isLowerTriangular());
+		ICholeskyResult r=Cholesky.decompose(a);
+		validateCholesky(a,r);
+	}
+	
+	@Test
+	public void testZero() {
+		AMatrix a = ZeroMatrix.create(4, 4);
+		ICholeskyResult r=Cholesky.decompose(a);
+		validateCholesky(a,r);		
+	}
+	
+	public void validateCholesky(AMatrix a, ICholeskyResult r) {
+		AMatrix l=r.getL();
+		AMatrix u=r.getU();
 		
-		AMatrix a2=l.innerProduct(l.getTranspose());
-		assertTrue(a.epsilonEquals(a2));
+		assertTrue("l and u and not transposes!",l.epsilonEquals(u.getTranspose()));
+		assertTrue(l.isLowerTriangular());
+		assertTrue(u.isUpperTriangular());
+		
+		assertTrue("product not valid",l.innerProduct(u).epsilonEquals(a));
 	}
 
 }
