@@ -22,10 +22,10 @@ public class TestHouseholderQR {
     AMatrix Q = alg.getQ();
     AMatrix R = alg.getR();
 
-    double[][] exceptDataQ = {{0, -0.6, 0.8}, {0, -0.8, -0.6}, {-1, 0, 0}};
-    double[][] exceptDataR = {{-2, -1, -1}, {0, -5, 1}, {0, 0, 2}};
-    Matrix exceptQ = Matrix.create(exceptDataQ);
-    Matrix exceptR = Matrix.create(exceptDataR);
+    double[][] expectDataQ = {{0, -0.6, 0.8}, {0, -0.8, -0.6}, {-1, 0, 0}};
+    double[][] expectDataR = {{-2, -1, -1}, {0, -5, 1}, {0, 0, 2}};
+    Matrix exceptQ = Matrix.create(expectDataQ);
+    Matrix exceptR = Matrix.create(expectDataR);
     assertEquals(Q, exceptQ);
     assertEquals(R, exceptR);
 

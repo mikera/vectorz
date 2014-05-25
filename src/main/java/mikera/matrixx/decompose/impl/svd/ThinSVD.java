@@ -29,8 +29,8 @@ import mikera.vectorz.Vector;
 
 /**
  * This class implements a thin SVD decomposition of a matrix
+ * 
  * @author Mike
- *
  */
 public class ThinSVD {
 
