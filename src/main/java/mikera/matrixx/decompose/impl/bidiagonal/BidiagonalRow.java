@@ -79,8 +79,7 @@ public class BidiagonalRow {
 	}
 
     /**
-     * Computes the decomposition of the provided matrix.  If no errors are detected then true is returned,
-     * false otherwise.
+     * Computes the decomposition of the provided matrix. 
      *
      * @param A  The matrix that is being decomposed.  Not modified.
      * @param compact If true, result matrices have zero-filled regions trimmed off
