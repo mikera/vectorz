@@ -34,27 +34,39 @@ public class TestHouseholderQR {
 
     assertEquals(Q, expectQ);
     assertEquals(R, expectR);
+    validateQR(A,alg);
   }
   
   @Test
   public void testZeroDecompose() {
-	  IQRResult qr=QR.decompose(ZeroMatrix.create(4, 3));
+	  AMatrix a=ZeroMatrix.create(4, 3);
+	  IQRResult qr=QR.decompose(a);
 	  AMatrix q=qr.getQ();
 	  AMatrix r=qr.getR();
 	  
 	  assertEquals(IdentityMatrix.create(3),q.subMatrix(0, 3, 0, 3));
-	  
 	  assertTrue(r.isZero());
+	  validateQR(a,qr);
   }
   
   @Test
   public void testZeroDecomposeSquare() {
-	  IQRResult qr=QR.decompose(ZeroMatrix.create(3, 3));
+	  AMatrix a=ZeroMatrix.create(3, 3);
+	  IQRResult qr=QR.decompose(a);
 	  AMatrix q=qr.getQ();
 	  AMatrix r=qr.getR();
 	  
 	  assertEquals(IdentityMatrix.create(3),q);
 	  
 	  assertTrue(r.isZero());
+	  validateQR(a,qr);
+  }
+  
+  public void validateQR(AMatrix a, IQRResult result) {
+	  AMatrix q=result.getQ();
+	  AMatrix r=result.getR();
+	  
+	  assertTrue(r.isUpperTriangular());
+	  assertTrue(q.innerProduct(r).epsilonEquals(a));
   }
 }
