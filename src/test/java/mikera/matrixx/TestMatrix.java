@@ -1,10 +1,11 @@
 package mikera.matrixx;
 
+import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TestMatrix {
   @Test
@@ -29,5 +30,15 @@ public class TestMatrix {
 	  m.setColumn(1, Vector.of(7,8));
 	  
 	  assertEquals(Matrix.create(new double[][] {{1,7},{3,8}}),m);
+  }
+  
+  @Test
+  public void testAsVector() {
+	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
+	  AVector v=m.asVector();
+	  assertEquals(Vector.class,v.getClass());
+	  v.set(2,7);
+	  assertTrue(m.get(1,0)==7);
+	  
   }
 }
