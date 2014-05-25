@@ -26,16 +26,6 @@ public class Determinant {
 	 * @return
 	 */
 	public static double calculate(AMatrix m) {
-		return smartDeterminant(m);
-	}
-
-	/**
-	 * Calculate the determinant of a dense Matrix.
-	 * 
-	 * @param m
-	 * @return
-	 */
-	public static double calculate(Matrix m) {
 		int rc = m.rowCount();
 		int cc = m.columnCount();
 		if (rc!=cc) {
@@ -51,7 +41,7 @@ public class Determinant {
 		return smartDeterminant(m);		
 	}
 	
-	public static double smartDeterminant(AMatrix m) {
+	static double smartDeterminant(AMatrix m) {
 		ILUPResult lup=SimpleLUP.decompose(m);
 		double det=lup.getL().diagonalProduct()*lup.getU().diagonalProduct()*lup.getP().determinant();
 		return det;
