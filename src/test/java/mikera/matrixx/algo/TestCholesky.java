@@ -3,11 +3,9 @@ package mikera.matrixx.algo;
 import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.Matrix11;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.Cholesky;
 import mikera.matrixx.decompose.ICholeskyResult;
-import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 
