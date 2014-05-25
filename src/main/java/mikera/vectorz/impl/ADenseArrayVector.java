@@ -598,8 +598,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	public AVector join(ADenseArrayVector v) {
 		if ((v.getArray() == getArray())
-				&& ((getArrayOffset() + length()) == v.getArrayOffset())) { 
-			return Vectorz.wrap(getArray(), getArrayOffset(), length() + v.length()); 
+				&& ((getArrayOffset() + length) == v.getArrayOffset())) { 
+			return Vectorz.wrap(getArray(), getArrayOffset(), length + v.length()); 
 		}
 		return JoinedArrayVector.joinVectors(this, v);
 	}

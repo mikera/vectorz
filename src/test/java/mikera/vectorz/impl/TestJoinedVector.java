@@ -209,4 +209,12 @@ public class TestJoinedVector {
 		
 		assertTrue(j.isFullyMutable());
 	}
+	
+	@Test public void testVectorRejoin() {
+		Vector v=Vector.createLength(10);
+		Vectorz.fillGaussian(v);
+		
+		AVector rv=v.subVector(0, 3).join(v.subVector(3,5)).join(v.subVector(8,2));
+		assertEquals(Vector.class,rv.getClass());
+	}
 }

@@ -263,7 +263,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Attempts to perform an efficient join with a second vector. An efficient join is guaranteed 
-	 * to be better than a simple JoinedVectr(left,right) 
+	 * to be better than a simple JoinedVector(left,right) 
 	 * 
 	 * If possible, returns the joined vector. If not, returns null
 	 */
