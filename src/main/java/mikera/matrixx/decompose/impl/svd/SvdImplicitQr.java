@@ -292,4 +292,12 @@ public class SvdImplicitQr {
             }
         }
     }
+    
+    public int numRows() {
+        return numRows;
+    }
+
+    public int numCols() {
+        return numCols;
+    }
 }
