@@ -31,17 +31,22 @@ public class QR {
 
 
 	public static IQRResult decompose(AMatrix matrix) {
-		return decompose(Matrix.create(matrix));
+		return decomposeInternal(Matrix.create(matrix));
+	}
+
+	public static IQRResult decompose(Matrix matrix) {
+		return decomposeInternal(matrix.clone());
 	}
 	
-	public static IQRResult decompose(Matrix matrix) {
+	// perform decomposition. Destructively modifies the input Matrix
+	private static IQRResult decomposeInternal(Matrix matrix) {
 		int rc = matrix.rowCount();
 		int cc = matrix.columnCount();
 
 		if (rc < cc) { throw new IllegalArgumentException("Wrong matrix size: "
 				+ "rows < columns"); }
 
-		Matrix qr = matrix.toMatrix();
+		Matrix qr = matrix;
 
 		Vector rdiag = Vector.createLength(cc);
 
