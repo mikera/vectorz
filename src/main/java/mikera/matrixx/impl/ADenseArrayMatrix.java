@@ -37,6 +37,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public boolean isUpperTriangular() {
+		// triangular test, taking into account cache layout to access via rows
 		int rc=rowCount();
 		int cc=columnCount();
 		int offset=getArrayOffset()+cc;
@@ -49,6 +50,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public boolean isLowerTriangular() {
+		// triangular test, taking into account cache layout to access via rows
 		int offset=getArrayOffset();
 		int cc=columnCount();
 		int testRows=Math.min(cc, rowCount());
