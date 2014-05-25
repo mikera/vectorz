@@ -1,11 +1,13 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrix11;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.Cholesky;
 import mikera.matrixx.decompose.ICholeskyResult;
+import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 
@@ -26,7 +28,7 @@ public class TestCholesky {
 	public void testZero() {
 		AMatrix a = ZeroMatrix.create(4, 4);
 		ICholeskyResult r=Cholesky.decompose(a);
-		validateCholesky(a,r);		
+		assertNull(r);
 	}
 	
 	@Test
@@ -39,6 +41,14 @@ public class TestCholesky {
 	@Test
 	public void testSpecial() {
 		AMatrix a = Matrix.create(new double[][] {{0,1},{0,0}});
+		ICholeskyResult r=Cholesky.decompose(a);
+		assertNull(r);	
+	}
+	
+	@Test
+	public void testNegative() {
+		// TODO: should this return null??
+		AMatrix a = Matrix.create(new double[][] {{-1}});
 		ICholeskyResult r=Cholesky.decompose(a);
 		validateCholesky(a,r);		
 	}

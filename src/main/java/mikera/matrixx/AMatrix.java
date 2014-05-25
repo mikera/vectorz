@@ -1685,9 +1685,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean isSameShape(INDArray a) {
 		if (a instanceof AMatrix) return isSameShape((AMatrix)a);
 		if (a.dimensionality()!=2) return false;
-		for (int i=0; i<2; i++) {
-			if (getShape(i)!=a.getShape(i)) return false;
-		}
+		if (getShape(0)!=a.getShape(0)) return false;
+		if (getShape(1)!=a.getShape(1)) return false;
 		return true;
 	}
 	

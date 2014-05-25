@@ -48,7 +48,11 @@ public class SimpleCholesky {
 				}
 				
 				final double aij=a.get(i,j);
-				double uij=(aij-crossSum)/u.get(j,j);
+				double uij=(aij-crossSum);
+				
+				double ujj=u.get(j,j);
+				if (ujj==0.0) return null;
+				uij=uij/ujj;
 				u.set(i,j,uij);
 				squareSum+=uij*uij;
 			}	

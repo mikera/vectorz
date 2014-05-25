@@ -40,10 +40,9 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		// triangular test, taking into account cache layout to access via rows
 		int rc=rowCount();
 		int cc=columnCount();
-		int offset=getArrayOffset()+cc;
+		int offset=getArrayOffset();
 		for (int i=1; i<rc; i++) {
-			if (!DoubleArrays.isZero(data, offset, Math.min(cc, i))) return false;
-			offset+=cc;
+			if (!DoubleArrays.isZero(data, offset+i*cc, Math.min(cc, i))) return false;
 		}
 		return true;
 	}
