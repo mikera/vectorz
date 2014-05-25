@@ -251,7 +251,8 @@ public abstract class StandardSvdChecks {
 //        found.print();
 //        expected.print();
 
-        assertTrue(expected.equals(found));
+//        assertTrue(expected.equals(found));
+        assertArrayEquals(expected.toDoubleArray(), found.toDoubleArray(), 1e-6);
     }
     
     /**
@@ -323,9 +324,10 @@ public abstract class StandardSvdChecks {
     private static boolean hasUncountable( Matrix m )
     {
         long length = m.elementCount();
+        double[] data = m.asDoubleArray();
 
         for( int i = 0; i < length; i++ ) {
-            double a = m.get(i);
+            double a = data[i];
             if( Double.isNaN(a) || Double.isInfinite(a))
                 return true;
         }
