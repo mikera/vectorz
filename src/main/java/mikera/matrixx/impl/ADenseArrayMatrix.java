@@ -36,6 +36,30 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public boolean isUpperTriangular() {
+		int rc=rowCount();
+		int cc=columnCount();
+		int offset=getArrayOffset()+cc;
+		for (int i=1; i<rc; i++) {
+			if (!DoubleArrays.isZero(data, offset, Math.min(cc, i))) return false;
+			offset+=cc;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isLowerTriangular() {
+		int offset=getArrayOffset();
+		int cc=columnCount();
+		int testRows=Math.min(cc, rowCount());
+		for (int i=0; i<testRows; i++) {
+			if (!DoubleArrays.isZero(data, offset+i+1, cc-i-1)) return false;
+			offset+=cc;
+		}
+		return true;
+	}
+	
+	@Override
 	public int rowStride() {
 		return cols;
 	}
