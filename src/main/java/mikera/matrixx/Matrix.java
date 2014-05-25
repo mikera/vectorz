@@ -232,11 +232,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public Matrix clone() {
-		return new Matrix(rows, cols, DoubleArrays.copyOf(data));
-	}
-
-	@Override
 	public final void copyRowTo(int row, double[] dest, int destOffset) {
 		int srcOffset = row * cols;
 		System.arraycopy(data, srcOffset, dest, destOffset, cols);
@@ -538,7 +533,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public StridedMatrix getTranspose() {
-		return StridedMatrix.wrap(data, cols, rows, 0, 1, cols);
+		return getTransposeView();
 	}
 
 	@Override
@@ -560,10 +555,15 @@ public final class Matrix extends ADenseArrayMatrix {
 	public void clamp(double min, double max) {
 		DoubleArrays.clamp(data, 0, data.length, min, max);
 	}
+	
+	@Override
+	public Matrix clone() {
+		return new Matrix(rows, cols, DoubleArrays.copyOf(data));
+	}
 
 	@Override
 	public Matrix exactClone() {
-		return new Matrix(this);
+		return clone();
 	}
 
 	@Override
