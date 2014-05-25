@@ -57,12 +57,14 @@ public class QR {
 
 		for (int k = 0; k < cc; k++) {
 
-			double norm = 0.0;
-
+			// norm of lower triangular matrix column
+			double ss=0.0;
 			for (int i = k; i < rc; i++) {
-				norm = Math.hypot(norm, qr.get(i, k));
+				double v=qr.get(i, k);
+				ss+=v*v;
 			}
-
+			double norm = Math.sqrt(ss);
+			
 			if (Math.abs(norm) > Constants.EPS) {
 
 				if (qr.get(k, k) < 0.0) {
