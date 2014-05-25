@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2009-2013, Peter Abeles. All Rights Reserved.
+ * Copyright (c) 2009-2014, Peter Abeles, Mike Anderson. All Rights Reserved.
  *
- * This file is part of Efficient Java Matrix Library (EJML).
+ * This file contains code that was originally part of Efficient Java Matrix Library (EJML),
+ * modified by Mike Anderson and other contributors for inclusion in Vectorz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.solve;
+package mikera.matrixx.solve.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -137,7 +138,7 @@ public class CholeskySolver {
      * </p>
      *
      * @param B A matrix that is n by m.  Not modified.
-     * @param X An n by m matrix where the solution is writen to.  Modified.
+     * @param X An n by m matrix where the solution is written to.  Modified.
      */
     public AMatrix solve(AMatrix B) {
     	Matrix X = Matrix.create(B.rowCount(), B.columnCount());

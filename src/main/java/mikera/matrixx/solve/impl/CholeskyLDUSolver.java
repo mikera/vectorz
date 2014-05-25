@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.solve;
+package mikera.matrixx.solve.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;

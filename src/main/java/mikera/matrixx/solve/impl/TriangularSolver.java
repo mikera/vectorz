@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.solve;
+package mikera.matrixx.solve.impl;
 
 /**
  * <p>
