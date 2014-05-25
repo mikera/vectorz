@@ -2,6 +2,7 @@ package mikera.matrixx.algo;
 
 import static org.junit.Assert.assertTrue;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.Cholesky;
 import mikera.matrixx.decompose.ICholeskyResult;
@@ -31,6 +32,13 @@ public class TestCholesky {
 	@Test
 	public void testIdentity() {
 		AMatrix a = IdentityMatrix.create(5);
+		ICholeskyResult r=Cholesky.decompose(a);
+		validateCholesky(a,r);		
+	}
+	
+	@Test
+	public void testSpecial() {
+		AMatrix a = Matrix.create(new double[][] {{0,1},{0,0}});
 		ICholeskyResult r=Cholesky.decompose(a);
 		validateCholesky(a,r);		
 	}
