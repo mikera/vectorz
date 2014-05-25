@@ -5,6 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.Cholesky;
 import mikera.matrixx.decompose.ICholeskyResult;
+import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 
 import org.junit.Test;
@@ -23,6 +24,13 @@ public class TestCholesky {
 	@Test
 	public void testZero() {
 		AMatrix a = ZeroMatrix.create(4, 4);
+		ICholeskyResult r=Cholesky.decompose(a);
+		validateCholesky(a,r);		
+	}
+	
+	@Test
+	public void testIdentity() {
+		AMatrix a = IdentityMatrix.create(5);
 		ICholeskyResult r=Cholesky.decompose(a);
 		validateCholesky(a,r);		
 	}
