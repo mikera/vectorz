@@ -42,7 +42,8 @@ public class ThinSVD {
 		return decomposeInternal(matrix.clone());
 	}
 
-	public static ISVDResult decomposeInternal(Matrix a) {
+	// internal decomposition function, destructively modifies input Matrix
+	private static ISVDResult decomposeInternal(Matrix a) {
 		int rc = a.rowCount();
 		int cc = a.columnCount();
 
