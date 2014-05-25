@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013, by Vladimir Kostyukov, Mike Anderson and Contributors.
+ * Copyright 2011-2014, by Vladimir Kostyukov, Mike Anderson and Contributors.
  * 
  * This file is adapted from the la4j project (http://la4j.org)
  * 
@@ -27,6 +27,11 @@ import mikera.matrixx.algo.impl.Constants;
 import mikera.matrixx.decompose.impl.qr.QRResult;
 import mikera.vectorz.Vector;
 
+/**
+ * Public API class for QR decomposition
+ * 
+ * @author Mike
+ */
 public class QR {
 
 
