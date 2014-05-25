@@ -9,9 +9,10 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
 /**
- * Static function class for determinant calculation.
+ * Public API function class for determinant calculation.
  * 
- * Use Determinant.calculate(m) to compute the determinant of a matrix.
+ * Normally you should use m.determinant() to calculate the determinant of a matrix. These functions
+ * are provided to allow access to alternative algorithms.
  * 
  * @author Mike
  *
@@ -19,7 +20,7 @@ import mikera.vectorz.util.IntArrays;
 public class Determinant {
 	
 	/**
-	 * Calculate the determinant of a Matrix. Equivalent to calling m.determinant();
+	 * Calculate the determinant of an AMatrix.
 	 * 
 	 * @param m
 	 * @return

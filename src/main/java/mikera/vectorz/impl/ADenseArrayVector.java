@@ -30,7 +30,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	/**
-	 * AArrayVector has a fixed stride of 1, which enables efficient operations
+	 * ADenseArrayVector has a fixed stride of 1, which enables efficient operations
 	 * on arrays
 	 */
 	@Override
