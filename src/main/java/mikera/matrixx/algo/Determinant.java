@@ -25,7 +25,7 @@ public class Determinant {
 	 * @return
 	 */
 	public static double calculate(AMatrix m) {
-		return m.determinant();
+		return smartDeterminant(m);
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class Determinant {
 		return smartDeterminant(m);		
 	}
 	
-	static double smartDeterminant(Matrix m) {
+	public static double smartDeterminant(AMatrix m) {
 		ILUPResult lup=SimpleLUP.decompose(m);
 		double det=lup.getL().diagonalProduct()*lup.getU().diagonalProduct()*lup.getP().determinant();
 		return det;
