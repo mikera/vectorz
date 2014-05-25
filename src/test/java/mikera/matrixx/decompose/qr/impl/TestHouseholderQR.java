@@ -22,20 +22,18 @@ public class TestHouseholderQR {
     AMatrix Q = alg.getQ();
     AMatrix R = alg.getR();
 
-    double[][] expectDataQ = {{0, -0.6, 0.8}, {0, -0.8, -0.6}, {-1, 0, 0}};
-    double[][] expectDataR = {{-2, -1, -1}, {0, -5, 1}, {0, 0, 2}};
-    Matrix exceptQ = Matrix.create(expectDataQ);
-    Matrix exceptR = Matrix.create(expectDataR);
-    assertEquals(Q, exceptQ);
-    assertEquals(R, exceptR);
+    Matrix expectQ = Matrix.create(new double[][] {{0, -0.6, 0.8}, {0, -0.8, -0.6}, {-1, 0, 0}});
+    Matrix expectR = Matrix.create(new double[][] {{-2, -1, -1}, {0, -5, 1}, {0, 0, 2}});
+    assertEquals(Q, expectQ);
+    assertEquals(R, expectR);
 
     A = Matrix.create(dataA);
     alg = new HouseholderQR(A, true);
     Q = alg.getQ();
     R = alg.getR();
 
-    assertEquals(Q, exceptQ);
-    assertEquals(R, exceptR);
+    assertEquals(Q, expectQ);
+    assertEquals(R, expectR);
   }
   
   @Test
