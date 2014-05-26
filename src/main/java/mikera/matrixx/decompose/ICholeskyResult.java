@@ -52,6 +52,9 @@ public interface ICholeskyResult {
     /**
      * <p>
      * Returns the upper triangular matrix from the decomposition.
+     * 
+     * The Upper triangular matrix is the transpose of the lower triangular matrix
+     * in the Cholesky decomposition.
      * </p>
      * @return A upper triangular matrix.
      */
