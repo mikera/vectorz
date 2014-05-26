@@ -34,7 +34,6 @@ import mikera.vectorz.Vector;
  */
 public class QR {
 
-
 	public static IQRResult decompose(AMatrix matrix) {
 		return decomposeInternal(Matrix.create(matrix));
 	}
