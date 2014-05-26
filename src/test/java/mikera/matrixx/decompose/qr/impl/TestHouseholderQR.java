@@ -76,5 +76,6 @@ public class TestHouseholderQR {
 
 		assertTrue(r.isUpperTriangular());
 		assertTrue(q.innerProduct(r).epsilonEquals(a));
+		assertTrue(q.hasOrthonormalColumns());
 	}
 }
