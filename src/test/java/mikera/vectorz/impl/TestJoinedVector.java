@@ -217,4 +217,20 @@ public class TestJoinedVector {
 		AVector rv=v.subVector(0, 3).join(v.subVector(3,5)).join(v.subVector(8,2));
 		assertEquals(Vector.class,rv.getClass());
 	}
+	
+	@Test public void testMultiJoining() {
+		AVector v=Vector0.INSTANCE;
+		
+		// initial join should replace Vector0
+		v=v.join(AxisVector.create(1, 3));
+		assertEquals(AxisVector.class,v.getClass());
+		
+		// second join should create JoinedVector
+		v=v.join(Vector.of(1,2,3));
+		assertEquals(JoinedVector.class,v.getClass());
+		
+		// third join should promote to JoinedMultiVector
+		v=v.join(ZeroVector.create(3));
+		assertEquals(JoinedMultiVector.class,v.getClass());
+	}
 }
