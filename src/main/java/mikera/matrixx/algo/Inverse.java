@@ -23,7 +23,7 @@ public final class Inverse {
 	}
 	
 	public static AMatrix calculateSmall(AMatrix m, int rc) {
-		if (rc==1) return new Matrix11(1.0/m.unsafeGet(0, 0));
+		if (rc==1) return new Matrix11(m).inverse();
 		if (rc==2) return new Matrix22(m).inverse();
 		if (rc==3) return new Matrix33(m).inverse();
 		throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));

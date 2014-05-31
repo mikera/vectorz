@@ -300,7 +300,7 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	@Override
 	public Matrix33 inverse() {
 		double det=determinant();
-		if (det==0.0) throw new IllegalArgumentException("Matrix has zero determinant: not invertible");
+		if (det==0.0) return null;
 		double invDet=1.0/det;
 		return new Matrix33(
 				invDet*((m11*m22-m12*m21)),

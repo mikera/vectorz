@@ -138,7 +138,7 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	@Override
 	public Matrix22 inverse() {
 		double det=determinant();
-		if (det==0.0) throw new IllegalArgumentException("Matrix has zero determinant: not invertible");
+		if (det==0.0) return null;
 		double invDet=1.0/det;
 		return new Matrix22( invDet*m11, -invDet*m01,
 				            -invDet*m10,  invDet*m00);		
