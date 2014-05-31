@@ -134,4 +134,9 @@ public final class WrappedSubVector extends ASizedVector {
 	public WrappedSubVector exactClone() {
 		return new WrappedSubVector(wrapped.exactClone(),offset,length);
 	}
+
+	@Override
+	public void addAt(int i, double v) {
+		wrapped.addAt(offset+i,v);
+	}
 }
