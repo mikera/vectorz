@@ -1,9 +1,11 @@
 package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix11;
 import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrix33;
+import mikera.matrixx.decompose.impl.lu.DecomposeLUP;
 import mikera.vectorz.util.ErrorMessages;
 
 public final class Inverse {
@@ -17,7 +19,7 @@ public final class Inverse {
 		
 		if (rc<=3) return calculateSmall(a,rc);
 		
-		return a.inverse();
+		return createLUPInverse(a);
 	}
 	
 	public static AMatrix calculateSmall(AMatrix m, int rc) {
@@ -25,6 +27,10 @@ public final class Inverse {
 		if (rc==2) return new Matrix22(m).inverse();
 		if (rc==3) return new Matrix33(m).inverse();
 		throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));
+	}
+	
+	static Matrix createLUPInverse(AMatrix m) {
+		return DecomposeLUP.createLUPInverse(m);
 	}
 	
 }
