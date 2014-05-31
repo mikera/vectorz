@@ -451,7 +451,6 @@ public class Matrixx {
 		int rc = data.size();
 		int cc = (rc == 0) ? 0 : data.get(0).length();
 		AMatrix m = newMatrix(rc, cc);
-		// TODO: should use getElements?
 		for (int i = 0; i < rc; i++) {
 			m.setRow(i,data.get(i));
 		}
