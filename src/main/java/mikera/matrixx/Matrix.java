@@ -574,6 +574,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	public Matrix clone() {
 		return new Matrix(rows, cols, DoubleArrays.copyOf(data));
 	}
+	
+	@Override
+	public Matrix copy() {
+		return clone();
+	}
 
 	@Override
 	public Matrix exactClone() {
