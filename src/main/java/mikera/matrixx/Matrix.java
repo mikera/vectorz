@@ -530,7 +530,17 @@ public final class Matrix extends ADenseArrayMatrix {
 				ErrorMessages.mismatch(this, a)); }
 		a.getElements(this.data, 0);
 	}
-
+	
+	@Override
+	public void set(AVector a) {
+		if ((rowCount() != a.length())) { throw new IllegalArgumentException(
+				ErrorMessages.incompatibleBroadcast(a, this)); }
+		a.getElements(data, 0);
+		for (int i = 1; i < rows; i++) {
+			System.arraycopy(data, 0, data, i*cols, cols);
+		}
+	}
+	
 	@Override
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(data, 0, dest, offset, data.length);
