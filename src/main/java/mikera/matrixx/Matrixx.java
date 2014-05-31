@@ -441,9 +441,8 @@ public class Matrixx {
 		int rc = data.length;
 		int cc = (rc == 0) ? 0 : data[0].length();
 		Matrix m = Matrix.create(rc, cc);
-		// TODO: should use getElements?
 		for (int i = 0; i < rc; i++) {
-			m.getRowView(i).set(data[i]);
+			m.setRow(i, data[i]);
 		}
 		return m;
 	}
@@ -454,7 +453,7 @@ public class Matrixx {
 		AMatrix m = newMatrix(rc, cc);
 		// TODO: should use getElements?
 		for (int i = 0; i < rc; i++) {
-			m.getRowView(i).set(data.get(i));
+			m.setRow(i,data.get(i));
 		}
 		return m;
 	}
