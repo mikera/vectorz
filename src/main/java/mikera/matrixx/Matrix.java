@@ -476,6 +476,14 @@ public final class Matrix extends ADenseArrayMatrix {
 		}
 	}
 
+	@Override
+	public void add(AMatrix m) {
+		if ((rowCount() != m.rowCount()) || (columnCount() != m.columnCount()))
+			throw new IllegalArgumentException(
+					ErrorMessages.incompatibleShapes(this, m));
+		m.addToArray(data, 0);
+	}
+	
 	public void add(Matrix m) {
 		if ((rowCount() != m.rowCount()) || (columnCount() != m.columnCount()))
 			throw new IllegalArgumentException(
@@ -502,19 +510,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void add(double d) {
 		DoubleArrays.add(data, d);
-	}
-
-	@Override
-	public void add(AMatrix m) {
-		if (m instanceof Matrix) {
-			add((Matrix) m);
-			return;
-		}
-		int rc = rowCount();
-		int cc = columnCount();
-		if (!((rc == m.rowCount()) && (cc == m.columnCount()))) { throw new IllegalArgumentException(
-				ErrorMessages.mismatch(this, m)); }
-		m.addToArray(data, 0);
 	}
 
 	@Override
