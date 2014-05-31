@@ -7,6 +7,7 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.impl.AVectorMatrix;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
@@ -46,6 +47,8 @@ public class TestMatrixx {
 		
 		AMatrix mi=m.inverse();
 		assertEquals(1.0,m.determinant()*mi.determinant(),0.001);
+		
+		assertTrue(mi.epsilonEquals(Inverse.calculate(m)));
 		
 		AVector mv=m.transform(v);
 		AVector mimv=mi.transform(mv);

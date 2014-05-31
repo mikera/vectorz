@@ -47,9 +47,6 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 
 	public Matrix33(AMatrix m) {
-		if((m.rowCount()!=3)||(m.columnCount()!=3)) {
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
-		}
 		m00=m.unsafeGet(0,0);
 		m01=m.unsafeGet(0,1);
 		m02=m.unsafeGet(0,2);
