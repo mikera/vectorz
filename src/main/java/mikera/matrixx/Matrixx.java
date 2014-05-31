@@ -437,10 +437,10 @@ public class Matrixx {
 		}
 	}
 
-	public static Matrix createFromVectors(AVector... data) {
+	public static AMatrix createFromVectors(AVector... data) {
 		int rc = data.length;
 		int cc = (rc == 0) ? 0 : data[0].length();
-		Matrix m = Matrix.create(rc, cc);
+		AMatrix m = newMatrix(rc, cc);
 		for (int i = 0; i < rc; i++) {
 			m.setRow(i, data[i]);
 		}
