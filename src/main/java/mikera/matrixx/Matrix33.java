@@ -170,7 +170,7 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 			for (int j=0; j<3; j++) {
 				double acc=0.0;
 				for (int k=0; k<3; k++) {
-					acc+=this.get(i, k)*a.get(k, j);
+					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
 				}
 				r.set(i,j,acc);
 			}
