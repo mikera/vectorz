@@ -99,16 +99,16 @@ public class SimpleLUP {
 
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < i; j++) {
-				l.set(i, j, m.get(i, j));
+				l.unsafeSet(i, j, m.get(i, j));
 			}
-			l.set(i, i, 1.0);
+			l.unsafeSet(i, i, 1.0);
 		}
 
 		// clear low elements to ensure upper triangle only is populated
 		Matrix u = m;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < i; j++) {
-				u.set(i, j, 0.0);
+				u.unsafeSet(i, j, 0.0);
 			}
 		}
 
