@@ -94,4 +94,9 @@ public final class IndexedSubVector extends BaseIndexedVector {
 			if ((indexes[i]<0)||(indexes[i]>=slen)) throw new VectorzException("Indexes out of range");
 		}
 	}
+
+	@Override
+	public void addAt(int i, double v) {
+		data.addAt(indexes[i], v);
+	}
 }

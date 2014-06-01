@@ -7,6 +7,7 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.impl.AVectorMatrix;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
@@ -46,6 +47,8 @@ public class TestMatrixx {
 		
 		AMatrix mi=m.inverse();
 		assertEquals(1.0,m.determinant()*mi.determinant(),0.001);
+		
+		assertTrue(mi.epsilonEquals(Inverse.calculate(m)));
 		
 		AVector mv=m.transform(v);
 		AVector mimv=mi.transform(mv);
@@ -488,6 +491,7 @@ public class TestMatrixx {
 		if ((cc==0)||(rc==0)) return; // bands are meaningless....
 		int bandMin=-m.rowCount();
 		int bandMax=m.columnCount();
+		Matrix mc=m.toMatrix();
 		
 		// TODO: what to do about out-of-range bands?
 		//assertNull(m.getBand(bandMin-1));
@@ -495,9 +499,9 @@ public class TestMatrixx {
 		
 		for (int i=bandMin; i<=bandMax; i++) {
 			AVector b=m.getBand(i);
-			assertEquals(b.length(),m.bandLength(i));
-			
+			assertEquals(b.length(),m.bandLength(i));		
 			assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
+			assertEquals(mc.getBand(i),b);
 		}
 		
 		assertEquals(m,BandedMatrix.create(m));

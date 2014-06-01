@@ -31,6 +31,17 @@ public abstract class ABooleanMatrix extends AMatrix {
 	}
 	
 	@Override
+	public double elementSum() {
+		return nonZeroCount();
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return nonZeroCount();
+	}
+	
+	
+	@Override
 	public AMatrix signumCopy() {
 		return copy();
 	}

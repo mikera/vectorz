@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -57,6 +58,18 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	@Override
 	public int lowerBandwidth() {
 		return 0;
+	}
+	
+	@Override
+	public AVector getBand(int band) {
+		int n=bandLength(band);
+		if ((n==0)||(band<0)) return Vectorz.createZeroVector(bandLength(band));
+		if (n==1) return ArraySubVector.wrap(data, internalIndex(0,band), 1);
+		int[] ixs=new int[n];
+		for (int i=0; i<n; i++) {
+			ixs[i]=internalIndex(i,i+band);
+		}
+		return IndexedArrayVector.wrap(data, ixs);
 	}
 
 	@Override

@@ -47,9 +47,6 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	}
 
 	public Matrix33(AMatrix m) {
-		if((m.rowCount()!=3)||(m.columnCount()!=3)) {
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
-		}
 		m00=m.unsafeGet(0,0);
 		m01=m.unsafeGet(0,1);
 		m02=m.unsafeGet(0,2);
@@ -173,7 +170,7 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 			for (int j=0; j<3; j++) {
 				double acc=0.0;
 				for (int k=0; k<3; k++) {
-					acc+=this.get(i, k)*a.get(k, j);
+					acc+=this.unsafeGet(i, k)*a.unsafeGet(k, j);
 				}
 				r.set(i,j,acc);
 			}
@@ -303,7 +300,7 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	@Override
 	public Matrix33 inverse() {
 		double det=determinant();
-		if (det==0.0) throw new IllegalArgumentException("Matrix has zero determinant: not invertible");
+		if (det==0.0) return null;
 		double invDet=1.0/det;
 		return new Matrix33(
 				invDet*((m11*m22-m12*m21)),

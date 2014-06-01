@@ -19,6 +19,7 @@ import mikera.vectorz.Vector;
  * 
  * Arrays have the following properties:
  * - They behave as an indexed, multi-dimensional array of doubles
+ * - They have a n-dimensional shape vector (conceptually equivalent to a list of integers)
  * - The may sometimes have size 0 dimensions, but not all array types support this.
  * 
  * @author Mike
@@ -41,7 +42,7 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the shape of the array as an array of ints, guaranteed to be a new array
-	 * i.e. will perform a defensive copy of the shape array if required.
+	 * i.e. will perform a defensive copy of any internal shape array if required.
 	 */
 	public int[] getShapeClone();
 	

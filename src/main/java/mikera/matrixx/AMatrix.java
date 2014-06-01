@@ -15,6 +15,7 @@ import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Determinant;
+import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.IFastColumns;
@@ -48,7 +49,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General abstract 2D matrix class.
+ * Abstract 2D matrix class. All Vectorz 2D matrices inherit from this class.
  * 
  * Implements generic version of most key matrix operations.
  * 
@@ -340,13 +341,20 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 				&&getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
 	}
 
-	
+	/**
+	 * Tests whether all columns in the matrix are orthonormal vectors
+	 * @return
+	 */
 	public boolean hasOrthonormalColumns() {
 		return getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
 	}
 	
+	/**
+	 * Tests whether all rows in the matrix are orthonormal vectors
+	 * @return
+	 */
 	public boolean hasOrthonormalRows() {
-		return innerProduct(getTranspose()).epsilonEquals(IdentityMatrix.create(columnCount()));
+		return innerProduct(getTranspose()).epsilonEquals(IdentityMatrix.create(rowCount()));
 	}
 	
 	@Override
@@ -656,7 +664,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	public double determinant() {
 		return Determinant.calculate(this);
-
 	}
 
 
@@ -1352,10 +1359,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Arrayz.create(al);
 	}
 
+	/**
+	 * Computes the inverse of a matrix. Returns null if the matrix is singular.
+	 * 
+	 * Throws an Exception is the matrix is not square
+	 * @param m
+	 * @return
+	 */
 	@Override
 	public AMatrix inverse() {
-		AMatrix result = Matrixx.createInverse(this);
-		return result;
+		return Inverse.calculate(this);
 	}
 	
 	/**
@@ -1686,9 +1699,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean isSameShape(INDArray a) {
 		if (a instanceof AMatrix) return isSameShape((AMatrix)a);
 		if (a.dimensionality()!=2) return false;
-		for (int i=0; i<2; i++) {
-			if (getShape(i)!=a.getShape(i)) return false;
-		}
+		if (getShape(0)!=a.getShape(0)) return false;
+		if (getShape(1)!=a.getShape(1)) return false;
 		return true;
 	}
 	

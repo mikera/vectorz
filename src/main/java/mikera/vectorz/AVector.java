@@ -263,7 +263,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Attempts to perform an efficient join with a second vector. An efficient join is guaranteed 
-	 * to be better than a simple JoinedVectr(left,right) 
+	 * to be better than a simple JoinedVector(left,right) 
 	 * 
 	 * If possible, returns the joined vector. If not, returns null
 	 */
@@ -1151,10 +1151,21 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Has no effect on a zero-length vector (i.e. it will remain zero)
 	 * 
 	 */
+	@Override
 	public double normalise() {
 		double d=magnitude();
 		if (d>0) multiply(1.0/d);
 		return d;
+	}
+	
+	/**
+	 * Returns a copy of this vector normalised to a Euclidean length of 1.0
+	 */
+	@Override
+	public AVector normaliseCopy() {
+		double d=magnitude();
+		if (d>0) return multiplyCopy(1.0/d);
+		return copy();
 	}
 	
 	/**
@@ -1703,6 +1714,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return sb.toString();
 	}
 	
+	/**
+	 * Coerces this vector to the standard dense Vector format.
+	 * 
+	 * May return the same vector is thsis is already a dense Vector, otherwise returns a Vector
+	 * containing a new clone of the vector elements.
+	 */
 	@Override
 	public Vector toVector() {
 		return Vector.create(this);

@@ -192,7 +192,7 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	@Override 
 	public Matrix innerProduct(Matrix a) {
 		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		return a.clone();
+		return a.copy();
 	}
 	
 	@Override 

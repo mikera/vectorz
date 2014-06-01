@@ -31,7 +31,7 @@ public abstract class ATriangularMatrix extends AArrayMatrix {
 	
 	@Override
 	public double determinant() { 
-		if (rows!=cols) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
+		if (rows!=cols) throw new IllegalArgumentException(ErrorMessages.nonSquareMatrix(this));
 		return this.diagonalProduct();
 	}
 

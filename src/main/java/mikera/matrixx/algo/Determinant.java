@@ -1,22 +1,30 @@
 package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix33;
-import mikera.matrixx.algo.decompose.lu.ILUP;
-import mikera.matrixx.algo.decompose.lu.impl.SimpleLUP;
+import mikera.matrixx.decompose.ILUPResult;
+import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
 /**
- * Static function class for determinant calculation.
+ * Public API function class for determinant calculation.
  * 
- * Use Determinant.calculate(m) to compute the determinant of a matrix.
+ * Normally you should use m.determinant() to calculate the determinant of a matrix. These functions
+ * are provided to allow access to alternative algorithms.
  * 
  * @author Mike
  *
  */
 public class Determinant {
-
+	
+	/**
+	 * Calculate the determinant of an AMatrix.
+	 * 
+	 * @param m
+	 * @return
+	 */
 	public static double calculate(AMatrix m) {
 		int rc = m.rowCount();
 		int cc = m.columnCount();
@@ -24,32 +32,62 @@ public class Determinant {
 			throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(m));
 		}
 
+		if (rc<=4) {
+			// much faster for small matrices
+			if (rc<=3) return calculateSmallDeterminant(m,rc);
+
+			// benchmarks show naive method is slightly better for
+			// size 4 matrices?
+			return naiveDeterminant(m.toMatrix(),rc);
+		}
+		
+		// general determinant uses LUP decomposition
+		return calculateLUPDeterminant(m);		
+	}
+	
+	/**
+	 * Determinant implemented using the LUP decomposition
+	 * 
+	 * @param m
+	 * @return
+	 */
+	static double calculateLUPDeterminant(AMatrix m) {
+		ILUPResult lup=SimpleLUP.decompose(m);
+		double det=lup.getL().diagonalProduct()*lup.getU().diagonalProduct()*lup.getP().determinant();
+		return det;
+	}
+	
+	/**
+	 * Calculates the determinant of a small square matrix via direct computation
+	 * @return
+	 */
+	static double calculateSmallDeterminant(AMatrix m, int rc) {
 		if (rc==1) return m.unsafeGet(0,0);
 		if (rc==2) return m.unsafeGet(0,0)*m.unsafeGet(1,1)-m.unsafeGet(1,0)*m.unsafeGet(0,1);
 		if (rc==3) {
 			return new Matrix33(m).determinant();
 		}
-		
-		return smartDeterminant(m);		
+		throw new UnsupportedOperationException("Small determinant calculation on size "+rc+" not possible");
 	}
 	
-	static double smartDeterminant(AMatrix m) {
-		ILUP lup=SimpleLUP.decompose(m);
-		double det=lup.getL().diagonalProduct()*lup.getU().diagonalProduct()*lup.getP().determinant();
-		return det;
-	}
-	
+	/**
+	 * Calculate determinant using naive method (brute force)
+	 */
 	@SuppressWarnings("unused")
-	static double naiveDeterminant(AMatrix m) {
-		int rc = m.rowCount();
+	static double naiveDeterminant(Matrix m) {
+		return naiveDeterminant(m,m.rowCount());
+	}
+	
+	static double naiveDeterminant(AMatrix m, int rc) {
 		int[] inds = new int[rc];
 		for (int i = 0; i < rc; i++) {
 			inds[i] = i;
 		}
-		return calcDeterminant(m,inds, 0);
+		return calcDeterminant(m.toMatrix(),inds, 0);
 	}
 
-	private static double calcDeterminant(AMatrix m, int[] inds, int offset) {
+
+	private static double calcDeterminant(Matrix m, int[] inds, int offset) {
 		int rc = m.rowCount();
 		if (offset == (rc - 1))
 			return m.unsafeGet(offset, inds[offset]);

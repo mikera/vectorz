@@ -290,7 +290,7 @@ public class TestArrays {
 			INDArray b = a.exactClone();
 			INDArray c = a.exactClone();
 			INDArray d = a.exactClone();
-			AVector v = b.toVector();
+			AVector v = Vector.create(b);
 			assertEquals(n,v.length());
 			double[] ds = new double[n];
 			double[] tmp = new double[n];

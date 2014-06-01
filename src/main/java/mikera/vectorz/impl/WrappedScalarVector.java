@@ -84,4 +84,9 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	public AScalar getWrappedObject() {
 		return scalar;
 	}
+
+	@Override
+	public void addAt(int i, double v) {
+		scalar.add(v);
+	}
 }

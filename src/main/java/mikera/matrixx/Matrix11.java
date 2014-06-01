@@ -22,6 +22,10 @@ public final class Matrix11 extends APrimitiveMatrix {
 		this.value=value;
 	}
 
+	public Matrix11(AMatrix m) {
+		this.value=m.unsafeGet(0, 0);
+	}
+
 	@Override
 	public int rowCount() {
 		return 1;
@@ -81,6 +85,12 @@ public final class Matrix11 extends APrimitiveMatrix {
 	@Override
 	public boolean isIdentity() {
 		return value==1.0;
+	}
+	
+	@Override
+	public Matrix11 inverse() {
+		if (value==0.0) return null;
+		return new Matrix11(1.0/value);
 	}
 	
 	@Override

@@ -30,7 +30,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	/**
-	 * AArrayVector has a fixed stride of 1, which enables efficient operations
+	 * ADenseArrayVector has a fixed stride of 1, which enables efficient operations
 	 * on arrays
 	 */
 	@Override
@@ -598,8 +598,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	public AVector join(ADenseArrayVector v) {
 		if ((v.getArray() == getArray())
-				&& ((getArrayOffset() + length()) == v.getArrayOffset())) { 
-			return Vectorz.wrap(getArray(), getArrayOffset(), length() + v.length()); 
+				&& ((getArrayOffset() + length) == v.getArrayOffset())) { 
+			return Vectorz.wrap(getArray(), getArrayOffset(), length + v.length()); 
 		}
 		return JoinedArrayVector.joinVectors(this, v);
 	}
