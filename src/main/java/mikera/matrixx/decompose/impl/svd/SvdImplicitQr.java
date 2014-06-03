@@ -174,9 +174,9 @@ public class SvdImplicitQr {
         if( transposed ) {
             A_mod = orig.getTransposeCopy().toMatrix();
         } else {
-            A_mod = orig;
+            A_mod = orig.copy().toMatrix();
         }
-        bidiagResult = Bidiagonal.decompose(A_mod);
+        bidiagResult = Bidiagonal.decompose(A_mod, compact);
         return bidiagResult == null;
     }
 
@@ -202,9 +202,9 @@ public class SvdImplicitQr {
 //        long pointA = System.currentTimeMillis();
         // compute U and V matrices
         if( computeU )
-            Ut = bidiagResult.getU().toMatrix();
+            Ut = bidiagResult.getU().getTranspose().toMatrix();
         if( computeV )
-            Vt = bidiagResult.getV().toMatrix();
+            Vt = bidiagResult.getV().getTranspose().toMatrix();
 
         qralg.setFastValues(false);
         if( computeU )
@@ -245,10 +245,8 @@ public class SvdImplicitQr {
         numRows = orig.rowCount();
         numCols = orig.columnCount();
 
-        if( diag == null || diag.length < numColsT ) {
-            diag = new double[ numColsT ];
-            off = new double[ numColsT-1 ];
-        }
+        diag = new double[ numColsT ];
+        off = new double[ numColsT-1 ];
 
         // if it is a tall matrix and U is not needed then there is faster decomposition algorithm
 //        if( canUseTallBidiagonal && numRows > numCols * 2 && !computeU ) {
