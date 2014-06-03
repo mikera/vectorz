@@ -114,24 +114,16 @@ public class SvdImplicitQr {
         return compact;
     }
 
-    public AMatrix getU(boolean transpose) {
+    public AMatrix getU() {
         if( !prefComputeU )
             throw new IllegalArgumentException("As requested U was not computed.");
-        if( transpose ) {
-        	return Ut;
-        } else {
-        	return Ut.getTranspose();
-        }
+    	return Ut.getTranspose();
     }
 
-    public AMatrix getV(boolean transpose) {
+    public AMatrix getV() {
         if( !prefComputeV )
             throw new IllegalArgumentException("As requested V was not computed.");
-        if( transpose ) {
-        	return Vt;
-        } else {
         	return Vt.getTranspose();
-        }
     }
 
     public AMatrix getW() {

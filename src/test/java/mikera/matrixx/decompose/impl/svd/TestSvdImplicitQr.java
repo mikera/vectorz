@@ -73,10 +73,10 @@ public class TestSvdImplicitQr extends StandardSvdChecks {
         checkSameElements(1e-10,sv.length,sv,alg.getSingularValues());
 
         if( checkU ) {
-            assertTrue(U.equals(alg.getU(false)));
+            assertTrue(U.equals(alg.getU()));
         }
         if( checkV )
-            assertTrue(V.equals(alg.getV(false)));
+            assertTrue(V.equals(alg.getV()));
     }
     
 //    TODO: Implement remaining tests

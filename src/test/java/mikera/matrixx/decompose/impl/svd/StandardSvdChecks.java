@@ -182,8 +182,8 @@ public abstract class StandardSvdChecks {
         SvdImplicitQr alg = createSvd();
         assertTrue(alg.decompose(A));
 
-        Matrix U = alg.getU(false).toMatrix();
-        Matrix Ut = alg.getU(true).toMatrix();
+        Matrix U = alg.getU().toMatrix();
+        Matrix Ut = alg.getU().getTranspose().toMatrix();
 
         Matrix found = U.getTransposeCopy().toMatrix();
 
@@ -227,8 +227,8 @@ public abstract class StandardSvdChecks {
 
     private void checkComponents( SvdImplicitQr svd , Matrix expected )
     {
-        Matrix U = svd.getU(false).toMatrix();
-        Matrix Vt = svd.getV(true).toMatrix();
+        Matrix U = svd.getU().toMatrix();
+        Matrix Vt = svd.getV().getTranspose().toMatrix();
         Matrix W = svd.getW().toMatrix();
 
         assertTrue( !hasUncountable(U) );
