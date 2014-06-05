@@ -131,17 +131,17 @@ public class SvdImplicitQr {
         	return Vt.getTranspose();
     }
 
-    public AMatrix getW() {
+    public AMatrix getS() {
         int m = compact ? numSingular : numRows;
         int n = compact ? numSingular : numCols;
 
-        Matrix W = Matrix.create(m,n);
+        Matrix S = Matrix.create(m,n);
         
         for( int i = 0; i < numSingular; i++ ) {
-            W.unsafeSet(i,i, singularValues[i]);
+            S.unsafeSet(i,i, singularValues[i]);
         }
 
-        return W;
+        return S;
     }
 
     public SVDResult _decompose(AMatrix _orig) {
@@ -153,7 +153,7 @@ public class SvdImplicitQr {
             return null;
         }
 
-        if( computeUWV() )
+        if( computeUSV() )
             return null;
 
         // make sure all the singular values or positive
@@ -162,7 +162,7 @@ public class SvdImplicitQr {
         // if transposed undo the transposition
         undoTranspose();
 
-        return new SVDResult(getU(), getW(), getV());
+        return new SVDResult(getU(), getS(), getV());
     }
 
     private boolean bidiagonalization(Matrix orig) {
@@ -190,7 +190,7 @@ public class SvdImplicitQr {
     /**
      * Compute singular values and U and V at the same time
      */
-    private boolean computeUWV() {
+    private boolean computeUSV() {
         diag = bidiagResult.getB().getBand(0).toDoubleArray();
         off = bidiagResult.getB().getBand(1).toDoubleArray();
         qralg.setMatrix(numRowsT,numColsT,diag,off);

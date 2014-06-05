@@ -230,7 +230,7 @@ public abstract class StandardSvdChecks {
     {
         Matrix U = svd.getU().toMatrix();
         Matrix Vt = svd.getV().getTranspose().toMatrix();
-        Matrix W = svd.getW().toMatrix();
+        Matrix W = svd.getS().toMatrix();
 
         assertTrue( !hasUncountable(U) );
         assertTrue( !hasUncountable(Vt) );

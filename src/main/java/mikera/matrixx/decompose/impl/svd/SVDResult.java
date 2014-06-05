@@ -6,12 +6,12 @@ import mikera.matrixx.decompose.ISVDResult;
 public class SVDResult implements ISVDResult {
 	
 	private final AMatrix U;
-	private final AMatrix W;
+	private final AMatrix S;
 	private final AMatrix V;
 	
-	public SVDResult(AMatrix U, AMatrix W, AMatrix V) {
+	public SVDResult(AMatrix U, AMatrix S, AMatrix V) {
 		this.U = U;
-		this.W = W;
+		this.S = S;
 		this.V = V;
 	}
 
@@ -33,8 +33,8 @@ public class SVDResult implements ISVDResult {
      * @return matrix with singular values along the diagonal.
      */
 	@Override
-	public AMatrix getW() {
-		return W;
+	public AMatrix getS() {
+		return S;
 	}
 
 	/**

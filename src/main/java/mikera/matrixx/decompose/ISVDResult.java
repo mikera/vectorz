@@ -21,7 +21,7 @@ public interface ISVDResult {
      *
      * @return matrix with singular values along the diagonal.
      */
-    public AMatrix getW();
+    public AMatrix getS();
     
     /**
      * <p>
