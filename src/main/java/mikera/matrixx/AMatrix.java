@@ -1510,6 +1510,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 					slice(i).add(a);
 				}
 			} else if (dims==2) {
+				if (rc!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 				for (int i=0; i<rc; i++) {
 					slice(i).add(a.slice(i));
 				}		
