@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package mikera.matrixx.decompose.bidiagonal;
+package mikera.matrixx.decompose.impl.bidiagonal;
 
 import java.util.Random;
 
