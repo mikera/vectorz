@@ -20,6 +20,7 @@ package mikera.matrixx.decompose.impl.svd;
 
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 
@@ -68,7 +69,7 @@ public class TestSvdImplicitQr extends StandardSvdChecks {
     	SvdImplicitQr alg = new SvdImplicitQr(compact,checkU,checkV);
 //        SvdImplicitQr alg = new SvdImplicitQr(compact,checkU,checkV,false);
 
-        assertTrue(alg.decompose(A.copy()));
+        assertNotNull(alg._decompose(A.copy()));
 
         checkSameElements(1e-10,sv.length,sv,alg.getSingularValues());
 

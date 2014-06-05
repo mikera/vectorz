@@ -25,6 +25,7 @@ import mikera.matrixx.algo.Multiplications;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 
 /**
@@ -62,7 +63,7 @@ public abstract class StandardSvdChecks {
         Matrix A = Matrix.create(dataA);
 
         SvdImplicitQr alg = createSvd();
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
 
         assertEquals(3, rank(alg, EPS));
         assertEquals(0, nullity(alg, EPS));
@@ -80,7 +81,7 @@ public abstract class StandardSvdChecks {
         A.sub(0.5);
         A.scale(2);
         SvdImplicitQr alg = createSvd();
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
 
         checkComponents(alg,A);
     }
@@ -91,7 +92,7 @@ public abstract class StandardSvdChecks {
         A.scale(2);
 
         SvdImplicitQr alg = createSvd();
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
 
         checkComponents(alg,A);
     }
@@ -103,7 +104,7 @@ public abstract class StandardSvdChecks {
                 Matrix A = Matrix.create(i,j);
 
                 SvdImplicitQr alg = createSvd();
-                assertTrue(alg.decompose(A));
+                assertNotNull(alg._decompose(A));
 
                 int min = Math.min(i,j);
 
@@ -119,7 +120,7 @@ public abstract class StandardSvdChecks {
         Matrix A = Matrix.createIdentity(6,6);
 
         SvdImplicitQr alg = createSvd();
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
 
         assertEquals(6,checkOccurrence(1,alg.getSingularValues(),6),1e-5);
 
@@ -132,7 +133,7 @@ public abstract class StandardSvdChecks {
         A.scale(2);
 
         SvdImplicitQr alg = createSvd();
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
 
         checkComponents(alg,A);
     }
@@ -149,7 +150,7 @@ public abstract class StandardSvdChecks {
         A.scale(1e-200);
 
         SvdImplicitQr alg = createSvd();
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
 
         checkComponents(alg,A);
     }
@@ -164,7 +165,7 @@ public abstract class StandardSvdChecks {
                 A.sub(0.5);
                 A.scale(2);
 
-                assertTrue(alg.decompose(A));
+                assertNotNull(alg._decompose(A));
 
                 checkComponents(alg,A);
             }
@@ -180,7 +181,7 @@ public abstract class StandardSvdChecks {
         A.scale(2);
 
         SvdImplicitQr alg = createSvd();
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
 
         Matrix U = alg.getU().toMatrix();
         Matrix Ut = alg.getU().getTranspose().toMatrix();
@@ -202,7 +203,7 @@ public abstract class StandardSvdChecks {
         Matrix A = Matrix.createRandom(10,10);
         A.sub(0.5);
         A.scale(2);
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
         checkComponents(alg,A);
 
         // then the smaller one
@@ -210,7 +211,7 @@ public abstract class StandardSvdChecks {
         A.sub(0.5);
         A.scale(2);
         
-        assertTrue(alg.decompose(A));
+        assertNotNull(alg._decompose(A));
         checkComponents(alg,A);
     }
 

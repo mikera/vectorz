@@ -81,6 +81,11 @@ public class SvdImplicitQr {
 
     // Either a copy of the input matrix or a copy of it transposed
     private Matrix A_mod = Matrix.create(1,1);
+    
+    public static SVDResult decompose(AMatrix A, boolean compact, boolean computeU, boolean computeV) {
+    	SvdImplicitQr svd = new SvdImplicitQr(compact, computeU, computeV);
+    	return svd._decompose(A);
+    }
 
     /**
      * Configures the class
@@ -139,17 +144,17 @@ public class SvdImplicitQr {
         return W;
     }
 
-    public boolean decompose(AMatrix _orig) {
+    public SVDResult _decompose(AMatrix _orig) {
 //    	Creating a copy so that original matrix is not modified
     	Matrix orig = _orig.copy().toMatrix();
         setup(orig);
 
         if (bidiagonalization(orig)) {
-            return false;
+            return null;
         }
 
         if( computeUWV() )
-            return false;
+            return null;
 
         // make sure all the singular values or positive
         makeSingularPositive();
@@ -157,7 +162,7 @@ public class SvdImplicitQr {
         // if transposed undo the transposition
         undoTranspose();
 
-        return true;
+        return new SVDResult(getU(), getW(), getV());
     }
 
     private boolean bidiagonalization(Matrix orig) {
