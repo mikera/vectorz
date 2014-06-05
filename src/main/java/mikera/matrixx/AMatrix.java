@@ -15,6 +15,7 @@ import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Determinant;
+import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.IFastColumns;
@@ -1358,10 +1359,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Arrayz.create(al);
 	}
 
+	/**
+	 * Computes the inverse of a matrix. Returns null if the matrix is singular.
+	 * 
+	 * Throws an Exception is the matrix is not square
+	 * @param m
+	 * @return
+	 */
 	@Override
 	public AMatrix inverse() {
-		AMatrix result = Matrixx.createInverse(this);
-		return result;
+		return Inverse.calculate(this);
 	}
 	
 	/**

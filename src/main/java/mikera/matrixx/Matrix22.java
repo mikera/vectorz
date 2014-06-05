@@ -39,7 +39,7 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 		if (m instanceof Matrix22) {
 			set((Matrix22) m);
 		} else {
-			set(m);
+			unsafeSet(m);
 		}
 	}
 	
@@ -51,6 +51,13 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	@Override
 	public void set(AMatrix m) {
 		if ((m.rowCount()!=2)||(m.columnCount()!=2)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));
+		m00=m.unsafeGet(0,0);
+		m01=m.unsafeGet(0,1);
+		m10=m.unsafeGet(1,0);
+		m11=m.unsafeGet(1,1);		
+	}
+	
+	public void unsafeSet(AMatrix m) {
 		m00=m.unsafeGet(0,0);
 		m01=m.unsafeGet(0,1);
 		m10=m.unsafeGet(1,0);
@@ -131,7 +138,7 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	@Override
 	public Matrix22 inverse() {
 		double det=determinant();
-		if (det==0.0) throw new IllegalArgumentException("Matrix has zero determinant: not invertible");
+		if (det==0.0) return null;
 		double invDet=1.0/det;
 		return new Matrix22( invDet*m11, -invDet*m01,
 				            -invDet*m10,  invDet*m00);		

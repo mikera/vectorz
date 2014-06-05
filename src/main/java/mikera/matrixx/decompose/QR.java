@@ -34,6 +34,21 @@ import mikera.vectorz.Vector;
  */
 public class QR {
 
+	/**
+	 * Computes the QR factorisation of a matrix A such that:
+	 * 
+	 *   A = Q.R
+	 *   
+	 * Where:
+	 * 
+	 *   Q is an orthogonal matrix
+	 *   R is an upper triangular matrix
+	 * 
+	 * If A is rectangular (m x n where m>n) then Q will also be (m x n)
+	 * 
+	 * @param matrix
+	 * @return
+	 */
 	public static IQRResult decompose(AMatrix matrix) {
 		return decomposeInternal(Matrix.create(matrix));
 	}
@@ -42,8 +57,9 @@ public class QR {
 		return decomposeInternal(matrix.clone());
 	}
 	
-	// perform decomposition. Destructively modifies the input Matrix
-	private static IQRResult decomposeInternal(Matrix matrix) {
+	// Perform decomposition on a Matrix. 
+	// Destructively modifies the input Matrix
+	static IQRResult decomposeInternal(Matrix matrix) {
 		int rc = matrix.rowCount();
 		int cc = matrix.columnCount();
 

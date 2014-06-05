@@ -20,13 +20,13 @@ public class TestDeterminant {
 	@Test
 	public void testDetEquivalence3() {
 		Matrix m=Matrixx.createRandomSquareMatrix(3);
-		assertEquals(Determinant.naiveDeterminant(m),Determinant.smartDeterminant(m),0.0001);
+		assertEquals(Determinant.naiveDeterminant(m),Determinant.calculateLUPDeterminant(m),0.0001);
 	}
 	
 	@Test
 	public void testDetEquivalence4() {
 		Matrix m=Matrixx.createRandomSquareMatrix(4);
-		assertEquals(Determinant.naiveDeterminant(m),Determinant.smartDeterminant(m),0.0001);
+		assertEquals(Determinant.naiveDeterminant(m),Determinant.calculateLUPDeterminant(m),0.0001);
 	}
 
 }

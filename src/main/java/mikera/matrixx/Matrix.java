@@ -25,9 +25,9 @@ import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Standard MxN matrix class backed by a densely packed double[] array
- *
+ * 
  * This is the most efficient Vectorz type for dense 2D matrices.
- *
+ * 
  * @author Mike
  */
 public final class Matrix extends ADenseArrayMatrix {
@@ -50,6 +50,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	/**
 	 * Creates a new Matrix with a copy of all data from the source matrix
+	 * 
 	 * @param m
 	 */
 	public Matrix(AMatrix m) {
@@ -102,6 +103,16 @@ public final class Matrix extends ADenseArrayMatrix {
 					"Array shape is not rectangular! Row " + i + " has length "
 							+ drow.length); }
 			System.arraycopy(drow, 0, m.data, i * cols, cols);
+		}
+		return m;
+	}
+
+	public static Matrix create(AVector... data) {
+		int rc = data.length;
+		int cc = (rc == 0) ? 0 : data[0].length();
+		Matrix m = create(rc, cc);
+		for (int i = 0; i < rc; i++) {
+			m.setRow(i, data[i]);
 		}
 		return m;
 	}
@@ -169,7 +180,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public Matrix transposeInnerProduct(Matrix s) {
-		Matrix r= toMatrixTranspose();
+		Matrix r = toMatrixTranspose();
 		return Multiplications.multiply(r, s);
 	}
 
@@ -466,6 +477,14 @@ public final class Matrix extends ADenseArrayMatrix {
 		}
 	}
 
+	@Override
+	public void add(AMatrix m) {
+		if ((rowCount() != m.rowCount()) || (columnCount() != m.columnCount()))
+			throw new IllegalArgumentException(
+					ErrorMessages.incompatibleShapes(this, m));
+		m.addToArray(data, 0);
+	}
+
 	public void add(Matrix m) {
 		if ((rowCount() != m.rowCount()) || (columnCount() != m.columnCount()))
 			throw new IllegalArgumentException(
@@ -495,23 +514,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public void add(AMatrix m) {
-		if (m instanceof Matrix) {
-			add((Matrix) m);
-			return;
-		}
-		int rc = rowCount();
-		int cc = columnCount();
-		if (!((rc == m.rowCount()) && (cc == m.columnCount()))) { throw new IllegalArgumentException(
-				ErrorMessages.mismatch(this, m)); }
-		m.addToArray(data, 0);
-	}
-
-	@Override
 	public void multiply(double factor) {
-		for (int i = 0; i < data.length; i++) {
-			data[i] *= factor;
-		}
+		DoubleArrays.multiply(data, factor);
 	}
 
 	@Override
@@ -519,6 +523,16 @@ public final class Matrix extends ADenseArrayMatrix {
 		if ((rowCount() != a.rowCount()) || (columnCount() != a.columnCount())) { throw new IllegalArgumentException(
 				ErrorMessages.mismatch(this, a)); }
 		a.getElements(this.data, 0);
+	}
+
+	@Override
+	public void set(AVector a) {
+		if ((rowCount() != a.length())) { throw new IllegalArgumentException(
+				ErrorMessages.incompatibleBroadcast(a, this)); }
+		a.getElements(data, 0);
+		for (int i = 1; i < rows; i++) {
+			System.arraycopy(data, 0, data, i * cols, cols);
+		}
 	}
 
 	@Override
@@ -555,10 +569,15 @@ public final class Matrix extends ADenseArrayMatrix {
 	public void clamp(double min, double max) {
 		DoubleArrays.clamp(data, 0, data.length, min, max);
 	}
-	
+
 	@Override
 	public Matrix clone() {
 		return new Matrix(rows, cols, DoubleArrays.copyOf(data));
+	}
+	
+	@Override
+	public Matrix copy() {
+		return clone();
 	}
 
 	@Override
@@ -613,23 +632,25 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	/**
-	 * Creates a Matrix which contains ones along the main diagonal
-	 * and zeros everywhere else. If square, is equal to the identity matrix.
-	 *
-	 * @param numRows Number of rows in the matrix.
-	 * @param numCols NUmber of columns in the matrix.
+	 * Creates a Matrix which contains ones along the main diagonal and zeros
+	 * everywhere else. If square, is equal to the identity matrix.
+	 * 
+	 * @param numRows
+	 *            Number of rows in the matrix.
+	 * @param numCols
+	 *            NUmber of columns in the matrix.
 	 * @return A matrix with diagonal elements equal to one.
 	 */
 	public static Matrix createIdentity(int numRows, int numCols) {
-	  Matrix ret = create(numRows, numCols);
+		Matrix ret = create(numRows, numCols);
 
-	  int small = numRows < numCols ? numRows : numCols;
+		int small = numRows < numCols ? numRows : numCols;
 
-	  for (int i = 0; i < small; i++) {
-	    ret.set(i, i, 1.0);
-	  }
+		for (int i = 0; i < small; i++) {
+			ret.unsafeSet(i, i, 1.0);
+		}
 
-	  return ret;
+		return ret;
 	}
 
 	/**
@@ -639,17 +660,17 @@ public final class Matrix extends ADenseArrayMatrix {
 	 * a<sub>ij</sub> = 0 if i &ne; j<br>
 	 * a<sub>ij</sub> = 1 if i = j<br>
 	 * </p>
-	 *
+	 * 
 	 * @return A new instance of an identity matrix.
 	 */
-	public static Matrix createIdentity(int width) {
-	  Matrix ret = create(width, width);
+	public static Matrix createIdentity(int dims) {
+		Matrix ret = create(dims, dims);
 
-	  for (int i = 0; i < width; i++) {
-	    ret.set(i, i, 1.0);
-	  }
+		for (int i = 0; i < dims; i++) {
+			ret.unsafeSet(i, i, 1.0);
+		}
 
-	  return ret;
+		return ret;
 	}
 
 }

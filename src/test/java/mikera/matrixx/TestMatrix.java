@@ -41,4 +41,13 @@ public class TestMatrix {
 	  assertTrue(m.get(1,0)==7);
 	  
   }
+  
+  @Test
+  public void testSet() {
+	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
+	  m.set(Vector.of(5,5));
+	  
+	  assertEquals(m, Matrix.create(new double[][] {{5,5},{5,5}}));
+	  
+  }
 }

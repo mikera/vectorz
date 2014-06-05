@@ -100,4 +100,9 @@ public class VectorBuilder extends AVector {
 		return new VectorBuilder(data.clone(),length);
 	}
 
+	@Override
+	public void addAt(int i, double v) {
+		data[i]+=v;
+	}
+
 }

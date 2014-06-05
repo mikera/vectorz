@@ -74,8 +74,10 @@ public class TestHouseholderQR {
 		AMatrix q = result.getQ();
 		AMatrix r = result.getR();
 
+		assertTrue(q.isSameShape(a));
 		assertTrue(r.isUpperTriangular());
 		assertTrue(q.innerProduct(r).epsilonEquals(a));
 		assertTrue(q.hasOrthonormalColumns());
+		
 	}
 }
