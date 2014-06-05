@@ -35,28 +35,28 @@ import org.junit.Test;
 public class TestSvdImplicitQr extends StandardSvdChecks {
 
     boolean compact;
-    boolean needU;
-    boolean needV;
+//    boolean needU;
+//    boolean needV;
 
     @Override
     public SvdImplicitQr createSvd() {
 //    	return new SvdImplicitQr(compact,needU,needV,false);
-        return new SvdImplicitQr(compact,needU,needV);
+        return new SvdImplicitQr(compact);
     }
 
     @Test
     public void checkCompact() {
         compact = true;
-        needU = true;
-        needV = true;
+//        needU = true;
+//        needV = true;
         allTests();
     }
 
     @Test
     public void checkNotCompact() {
         compact = false;
-        needU = true;
-        needV = true;
+//        needU = true;
+//        needV = true;
         allTests();
     }
 
@@ -66,7 +66,7 @@ public class TestSvdImplicitQr extends StandardSvdChecks {
                              Matrix V ,
                              boolean checkU , boolean checkV )
     {
-    	SvdImplicitQr alg = new SvdImplicitQr(compact,checkU,checkV);
+    	SvdImplicitQr alg = new SvdImplicitQr(compact);
 //        SvdImplicitQr alg = new SvdImplicitQr(compact,checkU,checkV,false);
 
         assertNotNull(alg._decompose(A.copy()));

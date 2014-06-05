@@ -68,13 +68,13 @@ public class SvdImplicitQr {
     // compute a compact SVD
     private boolean compact;
     // What is actually computed
-    private boolean computeU;
-    private boolean computeV;
+//    private boolean computeU;
+//    private boolean computeV;
 
     // What the user requested to be computed
     // If the transpose is computed instead then what is actually computed is swapped
-    private boolean prefComputeU;
-    private boolean prefComputeV;
+//    private boolean prefComputeU;
+//    private boolean prefComputeV;
 
     // Should it compute the transpose instead
     private boolean transposed;
@@ -82,8 +82,8 @@ public class SvdImplicitQr {
     // Either a copy of the input matrix or a copy of it transposed
     private Matrix A_mod = Matrix.create(1,1);
     
-    public static SVDResult decompose(AMatrix A, boolean compact, boolean computeU, boolean computeV) {
-    	SvdImplicitQr svd = new SvdImplicitQr(compact, computeU, computeV);
+    public static SVDResult decompose(AMatrix A, boolean compact) {
+    	SvdImplicitQr svd = new SvdImplicitQr(compact);
     	return svd._decompose(A);
     }
 
@@ -100,10 +100,10 @@ public class SvdImplicitQr {
     to doc*/
 //    public SvdImplicitQr(boolean compact, boolean computeU, boolean computeV,
 //    		boolean canUseTallBidiagonal )    
-    public SvdImplicitQr(boolean compact, boolean computeU, boolean computeV) {
+    public SvdImplicitQr(boolean compact) {
         this.compact = compact;
-        this.prefComputeU = computeU;
-        this.prefComputeV = computeV;
+//        this.prefComputeU = computeU;
+//        this.prefComputeV = computeV;
 //        this.canUseTallBidiagonal = canUseTallBidiagonal;
     }
 
@@ -120,14 +120,14 @@ public class SvdImplicitQr {
     }
 
     public AMatrix getU() {
-        if( !prefComputeU )
-            throw new IllegalArgumentException("As requested U was not computed.");
+//        if( !prefComputeU )
+//            throw new IllegalArgumentException("As requested U was not computed.");
     	return Ut.getTranspose();
     }
 
     public AMatrix getV() {
-        if( !prefComputeV )
-            throw new IllegalArgumentException("As requested V was not computed.");
+//        if( !prefComputeV )
+//            throw new IllegalArgumentException("As requested V was not computed.");
         	return Vt.getTranspose();
     }
 
@@ -197,20 +197,20 @@ public class SvdImplicitQr {
 
 //        long pointA = System.currentTimeMillis();
         // compute U and V matrices
-        if( computeU )
+//        if( computeU )
             Ut = bidiagResult.getU().getTranspose().toMatrix();
-        if( computeV )
+//        if( computeV )
             Vt = bidiagResult.getV().getTranspose().toMatrix();
 
         qralg.setFastValues(false);
-        if( computeU )
+//        if( computeU )
             qralg.setUt(Ut);
-        else
-            qralg.setUt(null);
-        if( computeV )
+//        else
+//            qralg.setUt(null);
+//        if( computeV )
             qralg.setVt(Vt);
-        else
-            qralg.setVt(null);
+//        else
+//            qralg.setVt(null);
 
 //        long pointB = System.currentTimeMillis();
 
@@ -227,13 +227,13 @@ public class SvdImplicitQr {
 
         // flag what should be computed and what should not be computed
         if( transposed ) {
-            computeU = prefComputeV;
-            computeV = prefComputeU;
+//            computeU = prefComputeV;
+//            computeV = prefComputeU;
             numRowsT = orig.columnCount();
             numColsT = orig.rowCount();
         } else {
-            computeU = prefComputeU;
-            computeV = prefComputeV;
+//            computeU = prefComputeU;
+//            computeV = prefComputeV;
             numRowsT = orig.rowCount();
             numColsT = orig.columnCount();
         }
@@ -271,7 +271,7 @@ public class SvdImplicitQr {
             if( val < 0 ) {
                 singularValues[i] = 0.0d - val;
 
-                if( computeU ) {
+//                if( computeU ) {
                     // compute the results of multiplying it by an element of -1 at this location in
                     // a diagonal matrix.
                     int start = i* Ut.columnCount();
@@ -279,7 +279,7 @@ public class SvdImplicitQr {
 
                     for( int j = start; j < stop; j++ ) {
                         UtData[j] = 0.0d - UtData[j];
-                    }
+//                    }
                 }
             } else {
                 singularValues[i] = val;
