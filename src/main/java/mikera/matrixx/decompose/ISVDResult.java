@@ -1,7 +1,6 @@
 package mikera.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.impl.ADiagonalMatrix;
 
 /**
  * Interface representing the result of an SVD decomposition

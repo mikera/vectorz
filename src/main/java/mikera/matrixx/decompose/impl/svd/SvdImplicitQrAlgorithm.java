@@ -799,7 +799,8 @@ public class SvdImplicitQrAlgorithm {
     /**
      * Creates a Q matrix for debugging purposes.
      */
-    private Matrix createQ(int x1, double c, double s , boolean transposed ) {
+    @SuppressWarnings("unused")
+	private Matrix createQ(int x1, double c, double s , boolean transposed ) {
         return createQ(x1,x1+1,c,s,transposed);
     }
 
@@ -820,7 +821,8 @@ public class SvdImplicitQrAlgorithm {
         return Q;
     }
 
-    private Matrix createB() {
+    @SuppressWarnings("unused")
+	private Matrix createB() {
         Matrix B = Matrix.create(N,N);
 
         for( int i = 0; i < N-1; i++ ) {
