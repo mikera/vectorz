@@ -18,11 +18,11 @@ public class TestAltLU {
     AMatrix U = alg.getU();
     AMatrix P = alg.getP();
 
-    Matrix exceptL = Matrix.create(new double[][] {{1, 0, 0}, {-0.6, 1, 0}, {0.3, -0.44068, 1}});
-    Matrix exceptU = Matrix.create(new double[][] {{5, 2, 3}, {0, 5.9, 1.3}, {0, 0, 7.67288}});
+    Matrix expectL = Matrix.create(new double[][] {{1, 0, 0}, {-0.6, 1, 0}, {0.3, -0.44068, 1}});
+    Matrix expectU = Matrix.create(new double[][] {{5, 2, 3}, {0, 5.9, 1.3}, {0, 0, 7.67288}});
     assertTrue(P.isOrthogonal());
-    assertArrayEquals(L.getElements(), exceptL.data, 1e-5);
-    assertArrayEquals(U.getElements(), exceptU.data, 1e-5);
+    assertArrayEquals(L.getElements(), expectL.data, 1e-5);
+    assertArrayEquals(U.getElements(), expectU.data, 1e-5);
 
     assertFalse(((AltLU) alg).isSingular());
   }
