@@ -54,6 +54,7 @@ public class AltLU implements ILUPResult {
 	protected Matrix LU;
 	protected Matrix L;
 	protected Matrix U;
+	protected PermutationMatrix P;
 
 	protected boolean singular;
 
@@ -61,6 +62,7 @@ public class AltLU implements ILUPResult {
 		decompose(a.toMatrix());
 		L = computeL();
 		U = computeU();
+		P = computeP();
 		singular = computeSingular();
 	}
 
@@ -76,6 +78,11 @@ public class AltLU implements ILUPResult {
 	@Override
 	public Matrix getU() {
 		return U;
+	}
+	
+	@Override
+	public PermutationMatrix getP() {
+		return P;
 	}
 
 	/**
@@ -262,9 +269,10 @@ public class AltLU implements ILUPResult {
 			}
 		}
 	}
-
-	@Override
-	public PermutationMatrix getP() {
+	
+	private PermutationMatrix computeP() {
 		return PermutationMatrix.wrap(Index.wrap(pivot).invert());
 	}
+
+
 }
