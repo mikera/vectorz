@@ -18,10 +18,12 @@
 
 package mikera.matrixx.decompose.impl.lu;
 
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.impl.PermutationMatrix;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * <p>
@@ -245,9 +247,7 @@ public class AltLU implements ILUPResult {
 					dataLU[rowP] = dataLU[rowJ];
 					dataLU[rowJ] = t;
 				}
-				int k = pivot[p];
-				pivot[p] = pivot[j];
-				pivot[j] = k;
+				IntArrays.swap(pivot, p,j);
 				pivsign = -pivsign;
 			}
 
@@ -265,8 +265,6 @@ public class AltLU implements ILUPResult {
 
 	@Override
 	public PermutationMatrix getP() {
-		throw new UnsupportedOperationException(
-				"TODO: figure out right pivot matrix?");
-		// idea: return Matrixx.createSignedPivot(pivot,pivsign);
+		return PermutationMatrix.wrap(Index.wrap(pivot).invert());
 	}
 }
