@@ -1,8 +1,6 @@
 package mikera.matrixx.decompose.impl.lu;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -14,16 +12,15 @@ public class TestAltLU {
 
   @Test
   public void testDecompose() {
-    double[][] dataA = {{5, 2, 3}, {1.5, -2, 8}, {-3, 4.7, -0.5}};
-    Matrix A = Matrix.create(dataA);
+    Matrix A = Matrix.create(new double[][] {{5, 2, 3}, {1.5, -2, 8}, {-3, 4.7, -0.5}});
     ILUPResult alg = new AltLU(A);
     AMatrix L = alg.getL();
     AMatrix U = alg.getU();
+    AMatrix P = alg.getP();
 
-    double[][] exceptDataL = {{1, 0, 0}, {-0.6, 1, 0}, {0.3, -0.44068, 1}};
-    double[][] exceptDataU = {{5, 2, 3}, {0, 5.9, 1.3}, {0, 0, 7.67288}};
-    Matrix exceptL = Matrix.create(exceptDataL);
-    Matrix exceptU = Matrix.create(exceptDataU);
+    Matrix exceptL = Matrix.create(new double[][] {{1, 0, 0}, {-0.6, 1, 0}, {0.3, -0.44068, 1}});
+    Matrix exceptU = Matrix.create(new double[][] {{5, 2, 3}, {0, 5.9, 1.3}, {0, 0, 7.67288}});
+    assertTrue(P.isOrthogonal());
     assertArrayEquals(L.getElements(), exceptL.data, 1e-5);
     assertArrayEquals(U.getElements(), exceptU.data, 1e-5);
 
