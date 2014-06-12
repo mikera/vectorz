@@ -131,4 +131,16 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		}
 		return super.equals(v);
 	}
+
+	@Override
+	public boolean hasUncountable() {
+		Index ni = nonSparseIndexes();
+		for(int i=0; i<ni.length(); i++) {
+			int ii = ni.get(i);
+			if (Double.isNaN(unsafeGet(ii)) || Double.isInfinite(unsafeGet(ii))) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

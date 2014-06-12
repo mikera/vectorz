@@ -63,4 +63,9 @@ public abstract class ABooleanMatrix extends AMatrix {
 		}
 		super.validate();
 	}
+
+	@Override
+	public boolean hasUncountable() {
+		return false;
+	}
 }

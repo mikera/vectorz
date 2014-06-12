@@ -2159,5 +2159,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return r;
 	}
 
+	@Override
+	public boolean hasUncountable() {
+		int len = length();
+		for(int i=0; i<len; i++) {
+			if (Double.isNaN(get(i)) || Double.isInfinite(get(i))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 }

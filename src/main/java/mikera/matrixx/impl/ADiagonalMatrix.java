@@ -370,4 +370,9 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override 
 	public abstract ADiagonalMatrix exactClone();
+
+	@Override
+	public boolean hasUncountable() {
+		return getLeadingDiagonal().hasUncountable();
+	}
 }

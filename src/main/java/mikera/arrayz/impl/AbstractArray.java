@@ -1236,5 +1236,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		// TODO: any generic validation?
 	}
 
+	/**
+	 * Returns true if any element is this array is NaN or infinite
+	 * @return
+	 */
+	@Override
+	public boolean hasUncountable() {
+		if (dimensionality()==0) return Double.isNaN(get()) || Double.isInfinite(get());
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			INDArray s=slice(i);
+			if (s.hasUncountable()) return true;
+		}
+		return false;
+	}
+
 
 }

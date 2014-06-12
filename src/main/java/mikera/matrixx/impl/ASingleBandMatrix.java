@@ -62,6 +62,11 @@ public abstract class ASingleBandMatrix extends ABandedMatrix {
 			return Vectorz.createZeroVector(bandLength(band));
 		}
 	}
+
+	@Override
+	public boolean hasUncountable() {
+		return getNonZeroBand().hasUncountable();
+	}
 	
 	// TODO: inner product with single band matrix should be v.fast
 }
