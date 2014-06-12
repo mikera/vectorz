@@ -189,4 +189,9 @@ public final class RepeatedElementVector extends ASizedVector {
 	public boolean elementsEqual(double value) {
 		return this.value==value;
 	}
+
+	@Override
+	public boolean hasUncountable() {
+		return Double.isNaN(value) || Double.isInfinite(value);
+	}
 }

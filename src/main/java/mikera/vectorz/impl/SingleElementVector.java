@@ -215,4 +215,9 @@ public final class SingleElementVector extends ASparseVector {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
+	@Override
+	public boolean hasUncountable() {
+		return Double.isNaN(value) || Double.isInfinite(value);
+	}
+
 }

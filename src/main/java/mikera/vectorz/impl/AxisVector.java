@@ -374,5 +374,9 @@ public final class AxisVector extends ASparseVector {
 		super.validate();
 	}
 
+	@Override
+	public boolean hasUncountable() {
+		return false;
+	}
 	
 }

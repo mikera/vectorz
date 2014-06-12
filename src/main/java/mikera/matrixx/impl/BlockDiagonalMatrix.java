@@ -173,4 +173,14 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 		}
 		return nzero/((double)elementCount());
 	}
+
+	@Override
+	public boolean hasUncountable() {
+		for(int i=0; i<blockCount; i++) {
+			if (mats[i].hasUncountable()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -392,4 +392,9 @@ public final class ZeroVector extends ASparseVector {
 		return value==0.0;
 	}
 
+	@Override
+	public boolean hasUncountable() {
+		return false;
+	}
+
 }
