@@ -138,12 +138,12 @@ public class AltLU {
 	 * @return true if singular false otherwise.
 	 */
 	public boolean isSingular() {
-		return singular;
+		if (m != n)
+			throw new IllegalArgumentException("Must be a square matrix.");
+		return computeSingular();
 	}
 
-	protected boolean computeSingular() throws Exception {
-		if (m > n)
-			throw new Exception("Only for matrices with rows <= columns");
+	protected boolean computeSingular() {
 		for (int i = 0; i < m; i++) {
 			if (Math.abs(dataLU[i * n + i]) < EPS) return true;
 		}
@@ -248,7 +248,6 @@ public class AltLU {
 		}
 		L = computeL();
 		U = computeU();
-//		singular = computeSingular();
 		return new LUPResult(L, U, getPivotMatrix());
 	}
 }
