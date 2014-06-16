@@ -4,7 +4,6 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.ILUPResult;
-import mikera.matrixx.decompose.ILUResult;
 import mikera.matrixx.decompose.impl.lu.AltLU;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 

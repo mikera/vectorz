@@ -111,10 +111,6 @@ public class AltLU {
 
 	public PermutationMatrix getPivotMatrix() {
 		int numPivots = LU.rowCount();
-//		Matrix pivotMatrix = Matrix.create(numPivots, numPivots);
-//		for (int i = 0; i < numPivots; i++) {
-//			pivotMatrix.set(i, pivot[i], 1);
-//		}
 		return PermutationMatrix.create(Index.wrap(Arrays.copyOf(pivot, numPivots)));
 	}
 
@@ -145,7 +141,9 @@ public class AltLU {
 		return singular;
 	}
 
-	protected boolean computeSingular() {
+	protected boolean computeSingular() throws Exception {
+		if (m > n)
+			throw new Exception("Only for matrices with rows <= columns");
 		for (int i = 0; i < m; i++) {
 			if (Math.abs(dataLU[i * n + i]) < EPS) return true;
 		}
@@ -176,9 +174,8 @@ public class AltLU {
 	 * order that it performs its permutations in is the primary difference from
 	 * NR
 	 * 
-	 * @param A
-	 *            The matrix that is to be decomposed. Not modified.
-	 * @return 
+	 * @param A The matrix that is to be decomposed. Not modified.
+	 * @return An LUPResult object that contains L, U and P matrices
 	 */
 	public LUPResult decompose(AMatrix _A) {
 		Matrix A = _A.toMatrix();
@@ -251,7 +248,7 @@ public class AltLU {
 		}
 		L = computeL();
 		U = computeU();
-		singular = computeSingular();
+//		singular = computeSingular();
 		return new LUPResult(L, U, getPivotMatrix());
 	}
 }
