@@ -5,27 +5,30 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.ILUPResult;
+import mikera.matrixx.decompose.impl.lu.AltLU;
+import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 
 import org.junit.Test;
 
 public class TestAltLU {
 
-	@Test
-	public void testDecompose() {
-		Matrix A = Matrix.create(new double[][] {{5, 2, 3}, {1.5, -2, 8}, {-3, 4.7, -0.5}});
-		ILUPResult alg = new AltLU(A);
-		AMatrix L = alg.getL();
-		AMatrix U = alg.getU();
-		AMatrix P = alg.getP();
-	
-		// TODO: these seem to be the wrong results???
-		Matrix expectL = Matrix.create(new double[][] {{1, 0, 0}, {-0.6, 1, 0}, {0.3, -0.44068, 1}});
-		Matrix expectU = Matrix.create(new double[][] {{5, 2, 3}, {0, 5.9, 1.3}, {0, 0, 7.67288}});
-		assertTrue(P.isOrthogonal());
-		assertArrayEquals(L.getElements(), expectL.data, 1e-5);
-		assertArrayEquals(U.getElements(), expectU.data, 1e-5);
-	
-		assertFalse(((AltLU) alg).isSingular());
+  @Test
+  public void testDecompose() {
+    double[][] dataA = {{5, 2, 3}, {1.5, -2, 8}, {-3, 4.7, -0.5}};
+    Matrix A = Matrix.create(dataA);
+    AltLU alg = new AltLU(A);
+    LUPResult ans = alg.decompose(A);
+    AMatrix L = ans.getL();
+    AMatrix U = ans.getU();
+
+    double[][] exceptDataL = {{1, 0, 0}, {-0.6, 1, 0}, {0.3, -0.44068, 1}};
+    double[][] exceptDataU = {{5, 2, 3}, {0, 5.9, 1.3}, {0, 0, 7.67288}};
+    Matrix exceptL = Matrix.create(exceptDataL);
+    Matrix exceptU = Matrix.create(exceptDataU);
+    assertArrayEquals(L.getElements(), exceptL.data, 1e-5);
+    assertArrayEquals(U.getElements(), exceptU.data, 1e-5);
+
+    assertFalse((alg).isSingular());
 	    
 //		AMatrix LU=L.innerProduct(U);
 //		AMatrix PA=P.innerProduct(A);
