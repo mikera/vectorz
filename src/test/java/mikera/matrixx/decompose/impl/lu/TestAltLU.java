@@ -18,9 +18,10 @@ public class TestAltLU {
   public void testDecompose() {
     double[][] dataA = {{5, 2, 3}, {1.5, -2, 8}, {-3, 4.7, -0.5}};
     Matrix A = Matrix.create(dataA);
-    ILUResult alg = new AltLU(A);
-    AMatrix L = alg.getL();
-    AMatrix U = alg.getU();
+    AltLU alg = new AltLU(A);
+    LUPResult ans = alg.decompose(A);
+    AMatrix L = ans.getL();
+    AMatrix U = ans.getU();
 
     double[][] exceptDataL = {{1, 0, 0}, {-0.6, 1, 0}, {0.3, -0.44068, 1}};
     double[][] exceptDataU = {{5, 2, 3}, {0, 5.9, 1.3}, {0, 0, 7.67288}};
@@ -29,7 +30,7 @@ public class TestAltLU {
     assertArrayEquals(L.getElements(), exceptL.data, 1e-5);
     assertArrayEquals(U.getElements(), exceptU.data, 1e-5);
 
-    assertFalse(((AltLU) alg).isSingular());
+    assertFalse((alg).isSingular());
   }
 
   @Test public void testRandomDecompose() {

@@ -18,9 +18,11 @@
 
 package mikera.matrixx.decompose.impl.lu;
 
+import java.util.Arrays;
+
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.impl.PermutationMatrix;
 
 /**
@@ -32,7 +34,7 @@ import mikera.matrixx.impl.PermutationMatrix;
  * 
  * @author Peter Abeles
  */
-public class AltLU implements ILUPResult {
+public class AltLU {
 
 	// it can decompose a matrix up to this size
 	protected int maxWidth = -1;
@@ -56,24 +58,10 @@ public class AltLU implements ILUPResult {
 	protected boolean singular;
 
 	public AltLU(AMatrix a) {
-		decompose(a.toMatrix());
-		L = computeL();
-		U = computeU();
-		singular = computeSingular();
 	}
 
 	public Matrix getLU() {
 		return LU;
-	}
-
-	@Override
-	public Matrix getL() {
-		return L;
-	}
-
-	@Override
-	public Matrix getU() {
-		return U;
 	}
 
 	/**
@@ -81,8 +69,7 @@ public class AltLU implements ILUPResult {
 	 */
 	public Matrix computeL() {
 		int numRows = LU.rowCount();
-		int numCols = LU.rowCount() < LU.columnCount() ? LU.rowCount() : LU
-				.columnCount();
+		int numCols = Math.min(LU.rowCount(), LU.columnCount());
 
 		Matrix lower = Matrix.create(numRows, numCols);
 
@@ -108,8 +95,7 @@ public class AltLU implements ILUPResult {
 	 * Writes the upper triangular matrix into the specified matrix.
 	 */
 	public Matrix computeU() {
-		int numRows = LU.rowCount() < LU.columnCount() ? LU.rowCount() : LU
-				.columnCount();
+		int numRows = Math.min(LU.rowCount(), LU.columnCount());
 		int numCols = LU.columnCount();
 
 		Matrix upper = Matrix.create(numRows, numCols);
@@ -123,13 +109,13 @@ public class AltLU implements ILUPResult {
 		return upper;
 	}
 
-	public Matrix getPivotMatrix() {
+	public PermutationMatrix getPivotMatrix() {
 		int numPivots = LU.rowCount();
-		Matrix pivotMatrix = Matrix.create(numPivots, numPivots);
-		for (int i = 0; i < numPivots; i++) {
-			pivotMatrix.set(i, pivot[i], 1);
-		}
-		return pivotMatrix;
+//		Matrix pivotMatrix = Matrix.create(numPivots, numPivots);
+//		for (int i = 0; i < numPivots; i++) {
+//			pivotMatrix.set(i, pivot[i], 1);
+//		}
+		return PermutationMatrix.create(Index.wrap(Arrays.copyOf(pivot, numPivots)));
 	}
 
 	protected void decomposeCommonInit(Matrix A) {
@@ -192,8 +178,10 @@ public class AltLU implements ILUPResult {
 	 * 
 	 * @param A
 	 *            The matrix that is to be decomposed. Not modified.
+	 * @return 
 	 */
-	public void decompose(Matrix A) {
+	public LUPResult decompose(AMatrix _A) {
+		Matrix A = _A.toMatrix();
 		decomposeCommonInit(A);
 
 		double LUcolj[] = vv;
@@ -261,12 +249,9 @@ public class AltLU implements ILUPResult {
 				}
 			}
 		}
-	}
-
-	@Override
-	public PermutationMatrix getP() {
-		throw new UnsupportedOperationException(
-				"TODO: figure out right pivot matrix?");
-		// idea: return Matrixx.createSignedPivot(pivot,pivsign);
+		L = computeL();
+		U = computeU();
+		singular = computeSingular();
+		return new LUPResult(L, U, getPivotMatrix());
 	}
 }
