@@ -1,5 +1,6 @@
 package mikera.matrixx.decompose.impl.lu;
 
+import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -8,8 +9,6 @@ import mikera.matrixx.decompose.impl.lu.AltLU;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class TestAltLU {
 
@@ -30,7 +29,40 @@ public class TestAltLU {
     assertArrayEquals(U.getElements(), exceptU.data, 1e-5);
 
     assertFalse((alg).isSingular());
+	    
+//		AMatrix LU=L.innerProduct(U);
+//		AMatrix PA=P.innerProduct(A);
+// TODO: apprears to be broken? Needs fixing
+//		if(!LU.epsilonEquals(PA)) {
+//			fail("\n"+"L="+L+"\n"
+//					+"U="+U+"\n"
+//					+"P="+P+"\n"
+//				  	+"A="+A+"\n"
+//				  	+"LU="+LU+"\n"
+//				  	+"PA="+PA+"\n");
+//		}  
   }
+  
+// TODO: AltLU seems to be broken? Need to fix or remove
+// @Test public void testRandomDecomposeAltLU() {
+//	  AMatrix a=Matrixx.createRandomMatrix(4, 4);
+//	  ILUPResult r=new AltLU(a);
+//	  
+//	  AMatrix l=r.getL();
+//	  AMatrix u=r.getU();
+//	  AMatrix p=r.getP();
+//	  AMatrix lu=l.innerProduct(u);
+//	  AMatrix pa=p.innerProduct(a);
+//	  
+//	  if(!lu.epsilonEquals(pa)) {
+//		  fail("L="+l+"\n"
+//				  +"U="+u+"\n"
+//				  +"P="+p+"\n"
+//				  +"A="+a+"\n"
+//				  +"LU="+lu+"\n"
+//				  +"PA="+pa+"\n");
+//	  }
+//  }
 
   @Test public void testRandomDecompose() {
 	  AMatrix a=Matrixx.createRandomMatrix(4, 4);

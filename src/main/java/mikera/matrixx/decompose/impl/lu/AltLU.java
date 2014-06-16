@@ -19,11 +19,11 @@
 package mikera.matrixx.decompose.impl.lu;
 
 import java.util.Arrays;
-
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.PermutationMatrix;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * <p>
@@ -54,6 +54,7 @@ public class AltLU {
 	protected Matrix LU;
 	protected Matrix L;
 	protected Matrix U;
+	protected PermutationMatrix P;
 
 	protected boolean singular;
 
@@ -230,9 +231,7 @@ public class AltLU {
 					dataLU[rowP] = dataLU[rowJ];
 					dataLU[rowJ] = t;
 				}
-				int k = pivot[p];
-				pivot[p] = pivot[j];
-				pivot[j] = k;
+				IntArrays.swap(pivot, p,j);
 				pivsign = -pivsign;
 			}
 
@@ -250,4 +249,6 @@ public class AltLU {
 		U = computeU();
 		return new LUPResult(L, U, getPivotMatrix());
 	}
+
+
 }

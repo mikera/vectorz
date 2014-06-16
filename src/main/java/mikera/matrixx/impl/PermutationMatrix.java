@@ -54,6 +54,11 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 		return wrap(index);
 	}
 	
+
+	public static PermutationMatrix wrap(int[] rowPermutations) {
+		return wrap(Index.wrap(rowPermutations));
+	}
+	
 	public static PermutationMatrix createRandomPermutation(int length) {
 		Index index=Indexz.createRandomPermutation(length);
 		return new PermutationMatrix(index);
@@ -316,4 +321,5 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	public PermutationMatrix exactClone() {
 		return new PermutationMatrix(perm.clone());
 	}
+
 }
