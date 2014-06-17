@@ -16,8 +16,7 @@ public class TestAltLU {
   public void testDecompose() {
     double[][] dataA = {{5, 2, 3}, {1.5, -2, 8}, {-3, 4.7, -0.5}};
     Matrix A = Matrix.create(dataA);
-    AltLU alg = new AltLU(A);
-    LUPResult ans = alg.decompose(A);
+    LUPResult ans = AltLU.decompose(A);
     AMatrix L = ans.getL();
     AMatrix U = ans.getU();
 
@@ -28,7 +27,8 @@ public class TestAltLU {
     assertArrayEquals(L.getElements(), exceptL.data, 1e-5);
     assertArrayEquals(U.getElements(), exceptU.data, 1e-5);
 
-    assertFalse((alg).isSingular());
+    assertFalse(ans.isSingular());
+    assertTrue(-226.350 - ans.computeDeterminant() < 1e-3);
 	    
 //		AMatrix LU=L.innerProduct(U);
 //		AMatrix PA=P.innerProduct(A);

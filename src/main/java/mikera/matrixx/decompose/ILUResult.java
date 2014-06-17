@@ -60,4 +60,16 @@ public interface ILUResult {
    * @return The U matrix.
    */
   public AMatrix getU();
+  
+  /**
+   * For square matrices, returns true if the matrix is singular, false otherwise
+   * @return
+   */
+  public boolean isSingular();
+  
+  /**
+	 * Computes the determinant from the LU decomposition.
+	 * @return The matrix's determinant.
+	 */
+  public double computeDeterminant();
 }

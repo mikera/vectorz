@@ -34,6 +34,7 @@ import mikera.matrixx.impl.PermutationMatrix;
  *
  */
 public class SimpleLUP {
+	private final static double EPS = Math.pow(2, -52);
 	
 	public static ILUPResult decompose(AMatrix matrix) {
 		return decomposeLUPInternal(Matrix.create(matrix));
@@ -56,6 +57,14 @@ public class SimpleLUP {
 		}
 
 		int n = m.rowCount();
+		
+		boolean isSingular = false;
+		for (int i = 0; i < n; i++) {
+			if (Math.abs(m.unsafeGet(i, i)) < EPS) {
+				isSingular = true;
+				break;
+			}
+		}
 
 		PermutationMatrix p = PermutationMatrix.createIdentity(n);
 
@@ -112,6 +121,6 @@ public class SimpleLUP {
 			}
 		}
 
-		return new LUPResult (l, u, p );
+		return new LUPResult (l, u, p, isSingular);
 	}
 }

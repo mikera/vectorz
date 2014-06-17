@@ -52,13 +52,13 @@ public class AltLU {
 
 	// the decomposed matrix
 	protected Matrix LU;
-	protected Matrix L;
-	protected Matrix U;
-	protected PermutationMatrix P;
 
-	protected boolean singular;
-
-	public AltLU(AMatrix a) {
+	public static LUPResult decompose(AMatrix A) {
+		AltLU alg = new AltLU();
+		return alg._decompose(A);
+	}
+	
+	private AltLU() {
 	}
 
 	public Matrix getLU() {
@@ -68,7 +68,7 @@ public class AltLU {
 	/**
 	 * Writes the lower triangular matrix into the specified matrix.
 	 */
-	public Matrix computeL() {
+	private Matrix computeL() {
 		int numRows = LU.rowCount();
 		int numCols = Math.min(LU.rowCount(), LU.columnCount());
 
@@ -95,7 +95,7 @@ public class AltLU {
 	/**
 	 * Writes the upper triangular matrix into the specified matrix.
 	 */
-	public Matrix computeU() {
+	private Matrix computeU() {
 		int numRows = Math.min(LU.rowCount(), LU.columnCount());
 		int numCols = LU.columnCount();
 
@@ -110,7 +110,7 @@ public class AltLU {
 		return upper;
 	}
 
-	public PermutationMatrix getPivotMatrix() {
+	private PermutationMatrix getPivotMatrix() {
 		int numPivots = LU.rowCount();
 		return PermutationMatrix.create(Index.wrap(Arrays.copyOf(pivot, numPivots)));
 	}
@@ -132,42 +132,11 @@ public class AltLU {
 		pivsign = 1;
 	}
 
-	/**
-	 * Determines if the decomposed matrix is singular. This function can return
-	 * false and the matrix be almost singular, which is still bad.
-	 * 
-	 * @return true if singular false otherwise.
-	 */
-	public boolean isSingular() {
-		if (m != n)
-			throw new IllegalArgumentException("Must be a square matrix.");
-		return computeSingular();
-	}
-
 	protected boolean computeSingular() {
 		for (int i = 0; i < m; i++) {
 			if (Math.abs(dataLU[i * n + i]) < EPS) return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Computes the determinant from the LU decomposition.
-	 * 
-	 * @return The matrix's determinant.
-	 */
-	public double computeDeterminant() {
-		if (m != n)
-			throw new IllegalArgumentException("Must be a square matrix.");
-
-		double ret = pivsign;
-
-		int total = m * n;
-		for (int i = 0; i < total; i += n + 1) {
-			ret *= dataLU[i];
-		}
-
-		return ret;
 	}
 
 	/**
@@ -178,7 +147,7 @@ public class AltLU {
 	 * @param A The matrix that is to be decomposed. Not modified.
 	 * @return An LUPResult object that contains L, U and P matrices
 	 */
-	public LUPResult decompose(AMatrix _A) {
+	private LUPResult _decompose(AMatrix _A) {
 		Matrix A = _A.toMatrix();
 		decomposeCommonInit(A);
 
@@ -245,9 +214,7 @@ public class AltLU {
 				}
 			}
 		}
-		L = computeL();
-		U = computeU();
-		return new LUPResult(L, U, getPivotMatrix());
+		return new LUPResult(computeL(), computeU(), getPivotMatrix(), computeSingular());
 	}
 
 
