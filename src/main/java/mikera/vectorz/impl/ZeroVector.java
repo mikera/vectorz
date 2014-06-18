@@ -104,7 +104,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public Scalar innerProduct(Vector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		return Scalar.create(0.0);
 	}
 	

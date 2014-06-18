@@ -65,13 +65,13 @@ public final class WrappedSubVector extends ASizedVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return wrapped.unsafeGet(i+offset);
 	}
 
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		wrapped.unsafeSet(i+offset,value);
 	}
 	

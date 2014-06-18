@@ -219,7 +219,7 @@ public final class AxisVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
-		if((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		return (i==getAxis())?1.0:0.0;
 	}
 	
@@ -249,7 +249,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public final ImmutableScalar slice(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		if (i==getAxis()) return ImmutableScalar.ONE;
 		return ImmutableScalar.ZERO;
 	}
