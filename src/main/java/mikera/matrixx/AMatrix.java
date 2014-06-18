@@ -1091,21 +1091,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (a==this) return true;
 		int rc = rowCount();
 		if (rc != a.rowCount()) return false;
-		int cc = columnCount();
-		if (cc != a.columnCount()) return false;
 		
-		if ((cc>10)||(this instanceof IFastRows)) {
-			return equalsByRows(a);		
-		} else {
-			for (int i = 0; i < rc; i++) {
-				for (int j = 0; j < cc; j++) {
-					if (unsafeGet(i, j) != a.unsafeGet(i, j))
-						return false;
-				}
-			}			
-		}
-
-		return true;
+		return equalsByRows(a);		
 	}
 	
 	@Override
@@ -1206,7 +1193,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 
-	
+	/**
+	 * Internal method to test for equality in a row-wise basis. Assumes row counts are already proven equal.
+	 */
 	protected boolean equalsByRows(AMatrix m) {
 		int rc = rowCount();
 		for (int i=0; i<rc; i++) {
