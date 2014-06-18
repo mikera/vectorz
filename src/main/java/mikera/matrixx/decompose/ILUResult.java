@@ -45,7 +45,6 @@ public interface ILUResult {
    * <p>
    * Returns the L matrix from the decomposition. This matrix will have ones on the leading diagonal.
    * </p>
-   * <p/>
    *
    * @return The L matrix.
    */
@@ -55,7 +54,6 @@ public interface ILUResult {
    * <p>
    * Returns the U matrix from the decomposition.
    * </p>
-   * <p/>
    *
    * @return The U matrix.
    */
