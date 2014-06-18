@@ -303,7 +303,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override
 	public AVector getColumn(int col) {
-		return SingleElementVector.create(getDiagonalValue(col), col, dimensions);
+		return getRow(col);
 	}
 	
 	public double unsafeGetDiagonalValue(int i) {
