@@ -371,7 +371,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	
 	@Override
 	public void set(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		
 		if (v instanceof ADenseArrayVector) {
 			set((ADenseArrayVector)v);
@@ -397,7 +397,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	
 	@Override
 	public void set(ADenseArrayVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		setElements(v.getArray(),v.getArrayOffset());
 	}
 

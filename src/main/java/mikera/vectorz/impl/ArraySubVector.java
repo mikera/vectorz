@@ -80,10 +80,7 @@ public final class ArraySubVector extends ADenseArrayVector {
 
 	@Override
 	public void add(ADenseArrayVector v) {
-		int vlength=v.length();
-		if (vlength != length) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		}
+		checkSameLength(v);
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
@@ -93,7 +90,7 @@ public final class ArraySubVector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(ADenseArrayVector v, double factor) {
-		assert (v.length() == length);
+		checkSameLength(v);
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
