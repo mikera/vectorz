@@ -155,9 +155,7 @@ public final class RepeatedElementVector extends ASizedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		if ((offset<0)||(offset+length>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		checkRange(offset,length);
 		if (length==this.length) return this;
 		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length,value);

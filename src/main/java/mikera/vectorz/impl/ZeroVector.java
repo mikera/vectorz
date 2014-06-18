@@ -92,7 +92,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector innerProduct(AMatrix m) {
-		if (m.rowCount()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		checkLength(m.rowCount());
 		return ZeroVector.create(m.columnCount());
 	}
 	

@@ -46,10 +46,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	 * @return
 	 */
 	public AVector subVector(int offset, int length) {
-		int len = this.length();
-		if ((offset < 0) || ((offset + length) > len)) { 
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length)); 
-		}
+		int len = checkRange(offset,length);
 		if (length == 0) return Vector0.INSTANCE;
 		if (length == len) return this;
 		return new ArraySubVector(this, offset, length);

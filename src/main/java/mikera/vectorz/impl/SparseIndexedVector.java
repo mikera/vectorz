@@ -181,7 +181,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			multiply((ADenseArrayVector)v);
 			return;
 		}
-		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		double[] data=this.data;
 		int[] ixs=index.data;
 		for (int i=0; i<data.length; i++) {

@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import java.util.Iterator;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * View class referencing a contiguous subvector of another vector. 
@@ -97,9 +96,7 @@ public final class WrappedSubVector extends ASizedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		if ((offset<0)||(offset+length>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		checkRange(offset,length);
 		if (length==0) return Vector0.INSTANCE;
 		if (length==this.length) return this;
 		return wrapped.subVector(this.offset+offset, length);
