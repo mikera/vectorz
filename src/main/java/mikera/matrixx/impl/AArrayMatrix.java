@@ -82,7 +82,6 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 
 		if (!isSameShape(a)) return false;
 		
-		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				if (data[index(i, j)] != a.unsafeGet(i, j))
