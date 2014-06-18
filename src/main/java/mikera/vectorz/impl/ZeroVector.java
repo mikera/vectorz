@@ -141,13 +141,13 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector addCopy(AVector a) {
-		if (length!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		checkSameLength(a);
 		return a.copy();
 	}
 	
 	@Override
 	public AVector subCopy(AVector a) {
-		if (length!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		checkSameLength(a);
 		return a.negateCopy();
 	}
 	
