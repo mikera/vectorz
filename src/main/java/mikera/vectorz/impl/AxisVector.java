@@ -201,13 +201,13 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public Scalar innerProduct(Vector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		return Scalar.create(v.unsafeGet(axis));
 	}
 	
 	@Override
 	public Scalar innerProduct(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		return Scalar.create(v.unsafeGet(axis));
 	}
 	
@@ -320,7 +320,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector addCopy(AVector v) {
-		if (!isSameShape(v)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		AVector r=v.clone();
 		r.addAt(axis, 1.0);
 		return r;
@@ -328,7 +328,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector subCopy(AVector v) {
-		if (!isSameShape(v)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		AVector r=v.negateCopy().mutable();
 		r.addAt(axis, 1.0);
 		return r;
