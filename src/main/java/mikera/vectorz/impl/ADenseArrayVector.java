@@ -11,7 +11,6 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -319,7 +318,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	public void add(ADenseArrayVector src, int srcOffset) {
-		if ((srcOffset<0)||((srcOffset+length)>src.length())) throw new IllegalArgumentException(ErrorMessages.invalidRange(src, srcOffset, length));
+		src.checkRange(srcOffset,length);
 		double[] vdata = src.getArray();
 		double[] data = getArray();
 		int offset = getArrayOffset();

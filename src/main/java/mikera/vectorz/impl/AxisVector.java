@@ -7,7 +7,6 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -213,7 +212,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector innerProduct(AMatrix m) {
-		if (length!=m.rowCount()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		checkLength(m.rowCount());
 		return m.getRow(axis).copy();
 	}
 
@@ -273,16 +272,16 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
+		int len=checkRange(start,length);
+		if (length==len) return this;
+		if (length==0) return Vector0.INSTANCE;
+		
 		int end=start+length;
-		if ((start<0)||(end>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
-		}
-		if (length==this.length) return this;
 		
 		if ((start<=getAxis())&&(end>getAxis())) {
 			return AxisVector.create(getAxis()-start,length);
 		} else {
-			return Vectorz.createZeroVector(length);
+			return ZeroVector.create(length);
 		}
 	}
 
