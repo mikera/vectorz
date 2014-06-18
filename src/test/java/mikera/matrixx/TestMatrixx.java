@@ -315,6 +315,27 @@ public class TestMatrixx {
 		} catch (Throwable t) {
 			// OK
 		}
+		
+		try {
+			m.checkSquare();
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+		
+		try {
+			m.inverse();
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+		
+		try {
+			m.determinant();
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
 	}
 	
 	private void doLeadingDiagonalTests(AMatrix m) {
@@ -337,6 +358,8 @@ public class TestMatrixx {
 			doNotSquareTests(m);
 		} else {
 			assertEquals(m.rowCount(),m.columnCount());
+			assertEquals(m.rowCount(),m.checkSquare());
+			
 			doSquareTransposeTest(m);
 			doTraceTests(m);
 			doLeadingDiagonalTests(m);
