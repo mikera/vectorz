@@ -1204,6 +1204,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		return true;
 	}
+
+
 	
 	protected boolean equalsByRows(AMatrix m) {
 		int rc = rowCount();
