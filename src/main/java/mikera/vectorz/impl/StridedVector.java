@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class StridedVector extends AStridedVector {
@@ -16,7 +15,7 @@ public final class StridedVector extends AStridedVector {
 		if (length>0) {
 			// check last element is in the array
 			int lastOffset=(offset+(length-1)*stride);
-			if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException();
+			if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException("StridedVector ends outside array");
 		}
 		this.offset=offset;
 		this.stride=stride;
@@ -101,10 +100,7 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		int len=this.length();
-		if ((start<0)||(start+length>len)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		int len=checkRange(start,length);
 
 		if (length==0) return Vector0.INSTANCE;
 		if (length==len) return this;
