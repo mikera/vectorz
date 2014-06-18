@@ -1690,9 +1690,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc=columnCount();
 		if (rc!=cc) return false;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				if ((i!=j)&&(unsafeGet(i,j)!=0.0)) return false;
-			}
+			AVector r=getRow(i);
+			if (!r.isRangeZero(0, i-1)) return false;
+			if (!r.isRangeZero(i+1, cc-i-1)) return false;
 		}
 		return true;
 	}
@@ -1714,8 +1714,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc=rowCount();
 		int cc=columnCount();
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				if ((i!=j)&&(unsafeGet(i,j)!=0.0)) return false;
+			AVector r=getRow(i);
+			if (i<cc) {
+				if (!r.isRangeZero(0, i-1)) return false;
+				if (!r.isRangeZero(i+1, cc-i-1)) return false;
+			} else {
+				if (!r.isZero()) return false;
 			}
 		}
 		return true;
@@ -1730,9 +1734,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc=columnCount();
 		if (rc!=cc) return false;
 		for (int i=0; i<rc; i++) {
-			for (int j=i+1; j<cc; j++) {
-				if (unsafeGet(i,j)!=unsafeGet(j,i)) return false;
-			}
+			if (!getRow(i).equals(getColumn(i))) return false;
 		}
 		return true;
 	}
