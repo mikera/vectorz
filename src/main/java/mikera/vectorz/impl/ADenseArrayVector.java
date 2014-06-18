@@ -531,13 +531,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public void addMultiple(ADenseArrayVector v, double factor) {
 		int length = checkSameLength(v);
 
-		double[] data = getArray();
-		int offset = getArrayOffset();
-		double[] vdata = v.getArray();
-		int voffset = v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[offset + i] += vdata[voffset + i] * factor;
-		}
+		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
 	}
 	
 	@Override
