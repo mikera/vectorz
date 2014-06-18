@@ -56,7 +56,7 @@ public final class RepeatedElementVector extends ASizedVector {
 	
 	@Override
 	public double get(int i) {
-		if (!((i>=0)&&(i<length))) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		return value;
 	}
 	

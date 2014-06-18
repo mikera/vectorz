@@ -57,8 +57,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public AScalar slice(int position) {
-		if ((position < 0) || (position >= length())) { throw new IndexOutOfBoundsException(
-				ErrorMessages.invalidIndex(this, position)); }
+		checkIndex(position);
 		return new ArrayIndexScalar(getArray(), getArrayOffset() + position);
 	}
 	

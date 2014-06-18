@@ -307,7 +307,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,i));
+		checkIndex(i);
 		int ip=index.indexPosition(i);
 		if (ip<0) return 0.0;
 		return data[ip];
@@ -403,10 +403,10 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 
 	@Override
 	public void set(int i, double value) {
+		checkIndex(i);
 		int ip=index.indexPosition(i);
 		if (ip<0) {
 			if (value==0.0) return;
-			if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 			int npos=index.seekPosition(i);
 			data=DoubleArrays.insert(data,npos,value);
 			index=index.insert(npos,i);

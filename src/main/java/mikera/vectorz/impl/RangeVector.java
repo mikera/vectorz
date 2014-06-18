@@ -47,7 +47,7 @@ public class RangeVector extends AComputedVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return start+i;
 	}
 	
