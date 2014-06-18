@@ -1,6 +1,5 @@
 package mikera.matrixx.solve;
 
-import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
@@ -29,7 +28,7 @@ public class Linear {
 	}
 	
 	public static AVector solveSquare(AMatrix a, AVector b) {
-		if (!a.isSquare()) throw new IllegalArgumentException("Matrix must be square but got shape: "+Index.of(a.getShape()));
+		a.checkSquare();
 		AMatrix m=a.inverse();
 		if (m==null) return null;
 		return m.transform(b);
