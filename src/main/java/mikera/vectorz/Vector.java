@@ -269,13 +269,13 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void add(AVector v) {
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		v.addToArray(data, 0);
 	}
 	
 	@Override
 	public void add(Vector v) {
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		add(v.data,0);
 	}
 	
@@ -333,8 +333,8 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void sub(AVector v) {
 		if (v instanceof ADenseArrayVector) {sub(((ADenseArrayVector)v)); return;}
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int length=checkSameLength(v);
+		
 		for (int i = 0; i < length; i++) {
 			data[i] -= v.unsafeGet(i);
 		}
@@ -379,7 +379,7 @@ public final class Vector extends ADenseArrayVector {
 		if ((v instanceof Vector)) {
 			return dotProduct((Vector)v);
 		} else {
-			if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
+			checkSameLength(v);
 			return v.dotProduct(data,0);
 		}
 	}
@@ -403,8 +403,8 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	public double dotProduct(Vector v) {
-		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int len=checkSameLength(v);
+
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			result+=data[i]*v.data[i];
@@ -456,8 +456,8 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void addWeighted(AVector v, double factor) {
 		if (v instanceof ADenseArrayVector) {addWeighted(((ADenseArrayVector)v),factor); return;}
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int length=checkSameLength(v);
+
 		for (int i = 0; i < length; i++) {
 			data[i] = (data[i]*(1.0-factor)) + (v.unsafeGet(i)*factor);
 		}

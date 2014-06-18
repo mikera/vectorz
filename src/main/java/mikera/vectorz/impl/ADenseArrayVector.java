@@ -357,11 +357,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public double dotProduct(AVector v) {
-		int length = length();
-		if (length != v.length()) {
-			throw new IllegalArgumentException(
-					ErrorMessages.incompatibleShapes(this, v));
-		}
+		int length = checkSameLength(v);
+		
 		if (v instanceof ADenseArrayVector) {
 			ADenseArrayVector vv = (ADenseArrayVector) v;
 			return DoubleArrays.dotProduct(getArray(), getArrayOffset(),
@@ -537,10 +534,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	public void addMultiple(ADenseArrayVector v, double factor) {
-		int vlength = v.length();
-		int length = length();
-		if (vlength != length) { throw new IllegalArgumentException(
-				ErrorMessages.incompatibleShapes(this, v)); }
+		int length = checkSameLength(v);
+
 		double[] data = getArray();
 		int offset = getArrayOffset();
 		double[] vdata = v.getArray();
