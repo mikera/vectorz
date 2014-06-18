@@ -5,6 +5,8 @@ import mikera.matrixx.decompose.impl.lu.AltLU;
 
 public class LUP {
 	
+	// TODO: fuller documentation for LUP properties
+	
 	/**
 	 * This performs LU decomposition on the given matrix and returns the result as a ILUPResult object
 	 * 

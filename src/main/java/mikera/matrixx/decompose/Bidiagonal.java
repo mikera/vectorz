@@ -10,6 +10,8 @@ import mikera.matrixx.decompose.impl.bidiagonal.BidiagonalRow;
  *
  */
 public class Bidiagonal {
+	
+	// TODO: needs docs for API functions
 
 	public static IBidiagonalResult decompose(AMatrix A) {
 		return BidiagonalRow.decompose(A);
