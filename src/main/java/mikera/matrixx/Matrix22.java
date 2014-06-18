@@ -153,6 +153,11 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	public int columnCount() {
 		return 2;
 	}
+	
+	@Override
+	public int checkSquare() {
+		return 2;
+	}
 
 	@Override
 	public void add(AMatrix a) {
