@@ -258,8 +258,7 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(ADenseArrayVector v, double factor) {
-		int length=length();
-		assert(length==v.length());
+		int length=checkSameLength(v);
 		double[] vdata=v.getArray();
 		int voffset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
@@ -310,16 +309,14 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	public void addProduct(Vector a, Vector b) {
-		int length=length();
-		assert((a.length()==length)&&(b.length()==length));
+		int length=checkSameLength(a,b);
 		for (int i = 0; i < length; i++) {
 			data[i]+=(a.data[i]*b.data[i]);
 		}
 	}
 	
 	public void addProduct(Vector a, Vector b, double factor) {
-		int length=length();
-		assert((a.length()==length)&&(b.length()==length));
+		int length=checkSameLength(a,b);
 		for (int i = 0; i < length; i++) {
 			data[i]+=(a.data[i]*b.data[i])*factor;
 		}
@@ -509,10 +506,8 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	public void multiply(Vector v) {
-		int len=checkSameLength(v);
-		for (int i = 0; i < len; i++) {
-			data[i]*=v.data[i];
-		}	
+		checkSameLength(v);
+		DoubleArrays.multiply(data, v.data);
 	}
 	
 	@Override

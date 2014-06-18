@@ -1688,6 +1688,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return len;
 	}
 	
+	protected int checkSameLength(AVector v, AVector w) {
+		int len=length();
+		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
+		if (len!=w.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, w));		
+		return len;
+	}
+	
 	/**
 	 * Utility function to check vector range and throw an exception if not valid
 	 * Returns length if all OK.
