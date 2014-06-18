@@ -43,7 +43,7 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	protected int checkSameLength(AVector v) {
+	protected final int checkSameLength(AVector v) {
 		int len=length;
 		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
 		return len;
