@@ -206,10 +206,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public void addToArray(int offset, double[] destData, int destOffset, int length) {
 		double[] data = getArray();
 		int dataOffset = getArrayOffset() + offset;
-
-		for (int i = 0; i < length; i++) {
-			destData[destOffset + i] += data[dataOffset + i];
-		}
+		DoubleArrays.add(data, dataOffset, destData, destOffset, length);
 	}
 	
 	@Override
