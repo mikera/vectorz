@@ -16,6 +16,9 @@ public abstract class APrimitiveMatrix extends AMatrix {
 	}
 	
 	@Override
+	public abstract int checkSquare();
+	
+	@Override
 	public boolean isFullyMutable() {
 		return true;
 	}

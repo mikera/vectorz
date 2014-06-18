@@ -390,7 +390,7 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		if (i<split) {
 			return left.unsafeGet(i);
 		}
@@ -399,6 +399,7 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public void set(AVector src) {
+		checkSameLength(src);
 		set(src,0);
 	}
 	
@@ -419,20 +420,18 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public void setElements(double[] values, int offset, int length) {
-		if (length!=length()) {
-			throw new IllegalArgumentException("Incorrect length: "+length);
-		}
+		checkLength(length);
 		left.setElements(values,offset,split);
 		right.setElements(values,offset+split,length-split);
 	}
 
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		if (i<split) {
-			left.set(i,value);
+			left.unsafeSet(i,value);
 		} else {
-			right.set(i-split,value);
+			right.unsafeSet(i-split,value);
 		}
 	}
 	

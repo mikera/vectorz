@@ -350,6 +350,7 @@ public class TestVectors {
 		AVector cv=v.clone();
 		int len=cv.length();
 		assertEquals(v.length(), len);
+		assertEquals(len,v.checkSameLength(cv));
 		assertFalse(cv.isView());
 		assertTrue((cv.length()==0)||cv.isMutable());		
 		assertTrue(cv.isFullyMutable());

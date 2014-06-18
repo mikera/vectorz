@@ -127,6 +127,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public int checkSquare() {
+		return dimensions;
+	}
+	
+	@Override
 	public double elementMax(){
 		double ldv=getLeadingDiagonal().elementMax();
 		if (dimensions>1) return Math.max(0, ldv); else return ldv;
@@ -303,7 +308,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override
 	public AVector getColumn(int col) {
-		return SingleElementVector.create(getDiagonalValue(col), col, dimensions);
+		return getRow(col);
 	}
 	
 	public double unsafeGetDiagonalValue(int i) {
@@ -370,4 +375,9 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	
 	@Override 
 	public abstract ADiagonalMatrix exactClone();
+
+	@Override
+	public boolean hasUncountable() {
+		return getLeadingDiagonal().hasUncountable();
+	}
 }

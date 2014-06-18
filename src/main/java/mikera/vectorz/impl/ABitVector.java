@@ -29,4 +29,9 @@ public abstract class ABitVector extends ASizedVector {
 	public boolean isFullyMutable() {
 		return false;
 	}
+	
+	@Override
+	public boolean hasUncountable() {
+		return false;
+	}
 }

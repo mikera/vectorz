@@ -85,6 +85,11 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	public int columnCount() {
 		return 3;
 	}
+	
+	@Override
+	public int checkSquare() {
+		return 3;
+	}
 
 	@Override
 	public double get(int row, int column) {

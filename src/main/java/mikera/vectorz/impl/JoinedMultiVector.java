@@ -428,13 +428,14 @@ public final class JoinedMultiVector extends AJoinedVector {
 	
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		int j=IntArrays.indexLookup(splits, i);
 		return vecs[j].unsafeGet(i-splits[j]);
 	}
 	
 	@Override
 	public void set(AVector src) {
+		checkSameLength(src);
 		set(src,0);
 	}
 	
@@ -463,7 +464,7 @@ public final class JoinedMultiVector extends AJoinedVector {
 
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		unsafeSet(i,value);
 	}
 	

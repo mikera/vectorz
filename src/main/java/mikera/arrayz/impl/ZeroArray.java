@@ -171,4 +171,8 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 		return create(shape);
 	}
 
+	@Override
+	public boolean hasUncountable() {
+		return false;
+	}
 }

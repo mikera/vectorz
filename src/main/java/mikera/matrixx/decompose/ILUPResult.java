@@ -27,7 +27,6 @@ public interface ILUPResult extends ILUResult {
 	   * <p>
 	   * Returns the P matrix from the decomposition.
 	   * </p>
-	   * <p/>
 	   *
 	   * @return The P matrix.
 	   */

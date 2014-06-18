@@ -11,7 +11,6 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -46,10 +45,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	 * @return
 	 */
 	public AVector subVector(int offset, int length) {
-		int len = this.length();
-		if ((offset < 0) || ((offset + length) > len)) { 
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length)); 
-		}
+		int len = checkRange(offset,length);
 		if (length == 0) return Vector0.INSTANCE;
 		if (length == len) return this;
 		return new ArraySubVector(this, offset, length);
@@ -57,8 +53,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public AScalar slice(int position) {
-		if ((position < 0) || (position >= length())) { throw new IndexOutOfBoundsException(
-				ErrorMessages.invalidIndex(this, position)); }
+		checkIndex(position);
 		return new ArrayIndexScalar(getArray(), getArrayOffset() + position);
 	}
 	
@@ -152,10 +147,6 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void add(AVector src) {
-		if (src instanceof ADenseArrayVector) {
-			add((ADenseArrayVector) src, 0);
-			return;
-		}
 		src.addToArray(0, getArray(), getArrayOffset(), length());
 	}
 
@@ -166,21 +157,11 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void add(AVector src, int srcOffset) {
-		if (src instanceof ADenseArrayVector) {
-			add((ADenseArrayVector) src, srcOffset);
-			return;
-		}
-		int length = length();
 		src.addToArray(srcOffset, getArray(), getArrayOffset(), length);
 	}
 
 	@Override
 	public void add(int offset, AVector src) {
-		if (src instanceof ADenseArrayVector) {
-			add(offset, (ADenseArrayVector) src);
-			return;
-		}
-		int length = src.length();
 		src.addToArray(0, getArray(), getArrayOffset() + offset, length);
 	}
 
@@ -197,11 +178,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void addMultiple(AVector v, double factor) {
-		if (v instanceof ADenseArrayVector) {
-			addMultiple((ADenseArrayVector) v, factor);
-			return;
-		}
-		int length = length();
+		int length = checkSameLength(v);
 		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
 	}
 
@@ -229,10 +206,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public void addToArray(int offset, double[] destData, int destOffset, int length) {
 		double[] data = getArray();
 		int dataOffset = getArrayOffset() + offset;
-
-		for (int i = 0; i < length; i++) {
-			destData[destOffset + i] += data[dataOffset + i];
-		}
+		DoubleArrays.add(data, dataOffset, destData, destOffset, length);
 	}
 	
 	@Override
@@ -323,7 +297,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	public void add(ADenseArrayVector src, int srcOffset) {
-		if ((srcOffset<0)||((srcOffset+length)>src.length())) throw new IllegalArgumentException(ErrorMessages.invalidRange(src, srcOffset, length));
+		src.checkRange(srcOffset,length);
 		double[] vdata = src.getArray();
 		double[] data = getArray();
 		int offset = getArrayOffset();
@@ -357,11 +331,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public double dotProduct(AVector v) {
-		int length = length();
-		if (length != v.length()) {
-			throw new IllegalArgumentException(
-					ErrorMessages.incompatibleShapes(this, v));
-		}
+		int length = checkSameLength(v);
+		
 		if (v instanceof ADenseArrayVector) {
 			ADenseArrayVector vv = (ADenseArrayVector) v;
 			return DoubleArrays.dotProduct(getArray(), getArrayOffset(),
@@ -537,17 +508,19 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	public void addMultiple(ADenseArrayVector v, double factor) {
-		int vlength = v.length();
-		int length = length();
-		if (vlength != length) { throw new IllegalArgumentException(
-				ErrorMessages.incompatibleShapes(this, v)); }
-		double[] data = getArray();
-		int offset = getArrayOffset();
-		double[] vdata = v.getArray();
-		int voffset = v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[offset + i] += vdata[voffset + i] * factor;
-		}
+		int length = checkSameLength(v);
+
+		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
+	}
+
+	
+	@Override
+	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
+		checkRange(offset,length);
+		src.checkRange(srcOffset,length);
+		if (factor==0.0) return;
+		int tOffset=offset+this.getArrayOffset();
+		src.addMultipleToArray(factor, srcOffset, this.getArray(), tOffset, length);
 	}
 
 	@Override

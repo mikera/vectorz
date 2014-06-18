@@ -317,4 +317,9 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	public ZeroMatrix exactClone() {
 		return new ZeroMatrix(rows,cols);
 	}
+
+	@Override
+	public boolean hasUncountable() {
+		return false;
+	}
 }

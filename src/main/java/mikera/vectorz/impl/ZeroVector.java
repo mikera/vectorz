@@ -81,7 +81,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public double dotProduct(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		return 0.0;
 	}
 	
@@ -92,19 +92,19 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector innerProduct(AMatrix m) {
-		if (m.rowCount()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		checkLength(m.rowCount());
 		return ZeroVector.create(m.columnCount());
 	}
 	
 	@Override
 	public Scalar innerProduct(AVector a) {
-		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		checkSameLength(a);
 		return Scalar.create(0.0);
 	}
 	
 	@Override
 	public Scalar innerProduct(Vector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		return Scalar.create(0.0);
 	}
 	
@@ -115,7 +115,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
-		if (i<0||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return 0.0;
 	}
 
@@ -141,13 +141,13 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector addCopy(AVector a) {
-		if (length!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		checkSameLength(a);
 		return a.copy();
 	}
 	
 	@Override
 	public AVector subCopy(AVector a) {
-		if (length!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		checkSameLength(a);
 		return a.negateCopy();
 	}
 	
@@ -253,7 +253,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public final ImmutableScalar slice(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return ImmutableScalar.ZERO;
 	}
 	
@@ -269,13 +269,11 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		if ((offset<0)||(offset+length>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		checkRange(offset,length);
 		if (length==this.length) return this;
 		return ZeroVector.create(length);
 	}
-	
+
 	public ZeroVector join(ZeroVector a) {
 		return ZeroVector.create(length+a.length);
 	}
@@ -390,6 +388,11 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public boolean elementsEqual(double value) {
 		return value==0.0;
+	}
+
+	@Override
+	public boolean hasUncountable() {
+		return false;
 	}
 
 }

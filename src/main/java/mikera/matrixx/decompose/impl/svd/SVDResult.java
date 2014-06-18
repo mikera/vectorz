@@ -2,33 +2,50 @@ package mikera.matrixx.decompose.impl.svd;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.decompose.ISVDResult;
-import mikera.matrixx.impl.ADiagonalMatrix;
 
 public class SVDResult implements ISVDResult {
-
-	private final AMatrix u;
-	private final ADiagonalMatrix s;
-	private final AMatrix v;
-
-	public SVDResult(AMatrix u, ADiagonalMatrix s, AMatrix v) {
-		this.u=u;
-		this.s=s;
-		this.v=v;
-	}
 	
+	private final AMatrix U;
+	private final AMatrix S;
+	private final AMatrix V;
+	
+	public SVDResult(AMatrix U, AMatrix S, AMatrix V) {
+		this.U = U;
+		this.S = S;
+		this.V = V;
+	}
+
+	/**
+     * <p>
+     * Returns the orthogonal 'U' matrix.
+     * </p>
+     * @return An orthogonal matrix.
+     */
 	@Override
 	public AMatrix getU() {
-		return u;
+		return U;
 	}
 
+	/**
+     * Returns a diagonal matrix with the singular values.  Order of the singular values
+     * is not guaranteed.
+     *
+     * @return matrix with singular values along the diagonal.
+     */
 	@Override
-	public ADiagonalMatrix getS() {
-		return s;
+	public AMatrix getS() {
+		return S;
 	}
 
+	/**
+     * <p>
+     * Returns the orthogonal 'V' matrix.
+     * </p>
+     * @return An orthogonal matrix.
+     */
 	@Override
 	public AMatrix getV() {
-		return v;
+		return V;
 	}
 
 }

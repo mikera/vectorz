@@ -237,4 +237,9 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 		if (dimensions<30) return super.clone();
 		return sparseClone();
 	}
+
+	@Override
+	public boolean hasUncountable() {
+		return false;
+	}
 }

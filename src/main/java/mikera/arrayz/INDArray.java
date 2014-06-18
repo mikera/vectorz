@@ -727,5 +727,10 @@ public interface INDArray extends Cloneable, Serializable {
 
 	public INDArray multiplyCopy(double d);
 
+	/**
+	 * Returns true if any element is this array is NaN or infinite
+	 * @return
+	 */
+	public boolean hasUncountable();
 	
 }

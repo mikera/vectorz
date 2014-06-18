@@ -498,4 +498,9 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	public void abs() {
 		set(Math.abs(get()));
 	}
+
+	@Override
+	public boolean hasUncountable() {
+		return Double.isNaN(get()) || Double.isInfinite(get());
+	}
 }

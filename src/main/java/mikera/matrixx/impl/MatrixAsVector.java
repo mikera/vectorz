@@ -6,7 +6,6 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.impl.AMatrixViewVector;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised class for viewing a matrix as a flattened vector
@@ -27,13 +26,13 @@ public class MatrixAsVector extends AMatrixViewVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return source.unsafeGet(i/columns, i%columns);
 	}
 	
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		source.unsafeSet(i/columns, i%columns,value);	
 	}
 	
