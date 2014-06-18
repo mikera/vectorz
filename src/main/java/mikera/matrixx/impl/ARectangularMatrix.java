@@ -65,6 +65,13 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	@Override
+	public int checkSquare() {
+		int rc=rows;
+		if (rc!=cols) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
+		return rc;
+	}
+	
+	@Override
 	public final boolean isSameShape(AMatrix m) {
 		return (rows==m.rowCount())&&(cols==m.columnCount());
 	}

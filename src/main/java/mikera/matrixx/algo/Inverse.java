@@ -14,8 +14,7 @@ public final class Inverse {
 	 * Computes the inverse of an arbitrary Matrix
 	 */
 	public static AMatrix calculate(AMatrix a) {
-		int rc=a.rowCount(); 
-		if (rc!=a.columnCount()) throw new IllegalArgumentException(ErrorMessages.nonSquareMatrix(a));
+		int rc=a.checkSquare();
 		
 		if (rc<=3) return calculateSmall(a,rc);
 		

@@ -676,10 +676,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Matrixx.create(this);
 	}
 
+	/**
+	 * Transposes a matrix in place, if possible.
+	 * Throws an exception if this is not possible (e.g. if the matrix is not square or not sufficiently mutable)
+	 */
 	public void transposeInPlace() {
-		if (!isSquare())
-			throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
-		int dims = rowCount();
+		int dims = checkSquare();
 		for (int i = 0; i < dims; i++) {
 			for (int j = i + 1; j < dims; j++) {
 				double temp = unsafeGet(i, j);
@@ -2070,5 +2072,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Checks if a matrix is square. Returns the size if true, throws an exception otherwise;
+	 * @return
+	 */
+	public int checkSquare() {
+		int rc=rowCount();
+		if (rc!=columnCount()) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
+		return rc;
 	}
 }

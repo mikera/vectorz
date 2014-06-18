@@ -127,6 +127,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public int checkSquare() {
+		return dimensions;
+	}
+	
+	@Override
 	public double elementMax(){
 		double ldv=getLeadingDiagonal().elementMax();
 		if (dimensions>1) return Math.max(0, ldv); else return ldv;
