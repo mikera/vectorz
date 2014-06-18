@@ -236,10 +236,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Changes to the sub-vector will be reflected in this vector
 	 */
 	public AVector subVector(int offset, int length) {
-		int len=this.length();
-		if ((offset<0)||(offset+length>len)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		int len=checkRange(offset,length);
 
 		if (length==0) return Vector0.INSTANCE;
 		if (length==len) return this;
@@ -284,8 +281,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public int compareTo(AVector a) {
-		int len=length();
-		if (len!=a.length()) throw new IllegalArgumentException("Vectors must be same length for comparison");
+		int len=checkSameLength(a);
+		
 		for (int i=0; i<len; i++) {
 			double diff=unsafeGet(i)-a.unsafeGet(i);
 			if (diff<0.0) return -1;
@@ -373,9 +370,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public boolean epsilonEquals(AVector v,double tolerance) {
 		if (this == v) return true;
-		int len=length();
-		if (len!=v.length())
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int len=checkSameLength(v);
+		
 		for (int i = 0; i < len; i++) {
 			if (!Tools.epsilonEquals(unsafeGet(i), v.unsafeGet(i), tolerance)) return false;
 		}
@@ -556,8 +552,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			multiply((ADenseArrayVector) v);
 			return;
 		}
-		int len=length();
-		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int len=checkSameLength(v);
 		
 		for (int i = 0; i < len; i++) {
 			unsafeSet(i,unsafeGet(i)*v.unsafeGet(i));
@@ -565,8 +560,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void multiply(ADenseArrayVector v) {
-		int len=length();
-		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
+		
 		multiply(v.getArray(),v.getArrayOffset());
 	}
 	
@@ -598,8 +593,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void divide(AVector v) {
-		int len=length();
-		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int len=checkSameLength(v);
 		for (int i = 0; i < len; i++) {
 			unsafeSet(i,unsafeGet(i)/v.unsafeGet(i));
 		}	
@@ -781,21 +775,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public Scalar innerProduct(AVector v) {
-		if (length()!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		return Scalar.create(dotProduct(v));
 	}
 
 	public Scalar innerProduct(Vector v) {
 		double[] data=v.getArray();
 		int vl=data.length;
-		if (length()!=vl) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkLength(vl);
 		return Scalar.create(dotProduct(data,0));
 	}
 	
 	public AVector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
 		int rc=m.rowCount();
-		if (rc!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		checkLength(rc);
 		Vector r=Vector.createLength(cc);
 		for (int i=0; i<cc; i++) {
 			r.unsafeSet(i,m.getColumn(i).dotProduct(this));
@@ -818,10 +811,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		} else if (a.dimensionality()<=2) {
 			return innerProduct(Arrayz.create(a));
 		}
-		int len=length();
-		if (len!=a.sliceCount()) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
-		}
+		int len=checkLength(a.sliceCount());
 		List<INDArray> al=a.getSliceViews();
 		INDArray result=Arrayz.newArray(al.get(0).getShape());
 		for (int i=0; i<len; i++) {
@@ -1581,9 +1571,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	protected void checkLength(int length) {
+	protected int checkLength(int length) {
 		int len=length();
 		if (len!=length) throw new IllegalArgumentException("Vector length mismatch, expected length = "+length+", but got length = "+len);
+		return len;
 	}
 
 	/**

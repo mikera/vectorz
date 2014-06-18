@@ -66,8 +66,9 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	protected final void checkLength(int length) {
+	protected final int checkLength(int length) {
 		if (this.length!=length) throw new IllegalArgumentException("Vector length mismatch, expected length = "+length+", but got length = "+this.length);
+		return length;
 	}
 	
 	@Override
