@@ -43,7 +43,7 @@ public interface ILUResult {
 
   /**
    * <p>
-   * Returns the L matrix from the decomposition.
+   * Returns the L matrix from the decomposition. This matrix will have ones on the leading diagonal.
    * </p>
    * <p/>
    *
@@ -60,12 +60,6 @@ public interface ILUResult {
    * @return The U matrix.
    */
   public AMatrix getU();
-  
-  /**
-   * For square matrices, returns true if the matrix is singular, false otherwise
-   * @return
-   */
-  public boolean isSingular();
   
   /**
 	 * Computes the determinant from the LU decomposition.

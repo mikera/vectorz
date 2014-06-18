@@ -27,8 +27,7 @@ public class TestAltLU {
     assertArrayEquals(L.getElements(), exceptL.data, 1e-5);
     assertArrayEquals(U.getElements(), exceptU.data, 1e-5);
 
-    assertFalse(ans.isSingular());
-    assertTrue(-226.350 - ans.computeDeterminant() < 1e-3);
+    assertTrue(Math.abs(-226.350 - ans.computeDeterminant()) < 1e-3);
 	    
 //		AMatrix LU=L.innerProduct(U);
 //		AMatrix PA=P.innerProduct(A);

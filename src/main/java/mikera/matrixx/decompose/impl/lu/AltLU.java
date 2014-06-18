@@ -45,8 +45,6 @@ public class AltLU {
 	// used in set, solve, invert
 	protected double vv[];
 	protected int pivot[];
-	// used by determinant
-	protected double pivsign;
 
 	public final static double EPS = Math.pow(2, -52);
 
@@ -129,14 +127,6 @@ public class AltLU {
 		for (int i = 0; i < m; i++) {
 			pivot[i] = i;
 		}
-		pivsign = 1;
-	}
-
-	protected boolean computeSingular() {
-		for (int i = 0; i < m; i++) {
-			if (Math.abs(dataLU[i * n + i]) < EPS) return true;
-		}
-		return false;
 	}
 
 	/**
@@ -201,7 +191,6 @@ public class AltLU {
 					dataLU[rowJ] = t;
 				}
 				IntArrays.swap(pivot, p,j);
-				pivsign = -pivsign;
 			}
 
 			// Compute multipliers.
@@ -214,7 +203,7 @@ public class AltLU {
 				}
 			}
 		}
-		return new LUPResult(computeL(), computeU(), getPivotMatrix(), computeSingular());
+		return new LUPResult(computeL(), computeU(), getPivotMatrix());
 	}
 
 
