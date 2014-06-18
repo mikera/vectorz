@@ -117,13 +117,13 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public double get(int i) {
-		if (i<0||i>=length) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		return data[offset+i*stride];
 	}
 	
 	@Override
 	public void set(int i, double value) {
-		if (i<0||i>=length) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		data[offset+i*stride]=value;
 	}
 	
