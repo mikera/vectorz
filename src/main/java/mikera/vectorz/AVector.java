@@ -1698,6 +1698,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Utility function to check vector range and throw an exception if not valid
+	 * Returns length if all OK.
+	 */
+	protected int checkRange(int offset, int length) {
+		int len=this.length();
+		if ((offset<0)||(offset+length>len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
+		return len;
+	}
+	
+	/**
 	 * Utility function to check an index and throw an exception in not in bounds.
 	 * Returns the vector length
 	 */

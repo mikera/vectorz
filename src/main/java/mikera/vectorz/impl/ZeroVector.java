@@ -269,13 +269,11 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		if ((offset<0)||(offset+length>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		checkRange(offset,length);
 		if (length==this.length) return this;
 		return ZeroVector.create(length);
 	}
-	
+
 	public ZeroVector join(ZeroVector a) {
 		return ZeroVector.create(length+a.length);
 	}
