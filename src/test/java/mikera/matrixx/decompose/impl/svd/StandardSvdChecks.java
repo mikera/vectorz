@@ -232,9 +232,9 @@ public abstract class StandardSvdChecks {
         Matrix Vt = svd.getV().getTranspose().toMatrix();
         Matrix W = svd.getS().toMatrix();
 
-        assertTrue( !hasUncountable(U) );
-        assertTrue( !hasUncountable(Vt) );
-        assertTrue( !hasUncountable(W) );
+        assertTrue( !U.hasUncountable() );
+        assertTrue( !Vt.hasUncountable() );
+        assertTrue( !W.hasUncountable() );
 
         if( svd.isCompact() ) {
         	assertTrue(W.columnCount()==W.rowCount());
@@ -313,25 +313,5 @@ public abstract class StandardSvdChecks {
         }
 
         assertEquals(expected,numFound);
-    }
-    
-    /**
-     * Checks to see if any element in the matrix is NaN of Infinite.
-     *
-     * @param m A matrix. Not modified.
-     * @return True if any element in the matrix is NaN of Infinite.
-     */
-//    taken from Matrix Features
-    private static boolean hasUncountable( Matrix m )
-    {
-        long length = m.elementCount();
-        double[] data = m.asDoubleArray();
-
-        for( int i = 0; i < length; i++ ) {
-            double a = data[i];
-            if( Double.isNaN(a) || Double.isInfinite(a))
-                return true;
-        }
-        return false;
     }
 }

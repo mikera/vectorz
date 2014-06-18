@@ -2063,6 +2063,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return m;
 	}
 
+	/**
+     * Checks to see if any element in the matrix is NaN of Infinite.
+     *
+     * @param m A matrix. Not modified.
+     * @return True if any element in the matrix is NaN of Infinite.
+     */
 	@Override
 	public boolean hasUncountable() {
 		int rc = rowCount();
