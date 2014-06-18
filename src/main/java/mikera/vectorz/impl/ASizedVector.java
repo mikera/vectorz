@@ -43,6 +43,13 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
+	protected int checkSameLength(AVector v) {
+		int len=length;
+		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
+		return len;
+	}
+	
+	@Override
 	public final int[] getShapeClone() {
 		return new int[] {length};
 	}

@@ -512,8 +512,7 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	public void multiply(Vector v) {
-		int len=length();
-		assert(len==v.length());
+		int len=checkSameLength(v);
 		for (int i = 0; i < len; i++) {
 			data[i]*=v.data[i];
 		}	
@@ -522,19 +521,17 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void divide(AVector v) {
 		if (v instanceof Vector) {divide(((Vector)v)); return;}
-		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		v.divideTo(data, 0);	
 	}
 	
 	public void divide(Vector v) {
-		int len=length();
-		assert(len==v.length());
+		int len=checkSameLength(v);
 		for (int i = 0; i < len; i++) {
 			data[i]=(data[i]/v.data[i]);
 		}	
 	}
-	
+
 	@Override
 	public boolean isView() {
 		return false;

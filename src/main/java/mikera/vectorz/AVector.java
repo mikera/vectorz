@@ -1684,6 +1684,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return length()==a.length();
 	}
 	
+	/**
+	 * Utility function to check vector length and throw an exception in not same shape
+	 */
+	protected int checkSameLength(AVector v) {
+		int len=length();
+		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
+		return len;
+	}
+	
 	public void projectToPlane(AVector normal, double distance) {
 		assert(Tools.epsilonEquals(normal.magnitude(), 1.0));
 		double d=dotProduct(normal);
