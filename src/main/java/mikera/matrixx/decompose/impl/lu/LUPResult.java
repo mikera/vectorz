@@ -34,4 +34,12 @@ public class LUPResult implements ILUPResult {
 		return p;
 	}
 
+	@Override
+	public double computeDeterminant() {
+		if (l.rowCount()!= u.columnCount()) {
+			throw new IllegalArgumentException("Input must be a square matrix");
+		}
+		return u.diagonalProduct()*p.determinant();
+	}
+	
 }
