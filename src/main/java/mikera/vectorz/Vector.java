@@ -475,9 +475,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(Vector source, Index index, double factor) {
-		if (index.length()!=source.length()) throw new VectorzException(ErrorMessages.incompatibleShapes(index, source));
 		int len=source.length();
-		assert(len==index.length());
+		if (index.length()!=len) throw new VectorzException(ErrorMessages.incompatibleShapes(index, source));
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
 			this.data[j]+=source.data[i]*factor;
@@ -486,9 +485,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(Index destToSource, Vector source, double factor) {
-		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
 		int len=this.length();
-		assert(len==destToSource.length());
+		if (destToSource.length()!=len) throw new VectorzException("Index length must match this vector");
 		for (int i=0; i<len; i++) {
 			int j=destToSource.data[i];
 			this.data[i]+=source.data[j]*factor;
@@ -506,8 +504,7 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void multiply(AVector v) {
 		if (v instanceof Vector) {multiply(((Vector)v)); return;}
-		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		v.multiplyTo(data, 0);	
 	}
 	
