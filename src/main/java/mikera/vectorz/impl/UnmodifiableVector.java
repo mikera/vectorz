@@ -46,6 +46,13 @@ public class UnmodifiableVector extends BaseDerivedVector {
 	}
 	
 	@Override
+	public AVector subVector(int offset, int length) {
+		AVector ssv=source.subVector(offset, length);
+		if (ssv==source) return this;
+		return new UnmodifiableVector(ssv);
+	}
+	
+	@Override
 	public AVector sparse() {
 		return SparseImmutableVector.create(source);
 	}
