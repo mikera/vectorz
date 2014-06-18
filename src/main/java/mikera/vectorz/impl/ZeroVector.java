@@ -81,7 +81,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public double dotProduct(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		return 0.0;
 	}
 	
@@ -98,7 +98,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public Scalar innerProduct(AVector a) {
-		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		checkSameLength(a);
 		return Scalar.create(0.0);
 	}
 	
@@ -115,7 +115,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
-		if (i<0||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return 0.0;
 	}
 
@@ -253,7 +253,7 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public final ImmutableScalar slice(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return ImmutableScalar.ZERO;
 	}
 	
