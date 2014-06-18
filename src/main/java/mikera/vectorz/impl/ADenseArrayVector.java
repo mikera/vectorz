@@ -539,6 +539,15 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 			data[offset + i] += vdata[voffset + i] * factor;
 		}
 	}
+	
+	@Override
+	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
+		checkRange(offset,length);
+		src.checkRange(srcOffset,length);
+		if (factor==0.0) return;
+		int tOffset=offset+this.getArrayOffset();
+		src.addMultipleToArray(factor, srcOffset, this.getArray(), tOffset, length);
+	}
 
 	@Override
 	public double magnitudeSquared() {

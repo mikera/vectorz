@@ -1556,8 +1556,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addProduct(AVector a, AVector b, double factor) {
-		int length=checkSameLength(a);
-		b.checkLength(length);
+		int length=checkSameLength(a,b);
 		if (factor==0.0) return;
 		
 		if (a.isSparse()||b.isSparse()) {
@@ -1597,8 +1596,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
-		if ((offset+length)>length()) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		if ((srcOffset<0)||(srcOffset+length>src.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(src, srcOffset, length));
+		checkRange(offset,length);
+		src.checkRange(srcOffset, length);
 		if (factor==0.0) return;
 		for (int i = 0; i < length; i++) {
 			addAt(i+offset,src.unsafeGet(i+srcOffset)*factor);
@@ -1699,7 +1698,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Utility function to check vector range and throw an exception if not valid
 	 * Returns length if all OK.
 	 */
-	protected int checkRange(int offset, int length) {
+	public int checkRange(int offset, int length) {
 		int len=this.length();
 		if ((offset<0)||(offset+length>len)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
