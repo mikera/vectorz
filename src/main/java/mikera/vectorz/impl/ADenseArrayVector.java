@@ -147,10 +147,6 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void add(AVector src) {
-		if (src instanceof ADenseArrayVector) {
-			add((ADenseArrayVector) src, 0);
-			return;
-		}
 		src.addToArray(0, getArray(), getArrayOffset(), length());
 	}
 
@@ -161,21 +157,11 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void add(AVector src, int srcOffset) {
-		if (src instanceof ADenseArrayVector) {
-			add((ADenseArrayVector) src, srcOffset);
-			return;
-		}
-		int length = length();
 		src.addToArray(srcOffset, getArray(), getArrayOffset(), length);
 	}
 
 	@Override
 	public void add(int offset, AVector src) {
-		if (src instanceof ADenseArrayVector) {
-			add(offset, (ADenseArrayVector) src);
-			return;
-		}
-		int length = src.length();
 		src.addToArray(0, getArray(), getArrayOffset() + offset, length);
 	}
 
@@ -192,11 +178,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void addMultiple(AVector v, double factor) {
-		if (v instanceof ADenseArrayVector) {
-			addMultiple((ADenseArrayVector) v, factor);
-			return;
-		}
-		int length = length();
+		int length = checkSameLength(v);
 		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
 	}
 
@@ -533,6 +515,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
 	}
+
 	
 	@Override
 	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
