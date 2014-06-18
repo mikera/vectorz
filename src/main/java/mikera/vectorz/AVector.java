@@ -1582,7 +1582,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	protected final void checkLength(int length) {
+	protected void checkLength(int length) {
 		int len=length();
 		if (len!=length) throw new IllegalArgumentException("Vector length mismatch, expected length = "+length+", but got length = "+len);
 	}
