@@ -1204,12 +1204,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		return true;
 	}
-
-	public boolean equals(AAffineTransform a) {
-
-		return a.getTranslation().isIdentity()
-				&& this.equals(a.getMatrix());
-	}
 	
 	protected boolean equalsByRows(AMatrix m) {
 		int rc = rowCount();
