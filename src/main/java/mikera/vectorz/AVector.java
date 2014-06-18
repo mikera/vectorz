@@ -1567,9 +1567,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addProduct(AVector a, AVector b, double factor) {
-		int length=length();
-		if (a.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
-		if (b.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		int length=checkSameLength(a);
+		b.checkLength(length);
 		if (factor==0.0) return;
 		
 		if (a.isSparse()||b.isSparse()) {
@@ -1583,12 +1582,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	protected final void checkLength(int length) {
+		int len=length();
+		if (len!=length) throw new IllegalArgumentException("Vector length mismatch, expected length = "+length+", but got length = "+len);
+	}
+
 	/**
 	 * Adds a scaled multiple of another vector to this one
 	 * @param src
 	 */
 	public void addMultiple(AVector src, double factor) {
-		if (src.length()!=length()) throw new RuntimeException(ErrorMessages.incompatibleShapes(this, src));
+		checkSameLength(src);
 		addMultiple(src,0,factor);
 	}
 	
