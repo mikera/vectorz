@@ -19,6 +19,7 @@ import mikera.matrixx.impl.BroadcastVectorMatrix;
 import mikera.randomz.Hash;
 import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
+import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
@@ -1689,7 +1690,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	protected int checkSameLength(AVector v) {
 		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
+		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
+		return len;
+	}
+	
+	protected int checkSameLength(ASizedVector v) {
+		int len=length();
+		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
 		return len;
 	}
 	
@@ -2178,6 +2185,4 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		return false;
 	}
-
-
 }
