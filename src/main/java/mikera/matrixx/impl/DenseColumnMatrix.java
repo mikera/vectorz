@@ -70,6 +70,13 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 			throw new IndexOutOfBoundsException();
 		return data[(j * rows) + i];
 	}
+	
+	@Override
+	public void set(int i, int j, double value) {
+		if ((i < 0) || (i >= rows))
+			throw new IndexOutOfBoundsException();
+		data[(j * rows) + i] = value;
+	}
 
 	@Override
 	public void unsafeSet(int i, int j, double value) {
@@ -80,7 +87,11 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	public double unsafeGet(int i, int j) {
 		return data[(j * rows) + i];
 	}
-
+	
+	@Override
+	public void addAt(int i, int j, double d) {
+		data[(j * rows) + i] += d;
+	}
 
 	@Override
 	public boolean isFullyMutable() {
