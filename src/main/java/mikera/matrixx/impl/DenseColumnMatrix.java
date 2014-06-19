@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.vectorz.impl.ArraySubVector;
 
 /**
  * A densely packed matrix organised in column-major format.
@@ -11,7 +12,7 @@ import mikera.matrixx.Matrix;
  * @author Mike
  *
  */
-public class DenseColumnMatrix extends AStridedMatrix {
+public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	private static final long serialVersionUID = 5459617932072332096L;
 
 	private DenseColumnMatrix(int rowCount, int columnCount, double[] data) {
@@ -39,6 +40,11 @@ public class DenseColumnMatrix extends AStridedMatrix {
 	@Override
 	public int columnStride() {
 		return rows;
+	}
+	
+	@Override
+	public ArraySubVector getColumnView(int j) {
+		return ArraySubVector.wrap(data, j*rows, rows);
 	}
 
 	@Override
