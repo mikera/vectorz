@@ -9,6 +9,7 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
@@ -510,9 +511,9 @@ public class Matrixx {
 	 * @param reverse2
 	 * @return
 	 */
-	public static AMatrix wrapStrided(double[] data, int rows, int cols, int offset, int rowStride, int colStride) {
+	public static AStridedMatrix wrapStrided(double[] data, int rows, int cols, int offset, int rowStride, int colStride) {
 		if ((offset==0)&&(data.length==rows*cols)) {
-			if ((cols==rowStride)&&(colStride==1)) {
+			if ((rows<=1)||(cols<=1)||((cols==rowStride)&&(colStride==1))) {
 				return Matrix.wrap(rows, cols, data);
 			} 
 			if ((rows==colStride)&&(rowStride==1)) {
