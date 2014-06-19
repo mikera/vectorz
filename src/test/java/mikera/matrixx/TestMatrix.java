@@ -42,6 +42,19 @@ public class TestMatrix {
 	  
   }
   
+  
+  @Test 
+  public void testDegenerate() {
+	  AMatrix m;
+	  
+	  m=Matrixx.wrapStrided(new double[0], 0, 0, 0, 1, 1);
+	  assertEquals(Matrix.class,m.getClass());
+	  
+	  m=Matrixx.wrapStrided(new double[1], 1, 1, 0, 1, 1);
+	  assertEquals(Matrix.class,m.getClass());
+
+  }
+  
   @Test
   public void testSet() {
 	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
