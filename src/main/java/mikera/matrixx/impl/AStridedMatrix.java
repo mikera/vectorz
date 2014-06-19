@@ -7,6 +7,11 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * Abstract base class for arbitrary strided matrices
+ * 
+ * @author Mike
+ */
 public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArray {
 	private static final long serialVersionUID = -8908577438753599161L;
 

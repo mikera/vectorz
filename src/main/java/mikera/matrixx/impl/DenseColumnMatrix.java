@@ -70,6 +70,11 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	}
 	
 	@Override
+	public Matrix getTranspose() {
+		return getTransposeView();
+	}
+	
+	@Override
 	public Matrix getTransposeView() {
 		return Matrix.wrap(cols, rows, data);
 	}
