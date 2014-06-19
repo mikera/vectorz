@@ -48,15 +48,15 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	}
 
 	@Override
-	public void copyRowTo(int row, double[] dest, int destOffset) {
-		for (int i=0; i<cols; i++) {
-			dest[destOffset+i]=data[row+i*rows];
+	public void copyRowTo(int i, double[] dest, int destOffset) {
+		for (int j=0; j<cols; j++) {
+			dest[destOffset+j]=data[i+j*rows];
 		}
 	}
 
 	@Override
-	public void copyColumnTo(int col, double[] dest, int destOffset) {
-		System.arraycopy(data, col*rows, dest, destOffset, rows);
+	public void copyColumnTo(int j, double[] dest, int destOffset) {
+		System.arraycopy(data, j*rows, dest, destOffset, rows);
 	}
 
 	@Override
