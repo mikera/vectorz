@@ -502,7 +502,8 @@ public class Matrixx {
 	}
 
 	/**
-	 * Wraps double[] data in a strided matrix
+	 * Wraps double[] data in a strided matrix of the most efficient available type.
+	 * 
 	 * @param array
 	 * @param arrayOffset
 	 * @param reverse
