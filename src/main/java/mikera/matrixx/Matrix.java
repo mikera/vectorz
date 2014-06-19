@@ -459,10 +459,10 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		if ((column < 0) || (column >= cols))
+	public void set(int i, int j, double value) {
+		if ((j < 0) || (j >= cols))
 			throw new IndexOutOfBoundsException();
-		data[(row * cols) + column] = value;
+		data[(i * cols) + j] = value;
 	}
 
 	@Override
@@ -618,8 +618,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	protected final int index(int row, int col) {
-		return row * cols + col;
+	protected final int index(int i, int j) {
+		return i * cols + j;
 	}
 
 	@Override
