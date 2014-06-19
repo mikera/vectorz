@@ -3,8 +3,10 @@ package mikera.matrixx.impl;
 import java.util.Arrays;
 
 import mikera.matrixx.Matrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A densely packed matrix organised in column-major format.
@@ -59,6 +61,29 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	@Override
 	public void copyColumnTo(int j, double[] dest, int destOffset) {
 		System.arraycopy(data, j*rows, dest, destOffset, rows);
+	}
+	
+	@Override
+	public void setRow(int i, AVector row) {
+		int cc = columnCount();
+		if (row.length() != cc)
+			throw new IllegalArgumentException(ErrorMessages.mismatch(
+					this.getRow(i), row));
+		for (int j = 0; j < cc; i++) {
+			data[index(i, j)] = row.unsafeGet(i);
+		}
+	}
+
+	@Override
+	public void setColumn(int j, AVector col) {
+		int rc = rowCount();
+		if (col.length() != rc)
+			throw new IllegalArgumentException(ErrorMessages.mismatch(
+					this.getColumn(j), col));
+		for (int i = 0; i < rc; i++) {
+			data[index(i, j)] = col.unsafeGet(i);
+		}
+		col.getElements(data, j * rc);
 	}
 
 	@Override
