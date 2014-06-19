@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.matrixx.Matrix;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.DoubleArrays;
@@ -162,6 +164,32 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	public long nonZeroCount() {
 		return DoubleArrays.nonZeroCount(data);
 	}
+	
+	@Override
+	public void add(double d) {
+		DoubleArrays.add(data, d);
+	}
+
+	@Override
+	public void multiply(double factor) {
+		DoubleArrays.multiply(data, factor);
+	}
+	
+	@Override
+	public void set(double value) {
+		Arrays.fill(data, value);
+	}
+	
+	@Override
+	public void reciprocal() {
+		DoubleArrays.reciprocal(data, 0, data.length);
+	}
+
+	@Override
+	public void clamp(double min, double max) {
+		DoubleArrays.clamp(data, 0, data.length, min, max);
+	}
+
 	
 	@Override
 	public Matrix getTranspose() {
