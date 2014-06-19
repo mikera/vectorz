@@ -417,20 +417,20 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public double get(int row, int column) {
-		if ((column < 0) || (column >= cols))
+	public double get(int i, int j) {
+		if ((j < 0) || (j >= cols))
 			throw new IndexOutOfBoundsException();
-		return data[(row * cols) + column];
+		return data[(i * cols) + j];
 	}
 
 	@Override
-	public void unsafeSet(int row, int column, double value) {
-		data[(row * cols) + column] = value;
+	public void unsafeSet(int i, int j, double value) {
+		data[(i * cols) + j] = value;
 	}
 
 	@Override
-	public double unsafeGet(int row, int column) {
-		return data[(row * cols) + column];
+	public double unsafeGet(int i, int j) {
+		return data[(i * cols) + j];
 	}
 
 	@Override
