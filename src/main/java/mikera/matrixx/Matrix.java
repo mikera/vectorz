@@ -10,6 +10,7 @@ import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
+import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
@@ -546,13 +547,13 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public StridedMatrix getTranspose() {
+	public DenseColumnMatrix getTranspose() {
 		return getTransposeView();
 	}
 
 	@Override
-	public StridedMatrix getTransposeView() {
-		return StridedMatrix.wrap(data, cols, rows, 0, 1, cols);
+	public DenseColumnMatrix getTransposeView() {
+		return DenseColumnMatrix.wrap(cols, rows, data);
 	}
 
 	@Override
