@@ -1,6 +1,5 @@
 package mikera.matrixx.impl;
 
-import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.impl.ArraySubVector;
 
@@ -114,8 +113,18 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	}
 
 	@Override
-	public AMatrix exactClone() {
+	public DenseColumnMatrix exactClone() {
 		return new DenseColumnMatrix(rows,cols,data.clone());
+	}
+	
+	@Override
+	public DenseColumnMatrix copy() {
+		return exactClone();
+	}
+	
+	@Override
+	public DenseColumnMatrix clone() {
+		return exactClone();
 	}
 
 }
