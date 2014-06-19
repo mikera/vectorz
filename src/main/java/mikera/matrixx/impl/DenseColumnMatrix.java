@@ -63,10 +63,33 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	protected int index(int i, int j) {
 		return i+j*rows;
 	}
+	
+	@Override
+	public double get(int i, int j) {
+		if ((i < 0) || (i >= rows))
+			throw new IndexOutOfBoundsException();
+		return data[(j * rows) + i];
+	}
+
+	@Override
+	public void unsafeSet(int i, int j, double value) {
+		data[(j * rows) + i] = value;
+	}
+
+	@Override
+	public double unsafeGet(int i, int j) {
+		return data[(j * rows) + i];
+	}
+
 
 	@Override
 	public boolean isFullyMutable() {
 		return true;
+	}
+	
+	@Override
+	public boolean isPackedArray() {
+		return (cols<=1);
 	}
 	
 	@Override
