@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.Matrix;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * A densely packed matrix organised in column-major format.
@@ -100,6 +101,66 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	@Override
 	public boolean isPackedArray() {
 		return (cols<=1);
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		return DoubleArrays.isBoolean(data, 0, data.length);
+	}
+
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data, 0, data.length);
+	}
+	
+	@Override
+	public double elementSum() {
+		return DoubleArrays.elementSum(data);
+	}
+
+	@Override
+	public double elementSquaredSum() {
+		return DoubleArrays.elementSquaredSum(data);
+	}
+
+	@Override
+	public double elementMax() {
+		return DoubleArrays.elementMax(data);
+	}
+
+	@Override
+	public double elementMin() {
+		return DoubleArrays.elementMin(data);
+	}
+
+	@Override
+	public void abs() {
+		DoubleArrays.abs(data);
+	}
+
+	@Override
+	public void signum() {
+		DoubleArrays.signum(data);
+	}
+
+	@Override
+	public void square() {
+		DoubleArrays.square(data);
+	}
+
+	@Override
+	public void exp() {
+		DoubleArrays.exp(data);
+	}
+
+	@Override
+	public void log() {
+		DoubleArrays.log(data);
+	}
+
+	@Override
+	public long nonZeroCount() {
+		return DoubleArrays.nonZeroCount(data);
 	}
 	
 	@Override
