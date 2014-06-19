@@ -126,5 +126,10 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	public DenseColumnMatrix clone() {
 		return exactClone();
 	}
+	
+	@Override
+	public Matrix toMatrixTranspose() {
+		return Matrix.wrap(cols, rows, data);
+	}
 
 }

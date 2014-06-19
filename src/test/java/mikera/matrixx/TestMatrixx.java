@@ -756,9 +756,11 @@ public class TestMatrixx {
 
 		Matrix am1=new Matrix(m33);
 		doGenericTests(am1);
+		doGenericTests(am1.getTranspose());
 		
 		Matrix am2=new Matrix(mmn);
 		doGenericTests(am2);
+		doGenericTests(am2.getTranspose());
 		
 		doGenericTests(SubsetMatrix.create(Index.of(0,1,2),3));
 		doGenericTests(SubsetMatrix.create(Index.of(0,1,3,10),12));
