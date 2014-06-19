@@ -10,6 +10,7 @@ import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
@@ -509,9 +510,12 @@ public class Matrixx {
 	 * @return
 	 */
 	public static AMatrix wrapStrided(double[] data, int rows, int cols, int offset, int rowStride, int colStride) {
-		if (offset==0) {
-			if ((cols==rowStride)&&(colStride==1)&&(data.length==rows*cols)) {
+		if ((offset==0)&&(data.length==rows*cols)) {
+			if ((cols==rowStride)&&(colStride==1)) {
 				return Matrix.wrap(rows, cols, data);
+			} 
+			if ((rows==colStride)&&(rowStride==1)) {
+				return DenseColumnMatrix.wrap(rows, cols, data);
 			} 
 		}
 		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);
