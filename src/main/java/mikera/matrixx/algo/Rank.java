@@ -27,14 +27,14 @@ public class Rank {
      */
 	public static int compute(AMatrix A, double threshold) {
 		SVDResult ans = SvdImplicitQr.decompose(A, true);
-		int numRank = 0;
-		double w[]= ans.getSingularValues();
-        int N = w.length;
-        for( int j = 0; j < N; j++ ) {
-            if( w[j] > threshold)
-                numRank++;
+		int rank = 0;
+		double[] singularValues = ans.getSingularValues();
+        int len = singularValues.length;
+        for( int i = 0; i < len; i++ ) {
+            if( singularValues[i] > threshold)
+                rank++;
         }
-        return numRank;
+        return rank;
 	}
 
 }
