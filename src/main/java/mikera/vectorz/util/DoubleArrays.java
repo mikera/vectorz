@@ -160,7 +160,12 @@ public final class DoubleArrays {
 			data[i]*=value;
 		}
 	}
-
+	
+	public static void multiply(double[] dest, double[] src) {
+		for (int i=0; i<dest.length; i++) {
+			dest[i]*=src[i];
+		}
+	}
 	
 	public static void square(double[] ds) {
 		for (int i=0; i<ds.length; i++) {
@@ -517,5 +522,7 @@ public final class DoubleArrays {
 		}
 		return rs;
 	}
+
+
 
 }

@@ -676,10 +676,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Matrixx.create(this);
 	}
 
+	/**
+	 * Transposes a matrix in place, if possible.
+	 * Throws an exception if this is not possible (e.g. if the matrix is not square or not sufficiently mutable)
+	 */
 	public void transposeInPlace() {
-		if (!isSquare())
-			throw new UnsupportedOperationException(ErrorMessages.squareMatrixRequired(this));
-		int dims = rowCount();
+		int dims = checkSquare();
 		for (int i = 0; i < dims; i++) {
 			for (int j = i + 1; j < dims; j++) {
 				double temp = unsafeGet(i, j);
@@ -1091,21 +1093,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (a==this) return true;
 		int rc = rowCount();
 		if (rc != a.rowCount()) return false;
-		int cc = columnCount();
-		if (cc != a.columnCount()) return false;
 		
-		if ((cc>10)||(this instanceof IFastRows)) {
-			return equalsByRows(a);		
-		} else {
-			for (int i = 0; i < rc; i++) {
-				for (int j = 0; j < cc; j++) {
-					if (unsafeGet(i, j) != a.unsafeGet(i, j))
-						return false;
-				}
-			}			
-		}
-
-		return true;
+		return equalsByRows(a);		
 	}
 	
 	@Override
@@ -1205,12 +1194,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return true;
 	}
 
-	public boolean equals(AAffineTransform a) {
 
-		return a.getTranslation().isIdentity()
-				&& this.equals(a.getMatrix());
-	}
-	
+	/**
+	 * Internal method to test for equality in a row-wise basis. Assumes row counts are already proven equal.
+	 */
 	protected boolean equalsByRows(AMatrix m) {
 		int rc = rowCount();
 		for (int i=0; i<rc; i++) {
@@ -1609,6 +1596,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 
+	/**
+	 * Adds a value at a specific position in the matrix.
+	 * 
+	 * Does not perform bounds checking - this in an unsafe operation
+	 */
 	public void addAt(int i, int j, double d) {
 		unsafeSet(i,j,unsafeGet(i,j)+d);
 	}
@@ -1690,9 +1682,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc=columnCount();
 		if (rc!=cc) return false;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				if ((i!=j)&&(unsafeGet(i,j)!=0.0)) return false;
-			}
+			AVector r=getRow(i);
+			if (!r.isRangeZero(0, i-1)) return false;
+			if (!r.isRangeZero(i+1, cc-i-1)) return false;
 		}
 		return true;
 	}
@@ -1714,8 +1706,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc=rowCount();
 		int cc=columnCount();
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				if ((i!=j)&&(unsafeGet(i,j)!=0.0)) return false;
+			AVector r=getRow(i);
+			if (i<cc) {
+				if (!r.isRangeZero(0, i-1)) return false;
+				if (!r.isRangeZero(i+1, cc-i-1)) return false;
+			} else {
+				if (!r.isZero()) return false;
 			}
 		}
 		return true;
@@ -1730,9 +1726,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc=columnCount();
 		if (rc!=cc) return false;
 		for (int i=0; i<rc; i++) {
-			for (int j=i+1; j<cc; j++) {
-				if (unsafeGet(i,j)!=unsafeGet(j,i)) return false;
-			}
+			if (!getRow(i).equals(getColumn(i))) return false;
 		}
 		return true;
 	}
@@ -2069,6 +2063,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return m;
 	}
 
+	/**
+     * Checks to see if any element in the matrix is NaN of Infinite.
+     *
+     * @param m A matrix. Not modified.
+     * @return True if any element in the matrix is NaN of Infinite.
+     */
 	@Override
 	public boolean hasUncountable() {
 		int rc = rowCount();
@@ -2078,5 +2078,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Checks if a matrix is square. Returns the size if true, throws an exception otherwise;
+	 * @return
+	 */
+	public int checkSquare() {
+		int rc=rowCount();
+		if (rc!=columnCount()) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
+		return rc;
 	}
 }

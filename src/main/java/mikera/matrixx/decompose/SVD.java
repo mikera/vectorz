@@ -14,6 +14,8 @@ import mikera.matrixx.decompose.impl.svd.SvdImplicitQr;
  */
 public class SVD {
 	
+	// TODO: needs docs for public API functions
+	
 	public static ISVDResult decompose(AMatrix A) {
 		return SvdImplicitQr.decompose(A, false);
 	}

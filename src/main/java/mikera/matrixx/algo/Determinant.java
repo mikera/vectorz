@@ -5,7 +5,6 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
 /**
@@ -26,11 +25,7 @@ public class Determinant {
 	 * @return
 	 */
 	public static double calculate(AMatrix m) {
-		int rc = m.rowCount();
-		int cc = m.columnCount();
-		if (rc!=cc) {
-			throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(m));
-		}
+		int rc = m.checkSquare();
 
 		if (rc<=4) {
 			// much faster for small matrices

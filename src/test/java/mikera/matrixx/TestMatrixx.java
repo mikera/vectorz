@@ -315,6 +315,27 @@ public class TestMatrixx {
 		} catch (Throwable t) {
 			// OK
 		}
+		
+		try {
+			m.checkSquare();
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+		
+		try {
+			m.inverse();
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
+		
+		try {
+			m.determinant();
+			fail();
+		} catch (Throwable t) {
+			// OK
+		}
 	}
 	
 	private void doLeadingDiagonalTests(AMatrix m) {
@@ -337,6 +358,8 @@ public class TestMatrixx {
 			doNotSquareTests(m);
 		} else {
 			assertEquals(m.rowCount(),m.columnCount());
+			assertEquals(m.rowCount(),m.checkSquare());
+			
 			doSquareTransposeTest(m);
 			doTraceTests(m);
 			doLeadingDiagonalTests(m);
@@ -733,9 +756,11 @@ public class TestMatrixx {
 
 		Matrix am1=new Matrix(m33);
 		doGenericTests(am1);
+		doGenericTests(am1.getTranspose());
 		
 		Matrix am2=new Matrix(mmn);
 		doGenericTests(am2);
+		doGenericTests(am2.getTranspose());
 		
 		doGenericTests(SubsetMatrix.create(Index.of(0,1,2),3));
 		doGenericTests(SubsetMatrix.create(Index.of(0,1,3,10),12));

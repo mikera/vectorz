@@ -36,6 +36,11 @@ public final class Matrix11 extends APrimitiveMatrix {
 		return 1;
 	}
 	
+	@Override
+	public int checkSquare() {
+		return 1;
+	}
+	
 
 	@Override
 	public double determinant() {

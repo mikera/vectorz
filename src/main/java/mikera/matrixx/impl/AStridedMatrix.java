@@ -7,6 +7,11 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * Abstract base class for arbitrary strided matrices
+ * 
+ * @author Mike
+ */
 public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArray {
 	private static final long serialVersionUID = -8908577438753599161L;
 
@@ -21,7 +26,14 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	public abstract int columnStride();	
 	
 	@Override
-	public abstract AStridedMatrix subMatrix(int rowStart, int rows, int colStart, int cols);
+	public AStridedMatrix subMatrix(int rowStart, int rowCount, int colStart, int colCount) {
+		if ((rowStart<0)||(rowStart>=this.rows)||(colStart<0)||(colStart>=this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart,colStart));
+		if ((rowStart+rowCount>this.rows)||(colStart+colCount>this.cols)) throw new IndexOutOfBoundsException(ErrorMessages.position(rowStart+rowCount,colStart+colCount));
+		int rowStride=rowStride();
+		int colStride=columnStride();
+		int offset=getArrayOffset();
+		return StridedMatrix.wrap(data, rowCount, colCount, offset+rowStart*rowStride+colStart*colStride, rowStride, colStride);
+	}
 	
 	@Override
 	public AStridedVector getRowView(int i) {

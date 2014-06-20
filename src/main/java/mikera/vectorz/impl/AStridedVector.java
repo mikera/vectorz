@@ -161,8 +161,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	
 	@Override
 	public void add(Vector v) {
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int length=checkSameLength(v);
 		for (int i = 0; i < length; i++) {
 			addAt(i,v.data[i]);
 		}

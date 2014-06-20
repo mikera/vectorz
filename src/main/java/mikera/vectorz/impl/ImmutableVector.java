@@ -153,6 +153,7 @@ public class ImmutableVector extends AArrayVector implements IDense {
 	}
 	
 	@Override public double dotProduct(AVector v) {
+		checkSameLength(v);
 		return v.dotProduct(data, offset);
 	}
 	
