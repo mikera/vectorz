@@ -18,6 +18,7 @@
 
 package mikera.matrixx.decompose.impl.svd;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import mikera.matrixx.Matrix;
@@ -57,23 +58,32 @@ public abstract class StandardSvdChecks {
 
     public void testDecompositionOfTrivial()
     {
-    	double[][] dataA = {{5,2,3},
-    						{1.5, -2, 8},
-    						{-3, 4.7, -0.5}};
-        Matrix A = Matrix.create(dataA);
-
-        SvdImplicitQr alg = createSvd();
-        assertNotNull(alg._decompose(A));
-
-        assertEquals(3, rank(alg, EPS));
+//    	Test 1
+    	Matrix A = Matrix.create(new double[][] {{5,2,3},
+    			{1.5, -2, 8},
+    			{-3, 4.7, -0.5}});
+    	SvdImplicitQr alg = createSvd();
+    	assertNotNull(alg._decompose(A));
+    	assertEquals(3, rank(alg, EPS));
+    	assertEquals(0, nullity(alg, EPS));
+    	double []w = alg.getSingularValues();
+    	checkNumFound(1,1e-5,9.59186,w);
+    	checkNumFound(1,1e-5,5.18005,w);
+    	checkNumFound(1,1e-5,4.55558,w);
+    	checkComponents(alg,A);
+//    	Test 2
+        Matrix B = Matrix.create(new double[][] {{1, 2, 3},
+												 {4, 5, 6},
+												 {7, 8, 9}});
+        alg = createSvd();
+        assertNotNull(alg._decompose(B));
+        assertEquals(2, rank(alg, 10*EPS));
         assertEquals(0, nullity(alg, EPS));
-
-        double []w = alg.getSingularValues();
-        checkNumFound(1,1e-5,9.59186,w);
-        checkNumFound(1,1e-5,5.18005,w);
-        checkNumFound(1,1e-5,4.55558,w);
-
-        checkComponents(alg,A);
+        w = alg.getSingularValues();
+        checkNumFound(1,1e-5,16.848103,w);
+        checkNumFound(1,1e-5,1.068370,w);
+        checkNumFound(1,1e-5,0,w);
+        checkComponents(alg,B);
     }
 
     public void testWide() {

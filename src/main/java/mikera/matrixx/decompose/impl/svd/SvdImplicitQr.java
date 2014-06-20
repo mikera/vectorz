@@ -162,7 +162,7 @@ public class SvdImplicitQr {
         // if transposed undo the transposition
         undoTranspose();
 
-        return new SVDResult(getU(), getS(), getV());
+        return new SVDResult(getU(), getS(), getV(), singularValues);
     }
 
     private boolean bidiagonalization(Matrix orig) {

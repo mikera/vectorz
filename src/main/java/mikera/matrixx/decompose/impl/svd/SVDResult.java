@@ -8,11 +8,13 @@ public class SVDResult implements ISVDResult {
 	private final AMatrix U;
 	private final AMatrix S;
 	private final AMatrix V;
+	private final double[] singularValues;
 	
-	public SVDResult(AMatrix U, AMatrix S, AMatrix V) {
+	public SVDResult(AMatrix U, AMatrix S, AMatrix V, double[] singularValues) {
 		this.U = U;
 		this.S = S;
 		this.V = V;
+		this.singularValues = singularValues;
 	}
 
 	/**
@@ -46,6 +48,11 @@ public class SVDResult implements ISVDResult {
 	@Override
 	public AMatrix getV() {
 		return V;
+	}
+
+	@Override
+	public double[] getSingularValues() {
+		return singularValues;
 	}
 
 }

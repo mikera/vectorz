@@ -31,4 +31,11 @@ public interface ISVDResult {
      * @return An orthogonal matrix.
      */
     public AMatrix getV();
+    
+    /**
+     * Returns an array with singular values
+     * 
+     * @return
+     */
+    public double[] getSingularValues();
 }
