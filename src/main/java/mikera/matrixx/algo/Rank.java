@@ -3,6 +3,7 @@ package mikera.matrixx.algo;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.decompose.impl.svd.SVDResult;
 import mikera.matrixx.decompose.impl.svd.SvdImplicitQr;
+import mikera.vectorz.AVector;
 
 public class Rank {
 	
@@ -28,10 +29,9 @@ public class Rank {
 	public static int compute(AMatrix A, double threshold) {
 		SVDResult ans = SvdImplicitQr.decompose(A, true);
 		int rank = 0;
-		double[] singularValues = ans.getSingularValues();
-        int len = singularValues.length;
-        for( int i = 0; i < len; i++ ) {
-            if( singularValues[i] > threshold)
+		AVector singularValues = ans.getSingularValues();
+        for( double s : singularValues ) {
+            if( s > threshold)
                 rank++;
         }
         return rank;

@@ -66,7 +66,7 @@ public abstract class StandardSvdChecks {
     	assertNotNull(alg._decompose(A));
     	assertEquals(3, rank(alg, EPS));
     	assertEquals(0, nullity(alg, EPS));
-    	double []w = alg.getSingularValues();
+    	double []w = alg.getSingularValues().toDoubleArray();
     	checkNumFound(1,1e-5,9.59186,w);
     	checkNumFound(1,1e-5,5.18005,w);
     	checkNumFound(1,1e-5,4.55558,w);
@@ -79,7 +79,7 @@ public abstract class StandardSvdChecks {
         assertNotNull(alg._decompose(B));
         assertEquals(2, rank(alg, 10*EPS));
         assertEquals(0, nullity(alg, EPS));
-        w = alg.getSingularValues();
+        w = alg.getSingularValues().toDoubleArray();
         checkNumFound(1,1e-5,16.848103,w);
         checkNumFound(1,1e-5,1.068370,w);
         checkNumFound(1,1e-5,0,w);
@@ -118,7 +118,7 @@ public abstract class StandardSvdChecks {
 
                 int min = Math.min(i,j);
 
-                assertEquals(min,checkOccurrence(0,alg.getSingularValues(),min),1e-5);
+                assertEquals(min,checkOccurrence(0,alg.getSingularValues().toDoubleArray(),min),1e-5);
 
                 checkComponents(alg,A);
             }
@@ -132,7 +132,7 @@ public abstract class StandardSvdChecks {
         SvdImplicitQr alg = createSvd();
         assertNotNull(alg._decompose(A));
 
-        assertEquals(6,checkOccurrence(1,alg.getSingularValues(),6),1e-5);
+        assertEquals(6,checkOccurrence(1,alg.getSingularValues().toDoubleArray(),6),1e-5);
 
         checkComponents(alg,A);
     }
@@ -277,7 +277,7 @@ public abstract class StandardSvdChecks {
     private static int rank( SvdImplicitQr svd , double threshold ) {
         int numRank=0;
 
-        double w[]= svd.getSingularValues();
+        double w[]= svd.getSingularValues().toDoubleArray();
 
         int N = svd.numberOfSingularValues();
 
@@ -300,7 +300,7 @@ public abstract class StandardSvdChecks {
     public static int nullity( SvdImplicitQr svd , double threshold ) {
         int ret = 0;
 
-        double w[]= svd.getSingularValues();
+        double w[]= svd.getSingularValues().toDoubleArray();
 
         int N = svd.numberOfSingularValues();
 

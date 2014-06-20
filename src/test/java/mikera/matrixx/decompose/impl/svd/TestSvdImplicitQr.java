@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Arrays;
 
 import mikera.matrixx.Matrix;
+import mikera.vectorz.AVector;
 
 import org.junit.Test;
 
@@ -83,13 +84,13 @@ public class TestSvdImplicitQr extends StandardSvdChecks {
 //    TODO: Implement remaining tests
     
 //    taken from UnitTestMatrix
-    private static void checkSameElements( double tol, int length , double a[], double b[] )
+    private static void checkSameElements( double tol, int length , double a[], AVector b )
     {
         double aa[] = new double[ length ];
         double bb[] = new double[ length ];
 
         System.arraycopy(a,0,aa,0,length);
-        System.arraycopy(b,0,bb,0,length);
+        System.arraycopy(b.toArray(),0,bb,0,length);
 
         Arrays.sort(aa);
         Arrays.sort(bb);

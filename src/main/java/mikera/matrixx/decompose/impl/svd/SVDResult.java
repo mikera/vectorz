@@ -2,15 +2,16 @@ package mikera.matrixx.decompose.impl.svd;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.decompose.ISVDResult;
+import mikera.vectorz.AVector;
 
 public class SVDResult implements ISVDResult {
 	
 	private final AMatrix U;
 	private final AMatrix S;
 	private final AMatrix V;
-	private final double[] singularValues;
+	private final AVector singularValues;
 	
-	public SVDResult(AMatrix U, AMatrix S, AMatrix V, double[] singularValues) {
+	public SVDResult(AMatrix U, AMatrix S, AMatrix V, AVector singularValues) {
 		this.U = U;
 		this.S = S;
 		this.V = V;
@@ -51,7 +52,7 @@ public class SVDResult implements ISVDResult {
 	}
 
 	@Override
-	public double[] getSingularValues() {
+	public AVector getSingularValues() {
 		return singularValues;
 	}
 

@@ -1,6 +1,7 @@
 package mikera.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
 
 /**
  * Interface representing the result of an SVD decomposition
@@ -33,9 +34,11 @@ public interface ISVDResult {
     public AMatrix getV();
     
     /**
-     * Returns an array with singular values
+     * Returns an array containing singular values. The non zero singular values are
+     * the square roots of the non-zero eigenvalues of M<sup>T</sup>M and MM<sup>T</sup>, 
+     * where M is the input matrix.
      * 
      * @return
      */
-    public double[] getSingularValues();
+    public AVector getSingularValues();
 }
