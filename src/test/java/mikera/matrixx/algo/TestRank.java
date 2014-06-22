@@ -65,7 +65,7 @@ public class TestRank {
 		Matrix B = Matrix.create(new double[][] {{1, 2, 3, 4},
 												 {4, 5, 6, 7},
 												 {7, 8, 9, 10}});
-		result = SVD.decompose(A);
+		result = SVD.decompose(B);
 		assertEquals(Rank.compute(result, 10e-20),3);
 	}
 }
