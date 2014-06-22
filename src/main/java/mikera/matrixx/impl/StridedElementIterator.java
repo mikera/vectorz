@@ -9,6 +9,11 @@ import java.util.NoSuchElementException;
  * This is an optimised / specialised element iterator for strided matrices that otherwise
  * performs the same function as MatrixElementIterator.
  * 
+ * Performance tricks used:
+ * - Caches the data array reference
+ * - Caches the underlying stride data to avoid re-checking the strided matrix
+ * - Hopefully fits the full iterator data in a 64-byte cache line
+ * 
  * @author Mike
  */
 public class StridedElementIterator implements Iterator<Double> {
@@ -54,6 +59,6 @@ public class StridedElementIterator implements Iterator<Double> {
 
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException("Cannot remove from MatrixElementIterator");
+		throw new UnsupportedOperationException("Cannot remove from StridedElementIterator");
 	}
 }
