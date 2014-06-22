@@ -77,10 +77,7 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 
 	@Override
 	public void setColumn(int j, AVector col) {
-		int rc = rowCount();
-		if (col.length() != rc)
-			throw new IllegalArgumentException(ErrorMessages.mismatch(
-					this.getColumn(j), col));
+		int rc = checkRowCount(col.length());
 		for (int i = 0; i < rc; i++) {
 			data[index(i, j)] = col.unsafeGet(i);
 		}
@@ -89,11 +86,8 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	
 	@Override
 	public void addMultiple(AMatrix m, double factor) {
-		int rc=rowCount();
-		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
-			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
-		}
+		checkRowCount(m.rowCount());
+		int cc=checkColumnCount(m.columnCount());
 		
 		for (int i=0; i<cc; i++) {
 			getColumnView(i).addMultiple(m.getColumn(i), factor);

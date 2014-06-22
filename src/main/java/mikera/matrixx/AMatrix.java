@@ -2089,4 +2089,24 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (rc!=columnCount()) throw new UnsupportedOperationException(ErrorMessages.nonSquareMatrix(this));
 		return rc;
 	}
+	
+	protected int checkRowCount(int expected) {
+		int rc=rowCount();
+		if (rc!=expected) throw new IllegalArgumentException("Unexpected row count: "+rc+" expected: "+expected);
+		return rc;
+	}
+	
+	protected int checkColumnCount(int expected) {
+		int cc=columnCount();
+		if (cc!=expected) throw new IllegalArgumentException("Unexpected column count: "+cc+" expected: "+expected);
+		return cc;
+	}
+	
+	protected void checkSameShape(AMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
 }
