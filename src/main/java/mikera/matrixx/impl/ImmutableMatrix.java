@@ -48,6 +48,10 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 		return new ImmutableMatrix(rows,cols, data);
 	}
 	
+	private Matrix asMatrix() {
+		return Matrix.wrap(rows, cols, data);
+	}
+	
 	@Override
 	public boolean isMutable() {
 		return false;
@@ -108,37 +112,17 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	
 	@Override
 	public Vector innerProduct(AVector a) {
-		if (a instanceof Vector) return innerProduct((Vector)a);
-		return transform(a);
+		return asMatrix().transform(a);
 	}
 	
 	@Override
 	public Vector transform (AVector a) {
-		Vector v=Vector.createLength(rows);
-		double[] vdata=v.getArray();
-		for (int i=0; i<rows; i++) {
-			vdata[i]=a.dotProduct(data, i*cols);
-		}
-		return v;
+		return asMatrix().transform(a);
 	}
 	
 	@Override
 	public void transform(Vector source, Vector dest) {
-		int rc = rowCount();
-		int cc = columnCount();
-		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
-		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
-		int di=0;
-		double[] sdata=source.getArray();
-		double[] ddata=source.getArray();
-		for (int row = 0; row < rc; row++) {
-			double total = 0.0;
-			for (int column = 0; column < cc; column++) {
-				total += data[di+column] * sdata[column];
-			}
-			di+=cc;
-			ddata[row]=total;
-		}
+		asMatrix().transform(source, dest);
 	}
 	
 	@Override
@@ -170,12 +154,9 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	}
 	
 	public Matrix toMatrixTranspose() {
-		int di=0;
 		Matrix m = Matrix.create(cols, rows);
-		for (int j=0; j<rows; j++) {
-			for (int i=0; i<cols; i++) {
-				m.unsafeSet(i, j, data[di++]);
-			}
+		for (int j=0; j<cols; j++) {
+			copyColumnTo(j,m.data,rows*j);
 		}
 		return m;
 	}
@@ -227,10 +208,7 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	public static ImmutableMatrix create(AMatrix a) {
 		int rows=a.rowCount();
 		int cols=a.columnCount();
-		int n=rows*cols;
-		double[] data = new double[n];
-		a.getElements(data,0);
-		return ImmutableMatrix.wrap(rows,cols,data);
+		return ImmutableMatrix.wrap(rows,cols,a.getElements());
 	}
 
 	@Override
