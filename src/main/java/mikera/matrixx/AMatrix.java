@@ -2117,4 +2117,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	protected void checkIndex(int i, int j) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if ((i<0)||(i>=rc)||(j<0)||(j>=cc)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		}
+	}
+	
 }

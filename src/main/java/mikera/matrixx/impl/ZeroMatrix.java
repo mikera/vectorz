@@ -159,10 +159,8 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 
 	@Override
-	public double get(int row, int column) {
-		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		}
+	public double get(int i, int j) {
+		checkIndex(i,j);
 		return 0.0;
 	}
 
