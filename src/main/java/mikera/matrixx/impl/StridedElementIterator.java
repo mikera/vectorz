@@ -4,19 +4,22 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Iterator over matrix rows
+ * Iterator over strided matrix array elements.
+ * 
+ * This is an optimised / specialised element iterator for strided matrices that otherwise
+ * performs the same function as MatrixElementIterator.
  * 
  * @author Mike
  */
 public class StridedElementIterator implements Iterator<Double> {
-	private final double[] source;
+	private int col=0;
+	private int row=0;
 	private final int rows;
 	private final int cols;
 	private final int offset;
 	private final int rowStride;
 	private final int colStride;
-	private int col=0;
-	private int row=0;
+	private final double[] source;
 	
 	public StridedElementIterator(AStridedMatrix a) {
 		this(a.getArray(),a.rows,a.cols,a.getArrayOffset(),a.rowStride(),a.columnStride());

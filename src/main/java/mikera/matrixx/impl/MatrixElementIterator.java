@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import mikera.matrixx.AMatrix;
 
 /**
- * Iterator over matrix rows
+ * Iterator over matrix elements for an arbitrary matrix
  * 
  * @author Mike
  */
