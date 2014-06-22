@@ -1507,17 +1507,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			multiply(a.get());
 		} else {
 			int dims=a.dimensionality();
-			int rc=rowCount();
 			if (dims==0) {
 				multiply(a.get());
 			} else if (dims==1) {
-				for (int i=0; i<rc; i++) {
-					slice(i).multiply(a);
-				}
+				multiply(Vectorz.toVector(a));
 			} else if (dims==2) {
-				for (int i=0; i<rc; i++) {
-					slice(i).multiply(a.slice(i));
-				}		
+				multiply(Matrixx.toMatrix(a));
 			} else {
 				throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 			}
@@ -1564,17 +1559,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			sub(a.get());
 		} else {
 			int dims=a.dimensionality();
-			int rc=rowCount();
 			if (dims==0) {
 				sub(a.get());
 			} else if (dims==1) {
-				for (int i=0; i<rc; i++) {
-					slice(i).sub(a);
-				}
+				sub(Vectorz.toVector(a));
 			} else if (dims==2) {
-				for (int i=0; i<rc; i++) {
-					slice(i).sub(a.slice(i));
-				}		
+				sub(Matrixx.toMatrix(a));
 			}
 		}
 	}
