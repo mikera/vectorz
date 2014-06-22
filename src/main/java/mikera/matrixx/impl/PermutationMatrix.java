@@ -87,6 +87,11 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 		return perm.isEvenPermutation()?1.0:-1.0;
 	}
 	
+	@Override 
+	public int rank() {
+		return size;
+	}
+	
 	@Override
 	public boolean isIdentity() {
 		int[] data=perm.data;
