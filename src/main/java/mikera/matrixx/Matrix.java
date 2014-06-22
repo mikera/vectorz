@@ -338,9 +338,11 @@ public final class Matrix extends ADenseArrayMatrix {
 		int b = j * cols;
 		int cc = columnCount();
 		for (int k = 0; k < cc; k++) {
-			double t = data[a + k];
-			data[a + k] = data[b + k];
-			data[b + k] = t;
+			int i1 = a + k;
+			int i2 = b + k;
+			double t = data[i1];
+			data[i1] = data[i2];
+			data[i2] = t;
 		}
 	}
 
@@ -360,9 +362,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void multiplyRow(int i, double factor) {
 		int offset = i * cols;
-		for (int j = 0; j < cols; j++) {
-			data[offset + j] *= factor;
-		}
+		DoubleArrays.multiply(data, offset, cols, factor);
 	}
 
 	@Override
@@ -418,8 +418,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public double get(int i, int j) {
-		if ((j < 0) || (j >= cols))
-			throw new IndexOutOfBoundsException();
+		if ((j < 0) || (j >= cols)) throw new IndexOutOfBoundsException();
 		return data[(i * cols) + j];
 	}
 
@@ -460,8 +459,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void set(int i, int j, double value) {
-		if ((j < 0) || (j >= cols))
-			throw new IndexOutOfBoundsException();
+		if ((j < 0) || (j >= cols)) throw new IndexOutOfBoundsException();
 		data[(i * cols) + j] = value;
 	}
 
@@ -575,7 +573,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	public Matrix clone() {
 		return new Matrix(rows, cols, DoubleArrays.copyOf(data));
 	}
-	
+
 	@Override
 	public Matrix copy() {
 		return clone();
@@ -597,7 +595,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void setColumn(int j, AVector col) {
-		int rc = rowCount();
+		int rc = rows;
 		if (col.length() != rc)
 			throw new IllegalArgumentException(ErrorMessages.mismatch(
 					this.getColumn(j), col));
