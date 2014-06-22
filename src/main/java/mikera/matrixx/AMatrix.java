@@ -171,7 +171,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public int dimensionality() {
+	public final int dimensionality() {
 		return 2;
 	}
 	

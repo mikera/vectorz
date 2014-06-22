@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 
+import mikera.arrayz.impl.IDense;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -17,7 +18,7 @@ import mikera.vectorz.util.DoubleArrays;
  * @author Mike
  *
  */
-public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
+public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, IDense {
 	private static final long serialVersionUID = 5459617932072332096L;
 
 	private DenseColumnMatrix(int rowCount, int columnCount, double[] data) {
@@ -98,15 +99,19 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	
 	@Override
 	public double get(int i, int j) {
-		if ((i < 0) || (i >= rows))
-			throw new IndexOutOfBoundsException();
+		if ((i < 0) || (i >= rows)) {
+			// we only need to check i is in range: out of range j will trigger exception anyway
+			throw new IndexOutOfBoundsException("Row: "+i);
+		}
 		return data[(j * rows) + i];
 	}
 	
 	@Override
 	public void set(int i, int j, double value) {
-		if ((i < 0) || (i >= rows))
-			throw new IndexOutOfBoundsException();
+		if ((i < 0) || (i >= rows)) {
+			// we only need to check i is in range: out of range j will trigger exception anyway
+			throw new IndexOutOfBoundsException("Row: "+i);
+		}
 		data[(j * rows) + i] = value;
 	}
 
