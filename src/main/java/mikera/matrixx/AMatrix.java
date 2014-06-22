@@ -607,7 +607,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public void copyTo(double[] arr) {
+	public final void copyTo(double[] arr) {
 		getElements(arr,0);
 	}
 	

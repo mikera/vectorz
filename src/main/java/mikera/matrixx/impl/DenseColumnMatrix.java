@@ -247,6 +247,11 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, I
 	}
 	
 	@Override
+	public DenseColumnMatrix dense() {
+		return this;
+	}
+	
+	@Override
 	public DenseColumnMatrix copy() {
 		return exactClone();
 	}
