@@ -17,6 +17,7 @@ import mikera.arrayz.impl.SliceArray;
 import mikera.matrixx.algo.Determinant;
 import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.algo.Multiplications;
+import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.IFastRows;
@@ -666,7 +667,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Determinant.calculate(this);
 	}
 
-
+	/**
+	 * Calculate the rank of a matrix.
+	 * 
+	 * This is equivalent to the maximum number of linearly independent rows or columns.
+	 */
+	public int rank() {
+		return Rank.compute(this);
+	}
 
 	/**
 	 * Creates a fully mutable deep copy of this matrix

@@ -113,6 +113,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		return det;
 	}
 	
+	@Override
+	public int rank() {
+		return (int)getLeadingDiagonal().nonZeroCount();
+	}
+	
 	/**
 	 * Returns the number of dimensions of this diagonal matrix
 	 * @return

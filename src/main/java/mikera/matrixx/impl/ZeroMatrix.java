@@ -136,6 +136,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public int rank() {
+		return 0;
+	}
+	
+	@Override
 	public double trace() {
 		return 0.0;
 	}
