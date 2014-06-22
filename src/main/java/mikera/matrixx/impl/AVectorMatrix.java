@@ -224,6 +224,16 @@ public abstract class AVectorMatrix<T extends AVector> extends AMatrix implement
 	}
 	
 	@Override
+	public AVector innerProduct(AVector v) {
+		int rc=rowCount();
+		Vector r=Vector.createLength(rc);
+		for (int i=0; i<rc; i++) {
+			r.unsafeSet(i, getRow(i).dotProduct(v));
+		}
+		return r;
+	}
+	
+	@Override
 	public boolean equals(AMatrix m) {
 		return equalsByRows(m);
 	}
