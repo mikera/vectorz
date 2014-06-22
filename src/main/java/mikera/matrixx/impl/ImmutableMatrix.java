@@ -79,11 +79,9 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	}
 	
 	@Override
-	public double get(int row, int column) {
-		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		}
-		return unsafeGet(row,column);
+	public double get(int i, int j) {
+		checkIndex(i,j);
+		return unsafeGet(i,j);
 	}
 	
 	@Override
