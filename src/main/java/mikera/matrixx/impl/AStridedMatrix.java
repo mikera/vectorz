@@ -6,6 +6,7 @@ import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -104,6 +105,20 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 			int ro=offset+i*rowStride;
 			for (int j=0; j<cols; j++) {
 				dest[destOffset++]+=data[ro+j*colStride];
+			}
+		}
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		int offset=getArrayOffset();
+		int colStride=columnStride();
+		int rowStride=rowStride();
+		for (int i=0; i<rows; i++) {
+			int ro=offset+i*rowStride;
+			for (int j=0; j<cols; j++) {
+				int ix=ro+j*colStride;
+				data[ix]=op.apply(data[ix]);
 			}
 		}
 	}
