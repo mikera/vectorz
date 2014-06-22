@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import java.nio.DoubleBuffer;
 
-import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -227,7 +226,7 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 		return data;
 	}
 
-	public static INDArray create(AMatrix a) {
+	public static ImmutableMatrix create(AMatrix a) {
 		int rows=a.rowCount();
 		int cols=a.columnCount();
 		int n=rows*cols;
