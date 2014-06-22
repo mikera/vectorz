@@ -2037,13 +2037,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public INDArray addCopy(INDArray a) {
+	public final INDArray addCopy(INDArray a) {
 		if (a instanceof AMatrix) {
 			return addCopy((AMatrix)a);
 		} else {
-			AMatrix m=this.clone();
-			m.add(a);
-			return m;
+			INDArray r=this.broadcastCloneLike(a);
+			r.add(a);
+			return r;
 		}
 	}
 
