@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ArraySubVector;
@@ -84,6 +85,19 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 			data[index(i, j)] = col.unsafeGet(i);
 		}
 		col.getElements(data, j * rc);
+	}
+	
+	@Override
+	public void addMultiple(AMatrix m, double factor) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+		
+		for (int i=0; i<cc; i++) {
+			getColumnView(i).addMultiple(m.getColumn(i), factor);
+		}
 	}
 
 	@Override
