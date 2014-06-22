@@ -5,6 +5,7 @@ import java.util.Arrays;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.DoubleArrays;
 
@@ -187,6 +188,11 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	@Override
 	public void log() {
 		DoubleArrays.log(data);
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		op.applyTo(data);
 	}
 
 	@Override
