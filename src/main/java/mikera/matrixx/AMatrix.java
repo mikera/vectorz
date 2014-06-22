@@ -204,7 +204,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public AVector slice(int dimension, int index) {
-		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException("Dimension out of range!");
+		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		return (dimension==0)?getRow(index):getColumn(index);	
 	}	
 	
@@ -549,13 +549,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void set(AMatrix a) {
 		int rc = rowCount();
 		int cc = columnCount();
-		if ((a.rowCount() != rc)||(a.columnCount()!=cc)) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));			
-		}
-		for (int row = 0; row < rc; row++) {
-			for (int column = 0; column < cc; column++) {
-				unsafeSet(row, column, a.unsafeGet(row, column));
-			}
+		a.checkShape(rc,cc);
+		for (int i = 0; i < rc; i++) {
+			setRow(i,a.getRow(i));
 		}
 	}
 	
@@ -576,11 +572,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	public void set(Object o) {
-		if (o instanceof INDArray) {set((INDArray)o); return;}
-		if (o instanceof Number) {
-			set(((Number)o).doubleValue()); return;
-		}
-		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
+		set(Matrixx.toMatrix(o));		
 	}
 	
 	@Override
@@ -933,9 +925,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	public void elementMul(AMatrix m) {
 		int rc=rowCount();
-		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
-
+		checkSameShape(m);
+		
 		for (int i=0; i<rc; i++) {
 			getRowView(i).multiply(m.getRow(i));
 		}
