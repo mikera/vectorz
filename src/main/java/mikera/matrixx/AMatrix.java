@@ -937,11 +937,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Divides this matrix in-place by another in an entrywise manner.
 	 * @param m
 	 */
-	public void elementDiv(AMatrix m) {
+	private void elementDiv(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
-
+		m.checkShape(rc,cc);
+		
 		for (int i=0; i<rc; i++) {
 			for (int j=0; j<cc; j++) {
 				unsafeSet(i,j,unsafeGet(i,j)/m.unsafeGet(i, j));
@@ -2098,6 +2098,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc=columnCount();
 		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
 			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	protected void checkShape(int rows, int cols) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=rows)||(cc!=cols)) {
+			throw new IllegalArgumentException("Unexpected shape: ["+cc+","+rc+"] expected: ["+rows+","+cols+"]");
 		}
 	}
 	
