@@ -2090,4 +2090,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
 		}
 	}
+	
+	public boolean equals(ADenseArrayMatrix a) {
+		if (!isSameShape(a)) return false;
+		return equalsArray(a.getArray(),a.getArrayOffset());
+	}
 }
