@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Iterator;
+
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
@@ -100,6 +102,12 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		}
 	}
+	
+	@Override
+	public Iterator<Double> elementIterator() {
+		return new StridedElementIterator(this);
+	}
+	
 	
 	@Override
 	public AMatrix getTranspose() {
