@@ -5,6 +5,7 @@ import java.util.Iterator;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -84,6 +85,29 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
+	public void add(AVector v) {
+		checkColumnCount(v.length());
+		int offset=getArrayOffset();
+		int colStride=columnStride();
+		int rowStride=rowStride();
+		for (int i=0; i<rows; i++) {
+			v.addToArray(data, offset+i*rowStride, colStride);
+		}
+	}
+	
+	@Override
+	public void add(AMatrix m) {
+		checkColumnCount(m.columnCount());
+		checkRowCount(m.rowCount());
+		int offset=getArrayOffset();
+		int colStride=columnStride();
+		int rowStride=rowStride();
+		for (int i=0; i<rows; i++) {
+			m.getRow(i).addToArray(data, offset+i*rowStride, colStride);
+		}
+	}
+	
+	@Override
 	public abstract void copyRowTo(int row, double[] dest, int destOffset);
 	
 	@Override
@@ -97,9 +121,9 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	@Override
 	public int getStride(int dimension) {
 		switch (dimension) {
-		case 0: return rowStride();
-		case 1: return columnStride();
-		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+			case 0: return rowStride();
+			case 1: return columnStride();
+			default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		}
 	}
 	
