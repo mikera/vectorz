@@ -1572,11 +1572,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public void add(double d) {
 		int rc = rowCount();
-		int cc = columnCount();
 		for (int i = 0; i < rc; i++) {
-			for (int j = 0; j < cc; j++) {
-				addAt(i,j,d);
-			}
+			getRowView(i).add(d);
 		}
 	}
 
