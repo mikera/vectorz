@@ -68,5 +68,10 @@ public abstract class ASingleBandMatrix extends ABandedMatrix {
 		return getNonZeroBand().hasUncountable();
 	}
 	
+	@Override
+	public int rank() {
+		return (int)getNonZeroBand().nonZeroCount();
+	}
+	
 	// TODO: inner product with single band matrix should be v.fast
 }
