@@ -164,6 +164,7 @@ public class ImmutableVector extends AArrayVector implements IDense {
 	
 	@Override
 	public double get(int i) {
+		checkIndex(i);
 		return data[offset+i];
 	}
 
