@@ -3,6 +3,7 @@ package mikera.matrixx.algo;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.ISVDResult;
 import mikera.matrixx.decompose.SVD;
+import mikera.matrixx.impl.ZeroMatrix;
 
 import org.junit.Test;
 
@@ -67,5 +68,12 @@ public class TestRank {
 												 {7, 8, 9, 10}});
 		result = SVD.decompose(B);
 		assertEquals(Rank.compute(result, 10e-20),3);
+	}
+	
+	@Test
+	public void testZeroRank() {
+		assertEquals(0,Rank.compute(ZeroMatrix.create(3, 4)));
+		assertEquals(0,Rank.compute(ZeroMatrix.create(4, 3)));
+		assertEquals(0,Rank.compute(ZeroMatrix.create(2, 2)));
 	}
 }
