@@ -30,8 +30,9 @@ public class Rank {
 		ISVDResult ans = SVD.decompose(A, true);
 		int rank = 0;
 		AVector singularValues = ans.getSingularValues();
-		for( double s : singularValues ) {
-			if( s > threshold)
+		int n=singularValues.length();
+		for(int i=0; i<n; i++) {
+			if( singularValues.unsafeGet(i) >= threshold)
 				rank++;
 		}
 		return rank;
