@@ -7,7 +7,6 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.DoubleArrays;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A densely packed matrix organised in column-major format.
@@ -66,10 +65,7 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns {
 	
 	@Override
 	public void setRow(int i, AVector row) {
-		int cc = columnCount();
-		if (row.length() != cc)
-			throw new IllegalArgumentException(ErrorMessages.mismatch(
-					this.getRow(i), row));
+		int cc = checkColumnCount(row.length());
 		for (int j = 0; j < cc; i++) {
 			data[index(i, j)] = row.unsafeGet(i);
 		}
