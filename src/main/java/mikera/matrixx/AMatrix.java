@@ -1185,8 +1185,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean epsilonEquals(AMatrix a) {
 		int rc = rowCount();
 		int cc = columnCount();
-		if ((rc != a.rowCount())||(cc!=a.columnCount()))
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		a.checkShape(rc,cc);
 		
 		if ((this instanceof IFastRows)&&(a instanceof IFastRows)) {
 			for (int i = 0; i < rc; i++) {
