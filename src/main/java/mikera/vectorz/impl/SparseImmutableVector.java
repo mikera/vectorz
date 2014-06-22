@@ -13,7 +13,7 @@ import mikera.vectorz.util.VectorzException;
 /**
  * Indexed sparse immutable vector
  * 
- * Efficient for sparse vectors. Maintains a indexed array of strinctly non-zero elements. 
+ * Efficient for sparse vectors. Maintains a indexed array of strictly non-zero elements. 
  * 
  * @author Mike
  *
