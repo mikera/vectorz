@@ -1,6 +1,7 @@
 package mikera.matrixx.algo;
 
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrix22;
 import mikera.matrixx.decompose.ISVDResult;
 import mikera.matrixx.decompose.SVD;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -75,5 +76,11 @@ public class TestRank {
 		assertEquals(0,Rank.compute(ZeroMatrix.create(3, 4)));
 		assertEquals(0,Rank.compute(ZeroMatrix.create(4, 3)));
 		assertEquals(0,Rank.compute(ZeroMatrix.create(2, 2)));
+	}
+	
+	@Test
+	public void testPartialRank() {
+		assertEquals(1,Rank.compute(Matrix22.create(2, 4, 1, 2)));
+		assertEquals(1,Rank.compute(Matrix22.create(2, 4, 2, 4)));
 	}
 }
