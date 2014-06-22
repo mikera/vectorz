@@ -18,15 +18,15 @@
 
 package mikera.matrixx.decompose.impl.svd;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Random;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
 
 
 /**
