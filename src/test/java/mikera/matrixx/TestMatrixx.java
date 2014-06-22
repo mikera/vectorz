@@ -621,9 +621,9 @@ public class TestMatrixx {
 	}
 	
 	@Test public void g_SparseMatrix() {	
-		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
+		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,2),null,null,AxisVector.create(2, 3)));
 		doGenericTests(SparseRowMatrix.create(Matrixx.createRandomSquareMatrix(3)));
-		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3)));
+		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,2),null,null,AxisVector.create(2, 3)));
 		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(4)));
 	}
 	

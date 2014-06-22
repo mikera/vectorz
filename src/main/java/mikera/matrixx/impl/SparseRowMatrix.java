@@ -82,12 +82,19 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 
 	public static SparseRowMatrix create(AVector... rows) {
 		int rc = rows.length;
-		int cc = rows[0].length();
-		for (int i = 1; i < rc; i++) {
-			if (rows[i].length() != cc)
-				throw new IllegalArgumentException(
-						"Mismatched column count at row: " + i);
+		int cc = -1;
+		for (int i = 0; i < rc; i++) {
+			AVector r=rows[i];
+			if (r==null) continue;
+			if (cc<0) {
+				cc=r.length();
+			} else {
+				if (r.length() != cc)
+					throw new IllegalArgumentException(
+							"Mismatched column count at row: " + i);
+			}
 		}
+		if (cc==-1) {throw new IllegalArgumentException("All rows are null!");}
 		return new SparseRowMatrix(rows.clone(), rc, cc);
 	}
 	
