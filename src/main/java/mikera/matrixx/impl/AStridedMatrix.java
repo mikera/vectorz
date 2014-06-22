@@ -96,6 +96,19 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
+	public void addToArray(double[] dest, int destOffset) {
+		int offset=getArrayOffset();
+		int colStride=columnStride();
+		int rowStride=rowStride();
+		for (int i=0; i<rows; i++) {
+			int ro=offset+i*rowStride;
+			for (int j=0; j<cols; j++) {
+				dest[destOffset++]+=data[ro+j*colStride];
+			}
+		}
+	}
+	
+	@Override
 	public void add(AMatrix m) {
 		checkColumnCount(m.columnCount());
 		checkRowCount(m.rowCount());
