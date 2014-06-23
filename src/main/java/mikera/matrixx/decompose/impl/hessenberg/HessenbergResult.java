@@ -1,8 +1,9 @@
 package mikera.matrixx.decompose.impl.hessenberg;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.decompose.IHessenbergResult;
 
-public class HessenbergResult {
+public class HessenbergResult implements IHessenbergResult{
 	private final AMatrix H;
 	private final AMatrix Q;
 	

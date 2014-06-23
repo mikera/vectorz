@@ -33,10 +33,7 @@ import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
  * </p>
  *
  * <p>
- * A matrix is upper Hessenberg if a<sup>ij</sup> = 0 for all i > j+1. For example, the following matrix
- * is upper Hessenberg.<br>
- * <br>
- * WRITE IT OUT USING A TABLE
+ * A matrix is upper Hessenberg if a<sup>ij</sup> = 0 for all i > j+1.
  * </p>
  *
  * <p>
