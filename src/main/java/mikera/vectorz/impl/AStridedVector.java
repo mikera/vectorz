@@ -183,6 +183,13 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public void addAt(int i, double v) {
+		int ix=checkIndex(i);
+		double[] data=getArray();
+		data[ix]+=v;
+	}
+	
+	@Override
 	public void addToArray(int offset, double[] destData, int destOffset,int length) {
 		int stride=getStride();
 		double[] tdata=getArray();
