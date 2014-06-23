@@ -2220,7 +2220,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public boolean hasUncountable() {
 		int len = length();
 		for(int i=0; i<len; i++) {
-			if (Double.isNaN(get(i)) || Double.isInfinite(get(i))) {
+			double v=unsafeGet(i);
+			if (Double.isNaN(v) || Double.isInfinite(v)) {
 				return true;
 			}
 		}
