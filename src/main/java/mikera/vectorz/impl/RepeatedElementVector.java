@@ -155,8 +155,8 @@ public final class RepeatedElementVector extends ASizedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		checkRange(offset,length);
-		if (length==this.length) return this;
+		int len=checkRange(offset,length);
+		if (length==len) return this;
 		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length,value);
 	}

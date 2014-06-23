@@ -10,7 +10,9 @@ public class TestVector {
 		Vectorz.fillGaussian(v);
 		
 		AVector sv1=v.subVector(0, 5);
+		assertEquals(5,sv1.length());
 		AVector sv2=v.subVector(5, 5);
+		assertEquals(5,sv2.length());
 		assertEquals(v.getClass(),sv1.join(sv2).getClass());
 	}
 	

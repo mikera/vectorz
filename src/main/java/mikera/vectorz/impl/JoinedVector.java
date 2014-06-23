@@ -4,7 +4,6 @@ import java.nio.DoubleBuffer;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -142,16 +141,15 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		int end=start+length;
-		if ((start<0)||(end>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
-		}
-		if (length==this.length) return this;
+		int len=checkRange(start,length);
+		if (length==len) return this;
 		if (start>=split) return right.subVector(start-split, length);
-		if (end<=split) return left.subVector(start, length);
 		
-		AVector v1=left.subVector(start, split-start);
-		AVector v2=right.subVector(0, length-(split-start));
+		if ((start+length)<=split) return left.subVector(start, length);
+		
+		int cut=split-start; // amount cut from left vector
+		AVector v1=left.subVector(start, cut);
+		AVector v2=right.subVector(0, length-cut);
 		return v1.join(v2);
 	}
 	

@@ -276,8 +276,9 @@ public final class ZeroVector extends ASparseVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		checkRange(offset,length);
-		if (length==this.length) return this;
+		int len=checkRange(offset,length);
+		if (length==0) return Vector0.INSTANCE;
+		if (length==len) return this;
 		return ZeroVector.create(length);
 	}
 

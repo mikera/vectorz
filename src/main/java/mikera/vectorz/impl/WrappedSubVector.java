@@ -96,9 +96,9 @@ public final class WrappedSubVector extends ASizedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		checkRange(offset,length);
+		int len=checkRange(offset,length);
 		if (length==0) return Vector0.INSTANCE;
-		if (length==this.length) return this;
+		if (len==length) return this;
 		return wrapped.subVector(this.offset+offset, length);
 	}
 	

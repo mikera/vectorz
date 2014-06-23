@@ -275,9 +275,8 @@ public final class AxisVector extends ASparseVector {
 		int len=checkRange(start,length);
 		if (length==len) return this;
 		if (length==0) return Vector0.INSTANCE;
-		
+				
 		int end=start+length;
-		
 		if ((start<=getAxis())&&(end>getAxis())) {
 			return AxisVector.create(getAxis()-start,length);
 		} else {

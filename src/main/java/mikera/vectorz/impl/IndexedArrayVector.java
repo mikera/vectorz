@@ -59,11 +59,12 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		checkRange(offset,length);
+		int len=checkRange(offset,length);
 		if (length==0) return Vector0.INSTANCE;
-		if (length==this.length) return this;
+		if (length==len) return this;
 
-		int[] newIndexes=Arrays.copyOfRange(indexes, offset, offset+length);
+		int end=offset+length;
+		int[] newIndexes=Arrays.copyOfRange(indexes, offset, end);
 		return wrap(this.data,newIndexes);
 	}
 	

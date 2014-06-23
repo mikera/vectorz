@@ -52,7 +52,8 @@ public abstract class ASizedVector extends AVector {
 	@Override
 	public final int checkRange(int offset, int length) {
 		int len=this.length;
-		if ((offset<0)||(offset+length>len)) {
+		int end=offset+length;
+		if ((offset<0)||(end>len)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		}
 		return len;

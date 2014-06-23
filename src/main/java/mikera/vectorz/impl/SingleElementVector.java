@@ -145,8 +145,7 @@ public final class SingleElementVector extends ASparseVector {
 		int len=checkRange(offset,length);
 		if (length==0) return Vector0.INSTANCE;
 		if (length==len) return this;
-		int end=offset+length;
-		if ((offset>index)||(end<=index)) {
+		if ((offset>index)||((offset+length)<=index)) {
 			return ZeroVector.create(length);
 		}
 		return SingleElementVector.create(value, index-offset, length);

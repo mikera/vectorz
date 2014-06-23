@@ -232,7 +232,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}	
 	
 	/**
-	 * Obtains a sub-vector that refers to this vector.
+	 * Obtains a sub-vector view that refers to this vector.
 	 * Changes to the sub-vector will be reflected in this vector
 	 */
 	public AVector subVector(int offset, int length) {
@@ -414,7 +414,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Copies a subset of this vector to a specified destination array offset
-	 * using the given stride
+	 * using the given stride.
+	 * 
+	 * Unsafe operation: performs no bounds checking
 	 */
 	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
 		for (int i=0; i<length; i++) {
@@ -1710,12 +1712,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Utility function to check vector range and throw an exception if not valid
-	 * Returns length if all OK.
+	 * Utility function to check vector range and throw an exception if not valid.
+	 * 
+	 * Returns the length of this vector
 	 */
 	public int checkRange(int offset, int length) {
 		int len=this.length();
-		if ((offset<0)||(offset+length>len)) {
+		int end=offset+length;
+		if ((offset<0)||(end>len)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		}
 		return len;
