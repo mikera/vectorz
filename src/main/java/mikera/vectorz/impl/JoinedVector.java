@@ -308,6 +308,7 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public void addProduct(AVector a, AVector b, double factor) {
+		checkSameLength(a,b);
 		left.addProduct(a, 0, b, 0, factor);
 		right.addProduct(a, split, b, split, factor);
 	}

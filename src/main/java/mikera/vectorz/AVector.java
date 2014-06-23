@@ -1556,17 +1556,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void addProduct(AVector a, AVector b, double factor) {
-		int length=checkSameLength(a,b);
+		checkSameLength(a,b);
 		if (factor==0.0) return;
 		
 		if (a.isSparse()||b.isSparse()) {
 			AVector t=a.multiplyCopy(b);
 			addMultiple(t,factor);
 		} else {
-			for (int i = 0; i < length; i++) {
-				double t= a.unsafeGet(i)*b.unsafeGet(i);
-				addAt(i,(t*factor));
-			}
+			addProduct(a,0,b,0,factor);
 		}
 	}
 	
@@ -1976,8 +1973,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
 		int length=length();
-		if ((aOffset<0)||(aOffset+length>a.length())) throw new IndexOutOfBoundsException();
-		if ((bOffset<0)||(bOffset+length>b.length())) throw new IndexOutOfBoundsException();
+		a.checkRange(aOffset, length);
+		b.checkRange(bOffset, length);
 		for (int i=0; i<length; i++) {
 			addAt(i, (a.unsafeGet(i+aOffset)* b.unsafeGet(i+bOffset)*factor));
 		}
