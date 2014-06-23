@@ -421,11 +421,7 @@ public class Matrixx {
 		int rows = m.rowCount();
 		int columns = m.columnCount();
 		AMatrix result = newMatrix(rows, columns);
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				result.unsafeSet(i, j, m.get(i, j));
-			}
-		}
+		result.set(m);
 		return result;
 	}
 

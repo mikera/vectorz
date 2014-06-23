@@ -610,6 +610,7 @@ public class TestMatrixx {
 	
 	@Test public void g_BandedMatrix() {	
 		doGenericTests(BandedMatrix.create(3, 3, -2, 2));
+		doGenericTests(BandedMatrix.create(Matrixx.createRandomMatrix(2, 2)));
 		doGenericTests(BandedMatrix.wrap(3, 4, 0, 0,Vector.of(1,2,3)));		
 	}
 	
