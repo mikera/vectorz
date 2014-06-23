@@ -59,6 +59,7 @@ public final class WrappedSubVector extends ASizedVector {
 	
 	@Override
 	public boolean isRangeZero(int start, int length) {
+		checkRange(start,length);
 		return wrapped.isRangeZero(this.offset + start, length);
 	}
 
@@ -110,6 +111,11 @@ public final class WrappedSubVector extends ASizedVector {
 	@Override
 	public void copyTo(int offset, double[] dest, int destOffset, int length) {
 		wrapped.copyTo(this.offset+offset,dest,destOffset,length);
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		wrapped.copyTo(this.offset+offset,dest,destOffset,length, stride);
 	}
 	
 	@Override
