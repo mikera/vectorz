@@ -1014,9 +1014,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void addMultiple(AMatrix m, double factor) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
-			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
-		}
+		m.checkShape(rc, cc);
 		
 		for (int i=0; i<rc; i++) {
 			getRowView(i).addMultiple(m.getRow(i), factor);
