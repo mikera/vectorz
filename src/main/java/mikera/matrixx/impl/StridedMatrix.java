@@ -134,16 +134,14 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public double get(int row, int column) {
-		if ((row < 0) || (column < 0) || (row >= rows)
-				|| (column >= cols))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		return data[index(row,column)];
+	public double get(int i, int j) {
+		checkIndex(i,j);
+		return data[index(i,j)];
 	}
 	
 	@Override
-	public double unsafeGet(int row, int column) {
-		return data[index(row,column)];
+	public double unsafeGet(int i, int j) {
+		return data[index(i,j)];
 	}
 	
 	@Override
