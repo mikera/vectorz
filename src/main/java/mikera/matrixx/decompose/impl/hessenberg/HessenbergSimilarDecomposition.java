@@ -27,9 +27,9 @@ import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
  * <p>
  * Finds the decomposition of a matrix in the form of:<br>
  * <br>
- * A = OHO<sup>T</sup><br>
+ * A = QHQ<sup>T</sup><br>
  * <br>
- * where A is an m by m matrix, O is an orthogonal matrix, and H is an upper Hessenberg matrix.
+ * where A is an m by m matrix, Q is an orthogonal matrix, and H is an upper Hessenberg matrix.
  * </p>
  *
  * <p>
@@ -57,21 +57,8 @@ public class HessenbergSimilarDecomposition {
     private double b[];
     private double u[];
 
-    /**
-     * Creates a decomposition that won't need to allocate new memory if it is passed matrices up to
-     * the specified size.
-     *
-     * @param initialSize Expected size of the matrices it will decompose.
-     */
-    public HessenbergSimilarDecomposition( int initialSize ) {
-        gammas = new double[ initialSize ];
-        b = new double[ initialSize ];
-        u = new double[ initialSize ];
-    }
-
-    public HessenbergSimilarDecomposition() {
-        this(5);
-    }
+    // a constructor for the static decompose method to use
+    private HessenbergSimilarDecomposition() {}
 
     /**
      * Computes the decomposition of the provided matrix.  If no errors are detected then true is returned,
@@ -79,21 +66,10 @@ public class HessenbergSimilarDecomposition {
      * @param A  The matrix that is being decomposed.  Not modified.
      * @return If it detects any errors or not.
      */
-    public boolean decompose( AMatrix A )
+    public static HessenbergResult decompose( AMatrix A )
     {
-        if( A.rowCount() != A.columnCount() )
-            throw new IllegalArgumentException("A must be square.");
-
-        QH = A.toMatrix();
-
-        N = A.columnCount();
-
-        if( b.length < N ) {
-            b = new double[ N ];
-            gammas = new double[ N ];
-            u = new double[ N ];
-        }
-        return _decompose();
+        HessenbergSimilarDecomposition alg = new HessenbergSimilarDecomposition();
+        return alg._decompose(A);
     }
 
     /**
@@ -110,7 +86,7 @@ public class HessenbergSimilarDecomposition {
      *
      * @return The extracted H matrix.
      */
-    public AMatrix getH() {
+    private AMatrix getH() {
     	Matrix H = Matrix.create(N,N);
 
         // copy the first row
@@ -130,7 +106,7 @@ public class HessenbergSimilarDecomposition {
      *
      * @return The extracted Q matrix.
      */
-    public AMatrix getQ() {
+    private AMatrix getQ() {
         Matrix Q = Matrix.createIdentity(N);
 
         for( int j = N-2; j >= 0; j-- ) {
@@ -146,8 +122,19 @@ public class HessenbergSimilarDecomposition {
 
     /**
      * Internal function for computing the decomposition.
+     * @param A 
      */
-    private boolean _decompose() {
+    private HessenbergResult _decompose(AMatrix A) {
+    	if( A.rowCount() != A.columnCount() )
+            throw new IllegalArgumentException("A must be square.");
+    	QH = A.copy().toMatrix();
+
+        N = A.columnCount();
+
+        b = new double[ N ];
+        gammas = new double[ N ];
+        u = new double[ N ];
+        
         double h[] = QH.data;
 
         for( int k = 0; k < N-2; k++ ) {
@@ -207,7 +194,7 @@ public class HessenbergSimilarDecomposition {
 
         }
 
-        return true;
+        return new HessenbergResult(getH(), getQ());
     }
 
     public double[] getGammas() {
