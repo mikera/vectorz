@@ -395,7 +395,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	@Override
-	public void copyTo(double[] arr) {
+	public final void copyTo(double[] arr) {
 		getElements(arr,0);
 	}
 	

@@ -259,11 +259,7 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void addMultiple(ADenseArrayVector v, double factor) {
 		int length=checkSameLength(v);
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[i] += vdata[voffset + i]*factor;
-		}
+		v.addMultipleToArray(factor,0,data, 0,length);
 	}
 	
 	@Override
@@ -281,9 +277,7 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void add(double[] srcData, int srcOffset) {
 		int length=length();
-		for (int i = 0; i < length; i++) {
-			data[i] += srcData[srcOffset + i];
-		}
+		DoubleArrays.add(srcData, srcOffset, data, 0, length);
 	}
 	
 	@Override
