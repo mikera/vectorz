@@ -210,6 +210,23 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public void clamp(double min, double max) {
+		int len=length();
+		int stride=getStride();
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i = 0; i < len; i++) {
+			int ix=offset+i*stride;
+			double v=data[ix];
+			if (v<min) {
+				data[ix]=min;
+			} else if (v>max) {
+				data[ix]=max;
+			}
+		}
+	}
+	
+	@Override
 	public double[] asDoubleArray() {
 		if (isPackedArray()) return getArray();
 		return null;
