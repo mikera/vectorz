@@ -1901,18 +1901,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * sets the vector using values indexed from another vector
 	 */
-	public final void set(AVector v, Index indexes) {
-		set(v,indexes.data);
+	public final void set(AVector source, Index indexes) {
+		set(source,indexes.data);
 	}
 	
 	/**
 	 * sets the vector using values indexed from another vector
 	 */
-	public void set(AVector v, int[] indexes) {
+	public void set(AVector source, int[] indexes) {
 		int len=length();
 		if (len!=indexes.length) throw new IllegalArgumentException("Index length must match this vector length.");
 		for (int i=0; i<len ; i++) {
-			unsafeSet(i, v.get(indexes[i]));
+			unsafeSet(i, source.get(indexes[i]));
 		}
 	}
 	
@@ -1938,14 +1938,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		checkRange(offset,length);
 		for (int i=0; i<length; i++) {
 			array[i+arrayOffset]+=unsafeGet(i+offset);
 		}
 	}
 	
 	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
-		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
+		checkRange(offset,length);
 		for (int i=0; i<length; i++) {
 			array[i+arrayOffset]+=factor*unsafeGet(i+offset);
 		}
