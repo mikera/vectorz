@@ -108,6 +108,11 @@ public final class Matrix extends ADenseArrayMatrix {
 		return m;
 	}
 
+	/**
+	 * Creates a new Matrix using the given vectors as row data
+	 * @param data
+	 * @return
+	 */
 	public static Matrix create(AVector... data) {
 		int rc = data.length;
 		int cc = (rc == 0) ? 0 : data[0].length();
@@ -581,9 +586,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void setRow(int i, AVector row) {
 		int cc = columnCount();
-		if (row.length() != cc)
-			throw new IllegalArgumentException(ErrorMessages.mismatch(
-					this.getRow(i), row));
+		row.checkLength(cc);
 		row.getElements(data, i * cc);
 	}
 
