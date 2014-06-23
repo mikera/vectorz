@@ -469,8 +469,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	public void addMultiple(Matrix m, double factor) {
-		assert (rowCount() == m.rowCount());
-		assert (columnCount() == m.columnCount());
+		checkSameShape(m);
 		for (int i = 0; i < data.length; i++) {
 			data[i] += m.data[i] * factor;
 		}
@@ -478,16 +477,12 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void add(AMatrix m) {
-		if ((rowCount() != m.rowCount()) || (columnCount() != m.columnCount()))
-			throw new IllegalArgumentException(
-					ErrorMessages.incompatibleShapes(this, m));
+		checkSameShape(m);
 		m.addToArray(data, 0);
 	}
 
 	public void add(Matrix m) {
-		if ((rowCount() != m.rowCount()) || (columnCount() != m.columnCount()))
-			throw new IllegalArgumentException(
-					ErrorMessages.incompatibleShapes(this, m));
+		checkSameShape(m);
 		DoubleArrays.add(data, m.data);
 	}
 
@@ -499,8 +494,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		}
 		int rc = rowCount();
 		int cc = columnCount();
-		if (!((rc == m.rowCount()) && (cc == m.columnCount())))
-			throw new IllegalArgumentException(ErrorMessages.mismatch(this, m));
+		m.checkShape(rc, cc);
 
 		for (int i = 0; i < rc; i++) {
 			m.getRow(i).addMultipleToArray(factor, 0, data, i * cols, cc);

@@ -19,6 +19,7 @@ import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
+import mikera.matrixx.impl.ARectangularMatrix;
 import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -2092,6 +2093,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	protected void checkSameShape(AMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	protected void checkSameShape(ARectangularMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
 		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
