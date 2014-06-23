@@ -499,6 +499,13 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		System.arraycopy(src, off + offset, dst, dest.getArrayOffset()
 				+ destOffset, length);
 	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i*stride]=data[i+offset];
+		}
+	}
 
 	@Override
 	public void copyTo(int offset, double[] dest, int destOffset, int length) {

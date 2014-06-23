@@ -210,6 +210,14 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		int thisStride=getStride();
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i*stride]=data[offset+i*thisStride];
+		}
+	}
+	
+	@Override
 	public void clamp(double min, double max) {
 		int len=length();
 		int stride=getStride();

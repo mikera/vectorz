@@ -242,6 +242,13 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i*stride]=0.0;
+		}
+	}
+	
+	@Override
 	public void addToArray(double[] dest, int offset, int stride) {
 		// do nothing!
 	}
