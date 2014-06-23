@@ -75,17 +75,16 @@ public final class Vector2 extends APrimitiveVector {
 		x+=a.x*b.x*factor;
 		y+=a.y*b.y*factor;
 	}
-	
-	
+		
 	@Override
 	public double dotProduct(AVector a) {
-		if (a.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		a.checkLength(2);
 		return x*a.unsafeGet(0)+y*a.unsafeGet(1);
 	}
 	
 	@Override
 	public double dotProduct(Vector v) {
-		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
+		v.checkLength(2);
 		double[] data=v.getArray();
 		return x*data[0]+y*data[1];
 	}

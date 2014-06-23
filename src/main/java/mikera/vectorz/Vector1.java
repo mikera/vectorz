@@ -36,13 +36,13 @@ public final class Vector1 extends APrimitiveVector {
 	
 	@Override
 	public double dotProduct(AVector a) {
-		if (a.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		a.checkLength(1);
 		return x*a.unsafeGet(0);
 	}
 	
 	@Override
 	public double dotProduct(Vector v) {
-		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
+		v.checkLength(1);
 		double[] data=v.getArray();
 		return x*data[0];
 	}

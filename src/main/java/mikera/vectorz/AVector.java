@@ -849,12 +849,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public double dotProduct(Vector v) {
-		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.checkLength(length());
 		return dotProduct(v.getArray(), 0);
 	}
 	
 	public double dotProduct(ADenseArrayVector v) {
-		if(v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.checkLength(length());
 		return dotProduct(v.getArray(), v.getArrayOffset());
 	}
 	
