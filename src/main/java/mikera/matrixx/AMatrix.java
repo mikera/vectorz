@@ -2039,7 +2039,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean hasUncountable() {
 		int rc = rowCount();
 		for(int i=0; i<rc; i++) {
-			if (getRowView(i).hasUncountable()) {
+			if (getRow(i).hasUncountable()) {
 				return true;
 			}
 		}
