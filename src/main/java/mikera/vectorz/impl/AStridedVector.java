@@ -161,10 +161,8 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	
 	@Override
 	public void add(Vector v) {
-		int length=checkSameLength(v);
-		for (int i = 0; i < length; i++) {
-			addAt(i,v.data[i]);
-		}
+		checkSameLength(v);
+		v.addToArray(getArray(), getArrayOffset(), getStride());
 	}
 	
 	@Override
