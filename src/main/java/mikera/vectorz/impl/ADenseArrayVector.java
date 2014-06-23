@@ -110,7 +110,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void set(AVector a) {
-		assert (a.length() == length());
+		checkSameLength(a);
 		a.getElements(getArray(), getArrayOffset());
 	}
 
@@ -465,18 +465,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void divide(double[] data, int offset) {
-		int len = length();
-		double[] cdata = getArray();
-		int coffset = getArrayOffset();
-		for (int i = 0; i < len; i++) {
-			unsafeSet(i, cdata[i + coffset] / data[i + offset]);
-		}
+		DoubleArrays.arraydivide(data, offset, getArray(), getArrayOffset(), length());
 	}
 
 	@Override
 	public void divideTo(double[] data, int offset) {
-		DoubleArrays.arraydivide(getArray(), getArrayOffset(), data, offset,
-				length());
+		DoubleArrays.arraydivide(getArray(), getArrayOffset(), data, offset, length());
 	}
 
 	@Override
@@ -516,10 +510,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	public void addMultiple(ADenseArrayVector v, double factor) {
 		int length = checkSameLength(v);
-
 		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
 	}
-
 	
 	@Override
 	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
@@ -629,8 +621,9 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		int length = length();
 		double[] data = getArray();
 		int offset = getArrayOffset();
-		if ((offset < 0) || (offset + length > data.length))
+		if ((offset < 0) || (offset + length > data.length)) {
 			throw new VectorzException("ArrayVector out of bounds");
+		}
 		super.validate();
 	}
 }
