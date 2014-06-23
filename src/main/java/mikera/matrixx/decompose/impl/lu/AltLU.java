@@ -110,7 +110,7 @@ public class AltLU {
 
 	private PermutationMatrix getPivotMatrix() {
 		int numPivots = LU.rowCount();
-		return PermutationMatrix.create(Index.wrap(Arrays.copyOf(pivot, numPivots)));
+		return PermutationMatrix.create(Index.wrap(Arrays.copyOf(pivot, numPivots))).getTranspose();
 	}
 
 	protected void decomposeCommonInit(Matrix A) {

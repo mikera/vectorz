@@ -90,11 +90,7 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 		}
 		return true;
 	}
-	
-	public boolean equals(ADenseArrayMatrix a) {
-		if (!isSameShape(a)) return false;
-		return equalsArray(a.getArray(),a.getArrayOffset());
-	}
+
 
 	@Override
 	public boolean hasUncountable() {

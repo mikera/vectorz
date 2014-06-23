@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import mikera.arrayz.INDArray;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
@@ -483,6 +484,10 @@ public class Vectorz {
 			return (AVector)o;
 		} else if (o instanceof double[]) {
 			return Vectorz.create((double[])o);
+		} else if (o instanceof INDArray) {
+			INDArray a=(INDArray)o;
+			if (a.dimensionality()!=1) throw new IllegalArgumentException("Cannot coerce INDArray with shape "+a.getShape().toString()+" to a vector");
+			return a.asVector();
 		} else if (o instanceof List<?>) {
 			return Vectorz.create((List<Object>)o);
 		} else if (o instanceof Iterable<?>) {

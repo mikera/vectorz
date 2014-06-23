@@ -487,7 +487,7 @@ public class ThinSVD {
 			}
 		}
 
-		return new SVDResult (u, DiagonalMatrix.wrap(s), v );
+		return new SVDResult (u, DiagonalMatrix.wrap(s), v, s);
 	}
 
 }

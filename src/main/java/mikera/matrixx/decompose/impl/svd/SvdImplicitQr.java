@@ -22,6 +22,8 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.Bidiagonal;
 import mikera.matrixx.decompose.IBidiagonalResult;
+import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 
 /**
  * <p>
@@ -107,8 +109,8 @@ public class SvdImplicitQr {
 //        this.canUseTallBidiagonal = canUseTallBidiagonal;
     }
 
-    public double[] getSingularValues() {
-        return singularValues;
+    public AVector getSingularValues() {
+        return Vector.wrap(singularValues);
     }
 
     public int numberOfSingularValues() {
@@ -162,7 +164,7 @@ public class SvdImplicitQr {
         // if transposed undo the transposition
         undoTranspose();
 
-        return new SVDResult(getU(), getS(), getV());
+        return new SVDResult(getU(), getS(), getV(), getSingularValues());
     }
 
     private boolean bidiagonalization(Matrix orig) {

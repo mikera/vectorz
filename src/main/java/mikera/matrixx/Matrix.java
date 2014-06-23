@@ -10,6 +10,7 @@ import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
+import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
@@ -337,9 +338,11 @@ public final class Matrix extends ADenseArrayMatrix {
 		int b = j * cols;
 		int cc = columnCount();
 		for (int k = 0; k < cc; k++) {
-			double t = data[a + k];
-			data[a + k] = data[b + k];
-			data[b + k] = t;
+			int i1 = a + k;
+			int i2 = b + k;
+			double t = data[i1];
+			data[i1] = data[i2];
+			data[i2] = t;
 		}
 	}
 
@@ -359,9 +362,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void multiplyRow(int i, double factor) {
 		int offset = i * cols;
-		for (int j = 0; j < cols; j++) {
-			data[offset + j] *= factor;
-		}
+		DoubleArrays.multiply(data, offset, cols, factor);
 	}
 
 	@Override
@@ -416,20 +417,19 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public double get(int row, int column) {
-		if ((column < 0) || (column >= cols))
-			throw new IndexOutOfBoundsException();
-		return data[(row * cols) + column];
+	public double get(int i, int j) {
+		if ((j < 0) || (j >= cols)) throw new IndexOutOfBoundsException();
+		return data[(i * cols) + j];
 	}
 
 	@Override
-	public void unsafeSet(int row, int column, double value) {
-		data[(row * cols) + column] = value;
+	public void unsafeSet(int i, int j, double value) {
+		data[(i * cols) + j] = value;
 	}
 
 	@Override
-	public double unsafeGet(int row, int column) {
-		return data[(row * cols) + column];
+	public double unsafeGet(int i, int j) {
+		return data[(i * cols) + j];
 	}
 
 	@Override
@@ -458,10 +458,9 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		if ((column < 0) || (column >= cols))
-			throw new IndexOutOfBoundsException();
-		data[(row * cols) + column] = value;
+	public void set(int i, int j, double value) {
+		if ((j < 0) || (j >= cols)) throw new IndexOutOfBoundsException();
+		data[(i * cols) + j] = value;
 	}
 
 	@Override
@@ -546,13 +545,13 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public StridedMatrix getTranspose() {
+	public DenseColumnMatrix getTranspose() {
 		return getTransposeView();
 	}
 
 	@Override
-	public StridedMatrix getTransposeView() {
-		return StridedMatrix.wrap(data, cols, rows, 0, 1, cols);
+	public DenseColumnMatrix getTransposeView() {
+		return DenseColumnMatrix.wrap(cols, rows, data);
 	}
 
 	@Override
@@ -574,7 +573,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	public Matrix clone() {
 		return new Matrix(rows, cols, DoubleArrays.copyOf(data));
 	}
-	
+
 	@Override
 	public Matrix copy() {
 		return clone();
@@ -596,7 +595,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void setColumn(int j, AVector col) {
-		int rc = rowCount();
+		int rc = rows;
 		if (col.length() != rc)
 			throw new IllegalArgumentException(ErrorMessages.mismatch(
 					this.getColumn(j), col));
@@ -617,8 +616,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	protected final int index(int row, int col) {
-		return row * cols + col;
+	protected final int index(int i, int j) {
+		return i * cols + j;
 	}
 
 	@Override

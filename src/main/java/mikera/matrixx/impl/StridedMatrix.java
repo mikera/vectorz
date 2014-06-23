@@ -101,9 +101,11 @@ public final class StridedMatrix extends AStridedMatrix {
 	public void applyOp(Op op) {
 		int rc = rowCount();
 		int cc = columnCount();
+		int o=offset;
 		for (int row = 0; row < rc; row++) {
+			int ro=o+row*rowStride();
 			for (int col = 0; col < cc; col++) {
-				int index = index(row,col);
+				int index = ro+col*colStride;
 				double v = data[index];
 				data[index] = op.apply(v);
 			}
@@ -114,13 +116,8 @@ public final class StridedMatrix extends AStridedMatrix {
 	public void getElements(double[] dest, int destOffset) {
 		int rc = rowCount();
 		int cc = columnCount();
-		int di=destOffset;
 		for (int row = 0; row < rc; row++) {
-			for (int col = 0; col < cc; col++) {
-				int index = index(row,col);
-				double v = data[index];
-				dest[di++] = v;
-			}
+			copyRowTo(row, dest, destOffset+row*cc);
 		}
 	}
 

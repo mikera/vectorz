@@ -34,7 +34,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 
 	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
 	
-	private AVector emptyColumn;
+	private final AVector emptyColumn;
 
 	protected SparseColumnMatrix(int rowCount, int columnCount) {
 		this(new HashMap<Integer,AVector>(),rowCount,columnCount);
@@ -282,16 +282,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override 
 	public AMatrix transposeInnerProduct(AMatrix a) {
-		int rc=this.columnCount(); // i.e. rowCount of transpose
-		int cc=a.columnCount();
-		Matrix r=Matrix.create(rc, cc);
-		
-		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				r.unsafeSet(i,j,getColumn(i).dotProduct(a.getColumn(j)));
-			}
-		}
-		return r;		
+		return getTranspose().innerProduct(a);	
 	}
 	
 	@Override

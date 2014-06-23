@@ -276,7 +276,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray slice(int majorSlice);
 	
 	/**
-	 * Returns the value of a major slice of this array (slice along dimension 0
+	 * Returns the value of a major slice of this array (slice along dimension 0)
 	 * 
 	 * Like 'slice', except returns a Double value for slices of 1D vectors
 	 */
@@ -717,14 +717,35 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray innerProduct(AVector v);
 
+	/**
+	 * Returns a copy of the array with the abs operator applied to each element
+	 * @return
+	 */
 	public INDArray absCopy();
 
+	/**
+	 * Returns a copy of the array with the signum operator applied to each element
+	 * @return
+	 */
 	public INDArray signumCopy();
 
+	/**
+	 * Gets all elements of the array as a Java double[] array
+	 * @return
+	 */
 	public double[] getElements();
 
+	/**
+	 * Returns the product of all elements in the array.
+	 * @return
+	 */
 	public double elementProduct();
 
+	/**
+	 * Returns a copy of the array with all elements multiplied by a single constant value
+	 * @param d
+	 * @return
+	 */
 	public INDArray multiplyCopy(double d);
 
 	/**

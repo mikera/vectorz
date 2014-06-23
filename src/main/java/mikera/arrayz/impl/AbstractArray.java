@@ -1217,8 +1217,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray broadcastCloneLike(INDArray target) {
+		int dims=dimensionality();
+		int targetDims=target.dimensionality();
 		INDArray r=this;
-		if (r.dimensionality()<target.dimensionality()) r=r.broadcastLike(target);
+		if (dims<targetDims) r=r.broadcastLike(target);
 		return r.clone();
 	}
 	
