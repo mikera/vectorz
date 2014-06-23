@@ -71,25 +71,29 @@ public final class ArraySubVector extends ADenseArrayVector {
 	public void unsafeSet(int i, double value) {
 		data[offset + i] = value;
 	}
+	
+	@Override
+	public void add(AVector v) {
+		checkSameLength(v);
+		v.addToArray(data, offset);
+	}
 
 	@Override
 	public void add(ADenseArrayVector v) {
 		checkSameLength(v);
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[offset + i] += vdata[voffset + i];
-		}
+		v.addToArray(data, offset);
+	}
+	
+	@Override
+	public void addMultiple(AVector v, double factor) {
+		checkSameLength(v);
+		v.addMultipleToArray(factor, 0, data, offset, length);
 	}
 	
 	@Override
 	public void addMultiple(ADenseArrayVector v, double factor) {
 		checkSameLength(v);
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[offset + i] += vdata[voffset + i]*factor;
-		}
+		v.addMultipleToArray(factor, 0, data, offset, length);
 	}
 	
 	@Override
