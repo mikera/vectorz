@@ -94,12 +94,9 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	
 	public static VectorMatrixMN create(AMatrix source) {
 		int rc=source.rowCount();
-		int cc=source.columnCount();
 		VectorMatrixMN m=new VectorMatrixMN(source.rowCount(),source.columnCount());
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				m.unsafeSet(i,j,source.unsafeGet(i, j));
-			}
+			m.rows[i].set(source.getRow(i));
 		}
 		return m;
 	}

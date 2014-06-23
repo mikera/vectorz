@@ -373,12 +373,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if ((v instanceof Vector)) {
-			return dotProduct((Vector)v);
-		} else {
-			checkSameLength(v);
-			return v.dotProduct(data,0);
-		}
+		checkSameLength(v);
+		return v.dotProduct(data,0);
 	}
 	
 	@Override
@@ -492,10 +488,7 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void multiply(double factor) {
-		int len=length();
-		for (int i = 0; i < len; i++) {
-			data[i]*=factor;
-		}	
+		DoubleArrays.multiply(data, factor);
 	}
 	
 	@Override

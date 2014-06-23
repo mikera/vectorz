@@ -110,6 +110,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	/**
 	 * Creates a new Matrix using the given vectors as row data
+	 * 
 	 * @param data
 	 * @return
 	 */
