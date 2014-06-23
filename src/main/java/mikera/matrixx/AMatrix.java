@@ -206,7 +206,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public AVector slice(int dimension, int index) {
 		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
-		return (dimension==0)?getRow(index):getColumn(index);	
+		return (dimension==0)?getRowView(index):getColumnView(index);	
 	}	
 	
 	@Override
@@ -219,7 +219,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		ArrayList<AVector> al=new ArrayList<AVector>();
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			al.add(getRow(i));
+			al.add(getRowView(i));
 		}
 		return al;
 	}
@@ -634,12 +634,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return this;
 	}
 	
-	public final AVector cloneRow(int row) {
-		return getRowClone(row);
+	public final AVector cloneRow(int i) {
+		return getRowClone(i);
 	}
 	
-	public final AVector cloneColumn(int column) {
-		return getColumnClone(column);
+	public final AVector cloneColumn(int j) {
+		return getColumnClone(j);
 	}
 	
 	@Override
@@ -1874,7 +1874,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param row
 	 */
 	public void setRow(int i, AVector row) {
-		getRow(i).set(row);
+		getRowView(i).set(row);
 	}
 	
 	/**
@@ -1908,7 +1908,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param row
 	 */
 	public void setColumn(int i, AVector col) {
-		getColumn(i).set(col);
+		getColumnView(i).set(col);
 	}
 
 	@Override

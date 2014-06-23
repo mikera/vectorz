@@ -169,8 +169,8 @@ public abstract class StandardSvdChecks {
     public void testLots() {
         SvdImplicitQr alg = createSvd();
 
-        for( int i = 1; i < 8; i++ ) {
-            for( int j = 1; j < 8; j++ ) {
+        for( int i = 1; i < 8; i+=2 ) {
+            for( int j = 1; j < 8; j+=2 ) {
                 Matrix A = Matrix.createRandom(i,j);
                 A.sub(0.5);
                 A.scale(2);

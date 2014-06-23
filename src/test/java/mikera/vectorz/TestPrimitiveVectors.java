@@ -1,7 +1,9 @@
 package mikera.vectorz;
 
 import static org.junit.Assert.*;
+import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
+import mikera.matrixx.Matrix22;
 import mikera.vectorz.impl.APrimitiveVector;
 
 import org.junit.Test;
@@ -33,5 +35,20 @@ public class TestPrimitiveVectors {
 		assertEquals(3,v2.getY(),0.0);
 		assertEquals(6,v3.getZ(),0.0);
 		assertEquals(10,v4.getT(),0.0);
+	}
+	
+	@Test
+	public void testBroadCast() {
+		Vector2 v=Vector2.of(1,2);
+		
+		INDArray a=v.broadcast(1,3,2);
+		assertEquals(v,a.slice(0).slice(1));
+	}
+	
+	@Test 
+	public void testPrimitiveMatricSlices() {
+		Matrix22 m2=new Matrix22(1,2,3,4);
+		AVector r0=m2.getRow(0);
+		assertEquals(Vector2.class,r0.getClass());
 	}
 }

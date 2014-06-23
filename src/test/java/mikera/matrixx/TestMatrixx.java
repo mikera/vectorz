@@ -270,8 +270,8 @@ public class TestMatrixx {
 			assertEquals(rc,col.length());
 		}
 		
-		AVector row=m.getRow(0);
-		AVector col=m.getColumn(0);
+		AVector row=m.getRowView(0);
+		AVector col=m.getColumnView(0);
 		
 		row.set(0,1.77);
 		assertEquals(1.77,m.get(0,0),0.0);

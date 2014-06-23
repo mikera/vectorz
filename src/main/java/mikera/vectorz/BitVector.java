@@ -124,7 +124,7 @@ public final class BitVector extends ABitVector {
 	@Override
 	public double dotProduct(double[] data, int offset) {
 		double result=0.0;
-		for (int i=0; i<data.length; i++) {
+		for (int i=0; i<this.data.length; i++) {
 			long mask=this.data[i];
 			for (int j=0; j<64; j++) {
 				if (mask==0) break;
