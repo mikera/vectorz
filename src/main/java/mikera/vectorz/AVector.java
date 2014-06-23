@@ -774,7 +774,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return super.outerProduct(a);
 	}
 	
-	public Scalar innerProduct(AVector v) {
+	public AScalar innerProduct(AVector v) {
 		return Scalar.create(dotProduct(v));
 	}
 

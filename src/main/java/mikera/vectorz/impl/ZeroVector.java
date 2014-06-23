@@ -97,9 +97,9 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
-	public Scalar innerProduct(AVector a) {
+	public ImmutableScalar innerProduct(AVector a) {
 		checkSameLength(a);
-		return Scalar.create(0.0);
+		return ImmutableScalar.ZERO;
 	}
 	
 	@Override
