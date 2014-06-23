@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract class for a Matrix backed with a single double[] data array
@@ -28,13 +27,13 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double get(int i, int j) {
-		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		checkIndex(i,j);
 		return data[index(i,j)];
 	}
 	
 	@Override
 	public void set(int i, int j,double value) {
-		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		checkIndex(i,j);
 		data[index(i,j)]=value;
 	}
 	
