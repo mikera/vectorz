@@ -158,17 +158,13 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	
 	@Override
 	public double get(int row, int column) {
-		if ((column<0)||(column>=columnCount)||(row>=rowCount)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		}
+		checkIndex(row,column);
 		return rows[row].unsafeGet(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		if ((column<0)||(column>=columnCount)||(row>=rowCount)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		}
+		checkIndex(row,column);
 		rows[row].unsafeSet(column,value);
 	}
 	

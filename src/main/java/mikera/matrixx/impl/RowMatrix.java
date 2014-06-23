@@ -76,6 +76,11 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	}
 	
 	@Override 
+	public double elementSquaredSum() {
+		return vector.elementSquaredSum();
+	}
+	
+	@Override 
 	public double elementMin() {
 		return vector.elementMin();
 	}
