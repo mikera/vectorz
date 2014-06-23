@@ -1101,17 +1101,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean equalsArray(double[] data, int offset) {
 		int rc = rowCount();
 		int cc = columnCount();
-		if (this instanceof IFastRows) {
-			for (int i = 0; i < rc; i++) {
-				if (!getRow(i).equalsArray(data,offset+i*cc)) return false;
-			}
-		} else {
-			int di=offset;
-			for (int i = 0; i < rc; i++) {
-				for (int j = 0; j < cc; j++) {
-					if (unsafeGet(i, j) != data[di++]) return false;
-				}
-			}
+		for (int i = 0; i < rc; i++) {
+			if (!getRow(i).equalsArray(data,offset+i*cc)) return false;
 		}
 		return true;
 	}
@@ -1119,18 +1110,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public boolean elementsEqual(double value) {
 		int rc = rowCount();
-		
-		if (this instanceof IFastRows) {
-			for (int i = 0; i < rc; i++) {
-				if (!getRow(i).elementsEqual(value)) return false;
-			}
-		} else {
-			int cc = columnCount();
-			for (int i = 0; i < rc; i++) {
-				for (int j = 0; j < cc; j++) {
-					if (unsafeGet(i, j) != value) return false;
-				}
-			}
+		for (int i = 0; i < rc; i++) {
+			if (!getRow(i).elementsEqual(value)) return false;
 		}
 		return true;
 	}
@@ -1156,13 +1137,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public boolean equals(INDArray v) {
 		if (v instanceof AMatrix) return equals((AMatrix) v);
-		if (v.dimensionality()!=2) return false;
-		int[] vs=v.getShape();
+		if (!isSameShape(v)) return false;
 		int rc=rowCount();
-		if (rc != vs[0]) return false;
-		int cc=columnCount();
-		if (cc != vs[1]) return false;
-		
 		for (int i = 0; i < rc; i++) {
 			if (!getRow(i).equals(v.slice(i))) return false;
 		}

@@ -54,14 +54,8 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	public abstract boolean isPackedArray();
 	
 	@Override
-	public AMatrix getTransposeCopy() {
-		int rc=this.rowCount();
-		int cc=this.columnCount();
-		Matrix m=Matrix.create(cc,rc);
-		for (int j=0; j<cc; j++) {
-			this.copyColumnTo(j, m.data, j*rc);
-		}
-		return m;
+	public Matrix getTransposeCopy() {
+		return toMatrixTranspose();
 	}
 	
 	/**
