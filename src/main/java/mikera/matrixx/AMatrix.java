@@ -827,12 +827,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public long nonZeroCount() {
 		long result=0;
 		int rc=rowCount();
-		int cc=columnCount();
 		
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				if (unsafeGet(i,j)!=0.0) result++;
-			}
+			result+=getRow(i).nonZeroCount();
 		}
 		return result;	
 	}
@@ -929,9 +926,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		m.checkShape(rc,cc);
 		
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)/m.unsafeGet(i, j));
-			}
+			getRowView(i).divide(m.getRow(i));
 		}
 	}
 	
@@ -1932,19 +1927,19 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		// nothing to do since we have no data to validate
 	}
 
-	public void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int i, double[] dest, int destOffset) {
 		// note: using getRow() may be faster when overriding
 		int cc=columnCount();
-		for (int i=0; i<cc; i++) {
-			dest[i+destOffset]=unsafeGet(row,i);
+		for (int j=0; j<cc; j++) {
+			dest[destOffset+j]=unsafeGet(i,j);
 		}
 	}
 	
-	public void copyColumnTo(int col, double[] dest, int destOffset) {
+	public void copyColumnTo(int j, double[] dest, int destOffset) {
 		// note: using getColumn() may be faster when overriding
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			dest[i+destOffset]=unsafeGet(i,col);
+			dest[destOffset+i]=unsafeGet(i,j);
 		}
 	}
 
