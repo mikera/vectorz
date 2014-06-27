@@ -16,6 +16,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BroadcastVectorMatrix;
+import mikera.matrixx.impl.RowMatrix;
 import mikera.randomz.Hash;
 import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
@@ -2163,8 +2164,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AMatrix broadcastLike(AMatrix target) {
-		if (length()==target.columnCount()) {
-			return BroadcastVectorMatrix.wrap(this, target.rowCount());
+		int cc=target.columnCount();
+		if (length()==cc) {
+			int rc=target.rowCount();
+			if (rc==1) return RowMatrix.wrap(this);
+			return BroadcastVectorMatrix.wrap(this, rc);
 		} else {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}

@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -42,9 +44,7 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 	@Override
 	public final void copyColumnTo(int col, double[] dest, int destOffset) {
 		double v=vector.get(col);
-		for (int i=0;i<rows; i++) {
-			dest[destOffset+i]=v;
-		}
+		Arrays.fill(dest, destOffset, destOffset+rows, v);
 	}
 	
 	@Override
