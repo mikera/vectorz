@@ -1,6 +1,5 @@
 package mikera.matrixx.impl;
 
-import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 
 /**
@@ -65,25 +64,6 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	 * @return
 	 */
 	protected abstract int index(int i, int j);
-
-	@Override
-	public boolean equals(AMatrix a) {
-		if (a==this) return true;	
-		if (a instanceof ADenseArrayMatrix) {
-			return equals((ADenseArrayMatrix)a);
-		}
-
-		if (!isSameShape(a)) return false;
-		
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				if (data[index(i, j)] != a.unsafeGet(i, j))
-					return false;
-			}
-		}
-		return true;
-	}
-
 
 	@Override
 	public boolean hasUncountable() {
