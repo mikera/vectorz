@@ -59,7 +59,6 @@ public final class WrappedSubVector extends ASizedVector {
 	
 	@Override
 	public boolean isRangeZero(int start, int length) {
-		checkRange(start,length);
 		return wrapped.isRangeZero(this.offset + start, length);
 	}
 
