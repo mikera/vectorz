@@ -244,7 +244,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
-	public ZeroMatrix innerProduct(double a) {
+	public ZeroMatrix multiplyCopy(double a) {
 		return this;
 	}
 	

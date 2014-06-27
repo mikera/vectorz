@@ -233,6 +233,15 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public AMatrix multiplyCopy(double a) {
+		HashMap<Integer,AVector> ndata=new HashMap<Integer,AVector>();
+		for (Entry<Integer, AVector> eCol : data.entrySet()) {
+			ndata.put(eCol.getKey(), eCol.getValue().innerProduct(a));
+		}
+		return wrap(ndata,rows,cols);
+	}
+	
+	@Override
 	public AVector innerProduct(AVector a) {
 		return transform(a);
 	}

@@ -298,7 +298,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 	}
 	
 	@Override
-	public AMatrix innerProduct(double a) {
+	public AMatrix multiplyCopy(double a) {
 		HashMap<Integer,AVector> ndata=new HashMap<Integer,AVector>();
 		for (Entry<Integer, AVector> eRow : data.entrySet()) {
 			ndata.put(eRow.getKey(), eRow.getValue().innerProduct(a));

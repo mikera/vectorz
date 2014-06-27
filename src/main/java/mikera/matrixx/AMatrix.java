@@ -1252,15 +1252,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public AMatrix innerProduct(AScalar s) {
+	public final AMatrix innerProduct(AScalar s) {
 		return innerProduct(s.get());
 	}
 	
 	@Override
-	public AMatrix innerProduct(double d) {
-		AMatrix r= clone();
-		r.scale(d);
-		return r;
+	public final AMatrix innerProduct(double d) {
+		return multiplyCopy(d);
 	}	
 	
 	public AMatrix transposeInnerProduct(AMatrix s) {
