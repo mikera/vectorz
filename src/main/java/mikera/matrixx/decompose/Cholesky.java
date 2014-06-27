@@ -2,7 +2,6 @@ package mikera.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.decompose.impl.chol.SimpleCholesky;
 
 /**
  * Class implementing Cholesky decomposition
@@ -28,7 +27,7 @@ public class Cholesky {
 	 * @return The decomposition result, or null if not possible
 	 */
 	public static final ICholeskyResult decompose(AMatrix a) {
-		return SimpleCholesky.decompose(a.toMatrix());
+		return mikera.matrixx.decompose.impl.chol.Cholesky.decompose(a.toMatrix());
 	}
 	
 	/**
@@ -38,6 +37,6 @@ public class Cholesky {
 	 * @return The decomposition result, or null if not possible
 	 */
 	public static final ICholeskyResult decompose(Matrix a) {
-		return SimpleCholesky.decompose(a);
+		return mikera.matrixx.decompose.impl.chol.Cholesky.decompose(a);
 	}
 }
