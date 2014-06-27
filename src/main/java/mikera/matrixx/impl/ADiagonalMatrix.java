@@ -80,6 +80,33 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	protected void checkSameShape(AMatrix m) {
+		int dims=dimensions;
+		if((dims!=m.rowCount())||(dims!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	@Override
+	protected void checkSameShape(ARectangularMatrix m) {
+		int dims=dimensions;
+		if((dims!=m.rowCount())||(dims!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	@Override
+	protected final void checkIndex(int i, int j) {
+		if ((i<0)||(i>=dimensions)||(j<0)||(j>=dimensions)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		}
+	}
+	
+	public final boolean isSameShape(ARectangularMatrix m) {
+		return (dimensions==m.rows)&&(dimensions==m.cols);
+	}
+	
+	@Override
 	public final int upperBandwidthLimit() {
 		return 0;
 	}
