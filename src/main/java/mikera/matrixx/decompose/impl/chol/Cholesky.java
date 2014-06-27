@@ -40,6 +40,9 @@ public class Cholesky extends CholeskyCommon {
      */
     private static final int BLOCK_WIDTH = 60;
     
+    private Cholesky() { blockWidth = Cholesky.BLOCK_WIDTH; }
+    private Cholesky(int blockWidth) { this.blockWidth = blockWidth; }
+    
     /**
      * <p>
      * Computes the Cholesky Decomposition (A = LU) of a matrix, taking
@@ -71,7 +74,7 @@ public class Cholesky extends CholeskyCommon {
      * @return ICholeskyResult if decomposition is successful, null otherwise.
      */
     public static ICholeskyResult decompose(AMatrix mat, int blockWidth) {
-		CholeskyInner temp = new CholeskyInner();
+		Cholesky temp = new Cholesky(blockWidth);
 		return temp._decompose(mat);
 	}
 

@@ -15,7 +15,7 @@ public class TestCholesky {
 
 	@Test
 	public void testCholesky() {
-		AMatrix z = Matrixx.createRandomMatrix(3, 2);
+		AMatrix z = Matrixx.createRandomMatrix(3, 3);
 		AMatrix a = z.innerProduct(z.getTranspose()); // should get a symmetric positive definite matrix!
 		
 		ICholeskyResult r=Cholesky.decompose(a);
@@ -45,10 +45,9 @@ public class TestCholesky {
 	
 	@Test
 	public void testNegative() {
-		// TODO: should this return null??
 		AMatrix a = Matrix.create(new double[][] {{-1}});
 		ICholeskyResult r=Cholesky.decompose(a);
-		validateCholesky(a,r);		
+		assertNull(r);		
 	}
 	
 	public void validateCholesky(AMatrix a, ICholeskyResult r) {
