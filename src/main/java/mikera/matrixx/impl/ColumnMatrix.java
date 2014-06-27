@@ -8,7 +8,8 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Matrix class that wraps a vector as a 1-columns matrix
+ * Matrix class that wraps a vector as a single-column matrix
+ * 
  * @author Mike
  */
 public class ColumnMatrix extends AMatrix implements IFastColumns {
