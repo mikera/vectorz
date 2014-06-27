@@ -11,6 +11,11 @@ import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * A general purpose strided matrix implementation
+ * 
+ * @author Mike
+ */
 public final class StridedMatrix extends AStridedMatrix {
 	private static final long serialVersionUID = -7928115802247422177L;
 
@@ -158,9 +163,7 @@ public final class StridedMatrix extends AStridedMatrix {
 
 	@Override
 	public void set(int row, int column, double value) {
-		if ((row < 0) || (column < 0) || (row >= rows)
-				|| (column >= cols))
-			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
+		checkIndex(row,column);
 		data[index(row,column)] = value;
 	}
 	
