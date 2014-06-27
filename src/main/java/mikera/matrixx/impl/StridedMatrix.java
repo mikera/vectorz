@@ -162,14 +162,14 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		checkIndex(row,column);
-		data[index(row,column)] = value;
+	public void set(int i, int j, double value) {
+		checkIndex(i,j);
+		data[index(i,j)] = value;
 	}
 	
 	@Override
-	public void unsafeSet(int row, int column, double value) {
-		data[index(row,column)] = value;
+	public void unsafeSet(int i, int j, double value) {
+		data[index(i,j)] = value;
 	}
 
 	@Override
