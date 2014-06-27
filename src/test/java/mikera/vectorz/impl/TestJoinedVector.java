@@ -145,6 +145,8 @@ public class TestJoinedVector {
 		AVector j=v;
 		
 		for (int i=0; i<10; i++) {
+			AVector sv=v.subVector(i, 1);
+			assertEquals(1,sv.length());
 			j=j.join(v.subVector(i, 1));
 		}
 		assertEquals(20,j.length());

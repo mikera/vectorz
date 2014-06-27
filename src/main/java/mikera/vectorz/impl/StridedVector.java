@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public final class StridedVector extends AStridedVector {
@@ -16,7 +15,7 @@ public final class StridedVector extends AStridedVector {
 		if (length>0) {
 			// check last element is in the array
 			int lastOffset=(offset+(length-1)*stride);
-			if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException();
+			if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException("StridedVector ends outside array");
 		}
 		this.offset=offset;
 		this.stride=stride;
@@ -47,7 +46,7 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
+		int length=checkLength(v.length());
 		if (v instanceof ADenseArrayVector) {
 			ADenseArrayVector av=(ADenseArrayVector) v;
 			return dotProduct(av.getArray(),av.getArrayOffset());
@@ -70,10 +69,8 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public void set(AVector v) {
-		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
-		for (int i=0; i<length; i++) {
-			data[offset+i*stride]=v.unsafeGet(i);
-		}
+		int length=checkSameLength(v);
+		v.copyTo(0, data, offset, length, stride);
 	}
 	
 	@Override
@@ -86,7 +83,13 @@ public final class StridedVector extends AStridedVector {
 	}
 	
 	public void add(AStridedVector v) {
-		if (length!=v.length()) throw new IllegalArgumentException("Mismatched vector lengths");
+		int length=checkLength(v.length());
+		double[] vdata=v.getArray();
+		int voffset=v.getArrayOffset();
+		int vstride=v.getStride();
+		for (int i=0; i<length; i++) {
+			data[offset+i*stride]+=vdata[voffset+i*vstride];
+		}
 	}
 	
 	@Override
@@ -101,10 +104,7 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		int len=this.length();
-		if ((start<0)||(start+length>len)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		int len=checkRange(start,length);
 
 		if (length==0) return Vector0.INSTANCE;
 		if (length==len) return this;
@@ -117,13 +117,13 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public double get(int i) {
-		if (i<0||i>=length) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		return data[offset+i*stride];
 	}
 	
 	@Override
 	public void set(int i, double value) {
-		if (i<0||i>=length) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		data[offset+i*stride]=value;
 	}
 	

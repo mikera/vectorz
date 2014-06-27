@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
@@ -181,6 +182,12 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public boolean equals(AMatrix a) {
+		if (!isSameShape(a)) return false;
+		return a.equalsArray(getArray(), getArrayOffset());
+	}
+	
+	@Override
+	public boolean equals(INDArray a) {
 		if (!isSameShape(a)) return false;
 		return a.equalsArray(getArray(), getArrayOffset());
 	}

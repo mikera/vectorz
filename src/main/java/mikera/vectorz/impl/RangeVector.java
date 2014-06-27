@@ -47,7 +47,7 @@ public class RangeVector extends AComputedVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return start+i;
 	}
 	
@@ -67,11 +67,9 @@ public class RangeVector extends AComputedVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		if ((start<0)||(start+length>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
-		}
+		int len=checkRange(start,length);
 		if (length==0) return Vector0.INSTANCE;
-		if (length==this.length) return this;
+		if (length==len) return this;
 		
 		return create(this.start+start,length);
 	}

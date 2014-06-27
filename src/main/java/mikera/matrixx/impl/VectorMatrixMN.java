@@ -94,12 +94,9 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	
 	public static VectorMatrixMN create(AMatrix source) {
 		int rc=source.rowCount();
-		int cc=source.columnCount();
 		VectorMatrixMN m=new VectorMatrixMN(source.rowCount(),source.columnCount());
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				m.unsafeSet(i,j,source.unsafeGet(i, j));
-			}
+			m.rows[i].set(source.getRow(i));
 		}
 		return m;
 	}
@@ -161,15 +158,13 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	
 	@Override
 	public double get(int row, int column) {
-		if ((column<0)||(column>=columnCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		if (row>=rowCount) throw new IndexOutOfBoundsException("Row: "+row);
+		checkIndex(row,column);
 		return rows[row].unsafeGet(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		if ((column<0)||(column>=columnCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		if (row>=rowCount) throw new IndexOutOfBoundsException("Row: "+row);
+		checkIndex(row,column);
 		rows[row].unsafeSet(column,value);
 	}
 	

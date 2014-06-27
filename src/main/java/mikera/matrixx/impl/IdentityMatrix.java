@@ -148,6 +148,11 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 		return 1.0;
 	}
 	
+	@Override 
+	public int rank() {
+		return dimensions;
+	}
+	
 	@Override
 	public long nonZeroCount() {
 		return dimensions;

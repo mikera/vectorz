@@ -13,7 +13,7 @@ import mikera.vectorz.util.VectorzException;
 /**
  * Indexed sparse immutable vector
  * 
- * Efficient for sparse vectors. Maintains a indexed array of strinctly non-zero elements. 
+ * Efficient for sparse vectors. Maintains a indexed array of strictly non-zero elements. 
  * 
  * @author Mike
  *
@@ -227,10 +227,8 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,i));
-		int ip=index.indexPosition(i);
-		if (ip<0) return 0.0;
-		return data[ip];
+		checkIndex(i);
+		return unsafeGet(i);
 	}
 	
 	@Override

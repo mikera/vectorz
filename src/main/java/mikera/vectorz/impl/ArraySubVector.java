@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Vector referring to a fixed offset into a double[] array
@@ -47,24 +46,19 @@ public final class ArraySubVector extends ADenseArrayVector {
 	 */
 	public ArraySubVector(ADenseArrayVector source, int offset, int length) {
 		super(length,source.getArray());
-		int len=source.length();
-		if ((offset < 0)||(offset + length > len)) 
-			throw new IndexOutOfBoundsException(
-					ErrorMessages.invalidRange(source, offset, length));
+		source.checkRange(offset,length);
 		this.offset = source.getArrayOffset() + offset;
 	}
 
 	@Override
 	public double get(int i) {
-		if ((i < 0) || (i >= length))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return data[offset + i];
 	}
 
 	@Override
 	public void set(int i, double value) {
-		if ((i < 0) || (i >= length))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		data[offset + i] = value;
 	}
 	
@@ -77,28 +71,29 @@ public final class ArraySubVector extends ADenseArrayVector {
 	public void unsafeSet(int i, double value) {
 		data[offset + i] = value;
 	}
+	
+	@Override
+	public void add(AVector v) {
+		checkSameLength(v);
+		v.addToArray(data, offset);
+	}
 
 	@Override
 	public void add(ADenseArrayVector v) {
-		int vlength=v.length();
-		if (vlength != length) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		}
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[offset + i] += vdata[voffset + i];
-		}
+		checkSameLength(v);
+		v.addToArray(data, offset);
+	}
+	
+	@Override
+	public void addMultiple(AVector v, double factor) {
+		checkSameLength(v);
+		v.addMultipleToArray(factor, 0, data, offset, length);
 	}
 	
 	@Override
 	public void addMultiple(ADenseArrayVector v, double factor) {
-		assert (v.length() == length);
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[offset + i] += vdata[voffset + i]*factor;
-		}
+		checkSameLength(v);
+		v.addMultipleToArray(factor, 0, data, offset, length);
 	}
 	
 	@Override
@@ -131,10 +126,7 @@ public final class ArraySubVector extends ADenseArrayVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		int len=length();
-		if ((start<0)||(start+length>len)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
-		}
+		int len=checkRange(start,length);
 		if (length==0) return Vector0.INSTANCE;
 		if (len==length) return this;
 		return ArraySubVector.wrap(data, offset+start, length);

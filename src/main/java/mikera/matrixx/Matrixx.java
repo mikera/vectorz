@@ -9,7 +9,9 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.impl.ADiagonalMatrix;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ScalarMatrix;
@@ -419,11 +421,7 @@ public class Matrixx {
 		int rows = m.rowCount();
 		int columns = m.columnCount();
 		AMatrix result = newMatrix(rows, columns);
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				result.unsafeSet(i, j, m.get(i, j));
-			}
-		}
+		result.set(m);
 		return result;
 	}
 
@@ -501,17 +499,21 @@ public class Matrixx {
 	}
 
 	/**
-	 * Wraps double[] data in a strided matrix
+	 * Wraps double[] data in a strided matrix of the most efficient available type.
+	 * 
 	 * @param array
 	 * @param arrayOffset
 	 * @param reverse
 	 * @param reverse2
 	 * @return
 	 */
-	public static AMatrix wrapStrided(double[] data, int rows, int cols, int offset, int rowStride, int colStride) {
-		if (offset==0) {
-			if ((cols==rowStride)&&(colStride==1)&&(data.length==rows*cols)) {
+	public static AStridedMatrix wrapStrided(double[] data, int rows, int cols, int offset, int rowStride, int colStride) {
+		if ((offset==0)&&(data.length==rows*cols)) {
+			if ((rows<=1)||(cols<=1)||((cols==rowStride)&&(colStride==1))) {
 				return Matrix.wrap(rows, cols, data);
+			} 
+			if ((rows==colStride)&&(rowStride==1)) {
+				return DenseColumnMatrix.wrap(rows, cols, data);
 			} 
 		}
 		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);

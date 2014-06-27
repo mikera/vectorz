@@ -50,7 +50,7 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	
 	@Override
 	public void set(AMatrix m) {
-		if ((m.rowCount()!=2)||(m.columnCount()!=2)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));
+		m.checkShape(2, 2);
 		m00=m.unsafeGet(0,0);
 		m01=m.unsafeGet(0,1);
 		m10=m.unsafeGet(1,0);
@@ -153,15 +153,18 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 	public int columnCount() {
 		return 2;
 	}
+	
+	@Override
+	public int checkSquare() {
+		return 2;
+	}
 
 	@Override
 	public void add(AMatrix a) {
 		if (a instanceof Matrix22) {
 			add((Matrix22)a); return;
 		}
-		if ((a.rowCount()!=2)||(a.columnCount()!=2)) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
-		}
+		a.checkShape(2, 2);
 		m00+=a.unsafeGet(0, 0);
 		m01+=a.unsafeGet(0, 1);
 		m10+=a.unsafeGet(1, 0);

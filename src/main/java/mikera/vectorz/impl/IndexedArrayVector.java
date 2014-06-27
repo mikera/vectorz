@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
 /**
@@ -60,13 +59,12 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		if ((offset<0)||((offset+length)>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		int len=checkRange(offset,length);
 		if (length==0) return Vector0.INSTANCE;
-		if (length==this.length) return this;
+		if (length==len) return this;
 
-		int[] newIndexes=Arrays.copyOfRange(indexes, offset, offset+length);
+		int end=offset+length;
+		int[] newIndexes=Arrays.copyOfRange(indexes, offset, end);
 		return wrap(this.data,newIndexes);
 	}
 	

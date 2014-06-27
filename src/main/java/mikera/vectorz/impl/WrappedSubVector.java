@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import java.util.Iterator;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * View class referencing a contiguous subvector of another vector. 
@@ -60,18 +59,19 @@ public final class WrappedSubVector extends ASizedVector {
 	
 	@Override
 	public boolean isRangeZero(int start, int length) {
+		checkRange(start,length);
 		return wrapped.isRangeZero(this.offset + start, length);
 	}
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return wrapped.unsafeGet(i+offset);
 	}
 
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		wrapped.unsafeSet(i+offset,value);
 	}
 	
@@ -97,11 +97,9 @@ public final class WrappedSubVector extends ASizedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		if ((offset<0)||(offset+length>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-		}
+		int len=checkRange(offset,length);
 		if (length==0) return Vector0.INSTANCE;
-		if (length==this.length) return this;
+		if (len==length) return this;
 		return wrapped.subVector(this.offset+offset, length);
 	}
 	
@@ -113,6 +111,11 @@ public final class WrappedSubVector extends ASizedVector {
 	@Override
 	public void copyTo(int offset, double[] dest, int destOffset, int length) {
 		wrapped.copyTo(this.offset+offset,dest,destOffset,length);
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		wrapped.copyTo(this.offset+offset,dest,destOffset,length, stride);
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.indexz.AIndex;
@@ -68,8 +69,16 @@ public final class Vector extends ADenseArrayVector {
 		return wrap(data.clone());
 	}
 	
-
 	public static Vector create(ArrayList<Double> al) {
+		int n=al.size();
+		Vector v=Vector.createLength(n);
+		for (int i=0; i<n; i++) {
+			v.unsafeSet(i,al.get(i));
+		}
+		return v;
+	}
+	
+	public static Vector create(List<Double> al) {
 		int n=al.size();
 		Vector v=Vector.createLength(n);
 		for (int i=0; i<n; i++) {
@@ -258,33 +267,26 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(ADenseArrayVector v, double factor) {
-		int length=length();
-		assert(length==v.length());
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[i] += vdata[voffset + i]*factor;
-		}
+		int length=checkSameLength(v);
+		v.addMultipleToArray(factor,0,data, 0,length);
 	}
 	
 	@Override
 	public void add(AVector v) {
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		v.addToArray(data, 0);
 	}
 	
 	@Override
 	public void add(Vector v) {
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		add(v.data,0);
 	}
 	
 	@Override
 	public void add(double[] srcData, int srcOffset) {
 		int length=length();
-		for (int i = 0; i < length; i++) {
-			data[i] += srcData[srcOffset + i];
-		}
+		DoubleArrays.add(srcData, srcOffset, data, 0, length);
 	}
 	
 	@Override
@@ -310,16 +312,14 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	public void addProduct(Vector a, Vector b) {
-		int length=length();
-		assert((a.length()==length)&&(b.length()==length));
+		int length=checkSameLength(a,b);
 		for (int i = 0; i < length; i++) {
 			data[i]+=(a.data[i]*b.data[i]);
 		}
 	}
 	
 	public void addProduct(Vector a, Vector b, double factor) {
-		int length=length();
-		assert((a.length()==length)&&(b.length()==length));
+		int length=checkSameLength(a,b);
 		for (int i = 0; i < length; i++) {
 			data[i]+=(a.data[i]*b.data[i])*factor;
 		}
@@ -333,8 +333,8 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void sub(AVector v) {
 		if (v instanceof ADenseArrayVector) {sub(((ADenseArrayVector)v)); return;}
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int length=checkSameLength(v);
+		
 		for (int i = 0; i < length; i++) {
 			data[i] -= v.unsafeGet(i);
 		}
@@ -376,12 +376,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if ((v instanceof Vector)) {
-			return dotProduct((Vector)v);
-		} else {
-			if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
-			return v.dotProduct(data,0);
-		}
+		checkSameLength(v);
+		return v.dotProduct(data,0);
 	}
 	
 	@Override
@@ -403,8 +399,8 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	public double dotProduct(Vector v) {
-		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int len=checkSameLength(v);
+
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			result+=data[i]*v.data[i];
@@ -456,8 +452,8 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void addWeighted(AVector v, double factor) {
 		if (v instanceof ADenseArrayVector) {addWeighted(((ADenseArrayVector)v),factor); return;}
-		int length=length();
-		if(length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		int length=checkSameLength(v);
+
 		for (int i = 0; i < length; i++) {
 			data[i] = (data[i]*(1.0-factor)) + (v.unsafeGet(i)*factor);
 		}
@@ -475,9 +471,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(Vector source, Index index, double factor) {
-		if (index.length()!=source.length()) throw new VectorzException(ErrorMessages.incompatibleShapes(index, source));
 		int len=source.length();
-		assert(len==index.length());
+		if (index.length()!=len) throw new VectorzException(ErrorMessages.incompatibleShapes(index, source));
 		for (int i=0; i<len; i++) {
 			int j=index.data[i];
 			this.data[j]+=source.data[i]*factor;
@@ -486,9 +481,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(Index destToSource, Vector source, double factor) {
-		if (destToSource.length()!=this.length()) throw new VectorzException("Index must match this vector");
 		int len=this.length();
-		assert(len==destToSource.length());
+		if (destToSource.length()!=len) throw new VectorzException("Index length must match this vector");
 		for (int i=0; i<len; i++) {
 			int j=destToSource.data[i];
 			this.data[i]+=source.data[j]*factor;
@@ -497,44 +491,35 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void multiply(double factor) {
-		int len=length();
-		for (int i = 0; i < len; i++) {
-			data[i]*=factor;
-		}	
+		DoubleArrays.multiply(data, factor);
 	}
 	
 	@Override
 	public void multiply(AVector v) {
 		if (v instanceof Vector) {multiply(((Vector)v)); return;}
-		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		v.multiplyTo(data, 0);	
 	}
 	
 	public void multiply(Vector v) {
-		int len=length();
-		assert(len==v.length());
-		for (int i = 0; i < len; i++) {
-			data[i]*=v.data[i];
-		}	
+		checkSameLength(v);
+		DoubleArrays.multiply(data, v.data);
 	}
 	
 	@Override
 	public void divide(AVector v) {
 		if (v instanceof Vector) {divide(((Vector)v)); return;}
-		int len=length();
-		if(len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		checkSameLength(v);
 		v.divideTo(data, 0);	
 	}
 	
 	public void divide(Vector v) {
-		int len=length();
-		assert(len==v.length());
+		int len=checkSameLength(v);
 		for (int i = 0; i < len; i++) {
 			data[i]=(data[i]/v.data[i]);
 		}	
 	}
-	
+
 	@Override
 	public boolean isView() {
 		return false;

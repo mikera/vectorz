@@ -26,23 +26,18 @@ public final class Vector2 extends APrimitiveVector {
 		this.y=y;
 	}
 	
-	private Vector2(double... values) {
-		this.x=values[0];
-		this.y=values[1];
-	}
-	
 	public static Vector2 of(double x, double y) {
 		return new Vector2(x,y);
 	}
 	
 	public static Vector2 of(double... values) {
 		if (values.length!=2) throw new IllegalArgumentException("Can't create Vector2 vector from: "+Arrays.toString(values));
-		return new Vector2(values);
+		return new Vector2(values[0],values[1]);
 	}
 	
 	public static Vector2 create(AVector v) {
 		if (v.length()!=2) throw new IllegalArgumentException("Can't create Vector2 from vector with length "+v.length());
-		return new Vector2(v.get(0),v.get(1));
+		return new Vector2(v.unsafeGet(0),v.unsafeGet(1));
 	}
 	
 	@Override
@@ -75,17 +70,16 @@ public final class Vector2 extends APrimitiveVector {
 		x+=a.x*b.x*factor;
 		y+=a.y*b.y*factor;
 	}
-	
-	
+		
 	@Override
 	public double dotProduct(AVector a) {
-		if (a.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		a.checkLength(2);
 		return x*a.unsafeGet(0)+y*a.unsafeGet(1);
 	}
 	
 	@Override
 	public double dotProduct(Vector v) {
-		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
+		v.checkLength(2);
 		double[] data=v.getArray();
 		return x*data[0]+y*data[1];
 	}
@@ -263,13 +257,12 @@ public final class Vector2 extends APrimitiveVector {
 	public void addAt(int i, double value) {
 		switch (i) {
 		case 0: x+=value; return;
-		case 1: y+=value; return;
-		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		default: y+=value; return;
 		}
 	}
 	
 	/**
-	 * Rorates a 2D vector around the origin by a given angle
+	 * Rotates a 2D vector around the origin by a given angle
 	 * @param angle
 	 */
 	public void rotateInPlace(int angle) {
@@ -308,7 +301,6 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override 
 	public boolean equals(AVector v) {
-		if (v==this) return true;
 		if (v instanceof Vector2) {
 			return equals((Vector2)v);
 		}

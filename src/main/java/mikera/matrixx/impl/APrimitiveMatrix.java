@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
 
 /**
  * Base class for the small square primitive backed matrices
@@ -16,8 +17,21 @@ public abstract class APrimitiveMatrix extends AMatrix {
 	}
 	
 	@Override
+	public abstract int checkSquare();
+	
+	@Override
 	public boolean isFullyMutable() {
 		return true;
+	}
+	
+	@Override
+	public AVector getRow(int i) {
+		return getRowClone(i);
+	}
+	
+	@Override
+	public AVector getColumn(int j) {
+		return getColumnClone(j);
 	}
 	
 	@Override

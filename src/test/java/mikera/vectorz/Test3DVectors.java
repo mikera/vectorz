@@ -67,6 +67,10 @@ public class Test3DVectors {
 		grownVector
 	};
 	
+	@Test public void testSubVector() {
+		assertEquals(Vector.of(1,2),Vector3.of(0,1,2).subVector(1, 2));
+	}
+	
 	@Test public void testAll() {
 		for (AVector a:vectors_3D) {
 			testVector(a);

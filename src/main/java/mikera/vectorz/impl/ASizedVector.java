@@ -43,6 +43,43 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
+	protected final int checkSameLength(AVector v) {
+		int len=length;
+		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
+		return len;
+	}
+	
+	@Override
+	public final int checkRange(int offset, int length) {
+		int len=this.length;
+		int end=offset+length;
+		if ((offset<0)||(end>len)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		}
+		return len;
+	}
+	
+	@Override
+	protected final int checkIndex(int i) {
+		int len=length;
+		if ((i<0)||(i>=len)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		return len;
+	}
+	
+	@Override
+	public final int checkLength(int length) {
+		if (this.length!=length) throw new IllegalArgumentException("Vector length mismatch, expected length = "+length+", but got length = "+this.length);
+		return length;
+	}
+	
+	@Override
+	protected final int checkSameLength(ASizedVector v) {
+		int len=length;
+		if (len!=v.length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
+		return len;
+	}
+	
+	@Override
 	public final int[] getShapeClone() {
 		return new int[] {length};
 	}

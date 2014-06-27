@@ -101,9 +101,11 @@ public final class StridedMatrix extends AStridedMatrix {
 	public void applyOp(Op op) {
 		int rc = rowCount();
 		int cc = columnCount();
+		int o=offset;
 		for (int row = 0; row < rc; row++) {
+			int ro=o+row*rowStride();
 			for (int col = 0; col < cc; col++) {
-				int index = index(row,col);
+				int index = ro+col*colStride;
 				double v = data[index];
 				data[index] = op.apply(v);
 			}
@@ -114,13 +116,8 @@ public final class StridedMatrix extends AStridedMatrix {
 	public void getElements(double[] dest, int destOffset) {
 		int rc = rowCount();
 		int cc = columnCount();
-		int di=destOffset;
 		for (int row = 0; row < rc; row++) {
-			for (int col = 0; col < cc; col++) {
-				int index = index(row,col);
-				double v = data[index];
-				dest[di++] = v;
-			}
+			copyRowTo(row, dest, destOffset+row*cc);
 		}
 	}
 
@@ -137,16 +134,14 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public double get(int row, int column) {
-		if ((row < 0) || (column < 0) || (row >= rows)
-				|| (column >= cols))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		return data[index(row,column)];
+	public double get(int i, int j) {
+		checkIndex(i,j);
+		return data[index(i,j)];
 	}
 	
 	@Override
-	public double unsafeGet(int row, int column) {
-		return data[index(row,column)];
+	public double unsafeGet(int i, int j) {
+		return data[index(i,j)];
 	}
 	
 	@Override

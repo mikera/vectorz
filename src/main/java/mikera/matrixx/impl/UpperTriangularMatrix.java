@@ -5,7 +5,6 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.IndexedArrayVector;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Class for an upper triangular matrix packed densely by columns.
@@ -84,7 +83,7 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	
 	@Override
 	public double get(int i, int j) {
-		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		checkIndex(i,j);
 		if (i>j) return 0.0;
 		return data[internalIndex(i,j)];
 	}

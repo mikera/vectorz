@@ -18,14 +18,15 @@
 
 package mikera.matrixx.decompose.impl.svd;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Random;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
 
 
 /**
@@ -57,23 +58,32 @@ public abstract class StandardSvdChecks {
 
     public void testDecompositionOfTrivial()
     {
-    	double[][] dataA = {{5,2,3},
-    						{1.5, -2, 8},
-    						{-3, 4.7, -0.5}};
-        Matrix A = Matrix.create(dataA);
-
-        SvdImplicitQr alg = createSvd();
-        assertNotNull(alg._decompose(A));
-
-        assertEquals(3, rank(alg, EPS));
+//    	Test 1
+    	Matrix A = Matrix.create(new double[][] {{5,2,3},
+    			{1.5, -2, 8},
+    			{-3, 4.7, -0.5}});
+    	SvdImplicitQr alg = createSvd();
+    	assertNotNull(alg._decompose(A));
+    	assertEquals(3, rank(alg, EPS));
+    	assertEquals(0, nullity(alg, EPS));
+    	double []w = alg.getSingularValues().toDoubleArray();
+    	checkNumFound(1,1e-5,9.59186,w);
+    	checkNumFound(1,1e-5,5.18005,w);
+    	checkNumFound(1,1e-5,4.55558,w);
+    	checkComponents(alg,A);
+//    	Test 2
+        Matrix B = Matrix.create(new double[][] {{1, 2, 3},
+												 {4, 5, 6},
+												 {7, 8, 9}});
+        alg = createSvd();
+        assertNotNull(alg._decompose(B));
+        assertEquals(2, rank(alg, 10*EPS));
         assertEquals(0, nullity(alg, EPS));
-
-        double []w = alg.getSingularValues();
-        checkNumFound(1,1e-5,9.59186,w);
-        checkNumFound(1,1e-5,5.18005,w);
-        checkNumFound(1,1e-5,4.55558,w);
-
-        checkComponents(alg,A);
+        w = alg.getSingularValues().toDoubleArray();
+        checkNumFound(1,1e-5,16.848103,w);
+        checkNumFound(1,1e-5,1.068370,w);
+        checkNumFound(1,1e-5,0,w);
+        checkComponents(alg,B);
     }
 
     public void testWide() {
@@ -99,8 +109,8 @@ public abstract class StandardSvdChecks {
 
     public void testZero() {
 
-        for( int i = 1; i <= 16; i += 5 ) {
-            for( int j = 1; j <= 16; j += 5 ) {
+        for( int i = 1; i <= 11; i += 5 ) {
+            for( int j = 1; j <= 11; j += 5 ) {
                 Matrix A = Matrix.create(i,j);
 
                 SvdImplicitQr alg = createSvd();
@@ -108,7 +118,7 @@ public abstract class StandardSvdChecks {
 
                 int min = Math.min(i,j);
 
-                assertEquals(min,checkOccurrence(0,alg.getSingularValues(),min),1e-5);
+                assertEquals(min,checkOccurrence(0,alg.getSingularValues().toDoubleArray(),min),1e-5);
 
                 checkComponents(alg,A);
             }
@@ -122,7 +132,7 @@ public abstract class StandardSvdChecks {
         SvdImplicitQr alg = createSvd();
         assertNotNull(alg._decompose(A));
 
-        assertEquals(6,checkOccurrence(1,alg.getSingularValues(),6),1e-5);
+        assertEquals(6,checkOccurrence(1,alg.getSingularValues().toDoubleArray(),6),1e-5);
 
         checkComponents(alg,A);
     }
@@ -159,8 +169,8 @@ public abstract class StandardSvdChecks {
     public void testLots() {
         SvdImplicitQr alg = createSvd();
 
-        for( int i = 1; i < 10; i++ ) {
-            for( int j = 1; j < 10; j++ ) {
+        for( int i = 1; i < 8; i+=2 ) {
+            for( int j = 1; j < 8; j+=2 ) {
                 Matrix A = Matrix.createRandom(i,j);
                 A.sub(0.5);
                 A.scale(2);
@@ -232,9 +242,9 @@ public abstract class StandardSvdChecks {
         Matrix Vt = svd.getV().getTranspose().toMatrix();
         Matrix W = svd.getS().toMatrix();
 
-        assertTrue( !hasUncountable(U) );
-        assertTrue( !hasUncountable(Vt) );
-        assertTrue( !hasUncountable(W) );
+        assertTrue( !U.hasUncountable() );
+        assertTrue( !Vt.hasUncountable() );
+        assertTrue( !W.hasUncountable() );
 
         if( svd.isCompact() ) {
         	assertTrue(W.columnCount()==W.rowCount());
@@ -267,7 +277,7 @@ public abstract class StandardSvdChecks {
     private static int rank( SvdImplicitQr svd , double threshold ) {
         int numRank=0;
 
-        double w[]= svd.getSingularValues();
+        double w[]= svd.getSingularValues().toDoubleArray();
 
         int N = svd.numberOfSingularValues();
 
@@ -290,7 +300,7 @@ public abstract class StandardSvdChecks {
     public static int nullity( SvdImplicitQr svd , double threshold ) {
         int ret = 0;
 
-        double w[]= svd.getSingularValues();
+        double w[]= svd.getSingularValues().toDoubleArray();
 
         int N = svd.numberOfSingularValues();
 
@@ -313,25 +323,5 @@ public abstract class StandardSvdChecks {
         }
 
         assertEquals(expected,numFound);
-    }
-    
-    /**
-     * Checks to see if any element in the matrix is NaN of Infinite.
-     *
-     * @param m A matrix. Not modified.
-     * @return True if any element in the matrix is NaN of Infinite.
-     */
-//    taken from Matrix Features
-    private static boolean hasUncountable( Matrix m )
-    {
-        long length = m.elementCount();
-        double[] data = m.asDoubleArray();
-
-        for( int i = 0; i < length; i++ ) {
-            double a = data[i];
-            if( Double.isNaN(a) || Double.isInfinite(a))
-                return true;
-        }
-        return false;
     }
 }

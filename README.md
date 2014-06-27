@@ -59,4 +59,4 @@ This focus has driven a number of important design decisions:
  - Vector operations are generally not thread safe, by design
  - Concrete classes are generally final
  
-If you have a common case that isn't yet well optimised then please post an issue - the aim is to make all common operations efficient as efficient as they can possibly be on the JVM.
+If you have a use case that isn't yet well optimised then please post an issue - the aim is to make all common operations as efficient as possible.

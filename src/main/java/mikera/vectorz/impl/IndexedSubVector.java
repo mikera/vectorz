@@ -15,11 +15,11 @@ import mikera.vectorz.util.VectorzException;
 public final class IndexedSubVector extends BaseIndexedVector {
 	private static final long serialVersionUID = -1411109918028367417L;
 
-	private final AVector data;
+	private final AVector source;
 	
 	private IndexedSubVector(AVector source, int[] indexes) {
 		super(indexes);
-		this.data=source;
+		this.source=source;
 	}
 	
 	public static IndexedSubVector wrap(AVector source, int[] indexes) {
@@ -29,41 +29,41 @@ public final class IndexedSubVector extends BaseIndexedVector {
 	@Override
 	public void addToArray(double[] dest, int offset) {
 		for (int i=0; i<length; i++) {
-			dest[offset+i]+=data.unsafeGet(indexes[i]);
+			dest[offset+i]+=source.unsafeGet(indexes[i]);
 		}
 	}
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
 		for (int i=0; i<length; i++) {
-			dest[offset+i]=data.unsafeGet(indexes[i]);
+			dest[offset+i]=source.unsafeGet(indexes[i]);
 		}
 	}
 	
 	@Override
 	public AVector selectView(int... inds) {
 		int[] ci=IntArrays.select(indexes,inds);
-		return new IndexedSubVector(data,ci);
+		return new IndexedSubVector(source,ci);
 	}
 
 	@Override
 	public double get(int i) {
-		return data.unsafeGet(indexes[i]);
+		return source.unsafeGet(indexes[i]);
 	}
 
 	@Override
 	public void set(int i, double value) {
-		data.unsafeSet(indexes[i],value);
+		source.unsafeSet(indexes[i],value);
 	}
 	
 	@Override
 	public double unsafeGet(int i) {
-		return data.unsafeGet(indexes[i]);
+		return source.unsafeGet(indexes[i]);
 	}
 
 	@Override
 	public void unsafeSet(int i, double value) {
-		data.unsafeSet(indexes[i],value);
+		source.unsafeSet(indexes[i],value);
 	}
 	
 	@Override
@@ -78,18 +78,18 @@ public final class IndexedSubVector extends BaseIndexedVector {
 		for (int i=0; i<length; i++) {
 			newIndexes[i]=indexes[offset+i];
 		}
-		return wrap(this.data,newIndexes);
+		return wrap(this.source,newIndexes);
 	}
 	
 	@Override 
 	public IndexedSubVector exactClone() {
-		return IndexedSubVector.wrap(data.exactClone(), indexes.clone());
+		return IndexedSubVector.wrap(source.exactClone(), indexes.clone());
 	}
 	
 	@Override
 	public void validate() {
 		super.validate();
-		int slen=data.length();
+		int slen=source.length();
 		for (int i=0; i<length; i++) {
 			if ((indexes[i]<0)||(indexes[i]>=slen)) throw new VectorzException("Indexes out of range");
 		}
@@ -97,6 +97,6 @@ public final class IndexedSubVector extends BaseIndexedVector {
 
 	@Override
 	public void addAt(int i, double v) {
-		data.addAt(indexes[i], v);
+		source.addAt(indexes[i], v);
 	}
 }

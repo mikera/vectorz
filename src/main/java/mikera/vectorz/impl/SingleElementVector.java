@@ -4,7 +4,6 @@ import mikera.indexz.Index;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector1;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
@@ -143,12 +142,13 @@ public final class SingleElementVector extends ASparseVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		int end=offset+length;
-		if ((offset>index)||(end<=index)) {
-			if ((offset<0)||(end>this.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
-			return Vectorz.createZeroVector(length);
+		int len=checkRange(offset,length);
+		if (length==0) return Vector0.INSTANCE;
+		if (length==len) return this;
+		if ((offset>index)||((offset+length)<=index)) {
+			return ZeroVector.create(length);
 		}
-		return super.subVector(offset, length);
+		return SingleElementVector.create(value, index-offset, length);
 	}
 	
 	@Override

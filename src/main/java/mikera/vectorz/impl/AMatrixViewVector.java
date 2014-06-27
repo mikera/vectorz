@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract Vector class representing a view over a matrix
@@ -26,7 +25,7 @@ public abstract class AMatrixViewVector extends ASizedVector {
 	
 	@Override 
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		// we assume unsafe is OK, i.e. calculations are correct given correct i
 		source.unsafeSet(calcRow(i),calcCol(i),value);
 	}
@@ -46,7 +45,7 @@ public abstract class AMatrixViewVector extends ASizedVector {
 	
 	@Override 
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		// we assume unsafe is OK, i.e. calculations are correct given correct i
 		return source.unsafeGet(calcRow(i),calcCol(i));
 	}

@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import mikera.arrayz.ISparse;
@@ -49,6 +50,12 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	
 	@Override
 	public abstract void addToArray(int offset, double[] destData, int destOffset, int length);
+
+	@Override
+	public void copyTo(int offset, double[] destData, int destOffset, int length) {
+		Arrays.fill(destData, destOffset, destOffset+length, 0.0);
+		addToArray(offset, destData, destOffset, length);
+	}
 	
 	@Override
 	public abstract boolean isZero();
