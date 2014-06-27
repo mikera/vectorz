@@ -125,8 +125,7 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	
 	@Override
 	public void add(AMatrix m) {
-		checkColumnCount(m.columnCount());
-		checkRowCount(m.rowCount());
+		checkSameShape(m);
 		int offset=getArrayOffset();
 		int colStride=columnStride();
 		int rowStride=rowStride();
