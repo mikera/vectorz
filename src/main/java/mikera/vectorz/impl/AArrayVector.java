@@ -14,5 +14,10 @@ public abstract class AArrayVector extends ASizedVector {
 		super(length);
 		this.data=data;
 	}
+	
+	/**
+	 * Computes an index into the underlying array for a given vector index
+	 */
+	protected abstract int index(int i);
 
 }

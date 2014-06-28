@@ -604,4 +604,9 @@ public final class Vector extends ADenseArrayVector {
 		return DoubleArrays.equals(data, arr, length);
 	}
 
+	@Override
+	protected int index(int i) {
+		return i;
+	}
+
 }

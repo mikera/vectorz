@@ -238,4 +238,9 @@ public class ImmutableVector extends AArrayVector implements IDense {
 		super.validate();
 	}
 
+	@Override
+	protected int index(int i) {
+		return offset+i;
+	}
+
 }

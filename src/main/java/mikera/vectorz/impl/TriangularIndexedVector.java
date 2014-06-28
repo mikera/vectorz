@@ -3,9 +3,9 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 
 /**
- * Vector with an increasing triangular index.
+ * Vector with an increasing triangular index. Useful for triangular and symmetric matrix subviews
+ * 
  * @author Mike
- *
  */
 public final class TriangularIndexedVector extends AArrayVector {
 	private static final long serialVersionUID = -3987292933848795478L;
@@ -23,7 +23,8 @@ public final class TriangularIndexedVector extends AArrayVector {
 		return new TriangularIndexedVector(length, data, offset, baseStride*2);
 	}
 	
-	private int index(int i) {
+	@Override
+	protected int index(int i) {
 		return offset+(((baseStride2+i+1)*i)>>1);
 	}
 
@@ -47,6 +48,14 @@ public final class TriangularIndexedVector extends AArrayVector {
 	@Override
 	public void unsafeSet(int i, double value) {
 		data[index(i)]=value;
+	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		int len=checkRange(start,length);
+		if (length==0) return Vector0.INSTANCE;
+		if (length==len) return this;
+		return wrap(length,data,index(start),(baseStride2>>1)+start);
 	}
 
 	@Override
