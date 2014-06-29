@@ -24,6 +24,7 @@ package mikera.matrixx.decompose;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.impl.Constants;
+import mikera.matrixx.decompose.impl.qr.HouseholderQR;
 import mikera.matrixx.decompose.impl.qr.QRResult;
 import mikera.vectorz.Vector;
 
@@ -50,11 +51,12 @@ public class QR {
 	 * @return
 	 */
 	public static IQRResult decompose(AMatrix matrix) {
+//		For taller matrices, use decomposeInternal, otherwise use householder.
+		if (matrix.columnCount() > matrix.rowCount()*3/10.0) {
+			HouseholderQR alg = new HouseholderQR(matrix.toMatrix(), false);
+			return new QRResult(alg.getQ(), alg.getR());	
+		}
 		return decomposeInternal(Matrix.create(matrix));
-	}
-
-	public static IQRResult decompose(Matrix matrix) {
-		return decomposeInternal(matrix.clone());
 	}
 	
 	// Perform decomposition on a Matrix. 
