@@ -355,6 +355,16 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean equals(AVector v) {
+		int len=v.length();
+		if (len!=length) return false;
+		if (v.unsafeGet(axis)!=1.0) return false;
+		if (!v.isRangeZero(0,axis)) return false;
+		if (!v.isRangeZero(axis+1,length-axis-1)) return false;
+		return true;
+	}
+	
+	@Override
 	public boolean elementsEqual(double value) {
 		return (value==1.0)&&(length==1);
 	}
