@@ -3,7 +3,7 @@ package mikera.matrixx.decompose.impl.qr;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.IQRResult;
-import mikera.matrixx.decompose.QR;
+import mikera.matrixx.decompose.impl.qr.HouseholderQR;
 import mikera.matrixx.decompose.impl.qr.HouseholderQR;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -42,7 +42,8 @@ public class TestHouseholderQR {
 	@Test
 	public void testZeroDecompose() {
 		AMatrix a = ZeroMatrix.create(4, 3);
-		IQRResult qr = QR.decompose(a);
+		HouseholderQR alg = new HouseholderQR(a.toMatrix(), false);
+		IQRResult qr = new QRResult(alg.getQ(), alg.getR());
 		AMatrix q = qr.getQ();
 		AMatrix r = qr.getR();
 
@@ -54,7 +55,8 @@ public class TestHouseholderQR {
 	@Test
 	public void testZeroDecomposeSquare() {
 		AMatrix a = ZeroMatrix.create(3, 3);
-		IQRResult qr = QR.decompose(a);
+		HouseholderQR alg = new HouseholderQR(a.toMatrix(), false);
+		IQRResult qr = new QRResult(alg.getQ(), alg.getR());
 		AMatrix q = qr.getQ();
 		AMatrix r = qr.getR();
 
@@ -73,8 +75,6 @@ public class TestHouseholderQR {
 	public void validateQR(AMatrix a, IQRResult result) {
 		AMatrix q = result.getQ();
 		AMatrix r = result.getR();
-
-		assertTrue(q.isSameShape(a));
 		assertTrue(r.isUpperTriangular());
 		assertTrue(q.innerProduct(r).epsilonEquals(a));
 		assertTrue(q.hasOrthonormalColumns());
