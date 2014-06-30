@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
@@ -298,10 +299,22 @@ public class Matrixx {
 		fillRandomValues(m);
 		return m;
 	}
+	
+	public static Matrix createRandomSquareMatrix(int dimensions, Random rand) {
+		Matrix m = createSquareMatrix(dimensions);
+		fillRandomValues(m,rand);
+		return m;
+	}
 
 	public static AMatrix createRandomMatrix(int rows, int columns) {
 		AMatrix m = newMatrix(rows, columns);
 		fillRandomValues(m);
+		return m;
+	}
+	
+	public static AMatrix createRandomMatrix(int rows, int columns, Random rand) {
+		AMatrix m = newMatrix(rows, columns);
+		fillRandomValues(m,rand);
 		return m;
 	}
 
@@ -431,6 +444,16 @@ public class Matrixx {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				m.unsafeSet(i, j, Rand.nextDouble());
+			}
+		}
+	}
+	
+	public static void fillRandomValues(AMatrix m, Random rand) {
+		int rows = m.rowCount();
+		int columns = m.columnCount();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				m.unsafeSet(i, j, rand.nextDouble());
 			}
 		}
 	}
