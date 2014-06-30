@@ -1775,7 +1775,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param j
 	 * @return
 	 */
-	public int bandIndex(int i, int j) {
+	public final int bandIndex(int i, int j) {
 		return j-i;
 	}
 	
@@ -1785,7 +1785,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param j
 	 * @return
 	 */
-	public int bandPosition(int i, int j) {
+	public final int bandPosition(int i, int j) {
 		return Math.min(i, j);
 	}
 	
