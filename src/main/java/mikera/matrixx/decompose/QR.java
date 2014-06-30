@@ -51,12 +51,8 @@ public class QR {
 	 * @return
 	 */
 	public static IQRResult decompose(AMatrix matrix) {
-//		For taller matrices, use decomposeInternal, otherwise use householder.
-		if (matrix.columnCount() > matrix.rowCount()*3/10.0) {
-			HouseholderQR alg = new HouseholderQR(matrix.toMatrix(), false);
-			return new QRResult(alg.getQ(), alg.getR());	
-		}
-		return decomposeInternal(Matrix.create(matrix));
+		HouseholderQR alg = new HouseholderQR(matrix.toMatrix(), false);
+		return new QRResult(alg.getQ(), alg.getR());	
 	}
 	
 	// Perform decomposition on a Matrix. 
