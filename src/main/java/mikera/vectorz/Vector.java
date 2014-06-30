@@ -591,7 +591,7 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public boolean equals(ADenseArrayVector v) {
 		if (length!=v.length()) return false;
-		return DoubleArrays.equals(data, 0, v.getArray(), v.getArrayOffset(), length);
+		return v.equalsArray(data, 0);
 	}
 	
 	@Override
