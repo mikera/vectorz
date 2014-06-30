@@ -438,6 +438,10 @@ public class Matrixx {
 		return result;
 	}
 
+	/**
+	 * Fills a matrix with uniform random numbers
+	 * @param m
+	 */
 	public static void fillRandomValues(AMatrix m) {
 		int rows = m.rowCount();
 		int columns = m.columnCount();
@@ -448,6 +452,10 @@ public class Matrixx {
 		}
 	}
 	
+	/**
+	 * Fills a matrix with uniform random numbers, using the specified Random instance
+	 * @param m
+	 */
 	public static void fillRandomValues(AMatrix m, Random rand) {
 		int rows = m.rowCount();
 		int columns = m.columnCount();
