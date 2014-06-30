@@ -190,6 +190,14 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public void add(int offset, AVector a, int aOffset, int length) {
+		double[] tdata=getArray();
+		int stride=getStride();
+		int toffset=getArrayOffset()+offset*stride;
+		a.subVector(aOffset, length).addToArray(tdata, toffset, stride);	
+	}
+	
+	@Override
 	public void addAt(int i, double v) {
 		int ix=checkIndex(i);
 		double[] data=getArray();
