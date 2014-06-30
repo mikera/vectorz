@@ -929,7 +929,6 @@ public class TestVectors {
 		AVector joined = Vectorz.join( new Vector3(1.0,2.0,3.0), Vectorz.create(data));
 		doGenericTests(joined);
 		
-		
 		AVector j5=Vectorz.join(Vector4.of(1,2,3,4),joined,Vector3.of(1,2,3),Vector.of(2,3,4,5),Vector0.INSTANCE,Vector.of(),joined);
 		doGenericTests(j5);
 	}
