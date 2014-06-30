@@ -1,16 +1,14 @@
 package mikera.matrixx.decompose.impl.qr;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.IQRResult;
-import mikera.matrixx.decompose.impl.qr.HouseholderQR;
-import mikera.matrixx.decompose.impl.qr.HouseholderQR;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class TestHouseholderQR {
 
