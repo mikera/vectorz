@@ -27,11 +27,6 @@ public final class ArraySubVector extends ADenseArrayVector {
 		this.offset=offset;
 	}
 
-	public ArraySubVector(int length) {
-		super(length,new double[length]);
-		offset = 0;
-	}
-	
 	public static ArraySubVector wrap(double[] data, int offset, int length) {
 		return new ArraySubVector(data,offset,length);
 	}
