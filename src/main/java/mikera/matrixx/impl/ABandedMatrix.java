@@ -224,6 +224,18 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 		}
 	}
 	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		int b1=-lowerBandwidth();
+		int b2=upperBandwidth();
+		int cc=columnCount();
+		for (int b=b1; b<=b2; b++) {
+			AVector band=getBand(b);
+			int di = offset+this.bandStartColumn(b)+cc*bandStartRow(b);
+			band.addToArray(data, di, cc+1);
+		}
+	}
+	
 	@Override public void validate() {
 		super.validate();
 		if (lowerBandwidthLimit()<0) throw new VectorzException("Negative lower bandwidth limit?!?");
