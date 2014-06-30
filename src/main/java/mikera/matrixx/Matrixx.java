@@ -542,8 +542,9 @@ public class Matrixx {
 		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);
 	}
 
-	public static AMatrix createSparse(List<INDArray> slices) {
-		int cc=slices.get(0).sliceCount();
+	public static AMatrix createSparse(Iterable<INDArray> slices) {
+		INDArray slice1=slices.iterator().next();
+		int cc=slice1.sliceCount();
 		ArrayList<AVector> al=new ArrayList<AVector>();
 		for (INDArray a:slices) {
 			if ((a.dimensionality()!=1)||(a.sliceCount()!=cc)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a)); 
