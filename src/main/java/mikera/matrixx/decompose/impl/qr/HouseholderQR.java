@@ -82,10 +82,6 @@ public class HouseholderQR implements QRDecomposition {
         this.compact = compact;
     }
 
-    public void setExpectedMaxSize( int numRows , int numCols ) {
-        
-    }
-
     /**
      * Returns a single matrix which contains the combined values of Q and R.  This
      * is possible since Q is symmetric and R is upper triangular.
