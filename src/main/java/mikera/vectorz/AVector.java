@@ -807,7 +807,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		checkLength(rc);
 		Vector r=Vector.createLength(cc);
 		for (int i=0; i<cc; i++) {
-			r.unsafeSet(i,m.getColumn(i).dotProduct(this));
+			r.unsafeSet(i,this.dotProduct(m.getColumn(i)));
 		}
 		return r;
 	}
