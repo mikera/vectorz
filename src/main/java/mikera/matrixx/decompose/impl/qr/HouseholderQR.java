@@ -18,8 +18,6 @@
 
 package mikera.matrixx.decompose.impl.qr;
 
-import java.util.Arrays;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 
@@ -77,6 +75,8 @@ public class HouseholderQR implements QRDecomposition {
     protected boolean error;
     
     private boolean compact;
+    private AMatrix Q;
+    private AMatrix R;
     
     public HouseholderQR(boolean compact) {
         this.compact = compact;
@@ -91,12 +91,32 @@ public class HouseholderQR implements QRDecomposition {
     public AMatrix getQR() {
         return QR;
     }
+    
+    /**
+     * @return The Q matrix from the decomposition.
+     */
+    public AMatrix getQ() {
+        if (Q == null) {
+            Q = computeQ();
+        }
+        return Q;
+    }
+
+    /**
+     * @return The R matrix from the decomposition.
+     */
+    public AMatrix getR() {
+        if (R == null) {
+            R = computeR();
+        }
+        return R;
+    }
 
     /**
      * Computes the Q matrix from the imformation stored in the QR matrix.  This
      * operation requires about 4(m<sup>2</sup>n-mn<sup>2</sup>+n<sup>3</sup>/3) flops.
      */
-    public AMatrix getQ() {
+    protected AMatrix computeQ() {
         Matrix Q = Matrix.createIdentity(numRows);
 
         for( int j = minLength-1; j >= 0; j-- ) {
@@ -113,7 +133,7 @@ public class HouseholderQR implements QRDecomposition {
     /**
      * Returns an upper triangular matrix which is the R in the QR decomposition.
      */
-    public AMatrix getR() {
+    protected AMatrix computeR() {
         Matrix R;
         if( compact ) {
             R = Matrix.create(minLength,numCols);

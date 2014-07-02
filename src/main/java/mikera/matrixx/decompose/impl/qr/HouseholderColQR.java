@@ -28,11 +28,9 @@ import mikera.matrixx.Matrix;
  * of CPU cache misses and the number of copies that are performed.
  * </p>
  *
- * @see org.ejml.alg.dense.decomposition.qr.QRDecompositionHouseholder
- *
  * @author Peter Abeles
  */
-public class HouseholderColQR {
+public class HouseholderColQR implements QRDecomposition {
 
     /**
      * Where the Q and R matrices are stored.  R is stored in the
@@ -59,6 +57,8 @@ public class HouseholderColQR {
     protected boolean error;
     
     private boolean compact;
+    private AMatrix Q;
+    private AMatrix R;
     
     public HouseholderColQR(boolean compact) {
         this.compact = compact;
@@ -73,20 +73,32 @@ public class HouseholderColQR {
     public double[][] getQR() {
         return dataQR;
     }
-
+    
     /**
-     * Computes the Q matrix from the imformation stored in the QR matrix.  This
-     * operation requires about 4(m<sup>2</sup>n-mn<sup>2</sup>+n<sup>3</sup>/3) flops.
-     *
-     * @param Q The orthogonal Q matrix.
+     * @return The Q matrix from the decomposition.
      */
     public AMatrix getQ() {
-        Matrix Q;
-        if( compact ) {
-            Q = Matrix.createIdentity(numRows, minLength);
-        } else {
-            Q = Matrix.createIdentity(numRows);
+        if (Q == null) {
+            Q = computeQ();
         }
+        return Q;
+    }
+
+    /**
+     * @return The R matrix from the decomposition.
+     */
+    public AMatrix getR() {
+        if (R == null) {
+            R = computeR();
+        }
+        return R;
+    }
+
+    /**
+     * Computes Q.
+     */
+    protected AMatrix computeQ() {
+        Matrix Q = Matrix.createIdentity(numRows);
 
         for( int j = minLength-1; j >= 0; j-- ) {
             double u[] = dataQR[j];
@@ -101,12 +113,9 @@ public class HouseholderColQR {
     }
 
     /**
-     * Returns an upper triangular matrix which is the R in the QR decomposition.
-     *
-     * @param R An upper triangular matrix.
-     * @param compact
+     * Computes R.
      */
-    public AMatrix getR() {
+    protected AMatrix computeR() {
         Matrix R;
         if( compact ) {
             R = Matrix.create(minLength,numCols);
@@ -138,7 +147,7 @@ public class HouseholderColQR {
      * to it.
      * </p>
      */
-    public boolean decompose( AMatrix A ) {
+    public QRResult decompose( AMatrix A ) {
         this.numCols = A.columnCount();
         this.numRows = A.rowCount();
         minLength = Math.min(numCols,numRows);
@@ -157,7 +166,10 @@ public class HouseholderColQR {
             updateA(j);
         }
 
-        return !error;
+    //  if (error)
+    //      return null;
+    //  else
+        return new QRResult(getQ(), getR());
     }
 
     /**
