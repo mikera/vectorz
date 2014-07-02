@@ -35,6 +35,44 @@ import mikera.vectorz.Vector;
  */
 public class QR {
 
+    /**
+     * Computes the QR factorisation of a matrix A such that:
+     * 
+     *   A = Q.R
+     *   
+     * Where:
+     * 
+     *   Q is an orthogonal matrix
+     *   R is an upper triangular matrix
+     * 
+     * If A is rectangular (m x n where m>n) then Q will also be (m x n)
+     * 
+     * @param matrix
+     * @return
+     */
+    public static IQRResult decompose(AMatrix matrix) {
+        HouseholderQR alg = new HouseholderQR(false);
+        return alg.decompose(matrix);	
+    }
+    /**
+     * Computes the QR factorisation of a matrix A such that:
+     * 
+     *   A = Q.R
+     *   
+     * Where:
+     * 
+     *   Q is an orthogonal matrix
+     *   R is an upper triangular matrix
+     * 
+     * If A is rectangular (m x n where m>n) then Q will also be (m x n)
+     * 
+     * @param matrix
+     * @return
+     */
+    public static IQRResult decompose(AMatrix matrix, boolean compact) {
+        HouseholderQR alg = new HouseholderQR(compact);
+        return alg.decompose(matrix);	
+    }
 	/**
 	 * Computes the QR factorisation of a matrix A such that:
 	 * 
@@ -50,104 +88,10 @@ public class QR {
 	 * @param matrix
 	 * @return
 	 */
-	public static IQRResult decompose(AMatrix matrix) {
-		HouseholderQR alg = new HouseholderQR(false);
+	public static IQRResult decomposeCompact(AMatrix matrix) {
+		HouseholderQR alg = new HouseholderQR(true);
 		return alg.decompose(matrix);	
 	}
 	
-	// Perform decomposition on a Matrix. 
-	// Destructively modifies the input Matrix
-	static IQRResult decomposeInternal(Matrix matrix) {
-		int rc = matrix.rowCount();
-		int cc = matrix.columnCount();
-
-		if (rc < cc) { throw new IllegalArgumentException("Wrong matrix size: "
-				+ "rows < columns"); }
-
-		Matrix qr = matrix;
-
-		Vector rdiag = Vector.createLength(cc);
-
-		for (int k = 0; k < cc; k++) {
-
-			// norm of lower triangular matrix column
-			double ss=0.0;
-			for (int i = k; i < rc; i++) {
-				double v=qr.get(i, k);
-				ss+=v*v;
-			}
-			double norm = Math.sqrt(ss);
-			
-			if (Math.abs(norm) > Constants.EPS) {
-
-				if (qr.get(k, k) < 0.0) {
-					norm = -norm;
-				}
-
-				for (int i = k; i < rc; i++) {
-					qr.set(i, k, qr.get(i,k)/norm);
-				}
-
-				qr.addAt(k, k, 1.0);
-
-				for (int j = k + 1; j < cc; j++) {
-
-					double summand = 0.0;
-
-					for (int i = k; i < rc; i++) {
-						summand += qr.unsafeGet(i, k) * qr.unsafeGet(i, j);
-					}
-
-					summand = -summand / qr.get(k, k);
-
-					for (int i = k; i < rc; i++) {
-						qr.addAt(i, j,summand * qr.unsafeGet(i, k));
-					}
-				}
-			}
-
-			rdiag.set(k, -norm);
-		}
-
-		Matrix q = Matrix.create(rc, cc);
-
-		for (int k = cc - 1; k >= 0; k--) {
-
-			q.set(k, k, 1.0);
-
-			for (int j = k; j < cc; j++) {
-
-				if (Math.abs(qr.unsafeGet(k, k)) > Constants.EPS) {
-
-					double summand = 0.0;
-
-					for (int i = k; i < rc; i++) {
-						summand += qr.get(i, k) * q.unsafeGet(i, j);
-					}
-
-					summand = -summand / qr.unsafeGet(k, k);
-
-					for (int i = k; i < rc; i++) {
-						q.addAt(i, j,summand * qr.unsafeGet(i, k));
-					}
-				}
-			}
-		}
-
-		// create square matrix
-		Matrix r = Matrix.create(cc,cc);
-
-		for (int i = 0; i < cc; i++) {
-			for (int j = i; j < cc; j++) {
-				if (i < j) {
-					r.set(i, j, qr.unsafeGet(i, j));
-				} else if (i == j) {
-					r.set(i, j, rdiag.unsafeGet(i));
-				}
-			}
-		}
-
-		return new QRResult ( q, r );
-	}
 
 }

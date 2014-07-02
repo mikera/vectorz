@@ -71,8 +71,7 @@ public abstract class GenericQrCheck {
 
         Matrix Q = result.getQ().toMatrix();
         Matrix R = result.getR().toMatrix();
-        assertTrue(Q.rowCount() == height);
-        assertTrue(Q.columnCount() == (compact ? minStride : height));
+        assertTrue(Q.rowCount() == height && Q.columnCount() == height);
         assertTrue(R.rowCount() == (compact ? minStride : height));
         assertTrue(R.columnCount() == width);
 
@@ -80,6 +79,7 @@ public abstract class GenericQrCheck {
         assertTrue(Q.isOrthogonal());
 
         // see if it has the expected properties
+        R = R.reshape(A.rowCount(), A.columnCount());
         Matrix A_found = Multiplications.multiply(Q, R);
 
         A.epsilonEquals(A_found,1e-6);

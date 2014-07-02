@@ -21,8 +21,8 @@ public class TestHouseholderQR extends GenericQrCheck {
 		HouseholderQR alg = new HouseholderQR(false);
 		IQRResult result = alg.decompose(A);
 		
-		AMatrix Q = alg.getQ();
-		AMatrix R = alg.getR();
+		AMatrix Q = result.getQ();
+		AMatrix R = result.getR();
 
 		Matrix expectQ = Matrix.create(new double[][] { { 0, -0.6, 0.8 },
 				{ 0, -0.8, -0.6 }, { -1, 0, 0 } });
@@ -34,8 +34,8 @@ public class TestHouseholderQR extends GenericQrCheck {
 		A = Matrix.create(dataA);
 		alg = new HouseholderQR(true);
 		result = alg.decompose(A);
-		Q = alg.getQ();
-		R = alg.getR();
+		Q = result.getQ();
+		R = result.getR();
 
 		assertEquals(Q, expectQ);
 		assertEquals(R, expectR);

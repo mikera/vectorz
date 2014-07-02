@@ -57,6 +57,13 @@ public class HouseholderColQR {
 
     // did it encounter an error?
     protected boolean error;
+    
+    private boolean compact;
+    
+    public HouseholderColQR(boolean compact) {
+        this.compact = compact;
+        
+    }
 
     /**
      * Returns the combined QR matrix in a 2D array format that is column major.
@@ -73,7 +80,8 @@ public class HouseholderColQR {
      *
      * @param Q The orthogonal Q matrix.
      */
-    public AMatrix getQ( AMatrix Q , boolean compact ) {
+    public AMatrix getQ() {
+        Matrix Q;
         if( compact ) {
             Q = Matrix.createIdentity(numRows, minLength);
         } else {
@@ -85,7 +93,7 @@ public class HouseholderColQR {
 
             double vv = u[j];
             u[j] = 1;
-            QRHelperFunctions.rank1UpdateMultR(Q.toMatrix(),u,gammas[j],j,j,numRows,v);
+            QRHelperFunctions.rank1UpdateMultR(Q,u,gammas[j],j,j,numRows,v);
             u[j] = vv;
         }
 
@@ -98,7 +106,8 @@ public class HouseholderColQR {
      * @param R An upper triangular matrix.
      * @param compact
      */
-    public AMatrix getR(AMatrix R, boolean compact) {
+    public AMatrix getR() {
+        Matrix R;
         if( compact ) {
             R = Matrix.create(minLength,numCols);
         } else {
