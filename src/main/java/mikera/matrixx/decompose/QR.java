@@ -51,8 +51,8 @@ public class QR {
 	 * @return
 	 */
 	public static IQRResult decompose(AMatrix matrix) {
-		HouseholderQR alg = new HouseholderQR(matrix.toMatrix(), false);
-		return new QRResult(alg.getQ(), alg.getR());	
+		HouseholderQR alg = new HouseholderQR(false);
+		return alg.decompose(matrix);	
 	}
 	
 	// Perform decomposition on a Matrix. 

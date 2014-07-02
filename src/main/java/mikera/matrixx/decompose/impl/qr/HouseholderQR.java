@@ -18,6 +18,7 @@
 
 package mikera.matrixx.decompose.impl.qr;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.IQRResult;
 import mikera.vectorz.Vector;
@@ -51,7 +52,7 @@ import mikera.vectorz.Vector;
  * 
  * @author Peter Abeles
  */
-public class HouseholderQR implements IQRResult {
+public class HouseholderQR implements QRDecomposition {
 
 	/**
 	 * Where the Q and R matrices are stored. R is stored in the upper
@@ -78,9 +79,8 @@ public class HouseholderQR implements IQRResult {
 	private Matrix Q;
 	private Matrix R;
 
-	public HouseholderQR(Matrix A, boolean compact) {
+	public HouseholderQR(boolean compact) {
 		this.compact = compact;
-		decompose(A);
 	}
 
 	protected void setExpectedMaxSize(int numRows, int numCols) {
@@ -123,7 +123,6 @@ public class HouseholderQR implements IQRResult {
 	/**
 	 * @return The Q matrix from the decomposition.
 	 */
-	@Override
 	public Matrix getQ() {
 		if (Q == null) {
 			Q = computeQ(compact);
@@ -134,7 +133,6 @@ public class HouseholderQR implements IQRResult {
 	/**
 	 * @return The R matrix from the decomposition.
 	 */
-	@Override
 	public Matrix getR() {
 		if (R == null) {
 			R = computeR(compact);
@@ -206,15 +204,19 @@ public class HouseholderQR implements IQRResult {
 	 * it.
 	 * </p>
 	 */
-	protected boolean decompose(Matrix A) {
-		commonSetup(A);
+	public QRResult decompose(AMatrix A) {
+	    Matrix _A = A.toMatrix();
+		commonSetup(_A);
 
 		for (int j = 0; j < minLength; j++) {
 			householder(j);
 			updateA(j);
 		}
 
-		return !error;
+//		if (error)
+//		    return null;
+//		else
+	    return new QRResult(getQ(), getR());
 	}
 
 	/**

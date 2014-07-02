@@ -12,13 +12,15 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TestHouseholderQR {
+public class TestHouseholderQR extends GenericQrCheck {
 
 	@Test
 	public void testDecompose() {
 		double[][] dataA = { { 0, 3, 1 }, { 0, 4, -2 }, { 2, 1, 1 } };
 		Matrix A = Matrix.create(dataA);
-		IQRResult alg = new HouseholderQR(A, false);
+		HouseholderQR alg = new HouseholderQR(false);
+		IQRResult result = alg.decompose(A);
+		
 		AMatrix Q = alg.getQ();
 		AMatrix R = alg.getR();
 
@@ -30,40 +32,41 @@ public class TestHouseholderQR {
 		assertEquals(R, expectR);
 
 		A = Matrix.create(dataA);
-		alg = new HouseholderQR(A, true);
+		alg = new HouseholderQR(true);
+		result = alg.decompose(A);
 		Q = alg.getQ();
 		R = alg.getR();
 
 		assertEquals(Q, expectQ);
 		assertEquals(R, expectR);
-		validateQR(A, alg);
+		validateQR(A, result);
 	}
 
 	@Test
 	public void testZeroDecompose() {
 		AMatrix a = ZeroMatrix.create(4, 3);
-		HouseholderQR alg = new HouseholderQR(a.toMatrix(), false);
-		IQRResult qr = new QRResult(alg.getQ(), alg.getR());
-		AMatrix q = qr.getQ();
-		AMatrix r = qr.getR();
+		HouseholderQR alg = new HouseholderQR(false);
+		IQRResult result = alg.decompose(a);
+		AMatrix q = result.getQ();
+		AMatrix r = result.getR();
 
 		assertEquals(IdentityMatrix.create(3), q.subMatrix(0, 3, 0, 3));
 		assertTrue(r.isZero());
-		validateQR(a, qr);
+		validateQR(a, result);
 	}
 
 	@Test
 	public void testZeroDecomposeSquare() {
 		AMatrix a = ZeroMatrix.create(3, 3);
-		HouseholderQR alg = new HouseholderQR(a.toMatrix(), false);
-		IQRResult qr = new QRResult(alg.getQ(), alg.getR());
-		AMatrix q = qr.getQ();
-		AMatrix r = qr.getR();
+		HouseholderQR alg = new HouseholderQR(false);
+		IQRResult result = alg.decompose(a);
+		AMatrix q = result.getQ();
+		AMatrix r = result.getR();
 
 		assertEquals(IdentityMatrix.create(3), q);
 
 		assertTrue(r.isZero());
-		validateQR(a, qr);
+		validateQR(a, result);
 	}
 
 	/**
@@ -80,4 +83,10 @@ public class TestHouseholderQR {
 		assertTrue(q.hasOrthonormalColumns());
 		
 	}
+
+    @Override
+    protected QRDecomposition createQRDecomposition(boolean compact)
+    {
+        return new HouseholderQR(compact);
+    }
 }
