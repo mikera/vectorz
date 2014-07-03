@@ -1,31 +1,49 @@
+/*
+ * Copyright (c) 2009-2013, Peter Abeles. All Rights Reserved.
+ *
+ * This file is part of Efficient Java Matrix Library (EJML).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mikera.matrixx.decompose.impl.qr;
 
 import java.util.Random;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import mikera.matrixx.AMatrix;
+
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
-import mikera.matrixx.decompose.IQRResult;
-import mikera.matrixx.decompose.impl.qr.HouseholderQR;
 import mikera.matrixx.impl.AStridedMatrix;
-import mikera.matrixx.impl.IdentityMatrix;
-import mikera.matrixx.impl.ZeroMatrix;
 
 import org.junit.Test;
 
-public class TestHouseholderQR extends GenericQrCheck {
-    
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+/**
+ * @author Peter Abeles
+ */
+public class TestHouseholderColQR extends GenericQrCheck {
+
     Random rand = new Random(0xff);
-
-
+    
     @Override
-    protected QRDecomposition createQRDecomposition(boolean compact) {
-        return new HouseholderQR(compact);
+    protected QRDecomposition createQRDecomposition(boolean compact)
+    {
+        return new HouseholderColQR(compact);
     }
 
     /**
-     * Internall several house holder operations are performed.  This
+     * Internal several householder operations are performed.  This
      * checks to see if the householder operations and the expected result for all the
      * submatrices.
      */
@@ -45,13 +63,14 @@ public class TestHouseholderQR extends GenericQrCheck {
 
         qr.householder(w,A);
 
-//        SimpleMatrix U = new SimpleMatrix(width,1, true, qr.getU()).extractMatrix(w,width,0,1);
+//        SimpleMatrix U = new SimpleMatrix(width,1, true, qr.getQR()[w]).extractMatrix(w,width,0,1);
         Matrix temp = Matrix.create(width,1);
-        temp.setElements(qr.getU());
+        temp.setElements(qr.getQR()[w]);
         AStridedMatrix U = temp.subMatrix(w, width-w, 0, 1);
-
+        
+        U.set(0,0,1); // this is not explicity set and is assumed to be 1
         Matrix I = Matrix.createIdentity(width-w);
-//      SimpleMatrix Q = I.minus(U.mult(U.transpose()).scale(qr.getGamma()));
+//        SimpleMatrix Q = I.minus(U.mult(U.transpose()).scale(qr.getGamma()));
         Matrix temp1 = Multiplications.multiply(U, U.getTranspose());
         temp1.scale(qr.getGamma());
         I.sub(temp1);
@@ -91,13 +110,14 @@ public class TestHouseholderQR extends GenericQrCheck {
         Matrix U = Matrix.createRandom(width, 1);
         Matrix A = Matrix.createRandom(width, width);
 
-        qr.getQR().set(A);
+        qr.convertToColumnMajor(A);
 
         // compute the results using standard matrix operations
         Matrix I = Matrix.createIdentity(width-w);
 
 //        SimpleMatrix u_sub = U.extractMatrix(w,width,0,1);
         AStridedMatrix u_sub = U.subMatrix(w, width-w, 0, 1);
+        u_sub.set(0,0,1);// assumed to be 1 in the algorithm
 //        SimpleMatrix A_sub = A.extractMatrix(w,width,w,width);
         AStridedMatrix A_sub = A.subMatrix(w,width-w,w,width-w);
 //        SimpleMatrix expected = I.minus(u_sub.mult(u_sub.transpose()).scale(gamma)).mult(A_sub);
@@ -108,107 +128,28 @@ public class TestHouseholderQR extends GenericQrCheck {
 
         qr.updateA(w,U.asDoubleArray(),gamma,tau);
 
-        AMatrix found = qr.getQR();
-
-        assertEquals(-tau,found.get(w,w),1e-8);
+        double[][] found = qr.getQR();
 
         for( int i = w+1; i < width; i++ ) {
-            assertEquals(U.get(i,0),found.get(i,w),1e-8);
+            assertEquals(U.get(i,0),found[w][i],1e-8);
         }
 
         // the right should be the same
         for( int i = w; i < width; i++ ) {
             for( int j = w+1; j < width; j++ ) {
                 double a = expected.get(i-w,j-w);
-                double b = found.get(i,j);
+                double b = found[j][i];
 
                 assertEquals(a,b,1e-6);
             }
         }
     }
 
-	@Test
-	public void testDecompose() {
-		double[][] dataA = { { 0, 3, 1 }, { 0, 4, -2 }, { 2, 1, 1 } };
-		Matrix A = Matrix.create(dataA);
-		HouseholderQR alg = new HouseholderQR(false);
-		IQRResult result = alg.decompose(A);
-		
-		AMatrix Q = result.getQ();
-		AMatrix R = result.getR();
-
-		Matrix expectQ = Matrix.create(new double[][] { { 0, -0.6, 0.8 },
-				{ 0, -0.8, -0.6 }, { -1, 0, 0 } });
-		Matrix expectR = Matrix.create(new double[][] { { -2, -1, -1 },
-				{ 0, -5, 1 }, { 0, 0, 2 } });
-		assertEquals(Q, expectQ);
-		assertEquals(R, expectR);
-
-		A = Matrix.create(dataA);
-		alg = new HouseholderQR(true);
-		result = alg.decompose(A);
-		Q = result.getQ();
-		R = result.getR();
-
-		assertEquals(Q, expectQ);
-		assertEquals(R, expectR);
-		validateQR(A, result);
-	}
-
-	@Test
-	public void testZeroDecompose() {
-		AMatrix a = ZeroMatrix.create(4, 3);
-		HouseholderQR alg = new HouseholderQR(false);
-		IQRResult result = alg.decompose(a);
-		AMatrix q = result.getQ();
-		AMatrix r = result.getR();
-
-		assertEquals(IdentityMatrix.create(3), q.subMatrix(0, 3, 0, 3));
-		assertTrue(r.isZero());
-		validateQR(a, result);
-	}
-
-	@Test
-	public void testZeroDecomposeSquare() {
-		AMatrix a = ZeroMatrix.create(3, 3);
-		HouseholderQR alg = new HouseholderQR(false);
-		IQRResult result = alg.decompose(a);
-		AMatrix q = result.getQ();
-		AMatrix r = result.getR();
-
-		assertEquals(IdentityMatrix.create(3), q);
-
-		assertTrue(r.isZero());
-		validateQR(a, result);
-	}
-
-	/**
-	 * Validate that a QR result is correct for a given input matrix
-	 * 
-	 * @param a
-	 * @param result
-	 */
-	public void validateQR(AMatrix a, IQRResult result) {
-		AMatrix q = result.getQ();
-		AMatrix r = result.getR();
-		assertTrue(r.isUpperTriangular());
-		assertTrue(q.innerProduct(r).epsilonEquals(a));
-		assertTrue(q.hasOrthonormalColumns());
-		
-	}
-	
-	private static class DebugQR extends HouseholderQR
+    private static class DebugQR extends HouseholderColQR
     {
 
-        public DebugQR(int numRows, int numCols) {
+        public DebugQR( int numRows , int numCols ) {
             super(false);
-            setExpectedMaxSize(numRows,numCols);
-            this.numRows = numRows;
-            this.numCols = numCols;
-        }
-
-        private void setExpectedMaxSize(int numRows, int numCols)
-        {
             error = false;
 
             this.numCols = numCols;
@@ -216,31 +157,30 @@ public class TestHouseholderQR extends GenericQrCheck {
             minLength = Math.min(numRows,numCols);
             int maxLength = Math.max(numRows,numCols);
 
-            QR = Matrix.create(numRows, numCols);
-            u = new double[ maxLength ];
+            dataQR = new double[ numCols ][  numRows ];
             v = new double[ maxLength ];
-
-            dataQR = QR.data;
-
             gammas = new double[ minLength ];
+            
+            this.numCols = numCols;
+            this.numRows = numRows;
         }
 
         public void householder( int j , Matrix A ) {
-            this.QR.set(A);
+            convertToColumnMajor(A);
 
             super.householder(j);
         }
 
+        protected void convertToColumnMajor(Matrix A) {
+            super.convertToColumnMajor(A);
+        }
+
         public void updateA( int w , double u[] , double gamma , double tau ) {
-            System.arraycopy(u,0,this.u,0,this.u.length);
+            System.arraycopy(u,0,this.dataQR[w],0,u.length);
             this.gamma = gamma;
             this.tau = tau;
 
             super.updateA(w);
-        }
-
-        public double[] getU() {
-            return u;
         }
 
         public double getGamma() {
