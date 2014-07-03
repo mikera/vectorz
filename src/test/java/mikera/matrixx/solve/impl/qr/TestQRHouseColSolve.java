@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Peter Abeles
  */
-public class TestHouseholderColQR {
+public class TestQRHouseColSolve {
 
     protected Random rand = new Random(0xff);
 
@@ -97,7 +97,7 @@ public class TestHouseholderColQR {
             // quality is not supported
             return;
         }
-
+        solver = new QRHouseColSolver();
         assertTrue(solver.setA(A_bad));
         double q_bad = solver.quality();
 
