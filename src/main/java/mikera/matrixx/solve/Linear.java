@@ -16,6 +16,13 @@ import mikera.vectorz.Vector;
  */
 public class Linear {
     
+    /**
+     * Returns the least squares solution to the equation A.x = b
+     * 
+     * @param a
+     * @param b
+     * @return AVector x
+     */
     public static AVector solveLeastSquares(AMatrix a, AVector b) {
         QRHouseColSolver solver = new QRHouseColSolver();
         solver.setA(a);

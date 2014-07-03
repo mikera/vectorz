@@ -18,14 +18,11 @@
 
 package mikera.matrixx.solve.impl.qr;
 
-import java.util.Arrays;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.impl.qr.HouseholderColQR;
 import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
 import mikera.matrixx.decompose.impl.qr.QRResult;
-import mikera.matrixx.impl.ATriangularMatrix;
 
 /**
  * <p>
@@ -118,7 +115,6 @@ public class QRHouseColSolver {
      * Solves for X using the QR decomposition.
      *
      * @param B A matrix that is n by m.  Not modified.
-     * @param X An n by m matrix where the solution is written to.  Modified.
      */
     public AMatrix solve(AMatrix B) {
         if( B.rowCount() != numRows)
@@ -190,9 +186,8 @@ public class QRHouseColSolver {
     }
     
     /**
-     * Computes the quality of a triangular matrix, where the quality of a matrix
-     * is defined in {@link org.ejml.factory.LinearSolver#quality()}.  In
-     * this situation the quality os the absolute value of the product of
+     * Computes the quality of a triangular matrix.  In
+     * this situation the quality is the absolute value of the product of
      * each diagonal element divided by the magnitude of the largest diagonal element.
      * If all diagonal elements are zero then zero is returned.
      *
