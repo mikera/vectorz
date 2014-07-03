@@ -18,6 +18,8 @@
 
 package mikera.matrixx.solve.impl.qr;
 
+import java.util.Arrays;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.impl.qr.HouseholderColQR;
@@ -94,7 +96,6 @@ public class QRHouseColSolver {
         if( A.rowCount() > maxRows || A.columnCount() > maxCols )
             setMaxSize(A.rowCount(),A.columnCount());
 
-        R = Matrix.create(A.columnCount(),A.columnCount());
         a = Matrix.create(A.rowCount(),1);
         temp = Matrix.create(A.rowCount(),1);
 
@@ -105,7 +106,7 @@ public class QRHouseColSolver {
 
         gammas = decomposer.getGammas();
         QR = decomposer.getQR();
-        result.getR();
+        R = result.getR().toMatrix();
         return true;
     }
 
@@ -119,11 +120,10 @@ public class QRHouseColSolver {
      * @param B A matrix that is n by m.  Not modified.
      * @param X An n by m matrix where the solution is written to.  Modified.
      */
-    public void solve(AMatrix B, AMatrix X) {
-        if( X.rowCount() != numCols )
-            throw new IllegalArgumentException("Unexpected dimensions for X: X rows = "+X.rowCount()+" expected = "+numCols);
-        else if( B.rowCount() != numRows || B.columnCount() != X.columnCount() )
+    public AMatrix solve(AMatrix B) {
+        if( B.rowCount() != numRows)
             throw new IllegalArgumentException("Unexpected dimensions for B");
+        Matrix X = Matrix.create(numCols, B.columnCount());
 
         int BnumCols = B.columnCount();
         
@@ -136,11 +136,13 @@ public class QRHouseColSolver {
                 a.data[i] = B.unsafeGet(i, colB);
             }
 
+
             // Solve Qa=b
             // a = Q'b
             // a = Q_{n-1}...Q_2*Q_1*b
             //
             // Q_n*b = (I-gamma*u*u^T)*b = b - u*(gamma*U^T*b)
+            
             for( int n = 0; n < numCols; n++ ) {
                 double []u = QR[n];
 
@@ -149,16 +151,17 @@ public class QRHouseColSolver {
                 QRHelperFunctions.rank1UpdateMultR(a, u, gammas[n], 0, n, numRows, temp.data);
                 u[n] = vv;
             }
-
             // solve for Rx = b using the standard upper triangular solver
-            solveU(R.data,a.data,numCols);
+            solveU(R.asDoubleArray(),a.asDoubleArray(),numCols);
 
             // save the results
+            double[]data = X.asDoubleArray();
             for( int i = 0; i < numCols; i++ ) {
 //                X.data[i*X.columnCount()+colB] = a.data[i];
-                X.unsafeSet(X.columnCount(), colB, a.data[i]);
+                data[i*X.columnCount()+colB] = a.data[i];
             }
         }
+        return X;
     }
     
     /**
@@ -176,13 +179,6 @@ public class QRHouseColSolver {
      */
     private void solveU( double U[] , double []b , int n )
     {
-//        for( int i =n-1; i>=0; i-- ) {
-//            double sum = b[i];
-//            for( int j = i+1; j <n; j++ ) {
-//                sum -= U[i*n+j]* b[j];
-//            }
-//            b[i] = sum/U[i*n+i];
-//        }
         for( int i =n-1; i>=0; i-- ) {
             double sum = b[i];
             int indexU = i*n+i+1;
