@@ -1,7 +1,10 @@
 package mikera.matrixx.solve;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
+import mikera.matrixx.solve.impl.qr.QRHouseColSolver;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 
 /**
  * Class providing liner solver algorithms that find the solution to systems of the form:
@@ -12,6 +15,17 @@ import mikera.vectorz.AVector;
  *
  */
 public class Linear {
+    
+    public static AVector solveLeastSquares(AMatrix a, AVector b) {
+        QRHouseColSolver solver = new QRHouseColSolver();
+        solver.setA(a);
+//        create AMatrix from AVector
+        Matrix B = Matrix.create(b.length(), 1);
+        B.setElements(b.asDoubleArray());
+        AMatrix X = solver.solve(B);
+//        convert AMatrix into AVector and return
+        return Vector.create(X.asDoubleArray());
+    }
 
 	/**
 	 * Returns the solution to the equation A.x = b
