@@ -136,4 +136,9 @@ public final class ArraySubVector extends ADenseArrayVector {
 	public ArraySubVector exactClone() {
 		return new ArraySubVector(data.clone(),offset,length);
 	}
+
+	@Override
+	protected int index(int i) {
+		return offset+i;
+	}
 }

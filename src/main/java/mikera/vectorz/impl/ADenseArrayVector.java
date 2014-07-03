@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
-import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -52,7 +51,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public AScalar slice(int position) {
+	public ArrayIndexScalar slice(int position) {
 		checkIndex(position);
 		return new ArrayIndexScalar(getArray(), getArrayOffset() + position);
 	}

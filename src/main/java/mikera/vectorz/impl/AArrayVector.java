@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import mikera.vectorz.AScalar;
+
 /**
  * Base class for all vectors backed by a single final double[] array
  * @author Mike
@@ -14,5 +16,16 @@ public abstract class AArrayVector extends ASizedVector {
 		super(length);
 		this.data=data;
 	}
+	
+	@Override
+	public AScalar slice(int i) {
+		checkIndex(i);
+		return ArrayIndexScalar.wrap(data,index(i));
+	}
+	
+	/**
+	 * Computes an index into the underlying array for a given vector index
+	 */
+	protected abstract int index(int i);
 
 }

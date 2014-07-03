@@ -1,7 +1,8 @@
 package mikera.matrixx.decompose.impl.qr;
 
 import java.util.Random;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
@@ -12,8 +13,6 @@ import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class TestHouseholderQR extends GenericQrCheck {
     

@@ -165,4 +165,9 @@ public final class StridedVector extends AStridedVector {
 		
 		super.validate();
 	}
+
+	@Override
+	protected int index(int i) {
+		return offset+i*stride;
+	}
 }
