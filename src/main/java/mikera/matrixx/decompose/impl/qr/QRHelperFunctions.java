@@ -18,6 +18,8 @@
 
 package mikera.matrixx.decompose.impl.qr;
 
+import java.util.Arrays;
+
 import mikera.matrixx.Matrix;
 
 /**
