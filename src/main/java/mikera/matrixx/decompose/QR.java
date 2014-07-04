@@ -22,11 +22,7 @@
 package mikera.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
-import mikera.matrixx.algo.impl.Constants;
 import mikera.matrixx.decompose.impl.qr.HouseholderQR;
-import mikera.matrixx.decompose.impl.qr.QRResult;
-import mikera.vectorz.Vector;
 
 /**
  * Public API class for QR decomposition
