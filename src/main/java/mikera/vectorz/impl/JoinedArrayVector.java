@@ -277,17 +277,13 @@ public final class JoinedArrayVector extends ASizedVector {
 			int soffset=offsets[j];
 			if (offset<=sp) {
 				// chunk start aligned with current array, so just use clen elements
-				for (int i=0; i<clen; i++) {
-					array[arrayOffset+i]+=factor*sa[soffset+i];
-				}
+				DoubleArrays.addMultiple(array, arrayOffset, sa, soffset, clen, factor);
 			} else {
 				// first chunk not starting at sp, need to skip some elements
 				int skip=offset-sp;
 				assert(skip>0);
 				clen-=skip;
-				for (int i=0; i<clen; i++) {
-					array[arrayOffset+i]+=factor*sa[skip+soffset+i];
-				}
+				DoubleArrays.addMultiple(array, arrayOffset, sa, soffset+skip, clen, factor);
 			}
 			arrayOffset+=clen;
 		}
