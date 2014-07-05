@@ -136,10 +136,7 @@ public class ImmutableVector extends AArrayVector implements IDense {
 	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		int dataOffset=this.offset+offset;
-		
-		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*data[i+dataOffset];
-		}
+		DoubleArrays.addMultiple(array, arrayOffset, data, dataOffset, length, factor);
 	}
 	
 	@Override
