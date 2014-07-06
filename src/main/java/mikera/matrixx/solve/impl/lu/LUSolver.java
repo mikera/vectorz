@@ -43,6 +43,9 @@ public class LUSolver {
     public LUSolver( boolean improve ) {
         this.doImprove = improve;
     }
+    public LUSolver() {
+        this.doImprove = false;
+    }
 
     public LUPResult setA(AMatrix A) {
         this.A = A;
