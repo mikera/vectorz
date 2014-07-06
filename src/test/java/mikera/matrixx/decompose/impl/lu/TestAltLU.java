@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2009-2013, Peter Abeles. All Rights Reserved.
+ *
+ * This file is part of Efficient Java Matrix Library (EJML).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mikera.matrixx.decompose.impl.lu;
 
 import static org.junit.Assert.*;
@@ -7,6 +25,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.decompose.impl.lu.AltLU;
 import mikera.matrixx.decompose.impl.lu.SimpleLUP;
+import mikera.matrixx.solve.impl.TriangularSolver;
 
 import org.junit.Test;
 
@@ -86,7 +105,8 @@ public class TestAltLU {
 //	  }
 //  }
 
-  @Test public void testRandomDecompose() {
+  @Test 
+  public void testRandomDecompose() {
 	  AMatrix a=Matrixx.createRandomMatrix(4, 4);
 	  ILUPResult r=SimpleLUP.decompose(a);
 	  
@@ -96,5 +116,73 @@ public class TestAltLU {
 	  if(!lu.epsilonEquals(pa)) {
 		  fail("L="+r.getL()+"\n"+"U="+r.getU()+"\n"+"LU="+lu+"\n"+"PA="+pa+"\n");
 	  }
+  }
+  
+  /**
+   * Compare the determinant computed from LU to the value computed from the minor
+   * matrix method.
+   */
+  @Test
+  public void testDeterminant()
+  {
+      int width = 10;
+
+      Matrix A = Matrix.createRandom(width,width);
+
+      double minorVal = A.determinant();
+
+      AltLU alg = new AltLU();
+      LUPResult result = alg._decompose(A);
+      double luVal = result.computeDeterminant();
+
+      assertEquals(minorVal,luVal,1e-6);
+  }
+
+  @Test
+  public void _solveVectorInternal() {
+      int width = 10;
+      Matrix LU = Matrix.createRandom(width,width);
+
+      double a[] = new double[]{1,2,3,4,5,6,7,8,9,10};
+      double b[] = new double[]{1,2,3,4,5,6,7,8,9,10};
+      for( int i = 0; i < width; i++ ) LU.set(i,i,1);
+
+      TriangularSolver.solveL(LU.data,a,width);
+      TriangularSolver.solveU(LU.data,a,width);
+
+      DebugDecompose alg = new DebugDecompose(width);
+      for( int i = 0; i < width; i++ ) alg.getIndx()[i] = i;
+      alg.setLU(LU);
+      
+      alg._solveVectorInternal(b);
+
+      for( int i = 0; i < width; i++ ) {
+          assertEquals(a[i],b[i],1e-6);
+      }
+  }
+
+  private static class DebugDecompose extends AltLU
+  {
+      public DebugDecompose(int width) {
+          LU = Matrix.create(width,width);
+
+          this.dataLU = LU.data;
+          maxWidth = Math.max(width,width);
+
+          vv = new double[ maxWidth ];
+          indx = new int[ maxWidth ];
+          pivot = new int[ maxWidth ];
+          m = n = width;
+      }
+
+      void setLU( Matrix LU ) {
+          this.LU = LU;
+          this.dataLU = LU.data;
+      }
+
+      @Override
+      public LUPResult _decompose(AMatrix orig) {
+          return null;
+      }
   }
 }
