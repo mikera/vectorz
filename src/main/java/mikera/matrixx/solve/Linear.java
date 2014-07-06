@@ -33,6 +33,19 @@ public class Linear {
 //        convert AMatrix into AVector and return
         return Vector.create(X.asDoubleArray());
     }
+    /**
+     * Returns the least squares solution to the equation A.x = b
+     * 
+     * @param a
+     * @param b
+     * @return AMatrix x
+     */
+    public static AMatrix solveLeastSquares(AMatrix a, AMatrix b) {
+        QRHouseColSolver solver = new QRHouseColSolver();
+        solver.setA(a);
+        AMatrix x = solver.solve(b);
+        return x;
+    }
 
 	/**
 	 * Returns the solution to the equation A.x = b
