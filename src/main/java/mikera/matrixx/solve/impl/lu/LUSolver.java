@@ -48,6 +48,8 @@ public class LUSolver {
     }
 
     public LUPResult setA(AMatrix A) {
+        if(!A.isSquare())
+            throw new IllegalArgumentException("Input must be a square matrix.");
         this.A = A;
         this.numRows = A.rowCount();
         this.numCols = A.columnCount();
@@ -81,9 +83,11 @@ public class LUSolver {
     }
     
     public ADenseArrayMatrix solve(AMatrix b) {
-        if( b.rowCount() != numCols ) {
+        if( b.rowCount() != numCols )
             throw new IllegalArgumentException("Unexpected matrix size");
-        }
+        if(Math.abs(result.computeDeterminant()) < 1e-10)
+            return null;
+            
         Matrix x = Matrix.create(numCols, b.columnCount());
 
         int numCols = b.columnCount();

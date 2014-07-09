@@ -23,8 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Random;
-
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
 
@@ -34,7 +32,6 @@ import mikera.matrixx.algo.Multiplications;
  */
 public abstract class StandardSvdChecks {
 
-    Random rand = new Random(73675);
     private static double EPS = Math.pow(2,-52);
 
     public abstract SvdImplicitQr createSvd();
@@ -52,7 +49,6 @@ public abstract class StandardSvdChecks {
         testZero();
         testLargeToSmall();
         testIdentity();
-        testLarger();
         testLots();
     }
 
@@ -133,17 +129,6 @@ public abstract class StandardSvdChecks {
         assertNotNull(alg._decompose(A));
 
         assertEquals(6,checkOccurrence(1,alg.getSingularValues().toDoubleArray(),6),1e-5);
-
-        checkComponents(alg,A);
-    }
-
-    public void testLarger() {
-        Matrix A = Matrix.createRandom(200,200);
-        A.sub(0.5);
-        A.scale(2);
-
-        SvdImplicitQr alg = createSvd();
-        assertNotNull(alg._decompose(A));
 
         checkComponents(alg,A);
     }

@@ -2,6 +2,7 @@ package mikera.matrixx.solve;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.solve.impl.lu.LUSolver;
 import mikera.matrixx.solve.impl.qr.QRHouseColSolver;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -34,7 +35,7 @@ public class Linear {
         return Vector.create(X.asDoubleArray());
     }
     /**
-     * Returns the least squares solution to the equation A.x = b
+     * Returns the least squares solution to the equation A.X = B
      * 
      * @param a
      * @param b
@@ -50,22 +51,37 @@ public class Linear {
 	/**
 	 * Returns the solution to the equation A.x = b
 	 * 
-	 * Returns null if no unique solution exists
-	 * 
 	 * @param a
 	 * @param b
 	 * @return
 	 */
 	public static AVector solve(AMatrix a, AVector b) {
-		if (a.isSquare()) return solveSquare(a,b);
-		throw new UnsupportedOperationException("Not yet implemented");
+		if (a.isSquare()) 
+		    return solveSquare(a,b);
+		else
+		    return solveLeastSquares(a, b);
 	}
 	
 	public static AVector solveSquare(AMatrix a, AVector b) {
+	    a.checkSquare();
+	    LUSolver solver = new LUSolver();
+	    solver.setA(a);
+//      create AMatrix from AVector
+	    Matrix B = Matrix.create(b.length(), 1);
+	    B.setElements(b.asDoubleArray());
+	    AMatrix X = solver.solve(B);
+//      if no solution
+	    if(X == null)
+	        return null;
+//      convert AMatrix into AVector and return
+	    return Vector.create(X.asDoubleArray());
+	}
+	
+	public static AMatrix solveSquare(AMatrix a, Matrix b) {
 		a.checkSquare();
-		AMatrix m=a.inverse();
-		if (m==null) return null;
-		return m.transform(b);
+		LUSolver solver = new LUSolver();
+		solver.setA(a);
+		return solver.solve(b);
 	}
 
 }
