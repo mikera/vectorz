@@ -18,15 +18,18 @@
 
 package mikera.matrixx.decompose.impl.lu;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.decompose.ILUPResult;
-import mikera.matrixx.decompose.LUP;
-import mikera.matrixx.decompose.impl.lu.AltLU;
-import mikera.matrixx.decompose.impl.lu.SimpleLUP;
 import mikera.matrixx.solve.impl.TriangularSolver;
 
 import org.junit.Test;
@@ -207,8 +210,7 @@ public class TestAltLU {
       Matrix octLower = Matrix.create(new double[][] {{1, 0, 0},{-0.6, 1, 0},{0.3, -0.44068, 1}});
       Matrix octUpper = Matrix.create(new double[][] {{5, 2, 3},{0, 5.9, 1.3},{0, 0, 7.67288}});
 
-      AltLU alg = new AltLU();
-      LUPResult result = alg.decompose(A);
+      LUPResult result = AltLU.decompose(A);
       assertNotNull(result);
 
       // not singular
