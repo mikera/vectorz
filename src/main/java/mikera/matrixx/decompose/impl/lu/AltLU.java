@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2014, Peter Abeles. All Rights Reserved.
+ * Copyright (c) 2009-2013, Peter Abeles. All Rights Reserved.
  *
  * This file is part of Efficient Java Matrix Library (EJML).
  *
@@ -19,192 +19,245 @@
 package mikera.matrixx.decompose.impl.lu;
 
 import java.util.Arrays;
+
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.PermutationMatrix;
-import mikera.vectorz.util.IntArrays;
+import mikera.matrixx.solve.impl.TriangularSolver;
 
 /**
  * <p>
- * An LU decomposition algorithm that originally came from Jama. In general this
- * is faster than what is in NR since it creates a cache of a column, which
- * makes a big difference in larger matrices.
+ * Contains common data structures and operations for LU decomposition algorithms.
  * </p>
- * 
  * @author Peter Abeles
  */
 public class AltLU {
+    
+    public static LUPResult decompose(AMatrix A) {
+        AltLU alg = new AltLU();
+        return alg._decompose(A);
+    }
+    
+    // the decomposed matrix
+    protected Matrix LU;
 
-	// it can decompose a matrix up to this size
-	protected int maxWidth = -1;
-	// the shape of the matrix
-	protected int m, n;
-	// data in the matrix
-	protected double dataLU[];
-	// used in set, solve, invert
-	protected double vv[];
-	protected int pivot[];
+    // it can decompose a matrix up to this size
+    protected int maxWidth=-1;
 
-	public final static double EPS = Math.pow(2, -52);
+    // the shape of the matrix
+    protected int m,n;
+    // data in the matrix
+    protected double dataLU[];
 
-	// the decomposed matrix
-	protected Matrix LU;
+    // used in set, solve, invert
+    protected double vv[];
+    // used in set
+    protected int indx[];
+    protected int pivot[];
 
-	public static LUPResult decompose(AMatrix A) {
-		AltLU alg = new AltLU();
-		return alg._decompose(A);
-	}
-	
-	private AltLU() {
-	}
+    public AMatrix getLU() {
+        return LU;
+    }
 
-	public Matrix getLU() {
-		return LU;
-	}
+    public int[] getIndx() {
+        return indx;
+    }
 
-	/**
-	 * Writes the lower triangular matrix into the specified matrix.
-	 */
-	private Matrix computeL() {
-		int numRows = LU.rowCount();
-		int numCols = Math.min(LU.rowCount(), LU.columnCount());
+    public int[] getPivot() {
+        return pivot;
+    }
 
-		Matrix lower = Matrix.create(numRows, numCols);
+    /**
+     * Returns the lower triangular matrix.
+     */
+    private AMatrix computeL()
+    {
+        int numRows = LU.rowCount();
+        int numCols = Math.min(LU.rowCount(), LU.columnCount());
 
-		for (int i = 0; i < numCols; i++) {
-			lower.set(i, i, 1.0);
+        Matrix lower = Matrix.create(numRows,numCols);
 
-			for (int j = 0; j < i; j++) {
-				lower.set(i, j, LU.get(i, j));
-			}
-		}
+        for( int i = 0; i < numCols; i++ ) {
+            lower.set(i,i,1.0);
 
-		if (numRows > numCols) {
-			for (int i = numCols; i < numRows; i++) {
-				for (int j = 0; j < numCols; j++) {
-					lower.set(i, j, LU.get(i, j));
-				}
-			}
-		}
-		return lower;
-	}
+            for( int j = 0; j < i; j++ ) {
+                lower.set(i,j, LU.get(i,j));
+            }
+        }
 
-	/**
-	 * Writes the upper triangular matrix into the specified matrix.
-	 */
-	private Matrix computeU() {
-		int numRows = Math.min(LU.rowCount(), LU.columnCount());
-		int numCols = LU.columnCount();
+        if( numRows > numCols ) {
+            for( int i = numCols; i < numRows; i++ ) {
+                for( int j = 0; j < numCols; j++ ) {
+                    lower.set(i,j, LU.get(i,j));
+                }
+            }
+        }
+        return lower;
+    }
 
-		Matrix upper = Matrix.create(numRows, numCols);
+    /**
+     * Returns the upper triangular matrix.
+     */
+    private AMatrix computeU()
+    {
+        int numRows = Math.min(LU.rowCount(), LU.columnCount());
+        int numCols = LU.columnCount();
 
-		for (int i = 0; i < numRows; i++) {
-			for (int j = i; j < numCols; j++) {
-				upper.set(i, j, LU.get(i, j));
-			}
-		}
+        Matrix upper = Matrix.create(numRows, numCols);
 
-		return upper;
-	}
+        for( int i = 0; i < numRows; i++ ) {
+            for( int j = i; j < numCols; j++ ) {
+                upper.set(i,j, LU.get(i,j));
+            }
+        }
 
-	private PermutationMatrix getPivotMatrix() {
-		int numPivots = LU.rowCount();
-		return PermutationMatrix.create(Index.wrap(Arrays.copyOf(pivot, numPivots))).getTranspose();
-	}
+        return upper;
+    }
 
-	protected void decomposeCommonInit(Matrix A) {
-		m = A.rowCount();
-		n = A.columnCount();
-		LU = A;
+    private PermutationMatrix getPivotMatrix() {
+        return PermutationMatrix.create(Index.wrap(Arrays.copyOf(pivot, LU.rowCount()))).getTranspose();
+    }
 
-		dataLU = LU.data;
-		maxWidth = Math.max(m, n);
+    private void decomposeCommonInit(AMatrix a) {
+        m = a.rowCount();
+        n = a.columnCount();
 
-		vv = new double[maxWidth];
-		pivot = new int[maxWidth];
+        LU = Matrix.create(a);
 
-		for (int i = 0; i < m; i++) {
-			pivot[i] = i;
-		}
-	}
+        this.dataLU = LU.data;
+        maxWidth = Math.max(m,n);
 
-	/**
-	 * This is a modified version of what was found in the JAMA package. The
-	 * order that it performs its permutations in is the primary difference from
-	 * NR
-	 * 
-	 * @param A The matrix that is to be decomposed. Not modified.
-	 * @return An LUPResult object that contains L, U and P matrices
-	 */
-	private LUPResult _decompose(AMatrix _A) {
-		Matrix A = _A.toMatrix();
-		decomposeCommonInit(A);
+        vv = new double[ maxWidth ];
+        indx = new int[ maxWidth ];
+        pivot = new int[ maxWidth ];
 
-		double LUcolj[] = vv;
+        for (int i = 0; i < m; i++) {
+            pivot[i] = i;
+        }
+    }
 
-		for (int j = 0; j < n; j++) {
+    /**
+     * the quality is the absolute value of the product of
+     * each diagonal element divided by the magnitude of the largest diagonal element.
+     * If all diagonal elements are zero then zero is returned.
+     * @return
+     */
+    public double quality() {
+        int N = Math.min(LU.rowCount(), LU.columnCount());
+        double max = LU.getLeadingDiagonal().maxAbsElement();
+        if (Math.abs(max-0) < 1e-8)
+            return 0;
+        return LU.diagonalProduct()/Math.pow(max, N);
+    }
+    
+    /**
+     * This is a modified version of what was found in the JAMA package.  The order that it
+     * performs its permutations in is the primary difference from NR
+     *
+     * @param a The matrix that is to be decomposed.  Not modified.
+     * @return true If the matrix can be decomposed and false if it can not.
+     */
+    public LUPResult _decompose( AMatrix a )
+    {
+        decomposeCommonInit(a);
 
-			// make a copy of the column to avoid cache jumping issues
-			for (int i = 0; i < m; i++) {
-				LUcolj[i] = dataLU[i * n + j];
-			}
+        double LUcolj[] = vv;
 
-			// Apply previous transformations.
-			for (int i = 0; i < m; i++) {
-				int rowIndex = i * n;
+        for( int j = 0; j < n; j++ ) {
 
-				// Most of the time is spent in the following dot product.
-				int kmax = i < j ? i : j;
-				double s = 0.0;
-				for (int k = 0; k < kmax; k++) {
-					s += dataLU[rowIndex + k] * LUcolj[k];
-				}
+            // make a copy of the column to avoid cache jumping issues
+            for( int i = 0; i < m; i++) {
+                LUcolj[i] = dataLU[i*n + j];
+            }
 
-				dataLU[rowIndex + j] = LUcolj[i] -= s;
-			}
+            // Apply previous transformations.
+            for( int i = 0; i < m; i++ ) {
+                int rowIndex = i*n;
 
-			// Find pivot and exchange if necessary.
-			int p = j;
-			double max = Math.abs(LUcolj[p]);
-			for (int i = j + 1; i < m; i++) {
-				double v = Math.abs(LUcolj[i]);
-				if (v > max) {
-					p = i;
-					max = v;
-				}
-			}
+                // Most of the time is spent in the following dot product.
+                int kmax = i < j ? i : j;
+                double s = 0.0;
+                for (int k = 0; k < kmax; k++) {
+                    s += dataLU[rowIndex+k]*LUcolj[k];
+                }
 
-			if (p != j) {
-				// swap the rows
-				// for (int k = 0; k < n; k++) {
-				// double t = dataLU[p*n + k];
-				// dataLU[p*n + k] = dataLU[j*n + k];
-				// dataLU[j*n + k] = t;
-				// }
-				int rowP = p * n;
-				int rowJ = j * n;
-				int endP = rowP + n;
-				for (; rowP < endP; rowP++, rowJ++) {
-					double t = dataLU[rowP];
-					dataLU[rowP] = dataLU[rowJ];
-					dataLU[rowJ] = t;
-				}
-				IntArrays.swap(pivot, p,j);
-			}
+                dataLU[rowIndex+j] = LUcolj[i] -= s;
+            }
 
-			// Compute multipliers.
-			if (j < m) {
-				double lujj = dataLU[j * n + j];
-				if (lujj != 0) {
-					for (int i = j + 1; i < m; i++) {
-						dataLU[i * n + j] /= lujj;
-					}
-				}
-			}
-		}
-		return new LUPResult(computeL(), computeU(), getPivotMatrix());
-	}
+            // Find pivot and exchange if necessary.
+            int p = j;
+            double max = Math.abs(LUcolj[p]);
+            for (int i = j+1; i < m; i++) {
+                double v = Math.abs(LUcolj[i]);
+                if ( v > max) {
+                    p = i;
+                    max = v;
+                }
+            }
 
+            if (p != j) {
+                // swap the rows
+//                for (int k = 0; k < n; k++) {
+//                    double t = dataLU[p*n + k];
+//                    dataLU[p*n + k] = dataLU[j*n + k];
+//                    dataLU[j*n + k] = t;
+//                }
+                int rowP = p*n;
+                int rowJ = j*n;
+                int endP = rowP+n;
+                for (;rowP < endP; rowP++,rowJ++) {
+                    double t = dataLU[rowP];
+                    dataLU[rowP] = dataLU[rowJ];
+                    dataLU[rowJ] = t;
+                }
+                int k = pivot[p]; pivot[p] = pivot[j]; pivot[j] = k;
+            }
+            indx[j] = p;
 
+            // Compute multipliers.
+            if (j < m ) {
+                double lujj = dataLU[j*n+j];
+                if( lujj != 0 ) {
+                    for (int i = j+1; i < m; i++) {
+                        dataLU[i*n+j] /= lujj;
+                    }
+                }
+            }
+        }
+
+        return new LUPResult(computeL(), computeU(), getPivotMatrix());
+    }
+
+    /**
+     * a specialized version of solve that avoid additional checks that are not needed.
+     */
+    public void _solveVectorInternal( double []vv )
+    {
+        // Solve L*Y = B
+        int ii = 0;
+
+        for( int i = 0; i < n; i++ ) {
+            int ip = indx[i];
+            double sum = vv[ip];
+            vv[ip] = vv[i];
+            if( ii != 0 ) {
+//                for( int j = ii-1; j < i; j++ )
+//                    sum -= dataLU[i* n +j]*vv[j];
+                int index = i*n + ii-1;
+                for( int j = ii-1; j < i; j++ )
+                    sum -= dataLU[index++]*vv[j];
+            } else if( sum != 0.0 ) {
+                ii=i+1;
+            }
+            vv[i] = sum;
+        }
+
+        // Solve U*X = Y;
+        TriangularSolver.solveU(dataLU,vv,n);
+    }
+
+    public double[] _getVV() {
+        return vv;
+    }
 }
