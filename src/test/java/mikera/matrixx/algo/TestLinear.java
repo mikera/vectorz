@@ -48,11 +48,11 @@ public class TestLinear {
         assertArrayEquals(new double[] {-1.35294117647,1.05882352941,0.11764705882},x.asDoubleArray(), 1e-8);
     }
     
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected=IllegalArgumentException.class)
     public void testSolveSquareMatrixRectangular() {
         AMatrix m= Matrix.create(new double[][] {{1,2},{1,4},{5,9}});
         
-        AVector x = Linear.solveSquare(m, Vector.of(1,3,3));
+        AVector x = Linear.solve(m, Vector.of(1,3,3));
         assertTrue(Vector.of(-1.35294117647,1.05882352941,0.11764705882).epsilonEquals(x, 1e-8));
     }
 
@@ -60,7 +60,7 @@ public class TestLinear {
 	public void testSolveSquareMatrixSingular() {
 		AMatrix m= Matrix.create(new double[][] {{1,2,3},{4,5,6},{7,8,9}});
 		
-		assertNull(Linear.solveSquare(m, Vector.of(1,3,3)));
+		assertNull(Linear.solve(m, Vector.of(1,3,3)));
 	}
 
 }
