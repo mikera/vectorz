@@ -1240,8 +1240,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public void setElements(double[] data) {
-		int length=checkLength(data.length);
-		setElements(0,data,0,length);
+		checkLength(data.length);
+		setElements(data,0);
 	}
 	
 	@Override
@@ -1284,14 +1284,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		for (int i=0; i<len; i++) {
 			unsafeSet(i,src.unsafeGet(srcOffset+i));
 		}
-	}
-	
-	public void setValues(double... values) {
-		int len=length();
-		if (values.length!=len) throw new VectorzException("Trying to set vectors with incorrect number of doubles: "+values.length);
-		for (int i=0; i<len; i++) {
-			unsafeSet(i,values[i]);
-		}		
 	}
 	
 	public long zeroCount() {

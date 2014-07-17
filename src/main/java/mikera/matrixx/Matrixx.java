@@ -231,7 +231,7 @@ public class Matrixx {
 	public static DiagonalMatrix createDiagonalMatrix(double... diagonalValues) {
 		int dimensions = diagonalValues.length;
 		DiagonalMatrix im = new DiagonalMatrix(dimensions);
-		im.getLeadingDiagonal().setValues(diagonalValues);
+		im.getLeadingDiagonal().setElements(diagonalValues);
 		return im;
 	}
 	
