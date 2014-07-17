@@ -447,7 +447,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray clone();
 	
 	/**
-	 * Returns a defensive copy of the array data. 
+	 * Returns a defensive copy of the array data. Use this if the original array might change and you 
+	 * need a defensive copy.
 	 * 
 	 * May return the same array if the original was immutable, otherwise will return a defensive copy.
 	 */
@@ -509,12 +510,12 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Scales all elements of the array in place by a given double value
 	 */
-	public void scale(double d);
+	public void scale(double factor);
 	
 	/**
 	 * Scales all elements of the array by a given double value, returning a new array
 	 */
-	public INDArray scaleCopy(double d);
+	public INDArray scaleCopy(double factor);
 	
 	/**
 	 * Scales all elements of the array by a given double value and adds a constant value
@@ -524,7 +525,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Multiplies all elements of the array in place by a given double value
 	 */
-	public void multiply(double d);
+	public void multiply(double factor);
 	
 	/**
 	 * Raises all elements of the array to a specified power in place
