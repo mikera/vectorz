@@ -536,4 +536,14 @@ public final class JoinedVector extends AJoinedVector {
 		super.validate();
 	}
 
+	@Override
+	public int segmentCount() {
+		return 2;
+	}
+
+	@Override
+	public AVector getSegment(int k) {
+		return (k<=0)?left:right;
+	}
+
 }

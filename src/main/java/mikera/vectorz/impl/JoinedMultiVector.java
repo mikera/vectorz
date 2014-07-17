@@ -17,7 +17,14 @@ import mikera.vectorz.util.VectorzException;
 public final class JoinedMultiVector extends AJoinedVector {
 	private static final long serialVersionUID = 6226205676178066609L;
 	
+	/**
+	 * The number of segments
+	 */
 	private final int n;
+	
+	/**
+	 * The set of vectors that define all the segments of this JoinedMultiVector
+	 */
 	private final AVector[] vecs;
 	
 	// array of split positions [0, ...... , length] with length n+1
@@ -563,6 +570,16 @@ public final class JoinedMultiVector extends AJoinedVector {
 	public void validate() {
 		super.validate();
 		if (splits[n]!=length) throw new VectorzException("Unexpected final slit position - not equal to JoinedMultVector length");
+	}
+
+	@Override
+	public int segmentCount() {
+		return n;
+	}
+
+	@Override
+	public AVector getSegment(int k) {
+		return vecs[k];
 	}
 
 }

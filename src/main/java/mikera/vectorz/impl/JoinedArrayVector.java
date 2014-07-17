@@ -18,7 +18,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class JoinedArrayVector extends ASizedVector {
+public final class JoinedArrayVector extends AJoinedVector {
 	private static final long serialVersionUID = -8470277860344236392L;
 
 	private final int numArrays; // number of joined arrays
@@ -74,14 +74,14 @@ public final class JoinedArrayVector extends ASizedVector {
 		return pos[j+1]-pos[j];
 	}
 	
-	private ArraySubVector subArrayVector(int j) {
+	public ArraySubVector getSegment(int j) {
 		return ArraySubVector.wrap(data[j], offsets[j], subLength(j));
 	}
 	
 	public List<ADenseArrayVector> toSubArrays() {
 		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>();
 		for (int i=0; i<numArrays; i++) {
-			al.add(subArrayVector(i));
+			al.add(getSegment(i));
 		}
 		return al;
 	}
@@ -585,9 +585,14 @@ public final class JoinedArrayVector extends ASizedVector {
 		if (length!=pos[numArrays]) throw new VectorzException("End position incorrect!?!");
 		
 		for (int i=0; i<numArrays; i++) {
-			subArrayVector(i).validate();
+			getSegment(i).validate();
 		}
 		
 		super.validate();
+	}
+
+	@Override
+	public int segmentCount() {
+		return numArrays;
 	}
 }
