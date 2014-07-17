@@ -470,15 +470,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void copyTo(int start, AVector dest, int destOffset, int length) {
-		if (dest instanceof ADenseArrayVector) {
-			copyTo(start, (ADenseArrayVector) dest, destOffset, length);
-			return;
-		}
-		double[] src = getArray();
-		int off = getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			dest.unsafeSet(destOffset + i, src[off + start + i]);
-		}
+		dest.setElements(destOffset, getArray(), getArrayOffset()+start, length);
 	}
 
 	public void copyTo(int offset, ADenseArrayVector dest, int destOffset, int length) {
