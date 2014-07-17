@@ -337,12 +337,6 @@ public final class JoinedArrayVector extends AJoinedVector {
 			v.copyTo(pos[j],data[j], offsets[j],subLength(j));
 		}
 	}
-
-//	TODO: should have a fast implementation for this?
-//	@Override
-//	public void setElements(int pos, double[] values, int offset, int length) {
-//		....
-//	} 
 	
 	@Override 
 	public void multiply(double value) {

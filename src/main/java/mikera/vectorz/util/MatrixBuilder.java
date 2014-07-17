@@ -1,16 +1,15 @@
 package mikera.vectorz.util;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
 /**
- * Utility class for efficiently building matrices by addition of vector rows
+ * Utility class for efficiently building matrices by appending vector rows
  * 
  * @author Mike
  */
-public class MatrixBuilder extends AVectorMatrix<AVector> {
+public class MatrixBuilder extends AMatrix {
 	private static final long serialVersionUID = -5875133722867126330L;
 
 	private AVector[] data=new AVector[4];
@@ -40,7 +39,6 @@ public class MatrixBuilder extends AVectorMatrix<AVector> {
 		data[length++]=Vectorz.create(ds);
 	}
 
-	@Override
 	public void appendRow(AVector row) {
 		append(row);
 	}
@@ -74,6 +72,26 @@ public class MatrixBuilder extends AVectorMatrix<AVector> {
 			mb.append(data[i].exactClone());
 		}
 		return mb;
+	}
+
+	@Override
+	public double get(int row, int column) {
+		checkIndex(row,column);
+		return data[row].get(column);
+	}
+
+	@Override
+	public void set(int row, int column, double value) {
+		checkIndex(row,column);
+		 data[row].set(column,value);
+	}
+
+	@Override
+	public boolean isFullyMutable() {
+		for (int i=0; i<rowCount(); i++) {
+			if (!data[i].isFullyMutable()) return false;
+		}
+		return true;
 	}
 
 

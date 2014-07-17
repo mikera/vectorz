@@ -18,28 +18,19 @@ import mikera.vectorz.util.ErrorMessages;
 public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	private static final long serialVersionUID = -3660730676103956050L;
 
-	protected int rowCount;	
-	protected final int columnCount;	
-	protected AVector[] rows;
+	protected final AVector[] rowData;
 	
 	public VectorMatrixMN(int rowCount, int columnCount) {
-		this.rows=new AVector[rowCount];
-		this.rowCount=rowCount;
-		this.columnCount=columnCount;
+		super(rowCount,columnCount);
+		this.rowData=new AVector[rowCount];
 		for (int i=0; i<rowCount; i++) {
-			rows[i]=Vectorz.newVector(columnCount);
+			rowData[i]=Vectorz.newVector(columnCount);
 		}
 	}
 	
-	protected VectorMatrixMN(AVector[] rows, int rowCount, int columnCount) {
-		if (rows.length<rowCount) throw new IllegalArgumentException("Insufficient rows provided!");
-		this.rows=rows;
-		this.rowCount=rowCount;
-		this.columnCount=columnCount;
-	}
-	
-	protected VectorMatrixMN(AVector[] rows) {
-		this(rows,rows.length,rows[0].length());
+	protected VectorMatrixMN(AVector... rows) {
+		super(rows.length,(rows.length>0)?rows[0].length():0);
+		this.rowData=rows;
 	}
 	
 	/**
@@ -63,32 +54,24 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 		for (int i = 0; i < rc; i++) {
 			vs[i] = Vectorz.toVector(rows.get(i));
 		}
-		return VectorMatrixMN.wrap(vs,shape);
+		return VectorMatrixMN.wrap(vs);
 	}
 		
 	public static VectorMatrixMN wrap(AVector[] rows) {
-		int rc=rows.length;
-		int cc=rows[0].length();
-		return new VectorMatrixMN(rows,rc,cc);
-	}
-	
-	public static VectorMatrixMN wrap(AVector[] rows, int[] shape) {
-		int rc=shape[0];
-		if (rows.length!=rc) throw new IllegalArgumentException("Inconsistent row count!");
-		return new VectorMatrixMN(rows,rc,shape[1]);
+		return new VectorMatrixMN(rows);
 	}
 	
 	@Override
 	public void multiply(double factor) {
-		for (int i=0; i<rowCount; i++) {
-			rows[i].scale(factor);
+		for (int i=0; i<rows; i++) {
+			rowData[i].scale(factor);
 		}
 	}
 	
 	@Override
 	public void applyOp(Op op) {
-		for (int i=0; i<rowCount; i++) {
-			rows[i].applyOp(op);
+		for (int i=0; i<rows; i++) {
+			rowData[i].applyOp(op);
 		}
 	}
 	
@@ -96,110 +79,85 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 		int rc=source.rowCount();
 		VectorMatrixMN m=new VectorMatrixMN(source.rowCount(),source.columnCount());
 		for (int i=0; i<rc; i++) {
-			m.rows[i].set(source.getRow(i));
+			m.rowData[i].set(source.getRow(i));
 		}
 		return m;
 	}
 	
 	public static VectorMatrixMN wrap(AMatrix source) {
 		int rc=source.rowCount();
-		int cc=source.columnCount();
 		AVector[] rows=new AVector[rc];
 		for (int i=0; i<rc; i++) {
-			rows[i]=source.getRow(i);
+			rows[i]=source.getRowView(i);
 		}
-		return new VectorMatrixMN(rows,rc,cc);
-	}
-	
-	private void ensureRowCapacity(int size) {
-		if (size<=rows.length) return;
-		int newSize=Math.max(size, rows.length*2);
-		AVector[] newRows=new AVector[newSize];
-		System.arraycopy(rows, 0, newRows, 0, rowCount);
-		rows=newRows;
-	}
-	
-	@Override 
-	public void appendRow(AVector row) {
-		ensureRowCapacity(rowCount+1);
-		rows[rowCount++]=row;
+		return new VectorMatrixMN(rows);
 	}
 	
 	@Override 
 	public void replaceRow(int i, AVector row) {
-		if ((i<0)||(i>=rowCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
-		rows[i]=row;
+		if ((i<0)||(i>=rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
+		rowData[i]=row;
 	}
 	
 	@Override
 	public void swapRows(int i, int j) {
 		if (i!=j) {
-			AVector t=rows[i];
-			rows[i]=rows[j];
-			rows[j]=t;
+			AVector t=rowData[i];
+			rowData[i]=rowData[j];
+			rowData[j]=t;
 		}
 	}
 
 	@Override
 	public AVector getRowView(int row) {
-		if (row>=rowCount) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
-		return rows[row];
-	}
-
-	@Override
-	public int rowCount() {
-		return rowCount;
-	}
-
-	@Override
-	public int columnCount() {
-		return columnCount;
+		if (row>=rows) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
+		return rowData[row];
 	}
 	
 	@Override
 	public double get(int row, int column) {
 		checkIndex(row,column);
-		return rows[row].unsafeGet(column);
+		return rowData[row].unsafeGet(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
 		checkIndex(row,column);
-		rows[row].unsafeSet(column,value);
+		rowData[row].unsafeSet(column,value);
 	}
 	
 	@Override
 	public double unsafeGet(int row, int column) {
-		return rows[row].unsafeGet(column);
+		return rowData[row].unsafeGet(column);
 	}
 
 	@Override
 	public void unsafeSet(int row, int column, double value) {
-		rows[row].unsafeSet(column,value);
+		rowData[row].unsafeSet(column,value);
 	}
 	
 	@Override
 	public void addAt(int i, int j, double d) {
-		rows[i].addAt(j, d);
+		rowData[i].addAt(j, d);
 	}
 	
 	@Override
 	public void transform(AVector source, AVector dest) {
-		for (int i=0; i<rowCount; i++) {
+		for (int i=0; i<rows; i++) {
 			dest.unsafeSet(i,getRow(i).dotProduct(source));
 		}
 	}
 	
 	@Override
 	public double calculateElement(int i, AVector inputVector) {
-		assert(i<rowCount);
-		AVector row=rows[i];
+		assert(i<rows);
+		AVector row=rowData[i];
 		return row.dotProduct(inputVector);
 	}
 	
 	@Override
 	public boolean isSquare() {
-		return rowCount==columnCount;
+		return rows==cols;
 	}
 	
 	@Override
@@ -209,10 +167,10 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	
 	@Override
 	public VectorMatrixMN exactClone() {
-		AVector[] newRows=rows.clone();
-		for (int i=0; i<rowCount; i++) {
+		AVector[] newRows=rowData.clone();
+		for (int i=0; i<rows; i++) {
 			newRows[i]=newRows[i].exactClone();
 		}
-		return new VectorMatrixMN(newRows,rowCount,columnCount);
+		return new VectorMatrixMN(newRows);
 	}
 }

@@ -32,6 +32,7 @@ import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.MatrixAsVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.randomz.Hash;
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.AffineMN;
@@ -388,11 +389,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}	
 	
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
-		VectorMatrixMN vm=new VectorMatrixMN(0,cols);
+		if ((rows==0)||(cols==0)) return ZeroMatrix.create(rows, cols);
+		AVector[] vs=new AVector[rows];
 		for (int i=0; i<rows; i++) {
-			vm.appendRow(this.getRowView(rowStart+i).subVector(colStart, cols));
+			vs[i]=this.getRowView(rowStart+i).subVector(colStart, cols);
 		}
-		return vm;	
+		return VectorMatrixMN.wrap(vs);	
 	}
 	
 	@Override

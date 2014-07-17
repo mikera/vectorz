@@ -923,6 +923,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray reorder(int dim, int[] order) {
+		if (order.length==0) {
+			int[] shape=getShapeClone();
+			shape[0]=0;
+			return Arrayz.createZeroArray(shape);
+		}
 		int dims=dimensionality();
 		if ((dim<0)||(dim>=dims)) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
