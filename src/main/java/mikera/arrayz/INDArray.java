@@ -490,7 +490,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Sets all elements in an array using the given double values
 	 */
-	public void setElements(double[] values);
+	public void setElements(double... values);
 	
 	/**
 	 * Sets all elements in an array using the given double values

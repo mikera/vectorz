@@ -591,7 +591,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public void setElements(double[] values) {
+	public void setElements(double... values) {
 		setElements(0,values,0,values.length);
 	}
 

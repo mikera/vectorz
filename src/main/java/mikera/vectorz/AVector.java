@@ -1239,7 +1239,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public void setElements(double[] data) {
+	public void setElements(double... data) {
 		checkLength(data.length);
 		setElements(data,0);
 	}

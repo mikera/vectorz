@@ -341,12 +341,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void set(double value) {
 		set(new int[0],value);
 	}
+	
 	public void set(int x, double value) {
 		set(new int[] {x},value);
 	}
+	
 	public void set(int x, int y, double value) {
 		set(new int[] {x,y},value);	
 	}
+	
 	public void set (INDArray a) {
 		int tdims=this.dimensionality();
 		int adims=a.dimensionality();
@@ -403,7 +406,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
 	}
 	
-	public void setElements(double[] values) {
+	public void setElements(double... values) {
 		int vl=values.length;
 		if (vl!=elementCount()) throw new IllegalArgumentException("Wrong array length: "+vl);
 		setElements(0,values,0,vl);
