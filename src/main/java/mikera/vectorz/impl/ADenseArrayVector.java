@@ -313,7 +313,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void addAt(int i, double v) {
-		assert ((i >= 0) && (i < length()));
+		assert ((i >= 0) && (i < length())); // just an assert since this is unchecked
 		double[] data = getArray();
 		int offset = getArrayOffset();
 		data[i + offset] += v;
