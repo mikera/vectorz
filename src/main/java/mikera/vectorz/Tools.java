@@ -68,6 +68,11 @@ public final class Tools {
 		}
 	}
 	
+	/**
+	 * Convenience overload to convert a primitive long to a primitive int
+	 * 
+	 * Throws an exception if out of range.
+	 */
 	public static int toInt(long d) {
 		int r=(int)d; 
 		if (r!=d) throw new IllegalArgumentException("Out of range when converting to int");
