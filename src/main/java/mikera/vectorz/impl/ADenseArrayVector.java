@@ -127,9 +127,9 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public void setElements(double[] values, int offset, int length) {
+	public void setElements(int pos,double[] values, int offset, int length) {
 		assert (length == this.length());
-		System.arraycopy(values, offset, getArray(), getArrayOffset(), length);
+		System.arraycopy(values, offset, getArray(), getArrayOffset()+pos, length);
 	}
 
 	@Override

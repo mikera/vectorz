@@ -348,7 +348,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override 
-	public void setElements(double[] array, int offset, int length) {
+	public void setElements(int pos,double[] array, int offset, int length) {
 		if (length>=this.length) {
 			setElements(array,offset);
 			return;
@@ -358,7 +358,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		int[] ixs=new int[nz];
 		double[] data=new double[nz];
 		this.data=data;
-		int di=0;
+		int di=pos;
 		for (int i=0; i<length; i++) {
 			double x=array[offset+i];
 			if (x==0.0) continue;

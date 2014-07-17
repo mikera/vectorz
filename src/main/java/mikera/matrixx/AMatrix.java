@@ -577,19 +577,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		if (length!=elementCount()) {
-			throw new IllegalArgumentException("Incorrect element count: "+length);
-		}
-		int rc = rowCount();
-		int cc = columnCount();
-		for (int i = 0; i < rc; i++) {
-			int iOffset=offset+i*cc;
-			getRowView(i).setElements(values,iOffset);
-		}	
-	} 
-	
-	@Override
 	public void getElements(double[] dest, int offset) {
 		int rc=this.rowCount();
 		int cc=this.columnCount();
@@ -605,7 +592,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public void setElements(double[] values) {
-		setElements(values,0,values.length);
+		setElements(0,values,0,values.length);
 	}
 
 	@Override

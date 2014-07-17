@@ -195,15 +195,33 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void setElements(double[] values, int offset) {
-		setElements(values,offset,(int)elementCount());
+		setElements(0,values,offset,(int)elementCount());
 	}
 	
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		int n=sliceCount();
+	public void setElements(int pos, double[] values, int offset, int length) {
+		if (length==0) return;
 		int ss=(int)(slice(0).elementCount());
-		for (int i=0; i<n; i++) {
-			slice(i).setElements(values, offset+i*ss, ss);
+		int s1=pos/ss;
+		int s2=(pos+length-1)/ss;
+		if (s1==s2) {
+			slice(s1).setElements(pos-s1*ss,values,offset,length);
+			return;
+		}
+		
+		int si=offset;
+		int l1 = (s1+1)*ss-pos;
+		if (l1>0) {
+			slice(s1).setElements(pos-s1*ss, values, si, l1);
+			si+=l1;
+		}
+		for (int i=s1+1; i<s2; i++) {
+			slice(i).setElements(values, si);
+			si+=ss;
+		}
+		int l2=(pos+length)-(s2*ss);
+		if (l2>0) {
+			slice(s2).setElements(0,values,si,l2);
 		}
 	}
 	
@@ -386,7 +404,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	public void setElements(double[] values) {
-		setElements(values,0,values.length);
+		int vl=values.length;
+		if (vl!=elementCount()) throw new IllegalArgumentException("Wrong array length: "+vl);
+		setElements(0,values,0,vl);
 	}
 	
 	public void square() {

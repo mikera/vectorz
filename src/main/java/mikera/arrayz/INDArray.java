@@ -500,7 +500,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Sets elements in an array using the given double values
 	 */
-	public void setElements(double[] values, int offset, int length);
+	public void setElements(int pos, double[] values, int offset, int length);
 
 	/**
 	 * Gets all elements of the array, copying them into a double array

@@ -337,17 +337,12 @@ public final class JoinedArrayVector extends ASizedVector {
 			v.copyTo(pos[j],data[j], offsets[j],subLength(j));
 		}
 	}
-	
-	@Override
-	public void setElements(double[] values, int offset, int length) {
-		assert(length==this.length());
-		int srcPos=offset;
-		for (int j=0; j<numArrays; j++) {
-			int sl=subLength(j);
-			System.arraycopy(values,srcPos, data[j],offsets[j],sl);
-			srcPos+=sl;
-		}
-	} 
+
+//	TODO: should have a fast implementation for this?
+//	@Override
+//	public void setElements(int pos, double[] values, int offset, int length) {
+//		....
+//	} 
 	
 	@Override 
 	public void multiply(double value) {

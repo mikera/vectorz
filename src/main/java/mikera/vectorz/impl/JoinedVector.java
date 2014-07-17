@@ -418,10 +418,15 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		checkLength(length);
-		left.setElements(values,offset,split);
-		right.setElements(values,offset+split,length-split);
+	public void setElements(int pos, double[] values, int offset, int length) {
+		int l0=Math.min(length, (split-pos));
+		if (l0>0) {
+			left.setElements(pos,values,offset,l0);
+		}
+		int l1=Math.min(length, pos+length-split);
+		if (l1>0) {
+			right.setElements(pos+length-split-l1,values,offset+split,l1);
+		}
 	}
 
 	@Override

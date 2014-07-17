@@ -1235,17 +1235,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Deprecated
 	public void set(double[] data) {
-		setElements(data,0,length());
+		setElements(data);
 	}
 	
 	@Override
 	public void setElements(double[] data) {
-		setElements(data,0,length());
+		int length=checkLength(data.length);
+		setElements(0,data,0,length);
 	}
 	
 	@Override
 	public void setElements(double[] data,int offset) {
-		setElements(data,offset,length());
+		setElements(0,data,offset,length());
 	}
 	
 	@Override
@@ -1262,12 +1263,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		if (length!=length()) {
-			throw new IllegalArgumentException("Incorrect length: "+length);
-		}
+	public void setElements(int pos,double[] values, int offset, int length) {
+		checkRange(pos,length);
 		for (int i=0; i<length; i++) {
-			unsafeSet(i,values[offset+i]);
+			unsafeSet(i+pos,values[offset+i]);
 		}
 	}
 	

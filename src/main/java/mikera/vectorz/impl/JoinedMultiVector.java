@@ -451,16 +451,6 @@ public final class JoinedMultiVector extends AJoinedVector {
 			vecs[i].set(src,srcOffset+splits[i]);
 		}
 	}
-	
-	@Override
-	public void setElements(double[] values, int offset, int length) {
-		if (length!=length()) {
-			throw new IllegalArgumentException("Incorrect length: "+length);
-		}
-		for (int i=0; i<n; i++) {
-			vecs[i].setElements(values,offset+splits[i]);
-		}
-	}
 
 	@Override
 	public void set(int i, double value) {

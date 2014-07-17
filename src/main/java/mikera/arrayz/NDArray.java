@@ -347,21 +347,16 @@ public final class NDArray extends BaseNDArray {
 	}
 
 	@Override
-	public void setElements(double[] values, int offset, int length) {
+	public void setElements(int pos,double[] values, int offset, int length) {
+		if (length==0) return;
 		if (dimensions==0) {
+			if (length!=1) throw new IllegalArgumentException("Must have one element!");
+			if (pos!=0) throw new IllegalArgumentException("Element index out of bounds: "+pos);
 			data[this.offset]=values[offset];
 		} else if (dimensions==1) {
-			if (length>getShape(0)) throw new IllegalArgumentException("Too many values for NDArray: "+length);
-			int st0=getStride(0);
-			for (int i=0; i<length; i++) {
-				data[this.offset+i*st0]=values[offset+i];
-			}
+			asVector().setElements(pos,values,offset,length);
 		} else {
-			int sc=getShape(0);
-			int ssize=(int) IntArrays.arrayProduct(shape,1,dimensions);
-			for (int i=0; i<sc; i++) {
-				slice(i).setElements(values,offset+ssize*i,ssize);
-			}
+			super.setElements(pos, values, offset, length);
 		}
 	}
 	

@@ -267,7 +267,9 @@ public class TestArrays {
 
 		INDArray b = a.exactClone();
 		b.fill(Double.NaN);
-		b.setElements(data, 1, ecount);
+		b.setElements(data, 1);
+		assertEquals(a, b);
+		b.setElements(0,data, 1, ecount);
 		assertEquals(a, b);
 	}
 
