@@ -594,8 +594,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray[] toSliceArray();
 	
 	/**
-	 * Returns the underlying double array representing the packed elements of this array
-	 * Returns nil if there is no such underlying array
+	 * Returns the underlying double array representing the densely packed elements of this array
+	 * Returns nil if there is no such array
 	 */
 	public double[] asDoubleArray();
 
