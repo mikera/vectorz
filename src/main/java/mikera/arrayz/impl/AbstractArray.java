@@ -1281,5 +1281,38 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return false;
 	}
 
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    public double elementPowSum(double p) {
+        if (dimensionality()==0) {
+            double value=get();
+            return Math.pow(value, p);
+        }
+        double result=0;
+        int n=sliceCount();
+        for (int i=0; i<n; i++) {
+            result+=slice(i).elementPowSum(p);
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    public double elementAbsPowSum(double p) {
+        if (dimensionality()==0) {
+            double value=Math.abs(get());
+            return Math.pow(value, p);
+        }
+        double result=0;
+        int n=sliceCount();
+        for (int i=0; i<n; i++) {
+            result+=slice(i).elementPowSum(p);
+        }
+        return result;
+    }
 
 }

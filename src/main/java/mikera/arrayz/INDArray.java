@@ -755,4 +755,15 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public boolean hasUncountable();
 	
+	/**
+	 * Returns the sum of all the elements raised to a specified power
+	 * @return
+	 */
+	public double elementPowSum(double p);
+	
+	/**
+	 * Returns the sum of the absolute values of all the elements raised to a specified power
+	 * @return
+	 */
+	public double elementAbsPowSum(double p);
 }

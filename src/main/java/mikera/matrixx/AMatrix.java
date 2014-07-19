@@ -2076,5 +2076,4 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
 		}
 	}
-	
 }
