@@ -100,6 +100,5 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
             result += Math.pow(Math.abs(i), 3);
         }
         return result;
-
     }
 }

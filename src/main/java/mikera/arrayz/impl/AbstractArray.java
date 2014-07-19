@@ -1310,7 +1310,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
         double result=0;
         int n=sliceCount();
         for (int i=0; i<n; i++) {
-            result+=slice(i).elementPowSum(p);
+            result+=slice(i).elementAbsPowSum(p);
         }
         return result;
     }

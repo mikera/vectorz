@@ -36,7 +36,7 @@ public abstract class AArrayVector extends ASizedVector {
     public double elementPowSum(double p) {
         double result = 0;
         for(double i: data) {
-            result += Math.pow(i, 3);
+            result += Math.pow(i, p);
         }
         return result;
     }
@@ -49,7 +49,7 @@ public abstract class AArrayVector extends ASizedVector {
     public double elementAbsPowSum(double p) {
         double result = 0;
         for(double i: data) {
-            result += Math.pow(Math.abs(i), 3);
+            result += Math.pow(Math.abs(i), p);
         }
         return result;
 
