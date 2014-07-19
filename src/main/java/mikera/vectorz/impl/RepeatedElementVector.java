@@ -192,4 +192,22 @@ public final class RepeatedElementVector extends ASizedVector {
 	public boolean hasUncountable() {
 		return Double.isNaN(value) || Double.isInfinite(value);
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return length*Math.pow(value, p);
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return length*Math.pow(Math.abs(value), p);
+    }
 }

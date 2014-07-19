@@ -89,11 +89,7 @@ public final class BitVector extends ABitVector {
 	
 	@Override
 	public double elementSum() {
-		double result=0.0;
-		for (int i=0; i<data.length; i++) {
-			result+=Long.bitCount(data[i]);
-		}
-		return result;
+		return nonZeroCount();
 	}
 	
 	@Override

@@ -387,4 +387,22 @@ public final class AxisVector extends ASparseVector {
 		return false;
 	}
 	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return 1;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return elementPowSum(p);
+    }
+	
 }

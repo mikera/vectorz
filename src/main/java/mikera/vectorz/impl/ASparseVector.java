@@ -150,4 +150,34 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		}
 		return false;
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        Index ni = nonSparseIndexes();
+        double result = 0;
+        for(int i=0; i<ni.length(); i++) {
+            int ii = ni.get(i);
+            result += Math.pow(unsafeGet(ii), p);
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        Index ni = nonSparseIndexes();
+        double result = 0;
+        for(int i=0; i<ni.length(); i++) {
+            int ii = ni.get(i);
+            result += Math.pow(Math.abs(unsafeGet(ii)), p);
+        }
+        return result;
+    }
 }

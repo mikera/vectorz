@@ -402,5 +402,23 @@ public final class ZeroVector extends ASparseVector {
 	public boolean hasUncountable() {
 		return false;
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return 0;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return elementPowSum(p);
+    }
 
 }
