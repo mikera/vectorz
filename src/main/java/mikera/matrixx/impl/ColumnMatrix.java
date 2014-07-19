@@ -179,5 +179,28 @@ public class ColumnMatrix extends AMatrix implements IFastColumns, IFastRows {
 		Vector v=vector.innerProduct(s).toVector();
 		return Matrix.wrap(1, s.columnCount(), v.asDoubleArray());
 	}
+	
+	@Override
+	public boolean hasUncountable() {
+	    return vector.hasUncountable();
+	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return vector.elementPowSum(p);
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return vector.elementAbsPowSum(p);
+    }
 
 }
