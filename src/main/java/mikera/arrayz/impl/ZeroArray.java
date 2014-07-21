@@ -140,6 +140,12 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 	}
 	
 	@Override
+	public boolean equals(INDArray a) {
+		if (!a.isSameShape(this)) return false;
+		return a.isZero();
+	}
+	
+	@Override
 	public AVector asVector() {
 		return ZeroVector.create(this);
 	}
