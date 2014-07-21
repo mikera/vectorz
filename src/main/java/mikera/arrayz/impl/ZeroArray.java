@@ -26,8 +26,17 @@ import mikera.vectorz.util.IntArrays;
 public final class ZeroArray extends BaseShapedArray implements ISparse {
 	private static final long serialVersionUID = 7355257027343666183L;
 	
+	private INDArray sliceValue;
+	
 	private ZeroArray(int[] shape)  {
 		super(shape);
+		int dims=this.dimensionality();
+		switch(dims) {
+			case 1: sliceValue= ImmutableScalar.ZERO; break;
+			case 2: sliceValue= ZeroVector.create(shape[1]); break;
+			case 3: sliceValue= ZeroMatrix.create(shape[1],shape[2]); break;
+			default: sliceValue= ZeroArray.wrap(IntArrays.removeIndex(shape, 0)); break;
+		}
 	}
 	
 	public static ZeroArray wrap(int... shape) {
@@ -78,12 +87,7 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 	@Override
 	public INDArray slice(int majorSlice) {
 		if ((majorSlice<0)||(majorSlice>=shape[0])) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, majorSlice));
-		switch (dimensionality()) {
-		case 1: return ImmutableScalar.ZERO;
-		case 2: return ZeroVector.create(shape[1]);
-		case 3: return ZeroMatrix.create(shape[1],shape[2]);
-		default: return ZeroArray.wrap(IntArrays.removeIndex(shape, 0));
-		}
+		return sliceValue;
 	}
 
 	@Override
