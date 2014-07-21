@@ -4,6 +4,10 @@ import mikera.vectorz.AScalar;
 
 /**
  * Base class for all vectors backed by a single final double[] array
+ * 
+ * Supports arbitrary indexing: array elements may not correspond to vector elements in any particular order. Ordering of elements is
+ * defined by subclasses of AArrayVector.
+ * 
  * @author Mike
  *
  */
@@ -27,32 +31,5 @@ public abstract class AArrayVector extends ASizedVector {
 	 * Computes an index into the underlying array for a given vector index
 	 */
 	protected abstract int index(int i);
-	
-	/**
-     * Returns the sum of all the elements raised to a specified power
-     * @return
-     */
-    @Override
-    public double elementPowSum(double p) {
-        double result = 0;
-        for(double i: data) {
-            result += Math.pow(i, p);
-        }
-        return result;
-    }
-    
-    /**
-     * Returns the sum of the absolute values of all the elements raised to a specified power
-     * @return
-     */
-    @Override
-    public double elementAbsPowSum(double p) {
-        double result = 0;
-        for(double i: data) {
-            result += Math.pow(Math.abs(i), p);
-        }
-        return result;
-
-    }
 
 }

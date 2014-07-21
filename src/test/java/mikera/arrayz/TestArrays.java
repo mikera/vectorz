@@ -529,6 +529,16 @@ public class TestArrays {
 		assertEquals(m.elementCount(),i);
 	}
 	
+	private void testElementSums(INDArray m) {
+		double es=m.elementSum();
+		double ess=m.elementSquaredSum();
+		
+		assertEquals(es,m.asVector().elementSum(),0.0001);
+		assertEquals(es,m.elementPowSum(1.0),0.0001);
+		assertEquals(ess,m.elementAbsPowSum(2.0),0.0001);
+
+	}
+	
 	private void testStridedArray(INDArray mm) {
 		if (!(mm instanceof IStridedArray)) {
 			assertNull(mm.asDoubleArray());
@@ -634,6 +644,7 @@ public class TestArrays {
 		testApplyOp(a);
 		testApplyAllOps(a);
 		testElementIterator(a);
+		testElementSums(a);
 		testStridedArray(a);
 		testBoolean(a);
 		testSums(a);

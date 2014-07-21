@@ -190,7 +190,7 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
      */
     @Override
     public double elementPowSum(double p) {
-        long result = 0;
+        double result = 0;
         for(int i=0; i<blockCount; i++) {
             result += mats[i].elementPowSum(p);
         }
@@ -203,7 +203,7 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
      */
     @Override
     public double elementAbsPowSum(double p) {
-        long result = 0;
+        double result = 0;
         for(int i=0; i<blockCount; i++) {
             result += mats[i].elementAbsPowSum(p);
         }
