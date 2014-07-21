@@ -222,6 +222,15 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 		public boolean isFullyMutable() {
 			return ABandedMatrix.this.isFullyMutable();
 		}
+		
+		@Override
+		public double dotProduct(double[] data, int offset) {
+			double result=0.0;
+			for (int i=0; i<length; i++) {
+				result+=data[offset+i]*unsafeGet(i);
+			}
+			return result;
+		}
 	}
 	
 	@Override

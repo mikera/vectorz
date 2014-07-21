@@ -851,6 +851,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Returns the dot product of this vector with another vector
 	 * 
+	 * The vectors must have the same length: if not the result is undefined
+	 * 
 	 * @param v
 	 * @return
 	 */
@@ -902,14 +904,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * 
 	 * Likely to be faster than other dot product operations
 	 */
-	public double dotProduct(double[] data, int offset) {
-		int len=length();
-		double result=0.0;
-		for (int i=0; i<len; i++) {
-			result+=unsafeGet(i)*data[offset+i];
-		}
-		return result;
-	}
+	public abstract double dotProduct(double[] data, int offset);
 	
 	/**
 	 * Computes the crossProduct of this vector with another vector, and stores the result in this vector.

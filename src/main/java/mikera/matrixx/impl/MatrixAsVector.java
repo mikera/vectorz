@@ -184,4 +184,13 @@ public class MatrixAsVector extends AMatrixViewVector {
 		}
 		return super.subVector(start, length);
 	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<rows; i++) {
+			result+=source.getRow(i).dotProduct(data, offset+i*columns);
+		}
+		return result;
+	}
 }

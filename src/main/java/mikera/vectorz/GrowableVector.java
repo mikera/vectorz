@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -130,5 +131,10 @@ public final class GrowableVector extends AVector {
 	public void validate() {
 		if (length>data.length) throw new VectorzException("data array is wrong size!?!");
 		super.validate();
+	}
+
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return DoubleArrays.dotProduct(data, offset, this.data, 0, length);
 	}
 }

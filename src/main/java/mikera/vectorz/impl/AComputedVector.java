@@ -42,4 +42,13 @@ public abstract class AComputedVector extends ASizedVector {
 	public AComputedVector exactClone() {
 		return this;
 	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*unsafeGet(i);
+		}
+		return result;
+	}
 }

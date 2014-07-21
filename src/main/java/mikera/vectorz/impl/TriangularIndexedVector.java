@@ -63,4 +63,13 @@ public final class TriangularIndexedVector extends AArrayVector {
 		return new TriangularIndexedVector(length,data.clone(),offset,baseStride2);
 	}
 
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*unsafeGet(i);
+		}
+		return result;
+	}
+
 }

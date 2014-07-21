@@ -141,4 +141,13 @@ public final class WrappedSubVector extends ASizedVector {
 	public void addAt(int i, double v) {
 		wrapped.addAt(offset+i,v);
 	}
+
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*unsafeGet(i);
+		}
+		return result;
+	}
 }

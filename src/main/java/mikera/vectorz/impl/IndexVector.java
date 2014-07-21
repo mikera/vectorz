@@ -85,4 +85,13 @@ public class IndexVector extends ASizedVector {
 		super.validate();
 	}
 
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*index.unsafeGet(i);
+		}
+		return result;
+	}
+
 }

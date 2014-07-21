@@ -238,4 +238,9 @@ public final class SingleElementVector extends ASparseVector {
         return Math.pow(Math.abs(value), p);
     }
 
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return value*data[offset+index];
+	}
+
 }

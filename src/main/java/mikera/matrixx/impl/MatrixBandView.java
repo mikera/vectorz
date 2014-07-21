@@ -66,5 +66,14 @@ public final class MatrixBandView extends AMatrixViewVector {
 	public AVector exactClone() {
 		return new MatrixBandView(source.exactClone(),band);
 	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*unsafeGet(i);
+		}
+		return result;
+	}
 
 }
