@@ -296,15 +296,17 @@ public class TestMatrixx {
 		int bandMax=m.columnCount();
 		Matrix mc=m.toMatrix();
 		
-		// TODO: what to do about out-of-range bands?
+		// TODO: consider what to do about out-of-range bands?
 		//assertNull(m.getBand(bandMin-1));
 		//assertNull(m.getBand(bandMax+1));
 		
 		for (int i=bandMin; i<=bandMax; i++) {
 			AVector b=m.getBand(i);
 			assertEquals(b.length(),m.bandLength(i));		
-			if (rc*cc!=0) assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
 			assertEquals(mc.getBand(i),b);
+			
+			// wrapped band test
+			if (rc*cc!=0) assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
 		}
 		
 		assertEquals(m,BandedMatrix.create(m));
