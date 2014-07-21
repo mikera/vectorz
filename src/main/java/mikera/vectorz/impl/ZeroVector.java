@@ -409,7 +409,7 @@ public final class ZeroVector extends ASparseVector {
      */
     @Override
     public double elementPowSum(double p) {
-        return 0;
+        return 0.0;
     }
     
     /**
@@ -418,7 +418,7 @@ public final class ZeroVector extends ASparseVector {
      */
     @Override
     public double elementAbsPowSum(double p) {
-        return elementPowSum(p);
+        return 0.0;
     }
 
 }
