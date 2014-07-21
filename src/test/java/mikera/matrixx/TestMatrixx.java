@@ -551,6 +551,7 @@ public class TestMatrixx {
 	@Test public void g_Matrix() {
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
+		randomise(mmn);
 
 		Matrix am1=new Matrix(Matrix33.createScaleMatrix(4.0));
 		doGenericTests(am1);
@@ -560,10 +561,11 @@ public class TestMatrixx {
 	}
 	
 	@Test public void g_DenseColumnMatrix() {
-		Matrix am1=new Matrix(Matrix33.createScaleMatrix(4.0));
+		Matrix am1=new Matrix(Matrix33.createScaleMatrix(Math.PI));
 		doGenericTests(am1.getTranspose());
 		
 		Matrix am2=new Matrix(new VectorMatrixMN(6 ,7));
+		randomise(am2);
 		doGenericTests(am2.getTranspose());
 	}
 	
@@ -575,8 +577,8 @@ public class TestMatrixx {
 	
 	@Test public void g_ScalarMatrix() {	
 		doGenericTests(ScalarMatrix.create(1,3.0));
-		doGenericTests(ScalarMatrix.create(3,3.0));
-		doGenericTests(ScalarMatrix.create(5,0));
+		doGenericTests(ScalarMatrix.create(3,Math.E));
+		doGenericTests(ScalarMatrix.create(5,0.0));
 		doGenericTests(ScalarMatrix.create(5,2.0).subMatrix(1, 3, 1, 3));
 	}
 	
@@ -620,9 +622,9 @@ public class TestMatrixx {
 	}
 	
 	@Test public void g_SparseMatrix() {	
-		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,2),null,null,AxisVector.create(2, 3)));
+		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,-Math.E),null,null,AxisVector.create(2, 3)));
 		doGenericTests(SparseRowMatrix.create(Matrixx.createRandomSquareMatrix(3)));
-		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,2),null,null,AxisVector.create(2, 3)));
+		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,-Math.PI),null,null,AxisVector.create(2, 3)));
 		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(4)));
 	}
 	
