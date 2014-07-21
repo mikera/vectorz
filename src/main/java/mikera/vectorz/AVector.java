@@ -638,6 +638,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public AVector absCopy() {
+		AVector v=clone();
+		v.abs();
+		return v;
+	}
+	
+	@Override
 	public void log() {
 		int len=length();
 		for (int i=0; i<len; i++) {

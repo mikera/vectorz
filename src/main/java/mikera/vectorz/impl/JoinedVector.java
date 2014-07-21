@@ -331,6 +331,11 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	@Override
+	public AVector absCopy() {
+		return left.absCopy().join(right.absCopy());
+	}
+	
+	@Override
 	public void exp() {
 		left.exp();
 		right.exp();
