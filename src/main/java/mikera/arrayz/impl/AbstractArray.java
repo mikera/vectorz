@@ -171,6 +171,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		r.multiply(d);
 		return r;
 	}
+	
+	@Override
+	public INDArray applyOpCopy(Op op) {
+		INDArray r=clone();
+		r.applyOp(op);
+		return r;
+	}
 
 	@Override
 	public boolean isElementConstrained() {

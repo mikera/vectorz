@@ -483,6 +483,11 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Applies a unary operator to all elements of the array (in-place)
 	 */
 	void applyOp(Op op);
+	
+	/**
+	 * Applies a unary operator to all elements of the array (creating a new array)
+	 */
+	INDArray applyOpCopy(Op op);
 
 	/**
 	 * Applies a unary operator to all elements of the array (in-place)
