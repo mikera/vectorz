@@ -129,6 +129,21 @@ public final class RepeatedElementVector extends ASizedVector {
 	}	
 	
 	@Override
+	public AVector reciprocalCopy() {
+		return create(length,1.0/value);
+	}
+	
+	@Override
+	public AVector absCopy() {
+		return create(length,Math.abs(value));
+	}
+	
+	@Override
+	public AVector negateCopy() {
+		return create(length,-value);
+	}
+
+	@Override
 	public AVector addCopy(AVector v) {
 		return v.addCopy(value);
 	}

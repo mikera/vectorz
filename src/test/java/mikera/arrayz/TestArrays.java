@@ -426,6 +426,17 @@ public class TestArrays {
 		assertTrue(m2.epsilonEquals(a));	
 	}
 	
+	private void testReciprocal(INDArray a) {
+		a=a.exactClone();
+		
+		INDArray ra=a.reciprocalCopy();
+		
+		if (a.isFullyMutable()&&(!ra.hasUncountable())) {
+			a.reciprocal();
+			assertTrue(a.epsilonEquals(ra));
+		}
+	}
+	
 	private void testBoolean(INDArray a) {
 		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(Tools.getElements(a)));
 	}
@@ -641,6 +652,7 @@ public class TestArrays {
 		testSub(a);
 		testToArray(a);
 		testMultiply(a);
+		testReciprocal(a);
 		testApplyOp(a);
 		testApplyAllOps(a);
 		testElementIterator(a);

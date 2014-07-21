@@ -443,6 +443,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray reciprocalCopy() {
+		INDArray r=clone();
+		r.reciprocal();
+		return r;
+	}
+	
+	@Override
 	public INDArray signumCopy() {
 		INDArray r=clone();
 		r.signum();

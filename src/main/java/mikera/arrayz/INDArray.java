@@ -197,7 +197,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public void reciprocal();
 	
 	/**
-	 * Clamps all the elments of this array within the specified [min,max] range
+	 * Returns a new array where every element is the reciprocal of the corresponding element in this array
+	 */
+	public INDArray reciprocalCopy();
+	
+	/**
+	 * Clamps all the elements of this array within the specified [min,max] range
 	 */
 	public void clamp(double min, double max);
 
