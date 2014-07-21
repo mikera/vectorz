@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import mikera.arrayz.impl.SliceArray;
 import mikera.arrayz.impl.ZeroArray;
@@ -272,5 +273,21 @@ public class Arrayz {
 			case 2: return ZeroMatrix.create(shape[0],shape[1]);
 			default: return ZeroArray.create(shape);
 		}
+	}
+
+	public static void fillRandom(INDArray a, long seed) {
+		Vectorz.fillRandom(a.asVector(),seed);
+	}
+	
+	public static void fillRandom(INDArray a, Random random) {
+		Vectorz.fillRandom(a.asVector(),random);
+	}
+
+	public static void fillNormal(INDArray a, long seed) {
+		Vectorz.fillNormal(a.asVector(),seed);
+	}
+	
+	public static void fillNormal(INDArray a, Random random) {
+		Vectorz.fillNormal(a.asVector(),random);
 	}
 }

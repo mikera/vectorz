@@ -109,7 +109,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public double get(int... indexes) {
+	public final double get(int... indexes) {
 		return get(indexes[0]);
 	}
 	

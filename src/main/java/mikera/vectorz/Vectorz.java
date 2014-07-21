@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import mikera.arrayz.INDArray;
 import mikera.util.Rand;
@@ -524,6 +525,42 @@ public class Vectorz {
 		if (result!=value) throw new IllegalArgumentException("Can't cast safely to int: "+value);
 		return result;
 	}
+
+	/**
+	 * Fills a mutable vector with random double values in the range [0..1)
+	 */
+	public static void fillRandom(AVector v, long seed) {
+		fillRandom(v, new Random(seed));
+	}
+
+	/**
+	 * Fills a mutable vector with random double values in the range [0..1)
+	 */
+	public static void fillRandom(AVector v, Random random) {
+		int n=v.length();
+		for (int i=0; i<n ; i++) {
+			v.unsafeSet(i, random.nextDouble());
+		}
+	}
+	
+	/**
+	 * Fills a mutable vector with random normally distributed values
+	 */
+	public static void fillNormal(AVector v, long seed) {
+		fillNormal(v, new Random(seed));
+
+	}
+
+	/**
+	 * Fills a mutable vector with random normally distributed values
+	 */
+	public static void fillNormal(AVector v, Random random) {
+		int n=v.length();
+		for (int i=0; i<n ; i++) {
+			v.unsafeSet(i, random.nextGaussian());
+		}
+	}
+
 
 
 	

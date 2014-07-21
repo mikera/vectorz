@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import mikera.arrayz.Arrayz;
+import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
@@ -487,17 +489,17 @@ public class TestMatrixx {
 	@Test public void g_PrimitiveMatrix() {
 		// specialised 3x3 matrix
 		Matrix33 m33=new Matrix33();
-		Matrixx.fillRandomValues(m33);
+		randomise(m33);
 		doGenericTests(m33);
 		
 		// specialised 2*2 matrix
 		Matrix22 m22=new Matrix22();
-		Matrixx.fillRandomValues(m22);
+		randomise(m22);
 		doGenericTests(m22);
 		
 		// specialised 1*1 matrix
 		Matrix11 m11=new Matrix11();
-		Matrixx.fillRandomValues(m11);
+		randomise(m11);
 		doGenericTests(m11);
 	}
 	
@@ -517,11 +519,13 @@ public class TestMatrixx {
 	@Test public void g_VectorMatrix() {
 		// specialised Mx3 matrix
 		VectorMatrixM3 mm3=new VectorMatrixM3(10);
+		Arrayz.fillNormal(mm3,101);
 		doGenericTests(mm3);
 		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
 	
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
+		randomise(mmn);
 		doGenericTests(mmn);
 		doGenericTests(mmn.subMatrix(1, 4, 1, 5));
 	
@@ -538,6 +542,12 @@ public class TestMatrixx {
 		doGenericTests(mmn);
 	}
 	
+	private static long seed;
+	
+	private void randomise(INDArray m) {
+		Arrayz.fillNormal(m, seed++);	
+	}
+
 	@Test public void g_Matrix() {
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);

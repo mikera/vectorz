@@ -586,7 +586,7 @@ public class TestArrays {
 		AVector v = b.toVector();
 		b.pow(2.5);
 		v.pow(2.5);
-		assertEquals(v, b.toVector());
+		assertTrue(v.epsilonEquals(b.toVector()));
 
 		b = a.exactClone();
 		v = b.toVector();
