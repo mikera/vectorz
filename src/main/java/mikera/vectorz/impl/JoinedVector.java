@@ -354,6 +354,11 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	@Override
+	public AVector negateCopy() {
+		return left.negateCopy().join(right.negateCopy());
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		left.applyOp(op);
 		right.applyOp(op);
