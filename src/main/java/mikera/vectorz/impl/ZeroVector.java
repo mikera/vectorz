@@ -152,6 +152,33 @@ public final class ZeroVector extends ASparseVector {
 	}
 	
 	@Override
+	public RepeatedElementVector reciprocalCopy() {
+		return RepeatedElementVector.create(length, 1.0/0.0);
+	}
+	
+	@Override
+	public ZeroVector absCopy() {
+		return this;
+	}
+	
+	@Override
+	public ZeroVector multiplyCopy(AVector a) {
+		checkSameLength(a);
+		return this;
+	}
+	
+	@Override
+	public ZeroVector multiplyCopy(double factor) {
+		return this;
+	}
+	
+	@Override
+	public ZeroVector divideCopy(AVector a) {
+		checkSameLength(a);
+		return this;
+	}
+	
+	@Override
 	public double magnitudeSquared() {
 		return 0.0;
 	}
