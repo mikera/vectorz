@@ -20,6 +20,16 @@ public abstract class AJoinedVector extends ASizedVector {
 	public abstract int segmentCount();
 	
 	public abstract AVector getSegment(int k);
+	
+	/**
+	 * Reconstructs a new joined vector of the same type and shape with the given segments.
+	 * 
+	 * The segments must be the same shape as the original segments
+	 * 
+	 * @param aVectors
+	 * @return
+	 */
+	protected abstract AJoinedVector reconstruct(AVector... segments);
 
 	@Override
 	public boolean isView() {

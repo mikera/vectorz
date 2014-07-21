@@ -30,24 +30,28 @@ public final class JoinedMultiVector extends AJoinedVector {
 	// array of split positions [0, ...... , length] with length n+1
 	private final int[] splits;
 	
+	private JoinedMultiVector(int length, AVector[] vecs, int[] splits) {
+		super(length);
+		n=vecs.length;
+		this.vecs=vecs;
+		this.splits=splits;
+	}
+	
+	private JoinedMultiVector(AVector[] vs) {
+		this(sumOfLengths(vs),vs,new int[vs.length+1]);
+		int j=0;
+		for (int i=0; i<n ; i++) {
+			j+=vs[i].length();
+			splits[i+1]=j;
+		}
+	}
+	
 	private static final int sumOfLengths(AVector[] vs) {
 		int result=0;
 		for (AVector v:vs) {
 			result+=v.length();
 		}
 		return result;
-	}
-	
-	private JoinedMultiVector(AVector[] vs) {
-		super(sumOfLengths(vs));
-		n=vs.length;
-		vecs=vs;
-		splits=new int[n+1];
-		int j=0;
-		for (int i=0; i<n ; i++) {
-			j+=vs[i].length();
-			splits[i+1]=j;
-		}
 	}
 
 	@Override
@@ -580,6 +584,11 @@ public final class JoinedMultiVector extends AJoinedVector {
 	@Override
 	public AVector getSegment(int k) {
 		return vecs[k];
+	}
+
+	@Override
+	protected AJoinedVector reconstruct(AVector... segments) {
+		return new JoinedMultiVector(length,vecs,splits);
 	}
 
 }

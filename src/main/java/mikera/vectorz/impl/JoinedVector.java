@@ -556,4 +556,9 @@ public final class JoinedVector extends AJoinedVector {
 		return (k<=0)?left:right;
 	}
 
+	@Override
+	protected JoinedVector reconstruct(AVector... segments) {
+		return new JoinedVector(segments[0],segments[1]);
+	}
+
 }

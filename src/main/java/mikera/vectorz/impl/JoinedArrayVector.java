@@ -589,4 +589,22 @@ public final class JoinedArrayVector extends AJoinedVector {
 	public int segmentCount() {
 		return numArrays;
 	}
+
+	@Override
+	protected AJoinedVector reconstruct(AVector... segments) {
+		int sc=segmentCount();
+		double[][] newData=new double[sc][];
+		int[] offs=this.offsets.clone();
+		for (int i=0; i<sc; i++) {
+			AVector v=segments[i];
+			if (v instanceof ADenseArrayVector) {
+				newData[i]=((ADenseArrayVector) v).getArray();
+				offs[i]=((ADenseArrayVector) v).getArrayOffset();
+			} else {
+				newData[i]=segments[i].toDoubleArray();
+				offs[i]=0;
+			}
+		}
+		return new JoinedArrayVector(length,newData,offs,this.pos);
+	}
 }
