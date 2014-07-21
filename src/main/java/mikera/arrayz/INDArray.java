@@ -5,6 +5,8 @@ import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.indexz.AIndex;
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
@@ -56,7 +58,17 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns the shape of the array as an array of longs.
 	 */
 	public long[] getLongShape();
-		
+	
+	/**
+	 * Returns the double value at the specified position in the array
+	 */
+	public double get(AIndex ix);
+	
+	/**
+	 * Returns the double value at the specified position in the array
+	 */
+	public double get(Index ix);
+	
 	/**
 	 * Returns the double value of a scalar array
 	 */

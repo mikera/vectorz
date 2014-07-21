@@ -10,6 +10,8 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
+import mikera.indexz.AIndex;
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -47,6 +49,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public abstract double get(int x);
 	
 	public abstract double get(int x, int y);
+	
+	@Override
+	public double get(AIndex ix) {
+		return get(ix.toArray());
+	}
+	
+	@Override
+	public double get(Index ix) {
+		return get(ix.getData());
+	}
 	
 	@Override
 	public int getShape(int dim) {
