@@ -292,7 +292,6 @@ public class TestMatrixx {
 	private void doBandTests(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();
-		if ((cc==0)||(rc==0)) return; // bands are meaningless....
 		int bandMin=-m.rowCount();
 		int bandMax=m.columnCount();
 		Matrix mc=m.toMatrix();
@@ -304,7 +303,7 @@ public class TestMatrixx {
 		for (int i=bandMin; i<=bandMax; i++) {
 			AVector b=m.getBand(i);
 			assertEquals(b.length(),m.bandLength(i));		
-			assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
+			if (rc*cc!=0) assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
 			assertEquals(mc.getBand(i),b);
 		}
 		
