@@ -1,13 +1,14 @@
 package mikera.matrixx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
-import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrixx;
-import mikera.matrixx.impl.AVectorMatrix;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
@@ -40,11 +41,7 @@ import org.junit.Test;
 
 public class TestMatrixx {
 
-	
-
-
-	
-	void doMutationTest(AMatrix m) {
+	private void doMutationTest(AMatrix m) {
 		if (!m.isFullyMutable()) return;
 		m=m.exactClone();
 		AMatrix m2=m.exactClone();
@@ -335,10 +332,6 @@ public class TestMatrixx {
 		assertEquals(m,Matrixx.parse(m.toString()));
 	}
 	
-	void doHashTest(AMatrix m) {
-		assertEquals(m.hashCode(),m.toVector().hashCode());
-	}
-
 	void doBigComposeTest(AMatrix m) {
 		AMatrix a=Matrixx.createRandomSquareMatrix(m.rowCount());
 		AMatrix b=Matrixx.createRandomSquareMatrix(m.columnCount());
@@ -461,7 +454,6 @@ public class TestMatrixx {
 		doTriangularTests(m);
 		doVectorTest(m);
 		doParseTest(m);
-		doHashTest(m);
 		doNDArrayTest(m);
 		doScaleTest(m);
 		doBoundsTest(m);
@@ -475,10 +467,6 @@ public class TestMatrixx {
 		doRandomTests(m);
 		doBigComposeTest(m);
 		doSubMatrixTest(m);
-		
-		if (m instanceof AVectorMatrix<?>) {
-			TestVectorMatrix.doVectorMatrixTests((AVectorMatrix<AVector>)m);
-		}
 		
 		TestTransformz.doITransformTests(new MatrixTransform(m));
 		

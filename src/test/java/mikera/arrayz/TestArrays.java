@@ -670,13 +670,16 @@ public class TestArrays {
 	}
 
 	@Test
-	public void genericTests() {
+	public void g_SliceArray() {
 		SliceArray<AVector> sa = SliceArray.of(
 				Vectorz.createUniformRandomVector(10),
 				Vectorz.createUniformRandomVector(10));
 		testArray(sa);
 		testArray(Array.create(sa));
+	}
 
+	@Test
+	public void g_NDArray() {
 		NDArray nd1 = NDArray.newArray(3);
 		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
@@ -692,21 +695,32 @@ public class TestArrays {
 		Vectorz.fillIndexes(nd3.asVector());
 		testArray(nd3);
 		testArray(Array.create(nd3));
+	}
 
+	@Test
+	public void g_NDScalar() {
 		NDArray ndscalar = NDArray.newArray();
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
+	}
 		
+	@Test
+	public void g_JoinedArray() {
 		testArray(JoinedArray.join(Vector.of(1,2),Vector.of(1,2,3,4,5),0));
 		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 3),1));
-		
+	}
+	
+	@Test
+	public void g_ImmutableArray() {
 		// immutable array tests
-		testArray(nd3.immutable());
 		testArray(ImmutableArray.create(Matrixx.createRandomMatrix(4, 5)));
 		testArray(ImmutableArray.create(Vectorz.createUniformRandomVector(4)));
 		testArray(ImmutableArray.create(Scalar.create(4)));
+	}
 		
+	@Test
+	public void g_ZeroArray() {
 		// zero array tests
 		testArray(Arrayz.createZeroArray());
 		testArray(Arrayz.createZeroArray(2));
