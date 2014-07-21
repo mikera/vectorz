@@ -466,6 +466,11 @@ public class Matrixx {
 		}
 	}
 
+	/** 
+	 * Create a matrix using as array of vectors which represent the data for each row
+	 * @param data
+	 * @return
+	 */
 	public static AMatrix createFromVectors(AVector... data) {
 		int rc = data.length;
 		int cc = (rc == 0) ? 0 : data[0].length();
@@ -476,6 +481,11 @@ public class Matrixx {
 		return m;
 	}
 
+	/** 
+	 * Create a matrix using a list of vectors as the data for each row
+	 * @param data
+	 * @return
+	 */
 	public static AMatrix createFromVectors(List<AVector> data) {
 		int rc = data.size();
 		int cc = (rc == 0) ? 0 : data.get(0).length();

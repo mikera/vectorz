@@ -226,7 +226,7 @@ public class TestVectors {
 		if (len>20) return;
 		
 		AMatrix m=Matrixx.createRandomMatrix(len, len);
-		assertEquals(v.innerProduct(m),m.getTranspose().transform(v));
+		assertTrue(v.innerProduct(m).epsilonEquals(m.getTranspose().transform(v)));
 	}
 	
 	private void testSelect(AVector v) {
@@ -886,7 +886,7 @@ public class TestVectors {
 	@Test public void g_ArraySubVector() {
 		double[] data=new double[100];
 		for (int i=0; i<100; i++) {
-			data[i]=i;
+			data[i]=i+(1.0/Math.PI);
 		}
 
 		doGenericTests(ArraySubVector.wrap(data));
@@ -896,7 +896,7 @@ public class TestVectors {
 		double[] data=new double[100];
 		int[] indexes=new int[100];
 		for (int i=0; i<100; i++) {
-			data[i]=i;
+			data[i]=i+(1.0/Math.E);
 			indexes[i]=i;
 		}
 
@@ -915,7 +915,7 @@ public class TestVectors {
 	}
 		
 	@Test public void g_MiscSubVectors() {
-		AVector v3 = new Vector3(1.0,2.0,3.0);
+		AVector v3 = new Vector3(1.0,2.0,-Math.PI);
 		doGenericTests(v3.subVector(1, 2));
 		doGenericTests(WrappedSubVector.wrap(v3,1,2));
 	}
@@ -926,7 +926,7 @@ public class TestVectors {
 			data[i]=i;
 		}
 
-		AVector joined = Vectorz.join( new Vector3(1.0,2.0,3.0), Vectorz.create(data));
+		AVector joined = Vectorz.join( new Vector3(1.0,2.0,-Math.PI), Vectorz.create(data));
 		doGenericTests(joined);
 		
 		AVector j5=Vectorz.join(Vector4.of(1,2,3,4),joined,Vector3.of(1,2,3),Vector.of(2,3,4,5),Vector0.INSTANCE,Vector.of(),joined);
@@ -934,7 +934,7 @@ public class TestVectors {
 	}
 		
 	@Test public void g_Length4() {
-		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
+		AVector v4 = Vectorz.create(1.0,2.0,Math.PI,4.0);
 		doGenericTests(v4);
 		doGenericTests(v4.subVector(1, 2));
 	}
@@ -943,7 +943,7 @@ public class TestVectors {
 		AVector g0=new GrowableVector();
 		doGenericTests(g0);
 
-		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
+		AVector v4 = Vectorz.create(1.0,2.0,Math.PI,4.0);
 		AVector g4=new GrowableVector(v4);
 		doGenericTests(g4);
 	}
@@ -986,10 +986,10 @@ public class TestVectors {
 	}
 
 	@Test public void g_RepeatedElementVector() {	
-		doGenericTests(RepeatedElementVector.create(1,1.0));
+		doGenericTests(RepeatedElementVector.create(1,Math.PI));
 		doGenericTests(RepeatedElementVector.create(4,0.0));
-		doGenericTests(RepeatedElementVector.create(10,1.0));
-		doGenericTests(RepeatedElementVector.create(10,1.0).subVector(2, 5));
+		doGenericTests(RepeatedElementVector.create(10,Math.PI));
+		doGenericTests(RepeatedElementVector.create(10,Math.PI).subVector(2, 5));
 	}
 		
 	@Test public void g_IndexVector() {	
