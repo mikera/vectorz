@@ -121,40 +121,15 @@ public final class NDArray extends BaseNDArray {
 		}
 		data[ix]=value;
 	}
-
-	@Override
-	public void add(double a) {
-		super.add(a);
-	}
-	
-	@Override
-	public void add(INDArray a) {
-		super.add(a);
-	}
-
-	@Override
-	public void sub(INDArray a) {
-		super.sub(a);
-	}
-
-	@Override
-	public INDArray innerProduct(INDArray a) {
-		return super.innerProduct(a);
-	}
-
-	@Override
-	public INDArray outerProduct(INDArray a) {
-		return super.outerProduct(a);
-	}
 	
 	@Override
 	public INDArray getTranspose() {
-		return new NDArray(data,dimensions,offset,IntArrays.reverse(shape),IntArrays.reverse(stride));
+		return getTransposeView();
 	}
 	
 	@Override
 	public INDArray getTransposeView() {
-		return getTranspose();
+		return new NDArray(data,dimensions,offset,IntArrays.reverse(shape),IntArrays.reverse(stride));
 	}
 
 	@Override
