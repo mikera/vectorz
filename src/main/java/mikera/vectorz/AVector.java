@@ -2042,6 +2042,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
+	public AVector applyOpCopy(Op op) {
+		AVector r=clone();
+		r.applyOp(op);
+		return r;
+	}
+	
 	/**
 	 * Adds a value to a specific element of the vector
 	 * 
