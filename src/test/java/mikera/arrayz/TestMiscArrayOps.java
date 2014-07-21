@@ -2,13 +2,25 @@ package mikera.arrayz;
 
 import static org.junit.Assert.*;
 import mikera.arrayz.impl.SliceArray;
+import mikera.arrayz.impl.ZeroArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.impl.BlockDiagonalMatrix;
+import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.DiagonalMatrix;
+import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.PermutationMatrix;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.BitVector;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.impl.ZeroVector;
 
 import org.junit.Test;
 
@@ -78,8 +90,48 @@ public class TestMiscArrayOps {
 		assertEquals(Scalar.create(2),Vector.of(2,3,4).reshape());
 		
 		assertEquals(Vector0.INSTANCE,Array.newArray(2,3,4,5).reshape(0));
-
-
+	}
+	
+	@Test
+	public void testElementSum() {
+	   assertEquals(0, ZeroArray.create(1,2,3).elementAbsPowSum(3), 0.0001); 
+	   assertEquals(0, ZeroArray.create(1,2,3).elementPowSum(3), 0.0001); 
+	   
+	   assertEquals(0, ZeroMatrix.create(1,2).elementAbsPowSum(3123), 0.0001); 
+	   assertEquals(0, ZeroMatrix.create(1,2).elementPowSum(3), 0.0001); 
+	    
+	   assertEquals(0, ZeroVector.create(2).elementAbsPowSum(1), 0.0001); 
+	   assertEquals(0, ZeroVector.create(2).elementPowSum(3), 0.0001); 
+	   
+	   assertEquals(3, PermutationMatrix.create(1,0,2).elementAbsPowSum(5), 0.0001);
+	   assertEquals(3, PermutationMatrix.create(1,2,0).elementPowSum(2), 0.0001);
+	   
+	   assertEquals(10, DiagonalMatrix.create(1,0,2,7).elementAbsPowSum(1), 0.0001);
+	   assertEquals(14, DiagonalMatrix.create(1,2,0,3).elementPowSum(2), 0.0001);
+	   
+	   Matrix i = Matrix.createIdentity(3);
+	   Matrix j = Matrix.create(2,2);
+	   assertEquals(3, BlockDiagonalMatrix.create(i,j).elementAbsPowSum(1), 0.0001);
+	   assertEquals(3, BlockDiagonalMatrix.create(i,j).elementPowSum(4), 0.0001);
+	   
+	   assertEquals(6, ColumnMatrix.wrap(Vector.of(1,2,3)).elementAbsPowSum(1), 0.0001);
+	   assertEquals(126, ColumnMatrix.wrap(Vector.of(1,5,10)).elementPowSum(2), 0.0001);
+	   
+	   assertEquals(3, IdentityMatrix.create(3).elementAbsPowSum(1), 0.0001);
+	   assertEquals(6, IdentityMatrix.create(6).elementPowSum(2), 0.0001);
+	   
+	   assertEquals(2, BitVector.create(Vector.of(0,1,1)).elementAbsPowSum(1), 0.0001);
+	   assertEquals(1, BitVector.create(Vector.of(1,0,0)).elementPowSum(2), 0.0001);
+	   
+	   assertEquals(1, AxisVector.create(3,10).elementAbsPowSum(-21), 0.0001);
+	   assertEquals(1, AxisVector.create(5,6).elementPowSum(22), 0.0001);
+	   
+	   assertEquals(30, RepeatedElementVector.create(3,10).elementAbsPowSum(1), 0.0001);
+	   assertEquals(180, RepeatedElementVector.create(5,6).elementPowSum(2), 0.0001);
+	   
+	   assertEquals(9, SingleElementVector.create(3,1,5).elementAbsPowSum(2), 0.0001);
+       assertEquals(-512, SingleElementVector.create(-8,5,6).elementPowSum(3), 0.0001);
+       
 	}
 
 
