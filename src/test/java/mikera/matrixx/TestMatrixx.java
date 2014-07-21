@@ -40,11 +40,7 @@ import org.junit.Test;
 
 public class TestMatrixx {
 
-	
-
-
-	
-	void doMutationTest(AMatrix m) {
+	private void doMutationTest(AMatrix m) {
 		if (!m.isFullyMutable()) return;
 		m=m.exactClone();
 		AMatrix m2=m.exactClone();
@@ -335,10 +331,6 @@ public class TestMatrixx {
 		assertEquals(m,Matrixx.parse(m.toString()));
 	}
 	
-	void doHashTest(AMatrix m) {
-		assertEquals(m.hashCode(),m.toVector().hashCode());
-	}
-
 	void doBigComposeTest(AMatrix m) {
 		AMatrix a=Matrixx.createRandomSquareMatrix(m.rowCount());
 		AMatrix b=Matrixx.createRandomSquareMatrix(m.columnCount());
@@ -461,7 +453,6 @@ public class TestMatrixx {
 		doTriangularTests(m);
 		doVectorTest(m);
 		doParseTest(m);
-		doHashTest(m);
 		doNDArrayTest(m);
 		doScaleTest(m);
 		doBoundsTest(m);
