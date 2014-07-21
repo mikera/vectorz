@@ -3,7 +3,6 @@ package mikera.matrixx.impl;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector3;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Specialised N*3 Matrix with Vector3 row components
@@ -14,38 +13,25 @@ import mikera.vectorz.util.ErrorMessages;
 public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISpecialisedTransform  {
 	private static final long serialVersionUID = -8148184725377519520L;
 
-	private int rowCount;	
-	private Vector3[] rows;
+	private Vector3[] rowData;
 	
 	public VectorMatrixM3(int rowCount) {
-		this.rowCount=rowCount;
-		rows=new Vector3[rowCount];
+		super(rowCount,3);
+		rowData=new Vector3[rowCount];
 		for (int i=0; i<rowCount; i++) {
-			rows[i]=new Vector3();
+			rowData[i]=new Vector3();
 		}
 	}
 	
-	private void ensureRowCapacity(int size) {
-		if (size<=rows.length) return;
-		int newSize=Math.max(size, rows.length*2);
-		Vector3[] newRows=new Vector3[newSize];
-		System.arraycopy(rows, 0, newRows, 0, rowCount);
-		rows=newRows;
+	private VectorMatrixM3(Vector3[] rows) {
+		super(rows.length,3);
+		this.rowData=rows;
 	}
 	
 	@Override
 	public void multiply(double factor) {
-		for (Vector3 vector:rows) {
+		for (Vector3 vector:rowData) {
 			vector.scale(factor);
-		}
-	}
-	
-	@Override 
-	public void appendRow(AVector row) {
-		if (row instanceof Vector3) {
-			appendRow((Vector3)row);
-		} else {
-			appendRow(new Vector3(row));
 		}
 	}
 	
@@ -55,53 +41,32 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	public void replaceRow(int i, Vector3 row) {
-		if ((i<0)||(i>=rowCount)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, i));
-		rows[i]=row;
-	}
-	
-	public void appendRow(Vector3 row) {
-		ensureRowCapacity(rowCount+1);
-		rows[rowCount++]=row;
-	}
-	
-	private VectorMatrixM3(Vector3[] rows) {
-		rowCount=rows.length;
-		this.rows=rows;
-	}
-
-	@Override
-	public int rowCount() {
-		return rowCount;
-	}
-
-	@Override
-	public int columnCount() {
-		return 3;
+		rowData[i]=row;
 	}
 
 	@Override
 	public double get(int row, int column) {
-		return rows[row].get(column);
+		return rowData[row].get(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		rows[row].set(column,value);
+		rowData[row].set(column,value);
 	}
 	
 	@Override
 	public double unsafeGet(int row, int column) {
-		return rows[row].unsafeGet(column);
+		return rowData[row].unsafeGet(column);
 	}
 
 	@Override
 	public void unsafeSet(int row, int column, double value) {
-		rows[row].unsafeSet(column,value);
+		rowData[row].unsafeSet(column,value);
 	}
 	
 	@Override
 	public Vector3 getRowView(int row) {
-		return  rows[row];
+		return  rowData[row];
 	}
 	
 	@Override
@@ -111,28 +76,28 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	public void transform(Vector3 source, AVector dest) {
-		for (int i=0; i<rowCount; i++) {
+		for (int i=0; i<rows; i++) {
 			dest.set(i,getRow(i).dotProduct(source));
 		}
 	}
 	
 	@Override
 	public double calculateElement(int i, AVector inputVector) {
-		assert(i<rowCount);
-		Vector3 row=rows[i];
+		assert(i<rows);
+		Vector3 row=rowData[i];
 		return row.dotProduct(inputVector);
 	}
 	
 	@Override
 	public boolean isSquare() {
-		return rowCount==3;
+		return rows==3;
 	}
 	
 	@Override
 	public VectorMatrixM3 clone() {
-		VectorMatrixM3 m=new VectorMatrixM3(rows.clone());
-		for (int i=0; i<rowCount; i++) {
-			m.rows[i]=m.rows[i].clone();
+		VectorMatrixM3 m=new VectorMatrixM3(rowData.clone());
+		for (int i=0; i<rows; i++) {
+			m.rowData[i]=m.rowData[i].clone();
 		}
 		return m;
 	}

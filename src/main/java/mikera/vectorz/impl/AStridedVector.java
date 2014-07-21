@@ -160,11 +160,36 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void add(Vector v) {
+	public void set(AVector v) {
 		int length=checkSameLength(v);
-		for (int i = 0; i < length; i++) {
-			addAt(i,v.data[i]);
+		int stride=getStride();
+		v.copyTo(0, getArray(), getArrayOffset(), length, stride);
+	}
+	
+	@Override
+	public void setElements(double[] values, int offset) {
+		double[] data=getArray();
+		int stride=getStride();		
+		int off=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			data[off+i*stride]=values[offset+i];
 		}
+	}
+	
+	@Override
+	public void setElements(int pos, double[] values, int offset, int length) {
+		double[] data=getArray();
+		int stride=getStride();		
+		int off=getArrayOffset()+pos*stride;
+		for (int i=0; i<length; i++) {
+			data[off+i*stride]=values[offset+i];
+		}
+	}
+	
+	@Override
+	public void add(Vector v) {
+		checkSameLength(v);
+		v.addToArray(getArray(), getArrayOffset(), getStride());
 	}
 	
 	@Override
@@ -176,6 +201,27 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 		for (int i = 0; i < length; i++) {
 			tdata[toffset+i*stride]+=data[offset+i];
 		}
+	}
+	
+	@Override
+	public void add(int offset, AVector a) {
+		int stride=getStride();
+		a.addToArray(getArray(), getArrayOffset()+offset*stride,stride);	
+	}
+	
+	@Override
+	public void add(int offset, AVector a, int aOffset, int length) {
+		double[] tdata=getArray();
+		int stride=getStride();
+		int toffset=getArrayOffset()+offset*stride;
+		a.subVector(aOffset, length).addToArray(tdata, toffset, stride);	
+	}
+	
+	@Override
+	public void addAt(int i, double v) {
+		int ix=checkIndex(i);
+		double[] data=getArray();
+		data[ix]+=v;
 	}
 	
 	@Override
@@ -195,6 +241,31 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 		int toffset=getArrayOffset();
 		for (int i = 0; i < length; i++) {
 			dest[destOffset+i*destStride]+=tdata[toffset+i*stride];
+		}
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		int thisStride=getStride();
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i*stride]=data[offset+i*thisStride];
+		}
+	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		int len=length();
+		int stride=getStride();
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i = 0; i < len; i++) {
+			int ix=offset+i*stride;
+			double v=data[ix];
+			if (v<min) {
+				data[ix]=min;
+			} else if (v>max) {
+				data[ix]=max;
+			}
 		}
 	}
 	

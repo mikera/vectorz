@@ -300,14 +300,6 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		}
 		return al;
 	}
-
-	@Override
-	public void setElements(double[] values, int offset, int length) {
-		int skip=(int)slice(0).elementCount();
-		for (int i=0; i<slices.length; i++) {
-			slices[i].setElements(values,offset+skip*i,skip);
-		}
-	}
 	
 	@Override
 	public double[] toDoubleArray() {

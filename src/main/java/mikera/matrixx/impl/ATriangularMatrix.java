@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -28,6 +29,9 @@ public abstract class ATriangularMatrix extends AArrayMatrix {
 	public boolean isPackedArray() {
 		return false;
 	}
+	
+	@Override
+	public abstract AVector getBand(int i);
 	
 	@Override
 	public double determinant() { 

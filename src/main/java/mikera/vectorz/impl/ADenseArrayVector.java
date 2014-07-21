@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
-import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -52,7 +51,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public AScalar slice(int position) {
+	public ArrayIndexScalar slice(int position) {
 		checkIndex(position);
 		return new ArrayIndexScalar(getArray(), getArrayOffset() + position);
 	}
@@ -110,7 +109,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void set(AVector a) {
-		assert (a.length() == length());
+		checkSameLength(a);
 		a.getElements(getArray(), getArrayOffset());
 	}
 
@@ -128,9 +127,9 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		assert (length == this.length());
-		System.arraycopy(values, offset, getArray(), getArrayOffset(), length);
+	public void setElements(int pos,double[] values, int offset, int length) {
+		checkRange(pos,length);
+		System.arraycopy(values, offset, getArray(), getArrayOffset()+pos, length);
 	}
 
 	@Override
@@ -309,16 +308,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	
 	@Override
 	public void add(double[] data, int offset) {
-		double[] tdata = getArray();
-		int toffset = getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			tdata[toffset + i] += data[offset + i];
-		}
+		DoubleArrays.add(data, offset, getArray(), getArrayOffset(), length);
 	}
 
 	@Override
 	public void addAt(int i, double v) {
-		assert ((i >= 0) && (i < length()));
+		assert ((i >= 0) && (i < length())); // just an assert since this is unchecked
 		double[] data = getArray();
 		int offset = getArrayOffset();
 		data[i + offset] += v;
@@ -365,6 +360,16 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(getArray(), getArrayOffset(), length());
+	}
+	
+	@Override
+	public double elementPowSum(double exponent) {
+		return DoubleArrays.elementPowSum(getArray(), getArrayOffset(), length(),exponent);
+	}
+	
+	@Override
+	public double elementAbsPowSum(double exponent) {
+		return DoubleArrays.elementAbsPowSum(getArray(), getArrayOffset(), length(),exponent);
 	}
 	
 	@Override
@@ -465,31 +470,17 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void divide(double[] data, int offset) {
-		int len = length();
-		double[] cdata = getArray();
-		int coffset = getArrayOffset();
-		for (int i = 0; i < len; i++) {
-			unsafeSet(i, cdata[i + coffset] / data[i + offset]);
-		}
+		DoubleArrays.arraydivide(data, offset, getArray(), getArrayOffset(), length());
 	}
 
 	@Override
 	public void divideTo(double[] data, int offset) {
-		DoubleArrays.arraydivide(getArray(), getArrayOffset(), data, offset,
-				length());
+		DoubleArrays.arraydivide(getArray(), getArrayOffset(), data, offset, length());
 	}
 
 	@Override
 	public void copyTo(int start, AVector dest, int destOffset, int length) {
-		if (dest instanceof ADenseArrayVector) {
-			copyTo(start, (ADenseArrayVector) dest, destOffset, length);
-			return;
-		}
-		double[] src = getArray();
-		int off = getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			dest.unsafeSet(destOffset + i, src[off + start + i]);
-		}
+		dest.setElements(destOffset, getArray(), getArrayOffset()+start, length);
 	}
 
 	public void copyTo(int offset, ADenseArrayVector dest, int destOffset, int length) {
@@ -498,6 +489,13 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		double[] dst = dest.getArray();
 		System.arraycopy(src, off + offset, dst, dest.getArrayOffset()
 				+ destOffset, length);
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i*stride]=data[i+offset];
+		}
 	}
 
 	@Override
@@ -509,10 +507,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	public void addMultiple(ADenseArrayVector v, double factor) {
 		int length = checkSameLength(v);
-
 		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
 	}
-
 	
 	@Override
 	public void addMultiple(int offset, AVector src, int srcOffset, int length, double factor) {
@@ -622,8 +618,9 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		int length = length();
 		double[] data = getArray();
 		int offset = getArrayOffset();
-		if ((offset < 0) || (offset + length > data.length))
+		if ((offset < 0) || (offset + length > data.length)) {
 			throw new VectorzException("ArrayVector out of bounds");
+		}
 		super.validate();
 	}
 }

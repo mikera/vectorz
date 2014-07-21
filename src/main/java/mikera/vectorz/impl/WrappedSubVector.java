@@ -96,9 +96,9 @@ public final class WrappedSubVector extends ASizedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		checkRange(offset,length);
+		int len=checkRange(offset,length);
 		if (length==0) return Vector0.INSTANCE;
-		if (length==this.length) return this;
+		if (len==length) return this;
 		return wrapped.subVector(this.offset+offset, length);
 	}
 	
@@ -110,6 +110,11 @@ public final class WrappedSubVector extends ASizedVector {
 	@Override
 	public void copyTo(int offset, double[] dest, int destOffset, int length) {
 		wrapped.copyTo(this.offset+offset,dest,destOffset,length);
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		wrapped.copyTo(this.offset+offset,dest,destOffset,length, stride);
 	}
 	
 	@Override
@@ -135,5 +140,14 @@ public final class WrappedSubVector extends ASizedVector {
 	@Override
 	public void addAt(int i, double v) {
 		wrapped.addAt(offset+i,v);
+	}
+
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*unsafeGet(i);
+		}
+		return result;
 	}
 }

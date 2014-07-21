@@ -67,9 +67,9 @@ public class RangeVector extends AComputedVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		checkRange(start,length);
+		int len=checkRange(start,length);
 		if (length==0) return Vector0.INSTANCE;
-		if (length==this.length) return this;
+		if (length==len) return this;
 		
 		return create(this.start+start,length);
 	}

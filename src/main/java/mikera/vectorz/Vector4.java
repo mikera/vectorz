@@ -144,7 +144,16 @@ public final class Vector4 extends APrimitiveVector {
 	public double dotProduct(Vector4 a) {
 		return (x*a.x)+(y*a.y)+(z*a.z)+(t*a.t);
 	}
-
+	
+	public double dotProduct(double[] as, int offset) {
+		return (x*as[offset])+(y*as[offset+1])+(z*as[offset+2])+(t*as[offset+3]);
+	}
+	
+	@Override
+	public double dotProduct(AVector v) {
+		v.checkLength(4);
+		return x*v.unsafeGet(0)+y*v.unsafeGet(1)+z*v.unsafeGet(2)+t*v.unsafeGet(3);
+	}
 	
 	@Override
 	public int length() {

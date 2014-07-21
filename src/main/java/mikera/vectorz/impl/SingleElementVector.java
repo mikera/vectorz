@@ -145,8 +145,7 @@ public final class SingleElementVector extends ASparseVector {
 		int len=checkRange(offset,length);
 		if (length==0) return Vector0.INSTANCE;
 		if (length==len) return this;
-		int end=offset+length;
-		if ((offset>index)||(end<=index)) {
+		if ((offset>index)||((offset+length)<=index)) {
 			return ZeroVector.create(length);
 		}
 		return SingleElementVector.create(value, index-offset, length);
@@ -219,6 +218,29 @@ public final class SingleElementVector extends ASparseVector {
 	@Override
 	public boolean hasUncountable() {
 		return Double.isNaN(value) || Double.isInfinite(value);
+	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return Math.pow(value, p);
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return Math.pow(Math.abs(value), p);
+    }
+
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return value*data[offset+index];
 	}
 
 }

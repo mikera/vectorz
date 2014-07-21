@@ -76,9 +76,6 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, I
 	@Override
 	public void setColumn(int j, AVector col) {
 		int rc = checkRowCount(col.length());
-		for (int i = 0; i < rc; i++) {
-			data[index(i, j)] = col.unsafeGet(i);
-		}
 		col.getElements(data, j * rc);
 	}
 	

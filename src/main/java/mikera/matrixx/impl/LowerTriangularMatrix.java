@@ -7,7 +7,6 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.IndexedArrayVector;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Class for a lower triangular matrix packed densely by rows.
@@ -66,7 +65,7 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	public AVector getBand(int band) {
 		int n=bandLength(band);
 		if ((n==0)||(band>0)) return Vectorz.createZeroVector(bandLength(band));
-		if (n==1) return ArraySubVector.wrap(data, internalIndex(-band,0), 1);
+
 		int[] ixs=new int[n];
 		for (int i=0; i<n; i++) {
 			ixs[i]=internalIndex(i-band,i);
@@ -86,7 +85,7 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 
 	@Override
 	public double get(int i, int j) {
-		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		checkIndex(i,j);
 		if (j>i) return 0.0;
 		return data[internalIndex(i,j)];
 	}
@@ -122,11 +121,11 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	
 	@Override
 	public boolean equals(AMatrix a) {
-		if (a==this) return true;	
 		if (a instanceof ADenseArrayMatrix) {
 			return equals((ADenseArrayMatrix)a);
 		}
 
+		if (a==this) return true;	
 		if (!isSameShape(a)) return false;
 		
 		for (int i = 0; i < rows; i++) {

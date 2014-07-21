@@ -275,9 +275,8 @@ public final class AxisVector extends ASparseVector {
 		int len=checkRange(start,length);
 		if (length==len) return this;
 		if (length==0) return Vector0.INSTANCE;
-		
+				
 		int end=start+length;
-		
 		if ((start<=getAxis())&&(end>getAxis())) {
 			return AxisVector.create(getAxis()-start,length);
 		} else {
@@ -356,6 +355,16 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean equals(AVector v) {
+		int len=v.length();
+		if (len!=length) return false;
+		if (v.unsafeGet(axis)!=1.0) return false;
+		if (!v.isRangeZero(0,axis)) return false;
+		if (!v.isRangeZero(axis+1,length-axis-1)) return false;
+		return true;
+	}
+	
+	@Override
 	public boolean elementsEqual(double value) {
 		return (value==1.0)&&(length==1);
 	}
@@ -377,5 +386,23 @@ public final class AxisVector extends ASparseVector {
 	public boolean hasUncountable() {
 		return false;
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return 1;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return elementPowSum(p);
+    }
 	
 }

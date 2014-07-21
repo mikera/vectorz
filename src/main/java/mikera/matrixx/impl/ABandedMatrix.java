@@ -172,7 +172,7 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 
 		@Override
 		public double get(int i) {
-			if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+			checkIndex(i);
 			return unsafeGet(i);
 		}
 		
@@ -203,7 +203,7 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 
 		@Override
 		public void set(int i, double value) {
-			if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException("Index: "+i);
+			checkIndex(i);
 			unsafeSet(i,value);
 		}
 		
@@ -222,6 +222,35 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 		public boolean isFullyMutable() {
 			return ABandedMatrix.this.isFullyMutable();
 		}
+		
+		@Override
+		public double dotProduct(double[] data, int offset) {
+			double result=0.0;
+			for (int i=0; i<length; i++) {
+				result+=data[offset+i]*unsafeGet(i);
+			}
+			return result;
+		}
+	}
+	
+	@Override
+	public void addToArray(double[] data, int offset) {
+		int b1=-lowerBandwidth();
+		int b2=upperBandwidth();
+		int cc=columnCount();
+		for (int b=b1; b<=b2; b++) {
+			AVector band=getBand(b);
+			int di = offset+this.bandStartColumn(b)+cc*bandStartRow(b);
+			band.addToArray(data, di, cc+1);
+		}
+	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		double[] result=Matrix.createStorage(rowCount(),columnCount());
+		// since this array is sparse, fastest to use addToArray to modify only non-zero elements
+		addToArray(result,0);
+		return result;
 	}
 	
 	@Override public void validate() {

@@ -80,6 +80,33 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	protected void checkSameShape(AMatrix m) {
+		int dims=dimensions;
+		if((dims!=m.rowCount())||(dims!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	@Override
+	protected void checkSameShape(ARectangularMatrix m) {
+		int dims=dimensions;
+		if((dims!=m.rowCount())||(dims!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	@Override
+	protected final void checkIndex(int i, int j) {
+		if ((i<0)||(i>=dimensions)||(j<0)||(j>=dimensions)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		}
+	}
+	
+	public final boolean isSameShape(ARectangularMatrix m) {
+		return (dimensions==m.rows)&&(dimensions==m.cols);
+	}
+	
+	@Override
 	public final int upperBandwidthLimit() {
 		return 0;
 	}
@@ -385,4 +412,22 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	public boolean hasUncountable() {
 		return getLeadingDiagonal().hasUncountable();
 	}
+	
+    /**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return getLeadingDiagonal().elementPowSum(p);
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return getLeadingDiagonal().elementAbsPowSum(p);
+    }
 }

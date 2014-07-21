@@ -1,6 +1,5 @@
 package mikera.matrixx.impl;
 
-import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -9,25 +8,21 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Matrix class that wraps a vector as a 1-row matrix
+ * Matrix class that wraps a vector as a single-row matrix
  * @author Mike
  */
-public class RowMatrix extends AMatrix implements IFastRows {
+public class RowMatrix extends ARectangularMatrix implements IFastColumns, IFastRows {
 	private static final long serialVersionUID = 2636365975400418264L;
 
 	private final AVector vector;
 	
 	public RowMatrix(AVector v) {
+		super(1,v.length());
 		vector=v;
 	}
 	
 	public static RowMatrix wrap(AVector v) {
 		return new RowMatrix(v);
-	}
-
-	@Override
-	public int rowCount() {
-		return 1;
 	}
 	
 	@Override
@@ -64,15 +59,15 @@ public class RowMatrix extends AMatrix implements IFastRows {
 	public void applyOp(Op op) {
 		vector.applyOp(op);
 	}
-
-	@Override
-	public int columnCount() {
-		return vector.length();
-	}
 	
 	@Override 
 	public double elementSum() {
 		return vector.elementSum();
+	}
+	
+	@Override 
+	public double elementSquaredSum() {
+		return vector.elementSquaredSum();
 	}
 	
 	@Override 

@@ -164,4 +164,9 @@ public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 		// immutable, so return self
 		return this;
 	}
+
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		return 0.0;
+	}
 }

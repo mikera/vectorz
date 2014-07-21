@@ -106,7 +106,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 
 	@Override
 	public void set(int i, int j, double value) {
-		if ((j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		checkIndex(i,j);
 		Integer io=j;
 		AVector v=data.get(io);
 		if (v==null) {
@@ -233,6 +233,15 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public AMatrix multiplyCopy(double a) {
+		HashMap<Integer,AVector> ndata=new HashMap<Integer,AVector>();
+		for (Entry<Integer, AVector> eCol : data.entrySet()) {
+			ndata.put(eCol.getKey(), eCol.getValue().innerProduct(a));
+		}
+		return wrap(ndata,rows,cols);
+	}
+	
+	@Override
 	public AVector innerProduct(AVector a) {
 		return transform(a);
 	}
@@ -318,27 +327,25 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public boolean equals(AMatrix m) {
-		if (m instanceof IFastColumns) {
-			if (m instanceof SparseColumnMatrix) {
-				return equals((SparseColumnMatrix)m);
-			}
-			for (int i=0; i<cols; i++) {
-				AVector v=data.get(i);
-				if (v==null) {
-					if (!m.getColumn(i).isZero()) return false;
-				} else {
-					if (!v.equals(m.getColumn(i))) return false;
-				}
-				
-			}
-			return true;
+		if (m instanceof SparseColumnMatrix) {
+			return equals((SparseColumnMatrix)m);
 		}
-		return super.equals(m);
+		if (!isSameShape(m)) return false;
+		for (int i=0; i<cols; i++) {
+			AVector v=data.get(i);
+			if (v==null) {
+				if (!m.getColumn(i).isZero()) return false;
+			} else {
+				if (!v.equals(m.getColumn(i))) return false;
+			}
+			
+		}
+		return true;
 	}
 	
 	public boolean equals(SparseColumnMatrix m) {
 		if (m==this) return true;
-		if ((this.rows!=m.rows)||(this.cols!=m.cols)) return false;
+		if (!isSameShape(m)) return false;
 		HashSet<Integer> checked=new HashSet<Integer>();
 		
 		for (Entry<Integer,AVector> e:data.entrySet()) {

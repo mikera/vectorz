@@ -304,8 +304,8 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	}
 
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		System.arraycopy(values, offset, data, 0, length);
+	public void setElements(int pos, double[] values, int offset, int length) {
+		System.arraycopy(values, offset, data, pos, length);
 	}
 	
 	@Override

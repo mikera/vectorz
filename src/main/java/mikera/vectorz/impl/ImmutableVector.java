@@ -92,9 +92,9 @@ public class ImmutableVector extends AArrayVector implements IDense {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		if ((start<0)||(start+length>this.length)||(length<0)) throw new IllegalArgumentException("Illegal subvector with arguments start= "+start+", length= "+length);
+		int len=checkRange(start,length);
 		if (length==0) return Vector0.INSTANCE;
-		if (length==this.length) return this;
+		if (length==len) return this;
 		return new ImmutableVector(data,offset+start,length);
 	}
 	
@@ -130,17 +130,13 @@ public class ImmutableVector extends AArrayVector implements IDense {
 
 	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
 		DoubleArrays.add(data, offset+this.offset, array, arrayOffset, length);
 	}
 	
 	@Override
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		int dataOffset=this.offset+offset;
-		
-		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*data[i+dataOffset];
-		}
+		DoubleArrays.addMultiple(array, arrayOffset, data, dataOffset, length, factor);
 	}
 	
 	@Override
@@ -237,6 +233,11 @@ public class ImmutableVector extends AArrayVector implements IDense {
 	public void validate() {
 		if ((offset<0)||(offset+length>data.length)||(length<0)) throw new VectorzException("ImmutableVector data out of bounds");
 		super.validate();
+	}
+
+	@Override
+	protected int index(int i) {
+		return offset+i;
 	}
 
 }

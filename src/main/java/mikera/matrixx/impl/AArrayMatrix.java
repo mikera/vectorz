@@ -1,8 +1,6 @@
 package mikera.matrixx.impl;
 
-import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract class for a Matrix backed with a single double[] data array
@@ -28,13 +26,13 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double get(int i, int j) {
-		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		checkIndex(i,j);
 		return data[index(i,j)];
 	}
 	
 	@Override
 	public void set(int i, int j,double value) {
-		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
+		checkIndex(i,j);
 		data[index(i,j)]=value;
 	}
 	
@@ -55,14 +53,8 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	public abstract boolean isPackedArray();
 	
 	@Override
-	public AMatrix getTransposeCopy() {
-		int rc=this.rowCount();
-		int cc=this.columnCount();
-		Matrix m=Matrix.create(cc,rc);
-		for (int j=0; j<cc; j++) {
-			this.copyColumnTo(j, m.data, j*rc);
-		}
-		return m;
+	public Matrix getTransposeCopy() {
+		return toMatrixTranspose();
 	}
 	
 	/**
@@ -74,25 +66,6 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	protected abstract int index(int i, int j);
 
 	@Override
-	public boolean equals(AMatrix a) {
-		if (a==this) return true;	
-		if (a instanceof ADenseArrayMatrix) {
-			return equals((ADenseArrayMatrix)a);
-		}
-
-		if (!isSameShape(a)) return false;
-		
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				if (data[index(i, j)] != a.unsafeGet(i, j))
-					return false;
-			}
-		}
-		return true;
-	}
-
-
-	@Override
 	public boolean hasUncountable() {
 		int len = data.length;
 		for(int i=0; i<len; i++) {
@@ -102,4 +75,30 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 		}
 		return false;
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        double result = 0;
+        for(double i: data) {
+            result += Math.pow(i, p);
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        double result = 0;
+        for(double i: data) {
+            result += Math.pow(Math.abs(i), p);
+        }
+        return result;
+    }
 }

@@ -18,7 +18,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class JoinedArrayVector extends ASizedVector {
+public final class JoinedArrayVector extends AJoinedVector {
 	private static final long serialVersionUID = -8470277860344236392L;
 
 	private final int numArrays; // number of joined arrays
@@ -74,14 +74,14 @@ public final class JoinedArrayVector extends ASizedVector {
 		return pos[j+1]-pos[j];
 	}
 	
-	private ArraySubVector subArrayVector(int j) {
+	public ArraySubVector getSegment(int j) {
 		return ArraySubVector.wrap(data[j], offsets[j], subLength(j));
 	}
 	
 	public List<ADenseArrayVector> toSubArrays() {
 		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>();
 		for (int i=0; i<numArrays; i++) {
-			al.add(subArrayVector(i));
+			al.add(getSegment(i));
 		}
 		return al;
 	}
@@ -277,17 +277,13 @@ public final class JoinedArrayVector extends ASizedVector {
 			int soffset=offsets[j];
 			if (offset<=sp) {
 				// chunk start aligned with current array, so just use clen elements
-				for (int i=0; i<clen; i++) {
-					array[arrayOffset+i]+=factor*sa[soffset+i];
-				}
+				DoubleArrays.addMultiple(array, arrayOffset, sa, soffset, clen, factor);
 			} else {
 				// first chunk not starting at sp, need to skip some elements
 				int skip=offset-sp;
 				assert(skip>0);
 				clen-=skip;
-				for (int i=0; i<clen; i++) {
-					array[arrayOffset+i]+=factor*sa[skip+soffset+i];
-				}
+				DoubleArrays.addMultiple(array, arrayOffset, sa, soffset+skip, clen, factor);
 			}
 			arrayOffset+=clen;
 		}
@@ -341,17 +337,6 @@ public final class JoinedArrayVector extends ASizedVector {
 			v.copyTo(pos[j],data[j], offsets[j],subLength(j));
 		}
 	}
-	
-	@Override
-	public void setElements(double[] values, int offset, int length) {
-		assert(length==this.length());
-		int srcPos=offset;
-		for (int j=0; j<numArrays; j++) {
-			int sl=subLength(j);
-			System.arraycopy(values,srcPos, data[j],offsets[j],sl);
-			srcPos+=sl;
-		}
-	} 
 	
 	@Override 
 	public void multiply(double value) {
@@ -594,9 +579,32 @@ public final class JoinedArrayVector extends ASizedVector {
 		if (length!=pos[numArrays]) throw new VectorzException("End position incorrect!?!");
 		
 		for (int i=0; i<numArrays; i++) {
-			subArrayVector(i).validate();
+			getSegment(i).validate();
 		}
 		
 		super.validate();
+	}
+
+	@Override
+	public int segmentCount() {
+		return numArrays;
+	}
+
+	@Override
+	protected AJoinedVector reconstruct(AVector... segments) {
+		int sc=segmentCount();
+		double[][] newData=new double[sc][];
+		int[] offs=this.offsets.clone();
+		for (int i=0; i<sc; i++) {
+			AVector v=segments[i];
+			if (v instanceof ADenseArrayVector) {
+				newData[i]=((ADenseArrayVector) v).getArray();
+				offs[i]=((ADenseArrayVector) v).getArrayOffset();
+			} else {
+				newData[i]=segments[i].toDoubleArray();
+				offs[i]=0;
+			}
+		}
+		return new JoinedArrayVector(length,newData,offs,this.pos);
 	}
 }

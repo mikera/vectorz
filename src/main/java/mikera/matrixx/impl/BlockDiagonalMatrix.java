@@ -183,4 +183,31 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 		}
 		return false;
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        double result = 0;
+        for(int i=0; i<blockCount; i++) {
+            result += mats[i].elementPowSum(p);
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        double result = 0;
+        for(int i=0; i<blockCount; i++) {
+            result += mats[i].elementAbsPowSum(p);
+        }
+        return result;
+
+    }
 }

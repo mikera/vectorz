@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import mikera.arrayz.ISparse;
@@ -49,6 +50,12 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	
 	@Override
 	public abstract void addToArray(int offset, double[] destData, int destOffset, int length);
+
+	@Override
+	public void copyTo(int offset, double[] destData, int destOffset, int length) {
+		Arrays.fill(destData, destOffset, destOffset+length, 0.0);
+		addToArray(offset, destData, destOffset, length);
+	}
 	
 	@Override
 	public abstract boolean isZero();
@@ -143,4 +150,34 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		}
 		return false;
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        Index ni = nonSparseIndexes();
+        double result = 0;
+        for(int i=0; i<ni.length(); i++) {
+            int ii = ni.get(i);
+            result += Math.pow(unsafeGet(ii), p);
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        Index ni = nonSparseIndexes();
+        double result = 0;
+        for(int i=0; i<ni.length(); i++) {
+            int ii = ni.get(i);
+            result += Math.pow(Math.abs(unsafeGet(ii)), p);
+        }
+        return result;
+    }
 }

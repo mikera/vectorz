@@ -10,6 +10,8 @@ import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
+import mikera.indexz.AIndex;
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -47,6 +49,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public abstract double get(int x);
 	
 	public abstract double get(int x, int y);
+	
+	@Override
+	public double get(AIndex ix) {
+		return get(ix.toArray());
+	}
+	
+	@Override
+	public double get(Index ix) {
+		return get(ix.getData());
+	}
 	
 	@Override
 	public int getShape(int dim) {
@@ -159,6 +171,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		r.multiply(d);
 		return r;
 	}
+	
+	@Override
+	public INDArray applyOpCopy(Op op) {
+		INDArray r=clone();
+		r.applyOp(op);
+		return r;
+	}
 
 	@Override
 	public boolean isElementConstrained() {
@@ -195,15 +214,33 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void setElements(double[] values, int offset) {
-		setElements(values,offset,(int)elementCount());
+		setElements(0,values,offset,(int)elementCount());
 	}
 	
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		int n=sliceCount();
+	public void setElements(int pos, double[] values, int offset, int length) {
+		if (length==0) return;
 		int ss=(int)(slice(0).elementCount());
-		for (int i=0; i<n; i++) {
-			slice(i).setElements(values, offset+i*ss, ss);
+		int s1=pos/ss;
+		int s2=(pos+length-1)/ss;
+		if (s1==s2) {
+			slice(s1).setElements(pos-s1*ss,values,offset,length);
+			return;
+		}
+		
+		int si=offset;
+		int l1 = (s1+1)*ss-pos;
+		if (l1>0) {
+			slice(s1).setElements(pos-s1*ss, values, si, l1);
+			si+=l1;
+		}
+		for (int i=s1+1; i<s2; i++) {
+			slice(i).setElements(values, si);
+			si+=ss;
+		}
+		int l2=(pos+length)-(s2*ss);
+		if (l2>0) {
+			slice(s2).setElements(0,values,si,l2);
 		}
 	}
 	
@@ -323,12 +360,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void set(double value) {
 		set(new int[0],value);
 	}
+	
 	public void set(int x, double value) {
 		set(new int[] {x},value);
 	}
+	
 	public void set(int x, int y, double value) {
 		set(new int[] {x,y},value);	
 	}
+	
 	public void set (INDArray a) {
 		int tdims=this.dimensionality();
 		int adims=a.dimensionality();
@@ -385,8 +425,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
 	}
 	
-	public void setElements(double[] values) {
-		setElements(values,0,values.length);
+	public void setElements(double... values) {
+		int vl=values.length;
+		if (vl!=elementCount()) throw new IllegalArgumentException("Wrong array length: "+vl);
+		setElements(0,values,0,vl);
 	}
 	
 	public void square() {
@@ -404,6 +446,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public INDArray absCopy() {
 		INDArray r=clone();
 		r.abs();
+		return r;
+	}
+	
+	@Override
+	public INDArray reciprocalCopy() {
+		INDArray r=clone();
+		r.reciprocal();
 		return r;
 	}
 	
@@ -900,6 +949,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray reorder(int dim, int[] order) {
+		if (order.length==0) {
+			int[] shape=getShapeClone();
+			shape[0]=0;
+			return Arrayz.createZeroArray(shape);
+		}
 		int dims=dimensionality();
 		if ((dim<0)||(dim>=dims)) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
@@ -1253,5 +1307,38 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return false;
 	}
 
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    public double elementPowSum(double p) {
+        if (dimensionality()==0) {
+            double value=get();
+            return Math.pow(value, p);
+        }
+        double result=0;
+        int n=sliceCount();
+        for (int i=0; i<n; i++) {
+            result+=slice(i).elementPowSum(p);
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    public double elementAbsPowSum(double p) {
+        if (dimensionality()==0) {
+            double value=Math.abs(get());
+            return Math.pow(value, p);
+        }
+        double result=0;
+        int n=sliceCount();
+        for (int i=0; i<n; i++) {
+            result+=slice(i).elementAbsPowSum(p);
+        }
+        return result;
+    }
 
 }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
@@ -230,7 +231,7 @@ public class Matrixx {
 	public static DiagonalMatrix createDiagonalMatrix(double... diagonalValues) {
 		int dimensions = diagonalValues.length;
 		DiagonalMatrix im = new DiagonalMatrix(dimensions);
-		im.getLeadingDiagonal().setValues(diagonalValues);
+		im.getLeadingDiagonal().setElements(diagonalValues);
 		return im;
 	}
 	
@@ -298,10 +299,22 @@ public class Matrixx {
 		fillRandomValues(m);
 		return m;
 	}
+	
+	public static Matrix createRandomSquareMatrix(int dimensions, Random rand) {
+		Matrix m = createSquareMatrix(dimensions);
+		fillRandomValues(m,rand);
+		return m;
+	}
 
 	public static AMatrix createRandomMatrix(int rows, int columns) {
 		AMatrix m = newMatrix(rows, columns);
 		fillRandomValues(m);
+		return m;
+	}
+	
+	public static AMatrix createRandomMatrix(int rows, int columns, Random rand) {
+		AMatrix m = newMatrix(rows, columns);
+		fillRandomValues(m,rand);
 		return m;
 	}
 
@@ -421,14 +434,14 @@ public class Matrixx {
 		int rows = m.rowCount();
 		int columns = m.columnCount();
 		AMatrix result = newMatrix(rows, columns);
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				result.unsafeSet(i, j, m.get(i, j));
-			}
-		}
+		result.set(m);
 		return result;
 	}
 
+	/**
+	 * Fills a matrix with uniform random numbers
+	 * @param m
+	 */
 	public static void fillRandomValues(AMatrix m) {
 		int rows = m.rowCount();
 		int columns = m.columnCount();
@@ -438,7 +451,26 @@ public class Matrixx {
 			}
 		}
 	}
+	
+	/**
+	 * Fills a matrix with uniform random numbers, using the specified Random instance
+	 * @param m
+	 */
+	public static void fillRandomValues(AMatrix m, Random rand) {
+		int rows = m.rowCount();
+		int columns = m.columnCount();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				m.unsafeSet(i, j, rand.nextDouble());
+			}
+		}
+	}
 
+	/** 
+	 * Create a matrix using as array of vectors which represent the data for each row
+	 * @param data
+	 * @return
+	 */
 	public static AMatrix createFromVectors(AVector... data) {
 		int rc = data.length;
 		int cc = (rc == 0) ? 0 : data[0].length();
@@ -449,6 +481,11 @@ public class Matrixx {
 		return m;
 	}
 
+	/** 
+	 * Create a matrix using a list of vectors as the data for each row
+	 * @param data
+	 * @return
+	 */
 	public static AMatrix createFromVectors(List<AVector> data) {
 		int rc = data.size();
 		int cc = (rc == 0) ? 0 : data.get(0).length();
@@ -523,8 +560,9 @@ public class Matrixx {
 		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);
 	}
 
-	public static AMatrix createSparse(List<INDArray> slices) {
-		int cc=slices.get(0).sliceCount();
+	public static AMatrix createSparse(Iterable<INDArray> slices) {
+		INDArray slice1=slices.iterator().next();
+		int cc=slice1.sliceCount();
 		ArrayList<AVector> al=new ArrayList<AVector>();
 		for (INDArray a:slices) {
 			if ((a.dimensionality()!=1)||(a.sliceCount()!=cc)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a)); 

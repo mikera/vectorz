@@ -4,7 +4,6 @@ import java.nio.DoubleBuffer;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -142,16 +141,15 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public AVector subVector(int start, int length) {
-		int end=start+length;
-		if ((start<0)||(end>this.length)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, start, length));
-		}
-		if (length==this.length) return this;
+		int len=checkRange(start,length);
+		if (length==len) return this;
 		if (start>=split) return right.subVector(start-split, length);
-		if (end<=split) return left.subVector(start, length);
 		
-		AVector v1=left.subVector(start, split-start);
-		AVector v2=right.subVector(0, length-(split-start));
+		if ((start+length)<=split) return left.subVector(start, length);
+		
+		int cut=split-start; // amount cut from left vector
+		AVector v1=left.subVector(start, cut);
+		AVector v2=right.subVector(0, length-cut);
 		return v1.join(v2);
 	}
 	
@@ -308,6 +306,7 @@ public final class JoinedVector extends AJoinedVector {
 	
 	@Override
 	public void addProduct(AVector a, AVector b, double factor) {
+		checkSameLength(a,b);
 		left.addProduct(a, 0, b, 0, factor);
 		right.addProduct(a, split, b, split, factor);
 	}
@@ -332,6 +331,11 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	@Override
+	public AVector absCopy() {
+		return left.absCopy().join(right.absCopy());
+	}
+	
+	@Override
 	public void exp() {
 		left.exp();
 		right.exp();
@@ -347,6 +351,11 @@ public final class JoinedVector extends AJoinedVector {
 	public void negate() {
 		left.negate();
 		right.negate();
+	}
+	
+	@Override
+	public AVector negateCopy() {
+		return left.negateCopy().join(right.negateCopy());
 	}
 	
 	@Override
@@ -419,10 +428,15 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		checkLength(length);
-		left.setElements(values,offset,split);
-		right.setElements(values,offset+split,length-split);
+	public void setElements(int pos, double[] values, int offset, int length) {
+		int l0=Math.min(length, (split-pos));
+		if (l0>0) {
+			left.setElements(pos,values,offset,l0);
+		}
+		int l1=Math.min(length, pos+length-split);
+		if (l1>0) {
+			right.setElements(pos+length-split-l1,values,offset+split,l1);
+		}
 	}
 
 	@Override
@@ -530,6 +544,21 @@ public final class JoinedVector extends AJoinedVector {
 	public void validate() {
 		if (left.tryEfficientJoin(right)!=null) throw new VectorzException("Should have used efficient join!");
 		super.validate();
+	}
+
+	@Override
+	public int segmentCount() {
+		return 2;
+	}
+
+	@Override
+	public AVector getSegment(int k) {
+		return (k<=0)?left:right;
+	}
+
+	@Override
+	protected JoinedVector reconstruct(AVector... segments) {
+		return new JoinedVector(segments[0],segments[1]);
 	}
 
 }

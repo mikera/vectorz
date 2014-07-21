@@ -62,6 +62,15 @@ public final class MatrixColumnView extends AMatrixViewVector {
 	}
 	
 	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*unsafeGet(i);
+		}
+		return result;
+	}
+	
+	@Override
 	public AVector clone() {
 		return source.getColumnClone(column);
 	}

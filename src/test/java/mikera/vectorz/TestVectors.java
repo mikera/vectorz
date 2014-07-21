@@ -226,7 +226,7 @@ public class TestVectors {
 		if (len>20) return;
 		
 		AMatrix m=Matrixx.createRandomMatrix(len, len);
-		assertEquals(v.innerProduct(m),m.getTranspose().transform(v));
+		assertTrue(v.innerProduct(m).epsilonEquals(m.getTranspose().transform(v)));
 	}
 	
 	private void testSelect(AVector v) {
@@ -848,7 +848,7 @@ public class TestVectors {
 		new TestArrays().testArray(v);
 	}
 
-	@Test public void genericTests() {
+	@Test public void g_PrimitiveVectors() {
 		doGenericTests(Vector0.of());
 		
 		doGenericTests(new Vector1(1.0));
@@ -856,134 +856,209 @@ public class TestVectors {
 		doGenericTests(new Vector3(1.0,2.0,3.0));
 		doGenericTests(new Vector4(1.0,2.0,3.0,4.0));
 		doGenericTests(new Vector4(1.0,2.0,3.0,4.0).subVector(1, 2));
-		
+	}
+	
+	@Test public void g_BitVector() {
 		// bit vectors
 		doGenericTests(BitVector.of());
 		doGenericTests(BitVector.of(0));
 		doGenericTests(BitVector.of(0,1,0));
 		doGenericTests(BitVector.of(0,1,0).subVector(1, 1));
+	}
 		
+	@Test public void g_ZeroLength() {
 		// zero-length Vectors
 		doGenericTests(Vector.of());
 		doGenericTests(Vector.EMPTY);
 		doGenericTests(new GrowableVector(Vector.of()));
 		doGenericTests(Vector.wrap(new double[0]));
 		doGenericTests(new Vector3(1.0,2.0,3.0).subVector(2, 0));
+	}
 		
+	@Test public void g_SmallMutable() {
 		for (int j=0; j<10; j++) {
 			double[] data=new double[j];
 			for (int i=0; i<j; i++) data[i]=i;
 			doGenericTests(Vectorz.create(data));
 		}
+	}
 		
+	@Test public void g_ArraySubVector() {
 		double[] data=new double[100];
-		int[] indexes=new int[100];
 		for (int i=0; i<100; i++) {
-			data[i]=i;
-			indexes[i]=i;
+			data[i]=i+(1.0/Math.PI);
 		}
 
 		doGenericTests(ArraySubVector.wrap(data));
+	}
+	
+	@Test public void g_IndexedSubVector() {
+		double[] data=new double[100];
+		int[] indexes=new int[100];
+		for (int i=0; i<100; i++) {
+			data[i]=i+(1.0/Math.E);
+			indexes[i]=i;
+		}
+
 		doGenericTests(IndexedArrayVector.wrap(data,indexes));
 		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
+	}
+		
+	@Test public void g_SubVectors() {
+		double[] data=new double[100];
+		for (int i=0; i<100; i++) {
+			data[i]=i;
+		}
 		
 		doGenericTests(Vector.create(data).subVector(25, 50));
 		doGenericTests(ArraySubVector.wrap(data).subVector(25, 50));
+	}
 		
-		AVector v3 = new Vector3(1.0,2.0,3.0);
+	@Test public void g_MiscSubVectors() {
+		AVector v3 = new Vector3(1.0,2.0,-Math.PI);
 		doGenericTests(v3.subVector(1, 2));
 		doGenericTests(WrappedSubVector.wrap(v3,1,2));
+	}
 
-		AVector joined = Vectorz.join(v3, Vectorz.create(data));
+	@Test public void g_JoinedVector() {
+		double[] data=new double[100];
+		for (int i=0; i<100; i++) {
+			data[i]=i;
+		}
+
+		AVector joined = Vectorz.join( new Vector3(1.0,2.0,-Math.PI), Vectorz.create(data));
 		doGenericTests(joined);
 		
-		AVector v4 = Vectorz.create(1.0,2.0,3.0,4.0);
+		AVector j5=Vectorz.join(Vector4.of(1,2,3,4),joined,Vector3.of(1,2,3),Vector.of(2,3,4,5),Vector0.INSTANCE,Vector.of(),joined);
+		doGenericTests(j5);
+	}
+		
+	@Test public void g_Length4() {
+		AVector v4 = Vectorz.create(1.0,2.0,Math.PI,4.0);
 		doGenericTests(v4);
 		doGenericTests(v4.subVector(1, 2));
+	}
 		
+	@Test public void g_Growable() {
 		AVector g0=new GrowableVector();
 		doGenericTests(g0);
-		
+
+		AVector v4 = Vectorz.create(1.0,2.0,Math.PI,4.0);
 		AVector g4=new GrowableVector(v4);
 		doGenericTests(g4);
+	}
 		
-		AVector j5=Vectorz.join(g4,joined,v3,v4,g0,g0,joined);
-		doGenericTests(j5);
-		
+	@Test public void g_MatrixViews5x5() {	
 		AMatrix m1=Matrixx.createRandomSquareMatrix(5);
 		doGenericTests(m1.asVector());
 		doGenericTests(m1.getRow(4));
 		doGenericTests(m1.getColumn(1));
 		doGenericTests(m1.getLeadingDiagonal());
+	}
 		
+	@Test public void g_MatrixViews3x3() {	
 		AMatrix m2=Matrixx.createRandomSquareMatrix(3);
 		doGenericTests(m2.asVector());
 		doGenericTests(m2.getRow(1));
 		doGenericTests(m2.getColumn(1));
 		doGenericTests(m2.getLeadingDiagonal());
 		doGenericTests(new MatrixAsVector(m2));
+	}
 
+	@Test public void g_MatrixViews4x5() {	
 		AMatrix m3=Matrixx.createRandomMatrix(4,5);
 		doGenericTests(m3.asVector());
 		doGenericTests(m3.getRow(2));
 		doGenericTests(m3.getColumn(2));
 		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
 		doGenericTests(new MatrixAsVector(m3));
+	}
 		
+	@Test public void g_AxisVector() {	
 		doGenericTests(AxisVector.create(1,3));
 		doGenericTests(AxisVector.create(0,1));
 		doGenericTests(AxisVector.create(5,10));
+	}
 		
+	@Test public void g_SingleElementVector() {	
 		doGenericTests(new SingleElementVector(1,3));
 		doGenericTests(new SingleElementVector(0,1));
+	}
 
-		doGenericTests(RepeatedElementVector.create(1,1.0));
+	@Test public void g_RepeatedElementVector() {	
+		doGenericTests(RepeatedElementVector.create(1,Math.PI));
 		doGenericTests(RepeatedElementVector.create(4,0.0));
-		doGenericTests(RepeatedElementVector.create(10,1.0));
-		doGenericTests(RepeatedElementVector.create(10,1.0).subVector(2, 5));
+		doGenericTests(RepeatedElementVector.create(10,Math.PI));
+		doGenericTests(RepeatedElementVector.create(10,Math.PI).subVector(2, 5));
+	}
 		
+	@Test public void g_IndexVector() {	
 		doGenericTests(IndexVector.of(1,2,3));
 		doGenericTests(IndexVector.of(1));
 		doGenericTests(IndexVector.of());
+	}
 		
+	@Test public void g_SparseIndexedVector() {	
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
 		doGenericTests(SparseIndexedVector.create(Vector.of(1,2,3,4,5))); // fully dense!
 		doGenericTests(SparseIndexedVector.create(Vector.of(-1,-2,-3))); // fully dense!
+	}
 
+	@Test public void g_SparseImmutableVector() {	
 		doGenericTests(SparseImmutableVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseImmutableVector.create(Vector.of(1,2,3,4,5))); // fully dense!
 		doGenericTests(SparseImmutableVector.create(Vector.of(-1,-2,-3))); // fully dense!
+	}
 
+	
+	@Test public void g_JoinedSparse() {	
 		doGenericTests(Vector3.of(1,2,3).join(SparseIndexedVector.create(5,Index.of(1,3),Vector.of(1.0,2.0))));
+	}
 		
+	@Test public void g_SparseHashedVector() {	
 		doGenericTests(SparseHashedVector.create(Vector.of(0,1,-1.5,0,2)));
 		doGenericTests(SparseHashedVector.create(Vector.of(1,2,3,4,5))); // fully dense!
 		doGenericTests(SparseHashedVector.create(Vector.of(-1,-2,-3))); // fully dense!
+	}
 		
+	@Test public void g_ScalarsAsVectors() {	
 		doGenericTests(new Scalar(1.0).asVector());
 		doGenericTests(Vector.of(1,2,3).slice(1).asVector());
+	}
 		
-		doGenericTests(JoinedMultiVector.create(v4,j5));
+	@Test public void g_JoinedMultiVector() {	
+		doGenericTests(JoinedMultiVector.create(Vector4.of(1,2,3,4),Vector.of(10,20,30,40,50)));
 		doGenericTests(JoinedMultiVector.create(Vectorz.createRange(3)));
+	}
 		
-		AVector jav1=JoinedArrayVector.create(v4);
-		AVector jav2=JoinedArrayVector.create(j5);
+	@Test public void g_JoinedArrayVector() {	
+		AVector jav1=JoinedArrayVector.create(Vector.of(1,2,3,4));
+		AVector jav2=JoinedArrayVector.create(Vector.of(1,2,3,4,5));
 		doGenericTests(jav1);
 		doGenericTests(jav2);
 		doGenericTests(jav2.join(jav1));
 		doGenericTests(jav2.join(jav1).subVector(2, 5));
-		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(g4)));
+		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(Vector.of(3,4,5,6))));
+	}
 		
+	@Test public void g_StridedVector() {	
 		doGenericTests(StridedVector.wrap(new double[]{1,2,3}, 2, 3, -1));
 		doGenericTests(StridedVector.wrap(new double[]{1,2}, 1, 1, 100));
+	}
 		
+	@Test public void g_ImmutableVector() {	
 		doGenericTests(ImmutableVector.create(Vector.of(1,2,3)));
 		doGenericTests(ImmutableVector.create(Vector.of()));
+	}
 		
+	@Test public void g_RangeVector() {	
 		doGenericTests(RangeVector.create(-10,3));
 		doGenericTests(RangeVector.create(0,7));
+	}
 		
+		
+	@Test public void g_VectorBuilder() {	
 		// VectorBuilder as a Vector
 		VectorBuilder vbl=new VectorBuilder();
 		doGenericTests(vbl);

@@ -75,4 +75,14 @@ public final class MatrixRowView extends AMatrixViewVector {
 		}
 		return true;
 	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		AVector r=source.getRow(row);
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*r.unsafeGet(i);
+		}
+		return result;
+	}
 }

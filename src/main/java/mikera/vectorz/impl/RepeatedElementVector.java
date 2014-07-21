@@ -129,6 +129,21 @@ public final class RepeatedElementVector extends ASizedVector {
 	}	
 	
 	@Override
+	public AVector reciprocalCopy() {
+		return create(length,1.0/value);
+	}
+	
+	@Override
+	public AVector absCopy() {
+		return create(length,Math.abs(value));
+	}
+	
+	@Override
+	public AVector negateCopy() {
+		return create(length,-value);
+	}
+
+	@Override
 	public AVector addCopy(AVector v) {
 		return v.addCopy(value);
 	}
@@ -155,8 +170,8 @@ public final class RepeatedElementVector extends ASizedVector {
 	
 	@Override
 	public AVector subVector(int offset, int length) {
-		checkRange(offset,length);
-		if (length==this.length) return this;
+		int len=checkRange(offset,length);
+		if (length==len) return this;
 		if (length==0) return Vector0.INSTANCE;
 		return RepeatedElementVector.create(length,value);
 	}
@@ -192,4 +207,22 @@ public final class RepeatedElementVector extends ASizedVector {
 	public boolean hasUncountable() {
 		return Double.isNaN(value) || Double.isInfinite(value);
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return length*Math.pow(value, p);
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return length*Math.pow(Math.abs(value), p);
+    }
 }

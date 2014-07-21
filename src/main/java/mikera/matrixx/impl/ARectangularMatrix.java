@@ -72,6 +72,24 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	@Override
+	protected void checkSameShape(AMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	@Override
+	protected void checkSameShape(ARectangularMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	@Override
 	protected final void checkIndex(int i, int j) {
 		if ((i<0)||(i>=rows)||(j<0)||(j>=cols)) {
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));

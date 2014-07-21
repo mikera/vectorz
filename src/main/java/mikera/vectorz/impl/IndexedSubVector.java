@@ -99,4 +99,13 @@ public final class IndexedSubVector extends BaseIndexedVector {
 	public void addAt(int i, double v) {
 		source.addAt(indexes[i], v);
 	}
+
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i]*unsafeGet(i);
+		}
+		return result;
+	}
 }

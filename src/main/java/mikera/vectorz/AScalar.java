@@ -48,10 +48,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
-	public void setElements(double[] values, int offset, int length) {
+	public void setElements(int pos,double[] values, int offset, int length) {
+		if (length==0) return;
 		if (length!=1) {
-			throw new IllegalArgumentException("length must be 1");
+			throw new IllegalArgumentException("Length must be 0 or 1");
 		}
+		if (pos!=0) throw new IllegalArgumentException("Element position must be zero for any scalar");
 		set(values[offset]);
 	}
 	

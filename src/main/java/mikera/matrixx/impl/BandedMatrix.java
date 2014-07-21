@@ -108,14 +108,24 @@ public class BandedMatrix extends ABandedMatrix {
 	}
 	
 	@Override
-	public double get(int row, int column) {
-		if ((row<0)||(column<0)||(row>=rowCount)||(column>=columnCount)) throw new IndexOutOfBoundsException("["+row+","+column+"]");
-		return getBand(bandIndex(row,column)).unsafeGet(bandPosition(row,column));
+	public double get(int i, int j) {
+		checkIndex(i,j);
+		return getBand(bandIndex(i,j)).unsafeGet(bandPosition(i,j));
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		getBand(bandIndex(row,column)).set(bandPosition(row,column),value);
+	public void set(int i, int j, double value) {
+		getBand(bandIndex(i,j)).set(bandPosition(i,j),value);
+	}
+	
+	@Override
+	public double unsafeGet(int i, int j) {
+		return getBand(bandIndex(i,j)).unsafeGet(bandPosition(i,j));
+	}
+
+	@Override
+	public void unsafeSet(int i, int j, double value) {
+		getBand(bandIndex(i,j)).unsafeSet(bandPosition(i,j),value);
 	}
 	
 	public void addAt(int i, int j, double d) {

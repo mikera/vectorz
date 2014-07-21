@@ -267,7 +267,9 @@ public class TestArrays {
 
 		INDArray b = a.exactClone();
 		b.fill(Double.NaN);
-		b.setElements(data, 1, ecount);
+		b.setElements(data, 1);
+		assertEquals(a, b);
+		b.setElements(0,data, 1, ecount);
 		assertEquals(a, b);
 	}
 
@@ -424,6 +426,17 @@ public class TestArrays {
 		assertTrue(m2.epsilonEquals(a));	
 	}
 	
+	private void testReciprocal(INDArray a) {
+		a=a.exactClone();
+		
+		INDArray ra=a.reciprocalCopy();
+		
+		if (a.isFullyMutable()&&(!ra.hasUncountable())) {
+			a.reciprocal();
+			assertTrue(a.epsilonEquals(ra));
+		}
+	}
+	
 	private void testBoolean(INDArray a) {
 		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(Tools.getElements(a)));
 	}
@@ -527,6 +540,16 @@ public class TestArrays {
 		assertEquals(m.elementCount(),i);
 	}
 	
+	private void testElementSums(INDArray m) {
+		double es=m.elementSum();
+		double ess=m.elementSquaredSum();
+		
+		assertEquals(es,m.asVector().elementSum(),0.0001);
+		assertEquals(es,m.elementPowSum(1.0),0.0001);
+		assertEquals(ess,m.elementAbsPowSum(2.0),0.0001);
+
+	}
+	
 	private void testStridedArray(INDArray mm) {
 		if (!(mm instanceof IStridedArray)) {
 			assertNull(mm.asDoubleArray());
@@ -574,7 +597,7 @@ public class TestArrays {
 		AVector v = b.toVector();
 		b.pow(2.5);
 		v.pow(2.5);
-		assertEquals(v, b.toVector());
+		assertTrue(v.epsilonEquals(b.toVector()));
 
 		b = a.exactClone();
 		v = b.toVector();
@@ -629,9 +652,11 @@ public class TestArrays {
 		testSub(a);
 		testToArray(a);
 		testMultiply(a);
+		testReciprocal(a);
 		testApplyOp(a);
 		testApplyAllOps(a);
 		testElementIterator(a);
+		testElementSums(a);
 		testStridedArray(a);
 		testBoolean(a);
 		testSums(a);
@@ -657,13 +682,16 @@ public class TestArrays {
 	}
 
 	@Test
-	public void genericTests() {
+	public void g_SliceArray() {
 		SliceArray<AVector> sa = SliceArray.of(
 				Vectorz.createUniformRandomVector(10),
 				Vectorz.createUniformRandomVector(10));
 		testArray(sa);
 		testArray(Array.create(sa));
+	}
 
+	@Test
+	public void g_NDArray() {
 		NDArray nd1 = NDArray.newArray(3);
 		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
@@ -679,21 +707,32 @@ public class TestArrays {
 		Vectorz.fillIndexes(nd3.asVector());
 		testArray(nd3);
 		testArray(Array.create(nd3));
+	}
 
+	@Test
+	public void g_NDScalar() {
 		NDArray ndscalar = NDArray.newArray();
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
+	}
 		
+	@Test
+	public void g_JoinedArray() {
 		testArray(JoinedArray.join(Vector.of(1,2),Vector.of(1,2,3,4,5),0));
 		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 3),1));
-		
+	}
+	
+	@Test
+	public void g_ImmutableArray() {
 		// immutable array tests
-		testArray(nd3.immutable());
 		testArray(ImmutableArray.create(Matrixx.createRandomMatrix(4, 5)));
 		testArray(ImmutableArray.create(Vectorz.createUniformRandomVector(4)));
 		testArray(ImmutableArray.create(Scalar.create(4)));
+	}
 		
+	@Test
+	public void g_ZeroArray() {
 		// zero array tests
 		testArray(Arrayz.createZeroArray());
 		testArray(Arrayz.createZeroArray(2));

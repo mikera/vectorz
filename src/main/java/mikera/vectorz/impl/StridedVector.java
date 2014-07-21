@@ -69,10 +69,8 @@ public final class StridedVector extends AStridedVector {
 	
 	@Override
 	public void set(AVector v) {
-		if(v.length()!=length) throw new IllegalArgumentException("Vector size mismatch");
-		for (int i=0; i<length; i++) {
-			data[offset+i*stride]=v.unsafeGet(i);
-		}
+		int length=checkSameLength(v);
+		v.copyTo(0, data, offset, length, stride);
 	}
 	
 	@Override
@@ -166,5 +164,10 @@ public final class StridedVector extends AStridedVector {
 		}
 		
 		super.validate();
+	}
+
+	@Override
+	protected int index(int i) {
+		return offset+i*stride;
 	}
 }

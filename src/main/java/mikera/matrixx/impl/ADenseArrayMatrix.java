@@ -4,6 +4,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ADenseArrayVector;
@@ -93,6 +94,20 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		double[] data=getArray();
 		int offset=getArrayOffset();
 		m.getElements(data, offset);
+	}
+	
+	@Override
+	public void setElements(double[] values, int offset) {
+		double[] data=getArray();
+		int di=getArrayOffset();
+		System.arraycopy(values, offset, data, di, Tools.toInt(elementCount()));
+	}
+	
+	@Override
+	public void setElements(int pos, double[] values, int offset, int length) {
+		double[] data=getArray();
+		int di=getArrayOffset()+pos;
+		System.arraycopy(values, offset, data, di, length);
 	}
 	
 	@Override

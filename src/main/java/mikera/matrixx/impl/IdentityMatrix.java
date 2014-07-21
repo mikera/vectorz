@@ -52,24 +52,24 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 
 	@Override
-	public double get(int row, int column) {
-		if ((row<0)||(column<0)||(row>=dimensions)||(column>=dimensions)) throw new IndexOutOfBoundsException(ErrorMessages.position(row,column));
-		return (row==column)?1.0:0.0;
+	public double get(int i, int j) {
+		checkIndex(i,j);
+		return (i==j)?1.0:0.0;
 	}
 	
 	@Override
-	public double unsafeGet(int row, int column) {
-		return (row==column)?1.0:0.0;
+	public double unsafeGet(int i, int j) {
+		return (i==j)?1.0:0.0;
 	}
 	
 	@Override
-	public AVector getRow(int row) {
-		return AxisVector.create(row,dimensions);
+	public AVector getRow(int i) {
+		return AxisVector.create(i,dimensions);
 	}
 	
 	@Override
-	public AVector getColumn(int column) {
-		return AxisVector.create(column,dimensions);
+	public AVector getColumn(int j) {
+		return AxisVector.create(j,dimensions);
 	}
 	
 	@Override
@@ -247,4 +247,22 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	public boolean hasUncountable() {
 		return false;
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return dimensions;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return elementPowSum(p);
+    }
 }

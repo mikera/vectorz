@@ -19,6 +19,7 @@ import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
+import mikera.matrixx.impl.ARectangularMatrix;
 import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -31,6 +32,7 @@ import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.MatrixAsVector;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.randomz.Hash;
 import mikera.transformz.AAffineTransform;
 import mikera.transformz.AffineMN;
@@ -205,7 +207,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public AVector slice(int dimension, int index) {
 		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
-		return (dimension==0)?getRow(index):getColumn(index);	
+		return (dimension==0)?getRowView(index):getColumnView(index);	
 	}	
 	
 	@Override
@@ -218,7 +220,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		ArrayList<AVector> al=new ArrayList<AVector>();
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			al.add(getRow(i));
+			al.add(getRowView(i));
 		}
 		return al;
 	}
@@ -387,11 +389,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}	
 	
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
-		VectorMatrixMN vm=new VectorMatrixMN(0,cols);
+		if ((rows==0)||(cols==0)) return ZeroMatrix.create(rows, cols);
+		AVector[] vs=new AVector[rows];
 		for (int i=0; i<rows; i++) {
-			vm.appendRow(this.getRowView(rowStart+i).subVector(colStart, cols));
+			vs[i]=this.getRowView(rowStart+i).subVector(colStart, cols);
 		}
-		return vm;	
+		return VectorMatrixMN.wrap(vs);	
 	}
 	
 	@Override
@@ -576,21 +579,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public void setElements(double[] values, int offset, int length) {
-		if (length!=elementCount()) {
-			throw new IllegalArgumentException("Incorrect element count: "+length);
-		}
-		int rc = rowCount();
-		int cc = columnCount();
-		for (int i = 0; i < rc; i++) {
-			int iOffset=offset+i*cc;
-			for (int j = 0; j < cc; j++) {
-				unsafeSet(i,j,values[iOffset+j]);
-			}
-		}	
-	} 
-	
-	@Override
 	public void getElements(double[] dest, int offset) {
 		int rc=this.rowCount();
 		int cc=this.columnCount();
@@ -605,8 +593,19 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public void setElements(double[] values) {
-		setElements(values,0,values.length);
+	public void setElements(double... values) {
+		int vl=values.length;
+		if (vl!=elementCount()) throw new IllegalArgumentException("Incorrect number of elements in array: "+vl);
+		setElements(values,0);
+	}
+	
+	@Override
+	public void setElements(double[] values, int offset) {
+		int rc=rowCount();
+		int cc=columnCount();
+		for (int i=0; i<rc; i++) {
+			slice(i).setElements(values,offset+i*cc);
+		}
 	}
 
 	@Override
@@ -633,12 +632,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return this;
 	}
 	
-	public final AVector cloneRow(int row) {
-		return getRowClone(row);
+	public final AVector cloneRow(int i) {
+		return getRowClone(i);
 	}
 	
-	public final AVector cloneColumn(int column) {
-		return getColumnClone(column);
+	public final AVector cloneColumn(int j) {
+		return getColumnClone(j);
 	}
 	
 	@Override
@@ -726,23 +725,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void add(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, m));
+		m.checkShape(rc, cc);
 
-		if ((cc>20)||(this instanceof IFastRows)) {
-			for (int i=0; i<rc; i++) {
-				getRowView(i).add(m.getRow(i));
-			}			
-		} else if ((this instanceof IFastColumns)&&(m instanceof IFastColumns)) {
-			for (int i=0; i<cc; i++) {
-				getColumnView(i).add(m.getColumn(i));
-			}	
-		} else {
-			for (int i=0; i<rc; i++) {
-				for (int j=0; j<cc; j++) {
-					unsafeSet(i,j,unsafeGet(i,j)+m.unsafeGet(i, j));
-				}
-			}
-		}
+		for (int i=0; i<rc; i++) {
+			getRowView(i).add(m.getRow(i));
+		}		
 	}
 	
 	/**
@@ -820,7 +807,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
-			result+=getRowView(i).elementSquaredSum();
+			result+=getRow(i).elementSquaredSum();
 		}
 		return result;
 	}
@@ -840,12 +827,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public long nonZeroCount() {
 		long result=0;
 		int rc=rowCount();
-		int cc=columnCount();
 		
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				if (unsafeGet(i,j)!=0.0) result++;
-			}
+			result+=getRow(i).nonZeroCount();
 		}
 		return result;	
 	}
@@ -942,9 +926,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		m.checkShape(rc,cc);
 		
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				unsafeSet(i,j,unsafeGet(i,j)/m.unsafeGet(i, j));
-			}
+			getRowView(i).divide(m.getRow(i));
 		}
 	}
 	
@@ -1027,9 +1009,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void addMultiple(AMatrix m, double factor) {
 		int rc=rowCount();
 		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
-			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
-		}
+		m.checkShape(rc, cc);
 		
 		for (int i=0; i<rc; i++) {
 			getRowView(i).addMultiple(m.getRow(i), factor);
@@ -1100,17 +1080,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean equalsArray(double[] data, int offset) {
 		int rc = rowCount();
 		int cc = columnCount();
-		if (this instanceof IFastRows) {
-			for (int i = 0; i < rc; i++) {
-				if (!getRow(i).equalsArray(data,offset+i*cc)) return false;
-			}
-		} else {
-			int di=offset;
-			for (int i = 0; i < rc; i++) {
-				for (int j = 0; j < cc; j++) {
-					if (unsafeGet(i, j) != data[di++]) return false;
-				}
-			}
+		for (int i = 0; i < rc; i++) {
+			if (!getRow(i).equalsArray(data,offset+i*cc)) return false;
 		}
 		return true;
 	}
@@ -1118,18 +1089,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public boolean elementsEqual(double value) {
 		int rc = rowCount();
-		
-		if (this instanceof IFastRows) {
-			for (int i = 0; i < rc; i++) {
-				if (!getRow(i).elementsEqual(value)) return false;
-			}
-		} else {
-			int cc = columnCount();
-			for (int i = 0; i < rc; i++) {
-				for (int j = 0; j < cc; j++) {
-					if (unsafeGet(i, j) != value) return false;
-				}
-			}
+		for (int i = 0; i < rc; i++) {
+			if (!getRow(i).elementsEqual(value)) return false;
 		}
 		return true;
 	}
@@ -1155,13 +1116,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public boolean equals(INDArray v) {
 		if (v instanceof AMatrix) return equals((AMatrix) v);
-		if (v.dimensionality()!=2) return false;
-		int[] vs=v.getShape();
+		if (!isSameShape(v)) return false;
 		int rc=rowCount();
-		if (rc != vs[0]) return false;
-		int cc=columnCount();
-		if (cc != vs[1]) return false;
-		
 		for (int i = 0; i < rc; i++) {
 			if (!getRow(i).equals(v.slice(i))) return false;
 		}
@@ -1296,15 +1252,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public AMatrix innerProduct(AScalar s) {
+	public final AMatrix innerProduct(AScalar s) {
 		return innerProduct(s.get());
 	}
 	
 	@Override
-	public AMatrix innerProduct(double d) {
-		AMatrix r= clone();
-		r.scale(d);
-		return r;
+	public final AMatrix innerProduct(double d) {
+		return multiplyCopy(d);
 	}	
 	
 	public AMatrix transposeInnerProduct(AMatrix s) {
@@ -1821,7 +1775,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param j
 	 * @return
 	 */
-	public int bandIndex(int i, int j) {
+	public final int bandIndex(int i, int j) {
 		return j-i;
 	}
 	
@@ -1831,7 +1785,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param j
 	 * @return
 	 */
-	public int bandPosition(int i, int j) {
+	public final int bandPosition(int i, int j) {
 		return Math.min(i, j);
 	}
 	
@@ -1897,7 +1851,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param row
 	 */
 	public void setRow(int i, AVector row) {
-		getRow(i).set(row);
+		getRowView(i).set(row);
 	}
 	
 	/**
@@ -1931,7 +1885,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param row
 	 */
 	public void setColumn(int i, AVector col) {
-		getColumn(i).set(col);
+		getColumnView(i).set(col);
 	}
 
 	@Override
@@ -1971,19 +1925,19 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		// nothing to do since we have no data to validate
 	}
 
-	public void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int i, double[] dest, int destOffset) {
 		// note: using getRow() may be faster when overriding
 		int cc=columnCount();
-		for (int i=0; i<cc; i++) {
-			dest[i+destOffset]=unsafeGet(row,i);
+		for (int j=0; j<cc; j++) {
+			dest[destOffset+j]=unsafeGet(i,j);
 		}
 	}
 	
-	public void copyColumnTo(int col, double[] dest, int destOffset) {
+	public void copyColumnTo(int j, double[] dest, int destOffset) {
 		// note: using getColumn() may be faster when overriding
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			dest[i+destOffset]=unsafeGet(i,col);
+			dest[destOffset+i]=unsafeGet(i,j);
 		}
 	}
 
@@ -2062,7 +2016,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean hasUncountable() {
 		int rc = rowCount();
 		for(int i=0; i<rc; i++) {
-			if (getRowView(i).hasUncountable()) {
+			if (getRow(i).hasUncountable()) {
 				return true;
 			}
 		}
@@ -2099,6 +2053,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	protected void checkSameShape(ARectangularMatrix m) {
+		int rc=rowCount();
+		int cc=columnCount();
+		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
 	protected void checkShape(int rows, int cols) {
 		int rc=rowCount();
 		int cc=columnCount();
@@ -2114,5 +2076,4 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
 		}
 	}
-	
 }

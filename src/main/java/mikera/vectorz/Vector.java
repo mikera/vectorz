@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.indexz.AIndex;
@@ -68,8 +69,16 @@ public final class Vector extends ADenseArrayVector {
 		return wrap(data.clone());
 	}
 	
-
 	public static Vector create(ArrayList<Double> al) {
+		int n=al.size();
+		Vector v=Vector.createLength(n);
+		for (int i=0; i<n; i++) {
+			v.unsafeSet(i,al.get(i));
+		}
+		return v;
+	}
+	
+	public static Vector create(List<Double> al) {
 		int n=al.size();
 		Vector v=Vector.createLength(n);
 		for (int i=0; i<n; i++) {
@@ -259,11 +268,7 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void addMultiple(ADenseArrayVector v, double factor) {
 		int length=checkSameLength(v);
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[i] += vdata[voffset + i]*factor;
-		}
+		v.addMultipleToArray(factor,0,data, 0,length);
 	}
 	
 	@Override
@@ -281,9 +286,7 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void add(double[] srcData, int srcOffset) {
 		int length=length();
-		for (int i = 0; i < length; i++) {
-			data[i] += srcData[srcOffset + i];
-		}
+		DoubleArrays.add(srcData, srcOffset, data, 0, length);
 	}
 	
 	@Override
@@ -373,12 +376,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if ((v instanceof Vector)) {
-			return dotProduct((Vector)v);
-		} else {
-			checkSameLength(v);
-			return v.dotProduct(data,0);
-		}
+		checkSameLength(v);
+		return v.dotProduct(data,0);
 	}
 	
 	@Override
@@ -492,10 +491,7 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void multiply(double factor) {
-		int len=length();
-		for (int i = 0; i < len; i++) {
-			data[i]*=factor;
-		}	
+		DoubleArrays.multiply(data, factor);
 	}
 	
 	@Override
@@ -595,7 +591,7 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public boolean equals(ADenseArrayVector v) {
 		if (length!=v.length()) return false;
-		return DoubleArrays.equals(data, 0, v.getArray(), v.getArrayOffset(), length);
+		return v.equalsArray(data, 0);
 	}
 	
 	@Override
@@ -606,6 +602,11 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public boolean equalsArray(double[] arr) {
 		return DoubleArrays.equals(data, arr, length);
+	}
+
+	@Override
+	protected int index(int i) {
+		return i;
 	}
 
 }

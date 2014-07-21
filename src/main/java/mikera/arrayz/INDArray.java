@@ -5,6 +5,8 @@ import java.nio.DoubleBuffer;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.indexz.AIndex;
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
@@ -56,7 +58,17 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns the shape of the array as an array of longs.
 	 */
 	public long[] getLongShape();
-		
+	
+	/**
+	 * Returns the double value at the specified position in the array
+	 */
+	public double get(AIndex ix);
+	
+	/**
+	 * Returns the double value at the specified position in the array
+	 */
+	public double get(Index ix);
+	
 	/**
 	 * Returns the double value of a scalar array
 	 */
@@ -185,7 +197,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public void reciprocal();
 	
 	/**
-	 * Clamps all the elments of this array within the specified [min,max] range
+	 * Returns a new array where every element is the reciprocal of the corresponding element in this array
+	 */
+	public INDArray reciprocalCopy();
+	
+	/**
+	 * Clamps all the elements of this array within the specified [min,max] range
 	 */
 	public void clamp(double min, double max);
 
@@ -447,7 +464,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray clone();
 	
 	/**
-	 * Returns a defensive copy of the array data. 
+	 * Returns a defensive copy of the array data. Use this if the original array might change and you 
+	 * need a defensive copy.
 	 * 
 	 * May return the same array if the original was immutable, otherwise will return a defensive copy.
 	 */
@@ -465,6 +483,11 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Applies a unary operator to all elements of the array (in-place)
 	 */
 	void applyOp(Op op);
+	
+	/**
+	 * Applies a unary operator to all elements of the array (creating a new array)
+	 */
+	INDArray applyOpCopy(Op op);
 
 	/**
 	 * Applies a unary operator to all elements of the array (in-place)
@@ -489,7 +512,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Sets all elements in an array using the given double values
 	 */
-	public void setElements(double[] values);
+	public void setElements(double... values);
 	
 	/**
 	 * Sets all elements in an array using the given double values
@@ -499,7 +522,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Sets elements in an array using the given double values
 	 */
-	public void setElements(double[] values, int offset, int length);
+	public void setElements(int pos, double[] values, int offset, int length);
 
 	/**
 	 * Gets all elements of the array, copying them into a double array
@@ -509,12 +532,12 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Scales all elements of the array in place by a given double value
 	 */
-	public void scale(double d);
+	public void scale(double factor);
 	
 	/**
 	 * Scales all elements of the array by a given double value, returning a new array
 	 */
-	public INDArray scaleCopy(double d);
+	public INDArray scaleCopy(double factor);
 	
 	/**
 	 * Scales all elements of the array by a given double value and adds a constant value
@@ -524,7 +547,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Multiplies all elements of the array in place by a given double value
 	 */
-	public void multiply(double d);
+	public void multiply(double factor);
 	
 	/**
 	 * Raises all elements of the array to a specified power in place
@@ -593,8 +616,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray[] toSliceArray();
 	
 	/**
-	 * Returns the underlying double array representing the packed elements of this array
-	 * Returns nil if there is no such underlying array
+	 * Returns the underlying double array representing the densely packed elements of this array
+	 * Returns nil if there is no such array
 	 */
 	public double[] asDoubleArray();
 
@@ -754,4 +777,15 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public boolean hasUncountable();
 	
+	/**
+	 * Returns the sum of all the elements raised to a specified power
+	 * @return
+	 */
+	public double elementPowSum(double p);
+	
+	/**
+	 * Returns the sum of the absolute values of all the elements raised to a specified power
+	 * @return
+	 */
+	public double elementAbsPowSum(double p);
 }

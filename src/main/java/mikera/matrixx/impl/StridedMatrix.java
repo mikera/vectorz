@@ -11,6 +11,11 @@ import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * A general purpose strided matrix implementation
+ * 
+ * @author Mike
+ */
 public final class StridedMatrix extends AStridedMatrix {
 	private static final long serialVersionUID = -7928115802247422177L;
 
@@ -134,16 +139,14 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public double get(int row, int column) {
-		if ((row < 0) || (column < 0) || (row >= rows)
-				|| (column >= cols))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		return data[index(row,column)];
+	public double get(int i, int j) {
+		checkIndex(i,j);
+		return data[index(i,j)];
 	}
 	
 	@Override
-	public double unsafeGet(int row, int column) {
-		return data[index(row,column)];
+	public double unsafeGet(int i, int j) {
+		return data[index(i,j)];
 	}
 	
 	@Override
@@ -159,16 +162,14 @@ public final class StridedMatrix extends AStridedMatrix {
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		if ((row < 0) || (column < 0) || (row >= rows)
-				|| (column >= cols))
-			throw new IndexOutOfBoundsException("[" + row + "," + column + "]");
-		data[index(row,column)] = value;
+	public void set(int i, int j, double value) {
+		checkIndex(i,j);
+		data[index(i,j)] = value;
 	}
 	
 	@Override
-	public void unsafeSet(int row, int column, double value) {
-		data[index(row,column)] = value;
+	public void unsafeSet(int i, int j, double value) {
+		data[index(i,j)] = value;
 	}
 
 	@Override

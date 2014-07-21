@@ -76,6 +76,11 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	}
 	
 	@Override
+	public double dotProduct(double[] data, int offset) {
+		return data[offset]*scalar.get();
+	}
+	
+	@Override
 	public WrappedScalarVector exactClone() {
 		return new WrappedScalarVector(scalar.exactClone());
 	}

@@ -17,11 +17,34 @@ import mikera.vectorz.util.VectorzException;
 public final class JoinedMultiVector extends AJoinedVector {
 	private static final long serialVersionUID = 6226205676178066609L;
 	
+	/**
+	 * The number of segments
+	 */
 	private final int n;
+	
+	/**
+	 * The set of vectors that define all the segments of this JoinedMultiVector
+	 */
 	private final AVector[] vecs;
 	
 	// array of split positions [0, ...... , length] with length n+1
 	private final int[] splits;
+	
+	private JoinedMultiVector(int length, AVector[] vecs, int[] splits) {
+		super(length);
+		n=vecs.length;
+		this.vecs=vecs;
+		this.splits=splits;
+	}
+	
+	private JoinedMultiVector(AVector[] vs) {
+		this(sumOfLengths(vs),vs,new int[vs.length+1]);
+		int j=0;
+		for (int i=0; i<n ; i++) {
+			j+=vs[i].length();
+			splits[i+1]=j;
+		}
+	}
 	
 	private static final int sumOfLengths(AVector[] vs) {
 		int result=0;
@@ -29,18 +52,6 @@ public final class JoinedMultiVector extends AJoinedVector {
 			result+=v.length();
 		}
 		return result;
-	}
-	
-	private JoinedMultiVector(AVector[] vs) {
-		super(sumOfLengths(vs));
-		n=vs.length;
-		vecs=vs;
-		splits=new int[n+1];
-		int j=0;
-		for (int i=0; i<n ; i++) {
-			j+=vs[i].length();
-			splits[i+1]=j;
-		}
 	}
 
 	@Override
@@ -451,16 +462,6 @@ public final class JoinedMultiVector extends AJoinedVector {
 			vecs[i].set(src,srcOffset+splits[i]);
 		}
 	}
-	
-	@Override
-	public void setElements(double[] values, int offset, int length) {
-		if (length!=length()) {
-			throw new IllegalArgumentException("Incorrect length: "+length);
-		}
-		for (int i=0; i<n; i++) {
-			vecs[i].setElements(values,offset+splits[i]);
-		}
-	}
 
 	@Override
 	public void set(int i, double value) {
@@ -573,6 +574,21 @@ public final class JoinedMultiVector extends AJoinedVector {
 	public void validate() {
 		super.validate();
 		if (splits[n]!=length) throw new VectorzException("Unexpected final slit position - not equal to JoinedMultVector length");
+	}
+
+	@Override
+	public int segmentCount() {
+		return n;
+	}
+
+	@Override
+	public AVector getSegment(int k) {
+		return vecs[k];
+	}
+
+	@Override
+	protected AJoinedVector reconstruct(AVector... segments) {
+		return new JoinedMultiVector(length,vecs,splits);
 	}
 
 }

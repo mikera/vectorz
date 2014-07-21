@@ -1,13 +1,16 @@
 package mikera.matrixx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import mikera.arrayz.Arrayz;
+import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
-import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrixx;
-import mikera.matrixx.impl.AVectorMatrix;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
@@ -40,11 +43,7 @@ import org.junit.Test;
 
 public class TestMatrixx {
 
-	
-
-
-	
-	void doMutationTest(AMatrix m) {
+	private void doMutationTest(AMatrix m) {
 		if (!m.isFullyMutable()) return;
 		m=m.exactClone();
 		AMatrix m2=m.exactClone();
@@ -270,8 +269,8 @@ public class TestMatrixx {
 			assertEquals(rc,col.length());
 		}
 		
-		AVector row=m.getRow(0);
-		AVector col=m.getColumn(0);
+		AVector row=m.getRowView(0);
+		AVector col=m.getColumnView(0);
 		
 		row.set(0,1.77);
 		assertEquals(1.77,m.get(0,0),0.0);
@@ -293,20 +292,21 @@ public class TestMatrixx {
 	private void doBandTests(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();
-		if ((cc==0)||(rc==0)) return; // bands are meaningless....
 		int bandMin=-m.rowCount();
 		int bandMax=m.columnCount();
 		Matrix mc=m.toMatrix();
 		
-		// TODO: what to do about out-of-range bands?
+		// TODO: consider what to do about out-of-range bands?
 		//assertNull(m.getBand(bandMin-1));
 		//assertNull(m.getBand(bandMax+1));
 		
 		for (int i=bandMin; i<=bandMax; i++) {
 			AVector b=m.getBand(i);
 			assertEquals(b.length(),m.bandLength(i));		
-			assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
 			assertEquals(mc.getBand(i),b);
+			
+			// wrapped band test
+			if (rc*cc!=0) assertEquals(Math.max(rc, cc),m.getBandWrapped(i).length());
 		}
 		
 		assertEquals(m,BandedMatrix.create(m));
@@ -335,10 +335,6 @@ public class TestMatrixx {
 		assertEquals(m,Matrixx.parse(m.toString()));
 	}
 	
-	void doHashTest(AMatrix m) {
-		assertEquals(m.hashCode(),m.toVector().hashCode());
-	}
-
 	void doBigComposeTest(AMatrix m) {
 		AMatrix a=Matrixx.createRandomSquareMatrix(m.rowCount());
 		AMatrix b=Matrixx.createRandomSquareMatrix(m.columnCount());
@@ -461,7 +457,6 @@ public class TestMatrixx {
 		doTriangularTests(m);
 		doVectorTest(m);
 		doParseTest(m);
-		doHashTest(m);
 		doNDArrayTest(m);
 		doScaleTest(m);
 		doBoundsTest(m);
@@ -475,10 +470,6 @@ public class TestMatrixx {
 		doRandomTests(m);
 		doBigComposeTest(m);
 		doSubMatrixTest(m);
-		
-		if (m instanceof AVectorMatrix<?>) {
-			TestVectorMatrix.doVectorMatrixTests((AVectorMatrix<AVector>)m);
-		}
 		
 		TestTransformz.doITransformTests(new MatrixTransform(m));
 		
@@ -499,17 +490,17 @@ public class TestMatrixx {
 	@Test public void g_PrimitiveMatrix() {
 		// specialised 3x3 matrix
 		Matrix33 m33=new Matrix33();
-		Matrixx.fillRandomValues(m33);
+		randomise(m33);
 		doGenericTests(m33);
 		
 		// specialised 2*2 matrix
 		Matrix22 m22=new Matrix22();
-		Matrixx.fillRandomValues(m22);
+		randomise(m22);
 		doGenericTests(m22);
 		
 		// specialised 1*1 matrix
 		Matrix11 m11=new Matrix11();
-		Matrixx.fillRandomValues(m11);
+		randomise(m11);
 		doGenericTests(m11);
 	}
 	
@@ -529,11 +520,13 @@ public class TestMatrixx {
 	@Test public void g_VectorMatrix() {
 		// specialised Mx3 matrix
 		VectorMatrixM3 mm3=new VectorMatrixM3(10);
+		Arrayz.fillNormal(mm3,101);
 		doGenericTests(mm3);
 		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
 	
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
+		randomise(mmn);
 		doGenericTests(mmn);
 		doGenericTests(mmn.subMatrix(1, 4, 1, 5));
 	
@@ -550,9 +543,16 @@ public class TestMatrixx {
 		doGenericTests(mmn);
 	}
 	
+	private static long seed;
+	
+	private void randomise(INDArray m) {
+		Arrayz.fillNormal(m, seed++);	
+	}
+
 	@Test public void g_Matrix() {
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
+		randomise(mmn);
 
 		Matrix am1=new Matrix(Matrix33.createScaleMatrix(4.0));
 		doGenericTests(am1);
@@ -562,10 +562,11 @@ public class TestMatrixx {
 	}
 	
 	@Test public void g_DenseColumnMatrix() {
-		Matrix am1=new Matrix(Matrix33.createScaleMatrix(4.0));
+		Matrix am1=new Matrix(Matrix33.createScaleMatrix(Math.PI));
 		doGenericTests(am1.getTranspose());
 		
 		Matrix am2=new Matrix(new VectorMatrixMN(6 ,7));
+		randomise(am2);
 		doGenericTests(am2.getTranspose());
 	}
 	
@@ -577,8 +578,8 @@ public class TestMatrixx {
 	
 	@Test public void g_ScalarMatrix() {	
 		doGenericTests(ScalarMatrix.create(1,3.0));
-		doGenericTests(ScalarMatrix.create(3,3.0));
-		doGenericTests(ScalarMatrix.create(5,0));
+		doGenericTests(ScalarMatrix.create(3,Math.E));
+		doGenericTests(ScalarMatrix.create(5,0.0));
 		doGenericTests(ScalarMatrix.create(5,2.0).subMatrix(1, 3, 1, 3));
 	}
 	
@@ -610,6 +611,7 @@ public class TestMatrixx {
 	
 	@Test public void g_BandedMatrix() {	
 		doGenericTests(BandedMatrix.create(3, 3, -2, 2));
+		doGenericTests(BandedMatrix.create(Matrixx.createRandomMatrix(2, 2)));
 		doGenericTests(BandedMatrix.wrap(3, 4, 0, 0,Vector.of(1,2,3)));		
 	}
 	
@@ -621,9 +623,9 @@ public class TestMatrixx {
 	}
 	
 	@Test public void g_SparseMatrix() {	
-		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,2),null,null,AxisVector.create(2, 3)));
+		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,-Math.E),null,null,AxisVector.create(2, 3)));
 		doGenericTests(SparseRowMatrix.create(Matrixx.createRandomSquareMatrix(3)));
-		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,2),null,null,AxisVector.create(2, 3)));
+		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,-Math.PI),null,null,AxisVector.create(2, 3)));
 		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(4)));
 	}
 	
