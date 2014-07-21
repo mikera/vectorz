@@ -1,17 +1,17 @@
 package mikera.vectorz.impl;
 
 /**
- * Abstract base class for bit vectors 
+ * Abstract base class for boolean vectors 
  * 
- * Bit vectors only support two element values, 0.0 and 1.0
+ * Boolean vectors only support two element values, 0.0 and 1.0
  * 
  * @author Mike
  *
  */
 @SuppressWarnings("serial")
-public abstract class ABitVector extends ASizedVector {
+public abstract class ABooleanVector extends ASizedVector {
 
-	protected ABitVector(int length) {
+	protected ABooleanVector(int length) {
 		super(length);
 	}
 

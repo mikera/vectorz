@@ -1,9 +1,9 @@
 package mikera.vectorz;
 
-import mikera.vectorz.impl.ABitVector;
+import mikera.vectorz.impl.ABooleanVector;
 
 /**
- * Vector of bits - constrained to 0.0 / 1.0 values
+ * Boolean vector backed by densely packed single bits - constrained to 0.0 / 1.0 values
  * 
  * Setting the BitVector will set to 1.0 for any positive values (true) and 0.0 otherwise (false)
  * 
@@ -12,7 +12,7 @@ import mikera.vectorz.impl.ABitVector;
  * @author Mike
  */
 
-public final class BitVector extends ABitVector {
+public final class BitVector extends ABooleanVector {
 	private static final long serialVersionUID = 349277216077562294L;
 	public static final double BIT_ON=1.0;
 	public static final double BIT_OFF=0.0;
