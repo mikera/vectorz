@@ -1143,6 +1143,28 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return magnitudeSquared();
 	}
 	
+	@Override
+	public double elementPowSum(double exponent) {
+		int n=length();
+		double result=0.0;
+		for (int i=0; i<n; i++) {
+			double x=unsafeGet(i);
+			result+=Math.pow(x,exponent);
+		}
+		return result;
+	}
+	
+	@Override
+	public double elementAbsPowSum(double exponent) {
+		int n=length();
+		double result=0.0;
+		for (int i=0; i<n; i++) {
+			double x=Math.abs(unsafeGet(i));
+			result+=Math.pow(x,exponent);
+		}
+		return result;
+	}
+	
 	/**
 	 * Returns the Euclidean angle between this vector and another vector
 	 * @return angle in radians
