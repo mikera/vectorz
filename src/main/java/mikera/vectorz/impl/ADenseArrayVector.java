@@ -363,6 +363,16 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 	
 	@Override
+	public double elementPowSum(double exponent) {
+		return DoubleArrays.elementPowSum(getArray(), getArrayOffset(), length(),exponent);
+	}
+	
+	@Override
+	public double elementAbsPowSum(double exponent) {
+		return DoubleArrays.elementAbsPowSum(getArray(), getArrayOffset(), length(),exponent);
+	}
+	
+	@Override
 	public double elementProduct() {
 		return DoubleArrays.elementProduct(getArray(), getArrayOffset(), length());
 	}

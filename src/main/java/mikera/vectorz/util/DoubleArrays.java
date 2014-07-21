@@ -131,6 +131,26 @@ public final class DoubleArrays {
 		}
 		return result;	
 	}
+
+	public static double elementPowSum(double[] data, int offset,
+			int length, double exponent) {
+		double result = 0.0;
+		for (int i=0; i<length; i++) {
+			double x=data[offset+i];
+			result+=Math.pow(x, exponent);
+		}
+		return result;	
+	}
+	
+	public static double elementAbsPowSum(double[] data, int offset,
+			int length, double exponent) {
+		double result = 0.0;
+		for (int i=0; i<length; i++) {
+			double x=Math.abs(data[offset+i]);
+			result+=Math.pow(x, exponent);
+		}
+		return result;	
+	}
 	
 	public static int nonZeroCount(double[] data) {
 		int result = 0;
@@ -522,6 +542,7 @@ public final class DoubleArrays {
 		}
 		return rs;
 	}
+
 
 
 
