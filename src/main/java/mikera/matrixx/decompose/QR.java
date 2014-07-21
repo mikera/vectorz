@@ -27,6 +27,15 @@ import mikera.matrixx.decompose.impl.qr.HouseholderQR;
 /**
  * Public API class for QR decomposition
  * 
+ * QR decomposition decomposes any matrix A such that:
+ * 
+ *   A = Q.R
+ *   
+ * Where:
+ * 
+ *   Q is an orthogonal matrix
+ *   R is an upper triangular matrix
+ * 
  * @author Mike
  */
 public class QR {
@@ -69,6 +78,7 @@ public class QR {
         HouseholderQR alg = new HouseholderQR(compact);
         return alg.decompose(matrix);	
     }
+    
 	/**
 	 * Computes the QR factorisation of a matrix A such that:
 	 * 
@@ -89,5 +99,4 @@ public class QR {
 		return alg.decompose(matrix);	
 	}
 	
-
 }
