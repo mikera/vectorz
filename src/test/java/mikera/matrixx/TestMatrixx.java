@@ -1,13 +1,14 @@
 package mikera.matrixx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
-import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrixx;
-import mikera.matrixx.impl.AVectorMatrix;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
@@ -466,10 +467,6 @@ public class TestMatrixx {
 		doRandomTests(m);
 		doBigComposeTest(m);
 		doSubMatrixTest(m);
-		
-		if (m instanceof AVectorMatrix<?>) {
-			TestVectorMatrix.doVectorMatrixTests((AVectorMatrix<AVector>)m);
-		}
 		
 		TestTransformz.doITransformTests(new MatrixTransform(m));
 		

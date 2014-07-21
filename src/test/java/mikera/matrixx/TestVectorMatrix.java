@@ -1,19 +1,11 @@
 package mikera.matrixx;
 
 import static org.junit.Assert.*;
-import mikera.matrixx.impl.AVectorMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
-import mikera.vectorz.AVector;
 import org.junit.Test;
 
 public class TestVectorMatrix {
-	public static void doVectorMatrixTests(AVectorMatrix<AVector> m) {
-		int rc=m.rowCount();
-		if (rc>0) {
-			assertTrue(m.getRow(0)==m.getRow(0));
-		}
-	}
 
 	@Test public void testCreateM3() {
 		VectorMatrixM3 m=new VectorMatrixM3(0);
