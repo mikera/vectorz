@@ -247,4 +247,22 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	public boolean hasUncountable() {
 		return false;
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return dimensions;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return elementPowSum(p);
+    }
 }

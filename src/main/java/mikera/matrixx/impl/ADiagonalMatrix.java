@@ -412,4 +412,22 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	public boolean hasUncountable() {
 		return getLeadingDiagonal().hasUncountable();
 	}
+	
+    /**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return getLeadingDiagonal().elementPowSum(p);
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return getLeadingDiagonal().elementAbsPowSum(p);
+    }
 }

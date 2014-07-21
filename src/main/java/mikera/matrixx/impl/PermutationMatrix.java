@@ -326,5 +326,28 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	public PermutationMatrix exactClone() {
 		return new PermutationMatrix(perm.clone());
 	}
+	
+	@Override
+    public boolean hasUncountable() {
+        return false;
+    }
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return size;
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return elementPowSum(p);
+    }
 
 }

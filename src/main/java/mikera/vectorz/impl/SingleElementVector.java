@@ -219,5 +219,23 @@ public final class SingleElementVector extends ASparseVector {
 	public boolean hasUncountable() {
 		return Double.isNaN(value) || Double.isInfinite(value);
 	}
+	
+	/**
+     * Returns the sum of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementPowSum(double p) {
+        return Math.pow(value, p);
+    }
+    
+    /**
+     * Returns the sum of the absolute values of all the elements raised to a specified power
+     * @return
+     */
+    @Override
+    public double elementAbsPowSum(double p) {
+        return Math.pow(Math.abs(value), p);
+    }
 
 }
