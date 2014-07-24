@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>net.mikera</groupId>
 		<artifactId>mikera-pom</artifactId>
-		<version>0.0.7</version>
+		<version>0.1.0</version>
 	</parent>
 
 	<properties>
