@@ -445,7 +445,6 @@ public class TestMatrixx {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	void doGenericTests(AMatrix m) {
 		m.validate();
 		
