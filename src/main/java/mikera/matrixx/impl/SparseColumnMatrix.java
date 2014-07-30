@@ -74,7 +74,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		return new SparseColumnMatrix(columns,rc,cc);
 	}
 	
-	public static AMatrix create(AMatrix source) {
+	public static SparseColumnMatrix create(AMatrix source) {
 		int cc=source.columnCount();
 		int rc=source.rowCount();
 		HashMap<Integer,AVector> data=new HashMap<Integer,AVector>();
