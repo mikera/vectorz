@@ -313,7 +313,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse,
 		for (Entry<Integer, AVector> eRow : data.entrySet()) {
 			int i = eRow.getKey();
 			AVector row = eRow.getValue();
-			for (Entry<Integer, AVector> eCol : data.entrySet()) {
+			for (Entry<Integer, AVector> eCol : a.data.entrySet()) {
 				int j = eCol.getKey();
 				AVector acol = eCol.getValue();
 				double v= row.dotProduct(acol);
