@@ -45,4 +45,17 @@ public class TestSparseRowMatrix {
 		AMatrix mc=m.innerProduct(c);
 		assertEquals(5,mc.get(0,0),0.0);
 	}
+
+	@Test public void testSparseColumnMultiply() {
+		SparseRowMatrix M=SparseRowMatrix.create(3, 3);
+		Vector v=Vector.of(1,2,3);
+		M.replaceRow(1, v);
+
+		SparseColumnMatrix N = SparseColumnMatrix.create(3,3);
+		v=Vector.of(4,5,6);
+		N.replaceColumn(1, v);
+
+		assertEquals(M.innerProduct(N).get(1,1), 32, 0.01);
+		assertEquals(M.innerProduct(N).elementSum(), 32, 0.01);
+	}
 }

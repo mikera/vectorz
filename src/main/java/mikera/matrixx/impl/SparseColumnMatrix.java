@@ -55,6 +55,10 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		}
 	}
 	
+	public static SparseColumnMatrix create(int rows, int cols) {
+		return new SparseColumnMatrix(rows, cols);
+	}
+
 	public static SparseColumnMatrix create(AVector... columns) {
 		return wrap(columns);
 	}
