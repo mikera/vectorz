@@ -37,13 +37,20 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	/**
 	 * Creates a new ImmutableMatrix wrapping the data array of a given Matrix
 	 * 
-	 * WARNING: does not take a defensive copy.
+	 * WARNING: does not take a defensive copy. Should be used only if you can guarantee that
+	 * the underlying data array will not be mutated elsewhere.
 	 */
 	public static ImmutableMatrix wrap(Matrix source) {
 		double[] data=source.data;
 		return new ImmutableMatrix(source.rowCount(), source.columnCount(), data);
 	}
 	
+	/**
+	 * Creates a new ImmutableMatrix wrapping the specified source array
+	 * 
+	 * WARNING: does not take a defensive copy. Should be used only if you can guarantee that
+	 * the data array will not be mutated elsewhere.
+	 */
 	public static ImmutableMatrix wrap(int rows, int cols, double[] data) {
 		return new ImmutableMatrix(rows,cols, data);
 	}
