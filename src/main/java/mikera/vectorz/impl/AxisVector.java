@@ -401,5 +401,10 @@ public final class AxisVector extends ASingleElementVector {
     public double elementAbsPowSum(double p) {
         return elementPowSum(p);
     }
+
+	@Override
+	protected double value() {
+		return 1.0;
+	}
 	
 }

@@ -10,4 +10,5 @@ public abstract class ASingleElementVector extends ASparseVector {
 		this.index=index;
 	}
 
+	protected abstract double value();
 }

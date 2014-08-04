@@ -241,4 +241,9 @@ public final class SingleElementVector extends ASingleElementVector {
 		return value*data[offset+index];
 	}
 
+	@Override
+	protected double value() {
+		return value;
+	}
+
 }
