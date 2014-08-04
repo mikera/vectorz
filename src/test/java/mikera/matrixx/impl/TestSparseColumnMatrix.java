@@ -18,22 +18,22 @@ import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.VectorzException;
 
-public class TestSparseRowMatrix {
+public class TestSparseColumnMatrix {
 
 	@Test public void testReplace() {
-		SparseRowMatrix m=SparseRowMatrix.create(3, 3);
+		SparseColumnMatrix m=SparseColumnMatrix.create(3, 3);
 		
 		Vector v=Vector.of(1,2,3);
 		
-		m.replaceRow(1, v);
-		assertTrue(v==m.getRow(1)); // identical objects
-		assertEquals(Vector.of(0,2,0),m.getColumn(1));
+		m.replaceColumn(1, v);
+		assertTrue(v==m.getColumn(1)); // identical objects
+		assertEquals(Vector.of(0,2,0),m.getRow(1));
 	}
 	
 	@Test public void testOps() {
-		SparseRowMatrix m=SparseRowMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3));
+		SparseColumnMatrix m=SparseColumnMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3));
 		
-		SparseRowMatrix m2=m.exactClone();
+		SparseColumnMatrix m2=m.exactClone();
 		assertEquals(m,m2);
 		m.applyOp(Ops.EXP);
 		Ops.EXP.applyTo(m2);
@@ -42,9 +42,9 @@ public class TestSparseRowMatrix {
 	}
 
 	@Test public void testArithmetic() {
-		SparseRowMatrix M=SparseRowMatrix.create(3, 3);
+		SparseColumnMatrix M=SparseColumnMatrix.create(3, 3);
 		Vector v=Vector.of(-1,2,3);
-		M.replaceRow(1, v);
+		M.replaceColumn(1, v);
 
 		assertEquals(4, M.elementSum(), 0.01);
 		assertEquals(14, M.elementSquaredSum(), 0.01);
@@ -52,49 +52,49 @@ public class TestSparseRowMatrix {
 		assertEquals(3, M.elementMax(), 0.01);
 		assertEquals(3, M.nonZeroCount());
 
-		SparseColumnMatrix N = SparseColumnMatrix.create(3,3);
+		SparseRowMatrix N = SparseRowMatrix.create(3,3);
 		v=Vector.of(4,5,6);
-		N.replaceColumn(1, v);
+		N.replaceRow(1, v);
         M.add(N); 					// test add
-        M.swapRows(0,1);			// test swapRows
-		assertEquals(7, M.get(0,1), 0.01);
+        M.swapColumns(0,1);			// test swapColumns
+		assertEquals(7, M.get(1,0), 0.01);
 
-		SparseRowMatrix M1 = SparseRowMatrix.create(3, 3);
+		SparseColumnMatrix M1 = SparseColumnMatrix.create(3, 3);
 		Vector v1=Vector.of(-1,2,3);
-		M1.replaceRow(1, v1);
+		M1.replaceColumn(1, v1);
 
         int[] index = {0,2};
         double[] data = {7,8};
-		SparseRowMatrix M2 = SparseRowMatrix.create(Vector.of(0,1,2),SparseIndexedVector.wrap(3, index, data),null);
+		SparseColumnMatrix M2 = SparseColumnMatrix.create(Vector.of(0,1,2),SparseIndexedVector.wrap(3, index, data),null);
         M2.validate();
 		
-		M1.add(M2); 				// test adding SparseRowMatrix
+		M1.add(M2); 				// test adding SparseColumnMatrix
 		assertEquals(2, M1.get(1,1), 0.01);
 	}
 
-	@Test public void testSparseColumnMultiply() {
-		SparseRowMatrix M=SparseRowMatrix.create(3, 3);
+	@Test public void testSparseRowMultiply() {
+		SparseColumnMatrix M=SparseColumnMatrix.create(3, 3);
 		Vector v=Vector.of(1,2,3);
-		M.replaceRow(1, v);
+		M.replaceColumn(1, v);
 
-		SparseColumnMatrix N = SparseColumnMatrix.create(3,3);
+		SparseRowMatrix N = SparseRowMatrix.create(3,3);
 		v=Vector.of(4,5,6);
-		N.replaceColumn(1, v);
+		N.replaceRow(1, v);
 
-		assertEquals(32, M.innerProduct(N).get(1,1), 0.01);
-		assertEquals(32, M.innerProduct(N).elementSum(), 0.01);
+		assertEquals(10, M.innerProduct(N).get(1,1), 0.01);
+		assertEquals(90, M.innerProduct(N).elementSum(), 0.01);
 	}
 
 	@Test public void testConversionAndEquals() {
         int SSIZE = 100, DSIZE = 20;
-		SparseRowMatrix M=SparseRowMatrix.create(SSIZE,SSIZE);
+		SparseColumnMatrix M=SparseColumnMatrix.create(SSIZE,SSIZE);
 		for (int i=0; i<SSIZE; i++) {
 			double[] data=new double[DSIZE];
 			for (int j=0; j<DSIZE; j++) {
 				data[j]=Rand.nextDouble();
 			}
 			Index indy=Indexz.createRandomChoice(DSIZE, SSIZE);
-			M.replaceRow(i,SparseIndexedVector.create(SSIZE, indy, data));
+			M.replaceColumn(i,SparseIndexedVector.create(SSIZE, indy, data));
 		}
 		Matrix D = Matrix.create(M);
 		assertTrue(M.equals(D));
@@ -132,7 +132,7 @@ public class TestSparseRowMatrix {
 	@Test public void testValidate() {
         try {
 		    AVector[] vecs = { Vectorz.createZeroVector(6), Vector.of(1,2,3), Vectorz.createZeroVector(6) };
-		    SparseRowMatrix M = SparseRowMatrix.create(vecs);
+		    SparseColumnMatrix M = SparseColumnMatrix.create(vecs);
 		    M.validate();
             fail("Expected a VectorzException to be thrown");
         } catch (VectorzException E) {
