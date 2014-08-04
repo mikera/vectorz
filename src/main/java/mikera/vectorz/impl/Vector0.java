@@ -105,6 +105,11 @@ public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 	public boolean isZero() {
 		return true;
 	}
+	
+	@Override
+	public boolean isRangeZero(int start, int length) {
+		return true;
+	}
 
 	@Override
 	public double magnitudeSquared() {
