@@ -173,7 +173,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public final boolean isZero() {
 		for (AVector vec: data) {
-			if (vec.isZero()) return false;
+			if (! ((vec == null) || (vec.isZero()))) return false;
 		}
 		return true;
 	}
