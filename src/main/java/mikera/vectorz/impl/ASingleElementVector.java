@@ -1,6 +1,9 @@
 package mikera.vectorz.impl;
 
+import mikera.indexz.Index;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector1;
+import mikera.vectorz.util.IntArrays;
 
 /**
  * Abstract base classes for sparse vectors that have a single potentially non-zero element
@@ -32,5 +35,29 @@ public abstract class ASingleElementVector extends ASparseVector {
 	@Override 
 	public double dotProduct(double[] data, int offset) {
 		return value()*data[offset+index()];
+	}
+	
+	@Override
+	public int nonSparseElementCount() {
+		return 1;
+	}
+
+	@Override
+	public AVector nonSparseValues() {
+		return Vector1.of(value());
+	}
+
+	@Override
+	public Index nonSparseIndexes() {
+		return Index.of(index);
+	}
+	
+	@Override
+	public int[] nonZeroIndices() {
+		if (value()==0.0) {
+			return IntArrays.EMPTY_INT_ARRAY;
+		} else {
+			return new int[]{index};
+		}
 	}
 }
