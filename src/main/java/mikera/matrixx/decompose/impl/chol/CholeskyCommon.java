@@ -55,7 +55,7 @@ public abstract class CholeskyCommon {
     protected Matrix T;
     protected double[] t;
 
-    // tempoary variable used by various functions
+    // temporary variable used by various functions
     protected double vv[];
 
     /**
