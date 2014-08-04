@@ -41,6 +41,19 @@ public class TestSparseRowMatrix {
 		assertEquals(m,m2);
 	}
 
+	@Test public void testColumnMultiply() {
+		SparseRowMatrix m=SparseRowMatrix.create(Matrix.create(
+				Vector.of(1,2), 
+				Vector.of(3,4)));
+		
+		SparseColumnMatrix c=SparseColumnMatrix.create(Matrix.create(
+				Vector.of(1,3), 
+				Vector.of(2,4)));
+
+		AMatrix mc=m.innerProduct(c);
+		assertEquals(5,mc.get(0,0),0.0);
+	}
+
 	@Test public void testArithmetic() {
 		SparseRowMatrix M=SparseRowMatrix.create(3, 3);
 		Vector v=Vector.of(-1,2,3);
