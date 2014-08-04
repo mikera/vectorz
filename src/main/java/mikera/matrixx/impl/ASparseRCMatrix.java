@@ -39,7 +39,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public void fill(double value) {
-		RepeatedElementVector v=RepeatedElementVector.create(rows, value);
+		RepeatedElementVector v=RepeatedElementVector.create(lineLength(), value);
 		for (int i = 0; i < lineCount(); i++) {
 			unsafeSetVec(i, v);
 		}
