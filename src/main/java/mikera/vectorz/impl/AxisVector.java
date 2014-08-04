@@ -15,14 +15,11 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class AxisVector extends ASparseVector {
+public final class AxisVector extends ASingleElementVector {
 	private static final long serialVersionUID = 6767495113060894804L;
 	
-	private final int axis;
-	
 	private AxisVector(int axisIndex, int length) {
-		super(length);
-		this.axis=axisIndex;
+		super(axisIndex,length); 
 	}
 	
 	public static AxisVector create(int axisIndex, int dimensions) {
@@ -31,7 +28,7 @@ public final class AxisVector extends ASparseVector {
 	}
 	
 	public int getAxis() {
-		return axis;
+		return index;
 	}
 	
 	@Override
@@ -113,7 +110,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public int maxElementIndex(){
-		return axis;
+		return index;
 	}
 	
 	@Override
@@ -123,13 +120,13 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public int maxAbsElementIndex(){
-		return axis;
+		return index;
 	}
 	
 	@Override
 	public int minElementIndex(){
 		if (length==1) return 0;
-		return (axis==0)?1:0;
+		return (index==0)?1:0;
 	}
 
 	@Override
@@ -144,7 +141,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public boolean isRangeZero(int start, int length) {
-		return (start>axis)||(start+length<=axis);
+		return (start>index)||(start+length<=index);
 	}
 	
 	@Override
@@ -195,25 +192,25 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public AVector innerProduct(double d) {
-		return SingleElementVector.create(d,axis,length);
+		return SingleElementVector.create(d,index,length);
 	}
 	
 	@Override
 	public Scalar innerProduct(Vector v) {
 		checkSameLength(v);
-		return Scalar.create(v.unsafeGet(axis));
+		return Scalar.create(v.unsafeGet(index));
 	}
 	
 	@Override
 	public Scalar innerProduct(AVector v) {
 		checkSameLength(v);
-		return Scalar.create(v.unsafeGet(axis));
+		return Scalar.create(v.unsafeGet(index));
 	}
 	
 	@Override
 	public AVector innerProduct(AMatrix m) {
 		checkLength(m.rowCount());
-		return m.getRow(axis).copy();
+		return m.getRow(index).copy();
 	}
 
 	@Override
@@ -229,21 +226,21 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
-		if (axis<offset) return;
-		if (axis>=offset+length) return;
-		array[arrayOffset-offset+axis]+=1.0;
+		if (index<offset) return;
+		if (index>=offset+length) return;
+		array[arrayOffset-offset+index]+=1.0;
 	}
 	
 	@Override
 	public void addToArray(double[] array, int offset, int stride) {
-		array[offset+axis*stride]+=1.0;
+		array[offset+index*stride]+=1.0;
 	}
 	
 	@Override
 	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
-		if (axis<offset) return;
-		if (axis>=offset+length) return;
-		array[arrayOffset-offset+axis]+=factor;
+		if (index<offset) return;
+		if (index>=offset+length) return;
+		array[arrayOffset-offset+index]+=factor;
 	}
 	
 	@Override
@@ -261,7 +258,7 @@ public final class AxisVector extends ASparseVector {
 	@Override
 	public double[] toDoubleArray() {
 		double[] data=new double[length];
-		data[axis]=1.0;
+		data[index]=1.0;
 		return data;
 	}
 	
@@ -308,7 +305,7 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public int[] nonZeroIndices() {
-		return new int[] {axis};
+		return new int[] {index};
 	}
 	
 	@Override
@@ -320,7 +317,7 @@ public final class AxisVector extends ASparseVector {
 	public AVector addCopy(AVector v) {
 		checkSameLength(v);
 		AVector r=v.clone();
-		r.addAt(axis, 1.0);
+		r.addAt(index, 1.0);
 		return r;
 	}
 	
@@ -328,7 +325,7 @@ public final class AxisVector extends ASparseVector {
 	public AVector subCopy(AVector v) {
 		checkSameLength(v);
 		AVector r=v.negateCopy().mutable();
-		r.addAt(axis, 1.0);
+		r.addAt(index, 1.0);
 		return r;
 	}
 
@@ -344,11 +341,11 @@ public final class AxisVector extends ASparseVector {
 	
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
-		if (data[offset+axis]!=1.0) return false;
-		for (int i=0; i<axis; i++) {
+		if (data[offset+index]!=1.0) return false;
+		for (int i=0; i<index; i++) {
 			if (data[offset+i]!=0.0) return false;
 		}
-		for (int i=axis+1; i<length; i++) {
+		for (int i=index+1; i<length; i++) {
 			if (data[offset+i]!=0.0) return false;
 		}
 		return true;
@@ -358,9 +355,9 @@ public final class AxisVector extends ASparseVector {
 	public boolean equals(AVector v) {
 		int len=v.length();
 		if (len!=length) return false;
-		if (v.unsafeGet(axis)!=1.0) return false;
-		if (!v.isRangeZero(0,axis)) return false;
-		if (!v.isRangeZero(axis+1,length-axis-1)) return false;
+		if (v.unsafeGet(index)!=1.0) return false;
+		if (!v.isRangeZero(0,index)) return false;
+		if (!v.isRangeZero(index+1,length-index-1)) return false;
 		return true;
 	}
 	

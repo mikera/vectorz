@@ -14,8 +14,7 @@ import mikera.vectorz.util.IntArrays;
  *
  */
 @SuppressWarnings("serial")
-public final class SingleElementVector extends ASparseVector {
-	final int index;
+public final class SingleElementVector extends ASingleElementVector {
 	final double value;
 	
 	public SingleElementVector(int componentIndex, int dimensions) {
@@ -23,16 +22,15 @@ public final class SingleElementVector extends ASparseVector {
 	}
 	
 	public SingleElementVector(int componentIndex, int dimensions, double value) {
-		super(dimensions);
+		super(componentIndex, dimensions);
 		
 		if (dimensions<=0) throw new IllegalArgumentException("SingleElementVEctor must have >= 1 dimensions");
 		if (componentIndex<0||componentIndex>=dimensions) throw new IllegalArgumentException("Invalid non-zero component index: "+componentIndex);
 		
-		this.index=componentIndex;
 		this.value=value;
 	}
 	
-	public static AVector create(double val, int i, int len) {
+	public static SingleElementVector create(double val, int i, int len) {
 		return new SingleElementVector(i,len,val);
 	}
 	
