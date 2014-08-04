@@ -356,6 +356,14 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public void applyOp(Op op) {
 		op.applyTo(getArray(), getArrayOffset(), length());
 	}
+	
+	@Override
+	public ADenseArrayVector applyOpCopy(Op op) {
+		int len=length();
+		Vector v=Vector.createLength(len);
+		op.applyTo(v.getArray(), v.getArrayOffset(), len);
+		return v;
+	}
 
 	@Override
 	public double elementSum() {
