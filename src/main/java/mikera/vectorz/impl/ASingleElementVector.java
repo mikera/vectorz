@@ -59,6 +59,17 @@ public abstract class ASingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean equals(AVector v) {
+		int len=v.length();
+		if (len!=this.length) return false;
+		
+		if (v.unsafeGet(index)!=value()) return false;
+		if (!v.isRangeZero(0, index)) return false;
+		if (!(v.isRangeZero(index+1, len-(index+1)))) return false;
+		return true;
+	}
+	
+	@Override
 	public int[] nonZeroIndices() {
 		if (value()==0.0) {
 			return IntArrays.EMPTY_INT_ARRAY;
