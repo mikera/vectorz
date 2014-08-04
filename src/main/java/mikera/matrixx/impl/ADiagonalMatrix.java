@@ -8,6 +8,8 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ADenseArrayVector;
+import mikera.vectorz.impl.ASingleElementVector;
+import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -334,12 +336,12 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	public AVector getRow(int row) {
+	public ASingleElementVector getRow(int row) {
 		return SingleElementVector.create(getDiagonalValue(row), row, dimensions);
 	}
 	
 	@Override
-	public AVector getColumn(int col) {
+	public ASingleElementVector getColumn(int col) {
 		return getRow(col);
 	}
 	
