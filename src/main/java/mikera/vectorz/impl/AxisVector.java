@@ -27,7 +27,7 @@ public final class AxisVector extends ASingleElementVector {
 		return new AxisVector(axisIndex,dimensions);
 	}
 	
-	public int getAxis() {
+	public int axis() {
 		return index;
 	}
 	
@@ -161,22 +161,22 @@ public final class AxisVector extends ASingleElementVector {
 	
 	@Override 
 	public double dotProduct(AVector v) {
-		return v.unsafeGet(getAxis());
+		return v.unsafeGet(axis());
 	}
 	
 	@Override 
 	public double dotProduct(double[] data, int offset) {
-		return data[offset+getAxis()];
+		return data[offset+axis()];
 	}
 	
 	@Override 
 	public double dotProduct(Vector v) {
 		assert(length==v.length());
-		return v.data[getAxis()];
+		return v.data[axis()];
 	}
 	
 	public double dotProduct(Vector3 v) {
-		switch (getAxis()) {
+		switch (axis()) {
 			case 0: return v.x;
 			case 1: return v.y;
 			default: return v.z;
@@ -184,7 +184,7 @@ public final class AxisVector extends ASingleElementVector {
 	}
 	
 	public double dotProduct(Vector2 v) {
-		switch (getAxis()) {
+		switch (axis()) {
 			case 0: return v.x;
 			default: return v.y;
 		}
@@ -216,12 +216,12 @@ public final class AxisVector extends ASingleElementVector {
 	@Override
 	public double get(int i) {
 		checkIndex(i);
-		return (i==getAxis())?1.0:0.0;
+		return (i==axis())?1.0:0.0;
 	}
 	
 	@Override
 	public double unsafeGet(int i) {
-		return (i==getAxis())?1.0:0.0;
+		return (i==axis())?1.0:0.0;
 	}
 	
 	@Override
@@ -246,7 +246,7 @@ public final class AxisVector extends ASingleElementVector {
 	@Override
 	public final ImmutableScalar slice(int i) {
 		checkIndex(i);
-		if (i==getAxis()) return ImmutableScalar.ONE;
+		if (i==axis()) return ImmutableScalar.ONE;
 		return ImmutableScalar.ZERO;
 	}
 	
@@ -274,8 +274,8 @@ public final class AxisVector extends ASingleElementVector {
 		if (length==0) return Vector0.INSTANCE;
 				
 		int end=start+length;
-		if ((start<=getAxis())&&(end>getAxis())) {
-			return AxisVector.create(getAxis()-start,length);
+		if ((start<=axis())&&(end>axis())) {
+			return AxisVector.create(axis()-start,length);
 		} else {
 			return ZeroVector.create(length);
 		}
@@ -300,7 +300,7 @@ public final class AxisVector extends ASingleElementVector {
 
 	@Override
 	public Index nonSparseIndexes() {
-		return Index.of(getAxis());
+		return Index.of(axis());
 	}
 	
 	@Override
@@ -331,7 +331,7 @@ public final class AxisVector extends ASingleElementVector {
 
 	@Override
 	public boolean includesIndex(int i) {
-		return (i==getAxis());
+		return (i==axis());
 	}
 
 	@Override
@@ -375,7 +375,7 @@ public final class AxisVector extends ASingleElementVector {
 	@Override
 	public void validate() {
 		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
-		if ((getAxis()<0)||(getAxis()>=length)) throw new VectorzException("Axis index out of bounds");
+		if ((axis()<0)||(axis()>=length)) throw new VectorzException("Axis index out of bounds");
 		super.validate();
 	}
 

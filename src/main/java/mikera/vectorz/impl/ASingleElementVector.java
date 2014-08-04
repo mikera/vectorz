@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import mikera.vectorz.AVector;
+
 /**
  * Abstract base classes for sparse vectors that have a single potentially non-zero element
  * 
@@ -18,7 +20,17 @@ public abstract class ASingleElementVector extends ASparseVector {
 
 	protected abstract double value();
 	
-	protected final double index() {
+	protected final int index() {
 		return index;
+	}
+	
+	@Override 
+	public double dotProduct(AVector v) {
+		return value()*v.unsafeGet(index());
+	}
+	
+	@Override 
+	public double dotProduct(double[] data, int offset) {
+		return value()*data[offset+index()];
 	}
 }
