@@ -479,8 +479,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Copies a subset of this vector to a vector at the specified offset
 	 */
 	public void copyTo(int offset, AVector dest, int destOffset, int length) {
+		checkRange(offset,length);
+		dest.checkRange(destOffset,length);
 		for (int i=0; i<length; i++) {
-			dest.set(destOffset+i,get(offset+i));
+			dest.unsafeSet(destOffset+i,unsafeGet(offset+i));
 		}
 	}
 
