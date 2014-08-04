@@ -1,5 +1,11 @@
 package mikera.vectorz.impl;
 
+/**
+ * Abstract base classes for sparse vectors that have a single potentially non-zero element
+ * 
+ * @author Mike
+ *
+ */
 public abstract class ASingleElementVector extends ASparseVector {
 	private static final long serialVersionUID = -5246190958486810285L;
 
@@ -11,4 +17,8 @@ public abstract class ASingleElementVector extends ASparseVector {
 	}
 
 	protected abstract double value();
+	
+	protected final double index() {
+		return index;
+	}
 }
