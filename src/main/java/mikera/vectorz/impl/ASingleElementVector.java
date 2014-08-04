@@ -21,11 +21,17 @@ public abstract class ASingleElementVector extends ASparseVector {
 		this.index=index;
 	}
 
+	// =============================================
+	// Abstract / standard methods
+
 	protected abstract double value();
 	
 	protected final int index() {
 		return index;
 	}
+	
+	// =============================================
+	// Generic implementations
 	
 	@Override 
 	public double dotProduct(AVector v) {
