@@ -349,7 +349,10 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		AMatrix r = Matrix.create(rows, a.columnCount());
 
         for (int i = 0; i < rows; ++i) {
-			r.setRow(i,getRow(i).innerProduct(a));
+			AVector row = unsafeGetVec(i);
+            if (! ((row == null) || (row.isZero()))) {
+			    r.setRow(i,row.innerProduct(a));
+            }
 		}
 		return r;
 	}
@@ -358,12 +361,14 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		AMatrix r = Matrixx.createSparse(rows, a.cols);
 
         for (int i = 0; i < rows; ++i) {
-			AVector row = getRow(i);
-            for (int j = 0; j < cols; ++j) {
-				AVector acol = a.getColumn(j);
-				double v= row.dotProduct(acol);
-				if (v!=0.0) r.unsafeSet(i, j, v);
-			}
+			AVector row = unsafeGetVec(i);
+            if (! ((row == null) || (row.isZero()))) {
+                for (int j = 0; j < cols; ++j) {
+    				AVector acol = a.unsafeGetVec(j);
+    				double v = ((acol == null) || acol.isZero()) ? 0.0 : row.dotProduct(acol);
+    				if (v!=0.0) r.unsafeSet(i, j, v);
+    			}
+            }
 		}
 		return r;
 	}
