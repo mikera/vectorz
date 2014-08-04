@@ -72,6 +72,10 @@ public class SymmetricQrAlgorithm {
     }
 
     public void setQ(AMatrix q) {
+        if (q == null) {
+            Q = null;
+            return;
+        }
         Q = Matrix.create(q);
     }
 
