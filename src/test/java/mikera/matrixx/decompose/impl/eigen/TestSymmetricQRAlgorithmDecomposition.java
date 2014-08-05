@@ -105,42 +105,6 @@ public class TestSymmetricQRAlgorithmDecomposition {
     }
 
     /**
-     * Compare results against a simple matrix with known results where all the eigenvalues
-     * are real.  Octave was used to test the known values.
-     */
-    public void checkKnownReal() {
-        Matrix A = Matrix.create(new double[][] {{0.907265, 0.832472, 0.255310}, 
-                                                 {0.667810, 0.871323, 0.612657}, 
-                                                 {0.025059, 0.126475, 0.427002}});
-
-        SymmetricQRAlgorithmDecomposition alg = createDecomposition();
-
-        assertNotNull(alg.decompose(A));
-        performStandardTests(alg,A,-1);
-
-        testForEigenpair(alg,1.686542,0,-0.739990,-0.667630,-0.081761);
-        testForEigenpair(alg,0.079014,0,-0.658665,0.721163,-0.214673);
-        testForEigenpair(alg,0.440034,0,-0.731422,0.211711,0.648229);
-    }
-
-    /**
-     * Sees if it correctly computed the eigenvalues.  Does not check eigenvectors.
-     */
-    public void checkKnownReal_JustValue() {
-        Matrix A = Matrix.create(new double[][] {{0.907265, 0.832472, 0.255310}, 
-                                                 {0.667810, 0.871323, 0.612657}, 
-                                                 {0.025059, 0.126475, 0.427002}});
-
-        SymmetricQRAlgorithmDecomposition alg = createDecomposition();
-
-        assertNotNull(alg.decompose(A));
-
-        testForEigenvalue(alg,A,1.686542,0,1);
-        testForEigenvalue(alg,A,0.079014,0,1);
-        testForEigenvalue(alg,A,0.440034,0,1);
-    }
-
-    /**
      * Sees if it correctly computed the eigenvalues.  Does not check eigenvectors.
      */
     public void checkKnownSymmetric_JustValue() {

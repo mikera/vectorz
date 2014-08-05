@@ -22,6 +22,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.impl.hessenberg.TridiagonalDecompositionHouseholder;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 
 /**
@@ -119,15 +120,17 @@ public class SymmetricQRAlgorithmDecomposition {
      * @param orig The matrix which is being decomposed.  Not modified.
      * @return true if it decomposed the matrix or false if an error was detected.  This will not catch all errors.
      */
-    public boolean decompose(AMatrix orig) {
+    public EigenResult decompose(AMatrix orig) {
         if( orig.columnCount() != orig.rowCount() )
             throw new IllegalArgumentException("Matrix must be square.");
+        if ( !orig.isSymmetric() )
+            throw new IllegalArgumentException("Matrix must be symmetric.");
 
         int N = orig.rowCount();
 
         // compute a similar tridiagonal matrix
         if( !decomp.decompose(orig) )
-            return false;
+            return null;
 
         if( diag == null || diag.length < N) {
             diag = new double[N];
@@ -140,13 +143,41 @@ public class SymmetricQRAlgorithmDecomposition {
 
         if( computeVectors ) {
             if( computeVectorsWithValues ) {
-                return extractTogether();
+                if (extractTogether()) {
+                    return new EigenResult(allEigenValues(), allEigenVectors());
+                } else {
+                    return null;
+                }
             }  else {
-                return extractSeparate(N);
+                if (extractSeparate(N)) {
+                    return new EigenResult(allEigenValues(), allEigenVectors());
+                } else {
+                    return null;
+                }
             }
         } else {
-            return computeEigenValues();
+            if (computeEigenValues()) {
+                return new EigenResult(allEigenValues());
+            } else {
+                return null;
+            }
         }
+    }
+
+    private AVector[] allEigenVectors() {
+        AVector[] eig_vecs = new AVector[getNumberOfEigenvalues()];
+        for (int i = 0; i < eig_vecs.length; i++) {
+            eig_vecs[i] = getEigenVector(i);
+        }
+        return eig_vecs;
+    }
+
+    private Vector2[] allEigenValues() {
+        Vector2[] eig_vals = new Vector2[getNumberOfEigenvalues()];
+        for (int i = 0; i < eig_vals.length; i++) {
+            eig_vals[i] = getEigenvalue(i);
+        }
+        return eig_vals;
     }
 
     private boolean extractTogether() {
