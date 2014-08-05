@@ -57,7 +57,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
         computeVectors = true;
 
         checkRandomSymmetric();
-//        checkIdentity();
+        checkIdentity();
         checkAllZeros();
 //        checkLargeValue(true);
 //
@@ -71,7 +71,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
         computeVectors = true;
 
         checkRandomSymmetric();
-//        checkIdentity();
+        checkIdentity();
         checkAllZeros();
 //        checkLargeValue(true);
 
@@ -377,10 +377,15 @@ public class TestSymmetricQRAlgorithmDecomposition {
                 assertFalse(v.hasUncountable());
 
 //                CommonOps.mult(A,v,tempA);
-                AMatrix tempA = Multiplications.multiply(A, Matrix.create(v.toDoubleArray()).getTranspose());
+                Matrix ta = Matrix.create(A.rowCount(), 1);
+                ta.setColumn(0, (v));
+                AMatrix tempA = Multiplications.multiply(A, ta);
 //                CommonOps.scale(c.real,v,tempB);
-                AMatrix tempB = Matrix.create(v.toDoubleArray()).getTranspose().multiplyCopy(c.x);
-
+                Matrix tb = Matrix.create(v.length(), 1);
+                tb.setColumn(0, v);
+                AMatrix tempB = tb.multiplyCopy(c.x);
+//                System.out.println("A:\n" + tempA);
+//                System.out.println("B:\n" + tempB);
 //                double max = NormOps.normPInf(A);
                 double max = normPInf(A);
                 if( max == 0 ) max = 1;
@@ -531,11 +536,13 @@ public class TestSymmetricQRAlgorithmDecomposition {
                         AVector v = alg.getEigenVector(i);
                         AMatrix e = Matrix.create(vector);
                         e = e.getTranspose();
-
-                        double error = diffNormF(e,Matrix.create(v.toDoubleArray()));
+                        
+                        Matrix t = Matrix.create(v.length(), 1);
+                        t.setColumn(0, v);
+                        double error = diffNormF(e,t);
 //                        CommonOps.changeSign(e);
                         e.multiply(-1);
-                        double error2 = diffNormF(e,Matrix.create(v.toDoubleArray()));
+                        double error2 = diffNormF(e,t);
 
 
                         if(error < 1e-3 || error2 < 1e-3)
