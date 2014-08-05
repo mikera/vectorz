@@ -340,6 +340,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	public boolean isOrthogonal() {
+		// TODO: needs a better algorithm!
 		return isSquare()
 				&&getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
 	}
