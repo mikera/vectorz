@@ -6,6 +6,7 @@ import java.util.Arrays;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Tools;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.util.DoubleArrays;
@@ -196,7 +197,7 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 	
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
-		return DoubleArrays.equals(this.data, offset, data, offset, (int)elementCount());
+		return DoubleArrays.equals(this.data, this.offset, data, offset, Tools.toInt(elementCount()));
 	}
 
 	public static INDArray create(INDArray a) {

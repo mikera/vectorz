@@ -256,6 +256,7 @@ public class TestArrays {
 		for (int i = 1; i < data.length; i++) {
 			assertFalse(Double.isNaN(data[i]));
 		}
+		assertTrue(a.equalsArray(data,1));
 		
 		double[] data2=new double[ecount+1];
 		data[0]=13;

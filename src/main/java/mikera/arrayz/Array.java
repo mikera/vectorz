@@ -15,6 +15,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
@@ -455,7 +456,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
-		return DoubleArrays.equals(this.data, 0, data, offset, data.length);
+		return DoubleArrays.equals(this.data, 0, data, offset, Tools.toInt(elementCount()));
 	}
 
 }
