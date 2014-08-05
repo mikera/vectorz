@@ -4,6 +4,7 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.util.Rand;
 import mikera.vectorz.AVector;
@@ -19,7 +20,8 @@ import mikera.vectorz.impl.SparseIndexedVector;
 public class SparseMatrix {
 	private static int SIZE=32000; // size of large NxN matrix
 	private static int DSIZE=100; // dense elements per row in large matrix
-	private static int CSIZE=20; // dense elements per row for target matrix
+	private static int CSIZE=200; // dense elements per row for target matrix
+	private static int SSIZE=2000; // size of smaller NxN matrix
 	private static long start=0;
 	
 	private static void printTime(String msg) {
@@ -93,5 +95,61 @@ public class SparseMatrix {
 		System.out.println("Result element sum = "+result.elementSum());
 		// if this demo is working, the element sum should be roughly the same before and after transformation
 		// (modulo some small numerical errors)
+
+        // ----------------------------------------------------------------------
+		// Construct another (smaller) sparse matrix.
+		SparseRowMatrix M=SparseRowMatrix.create(SSIZE,SSIZE);
+		
+		// First task is to construct the large sparse matrix
+		startTimer();
+		
+		for (int i=0; i<SSIZE; i++) {
+			double[] data=new double[DSIZE];
+			for (int j=0; j<DSIZE; j++) {
+				data[j]=Rand.nextDouble();
+			}
+			Index indy=Indexz.createRandomChoice(DSIZE, SSIZE);
+			M.replaceRow(i,SparseIndexedVector.create(SSIZE, indy, data));
+		}
+		
+		printTime("Construct small sparse matrix: ");
+
+		
+        // ----------------------------------------------------------------------
+		// Convert this sparse matrix into a dense matrix.
+		startTimer();
+		Matrix D = Matrix.create(M);
+		printTime("Convert small sparse matrix to dense: ");
+
+		
+        // ----------------------------------------------------------------------
+		// Check equality from M.
+		startTimer();
+		boolean eq = M.equals(D);
+		printTime("Equality check result (" + eq + "): ");
+		
+		
+        // ----------------------------------------------------------------------
+		// Check equality from D.
+		startTimer();
+		eq = D.epsilonEquals(M, 0.000001);
+		printTime("epsilonEquals check result (" + eq + ", should be true): ");
+		
+		
+        // ----------------------------------------------------------------------
+		// Change sparse matrix and test equality again (shouldn't be equal)
+		startTimer();
+        M.addAt(SSIZE-1, SSIZE-1, 3.14159);
+		eq = M.equals(D);
+		printTime("Equality check result (" + eq + ", should be false): ");
+		
+		
+        // ----------------------------------------------------------------------
+		// Change dense matrix also; should be equal again.
+		startTimer();
+        D.addAt(SSIZE-1, SSIZE-1, 3.14159);
+		eq = M.equals(D);
+		printTime("Equality check result (" + eq + ", should be true): ");
+		
 	}
 }

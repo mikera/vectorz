@@ -1,7 +1,7 @@
 package mikera.matrixx.impl;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
+// import java.util.HashMap;
+// import java.util.Map.Entry;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -17,32 +17,47 @@ import mikera.vectorz.util.VectorzException;
 public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	private static final long serialVersionUID = -4153075712517555814L;
 
-	protected final HashMap<Integer,AVector> data;
+	protected final AVector[] data;
 
-	protected ASparseRCMatrix(int rows, int cols,HashMap<Integer,AVector> data) {
+	protected ASparseRCMatrix(int rows, int cols, AVector[] data) {
 		super(rows, cols);
 		this.data=data;
 	}
 	
+    protected void unsafeSetVec(int i, AVector vec) {
+        data[i] = vec;
+    }
+
+    protected AVector unsafeGetVec(int i) {
+        return data[i];
+    }
+
 	@Override
 	public boolean isSparse() {
 		return true;
 	}
 	
 	@Override
+	public void fill(double value) {
+		RepeatedElementVector v=RepeatedElementVector.create(lineLength(), value);
+		for (int i = 0; i < lineCount(); i++) {
+			unsafeSetVec(i, v);
+		}
+	}
+	
+	@Override
 	public void reciprocal() {
 		AVector rr=RepeatedElementVector.create(lineLength(), 1.0/0.0);
 		for (int i=0; i<lineCount(); i++) {
-			Integer io=i;
-			AVector line=data.get(io);
+			AVector line=data[i];
 			if (line==null) {
-				data.put(io, rr);
-			} else if (line.isFullyMutable()) {
-				line.reciprocal();
+				data[i] = rr;
 			} else {
-				line=line.sparseClone();
-				line.reciprocal();				
-				data.put(io, line);
+				if (!line.isFullyMutable()) {
+					line = line.sparseClone();
+					data[i] = line;
+				}
+				line.reciprocal();
 			}
 		}
 	}
@@ -50,33 +65,80 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void abs() {
 		for (int i=0; i<lineCount(); i++) {
-			Integer io=i;
-			AVector line=data.get(io);
+			AVector line=data[i];
 			if (line==null) {
 				// OK;
-			} else if (line.isFullyMutable()) {
-				line.abs();
 			} else {
-				line=line.sparseClone();
-				line.abs();				
-				data.put(io, line);
+				if (!line.isFullyMutable()) {
+					line = line.sparseClone();
+					data[i] = line;
+				}
+				line.abs();
 			}
 		}
 	}
 	
 	@Override
-	public void sqrt() {
+	public void pow(double exponent) {
 		for (int i=0; i<lineCount(); i++) {
-			Integer io=i;
-			AVector line=data.get(io);
+			AVector line=data[i];
 			if (line==null) {
 				// OK;
-			} else if (line.isFullyMutable()) {
-				line.sqrt();
 			} else {
-				line=line.sparseClone();
-				line.sqrt();				
-				data.put(io, line);
+				if (!line.isFullyMutable()) {
+					line = line.sparseClone();
+					data[i] = line;
+				}
+				line.pow(exponent);
+			}
+		}
+	}
+
+	@Override
+	public void square() {
+		for (int i=0; i<lineCount(); i++) {
+			AVector line=data[i];
+			if (line==null) {
+				// OK;
+			} else {
+				if (!line.isFullyMutable()) {
+					line = line.sparseClone();
+					data[i] = line;
+				}
+				line.square();
+			}
+		}
+	}
+
+	@Override
+	public void sqrt() {
+		for (int i=0; i<lineCount(); i++) {
+			AVector line=data[i];
+			if (line==null) {
+				// OK;
+			} else {
+				if (!line.isFullyMutable()) {
+					line = line.sparseClone();
+					data[i] = line;
+				}
+				line.sqrt();
+			}
+		}
+	}
+	
+	@Override
+	public void exp() {
+		AVector rr = RepeatedElementVector.create(lineLength(), 1.0);
+		for (int i = 0; i < lineCount(); i++) {
+			AVector line = data[i];
+			if (line == null) {
+				data[i] = rr;
+			} else {
+				if (!line.isFullyMutable()) {
+					line = line.sparseClone();
+					data[i] = line;
+				}
+				line.exp();
 			}
 		}
 	}
@@ -85,16 +147,15 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	public void log() {
 		AVector rr=RepeatedElementVector.create(lineLength(), Math.log(0.0));
 		for (int i=0; i<lineCount(); i++) {
-			Integer io=i;
-			AVector line=data.get(io);
+			AVector line=data[i];
 			if (line==null) {
-				data.put(io, rr);
-			} else if (line.isFullyMutable()) {
-				line.log();
+				data[i] = rr;
 			} else {
-				line=line.sparseClone();
-				line.log();				
-				data.put(io, line);
+				if (!line.isFullyMutable()) {
+					line = line.sparseClone();
+					data[i] = line;
+				}
+				line.log();
 			}
 		}
 	}
@@ -111,8 +172,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public final boolean isZero() {
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			if (!e.getValue().isZero()) return false;
+		for (AVector vec: data) {
+			if (! ((vec == null) || (vec.isZero()))) return false;
 		}
 		return true;
 	}
@@ -130,8 +191,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public double elementSum() {
 		double result=0.0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().elementSum();
+		for (AVector vec: data) {
+			if (vec != null) result += vec.elementSum();
 		}
 		return result;
 	}	
@@ -139,41 +200,37 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public double elementSquaredSum() {
 		double result=0.0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().elementSquaredSum();
+		for (AVector vec: data) {
+			if (vec != null) result += vec.elementSquaredSum();
 		}
 		return result;
 	}	
 	
 	@Override
 	public double elementMin() {
-		if (data.size()==0) return 0.0;
 		double result=Double.MAX_VALUE;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			double v=e.getValue().elementMin();
+		for (AVector vec: data) {
+			double v = (vec == null) ? 0 : vec.elementMin();
 			if (v<result) result=v;
 		}
-		if ((result>0)&&(data.size()<lineCount())) return 0.0;
 		return result;
 	}	
 	
 	@Override
 	public double elementMax() {
-		if (data.size()==0) return 0.0;
 		double result=-Double.MAX_VALUE;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			double v=e.getValue().elementMax();
+		for (AVector vec: data) {
+			double v = (vec == null) ? 0 : vec.elementMax();
 			if (v>result) result=v;
 		}
-		if ((result<0)&&(data.size()<lineCount())) return 0.0;
 		return result;
 	}	
 	
 	@Override
 	public final long nonZeroCount() {
 		long result=0;
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			result+=e.getValue().nonZeroCount();
+		for (AVector vec: data) {
+			if (vec != null) result+=vec.nonZeroCount();
 		}
 		return result;
 	}	
@@ -210,11 +267,11 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void validate() {
 		super.validate();
-		for (Entry<Integer,AVector> e:data.entrySet()) {
-			int i=e.getKey();
-			AVector v=e.getValue();
-			if ((i<0)||(i>=lineCount())) throw new VectorzException("data key out of bounds: "+i);
-			int vlen=v.length();
+        int dlen = data.length;
+		if (dlen != lineCount()) throw new VectorzException("Too many rows");
+		for (int i = 0; i < dlen; ++i) {
+            AVector vec = unsafeGetVec(i);
+			int vlen = (vec == null) ? lineLength() : vec.length();
 			if (vlen!=lineLength()) throw new VectorzException("Wrong length data line vector, length "+vlen+" at position: "+i);
 		}
 	}

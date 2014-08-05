@@ -52,6 +52,10 @@ public class ErrorMessages {
 		return "Index shape: "+shape(index)+" must match vector shape: "+shape(v);
 	}
 
+	public static String incompatibleShapes(int specified, int actual) {
+		return "Incompatible shapes: specified length "+specified+" vs. actual length: "+actual;
+	}
+	
 	/**
 	 * Returns an error message indicating that a broadcast is not possible
 	 * 
