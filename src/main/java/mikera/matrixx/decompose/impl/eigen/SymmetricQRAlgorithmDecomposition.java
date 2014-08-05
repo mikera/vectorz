@@ -60,7 +60,7 @@ public class SymmetricQRAlgorithmDecomposition {
     private double offSaved[];
 
     // temporary variable used to store/compute eigenvectors
-    private AMatrix V;
+    private Matrix V;
     // the extracted eigenvectors stored as a matrix, where each row is a vector
     private Matrix eigenvectors;
 
@@ -152,7 +152,8 @@ public class SymmetricQRAlgorithmDecomposition {
     private boolean extractTogether() {
         // extract the orthogonal from the similar transform
 //        V = decomp.getQ(V,true);
-        V = decomp.getQ(true);
+        AMatrix temp = decomp.getQ(true);
+        V = Matrix.wrap(temp.rowCount(), temp.columnCount(), temp.asDoubleArray());
 
         // tell eigenvector algorithm to update this matrix as it computes the rotators
         helper.setQ(V);
@@ -184,7 +185,8 @@ public class SymmetricQRAlgorithmDecomposition {
 
         // extract the orthogonal from the similar transform
 //        V = decomp.getQ(V,true);
-        V = decomp.getQ(true);
+        AMatrix temp = decomp.getQ(true);
+        V = Matrix.wrap(temp.rowCount(), temp.columnCount(), temp.asDoubleArray());
 
         // tell eigenvector algorithm to update this matrix as it computes the rotators
         vector.setQ(V);

@@ -18,7 +18,6 @@
 
 package mikera.matrixx.decompose.impl.eigen;
 
-import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 
 /**
@@ -67,16 +66,16 @@ public class SymmetricQrAlgorithm {
         this.maxIterations = maxIterations;
     }
 
-    public AMatrix getQ() {
+    public Matrix getQ() {
         return Q;
     }
 
-    public void setQ(AMatrix q) {
+    public void setQ(Matrix q) {
         if (q == null) {
             Q = null;
             return;
         }
-        Q = Matrix.create(q);
+        Q = q;
     }
 
     public void setFastEigenvalues(boolean fastEigenvalues) {

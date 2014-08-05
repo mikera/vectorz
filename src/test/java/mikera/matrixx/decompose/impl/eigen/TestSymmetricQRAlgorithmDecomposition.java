@@ -59,7 +59,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
         checkRandomSymmetric();
         checkIdentity();
         checkAllZeros();
-//        checkLargeValue(true);
+        checkLargeValue(true);
 //
         computeVectors = false;
         checkKnownSymmetric_JustValue();
@@ -73,7 +73,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
         checkRandomSymmetric();
         checkIdentity();
         checkAllZeros();
-//        checkLargeValue(true);
+        checkLargeValue(true);
 
         computeVectors = false;
         checkKnownSymmetric_JustValue();
@@ -189,6 +189,8 @@ public class TestSymmetricQRAlgorithmDecomposition {
                 SymmetricQRAlgorithmDecomposition alg = createDecomposition();
 
                 assertNotNull(alg.decompose(A));
+                
+                performStandardTests(alg,A.toMatrix(),-1);
             }
         }
     }
@@ -284,18 +286,13 @@ public class TestSymmetricQRAlgorithmDecomposition {
 //    }
 
     public void checkLargeValue( boolean symmetric) {
-
-        SymmetricQRAlgorithmDecomposition alg = createDecomposition();
-
         for( int i = 0; i < 20; i++ ) {
+            SymmetricQRAlgorithmDecomposition alg = createDecomposition();
             Matrix z = Matrix.createRandom(3, 3);
-            Matrix y = z.innerProduct(z.getTranspose());  // symmetric
-            Matrix A = symmetric ?
-                    y :
-                    Matrix.createRandom(4,4);
+            Matrix A = z.innerProduct(z.getTranspose());  // symmetric
 
 //            CommonOps.scale(1e-200,A);
-            A.scale(1e100);
+//            A.scale(1e100);
 
             assertNotNull(alg.decompose(A));
 
@@ -384,8 +381,6 @@ public class TestSymmetricQRAlgorithmDecomposition {
                 Matrix tb = Matrix.create(v.length(), 1);
                 tb.setColumn(0, v);
                 AMatrix tempB = tb.multiplyCopy(c.x);
-//                System.out.println("A:\n" + tempA);
-//                System.out.println("B:\n" + tempB);
 //                double max = NormOps.normPInf(A);
                 double max = normPInf(A);
                 if( max == 0 ) max = 1;

@@ -20,7 +20,6 @@ package mikera.matrixx.decompose.impl.eigen;
 
 import java.util.Random;
 
-import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 
 /**
@@ -88,8 +87,8 @@ public class SymmetricQREigenHelper {
         System.out.println();
     }
 
-    public void setQ(AMatrix q) {
-        Q = Matrix.create(q);
+    public void setQ(Matrix q) {
+        Q = q;
     }
 
     public void incrementSteps() {
