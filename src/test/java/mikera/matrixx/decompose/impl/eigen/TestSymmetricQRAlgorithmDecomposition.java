@@ -393,26 +393,6 @@ public class TestSymmetricQRAlgorithmDecomposition {
         return Math.abs(scale-0) > 1e-12 ? total/scale : 0;
     }
 
-    private double inducedPInf(Matrix A)
-    {
-        double max = 0;
-
-        int m = A.rowCount();
-        int n = A.columnCount();
-
-        for( int i = 0; i < m; i++ ) {
-            double total = 0;
-            for( int j = 0; j < n; j++ ) {
-                total += Math.abs(A.get(i,j));
-            }
-            if( total > max ) {
-                max = total;
-            }
-        }
-
-        return max;
-    }
-
     /**
      * See if eigenvalues cause the characteristic equation to have a value of zero
      */
