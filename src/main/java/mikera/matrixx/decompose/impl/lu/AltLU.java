@@ -33,6 +33,8 @@ import mikera.matrixx.solve.impl.TriangularSolver;
  * @author Peter Abeles
  */
 public class AltLU {
+
+    private static final double EPS = Math.pow(2,-52);
     
     public static LUPResult decompose(AMatrix A) {
         AltLU alg = new AltLU();
@@ -259,5 +261,19 @@ public class AltLU {
 
     public double[] _getVV() {
         return vv;
+    }
+    
+    /**
+     * Determines if the decomposed matrix is singular.  This function can return
+     * false and the matrix be almost singular, which is still bad.
+     *
+     * @return true if singular false otherwise.
+     */
+    public boolean isSingular() {
+        for( int i = 0; i < m; i++ ) {
+            if( Math.abs(dataLU[i* n +i]) < EPS )
+                return true;
+        }
+        return false;
     }
 }
