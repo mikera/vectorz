@@ -63,12 +63,12 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override
-	public AVector getRow(int i) {
+	public AxisVector getRow(int i) {
 		return AxisVector.create(i,dimensions);
 	}
 	
 	@Override
-	public AVector getColumn(int j) {
+	public AxisVector getColumn(int j) {
 		return AxisVector.create(j,dimensions);
 	}
 	

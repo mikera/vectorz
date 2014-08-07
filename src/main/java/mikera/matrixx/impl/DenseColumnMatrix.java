@@ -15,6 +15,9 @@ import mikera.vectorz.util.DoubleArrays;
  * 
  * Transposes to/from a regular dense Matrix
  * 
+ * This class is useful if your main performance requirement is fast access to columns of a matrix. 
+ * This is frequently true when the matrix is used as the *second* argument in matrix/matrix operations.
+ * 
  * @author Mike
  *
  */

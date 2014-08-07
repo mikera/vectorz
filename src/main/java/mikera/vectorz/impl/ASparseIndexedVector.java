@@ -219,6 +219,29 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		return DoubleArrays.isZero(ds, offset+i, length-i);
 	}
 	
+	@Override
+	public boolean equals(AVector v) {
+		int len=length();
+		if (v.length()!=len) return false;
+		
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector vv=(ADenseArrayVector) v;
+			return equalsArray(vv.getArray(),vv.getArrayOffset());
+		}
+		
+		double[] data=internalData();
+		int[] ixs=internalIndexArray();
+		int n=ixs.length;
+		int start=0;
+		for (int i=0; i<n; i++) {
+			int pos=ixs[i];
+			if (!v.isRangeZero(start, pos-start)) return false;
+			if (v.unsafeGet(pos)!=data[i]) return false;
+			start=pos+1;
+		}
+		return v.isRangeZero(start, len-start);
+	}
+	
 	/**
 	 * Create a clone of this sparse indexed vector including the new indexes specified
 	 * Intended to allow fast subsequent modification

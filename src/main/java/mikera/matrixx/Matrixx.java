@@ -2,7 +2,6 @@ package mikera.matrixx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -117,21 +116,29 @@ public class Matrixx {
 	 * Creates a sparse matrix from the given iterator. Each vector in the iterator will be copied to
 	 * a row in the new sparse matrix 
 	 */
-	public static SparseRowMatrix createSparseRows(Iterator<AVector> rowIterator) {
-		AVector r0=rowIterator.next();
-		int cc=r0.length();
-		HashMap<Integer,AVector> rowMap=new HashMap<Integer,AVector>();
-		rowMap.put(0, r0);
-		int ri=1;
-		while (rowIterator.hasNext()) {
-			AVector v=rowIterator.next();
-			if (!(v.isZero())) rowMap.put(ri, v.sparseClone());
-			ri++;
+	public static ArrayList<AVector> createSparseArray(Iterator<AVector> vecIterator) {
+		AVector v0=vecIterator.next();
+		int len = v0.length();
+		ArrayList<AVector> vecList = new ArrayList<AVector>();
+		vecList.add(v0);
+		while (vecIterator.hasNext()) {
+			AVector v = vecIterator.next();
+            if ((v == null) || (v.isZero()))
+                v = Vectorz.createZeroVector(len);
+            else
+			    v = v.sparseClone();
+			vecList.add(v.sparseClone());
 		}
-		int rc=ri;
-		SparseRowMatrix m=SparseRowMatrix.wrap(rowMap,rc,cc);
-		return m;
+        return vecList;
 	}
+
+	public static SparseRowMatrix createSparseRows(Iterator<AVector> rowIterator) {
+		return SparseRowMatrix.wrap(createSparseArray(rowIterator));
+    }
+	
+	public static SparseColumnMatrix createSparseColumns(Iterator<AVector> colIterator) {
+		return SparseColumnMatrix.wrap(createSparseArray(colIterator));
+    }
 	
 	/**
 	 * Create a sparse array, given an Index of column positions and AVector of corresponding values for each row in the sparse array

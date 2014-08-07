@@ -110,7 +110,7 @@ public class BandedMatrix extends ABandedMatrix {
 	@Override
 	public double get(int i, int j) {
 		checkIndex(i,j);
-		return getBand(bandIndex(i,j)).unsafeGet(bandPosition(i,j));
+		return unsafeGet(i,j);
 	}
 
 	@Override

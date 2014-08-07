@@ -68,7 +68,6 @@ public class Determinant {
 	/**
 	 * Calculate determinant using naive method (brute force)
 	 */
-	@SuppressWarnings("unused")
 	static double naiveDeterminant(Matrix m) {
 		return naiveDeterminant(m,m.rowCount());
 	}
