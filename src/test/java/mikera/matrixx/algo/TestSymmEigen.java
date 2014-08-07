@@ -1,10 +1,9 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.Eigen;
 import mikera.matrixx.decompose.IEigenResult;
-import mikera.matrixx.decompose.impl.eigen.EigenResult;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
