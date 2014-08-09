@@ -22,7 +22,6 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.impl.hessenberg.TridiagonalDecompositionHouseholder;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 
 /**
