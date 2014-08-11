@@ -60,7 +60,7 @@ public class Arrayz {
 			} else if (o1 instanceof INDArray) {
 				return SliceArray.create((List<INDArray>)object);				
 			} else {
-				ArrayList<INDArray> al=new ArrayList<INDArray>();
+				ArrayList<INDArray> al=new ArrayList<>();
 				for (Object o: list) {
 					al.add(create(o));
 				}

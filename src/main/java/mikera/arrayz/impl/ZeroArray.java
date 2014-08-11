@@ -100,7 +100,7 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 	public List<INDArray> getSlices() {
 		int sc=sliceCount();
 		if (sc==0) return Collections.emptyList();
-		ArrayList<INDArray> al=new ArrayList<INDArray>(sc);
+		ArrayList<INDArray> al=new ArrayList<>(sc);
 		INDArray z=slice(0);
 		for (int i=0; i<sc; i++) {
 			al.add(z);
@@ -166,7 +166,7 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 			case 1: return Vectorz.createSparseMutable(shape[0]);
 			case 2: return Matrixx.createSparseRows(this);
 			default: {
-				ArrayList<INDArray> al=new ArrayList<INDArray>();
+				ArrayList<INDArray> al=new ArrayList<>();
 				int n=sliceCount();
 				for (int i=0; i<n; i++) {
 					al.add(slice(i).sparseClone());

@@ -25,7 +25,7 @@ import mikera.vectorz.ops.StochasticBinary;
 import mikera.vectorz.util.VectorzException;
 
 public class TestOps {
-	public static final List<Op> ALL_OPS=new ArrayList<Op>();
+	public static final List<Op> ALL_OPS=new ArrayList<>();
 	
 	static {
 		Field[] declaredFields = Ops.class.getDeclaredFields();

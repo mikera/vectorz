@@ -298,7 +298,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			}
 		}
 		int sc=sliceCount();
-		ArrayList<INDArray> sips=new ArrayList<INDArray>();
+		ArrayList<INDArray> sips=new ArrayList<>();
 		for (int i=0; i<sc; i++) {
 			sips.add(slice(i).innerProduct(a));
 		}
@@ -317,7 +317,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray outerProduct(INDArray a) {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<>();
 		for (Object s:this) {
 			if (s instanceof INDArray) {
 				al.add(((INDArray)s).outerProduct(a));
@@ -465,7 +465,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public Iterator<T> iterator() {
-		return new SliceIterator<T>(this);
+		return new SliceIterator<>(this);
 	}
 	
 	@Override
@@ -956,7 +956,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		int dims=dimensionality();
 		if ((dim<0)||(dim>=dims)) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<>();
 		for (int i : order) {
 			al.add(slice(dim,i));
 		}
@@ -989,7 +989,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public List<?> getSlices(int dimension) {
 		int l=getShape(dimension);
-		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
+		ArrayList<INDArray> al=new ArrayList<>(l);
 		for (int i=0; i<l; i++) {
 			al.add(slice(dimension,i));
 		}
@@ -999,7 +999,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public List<?> getSlices() {
 		int n=sliceCount();
-		ArrayList<Object> al=new ArrayList<Object>(n);
+		ArrayList<Object> al=new ArrayList<>(n);
 		for (int i=0; i<n; i++) {
 			al.add(slice(i));
 		}
@@ -1009,7 +1009,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public List<INDArray> getSliceViews() {
 		int n=sliceCount();
-		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
+		ArrayList<INDArray> al=new ArrayList<>(n);
 		for (int i=0; i<n; i++) {
 			al.add(slice(i));
 		}
@@ -1031,7 +1031,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			}
 		}
 		
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<>();
 		int endIndex=offsets[0]+shape[0];
 		int[] zzoffsets=IntArrays.removeIndex(offsets, 0);
 		int[] zzshape=IntArrays.removeIndex(shape, 0);

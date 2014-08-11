@@ -21,7 +21,7 @@ public class ListBenchmark extends SimpleBenchmark {
 	
 	// about 13ns per iteration
 	public void timeIndexed(int runs) {
-		ArrayList<Integer> calc = new ArrayList<Integer>();
+		ArrayList<Integer> calc = new ArrayList<>();
 		for (int i=0; i<LIST_SIZE; i++) calc.add(i);
 		
 		for (int i=0; i<runs; i++) {
@@ -33,7 +33,7 @@ public class ListBenchmark extends SimpleBenchmark {
 	}
 	
 	public void timeIndexedWithSize(int runs) {
-		ArrayList<Integer> calc = new ArrayList<Integer>();
+		ArrayList<Integer> calc = new ArrayList<>();
 		for (int i=0; i<LIST_SIZE; i++) calc.add(i);
 		
 		for (int i=0; i<runs; i++) {
@@ -45,7 +45,7 @@ public class ListBenchmark extends SimpleBenchmark {
 	
 	// about 33 ns per iteration
 	public void timeIterator(int runs) {
-		ArrayList<Integer> calc = new ArrayList<Integer>();
+		ArrayList<Integer> calc = new ArrayList<>();
 		for (int i=0; i<LIST_SIZE; i++) calc.add(i);
 		
 		for (int i=0; i<runs; i++) {

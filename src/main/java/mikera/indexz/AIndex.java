@@ -58,7 +58,7 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 	
 	public List<Integer> toList() {
 		int len=length();
-		ArrayList<Integer> al=new ArrayList<Integer>();
+		ArrayList<Integer> al=new ArrayList<>();
 		for (int i=0; i<len; i++) {
 			al.add(get(i));
 		}
@@ -136,7 +136,7 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 	 * @return
 	 */
 	public boolean isDistinct() {
-		HashSet<Integer> hs=new HashSet<Integer>();
+		HashSet<Integer> hs=new HashSet<>();
 		int len=length();
 		for (int i=0; i<len; i++) {
 			Integer v=get(i);

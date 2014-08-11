@@ -56,7 +56,7 @@ public final class Index extends AIndex {
 	}
 
 	public static Index createSorted(Set<Integer> keySet) {
-		ArrayList<Integer> al=new ArrayList<Integer>();
+		ArrayList<Integer> al=new ArrayList<>();
 		al.addAll(keySet);
 		Collections.sort(al);
 		return create(al);
@@ -186,7 +186,7 @@ public final class Index extends AIndex {
 	}
 	
 	public Index includeSorted(Set<Integer> is) {
-		TreeSet<Integer> ss=new TreeSet<Integer>(this.toSet());
+		TreeSet<Integer> ss=new TreeSet<>(this.toSet());
 		for (Integer i:is) {
 			ss.add(i);
 		}
@@ -194,7 +194,7 @@ public final class Index extends AIndex {
 	}
 	
 	public Index includeSorted(Index ind) {
-		TreeSet<Integer> ss=new TreeSet<Integer>(this.toSet());
+		TreeSet<Integer> ss=new TreeSet<>(this.toSet());
 		for (Integer i:ind) {
 			ss.add(i);
 		}
@@ -202,7 +202,7 @@ public final class Index extends AIndex {
 	}
 	
 	public Set<Integer> toSet() {
-		TreeSet<Integer> ss=new TreeSet<Integer>();
+		TreeSet<Integer> ss=new TreeSet<>();
 		for (int i=0; i<data.length; i++) {
 			ss.add(data[i]);
 		}
@@ -210,7 +210,7 @@ public final class Index extends AIndex {
 	}
 	
 	public SortedSet<Integer> toSortedSet() {
-		TreeSet<Integer> ss=new TreeSet<Integer>();
+		TreeSet<Integer> ss=new TreeSet<>();
 		for (int i=0; i<data.length; i++) {
 			ss.add(data[i]);
 		}

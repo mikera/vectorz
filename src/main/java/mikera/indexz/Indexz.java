@@ -95,7 +95,7 @@ public class Indexz {
 	 * @return
 	 */
 	public static Index createRandomSubset(AIndex index, double probability) {
-		ArrayList<Integer> al=new ArrayList<Integer>();
+		ArrayList<Integer> al=new ArrayList<>();
 		int len=index.length();
 		for (int i=0; i<len; i++) {
 			if (Rand.chance(probability)) {

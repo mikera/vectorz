@@ -329,7 +329,7 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector create(Iterable<Object> d) {
-		ArrayList<Object> al=new ArrayList<Object>();
+		ArrayList<Object> al=new ArrayList<>();
 		for (Object o:d) {
 			al.add(o);
 		}
