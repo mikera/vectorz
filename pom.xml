@@ -42,6 +42,14 @@
         </plugin>
       </plugins>
     </build>
+    
+  	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://http://repo.maven.apache.org/maven2/</url>
+		</repository>
+    </repositories>
 
 	<dependencies>
 		<dependency>
