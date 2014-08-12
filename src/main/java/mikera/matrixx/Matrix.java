@@ -486,6 +486,20 @@ public final class Matrix extends ADenseArrayMatrix {
 		checkSameShape(m);
 		m.addToArray(data, 0);
 	}
+	
+	@Override
+	public void add(AMatrix a, AMatrix b) {
+		checkSameShape(a);
+		checkSameShape(b);
+		a.addToArray(data, 0);
+		b.addToArray(data, 0);
+	}
+	
+	public void add(Matrix a, Matrix b) {
+		checkSameShape(a);
+		checkSameShape(b);
+		DoubleArrays.add2(data, a.data,b.data);
+	}
 
 	public void add(Matrix m) {
 		checkSameShape(m);

@@ -543,7 +543,17 @@ public final class DoubleArrays {
 		return rs;
 	}
 
-
-
+	public static void add2(double[] dest, double[] aData, double[] bData) {
+		int len=dest.length;
+		for (int i=0; i<len; i++) {
+			dest[i]+=aData[i]+bData[i];
+		}
+	}
+	
+	public static void add2(double[] dest, int destOffset, double[] aData, int aOffset, double[] bData, int bOffset, int len) {
+		for (int i=0; i<len; i++) {
+			dest[i+destOffset]+=aData[i+aOffset]+bData[i+bOffset];
+		}
+	}
 
 }

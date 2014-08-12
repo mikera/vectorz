@@ -52,6 +52,14 @@ public interface IMatrix extends INDArray {
 
 	boolean isSymmetric();
 
+	/**
+	 * Adds two matrices to this matrix. May be better optimised than adding both matrices individually.
+	 * 
+	 * @param a
+	 * @param b
+	 */
+	void add(AMatrix a, AMatrix b);
+
 
 
 }
