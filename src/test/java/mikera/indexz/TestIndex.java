@@ -80,7 +80,7 @@ public class TestIndex {
 		assertEquals(index,index4);
 
 		// all indexes should map to same hashcode
-		HashSet<AIndex> hs=new HashSet<>();
+		HashSet<AIndex> hs=new HashSet<AIndex>();
 		hs.add(index);
 		hs.add(index2);
 		hs.add(index3);

@@ -45,7 +45,7 @@ public class SparseHashedVector extends ASparseVector {
 	public static SparseHashedVector create(AVector v) {
 		int n=v.length();
 		if (n==0) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(v));
-		HashMap<Integer,Double> hm=new HashMap<>();
+		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
 		for (int i=0; i<n; i++) {
 			double val=v.unsafeGet(i);
 			if (val!=0) hm.put(i,val);
@@ -59,7 +59,7 @@ public class SparseHashedVector extends ASparseVector {
 	public static SparseHashedVector create(int length, Index index, Vector values) {
 		int n=index.length();
 		if (values.length()!=n) throw new IllegalArgumentException("Mismatched values length: "+values.length());
-		HashMap<Integer,Double> hm=new HashMap<>();
+		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
 		for (int i=0; i<n; i++) {
 			double v=values.get(i);
 			if (v!=0.0) hm.put(index.get(i), v);
@@ -263,7 +263,7 @@ public class SparseHashedVector extends ASparseVector {
 			return;
 		}
 		
-		hash=new HashMap<>();
+		hash=new HashMap<Integer, Double>();
 		
 		for (int i=0; i<length; i++) {
 			double val=v.unsafeGet(i);

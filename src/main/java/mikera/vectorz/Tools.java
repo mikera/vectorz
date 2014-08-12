@@ -40,7 +40,7 @@ public final class Tools {
 	}
 	
 	public static <E> List<E> toList(Iterable<E> iter) {
-	    List<E> list = new ArrayList<>();
+	    List<E> list = new ArrayList<E>();
 	    for (E item : iter) {
 	        list.add(item);
 	    }

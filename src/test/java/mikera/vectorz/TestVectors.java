@@ -36,6 +36,7 @@ import mikera.vectorz.util.VectorBuilder;
 
 import org.junit.Test;
 
+
 public class TestVectors {
 	@Test public void testDistances() {
 		Vector3 v=Vector3.of(1,2,3);
@@ -108,7 +109,7 @@ public class TestVectors {
 	
 	
 	@Test public void testCreateFromIterable() {
-		ArrayList<Object> al=new ArrayList<>();
+		ArrayList<Object> al=new ArrayList<Object>();
 		al.add(1);
 		al.add(2L);
 		al.add(3.0);

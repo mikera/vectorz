@@ -77,7 +77,7 @@ public class Matrixx {
 		} else if (o instanceof AVector) {
 			return ColumnMatrix.wrap((AVector) o);
 		} else if (o instanceof Iterable<?>) {
-			ArrayList<AVector> al = new ArrayList<>();
+			ArrayList<AVector> al = new ArrayList<AVector>();
 			for (Object obj : (Iterable<?>) o) {
 				al.add(Vectorz.toVector(obj));
 			}
@@ -119,7 +119,7 @@ public class Matrixx {
 	public static ArrayList<AVector> createSparseArray(Iterator<AVector> vecIterator) {
 		AVector v0=vecIterator.next();
 		int len = v0.length();
-		ArrayList<AVector> vecList = new ArrayList<>();
+		ArrayList<AVector> vecList = new ArrayList<AVector>();
 		vecList.add(v0);
 		while (vecIterator.hasNext()) {
 			AVector v = vecIterator.next();
@@ -570,7 +570,7 @@ public class Matrixx {
 	public static AMatrix createSparse(Iterable<INDArray> slices) {
 		INDArray slice1=slices.iterator().next();
 		int cc=slice1.sliceCount();
-		ArrayList<AVector> al=new ArrayList<>();
+		ArrayList<AVector> al=new ArrayList<AVector>();
 		for (INDArray a:slices) {
 			if ((a.dimensionality()!=1)||(a.sliceCount()!=cc)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a)); 
 			al.add(a.sparse().asVector());

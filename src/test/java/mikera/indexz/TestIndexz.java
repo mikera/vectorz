@@ -29,7 +29,7 @@ public class TestIndexz {
 	}
 	
 	@Test public void testPermutations() {
-		HashSet<Index> hs=new HashSet<>();
+		HashSet<Index> hs=new HashSet<Index>();
 		
 		for (int i=0; i<2000; i++) {
 			Index ind=Indexz.createRandomPermutation(4);
@@ -48,7 +48,7 @@ public class TestIndexz {
 	}
 	
 	@Test public void testIntegerChoice() {
-		HashSet<Index> hs=new HashSet<>();
+		HashSet<Index> hs=new HashSet<Index>();
 		
 		for (int i=0; i<1000; i++) {
 			Index ind=Indexz.createRandomChoice(2,4);

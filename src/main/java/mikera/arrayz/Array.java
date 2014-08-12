@@ -328,7 +328,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	public List<?> getSlices() {
 		if (dimensions==1) {
 			int n=sliceCount();
-			ArrayList<Double> al=new ArrayList<>(n);
+			ArrayList<Double> al=new ArrayList<Double>(n);
 			for (int i=0; i<n; i++) {
 				al.add(get(i));
 			}
