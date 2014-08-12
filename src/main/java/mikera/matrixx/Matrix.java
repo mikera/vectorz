@@ -476,9 +476,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	public void addMultiple(Matrix m, double factor) {
 		checkSameShape(m);
-		for (int i = 0; i < data.length; i++) {
-			data[i] += m.data[i] * factor;
-		}
+		DoubleArrays.addMultiple(data,m.data,factor);
 	}
 
 	@Override
@@ -515,7 +513,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		int rc = rowCount();
 		int cc = columnCount();
 		m.checkShape(rc, cc);
-
+		
 		for (int i = 0; i < rc; i++) {
 			m.getRow(i).addMultipleToArray(factor, 0, data, i * cols, cc);
 		}
