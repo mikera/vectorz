@@ -492,6 +492,10 @@ public final class Matrix extends ADenseArrayMatrix {
 				add((Matrix)a,(Matrix)b);
 				return;
 			}
+			if (b instanceof ADenseArrayMatrix) {
+				super.add((ADenseArrayMatrix)a,(ADenseArrayMatrix)b);
+				return;
+			}
 		}
 		checkSameShape(a);
 		checkSameShape(b);

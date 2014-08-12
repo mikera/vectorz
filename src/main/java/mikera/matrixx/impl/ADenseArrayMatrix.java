@@ -190,6 +190,12 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		a.addToArray(getArray(), getArrayOffset());
 	}
 	
+	public void add(ADenseArrayMatrix a, ADenseArrayMatrix b) {
+		checkSameShape(a);
+		checkSameShape(b);
+		DoubleArrays.add2(getArray(), getArrayOffset(), a.getArray(), a.getArrayOffset(), b.getArray(), b.getArrayOffset(), Tools.toInt(this.elementCount()));
+	}
+	
 	@Override
 	public void addToArray(double[] data, int offset) {
 		DoubleArrays.add(getArray(), getArrayOffset(), data, offset, rows*cols);
