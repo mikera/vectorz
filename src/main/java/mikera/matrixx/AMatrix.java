@@ -2086,7 +2086,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	@Override
-	public void add(AMatrix a, AMatrix b) {
+	public void add2(AMatrix a, AMatrix b) {
 		add(a);
 		add(b);
 	}

@@ -58,7 +58,7 @@ public interface IMatrix extends INDArray {
 	 * @param a
 	 * @param b
 	 */
-	void add(AMatrix a, AMatrix b);
+	void add2(AMatrix a, AMatrix b);
 
 
 

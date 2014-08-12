@@ -494,7 +494,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
-	public void add(AMatrix a, AMatrix b) {
+	public void add2(AMatrix a, AMatrix b) {
 		if (a instanceof ADenseArrayMatrix) {
 			if ((a instanceof Matrix)&&(b instanceof Matrix)) {
 				add((Matrix)a,(Matrix)b);
