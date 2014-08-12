@@ -503,6 +503,10 @@ public final class Matrix extends ADenseArrayMatrix {
 		b.addToArray(data, 0);
 	}
 	
+	public static void add(Matrix dest, Matrix a, Matrix b) {
+		DoubleArrays.addResult(dest.data, a.data, b.data);
+	}
+	
 	public void add(Matrix a, Matrix b) {
 		checkSameShape(a);
 		checkSameShape(b);
