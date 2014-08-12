@@ -56,6 +56,17 @@ public class TestMatrix {
   }
   
   @Test
+  public void testMatrixAdd() {
+	  Matrix a=Matrix.createRandom(3, 4);
+	  Matrix b=Matrix.createRandom(3, 4);
+	  Matrix c=a.addCopy(b);
+	  
+	  Matrix r=Matrix.createRandom(3, 4);
+	  Matrix.add(r,a,b);
+	  assertEquals(c, r);
+  }
+  
+  @Test
   public void testSet() {
 	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
 	  m.set(Vector.of(5,5));

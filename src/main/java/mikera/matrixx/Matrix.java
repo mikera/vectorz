@@ -486,6 +486,14 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
+	public Matrix addCopy(Matrix a) {
+		checkSameShape(a);
+		Matrix r=Matrix.create(rows, cols);
+		Matrix.add(r,this,a);
+		return r;
+	}
+	
+	@Override
 	public void add(AMatrix a, AMatrix b) {
 		if (a instanceof ADenseArrayMatrix) {
 			if ((a instanceof Matrix)&&(b instanceof Matrix)) {

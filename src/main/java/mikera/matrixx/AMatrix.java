@@ -2006,6 +2006,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		m.add(a);
 		return m;
 	}
+	
+	public Matrix addCopy(Matrix a) {
+		checkSameShape(a);
+		Matrix r=a.clone();
+		this.addToArray(r.data,0);
+		return r;
+	}
 
 	/**
      * Checks to see if any element in the matrix is NaN of Infinite.
