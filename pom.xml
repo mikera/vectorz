@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>net.mikera</groupId>
 		<artifactId>mikera-pom</artifactId>
-		<version>0.2.0</version>
+		<version>0.4.0</version>
 	</parent>
 
 	<properties>
@@ -47,7 +47,7 @@
 		<repository>
 			<id>central</id>
 			<name>Maven Central</name>
-			<url>https://http://repo.maven.apache.org/maven2/</url>
+			<url>https://repo.maven.apache.org/maven2/</url>
 		</repository>
     </repositories>
 
