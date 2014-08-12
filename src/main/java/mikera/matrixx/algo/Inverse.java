@@ -6,6 +6,7 @@ import mikera.matrixx.Matrix11;
 import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.decompose.impl.lu.DecomposeLUP;
+import mikera.matrixx.solve.impl.lu.LUSolver;
 import mikera.vectorz.util.ErrorMessages;
 
 public final class Inverse {
@@ -40,7 +41,9 @@ public final class Inverse {
 	}
 	
 	static Matrix createLUPInverse(AMatrix m) {
-		return DecomposeLUP.createLUPInverse(m);
+		LUSolver lus = new LUSolver();
+        lus.setA(m);
+		return lus.invert().toMatrix();
 	}
 	
 }
