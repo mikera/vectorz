@@ -5,7 +5,6 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix11;
 import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrix33;
-import mikera.matrixx.decompose.impl.lu.DecomposeLUP;
 import mikera.matrixx.solve.impl.lu.LUSolver;
 import mikera.vectorz.util.ErrorMessages;
 
