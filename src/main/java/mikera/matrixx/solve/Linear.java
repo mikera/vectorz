@@ -32,10 +32,10 @@ public class Linear {
         solver.setA(A);
 //        create AMatrix from AVector
         Matrix B = Matrix.create(b.length(), 1);
-        B.setElements(b.asDoubleArray());
+        B.setElements(b.toDoubleArray());
         AMatrix X = solver.solve(B);
 //        convert AMatrix into AVector and return
-        return Vector.create(X.asDoubleArray());
+        return Vector.create(X.toDoubleArray());
     }
     
     /**
@@ -102,13 +102,13 @@ public class Linear {
 	    solver.setA(A);
 //      create AMatrix from AVector
 	    Matrix B = Matrix.create(b.length(), 1);
-	    B.setElements(b.asDoubleArray());
+	    B.setElements(b.toDoubleArray());
 	    AMatrix X = solver.solve(B);
 //      if no solution
 	    if(X == null)
 	        return null;
 //      convert AMatrix into AVector and return
-	    return Vector.create(X.asDoubleArray());
+	    return Vector.create(X.toDoubleArray());
 	}
 	
 	/**
