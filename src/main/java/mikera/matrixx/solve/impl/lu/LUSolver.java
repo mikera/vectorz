@@ -98,6 +98,9 @@ public class LUSolver {
         int numCols = b.columnCount();
 
         double dataB[] = b.asDoubleArray();
+        if (dataB == null) {
+            dataB = b.toDoubleArray();
+        }
         double dataX[] = x.data;
 
         double []vv = decomp._getVV();
