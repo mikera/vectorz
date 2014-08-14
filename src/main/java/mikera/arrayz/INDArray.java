@@ -617,7 +617,7 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the underlying double array representing the densely packed elements of this array
-	 * Returns nil if there is no such array
+	 * Returns null if there is no such array
 	 */
 	public double[] asDoubleArray();
 
