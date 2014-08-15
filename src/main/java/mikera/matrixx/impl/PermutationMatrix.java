@@ -103,6 +103,10 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	
 	@Override
 	public boolean isOrthogonal() {
+	    return true;
+	}
+	@Override
+	public boolean isOrthogonal(double tolerance) {
 		return true;
 	}
 	

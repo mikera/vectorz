@@ -76,7 +76,7 @@ public abstract class GenericQrCheck {
         assertTrue(R.columnCount() == width);
 
         // see if Q has the expected properties
-        assertTrue(Q.isOrthogonal());
+        assertTrue(Q.isOrthogonal(1e-8));
 
         // see if it has the expected properties
         R = R.reshape(A.rowCount(), A.columnCount());
@@ -104,7 +104,7 @@ public abstract class GenericQrCheck {
         Matrix Q = result.getQ().toMatrix();
 
         // see if Q has the expected properties
-        assertTrue(Q.isOrthogonal());
+        assertTrue(Q.isOrthogonal(1e-8));
     }
 
 }

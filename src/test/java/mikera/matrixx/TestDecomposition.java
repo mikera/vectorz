@@ -86,7 +86,7 @@ public class TestDecomposition {
 		//assertEquals(a,usvt);
 		assertTrue(usvt.epsilonEquals(a));
 		
-		assertTrue(v.isOrthogonal());
+		assertTrue(v.isOrthogonal(1e-8));
 		assertTrue(s.isRectangularDiagonal()); 
 		assertTrue(u.hasOrthonormalColumns()); 
 	}

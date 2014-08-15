@@ -20,6 +20,7 @@ import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.ARectangularMatrix;
+import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -62,6 +63,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	// ==============================================
 	// Abstract interface
 	private static final long serialVersionUID = 4854869374064155441L;
+	
+	private static final double TOLERANCE = 1e-8;
 
 	/**
 	 * Returns the number of rows in the matrix
@@ -339,10 +342,34 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return rowCount() == columnCount();
 	}
 	
+	/**
+	 * Check to see if the matrix is orthogonal
+	 * (default tolerance: 1e-8)
+	 * @return
+	 */
 	public boolean isOrthogonal() {
-		// TODO: needs a better algorithm!
-		return isSquare()
-				&&getTranspose().innerProduct(this).epsilonEquals(IdentityMatrix.create(columnCount()));
+	    return isOrthogonal(TOLERANCE);
+	}
+	/**
+	 * Check to see if the matrix is orthogonal
+	 * @param tolerance inner product of a column with all of the next columns should be less than tolerance
+	 * @return
+	 */
+	public boolean isOrthogonal(double tolerance) {
+	    if(!isSquare())
+	        return false;
+	    
+        AMatrix Q = DenseColumnMatrix.wrap(this.rowCount(), this.columnCount(), this.getTransposeView().toDoubleArray());
+        for( int i = 0; i < Q.columnCount(); i++ ) {
+            AVector a = Q.getColumn(i);
+            for( int j = i+1; j < Q.columnCount(); j++ ) {
+                double val = a.innerProduct(Q.getColumn(j)).get();
+                if( !(Math.abs(val) <= TOLERANCE))
+                    return false;
+            }
+        }
+        
+        return true;
 	}
 
 	/**
