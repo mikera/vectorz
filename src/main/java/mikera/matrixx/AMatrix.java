@@ -342,7 +342,20 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return rowCount() == columnCount();
 	}
 	
+	/**
+	 * Check to see if the matrix is orthogonal
+	 * (default tolerance: 1e-8)
+	 * @return
+	 */
 	public boolean isOrthogonal() {
+	    return isOrthogonal(TOLERANCE);
+	}
+	/**
+	 * Check to see if the matrix is orthogonal
+	 * @param tolerance inner product of a column with all of the next columns should be less than tolerance
+	 * @return
+	 */
+	public boolean isOrthogonal(double tolerance) {
 	    if(!isSquare())
 	        return false;
 	    

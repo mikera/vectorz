@@ -84,13 +84,13 @@ public class TestMatrix {
       
       for (int i=0; i<10; i++) {
           Matrix A = Matrix.createRandom(r.nextInt(30)+10, r.nextInt(30)+10);
-          assertFalse(A.isOrthogonal());
+          assertFalse(A.isOrthogonal(1e-8));
       }
       
       for (int i=0; i<10; i++) {
           Matrix A = Matrix.createRandom(r.nextInt(40)+10, r.nextInt(40)+10);
           AMatrix Q = QR.decompose(A).getQ();
-          assertTrue(Q.isOrthogonal());
+          assertTrue(Q.isOrthogonal(1e-8));
       }
       
       // Test for a known orthogonal matrix (computed using octave)
@@ -99,7 +99,7 @@ public class TestMatrix {
                                                {0.6144295377250426, 0.1551520064329187, 0.2204660780610110,-0.2929918884817742,-0.6811421729559179},
                                                {0.3317192926815656,-0.1458153295325708, 0.7954818130574060, 0.2526947945902193, 0.4147941976668178},
                                                {0.3416978718633434,-0.7973443884059042,-0.3312209605918151, 0.3476264052490511,-0.1301270466887443}});
-      assertTrue(Q.isOrthogonal());
+      assertTrue(Q.isOrthogonal(1e-8));
       
       
   }

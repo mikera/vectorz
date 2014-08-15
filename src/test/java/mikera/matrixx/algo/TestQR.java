@@ -76,7 +76,7 @@ public class TestQR {
 		AMatrix q=result.getQ();
 		AMatrix r=result.getR();
 		
-		assertTrue(q.isOrthogonal());
+		assertTrue(q.isOrthogonal(1e-8));
 		assertTrue(r.isUpperTriangular());
 		assertTrue(r.rowCount() == a.rowCount() && r.columnCount() == a.columnCount());
 		
