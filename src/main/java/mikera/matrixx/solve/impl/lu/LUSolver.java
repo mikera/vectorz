@@ -62,7 +62,10 @@ public class LUSolver {
         return decomp.quality();
     }
 
-    public void invert() {
+    public AMatrix invert() {
+        if (!A.isSquare()) { throw new IllegalArgumentException(
+            "Matrix must be square for inverse!"); }
+
         double []vv = decomp._getVV();
         AMatrix LU = decomp.getLU();
         
@@ -80,6 +83,8 @@ public class LUSolver {
             int index = j;
             for( int i = 0; i < n; i++ , index += n) dataInv[ index ] = vv[i];
         }
+
+        return A_inv;
     }
     
     public ADenseArrayMatrix solve(AMatrix b) {
@@ -93,6 +98,9 @@ public class LUSolver {
         int numCols = b.columnCount();
 
         double dataB[] = b.asDoubleArray();
+        if (dataB == null) {
+            dataB = b.toDoubleArray();
+        }
         double dataX[] = x.data;
 
         double []vv = decomp._getVV();

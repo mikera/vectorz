@@ -543,7 +543,37 @@ public final class DoubleArrays {
 		return rs;
 	}
 
+	public static void add2(double[] dest, double[] aData, double[] bData) {
+		int len=dest.length;
+		for (int i=0; i<len; i++) {
+			dest[i]+=aData[i]+bData[i];
+		}
+	}
+	
+	/**
+	 * Simultaneously adds two arrays to a target array
+	 */
+	public static void add2(double[] dest, int destOffset, double[] aData, int aOffset, double[] bData, int bOffset, int len) {
+		for (int i=0; i<len; i++) {
+			dest[i+destOffset]+=aData[i+aOffset]+bData[i+bOffset];
+		}
+	}
 
+	public static void addMultiple(double[] dest, double[] src, double factor) {
+		int len=dest.length;
+		for (int i=0; i<len; i++) {
+			dest[i]+=src[i]*factor;
+		}
+	}
 
+	/**
+	 * Performs addition of two double arrays and stores the result in the desination array
+	 */
+	public static void addResult(double[] dest, double[] as, double[] bs) {
+		int len=dest.length;
+		for (int i=0; i<len; i++) {
+			dest[i]=as[i]+bs[i];
+		}
+	}
 
 }

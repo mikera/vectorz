@@ -476,15 +476,49 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	public void addMultiple(Matrix m, double factor) {
 		checkSameShape(m);
-		for (int i = 0; i < data.length; i++) {
-			data[i] += m.data[i] * factor;
-		}
+		DoubleArrays.addMultiple(data,m.data,factor);
 	}
 
 	@Override
 	public void add(AMatrix m) {
 		checkSameShape(m);
 		m.addToArray(data, 0);
+	}
+	
+	@Override
+	public Matrix addCopy(Matrix a) {
+		checkSameShape(a);
+		Matrix r=Matrix.create(rows, cols);
+		Matrix.add(r,this,a);
+		return r;
+	}
+	
+	@Override
+	public void add2(AMatrix a, AMatrix b) {
+		if (a instanceof ADenseArrayMatrix) {
+			if ((a instanceof Matrix)&&(b instanceof Matrix)) {
+				add((Matrix)a,(Matrix)b);
+				return;
+			}
+			if (b instanceof ADenseArrayMatrix) {
+				super.add((ADenseArrayMatrix)a,(ADenseArrayMatrix)b);
+				return;
+			}
+		}
+		checkSameShape(a);
+		checkSameShape(b);
+		a.addToArray(data, 0);
+		b.addToArray(data, 0);
+	}
+	
+	public static void add(Matrix dest, Matrix a, Matrix b) {
+		DoubleArrays.addResult(dest.data, a.data, b.data);
+	}
+	
+	public void add(Matrix a, Matrix b) {
+		checkSameShape(a);
+		checkSameShape(b);
+		DoubleArrays.add2(data, a.data,b.data);
 	}
 
 	public void add(Matrix m) {
@@ -501,7 +535,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		int rc = rowCount();
 		int cc = columnCount();
 		m.checkShape(rc, cc);
-
+		
 		for (int i = 0; i < rc; i++) {
 			m.getRow(i).addMultipleToArray(factor, 0, data, i * cols, cc);
 		}

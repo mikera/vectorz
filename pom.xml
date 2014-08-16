@@ -2,14 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>vectorz</artifactId>
 	<groupId>net.mikera</groupId>
-	<version>0.39.0</version>
+	<version>0.40.0</version>
 
 	<name>Vectorz</name>
 	<description>Fast double-precision vector and matrix maths library for Java, supporting N-dimensional numeric arrays.</description>
 	<parent>
 		<groupId>net.mikera</groupId>
 		<artifactId>mikera-pom</artifactId>
-		<version>0.1.0</version>
+		<version>0.4.0</version>
 	</parent>
 
 	<properties>
@@ -28,7 +28,7 @@
 		<connection>scm:git:git@github.com:mikera/${project.artifactId}.git</connection>
 		<url>scm:git:git@github.com:mikera/${project.artifactId}.git</url>
 		<developerConnection>scm:git:git@github.com:mikera/${project.artifactId}.git</developerConnection>
-		<tag>vectorz-0.39.0</tag>
+		<tag>vectorz-0.40.0</tag>
 	</scm>
 	
 	<build>
@@ -42,6 +42,14 @@
         </plugin>
       </plugins>
     </build>
+    
+  	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
+    </repositories>
 
 	<dependencies>
 		<dependency>

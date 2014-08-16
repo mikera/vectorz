@@ -135,6 +135,10 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	
 	@Override
 	public boolean isOrthogonal() {
+	    return true;
+	}
+	@Override
+	public boolean isOrthogonal(double tolerance) {
 		return true;
 	}
 	
