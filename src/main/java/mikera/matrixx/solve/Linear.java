@@ -1,13 +1,10 @@
 package mikera.matrixx.solve;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.ColumnMatrix;
-import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.solve.impl.lu.LUSolver;
 import mikera.matrixx.solve.impl.qr.QRHouseColSolver;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 
 /**
  * Class providing liner solver algorithms that find the solution to systems of the form:
