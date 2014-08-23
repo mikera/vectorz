@@ -63,6 +63,16 @@ public class ArrayPerfBenchmark extends SimpleBenchmark {
 			v.applyOp(op);
 		}		
 	}
+	
+	public void timeOptimised(int runs) {
+		Vector v=Vector.createLength(8388608);
+		Vectorz.fillGaussian(v);
+
+		for (int i=0; i<runs; i++) {
+			v.scaleAdd(4.0, 1.5); // combine scaling and addition
+			v.sqrt();
+		}		
+	}
 
 	/**
 	 * @param args
