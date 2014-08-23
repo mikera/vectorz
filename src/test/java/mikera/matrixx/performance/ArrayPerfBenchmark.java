@@ -9,6 +9,7 @@ import mikera.matrixx.algo.Multiplications;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Linear;
 
 /**
@@ -22,9 +23,10 @@ public class ArrayPerfBenchmark extends SimpleBenchmark {
 
 	public void timeMutable(int runs) {
 		Vector v=Vector.createLength(8388608);
+		Vectorz.fillGaussian(v);
 		
 		for (int i=0; i<runs; i++) {
-			v.add(0.125);
+			v.add(0.375);
 			v.sqrt();
 			v.scale(2.0);
 		}		
@@ -32,6 +34,7 @@ public class ArrayPerfBenchmark extends SimpleBenchmark {
 	
 	public void timeImmutable(int runs) {
 		Vector v=Vector.createLength(8388608);
+		Vectorz.fillGaussian(v);
 		
 		for (int i=0; i<runs; i++) {
 			Vector a=(Vector) v.addCopy(0.375);
@@ -43,6 +46,8 @@ public class ArrayPerfBenchmark extends SimpleBenchmark {
 	@SuppressWarnings("unused")
 	public void timeOpsImmutable(int runs) {
 		Vector v=Vector.createLength(8388608);
+		Vectorz.fillGaussian(v);
+
 		Op op = Ops.compose(Linear.create(2.0,0.0), Ops.compose(Ops.SQRT, Linear.create(0.0,0.375)));
 		for (int i=0; i<runs; i++) {
 			Vector a=(Vector) v.applyOpCopy(op);
@@ -51,6 +56,8 @@ public class ArrayPerfBenchmark extends SimpleBenchmark {
 	
 	public void timeOpsMutable(int runs) {
 		Vector v=Vector.createLength(8388608);
+		Vectorz.fillGaussian(v);
+
 		Op op = Ops.compose(Linear.create(2.0,0.0), Ops.compose(Ops.SQRT, Linear.create(0.0,0.375)));
 		for (int i=0; i<runs; i++) {
 			v.applyOp(op);
