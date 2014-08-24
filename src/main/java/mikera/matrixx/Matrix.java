@@ -497,7 +497,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	public void add2(AMatrix a, AMatrix b) {
 		if (a instanceof ADenseArrayMatrix) {
 			if ((a instanceof Matrix)&&(b instanceof Matrix)) {
-				add((Matrix)a,(Matrix)b);
+				add2((Matrix)a,(Matrix)b);
 				return;
 			}
 			if (b instanceof ADenseArrayMatrix) {
@@ -515,7 +515,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		DoubleArrays.addResult(dest.data, a.data, b.data);
 	}
 	
-	public void add(Matrix a, Matrix b) {
+	public void add2(Matrix a, Matrix b) {
 		checkSameShape(a);
 		checkSameShape(b);
 		DoubleArrays.add2(data, a.data,b.data);
