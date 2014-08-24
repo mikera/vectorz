@@ -527,6 +527,15 @@ public final class Matrix extends ADenseArrayMatrix {
 		dest.setMultiple(src, factor);
 	}
 	
+	public static void scaleAdd(Matrix dest, Matrix a, Matrix b, double bFactor) {	
+		dest.checkSameShape(a);
+		dest.checkSameShape(b);
+		int len=dest.data.length;
+		for (int i=0; i<len; i++) {
+			dest.data[i]=a.data[i]+(bFactor*b.data[i]);
+		}
+	}
+	
 	public void add2(Matrix a, Matrix b) {
 		checkSameShape(a);
 		checkSameShape(b);
