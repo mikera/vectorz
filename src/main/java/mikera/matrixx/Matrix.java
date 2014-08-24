@@ -478,6 +478,11 @@ public final class Matrix extends ADenseArrayMatrix {
 		checkSameShape(m);
 		DoubleArrays.addMultiple(data,m.data,factor);
 	}
+	
+	public void setMultiple(Matrix m, double factor) {
+		checkSameShape(m);
+		DoubleArrays.scaleCopy(data,m.data,factor);
+	}
 
 	@Override
 	public void add(AMatrix m) {
@@ -512,7 +517,14 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public static void add(Matrix dest, Matrix a, Matrix b) {
+		dest.checkSameShape(a);
+		dest.checkSameShape(b);
 		DoubleArrays.addResult(dest.data, a.data, b.data);
+	}
+	
+	public static void scale(Matrix dest, Matrix src, double factor) {
+		dest.checkSameShape(src);
+		dest.setMultiple(src, factor);
 	}
 	
 	public void add2(Matrix a, Matrix b) {

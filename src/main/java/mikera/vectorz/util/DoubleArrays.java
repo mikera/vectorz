@@ -576,4 +576,11 @@ public final class DoubleArrays {
 		}
 	}
 
+	public static void scaleCopy(double[] dest, double[] src, double factor) {
+		int len=dest.length;
+		for (int i=0; i<len; i++) {
+			dest[i]=src[i]*factor;
+		}
+	}
+
 }
