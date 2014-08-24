@@ -73,7 +73,7 @@ public final class ZeroVector extends ASparseVector {
 	 * @param arraySize
 	 * @return
 	 */
-	public static AVector create(INDArray array) {
+	public static ZeroVector create(INDArray array) {
 		int n = Vectorz.safeLongToInt(array.elementCount());
 		return ZeroVector.create(n);
 	}
