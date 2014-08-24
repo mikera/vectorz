@@ -44,6 +44,13 @@ public final class Matrix extends ADenseArrayMatrix {
 	public static Matrix create(int rowCount, int columnCount) {
 		return new Matrix(rowCount, columnCount);
 	}
+	
+	public static Matrix create(int... shape) {
+		int dims=shape.length;
+		if (dims!=2) throw new IllegalArgumentException("Cannot create Matrix with dimensionality: "+dims);
+		return create(shape[0],shape[1]);
+	}
+
 
 	public static Matrix create(AMatrix m) {
 		return new Matrix(m.rowCount(), m.columnCount(), m.toDoubleArray());
@@ -85,7 +92,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		return Matrix.wrap(rows, cols, m.toDoubleArray());
 	}
 
-	public static Matrix create(Object... rowVectors) {
+	public static Matrix createFromRows(Object... rowVectors) {
 		List<AVector> vs = new ArrayList<AVector>();
 		for (Object o : rowVectors) {
 			vs.add(Vectorz.create(o));
