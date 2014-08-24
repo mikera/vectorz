@@ -111,8 +111,16 @@ public class TestArrays {
 	public void testAdd(INDArray a) {
 		INDArray b=TestingUtils.createRandomLike(a, 16786);
 		INDArray r=a.addCopy(b);
+
+		double[] adata=a.getElements();
+		double[] bdata=b.getElements();
+		double[] rdata=r.getElements();
+		for (int i=0; i<adata.length; i++) {
+			assertTrue(rdata[i]==adata[i]+bdata[i]);
+		}
+		
 		b.add(a);
-		assertEquals(r,b);
+		assertEquals(r,b);	
 	}
 	
 	private void testSub(INDArray a) {
