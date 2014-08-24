@@ -18,6 +18,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
+import mikera.vectorz.TestingUtils;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -108,16 +109,10 @@ public class TestArrays {
 	}
 	
 	public void testAdd(INDArray a) {
-		INDArray v2=a.addCopy(Scalar.create(-1.0));
-		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
-		if (!v2.epsilonEquals(a,1.1)) {
-			// System.out.println(a.getClass());
-			fail(v2 + " not equal to original " + a);
-		}
-		
-		if (!a.isFullyMutable()) return;
-		INDArray v = a.exactClone();
-		v.add(1.0);
+		INDArray b=TestingUtils.createRandomLike(a, 16786);
+		INDArray r=a.addCopy(b);
+		b.add(a);
+		assertEquals(r,b);
 	}
 	
 	private void testSub(INDArray a) {
