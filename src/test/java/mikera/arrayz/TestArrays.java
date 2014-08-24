@@ -111,7 +111,8 @@ public class TestArrays {
 	public void testAdd(INDArray a) {
 		INDArray b=TestingUtils.createRandomLike(a, 16786);
 		INDArray r=a.addCopy(b);
-
+		assertTrue(r.isSameShape(a));
+		
 		double[] adata=a.getElements();
 		double[] bdata=b.getElements();
 		double[] rdata=r.getElements();
@@ -124,17 +125,20 @@ public class TestArrays {
 	}
 	
 	private void testSub(INDArray a) {
-		INDArray v2=a.subCopy(Scalar.create(-1.0));
-		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
-		assertTrue(v2.epsilonEquals(a,1.1));
+		INDArray b=TestingUtils.createRandomLike(a, 16786);
+		INDArray r=a.subCopy(b);
+		assertTrue(r.isSameShape(a));
 		
-		if (!a.isFullyMutable()) return;
-		INDArray v = a.exactClone();
-		v.sub(1.0);
-		if (!v.epsilonEquals(a,1.1)) {
-			// System.out.println(a.getClass());
-			fail(v + " not equal to original " + a);
-		}	
+		double[] adata=a.getElements();
+		double[] bdata=b.getElements();
+		double[] rdata=r.getElements();
+		for (int i=0; i<adata.length; i++) {
+			assertTrue(rdata[i]==adata[i]-bdata[i]);
+		}
+		
+		b.sub(a);
+		b.negate();
+		assertEquals(r,b);		
 	}
 
 
