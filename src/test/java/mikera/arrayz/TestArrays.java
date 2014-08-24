@@ -144,13 +144,9 @@ public class TestArrays {
 
 	private void testAsVector(INDArray a) {
 		AVector v = a.asVector();
-		int n=v.length();
-		assertTrue(n >= 0);
 		assertEquals(a.elementCount(), v.length());
-		assertEquals(a.elementSum(), v.elementSum(),0.0001);
-		if (n>0) assertEquals(a.elementMax(), v.elementMax(),0.0);
-		if (n>0) assertEquals(a.elementMin(), v.elementMin(),0.0);
-		
+		assertEquals(a.elementSum(), v.elementSum(),0.00000001);
+
 		if (a.isMutable() && (v.length() > 0)) {
 			assertTrue(v.isMutable());
 			// assertTrue((a==v)||(v.isView())); not always...
@@ -165,7 +161,7 @@ public class TestArrays {
 			}
 		}
 		
-		assertEquals(a.toArray().asVector(),a.asVector());
+		assertEquals(Vector.create(a.getElements()),v);
 	}
 
 	private void testToArray(INDArray a) {
