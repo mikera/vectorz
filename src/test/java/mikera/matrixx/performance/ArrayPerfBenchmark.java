@@ -3,9 +3,6 @@ package mikera.matrixx.performance;
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
-import mikera.matrixx.Matrix;
-import mikera.matrixx.Matrixx;
-import mikera.matrixx.algo.Multiplications;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Vector;
