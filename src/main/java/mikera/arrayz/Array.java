@@ -57,7 +57,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 		this(dims, shape, IntArrays.calcStrides(shape), data);
 	}
 	
-	public static INDArray wrap(double[] data, int[] shape) {
+	public static INDArray wrap(double[] data, int... shape) {
 		long ec=IntArrays.arrayProduct(shape);
 		if (data.length!=ec) throw new IllegalArgumentException("Data array does not have correct number of elements, expected: "+ec);
 		return new Array(shape.length,shape,data);
@@ -390,7 +390,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	 * @param columns
 	 * @return
 	 */
-	public static Array createFromVector(AVector a, int[] shape) {
+	public static Array createFromVector(AVector a, int... shape) {
 		Array m = Array.newArray(shape);
 		int n=(int)Math.min(m.elementCount(), a.length());
 		a.copyTo(0, m.data, 0, n);
