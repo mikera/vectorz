@@ -612,6 +612,7 @@ public class TestArrays {
 	
 	private void testIndexedAccess(INDArray a) {
 		if ((a.elementCount() <= 1)) return;
+		int dims=a.dimensionality();
 
 		// 0d indexed access
 		try {
@@ -646,6 +647,8 @@ public class TestArrays {
 				fail("1d set should fail for array with shape: "+Arrays.toString(a.getShape()));
 			} catch (Throwable t) { /* OK */ }
 		}
+		
+		assertEquals(a.getElements()[0],a.get(new int[dims]),0.0);
 	}
 
 	public void testArray(INDArray a) {
