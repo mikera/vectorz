@@ -76,14 +76,14 @@ public class Linear {
      * Returns null if A is square and equations don't have solutions.
 	 * 
 	 * @param A
-	 * @param b
+	 * @param B
 	 * @return
 	 */
-	public static AMatrix solve(AMatrix A, AMatrix b) {
+	public static AMatrix solve(AMatrix A, AMatrix B) {
 		if (A.isSquare()) 
-		    return solveSquare(A,b);
+		    return solveSquare(A,B);
 		else
-		    return solveLeastSquares(A, b);
+		    return solveLeastSquares(A, B);
 	}
 	
 	/**
