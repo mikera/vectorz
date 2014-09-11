@@ -30,7 +30,7 @@ public class Linear {
         QRHouseColSolver solver = new QRHouseColSolver();
         solver.setA(A);
 //        create AMatrix from AVector
-        AMatrix B = ColumnMatrix.wrap(b);
+        AMatrix B = b.asColumnMatrix();
         AMatrix X = solver.solve(B);
 //        convert AMatrix into AVector and return
         return X.asVector();
