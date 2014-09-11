@@ -100,7 +100,7 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	}
 	
 	@Override
-	public AVector getColumn(int j) {
+	public AVector getColumnView(int j) {
 		int end=Math.min(j+1, rows);
 		return ArraySubVector.wrap(data, internalIndex(0,j), end).join(Vectorz.createZeroVector(rows-end));
 	}
