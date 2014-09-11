@@ -727,6 +727,10 @@ public class TestVectors {
 		assertEquals(len,tl.size());
 	}
 	
+	private void testAsColumnMatrix(AVector v) {
+		assertEquals(v,v.asColumnMatrix().getColumn(0));
+	}
+	
 	private void testMultiply(AVector v) {
 		if (!v.isFullyMutable()) return;
 		
@@ -842,6 +846,7 @@ public class TestVectors {
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
 		testImmutable(v);
+		testAsColumnMatrix(v);
 		
 		doNonDegenerateTests(v);
 		

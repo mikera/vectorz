@@ -6,7 +6,9 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -273,6 +275,11 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	public double[] asDoubleArray() {
 		if (isPackedArray()) return getArray();
 		return null;
+	}
+	
+	@Override
+	public AStridedMatrix asColumnMatrix() {
+		return Matrixx.wrapStrided(data, length, 1, getArrayOffset(), getStride(), 0);
 	}
 
 	@Override
