@@ -8,6 +8,7 @@ import java.util.List;
 import mikera.arrayz.INDArray;
 import mikera.indexz.AIndex;
 import mikera.indexz.Index;
+import mikera.matrixx.Matrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.util.DoubleArrays;
@@ -575,6 +576,11 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public double[] asDoubleArray() {
 		return data;
+	}
+	
+	@Override
+	public Matrix asColumnMatrix() {
+		return Matrix.wrap(length, 1, data);
 	}
 	
 	@Override
