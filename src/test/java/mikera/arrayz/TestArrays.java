@@ -649,6 +649,12 @@ public class TestArrays {
 		}
 		
 		assertEquals(a.getElements()[0],a.get(new int[dims]),0.0);
+		
+		try {
+			int[] ix=new int[dims];
+			ix[0]=-1;
+			fail("Should get exception on invalid index");
+		} catch (Throwable t) { /* OK */ }
 	}
 
 	public void testArray(INDArray a) {
