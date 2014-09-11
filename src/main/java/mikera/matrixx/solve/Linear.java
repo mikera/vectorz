@@ -99,7 +99,7 @@ public class Linear {
 	    LUSolver solver = new LUSolver();
 	    solver.setA(A);
 //      create AMatrix from AVector
-	    AMatrix B = ColumnMatrix.wrap(b);
+	    AMatrix B = b.asColumnMatrix();
 	    AMatrix X = solver.solve(B);
 //      if no solution
 	    if(X == null)
