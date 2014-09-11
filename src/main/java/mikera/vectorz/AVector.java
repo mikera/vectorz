@@ -16,6 +16,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BroadcastVectorMatrix;
+import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.randomz.Hash;
 import mikera.util.Maths;
@@ -2253,5 +2254,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			}
 		}
 		return false;
+	}
+
+	public AMatrix asColumnMatrix() {
+		return ColumnMatrix.wrap(this);
 	}
 }
