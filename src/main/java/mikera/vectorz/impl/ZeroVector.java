@@ -6,6 +6,7 @@ import java.util.Iterator;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
@@ -409,6 +410,11 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public double[] toDoubleArray() {
 		return new double[length];
+	}
+	
+	@Override
+	public AMatrix asColumnMatrix() {
+		return Matrixx.createImmutableZeroMatrix(length, 1);
 	}
 
 	@Override
