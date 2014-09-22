@@ -7,6 +7,7 @@ import org.junit.Test;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.Scalar;
+import mikera.vectorz.impl.RangeVector;
 
 public class TestBigSparse {
 
@@ -86,6 +87,9 @@ public class TestBigSparse {
 		
 		m.set(Scalar.create(3));
 		assertEquals(3,m.get(10,10),0.0);
+		
+		m.set(RangeVector.create(0,300));
+		assertEquals(17,m.get(12,17),0.0);
 
 	}
 
