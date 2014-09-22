@@ -106,18 +106,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override 
 	public void set(double value) {
-		throw new VectorzException("0D set not supported on matrix!");
+		fill(value);
 	}
 	
 	@Override 
 	public void fill(double value) {
-		int rc = rowCount();
-		int cc = columnCount();
-		for (int row = 0; row < rc; row++) {
-			for (int column = 0; column < cc; column++) {
-				unsafeSet(row,column,value);
-			}
-		}	
+		int len=rowCount();
+		for (int i = 0; i < len; i++) {
+			getRowView(i).fill(value);
+		}
 	}
 	
 	/**

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.vectorz.Scalar;
 
 public class TestBigSparse {
 
@@ -75,6 +76,17 @@ public class TestBigSparse {
 		
 		assertEquals(m,m.innerProduct(m));
 		assertEquals(m.rowCount(),m.nonZeroCount());
+	}
+	
+	
+	@Test public void testSparseSet() {
+		SparseRowMatrix m=SparseRowMatrix.create(300, 300);
+		m.fill(2);
+		assertEquals(2,m.get(10,10),0.0);
+		
+		m.set(Scalar.create(3));
+		assertEquals(3,m.get(10,10),0.0);
+
 	}
 
 }

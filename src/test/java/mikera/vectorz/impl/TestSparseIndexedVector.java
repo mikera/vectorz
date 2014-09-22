@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import static org.junit.Assert.*;
 import mikera.indexz.Index;
+import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -67,4 +68,5 @@ public class TestSparseIndexedVector {
 		assertEquals(Vector.of(0,0,0,0,0,3,0,18,0,0),v3);
 
 	}
+
 }
