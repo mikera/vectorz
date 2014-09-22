@@ -6,7 +6,6 @@ import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
