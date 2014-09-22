@@ -142,7 +142,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 			v = v.sparseClone();
 		}
 		unsafeSetVec(i, v);
-		v.set(j, value);
+		v.unsafeSet(j, value);
 	}
 
 	@Override
@@ -163,8 +163,17 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 	
 	@Override
+	public void set(AMatrix a) {
+		checkSameShape(a);
+		for (int i=0; i<rows; i++) {
+			setRow(i,a.getRow(i));
+		}
+	}
+	
+	@Override
 	public void addAt(int i, int j, double d) {
-		AVector v=getRow(i);
+		if (d==0.0) return;
+		AVector v=unsafeGetVec(i);
 		if (v.isFullyMutable()) {
 			v.addAt(j, d);
 		} else {
