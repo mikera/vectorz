@@ -601,7 +601,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	public void set(Object o) {
 		if (o instanceof INDArray) {
-			set(o);
+			set((INDArray)o);
 		} else if (o instanceof Number) {
 			set(((Number) o).doubleValue());
 		} else {
