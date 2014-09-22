@@ -1,7 +1,6 @@
 package mikera.matrixx.solve;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.solve.impl.lu.LUSolver;
 import mikera.matrixx.solve.impl.qr.QRHouseColSolver;
 import mikera.vectorz.AVector;
