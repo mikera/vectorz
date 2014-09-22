@@ -90,6 +90,12 @@ public class TestBigSparse {
 		
 		m.set(RangeVector.create(0,300));
 		assertEquals(17,m.get(12,17),0.0);
+		
+		m.set(Scalar.create(1).broadcast(300,300));
+		assertEquals(1,m.get(10,10),0.0);
+		
+		m.set(RangeVector.create(0,300).broadcast(300,300));
+		assertEquals(19,m.get(12,19),0.0);
 
 	}
 
