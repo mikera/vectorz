@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
@@ -28,6 +30,7 @@ public class TestSparseVectors {
 		v.set(1,1);
 		assertEquals(1.0,v.elementSum(),0.0);
 		assertEquals(1,v.nonZeroCount());
+        assertTrue(Arrays.equals(new int[]{1},v.nonZeroIndices()));
 		
 	}
 }

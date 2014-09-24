@@ -95,10 +95,12 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 
     @Override
     public int[] nonZeroIndices() {
+        double[] data=internalData();
+        Index index=internalIndex();
         int n=index.length();
         ArrayList<Integer> nzIndices=new ArrayList(n);
         for (int i=0; i<n; i++) {
-            if (this.data[i]!=0) {
+            if (data[i]!=0) {
                 nzIndices.add(index.get(i));
             }
         }
