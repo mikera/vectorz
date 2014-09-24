@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
@@ -91,21 +92,18 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		int offset=v.getArrayOffset();
 		return dotProduct(array,offset);
 	}
-	
-	@Override
-	public int[] nonZeroIndices() {
-		int n=(int)nonZeroCount();
-		double[] data=internalData();
-		Index index=internalIndex();
-		int[] ret=new int[n];
-		int di=0;
-		for (int i=0; i<data.length; i++) {
-			if (data[i]!=0.0) ret[di++]=index.get(i);
-		}
-		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
-		return ret;
-	}
-	
+
+    @Override
+    public int[] nonZeroIndices() {
+        int n=index.length();
+        ArrayList<Integer> nzIndices=new ArrayList(n);
+        for (int i=0; i<n; i++) {
+            if (this.data[i]!=0) {
+                nzIndices.add(index.get(i));
+            }
+        }
+        return IntArrays.create(nzIndices);
+    }	
 	
 	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
