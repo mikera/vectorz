@@ -171,6 +171,11 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 	
 	@Override
+	public void setRow(int i, AVector v) {
+		data[i]=v.copy();
+	}
+	
+	@Override
 	public void addAt(int i, int j, double d) {
 		if (d==0.0) return;
 		AVector v=unsafeGetVec(i);
