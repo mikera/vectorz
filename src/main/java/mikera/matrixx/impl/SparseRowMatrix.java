@@ -195,6 +195,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		AVector v = unsafeGetVec(i);
 		if (v == null) {
 			AVector nv=SparseIndexedVector.createLength(cols);
+            unsafeSetVec(i, nv);
 			return nv;
 		}
 		if (v.isFullyMutable()) return v;
@@ -245,7 +246,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
 		if (vec.length() != cols)
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShape(vec));
-		unsafeSetVec(i, vec);
+        unsafeSetVec(i, vec);
 	}
 
 	@Override
