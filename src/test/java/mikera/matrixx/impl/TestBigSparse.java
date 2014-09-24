@@ -95,13 +95,14 @@ public class TestBigSparse {
 		m.set((AMatrix)(Scalar.create(1).broadcast(300,300)));
 		assertEquals(1,m.get(10,10),0.0);
 		
+		m.set((AMatrix)(Scalar.create(2).broadcast(300,300)));
+		assertEquals(2,m.get(299,299),0.0);
+		
 		m.set(RangeVector.create(0,300).broadcast(300,300));
 		assertEquals(19,m.get(12,19),0.0);
 		
 		m.setRow(10, RepeatedElementVector.create(300, 7));
 		assertEquals(7,m.get(10,11),0.0);
-		
-
 	}
 
 }
