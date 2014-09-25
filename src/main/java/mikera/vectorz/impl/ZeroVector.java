@@ -247,6 +247,11 @@ public final class ZeroVector extends ASparseVector {
 	public long nonZeroCount() {
 		return 0;
 	}
+	
+	@Override
+	public double[] nonZeroValues() {
+		return DoubleArrays.EMPTY;
+	}
 
 	@Override
 	public boolean isZero() {

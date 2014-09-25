@@ -120,6 +120,14 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 		return wrap(length,Index.wrap(indexes),vals); 
 	}
 	
+	public static AVector create(ASparseVector source) {
+		int length = source.length();
+		if (length==0) return Vector0.INSTANCE;
+		int[] indexes=source.nonZeroIndices();
+		double[] vals=source.nonZeroValues();
+		return wrap(length,Index.wrap(indexes),vals); 
+	}
+	
 	/** Creates a SparseIndexedVector from a row of an existing matrix */
 	public static AVector createFromRow(AMatrix m, int row) {
 		if (m instanceof AVectorMatrix) return create(m.getRow(row));
@@ -285,7 +293,7 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	protected double[] nonZeroValues() {
+	public double[] nonZeroValues() {
 		return DoubleArrays.copyOf(data);
 	}
 	

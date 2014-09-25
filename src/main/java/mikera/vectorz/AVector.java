@@ -191,7 +191,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
-	protected double[] nonZeroValues() {
+	/**
+	 * Return an double array specifying the values in this vector which are non-zero
+	 * 
+	 * @return
+	 */
+	public double[] nonZeroValues() {
 		int len=length();
 		int n=(int)nonZeroCount();
 		if (n==0) return DoubleArrays.EMPTY;
@@ -2225,6 +2230,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return ind;
 	}
 	
+	/**
+	 * Return an int array specifying the positions in this vector which are non-zero
+	 * 
+	 * @return
+	 */
 	public int[] nonZeroIndices() {
 		int n=(int)nonZeroCount();
 		int[] ret=new int[n];
