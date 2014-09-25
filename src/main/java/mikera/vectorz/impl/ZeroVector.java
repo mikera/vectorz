@@ -373,7 +373,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return Index.EMPTY;
 	}
 

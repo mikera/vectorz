@@ -2211,7 +2211,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * 
 	 * @return
 	 */
-	public Index nonSparseIndexes(){
+	public Index nonSparseIndex(){
 		int n=(int)nonZeroCount();
 		int length=length();
 		Index ind=Index.createLength(n);

@@ -31,11 +31,8 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	 */
 	public abstract AVector nonSparseValues();
 	
-	/**
-	 * Returns the non-sparse indexes
-	 */
 	@Override
-	public abstract Index nonSparseIndexes();
+	public abstract Index nonSparseIndex();
 	
 	/**
 	 * Returns true iff the sparse vector contains the index i 
@@ -71,7 +68,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	@Override
 	public double dotProduct(AVector v) {
 		double result=0.0;
-		Index ni=nonSparseIndexes();
+		Index ni=nonSparseIndex();
 		for (int i=0; i<ni.length(); i++) {
 			int ii=ni.get(i);
 			result+=unsafeGet(ii)*v.unsafeGet(ii);
@@ -109,13 +106,13 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		if (v==this) return true;
 		if (v.length!=length) return false;
 		
-		Index ni=nonSparseIndexes();
+		Index ni=nonSparseIndex();
 		for (int i=0; i<ni.length(); i++) {
 			int ii=ni.get(i);
 			if (unsafeGet(ii)!=v.unsafeGet(ii)) return false;
 		}
 		
-		Index ri=v.nonSparseIndexes();
+		Index ri=v.nonSparseIndex();
 		for (int i=0; i<ri.length(); i++) {
 			int ii=ri.get(i);
 			if (unsafeGet(ii)!=v.unsafeGet(ii)) return false;
@@ -141,7 +138,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 
 	@Override
 	public boolean hasUncountable() {
-		Index ni = nonSparseIndexes();
+		Index ni = nonSparseIndex();
 		for(int i=0; i<ni.length(); i++) {
 			int ii = ni.get(i);
 			if (Double.isNaN(unsafeGet(ii)) || Double.isInfinite(unsafeGet(ii))) {
@@ -157,7 +154,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      */
     @Override
     public double elementPowSum(double p) {
-        Index ni = nonSparseIndexes();
+        Index ni = nonSparseIndex();
         double result = 0;
         for(int i=0; i<ni.length(); i++) {
             int ii = ni.get(i);
@@ -172,7 +169,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      */
     @Override
     public double elementAbsPowSum(double p) {
-        Index ni = nonSparseIndexes();
+        Index ni = nonSparseIndex();
         double result = 0;
         for(int i=0; i<ni.length(); i++) {
             int ii = ni.get(i);

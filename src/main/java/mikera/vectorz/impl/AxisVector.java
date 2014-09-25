@@ -299,7 +299,7 @@ public final class AxisVector extends ASingleElementVector {
 	}
 
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return Index.of(axis());
 	}
 	

@@ -115,7 +115,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public static SparseIndexedVector create(ASparseVector source) {
 		int length = source.length();
 		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
-		Index ixs=source.nonSparseIndexes();
+		Index ixs=source.nonSparseIndex();
 		int n=ixs.length();
 		double[] vals=new double[n];
 		for (int i=0; i<n; i++) {
@@ -127,7 +127,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public static SparseIndexedVector create(SparseHashedVector source) {
 		int length = source.length();
 		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
-		Index ixs=source.nonSparseIndexes();
+		Index ixs=source.nonSparseIndex();
 		int n=ixs.length();
 		double[] vals=new double[n];
 		for (int i=0; i<n; i++) {
@@ -450,7 +450,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return index;
 	}
 
@@ -523,7 +523,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		if (v instanceof ASparseIndexedVector) {
 			includeIndices((ASparseIndexedVector)v);
 		} else {
-			includeIndices(v.nonSparseIndexes());
+			includeIndices(v.nonSparseIndex());
 		}
 	}
 	
