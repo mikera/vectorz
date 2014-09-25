@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.ArrayList;
+
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
@@ -376,23 +378,36 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		if (v instanceof ADenseArrayVector) {
 			set((ADenseArrayVector)v);
 			return;
-		}
-		double[] data=this.data;
-		int nz=(int) v.nonZeroCount();
-		if (nz!=data.length) {
-			data=new double[nz];
-			this.data=data;
-			index=Index.createLength(nz);
-		}
-		int di=0;
-		for (int i=0; i<length; i++) {
-			double val=v.unsafeGet(i);
-			if (val!=0) {
-				data[di]=val;
-				index.set(di, i);
-				di++;
-			}
-		}
+		} else if (v instanceof ASparseVector) {
+            int[] nzi = v.nonZeroIndices();
+            index=Index.wrap(nzi);
+            if (nzi.length!=data.length) {
+                data=new double[nzi.length];
+            }
+            for (int i=0; i<index.length(); i++) {
+                double val=v.unsafeGet(index.get(i));
+                data[i]=val;
+            }
+            return;
+        } else {
+            double[] data=this.data;
+            int nz=(int) v.nonZeroCount();
+            if (nz!=data.length) {
+                data=new double[nz];
+                this.data=data;
+                index=Index.createLength(nz);
+            }
+            
+            int di=0;
+            for (int i=0; i<nz; i++) {
+                double val=v.unsafeGet(i);
+                if (val!=0) {
+                    data[di]=val;
+                    index.set(di, i);
+                    di++;
+                }
+            }
+        }
 	}
 	
 	@Override
