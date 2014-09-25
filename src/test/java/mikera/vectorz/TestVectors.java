@@ -623,7 +623,13 @@ public class TestVectors {
 	private void testSparseOps(AVector v) {
 		long nz=v.nonZeroCount();
 		assertTrue(nz<=v.nonSparseIndex().length());
-		assertEquals(nz,v.nonZeroValues().length);
+		
+		double[] nzv=v.nonZeroValues();
+		assertEquals(nz,nzv.length);
+		for (double d:nzv) {
+			assertNotEquals(0.0, d);
+		}
+		
 		assertEquals(nz,v.nonZeroIndices().length);
 		
 		AVector sc=v.sparseClone();
