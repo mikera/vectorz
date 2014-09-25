@@ -309,6 +309,11 @@ public final class AxisVector extends ASingleElementVector {
 	}
 	
 	@Override
+	public double[] nonZeroValues() {
+		return new double[] {1.0};
+	}
+	
+	@Override
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
