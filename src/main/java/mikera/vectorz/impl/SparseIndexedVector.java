@@ -1,7 +1,5 @@
 package mikera.vectorz.impl;
 
-import java.util.ArrayList;
-
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
