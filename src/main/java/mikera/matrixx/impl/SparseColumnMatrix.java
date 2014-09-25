@@ -192,6 +192,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		AVector v = unsafeGetVec(i);
 		if (v == null) {
 			AVector nv=SparseIndexedVector.createLength(rows);
+            unsafeSetVec(i, nv);
 			return nv;
 		}
 		if (v.isFullyMutable()) return v;
