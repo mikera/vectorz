@@ -36,5 +36,10 @@ public class TestSparseVectors {
         SparseIndexedVector w=v.clone();
         v.add(ZeroVector.create(10));
         assertEquals(w, v);
+
+        SparseIndexedVector empty=SparseIndexedVector.createLength(3);
+        SparseIndexedVector nonEmpty=SparseIndexedVector.create(Vector.of(1,0,2));
+        empty.add(nonEmpty);
+        assertEquals(Vector.of(1,0,2), empty);
 	}
 }
