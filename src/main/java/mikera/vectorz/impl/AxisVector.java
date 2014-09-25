@@ -47,6 +47,11 @@ public final class AxisVector extends ASingleElementVector {
 		return 1.0;
 	}
 	
+	@Override
+	public AVector normaliseCopy() {
+		return this;
+	}
+	
 	@Override 
 	public void square() {
 		// no effect

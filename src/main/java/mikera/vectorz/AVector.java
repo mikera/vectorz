@@ -1201,7 +1201,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public AVector normaliseCopy() {
 		double d=magnitude();
-		if (d>0) return multiplyCopy(1.0/d);
+		if (d>0.0) return multiplyCopy(1.0/d);
 		return copy();
 	}
 	

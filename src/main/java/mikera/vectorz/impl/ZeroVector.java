@@ -186,6 +186,11 @@ public final class ZeroVector extends ASparseVector {
 	public ZeroVector multiplyCopy(double factor) {
 		return this;
 	}
+	
+	@Override
+	public AVector normaliseCopy() {
+		return this;
+	}
 
 	@Override
 	public ZeroVector divideCopy(AVector a) {
