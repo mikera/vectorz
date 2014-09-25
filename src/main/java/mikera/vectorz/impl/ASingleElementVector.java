@@ -54,7 +54,7 @@ public abstract class ASingleElementVector extends ASparseVector {
 	}
 
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return Index.of(index);
 	}
 	

@@ -40,16 +40,16 @@ public class TestSparseIndexedVector {
 	
 	@Test public void testZeroHandling() {
 		SparseIndexedVector sv=SparseIndexedVector.create(10, Index.of(1,3,6), Vector.of(1.0,2.0,3.0));
-		assertEquals(3,sv.nonSparseIndexes().length());
+		assertEquals(3,sv.nonSparseIndex().length());
 		assertEquals(3,sv.nonZeroCount());
 		
 		sv.set(1,0.0);
-		assertEquals(3,sv.nonSparseIndexes().length());
+		assertEquals(3,sv.nonSparseIndex().length());
 		assertEquals(2,sv.nonZeroCount());
 		
 		SparseIndexedVector sv2=SparseIndexedVector.createLength(sv.length());
 		sv2.set(sv);
-		assertEquals(2,sv2.nonSparseIndexes().length());
+		assertEquals(2,sv2.nonSparseIndex().length());
 	}
 	
 	@Test public void testAddProduct() {

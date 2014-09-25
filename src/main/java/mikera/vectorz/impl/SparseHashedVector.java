@@ -435,7 +435,7 @@ public class SparseHashedVector extends ASparseVector {
 	public Vector nonSparseValues() {
 		int n=hash.size();
 		double[] vs=new double[n];
-		Index index=nonSparseIndexes();
+		Index index=nonSparseIndex();
 		for (int i=0; i<n; i++) {
 			vs[i]=hash.get(index.get(i));
 		}
@@ -455,7 +455,7 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		int n=hash.size();
 		int[] in=new int[n];
 		int di=0;
@@ -474,7 +474,7 @@ public class SparseHashedVector extends ASparseVector {
 
 	@Override
 	public void add(ASparseVector v) {
-		Index ind=v.nonSparseIndexes();
+		Index ind=v.nonSparseIndex();
 		int n=ind.length();
 		for (int i=0; i<n; i++) {
 			int ii=ind.get(i);

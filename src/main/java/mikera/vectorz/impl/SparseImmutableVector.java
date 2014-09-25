@@ -290,7 +290,7 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return index;
 	}
 
