@@ -649,6 +649,7 @@ public class TestVectors {
 		
 		AVector n=v.normaliseCopy();
 		assertEquals(1.0,n.magnitude(),0.0001);
+		assertTrue(n.isUnitLengthVector());
 		
 		assertTrue(v2.epsilonEquals(v)); // compared normalised versions
 		assertEquals(d,nresult,0.0000001);

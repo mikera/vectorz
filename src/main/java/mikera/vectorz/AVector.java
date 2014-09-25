@@ -1703,8 +1703,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public boolean isUnitLengthVector() {
+		return isUnitLengthVector(Vectorz.TEST_EPSILON);
+	}
+	
+	public boolean isUnitLengthVector(double tolerance) {
 		double mag=magnitudeSquared();
-		return Math.abs(mag-1.0)<Vectorz.TEST_EPSILON;
+		return Math.abs(mag-1.0)<tolerance;
 	}
 	
 	@Override
