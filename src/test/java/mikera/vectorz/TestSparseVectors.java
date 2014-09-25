@@ -5,6 +5,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
+import mikera.vectorz.impl.ZeroVector;
 
 import org.junit.Test;
 
@@ -31,6 +32,9 @@ public class TestSparseVectors {
 		assertEquals(1.0,v.elementSum(),0.0);
 		assertEquals(1,v.nonZeroCount());
         assertTrue(Arrays.equals(new int[]{1},v.nonZeroIndices()));
-		
+
+        SparseIndexedVector w=v.clone();
+        v.add(ZeroVector.create(10));
+        assertEquals(w, v);
 	}
 }

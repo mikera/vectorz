@@ -161,6 +161,9 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	
 	@Override
 	public void add(ASparseVector v) {
+        if (v instanceof ZeroVector) {
+            return;
+        }
 		includeIndices(v);	
 		for (int i=0; i<data.length; i++) {
 			data[i]+=v.unsafeGet(index.get(i));
