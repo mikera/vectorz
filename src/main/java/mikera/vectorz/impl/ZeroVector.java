@@ -19,6 +19,9 @@ import mikera.vectorz.util.IntArrays;
 /**
  * Specialised immutable vector containing nothing but zeros.
  * 
+ * This enables significant optimisations on operations involving zeros and
+ * composite arrays that have zero areas.
+ * 
  * Must have length 1 or more: use Vector0 instead for immutable length 0
  * vectors.
  * 
@@ -43,6 +46,12 @@ public final class ZeroVector extends ASparseVector {
 		super(dimensions);
 	}
 
+	/**
+	 * Create a ZeroVector with the specified number of dimensions
+	 * 
+	 * @param dimensions
+	 * @return
+	 */
 	public static ZeroVector create(int dimensions) {
 		if (dimensions <= 0)
 			throw new IllegalArgumentException("Can't create length "
