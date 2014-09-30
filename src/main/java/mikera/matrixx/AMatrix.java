@@ -1500,6 +1500,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	public void multiply (AVector v) {
+		int rc = rowCount();
+		for (int i = 0; i < rc; i++) {
+			getRowView(i).multiply(v);
+		}
+	}
+	
 	@Override
 	public void multiply(INDArray a) {
 		if (a instanceof AMatrix) {
