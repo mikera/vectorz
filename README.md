@@ -1,6 +1,6 @@
 ![Vectorz Logo](https://raw.github.com/wiki/mikera/vectorz/images/vectorz.png)
 
-Fast double-precision vector and matrix maths library for Java
+Fast double-precision vector and matrix maths library for Java, based around the concept of N-dimensional arrays.
 
 This library is designed for use in games, simulations, raytracers, machine learning etc. 
 where fast vector maths is important. 
