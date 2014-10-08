@@ -44,13 +44,6 @@ public class TestMisc {
 
 		assertTrue(y.epsilonEquals(y2));
 	}
-	
-	@Test public void testMulRegression() {
-		Matrix22 a = new Matrix22 (0,0,-1,0);
-		Matrix b=new Matrix (new Matrix22(0,-1,-1,0));
-		
-		
-	}
 
 	@Test
 	public void test180RotationMatrix() {

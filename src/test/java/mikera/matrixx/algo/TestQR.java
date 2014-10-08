@@ -1,17 +1,15 @@
 package mikera.matrixx.algo;
 
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
-import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.IQRResult;
 import mikera.matrixx.decompose.QR;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
+
+import org.junit.Test;
 
 public class TestQR {
 	
