@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.IQRResult;
 import mikera.matrixx.decompose.QR;
@@ -21,6 +22,16 @@ public class TestQR {
 		IQRResult result = QR.decompose(a);
 		validateQR(a,result);
 	}
+	
+// TODO: fix this failing test, issue #69 in GitHub
+//	@Test
+//	public void testQR22Regression() {
+//		AMatrix a = new Matrix(Matrix22.create(0,0,-1,0));
+//		IQRResult result = QR.decompose(a);
+//		System.out.println(result.getQ());
+//		System.out.println(result.getR());
+//		validateQR(a,result);
+//	}
 	
 	@Test
 	public void testZero() {
