@@ -172,7 +172,7 @@ public class HouseholderQR implements QRDecomposition {
         minLength = Math.min(numRows,numCols);
         int maxLength = Math.max(numRows,numCols);
 
-        QR = A.copy().toMatrix();
+        QR = Matrix.create(A);
         u = new double[ maxLength ];
         v = new double[ maxLength ];
 
