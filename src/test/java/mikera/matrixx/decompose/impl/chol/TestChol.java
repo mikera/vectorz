@@ -18,9 +18,7 @@
 
 package mikera.matrixx.decompose.impl.chol;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -66,6 +64,20 @@ public class TestChol{
 
 //        EjmlUnitTests.assertEquals(L,foundL,1e-8);
         assertArrayEquals(L.getElements(),foundL.getElements(), 1e-8);
+    }
+    
+    @Test public void testDecomp() {
+    	double[][] data = 
+    		{{1, 2, 4}, 
+    		 {2, 13, 23},
+    		 {4, 23, 90}};
+    	
+        Matrix A = Matrix.create(data);
+        Matrix B=A.clone();
+        
+        ICholeskyResult ans = Cholesky.decompose(B);
+        assertNotNull(ans);
+        assertEquals(A,B);
     }
 
     @Test
