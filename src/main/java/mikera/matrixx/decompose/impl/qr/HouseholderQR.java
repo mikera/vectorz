@@ -184,10 +184,9 @@ public class HouseholderQR implements QRDecomposition {
             householder(j);
             updateA(j);
         }
+        
+        // if (error) return null; // TODO: figure out how to handle
 
-    //  if (error)
-    //      return null;
-    //  else
         return new QRResult(getQ(), getR());
     }
 
