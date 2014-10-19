@@ -3,6 +3,7 @@ package mikera.matrixx.algo;
 import static org.junit.Assert.assertTrue;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.decompose.IQRResult;
 import mikera.matrixx.decompose.QR;

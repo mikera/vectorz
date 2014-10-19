@@ -38,7 +38,7 @@ import mikera.matrixx.Matrix;
  * </p>
  *
  * <p>
- * For the most part this is a straight forward implementation.  To improve performance on large matrices a column is writen to an array and the order
+ * For the most part this is a straight forward implementation.  To improve performance on large matrices a column is written to an array and the order
  * of some of the loops has been changed.  This will degrade performance noticeably on small matrices.  Since
  * it is unlikely that the QR decomposition would be a bottle neck when small matrices are involved only
  * one implementation is provided.
@@ -113,7 +113,7 @@ public class HouseholderQR implements QRDecomposition {
     }
 
     /**
-     * Computes the Q matrix from the imformation stored in the QR matrix.  This
+     * Computes the Q matrix from the information stored in the QR matrix.  This
      * operation requires about 4(m<sup>2</sup>n-mn<sup>2</sup>+n<sup>3</sup>/3) flops.
      */
     protected AMatrix computeQ() {
@@ -194,7 +194,7 @@ public class HouseholderQR implements QRDecomposition {
     /**
      * <p>
      * Computes the householder vector "u" for the first column of submatrix j.  Note this is
-     * a specialized householder for this problem.  There is some protection against
+     * a specialised householder for this problem.  There is some protection against
      * overflow and underflow.
      * </p>
      * <p>
