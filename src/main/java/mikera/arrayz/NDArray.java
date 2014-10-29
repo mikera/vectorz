@@ -187,7 +187,6 @@ public final class NDArray extends BaseNDArray {
 		if ((dimension<0)||(dimension>=dimensions)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		if (dimension==0) return slice(index);
 		if (dimensions==2) {
-			if (dimension!=1) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 			return Vectorz.wrapStrided(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
 		return new NDArray(data,
