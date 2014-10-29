@@ -48,6 +48,13 @@ public class TestMatrix {
 	  assertEquals(t,b.addCopy(a));
   }
   
+  @Test
+  public void testColumnSlice() {
+	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
+	  assertEquals(Vector.of(1,3),m.slice(1,0));
+	  assertEquals(Vector.of(2,4),m.slice(1,1));
+  }
+  
   @Test 
   public void testSetColumn() {
 	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});

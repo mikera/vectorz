@@ -89,11 +89,14 @@ public class TestArrays {
 	}
 
 	private void testSlices(INDArray a) {
-		if ((a.elementCount() == 0) || (a.dimensionality() == 0)) return;
+		int dims=a.dimensionality();
+		if ((a.elementCount() == 0) || (dims == 0)) return;
 
 		INDArray sl = a.slice(0);
+		assertEquals(sl,a.slice(0,0));
+		
 		// assertTrue(sl.isView()); not always... damn contained vectors
-		assertTrue(sl.dimensionality() == (a.dimensionality() - 1));
+		assertTrue(sl.dimensionality() == (dims - 1));
 
 		if (a.isFullyMutable()) {
 			assert (sl.isFullyMutable());
