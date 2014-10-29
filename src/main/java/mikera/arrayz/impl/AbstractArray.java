@@ -1046,6 +1046,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return JoinedArray.join(this,a,dimension);
 	}
 	
+	public INDArray join(INDArray a) {
+		return JoinedArray.join(this,a,0);		
+	}
+	
 	@Override
 	public INDArray rotateView(int dimension, int shift) {
 		int dlen=getShape(dimension);

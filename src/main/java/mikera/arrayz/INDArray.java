@@ -305,6 +305,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray join(INDArray a, int dimension);
 
 	/**
+	 * Joins an array with another array along the major dimension
+	 */
+	public INDArray join(INDArray a);
+	
+	/**
 	 * Returns a slice view of this array along the specified dimension
 	 */
 	public INDArray slice(int dimension, int index);
