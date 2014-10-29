@@ -169,11 +169,7 @@ public final class NDArray extends BaseNDArray {
 			return new ArrayIndexScalar(data,offset+majorSlice*getStride(0));
 		} else if (dimensions==2) {
 			int st=stride[1];
-			if (st==1) {
-				return Vectorz.wrap(data, offset+majorSlice*getStride(0), getShape(1));
-			} else {
-				return Vectorz.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
-			}
+			return Vectorz.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
 		} else {
 			return new NDArray(data,
 					offset+majorSlice*getStride(0),
@@ -187,6 +183,7 @@ public final class NDArray extends BaseNDArray {
 		if ((dimension<0)||(dimension>=dimensions)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		if (dimension==0) return slice(index);
 		if (dimensions==2) {
+			// note: dimension must be 1 if we are here
 			return Vectorz.wrapStrided(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
 		return new NDArray(data,
