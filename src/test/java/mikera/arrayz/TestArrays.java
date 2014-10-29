@@ -555,7 +555,7 @@ public class TestArrays {
 		double ess=m.elementSquaredSum();
 		
 		assertEquals(es,m.asVector().elementSum(),0.0001);
-		assertEquals(es,m.elementPowSum(1.0),0.0001);
+		assertEquals(m.getClass().toString(),es,m.elementPowSum(1.0),0.0001);
 		assertEquals(ess,m.elementAbsPowSum(2.0),0.0001);
 
 	}

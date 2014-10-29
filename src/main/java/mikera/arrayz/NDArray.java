@@ -171,7 +171,7 @@ public final class NDArray extends BaseNDArray {
 			int st=stride[1];
 			return Vectorz.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
 		} else {
-			return new NDArray(data,
+			return Arrayz.wrapStrided(data,
 					offset+majorSlice*getStride(0),
 					Arrays.copyOfRange(shape, 1,dimensions),
 					Arrays.copyOfRange(stride, 1,dimensions));
@@ -186,7 +186,7 @@ public final class NDArray extends BaseNDArray {
 			// note: dimension must be 1 if we are here
 			return Vectorz.wrapStrided(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
-		return new NDArray(data,
+		return Arrayz.wrapStrided(data,
 				offset+index*stride[dimension],
 				IntArrays.removeIndex(shape,index),
 				IntArrays.removeIndex(stride,index));	
