@@ -129,17 +129,15 @@ public final class NDArray extends BaseNDArray {
 	
 	@Override
 	public INDArray getTransposeView() {
-		return new NDArray(data,dimensions,offset,IntArrays.reverse(shape),IntArrays.reverse(stride));
+		return Arrayz.wrapStrided(data,offset,IntArrays.reverse(shape),IntArrays.reverse(stride));
 	}
 
 	@Override
 	public AVector asVector() {
-		if (isPackedArray()) {
-			return Vector.wrap(data);
-		} else if (dimensions==0) {
+		if (dimensions==0) {
 			return ArraySubVector.wrap(data,offset,1);
 		} else if (dimensions==1) {
-			return StridedVector.wrap(data, offset, getShape(0), getStride(0));
+			return Vectorz.wrapStrided(data, offset, getShape(0), getStride(0));
 		} else {
 			AVector v=Vector0.INSTANCE;
 			int n=getShape(0);
