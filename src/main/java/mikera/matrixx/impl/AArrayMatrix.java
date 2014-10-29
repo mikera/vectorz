@@ -75,17 +75,4 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 		}
 		return false;
 	}
-    
-    /**
-     * Returns the sum of the absolute values of all the elements raised to a specified power
-     * @return
-     */
-    @Override
-    public double elementAbsPowSum(double p) {
-        double result = 0;
-        for(double i: data) {
-            result += Math.pow(Math.abs(i), p);
-        }
-        return result;
-    }
 }
