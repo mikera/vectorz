@@ -1046,6 +1046,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return JoinedArray.join(this,a,dimension);
 	}
 	
+	@Override
 	public INDArray join(INDArray a) {
 		return JoinedArray.join(this,a,0);		
 	}

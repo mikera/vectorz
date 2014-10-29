@@ -258,6 +258,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param second
 	 * @return
 	 */
+	@Override
+	public AVector join(INDArray b) {
+		if (b.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		return join(b.asVector());
+	}
+	
 	public AVector join(AVector second) {
 		if (second.length()==0) return this;
 		AVector ej=tryEfficientJoin(second);
