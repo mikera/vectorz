@@ -109,6 +109,9 @@ public class TestArrays {
 		assertEquals(a, Arrayz.create(slices));
 		
 		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
+		
+		List<?> vslices = a.getSliceViews();
+		assertEquals(sl, vslices.get(0));
 	}
 	
 	public void testAdd(INDArray a) {
