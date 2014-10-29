@@ -28,6 +28,16 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return source.isZero();
+	}
+	
+	@Override
+	public boolean isBoolean() {
+		return source.isBoolean();
+	}
+	
+	@Override
 	public abstract double get(int row, int column);
 	
 	@Override
