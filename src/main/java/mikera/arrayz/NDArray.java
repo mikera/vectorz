@@ -82,7 +82,7 @@ public final class NDArray extends BaseNDArray {
 		if (dimensions==0) {
 			data[offset]=value;
 		} else if (dimensions==1) {
-			int n=getShape(0);
+			int n=sliceCount();
 			int st=getStride(0);
 			for (int i=0; i<n; i++) {
 				data[offset+i*st]=value;
@@ -140,7 +140,7 @@ public final class NDArray extends BaseNDArray {
 			return Vectorz.wrapStrided(data, offset, getShape(0), getStride(0));
 		} else {
 			AVector v=Vector0.INSTANCE;
-			int n=getShape(0);
+			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				v=v.join(slice(i).asVector());
 			}
@@ -235,8 +235,8 @@ public final class NDArray extends BaseNDArray {
 		if (dimensions==0) {
 			data[offset]=op.apply(data[offset]);
 		} else if (dimensions==1) {
+			int len=sliceCount();
 			int st=getStride(0);
-			int len=getShape(0);
 			if (st==1) {
 				op.applyTo(data, offset, len);
 			} else {
@@ -245,7 +245,7 @@ public final class NDArray extends BaseNDArray {
 				}
 			}
 		} else {
-			int n=shape[0];
+			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				slice(i).applyOp(op);
 			}		
@@ -303,12 +303,12 @@ public final class NDArray extends BaseNDArray {
 		if (dimensions==0) {
 			data[offset]*=d;
 		} else if (dimensions==1) {
-			int n=getShape(0);
+			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				data[offset+i*getStride(0)]*=d;
 			}
 		} else {
-			int n=getShape(0);
+			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				slice(i).scale(d);
 			}
