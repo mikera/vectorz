@@ -18,7 +18,6 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
-import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
