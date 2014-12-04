@@ -372,6 +372,13 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		return r;
 	}
 	
+	/**
+	 * Specialised inner product for sparse row matrix multiplied by sparse column matrix. This is the 
+	 * fastest general purpose sparse matrix multiplication supported by Vectorz at present.
+	 *  
+	 * @param a
+	 * @return
+	 */
 	public AMatrix innerProduct(SparseColumnMatrix a) {
 		// new matrix has shape [ this.rows * a.cols ], issue #71
 		int acols=a.cols; 
