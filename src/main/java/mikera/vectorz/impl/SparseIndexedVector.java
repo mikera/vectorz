@@ -6,6 +6,7 @@ import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -158,6 +159,14 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
+	public void add(ADenseArrayVector v) {
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]+=v.unsafeGet(index.get(i));
+		}
+	}
+	
+	@Override
 	public void add(ASparseVector v) {
         if (v instanceof ZeroVector) {
             return;
@@ -166,6 +175,11 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		for (int i=0; i<data.length; i++) {
 			data[i]+=v.unsafeGet(index.get(i));
 		}
+	}
+	
+	@Override
+	public void add(double[] src, int offset) {
+		add(Vectorz.wrap(src, offset, length));
 	}
 	
 	@Override
