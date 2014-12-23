@@ -221,7 +221,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			int ti=tix[i];
 			while (thatIndex[i1]!=ti) i1++;
 			while (thisIndex[i2]!=ti) i2++;
-			ndata[i]=thatIndex[i1]*thisIndex[i2];
+			ndata[i]=v.unsafeGet(thatIndex[i1])*unsafeGet(thisIndex[i2]);
 		}
 	}
 	

@@ -178,7 +178,7 @@ public class Vectorz {
 		if (length<MIN_SPARSE_LENGTH) {
 			return Vector.createLength(length); // not enough sparsity to make worthwhile
 		} else  {
-			return SparseHashedVector.createLength(length);
+			return SparseIndexedVector.createLength(length);
 		} 
 	}
 	
