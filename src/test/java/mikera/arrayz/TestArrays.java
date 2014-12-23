@@ -708,6 +708,14 @@ public class TestArrays {
 		testArray(sa);
 		testArray(Array.create(sa));
 	}
+	
+	@Test
+	public void g_SparseArray() {
+		testArray(Arrayz.createSparseArray(new int[] {4}));
+		testArray(Arrayz.createSparseArray(new int[] {4,3}));
+		testArray(Arrayz.createSparseArray(new int[] {4,5,2}));
+		testArray(Arrayz.createSparseArray(new int[] {2,3,2,4}));
+	}
 
 	@Test
 	public void g_NDArray() {

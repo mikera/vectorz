@@ -74,6 +74,13 @@ public class TestMiscArrayOps {
 		assertEquals(Vector.of(4,5),Arrayz.parse("[[1, 2], [4, 5], [7, 8]]").slice(1));
 	}
 	
+	@Test
+	public void testSparse() {
+		INDArray a=Arrayz.createSparseArray(new int[] {2,3,2,4});
+		Arrayz.fillRandom(a, 1201);
+		assertEquals(a,a.dense());
+	}
+	
 	@Test public void testTranspose() {
 		INDArray m=Arrayz.parse("[[[1.0,2.0],[0.0,0.0]],[[0.0,0.0],[0.0,1.0]]]");
 		INDArray n=Arrayz.parse("[[[1.0,0.0],[0.0,0.0]],[[2.0,0.0],[0.0,1.0]]]");

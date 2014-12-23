@@ -68,6 +68,13 @@ public class IntArrays {
 		System.arraycopy(as, 0, nas, 1, len);
 		return nas;
 	}
+	
+	public static int[] tailArray(int[] as) {
+		int len=as.length-1;
+		int[] nas=new int[len];
+		System.arraycopy(as, 1, nas, 0, len);
+		return nas;
+	}
 
 	public static long[] copyIntsToLongs(int[] src, long[] dst) {
 		for (int i=0; i<src.length; i++) {
