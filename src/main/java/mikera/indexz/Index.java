@@ -374,51 +374,51 @@ public final class Index extends AIndex {
 	/**
 	 * Looks up an index value in the index, returning its position or -1 if not found
 	 * Index must be both sorted and distinct.
-	 * @param i
+	 * @param x
 	 * @return
 	 */
-	public int indexPosition(int i) {
+	public int indexPosition(int x) {
 		int max=data.length;
 		if (max>20) {
-			return indexPositionBig(i,0,max);
+			return indexPositionBig(x,0,max);
 		} else {
-			return indexPositionSmall(i, 0, max);
+			return indexPositionSmall(x, 0, max);
 		}
 	}
 	
-	private int indexPositionBig(int i, int min, int max) {
+	private int indexPositionBig(int x, int min, int max) {
 		int lx=data[min];
 		int hx=data[max-1];
-		if (i<=lx) {
-			if (i==lx) return min;
+		if (x<=lx) {
+			if (x==lx) return min;
 			return -1;
 		}
-		if (i>=hx) {
-			if (i==hx) return max-1;
+		if (x>=hx) {
+			if (x==hx) return max-1;
 			return -1;
 		}
 		
 		while ((min+10)<max) {
-			int mid=min+((max-min)*(i-lx))/((hx-lx)*2);
-			int mi=data[mid];
-			if (i==mi) return mid;
-			if (i<mi) {
+			int mid=min+((max-min)*(x-lx))/((hx-lx)*2);
+			int mx=data[mid];
+			if (x==mx) return mid;
+			if (x<mx) {
 				max=mid;
-				hx=mi;
+				hx=mx;
 			} else {
 				min=mid+1;
-				lx=mi;
+				lx=mx;
 			}
 		}
-		return indexPositionSmall(i,min,max);				
+		return indexPositionSmall(x,min,max);				
 	}
 	
-	private int indexPositionSmall(int i, int min, int max) {
+	private int indexPositionSmall(int x, int min, int max) {
 		while (min<max) {
 			int mid=(min+max)>>1;
-			int mi=data[mid];
-			if (i==mi) return mid;
-			if (i<mi) {
+			int mx=data[mid];
+			if (x==mx) return mid;
+			if (x<mx) {
 				max=mid;
 			} else {
 				min=mid+1;
