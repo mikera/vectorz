@@ -378,7 +378,11 @@ public final class Index extends AIndex {
 	 * @return
 	 */
 	public int indexPosition(int i) {
-		int min=0; int max=data.length;
+		// TODO: figure out if there is a faster technique for big indexes?
+		return indexPositionSmall(i, 0, data.length);
+	}
+	
+	private int indexPositionSmall(int i, int min, int max) {
 		while (min<max) {
 			int mid=(min+max)>>1;
 			int mi=data[mid];
@@ -389,7 +393,7 @@ public final class Index extends AIndex {
 				min=mid+1;
 			}
 		}
-		return -1;
+		return -1;		
 	}
 	
 	@Override
