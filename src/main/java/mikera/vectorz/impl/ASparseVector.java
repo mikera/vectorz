@@ -6,6 +6,7 @@ import java.util.List;
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract base class for Sparse vector implementations
@@ -79,6 +80,15 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	@Override
 	public final boolean isSparse() {
 		return true;
+	}
+	
+	@Override
+	public void add(AVector v) {
+		if (v instanceof ASparseVector) {
+			add((ASparseVector)v);
+			return;
+		}
+		super.add(v);
 	}
 
 	public abstract void add(ASparseVector v);

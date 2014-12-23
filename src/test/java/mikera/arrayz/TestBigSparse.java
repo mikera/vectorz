@@ -1,4 +1,4 @@
-package mikera.matrixx.impl;
+package mikera.arrayz;
 
 import static org.junit.Assert.*;
 
@@ -6,7 +6,12 @@ import org.junit.Test;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
+import mikera.matrixx.impl.ZeroMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 
@@ -70,6 +75,14 @@ public class TestBigSparse {
 		m.set(3,4,7.0);
 	
 		assertEquals(1,m.nonZeroCount());
+	}
+	
+	@Test public void testBigVectorAdd() {
+		AVector v=Vectorz.createSparseMutable(100000000);
+		v.set(5000,1.0);
+		AVector v2=v.sparseClone();
+		v.add(v2);
+		assertEquals(2.0,v.get(5000),0.0);
 	}
 	
 	@Test public void testBigIdentity() {
