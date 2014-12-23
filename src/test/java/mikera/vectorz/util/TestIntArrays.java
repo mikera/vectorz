@@ -29,4 +29,20 @@ public class TestIntArrays {
 		assertFalse(IntArrays.equals(xs,zs));
 		assertFalse(IntArrays.equals(zs,xs));
 	}
+	
+	@Test public void testMergeSorted() {
+		int[] xs=IntArrays.of(1,2,3,4);
+		int[] ys=IntArrays.of(2,3,7);
+		int[] zs=IntArrays.of(1,2,3,4,7);
+		
+		assertArrayEquals(zs,IntArrays.mergeSorted(xs, ys));
+	}
+	
+	@Test public void testIntersectSorted() {
+		int[] xs=IntArrays.of(1,2,3,4);
+		int[] ys=IntArrays.of(2,3,7);
+		int[] zs=IntArrays.of(2,3);
+		
+		assertArrayEquals(zs,IntArrays.intersectSorted(xs, ys));
+	}
 }

@@ -90,6 +90,11 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		}
 		super.add(v);
 	}
+	
+	@Override
+	public void addMultiple(AVector src, double factor) {
+		add(src.multiplyCopy(factor));
+	}
 
 	public abstract void add(ASparseVector v);
 	

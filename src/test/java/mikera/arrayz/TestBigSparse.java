@@ -83,6 +83,17 @@ public class TestBigSparse {
 		AVector v2=v.sparseClone();
 		v.add(v2);
 		assertEquals(2.0,v.get(5000),0.0);
+		
+		v.addMultiple(v2,3.0);
+		assertEquals(5.0,v.get(5000),0.0);
+	}
+	
+	@Test public void testBigVectorMultiply() {
+		AVector v=Vectorz.createSparseMutable(100000000);
+		v.set(5000,2.0);
+		AVector v2=v.sparseClone();
+		v.multiply(v2);
+		assertEquals(4.0,v.get(5000),0.0);
 	}
 	
 	@Test public void testBigIdentity() {

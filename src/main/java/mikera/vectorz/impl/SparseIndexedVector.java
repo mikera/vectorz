@@ -197,12 +197,31 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		if (v instanceof ADenseArrayVector) {
 			multiply((ADenseArrayVector)v);
 			return;
+		} else if (v instanceof ASparseVector) {
+			multiply((ASparseVector)v);
 		}
 		checkSameLength(v);
 		double[] data=this.data;
 		int[] ixs=index.data;
 		for (int i=0; i<data.length; i++) {
 			data[i]*=v.unsafeGet(ixs[i]);
+		}
+	}
+	
+	public void multiply(ASparseVector v) {
+		checkSameLength(v);
+		int[] thisIndex=index.data;
+		int[] thatIndex=v.nonSparseIndex().data;
+		int[] tix=IntArrays.intersectSorted(thatIndex, thisIndex);
+		int n=tix.length;
+		double[] ndata=new double[n];
+		int i1=0;
+		int i2=0;
+		for (int i=0; i<n; i++) {
+			int ti=tix[i];
+			while (thatIndex[i1]!=ti) i1++;
+			while (thisIndex[i2]!=ti) i2++;
+			ndata[i]=thatIndex[i1]*thisIndex[i2];
 		}
 	}
 	

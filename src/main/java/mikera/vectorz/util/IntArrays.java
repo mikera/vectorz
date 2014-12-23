@@ -286,6 +286,32 @@ public class IntArrays {
 		}
 		return rs;
 	}
+	
+	public static int[] intersectSorted(int[] xs, int[] ys) {
+		int xl=xs.length; if (xl==0) return EMPTY_INT_ARRAY;
+		int yl=ys.length; if (yl==0) return EMPTY_INT_ARRAY;
+		int ms = countMatches(xs,ys);
+		int[] rs=new int[ms];
+		int xi=0;
+		int yi=0;
+		for (int i=0; i<rs.length; i++) {
+			int x=xs[xi];
+			int y=ys[yi];
+			while (x!=y) {
+				if (x<y) {
+					xi++;
+					x=xs[xi];
+				} else {
+					yi++;
+					y=ys[yi];
+				}
+			} 
+			rs[i]=x;
+			xi++;
+			yi++;
+		}
+		return rs;
+	}
 
 	public static boolean validIndex(int[] as, int[] shape) {
 		if (as.length!=shape.length) return false;
