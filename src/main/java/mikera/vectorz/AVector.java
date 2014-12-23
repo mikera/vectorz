@@ -2100,11 +2100,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void add(double[] data, int offset) {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			addAt(i,data[i+offset]);
+			double v=data[i+offset];
+			addAt(i,v);
 		}
 	}
 	
 	public void add(double[] data) {
+		checkLength(data.length);
 		add(data,0);
 	}
 	
