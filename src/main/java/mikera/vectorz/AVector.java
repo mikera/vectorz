@@ -2105,6 +2105,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Adds the values from a double[] array to this vector
+	 * @param data
+	 */
 	public void add(double[] data) {
 		checkLength(data.length);
 		add(data,0);
