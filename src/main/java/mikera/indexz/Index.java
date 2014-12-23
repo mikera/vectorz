@@ -399,7 +399,7 @@ public final class Index extends AIndex {
 		}
 		
 		while ((min+10)<max) {
-			int mid=min+((max-min)*(x-lx))/((hx-lx)*2);
+			int mid=min+((max-min)*(x-lx))/((hx-lx)*2); // best estimate of position
 			int mx=data[mid];
 			if (x==mx) return mid;
 			if (x<mx) {
@@ -415,7 +415,7 @@ public final class Index extends AIndex {
 	
 	private int indexPositionSmall(int x, int min, int max) {
 		while (min<max) {
-			int mid=(min+max)>>1;
+			int mid=(min+max)>>1; // bisect interval
 			int mx=data[mid];
 			if (x==mx) return mid;
 			if (x<mx) {
