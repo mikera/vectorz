@@ -2085,6 +2085,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	@Override
 	public void add(double constant) {
+		if (constant==0.0) return;
 		int len=length();
 		for (int i=0; i<len; i++) {
 			addAt(i,constant);
