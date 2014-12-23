@@ -2071,6 +2071,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param v
 	 */
 	public void addAt(int i, double v) {
+		if (v==0.0) return;
 		unsafeSet(i,unsafeGet(i)+v);
 	}
 
