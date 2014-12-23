@@ -53,10 +53,7 @@ public final class ZeroVector extends ASparseVector {
 	 * @return
 	 */
 	public static ZeroVector create(int dimensions) {
-		if (dimensions <= 0)
-			throw new IllegalArgumentException("Can't create length "
-					+ dimensions + " ZeroVector. Use Vector0 instead");
-		return new ZeroVector(dimensions);
+		return createCached(dimensions);
 	}
 
 	public static ZeroVector createNew(int dimensions) {
