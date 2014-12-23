@@ -378,9 +378,8 @@ public final class Index extends AIndex {
 	 * @return
 	 */
 	public int indexPosition(int i) {
-		// TODO: figure out if there is a faster technique for big indexes?
 		int max=data.length;
-		if (max>30) {
+		if (max>20) {
 			return indexPositionBig(i,0,max);
 		} else {
 			return indexPositionSmall(i, 0, max);
@@ -390,17 +389,25 @@ public final class Index extends AIndex {
 	private int indexPositionBig(int i, int min, int max) {
 		int lx=data[min];
 		int hx=data[max-1];
-		if (i<lx) return -1;
-		if (i>hx) return -1;
+		if (i<=lx) {
+			if (i==lx) return min;
+			return -1;
+		}
+		if (i>=hx) {
+			if (i==hx) return max-1;
+			return -1;
+		}
 		
 		while ((min+10)<max) {
-			int mid=(min+max)>>1;
+			int mid=min+((max-min)*(i-lx))/((hx-lx)*2);
 			int mi=data[mid];
 			if (i==mi) return mid;
 			if (i<mi) {
 				max=mid;
+				hx=mi;
 			} else {
 				min=mid+1;
+				lx=mi;
 			}
 		}
 		return indexPositionSmall(i,min,max);				
