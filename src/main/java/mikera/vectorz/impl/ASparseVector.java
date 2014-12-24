@@ -56,7 +56,9 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 	
 	@Override
-	public abstract boolean isZero();
+	public boolean isZero() {
+		return nonZeroCount()==0L;
+	}
 	
 	@Override
 	public boolean isView() {
@@ -153,14 +155,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 
 	@Override
 	public boolean hasUncountable() {
-		Index ni = nonSparseIndex();
-		for(int i=0; i<ni.length(); i++) {
-			int ii = ni.get(i);
-			if (Double.isNaN(unsafeGet(ii)) || Double.isInfinite(unsafeGet(ii))) {
-				return true;
-			}
-		}
-		return false;
+		return nonSparseValues().hasUncountable();
 	}
 	
 	/**
