@@ -87,6 +87,20 @@ public class TestBigSparse {
 		assertEquals(1,m.nonZeroCount());
 	}
 	
+	@Test public void testBigDotProduct() {
+		AVector v=Vectorz.createSparseMutable(10000000);
+		v.set(100,1.0);
+		v.set(1000,2.0);
+
+		AVector v2=Vectorz.createRange(10000000);
+		assertEquals(2100,v.dotProduct(v2),0.0);
+		
+		AVector v3=v.clone();
+		v3.set(100,0.0);
+		v3.set(101,4.0);
+		assertEquals(4.0,v.dotProduct(v3),0.0);
+	}
+	
 	@Test public void testBigVectorAdd() {
 		AVector v=Vectorz.createSparseMutable(100000000);
 		v.set(5000,1.0);

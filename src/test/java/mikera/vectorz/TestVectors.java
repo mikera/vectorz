@@ -519,7 +519,7 @@ public class TestVectors {
 	private void testAddToPosition(AVector v) {
 		int len=v.length();
 		
-		AVector tv=Vectorz.createRange(len+10);
+		AVector tv=Vectorz.createMutableRange(len+10);
 
 		tv.add(5,v,0,len);
 		

@@ -22,6 +22,7 @@ import mikera.randomz.Hash;
 import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ASizedVector;
+import mikera.vectorz.impl.ASparseVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
@@ -872,6 +873,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public double dotProduct(AVector v) {
 		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
+		if (v instanceof ASparseVector) return ((ASparseVector)v).dotProduct(this);
 		int len=checkSameLength(v);
 		double total=0.0;
 		for (int i=0; i<len; i++) {
