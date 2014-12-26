@@ -16,11 +16,13 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.BroadcastVectorMatrix;
+import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.randomz.Hash;
 import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ASizedVector;
+import mikera.vectorz.impl.ASparseVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
@@ -190,7 +192,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
-	protected double[] nonZeroValues() {
+	/**
+	 * Return an double array specifying the values in this vector which are non-zero
+	 * 
+	 * @return
+	 */
+	public double[] nonZeroValues() {
 		int len=length();
 		int n=(int)nonZeroCount();
 		if (n==0) return DoubleArrays.EMPTY;
@@ -252,6 +259,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param second
 	 * @return
 	 */
+	@Override
+	public AVector join(INDArray b) {
+		if (b.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		return join(b.asVector());
+	}
+	
 	public AVector join(AVector second) {
 		if (second.length()==0) return this;
 		AVector ej=tryEfficientJoin(second);
@@ -860,6 +873,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public double dotProduct(AVector v) {
 		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
+		if (v instanceof ASparseVector) return ((ASparseVector)v).dotProduct(this);
 		int len=checkSameLength(v);
 		double total=0.0;
 		for (int i=0; i<len; i++) {
@@ -1195,7 +1209,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public AVector normaliseCopy() {
 		double d=magnitude();
-		if (d>0) return multiplyCopy(1.0/d);
+		if (d>0.0) return multiplyCopy(1.0/d);
 		return copy();
 	}
 	
@@ -1697,8 +1711,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public boolean isUnitLengthVector() {
+		return isUnitLengthVector(Vectorz.TEST_EPSILON);
+	}
+	
+	public boolean isUnitLengthVector(double tolerance) {
 		double mag=magnitudeSquared();
-		return Math.abs(mag-1.0)<Vectorz.TEST_EPSILON;
+		return Math.abs(mag-1.0)<tolerance;
 	}
 	
 	@Override
@@ -2055,6 +2073,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param v
 	 */
 	public void addAt(int i, double v) {
+		if (v==0.0) return;
 		unsafeSet(i,unsafeGet(i)+v);
 	}
 
@@ -2068,6 +2087,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	@Override
 	public void add(double constant) {
+		if (constant==0.0) return;
 		int len=length();
 		for (int i=0; i<len; i++) {
 			addAt(i,constant);
@@ -2082,11 +2102,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void add(double[] data, int offset) {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			addAt(i,data[i+offset]);
+			double v=data[i+offset];
+			addAt(i,v);
 		}
 	}
 	
+	/**
+	 * Adds the values from a double[] array to this vector
+	 * @param data
+	 */
 	public void add(double[] data) {
+		checkLength(data.length);
 		add(data,0);
 	}
 	
@@ -2210,20 +2236,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * 
 	 * @return
 	 */
-	public Index nonSparseIndexes(){
-		int n=(int)nonZeroCount();
-		int length=length();
-		Index ind=Index.createLength(n);
-		int di=0;
-		for (int i=0; i<length; i++) {
-			double v=unsafeGet(i);
-			if (v!=0.0) {
-				ind.data[di++]=i;
-			}
-		}
-		return ind;
+	public Index nonSparseIndex(){
+		// by default we just use the non-zero indices
+		return Index.of(nonZeroIndices());
 	}
 	
+	/**
+	 * Return an int array specifying the positions in this vector which are non-zero
+	 * 
+	 * @return
+	 */
 	public int[] nonZeroIndices() {
 		int n=(int)nonZeroCount();
 		int[] ret=new int[n];
@@ -2253,5 +2275,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			}
 		}
 		return false;
+	}
+
+	public AMatrix asColumnMatrix() {
+		return ColumnMatrix.wrap(this);
 	}
 }

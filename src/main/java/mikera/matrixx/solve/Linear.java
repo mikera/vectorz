@@ -1,13 +1,9 @@
 package mikera.matrixx.solve;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
-import mikera.matrixx.impl.ColumnMatrix;
-import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.solve.impl.lu.LUSolver;
 import mikera.matrixx.solve.impl.qr.QRHouseColSolver;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 
 /**
  * Class providing liner solver algorithms that find the solution to systems of the form:
@@ -33,7 +29,7 @@ public class Linear {
         QRHouseColSolver solver = new QRHouseColSolver();
         solver.setA(A);
 //        create AMatrix from AVector
-        AMatrix B = ColumnMatrix.wrap(b);
+        AMatrix B = b.asColumnMatrix();
         AMatrix X = solver.solve(B);
 //        convert AMatrix into AVector and return
         return X.asVector();
@@ -79,14 +75,14 @@ public class Linear {
      * Returns null if A is square and equations don't have solutions.
 	 * 
 	 * @param A
-	 * @param b
+	 * @param B
 	 * @return
 	 */
-	public static AMatrix solve(AMatrix A, AMatrix b) {
+	public static AMatrix solve(AMatrix A, AMatrix B) {
 		if (A.isSquare()) 
-		    return solveSquare(A,b);
+		    return solveSquare(A,B);
 		else
-		    return solveLeastSquares(A, b);
+		    return solveLeastSquares(A, B);
 	}
 	
 	/**
@@ -102,7 +98,7 @@ public class Linear {
 	    LUSolver solver = new LUSolver();
 	    solver.setA(A);
 //      create AMatrix from AVector
-	    AMatrix B = ColumnMatrix.wrap(b);
+	    AMatrix B = b.asColumnMatrix();
 	    AMatrix X = solver.solve(B);
 //      if no solution
 	    if(X == null)

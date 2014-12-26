@@ -18,6 +18,9 @@ public class TestTriangular {
 	public void testClone() {
 		UpperTriangularMatrix u=UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(3));
 		assertEquals(u,u.exactClone());
+		
+		assertTrue(u.isUpperTriangular());
+		assertTrue(u.getTranspose().isLowerTriangular());
 	}
 
 }

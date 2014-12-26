@@ -1,6 +1,8 @@
 package mikera.vectorz.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -36,6 +38,35 @@ public class TestSparseIndexedVector {
 		assertEquals(sv,sv.cloneIncludingIndices(new int[] {9}));
 	}
 	
+	@Test public void testZeroSetting() {
+		Vector v=Vector.of(0,1,1,0,0,0,1,2);
+		SparseIndexedVector sv=SparseIndexedVector.createLength(8);
+		assertEquals(0,sv.nonSparseElementCount());
+		sv.set(0,2.0);
+		assertEquals(1,sv.nonSparseElementCount());
+		sv.set(3,0.0);
+		assertEquals(1,sv.nonSparseElementCount());
+		sv.add(v);
+		sv.validate();
+		assertEquals(7.0,sv.elementSum(),0.0);
+		assertEquals(2.0,sv.get(0),0.0);
+		assertEquals(5,sv.nonSparseElementCount());
+	}
+	
+	@Test public void testZeroHandling() {
+		SparseIndexedVector sv=SparseIndexedVector.create(10, Index.of(1,3,6), Vector.of(1.0,2.0,3.0));
+		assertEquals(3,sv.nonSparseIndex().length());
+		assertEquals(3,sv.nonZeroCount());
+		
+		sv.set(1,0.0);
+		assertEquals(3,sv.nonSparseIndex().length());
+		assertEquals(2,sv.nonZeroCount());
+		
+		SparseIndexedVector sv2=SparseIndexedVector.createLength(sv.length());
+		sv2.set(sv);
+		assertEquals(2,sv2.nonSparseIndex().length());
+	}
+	
 	@Test public void testAddProduct() {
 		SparseIndexedVector sv=SparseIndexedVector.create(10, Index.of(1,3,6), Vector.of(1.0,2.0,3.0));
 		
@@ -67,4 +98,5 @@ public class TestSparseIndexedVector {
 		assertEquals(Vector.of(0,0,0,0,0,3,0,18,0,0),v3);
 
 	}
+
 }

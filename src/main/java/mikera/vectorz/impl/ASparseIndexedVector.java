@@ -91,7 +91,7 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		int offset=v.getArrayOffset();
 		return dotProduct(array,offset);
 	}
-	
+
 	@Override
 	public int[] nonZeroIndices() {
 		int n=(int)nonZeroCount();
@@ -105,8 +105,7 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
 		return ret;
 	}
-	
-	
+    	
 	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		assert((offset>=0)&&(offset+length<=this.length));

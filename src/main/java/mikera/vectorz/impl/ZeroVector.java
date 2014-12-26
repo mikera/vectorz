@@ -6,6 +6,7 @@ import java.util.Iterator;
 import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
@@ -17,6 +18,9 @@ import mikera.vectorz.util.IntArrays;
 
 /**
  * Specialised immutable vector containing nothing but zeros.
+ * 
+ * This enables significant optimisations on operations involving zeros and
+ * composite arrays that have zero areas.
  * 
  * Must have length 1 or more: use Vector0 instead for immutable length 0
  * vectors.
@@ -42,11 +46,14 @@ public final class ZeroVector extends ASparseVector {
 		super(dimensions);
 	}
 
+	/**
+	 * Create a ZeroVector with the specified number of dimensions
+	 * 
+	 * @param dimensions
+	 * @return
+	 */
 	public static ZeroVector create(int dimensions) {
-		if (dimensions <= 0)
-			throw new IllegalArgumentException("Can't create length "
-					+ dimensions + " ZeroVector. Use Vector0 instead");
-		return new ZeroVector(dimensions);
+		return createCached(dimensions);
 	}
 
 	public static ZeroVector createNew(int dimensions) {
@@ -73,7 +80,7 @@ public final class ZeroVector extends ASparseVector {
 	 * @param arraySize
 	 * @return
 	 */
-	public static AVector create(INDArray array) {
+	public static ZeroVector create(INDArray array) {
 		int n = Vectorz.safeLongToInt(array.elementCount());
 		return ZeroVector.create(n);
 	}
@@ -176,6 +183,11 @@ public final class ZeroVector extends ASparseVector {
 	public ZeroVector multiplyCopy(double factor) {
 		return this;
 	}
+	
+	@Override
+	public AVector normaliseCopy() {
+		return this;
+	}
 
 	@Override
 	public ZeroVector divideCopy(AVector a) {
@@ -236,6 +248,11 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public long nonZeroCount() {
 		return 0;
+	}
+	
+	@Override
+	public double[] nonZeroValues() {
+		return DoubleArrays.EMPTY;
 	}
 
 	@Override
@@ -372,7 +389,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return Index.EMPTY;
 	}
 
@@ -409,6 +426,11 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public double[] toDoubleArray() {
 		return new double[length];
+	}
+	
+	@Override
+	public AMatrix asColumnMatrix() {
+		return Matrixx.createImmutableZeroMatrix(length, 1);
 	}
 
 	@Override

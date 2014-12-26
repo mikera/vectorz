@@ -29,6 +29,16 @@ public class TestSparseRowMatrix {
 		assertTrue(v==m.getRow(1)); // identical objects
 		assertEquals(Vector.of(0,2,0),m.getColumn(1));
 	}
+
+    @Test public void testSetRow() {
+        SparseRowMatrix m=SparseRowMatrix.create(3, 3);
+
+        Vector v=Vector.of(1,2,3);
+
+        m.setRow(0, v);
+        assertEquals(v,m.getRow(0));
+        assertEquals(1,m.getRow(0).get(0),0.0);
+    }
 	
 	@Test public void testOps() {
 		SparseRowMatrix m=SparseRowMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3));

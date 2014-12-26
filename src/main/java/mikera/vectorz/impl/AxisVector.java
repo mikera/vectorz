@@ -47,6 +47,11 @@ public final class AxisVector extends ASingleElementVector {
 		return 1.0;
 	}
 	
+	@Override
+	public AVector normaliseCopy() {
+		return this;
+	}
+	
 	@Override 
 	public void square() {
 		// no effect
@@ -299,13 +304,18 @@ public final class AxisVector extends ASingleElementVector {
 	}
 
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return Index.of(axis());
 	}
 	
 	@Override
 	public int[] nonZeroIndices() {
 		return new int[] {index};
+	}
+	
+	@Override
+	public double[] nonZeroValues() {
+		return new double[] {1.0};
 	}
 	
 	@Override

@@ -118,6 +118,15 @@ public class TestIndex {
 		assertTrue(c2.isPermutation());
 
 	}
+	
+	@Test public void testIndexPosition() {
+		Index a=Index.of(0);
+		assertEquals(0,a.indexPosition(0));
+		assertEquals(-1,a.indexPosition(1));
+		
+		a=Index.of(0,2, 10);
+		assertEquals(-1,a.indexPosition(1));
+	}
 
 	@SuppressWarnings("serial")
 	@Test public void genericTests() {

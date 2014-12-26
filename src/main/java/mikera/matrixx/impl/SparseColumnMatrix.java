@@ -7,6 +7,7 @@ import java.util.List;
 // import java.util.Map;
 // import java.util.Map.Entry;
 
+
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -160,6 +161,14 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public void set(AMatrix a) {
+		checkSameShape(a);
+		for (int i=0; i<cols; i++) {
+			setColumn(i,a.getColumn(i));
+		}
+	}
+	
+	@Override
 	public void addAt(int i, int j, double d) {
 		AVector v=getColumn(j);
 		if (v.isFullyMutable()) {
@@ -183,6 +192,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		AVector v = unsafeGetVec(i);
 		if (v == null) {
 			AVector nv=SparseIndexedVector.createLength(rows);
+            unsafeSetVec(i, nv);
 			return nv;
 		}
 		if (v.isFullyMutable()) return v;

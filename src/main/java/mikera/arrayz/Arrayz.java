@@ -21,6 +21,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.ImmutableScalar;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -273,6 +274,24 @@ public class Arrayz {
 			case 2: return ZeroMatrix.create(shape[0],shape[1]);
 			default: return ZeroArray.create(shape);
 		}
+	}
+	
+	public static INDArray createSparseArray(int... shape) {
+		switch (shape.length) {
+			case 0: return Scalar.create(0.0);
+			case 1: return SparseIndexedVector.createLength(shape[0]);
+			case 2: return Matrixx.createSparse(shape[0],shape[1]);
+		}
+		int sliceCount=shape[0];
+		int[] subshape=IntArrays.tailArray(shape);
+		ArrayList<INDArray> slices=new ArrayList<INDArray>(sliceCount);
+		INDArray sa=createSparseArray(subshape);
+		slices.add(sa);
+		for (int i=1; i<sliceCount; i++) {
+			slices.add(sa.sparseClone());
+		}
+		SliceArray<INDArray> m=SliceArray.create(slices);
+		return m;
 	}
 
 	public static void fillRandom(INDArray a, long seed) {

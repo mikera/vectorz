@@ -47,6 +47,11 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override
+	public boolean isZero() {
+		return false;
+	}
+	
+	@Override
 	public double calculateElement(int i, AVector v) {
 		return v.unsafeGet(i);
 	}

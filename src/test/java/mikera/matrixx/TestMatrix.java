@@ -26,6 +26,35 @@ public class TestMatrix {
     assertEquals(4, A.elementSum(), 0);
   }
   
+  @Test
+  public void testOptimised() {
+	  Matrix a=Matrix.create(Matrixx.createRandomMatrix(4, 5));
+	  Matrix b=Matrix.create(Matrixx.createRandomMatrix(4, 5));
+	  Matrix t=a.addCopy(b); // target value
+	  Matrix r=Matrix.create(a.getShape()); // reult target
+	  
+	  Matrix.add(r, a, b);
+	  assertEquals(t,r);
+	  
+	  Matrix.scaleAdd(r, a, b, 1.0);
+	  assertEquals(t,r);
+	  
+	  Matrix.scale(r,t,1.0);
+	  assertEquals(t,r);
+	  
+	  Matrix.scale(r,t,0.0);
+	  assertTrue(r.isZero());
+	  
+	  assertEquals(t,b.addCopy(a));
+  }
+  
+  @Test
+  public void testColumnSlice() {
+	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
+	  assertEquals(Vector.of(1,3),m.slice(1,0));
+	  assertEquals(Vector.of(2,4),m.slice(1,1));
+  }
+  
   @Test 
   public void testSetColumn() {
 	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});

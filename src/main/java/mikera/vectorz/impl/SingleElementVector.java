@@ -190,7 +190,7 @@ public final class SingleElementVector extends ASingleElementVector {
 	}
 
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return Index.of(index);
 	}
 	

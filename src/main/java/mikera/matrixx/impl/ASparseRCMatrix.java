@@ -10,7 +10,7 @@ import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Abstract base class for matrices that store a sparse hashmap of rows or columns.
+ * Abstract base class for matrices that store sparse rows or columns.
  * @author Mike
  *
  */

@@ -64,10 +64,17 @@ public class TestVectorMath {
 	
 	
 	public void doMultiplyTests(AVector v) {
-		v=v.clone();
+		v=v.exactClone();
+		if (!v.isFullyMutable()) return;
 		double m=v.magnitude();
 		v.multiply(2.0);
 		assertEquals(m*2.0, v.magnitude(),0.0001);
+		
+		AVector vv=v.exactClone();
+		vv.set(0.5);
+		v.multiply(vv);
+		
+		assertEquals(m, v.magnitude(),0.0001);
 	}
 	
 	public void doNormaliseTests(AVector v) {

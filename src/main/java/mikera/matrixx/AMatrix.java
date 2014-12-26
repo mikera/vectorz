@@ -106,18 +106,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override 
 	public void set(double value) {
-		throw new VectorzException("0D set not supported on matrix!");
+		fill(value);
 	}
 	
 	@Override 
 	public void fill(double value) {
-		int rc = rowCount();
-		int cc = columnCount();
-		for (int row = 0; row < rc; row++) {
-			for (int column = 0; column < cc; column++) {
-				unsafeSet(row,column,value);
-			}
-		}	
+		int len=rowCount();
+		for (int i = 0; i < len; i++) {
+			getRowView(i).fill(value);
+		}
 	}
 	
 	/**
@@ -531,6 +528,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	/**
 	 * Returns a row of the matrix. May or may not be a view, depending on matrix type.
+	 * 
+	 * Intended for the fastest possible read access of the row. This often means a view, 
+	 * but might not be (e.g. getRow on a Matrix33 returns a Vector3).
 	 */
 	public AVector getRow(int row) {
 		return getRowView(row);
@@ -538,6 +538,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	/**
 	 * Returns a column of the matrix. May or may not be a view, depending on matrix type.
+	 * 
+	 * Intended for the fastest possible read access of the column. This often means a view, 
+	 * but might not be (e.g. getColumn on a Matrix33 returns a Vector3).
 	 */
 	public AVector getColumn(int column) {
 		return getColumnView(column);
@@ -551,14 +554,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	/**
-	 * Returns a column of the matrix as a vector view
+	 * Returns a column of the matrix as a vector view. May be used to modify the original matrix
 	 */
 	public AVector getColumnView(int column) {
 		return new MatrixColumnView(this, column);
 	}
 	
 	/**
-	 * Returns a row of the matrix as a new cloned vector
+	 * Returns a row of the matrix as a new cloned, mutable vector.
+	 * 
+	 * You may modify the cloned row without affecting the source matrix.
 	 */
 	public AVector getRowClone(int row) {
 		int cc=this.columnCount();
@@ -603,7 +608,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	public void set(Object o) {
-		set(Matrixx.toMatrix(o));		
+		if (o instanceof INDArray) {
+			set((INDArray)o);
+		} else if (o instanceof Number) {
+			set(((Number) o).doubleValue());
+		} else {
+			set(Matrixx.toMatrix(o));		
+		}
 	}
 	
 	@Override
@@ -1486,6 +1497,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			} else if (dims==2) {
 				add(Matrixx.toMatrix(a));
 			}
+		}
+	}
+	
+	public void multiply (AVector v) {
+		int rc = rowCount();
+		for (int i = 0; i < rc; i++) {
+			getRowView(i).multiply(v);
 		}
 	}
 	

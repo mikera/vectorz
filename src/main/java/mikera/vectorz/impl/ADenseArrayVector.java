@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
+import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;

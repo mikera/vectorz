@@ -9,7 +9,6 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ZeroMatrix;
-import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ZeroVector;
@@ -150,7 +149,7 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 	}
 	
 	@Override
-	public AVector asVector() {
+	public ZeroVector asVector() {
 		return ZeroVector.create(this);
 	}
 	

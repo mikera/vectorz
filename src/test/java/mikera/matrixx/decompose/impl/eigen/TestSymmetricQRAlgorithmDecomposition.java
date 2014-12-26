@@ -473,7 +473,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
                 if(Math.abs(c.y - 0) < 1e-8)
                     if( vector.length > 0 ) {
                         AVector v = alg.getEigenVector(i);
-                        AMatrix e = Matrix.create(vector);
+                        AMatrix e = Matrix.createFromRows(vector);
                         e = e.getTranspose();
                         
                         Matrix t = Matrix.create(v.length(), 1);

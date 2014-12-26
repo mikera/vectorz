@@ -519,7 +519,7 @@ public class TestVectors {
 	private void testAddToPosition(AVector v) {
 		int len=v.length();
 		
-		AVector tv=Vectorz.createRange(len+10);
+		AVector tv=Vectorz.createMutableRange(len+10);
 
 		tv.add(5,v,0,len);
 		
@@ -621,7 +621,16 @@ public class TestVectors {
 	}
 	
 	private void testSparseOps(AVector v) {
-		assertTrue(v.nonZeroCount()<=v.nonSparseIndexes().length());
+		long nz=v.nonZeroCount();
+		assertTrue(nz<=v.nonSparseIndex().length());
+		
+		double[] nzv=v.nonZeroValues();
+		assertEquals(nz,nzv.length);
+		for (double d:nzv) {
+			assertNotEquals(0.0, d);
+		}
+		
+		assertEquals(nz,v.nonZeroIndices().length);
 		
 		AVector sc=v.sparseClone();
 		assertTrue("clone = "+sc.getClass(), sc.isFullyMutable());
@@ -637,6 +646,10 @@ public class TestVectors {
 
 		double d=v.magnitude();
 		double nresult=v.normalise();
+		
+		AVector n=v.normaliseCopy();
+		assertEquals(1.0,n.magnitude(),0.0001);
+		assertTrue(n.isUnitLengthVector());
 		
 		assertTrue(v2.epsilonEquals(v)); // compared normalised versions
 		assertEquals(d,nresult,0.0000001);
@@ -725,6 +738,10 @@ public class TestVectors {
 		int len=v.length();
 		assertEquals(len,al.size());
 		assertEquals(len,tl.size());
+	}
+	
+	private void testAsColumnMatrix(AVector v) {
+		assertEquals(v,v.asColumnMatrix().getColumn(0));
 	}
 	
 	private void testMultiply(AVector v) {
@@ -842,6 +859,7 @@ public class TestVectors {
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
 		testImmutable(v);
+		testAsColumnMatrix(v);
 		
 		doNonDegenerateTests(v);
 		

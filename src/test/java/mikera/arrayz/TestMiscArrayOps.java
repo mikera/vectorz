@@ -62,8 +62,23 @@ public class TestMiscArrayOps {
 		assertEquals(new Double(2.0),SliceArray.create(Vector.of(1,2,3)).getSlices().get(1));
 	}
 	
+	@Test
+	public void testJoinedSlice() {
+		Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
+		INDArray j=m.join(m, 1);
+		assertEquals(Vector.of(1,3),j.slice(1,0));
+		assertEquals(Vector.of(2,4),j.slice(1,3));
+	}
+	
 	@Test public void testParse() {
 		assertEquals(Vector.of(4,5),Arrayz.parse("[[1, 2], [4, 5], [7, 8]]").slice(1));
+	}
+	
+	@Test
+	public void testSparse() {
+		INDArray a=Arrayz.createSparseArray(new int[] {2,3,2,4});
+		Arrayz.fillRandom(a, 1201);
+		assertEquals(a,a.dense());
 	}
 	
 	@Test public void testTranspose() {

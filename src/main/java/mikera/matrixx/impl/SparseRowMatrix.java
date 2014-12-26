@@ -142,7 +142,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 			v = v.sparseClone();
 		}
 		unsafeSetVec(i, v);
-		v.set(j, value);
+		v.unsafeSet(j, value);
 	}
 
 	@Override
@@ -163,8 +163,22 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 	
 	@Override
+	public void set(AMatrix a) {
+		checkSameShape(a);
+		for (int i=0; i<rows; i++) {
+			setRow(i,a.getRow(i));
+		}
+	}
+	
+	@Override
+	public void setRow(int i, AVector v) {
+		data[i]=v.copy();
+	}
+	
+	@Override
 	public void addAt(int i, int j, double d) {
-		AVector v=getRow(i);
+		if (d==0.0) return;
+		AVector v=unsafeGetVec(i);
 		if (v.isFullyMutable()) {
 			v.addAt(j, d);
 		} else {
@@ -186,6 +200,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		AVector v = unsafeGetVec(i);
 		if (v == null) {
 			AVector nv=SparseIndexedVector.createLength(cols);
+            unsafeSetVec(i, nv);
 			return nv;
 		}
 		if (v.isFullyMutable()) return v;
@@ -236,7 +251,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
 		if (vec.length() != cols)
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShape(vec));
-		unsafeSetVec(i, vec);
+        unsafeSetVec(i, vec);
 	}
 
 	@Override
@@ -357,13 +372,22 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		return r;
 	}
 	
+	/**
+	 * Specialised inner product for sparse row matrix multiplied by sparse column matrix. This is the 
+	 * fastest general purpose sparse matrix multiplication supported by Vectorz at present.
+	 *  
+	 * @param a
+	 * @return
+	 */
 	public AMatrix innerProduct(SparseColumnMatrix a) {
-		AMatrix r = Matrixx.createSparse(rows, a.cols);
+		// new matrix has shape [ this.rows * a.cols ], issue #71
+		int acols=a.cols; 
+		AMatrix r = Matrixx.createSparse(rows, acols);
 
         for (int i = 0; i < rows; ++i) {
 			AVector row = unsafeGetVec(i);
             if (! ((row == null) || (row.isZero()))) {
-                for (int j = 0; j < cols; ++j) {
+                for (int j = 0; j < acols; ++j) {
     				AVector acol = a.unsafeGetVec(j);
     				double v = ((acol == null) || acol.isZero()) ? 0.0 : row.dotProduct(acol);
     				if (v!=0.0) r.unsafeSet(i, j, v);

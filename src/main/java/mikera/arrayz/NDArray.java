@@ -18,7 +18,6 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
-import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -82,7 +81,7 @@ public final class NDArray extends BaseNDArray {
 		if (dimensions==0) {
 			data[offset]=value;
 		} else if (dimensions==1) {
-			int n=getShape(0);
+			int n=sliceCount();
 			int st=getStride(0);
 			for (int i=0; i<n; i++) {
 				data[offset+i*st]=value;
@@ -129,20 +128,18 @@ public final class NDArray extends BaseNDArray {
 	
 	@Override
 	public INDArray getTransposeView() {
-		return new NDArray(data,dimensions,offset,IntArrays.reverse(shape),IntArrays.reverse(stride));
+		return Arrayz.wrapStrided(data,offset,IntArrays.reverse(shape),IntArrays.reverse(stride));
 	}
 
 	@Override
 	public AVector asVector() {
-		if (isPackedArray()) {
-			return Vector.wrap(data);
-		} else if (dimensions==0) {
+		if (dimensions==0) {
 			return ArraySubVector.wrap(data,offset,1);
 		} else if (dimensions==1) {
-			return StridedVector.wrap(data, offset, getShape(0), getStride(0));
+			return Vectorz.wrapStrided(data, offset, getShape(0), getStride(0));
 		} else {
 			AVector v=Vector0.INSTANCE;
-			int n=getShape(0);
+			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				v=v.join(slice(i).asVector());
 			}
@@ -169,13 +166,9 @@ public final class NDArray extends BaseNDArray {
 			return new ArrayIndexScalar(data,offset+majorSlice*getStride(0));
 		} else if (dimensions==2) {
 			int st=stride[1];
-			if (st==1) {
-				return Vectorz.wrap(data, offset+majorSlice*getStride(0), getShape(1));
-			} else {
-				return Vectorz.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
-			}
+			return Vectorz.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
 		} else {
-			return new NDArray(data,
+			return Arrayz.wrapStrided(data,
 					offset+majorSlice*getStride(0),
 					Arrays.copyOfRange(shape, 1,dimensions),
 					Arrays.copyOfRange(stride, 1,dimensions));
@@ -187,10 +180,10 @@ public final class NDArray extends BaseNDArray {
 		if ((dimension<0)||(dimension>=dimensions)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		if (dimension==0) return slice(index);
 		if (dimensions==2) {
-			if (dimension!=1) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
-			return StridedVector.wrap(data, offset+index*getStride(1), getShape(0), getStride(0));
+			// note: dimension must be 1 if we are here
+			return Vectorz.wrapStrided(data, offset+index*getStride(1), getShape(0), getStride(0));
 		}
-		return new NDArray(data,
+		return Arrayz.wrapStrided(data,
 				offset+index*stride[dimension],
 				IntArrays.removeIndex(shape,index),
 				IntArrays.removeIndex(stride,index));	
@@ -241,8 +234,8 @@ public final class NDArray extends BaseNDArray {
 		if (dimensions==0) {
 			data[offset]=op.apply(data[offset]);
 		} else if (dimensions==1) {
+			int len=sliceCount();
 			int st=getStride(0);
-			int len=getShape(0);
 			if (st==1) {
 				op.applyTo(data, offset, len);
 			} else {
@@ -251,7 +244,7 @@ public final class NDArray extends BaseNDArray {
 				}
 			}
 		} else {
-			int n=shape[0];
+			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				slice(i).applyOp(op);
 			}		
@@ -309,12 +302,12 @@ public final class NDArray extends BaseNDArray {
 		if (dimensions==0) {
 			data[offset]*=d;
 		} else if (dimensions==1) {
-			int n=getShape(0);
+			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				data[offset+i*getStride(0)]*=d;
 			}
 		} else {
-			int n=getShape(0);
+			int n=sliceCount();
 			for (int i=0; i<n; i++) {
 				slice(i).scale(d);
 			}

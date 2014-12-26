@@ -76,11 +76,12 @@ public class JoinedArray extends BaseShapedArray {
 	@Override
 	public INDArray slice(int dimension, int index) {
 		if (this.dimension==dimension) {
-			return (index<split)?left.slice(index):right.slice(index-split);			
+			return (index<split)?left.slice(dimension,index):right.slice(dimension,index-split);			
 		} else if (dimension==0) {
 			return slice(index);
 		} else {
-			return new JoinedArray(left.slice(dimension-1,index),right.slice(dimension-1,index),this.dimension-1);			
+			int nd= (dimension<this.dimension)?dimension:dimension-1;
+			return left.slice(dimension,index).join(right.slice(dimension,index),nd);			
 		}
 	}
 

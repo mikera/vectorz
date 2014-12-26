@@ -13,6 +13,16 @@ import org.junit.Test;
 
 public class TestCholesky {
 
+	@Test 
+	public void testCholeskyRegression() {
+		Matrix original = Matrix.create(new double[][] {{4,12,-16},{12,37,-43},{-16,-43,98}});	
+		Matrix a=Matrix.create(original);
+		ICholeskyResult r=Cholesky.decompose(a);
+		validateCholesky(a,r);
+		
+		assertEquals(original,a);
+	}
+	
 	@Test
 	public void testCholesky() {
 		AMatrix z = Matrixx.createRandomMatrix(3, 3);

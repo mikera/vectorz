@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>vectorz</artifactId>
 	<groupId>net.mikera</groupId>
-	<version>0.40.0</version>
+	<version>0.42.0</version>
 
 	<name>Vectorz</name>
 	<description>Fast double-precision vector and matrix maths library for Java, supporting N-dimensional numeric arrays.</description>
@@ -28,7 +28,7 @@
 		<connection>scm:git:git@github.com:mikera/${project.artifactId}.git</connection>
 		<url>scm:git:git@github.com:mikera/${project.artifactId}.git</url>
 		<developerConnection>scm:git:git@github.com:mikera/${project.artifactId}.git</developerConnection>
-		<tag>vectorz-0.40.0</tag>
+		<tag>vectorz-0.42.0</tag>
 	</scm>
 	
 	<build>
@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

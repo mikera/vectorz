@@ -18,6 +18,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
+import mikera.vectorz.TestingUtils;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -88,11 +89,14 @@ public class TestArrays {
 	}
 
 	private void testSlices(INDArray a) {
-		if ((a.elementCount() == 0) || (a.dimensionality() == 0)) return;
+		int dims=a.dimensionality();
+		if ((a.elementCount() == 0) || (dims == 0)) return;
 
 		INDArray sl = a.slice(0);
+		assertEquals(sl,a.slice(0,0));
+		
 		// assertTrue(sl.isView()); not always... damn contained vectors
-		assertTrue(sl.dimensionality() == (a.dimensionality() - 1));
+		assertTrue(sl.dimensionality() == (dims - 1));
 
 		if (a.isFullyMutable()) {
 			assert (sl.isFullyMutable());
@@ -105,45 +109,50 @@ public class TestArrays {
 		assertEquals(a, Arrayz.create(slices));
 		
 		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
+		
+		List<?> vslices = a.getSliceViews();
+		assertEquals(sl, vslices.get(0));
 	}
 	
 	public void testAdd(INDArray a) {
-		INDArray v2=a.addCopy(Scalar.create(-1.0));
-		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
-		if (!v2.epsilonEquals(a,1.1)) {
-			// System.out.println(a.getClass());
-			fail(v2 + " not equal to original " + a);
+		INDArray b=TestingUtils.createRandomLike(a, 16786);
+		INDArray r=a.addCopy(b);
+		assertTrue(r.isSameShape(a));
+		
+		double[] adata=a.getElements();
+		double[] bdata=b.getElements();
+		double[] rdata=r.getElements();
+		for (int i=0; i<adata.length; i++) {
+			assertTrue(rdata[i]==adata[i]+bdata[i]);
 		}
 		
-		if (!a.isFullyMutable()) return;
-		INDArray v = a.exactClone();
-		v.add(1.0);
+		b.add(a);
+		assertEquals(r,b);	
 	}
 	
 	private void testSub(INDArray a) {
-		INDArray v2=a.subCopy(Scalar.create(-1.0));
-		assertTrue(IntArrays.equals(a.getShape(), v2.getShape()));
-		assertTrue(v2.epsilonEquals(a,1.1));
+		INDArray b=TestingUtils.createRandomLike(a, 16786);
+		INDArray r=a.subCopy(b);
+		assertTrue(r.isSameShape(a));
 		
-		if (!a.isFullyMutable()) return;
-		INDArray v = a.exactClone();
-		v.sub(1.0);
-		if (!v.epsilonEquals(a,1.1)) {
-			// System.out.println(a.getClass());
-			fail(v + " not equal to original " + a);
-		}	
+		double[] adata=a.getElements();
+		double[] bdata=b.getElements();
+		double[] rdata=r.getElements();
+		for (int i=0; i<adata.length; i++) {
+			assertTrue(rdata[i]==adata[i]-bdata[i]);
+		}
+		
+		b.sub(a);
+		b.negate();
+		assertEquals(r,b);		
 	}
 
 
 	private void testAsVector(INDArray a) {
 		AVector v = a.asVector();
-		int n=v.length();
-		assertTrue(n >= 0);
 		assertEquals(a.elementCount(), v.length());
-		assertEquals(a.elementSum(), v.elementSum(),0.0001);
-		if (n>0) assertEquals(a.elementMax(), v.elementMax(),0.0);
-		if (n>0) assertEquals(a.elementMin(), v.elementMin(),0.0);
-		
+		assertEquals(a.elementSum(), v.elementSum(),0.00000001);
+
 		if (a.isMutable() && (v.length() > 0)) {
 			assertTrue(v.isMutable());
 			// assertTrue((a==v)||(v.isView())); not always...
@@ -158,7 +167,7 @@ public class TestArrays {
 			}
 		}
 		
-		assertEquals(a.toArray().asVector(),a.asVector());
+		assertEquals(Vector.create(a.getElements()),v);
 	}
 
 	private void testToArray(INDArray a) {
@@ -546,7 +555,7 @@ public class TestArrays {
 		double ess=m.elementSquaredSum();
 		
 		assertEquals(es,m.asVector().elementSum(),0.0001);
-		assertEquals(es,m.elementPowSum(1.0),0.0001);
+		assertEquals(m.getClass().toString(),es,m.elementPowSum(1.0),0.0001);
 		assertEquals(ess,m.elementAbsPowSum(2.0),0.0001);
 
 	}
@@ -609,6 +618,7 @@ public class TestArrays {
 	
 	private void testIndexedAccess(INDArray a) {
 		if ((a.elementCount() <= 1)) return;
+		int dims=a.dimensionality();
 
 		// 0d indexed access
 		try {
@@ -643,6 +653,14 @@ public class TestArrays {
 				fail("1d set should fail for array with shape: "+Arrays.toString(a.getShape()));
 			} catch (Throwable t) { /* OK */ }
 		}
+		
+		assertEquals(a.getElements()[0],a.get(new int[dims]),0.0);
+		
+		try {
+			int[] ix=new int[dims];
+			ix[0]=-1;
+			fail("Should get exception on invalid index");
+		} catch (Throwable t) { /* OK */ }
 	}
 
 	public void testArray(INDArray a) {
@@ -689,6 +707,14 @@ public class TestArrays {
 				Vectorz.createUniformRandomVector(10));
 		testArray(sa);
 		testArray(Array.create(sa));
+	}
+	
+	@Test
+	public void g_SparseArray() {
+		testArray(Arrayz.createSparseArray(new int[] {4}));
+		testArray(Arrayz.createSparseArray(new int[] {4,3}));
+		testArray(Arrayz.createSparseArray(new int[] {4,5,2}));
+		testArray(Arrayz.createSparseArray(new int[] {2,3,2,4}));
 	}
 
 	@Test

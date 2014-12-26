@@ -44,6 +44,13 @@ public final class Matrix extends ADenseArrayMatrix {
 	public static Matrix create(int rowCount, int columnCount) {
 		return new Matrix(rowCount, columnCount);
 	}
+	
+	public static Matrix create(int... shape) {
+		int dims=shape.length;
+		if (dims!=2) throw new IllegalArgumentException("Cannot create Matrix with dimensionality: "+dims);
+		return create(shape[0],shape[1]);
+	}
+
 
 	public static Matrix create(AMatrix m) {
 		return new Matrix(m.rowCount(), m.columnCount(), m.toDoubleArray());
@@ -85,7 +92,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		return Matrix.wrap(rows, cols, m.toDoubleArray());
 	}
 
-	public static Matrix create(Object... rowVectors) {
+	public static Matrix createFromRows(Object... rowVectors) {
 		List<AVector> vs = new ArrayList<AVector>();
 		for (Object o : rowVectors) {
 			vs.add(Vectorz.create(o));
@@ -478,6 +485,11 @@ public final class Matrix extends ADenseArrayMatrix {
 		checkSameShape(m);
 		DoubleArrays.addMultiple(data,m.data,factor);
 	}
+	
+	public void setMultiple(Matrix m, double factor) {
+		checkSameShape(m);
+		DoubleArrays.scaleCopy(data,m.data,factor);
+	}
 
 	@Override
 	public void add(AMatrix m) {
@@ -497,7 +509,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	public void add2(AMatrix a, AMatrix b) {
 		if (a instanceof ADenseArrayMatrix) {
 			if ((a instanceof Matrix)&&(b instanceof Matrix)) {
-				add((Matrix)a,(Matrix)b);
+				add2((Matrix)a,(Matrix)b);
 				return;
 			}
 			if (b instanceof ADenseArrayMatrix) {
@@ -512,10 +524,26 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	public static void add(Matrix dest, Matrix a, Matrix b) {
+		dest.checkSameShape(a);
+		dest.checkSameShape(b);
 		DoubleArrays.addResult(dest.data, a.data, b.data);
 	}
 	
-	public void add(Matrix a, Matrix b) {
+	public static void scale(Matrix dest, Matrix src, double factor) {
+		dest.checkSameShape(src);
+		dest.setMultiple(src, factor);
+	}
+	
+	public static void scaleAdd(Matrix dest, Matrix a, Matrix b, double bFactor) {	
+		dest.checkSameShape(a);
+		dest.checkSameShape(b);
+		int len=dest.data.length;
+		for (int i=0; i<len; i++) {
+			dest.data[i]=a.data[i]+(bFactor*b.data[i]);
+		}
+	}
+	
+	public void add2(Matrix a, Matrix b) {
 		checkSameShape(a);
 		checkSameShape(b);
 		DoubleArrays.add2(data, a.data,b.data);

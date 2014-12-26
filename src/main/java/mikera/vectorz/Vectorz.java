@@ -11,6 +11,7 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseHashedVector;
@@ -178,7 +179,7 @@ public class Vectorz {
 		if (length<MIN_SPARSE_LENGTH) {
 			return Vector.createLength(length); // not enough sparsity to make worthwhile
 		} else  {
-			return SparseHashedVector.createLength(length);
+			return SparseIndexedVector.createLength(length);
 		} 
 	}
 	
@@ -502,12 +503,16 @@ public class Vectorz {
 		return toVector(o);
 	}
 
-	public static AVector createRange(int length) {
+	public static AVector createMutableRange(int length) {
 		AVector v=Vectorz.newVector(length);
 		for (int i=0; i<length; i++) {
 			v.unsafeSet(i,i);
 		}
 		return v;
+	}
+	
+	public static AVector createRange(int length) {
+		return RangeVector.create(0,length);
 	}
 	
 	public static AVector createRepeatedElement(int length,double value) {

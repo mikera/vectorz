@@ -6,6 +6,7 @@ import mikera.matrixx.impl.AVectorMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -113,7 +114,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public static SparseIndexedVector create(ASparseVector source) {
 		int length = source.length();
 		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
-		Index ixs=source.nonSparseIndexes();
+		Index ixs=source.nonSparseIndex();
 		int n=ixs.length();
 		double[] vals=new double[n];
 		for (int i=0; i<n; i++) {
@@ -125,7 +126,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public static SparseIndexedVector create(SparseHashedVector source) {
 		int length = source.length();
 		if (length==0) throw new IllegalArgumentException("Can't create a length 0 SparseIndexedVector");
-		Index ixs=source.nonSparseIndexes();
+		Index ixs=source.nonSparseIndex();
 		int n=ixs.length();
 		double[] vals=new double[n];
 		for (int i=0; i<n; i++) {
@@ -158,11 +159,27 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public void add(ASparseVector v) {
+	public void add(ADenseArrayVector v) {
 		includeIndices(v);	
 		for (int i=0; i<data.length; i++) {
 			data[i]+=v.unsafeGet(index.get(i));
 		}
+	}
+	
+	@Override
+	public void add(ASparseVector v) {
+        if (v instanceof ZeroVector) {
+            return;
+        }
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]+=v.unsafeGet(index.get(i));
+		}
+	}
+	
+	@Override
+	public void add(double[] src, int offset) {
+		add(Vectorz.wrap(src, offset, length));
 	}
 	
 	@Override
@@ -180,12 +197,31 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		if (v instanceof ADenseArrayVector) {
 			multiply((ADenseArrayVector)v);
 			return;
+		} else if (v instanceof ASparseVector) {
+			multiply((ASparseVector)v);
 		}
 		checkSameLength(v);
 		double[] data=this.data;
 		int[] ixs=index.data;
 		for (int i=0; i<data.length; i++) {
 			data[i]*=v.unsafeGet(ixs[i]);
+		}
+	}
+	
+	public void multiply(ASparseVector v) {
+		checkSameLength(v);
+		int[] thisIndex=index.data;
+		int[] thatIndex=v.nonSparseIndex().data;
+		int[] tix=IntArrays.intersectSorted(thatIndex, thisIndex);
+		int n=tix.length;
+		double[] ndata=new double[n];
+		int i1=0;
+		int i2=0;
+		for (int i=0; i<n; i++) {
+			int ti=tix[i];
+			while (thatIndex[i1]!=ti) i1++;
+			while (thisIndex[i2]!=ti) i2++;
+			ndata[i]=v.unsafeGet(thatIndex[i1])*unsafeGet(thisIndex[i2]);
 		}
 	}
 	
@@ -376,23 +412,36 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		if (v instanceof ADenseArrayVector) {
 			set((ADenseArrayVector)v);
 			return;
-		}
-		double[] data=this.data;
-		int nz=(int) v.nonZeroCount();
-		if (nz!=data.length) {
-			data=new double[nz];
-			this.data=data;
-			index=Index.createLength(nz);
-		}
-		int di=0;
-		for (int i=0; i<length; i++) {
-			double val=v.unsafeGet(i);
-			if (val!=0) {
-				data[di]=val;
-				index.set(di, i);
-				di++;
-			}
-		}
+		} else if (v instanceof ASparseVector) {
+            int[] nzi = v.nonZeroIndices();
+            index=Index.wrap(nzi);
+            if (nzi.length!=data.length) {
+                data=new double[nzi.length];
+            }
+            for (int i=0; i<index.length(); i++) {
+                double val=v.unsafeGet(index.get(i));
+                data[i]=val;
+            }
+            return;
+        } else {
+            double[] data=this.data;
+            int nz=(int) v.nonZeroCount();
+            if (nz!=data.length) {
+                data=new double[nz];
+                this.data=data;
+                index=Index.createLength(nz);
+            }
+            
+            int di=0;
+            for (int i=0; i<nz; i++) {
+                double val=v.unsafeGet(i);
+                if (val!=0) {
+                    data[di]=val;
+                    index.set(di, i);
+                    di++;
+                }
+            }
+        }
 	}
 	
 	@Override
@@ -435,7 +484,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public Index nonSparseIndexes() {
+	public Index nonSparseIndex() {
 		return index;
 	}
 
@@ -474,12 +523,13 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		double[] data=this.data;
 		double[] ndata=new double[nl];
 		int si=0;
+        
 		for (int i=0; i<nl; i++) {
+            if (si>=data.length) break;
 			int z=index.data[si];
 			if (z==nixs[i]) {
 				ndata[i]=data[si];
 				si++; 
-				if (si>=data.length) break;
 			}
 		}
 		this.data=ndata;
@@ -508,7 +558,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		if (v instanceof ASparseIndexedVector) {
 			includeIndices((ASparseIndexedVector)v);
 		} else {
-			includeIndices(v.nonSparseIndexes());
+			includeIndices(v.nonSparseIndex());
 		}
 	}
 	
