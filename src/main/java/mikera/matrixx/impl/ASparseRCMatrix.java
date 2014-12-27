@@ -179,6 +179,16 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public AMatrix innerProduct(AMatrix a) {
+		return SparseRowMatrix.create(this).innerProduct(a);
+	}
+	
+	@Override
+	public AVector innerProduct(AVector a) {
+		return SparseRowMatrix.create(this).innerProduct(a);
+	}
+	
+	@Override
 	public AVector getRowClone(int row) {
 		return getRow(row).sparseClone();
 	}
