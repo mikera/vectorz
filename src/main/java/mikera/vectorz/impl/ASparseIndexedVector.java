@@ -89,12 +89,42 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	@Override
 	public final double dotProduct(AVector v) {
 		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
+		if (v instanceof ASparseVector) return dotProduct((ASparseVector)v);
 		double result=0.0;
 		double[] data=internalData();
 		int[] ixs=internalIndexArray();
 		for (int j=0; j<data.length; j++) {
 			result+=data[j]*v.unsafeGet(ixs[j]);
 		}
+		return result;
+	}
+	
+	public final double dotProduct(ASparseVector v) {
+		double result=0.0;
+		double[] data=internalData();
+		int[] ixs=internalIndexArray();
+		double[] vdata=v.nonSparseValues().asDoubleArray();
+		int[] vixs=v.nonSparseIndex().data;
+		if ((data.length==0)||(vdata.length==0)) return 0.0;
+		
+		int ti=0;
+		int vi=0;
+		while ((ti<data.length)&&(vi<vdata.length)) {
+			int tv=ixs[ti];
+			int vv=vixs[vi];
+			if (tv==vv) {
+				result+=data[ti]*vdata[vi];
+				ti++;
+				vi++;
+			} else {
+				if (tv<vv) {
+					ti++;
+				} else {
+					vi++;
+				}
+			}
+		}
+		
 		return result;
 	}
 	
