@@ -361,6 +361,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
         AMatrix Q = DenseColumnMatrix.wrap(this.rowCount(), this.columnCount(), this.getTransposeView().toDoubleArray());
         for( int i = 0; i < Q.columnCount(); i++ ) {
             AVector a = Q.getColumn(i);
+            if (!a.isUnitLengthVector(tolerance)) return false;
             for( int j = i+1; j < Q.columnCount(); j++ ) {
                 double val = a.innerProduct(Q.getColumn(j)).get();
                 if( !(Math.abs(val) <= TOLERANCE))

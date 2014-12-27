@@ -12,4 +12,9 @@ public class TestDiagonalMatrix {
 		
 		assertEquals(DiagonalMatrix.create(2,6),a.innerProduct(b));
 	}
+	
+	@Test public void testOrthogonal() {
+		assertTrue(DiagonalMatrix.create(1,1,1).isOrthogonal());
+		assertFalse(DiagonalMatrix.create(1,2,3).isOrthogonal());
+	}
 }
