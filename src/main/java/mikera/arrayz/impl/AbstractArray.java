@@ -1267,7 +1267,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public INDArray sparseClone() {
 		int dims=dimensionality();
-		if (dims==0) return this;
+		if (dims==0) return Scalar.create(get());
 		if (dims==1) {
 			return Vectorz.createSparseMutable(this.asVector());
 		}
