@@ -2,9 +2,23 @@ package mikera.indexz;
 
 public class GrowableIndex extends AIndex {
 
-	private int[] data=new int[8];
-	private int count;
+	private int[] data;
+	private int count=0;
 	
+	public GrowableIndex() {
+		this(4);
+	}
+	
+	public GrowableIndex(int initialCapacity) {
+		data=new int[initialCapacity];
+	}
+	
+	public static GrowableIndex create(AIndex source) {
+		GrowableIndex g=new GrowableIndex(source.length());
+		source.copyTo(g.data, 0);
+		return g;
+	}
+
 	@Override
 	public int get(int i) {
 		if ((i<0)||(i>=count)) throw new IndexOutOfBoundsException("Index: "+i);

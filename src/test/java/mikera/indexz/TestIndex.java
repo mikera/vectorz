@@ -133,6 +133,9 @@ public class TestIndex {
 		doTests(Indexz.createProgression(10, 4, 2));
 		doTests(Indexz.createLength(0));
 		doTests(Indexz.createRandomPermutation(20));
+		
+		doTests(new GrowableIndex(3));
+		doTests(GrowableIndex.create(Indexz.createRandomPermutation(20)));
 
 		ComputedIndex ci=new ComputedIndex(4) {
 			@Override
