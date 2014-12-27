@@ -41,4 +41,9 @@ public abstract class ComputedIndex extends AIndex {
 	public void set(int i, int value) {
 		throw new UnsupportedOperationException();
 	}
+	
+	@Override
+	public AIndex exactClone() {
+		return clone();
+	}
 }

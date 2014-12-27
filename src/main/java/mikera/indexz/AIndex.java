@@ -298,4 +298,6 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 	 */	
 	public abstract int indexPosition(int x);
 
+	public abstract AIndex exactClone();
+
 }

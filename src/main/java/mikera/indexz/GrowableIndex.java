@@ -67,4 +67,9 @@ public class GrowableIndex extends AIndex {
 		return 0;
 	}
 
+	@Override
+	public GrowableIndex exactClone() {
+		return create(this);
+	}
+
 }

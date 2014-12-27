@@ -54,6 +54,11 @@ public final class Index extends AIndex {
 		}
 		return ind;
 	}
+	
+	public static Index create(AIndex index) {
+		int[] data=index.toArray();
+		return new Index(data);
+	}
 
 	public static Index createSorted(Set<Integer> keySet) {
 		ArrayList<Integer> al=new ArrayList<Integer>();
@@ -459,6 +464,11 @@ public final class Index extends AIndex {
 
 	public int[] getShape() {
 		return new int[length()];
+	}
+
+	@Override
+	public Index exactClone() {
+		return create(this);
 	}
 
 
