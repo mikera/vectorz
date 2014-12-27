@@ -7,6 +7,7 @@ import java.util.List;
 // import java.util.Map;
 // import java.util.Map.Entry;
 
+
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
@@ -16,6 +17,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -130,19 +132,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	@Override
 	public void set(int i, int j, double value) {
 		checkIndex(i,j);
-		AVector v = unsafeGetVec(i);
-		if (v == null) {
-			if (value == 0.0)
-				return;
-			v = Vectorz.createSparseMutable(cols);
-		} else if (v.isFullyMutable()) {
-			v.set(j, value);
-			return;
-		} else {
-			v = v.sparseClone();
-		}
-		unsafeSetVec(i, v);
-		v.unsafeSet(j, value);
+		unsafeSet(i,j,value);
 	}
 
 	@Override
@@ -151,15 +141,20 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 
 	@Override
-	public void unsafeSet(int row, int column, double value) {
-		AVector v=getRow(row);
-		if (v.isFullyMutable()) {
-			v.unsafeSet(column,value);
+	public void unsafeSet(int i, int j, double value) {
+		AVector v = unsafeGetVec(i);
+		if (v == null) {
+			if (value == 0.0)
+				return;
+			v = SingleElementVector.create(value, j, cols);
+		} else if (v.isFullyMutable()) {
+			v.set(j, value);
+			return;
 		} else {
-			v=v.mutable();
-			replaceRow(row,v);
-			v.unsafeSet(column,value);
+			v = v.sparseClone();
+			v.unsafeSet(j, value);
 		}
+		unsafeSetVec(i, v);
 	}
 	
 	@Override
