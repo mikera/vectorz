@@ -161,13 +161,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      */
     @Override
     public double elementPowSum(double p) {
-        Index ni = nonSparseIndex();
-        double result = 0;
-        for(int i=0; i<ni.length(); i++) {
-            int ii = ni.get(i);
-            result += Math.pow(unsafeGet(ii), p);
-        }
-        return result;
+        return nonSparseValues().elementPowSum(p);
     }
     
     /**
@@ -176,12 +170,6 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      */
     @Override
     public double elementAbsPowSum(double p) {
-        Index ni = nonSparseIndex();
-        double result = 0;
-        for(int i=0; i<ni.length(); i++) {
-            int ii = ni.get(i);
-            result += Math.pow(Math.abs(unsafeGet(ii)), p);
-        }
-        return result;
+    	return nonSparseValues().elementAbsPowSum(p);
     }
 }
