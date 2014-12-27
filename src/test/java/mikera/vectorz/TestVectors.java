@@ -17,6 +17,7 @@ import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.GrowableVector;
+import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.impl.JoinedMultiVector;
@@ -964,6 +965,15 @@ public class TestVectors {
 		AVector v4 = Vectorz.create(1.0,2.0,Math.PI,4.0);
 		AVector g4=new GrowableVector(v4);
 		doGenericTests(g4);
+	}
+	
+	@Test public void g_GrowableIndexed() {
+		GrowableIndexedVector g0=GrowableIndexedVector.createLength(10);
+		doGenericTests(g0);
+
+		g0.append(2,3.0);
+		g0.append(4,7.0);
+		doGenericTests(g0);
 	}
 		
 	@Test public void g_MatrixViews5x5() {	

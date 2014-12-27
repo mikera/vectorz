@@ -1,5 +1,7 @@
 package mikera.indexz;
 
+import mikera.vectorz.util.IntArrays;
+
 public class GrowableIndex extends AIndex {
 
 	private int[] data;
@@ -14,8 +16,10 @@ public class GrowableIndex extends AIndex {
 	}
 	
 	public static GrowableIndex create(AIndex source) {
-		GrowableIndex g=new GrowableIndex(source.length());
+		int n=source.length();
+		GrowableIndex g=new GrowableIndex(n);
 		source.copyTo(g.data, 0);
+		g.count=n;
 		return g;
 	}
 
@@ -51,6 +55,15 @@ public class GrowableIndex extends AIndex {
 		ensureCapacity(count+1);
 		data[count++]=i;
 	}
+	
+	/**
+	 * Appends to a growable index, ensuring that the added index is higher than the last index
+	 * @param i
+	 */
+	public void checkedAppend(int i) {
+		if ((count>0)&&(data[count]>=i)) throw new IllegalArgumentException("Trying to append non-increasing index value: "+i);
+		append(i);
+	}
 
 	private void ensureCapacity(int capacity) {
 		if (data.length>=capacity) return;
@@ -63,13 +76,13 @@ public class GrowableIndex extends AIndex {
 
 	@Override
 	public int indexPosition(int x) {
-		// TODO Auto-generated method stub
-		return 0;
+		return IntArrays.indexPosition(data, x, 0, count);
 	}
 
 	@Override
 	public GrowableIndex exactClone() {
 		return create(this);
 	}
+
 
 }
