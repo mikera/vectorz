@@ -31,6 +31,8 @@ import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.MatrixAsVector;
+import mikera.matrixx.impl.SparseColumnMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -408,9 +410,26 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public AMatrix reorder(int dim, int[] order) {
-		INDArray o=super.reorder(dim,order);
-		if (o instanceof AMatrix) return (AMatrix)o;
-		return Matrixx.toMatrix(o);
+		int n=order.length;
+		switch (dim) {
+		case 0: {
+			if (n==0) return ZeroMatrix.create(0, columnCount());
+			ArrayList<AVector> al=new ArrayList<AVector>();
+			for (int si: order) {
+				al.add(slice(si));
+			}
+			return SparseRowMatrix.wrap(al);
+		}
+		case 1: {
+			if (n==0) return ZeroMatrix.create(rowCount(),0);
+			ArrayList<AVector> al=new ArrayList<AVector>();
+			for (int si: order) {
+				al.add(slice(1,si));
+			}
+			return SparseColumnMatrix.wrap(al);
+		}
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		}
 	}	
 	
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
