@@ -55,6 +55,10 @@ public final class Index extends AIndex {
 		return ind;
 	}
 	
+	public static Index create(int[] indices) {
+		return wrap(indices.clone());
+	}
+	
 	public static Index create(AIndex index) {
 		int[] data=index.toArray();
 		return new Index(data);
@@ -470,6 +474,7 @@ public final class Index extends AIndex {
 	public Index exactClone() {
 		return create(this);
 	}
+
 
 
 }

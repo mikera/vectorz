@@ -27,6 +27,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleDoubleIterator;
+import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
@@ -497,6 +498,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public String toString() {
 		if (dimensionality()==0) {
 			return Double.toString(get());
+		}
+		
+		if (elementCount()>Constants.PRINT_THRESHOLD) {
+			Index shape=Index.create(getShape());
+			return "Large array with shape: "+shape.toString();
 		}
 		
 		StringBuilder sb=new StringBuilder();
