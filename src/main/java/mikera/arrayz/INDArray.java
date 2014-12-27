@@ -244,6 +244,8 @@ public interface INDArray extends Cloneable, Serializable {
 
 	/**
 	 * Returns a re-ordered array by taking the specified order of slices along a given dimension
+	 * 
+	 * May or may not use views of underlying slices (i.e. may be a reordered view)
 	 */
 	public INDArray reorder(int dimension, int[] order);
 	
