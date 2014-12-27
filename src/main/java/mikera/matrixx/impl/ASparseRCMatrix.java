@@ -180,12 +180,12 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public AMatrix innerProduct(AMatrix a) {
-		return SparseRowMatrix.create(this).innerProduct(a);
+		return SparseRowMatrix.innerProduct(this,a);
 	}
 	
 	@Override
 	public AVector innerProduct(AVector a) {
-		return SparseRowMatrix.create(this).innerProduct(a);
+		return SparseRowMatrix.innerProduct(this,a);
 	}
 	
 	@Override
