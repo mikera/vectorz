@@ -28,7 +28,7 @@ import mikera.vectorz.impl.RepeatedElementVector;
 public class TestBigSparse {
 
 	private void testBigStats(AMatrix m) {
-		assertEquals(40000000000L,m.elementCount());
+		assertEquals(400000000L,m.elementCount());
 		assertEquals(0,m.nonZeroCount());
 		assertEquals(0.0,m.elementSum(),0.0);
 		assertEquals(0.0,m.elementSquaredSum(),0.0);
@@ -37,7 +37,7 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testBigMatrix() {
-		AMatrix m=Matrixx.createSparse(200000,200000);
+		AMatrix m=Matrixx.createSparse(20000,20000);
 		testBigStats(m);
 		testBigStats(m.getTranspose());
 		
@@ -51,7 +51,7 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testBigMultiply() {
-		AMatrix m=Matrixx.createSparse(200000,200000);
+		AMatrix m=Matrixx.createSparse(20000,20000);
 		m.set(3,4,7.0);
 		
 		AMatrix r=m.innerProduct(m.getTranspose());

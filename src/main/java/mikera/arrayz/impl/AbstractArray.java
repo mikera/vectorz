@@ -956,25 +956,25 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		int dims=dimensionality();
 		if ((dim<0)||(dim>=dims)) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
-		for (int i : order) {
-			al.add(slice(dim,i));
+		ArrayList<INDArray> newSlices=new ArrayList<INDArray>();
+		for (int si : order) {
+			newSlices.add(slice(dim,si));
 		}
-		int n=al.size();
+		int n=newSlices.size();
 		int[] shp=this.getShapeClone();
 		shp[dim]=n;
 
 		if (dims==2) {
 			if (dim==0) {
-				return VectorMatrixMN.create(al,shp);
+				return VectorMatrixMN.create(newSlices,shp);
 			}
 		}
 		if (dim==0) {
-			return SliceArray.create(al,shp);
+			return SliceArray.create(newSlices,shp);
 		} else {
 			Array a=Array.newArray(shp);
-			for (int i=0; i<n; i++) {
-				a.slice(dim, i).set(al.get(i));
+			for (int di=0; di<n; di++) {
+				a.slice(dim, di).set(newSlices.get(di));
 			}
 			return a;
 		}
@@ -1097,6 +1097,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void getElements(double[] dest, int offset) {
 		if (dimensionality()==0) {
 			dest[offset]=get();
+			return;
+		}
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			INDArray s=slice(i);
+			s.getElements(dest,offset);
+			offset+=s.elementCount();
+		}
+	}
+	
+	@Override
+	public void getElements(Object[] dest, int offset) {
+		if (dimensionality()==0) {
+			dest[offset]=Double.valueOf(get());
 			return;
 		}
 		int sc=sliceCount();

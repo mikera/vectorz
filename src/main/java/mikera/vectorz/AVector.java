@@ -1314,6 +1314,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		copyTo(0,dest,offset,length());
 	}
 	
+	@Override
+	public void getElements(Object[] dest, int offset) {
+		int n=length();
+		for (int i=0; i<n; i++) {
+			dest[offset+i]=Double.valueOf(get(i));
+		}
+	}
+	
 	/**
 	 * Set the vector equal to an offset into another vector
 	 */
@@ -1716,7 +1724,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public boolean isUnitLengthVector(double tolerance) {
 		double mag=magnitudeSquared();
-		return Math.abs(mag-1.0)<tolerance;
+		return Math.abs(mag-1.0)<=tolerance;
 	}
 	
 	@Override

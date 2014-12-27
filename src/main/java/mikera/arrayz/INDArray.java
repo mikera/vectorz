@@ -244,6 +244,8 @@ public interface INDArray extends Cloneable, Serializable {
 
 	/**
 	 * Returns a re-ordered array by taking the specified order of slices along a given dimension
+	 * 
+	 * May or may not use views of underlying slices (i.e. may be a reordered view)
 	 */
 	public INDArray reorder(int dimension, int[] order);
 	
@@ -530,9 +532,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public void setElements(int pos, double[] values, int offset, int length);
 
 	/**
-	 * Gets all elements of the array, copying them into a double array
+	 * Gets all elements of the array, copying them into a double array at the specified offset
 	 */
 	public void getElements(double[] dest, int offset);
+	
+	/**
+	 * Gets all elements of the array, copying them into an object array at the specified offset
+	 */
+	public void getElements(Object[] dest, int offset);
 	
 	/**
 	 * Scales all elements of the array in place by a given double value
