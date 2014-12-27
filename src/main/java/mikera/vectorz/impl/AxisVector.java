@@ -383,6 +383,11 @@ public final class AxisVector extends ASingleElementVector {
 	}
 	
 	@Override
+	public SparseIndexedVector sparseClone() {
+		return SparseIndexedVector.create(length, Index.of(index), new double[] {1.0});
+	}
+	
+	@Override
 	public void validate() {
 		if (length<=0) throw new VectorzException("Axis vector length is too small: "+length);
 		if ((axis()<0)||(axis()>=length)) throw new VectorzException("Axis index out of bounds");
