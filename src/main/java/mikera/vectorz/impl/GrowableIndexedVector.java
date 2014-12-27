@@ -72,6 +72,11 @@ public class GrowableIndexedVector extends ASparseVector {
 	public AVector exactClone() {
 		return new GrowableIndexedVector(length,index.exactClone(), data.exactClone());
 	}
+	
+	@Override
+	public SparseIndexedVector sparseClone() {
+		return toSparseIndexedVector();
+	}
 
 	@Override
 	public int nonSparseElementCount() {
