@@ -17,14 +17,14 @@ public final class GrowableVector extends AVector {
 	private static final long serialVersionUID = -4560854157937758671L;
 
 	private double[] data;
-	private int length;
+	private int count;
 	
 	public GrowableVector(AVector v) {
 		this(v.length());
 		append(v);
 	}
 	
-	private GrowableVector(int initialCapacity) {
+	public GrowableVector(int initialCapacity) {
 		this(new double[initialCapacity],0);
 	}
 	
@@ -41,12 +41,12 @@ public final class GrowableVector extends AVector {
 	
 	private GrowableVector(double[] array, int length) {
 		this.data=array;
-		this.length=length;
+		this.count=length;
 	}
 
 	@Override
 	public int length() {
-		return length;
+		return count;
 	}
 	
 	public int currentCapacity() {
@@ -58,13 +58,13 @@ public final class GrowableVector extends AVector {
 		if (capacity<=cc) return;
 		
 		double[] newData=new double[Math.max(capacity+5, cc*2)];
-		System.arraycopy(data, 0, newData, 0, length);
+		System.arraycopy(data, 0, newData, 0, count);
 		data=newData;
 	}
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		if ((i<0)||(i>=count)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return data[i];
 	}
 
@@ -91,15 +91,22 @@ public final class GrowableVector extends AVector {
 	}
 	
 	public void append(double v) {
-		ensureCapacity(length+1);
-		data[length++]=v;
+		ensureCapacity(count+1);
+		data[count++]=v;
+	}
+	
+	public void append(double... vs) {
+		int n=vs.length;
+		ensureCapacity(count+n);
+		System.arraycopy(vs, 0, data, count, n);
+		count+=n;
 	}
 	
 	public void append(AVector v) {
 		int vl=v.length();
-		ensureCapacity(length+vl);
-		v.getElements(data, length);
-		length+=vl;
+		ensureCapacity(count+vl);
+		v.getElements(data, count);
+		count+=vl;
 	}
 	
 	/**
@@ -113,11 +120,11 @@ public final class GrowableVector extends AVector {
 
 	@Override
 	public GrowableVector clone() {
-		return new GrowableVector(data.clone(),length);
+		return new GrowableVector(data.clone(),count);
 	}
 
 	public void clear() {
-		length=0;
+		count=0;
 	}
 	
 	@Override 
@@ -129,12 +136,22 @@ public final class GrowableVector extends AVector {
 	
 	@Override
 	public void validate() {
-		if (length>data.length) throw new VectorzException("data array is wrong size!?!");
+		if (count>data.length) throw new VectorzException("data array is wrong size!?!");
 		super.validate();
+	}
+	
+	@Override
+	public Vector toVector() {
+		return Vector.create(this);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		System.arraycopy(data, 0, dest, offset, count);
 	}
 
 	@Override
 	public double dotProduct(double[] data, int offset) {
-		return DoubleArrays.dotProduct(data, offset, this.data, 0, length);
+		return DoubleArrays.dotProduct(data, offset, this.data, 0, count);
 	}
 }

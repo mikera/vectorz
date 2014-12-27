@@ -54,6 +54,15 @@ public final class Index extends AIndex {
 		}
 		return ind;
 	}
+	
+	public static Index create(int[] indices) {
+		return wrap(indices.clone());
+	}
+	
+	public static Index create(AIndex index) {
+		int[] data=index.toArray();
+		return new Index(data);
+	}
 
 	public static Index createSorted(Set<Integer> keySet) {
 		ArrayList<Integer> al=new ArrayList<Integer>();
@@ -377,54 +386,9 @@ public final class Index extends AIndex {
 	 * @param x
 	 * @return
 	 */
+	@Override
 	public int indexPosition(int x) {
-		int max=data.length;
-		if (max>20) {
-			return indexPositionBig(x,0,max);
-		} else {
-			return indexPositionSmall(x, 0, max);
-		}
-	}
-	
-	private int indexPositionBig(int x, int min, int max) {
-		int lx=data[min];
-		int hx=data[max-1];
-		if (x<=lx) {
-			if (x==lx) return min;
-			return -1;
-		}
-		if (x>=hx) {
-			if (x==hx) return max-1;
-			return -1;
-		}
-		
-		while ((min+10)<max) {
-			int mid=min+((max-min)*(x-lx))/((hx-lx)*2); // best estimate of position
-			int mx=data[mid];
-			if (x==mx) return mid;
-			if (x<mx) {
-				max=mid;
-				hx=mx;
-			} else {
-				min=mid+1;
-				lx=mx;
-			}
-		}
-		return indexPositionSmall(x,min,max);				
-	}
-	
-	private int indexPositionSmall(int x, int min, int max) {
-		while (min<max) {
-			int mid=(min+max)>>1; // bisect interval
-			int mx=data[mid];
-			if (x==mx) return mid;
-			if (x<mx) {
-				max=mid;
-			} else {
-				min=mid+1;
-			}
-		}
-		return -1;		
+		return IntArrays.indexPosition(data, x);
 	}
 	
 	@Override
@@ -505,6 +469,12 @@ public final class Index extends AIndex {
 	public int[] getShape() {
 		return new int[length()];
 	}
+
+	@Override
+	public Index exactClone() {
+		return create(this);
+	}
+
 
 
 }

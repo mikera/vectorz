@@ -361,7 +361,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		if (a instanceof SparseColumnMatrix) {
 			return innerProduct((SparseColumnMatrix) a);
 		}
-		AMatrix r = Matrix.create(rows, a.columnCount());
+		AMatrix r = Matrixx.createSparse(rows, a.columnCount());
 
         for (int i = 0; i < rows; ++i) {
 			AVector row = unsafeGetVec(i);
@@ -442,5 +442,15 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 			}
 		}
 		return true;
+	}
+
+	public static AVector innerProduct(AMatrix a, AVector b) {
+		// TODO: consider reducing working set?
+		return create(a).innerProduct(b);
+	}
+
+	public static AMatrix innerProduct(AMatrix a, AMatrix b) {
+		// TODO: consider reducing working set?
+		return create(a).innerProduct(b);
 	}
 }

@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
@@ -74,14 +75,56 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public AVector innerProduct(AMatrix a) {
+		// we assume sufficient sparsity to make specialised implementation worthwhile?
+		int cc=a.columnCount();
+		GrowableIndexedVector dest=GrowableIndexedVector.createLength(cc);
+		for (int i=0; i<cc; i++) {
+			double v=this.dotProduct(a.getColumn(i));
+			if (v!=0.0) dest.append(i, v);
+		}
+		return dest.toSparseIndexedVector();
+	}
+	
+	@Override
 	public final double dotProduct(AVector v) {
 		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
+		if (v instanceof ASparseVector) return dotProduct((ASparseVector)v);
 		double result=0.0;
 		double[] data=internalData();
 		int[] ixs=internalIndexArray();
 		for (int j=0; j<data.length; j++) {
 			result+=data[j]*v.unsafeGet(ixs[j]);
 		}
+		return result;
+	}
+	
+	public final double dotProduct(ASparseVector v) {
+		double result=0.0;
+		double[] data=internalData();
+		int[] ixs=internalIndexArray();
+		double[] vdata=v.nonSparseValues().asDoubleArray();
+		int[] vixs=v.nonSparseIndex().data;
+		if ((data.length==0)||(vdata.length==0)) return 0.0;
+		
+		int ti=0;
+		int vi=0;
+		while ((ti<data.length)&&(vi<vdata.length)) {
+			int tv=ixs[ti];
+			int vv=vixs[vi];
+			if (tv==vv) {
+				result+=data[ti]*vdata[vi];
+				ti++;
+				vi++;
+			} else {
+				if (tv<vv) {
+					ti++;
+				} else {
+					vi++;
+				}
+			}
+		}
+		
 		return result;
 	}
 	

@@ -11,6 +11,7 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.GrowableVector;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
@@ -19,7 +20,6 @@ import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
-import mikera.vectorz.util.VectorBuilder;
 import mikera.vectorz.util.VectorzException;
 import us.bpsm.edn.parser.CollectionBuilder;
 import us.bpsm.edn.parser.Parser;
@@ -261,7 +261,7 @@ public class Vectorz {
 				@Override
 				public us.bpsm.edn.parser.CollectionBuilder builder() {
 					return new CollectionBuilder() {
-						VectorBuilder b=new VectorBuilder();
+						GrowableVector b=new GrowableVector();
 						@Override
 						public void add(Object o) {
 							double d;

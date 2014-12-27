@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -14,6 +15,7 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 
 /**
  * Set of tests designed to test large array handling
@@ -34,6 +36,12 @@ public class TestBigSparse {
 		assertEquals(0.0,m.elementSquaredSum(),0.0);
 		assertEquals(0.0,m.elementMax(),0.0);
 		assertEquals(0.0,m.elementMin(),0.0);		
+	}
+	
+	@Test public void testBigArray() {
+		INDArray m=Arrayz.createSparseArray(20000,20000);
+		assertEquals(400000000L,m.elementCount());
+
 	}
 	
 	@Test public void testBigMatrix() {
@@ -70,16 +78,19 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testSparseInnerProduct() {
-		AMatrix m=Matrixx.createSparse(200000,200000);
+		int SIZE=100000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
 		
 		AMatrix mt=m.getTranspose();
 		AMatrix mmt = m.innerProduct(mt);
 		
 		assertTrue(mmt.isSameShape(m));
+		m.innerProduct(m);
 	}
 	
 	@Test public void testBigZeros() {
-		AMatrix m=ZeroMatrix.create(2000000, 2000000);
+		int SIZE=100000;
+		AMatrix m=ZeroMatrix.create(SIZE, SIZE);
 		m=m.sparseClone();
 		assertTrue("Not fully sparse:" +m.getClass(), m.isFullyMutable());
 		m.set(3,4,7.0);
@@ -88,11 +99,12 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testBigDotProduct() {
-		AVector v=Vectorz.createSparseMutable(10000000);
+		int SIZE=1000000000;
+		AVector v=Vectorz.createSparseMutable(SIZE);
 		v.set(100,1.0);
 		v.set(1000,2.0);
 
-		AVector v2=Vectorz.createRange(10000000);
+		AVector v2=Vectorz.createRange(SIZE);
 		assertEquals(2100,v.dotProduct(v2),0.0);
 		
 		AVector v3=v.clone();
@@ -101,8 +113,18 @@ public class TestBigSparse {
 		assertEquals(4.0,v.dotProduct(v3),0.0);
 	}
 	
+	@Test public void testBigSparseDotProduct() {
+		int SIZE=1000000000;
+		int VALS=1000;
+		AVector a=SparseIndexedVector.create(VALS, Indexz.createRandomChoice(VALS, SIZE), Vectorz.createUniformRandomVector(VALS));
+		AVector b=SparseIndexedVector.create(VALS, Indexz.createRandomChoice(VALS, SIZE), Vectorz.createUniformRandomVector(VALS));
+		a.dotProduct(b);
+		assertEquals(a.magnitudeSquared(),a.dotProduct(a),0.0);
+	}
+	
 	@Test public void testBigVectorAdd() {
-		AVector v=Vectorz.createSparseMutable(100000000);
+		int SIZE=1000000000;
+		AVector v=Vectorz.createSparseMutable(SIZE);
 		v.set(5000,1.0);
 		AVector v2=v.sparseClone();
 		v.add(v2);
@@ -113,7 +135,8 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testBigVectorMultiply() {
-		AVector v=Vectorz.createSparseMutable(100000000);
+		int SIZE=1000000000;
+		AVector v=Vectorz.createSparseMutable(SIZE);
 		v.set(5000,2.0);
 		AVector v2=v.sparseClone();
 		v.set(4999,3.0);
@@ -124,7 +147,8 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testBigIdentity() {
-		AMatrix m=IdentityMatrix.create(2000000);
+		int SIZE=1000000000;
+		AMatrix m=IdentityMatrix.create(SIZE);
 		m=m.sparse();
 		
 		assertEquals(m,m.innerProduct(m));

@@ -14,6 +14,7 @@ import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.indexz.Index;
 import mikera.matrixx.algo.Determinant;
 import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.algo.Multiplications;
@@ -50,6 +51,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -1227,14 +1229,24 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
+		if (elementCount()>Constants.PRINT_THRESHOLD) {
+			Index shape=Index.create(getShape());
+			return "Large matrix with shape: "+shape.toString();
+		}
+		
+		return toStringFull();
+	}
+
+	@Override
+	public String toStringFull() {
 		StringBuilder sb = new StringBuilder();
 		int rc = rowCount();
 		sb.append("[");
 		for (int i = 0; i < rc; i++) {
-			if (i>0) sb.append(',');
+			if (i>0) sb.append(",\n");
 			sb.append(getRow(i).toString());
 		}
 		sb.append("]");

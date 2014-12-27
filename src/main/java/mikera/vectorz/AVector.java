@@ -32,6 +32,7 @@ import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.VectorIterator;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Logistic;
+import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -1800,6 +1801,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public String toString() {
+		if (elementCount()>Constants.PRINT_THRESHOLD) {
+			Index shape=Index.create(getShape());
+			return "Large vector with shape: "+shape.toString();
+		}
+		return toStringFull();
+	}
+	
+	@Override
+	public String toStringFull() {
 		StringBuilder sb=new StringBuilder();
 		int length=length();
 		sb.append('[');

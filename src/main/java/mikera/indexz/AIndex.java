@@ -56,6 +56,13 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 		return arr;
 	}
 	
+	public Index toIndex() {
+		int len=length();
+		int[] arr=new int[len];
+		copyTo(arr,0);
+		return Index.wrap(arr);
+	}
+	
 	public List<Integer> toList() {
 		int len=length();
 		ArrayList<Integer> al=new ArrayList<Integer>();
@@ -282,5 +289,15 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 		}
 		return r;
 	}
+
+	/**
+	 * Looks up an index value in the index, returning its position or -1 if not found
+	 * Index must be both sorted and distinct.
+	 * @param x
+	 * @return
+	 */	
+	public abstract int indexPosition(int x);
+
+	public abstract AIndex exactClone();
 
 }
