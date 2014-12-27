@@ -360,6 +360,9 @@ public final class ZeroVector extends ASparseVector {
 	public AVector reorder(int[] order) {
 		int n = order.length;
 		if (n == length) return this;
+		for (int i: order) {
+			checkIndex(i);
+		}
 		return createNew(n);
 	}
 
