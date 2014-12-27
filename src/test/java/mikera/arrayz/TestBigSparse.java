@@ -36,6 +36,12 @@ public class TestBigSparse {
 		assertEquals(0.0,m.elementMin(),0.0);		
 	}
 	
+	@Test public void testBigArray() {
+		INDArray m=Arrayz.createSparseArray(20000,20000);
+		assertEquals(400000000L,m.elementCount());
+
+	}
+	
 	@Test public void testBigMatrix() {
 		AMatrix m=Matrixx.createSparse(20000,20000);
 		testBigStats(m);
