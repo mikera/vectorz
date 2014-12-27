@@ -1805,7 +1805,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			Index shape=Index.create(getShape());
 			return "Large vector with shape: "+shape.toString();
 		}
-		
+		return toStringFull();
+	}
+	
+	@Override
+	public String toStringFull() {
 		StringBuilder sb=new StringBuilder();
 		int length=length();
 		sb.append('[');

@@ -496,15 +496,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public String toString() {
-		if (dimensionality()==0) {
-			return Double.toString(get());
-		}
-		
 		if (elementCount()>Constants.PRINT_THRESHOLD) {
 			Index shape=Index.create(getShape());
 			return "Large array with shape: "+shape.toString();
 		}
 		
+		return toStringFull();
+	}
+	
+	public String toStringFull() {
+		
+		if (dimensionality()==0) {
+			return Double.toString(get());
+		}
 		StringBuilder sb=new StringBuilder();
 		int length=sliceCount();
 		sb.append('[');

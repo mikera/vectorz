@@ -1229,7 +1229,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
 		if (elementCount()>Constants.PRINT_THRESHOLD) {
@@ -1237,6 +1237,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			return "Large matrix with shape: "+shape.toString();
 		}
 		
+		return toStringFull();
+	}
+
+	@Override
+	public String toStringFull() {
 		StringBuilder sb = new StringBuilder();
 		int rc = rowCount();
 		sb.append("[");
