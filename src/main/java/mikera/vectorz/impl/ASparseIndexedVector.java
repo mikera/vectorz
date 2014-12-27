@@ -78,12 +78,12 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	public AVector innerProduct(AMatrix a) {
 		// we assume sufficient sparsity to make specialised implementation worthwhile?
 		int cc=a.columnCount();
-		SparseIndexedVector dest=SparseIndexedVector.createLength(cc);
+		GrowableIndexedVector dest=GrowableIndexedVector.createLength(cc);
 		for (int i=0; i<cc; i++) {
 			double v=this.dotProduct(a.getColumn(i));
-			if (v!=0.0) dest.unsafeSet(i,v);
+			if (v!=0.0) dest.append(i, v);
 		}
-		return dest;
+		return dest.toSparseIndexedVector();
 	}
 	
 	@Override

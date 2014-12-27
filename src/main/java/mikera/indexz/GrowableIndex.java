@@ -61,7 +61,7 @@ public class GrowableIndex extends AIndex {
 	 * @param i
 	 */
 	public void checkedAppend(int i) {
-		if ((count>0)&&(data[count]>=i)) throw new IllegalArgumentException("Trying to append non-increasing index value: "+i);
+		if ((count>0)&&(data[count-1]>=i)) throw new IllegalArgumentException("Trying to append non-increasing index value: "+i);
 		append(i);
 	}
 

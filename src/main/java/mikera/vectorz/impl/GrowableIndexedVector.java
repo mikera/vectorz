@@ -64,7 +64,7 @@ public class GrowableIndexedVector extends ASparseVector {
 		return toSparseIndexedVector().dotProduct(data,offset);
 	}
 
-	private SparseIndexedVector toSparseIndexedVector() {
+	public SparseIndexedVector toSparseIndexedVector() {
 		return SparseIndexedVector.create(length, Index.create(index), data.toDoubleArray());
 	}
 
