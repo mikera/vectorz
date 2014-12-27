@@ -1241,7 +1241,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc = rowCount();
 		sb.append("[");
 		for (int i = 0; i < rc; i++) {
-			if (i>0) sb.append(',');
+			if (i>0) sb.append(",\n");
 			sb.append(getRow(i).toString());
 		}
 		sb.append("]");
