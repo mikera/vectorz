@@ -499,6 +499,6 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 
 	@Override
 	public boolean hasUncountable() {
-		return Double.isNaN(get()) || Double.isInfinite(get());
+		return Vectorz.isUncountable(get());
 	}
 }

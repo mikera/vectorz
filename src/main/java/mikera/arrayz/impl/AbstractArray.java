@@ -1327,7 +1327,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	 */
 	@Override
 	public boolean hasUncountable() {
-		if (dimensionality()==0) return Double.isNaN(get()) || Double.isInfinite(get());
+		if (dimensionality()==0) return Vectorz.isUncountable(get());
 		int sc=sliceCount();
 		for (int i=0; i<sc; i++) {
 			INDArray s=slice(i);

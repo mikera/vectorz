@@ -2282,7 +2282,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len = length();
 		for(int i=0; i<len; i++) {
 			double v=unsafeGet(i);
-			if (Double.isNaN(v) || Double.isInfinite(v)) {
+			if (Vectorz.isUncountable(v)) {
 				return true;
 			}
 		}

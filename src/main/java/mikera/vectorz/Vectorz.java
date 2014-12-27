@@ -566,6 +566,15 @@ public class Vectorz {
 		}
 	}
 
+	/**
+	 * utility function to test whether a value is uncountable
+	 * @param value
+	 * @return
+	 */
+	public static boolean isUncountable(double value) {
+		return Double.isNaN(value) || Double.isInfinite(value);
+	}
+
 
 
 	
