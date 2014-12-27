@@ -108,7 +108,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public double elementProduct() {
 		int n=nonSparseElementCount();
 		if (n<length) return 0.0;
-		return super.elementProduct();
+		return nonSparseValues().elementProduct();
 	}
 	
 	@Override
