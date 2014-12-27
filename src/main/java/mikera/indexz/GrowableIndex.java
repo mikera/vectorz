@@ -2,7 +2,7 @@ package mikera.indexz;
 
 public class GrowableIndex extends AIndex {
 
-	private int[] data;
+	private int[] data=new int[8];
 	private int count;
 	
 	@Override
@@ -41,10 +41,16 @@ public class GrowableIndex extends AIndex {
 	private void ensureCapacity(int capacity) {
 		if (data.length>=capacity) return;
 		
-		int nLen=Math.max(capacity, data.length*2+5);
+		int nLen=Math.max(capacity, data.length*2+4);
 		int[] ndata=new int[nLen];
 		System.arraycopy(data, 0, ndata, 0, count);
 		data=ndata;
+	}
+
+	@Override
+	public int indexPosition(int x) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -16,6 +16,7 @@ import mikera.matrixx.impl.MatrixAsVector;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.GrowableVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.impl.JoinedMultiVector;
@@ -32,7 +33,6 @@ import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Constant;
-import mikera.vectorz.util.VectorBuilder;
 
 import org.junit.Test;
 
@@ -1078,7 +1078,7 @@ public class TestVectors {
 		
 	@Test public void g_VectorBuilder() {	
 		// VectorBuilder as a Vector
-		VectorBuilder vbl=new VectorBuilder();
+		GrowableVector vbl=new GrowableVector();
 		doGenericTests(vbl);
 		vbl.append(1.0);
 		doGenericTests(vbl);

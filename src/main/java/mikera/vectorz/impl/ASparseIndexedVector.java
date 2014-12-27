@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
@@ -71,6 +72,18 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 			result+=tdata[j]*data[offset+ixs[j]];
 		}
 		return result;
+	}
+	
+	@Override
+	public AVector innerProduct(AMatrix a) {
+		// we assume sufficient sparsity to make specialised implementation worthwhile?
+		int cc=a.columnCount();
+		SparseIndexedVector dest=SparseIndexedVector.createLength(cc);
+		for (int i=0; i<cc; i++) {
+			double v=this.dotProduct(a.getColumn(i));
+			if (v!=0.0) dest.unsafeSet(i,v);
+		}
+		return dest;
 	}
 	
 	@Override

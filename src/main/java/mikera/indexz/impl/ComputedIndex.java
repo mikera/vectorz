@@ -30,6 +30,14 @@ public abstract class ComputedIndex extends AIndex {
 	}
 	
 	@Override
+	public int indexPosition(int x) {
+		for (int i=0; i<length; i++) {
+			if (get(i)==x) return i;
+		}
+		return -1;
+	}	
+	
+	@Override
 	public void set(int i, int value) {
 		throw new UnsupportedOperationException();
 	}

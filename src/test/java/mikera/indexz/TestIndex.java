@@ -138,7 +138,8 @@ public class TestIndex {
 			@Override
 			public int get(int i) {
 				return length-1-i;
-			}	
+			}
+
 		};
 		doTests(ci);
 	}
