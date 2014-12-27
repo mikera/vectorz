@@ -1,6 +1,7 @@
 package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.decompose.Cholesky;
 import mikera.matrixx.decompose.Eigen;
 import mikera.matrixx.decompose.IEigenResult;
 
@@ -8,8 +9,7 @@ import mikera.matrixx.decompose.IEigenResult;
 public class Definite {
 
 	public static boolean isPositiveDefinite(AMatrix a) {
-		IEigenResult e=Eigen.decompose(a);
-		throw new UnsupportedOperationException("TODO: definiteness test");
+		return Cholesky.decompose(a)!=null;
 	}
 	
 	public static boolean isPositiveSemiDefinite(AMatrix a) {
