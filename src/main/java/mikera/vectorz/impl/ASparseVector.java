@@ -118,6 +118,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	
 	@Override
 	public AVector clone() {
+		// TODO: figure out a better heuristic?
 		if ((length<20)||(nonSparseElementCount()>(elementCount()*0.25))) return super.clone();
 		return SparseIndexedVector.create(this);
 	}
