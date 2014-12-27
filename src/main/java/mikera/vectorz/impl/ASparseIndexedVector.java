@@ -77,6 +77,7 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	@Override
 	public AVector innerProduct(AMatrix a) {
 		// we assume sufficient sparsity to make specialised implementation worthwhile?
+		// TODO should we go in a different order and calculate via non-zero elements in this? (i.e. avoid iterating over all columns of a)
 		int cc=a.columnCount();
 		GrowableIndexedVector dest=GrowableIndexedVector.createLength(cc);
 		for (int i=0; i<cc; i++) {
@@ -103,9 +104,12 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		double result=0.0;
 		double[] data=internalData();
 		int[] ixs=internalIndexArray();
-		double[] vdata=v.nonSparseValues().asDoubleArray();
+		AVector vvalues=v.nonSparseValues();
+		double[] vdata=vvalues.asDoubleArray();
+		if (vdata==null) vdata=vvalues.toDoubleArray();
 		int[] vixs=v.nonSparseIndex().data;
-		if ((data.length==0)||(vdata.length==0)) return 0.0;
+		if (data.length==0) return 0.0;
+		if (vdata.length==0) return 0.0;
 		
 		int ti=0;
 		int vi=0;

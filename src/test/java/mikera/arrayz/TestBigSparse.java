@@ -10,6 +10,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
+import mikera.util.Random;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
@@ -65,6 +66,17 @@ public class TestBigSparse {
 		AMatrix r=m.innerProduct(m.getTranspose());
 		assertEquals(49.0,r.get(3,3),0.0);
 		assertEquals(49.0,r.elementSum(),0.0);
+	}
+	
+	@Test public void testBigMultiply2() {
+		int SIZE=1000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
+		Random r=new Random(342345234);
+		for (int i=0; i<SIZE; i++) {
+			m.set(r.nextInt(SIZE),r.nextInt(SIZE),r.nextGaussian());
+		}
+		
+		m.innerProduct(m.getTranspose());
 	}
 	
 	@Test public void testSparseAdd() {

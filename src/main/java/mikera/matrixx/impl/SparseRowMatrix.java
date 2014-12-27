@@ -380,14 +380,8 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		AMatrix r = Matrixx.createSparse(rows, acols);
 
         for (int i = 0; i < rows; ++i) {
-			AVector row = unsafeGetVec(i);
-            if (! ((row == null) || (row.isZero()))) {
-                for (int j = 0; j < acols; ++j) {
-    				AVector acol = a.unsafeGetVec(j);
-    				double v = ((acol == null) || acol.isZero()) ? 0.0 : row.dotProduct(acol);
-    				if (v!=0.0) r.unsafeSet(i, j, v);
-    			}
-            }
+			AVector nr=getRow(i).innerProduct(a);
+			r.replaceRow(i, nr);
 		}
 		return r;
 	}
