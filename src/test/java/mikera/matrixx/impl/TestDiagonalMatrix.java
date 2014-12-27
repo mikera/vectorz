@@ -19,8 +19,13 @@ public class TestDiagonalMatrix {
 		assertFalse(DiagonalMatrix.create(1,2,3).isOrthogonal());
 	}
 	
-	@Test public void testPositiveDefinite() {
+	@Test public void testDefinite() {
 		assertTrue(Definite.isPositiveDefinite(DiagonalMatrix.create(1,0.4,2)));
 		assertFalse(Definite.isPositiveDefinite(DiagonalMatrix.create(1,0)));
+		assertFalse(Definite.isPositiveDefinite(DiagonalMatrix.create(-1,1)));
+		
+		assertTrue(Definite.isPositiveSemiDefinite(DiagonalMatrix.create(1,0.4,2)));
+		assertTrue(Definite.isPositiveSemiDefinite(DiagonalMatrix.create(1,0)));
+		assertFalse(Definite.isPositiveSemiDefinite(DiagonalMatrix.create(-1,1)));
 	}
 }
