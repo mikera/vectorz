@@ -150,6 +150,11 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return nonSparseValues().nonZeroCount();
+	}
+	
+	@Override
 	public boolean equals(AVector v) {
 		if (v instanceof ASparseVector) {
 			return equals((ASparseVector)v);
