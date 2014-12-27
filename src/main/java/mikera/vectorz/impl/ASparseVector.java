@@ -116,6 +116,12 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		return this;
 	}
 	
+	@Override
+	public AVector clone() {
+		if ((length<20)||(nonSparseElementCount()>(elementCount()*0.25))) return super.clone();
+		return SparseIndexedVector.create(this);
+	}
+	
 	public boolean equals(ASparseVector v) {
 		if (v==this) return true;
 		if (v.length!=length) return false;

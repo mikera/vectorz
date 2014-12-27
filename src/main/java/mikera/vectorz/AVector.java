@@ -48,8 +48,6 @@ import mikera.vectorz.util.VectorzException;
  */
 @SuppressWarnings("serial")
 public abstract class AVector extends AbstractArray<Double> implements IVector, Comparable<AVector> {
-	
-	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
 
 	// ================================================
 	// Abstract interface
@@ -1855,11 +1853,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (this.isFullyMutable()) {
 			return this;
 		} else {
-			if (elementCount()>SPARSE_ELEMENT_THRESHOLD) {
-				return Vectorz.createSparseMutable(this);
-			} else {
-				return this.clone();
-			}
+			return this.clone();
 		}
 	}
 	
