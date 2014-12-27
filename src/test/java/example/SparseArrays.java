@@ -3,14 +3,14 @@ package example;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.util.Random;
-import mikera.vectorz.impl.SparseHashedVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 
 public class SparseArrays {
 	public static final int SIZE=1000000;
 	private static Random r=new Random();
 
-	public static SparseHashedVector createRow() {
-		SparseHashedVector v=SparseHashedVector.createLength(SIZE);
+	public static SparseIndexedVector createRow() {
+		SparseIndexedVector v=SparseIndexedVector.createLength(SIZE);
 		
 		for (int i=0; i<1000; i++) {
 			v.set(r.nextInt(SIZE), r.nextDouble());
