@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -14,6 +15,7 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SparseIndexedVector;
 
 /**
  * Set of tests designed to test large array handling
@@ -105,6 +107,15 @@ public class TestBigSparse {
 		v3.set(100,0.0);
 		v3.set(101,4.0);
 		assertEquals(4.0,v.dotProduct(v3),0.0);
+	}
+	
+	@Test public void testBigSparseDotProduct() {
+		int SIZE=1000000000;
+		int VALS=1000;
+		AVector a=SparseIndexedVector.create(VALS, Indexz.createRandomChoice(VALS, SIZE), Vectorz.createUniformRandomVector(VALS));
+		AVector b=SparseIndexedVector.create(VALS, Indexz.createRandomChoice(VALS, SIZE), Vectorz.createUniformRandomVector(VALS));
+		a.dotProduct(b);
+		assertEquals(a.magnitudeSquared(),a.dotProduct(a),0.0);
 	}
 	
 	@Test public void testBigVectorAdd() {
