@@ -147,7 +147,19 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		if (v instanceof ASparseVector) {
 			return equals((ASparseVector)v);
 		}
-		return super.equals(v);
+		
+		if (v.length()!=length) return false;
+		Index ni=nonSparseIndex();
+		int n=ni.length();
+		AVector nv=nonSparseValues();
+		int offset=0;
+		for (int i=0; i<n; i++) {
+			int ii=ni.get(i);
+			if (!v.isRangeZero(offset, ii-offset)) return false;
+			if (nv.unsafeGet(i)!=v.unsafeGet(ii)) return false;
+			offset=ii+1;
+		}
+		return v.isRangeZero(offset,length-offset);
 	}
 
 	@Override
