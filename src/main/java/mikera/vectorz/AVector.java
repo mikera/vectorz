@@ -1724,7 +1724,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public boolean isUnitLengthVector(double tolerance) {
 		double mag=magnitudeSquared();
-		return Math.abs(mag-1.0)<tolerance;
+		return Math.abs(mag-1.0)<=tolerance;
 	}
 	
 	@Override
