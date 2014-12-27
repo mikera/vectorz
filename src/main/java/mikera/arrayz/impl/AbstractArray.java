@@ -1108,6 +1108,20 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void getElements(Object[] dest, int offset) {
+		if (dimensionality()==0) {
+			dest[offset]=Double.valueOf(get());
+			return;
+		}
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			INDArray s=slice(i);
+			s.getElements(dest,offset);
+			offset+=s.elementCount();
+		}
+	}
+	
+	@Override
 	public void copyTo(double[] arr) {
 		getElements(arr,0);
 	}

@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import java.io.ObjectStreamException;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import mikera.arrayz.INDArray;
@@ -12,6 +13,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -426,6 +428,19 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public double[] toDoubleArray() {
 		return new double[length];
+	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		Arrays.fill(dest, offset, offset+length(), 0.0);
+	}
+	
+	@Override
+	public void getElements(Object[] dest, int offset) {
+		int n=length();
+		for (int i=0; i<n; i++) {
+			dest[offset+i]=Constants.ZERO_DOUBLE;
+		}
 	}
 	
 	@Override

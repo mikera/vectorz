@@ -530,9 +530,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public void setElements(int pos, double[] values, int offset, int length);
 
 	/**
-	 * Gets all elements of the array, copying them into a double array
+	 * Gets all elements of the array, copying them into a double array at the specified offset
 	 */
 	public void getElements(double[] dest, int offset);
+	
+	/**
+	 * Gets all elements of the array, copying them into an object array at the specified offset
+	 */
+	public void getElements(Object[] dest, int offset);
 	
 	/**
 	 * Scales all elements of the array in place by a given double value
