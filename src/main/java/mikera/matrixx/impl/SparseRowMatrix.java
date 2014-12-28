@@ -251,15 +251,16 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
 	@Override
 	public void add(AMatrix a) {
-		int count=rowCount();
-		for (int i=0; i<count; i++) {
+		checkSameShape(a);
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
 			AVector myVec=unsafeGetVec(i);
 			AVector aVec=a.getRow(i);
 			if (myVec==null) {
 				if (!aVec.isZero()) {
 					unsafeSetVec(i,aVec.copy());
 				}
-			} else if (myVec.isMutable()) {
+			} else if (myVec.isFullyMutable()) {
 				myVec.add(aVec);
 			} else {
 				unsafeSetVec(i,myVec.addCopy(aVec));
