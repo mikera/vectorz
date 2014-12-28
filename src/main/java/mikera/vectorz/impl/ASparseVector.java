@@ -5,7 +5,10 @@ import java.util.List;
 
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -74,6 +77,19 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 			result+=unsafeGet(ii)*v.unsafeGet(ii);
 		}		
 		return result;
+	}
+	
+	@Override
+	public AVector innerProduct(AMatrix m) {
+		int cc=m.columnCount();
+		int rc=m.rowCount();
+		checkLength(rc);
+		AVector r=Vectorz.createSparseMutable(cc);
+		for (int i=0; i<cc; i++) {
+			double v=this.dotProduct(m.getColumn(i));
+			r.unsafeSet(i,v);
+		}
+		return r;
 	}
 	
 	@Override

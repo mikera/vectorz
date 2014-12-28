@@ -378,13 +378,14 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	public AMatrix innerProduct(SparseColumnMatrix a) {
 		// new matrix has shape [ this.rows * a.cols ], issue #71
 		int acols=a.cols; 
-		AMatrix r = Matrixx.createSparse(rows, acols);
+		AMatrix result = Matrixx.createSparse(rows, acols);
 
         for (int i = 0; i < rows; ++i) {
-			AVector nr=getRow(i).innerProduct(a);
-			r.replaceRow(i, nr);
+        	AVector r=getRow(i);
+			AVector nr=r.innerProduct(a);
+			result.replaceRow(i, nr);
 		}
-		return r;
+		return result;
 	}
 
 	@Override
