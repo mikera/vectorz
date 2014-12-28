@@ -136,7 +136,9 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public void set(int i, double value) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+        if (0.0 != value) {
+            throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+        }
 	}
 
 	@Override
@@ -146,7 +148,9 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public void unsafeSet(int i, double value) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+        if (0.0 != value) {
+            throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+        }
 	}
 
 	@Override
@@ -176,6 +180,16 @@ public final class ZeroVector extends ASparseVector {
 		return this;
 	}
 
+    @Override
+    public void multiply(AVector a) {
+        checkSameLength(a);
+    }
+
+    @Override
+    public void multiply(double factor) {
+        
+    }
+    
 	@Override
 	public ZeroVector multiplyCopy(AVector a) {
 		checkSameLength(a);

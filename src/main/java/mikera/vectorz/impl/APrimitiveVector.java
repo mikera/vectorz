@@ -48,7 +48,7 @@ public abstract class APrimitiveVector extends AVector {
 	
 	@Override
 	public APrimitiveVector sparseClone() {
-		return this;
+		return this.clone();
 	}
 	
 	@Override

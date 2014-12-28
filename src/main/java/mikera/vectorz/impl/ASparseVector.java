@@ -6,6 +6,8 @@ import java.util.List;
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract base class for Sparse vector implementations
@@ -40,7 +42,16 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	 * @return
 	 */
 	public abstract boolean includesIndex(int i);
-	
+
+    /**
+     * Replaces all values less-than-or-equal to precision with zeros.
+     * @param precision
+     * @return
+     */
+    public ASparseVector roundToZero(double precision) {
+        throw new VectorzException(ErrorMessages.notYetImplemented());
+    }
+    
 	// ================================================
 	// Superclass methods that must be overridden
 	// (superclass implementation is bad for sparse arrays)
@@ -82,6 +93,8 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 
 	public abstract void add(ASparseVector v);
+
+    //    public abstract void sub(ASparseVector v);
 	
 	@Override
 	public List<Double> getSlices() {
