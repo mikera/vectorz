@@ -2269,7 +2269,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		for (int i=0; i<length; i++) {
 			if (unsafeGet(i)!=0.0) ret[di++]=i;
 		}
-		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
+		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification?");
 		return ret;
 	}
 
