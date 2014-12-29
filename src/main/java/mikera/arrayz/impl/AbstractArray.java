@@ -1237,14 +1237,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray sparse() {
+		if (this instanceof ISparse) return this;
 		int dims=dimensionality();
 		if (dims==0) return this;
 		if (dims==1) {
-			if (this instanceof ISparse) return this;
 			return Vectorz.createSparse(this.asVector());
 		}
 		if (dims==2) {
-			if (this instanceof ISparse) return this;
 			return Matrixx.createSparse(this.getSliceViews());
 		}
 		int n=this.sliceCount();
