@@ -821,9 +821,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (dimensionality()==0) {
 			return get();
 		}
-		double result=-Double.MAX_VALUE;
+		double result=slice(0).elementMax();
 		int n=sliceCount();
-		for (int i=0; i<n; i++) {
+		for (int i=1; i<n; i++) {
 			double v=slice(i).elementMax();
 			if (v>result) result=v;
 		}
@@ -847,9 +847,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (dimensionality()==0) {
 			return get();
 		}
-		double result=Double.MAX_VALUE;
+		double result=slice(0).elementMin();
 		int n=sliceCount();
-		for (int i=0; i<n; i++) {
+		for (int i=1; i<n; i++) {
 			double v=slice(i).elementMin();
 			if (v<result) result=v;
 		}

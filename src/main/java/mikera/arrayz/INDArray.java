@@ -738,14 +738,15 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray sparseClone();
 	
 	/**
-	 * Creates a fully mutable clone of this array. 
+	 * Creates a fully mutable dense clone of this array. 
 	 * 
 	 * Will always use a dense format.
 	 */
 	public INDArray denseClone();
 
 	/**
-	 * Returns true if the elements in this array exactly match the given array
+	 * Returns true if the elements in this array exactly match the elements in the given array, in
+	 * row-major order
 	 * 
 	 * @param data
 	 * @return
@@ -753,7 +754,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean equalsArray(double[] data);	
 	
 	/**
-	 * Returns true if the elements in this array exactly match the given array
+	 * Returns true if the elements in this array exactly match the elements in the given array, in
+	 * row-major order
 	 * 
 	 * @param data
 	 * @return
