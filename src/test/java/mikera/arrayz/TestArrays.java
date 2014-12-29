@@ -196,8 +196,7 @@ public class TestArrays {
 		assertEquals(a.hashCode(), c.hashCode());
 
 		if (c == a) {
-			// can only return same object if immutable
-			assert (!a.isMutable());
+			assertFalse(a.isMutable());
 		}
 
 		INDArray ec = a.exactClone();
