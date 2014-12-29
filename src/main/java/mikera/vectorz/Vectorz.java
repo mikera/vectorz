@@ -518,6 +518,7 @@ public class Vectorz {
 	
 	public static AVector createRepeatedElement(int length,double value) {
 		if (length==0) return Vector0.INSTANCE;
+		if (value==0.0) return ZeroVector.create(length);
 		return RepeatedElementVector.create(length, value);
 	}
 
