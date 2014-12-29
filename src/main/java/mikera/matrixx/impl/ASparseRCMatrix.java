@@ -218,9 +218,11 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double elementMin() {
-		double result=Double.MAX_VALUE;
-		for (AVector vec: data) {
-			double v = (vec == null) ? 0 : vec.elementMin();
+		AVector fvec=data[0];
+		double result=(fvec==null)?0.0:fvec.elementMin();
+		for (int i=1 ; i<data.length; i++) {
+			AVector vec=data[i];
+			double v = (vec == null) ? 0.0 : vec.elementMin();
 			if (v<result) result=v;
 		}
 		return result;
@@ -228,9 +230,11 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double elementMax() {
-		double result=-Double.MAX_VALUE;
-		for (AVector vec: data) {
-			double v = (vec == null) ? 0 : vec.elementMax();
+		AVector fvec=data[0];
+		double result=(fvec==null)?0.0:fvec.elementMax();
+		for (int i=1 ; i<data.length; i++) {
+			AVector vec=data[i];
+			double v = (vec == null) ? 0.0 : vec.elementMax();
 			if (v>result) result=v;
 		}
 		return result;
