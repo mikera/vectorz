@@ -1253,42 +1253,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public INDArray dense() {
-		if (this instanceof IDense) return this;
+	public INDArray sparseClone() {
 		int dims=dimensionality();
 		switch (dims) {
 			case 0: return Scalar.create(get());
-			case 1: return Vector.create(this);
-			case 2:	return Matrix.create(this);
-		}
-		return Array.create(this);
-	}
-	
-	@Override
-	public INDArray denseClone() {
-		int dims=dimensionality();
-		if (dims==0) {
-			return Scalar.create(get());
-		}
-		if (dims==1) {
-			return Vector.create(this);
-		}
-		if (dims==2) {
-			return Matrix.create(this);
-		}
-		return Array.create(this);
-	}
-	
-	@Override
-	public INDArray sparseClone() {
-		int dims=dimensionality();
-		if (dims==0) return Scalar.create(get());
-		if (dims==1) {
-			return Vectorz.createSparseMutable(this.asVector());
-		}
-		if (dims==2) {
-			if (this instanceof AMatrix) return Matrixx.createSparseRows((AMatrix)this);
-			return Matrixx.createSparseRows(this);
+			case 1: return Vectorz.createSparseMutable(this.asVector());
+			case 2: return Matrixx.createSparseRows(this);
 		}
 		int n=this.sliceCount();
 		List<INDArray> sls=this.getSliceViews();
@@ -1297,6 +1267,24 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		return SliceArray.create(sls);
 	}
+	
+	@Override
+	public INDArray dense() {
+		if (this instanceof IDense) return this;
+		return denseClone();
+	}
+	
+	@Override
+	public INDArray denseClone() {
+		int dims=dimensionality();
+		switch (dims) {
+			case 0: return Scalar.create(get());
+			case 1: return Vector.create(this);
+			case 2:	return Matrix.create(this);
+		}
+		return Array.create(this);
+	}
+
 	
 	@Override
 	public INDArray broadcastLike(INDArray target) {
