@@ -88,12 +88,13 @@ public class Vectorz {
 	
 	/**
 	 * Creates an immutable zero vector of the specified length.
-	 * @param length
+	 * @param l
 	 * @return
 	 */
-	public static AVector createZeroVector(int length) {
-		if (length==0) return Vector0.INSTANCE;
-		return ZeroVector.create(length);
+	public static AVector createZeroVector(long l) {
+		if (l==0) return Vector0.INSTANCE;
+		if (l>=Integer.MAX_VALUE) throw new IllegalArgumentException("Requested zero vector length too large: "+l);
+		return ZeroVector.create((int)l);
 	}
 	
 	public static Vector wrap(double[] data) {

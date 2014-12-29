@@ -161,6 +161,10 @@ public class ErrorMessages {
 		return "Matrix should be square but has shape: "+shape(a);
 	}
 
+	public static String noElements(INDArray a) {
+		return "Array of class "+a.getClass()+" has no elements";
+	}
+
 
 
 

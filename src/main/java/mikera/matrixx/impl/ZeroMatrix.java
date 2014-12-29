@@ -197,6 +197,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public double elementMax(){
+		if ((rows<=0)||(cols<=0)) throw new IllegalArgumentException(ErrorMessages.noElements(this));
 		return 0.0;
 	}
 	

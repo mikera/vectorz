@@ -1086,6 +1086,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public INDArray rotateView(int dimension, int shift) {
 		int dlen=getShape(dimension);
+		if (dlen==0) return this;
 		int n=dimensionality();
 		
 		shift = Maths.mod(shift,dlen);

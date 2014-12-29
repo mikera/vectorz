@@ -560,6 +560,28 @@ public class TestArrays {
 
 	}
 	
+	@SuppressWarnings("unused")
+	private void testElementMinMax(INDArray m) {
+		long c=m.elementCount();
+		
+		if (c>0) {
+			double min=m.elementMin();
+			double max=m.elementMax();
+			assertTrue(min<=max);
+		} else {
+			try {
+				double min=m.elementMin();
+				fail("Should not be able to get minimum of array with non elements!");
+			} catch (Throwable t ) { /* OK */ };
+			
+			try {
+				double max=m.elementMax();
+				fail("Should not be able to get maximum of array with non elements!");
+			} catch (Throwable t ) { /* OK */ };
+		}
+
+	}
+	
 	private void testStridedArray(INDArray mm) {
 		if (!(mm instanceof IStridedArray)) {
 			assertNull(mm.asDoubleArray());
@@ -676,6 +698,7 @@ public class TestArrays {
 		testApplyAllOps(a);
 		testElementIterator(a);
 		testElementSums(a);
+		testElementMinMax(a);
 		testStridedArray(a);
 		testBoolean(a);
 		testSums(a);
@@ -763,6 +786,8 @@ public class TestArrays {
 		// zero array tests
 		testArray(Arrayz.createZeroArray());
 		testArray(Arrayz.createZeroArray(2));
+		testArray(Arrayz.createZeroArray(0,0));
+		testArray(Arrayz.createZeroArray(4,0,0));
 		testArray(Arrayz.createZeroArray(2,3));
 		testArray(Arrayz.createZeroArray(1,2,3));
 		testArray(Arrayz.createZeroArray(1,2,4,1));
