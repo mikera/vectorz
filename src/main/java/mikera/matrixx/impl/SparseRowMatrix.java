@@ -23,7 +23,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Matrix stored as a sparse collection of sparse row vectors.
+ * Matrix stored as a collection of normally sparse row vectors.
  * 
  * This format is especially efficient for:
  * - innerProduct() with another matrix, especially one with efficient

@@ -20,7 +20,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Matrix stored as a collection of sparse column vectors
+ * Matrix stored as a collection of normally sparse column vectors
  * 
  * This format is especially efficient for:
  * - transposeInnerProduct() with another matrix
