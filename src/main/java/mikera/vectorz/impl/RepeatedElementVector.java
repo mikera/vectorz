@@ -5,6 +5,7 @@ import java.util.Iterator;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -149,6 +150,11 @@ public final class RepeatedElementVector extends ASizedVector {
 	}
 	
 	@Override
+	public AVector addCopy(double v) {
+		return Vectorz.createRepeatedElement(length, value+v);
+	}
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		DoubleArrays.add(data, offset, length, value);
 	}
@@ -172,15 +178,14 @@ public final class RepeatedElementVector extends ASizedVector {
 	public AVector subVector(int offset, int length) {
 		int len=checkRange(offset,length);
 		if (length==len) return this;
-		if (length==0) return Vector0.INSTANCE;
-		return RepeatedElementVector.create(length,value);
+		return Vectorz.createRepeatedElement(length,value);
 	}
 	
 	@Override
 	public AVector tryEfficientJoin(AVector a) {
 		if (a instanceof RepeatedElementVector) {
 			RepeatedElementVector ra=(RepeatedElementVector) a;
-			if (ra.value==this.value) return RepeatedElementVector.create(length+ra.length, value);
+			if (ra.value==this.value) return Vectorz.createRepeatedElement(length+ra.length, value);
 		}
 		return null;
 	}
