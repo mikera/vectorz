@@ -295,11 +295,12 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
 	@Override
 	public AMatrix multiplyCopy(double a) {
-		AVector[] ndata=new AVector[lineCount()];
-		for (int i = 0; i < lineCount(); ++i) {
+		int n=lineCount();
+		AVector[] ndata=new AVector[n];
+		for (int i = 0; i < n; ++i) {
             AVector v = unsafeGetVec(i);
             if (v != null)
-                ndata[i] = v.innerProduct(a);
+                ndata[i] = v.multiplyCopy(a);
 		}
 		return wrap(ndata,rows,cols);
 	}
