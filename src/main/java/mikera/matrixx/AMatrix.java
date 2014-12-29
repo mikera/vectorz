@@ -1768,10 +1768,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean isUpperTriangular() {
 		int rc=rowCount();
 		int cc=columnCount();
-		for (int j=0; j<cc; j++) {
-			for (int i=j+1; i<rc; i++) {
-				if (unsafeGet(i,j)!=0.0) return false;
-			}
+		for (int i=1; i<rc; i++) {
+			if (!getRow(i).isRangeZero(0, Math.min(i,cc))) return false;
 		}
 		return true;
 	}
