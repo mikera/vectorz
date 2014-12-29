@@ -49,7 +49,29 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	public abstract double get(int x);
 	
+	public double get(long x) {
+		if (x>=getShape(0)) throw new IndexOutOfBoundsException("Index: "+x);
+		return get((int)x);
+	}
+	
 	public abstract double get(int x, int y);
+	
+	public double get(long x,long y) {
+		if (x>=getShape(0)) throw new IndexOutOfBoundsException("Index [0]: "+x);
+		if (y>=getShape(1)) throw new IndexOutOfBoundsException("Index [1]: "+y);
+		return get((int)x,(int)y);
+	}
+	
+	public double get(long... xs) {
+		int n=xs.length;
+		int[] ixs=new int[n];
+		for (int i=0; i<n; i++) {
+			long ix=xs[i];
+			if (ix>=getShape(i)) throw new IndexOutOfBoundsException("Index ["+i+"]: "+ix);
+			ixs[i]=(int)ix;
+		}
+		return get(ixs);
+	}
 	
 	@Override
 	public double get(AIndex ix) {

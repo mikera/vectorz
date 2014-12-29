@@ -80,14 +80,29 @@ public interface INDArray extends Cloneable, Serializable {
 	public double get(int x);
 	
 	/**
+	 * Returns the double value at the specified position in a 1D vector
+	 */
+	public double get(long x);
+	
+	/**
 	 * Returns the double value at the specified position in a 2D matrix
 	 */
 	public double get(int x, int y);
 	
 	/**
+	 * Returns the double value at the specified position in a 2D matrix
+	 */
+	public double get(long x, long y);
+	
+	/**
 	 * Returns the double value at the specified index position in an array
 	 */
 	public double get(int... indexes);
+	
+	/**
+	 * Returns the double value at the specified index position in an array
+	 */
+	public double get(long... indexes);
 
 	/**
 	 * Sets all elements of an array to a specific double value
