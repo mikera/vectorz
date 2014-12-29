@@ -28,6 +28,9 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
         data[i] = vec;
     }
 
+    /**
+     * Gets a vector from the internal data array, which may be null
+     */
     protected AVector unsafeGetVec(int i) {
         return data[i];
     }

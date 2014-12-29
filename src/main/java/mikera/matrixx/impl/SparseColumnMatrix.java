@@ -271,11 +271,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public void copyRowTo(int row, double[] targetData, int offset) {
-		Arrays.fill(targetData, offset,offset+ cols,0.0);
         for (int i = 0; i < cols; ++i) {
             AVector e = unsafeGetVec(i);
-            if (e != null)
-			    targetData[offset+i]=e.unsafeGet(row);
+            targetData[offset+i] = (e==null)? 0.0 : e.unsafeGet(row);
 		}		
 	}
 	

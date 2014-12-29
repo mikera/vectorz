@@ -280,11 +280,9 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	
 	@Override
 	public void copyColumnTo(int col, double[] targetData, int offset) {
-		Arrays.fill(targetData, offset, offset+rows, 0.0);
         for (int i = 0; i < rows; ++i) {
             AVector v = unsafeGetVec(i);
-            if (v != null)
-			    targetData[offset+i] = v.unsafeGet(col);
+            targetData[offset+i] = (v==null) ? 0.0 : v.unsafeGet(col);
 		}		
 	}
 
