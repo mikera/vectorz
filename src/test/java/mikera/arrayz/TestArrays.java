@@ -257,19 +257,22 @@ public class TestArrays {
 
 	private void testGetElements(INDArray a) {
 		int ecount = (int) a.elementCount();
-		double[] data = new double[ecount + 1];
+		double[] data = new double[ecount + 2];
 		Arrays.fill(data, Double.NaN);
 
 		a.getElements(data, 1);
 		assertTrue(Double.isNaN(data[0]));
-		for (int i = 1; i < data.length; i++) {
+		for (int i = 1; i < (ecount+1); i++) {
 			assertFalse(Double.isNaN(data[i]));
 		}
+		assertTrue(Double.isNaN(data[ecount+1]));
 		assertTrue(a.equalsArray(data,1));
 		
-		double[] data2=new double[ecount+1];
+		double[] data2=new double[ecount+2];
 		data[0]=13;
 		data2[0]=13;
+		data[ecount+1]=135;
+		data2[ecount+1]=135;
 		a.asVector().getElements(data2, 1);
 		assertTrue(DoubleArrays.equals(data, data2));
 		
