@@ -287,8 +287,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		AVector[] ndata=new AVector[lineCount()];
 		for (int i = 0; i < lineCount(); ++i) {
             AVector v = unsafeGetVec(i);
-            if (v != null)
-                ndata[i] = v.innerProduct(a);
+            if (v != null) {
+                ndata[i] = v.multiplyCopy(a);
+            }
 		}
 		return wrap(ndata,rows,cols);
 	}

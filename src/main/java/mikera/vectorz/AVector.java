@@ -1231,10 +1231,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public AVector scaleCopy(double d) {
-		AVector r=clone();
-		r.scale(d);
-		return r;
+	public final AVector scaleCopy(double d) {
+		return multiplyCopy(d);
 	}
 	
 	@Override
