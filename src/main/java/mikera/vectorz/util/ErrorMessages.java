@@ -113,6 +113,10 @@ public class ErrorMessages {
 		}
 	}
 	
+	public static String invalidIndex(INDArray a, long i) {
+		return "1-D access with index "+i+" not possible for "+a.getClass()+" with shape "+shape(a);
+	}
+	
 	public static String invalidRange(AVector v, int start, int length) {
 		return "Subrange {start="+start+", length="+length+"} not valid on vector with length "+v.length();
 	}

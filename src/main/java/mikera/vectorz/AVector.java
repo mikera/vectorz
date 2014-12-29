@@ -64,8 +64,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	// ================================================
 	// Standard implementations
 
+	@Override
 	public double get(long i) {
-		return get((int)i);
+		if ((i<0)||(i>=length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		return unsafeGet((int)i);
 	}
 	
 	public void set(long i, double value) {
