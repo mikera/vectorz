@@ -7,9 +7,7 @@ import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract base class for Sparse vector implementations

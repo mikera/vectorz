@@ -1,7 +1,5 @@
 package mikera.indexz.impl;
 
-import mikera.indexz.AIndex;
-
 /**
  * Class representing a sequential index [a, a+1, a+2..... b]
  * @author Mike

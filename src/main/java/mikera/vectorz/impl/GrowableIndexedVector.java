@@ -1,11 +1,9 @@
 package mikera.vectorz.impl;
 
-import mikera.indexz.AIndex;
 import mikera.indexz.GrowableIndex;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.GrowableVector;
-import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -13,6 +11,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  */
 public class GrowableIndexedVector extends ASparseVector {
+	private static final long serialVersionUID = 441979517032171392L;
 
 	private final GrowableIndex index;
 	private final GrowableVector data;

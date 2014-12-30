@@ -7,11 +7,9 @@ import java.util.List;
 // import java.util.Map;
 // import java.util.Map.Entry;
 
-
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;

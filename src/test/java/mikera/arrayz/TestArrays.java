@@ -574,12 +574,12 @@ public class TestArrays {
 			try {
 				double min=m.elementMin();
 				fail("Should not be able to get minimum of array with non elements!");
-			} catch (Throwable t ) { /* OK */ };
+			} catch (Throwable t ) { /* OK */ }
 			
 			try {
 				double max=m.elementMax();
 				fail("Should not be able to get maximum of array with non elements!");
-			} catch (Throwable t ) { /* OK */ };
+			} catch (Throwable t ) { /* OK */ }
 		}
 
 	}
