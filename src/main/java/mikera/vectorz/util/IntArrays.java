@@ -68,6 +68,13 @@ public class IntArrays {
 		System.arraycopy(as, 0, nas, 1, len);
 		return nas;
 	}
+	
+	public static int[] tailArray(int[] as) {
+		int len=as.length-1;
+		int[] nas=new int[len];
+		System.arraycopy(as, 1, nas, 0, len);
+		return nas;
+	}
 
 	public static long[] copyIntsToLongs(int[] src, long[] dst) {
 		for (int i=0; i<src.length; i++) {
@@ -190,6 +197,59 @@ public class IntArrays {
 		}
 		return min;
 	}
+	
+	public static int indexPosition(int[] data, int x) {
+		return indexPosition(data,x,0,data.length);
+	}
+	
+	public static int indexPosition(int[] data, int x, int min, int max) {
+		if (max>20) {
+			return indexPositionBig(data,x,0,max);
+		} else {
+			return indexPositionSmall(data,x, 0, max);
+		}	
+	}
+	
+	private static int indexPositionBig(int[] data, int x, int min, int max) {
+		int lx=data[min];
+		int hx=data[max-1];
+		if (x<=lx) {
+			if (x==lx) return min;
+			return -1;
+		}
+		if (x>=hx) {
+			if (x==hx) return max-1;
+			return -1;
+		}
+		
+		while ((min+10)<max) {
+			int mid=min+((max-min)*(x-lx))/((hx-lx)*2); // best estimate of position
+			int mx=data[mid];
+			if (x==mx) return mid;
+			if (x<mx) {
+				max=mid;
+				hx=mx;
+			} else {
+				min=mid+1;
+				lx=mx;
+			}
+		}
+		return indexPositionSmall(data, x,min,max);				
+	}
+	
+	private static int indexPositionSmall(int[] data, int x, int min, int max) {
+		while (min<max) {
+			int mid=(min+max)>>1; // bisect interval
+			int mx=data[mid];
+			if (x==mx) return mid;
+			if (x<mx) {
+				max=mid;
+			} else {
+				min=mid+1;
+			}
+		}
+		return -1;		
+	}
 
 	public static int[] decrementAll(int[] xs) {
 		int len=xs.length;
@@ -276,6 +336,32 @@ public class IntArrays {
 				rs[i]=y;
 				yi++;
 			}
+		}
+		return rs;
+	}
+	
+	public static int[] intersectSorted(int[] xs, int[] ys) {
+		int xl=xs.length; if (xl==0) return EMPTY_INT_ARRAY;
+		int yl=ys.length; if (yl==0) return EMPTY_INT_ARRAY;
+		int ms = countMatches(xs,ys);
+		int[] rs=new int[ms];
+		int xi=0;
+		int yi=0;
+		for (int i=0; i<rs.length; i++) {
+			int x=xs[xi];
+			int y=ys[yi];
+			while (x!=y) {
+				if (x<y) {
+					xi++;
+					x=xs[xi];
+				} else {
+					yi++;
+					y=ys[yi];
+				}
+			} 
+			rs[i]=x;
+			xi++;
+			yi++;
 		}
 		return rs;
 	}

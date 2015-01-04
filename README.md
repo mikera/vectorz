@@ -1,6 +1,6 @@
 ![Vectorz Logo](https://raw.github.com/wiki/mikera/vectorz/images/vectorz.png)
 
-Fast double-precision vector and matrix maths library for Java
+Fast double-precision vector and matrix maths library for Java, based around the concept of N-dimensional arrays.
 
 This library is designed for use in games, simulations, raytracers, machine learning etc. 
 where fast vector maths is important. 
@@ -44,6 +44,7 @@ See the [Vectorz Wiki](https://github.com/mikera/vectorz/wiki)
  - Vectors have lots of **utility functionality** implemented - Cloneable, Serializable, Comparable etc.
  - Various **specialised types** of vectors/matrices types (e.g. identity matrices, diagonal matrices)
  - Support for **affine** and other matrix **transformations**
+ - **sparse arrays** for space efficient large vectors and matrices where most elements are zero
  - Operator system provides **composable operators** that can be applied to array elements
  - **Input / output** of vectors and matrices - in various formats including readable edn format
 

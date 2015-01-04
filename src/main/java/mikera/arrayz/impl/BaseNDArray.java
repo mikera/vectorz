@@ -104,15 +104,6 @@ public abstract class BaseNDArray extends BaseShapedArray implements IStridedArr
 			
 		return (st==data.length);
 	}
-	
-	@Override
-	public int sliceCount() {
-		if (dimensions==0) {
-			throw new IllegalArgumentException(ErrorMessages.noSlices(this));
-		} else {
-			return getShape(0);
-		}
-	}
 
 	@Override
 	public long elementCount() {

@@ -54,6 +54,15 @@ public final class Index extends AIndex {
 		}
 		return ind;
 	}
+	
+	public static Index create(int[] indices) {
+		return wrap(indices.clone());
+	}
+	
+	public static Index create(AIndex index) {
+		int[] data=index.toArray();
+		return new Index(data);
+	}
 
 	public static Index createSorted(Set<Integer> keySet) {
 		ArrayList<Integer> al=new ArrayList<Integer>();
@@ -374,22 +383,12 @@ public final class Index extends AIndex {
 	/**
 	 * Looks up an index value in the index, returning its position or -1 if not found
 	 * Index must be both sorted and distinct.
-	 * @param i
+	 * @param x
 	 * @return
 	 */
-	public int indexPosition(int i) {
-		int min=0; int max=data.length;
-		while (min<max) {
-			int mid=(min+max)>>1;
-			int mi=data[mid];
-			if (i==mi) return mid;
-			if (i<mi) {
-				max=mid;
-			} else {
-				min=mid+1;
-			}
-		}
-		return -1;
+	@Override
+	public int indexPosition(int x) {
+		return IntArrays.indexPosition(data, x);
 	}
 	
 	@Override
@@ -470,6 +469,12 @@ public final class Index extends AIndex {
 	public int[] getShape() {
 		return new int[length()];
 	}
+
+	@Override
+	public Index exactClone() {
+		return create(this);
+	}
+
 
 
 }

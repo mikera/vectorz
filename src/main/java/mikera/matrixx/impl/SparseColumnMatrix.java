@@ -1,13 +1,11 @@
 package mikera.matrixx.impl;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 // import java.util.HashMap;
 // import java.util.HashSet;
 // import java.util.Map;
 // import java.util.Map.Entry;
-
 
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
@@ -21,7 +19,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Matrix stored as a collection of sparse column vectors
+ * Matrix stored as a collection of normally sparse column vectors
  * 
  * This format is especially efficient for:
  * - transposeInnerProduct() with another matrix
@@ -299,11 +297,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public void copyRowTo(int row, double[] targetData, int offset) {
-		Arrays.fill(targetData, offset,offset+ cols,0.0);
         for (int i = 0; i < cols; ++i) {
             AVector e = unsafeGetVec(i);
-            if (e != null)
-			    targetData[offset+i]=e.unsafeGet(row);
+            targetData[offset+i] = (e==null)? 0.0 : e.unsafeGet(row);
 		}		
 	}
 	
@@ -317,8 +313,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		AVector[] ndata=new AVector[lineCount()];
 		for (int i = 0; i < lineCount(); ++i) {
             AVector v = unsafeGetVec(i);
-            if (v != null)
-                ndata[i] = v.innerProduct(a);
+            if (v != null) {
+                ndata[i] = v.multiplyCopy(a);
+            }
 		}
 		return wrap(ndata,rows,cols);
 	}

@@ -10,7 +10,7 @@ import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Abstract base class for matrices that store a sparse hashmap of rows or columns.
+ * Abstract base class for matrices that store sparse rows or columns.
  * @author Mike
  *
  */
@@ -28,6 +28,9 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
         data[i] = vec;
     }
 
+    /**
+     * Gets a vector from the internal data array, which may be null
+     */
     protected AVector unsafeGetVec(int i) {
         return data[i];
     }
@@ -179,6 +182,16 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public AMatrix innerProduct(AMatrix a) {
+		return SparseRowMatrix.innerProduct(this,a);
+	}
+	
+	@Override
+	public AVector innerProduct(AVector a) {
+		return SparseRowMatrix.innerProduct(this,a);
+	}
+	
+	@Override
 	public AVector getRowClone(int row) {
 		return getRow(row).sparseClone();
 	}
@@ -208,9 +221,11 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double elementMin() {
-		double result=Double.MAX_VALUE;
-		for (AVector vec: data) {
-			double v = (vec == null) ? 0 : vec.elementMin();
+		AVector fvec=data[0];
+		double result=(fvec==null)?0.0:fvec.elementMin();
+		for (int i=1 ; i<data.length; i++) {
+			AVector vec=data[i];
+			double v = (vec == null) ? 0.0 : vec.elementMin();
 			if (v<result) result=v;
 		}
 		return result;
@@ -218,9 +233,11 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double elementMax() {
-		double result=-Double.MAX_VALUE;
-		for (AVector vec: data) {
-			double v = (vec == null) ? 0 : vec.elementMax();
+		AVector fvec=data[0];
+		double result=(fvec==null)?0.0:fvec.elementMax();
+		for (int i=1 ; i<data.length; i++) {
+			AVector vec=data[i];
+			double v = (vec == null) ? 0.0 : vec.elementMax();
 			if (v>result) result=v;
 		}
 		return result;

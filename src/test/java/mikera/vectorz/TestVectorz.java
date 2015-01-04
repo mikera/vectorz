@@ -1,9 +1,8 @@
 package mikera.vectorz;
 
 import static org.junit.Assert.*;
-
+import mikera.vectorz.GrowableVector;
 import mikera.vectorz.impl.Vector0;
-import mikera.vectorz.util.VectorBuilder;
 
 import org.junit.Test;
 
@@ -11,7 +10,7 @@ public class TestVectorz {
 
 	@Test
 	public void testVectorBuilder() {
-		VectorBuilder vb = new VectorBuilder();
+		GrowableVector vb = new GrowableVector();
 
 		assertEquals(Vector0.INSTANCE, vb.toVector());
 		vb.append(1.0);

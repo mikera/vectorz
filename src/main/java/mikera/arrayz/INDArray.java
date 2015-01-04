@@ -80,14 +80,29 @@ public interface INDArray extends Cloneable, Serializable {
 	public double get(int x);
 	
 	/**
+	 * Returns the double value at the specified position in a 1D vector
+	 */
+	public double get(long x);
+	
+	/**
 	 * Returns the double value at the specified position in a 2D matrix
 	 */
 	public double get(int x, int y);
 	
 	/**
+	 * Returns the double value at the specified position in a 2D matrix
+	 */
+	public double get(long x, long y);
+	
+	/**
 	 * Returns the double value at the specified index position in an array
 	 */
 	public double get(int... indexes);
+	
+	/**
+	 * Returns the double value at the specified index position in an array
+	 */
+	public double get(long... indexes);
 
 	/**
 	 * Sets all elements of an array to a specific double value
@@ -244,6 +259,8 @@ public interface INDArray extends Cloneable, Serializable {
 
 	/**
 	 * Returns a re-ordered array by taking the specified order of slices along a given dimension
+	 * 
+	 * May or may not use views of underlying slices (i.e. may be a reordered view)
 	 */
 	public INDArray reorder(int dimension, int[] order);
 	
@@ -304,6 +321,11 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray join(INDArray a, int dimension);
 
+	/**
+	 * Joins an array with another array along the major dimension
+	 */
+	public INDArray join(INDArray a);
+	
 	/**
 	 * Returns a slice view of this array along the specified dimension
 	 */
@@ -525,9 +547,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public void setElements(int pos, double[] values, int offset, int length);
 
 	/**
-	 * Gets all elements of the array, copying them into a double array
+	 * Gets all elements of the array, copying them into a double array at the specified offset
 	 */
 	public void getElements(double[] dest, int offset);
+	
+	/**
+	 * Gets all elements of the array, copying them into an object array at the specified offset
+	 */
+	public void getElements(Object[] dest, int offset);
 	
 	/**
 	 * Scales all elements of the array in place by a given double value
@@ -711,14 +738,15 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray sparseClone();
 	
 	/**
-	 * Creates a fully mutable clone of this array. 
+	 * Creates a fully mutable dense clone of this array. 
 	 * 
 	 * Will always use a dense format.
 	 */
 	public INDArray denseClone();
 
 	/**
-	 * Returns true if the elements in this array exactly match the given array
+	 * Returns true if the elements in this array exactly match the elements in the given array, in
+	 * row-major order
 	 * 
 	 * @param data
 	 * @return
@@ -726,7 +754,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean equalsArray(double[] data);	
 	
 	/**
-	 * Returns true if the elements in this array exactly match the given array
+	 * Returns true if the elements in this array exactly match the elements in the given array, in
+	 * row-major order
 	 * 
 	 * @param data
 	 * @return

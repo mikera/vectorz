@@ -16,6 +16,8 @@ import mikera.matrixx.impl.MatrixAsVector;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.GrowableVector;
+import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.impl.JoinedMultiVector;
@@ -32,7 +34,6 @@ import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Constant;
-import mikera.vectorz.util.VectorBuilder;
 
 import org.junit.Test;
 
@@ -519,7 +520,7 @@ public class TestVectors {
 	private void testAddToPosition(AVector v) {
 		int len=v.length();
 		
-		AVector tv=Vectorz.createRange(len+10);
+		AVector tv=Vectorz.createMutableRange(len+10);
 
 		tv.add(5,v,0,len);
 		
@@ -965,6 +966,15 @@ public class TestVectors {
 		AVector g4=new GrowableVector(v4);
 		doGenericTests(g4);
 	}
+	
+	@Test public void g_GrowableIndexed() {
+		GrowableIndexedVector g0=GrowableIndexedVector.createLength(10);
+		doGenericTests(g0);
+
+		g0.append(2,3.0);
+		g0.append(4,7.0);
+		doGenericTests(g0);
+	}
 		
 	@Test public void g_MatrixViews5x5() {	
 		AMatrix m1=Matrixx.createRandomSquareMatrix(5);
@@ -1078,7 +1088,7 @@ public class TestVectors {
 		
 	@Test public void g_VectorBuilder() {	
 		// VectorBuilder as a Vector
-		VectorBuilder vbl=new VectorBuilder();
+		GrowableVector vbl=new GrowableVector();
 		doGenericTests(vbl);
 		vbl.append(1.0);
 		doGenericTests(vbl);

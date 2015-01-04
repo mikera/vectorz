@@ -33,6 +33,12 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
+	public double get(long i) {
+		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		return unsafeGet((int)i);
+	}
+	
+	@Override
 	public final int[] getShape() {
 		return new int[] {length};
 	}

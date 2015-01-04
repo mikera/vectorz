@@ -89,11 +89,14 @@ public class TestArrays {
 	}
 
 	private void testSlices(INDArray a) {
-		if ((a.elementCount() == 0) || (a.dimensionality() == 0)) return;
+		int dims=a.dimensionality();
+		if ((a.elementCount() == 0) || (dims == 0)) return;
 
 		INDArray sl = a.slice(0);
+		assertEquals(sl,a.slice(0,0));
+		
 		// assertTrue(sl.isView()); not always... damn contained vectors
-		assertTrue(sl.dimensionality() == (a.dimensionality() - 1));
+		assertTrue(sl.dimensionality() == (dims - 1));
 
 		if (a.isFullyMutable()) {
 			assert (sl.isFullyMutable());
@@ -106,6 +109,9 @@ public class TestArrays {
 		assertEquals(a, Arrayz.create(slices));
 		
 		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
+		
+		List<?> vslices = a.getSliceViews();
+		assertEquals(sl, vslices.get(0));
 	}
 	
 	public void testAdd(INDArray a) {
@@ -190,8 +196,7 @@ public class TestArrays {
 		assertEquals(a.hashCode(), c.hashCode());
 
 		if (c == a) {
-			// can only return same object if immutable
-			assert (!a.isMutable());
+			assertFalse(a.isMutable());
 		}
 
 		INDArray ec = a.exactClone();
@@ -251,19 +256,22 @@ public class TestArrays {
 
 	private void testGetElements(INDArray a) {
 		int ecount = (int) a.elementCount();
-		double[] data = new double[ecount + 1];
+		double[] data = new double[ecount + 2];
 		Arrays.fill(data, Double.NaN);
 
 		a.getElements(data, 1);
 		assertTrue(Double.isNaN(data[0]));
-		for (int i = 1; i < data.length; i++) {
+		for (int i = 1; i < (ecount+1); i++) {
 			assertFalse(Double.isNaN(data[i]));
 		}
+		assertTrue(Double.isNaN(data[ecount+1]));
 		assertTrue(a.equalsArray(data,1));
 		
-		double[] data2=new double[ecount+1];
+		double[] data2=new double[ecount+2];
 		data[0]=13;
 		data2[0]=13;
+		data[ecount+1]=135;
+		data2[ecount+1]=135;
 		a.asVector().getElements(data2, 1);
 		assertTrue(DoubleArrays.equals(data, data2));
 		
@@ -549,8 +557,30 @@ public class TestArrays {
 		double ess=m.elementSquaredSum();
 		
 		assertEquals(es,m.asVector().elementSum(),0.0001);
-		assertEquals(es,m.elementPowSum(1.0),0.0001);
+		assertEquals(m.getClass().toString(),es,m.elementPowSum(1.0),0.0001);
 		assertEquals(ess,m.elementAbsPowSum(2.0),0.0001);
+
+	}
+	
+	@SuppressWarnings("unused")
+	private void testElementMinMax(INDArray m) {
+		long c=m.elementCount();
+		
+		if (c>0) {
+			double min=m.elementMin();
+			double max=m.elementMax();
+			assertTrue(min<=max);
+		} else {
+			try {
+				double min=m.elementMin();
+				fail("Should not be able to get minimum of array with non elements!");
+			} catch (Throwable t ) { /* OK */ }
+			
+			try {
+				double max=m.elementMax();
+				fail("Should not be able to get maximum of array with non elements!");
+			} catch (Throwable t ) { /* OK */ }
+		}
 
 	}
 	
@@ -670,6 +700,7 @@ public class TestArrays {
 		testApplyAllOps(a);
 		testElementIterator(a);
 		testElementSums(a);
+		testElementMinMax(a);
 		testStridedArray(a);
 		testBoolean(a);
 		testSums(a);
@@ -701,6 +732,14 @@ public class TestArrays {
 				Vectorz.createUniformRandomVector(10));
 		testArray(sa);
 		testArray(Array.create(sa));
+	}
+	
+	@Test
+	public void g_SparseArray() {
+		testArray(Arrayz.createSparseArray(new int[] {4}));
+		testArray(Arrayz.createSparseArray(new int[] {4,3}));
+		testArray(Arrayz.createSparseArray(new int[] {4,5,2}));
+		testArray(Arrayz.createSparseArray(new int[] {2,3,2,4}));
 	}
 
 	@Test
@@ -749,6 +788,8 @@ public class TestArrays {
 		// zero array tests
 		testArray(Arrayz.createZeroArray());
 		testArray(Arrayz.createZeroArray(2));
+		testArray(Arrayz.createZeroArray(0,0));
+		testArray(Arrayz.createZeroArray(4,0,0));
 		testArray(Arrayz.createZeroArray(2,3));
 		testArray(Arrayz.createZeroArray(1,2,3));
 		testArray(Arrayz.createZeroArray(1,2,4,1));

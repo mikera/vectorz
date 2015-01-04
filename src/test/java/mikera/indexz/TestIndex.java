@@ -118,18 +118,31 @@ public class TestIndex {
 		assertTrue(c2.isPermutation());
 
 	}
+	
+	@Test public void testIndexPosition() {
+		Index a=Index.of(0);
+		assertEquals(0,a.indexPosition(0));
+		assertEquals(-1,a.indexPosition(1));
+		
+		a=Index.of(0,2, 10);
+		assertEquals(-1,a.indexPosition(1));
+	}
 
 	@SuppressWarnings("serial")
 	@Test public void genericTests() {
 		doTests(Indexz.createProgression(10, 4, 2));
 		doTests(Indexz.createLength(0));
 		doTests(Indexz.createRandomPermutation(20));
+		
+		doTests(new GrowableIndex(3));
+		doTests(GrowableIndex.create(Indexz.createRandomPermutation(20)));
 
 		ComputedIndex ci=new ComputedIndex(4) {
 			@Override
 			public int get(int i) {
 				return length-1-i;
-			}	
+			}
+
 		};
 		doTests(ci);
 	}

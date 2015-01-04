@@ -30,4 +30,5 @@ public class SequentialIndex extends ComputedIndex {
 		assert((i>=0)&&(i<length));
 		return start+i;
 	}
+
 }

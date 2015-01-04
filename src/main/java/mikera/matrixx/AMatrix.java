@@ -14,6 +14,7 @@ import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.indexz.Index;
 import mikera.matrixx.algo.Determinant;
 import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.algo.Multiplications;
@@ -31,6 +32,8 @@ import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
 import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.MatrixAsVector;
+import mikera.matrixx.impl.SparseColumnMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.TransposedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
@@ -48,6 +51,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -359,10 +363,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
         AMatrix Q = DenseColumnMatrix.wrap(this.rowCount(), this.columnCount(), this.getTransposeView().toDoubleArray());
         for( int i = 0; i < Q.columnCount(); i++ ) {
             AVector a = Q.getColumn(i);
+            if (!a.isUnitLengthVector(tolerance)) return false;
             for( int j = i+1; j < Q.columnCount(); j++ ) {
                 double val = a.innerProduct(Q.getColumn(j)).get();
-                if( !(Math.abs(val) <= TOLERANCE))
-                    return false;
+                if ((Math.abs(val) > TOLERANCE)) return false;
             }
         }
         
@@ -408,9 +412,26 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public AMatrix reorder(int dim, int[] order) {
-		INDArray o=super.reorder(dim,order);
-		if (o instanceof AMatrix) return (AMatrix)o;
-		return Matrixx.toMatrix(o);
+		int n=order.length;
+		switch (dim) {
+		case 0: {
+			if (n==0) return ZeroMatrix.create(0, columnCount());
+			ArrayList<AVector> al=new ArrayList<AVector>();
+			for (int si: order) {
+				al.add(slice(si));
+			}
+			return SparseRowMatrix.wrap(al);
+		}
+		case 1: {
+			if (n==0) return ZeroMatrix.create(rowCount(),0);
+			ArrayList<AVector> al=new ArrayList<AVector>();
+			for (int si: order) {
+				al.add(slice(1,si));
+			}
+			return SparseColumnMatrix.wrap(al);
+		}
+		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		}
 	}	
 	
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
@@ -528,6 +549,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	/**
 	 * Returns a row of the matrix. May or may not be a view, depending on matrix type.
+	 * 
+	 * Intended for the fastest possible read access of the row. This often means a view, 
+	 * but might not be (e.g. getRow on a Matrix33 returns a Vector3).
 	 */
 	public AVector getRow(int row) {
 		return getRowView(row);
@@ -535,6 +559,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	/**
 	 * Returns a column of the matrix. May or may not be a view, depending on matrix type.
+	 * 
+	 * Intended for the fastest possible read access of the column. This often means a view, 
+	 * but might not be (e.g. getColumn on a Matrix33 returns a Vector3).
 	 */
 	public AVector getColumn(int column) {
 		return getColumnView(column);
@@ -548,14 +575,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	/**
-	 * Returns a column of the matrix as a vector view
+	 * Returns a column of the matrix as a vector view. May be used to modify the original matrix
 	 */
 	public AVector getColumnView(int column) {
 		return new MatrixColumnView(this, column);
 	}
 	
 	/**
-	 * Returns a row of the matrix as a new cloned vector
+	 * Returns a row of the matrix as a new cloned, mutable vector.
+	 * 
+	 * You may modify the cloned row without affecting the source matrix.
 	 */
 	public AVector getRowClone(int row) {
 		int cc=this.columnCount();
@@ -1200,14 +1229,24 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
+		if (elementCount()>Constants.PRINT_THRESHOLD) {
+			Index shape=Index.create(getShape());
+			return "Large matrix with shape: "+shape.toString();
+		}
+		
+		return toStringFull();
+	}
+
+	@Override
+	public String toStringFull() {
 		StringBuilder sb = new StringBuilder();
 		int rc = rowCount();
 		sb.append("[");
 		for (int i = 0; i < rc; i++) {
-			if (i>0) sb.append(',');
+			if (i>0) sb.append(",\n");
 			sb.append(getRow(i).toString());
 		}
 		sb.append("]");
@@ -1492,6 +1531,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	public void multiply (AVector v) {
+		int rc = rowCount();
+		for (int i = 0; i < rc; i++) {
+			getRowView(i).multiply(v);
+		}
+	}
+	
 	@Override
 	public void multiply(INDArray a) {
 		if (a instanceof AMatrix) {
@@ -1722,10 +1768,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean isUpperTriangular() {
 		int rc=rowCount();
 		int cc=columnCount();
-		for (int j=0; j<cc; j++) {
-			for (int i=j+1; i<rc; i++) {
-				if (unsafeGet(i,j)!=0.0) return false;
-			}
+		for (int i=1; i<rc; i++) {
+			if (!getRow(i).isRangeZero(0, Math.min(i,cc))) return false;
 		}
 		return true;
 	}
@@ -1739,9 +1783,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc=rowCount();
 		int cc=columnCount();
 		for (int i=0; i<rc; i++) {
-			for (int j=i+1; j<cc; j++) {
-				if (unsafeGet(i,j)!=0.0) return false;
-			}
+			int start=Math.min(cc, i+1);
+			if (!getRow(i).isRangeZero(start,cc-start)) return false;
 		}
 		return true;
 	}

@@ -12,6 +12,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -143,7 +144,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 
 	@Override
 	public INDArray slice(int dimension, int index) {
-		if (dimension<0) throw new IllegalArgumentException("Dimension out of range!");
+		if (dimension<0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		if (dimension==0) return slice(index);
 		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		for (INDArray s:this) {

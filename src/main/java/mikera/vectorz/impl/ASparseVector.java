@@ -5,9 +5,12 @@ import java.util.List;
 
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.Vectorz;
+
 
 /**
  * Abstract base class for Sparse vector implementations
@@ -57,16 +60,15 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	// (superclass implementation is bad for sparse arrays)
 	
 	@Override
-	public abstract void addToArray(int offset, double[] destData, int destOffset, int length);
-
-	@Override
 	public void copyTo(int offset, double[] destData, int destOffset, int length) {
 		Arrays.fill(destData, destOffset, destOffset+length, 0.0);
 		addToArray(offset, destData, destOffset, length);
 	}
 	
 	@Override
-	public abstract boolean isZero();
+	public boolean isZero() {
+		return nonZeroCount()==0L;
+	}
 	
 	@Override
 	public boolean isView() {
@@ -88,8 +90,35 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 	
 	@Override
+	public AVector innerProduct(AMatrix m) {
+		int cc=m.columnCount();
+		int rc=m.rowCount();
+		checkLength(rc);
+		AVector r=Vectorz.createSparseMutable(cc);
+		for (int i=0; i<cc; i++) {
+			double v=this.dotProduct(m.getColumn(i));
+			r.unsafeSet(i,v);
+		}
+		return r;
+	}
+	
+	@Override
 	public final boolean isSparse() {
 		return true;
+	}
+	
+	@Override
+	public void add(AVector v) {
+		if (v instanceof ASparseVector) {
+			add((ASparseVector)v);
+			return;
+		}
+		super.add(v);
+	}
+	
+	@Override
+	public void addMultiple(AVector src, double factor) {
+		add(src.multiplyCopy(factor));
 	}
 
 	public abstract void add(ASparseVector v);
@@ -107,12 +136,19 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public double elementProduct() {
 		int n=nonSparseElementCount();
 		if (n<length) return 0.0;
-		return super.elementProduct();
+		return nonSparseValues().elementProduct();
 	}
 	
 	@Override
 	public ASparseVector sparse() {
 		return this;
+	}
+	
+	@Override
+	public AVector clone() {
+		// TODO: figure out a better heuristic?
+		if ((length<20)||(nonSparseElementCount()>(elementCount()*0.25))) return super.clone();
+		return SparseIndexedVector.create(this);
 	}
 	
 	public boolean equals(ASparseVector v) {
@@ -142,23 +178,33 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return nonSparseValues().nonZeroCount();
+	}
+	
+	@Override
 	public boolean equals(AVector v) {
 		if (v instanceof ASparseVector) {
 			return equals((ASparseVector)v);
 		}
-		return super.equals(v);
+		
+		if (v.length()!=length) return false;
+		Index ni=nonSparseIndex();
+		int n=ni.length();
+		AVector nv=nonSparseValues();
+		int offset=0;
+		for (int i=0; i<n; i++) {
+			int ii=ni.get(i);
+			if (!v.isRangeZero(offset, ii-offset)) return false;
+			if (nv.unsafeGet(i)!=v.unsafeGet(ii)) return false;
+			offset=ii+1;
+		}
+		return v.isRangeZero(offset,length-offset);
 	}
 
 	@Override
 	public boolean hasUncountable() {
-		Index ni = nonSparseIndex();
-		for(int i=0; i<ni.length(); i++) {
-			int ii = ni.get(i);
-			if (Double.isNaN(unsafeGet(ii)) || Double.isInfinite(unsafeGet(ii))) {
-				return true;
-			}
-		}
-		return false;
+		return nonSparseValues().hasUncountable();
 	}
 	
 	/**
@@ -167,13 +213,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      */
     @Override
     public double elementPowSum(double p) {
-        Index ni = nonSparseIndex();
-        double result = 0;
-        for(int i=0; i<ni.length(); i++) {
-            int ii = ni.get(i);
-            result += Math.pow(unsafeGet(ii), p);
-        }
-        return result;
+        return nonSparseValues().elementPowSum(p);
     }
     
     /**
@@ -182,12 +222,6 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      */
     @Override
     public double elementAbsPowSum(double p) {
-        Index ni = nonSparseIndex();
-        double result = 0;
-        for(int i=0; i<ni.length(); i++) {
-            int ii = ni.get(i);
-            result += Math.pow(Math.abs(unsafeGet(ii)), p);
-        }
-        return result;
+    	return nonSparseValues().elementAbsPowSum(p);
     }
 }

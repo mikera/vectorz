@@ -94,14 +94,16 @@ public class Cholesky extends CholeskyCommon {
      */
     @Override
     protected ICholeskyResult _decompose( AMatrix mat ) {
-    	if( mat.rowCount() != mat.columnCount() ) {
+    	int rc=mat.rowCount();
+    	int cc=mat.columnCount();
+    	if( rc != cc ) {
             throw new IllegalArgumentException("Must be a square matrix.");
         }
 
         n = mat.rowCount();
         this.vv = new double[n];
-        T = mat.toMatrix();
-        t = T.data;
+        t=mat.toDoubleArray();
+        T = Matrix.wrap(rc, cc, t);
         
         if(mat.rowCount() < blockWidth) {
     		B = Matrix.create(0,0);

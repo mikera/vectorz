@@ -11,14 +11,13 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
-import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
-import mikera.vectorz.util.VectorBuilder;
 import mikera.vectorz.util.VectorzException;
 import us.bpsm.edn.parser.CollectionBuilder;
 import us.bpsm.edn.parser.Parser;
@@ -87,12 +86,13 @@ public class Vectorz {
 	
 	/**
 	 * Creates an immutable zero vector of the specified length.
-	 * @param length
+	 * @param l
 	 * @return
 	 */
-	public static AVector createZeroVector(int length) {
-		if (length==0) return Vector0.INSTANCE;
-		return ZeroVector.create(length);
+	public static AVector createZeroVector(long l) {
+		if (l==0) return Vector0.INSTANCE;
+		if (l>=Integer.MAX_VALUE) throw new IllegalArgumentException("Requested zero vector length too large: "+l);
+		return ZeroVector.create((int)l);
 	}
 	
 	public static Vector wrap(double[] data) {
@@ -178,7 +178,7 @@ public class Vectorz {
 		if (length<MIN_SPARSE_LENGTH) {
 			return Vector.createLength(length); // not enough sparsity to make worthwhile
 		} else  {
-			return SparseHashedVector.createLength(length);
+			return SparseIndexedVector.createLength(length);
 		} 
 	}
 	
@@ -260,7 +260,7 @@ public class Vectorz {
 				@Override
 				public us.bpsm.edn.parser.CollectionBuilder builder() {
 					return new CollectionBuilder() {
-						VectorBuilder b=new VectorBuilder();
+						GrowableVector b=new GrowableVector();
 						@Override
 						public void add(Object o) {
 							double d;
@@ -502,7 +502,7 @@ public class Vectorz {
 		return toVector(o);
 	}
 
-	public static AVector createRange(int length) {
+	public static AVector createMutableRange(int length) {
 		AVector v=Vectorz.newVector(length);
 		for (int i=0; i<length; i++) {
 			v.unsafeSet(i,i);
@@ -510,8 +510,13 @@ public class Vectorz {
 		return v;
 	}
 	
+	public static AVector createRange(int length) {
+		return RangeVector.create(0,length);
+	}
+	
 	public static AVector createRepeatedElement(int length,double value) {
 		if (length==0) return Vector0.INSTANCE;
+		if (value==0.0) return ZeroVector.create(length);
 		return RepeatedElementVector.create(length, value);
 	}
 
@@ -559,6 +564,15 @@ public class Vectorz {
 		for (int i=0; i<n ; i++) {
 			v.unsafeSet(i, random.nextGaussian());
 		}
+	}
+
+	/**
+	 * utility function to test whether a value is uncountable
+	 * @param value
+	 * @return
+	 */
+	public static boolean isUncountable(double value) {
+		return Double.isNaN(value) || Double.isInfinite(value);
 	}
 
 

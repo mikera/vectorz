@@ -298,8 +298,17 @@ public class TestMisc {
 		AMatrix m2 = m.clone();
 		m2 = m2.reorder(0, new int[] { 0, 1 });
 		assertEquals(m, m2);
+		m2 = m2.reorder(1, new int[] { 0, 1 });
+		assertEquals(m, m2);
 		m2 = m2.reorder(0, new int[] { 1, 0 });
 		assertEquals(Matrix.create(new double[][] { { 3, 4 }, { 1, 2 } }), m2);
+	}
+	
+	@Test
+	public void testReordering2() {
+		Matrix m = Matrix.create(new double[][] { { 1, 2 }, { 3, 4 } });
+		AMatrix m2 = m.reorder(1, new int[] { 0, 1 });
+		assertEquals(m, m2);
 	}
 
 	@Test

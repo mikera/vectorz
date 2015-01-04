@@ -203,9 +203,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	@Override
 	public INDArray innerProduct(INDArray a) {
-		a=a.clone();
-		a.scale(get());
-		return a;
+		return a.scaleCopy(get());
 	}
 	
 	public Scalar innerProduct(AScalar a) {
@@ -219,14 +217,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	@Override
 	public AVector innerProduct(AVector a) {
-		return a.innerProduct(get());
+		return a.multiplyCopy(get());
 	}
 	
 	@Override
 	public INDArray outerProduct(INDArray a) {
-		a=a.clone();
-		a.scale(get());
-		return a;
+		return a.scaleCopy(get());
 	}
 	
 	@Override 
@@ -503,6 +499,6 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 
 	@Override
 	public boolean hasUncountable() {
-		return Double.isNaN(get()) || Double.isInfinite(get());
+		return Vectorz.isUncountable(get());
 	}
 }

@@ -22,6 +22,7 @@ import mikera.randomz.Hash;
 import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ASizedVector;
+import mikera.vectorz.impl.ASparseVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
@@ -31,6 +32,7 @@ import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.VectorIterator;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Logistic;
+import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -46,8 +48,6 @@ import mikera.vectorz.util.VectorzException;
  */
 @SuppressWarnings("serial")
 public abstract class AVector extends AbstractArray<Double> implements IVector, Comparable<AVector> {
-	
-	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
 
 	// ================================================
 	// Abstract interface
@@ -64,8 +64,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	// ================================================
 	// Standard implementations
 
+	@Override
 	public double get(long i) {
-		return get((int)i);
+		if ((i<0)||(i>=length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		return unsafeGet((int)i);
 	}
 	
 	public void set(long i, double value) {
@@ -258,6 +260,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param second
 	 * @return
 	 */
+	@Override
+	public AVector join(INDArray b) {
+		if (b.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		return join(b.asVector());
+	}
+	
 	public AVector join(AVector second) {
 		if (second.length()==0) return this;
 		AVector ej=tryEfficientJoin(second);
@@ -821,7 +829,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		checkLength(rc);
 		Vector r=Vector.createLength(cc);
 		for (int i=0; i<cc; i++) {
-			r.unsafeSet(i,this.dotProduct(m.getColumn(i)));
+			double v=this.dotProduct(m.getColumn(i));
+			r.unsafeSet(i,v);
 		}
 		return r;
 	}
@@ -866,6 +875,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public double dotProduct(AVector v) {
 		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
+		if (v instanceof ASparseVector) return ((ASparseVector)v).dotProduct(this);
 		int len=checkSameLength(v);
 		double total=0.0;
 		for (int i=0; i<len; i++) {
@@ -1221,10 +1231,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public AVector scaleCopy(double d) {
-		AVector r=clone();
-		r.scale(d);
-		return r;
+	public final AVector scaleCopy(double d) {
+		return multiplyCopy(d);
 	}
 	
 	@Override
@@ -1304,6 +1312,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public void getElements(double[] dest, int offset) {
 		copyTo(0,dest,offset,length());
+	}
+	
+	@Override
+	public void getElements(Object[] dest, int offset) {
+		int n=length();
+		for (int i=0; i<n; i++) {
+			dest[offset+i]=Double.valueOf(get(i));
+		}
 	}
 	
 	/**
@@ -1708,7 +1724,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public boolean isUnitLengthVector(double tolerance) {
 		double mag=magnitudeSquared();
-		return Math.abs(mag-1.0)<tolerance;
+		return Math.abs(mag-1.0)<=tolerance;
 	}
 	
 	@Override
@@ -1784,6 +1800,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public String toString() {
+		if (elementCount()>Constants.PRINT_THRESHOLD) {
+			Index shape=Index.create(getShape());
+			return "Large vector with shape: "+shape.toString();
+		}
+		return toStringFull();
+	}
+	
+	@Override
+	public String toStringFull() {
 		StringBuilder sb=new StringBuilder();
 		int length=length();
 		sb.append('[');
@@ -1829,11 +1854,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (this.isFullyMutable()) {
 			return this;
 		} else {
-			if (elementCount()>SPARSE_ELEMENT_THRESHOLD) {
-				return Vectorz.createSparseMutable(this);
-			} else {
-				return this.clone();
-			}
+			return this.clone();
 		}
 	}
 	
@@ -2065,6 +2086,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param v
 	 */
 	public void addAt(int i, double v) {
+		if (v==0.0) return;
 		unsafeSet(i,unsafeGet(i)+v);
 	}
 
@@ -2078,6 +2100,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 
 	@Override
 	public void add(double constant) {
+		if (constant==0.0) return;
 		int len=length();
 		for (int i=0; i<len; i++) {
 			addAt(i,constant);
@@ -2092,11 +2115,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void add(double[] data, int offset) {
 		int len=length();
 		for (int i=0; i<len; i++) {
-			addAt(i,data[i+offset]);
+			double v=data[i+offset];
+			addAt(i,v);
 		}
 	}
 	
+	/**
+	 * Adds the values from a double[] array to this vector
+	 * @param data
+	 */
 	public void add(double[] data) {
+		checkLength(data.length);
 		add(data,0);
 	}
 	
@@ -2221,17 +2250,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public Index nonSparseIndex(){
-		int n=(int)nonZeroCount();
-		int length=length();
-		Index ind=Index.createLength(n);
-		int di=0;
-		for (int i=0; i<length; i++) {
-			double v=unsafeGet(i);
-			if (v!=0.0) {
-				ind.data[di++]=i;
-			}
-		}
-		return ind;
+		// by default we just use the non-zero indices
+		return Index.of(nonZeroIndices());
 	}
 	
 	/**
@@ -2247,7 +2267,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		for (int i=0; i<length; i++) {
 			if (unsafeGet(i)!=0.0) ret[di++]=i;
 		}
-		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
+		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification?");
 		return ret;
 	}
 
@@ -2263,7 +2283,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len = length();
 		for(int i=0; i<len; i++) {
 			double v=unsafeGet(i);
-			if (Double.isNaN(v) || Double.isInfinite(v)) {
+			if (Vectorz.isUncountable(v)) {
 				return true;
 			}
 		}
