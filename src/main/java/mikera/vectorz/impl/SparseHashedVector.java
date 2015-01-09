@@ -153,7 +153,7 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public double dotProduct(double[] data, int offset) {
 		double result=0.0;
-		for (int i: hash.keySet()) {
+		for (Integer i: hash.keySet()) {
 			result+=hash.get(i)*data[offset+i];
 		}
 		return result;
@@ -163,7 +163,7 @@ public class SparseHashedVector extends ASparseVector {
 	public void addMultipleToArray(double factor,int offset, double[] array, int arrayOffset, int length) {
 		int aOffset=arrayOffset-offset;
 
-		for (int i: hash.keySet()) {
+		for (Integer i: hash.keySet()) {
 			if ((i<offset)||(i>=(offset+length))) continue;
 			array[aOffset+i]+=factor*hash.get(i);
 		}

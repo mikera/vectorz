@@ -354,28 +354,29 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		if (a instanceof SparseColumnMatrix) {
 			return innerProduct((SparseColumnMatrix) a);
 		}
-		AMatrix r = Matrixx.createSparse(rows, a.columnCount());
+		SparseRowMatrix r = Matrixx.createSparse(rows, a.columnCount());
 
         for (int i = 0; i < rows; ++i) {
 			AVector row = unsafeGetVec(i);
             if (! ((row == null) || (row.isZero()))) {
-			    r.setRow(i,row.innerProduct(a));
+			    r.replaceRow(i,row.innerProduct(a));
             }
 		}
 		return r;
 	}
 	
 	/**
-	 * Specialised inner product for sparse row matrix multiplied by sparse column matrix. This is the 
-	 * fastest general purpose sparse matrix multiplication supported by Vectorz at present.
+	 * Specialised inner product for sparse row matrix multiplied by sparse column matrix. 
 	 *  
 	 * @param a
 	 * @return
 	 */
-	public AMatrix innerProduct(SparseColumnMatrix a) {
+	public SparseRowMatrix innerProduct(SparseColumnMatrix a) {
+		// TODO this is probably slow since it operates on the rows of the column matrix?
+		// maybe convert to SparseRowMatrix first?
 		// new matrix has shape [ this.rows * a.cols ], issue #71
 		int acols=a.cols; 
-		AMatrix result = Matrixx.createSparse(rows, acols);
+		SparseRowMatrix result = Matrixx.createSparse(rows, acols);
 
         for (int i = 0; i < rows; ++i) {
         	AVector r=getRow(i);

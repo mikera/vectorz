@@ -100,7 +100,7 @@ public class Matrixx {
 	/**
 	 * Creates a sparse matrix of the given size, initially zero-filled. Uses row-based storage by default
 	 */
-	public static AMatrix createSparse(int rowCount, int columnCount) {
+	public static SparseRowMatrix createSparse(int rowCount, int columnCount) {
 		return SparseRowMatrix.create(rowCount,columnCount);
 	}
 	
