@@ -24,6 +24,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
+@Deprecated
 public class SparseHashedVector extends ASparseVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
