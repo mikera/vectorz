@@ -68,6 +68,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	
 	@Override
 	public double dotProduct(AVector v) {
+		checkSameLength(v);
 		double result=0.0;
 		Index ni=nonSparseIndex();
 		for (int i=0; i<ni.length(); i++) {
@@ -79,6 +80,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	
 	@Override
 	public final double dotProduct(ADenseArrayVector v) {
+		checkSameLength(v);
 		double[] array=v.getArray();
 		int offset=v.getArrayOffset();
 		return dotProduct(array,offset);
@@ -90,10 +92,12 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		int rc=m.rowCount();
 		checkLength(rc);
 		AVector r=Vectorz.createSparseMutable(cc);
-		for (int i=0; i<cc; i++) {
-			double v=this.dotProduct(m.getColumn(i));
-			r.unsafeSet(i,v);
-		}
+		Index ni=nonSparseIndex();
+		for (int i=0; i<ni.length(); i++) {
+			int ti=ni.get(i);
+			double v=unsafeGet(ti);
+			if (v!=0.0) r.addMultiple(m.getRow(ti),v);
+		}		
 		return r;
 	}
 	
