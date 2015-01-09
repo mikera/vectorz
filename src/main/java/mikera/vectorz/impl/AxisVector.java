@@ -11,7 +11,9 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Specialised immutable unit axis vector. Has a 1.0 in one element, 0.0 everywhere else.
+ * Specialised immutable unit axis vector. 
+ * 
+ * Has a 1.0 in exactly one element, 0.0 everywhere else.
  * 
  * @author Mike
  */

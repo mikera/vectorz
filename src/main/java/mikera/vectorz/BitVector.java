@@ -192,10 +192,4 @@ public final class BitVector extends ABooleanVector {
 	public BitVector exactClone() {
 		return new BitVector(this);
 	}
-
-	@Override
-	public void addAt(int i, double v) {
-		// TODO Auto-generated method stub
-		
-	}
 }
