@@ -78,6 +78,13 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 	
 	@Override
+	public final double dotProduct(ADenseArrayVector v) {
+		double[] array=v.getArray();
+		int offset=v.getArrayOffset();
+		return dotProduct(array,offset);
+	}
+	
+	@Override
 	public AVector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
 		int rc=m.rowCount();

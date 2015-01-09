@@ -131,13 +131,6 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		
 		return result;
 	}
-	
-	@Override
-	public double dotProduct(ADenseArrayVector v) {
-		double[] array=v.getArray();
-		int offset=v.getArrayOffset();
-		return dotProduct(array,offset);
-	}
 
 	@Override
 	public int[] nonZeroIndices() {
