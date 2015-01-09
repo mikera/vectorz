@@ -1,7 +1,9 @@
 package mikera.vectorz.impl;
 
 import java.util.Iterator;
+import java.util.List;
 
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
@@ -109,6 +111,20 @@ public final class RepeatedElementVector extends ASizedVector {
 	@Override
 	public AVector innerProduct(double d) {
 		return RepeatedElementVector.create(length,d*value);
+	}
+	
+	@Override
+	public AVector innerProduct(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		this.checkLength(rc);
+		AVector r=Vector.createLength(cc);
+		List<AVector> cols=m.getColumns();
+		for (int i=0; i<cc; i++) {
+			AVector col=cols.get(i);
+			r.unsafeSet(i, value*col.elementSum());
+		}
+		return r;
 	}
 	
 	@Override
