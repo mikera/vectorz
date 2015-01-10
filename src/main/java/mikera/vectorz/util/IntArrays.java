@@ -203,7 +203,7 @@ public class IntArrays {
 	}
 	
 	public static int indexPosition(int[] data, int x, int min, int max) {
-		if (max>20) {
+		if ((max-min)>20) {
 			return indexPositionBig(data,x,0,max);
 		} else {
 			return indexPositionSmall(data,x, 0, max);
