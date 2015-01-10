@@ -102,10 +102,11 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		List<AVector> rows=source.getRows();
 		for (int i = 0; i < rc; i++) {
 			AVector row = rows.get(i);
-			if (!row.isZero())
+			if (!row.isZero()) {
 			    data[i] = Vectorz.createSparse(row);
+			}
 		}
-		return new SparseRowMatrix(data,rc,cc);
+		return SparseRowMatrix.wrap(data,rc,cc);
 	}
 
 	public static SparseRowMatrix wrap(List<AVector> vecs) {

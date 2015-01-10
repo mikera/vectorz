@@ -73,10 +73,11 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 				// OK;
 			} else {
 				if (!line.isFullyMutable()) {
-					line = line.sparseClone();
+					line = line.absCopy();
 					data[i] = line;
+				} else {
+					line.abs();
 				}
-				line.abs();
 			}
 		}
 	}

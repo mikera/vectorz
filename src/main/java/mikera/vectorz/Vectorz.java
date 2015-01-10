@@ -118,7 +118,7 @@ public class Vectorz {
 	 * @param data
 	 * @return
 	 */
-	public static Vector wrap(double[] data) {
+	public static Vector wrap(double... data) {
 		return Vector.wrap(data);
 	}
 	
@@ -176,7 +176,13 @@ public class Vectorz {
 	 * @return
 	 */
 	public static AVector createSparse(AVector v) {
+		if (v.isSparse()) return v.copy();
 		int len=v.length();
+		
+		if (len<MIN_SPARSE_LENGTH) {
+			return v.copy();
+		}
+		
 		int[] ixs=v.nonZeroIndices();
 		int n=ixs.length;
 		if (n==0) {
