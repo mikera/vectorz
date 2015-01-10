@@ -15,6 +15,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.util.Maths;
 import mikera.vectorz.AScalar;
@@ -998,7 +999,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 		if (dims==2) {
 			if (dim==0) {
-				return VectorMatrixMN.create(newSlices,shp);
+				return SparseRowMatrix.create(newSlices, shp[0], shp[1]);
 			}
 		}
 		if (dim==0) {

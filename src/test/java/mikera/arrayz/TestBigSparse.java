@@ -180,26 +180,27 @@ public class TestBigSparse {
 	
 	
 	@Test public void testSparseSet() {
-		SparseRowMatrix m=SparseRowMatrix.create(300, 300);
+		int SIZE=300;
+		SparseRowMatrix m=SparseRowMatrix.create(SIZE, SIZE);
 		m.fill(2);
 		assertEquals(2,m.get(10,10),0.0);
 		
 		m.set(Scalar.create(3));
 		assertEquals(3,m.get(10,10),0.0);
 		
-		m.set(RangeVector.create(0,300));
+		m.set(RangeVector.create(0,SIZE));
 		assertEquals(17,m.get(12,17),0.0);
 		
-		m.set((AMatrix)(Scalar.create(1).broadcast(300,300)));
+		m.set((AMatrix)(Scalar.create(1).broadcast(SIZE,SIZE)));
 		assertEquals(1,m.get(10,10),0.0);
 		
-		m.set((AMatrix)(Scalar.create(2).broadcast(300,300)));
-		assertEquals(2,m.get(299,299),0.0);
+		m.set((AMatrix)(Scalar.create(2).broadcast(SIZE,SIZE)));
+		assertEquals(2,m.get(SIZE-1,SIZE-1),0.0);
 		
-		m.set(RangeVector.create(0,300).broadcast(300,300));
+		m.set(RangeVector.create(0,SIZE).broadcast(SIZE,SIZE));
 		assertEquals(19,m.get(12,19),0.0);
 		
-		m.setRow(10, RepeatedElementVector.create(300, 7));
+		m.setRow(10, RepeatedElementVector.create(SIZE, 7));
 		assertEquals(7,m.get(10,11),0.0);
 	}
 

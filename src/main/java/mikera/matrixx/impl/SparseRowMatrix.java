@@ -9,6 +9,8 @@ import java.util.ArrayList;
 // import java.util.Map.Entry;
 
 
+
+import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -85,6 +87,16 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	
 	public static SparseRowMatrix create(List<AVector> rows) {
 		return create(rows.toArray(new AVector[rows.size()]));
+	}
+	
+	public static INDArray create(ArrayList<INDArray> slices, int rows, int cols) {
+		AVector[] vecs=new AVector[rows];
+		for (int i=0; i<rows; i++) {
+			INDArray a=slices.get(i);
+			if ((a.dimensionality()!=1)||(a.sliceCount()!=cols)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a));
+			vecs[i]=a.asVector();
+		}
+		return wrap(vecs,rows,cols);
 	}
 	
 	public static SparseRowMatrix wrap(AVector[] vecs, int rows, int cols) {
@@ -232,7 +244,6 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
     
 	@Override
 	public AVector getRow(int i) {
-		if ((i<0)||(i>=rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
 		AVector v = unsafeGetVec(i);
 		if (v == null) return emptyRow;
 		return v;
@@ -267,10 +278,6 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	public void swapRows(int i, int j) {
 		if (i == j)
 			return;
-		if ((i < 0) || (i >= rows))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
-		if ((j < 0) || (j >= rows))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, j));
 		AVector a = unsafeGetVec(i);
 		AVector b = unsafeGetVec(j);
 		unsafeSetVec(i, b);
@@ -279,8 +286,6 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
 	@Override
 	public void replaceRow(int i, AVector vec) {
-		if ((i < 0) || (i >= rows))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
 		if (vec.length() != cols)
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShape(vec));
         unsafeSetVec(i, vec);
@@ -482,4 +487,6 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		// TODO: consider reducing working set?
 		return create(a).innerProduct(b);
 	}
+
+
 }

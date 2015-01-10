@@ -222,7 +222,6 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public AVector getColumn(int j) {
-		if ((j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, j));
 		AVector v = unsafeGetVec(j);
 		if (v==null) return emptyColumn;
 		return v;
@@ -246,10 +245,6 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public void swapColumns(int i, int j) {
 		if (i == j)
 			return;
-		if ((i < 0) || (i >= cols))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
-		if ((j < 0) || (j >= cols))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, j));
 		AVector a = unsafeGetVec(i);
 		AVector b = unsafeGetVec(j);
 		unsafeSetVec(i, b);
@@ -258,8 +253,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public void replaceColumn(int i, AVector vec) {
-		if ((i<0)||(i>=cols))
-            throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
+		checkColumn(i);
 		if (vec.length()!=rows)
             throw new IllegalArgumentException(ErrorMessages.incompatibleShape(vec));
 		unsafeSetVec(i, vec);

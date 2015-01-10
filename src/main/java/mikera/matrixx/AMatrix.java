@@ -432,7 +432,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		for (int i=0; i<rows; i++) {
 			vs[i]=this.getRowView(rowStart+i).subVector(colStart, cols);
 		}
-		return VectorMatrixMN.wrap(vs);	
+		return SparseRowMatrix.wrap(vs);	
 	}
 	
 	@Override

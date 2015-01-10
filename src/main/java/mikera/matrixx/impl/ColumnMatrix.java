@@ -42,11 +42,8 @@ public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IF
 	
 	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
-		if (col==0) {
-			vector.getElements(dest, destOffset);
-		} else {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, col));
-		}
+		if (col!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, col));
+		vector.getElements(dest, destOffset);
 	}
 	
 	@Override

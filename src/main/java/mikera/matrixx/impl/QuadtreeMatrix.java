@@ -81,17 +81,13 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 
 	@Override
 	public double get(int row, int column) {
-		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		}
+		checkIndex(row,column);
 		return unsafeGet(row,column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		if ((row<0)||(row>=rows)||(column<0)||(column>=cols)) {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
-		}
+		checkIndex(row,column);
 		unsafeSet(row,column,value);
 	}
 	
