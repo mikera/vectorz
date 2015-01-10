@@ -1049,10 +1049,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return al;
 	}
 	
+	@Override
 	public long componentCount() {
 		return 0;
 	}
 	
+	@Override
 	public INDArray getComponent(long k) {
 		throw new UnsupportedOperationException("Component based access not supported for class "+this.getClass().getCanonicalName());	
 	}

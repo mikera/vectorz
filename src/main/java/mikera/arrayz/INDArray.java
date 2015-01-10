@@ -817,4 +817,15 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @return
 	 */
 	public double elementAbsPowSum(double p);
+	
+	/**
+	 * Returns the number of components of this array.
+	 * 
+	 * May return 0 if components are not supported
+	 * @return
+	 */
+	public long componentCount();
+	
+	public INDArray getComponent(long k);
+
 }

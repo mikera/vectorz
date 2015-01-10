@@ -180,6 +180,16 @@ public class TestArrays {
 		assertEquals(a, Arrayz.wrap(arr, a.getShape()));
 
 	}
+	
+	private void testComponents(INDArray a) {
+		long cc=a.componentCount();
+		if (cc==0) {
+			try {
+				a.getComponent(0);
+				fail("Should not be able to access any components!");
+			} catch (Throwable t) {/* OK */};
+		}
+	}
 
 	private void testClone(INDArray a) {
 		// regular clone
@@ -689,6 +699,7 @@ public class TestArrays {
 
 	public void testArray(INDArray a) {
 		a.validate();
+		testComponents(a);
 		testTranspose(a);
 		testAsVector(a);
 		testAdd(a);
