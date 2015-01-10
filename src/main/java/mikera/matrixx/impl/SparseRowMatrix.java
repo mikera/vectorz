@@ -240,17 +240,12 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 
     @Override
-	public List<AVector> getSlices() {
-        // TODO: Is it acceptable for views to be mixed with
-        //       empty row vectors?
+	public List<AVector> getRows() {
         ArrayList<AVector> rowList = new ArrayList<AVector>(rows);
 		for (int i = 0; i < rows; i++) {
             AVector v = unsafeGetVec(i);
-            if (v == null) {
-                rowList.add(emptyRow);
-            } else {
-                rowList.add(v);
-            }
+            if (v == null) v=emptyRow;
+            rowList.add(v);
         }
 		return rowList;
 	}

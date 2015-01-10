@@ -188,7 +188,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 
     @Override
-    public List<AVector> getSlices() {
+    public List<AVector> getRows() {
         ArrayList<AVector> rowList = new ArrayList<AVector>(rows);
         AVector emptyRow = Vectorz.createZeroVector(cols);
         for (int i = 0; i < rows; i++) {

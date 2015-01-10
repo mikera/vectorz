@@ -27,9 +27,11 @@ import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.MatrixBandView;
+import mikera.matrixx.impl.MatrixColumnList;
 import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
+import mikera.matrixx.impl.MatrixRowList;
 import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.MatrixAsVector;
 import mikera.matrixx.impl.SparseColumnMatrix;
@@ -220,28 +222,18 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public List<AVector> getSlices() {
-		ArrayList<AVector> al=new ArrayList<AVector>();
-		int rc=rowCount();
-		for (int i=0; i<rc; i++) {
-			al.add(getRowView(i));
-		}
-		return al;
+	public final List<AVector> getSlices() {
+		return getRows();
 	}
 	
-	@Override
-	public final List<AVector> getRows() {
-		return getSlices();
+    @Override
+	public List<AVector> getRows() {    
+		return new MatrixRowList(this);
 	}
-	
-	@Override
-	public List<AVector> getColumns() {
-		ArrayList<AVector> al=new ArrayList<AVector>();
-		int cc=columnCount();
-		for (int i=0; i<cc; i++) {
-			al.add(getColumn(i));
-		}
-		return al;
+    
+    @Override
+	public List<AVector> getColumns() {    
+		return new MatrixColumnList(this);
 	}
 	
 	@Override

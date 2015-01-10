@@ -46,8 +46,20 @@ public interface IMatrix extends INDArray {
 
 	double diagonalProduct();
 
+	/**
+	 * Gets the list of rows of a matrix.
+	 * 
+	 * May return either copies or views, depending on the specific matrix type.
+	 * @return
+	 */
 	List<AVector> getRows();
 
+	/**
+	 * Gets the list of columns of a matrix.
+	 * 
+	 * May return either copies or views, depending on the specific matrix type.
+	 * @return
+	 */
 	List<AVector> getColumns();
 
 	boolean isSymmetric();
