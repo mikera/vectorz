@@ -141,6 +141,15 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		return slices[majorSlice];
 	}
 	
+	@Override
+	public long componentCount() {
+		return sliceCount();
+	}
+	
+	@Override
+	public T getComponent(long k) {
+		return slices[(int)k];
+	}
 
 	@Override
 	public INDArray slice(int dimension, int index) {
