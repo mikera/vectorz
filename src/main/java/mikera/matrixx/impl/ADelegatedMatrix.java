@@ -1,5 +1,6 @@
 package mikera.matrixx.impl;
 
+import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
@@ -48,6 +49,16 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 
 	@Override
 	public abstract void unsafeSet(int row, int column, double value);
+	
+	@Override
+	public long componentCount() {
+		return source.componentCount();
+	}
+	
+	@Override
+	public INDArray getComponent(long k) {
+		return source.getComponent(k);
+	}
 	
 	@Override
 	public void applyOp(Op op) {
