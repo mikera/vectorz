@@ -61,6 +61,11 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public INDArray[] getComponents() {
+		return source.getComponents();
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		source.applyOp(op);
 	}

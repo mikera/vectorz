@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -592,12 +593,15 @@ public final class JoinedArrayVector extends AJoinedVector {
 	}
 
 	@Override
-	protected AJoinedVector reconstruct(AVector... segments) {
+	public AJoinedVector withComponents(INDArray[] segments) {
 		int sc=(int)componentCount();
 		double[][] newData=new double[sc][];
 		int[] offs=this.offsets.clone();
 		for (int i=0; i<sc; i++) {
-			AVector v=segments[i];
+			INDArray a=segments[i];
+			if (a.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a));
+			AVector v=a.asVector();
+			v.checkLength(subLength(i));
 			if (v instanceof ADenseArrayVector) {
 				newData[i]=((ADenseArrayVector) v).getArray();
 				offs[i]=((ADenseArrayVector) v).getArrayOffset();

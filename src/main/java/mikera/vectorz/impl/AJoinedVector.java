@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 
 /**
@@ -31,7 +32,8 @@ public abstract class AJoinedVector extends ASizedVector {
 	 * @param aVectors
 	 * @return
 	 */
-	protected abstract AJoinedVector reconstruct(AVector... segments);
+	@Override
+	public abstract AJoinedVector withComponents(INDArray[] segments);
 
 	@Override
 	public boolean isView() {
