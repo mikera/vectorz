@@ -118,28 +118,6 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	public UpperTriangularMatrix getTranspose() {
 		return UpperTriangularMatrix.wrap(data, cols, rows);
 	}
-	
-	@Override
-	public boolean equals(AMatrix a) {
-		if (a instanceof ADenseArrayMatrix) {
-			return equals((ADenseArrayMatrix)a);
-		}
-
-		if (a==this) return true;	
-		if (!isSameShape(a)) return false;
-		
-		for (int i = 0; i < rows; i++) {
-			int end=Math.min(i,cols-1);
-			for (int j = 0; j <= end; j++) {
-				if (data[internalIndex(i, j)] != a.unsafeGet(i, j)) return false;
-			}
-			
-			for (int j = i+1; j < cols; j++) {
-				if (a.unsafeGet(i, j)!=0.0) return false;
-			}
-		}
-		return true;
-	}
 
 	@Override
 	public AMatrix exactClone() {
