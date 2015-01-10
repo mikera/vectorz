@@ -114,7 +114,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 //	}
 	
 	@Override
-	protected int componentCount() {
+	protected long componentCount() {
 		return cols;
 	}
 
@@ -297,8 +297,8 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public AMatrix multiplyCopy(double a) {
-		int n=componentCount();
-		AVector[] ndata=new AVector[n];
+		long n=componentCount();
+		AVector[] ndata=new AVector[(int)n];
 		for (int i = 0; i < n; ++i) {
             AVector v = unsafeGetVec(i);
             if (v != null) {

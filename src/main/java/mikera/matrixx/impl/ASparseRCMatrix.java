@@ -46,7 +46,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void fill(double value) {
 		RepeatedElementVector v=RepeatedElementVector.create(lineLength(), value);
-		int n=componentCount();
+		long n=componentCount();
 		for (int i = 0; i < n; i++) {
 			unsafeSetVec(i, v);
 		}
@@ -55,7 +55,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void reciprocal() {
 		AVector rr=RepeatedElementVector.create(lineLength(), 1.0/0.0);
-		int n=componentCount();
+		long n=componentCount();
 		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
@@ -72,7 +72,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public void abs() {
-		int n=componentCount();
+		long n=componentCount();
 		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
@@ -90,7 +90,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public void pow(double exponent) {
-		int n=componentCount();
+		long n=componentCount();
 		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
@@ -107,7 +107,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 
 	@Override
 	public void square() {
-		for (int i=0; i<componentCount(); i++) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
 				// OK;
@@ -123,7 +124,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 
 	@Override
 	public void sqrt() {
-		int n=componentCount();
+		long n=componentCount();
 		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
@@ -141,7 +142,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void exp() {
 		AVector rr = RepeatedElementVector.create(lineLength(), 1.0);
-		int n=componentCount();
+		long n=componentCount();
 		for (int i = 0; i < n; i++) {
 			AVector line = data[i];
 			if (line == null) {
@@ -159,7 +160,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void log() {
 		AVector rr=RepeatedElementVector.create(lineLength(), Math.log(0.0));
-		int n=componentCount();
+		long n=componentCount();
 		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
@@ -259,7 +260,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 		boolean stoch = op.isStochastic();
 		AVector rr = (stoch) ? null : RepeatedElementVector.create(lineLength(), op.apply(0.0));
 
-		int n=componentCount();
+		long n=componentCount();
 		for (int i = 0; i < n; i++) {
 			AVector v = unsafeGetVec(i);
 			if (v == null) {
@@ -311,9 +312,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 		return this;
 	}
 	
-	protected abstract int componentCount();
-	
-	
+	protected abstract long componentCount();
 
 	protected abstract int lineLength();
 

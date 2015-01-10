@@ -1049,6 +1049,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return al;
 	}
 	
+	protected long componentCount() {
+		return 0;
+	}
+	
+	protected INDArray getComponent() {
+		throw new UnsupportedOperationException("Component based access not supported for class "+this.getClass().getCanonicalName());
+	}
+	
 	@Override
 	public INDArray subArray(int[] offsets, int[] shape) {
 		int n=dimensionality();
