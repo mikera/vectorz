@@ -130,7 +130,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 //	}
 
 	@Override
-	protected int lineCount() {
+	protected int componentCount() {
 		return rows;
 	}
 
@@ -335,7 +335,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
 	@Override
 	public AMatrix multiplyCopy(double a) {
-		int n=lineCount();
+		int n=componentCount();
 		AVector[] ndata=new AVector[n];
 		for (int i = 0; i < n; ++i) {
             AVector v = unsafeGetVec(i);
