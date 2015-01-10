@@ -344,6 +344,18 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		}
 		return wrap(ndata,rows,cols);
 	}
+	
+	@Override
+	public void multiplyRow(int i, double value) {
+		if (value==0.0) {
+			unsafeSetVec(i,null);
+			return;
+		}
+		AVector v = unsafeGetVec(i);
+		if (v==null) return;
+		v=v.multiplyCopy(value);
+		unsafeSetVec(i,v);
+	}
 
 	@Override
 	public AVector innerProduct(AVector a) {
@@ -357,28 +369,6 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 			r.set(i,getRow(i).dotProduct(a));
 		}
 		return r;
-	}
-	
-	@Override
-	public void applyOp(Op op) {
-		boolean stoch = op.isStochastic();
-		AVector rr = (stoch) ? null : RepeatedElementVector.create(lineLength(), op.apply(0.0));
-
-		for (int i = 0; i < lineCount(); i++) {
-			AVector v = unsafeGetVec(i);
-			if (v == null) {
-				if (!stoch) {
-					unsafeSetVec(i, rr);
-					continue;
-				}
-				v = Vector.createLength(lineLength());
-				unsafeSetVec(i, v);
-			} else if (!v.isFullyMutable()) {
-				v = v.sparseClone();
-				unsafeSetVec(i, v);
-			}
-			v.applyOp(op);
-		}
 	}
 
 	@Override

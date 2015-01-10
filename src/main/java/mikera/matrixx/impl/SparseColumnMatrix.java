@@ -322,20 +322,6 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
-	public void applyOp(Op op) {
-		for (int i=0; i<cols; i++) {
-			AVector col=getColumn(i);
-			if (col.isFullyMutable()) {
-				col.applyOp(op);
-			} else {
-				col=col.mutable();
-				col.applyOp(op);
-				replaceColumn(i,col);
-			}
-		}
-	}
-	
-	@Override
 	public Matrix toMatrixTranspose() {
 		Matrix m=Matrix.create(cols, rows);
         for (int i = 0; i < cols; ++i) {

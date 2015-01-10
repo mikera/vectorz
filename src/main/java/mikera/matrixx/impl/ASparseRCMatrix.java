@@ -6,6 +6,8 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -243,6 +245,28 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 		}
 		return result;
 	}	
+	
+	@Override
+	public void applyOp(Op op) {
+		boolean stoch = op.isStochastic();
+		AVector rr = (stoch) ? null : RepeatedElementVector.create(lineLength(), op.apply(0.0));
+
+		for (int i = 0; i < lineCount(); i++) {
+			AVector v = unsafeGetVec(i);
+			if (v == null) {
+				if (!stoch) {
+					unsafeSetVec(i, rr);
+					continue;
+				}
+				v = Vector.createLength(lineLength());
+				unsafeSetVec(i, v);
+			} else if (!v.isFullyMutable()) {
+				v = v.sparseClone();
+				unsafeSetVec(i, v);
+			}
+			v.applyOp(op);
+		}
+	}
 	
 	@Override
 	public final long nonZeroCount() {

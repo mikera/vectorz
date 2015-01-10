@@ -39,6 +39,8 @@ import us.bpsm.edn.parser.Parsers;
 public class Matrixx {
 
 	private static final long SPARSE_ELEMENT_THRESHOLD = 100000;
+	
+	private final static Random rand=new Random();
 
 	/**
 	 * Creates an identity matrix
@@ -452,7 +454,7 @@ public class Matrixx {
 		int columns = m.columnCount();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				m.unsafeSet(i, j, Rand.nextDouble());
+				m.unsafeSet(i, j, rand.nextDouble());
 			}
 		}
 	}
