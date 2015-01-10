@@ -17,7 +17,9 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * A general n-dimensional double array implemented as a collection of (n-1) dimensional slices
+ * A general N-dimensional double array implemented as a collection of (n-1) dimensional slices
+ * 
+ * Must have dimensionality 1 or above, and at least one slice
  * 
  * @author Mike
  *
@@ -58,7 +60,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	
 	public static SliceArray<INDArray> create(List<INDArray> slices) {
 		int slen=slices.size();
-		if (slen==0) throw new VectorzException("Empty list of slices provided to SliceArray");
+		if (slen==0) throw new IllegalArgumentException("Empty list of slices provided to SliceArray");
 		INDArray[] arr=new INDArray[slen];
 		return new SliceArray<INDArray>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
 	}

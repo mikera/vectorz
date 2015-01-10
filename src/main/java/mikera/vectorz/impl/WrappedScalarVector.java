@@ -1,6 +1,8 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
+import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * A length 1 vector, as a view wrapping a single AScalar
@@ -27,7 +29,18 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	public boolean isFullyMutable() {
 		return scalar.isFullyMutable();
 	}
-
+	
+	@Override
+	public int componentCount() {
+		return 1;
+	}
+	
+	@Override
+	public AScalar getComponent(int k) {
+		if (k!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidComponent(this,k));
+		return scalar;
+	}
+	
 	@Override
 	public int length() {
 		return 1;

@@ -1,6 +1,7 @@
 package mikera.arrayz.impl;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -71,6 +72,20 @@ public class JoinedArray extends BaseShapedArray {
 		} else {
 			return new JoinedArray(left.slice(majorSlice),right.slice(majorSlice),dimension-1);
 		}
+	}
+	
+	@Override
+	public int componentCount() {
+		return 2;
+	}
+	
+	@Override
+	public INDArray getComponent(int k) {
+		switch (k) {
+			case 0: return left;
+			case 1: return right;
+		}
+		throw new IndexOutOfBoundsException(ErrorMessages.invalidComponent(this,k));
 	}
 
 	@Override
