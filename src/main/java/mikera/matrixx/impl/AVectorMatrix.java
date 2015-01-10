@@ -223,6 +223,18 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	}
 	
 	@Override
+	public long componentCount() {
+		return rows;
+	}
+	
+	@Override
+	public AVector getComponent(long k) {
+		int i=(int)k;
+		if (i!=k) throw new IndexOutOfBoundsException(ErrorMessages.invalidComponent(this,k));
+		return getRow(i);
+	}
+	
+	@Override
 	public AVector innerProduct(AVector v) {
 		int rc=rowCount();
 		Vector r=Vector.createLength(rc);

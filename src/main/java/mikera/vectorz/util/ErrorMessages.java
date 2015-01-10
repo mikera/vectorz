@@ -121,9 +121,14 @@ public class ErrorMessages {
 		return "Subrange {start="+start+", length="+length+"} not valid on vector with length "+v.length();
 	}
 
-	public static String invalidSlice(INDArray a, int slice) {
+	public static String invalidSlice(INDArray a, long slice) {
 		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice;
 	}
+	
+	public static String invalidComponent(INDArray a, long i) {
+		return ""+a.getClass()+" with shape "+shape(a)+" does not have component: "+i;
+	}
+	
 
 	public static String invalidSlice(INDArray a, int dimension, int slice) {
 		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice +" on dimension "+dimension;
@@ -133,7 +138,7 @@ public class ErrorMessages {
 		return "Cannot access slices of 0-D "+a.getClass();
 	}
 
-	public static String insufficientElements(int length) {
+	public static String insufficientElements(long length) {
 		return "Insufficient elements "+length;
 	}
 
