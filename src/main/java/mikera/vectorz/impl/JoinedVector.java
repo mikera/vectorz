@@ -547,12 +547,12 @@ public final class JoinedVector extends AJoinedVector {
 	}
 
 	@Override
-	public long componentCount() {
+	public int componentCount() {
 		return 2;
 	}
 
 	@Override
-	public AVector getComponent(long k) {
+	public AVector getComponent(int k) {
 		return (k<=0)?left:right;
 	}
 

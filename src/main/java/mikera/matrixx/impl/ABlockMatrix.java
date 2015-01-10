@@ -28,12 +28,12 @@ public abstract class ABlockMatrix extends AMatrix {
 	public abstract int rowBlockCount();
 	
 	@Override
-	public long componentCount() {
-		return ((long)columnBlockCount())*rowBlockCount();
+	public int componentCount() {
+		return columnBlockCount()*rowBlockCount();
 	}
 	
 	@Override
-	public AMatrix getComponent(long k) {
+	public AMatrix getComponent(int k) {
 		int cbc=columnBlockCount();
 		long i=k / cbc;
 		long j=k % cbc;

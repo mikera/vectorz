@@ -115,12 +115,12 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 //	}
 	
 	@Override
-	public long componentCount() {
+	public int componentCount() {
 		return cols;
 	}
 	
 	@Override
-	public AVector getComponent(long k) {
+	public AVector getComponent(int k) {
 		AVector v=data[(int)k];
 		if (v==null) return emptyColumn;
 		return v;

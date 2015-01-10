@@ -131,12 +131,12 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 //	}
 
 	@Override
-	public long componentCount() {
+	public int componentCount() {
 		return rows;
 	}
 	
 	@Override
-	public AVector getComponent(long k) {
+	public AVector getComponent(int k) {
 		AVector v=data[(int)k];
 		if (v==null) return emptyRow;
 		return v;

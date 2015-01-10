@@ -824,7 +824,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * May return 0 if components are not supported
 	 * @return
 	 */
-	public long componentCount();
+	public int componentCount();
 	
 	/**
 	 * Gets a component from the array at the specified index
@@ -833,7 +833,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param k
 	 * @return
 	 */
-	public INDArray getComponent(long k);
+	public INDArray getComponent(int k);
 	
 	/**
 	 * Returns a new array of the same shape/structure as the original but with the specified components. 
@@ -841,4 +841,10 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Components must be of a compatible type and identical shape to the original components.
 	 */
 	public INDArray withComponents(INDArray[] cs);
+
+	/**
+	 * Gets all components in a new array, with length componentCount();
+	 * @return
+	 */
+	INDArray[] getComponents();
 }

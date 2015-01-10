@@ -577,12 +577,12 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 
 	@Override
-	public long componentCount() {
+	public int componentCount() {
 		return n;
 	}
 
 	@Override
-	public AVector getComponent(long k) {
+	public AVector getComponent(int k) {
 		int i=(int)k;
 		return vecs[i];
 	}

@@ -182,7 +182,7 @@ public class TestArrays {
 	}
 	
 	private void testComponents(INDArray a) {
-		long cc=a.componentCount();
+		int cc=a.componentCount();
 		if (cc==0) {
 			try {
 				a.getComponent(0);

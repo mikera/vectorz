@@ -306,10 +306,10 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
-	public abstract long componentCount();
+	public abstract int componentCount();
 	
 	@Override
-	public abstract AVector getComponent(long k);
+	public abstract AVector getComponent(int k);
 
 	protected abstract int lineLength();
 

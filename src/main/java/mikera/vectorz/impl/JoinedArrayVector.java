@@ -74,7 +74,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 		return pos[j+1]-pos[j];
 	}
 	
-	public ArraySubVector getComponent(long j) {
+	public ArraySubVector getComponent(int j) {
 		int i=(int)j;
 		return ArraySubVector.wrap(data[i], offsets[i], subLength(i));
 	}
@@ -587,7 +587,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 	}
 
 	@Override
-	public long componentCount() {
+	public int componentCount() {
 		return numArrays;
 	}
 

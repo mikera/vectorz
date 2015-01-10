@@ -223,12 +223,12 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	}
 	
 	@Override
-	public long componentCount() {
+	public int componentCount() {
 		return rows;
 	}
 	
 	@Override
-	public AVector getComponent(long k) {
+	public AVector getComponent(int k) {
 		int i=(int)k;
 		if (i!=k) throw new IndexOutOfBoundsException(ErrorMessages.invalidComponent(this,k));
 		return getRow(i);

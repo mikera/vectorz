@@ -18,10 +18,10 @@ public abstract class AJoinedVector extends ASizedVector {
 	}
 	
 	@Override
-	public abstract long componentCount();
+	public abstract int componentCount();
 	
 	@Override
-	public abstract AVector getComponent(long k);
+	public abstract AVector getComponent(int k);
 	
 	/**
 	 * Reconstructs a new joined vector of the same type and shape with the given segments.

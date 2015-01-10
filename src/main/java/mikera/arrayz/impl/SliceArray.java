@@ -142,12 +142,12 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	}
 	
 	@Override
-	public long componentCount() {
+	public int componentCount() {
 		return sliceCount();
 	}
 	
 	@Override
-	public T getComponent(long k) {
+	public T getComponent(int k) {
 		return slices[(int)k];
 	}
 
@@ -312,6 +312,11 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 			al[i]=slice(i);
 		}
 		return al;
+	}
+	
+	@Override
+	public INDArray[] getComponents() {
+		return toSliceArray();
 	}
 	
 	@Override

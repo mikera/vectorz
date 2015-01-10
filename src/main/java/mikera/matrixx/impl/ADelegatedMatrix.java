@@ -51,12 +51,12 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 	public abstract void unsafeSet(int row, int column, double value);
 	
 	@Override
-	public long componentCount() {
+	public int componentCount() {
 		return source.componentCount();
 	}
 	
 	@Override
-	public INDArray getComponent(long k) {
+	public INDArray getComponent(int k) {
 		return source.getComponent(k);
 	}
 	
