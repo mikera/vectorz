@@ -28,6 +28,17 @@ public interface IMatrix extends INDArray {
 	
 	public AVector getColumn(int column);
 
+	/**
+	 * Gets a band of a matrix
+	 * 
+	 * The band is defined such that:
+	 * - 0 is the main diagonal
+	 * - bands above the main diagonal are 1, 2, 3 etc.
+	 * - bands below the main diagonal are -1, -2, -3 etc.
+	 * 
+	 * @param band
+	 * @return
+	 */
 	public AVector getBand(int band);
 
 	boolean isSquare();
@@ -47,7 +58,7 @@ public interface IMatrix extends INDArray {
 	double diagonalProduct();
 
 	/**
-	 * Gets the list of rows of a matrix.
+	 * Gets a List of rows of a matrix.
 	 * 
 	 * May return either copies or views, depending on the specific matrix type.
 	 * @return
@@ -55,7 +66,7 @@ public interface IMatrix extends INDArray {
 	List<AVector> getRows();
 
 	/**
-	 * Gets the list of columns of a matrix.
+	 * Gets a List of columns of a matrix.
 	 * 
 	 * May return either copies or views, depending on the specific matrix type.
 	 * @return
