@@ -162,8 +162,9 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	@Override
 	public void set(AMatrix a) {
 		checkSameShape(a);
+		List<AVector> srows=a.getRows();
 		for (int i=0; i<rows; i++) {
-			setRow(i,a.getRow(i));
+			setRow(i,srows.get(i));
 		}
 	}
 	

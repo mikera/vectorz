@@ -8,6 +8,7 @@ import java.util.ArrayList;
 // import java.util.Map.Entry;
 
 
+
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -16,6 +17,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -129,19 +131,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	@Override
 	public void set(int i, int j, double value) {
 		checkIndex(i,j);
-		AVector v = unsafeGetVec(j);
-		if (v==null) {
-			if (value == 0.0)
-                return;
-			v = Vectorz.createSparseMutable(rows);
-		} else if (v.isFullyMutable()) {
-			v.set(i,value);
-			return;
-		} else {
-			v = v.sparseClone();			
-		}
-		unsafeSetVec(j, v);
-		v.set(i, value);
+		unsafeSet(i,j,value);
 	}
 	
 	@Override
@@ -150,22 +140,28 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 
 	@Override
-	public void unsafeSet(int row, int column, double value) {
-		AVector v=getColumn(column);
-		if (v.isFullyMutable()) {
-			v.unsafeSet(row,value);
+	public void unsafeSet(int i, int j, double value) {
+		AVector v = unsafeGetVec(j);
+		if (v==null) {
+			if (value == 0.0)
+                return;
+			v = SingleElementVector.create(value, i, rows);
+		} else if (v.isFullyMutable()) {
+			v.unsafeSet(i,value);
+			return;
 		} else {
-			v=v.mutable();
-			replaceColumn(column,v);
-			v.unsafeSet(row,value);
+			v = v.sparseClone();
+			v.unsafeSet(i, value);
 		}
+		unsafeSetVec(j, v);
 	}
 	
 	@Override
 	public void set(AMatrix a) {
 		checkSameShape(a);
+		List<AVector> scols=a.getColumns();
 		for (int i=0; i<cols; i++) {
-			setColumn(i,a.getColumn(i));
+			setColumn(i,scols.get(i));
 		}
 	}
 	
@@ -225,16 +221,16 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
-	public AVector getColumn(int i) {
-		if ((i<0)||(i>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, i));
-		AVector v = unsafeGetVec(i);
+	public AVector getColumn(int j) {
+		if ((j<0)||(j>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, j));
+		AVector v = unsafeGetVec(j);
 		if (v==null) return emptyColumn;
 		return v;
 	}
 	
 	@Override
-	public AVector getColumnView(int i) {
-		return ensureMutableColumn(i);
+	public AVector getColumnView(int j) {
+		return ensureMutableColumn(j);
 	}
 	
 	@Override
@@ -359,8 +355,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		Matrix m=Matrix.create(rows, cols);
 		for (int i=0; i<cols; i++) {
 			AVector v = unsafeGetVec(i);
-			if (v != null)
+			if (v != null) {
                 m.getColumn(i).set(v);
+            }
 		}
 		return m.getArray();
 	}
@@ -375,8 +372,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		SparseColumnMatrix result= new SparseColumnMatrix(rows,cols);
         for (int i = 0; i < cols; ++i) {
 			AVector col = unsafeGetVec(i);
-			if (col != null)
+			if (col != null) {
 			    result.replaceColumn(i, col.exactClone());
+			}
 		}
 		return result;
 	}

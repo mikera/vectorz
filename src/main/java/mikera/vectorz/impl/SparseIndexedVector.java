@@ -531,6 +531,11 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	@Override
 	public void set(int i, double value) {
 		checkIndex(i);
+		unsafeSet(i,value);
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
 		int ip=index.indexPosition(i);
 		if (ip<0) {
 			if (value==0.0) return;
