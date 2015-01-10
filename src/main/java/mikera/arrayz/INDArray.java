@@ -102,7 +102,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Returns the double value at the specified index position in an array
 	 */
-	public double get(long... indexes);
+	public double get(long[] indexes);
 
 	/**
 	 * Sets all elements of an array to a specific double value

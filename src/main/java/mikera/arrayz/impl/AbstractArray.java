@@ -62,7 +62,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return get((int)x,(int)y);
 	}
 	
-	public double get(long... xs) {
+	public double get(long[] xs) {
 		int n=xs.length;
 		int[] ixs=new int[n];
 		for (int i=0; i<n; i++) {
