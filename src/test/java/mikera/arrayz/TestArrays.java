@@ -189,6 +189,19 @@ public class TestArrays {
 				fail("Should not be able to access any components!");
 			} catch (Throwable t) {/* OK */};
 		}
+		if (cc==0) return;
+		
+		long ec=a.elementCount();
+		double ess=a.elementSquaredSum();
+		long ec_acc=0;
+		double ess_acc=0.0;
+		for (int i=0; i<cc ; i++) {
+			INDArray c=a.getComponent(i);
+			ec_acc+=c.elementCount();
+			ess_acc+=c.elementSquaredSum();
+		}
+		assertEquals(ec,ec_acc);
+		assertEquals(ess,ess_acc,0.0001);
 	}
 
 	private void testClone(INDArray a) {
