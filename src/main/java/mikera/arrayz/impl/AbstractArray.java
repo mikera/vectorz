@@ -1058,6 +1058,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public INDArray getComponent(long k) {
 		throw new UnsupportedOperationException("Component based access not supported for class "+this.getClass().getCanonicalName());	
 	}
+	
+	@Override
+	public INDArray withComponents(INDArray[] cs) {
+		throw new UnsupportedOperationException("Component re-wrapping not supported for class "+this.getClass().getCanonicalName());	
+	}
 
 	@Override
 	public INDArray subArray(int[] offsets, int[] shape) {

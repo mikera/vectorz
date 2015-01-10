@@ -826,6 +826,19 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public long componentCount();
 	
+	/**
+	 * Gets a component from the array at the specified index
+	 * 
+	 * Will throw an error if components are not supported, or if the component is out of bounds as defined by 0 <= k <componentCount()
+	 * @param k
+	 * @return
+	 */
 	public INDArray getComponent(long k);
-
+	
+	/**
+	 * Returns a new array of the same shape/structure as the original but with the specified components. 
+	 * 
+	 * Components must be of a compatible type and identical shape to the original components.
+	 */
+	public INDArray withComponents(INDArray[] cs);
 }
