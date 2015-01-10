@@ -204,7 +204,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
                     if (v!=0.0) {
                     	rm.set(i,j, v);
                     }
-                }
+                } 
             }
         }
         
