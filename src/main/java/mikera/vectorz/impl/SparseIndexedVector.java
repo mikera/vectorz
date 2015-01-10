@@ -604,10 +604,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		return index;
 	}
 
-	@Override
-	public boolean includesIndex(int i) {
-		return index.indexPosition(i)>=0;
-	}
 	
 	@Override
 	public Vector toVector() {

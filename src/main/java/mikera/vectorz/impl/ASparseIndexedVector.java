@@ -31,6 +31,11 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean includesIndex(int i) {
+		return internalIndex().indexPosition(i)>=0;
+	}
+	
+	@Override
 	public boolean isZero() {
 		return DoubleArrays.isZero(internalData());
 	}
