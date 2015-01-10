@@ -81,8 +81,8 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
         // don't validate; user can call validate() if they want it.
 	}
 	
-	public static SparseRowMatrix create(List<AVector> vecs) {
-		return create(vecs.toArray(new AVector[0]));
+	public static SparseRowMatrix create(List<AVector> rows) {
+		return create(rows.toArray(new AVector[rows.size()]));
 	}
 	
 	public static SparseRowMatrix wrap(AVector[] vecs, int rows, int cols) {

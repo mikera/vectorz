@@ -77,8 +77,8 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
         // don't validate; user can call validate() if they want it.
 	}
 	
-	public static SparseColumnMatrix create(List<AVector> vecs) {
-		return create(vecs.toArray(new AVector[0]));
+	public static SparseColumnMatrix create(List<AVector> columns) {
+		return create(columns.toArray(new AVector[columns.size()]));
 	}
 	
 	public static SparseColumnMatrix wrap(AVector[] vecs, int rows, int cols) {
