@@ -5,6 +5,12 @@ import java.util.AbstractList;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
+/**
+ * Lightweight wrapper for the list of rows of a matrix
+ * 
+ * @author Mike
+ *
+ */
 public class MatrixRowList extends AbstractList<AVector> {
 	
 	private AMatrix source;
