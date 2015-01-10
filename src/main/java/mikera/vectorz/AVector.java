@@ -1324,6 +1324,19 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Gets the elements in this vector from the specified indices
+	 * @param data
+	 * @param offset
+	 * @param indices
+	 */
+	public void getElements(double[] data, int offset, int[] indices) {
+		int n=indices.length;
+		for (int i=0; i<n; i++) {
+			data[offset+i]=unsafeGet(indices[i]);
+		}
+	}
+	
+	/**
 	 * Set the vector equal to an offset into another vector
 	 */
 	public void set(AVector src, int srcOffset) {
@@ -2294,4 +2307,5 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public AMatrix asColumnMatrix() {
 		return ColumnMatrix.wrap(this);
 	}
+
 }

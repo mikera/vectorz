@@ -82,6 +82,23 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		return new SparseIndexedVector(length, index.clone(),DoubleArrays.copyOf(data));
 	}
 	
+	/**
+	 * Creates a sparse indexed vector using the specified indexed values from the source vector
+	 * 
+	 * All non-indexed vales will be zero.
+	 * 
+	 * @param v
+	 * @param ixs
+	 * @return
+	 */
+	public static AVector createWithIndices(AVector v, int[] ixs) {
+		int length=v.length();
+		int n=ixs.length;
+		double[] data = new double[n];
+		v.getElements(data,0,ixs);
+		return wrap(length,ixs,data);
+	}
+	
 	public static SparseIndexedVector createLength(int length) {
 		return new SparseIndexedVector(length, Index.EMPTY,DoubleArrays.EMPTY);
 	}
@@ -696,6 +713,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	Index internalIndex() {
 		return index;
 	}
+
 
 
 }

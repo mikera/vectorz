@@ -42,7 +42,12 @@ public class Vectorz {
 	// ===========================
 	// Factory functions
 	
-
+	/**
+	 * Creates a vector using the given double data, using the most efficient dense representation.
+	 * 
+	 * @param data
+	 * @return
+	 */
 	public static AVector create(double... data) {
 		int n=data.length;
 		switch (n) {
@@ -68,6 +73,11 @@ public class Vectorz {
 		return result;
 	}
 	
+	/**
+	 * Join one or more vectors into a single concatenated vector
+	 * @param vectors
+	 * @return
+	 */
 	public static AVector join(AVector... vectors) {
 		AVector result=vectors[0];
 		for (int i=1; i<vectors.length; i++) {
@@ -76,10 +86,15 @@ public class Vectorz {
 		return result;
 	}
 	
+	/**
+	 * Join a list of vectors into a single concatenated vector
+	 * @param vectors
+	 * @return
+	 */
 	public static AVector join(List<AVector> vectors) {
 		int count=vectors.size();
-		AVector v=vectors.get(0);
-		for (int i=1; i<count; i++) {
+		AVector v=Vector0.INSTANCE;
+		for (int i=0; i<count; i++) {
 			v=v.join(vectors.get(i));
 		}
 		return v;
@@ -96,6 +111,13 @@ public class Vectorz {
 		return ZeroVector.create((int)l);
 	}
 	
+	/**
+	 * Wraps a double array as a Vector instance. Changes to the double array will
+	 * be reflected in the Vector
+	 * 
+	 * @param data
+	 * @return
+	 */
 	public static Vector wrap(double[] data) {
 		return Vector.wrap(data);
 	}
@@ -103,8 +125,8 @@ public class Vectorz {
 	public static AVector wrap(double[][] data) {
 		if ((data.length)==0) return Vector0.INSTANCE;
 		
-		AVector v=wrap(data[0]);
-		for (int i=1; i<data.length; i++) {
+		AVector v=Vector0.INSTANCE;
+		for (int i=0; i<data.length; i++) {
 			v=join(v,wrap(data[i]));
 		}
 		return v;
@@ -148,30 +170,32 @@ public class Vectorz {
 	 * Creates a sparse vector from the data in the given vector. Selects the appropriate sparse
 	 * vector type based on analysis of the element values.
 	 * 
+	 * The sparse vector may or may not be mutable.
+	 * 
 	 * @param v Vector containing sparse element data
 	 * @return
 	 */
 	public static AVector createSparse(AVector v) {
 		int len=v.length();
-		long n=v.nonZeroCount();
+		int[] ixs=v.nonZeroIndices();
+		int n=ixs.length;
 		if (n==0) {
 			return createZeroVector(len);
 		} else if (n==1) {
-			for (int i=0; i<len; i++) {
-				double val=v.unsafeGet(i);
-				if (val!=0.0) {
-					if (val==1.0) {
-						return AxisVector.create(i, len);
-					} else {
-						return SingleElementVector.create(val,i,len);
-					}
+			int i=ixs[0];
+			double val=v.unsafeGet(i);
+			if (val!=0.0) {
+				if (val==1.0) {
+					return AxisVector.create(i, len);
+				} else {
+					return SingleElementVector.create(val,i,len);
 				}
 			}
 			throw new VectorzException("non-zero element not found!!");
 		} else if (n>(len*SPARSE_DENSITY_THRESHOLD)) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
 		} else {
-			return SparseIndexedVector.create(v);
+			return SparseIndexedVector.createWithIndices(v,ixs);
 		}
 	}
 	

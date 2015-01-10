@@ -144,7 +144,7 @@ public class TestBigSparse {
 		a.dotProduct(b);
 		assertEquals(a.magnitudeSquared(),a.dotProduct(a),0.0);
 	}
-	
+	 
 	@Test public void testBigVectorAdd() {
 		int SIZE=1000000000;
 		AVector v=Vectorz.createSparseMutable(SIZE);
