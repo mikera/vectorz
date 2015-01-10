@@ -97,8 +97,9 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		int rc = source.rowCount();
 		int cc = source.columnCount();
 		AVector[] data = new AVector[rc];
+		List<AVector> rows=source.getRows();
 		for (int i = 0; i < rc; i++) {
-			AVector row = source.getRow(i);
+			AVector row = rows.get(i);
 			if (!row.isZero())
 			    data[i] = Vectorz.createSparse(row);
 		}
@@ -416,19 +417,20 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	 * @return
 	 */
 	public SparseRowMatrix innerProduct(SparseColumnMatrix a) {
-		// TODO this is probably slow since it operates on the rows of the column matrix?
-		// maybe convert to SparseRowMatrix first?
-		// new matrix has shape [ this.rows * a.cols ], issue #71
-		int acols=a.cols; 
-		SparseRowMatrix result = Matrixx.createSparse(rows, acols);
-
-        for (int i = 0; i < rows; ++i) {
-        	AVector r=getRow(i);
-			AVector nr=r.innerProduct(a);
-			result.replaceRow(i, nr);
-		}
-		return result;
+		return innerProduct(SparseRowMatrix.create(a));
 	}
+	
+	public SparseRowMatrix innerProduct(SparseRowMatrix a) {
+		SparseRowMatrix r = Matrixx.createSparse(rows, a.columnCount());
+		for (int i = 0; i < rows; ++i) {
+			AVector row = unsafeGetVec(i);
+            if (! ((row == null) || (row.isZero()))) {
+			    r.replaceRow(i,row.innerProduct(a));
+            }
+		}
+		return r;
+	}
+
 
 	@Override
 	public SparseRowMatrix exactClone() {

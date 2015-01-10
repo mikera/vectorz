@@ -79,6 +79,17 @@ public class TestBigSparse {
 		m.innerProduct(m.getTranspose());
 	}
 	
+	@Test public void testBigMultiply3() {
+		int SIZE=1000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
+		Random r=new Random(342345237);
+		for (int i=0; i<SIZE; i++) {
+			m.set(r.nextInt(SIZE),r.nextInt(SIZE),r.nextGaussian());
+		}
+		
+		m.innerProduct(m);
+	}
+	
 	@Test public void testSparseAdd() {
 		AMatrix m=Matrixx.createSparse(20000,20000);
 		m.add(ZeroMatrix.create(20000, 20000));
