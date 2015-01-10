@@ -65,7 +65,7 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 	
 	public List<Integer> toList() {
 		int len=length();
-		ArrayList<Integer> al=new ArrayList<Integer>();
+		ArrayList<Integer> al=new ArrayList<Integer>(len);
 		for (int i=0; i<len; i++) {
 			al.add(get(i));
 		}

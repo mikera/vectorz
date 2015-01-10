@@ -321,7 +321,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			}
 		}
 		int sc=sliceCount();
-		ArrayList<INDArray> sips=new ArrayList<INDArray>();
+		ArrayList<INDArray> sips=new ArrayList<INDArray>(sc);
 		for (int i=0; i<sc; i++) {
 			sips.add(slice(i).innerProduct(a));
 		}
@@ -340,7 +340,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray outerProduct(INDArray a) {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(sliceCount());
 		for (Object s:this) {
 			if (s instanceof INDArray) {
 				al.add(((INDArray)s).outerProduct(a));
@@ -981,18 +981,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray reorder(int dim, int[] order) {
-		if (order.length==0) {
+		int n=order.length;
+		if (n==0) {
 			int[] shape=getShapeClone();
 			shape[0]=0;
 			return Arrayz.createZeroArray(shape);
 		}
 		int dims=dimensionality();
 		if ((dim<0)||(dim>=dims)) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
-		ArrayList<INDArray> newSlices=new ArrayList<INDArray>();
+		ArrayList<INDArray> newSlices=new ArrayList<INDArray>(n);
 		for (int si : order) {
 			newSlices.add(slice(dim,si));
 		}
-		int n=newSlices.size();
 		int[] shp=this.getShapeClone();
 		shp[dim]=n;
 
@@ -1063,8 +1063,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			}
 		}
 		
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
-		int endIndex=offsets[0]+shape[0];
+		int nslices=shape[0];
+		ArrayList<INDArray> al=new ArrayList<INDArray>(nslices);
+		int endIndex=offsets[0]+nslices;
 		int[] zzoffsets=IntArrays.removeIndex(offsets, 0);
 		int[] zzshape=IntArrays.removeIndex(shape, 0);
 		for (int i=offsets[0]; i<endIndex; i++) {

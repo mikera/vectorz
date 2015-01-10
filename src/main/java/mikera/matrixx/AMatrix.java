@@ -249,8 +249,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public List<INDArray> getSliceViews() {	
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		int rc=rowCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(rc);
 		for (int i=0; i<rc; i++) {
 			al.add(getRowView(i));
 		}
@@ -408,7 +408,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		switch (dim) {
 		case 0: {
 			if (n==0) return ZeroMatrix.create(0, columnCount());
-			ArrayList<AVector> al=new ArrayList<AVector>();
+			ArrayList<AVector> al=new ArrayList<AVector>(n);
 			for (int si: order) {
 				al.add(slice(si));
 			}
@@ -416,7 +416,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		case 1: {
 			if (n==0) return ZeroMatrix.create(rowCount(),0);
-			ArrayList<AVector> al=new ArrayList<AVector>();
+			ArrayList<AVector> al=new ArrayList<AVector>(n);
 			for (int si: order) {
 				al.add(slice(1,si));
 			}
@@ -1071,6 +1071,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Returns an iterator over rows in this Matrix
 	 */
+	@Override
 	public Iterator<AVector> iterator() {
 		return new MatrixIterator(this);
 	}
@@ -1353,8 +1354,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			return innerProduct(Arrayz.create(a)); // convert to most efficient format
 		}
 		// TODO: figure out a faster approach?
-		List<AVector> al=getSlices();
-		List<INDArray> rl=new ArrayList<INDArray>();
+		int rc=rowCount();
+		List<AVector> al=getRows();
+		List<INDArray> rl=new ArrayList<INDArray>(rc);
 		for (AVector v: al ) {
 			rl.add(v.innerProduct(a));
 		}
@@ -1363,7 +1365,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public INDArray outerProduct(INDArray a) {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(sliceCount());
 		for (AVector s:this) {
 			al.add(s.outerProduct(a));
 		}

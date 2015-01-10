@@ -49,7 +49,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	}
 	
 	public static SliceArray<INDArray> repeat (INDArray s, int n) {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 		for (int i=0; i<n; i++) {
 			al.add(s);
 		}
@@ -146,7 +146,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	public INDArray slice(int dimension, int index) {
 		if (dimension<0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		if (dimension==0) return slice(index);
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(sliceCount());
 		for (INDArray s:this) {
 			al.add(s.slice(dimension-1,index));
 		}
@@ -174,7 +174,8 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 			}
 		}
 		
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		int n=sliceCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 		for (INDArray s:this) {
 			al.add(s.innerProduct(a));
 		}
@@ -182,7 +183,8 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	}
 	
 	public INDArray outerProduct(INDArray a) {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		int n=sliceCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 		for (INDArray s:this) {
 			al.add(s.outerProduct(a));
 		}
@@ -277,9 +279,9 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 
 	@Override
 	public List<?> getSlices() {
-		ArrayList<Object> al=new ArrayList<Object>();
+		int n=sliceCount();
+		ArrayList<Object> al=new ArrayList<Object>(n);
 		if (dimensionality()==1) {
-			int n=sliceCount();
 			for (int i=0; i<n ; i++) {
 				al.add(Double.valueOf(slices[i].get()));
 			}

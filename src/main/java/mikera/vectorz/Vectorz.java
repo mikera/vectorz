@@ -44,7 +44,8 @@ public class Vectorz {
 	
 
 	public static AVector create(double... data) {
-		switch (data.length) {
+		int n=data.length;
+		switch (n) {
 			case 0: return Vector0.INSTANCE;
 			case 1: return Vector1.of(data);
 			case 2: return Vector2.of(data);

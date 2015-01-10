@@ -52,7 +52,8 @@ public class Arrayz {
 		if (object instanceof double[]) return Vector.of((double[])object);
 		if (object instanceof List<?>) {
 			List<?> list=(List<Object>) object;
-			if (list.size()==0) return Vector0.INSTANCE;
+			int n=list.size();
+			if (n==0) return Vector0.INSTANCE;
 			Object o1=list.get(0);
 			if ((o1 instanceof AScalar)||(o1 instanceof Number)) {
 				return Vectorz.create((List<Object>)object);
@@ -61,7 +62,7 @@ public class Arrayz {
 			} else if (o1 instanceof INDArray) {
 				return SliceArray.create((List<INDArray>)object);				
 			} else {
-				ArrayList<INDArray> al=new ArrayList<INDArray>();
+				ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 				for (Object o: list) {
 					al.add(create(o));
 				}

@@ -79,7 +79,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 	}
 	
 	public List<ADenseArrayVector> toSubArrays() {
-		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>();
+		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>(numArrays);
 		for (int i=0; i<numArrays; i++) {
 			al.add(getSegment(i));
 		}

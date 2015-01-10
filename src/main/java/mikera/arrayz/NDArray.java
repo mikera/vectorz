@@ -353,8 +353,8 @@ public final class NDArray extends BaseNDArray {
 		if (dimensions==0) {
 			throw new IllegalArgumentException(ErrorMessages.noSlices(this));
 		} else {
-			ArrayList<INDArray> al=new ArrayList<INDArray>();
 			int n=getShape(0);
+			ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 			for (int i=0; i<n; i++) {
 				al.add(slice(i));
 			}

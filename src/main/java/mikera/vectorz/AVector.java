@@ -145,8 +145,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public List<Double> getSlices() {
 		// TODO: consider returning a ListWrapper directly?
-		ArrayList<Double> al=new ArrayList<Double>();
 		int l=length();
+		ArrayList<Double> al=new ArrayList<Double>(l);
 		for (int i=0; i<l; i++) {
 			al.add(unsafeGet(i));
 		}
@@ -352,8 +352,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public List<Double> toList() {
-		ArrayList<Double> al=new ArrayList<Double>();
 		int len=length();
+		ArrayList<Double> al=new ArrayList<Double>(len);
 		for (int i=0; i<len; i++) {
 			al.add(unsafeGet(i));
 		}
