@@ -119,4 +119,12 @@ public class TestSparseIndexedVector {
 
 	}
 
+    @Test public void testRoundToZero() {
+        SparseIndexedVector sv = SparseIndexedVector.create(10,
+                                                            Index.of(1, 3, 6),
+                                                            Vector.of(0.001, 0.01, 0.1));
+        ASparseVector rsv = sv.roundToZero(0.001);
+        assertEquals(Vector.of(0, 0, 0, 0.01, 0, 0, 0.1, 0, 0, 0), rsv);
+    }
+
 }

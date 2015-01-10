@@ -521,6 +521,10 @@ public final class Vector extends ADenseArrayVector {
 		}	
 	}
 
+    public void divide(double factor) {
+		multiply(1.0/factor);
+	}
+
 	@Override
 	public boolean isView() {
 		return false;

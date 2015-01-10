@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import java.util.List;
+import java.util.ArrayList;
 // import java.util.HashMap;
 // import java.util.HashSet;
 // import java.util.Map;
@@ -185,7 +186,34 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 			if (v != null) v.addToArray(targetData, offset+i, cols);
 		}
 	}
-	
+
+    @Override
+    public List<AVector> getSlices() {
+        ArrayList<AVector> rowList = new ArrayList<AVector>(rows);
+        AVector emptyRow = Vectorz.createZeroVector(cols);
+        for (int i = 0; i < rows; i++) {
+            rowList.add(emptyRow);
+        }
+
+        for (int i = 0; i < cols; i++) {
+            AVector colVec = unsafeGetVec(i);
+            if (null != colVec) {
+                int[] nonZeroRows = colVec.nonZeroIndices();
+                for (int j = 0; j < nonZeroRows.length; j++) {
+                    int row = nonZeroRows[j];
+                    AVector rowVec = rowList.get(row);
+                    if (emptyRow == rowVec) {
+                        rowVec = SparseIndexedVector.createLength(cols);
+                    }
+                    rowVec.set(i, colVec.get(row));
+                    rowList.set(row, rowVec);
+                }
+            }
+        }
+        
+        return rowList;
+    }
+    
 	private AVector ensureMutableColumn(int i) {
 		AVector v = unsafeGetVec(i);
 		if (v == null) {

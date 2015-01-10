@@ -52,6 +52,14 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	public double elementSum() {
 		return DoubleArrays.elementSum(internalData());
 	}
+
+    @Override
+    public void multiply(double factor) {
+        double[] data = internalData();
+		for (int i = 0; i < data.length; i++) {
+			unsafeSet(i,unsafeGet(i)*factor);
+		}	
+	}
 	
 	@Override
 	public double magnitudeSquared() {
@@ -135,6 +143,9 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	@Override
 	public int[] nonZeroIndices() {
 		int n=(int)nonZeroCount();
+        if (n==0) {
+            return new int[0];
+        }
 		double[] data=internalData();
 		Index index=internalIndex();
 		int[] ret=new int[n];

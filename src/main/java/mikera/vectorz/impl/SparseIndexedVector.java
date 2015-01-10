@@ -3,6 +3,8 @@ package mikera.vectorz.impl;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
+import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -145,8 +147,59 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public int nonSparseElementCount() {
 		return data.length;
 	}
-	
-	@Override
+
+    public AVector innerProduct(SparseRowMatrix m) {
+		int cc = m.columnCount();
+		int rc = m.rowCount();
+		checkLength(rc);
+        ASparseIndexedVector r = SparseIndexedVector.createLength(cc);
+		for (int i = 0; i < rc; i++) {
+            AVector row = m.getRow(i);
+            if (row instanceof ZeroVector) {
+                continue;
+            }
+            // TODO: we were casting to ASparseVector, necessary for speed??
+            //            if (row instanceof ASparseVector)
+            // This vector could be of any type, such as Vector3.
+            // And some vectors don't have a sparseClone and instead return
+            // a reference to same instance!!!! (See Vector3...)
+            AVector temp = row.sparseClone();
+            temp.multiply(this.unsafeGet(i));
+            r.add(temp);
+		}
+		return r;
+	}
+
+    public AVector innerProduct(SparseColumnMatrix m) {
+		int cc = m.columnCount();
+		int rc = m.rowCount();
+		checkLength(rc);
+        ASparseIndexedVector r = SparseIndexedVector.createLength(cc);
+		for (int i = 0; i < cc; i++) {
+			r.unsafeSet(i, this.dotProduct((ASparseVector)m.getColumn(i)));
+		}
+		return r;
+	}
+    
+    @Override
+    public AVector innerProduct(AMatrix m) {
+        if (m instanceof SparseRowMatrix) {
+            return this.innerProduct((SparseRowMatrix)m);
+        }
+        if (m instanceof SparseColumnMatrix) {
+            return this.innerProduct((SparseColumnMatrix)m);
+        }
+		int cc=m.columnCount();
+		int rc=m.rowCount();
+		checkLength(rc);
+        AVector r = SparseIndexedVector.createLength(cc);
+		for (int i=0; i<cc; i++) {
+			r.unsafeSet(i,this.dotProduct(m.getColumn(i)));
+		}
+		return r;
+	}
+
+    @Override
 	public void add(AVector v) {
 		if (v instanceof ASparseVector) {
 			add((ASparseVector)v);
@@ -157,7 +210,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[i]+=v.unsafeGet(index.get(i));
 		}
 	}
-	
+
 	@Override
 	public void add(ADenseArrayVector v) {
 		includeIndices(v);	
@@ -176,6 +229,29 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[i]+=v.unsafeGet(index.get(i));
 		}
 	}
+    
+    @Override
+	public void sub(AVector v) {
+		if (v instanceof ASparseVector) {
+			sub((ASparseVector)v);
+			return;
+		}
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]-=v.unsafeGet(index.get(i));
+		}
+	}
+
+	public void sub(ASparseVector v) {
+        if (v instanceof ZeroVector) {
+            return;
+        }
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]-=v.unsafeGet(index.get(i));
+		}
+	}
+
 	
 	@Override
 	public void add(double[] src, int offset) {
@@ -463,6 +539,29 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[ip]=value;
 		}
 	}
+
+    // TODO: consider a generic sparseApplyOp instead.
+    //       keep in mind efficiency when randomly
+    //       modifying index.
+    @Override
+    public ASparseVector roundToZero(double precision) {
+        int[] aboveInds = new int[data.length];
+        double[] aboveData = new double[data.length];
+        int ai = 0;
+        for (int i = 0; i < index.length(); i++) {
+            if (data[i] > precision) {
+                aboveInds[ai] = index.get(i);
+                aboveData[ai] = data[i];
+                ai++;
+            }
+        }
+        int[] newInds = new int[ai];
+        double[] newData = new double[ai];
+        System.arraycopy(aboveInds, 0, newInds, 0, ai);
+        System.arraycopy(aboveData, 0, newData, 0, ai);
+
+        return SparseIndexedVector.wrap(this.length, newInds, newData);
+    }
 	
 	@Override
 	public void addAt(int i, double value) {

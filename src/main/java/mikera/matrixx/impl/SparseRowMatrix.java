@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 // import java.util.HashMap;
 // import java.util.HashSet;
 // import java.util.Map;
@@ -202,12 +203,55 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		return mv;
 	}
 
+    @Override
+    public List<AVector> getColumns() {
+        ArrayList<AVector> colList = new ArrayList<AVector>(cols);
+        AVector emptyCol = Vectorz.createZeroVector(rows);
+        for (int i = 0; i < cols; i++) {
+            colList.add(emptyCol);
+        }
+
+        for (int i = 0; i < rows; i++) {
+            AVector rowVec = unsafeGetVec(i);
+            if (null != rowVec) {
+                int[] nonZeroCols = rowVec.nonZeroIndices();
+                for (int j = 0; j < nonZeroCols.length; j++) {
+                    int col = nonZeroCols[j];
+                    AVector colVec = colList.get(col);
+                    if (emptyCol == colVec) {
+                        colVec = SparseIndexedVector.createLength(rows);
+                    }
+                    colVec.set(i, rowVec.get(col));
+                    colList.set(col, colVec);
+                }
+            }
+        }
+        
+        return colList;
+    }
+    
 	@Override
 	public AVector getRow(int i) {
 		if ((i<0)||(i>=rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
 		AVector v = unsafeGetVec(i);
 		if (v == null) return emptyRow;
 		return v;
+	}
+
+    @Override
+	public List<AVector> getSlices() {
+        // TODO: Is it acceptable for views to be mixed with
+        //       empty row vectors?
+        ArrayList<AVector> rowList = new ArrayList<AVector>(rows);
+		for (int i = 0; i < rows; i++) {
+            AVector v = unsafeGetVec(i);
+            if (v == null) {
+                rowList.add(emptyRow);
+            } else {
+                rowList.add(v);
+            }
+        }
+		return rowList;
 	}
 	
 	@Override
