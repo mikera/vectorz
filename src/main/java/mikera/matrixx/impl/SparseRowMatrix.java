@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 
 
+
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
@@ -130,8 +131,15 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 //	}
 
 	@Override
-	protected long componentCount() {
+	public long componentCount() {
 		return rows;
+	}
+	
+	@Override
+	public AVector getComponent(long k) {
+		AVector v=data[(int)k];
+		if (v==null) return emptyRow;
+		return v;
 	}
 
 	@Override

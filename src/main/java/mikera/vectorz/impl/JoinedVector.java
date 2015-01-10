@@ -552,7 +552,7 @@ public final class JoinedVector extends AJoinedVector {
 	}
 
 	@Override
-	public AVector getSegment(int k) {
+	public AVector getComponent(long k) {
 		return (k<=0)?left:right;
 	}
 

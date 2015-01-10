@@ -20,7 +20,8 @@ public abstract class AJoinedVector extends ASizedVector {
 	@Override
 	public abstract long componentCount();
 	
-	public abstract AVector getSegment(int k);
+	@Override
+	public abstract AVector getComponent(long k);
 	
 	/**
 	 * Reconstructs a new joined vector of the same type and shape with the given segments.
@@ -41,7 +42,7 @@ public abstract class AJoinedVector extends ASizedVector {
 	public void setElements(double[] values, int offset) {
 		long n=componentCount();
 		for (int i=0; i<n; i++) {
-			AVector v=getSegment(i);
+			AVector v=getComponent(i);
 			v.setElements(values,offset);
 			offset+=v.length();
 		}
@@ -51,7 +52,7 @@ public abstract class AJoinedVector extends ASizedVector {
 	public boolean equalsArray(double[] values, int offset) {
 		long n=componentCount();
 		for (int i=0; i<n; i++) {
-			AVector v=getSegment(i);
+			AVector v=getComponent(i);
 			if (!v.equalsArray(values, offset)) return false;
 			offset+=v.length();
 		}

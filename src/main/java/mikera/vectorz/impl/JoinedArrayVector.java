@@ -74,14 +74,15 @@ public final class JoinedArrayVector extends AJoinedVector {
 		return pos[j+1]-pos[j];
 	}
 	
-	public ArraySubVector getSegment(int j) {
-		return ArraySubVector.wrap(data[j], offsets[j], subLength(j));
+	public ArraySubVector getComponent(long j) {
+		int i=(int)j;
+		return ArraySubVector.wrap(data[i], offsets[i], subLength(i));
 	}
 	
 	public List<ADenseArrayVector> toSubArrays() {
 		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>(numArrays);
 		for (int i=0; i<numArrays; i++) {
-			al.add(getSegment(i));
+			al.add(getComponent(i));
 		}
 		return al;
 	}
@@ -579,7 +580,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 		if (length!=pos[numArrays]) throw new VectorzException("End position incorrect!?!");
 		
 		for (int i=0; i<numArrays; i++) {
-			getSegment(i).validate();
+			getComponent(i).validate();
 		}
 		
 		super.validate();

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 
 
+
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -114,8 +115,15 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 //	}
 	
 	@Override
-	protected long componentCount() {
+	public long componentCount() {
 		return cols;
+	}
+	
+	@Override
+	public AVector getComponent(long k) {
+		AVector v=data[(int)k];
+		if (v==null) return emptyColumn;
+		return v;
 	}
 
 	@Override

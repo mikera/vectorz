@@ -301,18 +301,15 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
-	public Matrix toMatrix() {
-		Matrix m=Matrix.create(rows, cols);
-		addToArray(m.data,0);
-		return m;
-	}
-	
-	@Override
 	public AMatrix sparse() {
 		return this;
 	}
 	
-	protected abstract long componentCount();
+	@Override
+	public abstract long componentCount();
+	
+	@Override
+	public abstract AVector getComponent(long k);
 
 	protected abstract int lineLength();
 

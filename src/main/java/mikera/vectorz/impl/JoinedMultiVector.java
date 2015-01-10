@@ -582,8 +582,9 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 
 	@Override
-	public AVector getSegment(int k) {
-		return vecs[k];
+	public AVector getComponent(long k) {
+		int i=(int)k;
+		return vecs[i];
 	}
 
 	@Override
