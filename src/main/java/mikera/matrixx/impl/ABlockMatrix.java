@@ -36,7 +36,7 @@ public abstract class ABlockMatrix extends AMatrix {
 	public AMatrix getComponent(long k) {
 		int cbc=columnBlockCount();
 		long i=k / cbc;
-		long j=k * cbc;
+		long j=k % cbc;
 		return getBlock((int)i, (int)j);
 	}
 	
