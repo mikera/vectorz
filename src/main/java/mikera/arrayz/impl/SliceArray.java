@@ -137,7 +137,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	}
 
 	@Override
-	public INDArray slice(int majorSlice) {
+	public T slice(int majorSlice) {
 		return slices[majorSlice];
 	}
 	
@@ -151,15 +151,16 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		return slices[(int)k];
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public INDArray slice(int dimension, int index) {
+	public T slice(int dimension, int index) {
 		if (dimension<0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		if (dimension==0) return slice(index);
 		ArrayList<INDArray> al=new ArrayList<INDArray>(sliceCount());
 		for (INDArray s:this) {
 			al.add(s.slice(dimension-1,index));
 		}
-		return SliceArray.create(al);	
+		return (T)SliceArray.create(al);	
 	}	
 
 	@Override
@@ -167,6 +168,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		return IntArrays.arrayProduct(shape);
 	}
 	
+	@Override
 	public INDArray innerProduct(INDArray a) {
 		int dims=dimensionality();
 		switch (dims) {
@@ -191,6 +193,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		return Arrayz.create(al);
 	}
 	
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		int n=sliceCount();
 		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
