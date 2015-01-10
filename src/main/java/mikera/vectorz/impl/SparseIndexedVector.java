@@ -355,8 +355,8 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 				di=i;
 			}
 		}
-		if (result<0.0) { // need to find a sparse element
-			int ind=sparseElementIndex();
+		if (result<0.0) { // see if we can find a zero element
+			int ind=index.findMissing();
 			if (ind>0) return ind;
 		}
 		return index.get(di);
@@ -392,27 +392,12 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 				di=i;
 			}
 		}
-		if (result>0.0) { // need to find a sparse element
-			int ind=sparseElementIndex();
-			if (ind>0) return ind;
+		if (result>0.0) { // see if we can find a zero element
+			int ind=index.findMissing();
+			if (ind>=0) return ind;
 		}
 		return index.get(di);
 	}
-	
-	/**
-	 * Return this index of a sparse zero element, or -1 if not sparse
-	 * @return
-	 */
-	private int sparseElementIndex() {
-		if (data.length==length) {
-			return -1;
-		}
-		for (int i=0; i<length; i++) {
-			if (!index.contains(i)) return i;
-		}
-		throw new VectorzException(ErrorMessages.impossible());
-	}
-
 	
 	@Override
 	public void negate() {

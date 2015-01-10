@@ -395,6 +395,20 @@ public final class Index extends AIndex {
 		return IntArrays.indexPosition(data, x);
 	}
 	
+	/**
+	 * Finds the first missing index value, assuming the index is sorted and distinct.
+	 * 
+	 * If the index is a complete range, returns -1
+	 * @return
+	 */
+	public int findMissing() {
+		int n=data.length;
+		for (int i=0; i<n ; i++) {
+			if (data[i]!=i) return i;
+		}
+		return -1;
+	}
+	
 	@Override
 	public boolean containsSorted(int index) {
 		return indexPosition(index)>=0;
