@@ -586,13 +586,13 @@ public final class JoinedArrayVector extends AJoinedVector {
 	}
 
 	@Override
-	public int segmentCount() {
+	public long componentCount() {
 		return numArrays;
 	}
 
 	@Override
 	protected AJoinedVector reconstruct(AVector... segments) {
-		int sc=segmentCount();
+		int sc=(int)componentCount();
 		double[][] newData=new double[sc][];
 		int[] offs=this.offsets.clone();
 		for (int i=0; i<sc; i++) {

@@ -17,7 +17,8 @@ public abstract class AJoinedVector extends ASizedVector {
 		super(length);
 	}
 	
-	public abstract int segmentCount();
+	@Override
+	public abstract long componentCount();
 	
 	public abstract AVector getSegment(int k);
 	
@@ -38,7 +39,7 @@ public abstract class AJoinedVector extends ASizedVector {
 	
 	@Override
 	public void setElements(double[] values, int offset) {
-		int n=segmentCount();
+		long n=componentCount();
 		for (int i=0; i<n; i++) {
 			AVector v=getSegment(i);
 			v.setElements(values,offset);
@@ -48,7 +49,7 @@ public abstract class AJoinedVector extends ASizedVector {
 	
 	@Override
 	public boolean equalsArray(double[] values, int offset) {
-		int n=segmentCount();
+		long n=componentCount();
 		for (int i=0; i<n; i++) {
 			AVector v=getSegment(i);
 			if (!v.equalsArray(values, offset)) return false;

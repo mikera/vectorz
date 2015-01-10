@@ -547,7 +547,7 @@ public final class JoinedVector extends AJoinedVector {
 	}
 
 	@Override
-	public int segmentCount() {
+	public long componentCount() {
 		return 2;
 	}
 

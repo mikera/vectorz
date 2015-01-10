@@ -577,7 +577,7 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 
 	@Override
-	public int segmentCount() {
+	public long componentCount() {
 		return n;
 	}
 
