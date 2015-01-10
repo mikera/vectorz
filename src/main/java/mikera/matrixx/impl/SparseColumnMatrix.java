@@ -200,9 +200,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
                 int n=nonSparseRows.length();
                 for (int k = 0; k < n; k++) {
                     int i = nonSparseRows.unsafeGet(k);
-                    double v=colVec.get(i);
+                    double v=colVec.unsafeGet(i);
                     if (v!=0.0) {
-                    	rm.set(i,j, v);
+                    	rm.unsafeSet(i,j, v);
                     }
                 } 
             }

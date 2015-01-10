@@ -8,7 +8,9 @@ import java.util.ArrayList;
 // import java.util.Map;
 // import java.util.Map.Entry;
 
+
 import mikera.arrayz.ISparse;
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
@@ -206,29 +208,24 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
     @Override
     public List<AVector> getColumns() {
-        ArrayList<AVector> colList = new ArrayList<AVector>(cols);
-        AVector emptyCol = Vectorz.createZeroVector(rows);
-        for (int i = 0; i < cols; i++) {
-            colList.add(emptyCol);
-        }
-
+        SparseColumnMatrix cm=SparseColumnMatrix.create(rows,cols);
+    	
         for (int i = 0; i < rows; i++) {
             AVector rowVec = unsafeGetVec(i);
             if (null != rowVec) {
-                int[] nonZeroCols = rowVec.nonZeroIndices();
-                for (int j = 0; j < nonZeroCols.length; j++) {
-                    int col = nonZeroCols[j];
-                    AVector colVec = colList.get(col);
-                    if (emptyCol == colVec) {
-                        colVec = SparseIndexedVector.createLength(rows);
+                Index nonSparseCols = rowVec.nonSparseIndex();
+                int n=nonSparseCols.length();
+                for (int k = 0; k < n; k++) {
+                    int j = nonSparseCols.unsafeGet(k);
+                    double v=rowVec.unsafeGet(j);
+                    if (v!=0.0) {
+                    	cm.unsafeSet(i,j, v);
                     }
-                    colVec.set(i, rowVec.get(col));
-                    colList.set(col, colVec);
                 }
             }
         }
         
-        return colList;
+        return cm.getColumns();
     }
     
 	@Override
