@@ -4,6 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -194,6 +195,7 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	
 	@Override
 	public AMatrix innerProduct(ADiagonalMatrix a) {
+		if(a.dimensions!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		return a.copy();
 	}
 	
@@ -245,12 +247,7 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	public IdentityMatrix exactClone() {
 		return create(dimensions);
 	}
-	
-	@Override
-	public AMatrix clone() {
-		if (dimensions<30) return super.clone();
-		return sparseClone();
-	}
+
 
 	@Override
 	public boolean hasUncountable() {
