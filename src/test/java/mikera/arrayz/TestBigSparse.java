@@ -60,12 +60,16 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testBigMultiply() {
-		AMatrix m=Matrixx.createSparse(20000,20000);
+		int SIZE=100000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
 		m.set(3,4,7.0);
 		
 		AMatrix r=m.innerProduct(m.getTranspose());
 		assertEquals(49.0,r.get(3,3),0.0);
 		assertEquals(49.0,r.elementSum(),0.0);
+		r.multiply(1.0/7.0);
+		assertEquals(7.0,r.get(3,3),0.0);
+		assertEquals(7.0,r.elementSum(),0.0);
 	}
 	
 	@Test public void testBigMultiply2() {
@@ -175,6 +179,10 @@ public class TestBigSparse {
 		assertEquals(25.0,v.get(0),0.0);
 		assertEquals(4.0,v.get(5000),0.0);
 		assertEquals(29.0,v.elementSum(),0.0);
+		
+		v.divide(4.0);
+		assertEquals(2,v.nonZeroCount());
+		assertEquals(1.0,v.get(5000),0.0);
 	}
 	
 	@Test public void testBigIdentity() {

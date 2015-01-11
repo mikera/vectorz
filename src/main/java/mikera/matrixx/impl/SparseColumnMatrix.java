@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 
 
+
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
@@ -95,6 +96,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	public static SparseColumnMatrix create(AMatrix source) {
+		if (source instanceof SparseRowMatrix) return ((SparseRowMatrix)source).toSparseColumnMatrix();
 		int cc=source.columnCount();
 		int rc=source.rowCount();
 		AVector[] data = new AVector[cc];
@@ -195,6 +197,10 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 
     @Override
     public List<AVector> getRows() {
+        return toSparseRowMatrix().getRows();
+    }
+    
+    public SparseRowMatrix toSparseRowMatrix() {
         SparseRowMatrix rm=SparseRowMatrix.create(rows, cols);
 
         for (int j = 0; j < cols; j++) {
@@ -211,8 +217,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
                 } 
             }
         }
-        
-        return rm.getRows();
+        return rm;    	
     }
     
 	private AVector ensureMutableColumn(int i) {

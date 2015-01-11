@@ -109,6 +109,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 	
 	public static SparseRowMatrix create(AMatrix source) {
+		if (source instanceof SparseColumnMatrix) return ((SparseColumnMatrix)source).toSparseRowMatrix();
 		int rc = source.rowCount();
 		int cc = source.columnCount();
 		AVector[] data = new AVector[rc];
@@ -230,8 +231,11 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
     @Override
     public List<AVector> getColumns() {
+        return toSparseColumnMatrix().getColumns();
+    }
+    
+    public SparseColumnMatrix toSparseColumnMatrix() {
         SparseColumnMatrix cm=SparseColumnMatrix.create(rows,cols);
-    	
         for (int i = 0; i < rows; i++) {
             AVector rowVec = unsafeGetVec(i);
             if (null != rowVec) {
@@ -246,8 +250,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
                 }
             }
         }
-        
-        return cm.getColumns();
+        return cm;    	
     }
     
 	@Override
@@ -421,7 +424,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		SparseRowMatrix r = Matrixx.createSparse(rows, a.columnCount());
 		for (int i = 0; i < rows; ++i) {
 			AVector row = unsafeGetVec(i);
-            if (! ((row == null) || (row.isZero()))) {
+            if (row != null) {
 			    r.replaceRow(i,row.innerProduct(a));
             }
 		}
