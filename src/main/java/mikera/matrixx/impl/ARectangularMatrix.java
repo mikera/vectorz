@@ -87,7 +87,7 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	protected int checkRow(int row) {
-		int rc=columnCount();
+		int rc=rowCount();
 		if ((row<0)||(row>=rc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, row));
 		return rc;
 	}
