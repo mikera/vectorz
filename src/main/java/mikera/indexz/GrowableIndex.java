@@ -3,6 +3,7 @@ package mikera.indexz;
 import mikera.vectorz.util.IntArrays;
 
 public class GrowableIndex extends AIndex {
+	private static final long serialVersionUID = 4466899007444582094L;
 
 	private int[] data;
 	private int count=0;

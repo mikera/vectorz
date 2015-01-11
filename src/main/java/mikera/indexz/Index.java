@@ -65,10 +65,14 @@ public final class Index extends AIndex {
 	}
 
 	public static Index createSorted(Set<Integer> keySet) {
-		ArrayList<Integer> al=new ArrayList<Integer>();
-		al.addAll(keySet);
-		Collections.sort(al);
-		return create(al);
+		int n=keySet.size();
+		int[] data=new int[n];
+		int i=0;
+		for (int v:keySet) {
+			data[i++]=v;
+		}
+		Arrays.sort(data);
+		return wrap(data);
 	}
 	
 	public static Index createSorted(SortedSet<Integer> keySet) {
@@ -389,6 +393,20 @@ public final class Index extends AIndex {
 	@Override
 	public int indexPosition(int x) {
 		return IntArrays.indexPosition(data, x);
+	}
+	
+	/**
+	 * Finds the first missing index value, assuming the index is sorted and distinct.
+	 * 
+	 * If the index is a complete range, returns -1
+	 * @return
+	 */
+	public int findMissing() {
+		int n=data.length;
+		for (int i=0; i<n ; i++) {
+			if (data[i]!=i) return i;
+		}
+		return -1;
 	}
 	
 	@Override

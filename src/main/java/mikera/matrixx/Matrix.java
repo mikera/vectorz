@@ -93,7 +93,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	public static Matrix createFromRows(Object... rowVectors) {
-		List<AVector> vs = new ArrayList<AVector>();
+		int rc=rowVectors.length;
+		List<AVector> vs = new ArrayList<AVector>(rc);
 		for (Object o : rowVectors) {
 			vs.add(Vectorz.create(o));
 		}

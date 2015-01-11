@@ -3,6 +3,8 @@ package mikera.vectorz.impl;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
+import mikera.matrixx.impl.SparseRowMatrix;
+import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -13,9 +15,9 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Indexed sparse vector.
+ * Indexed sparse vector. Efficient for mutable, mostly sparse vectors. 
  * 
- * Efficient for mostly sparse vectors. Maintains a indexed array of elements which may be non-zero. 
+ * Maintains a indexed array of elements which may be non-zero. These values *can* also be zero.
  * 
  * WARNING: individual updates of non-indexed elements are O(n) in the number of non-sparse elements. You should not normally
  * perform element-wise mutation on a SparseIndexedVector if performance is a concern
@@ -78,6 +80,23 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			throw new VectorzException("Length of index: mismatch woth data");			
 		}
 		return new SparseIndexedVector(length, index.clone(),DoubleArrays.copyOf(data));
+	}
+	
+	/**
+	 * Creates a sparse indexed vector using the specified indexed values from the source vector
+	 * 
+	 * All non-indexed vales will be zero.
+	 * 
+	 * @param v
+	 * @param ixs
+	 * @return
+	 */
+	public static AVector createWithIndices(AVector v, int[] ixs) {
+		int length=v.length();
+		int n=ixs.length;
+		double[] data = new double[n];
+		v.getElements(data,0,ixs);
+		return wrap(length,ixs,data);
 	}
 	
 	public static SparseIndexedVector createLength(int length) {
@@ -145,8 +164,60 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public int nonSparseElementCount() {
 		return data.length;
 	}
-	
-	@Override
+
+    public AVector innerProduct(SparseRowMatrix m) {
+		int cc = m.columnCount();
+		int rc = m.rowCount();
+		checkLength(rc);
+        ASparseIndexedVector r = SparseIndexedVector.createLength(cc);
+        int n=nonSparseElementCount();
+		for (int ii = 0; ii < n; ii++) {
+			double value=data[ii]; 
+			if (value==0.0) continue; // skip zero values
+			int i=index.get(ii);
+            AVector row = m.unsafeGetVector(i);
+            if (row==null) continue; // skip zero rows
+            
+            // TODO: we were casting to ASparseVector, necessary for speed??
+            //            if (row instanceof ASparseVector)
+            // This vector could be of any type, such as Vector3.
+            // And some vectors don't have a sparseClone and instead return
+            // a reference to same instance!!!! (See Vector3...)
+            r.addMultiple(row, value);
+		}
+		return r;
+	}
+
+    public AVector innerProduct(SparseColumnMatrix m) {
+		int cc = m.columnCount();
+		int rc = m.rowCount();
+		checkLength(rc);
+        ASparseIndexedVector r = SparseIndexedVector.createLength(cc);
+		for (int i = 0; i < cc; i++) {
+			r.unsafeSet(i, this.dotProduct((ASparseVector)m.getColumn(i)));
+		}
+		return r;
+	}
+    
+    @Override
+    public AVector innerProduct(AMatrix m) {
+        if (m instanceof SparseRowMatrix) {
+            return this.innerProduct((SparseRowMatrix)m);
+        }
+        if (m instanceof SparseColumnMatrix) {
+            return this.innerProduct((SparseColumnMatrix)m);
+        }
+		int cc=m.columnCount();
+		int rc=m.rowCount();
+		checkLength(rc);
+        AVector r = SparseIndexedVector.createLength(cc);
+		for (int i=0; i<cc; i++) {
+			r.unsafeSet(i,this.dotProduct(m.getColumn(i)));
+		}
+		return r;
+	}
+
+    @Override
 	public void add(AVector v) {
 		if (v instanceof ASparseVector) {
 			add((ASparseVector)v);
@@ -157,7 +228,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[i]+=v.unsafeGet(index.get(i));
 		}
 	}
-	
+
 	@Override
 	public void add(ADenseArrayVector v) {
 		includeIndices(v);	
@@ -176,6 +247,29 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[i]+=v.unsafeGet(index.get(i));
 		}
 	}
+    
+    @Override
+	public void sub(AVector v) {
+		if (v instanceof ASparseVector) {
+			sub((ASparseVector)v);
+			return;
+		}
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]-=v.unsafeGet(index.get(i));
+		}
+	}
+
+	public void sub(ASparseVector v) {
+        if (v instanceof ZeroVector) {
+            return;
+        }
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]-=v.unsafeGet(index.get(i));
+		}
+	}
+
 	
 	@Override
 	public void add(double[] src, int offset) {
@@ -199,12 +293,13 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			return;
 		} else if (v instanceof ASparseVector) {
 			multiply((ASparseVector)v);
-		}
-		checkSameLength(v);
-		double[] data=this.data;
-		int[] ixs=index.data;
-		for (int i=0; i<data.length; i++) {
-			data[i]*=v.unsafeGet(ixs[i]);
+		} else {
+			checkSameLength(v);
+			double[] data=this.data;
+			int[] ixs=index.data;
+			for (int i=0; i<data.length; i++) {
+				data[i]*=v.unsafeGet(ixs[i]);
+			}
 		}
 	}
 	
@@ -223,6 +318,8 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			while (thisIndex[i2]!=ti) i2++;
 			ndata[i]=v.unsafeGet(thatIndex[i1])*unsafeGet(thisIndex[i2]);
 		}
+		this.data=ndata;
+		this.index=Index.wrap(tix);
 	}
 	
 	public void multiply(ADenseArrayVector v) {
@@ -262,8 +359,8 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 				di=i;
 			}
 		}
-		if (result<0.0) { // need to find a sparse element
-			int ind=sparseElementIndex();
+		if (result<0.0) { // see if we can find a zero element
+			int ind=index.findMissing();
 			if (ind>0) return ind;
 		}
 		return index.get(di);
@@ -299,27 +396,12 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 				di=i;
 			}
 		}
-		if (result>0.0) { // need to find a sparse element
-			int ind=sparseElementIndex();
-			if (ind>0) return ind;
+		if (result>0.0) { // see if we can find a zero element
+			int ind=index.findMissing();
+			if (ind>=0) return ind;
 		}
 		return index.get(di);
 	}
-	
-	/**
-	 * Return this index of a sparse zero element, or -1 if not sparse
-	 * @return
-	 */
-	private int sparseElementIndex() {
-		if (data.length==length) {
-			return -1;
-		}
-		for (int i=0; i<length; i++) {
-			if (!index.contains(i)) return i;
-		}
-		throw new VectorzException(ErrorMessages.impossible());
-	}
-
 	
 	@Override
 	public void negate() {
@@ -453,6 +535,11 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	@Override
 	public void set(int i, double value) {
 		checkIndex(i);
+		unsafeSet(i,value);
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
 		int ip=index.indexPosition(i);
 		if (ip<0) {
 			if (value==0.0) return;
@@ -463,6 +550,29 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[ip]=value;
 		}
 	}
+
+    // TODO: consider a generic sparseApplyOp instead.
+    //       keep in mind efficiency when randomly
+    //       modifying index.
+    @Override
+    public ASparseVector roundToZero(double precision) {
+        int[] aboveInds = new int[data.length];
+        double[] aboveData = new double[data.length];
+        int ai = 0;
+        for (int i = 0; i < index.length(); i++) {
+            if (data[i] > precision) {
+                aboveInds[ai] = index.get(i);
+                aboveData[ai] = data[i];
+                ai++;
+            }
+        }
+        int[] newInds = new int[ai];
+        double[] newData = new double[ai];
+        System.arraycopy(aboveInds, 0, newInds, 0, ai);
+        System.arraycopy(aboveData, 0, newData, 0, ai);
+
+        return SparseIndexedVector.wrap(this.length, newInds, newData);
+    }
 	
 	@Override
 	public void addAt(int i, double value) {
@@ -488,10 +598,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		return index;
 	}
 
-	@Override
-	public boolean includesIndex(int i) {
-		return index.indexPosition(i)>=0;
-	}
 	
 	@Override
 	public Vector toVector() {
@@ -597,6 +703,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	Index internalIndex() {
 		return index;
 	}
+
 
 
 }

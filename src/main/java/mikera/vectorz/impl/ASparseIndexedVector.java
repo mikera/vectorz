@@ -31,6 +31,11 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public boolean includesIndex(int i) {
+		return internalIndex().indexPosition(i)>=0;
+	}
+	
+	@Override
 	public boolean isZero() {
 		return DoubleArrays.isZero(internalData());
 	}
@@ -51,6 +56,14 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(internalData());
+	}
+
+    @Override
+    public void multiply(double factor) {
+        double[] data = internalData();
+		for (int i = 0; i < data.length; i++) {
+			unsafeSet(i,unsafeGet(i)*factor);
+		}	
 	}
 	
 	@Override
@@ -77,6 +90,7 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	@Override
 	public AVector innerProduct(AMatrix a) {
 		// we assume sufficient sparsity to make specialised implementation worthwhile?
+		// TODO should we go in a different order and calculate via non-zero elements in this? (i.e. avoid iterating over all columns of a)
 		int cc=a.columnCount();
 		GrowableIndexedVector dest=GrowableIndexedVector.createLength(cc);
 		for (int i=0; i<cc; i++) {
@@ -103,9 +117,12 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		double result=0.0;
 		double[] data=internalData();
 		int[] ixs=internalIndexArray();
-		double[] vdata=v.nonSparseValues().asDoubleArray();
+		AVector vvalues=v.nonSparseValues();
+		double[] vdata=vvalues.asDoubleArray();
+		if (vdata==null) vdata=vvalues.toDoubleArray();
 		int[] vixs=v.nonSparseIndex().data;
-		if ((data.length==0)||(vdata.length==0)) return 0.0;
+		if (data.length==0) return 0.0;
+		if (vdata.length==0) return 0.0;
 		
 		int ti=0;
 		int vi=0;
@@ -127,17 +144,13 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		
 		return result;
 	}
-	
-	@Override
-	public double dotProduct(ADenseArrayVector v) {
-		double[] array=v.getArray();
-		int offset=v.getArrayOffset();
-		return dotProduct(array,offset);
-	}
 
 	@Override
 	public int[] nonZeroIndices() {
 		int n=(int)nonZeroCount();
+        if (n==0) {
+            return new int[0];
+        }
 		double[] data=internalData();
 		Index index=internalIndex();
 		int[] ret=new int[n];

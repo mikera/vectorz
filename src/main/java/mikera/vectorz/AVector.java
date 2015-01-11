@@ -48,8 +48,6 @@ import mikera.vectorz.util.VectorzException;
  */
 @SuppressWarnings("serial")
 public abstract class AVector extends AbstractArray<Double> implements IVector, Comparable<AVector> {
-	
-	private static final long SPARSE_ELEMENT_THRESHOLD = 1000L;
 
 	// ================================================
 	// Abstract interface
@@ -66,8 +64,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	// ================================================
 	// Standard implementations
 
+	@Override
 	public double get(long i) {
-		return get((int)i);
+		if ((i<0)||(i>=length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		return unsafeGet((int)i);
 	}
 	
 	public void set(long i, double value) {
@@ -145,8 +145,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public List<Double> getSlices() {
 		// TODO: consider returning a ListWrapper directly?
-		ArrayList<Double> al=new ArrayList<Double>();
 		int l=length();
+		ArrayList<Double> al=new ArrayList<Double>(l);
 		for (int i=0; i<l; i++) {
 			al.add(unsafeGet(i));
 		}
@@ -352,8 +352,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public List<Double> toList() {
-		ArrayList<Double> al=new ArrayList<Double>();
 		int len=length();
+		ArrayList<Double> al=new ArrayList<Double>(len);
 		for (int i=0; i<len; i++) {
 			al.add(unsafeGet(i));
 		}
@@ -828,10 +828,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int rc=m.rowCount();
 		checkLength(rc);
 		Vector r=Vector.createLength(cc);
+		List<AVector> cols=m.getColumns();
 		for (int i=0; i<cc; i++) {
-			r.unsafeSet(i,this.dotProduct(m.getColumn(i)));
+			double v=this.dotProduct(cols.get(i));
+			r.unsafeSet(i,v);
 		}
-		return r;
+		return r;		
 	}
 	
 	public AVector innerProduct(AScalar s) {
@@ -1230,10 +1232,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public AVector scaleCopy(double d) {
-		AVector r=clone();
-		r.scale(d);
-		return r;
+	public final AVector scaleCopy(double d) {
+		return multiplyCopy(d);
 	}
 	
 	@Override
@@ -1324,11 +1324,24 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Gets the elements in this vector from the specified indices
+	 * @param data
+	 * @param offset
+	 * @param indices
+	 */
+	public void getElements(double[] data, int offset, int[] indices) {
+		int n=indices.length;
+		for (int i=0; i<n; i++) {
+			data[offset+i]=unsafeGet(indices[i]);
+		}
+	}
+	
+	/**
 	 * Set the vector equal to an offset into another vector
 	 */
 	public void set(AVector src, int srcOffset) {
 		int len=length();
-		if ((srcOffset<0)||(len+srcOffset>src.length())) throw new IndexOutOfBoundsException();
+		src.checkRange(srcOffset, len);
 		for (int i=0; i<len; i++) {
 			unsafeSet(i,src.unsafeGet(srcOffset+i));
 		}
@@ -1855,11 +1868,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (this.isFullyMutable()) {
 			return this;
 		} else {
-			if (elementCount()>SPARSE_ELEMENT_THRESHOLD) {
-				return Vectorz.createSparseMutable(this);
-			} else {
-				return this.clone();
-			}
+			return this.clone();
 		}
 	}
 	
@@ -2272,7 +2281,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		for (int i=0; i<length; i++) {
 			if (unsafeGet(i)!=0.0) ret[di++]=i;
 		}
-		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification of vector?");
+		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification?");
 		return ret;
 	}
 
@@ -2288,7 +2297,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len = length();
 		for(int i=0; i<len; i++) {
 			double v=unsafeGet(i);
-			if (Double.isNaN(v) || Double.isInfinite(v)) {
+			if (Vectorz.isUncountable(v)) {
 				return true;
 			}
 		}
@@ -2298,4 +2307,5 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public AMatrix asColumnMatrix() {
 		return ColumnMatrix.wrap(this);
 	}
+
 }

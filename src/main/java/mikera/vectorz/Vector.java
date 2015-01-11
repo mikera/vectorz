@@ -188,6 +188,13 @@ public final class Vector extends ADenseArrayVector {
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(data, 0, dest, offset, data.length);
 	}
+	
+	public void getElements(double[] data, int offset, int[] indices) {
+		int n=indices.length;
+		for (int i=0; i<n; i++) {
+			data[offset+i]=data[indices[i]];
+		}
+	}
 
 	@Override
 	public int getArrayOffset() {
@@ -519,6 +526,10 @@ public final class Vector extends ADenseArrayVector {
 		for (int i = 0; i < len; i++) {
 			data[i]=(data[i]/v.data[i]);
 		}	
+	}
+
+    public void divide(double factor) {
+		multiply(1.0/factor);
 	}
 
 	@Override

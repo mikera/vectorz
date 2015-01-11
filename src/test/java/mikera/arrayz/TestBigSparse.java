@@ -10,6 +10,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
+import mikera.util.Random;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
@@ -59,12 +60,38 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testBigMultiply() {
-		AMatrix m=Matrixx.createSparse(20000,20000);
+		int SIZE=100000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
 		m.set(3,4,7.0);
 		
 		AMatrix r=m.innerProduct(m.getTranspose());
 		assertEquals(49.0,r.get(3,3),0.0);
 		assertEquals(49.0,r.elementSum(),0.0);
+		r.multiply(1.0/7.0);
+		assertEquals(7.0,r.get(3,3),0.0);
+		assertEquals(7.0,r.elementSum(),0.0);
+	}
+	
+	@Test public void testBigMultiply2() {
+		int SIZE=1000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
+		Random r=new Random(342345234);
+		for (int i=0; i<SIZE; i++) {
+			m.set(r.nextInt(SIZE),r.nextInt(SIZE),r.nextGaussian());
+		}
+		
+		m.innerProduct(m.getTranspose());
+	}
+	
+	@Test public void testBigMultiply3() {
+		int SIZE=1000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
+		Random r=new Random(342345237);
+		for (int i=0; i<SIZE; i++) {
+			m.set(r.nextInt(SIZE),r.nextInt(SIZE),r.nextGaussian());
+		}
+		
+		m.innerProduct(m);
 	}
 	
 	@Test public void testSparseAdd() {
@@ -121,7 +148,7 @@ public class TestBigSparse {
 		a.dotProduct(b);
 		assertEquals(a.magnitudeSquared(),a.dotProduct(a),0.0);
 	}
-	
+	 
 	@Test public void testBigVectorAdd() {
 		int SIZE=1000000000;
 		AVector v=Vectorz.createSparseMutable(SIZE);
@@ -137,13 +164,25 @@ public class TestBigSparse {
 	@Test public void testBigVectorMultiply() {
 		int SIZE=1000000000;
 		AVector v=Vectorz.createSparseMutable(SIZE);
+		
+		// clone with two shared elements
+		v.set(0,5.0);
 		v.set(5000,2.0);
 		AVector v2=v.sparseClone();
+		
+		// set some other elements
 		v.set(4999,3.0);
 		v2.set(5001,4.0);
+		
 		v.multiply(v2);
+		assertEquals(2,v.nonZeroCount());
+		assertEquals(25.0,v.get(0),0.0);
 		assertEquals(4.0,v.get(5000),0.0);
-		assertEquals(4.0,v.elementSum(),0.0);
+		assertEquals(29.0,v.elementSum(),0.0);
+		
+		v.divide(4.0);
+		assertEquals(2,v.nonZeroCount());
+		assertEquals(1.0,v.get(5000),0.0);
 	}
 	
 	@Test public void testBigIdentity() {
@@ -157,26 +196,27 @@ public class TestBigSparse {
 	
 	
 	@Test public void testSparseSet() {
-		SparseRowMatrix m=SparseRowMatrix.create(300, 300);
+		int SIZE=300;
+		SparseRowMatrix m=SparseRowMatrix.create(SIZE, SIZE);
 		m.fill(2);
 		assertEquals(2,m.get(10,10),0.0);
 		
 		m.set(Scalar.create(3));
 		assertEquals(3,m.get(10,10),0.0);
 		
-		m.set(RangeVector.create(0,300));
+		m.set(RangeVector.create(0,SIZE));
 		assertEquals(17,m.get(12,17),0.0);
 		
-		m.set((AMatrix)(Scalar.create(1).broadcast(300,300)));
+		m.set((AMatrix)(Scalar.create(1).broadcast(SIZE,SIZE)));
 		assertEquals(1,m.get(10,10),0.0);
 		
-		m.set((AMatrix)(Scalar.create(2).broadcast(300,300)));
-		assertEquals(2,m.get(299,299),0.0);
+		m.set((AMatrix)(Scalar.create(2).broadcast(SIZE,SIZE)));
+		assertEquals(2,m.get(SIZE-1,SIZE-1),0.0);
 		
-		m.set(RangeVector.create(0,300).broadcast(300,300));
+		m.set(RangeVector.create(0,SIZE).broadcast(SIZE,SIZE));
 		assertEquals(19,m.get(12,19),0.0);
 		
-		m.setRow(10, RepeatedElementVector.create(300, 7));
+		m.setRow(10, RepeatedElementVector.create(SIZE, 7));
 		assertEquals(7,m.get(10,11),0.0);
 	}
 

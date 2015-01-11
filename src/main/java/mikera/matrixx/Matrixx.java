@@ -39,6 +39,8 @@ import us.bpsm.edn.parser.Parsers;
 public class Matrixx {
 
 	private static final long SPARSE_ELEMENT_THRESHOLD = 100000;
+	
+	private final static Random rand=new Random();
 
 	/**
 	 * Creates an identity matrix
@@ -71,16 +73,14 @@ public class Matrixx {
 	 * Can handle:
 	 * - Existing matrices
 	 */
+	@SuppressWarnings("unchecked")
 	public static AMatrix toMatrix(Object o) {
 		if (o instanceof AMatrix) {
 			return (AMatrix) o;
 		} else if (o instanceof AVector) {
 			return ColumnMatrix.wrap((AVector) o);
 		} else if (o instanceof Iterable<?>) {
-			ArrayList<AVector> al = new ArrayList<AVector>();
-			for (Object obj : (Iterable<?>) o) {
-				al.add(Vectorz.toVector(obj));
-			}
+			List<INDArray> al = Tools.toList((Iterable<INDArray>) o);
 			return createFromVectors(al);
 		}
 		throw new UnsupportedOperationException("Can't convert to matrix: "
@@ -100,7 +100,7 @@ public class Matrixx {
 	/**
 	 * Creates a sparse matrix of the given size, initially zero-filled. Uses row-based storage by default
 	 */
-	public static AMatrix createSparse(int rowCount, int columnCount) {
+	public static SparseRowMatrix createSparse(int rowCount, int columnCount) {
 		return SparseRowMatrix.create(rowCount,columnCount);
 	}
 	
@@ -454,7 +454,7 @@ public class Matrixx {
 		int columns = m.columnCount();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				m.unsafeSet(i, j, Rand.nextDouble());
+				m.unsafeSet(i, j, rand.nextDouble());
 			}
 		}
 	}
@@ -478,12 +478,12 @@ public class Matrixx {
 	 * @param data
 	 * @return
 	 */
-	public static AMatrix createFromVectors(AVector... data) {
+	public static AMatrix createFromVectors(INDArray... data) {
 		int rc = data.length;
-		int cc = (rc == 0) ? 0 : data[0].length();
+		int cc = (rc == 0) ? 0 : data[0].sliceCount();
 		AMatrix m = newMatrix(rc, cc);
 		for (int i = 0; i < rc; i++) {
-			m.setRow(i, data[i]);
+			m.setRow(i, data[i].asVector());
 		}
 		return m;
 	}
@@ -493,12 +493,12 @@ public class Matrixx {
 	 * @param data
 	 * @return
 	 */
-	public static AMatrix createFromVectors(List<AVector> data) {
+	public static AMatrix createFromVectors(List<INDArray> data) {
 		int rc = data.size();
-		int cc = (rc == 0) ? 0 : data.get(0).length();
+		int cc = (rc == 0) ? 0 : data.get(0).sliceCount();
 		AMatrix m = newMatrix(rc, cc);
 		for (int i = 0; i < rc; i++) {
-			m.setRow(i,data.get(i));
+			m.setRow(i,data.get(i).asVector());
 		}
 		return m;
 	}

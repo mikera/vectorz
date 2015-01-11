@@ -2,26 +2,32 @@ package mikera.matrixx.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 // import java.util.HashMap;
 // import java.util.HashSet;
 // import java.util.Map;
 // import java.util.Map.Entry;
 
+
+
+
+import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Matrix stored as a sparse collection of sparse row vectors.
+ * Matrix stored as a collection of normally sparse row vectors.
  * 
  * This format is especially efficient for:
  * - innerProduct() with another matrix, especially one with efficient
@@ -80,8 +86,18 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
         // don't validate; user can call validate() if they want it.
 	}
 	
-	public static SparseRowMatrix create(List<AVector> vecs) {
-		return create(vecs.toArray(new AVector[0]));
+	public static SparseRowMatrix create(List<AVector> rows) {
+		return create(rows.toArray(new AVector[rows.size()]));
+	}
+	
+	public static INDArray create(ArrayList<INDArray> slices, int rows, int cols) {
+		AVector[] vecs=new AVector[rows];
+		for (int i=0; i<rows; i++) {
+			INDArray a=slices.get(i);
+			if ((a.dimensionality()!=1)||(a.sliceCount()!=cols)) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a));
+			vecs[i]=a.asVector();
+		}
+		return wrap(vecs,rows,cols);
 	}
 	
 	public static SparseRowMatrix wrap(AVector[] vecs, int rows, int cols) {
@@ -93,15 +109,18 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 	
 	public static SparseRowMatrix create(AMatrix source) {
+		if (source instanceof SparseColumnMatrix) return ((SparseColumnMatrix)source).toSparseRowMatrix();
 		int rc = source.rowCount();
 		int cc = source.columnCount();
 		AVector[] data = new AVector[rc];
+		List<AVector> rows=source.getRows();
 		for (int i = 0; i < rc; i++) {
-			AVector row = source.getRow(i);
-			if (!row.isZero())
+			AVector row = rows.get(i);
+			if (!row.isZero()) {
 			    data[i] = Vectorz.createSparse(row);
+			}
 		}
-		return new SparseRowMatrix(data,rc,cc);
+		return SparseRowMatrix.wrap(data,rc,cc);
 	}
 
 	public static SparseRowMatrix wrap(List<AVector> vecs) {
@@ -113,8 +132,15 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 //	}
 
 	@Override
-	protected int lineCount() {
+	public int componentCount() {
 		return rows;
+	}
+	
+	@Override
+	public AVector getComponent(int k) {
+		AVector v=data[(int)k];
+		if (v==null) return emptyRow;
+		return v;
 	}
 
 	@Override
@@ -130,19 +156,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	@Override
 	public void set(int i, int j, double value) {
 		checkIndex(i,j);
-		AVector v = unsafeGetVec(i);
-		if (v == null) {
-			if (value == 0.0)
-				return;
-			v = Vectorz.createSparseMutable(cols);
-		} else if (v.isFullyMutable()) {
-			v.set(j, value);
-			return;
-		} else {
-			v = v.sparseClone();
-		}
-		unsafeSetVec(i, v);
-		v.unsafeSet(j, value);
+		unsafeSet(i,j,value);
 	}
 
 	@Override
@@ -151,22 +165,28 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	}
 
 	@Override
-	public void unsafeSet(int row, int column, double value) {
-		AVector v=getRow(row);
-		if (v.isFullyMutable()) {
-			v.unsafeSet(column,value);
+	public void unsafeSet(int i, int j, double value) {
+		AVector v = unsafeGetVector(i);
+		if (v == null) {
+			if (value == 0.0)
+				return;
+			v = SingleElementVector.create(value, j, cols);
+		} else if (v.isFullyMutable()) {
+			v.set(j, value);
+			return;
 		} else {
-			v=v.mutable();
-			replaceRow(row,v);
-			v.unsafeSet(column,value);
+			v = v.sparseClone();
+			v.unsafeSet(j, value);
 		}
+		unsafeSetVec(i, v);
 	}
 	
 	@Override
 	public void set(AMatrix a) {
 		checkSameShape(a);
+		List<AVector> srows=a.getRows();
 		for (int i=0; i<rows; i++) {
-			setRow(i,a.getRow(i));
+			setRow(i,srows.get(i));
 		}
 	}
 	
@@ -178,7 +198,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	@Override
 	public void addAt(int i, int j, double d) {
 		if (d==0.0) return;
-		AVector v=unsafeGetVec(i);
+		AVector v=unsafeGetVector(i);
 		if (v.isFullyMutable()) {
 			v.addAt(j, d);
 		} else {
@@ -191,13 +211,13 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	@Override
 	public void addToArray(double[] targetData, int offset) {
         for (int i = 0; i < rows; ++i) {
-			AVector v = unsafeGetVec(i);
+			AVector v = unsafeGetVector(i);
 			if (v != null) v.addToArray(targetData, offset+cols*i);
 		}
 	}
 
 	private AVector ensureMutableRow(int i) {
-		AVector v = unsafeGetVec(i);
+		AVector v = unsafeGetVector(i);
 		if (v == null) {
 			AVector nv=SparseIndexedVector.createLength(cols);
             unsafeSetVec(i, nv);
@@ -209,12 +229,46 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		return mv;
 	}
 
+    @Override
+    public List<AVector> getColumns() {
+        return toSparseColumnMatrix().getColumns();
+    }
+    
+    public SparseColumnMatrix toSparseColumnMatrix() {
+        SparseColumnMatrix cm=SparseColumnMatrix.create(rows,cols);
+        for (int i = 0; i < rows; i++) {
+            AVector rowVec = unsafeGetVector(i);
+            if (null != rowVec) {
+                Index nonSparseCols = rowVec.nonSparseIndex();
+                int n=nonSparseCols.length();
+                for (int k = 0; k < n; k++) {
+                    int j = nonSparseCols.unsafeGet(k);
+                    double v=rowVec.unsafeGet(j);
+                    if (v!=0.0) {
+                    	cm.unsafeSet(i,j, v);
+                    }
+                }
+            }
+        }
+        return cm;    	
+    }
+    
 	@Override
 	public AVector getRow(int i) {
-		if ((i<0)||(i>=rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
-		AVector v = unsafeGetVec(i);
+		AVector v = unsafeGetVector(i);
 		if (v == null) return emptyRow;
 		return v;
+	}
+
+    @Override
+	public List<AVector> getRows() {
+        ArrayList<AVector> rowList = new ArrayList<AVector>(rows);
+		for (int i = 0; i < rows; i++) {
+            AVector v = unsafeGetVector(i);
+            if (v == null) v=emptyRow;
+            rowList.add(v);
+        }
+		return rowList;
 	}
 	
 	@Override
@@ -235,20 +289,14 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	public void swapRows(int i, int j) {
 		if (i == j)
 			return;
-		if ((i < 0) || (i >= rows))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
-		if ((j < 0) || (j >= rows))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, j));
-		AVector a = unsafeGetVec(i);
-		AVector b = unsafeGetVec(j);
+		AVector a = unsafeGetVector(i);
+		AVector b = unsafeGetVector(j);
 		unsafeSetVec(i, b);
 		unsafeSetVec(j, a);
 	}
 
 	@Override
 	public void replaceRow(int i, AVector vec) {
-		if ((i < 0) || (i >= rows))
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, i));
 		if (vec.length() != cols)
 			throw new IllegalArgumentException(ErrorMessages.incompatibleShape(vec));
         unsafeSetVec(i, vec);
@@ -256,15 +304,16 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
 	@Override
 	public void add(AMatrix a) {
-		int count=rowCount();
-		for (int i=0; i<count; i++) {
-			AVector myVec=unsafeGetVec(i);
+		checkSameShape(a);
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			AVector myVec=unsafeGetVector(i);
 			AVector aVec=a.getRow(i);
 			if (myVec==null) {
 				if (!aVec.isZero()) {
 					unsafeSetVec(i,aVec.copy());
 				}
-			} else if (myVec.isMutable()) {
+			} else if (myVec.isFullyMutable()) {
 				myVec.add(aVec);
 			} else {
 				unsafeSetVec(i,myVec.addCopy(aVec));
@@ -274,7 +323,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	
 	@Override
 	public void copyRowTo(int i, double[] data, int offset) {
-		AVector v=this.unsafeGetVec(i);
+		AVector v=this.unsafeGetVector(i);
 		if (v==null) {
 			Arrays.fill(data, offset, offset+cols, 0.0);			
 		} else {
@@ -284,11 +333,9 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	
 	@Override
 	public void copyColumnTo(int col, double[] targetData, int offset) {
-		Arrays.fill(targetData, offset, offset+rows, 0.0);
         for (int i = 0; i < rows; ++i) {
-            AVector v = unsafeGetVec(i);
-            if (v != null)
-			    targetData[offset+i] = v.unsafeGet(col);
+            AVector v = unsafeGetVector(i);
+            targetData[offset+i] = (v==null) ? 0.0 : v.unsafeGet(col);
 		}		
 	}
 
@@ -299,13 +346,26 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
 	@Override
 	public AMatrix multiplyCopy(double a) {
-		AVector[] ndata=new AVector[lineCount()];
-		for (int i = 0; i < lineCount(); ++i) {
-            AVector v = unsafeGetVec(i);
+		long n=componentCount();
+		AVector[] ndata=new AVector[(int)n];
+		for (int i = 0; i < n; ++i) {
+            AVector v = unsafeGetVector(i);
             if (v != null)
-                ndata[i] = v.innerProduct(a);
+                ndata[i] = v.multiplyCopy(a);
 		}
 		return wrap(ndata,rows,cols);
+	}
+	
+	@Override
+	public void multiplyRow(int i, double value) {
+		if (value==0.0) {
+			unsafeSetVec(i,null);
+			return;
+		}
+		AVector v = unsafeGetVector(i);
+		if (v==null) return;
+		v=v.multiplyCopy(value);
+		unsafeSetVec(i,v);
 	}
 
 	@Override
@@ -321,35 +381,13 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		}
 		return r;
 	}
-	
-	@Override
-	public void applyOp(Op op) {
-		boolean stoch = op.isStochastic();
-		AVector rr = (stoch) ? null : RepeatedElementVector.create(lineLength(), op.apply(0.0));
-
-		for (int i = 0; i < lineCount(); i++) {
-			AVector v = unsafeGetVec(i);
-			if (v == null) {
-				if (!stoch) {
-					unsafeSetVec(i, rr);
-					continue;
-				}
-				v = Vector.createLength(lineLength());
-				unsafeSetVec(i, v);
-			} else if (!v.isFullyMutable()) {
-				v = v.sparseClone();
-				unsafeSetVec(i, v);
-			}
-			v.applyOp(op);
-		}
-	}
 
 	@Override
 	public double[] toDoubleArray() {
 		double[] ds=new double[rows*cols];
 		// we use adding to array, since rows themselves are likely to be sparse
         for (int i = 0; i < rows; ++i) {
-            AVector v = unsafeGetVec(i);
+            AVector v = unsafeGetVector(i);
 			if (v != null)
                 v.addToArray(ds, i*cols);
 		}
@@ -361,47 +399,44 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		if (a instanceof SparseColumnMatrix) {
 			return innerProduct((SparseColumnMatrix) a);
 		}
-		AMatrix r = Matrixx.createSparse(rows, a.columnCount());
+		SparseRowMatrix r = Matrixx.createSparse(rows, a.columnCount());
 
         for (int i = 0; i < rows; ++i) {
-			AVector row = unsafeGetVec(i);
+			AVector row = unsafeGetVector(i);
             if (! ((row == null) || (row.isZero()))) {
-			    r.setRow(i,row.innerProduct(a));
+			    r.replaceRow(i,row.innerProduct(a));
             }
 		}
 		return r;
 	}
 	
 	/**
-	 * Specialised inner product for sparse row matrix multiplied by sparse column matrix. This is the 
-	 * fastest general purpose sparse matrix multiplication supported by Vectorz at present.
+	 * Specialised inner product for sparse row matrix multiplied by sparse column matrix. 
 	 *  
 	 * @param a
 	 * @return
 	 */
-	public AMatrix innerProduct(SparseColumnMatrix a) {
-		// new matrix has shape [ this.rows * a.cols ], issue #71
-		int acols=a.cols; 
-		AMatrix r = Matrixx.createSparse(rows, acols);
-
-        for (int i = 0; i < rows; ++i) {
-			AVector row = unsafeGetVec(i);
-            if (! ((row == null) || (row.isZero()))) {
-                for (int j = 0; j < acols; ++j) {
-    				AVector acol = a.unsafeGetVec(j);
-    				double v = ((acol == null) || acol.isZero()) ? 0.0 : row.dotProduct(acol);
-    				if (v!=0.0) r.unsafeSet(i, j, v);
-    			}
+	public SparseRowMatrix innerProduct(SparseColumnMatrix a) {
+		return innerProduct(SparseRowMatrix.create(a));
+	}
+	
+	public SparseRowMatrix innerProduct(SparseRowMatrix a) {
+		SparseRowMatrix r = Matrixx.createSparse(rows, a.columnCount());
+		for (int i = 0; i < rows; ++i) {
+			AVector row = unsafeGetVector(i);
+            if (row != null) {
+			    r.replaceRow(i,row.innerProduct(a));
             }
 		}
 		return r;
 	}
 
+
 	@Override
 	public SparseRowMatrix exactClone() {
 		SparseRowMatrix result = new SparseRowMatrix(rows, cols);
         for (int i = 0; i < rows; ++i) {
-			AVector row = unsafeGetVec(i);
+			AVector row = unsafeGetVector(i);
 			if (row != null)
                 result.replaceRow(i, row.exactClone());
 		}
@@ -433,7 +468,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		if (m==this) return true;
 		if (!isSameShape(m)) return false;
 		for (int i=0; i<rows; i++) {
-			AVector v=unsafeGetVec(i);
+			AVector v=unsafeGetVector(i);
             AVector ov = m.getRow(i);
 			if (v==null) {
 				if (!ov.isZero()) return false;
@@ -453,4 +488,6 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		// TODO: consider reducing working set?
 		return create(a).innerProduct(b);
 	}
+
+
 }

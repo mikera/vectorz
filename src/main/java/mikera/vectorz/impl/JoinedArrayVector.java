@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
@@ -74,14 +75,15 @@ public final class JoinedArrayVector extends AJoinedVector {
 		return pos[j+1]-pos[j];
 	}
 	
-	public ArraySubVector getSegment(int j) {
-		return ArraySubVector.wrap(data[j], offsets[j], subLength(j));
+	public ArraySubVector getComponent(int j) {
+		int i=(int)j;
+		return ArraySubVector.wrap(data[i], offsets[i], subLength(i));
 	}
 	
 	public List<ADenseArrayVector> toSubArrays() {
-		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>();
+		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>(numArrays);
 		for (int i=0; i<numArrays; i++) {
-			al.add(getSegment(i));
+			al.add(getComponent(i));
 		}
 		return al;
 	}
@@ -579,24 +581,27 @@ public final class JoinedArrayVector extends AJoinedVector {
 		if (length!=pos[numArrays]) throw new VectorzException("End position incorrect!?!");
 		
 		for (int i=0; i<numArrays; i++) {
-			getSegment(i).validate();
+			getComponent(i).validate();
 		}
 		
 		super.validate();
 	}
 
 	@Override
-	public int segmentCount() {
+	public int componentCount() {
 		return numArrays;
 	}
 
 	@Override
-	protected AJoinedVector reconstruct(AVector... segments) {
-		int sc=segmentCount();
+	public AJoinedVector withComponents(INDArray[] segments) {
+		int sc=(int)componentCount();
 		double[][] newData=new double[sc][];
 		int[] offs=this.offsets.clone();
 		for (int i=0; i<sc; i++) {
-			AVector v=segments[i];
+			INDArray a=segments[i];
+			if (a.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(a));
+			AVector v=a.asVector();
+			v.checkLength(subLength(i));
 			if (v instanceof ADenseArrayVector) {
 				newData[i]=((ADenseArrayVector) v).getArray();
 				offs[i]=((ADenseArrayVector) v).getArrayOffset();

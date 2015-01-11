@@ -27,7 +27,29 @@ public abstract class ABlockMatrix extends AMatrix {
 	public abstract int columnBlockCount();
 	public abstract int rowBlockCount();
 	
-
+	@Override
+	public int componentCount() {
+		return columnBlockCount()*rowBlockCount();
+	}
+	
+	@Override
+	public void copyRowTo(int i, double[] dest, int destOffset) {
+		getRow(i).copyTo(dest, destOffset);
+	}
+	
+	@Override
+	public void copyColumnTo(int j, double[] dest, int destOffset) {
+		getColumn(j).copyTo(dest, destOffset);
+	}
+	
+	@Override
+	public AMatrix getComponent(int k) {
+		int cbc=columnBlockCount();
+		long i=k / cbc;
+		long j=k % cbc;
+		return getBlock((int)i, (int)j);
+	}
+	
 	@Override
 	public AVector getRowView(int row) {
 		int blockIndex=getRowBlockIndex(row);

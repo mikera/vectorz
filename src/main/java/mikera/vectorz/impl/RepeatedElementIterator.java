@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class RepeatedElementIterator implements Iterator<Double> {
-	int n;
+	long n;
 	final Double value;
 	
-	public RepeatedElementIterator(int count, double value) {
+	public RepeatedElementIterator(long count, double value) {
 		this.value=value;
 		n=count;
 	}

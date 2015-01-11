@@ -80,14 +80,29 @@ public interface INDArray extends Cloneable, Serializable {
 	public double get(int x);
 	
 	/**
+	 * Returns the double value at the specified position in a 1D vector
+	 */
+	public double get(long x);
+	
+	/**
 	 * Returns the double value at the specified position in a 2D matrix
 	 */
 	public double get(int x, int y);
 	
 	/**
+	 * Returns the double value at the specified position in a 2D matrix
+	 */
+	public double get(long x, long y);
+	
+	/**
 	 * Returns the double value at the specified index position in an array
 	 */
 	public double get(int... indexes);
+	
+	/**
+	 * Returns the double value at the specified index position in an array
+	 */
+	public double get(long[] indexes);
 
 	/**
 	 * Sets all elements of an array to a specific double value
@@ -723,14 +738,15 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray sparseClone();
 	
 	/**
-	 * Creates a fully mutable clone of this array. 
+	 * Creates a fully mutable dense clone of this array. 
 	 * 
 	 * Will always use a dense format.
 	 */
 	public INDArray denseClone();
 
 	/**
-	 * Returns true if the elements in this array exactly match the given array
+	 * Returns true if the elements in this array exactly match the elements in the given array, in
+	 * row-major order
 	 * 
 	 * @param data
 	 * @return
@@ -738,7 +754,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean equalsArray(double[] data);	
 	
 	/**
-	 * Returns true if the elements in this array exactly match the given array
+	 * Returns true if the elements in this array exactly match the elements in the given array, in
+	 * row-major order
 	 * 
 	 * @param data
 	 * @return
@@ -800,4 +817,34 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @return
 	 */
 	public double elementAbsPowSum(double p);
+	
+	/**
+	 * Returns the number of components of this array.
+	 * 
+	 * May return 0 if components are not supported
+	 * @return
+	 */
+	public int componentCount();
+	
+	/**
+	 * Gets a component from the array at the specified index
+	 * 
+	 * Will throw an error if components are not supported, or if the component is out of bounds as defined by 0 <= k <componentCount()
+	 * @param k
+	 * @return
+	 */
+	public INDArray getComponent(int k);
+	
+	/**
+	 * Returns a new array of the same shape/structure as the original but with the specified components. 
+	 * 
+	 * Components must be of a compatible type and identical shape to the original components.
+	 */
+	public INDArray withComponents(INDArray[] cs);
+
+	/**
+	 * Gets all components in a new array, with length componentCount();
+	 * @return
+	 */
+	INDArray[] getComponents();
 }

@@ -99,19 +99,13 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, I
 	
 	@Override
 	public double get(int i, int j) {
-		if ((i < 0) || (i >= rows)) {
-			// we only need to check i is in range: out of range j will trigger exception anyway
-			throw new IndexOutOfBoundsException("Row: "+i);
-		}
+		checkRow(i); // we only need to check i is in range: out of range j will trigger exception anyway
 		return data[(j * rows) + i];
 	}
 	
 	@Override
 	public void set(int i, int j, double value) {
-		if ((i < 0) || (i >= rows)) {
-			// we only need to check i is in range: out of range j will trigger exception anyway
-			throw new IndexOutOfBoundsException("Row: "+i);
-		}
+		checkRow(i); // we only need to check i is in range: out of range j will trigger exception anyway
 		data[(j * rows) + i] = value;
 	}
 

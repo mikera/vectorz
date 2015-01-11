@@ -9,6 +9,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.ZeroMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.ZeroVector;
@@ -149,8 +150,9 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 	}
 	
 	@Override
-	public ZeroVector asVector() {
-		return ZeroVector.create(this);
+	public AVector asVector() {
+		
+		return Vectorz.createZeroVector(this.elementCount());
 	}
 	
 	@Override
@@ -165,8 +167,8 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 			case 1: return Vectorz.createSparseMutable(shape[0]);
 			case 2: return Matrixx.createSparseRows(this);
 			default: {
-				ArrayList<INDArray> al=new ArrayList<INDArray>();
 				int n=sliceCount();
+				ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 				for (int i=0; i<n; i++) {
 					al.add(slice(i).sparseClone());
 				}

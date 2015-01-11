@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
@@ -38,6 +40,29 @@ public class TestSparseRowMatrix {
         m.setRow(0, v);
         assertEquals(v,m.getRow(0));
         assertEquals(1,m.getRow(0).get(0),0.0);
+    }
+
+    @Test public void testGetSlices() {
+        SparseRowMatrix m = SparseRowMatrix.create(Matrix.create(Vector.of(1,2),
+                                                                 Vector.of(0,0),
+                                                                 Vector.of(3,4)));
+
+        List<AVector> slices = m.getSlices();
+        assertEquals(3, slices.size());
+        assertEquals(Vector.of(1,2), slices.get(0));
+        assertEquals(Vector.of(0,0), slices.get(1));
+        assertEquals(Vector.of(3,4), slices.get(2));
+    }
+
+    @Test public void testGetColumns() {
+        SparseRowMatrix m = SparseRowMatrix.create(Matrix.create(Vector.of(1,2),
+                                                                 Vector.of(0,0),
+                                                                 Vector.of(3,4)));
+
+        List<AVector> columns = m.getColumns();
+        assertEquals(2, columns.size());
+        assertEquals(Vector.of(1,0,3), columns.get(0));
+        assertEquals(Vector.of(2,0,4), columns.get(1));
     }
 	
 	@Test public void testOps() {

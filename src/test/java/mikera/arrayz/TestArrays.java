@@ -180,6 +180,39 @@ public class TestArrays {
 		assertEquals(a, Arrayz.wrap(arr, a.getShape()));
 
 	}
+	
+	private void testComponents(INDArray a) {
+		int cc=a.componentCount();
+		if (cc==0) {
+			try {
+				a.getComponent(0);
+				fail("Should not be able to access any components!");
+			} catch (Throwable t) {/* OK */};
+		}
+		if (cc==0) return;
+		
+		try {
+			a.getComponent(-1);
+			fail("Should not be able to access negative components!");
+		} catch (Throwable t) {/* OK */};
+		
+		try {
+			a.getComponent(cc);
+			fail("Should not be able to access out of bounds components!");
+		} catch (Throwable t) {/* OK */};
+		
+		long ec=a.elementCount();
+		double ess=a.elementSquaredSum();
+		long ec_acc=0;
+		double ess_acc=0.0;
+		for (int i=0; i<cc ; i++) {
+			INDArray c=a.getComponent(i);
+			ec_acc+=c.elementCount();
+			ess_acc+=c.elementSquaredSum();
+		}
+		assertEquals(ec,ec_acc);
+		assertEquals(ess,ess_acc,0.0001);
+	}
 
 	private void testClone(INDArray a) {
 		// regular clone
@@ -196,8 +229,7 @@ public class TestArrays {
 		assertEquals(a.hashCode(), c.hashCode());
 
 		if (c == a) {
-			// can only return same object if immutable
-			assert (!a.isMutable());
+			assertFalse(a.isMutable());
 		}
 
 		INDArray ec = a.exactClone();
@@ -257,19 +289,22 @@ public class TestArrays {
 
 	private void testGetElements(INDArray a) {
 		int ecount = (int) a.elementCount();
-		double[] data = new double[ecount + 1];
+		double[] data = new double[ecount + 2];
 		Arrays.fill(data, Double.NaN);
 
 		a.getElements(data, 1);
 		assertTrue(Double.isNaN(data[0]));
-		for (int i = 1; i < data.length; i++) {
+		for (int i = 1; i < (ecount+1); i++) {
 			assertFalse(Double.isNaN(data[i]));
 		}
+		assertTrue(Double.isNaN(data[ecount+1]));
 		assertTrue(a.equalsArray(data,1));
 		
-		double[] data2=new double[ecount+1];
+		double[] data2=new double[ecount+2];
 		data[0]=13;
 		data2[0]=13;
+		data[ecount+1]=135;
+		data2[ecount+1]=135;
 		a.asVector().getElements(data2, 1);
 		assertTrue(DoubleArrays.equals(data, data2));
 		
@@ -560,6 +595,28 @@ public class TestArrays {
 
 	}
 	
+	@SuppressWarnings("unused")
+	private void testElementMinMax(INDArray m) {
+		long c=m.elementCount();
+		
+		if (c>0) {
+			double min=m.elementMin();
+			double max=m.elementMax();
+			assertTrue(min<=max);
+		} else {
+			try {
+				double min=m.elementMin();
+				fail("Should not be able to get minimum of array with non elements!");
+			} catch (Throwable t ) { /* OK */ }
+			
+			try {
+				double max=m.elementMax();
+				fail("Should not be able to get maximum of array with non elements!");
+			} catch (Throwable t ) { /* OK */ }
+		}
+
+	}
+	
 	private void testStridedArray(INDArray mm) {
 		if (!(mm instanceof IStridedArray)) {
 			assertNull(mm.asDoubleArray());
@@ -665,6 +722,7 @@ public class TestArrays {
 
 	public void testArray(INDArray a) {
 		a.validate();
+		testComponents(a);
 		testTranspose(a);
 		testAsVector(a);
 		testAdd(a);
@@ -676,6 +734,7 @@ public class TestArrays {
 		testApplyAllOps(a);
 		testElementIterator(a);
 		testElementSums(a);
+		testElementMinMax(a);
 		testStridedArray(a);
 		testBoolean(a);
 		testSums(a);
@@ -763,6 +822,8 @@ public class TestArrays {
 		// zero array tests
 		testArray(Arrayz.createZeroArray());
 		testArray(Arrayz.createZeroArray(2));
+		testArray(Arrayz.createZeroArray(0,0));
+		testArray(Arrayz.createZeroArray(4,0,0));
 		testArray(Arrayz.createZeroArray(2,3));
 		testArray(Arrayz.createZeroArray(1,2,3));
 		testArray(Arrayz.createZeroArray(1,2,4,1));

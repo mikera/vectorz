@@ -44,6 +44,7 @@ See the [Vectorz Wiki](https://github.com/mikera/vectorz/wiki)
  - Vectors have lots of **utility functionality** implemented - Cloneable, Serializable, Comparable etc.
  - Various **specialised types** of vectors/matrices types (e.g. identity matrices, diagonal matrices)
  - Support for **affine** and other matrix **transformations**
+ - **sparse arrays** for space efficient large vectors and matrices where most elements are zero
  - Operator system provides **composable operators** that can be applied to array elements
  - **Input / output** of vectors and matrices - in various formats including readable edn format
 

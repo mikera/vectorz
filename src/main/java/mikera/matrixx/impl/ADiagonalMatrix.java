@@ -410,6 +410,12 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	public abstract ADiagonalMatrix exactClone();
 
 	@Override
+	public AMatrix clone() {
+		if (dimensions<Vectorz.MIN_SPARSE_LENGTH) return super.clone();
+		return sparseClone();
+	}
+	
+	@Override
 	public boolean hasUncountable() {
 		return getLeadingDiagonal().hasUncountable();
 	}

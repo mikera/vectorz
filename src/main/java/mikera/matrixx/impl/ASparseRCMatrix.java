@@ -6,11 +6,14 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
+import mikera.vectorz.Vector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.VectorzException;
 
 /**
  * Abstract base class for matrices that store sparse rows or columns.
+ * 
  * @author Mike
  *
  */
@@ -28,7 +31,13 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
         data[i] = vec;
     }
 
-    protected AVector unsafeGetVec(int i) {
+    /**
+     * Gets a vector from the internal data array
+     * 
+     * The vector may be null (indicating a zero row or column)
+     * 
+     */
+    public AVector unsafeGetVector(int i) {
         return data[i];
     }
 
@@ -40,7 +49,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void fill(double value) {
 		RepeatedElementVector v=RepeatedElementVector.create(lineLength(), value);
-		for (int i = 0; i < lineCount(); i++) {
+		long n=componentCount();
+		for (int i = 0; i < n; i++) {
 			unsafeSetVec(i, v);
 		}
 	}
@@ -48,7 +58,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void reciprocal() {
 		AVector rr=RepeatedElementVector.create(lineLength(), 1.0/0.0);
-		for (int i=0; i<lineCount(); i++) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
 				data[i] = rr;
@@ -64,23 +75,26 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public void abs() {
-		for (int i=0; i<lineCount(); i++) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
 				// OK;
 			} else {
 				if (!line.isFullyMutable()) {
-					line = line.sparseClone();
+					line = line.absCopy();
 					data[i] = line;
+				} else {
+					line.abs();
 				}
-				line.abs();
 			}
 		}
 	}
 	
 	@Override
 	public void pow(double exponent) {
-		for (int i=0; i<lineCount(); i++) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
 				// OK;
@@ -96,7 +110,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 
 	@Override
 	public void square() {
-		for (int i=0; i<lineCount(); i++) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
 				// OK;
@@ -112,7 +127,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 
 	@Override
 	public void sqrt() {
-		for (int i=0; i<lineCount(); i++) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
 				// OK;
@@ -129,7 +145,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void exp() {
 		AVector rr = RepeatedElementVector.create(lineLength(), 1.0);
-		for (int i = 0; i < lineCount(); i++) {
+		long n=componentCount();
+		for (int i = 0; i < n; i++) {
 			AVector line = data[i];
 			if (line == null) {
 				data[i] = rr;
@@ -146,7 +163,8 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void log() {
 		AVector rr=RepeatedElementVector.create(lineLength(), Math.log(0.0));
-		for (int i=0; i<lineCount(); i++) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
 			AVector line=data[i];
 			if (line==null) {
 				data[i] = rr;
@@ -199,6 +217,16 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public void copyRowTo(int i, double[] dest, int destOffset) {
+		getRow(i).copyTo(dest, destOffset);
+	}
+	
+	@Override
+	public void copyColumnTo(int j, double[] dest, int destOffset) {
+		getColumn(j).copyTo(dest, destOffset);
+	}
+	
+	@Override
 	public double elementSum() {
 		double result=0.0;
 		for (AVector vec: data) {
@@ -218,9 +246,11 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double elementMin() {
-		double result=Double.MAX_VALUE;
-		for (AVector vec: data) {
-			double v = (vec == null) ? 0 : vec.elementMin();
+		AVector fvec=data[0];
+		double result=(fvec==null)?0.0:fvec.elementMin();
+		for (int i=1 ; i<data.length; i++) {
+			AVector vec=data[i];
+			double v = (vec == null) ? 0.0 : vec.elementMin();
 			if (v<result) result=v;
 		}
 		return result;
@@ -228,13 +258,38 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double elementMax() {
-		double result=-Double.MAX_VALUE;
-		for (AVector vec: data) {
-			double v = (vec == null) ? 0 : vec.elementMax();
+		AVector fvec=data[0];
+		double result=(fvec==null)?0.0:fvec.elementMax();
+		for (int i=1 ; i<data.length; i++) {
+			AVector vec=data[i];
+			double v = (vec == null) ? 0.0 : vec.elementMax();
 			if (v>result) result=v;
 		}
 		return result;
 	}	
+	
+	@Override
+	public void applyOp(Op op) {
+		boolean stoch = op.isStochastic();
+		AVector rr = (stoch) ? null : RepeatedElementVector.create(lineLength(), op.apply(0.0));
+
+		long n=componentCount();
+		for (int i = 0; i < n; i++) {
+			AVector v = unsafeGetVector(i);
+			if (v == null) {
+				if (!stoch) {
+					unsafeSetVec(i, rr);
+					continue;
+				}
+				v = Vector.createLength(lineLength());
+				unsafeSetVec(i, v);
+			} else if (!v.isFullyMutable()) {
+				v = v.sparseClone();
+				unsafeSetVec(i, v);
+			}
+			v.applyOp(op);
+		}
+	}
 	
 	@Override
 	public final long nonZeroCount() {
@@ -259,18 +314,15 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
-	public Matrix toMatrix() {
-		Matrix m=Matrix.create(rows, cols);
-		addToArray(m.data,0);
-		return m;
-	}
-	
-	@Override
 	public AMatrix sparse() {
 		return this;
 	}
 	
-	protected abstract int lineCount();
+	@Override
+	public abstract int componentCount();
+	
+	@Override
+	public abstract AVector getComponent(int k);
 
 	protected abstract int lineLength();
 
@@ -278,9 +330,9 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	public void validate() {
 		super.validate();
         int dlen = data.length;
-		if (dlen != lineCount()) throw new VectorzException("Too many rows");
+		if (dlen != componentCount()) throw new VectorzException("Too many rows");
 		for (int i = 0; i < dlen; ++i) {
-            AVector vec = unsafeGetVec(i);
+            AVector vec = unsafeGetVector(i);
 			int vlen = (vec == null) ? lineLength() : vec.length();
 			if (vlen!=lineLength()) throw new VectorzException("Wrong length data line vector, length "+vlen+" at position: "+i);
 		}

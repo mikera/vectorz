@@ -56,7 +56,7 @@ public class ScalarMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public AVector getLeadingDiagonal() {
+	public RepeatedElementVector getLeadingDiagonal() {
 		// This is OK since we must have at least one dimension
 		return RepeatedElementVector.create(dimensions, scale);
 	}

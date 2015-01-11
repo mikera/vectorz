@@ -11,11 +11,9 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
-import mikera.vectorz.GrowableVector;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
-import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
@@ -44,9 +42,15 @@ public class Vectorz {
 	// ===========================
 	// Factory functions
 	
-
+	/**
+	 * Creates a vector using the given double data, using the most efficient dense representation.
+	 * 
+	 * @param data
+	 * @return
+	 */
 	public static AVector create(double... data) {
-		switch (data.length) {
+		int n=data.length;
+		switch (n) {
 			case 0: return Vector0.INSTANCE;
 			case 1: return Vector1.of(data);
 			case 2: return Vector2.of(data);
@@ -69,6 +73,11 @@ public class Vectorz {
 		return result;
 	}
 	
+	/**
+	 * Join one or more vectors into a single concatenated vector
+	 * @param vectors
+	 * @return
+	 */
 	public static AVector join(AVector... vectors) {
 		AVector result=vectors[0];
 		for (int i=1; i<vectors.length; i++) {
@@ -77,10 +86,15 @@ public class Vectorz {
 		return result;
 	}
 	
+	/**
+	 * Join a list of vectors into a single concatenated vector
+	 * @param vectors
+	 * @return
+	 */
 	public static AVector join(List<AVector> vectors) {
 		int count=vectors.size();
-		AVector v=vectors.get(0);
-		for (int i=1; i<count; i++) {
+		AVector v=Vector0.INSTANCE;
+		for (int i=0; i<count; i++) {
 			v=v.join(vectors.get(i));
 		}
 		return v;
@@ -88,23 +102,31 @@ public class Vectorz {
 	
 	/**
 	 * Creates an immutable zero vector of the specified length.
-	 * @param length
+	 * @param l
 	 * @return
 	 */
-	public static AVector createZeroVector(int length) {
-		if (length==0) return Vector0.INSTANCE;
-		return ZeroVector.create(length);
+	public static AVector createZeroVector(long l) {
+		if (l==0) return Vector0.INSTANCE;
+		if (l>=Integer.MAX_VALUE) throw new IllegalArgumentException("Requested zero vector length too large: "+l);
+		return ZeroVector.create((int)l);
 	}
 	
-	public static Vector wrap(double[] data) {
+	/**
+	 * Wraps a double array as a Vector instance. Changes to the double array will
+	 * be reflected in the Vector
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Vector wrap(double... data) {
 		return Vector.wrap(data);
 	}
 	
 	public static AVector wrap(double[][] data) {
 		if ((data.length)==0) return Vector0.INSTANCE;
 		
-		AVector v=wrap(data[0]);
-		for (int i=1; i<data.length; i++) {
+		AVector v=Vector0.INSTANCE;
+		for (int i=0; i<data.length; i++) {
 			v=join(v,wrap(data[i]));
 		}
 		return v;
@@ -148,30 +170,38 @@ public class Vectorz {
 	 * Creates a sparse vector from the data in the given vector. Selects the appropriate sparse
 	 * vector type based on analysis of the element values.
 	 * 
+	 * The sparse vector may or may not be mutable.
+	 * 
 	 * @param v Vector containing sparse element data
 	 * @return
 	 */
 	public static AVector createSparse(AVector v) {
+		if (v.isSparse()) return v.copy();
 		int len=v.length();
-		long n=v.nonZeroCount();
+		
+		if (len<MIN_SPARSE_LENGTH) {
+			return v.copy();
+		}
+		
+		int[] ixs=v.nonZeroIndices();
+		int n=ixs.length;
 		if (n==0) {
 			return createZeroVector(len);
 		} else if (n==1) {
-			for (int i=0; i<len; i++) {
-				double val=v.unsafeGet(i);
-				if (val!=0.0) {
-					if (val==1.0) {
-						return AxisVector.create(i, len);
-					} else {
-						return SingleElementVector.create(val,i,len);
-					}
+			int i=ixs[0];
+			double val=v.unsafeGet(i);
+			if (val!=0.0) {
+				if (val==1.0) {
+					return AxisVector.create(i, len);
+				} else {
+					return SingleElementVector.create(val,i,len);
 				}
 			}
 			throw new VectorzException("non-zero element not found!!");
 		} else if (n>(len*SPARSE_DENSITY_THRESHOLD)) {
 			return Vector.create(v); // not enough sparsity to make worthwhile
 		} else {
-			return SparseIndexedVector.create(v);
+			return SparseIndexedVector.createWithIndices(v,ixs);
 		}
 	}
 	
@@ -517,6 +547,7 @@ public class Vectorz {
 	
 	public static AVector createRepeatedElement(int length,double value) {
 		if (length==0) return Vector0.INSTANCE;
+		if (value==0.0) return ZeroVector.create(length);
 		return RepeatedElementVector.create(length, value);
 	}
 
@@ -564,6 +595,15 @@ public class Vectorz {
 		for (int i=0; i<n ; i++) {
 			v.unsafeSet(i, random.nextGaussian());
 		}
+	}
+
+	/**
+	 * utility function to test whether a value is uncountable
+	 * @param value
+	 * @return
+	 */
+	public static boolean isUncountable(double value) {
+		return Double.isNaN(value) || Double.isInfinite(value);
 	}
 
 

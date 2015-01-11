@@ -27,9 +27,11 @@ import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.MatrixBandView;
+import mikera.matrixx.impl.MatrixColumnList;
 import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
 import mikera.matrixx.impl.MatrixIterator;
+import mikera.matrixx.impl.MatrixRowList;
 import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.MatrixAsVector;
 import mikera.matrixx.impl.SparseColumnMatrix;
@@ -220,28 +222,18 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public List<AVector> getSlices() {
-		ArrayList<AVector> al=new ArrayList<AVector>();
-		int rc=rowCount();
-		for (int i=0; i<rc; i++) {
-			al.add(getRowView(i));
-		}
-		return al;
+	public final List<AVector> getSlices() {
+		return getRows();
 	}
 	
-	@Override
-	public final List<AVector> getRows() {
-		return getSlices();
+    @Override
+	public List<AVector> getRows() {    
+		return new MatrixRowList(this);
 	}
-	
-	@Override
-	public List<AVector> getColumns() {
-		ArrayList<AVector> al=new ArrayList<AVector>();
-		int cc=columnCount();
-		for (int i=0; i<cc; i++) {
-			al.add(getColumn(i));
-		}
-		return al;
+    
+    @Override
+	public List<AVector> getColumns() {    
+		return new MatrixColumnList(this);
 	}
 	
 	@Override
@@ -257,8 +249,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public List<INDArray> getSliceViews() {	
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
 		int rc=rowCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(rc);
 		for (int i=0; i<rc; i++) {
 			al.add(getRowView(i));
 		}
@@ -416,7 +408,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		switch (dim) {
 		case 0: {
 			if (n==0) return ZeroMatrix.create(0, columnCount());
-			ArrayList<AVector> al=new ArrayList<AVector>();
+			ArrayList<AVector> al=new ArrayList<AVector>(n);
 			for (int si: order) {
 				al.add(slice(si));
 			}
@@ -424,7 +416,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		case 1: {
 			if (n==0) return ZeroMatrix.create(rowCount(),0);
-			ArrayList<AVector> al=new ArrayList<AVector>();
+			ArrayList<AVector> al=new ArrayList<AVector>(n);
 			for (int si: order) {
 				al.add(slice(1,si));
 			}
@@ -440,7 +432,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		for (int i=0; i<rows; i++) {
 			vs[i]=this.getRowView(rowStart+i).subVector(colStart, cols);
 		}
-		return VectorMatrixMN.wrap(vs);	
+		return SparseRowMatrix.wrap(vs);	
 	}
 	
 	@Override
@@ -1079,6 +1071,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Returns an iterator over rows in this Matrix
 	 */
+	@Override
 	public Iterator<AVector> iterator() {
 		return new MatrixIterator(this);
 	}
@@ -1361,8 +1354,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			return innerProduct(Arrayz.create(a)); // convert to most efficient format
 		}
 		// TODO: figure out a faster approach?
-		List<AVector> al=getSlices();
-		List<INDArray> rl=new ArrayList<INDArray>();
+		int rc=rowCount();
+		List<AVector> al=getRows();
+		List<INDArray> rl=new ArrayList<INDArray>(rc);
 		for (AVector v: al ) {
 			rl.add(v.innerProduct(a));
 		}
@@ -1371,7 +1365,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public INDArray outerProduct(INDArray a) {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(sliceCount());
 		for (AVector s:this) {
 			al.add(s.outerProduct(a));
 		}
@@ -1768,10 +1762,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean isUpperTriangular() {
 		int rc=rowCount();
 		int cc=columnCount();
-		for (int j=0; j<cc; j++) {
-			for (int i=j+1; i<rc; i++) {
-				if (unsafeGet(i,j)!=0.0) return false;
-			}
+		for (int i=1; i<rc; i++) {
+			if (!getRow(i).isRangeZero(0, Math.min(i,cc))) return false;
 		}
 		return true;
 	}
@@ -1785,9 +1777,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc=rowCount();
 		int cc=columnCount();
 		for (int i=0; i<rc; i++) {
-			for (int j=i+1; j<cc; j++) {
-				if (unsafeGet(i,j)!=0.0) return false;
-			}
+			int start=Math.min(cc, i+1);
+			if (!getRow(i).isRangeZero(start,cc-start)) return false;
 		}
 		return true;
 	}

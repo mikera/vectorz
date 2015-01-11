@@ -84,9 +84,10 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 
 	@Override
 	public void set(int row, int column, double value) {
-		getRowView(row).set(column,value);
+		checkColumn(column);
+		unsafeSet(row,column,value);
 	}
-	
+
 	@Override
 	public void unsafeSet(int row, int column, double value) {
 		getRowView(row).unsafeSet(column,value);
@@ -123,6 +124,15 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		getRow(row).getElements(dest, destOffset);
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		checkColumn(col);
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			dest[destOffset++]=getRow(i).unsafeGet(col);
+		}
 	}
 	
 	@Override
@@ -219,6 +229,18 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 			v = Vectorz.join(v, getRowView(i));
 		}
 		return v;
+	}
+	
+	@Override
+	public int componentCount() {
+		return rows;
+	}
+	
+	@Override
+	public AVector getComponent(int k) {
+		int i=(int)k;
+		if (i!=k) throw new IndexOutOfBoundsException(ErrorMessages.invalidComponent(this,k));
+		return getRow(i);
 	}
 	
 	@Override

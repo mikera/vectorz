@@ -113,13 +113,22 @@ public class ErrorMessages {
 		}
 	}
 	
+	public static String invalidIndex(INDArray a, long i) {
+		return "1-D access with index "+i+" not possible for "+a.getClass()+" with shape "+shape(a);
+	}
+	
 	public static String invalidRange(AVector v, int start, int length) {
 		return "Subrange {start="+start+", length="+length+"} not valid on vector with length "+v.length();
 	}
 
-	public static String invalidSlice(INDArray a, int slice) {
+	public static String invalidSlice(INDArray a, long slice) {
 		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice;
 	}
+	
+	public static String invalidComponent(INDArray a, long i) {
+		return ""+a.getClass()+" with shape "+shape(a)+" does not have component: "+i;
+	}
+	
 
 	public static String invalidSlice(INDArray a, int dimension, int slice) {
 		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice +" on dimension "+dimension;
@@ -129,7 +138,7 @@ public class ErrorMessages {
 		return "Cannot access slices of 0-D "+a.getClass();
 	}
 
-	public static String insufficientElements(int length) {
+	public static String insufficientElements(long length) {
 		return "Insufficient elements "+length;
 	}
 
@@ -155,6 +164,10 @@ public class ErrorMessages {
 
 	public static String nonSquareMatrix(AMatrix a) {
 		return "Matrix should be square but has shape: "+shape(a);
+	}
+
+	public static String noElements(INDArray a) {
+		return "Array of class "+a.getClass()+" has no elements";
 	}
 
 

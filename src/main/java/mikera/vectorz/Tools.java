@@ -1,7 +1,9 @@
 package mikera.vectorz;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
 import mikera.arrayz.INDArray;
 
 public final class Tools {
@@ -39,12 +41,25 @@ public final class Tools {
 		return (int) (l ^ (l >>> 32));
 	}
 	
-	public static <E> List<E> toList(Iterable<E> iter) {
-	    List<E> list = new ArrayList<E>();
+	public static <E> ArrayList<E> toList(Iterable<E> iter) {
+		ArrayList<E> list = new ArrayList<E>();
 	    for (E item : iter) {
 	        list.add(item);
 	    }
 	    return list;
+	}
+	
+	/**
+	 * Function to create a list from an iterator
+	 * @param iter
+	 * @return
+	 */
+	public static <T> ArrayList<T> toList(Iterator<T> iter) {
+		ArrayList<T> result = new ArrayList<T>();
+	    while (iter.hasNext()) {
+	        result.add(iter.next());
+	    }
+	    return result;
 	}
 	
 
@@ -163,4 +178,6 @@ public final class Tools {
 		a.getElements(data, 0);
 		return data;
 	}
+
+
 }

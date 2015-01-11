@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import java.nio.DoubleBuffer;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
@@ -577,18 +578,25 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 
 	@Override
-	public int segmentCount() {
+	public int componentCount() {
 		return n;
 	}
 
 	@Override
-	public AVector getSegment(int k) {
+	public AVector getComponent(int k) {
 		return vecs[k];
 	}
 
 	@Override
-	protected AJoinedVector reconstruct(AVector... segments) {
-		return new JoinedMultiVector(length,vecs,splits);
+	public AJoinedVector withComponents(INDArray[] segments) {
+		AVector[] nvecs=new AVector[n];
+		for (int i=0; i<n; i++) {
+			INDArray a=segments[i];
+			if (!this.isSameShape(a)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+			AVector v=segments[i].asVector();
+			nvecs[i]=v;
+		}
+		return new JoinedMultiVector(length,nvecs,splits);
 	}
 
 }

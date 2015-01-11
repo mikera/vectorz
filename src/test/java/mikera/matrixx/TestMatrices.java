@@ -5,6 +5,9 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.Random;
+
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
@@ -506,6 +509,7 @@ public class TestMatrices {
 	@Test public void g_PermutedMatrix() {
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
+		randomise(mmn);
 
 		// permuted matrix
 		PermutedMatrix pmm=new PermutedMatrix(mmn,
@@ -519,7 +523,7 @@ public class TestMatrices {
 	@Test public void g_VectorMatrix() {
 		// specialised Mx3 matrix
 		VectorMatrixM3 mm3=new VectorMatrixM3(10);
-		Arrayz.fillNormal(mm3,101);
+		randomise(mm3);
 		doGenericTests(mm3);
 		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
 	
@@ -583,12 +587,12 @@ public class TestMatrices {
 	}
 	
 	@Test public void g_RowMatrix() {	
-		doGenericTests(new RowMatrix(Vector.of(1,2,3,4)));
+		doGenericTests(new RowMatrix(Vector.of(1,2,3,4,7)));
 		doGenericTests(new RowMatrix(Vector3.of(1,2,3)));		
 	}
 	
 	@Test public void g_ColumnMatrix() {	
-		doGenericTests(new ColumnMatrix(Vector.of(1,2,3,4)));
+		doGenericTests(new ColumnMatrix(Vector.of(1,2,3,4,5)));
 		doGenericTests(new ColumnMatrix(Vector3.of(1,2,3)));
 	}
 	

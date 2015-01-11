@@ -5,8 +5,12 @@ import java.util.List;
 
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.Vectorz;
+
 
 /**
  * Abstract base class for Sparse vector implementations
@@ -41,7 +45,16 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	 * @return
 	 */
 	public abstract boolean includesIndex(int i);
-	
+
+    /**
+     * Replaces all values less-than-or-equal to precision with zeros.
+     * @param precision
+     * @return
+     */
+    public ASparseVector roundToZero(double precision) {
+        throw new VectorzException(ErrorMessages.notYetImplemented());
+    }
+    
 	// ================================================
 	// Superclass methods that must be overridden
 	// (superclass implementation is bad for sparse arrays)
@@ -67,6 +80,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	
 	@Override
 	public double dotProduct(AVector v) {
+		checkSameLength(v);
 		double result=0.0;
 		Index ni=nonSparseIndex();
 		for (int i=0; i<ni.length(); i++) {
@@ -74,6 +88,29 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 			result+=unsafeGet(ii)*v.unsafeGet(ii);
 		}		
 		return result;
+	}
+	
+	@Override
+	public final double dotProduct(ADenseArrayVector v) {
+		checkSameLength(v);
+		double[] array=v.getArray();
+		int offset=v.getArrayOffset();
+		return dotProduct(array,offset);
+	}
+	
+	@Override
+	public AVector innerProduct(AMatrix m) {
+		int cc=m.columnCount();
+		int rc=m.rowCount();
+		checkLength(rc);
+		AVector r=Vectorz.createSparseMutable(cc);
+		Index ni=nonSparseIndex();
+		for (int i=0; i<ni.length(); i++) {
+			int ti=ni.get(i);
+			double v=unsafeGet(ti);
+			if (v!=0.0) r.addMultiple(m.getRow(ti),v);
+		}		
+		return r;
 	}
 	
 	@Override
@@ -96,6 +133,8 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 
 	public abstract void add(ASparseVector v);
+
+    //    public abstract void sub(ASparseVector v);
 	
 	@Override
 	public List<Double> getSlices() {
@@ -108,12 +147,19 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public double elementProduct() {
 		int n=nonSparseElementCount();
 		if (n<length) return 0.0;
-		return super.elementProduct();
+		return nonSparseValues().elementProduct();
 	}
 	
 	@Override
 	public ASparseVector sparse() {
 		return this;
+	}
+	
+	@Override
+	public AVector clone() {
+		// TODO: figure out a better heuristic?
+		if ((length<20)||(nonSparseElementCount()>(elementCount()*0.25))) return super.clone();
+		return SparseIndexedVector.create(this);
 	}
 	
 	public boolean equals(ASparseVector v) {
@@ -143,11 +189,28 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return nonSparseValues().nonZeroCount();
+	}
+	
+	@Override
 	public boolean equals(AVector v) {
 		if (v instanceof ASparseVector) {
 			return equals((ASparseVector)v);
 		}
-		return super.equals(v);
+		
+		if (v.length()!=length) return false;
+		Index ni=nonSparseIndex();
+		int n=ni.length();
+		AVector nv=nonSparseValues();
+		int offset=0;
+		for (int i=0; i<n; i++) {
+			int ii=ni.get(i);
+			if (!v.isRangeZero(offset, ii-offset)) return false;
+			if (nv.unsafeGet(i)!=v.unsafeGet(ii)) return false;
+			offset=ii+1;
+		}
+		return v.isRangeZero(offset,length-offset);
 	}
 
 	@Override
@@ -161,13 +224,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      */
     @Override
     public double elementPowSum(double p) {
-        Index ni = nonSparseIndex();
-        double result = 0;
-        for(int i=0; i<ni.length(); i++) {
-            int ii = ni.get(i);
-            result += Math.pow(unsafeGet(ii), p);
-        }
-        return result;
+        return nonSparseValues().elementPowSum(p);
     }
     
     /**
@@ -176,12 +233,6 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      */
     @Override
     public double elementAbsPowSum(double p) {
-        Index ni = nonSparseIndex();
-        double result = 0;
-        for(int i=0; i<ni.length(); i++) {
-            int ii = ni.get(i);
-            result += Math.pow(Math.abs(unsafeGet(ii)), p);
-        }
-        return result;
+    	return nonSparseValues().elementAbsPowSum(p);
     }
 }

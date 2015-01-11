@@ -17,7 +17,9 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * A general n-dimensional double array implemented as a collection of (n-1) dimensional slices
+ * A general N-dimensional double array implemented as a collection of (n-1) dimensional slices
+ * 
+ * Must have dimensionality 1 or above, and at least one slice
  * 
  * @author Mike
  *
@@ -49,7 +51,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	}
 	
 	public static SliceArray<INDArray> repeat (INDArray s, int n) {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 		for (int i=0; i<n; i++) {
 			al.add(s);
 		}
@@ -58,7 +60,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	
 	public static SliceArray<INDArray> create(List<INDArray> slices) {
 		int slen=slices.size();
-		if (slen==0) throw new VectorzException("Empty list of slices provided to SliceArray");
+		if (slen==0) throw new IllegalArgumentException("Empty list of slices provided to SliceArray");
 		INDArray[] arr=new INDArray[slen];
 		return new SliceArray<INDArray>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
 	}
@@ -137,16 +139,25 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	}
 
 	@Override
-	public INDArray slice(int majorSlice) {
+	public T slice(int majorSlice) {
 		return slices[majorSlice];
 	}
 	
+	@Override
+	public int componentCount() {
+		return sliceCount();
+	}
+	
+	@Override
+	public T getComponent(int k) {
+		return slices[(int)k];
+	}
 
 	@Override
 	public INDArray slice(int dimension, int index) {
 		if (dimension<0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
 		if (dimension==0) return slice(index);
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(sliceCount());
 		for (INDArray s:this) {
 			al.add(s.slice(dimension-1,index));
 		}
@@ -158,6 +169,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		return IntArrays.arrayProduct(shape);
 	}
 	
+	@Override
 	public INDArray innerProduct(INDArray a) {
 		int dims=dimensionality();
 		switch (dims) {
@@ -174,15 +186,18 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 			}
 		}
 		
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		int n=sliceCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 		for (INDArray s:this) {
 			al.add(s.innerProduct(a));
 		}
 		return Arrayz.create(al);
 	}
 	
+	@Override
 	public INDArray outerProduct(INDArray a) {
-		ArrayList<INDArray> al=new ArrayList<INDArray>();
+		int n=sliceCount();
+		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 		for (INDArray s:this) {
 			al.add(s.outerProduct(a));
 		}
@@ -277,9 +292,9 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 
 	@Override
 	public List<?> getSlices() {
-		ArrayList<Object> al=new ArrayList<Object>();
+		int n=sliceCount();
+		ArrayList<Object> al=new ArrayList<Object>(n);
 		if (dimensionality()==1) {
-			int n=sliceCount();
 			for (int i=0; i<n ; i++) {
 				al.add(Double.valueOf(slices[i].get()));
 			}
@@ -299,6 +314,11 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 			al[i]=slice(i);
 		}
 		return al;
+	}
+	
+	@Override
+	public INDArray[] getComponents() {
+		return toSliceArray();
 	}
 	
 	@Override

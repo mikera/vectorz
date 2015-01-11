@@ -95,8 +95,10 @@ public class Indexz {
 	 * @return
 	 */
 	public static Index createRandomSubset(AIndex index, double probability) {
-		ArrayList<Integer> al=new ArrayList<Integer>();
 		int len=index.length();
+		// estimated capacity required = 3 standard deviations
+		int elen=(int)(len*probability+3.0*Math.sqrt(len*probability*(1-probability)));
+		ArrayList<Integer> al=new ArrayList<Integer>(elen);
 		for (int i=0; i<len; i++) {
 			if (Rand.chance(probability)) {
 				al.add(index.get(i));

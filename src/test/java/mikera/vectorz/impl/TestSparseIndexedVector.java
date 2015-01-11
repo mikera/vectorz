@@ -8,6 +8,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TestSparseIndexedVector {
@@ -21,6 +22,25 @@ public class TestSparseIndexedVector {
 		assertEquals(6.0,sv.elementSum(),0.0);
         assertTrue(sv.includesIndex(6));
         assertFalse(sv.includesIndex(5));
+	}
+	
+	@Test public void testCreateAndClone() {
+		SparseIndexedVector sv=SparseIndexedVector.createLength(10);
+		assertEquals(0,sv.nonSparseElementCount());
+		sv.set(3,3.0);
+		
+		SparseIndexedVector sc=sv.sparseClone();
+		assertEquals(sc,sv);
+		sv.set(1,1.0);
+		sv.set(6,6.0);
+		sc.validate();
+		Assert.assertNotEquals(sc,sv);
+	}
+	
+	@Test public void testSparseHashedConversion() {
+		SparseIndexedVector sv=SparseIndexedVector.create(SparseHashedVector.createLength(10));
+		assertTrue(sv.isZero());
+		
 	}
 	
 	@Test (expected=java.lang.Throwable.class)
@@ -98,5 +118,13 @@ public class TestSparseIndexedVector {
 		assertEquals(Vector.of(0,0,0,0,0,3,0,18,0,0),v3);
 
 	}
+
+    @Test public void testRoundToZero() {
+        SparseIndexedVector sv = SparseIndexedVector.create(10,
+                                                            Index.of(1, 3, 6),
+                                                            Vector.of(0.001, 0.01, 0.1));
+        ASparseVector rsv = sv.roundToZero(0.001);
+        assertEquals(Vector.of(0, 0, 0, 0.01, 0, 0, 0.1, 0, 0, 0), rsv);
+    }
 
 }
