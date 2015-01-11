@@ -116,6 +116,16 @@ public final class Matrix11 extends APrimitiveMatrix {
 	}
 	
 	@Override
+	public double unsafeGet(int row, int column) {
+		return value;
+	}
+
+	@Override
+	public void unsafeSet(int row, int column, double value) {
+		this.value=value;
+	}
+	
+	@Override
 	public void addAt(int i, int j, double value) {
 		this.value+=value;
 	}
@@ -140,17 +150,7 @@ public final class Matrix11 extends APrimitiveMatrix {
 			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, column));
 		}
 	}
-	
-	@Override
-	public double unsafeGet(int row, int column) {
-		return value;
-	}
-
-	@Override
-	public void unsafeSet(int row, int column, double value) {
-		this.value=value;
-	}
-	
+		
 	@Override
 	public void getElements(double[] data, int offset) {
 		data[offset]=value;
