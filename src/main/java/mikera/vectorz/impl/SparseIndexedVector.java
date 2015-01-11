@@ -228,6 +228,16 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[i]+=v.unsafeGet(index.get(i));
 		}
 	}
+    
+    @Override
+	public void addMultiple(AVector v,double factor) {
+    	if (factor==0.0) return;
+		if (v instanceof ASparseVector) {
+			addMultiple((ASparseVector)v,factor);
+			return;
+		}
+		super.addMultiple(v, factor);
+	}
 
 	@Override
 	public void add(ADenseArrayVector v) {
@@ -239,12 +249,24 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	
 	@Override
 	public void add(ASparseVector v) {
+		checkSameLength(v);
         if (v instanceof ZeroVector) {
             return;
         }
 		includeIndices(v);	
 		for (int i=0; i<data.length; i++) {
 			data[i]+=v.unsafeGet(index.get(i));
+		}
+	}
+	
+	public void addMultiple(ASparseVector v, double factor) {
+		checkSameLength(v);
+        if ((factor==0.0)||(v instanceof ZeroVector)) {
+            return;
+        }
+		includeIndices(v);	
+		for (int i=0; i<data.length; i++) {
+			data[i]+=v.unsafeGet(index.get(i))*factor;
 		}
 	}
     
