@@ -316,9 +316,14 @@ public class IntArrays {
 	}
 
 	public static int[] mergeSorted(int[] xs, int[] ys) {
-		int xl=xs.length; if (xl==0) return ys.clone();
-		int yl=ys.length; if (yl==0) return xs.clone();
+		int xl=xs.length; if (xl==0) return ys;
+		int yl=ys.length; if (yl==0) return xs;
 		int ms = countMatches(xs,ys);
+		
+		// handle common-ish case of one list complete contained in other
+		if (ms==xl) return ys;
+		if (ms==yl) return xs;
+		
 		int[] rs=new int[xl+yl-ms];
 		int xi=0;
 		int yi=0;
@@ -344,6 +349,11 @@ public class IntArrays {
 		int xl=xs.length; if (xl==0) return EMPTY_INT_ARRAY;
 		int yl=ys.length; if (yl==0) return EMPTY_INT_ARRAY;
 		int ms = countMatches(xs,ys);
+		
+		// handle common-ish case of one list complete contained in other		
+		if (ms==xl) return xs;
+		if (ms==yl) return ys;
+		
 		int[] rs=new int[ms];
 		int xi=0;
 		int yi=0;
