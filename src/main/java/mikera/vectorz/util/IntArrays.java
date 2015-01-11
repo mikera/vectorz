@@ -315,9 +315,19 @@ public class IntArrays {
 		return res;
 	}
 
+	/**
+	 * Merges two distinct sorted integer arrays, returning the union of all values
+	 * 
+	 * WARNINGS: 
+	 * 1. may return one of the original arrays. 
+	 * 2. Does not check for consistency of input.
+	 * @param xs
+	 * @param ys
+	 * @return
+	 */
 	public static int[] mergeSorted(int[] xs, int[] ys) {
-		int xl=xs.length; if (xl==0) return ys;
-		int yl=ys.length; if (yl==0) return xs;
+		int xl=xs.length;
+		int yl=ys.length;
 		int ms = countMatches(xs,ys);
 		
 		// handle common-ish case of one list complete contained in other
@@ -345,9 +355,19 @@ public class IntArrays {
 		return rs;
 	}
 	
+	/**
+	 * Intersects two distinct sorted integer arrays, returning the intersection of all values
+	 * 
+	 * WARNINGS: 
+	 * 1. may return one of the original arrays. 
+	 * 2. Does not check for consistency of input.
+	 * @param xs
+	 * @param ys
+	 * @return
+	 */
 	public static int[] intersectSorted(int[] xs, int[] ys) {
-		int xl=xs.length; if (xl==0) return EMPTY_INT_ARRAY;
-		int yl=ys.length; if (yl==0) return EMPTY_INT_ARRAY;
+		int xl=xs.length; 
+		int yl=ys.length; 
 		int ms = countMatches(xs,ys);
 		
 		// handle common-ish case of one list complete contained in other		
