@@ -160,13 +160,21 @@ public class TestBigSparse {
 	@Test public void testBigVectorMultiply() {
 		int SIZE=1000000000;
 		AVector v=Vectorz.createSparseMutable(SIZE);
+		
+		// clone with two shared elements
+		v.set(0,5.0);
 		v.set(5000,2.0);
 		AVector v2=v.sparseClone();
+		
+		// set some other elements
 		v.set(4999,3.0);
 		v2.set(5001,4.0);
+		
 		v.multiply(v2);
+		assertEquals(2,v.nonZeroCount());
+		assertEquals(25.0,v.get(0),0.0);
 		assertEquals(4.0,v.get(5000),0.0);
-		assertEquals(4.0,v.elementSum(),0.0);
+		assertEquals(29.0,v.elementSum(),0.0);
 	}
 	
 	@Test public void testBigIdentity() {

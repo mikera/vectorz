@@ -292,12 +292,13 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			return;
 		} else if (v instanceof ASparseVector) {
 			multiply((ASparseVector)v);
-		}
-		checkSameLength(v);
-		double[] data=this.data;
-		int[] ixs=index.data;
-		for (int i=0; i<data.length; i++) {
-			data[i]*=v.unsafeGet(ixs[i]);
+		} else {
+			checkSameLength(v);
+			double[] data=this.data;
+			int[] ixs=index.data;
+			for (int i=0; i<data.length; i++) {
+				data[i]*=v.unsafeGet(ixs[i]);
+			}
 		}
 	}
 	
@@ -316,6 +317,8 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			while (thisIndex[i2]!=ti) i2++;
 			ndata[i]=v.unsafeGet(thatIndex[i1])*unsafeGet(thisIndex[i2]);
 		}
+		this.data=ndata;
+		this.index=Index.wrap(tix);
 	}
 	
 	public void multiply(ADenseArrayVector v) {
