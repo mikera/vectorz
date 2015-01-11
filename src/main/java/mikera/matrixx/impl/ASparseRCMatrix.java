@@ -32,9 +32,12 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
     }
 
     /**
-     * Gets a vector from the internal data array, which may be null
+     * Gets a vector from the internal data array
+     * 
+     * The vector may be null (indicating a zero row or column)
+     * 
      */
-    public AVector unsafeGetVec(int i) {
+    public AVector unsafeGetVector(int i) {
         return data[i];
     }
 
@@ -262,7 +265,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 
 		long n=componentCount();
 		for (int i = 0; i < n; i++) {
-			AVector v = unsafeGetVec(i);
+			AVector v = unsafeGetVector(i);
 			if (v == null) {
 				if (!stoch) {
 					unsafeSetVec(i, rr);
@@ -319,7 +322,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
         int dlen = data.length;
 		if (dlen != componentCount()) throw new VectorzException("Too many rows");
 		for (int i = 0; i < dlen; ++i) {
-            AVector vec = unsafeGetVec(i);
+            AVector vec = unsafeGetVector(i);
 			int vlen = (vec == null) ? lineLength() : vec.length();
 			if (vlen!=lineLength()) throw new VectorzException("Wrong length data line vector, length "+vlen+" at position: "+i);
 		}

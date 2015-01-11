@@ -151,7 +151,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 
 	@Override
 	public void unsafeSet(int i, int j, double value) {
-		AVector v = unsafeGetVec(j);
+		AVector v = unsafeGetVector(j);
 		if (v==null) {
 			if (value == 0.0)
                 return;
@@ -190,7 +190,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	@Override
 	public void addToArray(double[] targetData, int offset) {
         for (int i = 0; i < cols; ++i) {
-			AVector v = unsafeGetVec(i);
+			AVector v = unsafeGetVector(i);
 			if (v != null) v.addToArray(targetData, offset+i, cols);
 		}
 	}
@@ -204,7 +204,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
         SparseRowMatrix rm=SparseRowMatrix.create(rows, cols);
 
         for (int j = 0; j < cols; j++) {
-            AVector colVec = unsafeGetVec(j);
+            AVector colVec = unsafeGetVector(j);
             if (colVec!=null) {
                 Index nonSparseRows = colVec.nonSparseIndex();
                 int n=nonSparseRows.length();
@@ -221,7 +221,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
     }
     
 	private AVector ensureMutableColumn(int i) {
-		AVector v = unsafeGetVec(i);
+		AVector v = unsafeGetVector(i);
 		if (v == null) {
 			AVector nv=SparseIndexedVector.createLength(rows);
             unsafeSetVec(i, nv);
@@ -235,7 +235,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public AVector getColumn(int j) {
-		AVector v = unsafeGetVec(j);
+		AVector v = unsafeGetVector(j);
 		if (v==null) return emptyColumn;
 		return v;
 	}
@@ -258,8 +258,8 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public void swapColumns(int i, int j) {
 		if (i == j)
 			return;
-		AVector a = unsafeGetVec(i);
-		AVector b = unsafeGetVec(j);
+		AVector a = unsafeGetVector(i);
+		AVector b = unsafeGetVector(j);
 		unsafeSetVec(i, b);
 		unsafeSetVec(j, a);
 	}
@@ -276,7 +276,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public void add(AMatrix a) {
 		int count=columnCount();
 		for (int i=0; i<count; i++) {
-			AVector myVec=unsafeGetVec(i);
+			AVector myVec=unsafeGetVector(i);
 			AVector aVec=a.getColumn(i);
 			if (myVec==null) {
 				if (!aVec.isZero()) {
@@ -298,7 +298,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	@Override
 	public void copyRowTo(int row, double[] targetData, int offset) {
         for (int i = 0; i < cols; ++i) {
-            AVector e = unsafeGetVec(i);
+            AVector e = unsafeGetVector(i);
             targetData[offset+i] = (e==null)? 0.0 : e.unsafeGet(row);
 		}		
 	}
@@ -313,7 +313,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		long n=componentCount();
 		AVector[] ndata=new AVector[(int)n];
 		for (int i = 0; i < n; ++i) {
-            AVector v = unsafeGetVec(i);
+            AVector v = unsafeGetVector(i);
             if (v != null) {
                 ndata[i] = v.multiplyCopy(a);
             }
@@ -348,7 +348,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public double[] toDoubleArray() {
 		Matrix m=Matrix.create(rows, cols);
 		for (int i=0; i<cols; i++) {
-			AVector v = unsafeGetVec(i);
+			AVector v = unsafeGetVector(i);
 			if (v != null) {
                 m.getColumn(i).set(v);
             }
@@ -365,7 +365,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public SparseColumnMatrix exactClone() {
 		SparseColumnMatrix result= new SparseColumnMatrix(rows,cols);
         for (int i = 0; i < cols; ++i) {
-			AVector col = unsafeGetVec(i);
+			AVector col = unsafeGetVector(i);
 			if (col != null) {
 			    result.replaceColumn(i, col.exactClone());
 			}
@@ -398,7 +398,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		if (m==this) return true;
 		if (!isSameShape(m)) return false;
 		for (int i=0; i<cols; i++) {
-			AVector v=unsafeGetVec(i);
+			AVector v=unsafeGetVector(i);
             AVector ov = m.getColumn(i);
 			if (v==null) {
 				if (!ov.isZero()) return false;

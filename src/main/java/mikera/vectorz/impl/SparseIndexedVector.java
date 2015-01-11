@@ -175,7 +175,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			double value=data[ii]; 
 			if (value==0.0) continue; // skip zero values
 			int i=index.get(ii);
-            AVector row = m.unsafeGetVec(i);
+            AVector row = m.unsafeGetVector(i);
             if (row==null) continue; // skip zero rows
             
             // TODO: we were casting to ASparseVector, necessary for speed??
