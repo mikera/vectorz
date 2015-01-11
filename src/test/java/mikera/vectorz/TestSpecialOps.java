@@ -11,7 +11,7 @@ import mikera.vectorz.ops.Quadratic;
 
 import org.junit.Test;
 
-public class TestOpsExtra {
+public class TestSpecialOps {
 	private void testDerivativesAt(Op op, double... xs) {
 		for (double x:xs) {
 			testDerivativeAt(op,x);

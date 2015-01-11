@@ -12,6 +12,8 @@ import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.SubsetMatrix;
+import mikera.matrixx.impl.UpperTriangularMatrix;
+import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.ATransform;
@@ -394,5 +396,37 @@ public class TestMisc {
 		} catch (Throwable t) {
 			// OK
 		}
+	}
+
+	@Test 
+	public void testTriangularClone() {
+		UpperTriangularMatrix u=UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(3));
+		assertEquals(u,u.exactClone());
+		
+		assertTrue(u.isUpperTriangular());
+		assertTrue(u.getTranspose().isLowerTriangular());
+	}
+
+	@Test public void testVMCreateM3() {
+		VectorMatrixM3 m=new VectorMatrixM3(0);
+		assertEquals(0,m.rowCount());
+		assertEquals(3,m.columnCount());
+		
+		AMatrix mt=m.getTranspose();
+		assertEquals(0,mt.columnCount());
+	}
+
+	@Test public void testVMCreateMN() {
+		VectorMatrixMN m=new VectorMatrixMN(0,3);
+		assertEquals(0,m.rowCount());
+		assertEquals(3,m.columnCount());
+		
+		AMatrix mt=m.getTranspose();
+		assertEquals(0,mt.columnCount());
+	}
+
+	@Test public void testVMWrap() {
+		AMatrix m=Matrixx.createRandomMatrix(4, 5);
+		assertEquals(VectorMatrixMN.create(m),VectorMatrixMN.wrap(m));
 	}
 }

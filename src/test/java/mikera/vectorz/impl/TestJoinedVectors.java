@@ -15,7 +15,7 @@ import mikera.vectorz.Vectorz;
 
 import org.junit.Test;
 
-public class TestJoinedVector {
+public class TestJoinedVectors {
 	
 	@Test public void testJoinedArrays() {
 		Vector v=Vector.of(1);
