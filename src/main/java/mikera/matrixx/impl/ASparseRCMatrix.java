@@ -217,6 +217,16 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+	public void copyRowTo(int i, double[] dest, int destOffset) {
+		getRow(i).copyTo(dest, destOffset);
+	}
+	
+	@Override
+	public void copyColumnTo(int j, double[] dest, int destOffset) {
+		getColumn(j).copyTo(dest, destOffset);
+	}
+	
+	@Override
 	public double elementSum() {
 		double result=0.0;
 		for (AVector vec: data) {

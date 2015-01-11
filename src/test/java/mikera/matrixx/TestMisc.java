@@ -424,9 +424,4 @@ public class TestMisc {
 		AMatrix mt=m.getTranspose();
 		assertEquals(0,mt.columnCount());
 	}
-
-	@Test public void testVMWrap() {
-		AMatrix m=Matrixx.createRandomMatrix(4, 5);
-		assertEquals(VectorMatrixMN.create(m),VectorMatrixMN.wrap(m));
-	}
 }

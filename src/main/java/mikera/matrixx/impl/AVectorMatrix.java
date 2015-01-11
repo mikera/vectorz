@@ -127,6 +127,15 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	}
 	
 	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		checkColumn(col);
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			dest[destOffset++]=getRow(i).unsafeGet(col);
+		}
+	}
+	
+	@Override
 	public final void getElements(double[] dest, int destOffset) {
 		int rc=rowCount();
 		int cc=columnCount();

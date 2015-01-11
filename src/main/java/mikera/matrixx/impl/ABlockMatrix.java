@@ -33,6 +33,16 @@ public abstract class ABlockMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void copyRowTo(int i, double[] dest, int destOffset) {
+		getRow(i).copyTo(dest, destOffset);
+	}
+	
+	@Override
+	public void copyColumnTo(int j, double[] dest, int destOffset) {
+		getColumn(j).copyTo(dest, destOffset);
+	}
+	
+	@Override
 	public AMatrix getComponent(int k) {
 		int cbc=columnBlockCount();
 		long i=k / cbc;
