@@ -8,6 +8,10 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.Vector0;
 
+/**
+ * Utility function for testing arrays / matrix implementations
+ * @author Mike
+ */
 public class Testing {
 
 	public static AVector createTestVector(int length) {
