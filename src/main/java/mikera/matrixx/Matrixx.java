@@ -19,7 +19,6 @@ import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
-import mikera.util.Rand;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector3;

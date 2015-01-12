@@ -17,10 +17,8 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -138,7 +136,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	
 	@Override
 	public AVector getComponent(int k) {
-		AVector v=data[(int)k];
+		AVector v=data[k];
 		if (v==null) return emptyRow;
 		return v;
 	}

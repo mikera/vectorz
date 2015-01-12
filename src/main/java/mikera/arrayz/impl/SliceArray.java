@@ -150,7 +150,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	
 	@Override
 	public T getComponent(int k) {
-		return slices[(int)k];
+		return slices[k];
 	}
 
 	@Override

@@ -1,22 +1,11 @@
 package mikera.matrixx.impl;
 
 import java.util.List;
-import java.util.ArrayList;
-// import java.util.HashMap;
-// import java.util.HashSet;
-// import java.util.Map;
-// import java.util.Map.Entry;
-
-
-
-
-
 import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleElementVector;
@@ -123,7 +112,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public AVector getComponent(int k) {
-		AVector v=data[(int)k];
+		AVector v=data[k];
 		if (v==null) return emptyColumn;
 		return v;
 	}
