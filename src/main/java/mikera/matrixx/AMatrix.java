@@ -843,7 +843,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		
 		double result=0.0;
 		for (int i=0; i<rc; i++) {
-			result+=getRowView(i).elementSum();
+			result+=getRow(i).elementSum();
 		}
 		return result;
 	}
