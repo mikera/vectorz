@@ -432,7 +432,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public double get(int i, int j) {
-		if ((j < 0) || (j >= cols)) throw new IndexOutOfBoundsException();
+		checkColumn(j); // only need to check column, row of of bounds will cause IndexOutOfBoundsException
 		return data[(i * cols) + j];
 	}
 
@@ -473,7 +473,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void set(int i, int j, double value) {
-		if ((j < 0) || (j >= cols)) throw new IndexOutOfBoundsException();
+		checkColumn(j); // only need to check column, row out of bounds will cause IndexOutOfBoundsException
 		data[(i * cols) + j] = value;
 	}
 
@@ -582,8 +582,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void set(AMatrix a) {
-		if ((rowCount() != a.rowCount()) || (columnCount() != a.columnCount())) { throw new IllegalArgumentException(
-				ErrorMessages.mismatch(this, a)); }
+		checkSameShape(a);
 		a.getElements(this.data, 0);
 	}
 
