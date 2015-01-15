@@ -21,7 +21,7 @@ public class BufferMatrix extends ARectangularMatrix {
 		this(DoubleBuffer.allocate(rows*cols), rows, cols);
 	}
 
-	private BufferMatrix(DoubleBuffer buf, int rows, int cols) {
+	protected BufferMatrix(DoubleBuffer buf, int rows, int cols) {
 		super(rows,cols);
 		this.buffer=buf;
 	}
@@ -49,6 +49,16 @@ public class BufferMatrix extends ARectangularMatrix {
 		checkColumn(j);
 		buffer.put(i*cols+j,value);
 	}
+	
+	@Override
+	public double unsafeGet(int i, int j) {
+		return buffer.get(i*cols+j);
+	}
+
+	@Override
+	public void unsafeSet(int i, int j, double value) {
+		buffer.put(i*cols+j,value);
+	}
 
 	@Override
 	public boolean isFullyMutable() {
@@ -56,7 +66,7 @@ public class BufferMatrix extends ARectangularMatrix {
 	}
 
 	@Override
-	public AMatrix exactClone() {
+	public BufferMatrix exactClone() {
 		int ec=buffer.capacity();
 		double[] newArray=new double[ec];
 		buffer.get(newArray);
