@@ -5,6 +5,14 @@ import java.nio.DoubleBuffer;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 
+/**
+ * A matrix class implemented using a java.nio.DoubleBuffer
+ * 
+ * Intended for use with native libraries that require interop with buffer memory
+ * 
+ * @author Mike
+ *
+ */
 public class BufferMatrix extends ARectangularMatrix {
 
 	final DoubleBuffer buffer;
