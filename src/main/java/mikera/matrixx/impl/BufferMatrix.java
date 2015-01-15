@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.vectorz.impl.BufferVector;
 
 /**
  * A matrix class implemented using a java.nio.DoubleBuffer
@@ -58,6 +59,17 @@ public class BufferMatrix extends ARectangularMatrix {
 	@Override
 	public void unsafeSet(int i, int j, double value) {
 		buffer.put(i*cols+j,value);
+	}
+	
+	@Override
+	public BufferVector getRowView(int i) {
+		int cols=this.cols;
+		int t=i*cols;
+		buffer.position(t);
+		buffer.limit(t+cols);
+		DoubleBuffer subBuffer=buffer.slice();
+		buffer.clear();
+		return BufferVector.wrap(subBuffer, cols);
 	}
 
 	@Override
