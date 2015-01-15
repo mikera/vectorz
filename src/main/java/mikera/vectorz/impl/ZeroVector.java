@@ -186,7 +186,7 @@ public final class ZeroVector extends ASparseVector {
 
     @Override
     public void multiply(double factor) {
-        
+        throw new UnsupportedOperationException(ErrorMessages.immutable(this));
     }
     
 	@Override

@@ -187,19 +187,19 @@ public class TestArrays {
 			try {
 				a.getComponent(0);
 				fail("Should not be able to access any components!");
-			} catch (Throwable t) {/* OK */};
+			} catch (Throwable t) {/* OK */}
 		}
 		if (cc==0) return;
 		
 		try {
 			a.getComponent(-1);
 			fail("Should not be able to access negative components!");
-		} catch (Throwable t) {/* OK */};
+		} catch (Throwable t) {/* OK */}
 		
 		try {
 			a.getComponent(cc);
 			fail("Should not be able to access out of bounds components!");
-		} catch (Throwable t) {/* OK */};
+		} catch (Throwable t) {/* OK */}
 		
 		long ec=a.elementCount();
 		double ess=a.elementSquaredSum();

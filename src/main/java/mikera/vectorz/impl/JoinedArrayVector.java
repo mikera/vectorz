@@ -75,8 +75,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 		return pos[j+1]-pos[j];
 	}
 	
-	public ArraySubVector getComponent(int j) {
-		int i=(int)j;
+	public ArraySubVector getComponent(int i) {
 		return ArraySubVector.wrap(data[i], offsets[i], subLength(i));
 	}
 	
@@ -594,7 +593,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 
 	@Override
 	public AJoinedVector withComponents(INDArray[] segments) {
-		int sc=(int)componentCount();
+		int sc=componentCount();
 		double[][] newData=new double[sc][];
 		int[] offs=this.offsets.clone();
 		for (int i=0; i<sc; i++) {

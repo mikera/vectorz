@@ -1,7 +1,6 @@
 package mikera.arrayz.impl;
 
 import mikera.arrayz.INDArray;
-import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**

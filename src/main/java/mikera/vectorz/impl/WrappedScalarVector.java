@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
-import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
