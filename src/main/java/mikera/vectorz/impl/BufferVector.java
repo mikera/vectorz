@@ -77,6 +77,12 @@ public class BufferVector extends ASizedVector {
 		buffer.clear();
 		return wrap(newBuffer,length);
 	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		buffer.get(dest, offset, length);
+		buffer.clear();
+	}
 
 	@Override
 	public BufferVector exactClone() {
