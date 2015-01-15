@@ -30,6 +30,10 @@ public class BufferMatrix extends ARectangularMatrix {
 		return new BufferMatrix(DoubleBuffer.wrap(source),rows,cols);
 	}
 	
+	public static BufferMatrix wrap(DoubleBuffer source, int rows, int cols) {
+		return new BufferMatrix(source,rows,cols);
+	}
+	
 	public static AMatrix create(AMatrix m) {
 		return wrap(m.toDoubleArray(),m.rowCount(),m.columnCount());
 	}
