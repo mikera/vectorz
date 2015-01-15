@@ -17,6 +17,7 @@ import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.GrowableVector;
+import mikera.vectorz.impl.BufferVector;
 import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
@@ -883,6 +884,11 @@ public class TestVectors {
 		doGenericTests(BitVector.of(0));
 		doGenericTests(BitVector.of(0,1,0));
 		doGenericTests(BitVector.of(0,1,0).subVector(1, 1));
+	}
+	
+	@Test public void g_BufferVector() {
+		doGenericTests(BufferVector.create(Vector.of(1,3,5,7,-5)));
+		doGenericTests(BufferVector.createLength(0));
 	}
 		
 	@Test public void g_ZeroLength() {
