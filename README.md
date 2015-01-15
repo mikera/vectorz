@@ -48,7 +48,7 @@ See the [Vectorz Wiki](https://github.com/mikera/vectorz/wiki)
  - Operator system provides **composable operators** that can be applied to array elements
  - **Input / output** of vectors and matrices - in various formats including readable edn format
 
-Vectorz is deigned to allow the maximum performance possible for vector maths on the JVM.
+Vectorz is designed to allow the maximum performance possible for vector maths on the JVM.
 
 This focus has driven a number of important design decisions:
 
