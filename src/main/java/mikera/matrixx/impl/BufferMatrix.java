@@ -81,6 +81,11 @@ public class BufferMatrix extends ARectangularMatrix {
 	public boolean isFullyMutable() {
 		return true;
 	}
+	
+	@Override
+	public BufferMatrix clone() {
+		return exactClone();
+	}
 
 	@Override
 	public BufferMatrix exactClone() {
