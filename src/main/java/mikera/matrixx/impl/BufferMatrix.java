@@ -71,6 +71,11 @@ public class BufferMatrix extends ARectangularMatrix {
 		buffer.clear();
 		return BufferVector.wrap(subBuffer, cols);
 	}
+	
+	@Override
+	public BufferVector asVector() {
+		return BufferVector.wrap(buffer.duplicate(), rows*cols);
+	}
 
 	@Override
 	public boolean isFullyMutable() {
