@@ -33,6 +33,7 @@ import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.MatrixTransform;
 import mikera.transformz.TestTransformz;
+import mikera.util.Random;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
@@ -578,7 +579,7 @@ public class TestMatrices {
 	}
 	
 	@Test public void g_BufferMatrix() {
-		doGenericTests(BufferMatrix.create(Matrixx.createRandomSquareMatrix(3,new Random())));
+		doGenericTests(BufferMatrix.create(Matrixx.createRandomSquareMatrix(3,new Random(5645))));
 	}
 	
 	@Test public void g_ScalarMatrix() {	
