@@ -65,6 +65,18 @@ public class BufferVector extends ASizedVector {
 	public boolean isFullyMutable() {
 		return true;
 	}
+	
+	@Override
+	public AVector subVector(int offset, int length) {
+		checkRange(offset,length);
+		if (length==0) return Vector0.INSTANCE;
+		if (length==this.length) return this;
+		buffer.position(offset);
+		buffer.limit(offset+length);
+		DoubleBuffer newBuffer=buffer.slice();
+		buffer.clear();
+		return wrap(newBuffer,length);
+	}
 
 	@Override
 	public BufferVector exactClone() {
