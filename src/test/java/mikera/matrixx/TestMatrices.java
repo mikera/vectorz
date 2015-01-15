@@ -580,6 +580,7 @@ public class TestMatrices {
 	
 	@Test public void g_BufferMatrix() {
 		doGenericTests(BufferMatrix.create(Matrixx.createRandomSquareMatrix(3,new Random(5645))));
+		doGenericTests(BufferMatrix.create(Matrixx.createRandomMatrix(2, 4, new Random(55645))));
 	}
 	
 	@Test public void g_ScalarMatrix() {	
