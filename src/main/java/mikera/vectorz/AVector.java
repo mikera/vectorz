@@ -760,7 +760,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public AVector getTranspose() {return this;}
+	public final AVector getTranspose() {return this;}
 	
 	@Override
 	public Vector getTransposeCopy() {
