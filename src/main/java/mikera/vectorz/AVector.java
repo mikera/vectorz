@@ -763,8 +763,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public final AVector getTranspose() {return this;}
 	
 	@Override
-	public Vector getTransposeCopy() {
-		return Vector.create(this);
+	public AVector getTransposeCopy() {
+		return clone();
 	}
 	
 	@Override
