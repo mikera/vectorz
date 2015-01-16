@@ -2,8 +2,8 @@ package mikera.matrixx.impl;
 
 import java.nio.DoubleBuffer;
 
+import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.vectorz.impl.BufferVector;
 
 /**
@@ -15,7 +15,9 @@ import mikera.vectorz.impl.BufferVector;
  *
  */
 public class BufferMatrix extends ARectangularMatrix {
-
+	private static final long serialVersionUID = 2933979132279936135L;
+	
+	
 	final DoubleBuffer buffer;
 	
 	protected BufferMatrix(int rows, int cols) {
@@ -28,6 +30,7 @@ public class BufferMatrix extends ARectangularMatrix {
 	}
 	
 	public static BufferMatrix wrap(double[] source, int rows, int cols) {
+		if (source.length!=(rows*cols)) throw new IllegalArgumentException("Wrong array size for matrix of shape "+Index.of(rows,cols));
 		return new BufferMatrix(DoubleBuffer.wrap(source),rows,cols);
 	}
 	

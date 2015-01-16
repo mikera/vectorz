@@ -13,6 +13,7 @@ import mikera.vectorz.AVector;
  *
  */
 public class BufferVector extends ASizedVector {
+	private static final long serialVersionUID = -24132234222851156L;
 
 	final DoubleBuffer buffer;
 	
