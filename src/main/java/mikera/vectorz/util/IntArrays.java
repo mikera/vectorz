@@ -223,7 +223,7 @@ public class IntArrays {
 		}
 		
 		while ((min+10)<max) {
-			int mid=min+((max-min)*(x-lx))/((hx-lx)*2); // best estimate of position
+            int mid = (int)((long)min+(((long)(max-min))*((long)(x-lx)))/(((long)(hx-lx))*2)); // best estimate of position
 			int mx=data[mid];
 			if (x==mx) return mid;
 			if (x<mx) {
