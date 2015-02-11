@@ -111,4 +111,9 @@ public final class SubsetMatrix extends ABooleanMatrix implements ISparse, IFast
 		}
 		super.validate();
 	}
+
+	@Override
+	public boolean isZero() {
+		return false;
+	}
 }

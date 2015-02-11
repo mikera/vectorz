@@ -77,4 +77,9 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 	public void set(int row, int column, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
+
+	@Override
+	public boolean isZero() {
+		return vector.isZero();
+	}
 }

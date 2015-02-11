@@ -1659,21 +1659,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
 	public boolean isZero() {
-		if (this instanceof IFastRows) {
-			int rc=rowCount();
-			for (int i=0; i<rc; i++) {
-				if (!getRow(i).isZero()) return false;
-			}
-			return true;
-		} else if (this instanceof IFastColumns) {
-			int cc=columnCount();
-			for (int i=0; i<cc; i++) {
-				if (!getColumn(i).isZero()) return false;
-			}
-			return true;
-		} else {
-			return elementsEqual(0.0);
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).isZero()) return false;
 		}
+		return true;
 	}
 	
 	/**

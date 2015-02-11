@@ -354,4 +354,9 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
         return elementPowSum(p);
     }
 
+	@Override
+	public boolean isZero() {
+		return false;
+	}
+
 }

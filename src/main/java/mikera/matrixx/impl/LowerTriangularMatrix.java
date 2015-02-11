@@ -7,6 +7,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.IndexedArrayVector;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Class for a lower triangular matrix packed densely by rows.
@@ -123,5 +124,11 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	public AMatrix exactClone() {
 		return new LowerTriangularMatrix(data.clone(),rows,cols);
 	}
+	
+	@Override
+	public boolean isZero() {
+		return DoubleArrays.isZero(data);
+	}
+
 
 }
