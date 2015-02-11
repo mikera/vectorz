@@ -1509,8 +1509,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			add((AMatrix)a);
 		} else if (a instanceof AVector) {
 			add((AVector)a);
-		} else if (a instanceof AScalar) {
-			add(a.get());
 		} else {
 			int dims=a.dimensionality();
 			if (dims>2) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
