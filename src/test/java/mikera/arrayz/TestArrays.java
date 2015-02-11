@@ -674,32 +674,34 @@ public class TestArrays {
 	}
 	
 	private void testIndexedAccess(INDArray a) {
-		if ((a.elementCount() <= 1)) return;
+		if ((a.elementCount() == 0)) return;
 		int dims=a.dimensionality();
 
 		// 0d indexed access
-		try {
-			a.get();
-			fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
-		} catch (Throwable t) { /* OK */ }
-		
-		try {
-			a.set(1.0);
-			fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
-		} catch (Throwable t) { /* OK */ }
-
-		try {
-			a.get(IntArrays.EMPTY_INT_ARRAY);
-			fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
-		} catch (Throwable t) { /* OK */ }
-		
-		try {
-			a.set(IntArrays.EMPTY_INT_ARRAY,1.0);
-			fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
-		} catch (Throwable t) { /* OK */ }
+		if (dims>0) {
+			try {
+				a.get();
+				fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
+			} catch (Throwable t) { /* OK */ }
+			
+			try {
+				a.set(1.0);
+				fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
+			} catch (Throwable t) { /* OK */ }
+	
+			try {
+				a.get(IntArrays.EMPTY_INT_ARRAY);
+				fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
+			} catch (Throwable t) { /* OK */ }
+			
+			try {
+				a.set(IntArrays.EMPTY_INT_ARRAY,1.0);
+				fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
+			} catch (Throwable t) { /* OK */ }
+		}
 
 		// 1D indexed access
-		if (a.dimensionality()>1) {
+		if (dims>1) {
 			try {
 				a.get(0);
 				fail("1d get should fail for array with shape: "+Arrays.toString(a.getShape()));
@@ -711,6 +713,7 @@ public class TestArrays {
 			} catch (Throwable t) { /* OK */ }
 		}
 		
+		assertEquals(a.get(new int[dims]),a.asVector().get(0),0.0);
 		assertEquals(a.getElements()[0],a.get(new int[dims]),0.0);
 		
 		try {
@@ -778,6 +781,11 @@ public class TestArrays {
 
 	@Test
 	public void g_NDArray() {
+		NDArray nd0 = NDArray.newArray();
+		Vectorz.fillIndexes(nd0.asVector());
+		testArray(nd0);
+		testArray(Array.create(nd0));
+		
 		NDArray nd1 = NDArray.newArray(3);
 		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
