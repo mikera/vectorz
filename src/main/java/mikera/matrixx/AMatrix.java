@@ -1533,9 +1533,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void multiply(INDArray a) {
 		if (a instanceof AMatrix) {
 			elementMul((AMatrix)a);
-		} else if (a instanceof AScalar) {
-			multiply(a.get());
-		} else {
+		} else if (a instanceof AVector) {
+			multiply((AVector)a);
+		} else{
 			int dims=a.dimensionality();
 			if (dims==0) {
 				multiply(a.get());
@@ -1553,8 +1553,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void divide(INDArray a) {
 		if (a instanceof AMatrix) {
 			elementDiv((AMatrix)a);
-		} else if (a instanceof AScalar) {
-			multiply(1.0/a.get());
+		} else if (a instanceof AVector) {
+			divide((AVector)a);
 		} else {
 			int dims=a.dimensionality();
 			int rc=rowCount();
@@ -1585,8 +1585,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			sub((AMatrix)a);
 		} else if (a instanceof AVector) {
 			sub((AVector)a);
-		} else if (a instanceof AScalar) {
-			sub(a.get());
 		} else {
 			int dims=a.dimensionality();
 			if (dims==0) {
