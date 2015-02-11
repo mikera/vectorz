@@ -124,11 +124,4 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	public AMatrix exactClone() {
 		return new LowerTriangularMatrix(data.clone(),rows,cols);
 	}
-	
-	@Override
-	public boolean isZero() {
-		return DoubleArrays.isZero(data);
-	}
-
-
 }

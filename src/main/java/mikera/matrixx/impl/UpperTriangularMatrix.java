@@ -126,6 +126,7 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 				if (data[internalIndex(i, j)] != a.unsafeGet(i, j)) return false;
 			}
 			
+			// TODO: factor out using isRangeZero on rows / cols of a?
 			for (int i = j+1; i < rows; i++) {
 				if (a.unsafeGet(i, j)!=0.0) return false;
 			}
@@ -137,10 +138,4 @@ public final class UpperTriangularMatrix extends ATriangularMatrix implements IF
 	public AMatrix exactClone() {
 		return new UpperTriangularMatrix(data.clone(),rows,cols);
 	}
-
-	@Override
-	public boolean isZero() {
-		return DoubleArrays.isZero(data);
-	}
-
 }
