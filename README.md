@@ -15,7 +15,7 @@ Some highlights:
 
 Vectorz is reasonably mature, battle tested and being used in production applications. The API is still evolving however as new features get added so you can expect a few minor changes, at least until version 1.0.0
 
-[![Build Status](https://secure.travis-ci.org/mikera/vectorz.png)](http://travis-ci.org/mikera/vectorz)
+[![Build Status](https://secure.travis-ci.org/mikera/vectorz.png)](http://travis-ci.org/mikera/vectorz) [![Dependency Status](https://www.versioneye.com/user/projects/54deed14271c93aa1200002c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/54deed14271c93aa1200002c)
 
 ### Documentation
 
