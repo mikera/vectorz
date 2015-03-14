@@ -35,16 +35,15 @@ public class SparseHashedVector extends ASparseVector {
 	
 	private SparseHashedVector(int length, HashMap<Integer, Double> hashMap) {
 		super(length);
+		if (length<=0) throw new IllegalArgumentException("Can't create SparseHashedVector of length "+length);
 		hash=hashMap;
 	}
 
 	/**
-	 * Creates a SparseIndexedVector with the specified index and data values.
-	 * Performs no checking - Index must be distinct and sorted.
+	 * Creates a SparseHashedVector with the specified values
 	 */
 	public static SparseHashedVector create(AVector v) {
 		int n=v.length();
-		if (n==0) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(v));
 		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
 		for (int i=0; i<n; i++) {
 			double val=v.unsafeGet(i);
@@ -94,7 +93,7 @@ public class SparseHashedVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,i));
+		checkIndex(i);
 		return unsafeGet(i);
 	}
 	
@@ -142,7 +141,7 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.checkLength(length);
 		double result=0.0;
 		for (int i: hash.keySet()) {
 			result+=hash.get(i)*v.unsafeGet(i);
@@ -241,7 +240,7 @@ public class SparseHashedVector extends ASparseVector {
 
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length))  throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		if (value!=0.0) {	
 			hash.put(i, value);
 		} else {
@@ -251,12 +250,12 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public void set(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		if (v instanceof SparseHashedVector) {
 			set((SparseHashedVector) v);
 			return;
 		}
 		
+		v.checkLength(length);
 		hash=new HashMap<Integer, Double>();
 		
 		for (int i=0; i<length; i++) {
@@ -269,6 +268,7 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@SuppressWarnings("unchecked")
 	public void set(SparseHashedVector v) {
+		v.checkLength(length);
 		hash=(HashMap<Integer, Double>) v.hash.clone();
 	}
 	
