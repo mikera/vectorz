@@ -1654,8 +1654,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		checkRange(offset,length);
 		src.checkRange(srcOffset, length);
 		if (factor==0.0) return;
-		for (int i = 0; i < length; i++) {
-			addAt(i+offset,src.unsafeGet(i+srcOffset)*factor);
+		if (factor==1.0) {
+			add(offset,src,srcOffset,length);
+		} else {
+			for (int i = 0; i < length; i++) {
+				addAt(i+offset,src.unsafeGet(i+srcOffset)*factor);
+			}
 		}
 	}
 	
