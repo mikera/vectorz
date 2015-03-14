@@ -986,6 +986,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public double distanceSquared(AVector v) {
 		int len=length();
+		v.checkLength(len);
 		double total=0.0;
 		for (int i=0; i<len; i++) {
 			double d=unsafeGet(i)-v.unsafeGet(i);
