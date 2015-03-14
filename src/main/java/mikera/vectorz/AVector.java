@@ -1904,11 +1904,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	public void set(IVector vector) {
-		int len=length();
-		if (len!=vector.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, vector));
-		for (int i=0; i<len; i++) {
-			this.unsafeSet(i,vector.get(i));
-		}
+		set(vector.asVector());
 	}
 
 	/**
