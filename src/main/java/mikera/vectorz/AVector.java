@@ -1663,7 +1663,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public void addMultiple(int offset, AVector v, double factor) {
+	public final void addMultiple(int offset, AVector v, double factor) {
 		addMultiple(offset,v,0,v.length(),factor);
 	}
 	
