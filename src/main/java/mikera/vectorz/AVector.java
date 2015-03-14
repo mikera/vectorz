@@ -1447,9 +1447,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void add(ADenseArrayVector v) {
-		if (length() != v.length()) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		}
+		checkSameLength(v);
 		add(v.getArray(),v.getArrayOffset());
 	}
 	
@@ -1469,7 +1467,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (a instanceof AVector) {
 			return addCopy((AVector)a);
 		} else if (a.dimensionality()==1) {
-			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			return addCopy(a.asVector());
 		} else if (a.dimensionality()==0) {
 			return addCopy(a.get());
@@ -1498,7 +1495,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (a instanceof AVector) {
 			return subCopy((AVector)a);
 		} else if (a.dimensionality()==1) {
-			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			return subCopy(a.asVector());
 		} else {
 			return subCopy(a.broadcastLike(this));
@@ -1518,7 +1514,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (a instanceof AVector) {
 			return multiplyCopy((AVector)a);
 		} else if (a.dimensionality()==1) {
-			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			return multiplyCopy(a.asVector());
 		} else {
 			return multiplyCopy(a.broadcastLike(this));
@@ -1530,7 +1525,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (a instanceof AVector) {
 			return divideCopy((AVector)a);
 		} else if (a.dimensionality()==1) {
-			if (length()!=a.getShape(0)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 			return divideCopy(a.asVector());
 		} else {
 			return divideCopy(a.broadcastLike(this));
@@ -1568,7 +1562,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void add(AVector src, int srcOffset) {
 		int length=length();
-		if (!((srcOffset>=0)&&(srcOffset+length<=src.length()))) throw new IndexOutOfBoundsException();
+		src.checkRange(srcOffset, length);
 		for (int i = 0; i < length; i++) {
 			addAt(i,src.unsafeGet(srcOffset+i));
 		}
