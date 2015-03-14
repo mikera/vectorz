@@ -1012,6 +1012,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public double distanceL1(AVector v) {
 		int len=length();
+		v.checkLength(len);
 		double total=0.0;
 		for (int i=0; i<len; i++) {
 			double d=unsafeGet(i)-v.unsafeGet(i);
@@ -1022,6 +1023,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	public double distanceLinf(AVector v) {
 		int len=length();
+		v.checkLength(len);
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			double d=Math.abs(unsafeGet(i)-v.unsafeGet(i));
