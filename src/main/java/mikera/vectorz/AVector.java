@@ -1581,20 +1581,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Adds another vector into this one, at the specified offset
 	 * @param offset
-	 * @param a
+	 * @param src
 	 */
-	public void add(int offset, AVector a) {
-		add(offset,a,0,a.length());
+	public void add(int offset, AVector src) {
+		add(offset,src,0,src.length());
 	}
 	
 	/**
-	 * Adds another vector into this one, at the specified offset
+	 * Adds a segment of another vector into this one, at the specified offset
 	 * @param offset
-	 * @param a
+	 * @param src
 	 */
-	public void add(int offset, AVector a, int aOffset, int length) {
+	public void add(int offset, AVector src, int srcOffset, int length) {
 		for (int i = 0; i < length; i++) {
-			addAt(offset+i,a.unsafeGet(i+aOffset));
+			addAt(offset+i,src.unsafeGet(i+srcOffset));
 		}		
 	}
 	
