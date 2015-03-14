@@ -460,11 +460,6 @@ public final class ZeroVector extends ASparseVector {
 			dest[offset+i]=Constants.ZERO_DOUBLE;
 		}
 	}
-	
-	@Override
-	public AMatrix asColumnMatrix() {
-		return Matrixx.createImmutableZeroMatrix(length, 1);
-	}
 
 	@Override
 	public AVector selectClone(int... inds) {

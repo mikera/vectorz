@@ -590,11 +590,6 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public Matrix asColumnMatrix() {
-		return Matrix.wrap(length, 1, data);
-	}
-	
-	@Override
 	public Vector dense() {
 		return this;
 	}

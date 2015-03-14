@@ -276,11 +276,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 		if (isPackedArray()) return getArray();
 		return null;
 	}
-	
-	@Override
-	public AStridedMatrix asColumnMatrix() {
-		return Matrixx.wrapStrided(data, length, 1, getArrayOffset(), getStride(), 0);
-	}
 
 	@Override
 	public boolean isPackedArray() {

@@ -1,6 +1,7 @@
 package mikera.matrixx.solve;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.solve.impl.lu.LUSolver;
 import mikera.matrixx.solve.impl.qr.QRHouseColSolver;
 import mikera.vectorz.AVector;
@@ -29,7 +30,7 @@ public class Linear {
         QRHouseColSolver solver = new QRHouseColSolver();
         solver.setA(A);
 //        create AMatrix from AVector
-        AMatrix B = b.asColumnMatrix();
+        AMatrix B = ColumnMatrix.wrap(b);
         AMatrix X = solver.solve(B);
 //        convert AMatrix into AVector and return
         return X.asVector();
@@ -98,7 +99,7 @@ public class Linear {
 	    LUSolver solver = new LUSolver();
 	    solver.setA(A);
 //      create AMatrix from AVector
-	    AMatrix B = b.asColumnMatrix();
+	    AMatrix B = ColumnMatrix.wrap(b);
 	    AMatrix X = solver.solve(B);
 //      if no solution
 	    if(X == null)

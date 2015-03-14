@@ -2290,9 +2290,4 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		return false;
 	}
-
-	public AMatrix asColumnMatrix() {
-		return ColumnMatrix.wrap(this);
-	}
-
 }
