@@ -1229,9 +1229,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector negateCopy() {
-		AVector r=clone();
-		r.negate();
-		return r;
+		return multiplyCopy(-1.0);
 	}
 	
 	@Override
