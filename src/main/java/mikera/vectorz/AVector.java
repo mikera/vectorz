@@ -1253,7 +1253,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			set((ADenseArrayVector)src);
 		} else {
 			int len=length();
-			if (src.length()!=len) throw new IllegalArgumentException("Source Vector of wrong size: "+src.length());
+			src.checkLength(len);
 			for (int i=0; i<len; i++) {
 				unsafeSet(i,src.unsafeGet(i));
 			}
@@ -1265,7 +1265,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param v
 	 */
 	public void set(ADenseArrayVector v) {
-		if (v.length()!=length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.checkLength(length());
 		setElements(v.getArray(),v.getArrayOffset());
 	}
 	
