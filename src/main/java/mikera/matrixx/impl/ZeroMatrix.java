@@ -188,7 +188,6 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	public boolean isZero() {
 		return true;
 	}
-	
 
 	@Override
 	public double elementSum() {
