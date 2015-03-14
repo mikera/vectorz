@@ -933,7 +933,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param a
 	 */
 	public void crossProduct(AVector a) {
-		if(!((length()==3)&&(a.length()==3))) throw new IllegalArgumentException("Cross product requires length 3 vectors");
+		if(!(checkSameLength(a)==3)) throw new IllegalArgumentException("Cross product requires length 3 vectors");
 		double x=unsafeGet(0);
 		double y=unsafeGet(1);
 		double z=unsafeGet(2);
@@ -985,8 +985,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public double distanceSquared(AVector v) {
-		int len=length();
-		v.checkLength(len);
+		int len=checkSameLength(v);
 		double total=0.0;
 		for (int i=0; i<len; i++) {
 			double d=unsafeGet(i)-v.unsafeGet(i);
@@ -1011,8 +1010,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public double distanceL1(AVector v) {
-		int len=length();
-		v.checkLength(len);
+		int len=checkSameLength(v);
 		double total=0.0;
 		for (int i=0; i<len; i++) {
 			double d=unsafeGet(i)-v.unsafeGet(i);
@@ -1022,8 +1020,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public double distanceLinf(AVector v) {
-		int len=length();
-		v.checkLength(len);
+		int len=checkSameLength(v);
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			double d=Math.abs(unsafeGet(i)-v.unsafeGet(i));
@@ -1294,10 +1291,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void set(INDArray a) {
 		if (a instanceof AVector) {set((AVector)a); return;}
 		if (a.dimensionality()==1) {
-			int len=length();
-			for (int i=0; i<len; i++) {
-				unsafeSet(i,a.get(i));
-			}		
+			setElements(a.getElements());	
 		} else {
 			throw new IllegalArgumentException("Cannot set vector using array of dimensonality: "+a.dimensionality());
 		}
@@ -1446,11 +1440,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			add((ADenseArrayVector)v);
 			return;
 		}
-		int vlength=v.length();
-		int length=length();
-		if (vlength != length) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-		}
+		int length=checkSameLength(v);
 		for (int i = 0; i < length; i++) {
 			addAt(i,v.unsafeGet(i));
 		}
