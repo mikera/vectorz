@@ -19,7 +19,7 @@ public class VectorIndexScalar extends AScalar {
 	}
 	
 	public static VectorIndexScalar wrap(AVector vector, int index) {
-		if ((index<0)||(index>=vector.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(vector, index));
+		vector.checkIndex(index);
 		return new VectorIndexScalar(vector,index);
 	}
 	

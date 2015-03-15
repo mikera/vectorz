@@ -1765,7 +1765,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Utility function to check an index and throw an exception in not in bounds.
 	 * Returns the vector length
 	 */
-	protected int checkIndex(int i) {
+	public int checkIndex(int i) {
 		int len=length();
 		if ((i<0)||(i>=len)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return len;
