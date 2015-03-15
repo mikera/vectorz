@@ -105,13 +105,6 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
-	public double unsafeGetInteger(Integer i) {
-		Double d= hash.get(i);
-		if (d!=null) return d;
-		return 0.0;
-	}
-	
-	@Override
 	public boolean isFullyMutable() {
 		return true;
 	}
@@ -281,8 +274,13 @@ public class SparseHashedVector extends ASparseVector {
 		}
 	}
 	
-	@Override
-	public void unsafeSetInteger(Integer i, double value) {
+	/**
+	 * Special method to allow re-use of integer instances as keys
+	 * 
+	 * @param i
+	 * @param value
+	 */
+	private void unsafeSetInteger(Integer i, double value) {
 		if (value!=0.0) {	
 			hash.put(i, value);
 		} else {
@@ -293,7 +291,7 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public void addAt(int i, double value) {
 		Integer ind=i;
-		unsafeSetInteger(ind, value+unsafeGetInteger(ind));
+		unsafeSetInteger(ind, value+unsafeGet(ind));
 	}
 	
 	@Override
