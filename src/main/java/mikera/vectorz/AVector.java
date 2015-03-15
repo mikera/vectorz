@@ -1440,7 +1440,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
-	public void add(ADenseArrayVector v) {
+	public final void add(ADenseArrayVector v) {
 		checkSameLength(v);
 		add(v.getArray(),v.getArrayOffset());
 	}

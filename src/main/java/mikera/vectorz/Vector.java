@@ -286,12 +286,6 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public void add(ADenseArrayVector v) {
-		checkSameLength(v);
-		add(v.getArray(),v.getArrayOffset());
-	}
-	
-	@Override
 	public void add(double[] srcData, int srcOffset) {
 		int length=length();
 		DoubleArrays.add(srcData, srcOffset, data, 0, length);
