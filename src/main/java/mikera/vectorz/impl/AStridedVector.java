@@ -188,7 +188,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void add(Vector v) {
+	public void add(ADenseArrayVector v) {
 		checkSameLength(v);
 		v.addToArray(getArray(), getArrayOffset(), getStride());
 	}

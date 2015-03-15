@@ -286,9 +286,9 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public void add(Vector v) {
+	public void add(ADenseArrayVector v) {
 		checkSameLength(v);
-		add(v.data,0);
+		add(v.getArray(),v.getArrayOffset());
 	}
 	
 	@Override
