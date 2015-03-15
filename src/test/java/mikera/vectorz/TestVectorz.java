@@ -36,11 +36,11 @@ public class TestVectorz {
 	@Test
 	public void testIndexOf() {
 		AVector v = Vector.of(1, 2, 3, 4, 1, 2, 3);
-		assertEquals(4.0, Vectorz.maxValue(v), 0.0);
-		assertEquals(3, Vectorz.indexOfMaxValue(v));
+		assertEquals(4.0,v.elementMax(), 0.0);
+		assertEquals(3, v.maxElementIndex());
 
-		assertEquals(1.0, Vectorz.minValue(v), 0.0);
-		assertEquals(0, Vectorz.indexOfMinValue(v));
+		assertEquals(1.0, v.elementMin(), 0.0);
+		assertEquals(0, v.minElementIndex());
 
 	}
 

@@ -568,9 +568,9 @@ public class TestArrays {
 
 		a.fill(13.0);
 		a.clamp(14, 15);
-		assertEquals(14.0, Vectorz.minValue(a.toVector()), 0.0001);
+		assertEquals(14.0, a.toVector().elementMin(), 0.0001);
 		a.clamp(12, 17);
-		assertEquals(14.0, Vectorz.maxValue(a.toVector()), 0.0001);
+		assertEquals(14.0,a.toVector().elementMax(), 0.0001);
 	}
 	
 	private void testElementIterator(INDArray m) {

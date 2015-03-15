@@ -60,8 +60,8 @@ public class BitVectorTest {
 		v.add(b);
 		v2.multiply(2.0);
 		assertEquals(v,v2);
-		assertEquals(2.0,Vectorz.maxValue(v),0.0);
-		assertEquals(0.0,Vectorz.minValue(v),0.0);
+		assertEquals(2.0,v.elementMax(),0.0);
+		assertEquals(0.0,v.elementMin(),0.0);
 		
 		assertEquals(b.dotProduct(b),b.elementSquaredSum(),0.0);
 	}
