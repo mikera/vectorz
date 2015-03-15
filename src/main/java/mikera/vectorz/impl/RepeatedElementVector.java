@@ -13,7 +13,7 @@ import mikera.vectorz.util.ErrorMessages;
 
 
 /**
- * An immutable vector that always has a single repeated component.
+ * An immutable vector that has the same value for elements.
  *
  * @author Mike
  *
@@ -163,6 +163,12 @@ public final class RepeatedElementVector extends ASizedVector {
 	@Override
 	public AVector addCopy(AVector v) {
 		return v.addCopy(value);
+	}
+	
+	@Override
+	public AVector multiplyCopy(AVector v) {
+		checkSameLength(v);
+		return v.scaleCopy(value);
 	}
 	
 	@Override
