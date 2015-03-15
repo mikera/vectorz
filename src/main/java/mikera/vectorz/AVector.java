@@ -71,7 +71,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void set(long i, double value) {
-		set((int)i,value);
+		if ((i<0)||(i>=length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		unsafeSet((int)i,value);
 	}
 	
 	@Override
