@@ -95,7 +95,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public double get(int x, int y) {
+	public final double get(int x, int y) {
 		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, x,y));
 	}
 	
@@ -106,6 +106,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public final double get(int... indexes) {
+		if (indexes.length!=1) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, indexes));
 		return get(indexes[0]);
 	}
 	
