@@ -16,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
  * Hashed sparse vector, intended for large vectors with very few randomly positioned non-zero elements. 
  * 
  * Maintains hash elements for non-zero values only. This is useful (and better than SparseIndexedVector)
- * if elements are likely to be set back to zero on a frequent basis
+ * if elements are likely to be changed or set back to zero on a frequent basis
  * 
  * Mutable in all elements, but performance will be reduced if density is high. In general, if density 
  * is more than about 1% then a dense Vector is likely to be better.
