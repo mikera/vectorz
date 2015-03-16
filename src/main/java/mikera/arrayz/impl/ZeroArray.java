@@ -204,6 +204,5 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
     @Override
     public double elementAbsPowSum(double p) {
         return elementPowSum(p);
-
     }
 }
