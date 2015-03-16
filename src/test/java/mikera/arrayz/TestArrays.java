@@ -12,8 +12,10 @@ import mikera.arrayz.impl.ImmutableArray;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.indexz.Indexz;
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.VectorMatrixM3;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
@@ -534,6 +536,26 @@ public class TestArrays {
 		INDArray bcl=a.broadcastCloneLike(a);
 		assertEquals(a,bcl);
 		assertTrue((a.elementCount()==0)||(a!=bcl));
+		
+		int dims=a.dimensionality();
+		if (dims<=2) {
+			int[] sh=a.getShape();
+			while (sh.length<2) {
+				sh=IntArrays.insert(sh, 0, 2);
+			}
+			AMatrix m=ZeroMatrix.create(sh[0],sh[1]);
+			AMatrix r= a.broadcastLike(m);
+			assertTrue(r.isSameShape(m));
+		}
+		
+		if (dims>0) {
+			int[] sh=a.getShape().clone();
+			sh[0]++;
+			try {
+				a.broadcast(sh);
+				fail();
+			} catch (Throwable t) {/* OK */};
+		}
 	}
 
 	private void testSums(INDArray a) {
