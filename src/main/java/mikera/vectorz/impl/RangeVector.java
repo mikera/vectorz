@@ -41,7 +41,7 @@ public class RangeVector extends AComputedVector {
 	
 	@Override
 	public double elementSum() {
-		// compute sum of arithmentic progression
+		// compute sum of arithmetic progression directly
 		return ((double)start*length) + ((length*(length-1))/2);
 	}
 
