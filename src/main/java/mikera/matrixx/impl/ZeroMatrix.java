@@ -16,7 +16,9 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Lightweight immutable zero matrix class
+ * Lightweight immutable zero matrix class. 
+ * 
+ * Can be any shape.
  */
 public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns, ISparse {
 	private static final long serialVersionUID = 875833013123277805L;
@@ -188,7 +190,6 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	public boolean isZero() {
 		return true;
 	}
-	
 
 	@Override
 	public double elementSum() {

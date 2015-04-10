@@ -16,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
  * Hashed sparse vector, intended for large vectors with very few randomly positioned non-zero elements. 
  * 
  * Maintains hash elements for non-zero values only. This is useful (and better than SparseIndexedVector)
- * if elements are likely to be set back to zero on a frequent basis
+ * if elements are likely to be changed or set back to zero on a frequent basis
  * 
  * Mutable in all elements, but performance will be reduced if density is high. In general, if density 
  * is more than about 1% then a dense Vector is likely to be better.
@@ -35,16 +35,15 @@ public class SparseHashedVector extends ASparseVector {
 	
 	private SparseHashedVector(int length, HashMap<Integer, Double> hashMap) {
 		super(length);
+		if (length<=0) throw new IllegalArgumentException("Can't create SparseHashedVector of length "+length);
 		hash=hashMap;
 	}
 
 	/**
-	 * Creates a SparseIndexedVector with the specified index and data values.
-	 * Performs no checking - Index must be distinct and sorted.
+	 * Creates a SparseHashedVector with the specified values
 	 */
 	public static SparseHashedVector create(AVector v) {
 		int n=v.length();
-		if (n==0) throw new IllegalArgumentException(ErrorMessages.incompatibleShape(v));
 		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
 		for (int i=0; i<n; i++) {
 			double val=v.unsafeGet(i);
@@ -94,19 +93,12 @@ public class SparseHashedVector extends ASparseVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,i));
+		checkIndex(i);
 		return unsafeGet(i);
 	}
 	
 	@Override
 	public double unsafeGet(int i) {
-		Double d= hash.get(i);
-		if (d!=null) return d;
-		return 0.0;
-	}
-	
-	@Override
-	public double unsafeGetInteger(Integer i) {
 		Double d= hash.get(i);
 		if (d!=null) return d;
 		return 0.0;
@@ -142,7 +134,7 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		if (length!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.checkLength(length);
 		double result=0.0;
 		for (int i: hash.keySet()) {
 			result+=hash.get(i)*v.unsafeGet(i);
@@ -241,7 +233,7 @@ public class SparseHashedVector extends ASparseVector {
 
 	@Override
 	public void set(int i, double value) {
-		if ((i<0)||(i>=length))  throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		if (value!=0.0) {	
 			hash.put(i, value);
 		} else {
@@ -251,12 +243,12 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public void set(AVector v) {
-		if (v.length()!=length) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
 		if (v instanceof SparseHashedVector) {
 			set((SparseHashedVector) v);
 			return;
 		}
 		
+		v.checkLength(length);
 		hash=new HashMap<Integer, Double>();
 		
 		for (int i=0; i<length; i++) {
@@ -269,6 +261,7 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@SuppressWarnings("unchecked")
 	public void set(SparseHashedVector v) {
+		v.checkLength(length);
 		hash=(HashMap<Integer, Double>) v.hash.clone();
 	}
 	
@@ -281,8 +274,13 @@ public class SparseHashedVector extends ASparseVector {
 		}
 	}
 	
-	@Override
-	public void unsafeSetInteger(Integer i, double value) {
+	/**
+	 * Special method to allow re-use of integer instances as keys
+	 * 
+	 * @param i
+	 * @param value
+	 */
+	private void unsafeSetInteger(Integer i, double value) {
 		if (value!=0.0) {	
 			hash.put(i, value);
 		} else {
@@ -293,7 +291,7 @@ public class SparseHashedVector extends ASparseVector {
 	@Override
 	public void addAt(int i, double value) {
 		Integer ind=i;
-		unsafeSetInteger(ind, value+unsafeGetInteger(ind));
+		unsafeSetInteger(ind, value+unsafeGet(ind));
 	}
 	
 	@Override

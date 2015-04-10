@@ -112,7 +112,7 @@ public final class Vector4 extends APrimitiveVector {
 		if (v instanceof Vector4) {
 			addMultiple((Vector4)v,factor);
 		} else {
-			if (v.length()!=4) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,v));
+			v.checkLength(4);
 			x+=v.unsafeGet(0)*factor;
 			y+=v.unsafeGet(1)*factor;
 			z+=v.unsafeGet(2)*factor;

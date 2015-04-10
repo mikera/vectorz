@@ -662,13 +662,14 @@ public class TestVectors {
 		if (!v.isFullyMutable()) return;
 		v=v.exactClone();
 		v.fill(1.23);
-		assertEquals(1.23,Vectorz.minValue(v),0.0);
-		assertEquals(1.23,Vectorz.maxValue(v),0.0);
+		assertEquals(1.23,v.elementMin(),0.0);
+		assertEquals(1.23,v.elementMax(),0.0);
 		
-		v.fillRange(0, v.length(), 1.24);
-		assertEquals(1.24,Vectorz.minValue(v),0.0);
-		assertEquals(1.24,Vectorz.maxValue(v),0.0);
-		assertEquals(1.24,Vectorz.averageValue(v),0.0001);
+		int n=v.length();
+		v.fillRange(0, n, 1.24);
+		assertEquals(1.24,v.elementMin(),0.0);
+		assertEquals(1.24,v.elementMax(),0.0);
+		assertEquals(1.24,v.elementSum()/n,0.0001);
 	}
 	
 	private void testEquality(AVector v) {
@@ -742,10 +743,6 @@ public class TestVectors {
 		assertEquals(len,tl.size());
 	}
 	
-	private void testAsColumnMatrix(AVector v) {
-		assertEquals(v,v.asColumnMatrix().getColumn(0));
-	}
-	
 	private void testMultiply(AVector v) {
 		if (!v.isFullyMutable()) return;
 		
@@ -785,7 +782,7 @@ public class TestVectors {
 		}
 		
 		assertEquals(v.length(),count);
-		assertEquals(Vectorz.totalValue(v),total,0.00000001);
+		assertEquals(v.elementSum(),total,0.00000001);
 	}
 	
 	private void testApplyOp(AVector v) {
@@ -861,7 +858,6 @@ public class TestVectors {
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
 		testImmutable(v);
-		testAsColumnMatrix(v);
 		
 		doNonDegenerateTests(v);
 		

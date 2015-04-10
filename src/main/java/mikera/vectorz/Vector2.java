@@ -101,6 +101,7 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public void scaleAdd(double factor, AVector constant) {
+		constant.checkLength(2);
 		x=(x*factor)+constant.unsafeGet(0);
 		y=(y*factor)+constant.unsafeGet(1);
 	}
@@ -153,7 +154,7 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public void add(AVector v) {
-		if(v.length()!=2) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.checkLength(2);
 		x+=v.unsafeGet(0);
 		y+=v.unsafeGet(1);
 	}

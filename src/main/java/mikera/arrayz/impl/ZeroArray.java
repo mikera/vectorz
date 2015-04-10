@@ -26,6 +26,7 @@ import mikera.vectorz.util.IntArrays;
 public final class ZeroArray extends BaseShapedArray implements ISparse {
 	private static final long serialVersionUID = 7355257027343666183L;
 	
+	// we cache an instance of a slice, for performance and to save memory
 	private INDArray sliceValue;
 	
 	private ZeroArray(int[] shape)  {
@@ -203,6 +204,5 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
     @Override
     public double elementAbsPowSum(double p) {
         return elementPowSum(p);
-
     }
 }

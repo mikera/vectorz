@@ -372,7 +372,7 @@ public class Vectorz {
 	 * @param v
 	 * @return
 	 */
-	public static double minValue(AVector v) {
+	@Deprecated public static double minValue(AVector v) {
 		return v.elementMin();
 	}
 	
@@ -381,7 +381,7 @@ public class Vectorz {
 	 * @param v
 	 * @return
 	 */
-	public static int indexOfMinValue(AVector v) {
+	@Deprecated public static int indexOfMinValue(AVector v) {
 		int len=v.length();
 		double min = v.get(0);
 		int ind=0;
@@ -395,11 +395,11 @@ public class Vectorz {
 		return ind;
 	}
 	
-	public static double maxValue(AVector v) {
+	@Deprecated public static double maxValue(AVector v) {
 		return v.elementMax();
 	}
 	
-	public static int indexOfMaxValue(AVector v) {
+	@Deprecated public static int indexOfMaxValue(AVector v) {
 		int len=v.length();
 		double max = v.unsafeGet(0);
 		int ind=0;
@@ -431,17 +431,17 @@ public class Vectorz {
 		}		
 	}
 	
-	public static double totalValue(AVector v) {
+	@Deprecated public static double totalValue(AVector v) {
 		return v.elementSum();
 	}
 	
-	public static double averageValue(AVector v) {
+	@Deprecated public static double averageValue(AVector v) {
 		int len=v.length();
 		double result=v.elementSum();
 		return result/len;
 	}
 	
-	public static double averageSquaredDifference(AVector a, AVector b) {
+	@Deprecated public static double averageSquaredDifference(AVector a, AVector b) {
 		int len=a.length();
 		if (len!=b.length()) throw new IllegalArgumentException("Vector size mismatch");
 		double result=0.0;
