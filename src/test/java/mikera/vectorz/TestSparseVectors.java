@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.impl.ASparseVector;
 
 import org.junit.Test;
 
@@ -42,4 +43,20 @@ public class TestSparseVectors {
         empty.add(nonEmpty);
         assertEquals(Vector.of(1,0,2), empty);
 	}
+
+    @Test
+    public void testRoundToZero() {
+        ASparseVector x=SparseIndexedVector.create(Vector.of(0.01,0.01,2,0)).roundToZero(0.1);
+        ASparseVector y=SparseIndexedVector.create(Vector.of(1,0.01,0,2)).roundToZero(0.1);
+        x.add(y);
+        assertEquals(Vector.of(1,0,2,2), x);
+
+        ASparseVector smaller=SparseIndexedVector.create(Vector.of(1, 0.1, 0.01, 0.001, 0.0001));
+        assertEquals(5, smaller.nonZeroCount());
+        assertTrue(Arrays.equals(new int[]{0,1,2,3,4}, smaller.nonZeroIndices()));
+
+        smaller=smaller.roundToZero(0.01);
+        assertEquals(2, smaller.nonZeroCount());
+        assertTrue(Arrays.equals(new int[]{0,1}, smaller.nonZeroIndices()));
+    }
 }
