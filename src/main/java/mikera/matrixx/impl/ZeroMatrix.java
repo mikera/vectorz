@@ -106,7 +106,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
-	public void copyRowTo(int row, double[] dest, int destOffset) {
+	public void copyRowTo(int row, double[] dest, int destOffset) {	
 		Arrays.fill(dest, destOffset,destOffset+columnCount(),0.0);
 	}
 	
