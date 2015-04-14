@@ -22,7 +22,6 @@ import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.ARectangularMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
-import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
