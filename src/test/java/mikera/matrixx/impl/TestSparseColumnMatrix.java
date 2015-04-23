@@ -43,9 +43,9 @@ public class TestSparseColumnMatrix {
     }
 
     @Test public void testGetSlices() {
-        SparseRowMatrix m = SparseRowMatrix.create(Matrix.create(Vector.of(1,0,2),
-                                                                 Vector.of(0,0,0),
-                                                                 Vector.of(3,0,4)));
+        SparseColumnMatrix m = SparseColumnMatrix.create(Matrix.create(Vector.of(1,0,2),
+                                                                       Vector.of(0,0,0),
+                                                                       Vector.of(3,0,4)));
 
         List<AVector> rows = m.getSlices();
         assertEquals(3, rows.size());
@@ -54,6 +54,17 @@ public class TestSparseColumnMatrix {
         assertEquals(Vector.of(3,0,4), rows.get(2));
     }
 
+    @Test public void testGetRows() {
+        SparseColumnMatrix m = SparseColumnMatrix.create(new AVector[] {Vector.of(1,2),
+                                                                        Vector.of(0,0),
+                                                                        Vector.of(3,4)},
+            2, 3);
+        
+        List<AVector> rows = m.getRows();
+        assertEquals(2, rows.size());
+        assertEquals(Vector.of(1,0,3), rows.get(0));
+        assertEquals(Vector.of(2,0,4), rows.get(1));
+    }
 	
 	@Test public void testOps() {
 		SparseColumnMatrix m=SparseColumnMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3));
