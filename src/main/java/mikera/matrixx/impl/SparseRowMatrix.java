@@ -3,13 +3,6 @@ package mikera.matrixx.impl;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
-// import java.util.HashMap;
-// import java.util.HashSet;
-// import java.util.Map;
-// import java.util.Map.Entry;
-
-
-
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
@@ -229,26 +222,13 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
     @Override
     public List<AVector> getColumns() {
-        return toSparseColumnMatrix().getColumns();
+        return getRotatedData(rows, cols);
     }
     
     public SparseColumnMatrix toSparseColumnMatrix() {
-        SparseColumnMatrix cm=SparseColumnMatrix.create(rows,cols);
-        for (int i = 0; i < rows; i++) {
-            AVector rowVec = unsafeGetVector(i);
-            if (null != rowVec) {
-                Index nonSparseCols = rowVec.nonSparseIndex();
-                int n=nonSparseCols.length();
-                for (int k = 0; k < n; k++) {
-                    int j = nonSparseCols.unsafeGet(k);
-                    double v=rowVec.unsafeGet(j);
-                    if (v!=0.0) {
-                    	cm.unsafeSet(i,j, v);
-                    }
-                }
-            }
-        }
-        return cm;    	
+        AVector[] colVecs = getColumns().toArray(new AVector[cols]);
+        SparseColumnMatrix cm = SparseColumnMatrix.create(colVecs, rows, cols);
+        return cm;
     }
     
 	@Override
