@@ -4,7 +4,6 @@ import mikera.arrayz.impl.IDenseArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.Scalar;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 

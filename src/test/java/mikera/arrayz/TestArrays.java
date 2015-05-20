@@ -554,7 +554,7 @@ public class TestArrays {
 			try {
 				a.broadcast(sh);
 				fail();
-			} catch (Throwable t) {/* OK */};
+			} catch (Throwable t) {/* OK */}
 		}
 	}
 

@@ -1,8 +1,7 @@
 package mikera.matrixx.impl;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;

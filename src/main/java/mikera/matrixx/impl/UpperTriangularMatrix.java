@@ -5,7 +5,6 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.IndexedArrayVector;
-import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Class for an upper triangular matrix packed densely by columns.

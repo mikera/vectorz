@@ -1548,6 +1548,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	public void divide(AVector a) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRowView(i).divide(a);
+		}
+	}
+	
 	@Override
 	public void divide(INDArray a) {
 		if (a instanceof AMatrix) {

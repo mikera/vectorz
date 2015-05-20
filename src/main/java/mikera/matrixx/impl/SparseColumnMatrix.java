@@ -1,8 +1,8 @@
 package mikera.matrixx.impl;
 
 import java.util.List;
+
 import mikera.arrayz.ISparse;
-import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;

@@ -3,7 +3,6 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 public class VectorIndexScalar extends AScalar {

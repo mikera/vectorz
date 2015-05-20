@@ -1,12 +1,11 @@
 package mikera.matrixx.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
-import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
