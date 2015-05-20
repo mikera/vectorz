@@ -623,10 +623,25 @@ public class TestMatrices {
 	}
 	
 	@Test public void g_QuadtreeMatrix() {	
-		doGenericTests(QuadtreeMatrix.create(new Matrix22(1,0,0,2)
-		,ZeroMatrix.create(2, 1)
-		,ZeroMatrix.create(1, 2)
-		,Matrixx.createScaleMatrix(1, 3)));
+		Matrix22 m2=new Matrix22(1,0,0,2);
+		doGenericTests(QuadtreeMatrix.create(
+				m2,
+				ZeroMatrix.create(2, 1),
+				ZeroMatrix.create(1, 2),
+				Matrixx.createScaleMatrix(1, 3)));
+		
+// TODO: think about these cases?		
+//		doGenericTests(QuadtreeMatrix.wrap(
+//				m2,
+//				m2,
+//				ZeroMatrix.create(0, 2),
+//				ZeroMatrix.create(0, 2)));
+//		
+//		doGenericTests(QuadtreeMatrix.wrap(
+//				ZeroMatrix.create(2, 0), 
+//				m2,
+//				ZeroMatrix.create(2, 0), 
+//				m2));	
 	}
 	
 	@Test public void g_SparseMatrix() {	

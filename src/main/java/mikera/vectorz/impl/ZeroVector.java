@@ -34,7 +34,6 @@ public final class ZeroVector extends ASparseVector {
 
 	private static final int ZERO_VECTOR_CACHE_SIZE = 30;
 	private static final ZeroVector[] ZERO_VECTORS = new ZeroVector[ZERO_VECTOR_CACHE_SIZE];
-	private static final Double ZERO_DOUBLE = 0.0;
 
 	private static ZeroVector last = new ZeroVector(ZERO_VECTOR_CACHE_SIZE);
 
@@ -197,7 +196,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public AVector multiplyCopy(double factor) {
-		// note we need to do this in case on NaN
+		// note we need to do this in case of NaN
 		return Vectorz.createRepeatedElement(length, factor*0.0);
 	}
 	
@@ -335,7 +334,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public Iterator<Double> iterator() {
-		return new RepeatedElementIterator(length, ZERO_DOUBLE);
+		return new RepeatedElementIterator(length, Constants.ZERO_DOUBLE);
 	}
 
 	@Override
@@ -459,11 +458,6 @@ public final class ZeroVector extends ASparseVector {
 		for (int i=0; i<n; i++) {
 			dest[offset+i]=Constants.ZERO_DOUBLE;
 		}
-	}
-	
-	@Override
-	public AMatrix asColumnMatrix() {
-		return Matrixx.createImmutableZeroMatrix(length, 1);
 	}
 
 	@Override

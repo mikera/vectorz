@@ -22,7 +22,6 @@ import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.ARectangularMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
-import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
@@ -1509,8 +1508,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			add((AMatrix)a);
 		} else if (a instanceof AVector) {
 			add((AVector)a);
-		} else if (a instanceof AScalar) {
-			add(a.get());
 		} else {
 			int dims=a.dimensionality();
 			if (dims>2) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
@@ -1535,9 +1532,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void multiply(INDArray a) {
 		if (a instanceof AMatrix) {
 			elementMul((AMatrix)a);
-		} else if (a instanceof AScalar) {
-			multiply(a.get());
-		} else {
+		} else if (a instanceof AVector) {
+			multiply((AVector)a);
+		} else{
 			int dims=a.dimensionality();
 			if (dims==0) {
 				multiply(a.get());
@@ -1555,8 +1552,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void divide(INDArray a) {
 		if (a instanceof AMatrix) {
 			elementDiv((AMatrix)a);
-		} else if (a instanceof AScalar) {
-			multiply(1.0/a.get());
+		} else if (a instanceof AVector) {
+			divide((AVector)a);
 		} else {
 			int dims=a.dimensionality();
 			int rc=rowCount();
@@ -1587,8 +1584,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			sub((AMatrix)a);
 		} else if (a instanceof AVector) {
 			sub((AVector)a);
-		} else if (a instanceof AScalar) {
-			sub(a.get());
 		} else {
 			int dims=a.dimensionality();
 			if (dims==0) {
@@ -1663,21 +1658,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
 	public boolean isZero() {
-		if (this instanceof IFastRows) {
-			int rc=rowCount();
-			for (int i=0; i<rc; i++) {
-				if (!getRow(i).isZero()) return false;
-			}
-			return true;
-		} else if (this instanceof IFastColumns) {
-			int cc=columnCount();
-			for (int i=0; i<cc; i++) {
-				if (!getColumn(i).isZero()) return false;
-			}
-			return true;
-		} else {
-			return elementsEqual(0.0);
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).isZero()) return false;
 		}
+		return true;
 	}
 	
 	/**

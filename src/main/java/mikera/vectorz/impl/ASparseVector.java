@@ -26,6 +26,9 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 
 	/**
 	 * Returns the number of non-sparse elements in the sparse vector.
+	 * 
+	 * This will be greater or equal to the number of non-zero elements
+	 * 
 	 * @return
 	 */
 	public abstract int nonSparseElementCount();

@@ -12,8 +12,10 @@ import mikera.arrayz.impl.ImmutableArray;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.indexz.Indexz;
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.VectorMatrixM3;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Scalar;
@@ -534,6 +536,26 @@ public class TestArrays {
 		INDArray bcl=a.broadcastCloneLike(a);
 		assertEquals(a,bcl);
 		assertTrue((a.elementCount()==0)||(a!=bcl));
+		
+		int dims=a.dimensionality();
+		if (dims<=2) {
+			int[] sh=a.getShape();
+			while (sh.length<2) {
+				sh=IntArrays.insert(sh, 0, 2);
+			}
+			AMatrix m=ZeroMatrix.create(sh[0],sh[1]);
+			AMatrix r= a.broadcastLike(m);
+			assertTrue(r.isSameShape(m));
+		}
+		
+		if (dims>0) {
+			int[] sh=a.getShape().clone();
+			sh[0]++;
+			try {
+				a.broadcast(sh);
+				fail();
+			} catch (Throwable t) {/* OK */};
+		}
 	}
 
 	private void testSums(INDArray a) {
@@ -568,9 +590,9 @@ public class TestArrays {
 
 		a.fill(13.0);
 		a.clamp(14, 15);
-		assertEquals(14.0, Vectorz.minValue(a.toVector()), 0.0001);
+		assertEquals(14.0, a.toVector().elementMin(), 0.0001);
 		a.clamp(12, 17);
-		assertEquals(14.0, Vectorz.maxValue(a.toVector()), 0.0001);
+		assertEquals(14.0,a.toVector().elementMax(), 0.0001);
 	}
 	
 	private void testElementIterator(INDArray m) {
@@ -674,32 +696,34 @@ public class TestArrays {
 	}
 	
 	private void testIndexedAccess(INDArray a) {
-		if ((a.elementCount() <= 1)) return;
+		if ((a.elementCount() == 0)) return;
 		int dims=a.dimensionality();
 
 		// 0d indexed access
-		try {
-			a.get();
-			fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
-		} catch (Throwable t) { /* OK */ }
-		
-		try {
-			a.set(1.0);
-			fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
-		} catch (Throwable t) { /* OK */ }
-
-		try {
-			a.get(IntArrays.EMPTY_INT_ARRAY);
-			fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
-		} catch (Throwable t) { /* OK */ }
-		
-		try {
-			a.set(IntArrays.EMPTY_INT_ARRAY,1.0);
-			fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
-		} catch (Throwable t) { /* OK */ }
+		if (dims>0) {
+			try {
+				a.get();
+				fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
+			} catch (Throwable t) { /* OK */ }
+			
+			try {
+				a.set(1.0);
+				fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
+			} catch (Throwable t) { /* OK */ }
+	
+			try {
+				a.get(IntArrays.EMPTY_INT_ARRAY);
+				fail("0d get should fail for array with shape: "+Arrays.toString(a.getShape()));
+			} catch (Throwable t) { /* OK */ }
+			
+			try {
+				a.set(IntArrays.EMPTY_INT_ARRAY,1.0);
+				fail("0d set should fail for array with shape: "+Arrays.toString(a.getShape()));
+			} catch (Throwable t) { /* OK */ }
+		}
 
 		// 1D indexed access
-		if (a.dimensionality()>1) {
+		if (dims>1) {
 			try {
 				a.get(0);
 				fail("1d get should fail for array with shape: "+Arrays.toString(a.getShape()));
@@ -711,6 +735,7 @@ public class TestArrays {
 			} catch (Throwable t) { /* OK */ }
 		}
 		
+		assertEquals(a.get(new int[dims]),a.asVector().get(0),0.0);
 		assertEquals(a.getElements()[0],a.get(new int[dims]),0.0);
 		
 		try {
@@ -778,6 +803,11 @@ public class TestArrays {
 
 	@Test
 	public void g_NDArray() {
+		NDArray nd0 = NDArray.newArray();
+		Vectorz.fillIndexes(nd0.asVector());
+		testArray(nd0);
+		testArray(Array.create(nd0));
+		
 		NDArray nd1 = NDArray.newArray(3);
 		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);

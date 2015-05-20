@@ -35,12 +35,16 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 		this.cols=columnSplit+c01.columnCount();
 	}
 	
-	public static QuadtreeMatrix create(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
+	public static QuadtreeMatrix wrap(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
 		if (c00.rowCount()!=c01.rowCount()) throw new IllegalArgumentException("Mismtached submatrix size");
 		if (c10.rowCount()!=c11.rowCount()) throw new IllegalArgumentException("Mismtached submatrix size");
 		if (c00.columnCount()!=c10.columnCount()) throw new IllegalArgumentException("Mismtached submatrix size");
 		if (c01.columnCount()!=c11.columnCount()) throw new IllegalArgumentException("Mismtached submatrix size");
 		return new QuadtreeMatrix(c00,c01,c10,c11);
+	}
+	
+	public static QuadtreeMatrix create(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
+		return wrap(c00.copy(),c01.copy(),c10.copy(),c11.copy());
 	}
 	
 	@Override
@@ -156,11 +160,11 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	@Override
 	public void copyColumnTo(int col, double[] data, int offset) {
 		if (col<columnSplit) {
-			c00.copyRowTo(col, data, offset);
-			c10.copyRowTo(col, data, offset+rowSplit);
+			c00.copyColumnTo(col, data, offset);
+			c10.copyColumnTo(col, data, offset+rowSplit);
 		} else {
-			c01.copyRowTo(col-columnSplit, data, offset);
-			c11.copyRowTo(col-columnSplit, data, offset+rowSplit);
+			c01.copyColumnTo(col-columnSplit, data, offset);
+			c11.copyColumnTo(col-columnSplit, data, offset+rowSplit);
 		}
 	}
 	

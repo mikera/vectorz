@@ -72,12 +72,6 @@ public final class ArraySubVector extends ADenseArrayVector {
 		checkSameLength(v);
 		v.addToArray(data, offset);
 	}
-
-	@Override
-	public void add(ADenseArrayVector v) {
-		checkSameLength(v);
-		v.addToArray(data, offset);
-	}
 	
 	@Override
 	public void addMultiple(AVector v, double factor) {

@@ -239,10 +239,10 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 
 	@Override
-	public void add(ADenseArrayVector v) {
-		includeIndices(v);	
+	public void add(double[] src, int srcOffset) {
+		includeIndices(Vectorz.wrap(src, srcOffset, length));	
 		for (int i=0; i<data.length; i++) {
-			data[i]+=v.unsafeGet(index.get(i));
+			data[i]+=src[srcOffset+index.get(i)];
 		}
 	}
 	
@@ -291,12 +291,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		}
 	}
 
-	
-	@Override
-	public void add(double[] src, int offset) {
-		add(Vectorz.wrap(src, offset, length));
-	}
-	
 	@Override
 	public void multiply (double d) {
 		if (d==0.0) {

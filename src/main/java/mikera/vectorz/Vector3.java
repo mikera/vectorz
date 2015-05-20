@@ -186,6 +186,7 @@ public final class Vector3 extends APrimitiveVector {
 		if (v instanceof Vector3) {
 			add((Vector3)v);
 		} else {
+			v.checkLength(3);
 			x+=v.unsafeGet(0);
 			y+=v.unsafeGet(1);
 			z+=v.unsafeGet(2);
@@ -195,7 +196,7 @@ public final class Vector3 extends APrimitiveVector {
 	@Override
 	public Vector3 addCopy(AVector v) {
 		if (v instanceof Vector3) return addCopy((Vector3)v);
-		if (v.length()!=3) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		v.checkLength(3);
 		return new Vector3(x+v.unsafeGet(0),y+v.unsafeGet(1),z+v.unsafeGet(2));
 	}
 	

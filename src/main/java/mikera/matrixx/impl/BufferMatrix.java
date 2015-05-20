@@ -99,5 +99,10 @@ public class BufferMatrix extends ARectangularMatrix {
 		return BufferMatrix.wrap(newArray,rows,cols);
 	}
 
+	@Override
+	public boolean isZero() {
+		return asVector().isZero();
+	}
+
 
 }

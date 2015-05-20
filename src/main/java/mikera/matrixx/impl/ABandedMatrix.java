@@ -96,6 +96,14 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 	}
 	
 	@Override 
+	public boolean isZero() {
+		for (int i=-lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {
+			if (!getBand(i).isZero()) return false;
+		}
+		return true;
+	}
+	
+	@Override 
 	public double elementSum() {
 		double t=0;
 		for (int i=-lowerBandwidthLimit(); i<=upperBandwidthLimit(); i++) {

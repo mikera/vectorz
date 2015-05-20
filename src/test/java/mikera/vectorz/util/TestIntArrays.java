@@ -45,4 +45,14 @@ public class TestIntArrays {
 		
 		assertArrayEquals(zs,IntArrays.intersectSorted(xs, ys));
 	}
+
+    @Test public void testIndexPositionOverflow() {
+        int[] xs=new int[46342];
+        for (int i=0; i<xs.length; i++) {
+            xs[i]=i;
+        }
+
+        assertEquals(46340,IntArrays.indexPosition(xs,46340));
+    }
+    
 }

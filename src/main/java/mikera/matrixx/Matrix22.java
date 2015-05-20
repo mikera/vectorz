@@ -370,4 +370,9 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 		return new double[] {m00,m01,m10,m11};
 	}
 
+	@Override
+	public boolean isZero() {
+		return (m00==0.0)&&(m01==0.0)&&(m10==0.0)&&(m11==0.0);
+	}
+
 }

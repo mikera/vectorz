@@ -286,12 +286,6 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public void add(Vector v) {
-		checkSameLength(v);
-		add(v.data,0);
-	}
-	
-	@Override
 	public void add(double[] srcData, int srcOffset) {
 		int length=length();
 		DoubleArrays.add(srcData, srcOffset, data, 0, length);
@@ -587,11 +581,6 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public double[] asDoubleArray() {
 		return data;
-	}
-	
-	@Override
-	public Matrix asColumnMatrix() {
-		return Matrix.wrap(length, 1, data);
 	}
 	
 	@Override

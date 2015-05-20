@@ -97,7 +97,7 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	
 	@Override
 	public ImmutableVector getRowView(int row) {
-		if ((row<0)||(row>=rows)) throw new IllegalArgumentException(ErrorMessages.invalidSlice(this, row));
+		checkRow(row);
 		return ImmutableVector.wrap(data,row*cols,cols);
 	}
 	

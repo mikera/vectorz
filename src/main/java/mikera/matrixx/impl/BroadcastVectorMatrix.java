@@ -37,7 +37,7 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 
 	@Override
 	public AVector getRowView(int row) {
-		if (row<0 ||(row>=rows)) throw new IndexOutOfBoundsException("Row: "+row);
+		checkRow(row);
 		return vector;
 	}
 	
@@ -64,7 +64,7 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 
 	@Override
 	public double get(int row, int column) {
-		if (row<0 ||(row>=rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
+		checkRow(row);
 		return vector.get(column);
 	}
 	
@@ -76,5 +76,10 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 	@Override
 	public void set(int row, int column, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+
+	@Override
+	public boolean isZero() {
+		return vector.isZero();
 	}
 }

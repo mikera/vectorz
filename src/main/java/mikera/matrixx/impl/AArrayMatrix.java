@@ -64,15 +64,4 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	 * @return
 	 */
 	protected abstract int index(int i, int j);
-
-	@Override
-	public boolean hasUncountable() {
-		int len = data.length;
-		for(int i=0; i<len; i++) {
-			if (Double.isNaN(data[i]) || Double.isInfinite(data[i])) {
-				return true;
-			}
-		}
-		return false;
-	}
 }

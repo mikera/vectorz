@@ -180,4 +180,21 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		if (isPackedArray()) return getArray();
 		return null;
 	}
+	
+	@Override
+	public boolean isZero() {
+		// select row or column iteration in the most cache-friendly manner
+		if (rowStride()>columnStride()) {
+			int rc=rowCount();
+			for (int i=0; i<rc; i++) {
+				if (!getRow(i).isZero()) return false;
+			}
+		} else {
+			int cc=columnCount();
+			for (int i=0; i<cc; i++) {
+				if (!getColumn(i).isZero()) return false;
+			}
+		}
+		return true;
+	}
 }

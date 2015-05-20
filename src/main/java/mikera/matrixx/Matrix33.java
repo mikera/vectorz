@@ -388,4 +388,18 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	public static Matrix33 createScaleMatrix(double d) {
 		return new Matrix33(d,0,0,0,d,0,0,0,d);
 	}
+
+	@Override
+	public boolean isZero() {
+		return 
+			(m00==0.0) &&
+			(m01==0.0) &&
+			(m02==0.0) &&
+			(m10==0.0) &&
+			(m11==0.0) &&
+			(m12==0.0) &&
+			(m20==0.0) &&
+			(m21==0.0) &&
+			(m22==0.0);
+	}
 }

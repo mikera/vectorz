@@ -186,27 +186,13 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 
     @Override
     public List<AVector> getRows() {
-        return toSparseRowMatrix().getRows();
+        return getRotatedData(cols, rows);
     }
     
     public SparseRowMatrix toSparseRowMatrix() {
-        SparseRowMatrix rm=SparseRowMatrix.create(rows, cols);
-
-        for (int j = 0; j < cols; j++) {
-            AVector colVec = unsafeGetVector(j);
-            if (colVec!=null) {
-                Index nonSparseRows = colVec.nonSparseIndex();
-                int n=nonSparseRows.length();
-                for (int k = 0; k < n; k++) {
-                    int i = nonSparseRows.unsafeGet(k);
-                    double v=colVec.unsafeGet(i);
-                    if (v!=0.0) {
-                    	rm.unsafeSet(i,j, v);
-                    }
-                } 
-            }
-        }
-        return rm;    	
+        AVector[] rowVecs = getRows().toArray(new AVector[rows]);
+        SparseRowMatrix rm = SparseRowMatrix.create(rowVecs, rows, cols);
+        return rm;
     }
     
 	private AVector ensureMutableColumn(int i) {

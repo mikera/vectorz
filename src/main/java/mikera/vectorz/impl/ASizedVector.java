@@ -66,7 +66,7 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	protected final int checkIndex(int i) {
+	public final int checkIndex(int i) {
 		int len=length;
 		if ((i<0)||(i>=len)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return len;

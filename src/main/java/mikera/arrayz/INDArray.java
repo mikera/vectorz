@@ -242,12 +242,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray outerProduct(INDArray a);
 	
 	/**
-	 * Constructs a view of the array as a single vector in row-major order.
+	 * Constructs a view of all elements in the array as a single vector in row-major order.
 	 */
 	public AVector asVector();
 	
 	/**
-	 * Returns a list containing all elements of this array
+	 * Returns a List<Double> containing all elements of this array
 	 */
 	public List<Double> asElementList();
 	

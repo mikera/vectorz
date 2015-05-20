@@ -188,12 +188,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void add(Vector v) {
-		checkSameLength(v);
-		v.addToArray(getArray(), getArrayOffset(), getStride());
-	}
-	
-	@Override
 	public void add(double[] data, int offset) {
 		int stride=getStride();
 		double[] tdata=getArray();
@@ -275,11 +269,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	public double[] asDoubleArray() {
 		if (isPackedArray()) return getArray();
 		return null;
-	}
-	
-	@Override
-	public AStridedMatrix asColumnMatrix() {
-		return Matrixx.wrapStrided(data, length, 1, getArrayOffset(), getStride(), 0);
 	}
 
 	@Override
