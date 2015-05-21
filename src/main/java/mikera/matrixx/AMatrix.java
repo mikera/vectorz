@@ -31,7 +31,7 @@ import mikera.matrixx.impl.MatrixBandView;
 import mikera.matrixx.impl.MatrixColumnList;
 import mikera.matrixx.impl.MatrixColumnView;
 import mikera.matrixx.impl.MatrixElementIterator;
-import mikera.matrixx.impl.MatrixIterator;
+import mikera.matrixx.impl.MatrixRowIterator;
 import mikera.matrixx.impl.MatrixRowList;
 import mikera.matrixx.impl.MatrixRowView;
 import mikera.matrixx.impl.SparseColumnMatrix;
@@ -1072,7 +1072,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	@Override
 	public Iterator<AVector> iterator() {
-		return new MatrixIterator(this);
+		return new MatrixRowIterator(this);
 	}
 	
 	@Override

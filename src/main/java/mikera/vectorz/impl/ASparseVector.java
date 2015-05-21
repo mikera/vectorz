@@ -34,7 +34,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public abstract int nonSparseElementCount();
 	
 	/**
-	 * Returns the non-sparse values as a compacted vector view
+	 * Returns the non-sparse elements as a compacted vector
 	 * @return
 	 */
 	public abstract AVector nonSparseValues();

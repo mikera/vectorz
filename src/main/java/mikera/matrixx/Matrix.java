@@ -53,7 +53,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 
 	public static Matrix create(AMatrix m) {
-		return new Matrix(m.rowCount(), m.columnCount(), m.toDoubleArray());
+		return new Matrix(m);
 	}
 
 	/**
@@ -367,9 +367,11 @@ public final class Matrix extends ADenseArrayMatrix {
 		int cc = columnCount();
 		for (int k = 0; k < rc; k++) {
 			int x = k * cc;
-			double t = data[i + x];
-			data[i + x] = data[j + x];
-			data[j + x] = t;
+			int i1 = i + x;
+			int i2 = j + x;
+			double t = data[i1];
+			data[i1] = data[i2];
+			data[i2] = t;
 		}
 	}
 

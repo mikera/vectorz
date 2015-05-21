@@ -10,12 +10,12 @@ import mikera.vectorz.AVector;
  * 
  * @author Mike
  */
-public class MatrixIterator implements Iterator<AVector> {
+public class MatrixRowIterator implements Iterator<AVector> {
 	private final AMatrix source;
 	private final int maxPos;
 	private int pos;
 
-	public MatrixIterator(AMatrix source) {
+	public MatrixRowIterator(AMatrix source) {
 		this.pos=0;
 		this.source=source;
 		this.maxPos=source.rowCount();
