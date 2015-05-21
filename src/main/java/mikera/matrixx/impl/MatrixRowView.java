@@ -71,17 +71,16 @@ public final class MatrixRowView extends AMatrixViewVector {
 		if (v==this) return true;
 		if (v.length()!=length) return false;
 		for (int i=0; i<length; i++) {
-			if (v.unsafeGet(i)!=source.unsafeGet(row,i)) return false;
+			if (v.unsafeGet(i)!=unsafeGet(i)) return false;
 		}
 		return true;
 	}
 	
 	@Override
 	public double dotProduct(double[] data, int offset) {
-		AVector r=source.getRow(row);
 		double result=0.0;
 		for (int i=0; i<length; i++) {
-			result+=data[offset+i]*r.unsafeGet(i);
+			result+=data[offset+i]*unsafeGet(i);
 		}
 		return result;
 	}
