@@ -4,7 +4,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**
- * Base class for the small square primitive backed matrices
+ * Abstract base class for the small square primitive backed matrices
  * @author Mike
  *
  */
