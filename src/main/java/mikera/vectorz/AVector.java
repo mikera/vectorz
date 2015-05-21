@@ -1614,6 +1614,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (len!=length) throw new IllegalArgumentException("Vector length mismatch, expected length = "+length+", but got length = "+len);
 		return len;
 	}
+	
+	@Override
+	protected final void checkDimension(int dimension) {
+		if (dimension !=0) {
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
+		}
+	}
 
 	/**
 	 * Adds a scaled multiple of another vector to this one

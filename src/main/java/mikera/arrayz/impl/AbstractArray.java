@@ -1349,6 +1349,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void validate() {
 		// TODO: any generic validation?
 	}
+	
+	protected void checkDimension(int dimension) {
+		if ((dimension < 0) || (dimension >= dimensionality()))
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
+	}
 
 	/**
 	 * Returns true if any element is this array is NaN or infinite

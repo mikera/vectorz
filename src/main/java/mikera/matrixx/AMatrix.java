@@ -2111,6 +2111,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return cc;
 	}
 	
+	@Override
+	protected final void checkDimension(int dimension) {
+		if ((dimension < 0) || (dimension >= 2))
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
+	}
+	
 	protected void checkSameShape(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();

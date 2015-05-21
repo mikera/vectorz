@@ -103,6 +103,12 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	public int dimensionality() {
 		return dimensions;
 	}
+	
+	@Override
+	protected final void checkDimension(int dimension) {
+		if ((dimension < 0) || (dimension >= dimensions))
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
+	}
 
 	@Override
 	public long[] getLongShape() {
