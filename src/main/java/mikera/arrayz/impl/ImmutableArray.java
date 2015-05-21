@@ -125,7 +125,7 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 	
 	@Override
 	public INDArray slice(int dimension, int index) {
-		if ((dimension<0)||(dimension>=dimensions)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		checkDimension(dimension);
 		if (dimension==0) return slice(index);
 		return new ImmutableArray(data,
 				dimensions-1,

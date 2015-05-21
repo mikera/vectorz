@@ -134,7 +134,7 @@ public final class RepeatedElementVector extends ASizedVector {
 	
 	@Override
 	public AVector reorder(int dim, int[] order) {
-		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		checkDimension(dim);
 		return reorder(order);
 	}	
 	

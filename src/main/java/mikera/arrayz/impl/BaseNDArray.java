@@ -119,5 +119,9 @@ public abstract class BaseNDArray extends BaseShapedArray implements IStridedArr
 	public int[] getStrides() {
 		return stride;
 	}
-
+	@Override
+	protected final void checkDimension(int dimension) {
+		if ((dimension < 0) || (dimension >= dimensions))
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
+	}
 }

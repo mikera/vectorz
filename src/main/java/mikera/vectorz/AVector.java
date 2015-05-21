@@ -126,7 +126,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AScalar slice(int dimension, int index) {
-		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		checkDimension(dimension);
 		return slice(index);	
 	}	
 	
@@ -212,7 +212,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public INDArray rotateView(int dimension, int shift) {
-		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		checkDimension(dimension);
 		return rotateView(shift);
 	}
 	
@@ -272,7 +272,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public INDArray join(INDArray a, int dimension) {
-		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		checkDimension(dimension);
 		if (a instanceof AVector) {
 			return join((AVector)a);
 		}
@@ -1384,7 +1384,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector reorder(int dim, int[] order) {
-		if (dim!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+		checkDimension(dim);
 		Vector result=Vector.createLength(order.length);
 		result.set(this, order);
 		return result;

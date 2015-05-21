@@ -381,9 +381,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public AVector reorder(int dim, int[] order) {
-		if (dim != 0)
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(
-					this, dim));
+		checkDimension(dim);
 		return reorder(order);
 	}
 

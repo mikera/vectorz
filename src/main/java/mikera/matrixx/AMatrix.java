@@ -210,7 +210,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public AVector slice(int dimension, int index) {
-		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		checkDimension(dimension);
 		return (dimension==0)?getRowView(index):getColumnView(index);	
 	}	
 	
@@ -236,7 +236,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public List<INDArray> getSlices(int dimension) {
-		if ((dimension<0)||(dimension>=2)) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		checkDimension(dimension);
 		int l=getShape(dimension);
 		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
 		for (int i=0; i<l; i++) {

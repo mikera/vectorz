@@ -155,7 +155,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 
 	@Override
 	public INDArray slice(int dimension, int index) {
-		if (dimension<0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		checkDimension(dimension);
 		if (dimension==0) return slice(index);
 		ArrayList<INDArray> al=new ArrayList<INDArray>(sliceCount());
 		for (INDArray s:this) {
