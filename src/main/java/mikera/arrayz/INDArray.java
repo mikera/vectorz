@@ -351,7 +351,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray getTransposeView();
 	
 	/**
-	 * Returns a transposed copy of the array. Guarantees a new mutable defensive copy.
+	 * Returns a transposed copy of the array. Guarantees a new defensive copy.
 	 */
 	public INDArray getTransposeCopy();
 

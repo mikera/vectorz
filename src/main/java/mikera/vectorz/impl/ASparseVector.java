@@ -57,7 +57,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
      * @param precision
      * @return
      */
-    public ASparseVector roundToZero(double precision) {
+	public ASparseVector roundToZero(double precision) {
         throw new VectorzException(ErrorMessages.notYetImplemented());
     }
     
