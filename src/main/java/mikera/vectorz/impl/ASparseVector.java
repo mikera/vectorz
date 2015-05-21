@@ -50,7 +50,10 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public abstract boolean includesIndex(int i);
 
     /**
-     * Replaces all values less-than-or-equal to precision with zeros.
+     * Returns a vector after replacing all elements with absolute values less-than-or-equal to precision with zeros.
+     * 
+     * May return either this vector or a new vector. If this vector is return, it may have been mutated.
+     * 
      * @param precision
      * @return
      */
