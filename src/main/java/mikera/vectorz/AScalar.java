@@ -491,6 +491,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		get();
 		super.validate();
 	}
+	
+	@Override
+	protected final void checkDimension(int dimension) {
+		// scalar has no valid dimensions, so always an error
+		throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
+	}
 
 	@Override
 	public void abs() {
