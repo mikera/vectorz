@@ -15,6 +15,7 @@ import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
 import mikera.indexz.Index;
+import mikera.matrixx.algo.Definite;
 import mikera.matrixx.algo.Determinant;
 import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.algo.Multiplications;
@@ -1675,8 +1676,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Returns true if a matrix is positive definite
 	 */
-	public void isPositiveDefinite() {
-		throw new UnsupportedOperationException(ErrorMessages.notYetImplemented());
+	public boolean isPositiveDefinite() {
+		return Definite.isPositiveDefinite(this);
 	}
 	
 	/**
