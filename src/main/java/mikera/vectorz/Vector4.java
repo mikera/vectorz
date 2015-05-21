@@ -59,6 +59,11 @@ public final class Vector4 extends APrimitiveVector {
 		z=op.apply(z);
 		t=op.apply(t);
 	}
+	
+	@Override
+	public boolean isZero() {
+		return (x==0.0)&&(y==0.0)&&(z==0.0)&&(t==0.0);
+	}
 
 	public void add(double dx, double dy, double dz, double dt) {
 		x+=dx;

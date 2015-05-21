@@ -145,6 +145,11 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return (x==0.0);
+	}
+	
+	@Override
 	public Vector1 clone() {
 		return new Vector1(x);	
 	}

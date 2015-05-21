@@ -78,6 +78,11 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public boolean isZero() {
+		return (x==0.0)&&(y==0.0)&&(z==0.0);
+	}
+	
+	@Override
 	public double angle(AVector v) {
 		if (v instanceof Vector3) {return angle((Vector3)v);}
 		return super.angle(v);
