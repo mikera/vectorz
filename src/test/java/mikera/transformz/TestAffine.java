@@ -1,8 +1,10 @@
 package mikera.transformz;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.Random;
 
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.transformz.impl.ConstantTransform;
@@ -77,7 +79,7 @@ public class TestAffine {
 		if (!t.isSquare()) return;
 		int dimensions=t.inputDimensions();
 		AVector d=Vectorz.newVector(dimensions);
-		Vectorz.fillGaussian(d);
+		Vectorz.fillGaussian(d,new Random(3524523));
 		d.normalise();
 		
 		AVector r=Vectorz.newVector(dimensions);

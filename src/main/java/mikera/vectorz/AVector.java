@@ -2164,7 +2164,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Set a subrange of this vector from a double array
 	 */
 	public void setRange(int offset, double[] data, int dataOffset, int length) {
-		if ((offset<0)||(offset+length>this.length())) throw new IndexOutOfBoundsException(ErrorMessages.invalidRange(this, offset, length));
+		checkRange(offset,length);
 		for (int i=0; i<length; i++) {
 			unsafeSet(offset+i,data[dataOffset+i]);
 		}
@@ -2173,23 +2173,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public INDArray broadcast(int... targetShape) {
 		int tdims=targetShape.length;
+		if (tdims==0) throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
+		
 		int len=this.length();
-		if (tdims<1) {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
-		} else if (tdims==1) {
-			if (targetShape[0]!=len) {
-				throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
-			}
+		if (targetShape[tdims-1]!=len) throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
+
+		if (tdims==1) {
 			return this;
 		} else if (tdims==2) {
 			int n=targetShape[0];
-			if (len!=targetShape[1]) throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 			AVector[] vs=new AVector[n];
 			for (int i=0; i<n; i++) {vs[i]=this;}
 			return Matrixx.createFromVectors(vs);
 		} else {
 			int n=targetShape[0];
-			if (len!=targetShape[tdims-1]) throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
 			return SliceArray.repeat(s,n);
 		}

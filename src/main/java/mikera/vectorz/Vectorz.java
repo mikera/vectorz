@@ -468,10 +468,6 @@ public class Vectorz {
 		}
 	}
 	
-	public static void fillGaussian(AVector v) {
-		fillGaussian(v,0.0,1.0);
-	}
-	
 	/**
 	 * Fills a vector with index values
 	 * @param v
@@ -483,10 +479,25 @@ public class Vectorz {
 		}
 	}
 	
+	public static void fillGaussian(AVector v) {
+		fillGaussian(v,0.0,1.0);
+	}
+	
+	public static void fillGaussian(AVector v, Random r) {
+		fillGaussian(v,0.0,1.0);
+	}
+	
 	public static void fillGaussian(AVector v, double mean, double sd) {
 		int len=v.length();
 		for (int i=0; i<len; i++) {
 			v.unsafeSet(i,mean+Rand.nextGaussian()*sd);
+		}
+	}
+	
+	public static void fillGaussian(AVector v, double mean, double sd, Random r) {
+		int len=v.length();
+		for (int i=0; i<len; i++) {
+			v.unsafeSet(i,mean+r.nextGaussian()*sd);
 		}
 	}
 	

@@ -3,6 +3,7 @@ package mikera.indexz;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -46,6 +47,23 @@ public final class Index extends AIndex {
 	 * @return
 	 */
 	public static Index create(ArrayList<Integer> v) {
+		int n=v.size();
+		Index ind=new Index(n);
+		for (int i=0; i<n ; i++) {
+			ind.data[i]=v.get(i);
+		}
+		return ind;
+	}
+	
+	/**
+	 * Creates an Index using the values from the given List.
+	 * 
+	 * Values are cast to integers as needed, according to the semantics of (int)value
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static Index create(List<Integer> v) {
 		int n=v.size();
 		Index ind=new Index(n);
 		for (int i=0; i<n ; i++) {
