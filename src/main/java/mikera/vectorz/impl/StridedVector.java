@@ -3,22 +3,17 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.VectorzException;
 
-public final class StridedVector extends AStridedVector {
+public final class StridedVector extends BaseStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
-	private final int offset;
-	private final int stride;
-	
 	private StridedVector(double[] data, int offset, int length, int stride) {
-		super(length,data);
+		super(length,data,offset,stride);
 		if ((offset<0)) throw new IndexOutOfBoundsException();
 		if (length>0) {
 			// check last element is in the array
 			int lastOffset=(offset+(length-1)*stride);
 			if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException("StridedVector ends outside array");
 		}
-		this.offset=offset;
-		this.stride=stride;
 	}
 	
 	public static StridedVector wrapStrided(double[] data, int offset, int length, int stride) {
