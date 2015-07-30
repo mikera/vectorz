@@ -447,7 +447,7 @@ public class TestMatrices {
 		}
 	}
 	
-	void doGenericTests(AMatrix m) {
+	public void doGenericTests(AMatrix m) {
 		m.validate();
 		
 		testApplyOp(m);
