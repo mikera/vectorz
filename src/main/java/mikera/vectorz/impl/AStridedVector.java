@@ -213,7 +213,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	
 	@Override
 	public void addAt(int i, double v) {
-		int ix=checkIndex(i);
+		int ix=index(i);
 		double[] data=getArray();
 		data[ix]+=v;
 	}
