@@ -54,21 +54,6 @@ public final class StridedVector extends BaseStridedVector {
 	}
 	
 	@Override
-	public double dotProduct(double[] ds, int off) {
-		double result=0.0;
-		for (int i=0; i<length; i++) {
-			result+=data[offset+i*stride]*ds[i+off];
-		}
-		return result;
-	}
-	
-	@Override
-	public void set(AVector v) {
-		int length=checkSameLength(v);
-		v.copyTo(0, data, offset, length, stride);
-	}
-	
-	@Override
 	public void add(AVector v) {
 		if (v instanceof AStridedVector) {
 			add((AStridedVector)v);
@@ -88,16 +73,6 @@ public final class StridedVector extends BaseStridedVector {
 	}
 	
 	@Override
-	public int getStride() {
-		return stride;
-	}
-	
-	@Override
-	public int getArrayOffset() {
-		return offset;
-	}
-	
-	@Override
 	public AVector subVector(int start, int length) {
 		int len=checkRange(start,length);
 
@@ -108,33 +83,6 @@ public final class StridedVector extends BaseStridedVector {
 			return ArraySubVector.wrap(data, offset+start*stride, 1);
 		} 
 		return wrapStrided(data,offset+start*stride,length,stride);
-	}
-	
-	@Override
-	public double get(int i) {
-		checkIndex(i);
-		return data[offset+i*stride];
-	}
-	
-	@Override
-	public void set(int i, double value) {
-		checkIndex(i);
-		data[offset+i*stride]=value;
-	}
-	
-	@Override
-	public double unsafeGet(int i) {
-		return data[offset+i*stride];
-	}
-	
-	@Override
-	public void unsafeSet(int i, double value) {
-		data[offset+i*stride]=value;
-	}
-	
-	@Override
-	public void addAt(int i, double value) {
-		data[offset+i*stride]+=value;
 	}
 	
 	@Override

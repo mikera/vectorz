@@ -29,24 +29,44 @@ public abstract class BaseStridedVector extends AStridedVector {
 	}
 
 	@Override
-	public double get(int i) {
+	public final double get(int i) {
 		checkIndex(i);
-		return unsafeGet(i);
+		return data[offset+i*stride];
 	}
 	
 	@Override
-	public double unsafeGet(int i) {
-		return data[index(i)];
+	public final double unsafeGet(int i) {
+		return data[offset+i*stride];
 	}
-
+	
 	@Override
 	public void set(int i, double value) {
 		checkIndex(i);
-		unsafeSet(i,value);
+		data[offset+i*stride]=value;
 	}
 	
 	@Override
 	public void unsafeSet(int i, double value) {
-		data[index(i)]=value;
+		data[offset+i*stride]=value;
+	}
+	
+	@Override
+	public void addAt(int i, double value) {
+		data[offset+i*stride]+=value;
+	}
+	
+	@Override
+	public double dotProduct(double[] ds, int off) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i*stride]*ds[i+off];
+		}
+		return result;
+	}
+	
+	@Override
+	public void set(AVector v) {
+		int length=checkSameLength(v);
+		v.copyTo(0, data, offset, length, stride);
 	}
 }
