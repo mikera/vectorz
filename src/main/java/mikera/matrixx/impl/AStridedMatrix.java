@@ -40,8 +40,23 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
-	public AStridedVector getRowView(int i) {
+	public AStridedVector getRow(int i) {
 		return Vectorz.wrapStrided(data, getArrayOffset()+i*rowStride(), cols, columnStride());
+	}
+	
+	@Override
+	public AStridedVector getColumn(int i) {
+		return Vectorz.wrapStrided(data, getArrayOffset()+i*columnStride(), rows, rowStride());
+	}
+	
+	@Override
+	public AStridedVector getRowView(int i) {
+		return getRow(i);
+	}
+	
+	@Override
+	public AStridedVector getColumnView(int i) {
+		return getColumn(i);
 	}
 	
 	@Override
@@ -70,11 +85,6 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 			offset+=st;
 		}
 		return result;
-	}
-	
-	@Override
-	public AStridedVector getColumnView(int i) {
-		return Vectorz.wrapStrided(data, getArrayOffset()+i*columnStride(), rows, rowStride());
 	}
 	
 	@Override
