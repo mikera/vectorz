@@ -16,19 +16,12 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class StridedMatrix extends AStridedMatrix {
+public final class StridedMatrix extends BaseStridedMatrix {
 	private static final long serialVersionUID = -7928115802247422177L;
-
-	private final int rowStride;
-	private final int colStride;
-	private final int offset;
 
 	private StridedMatrix(double[] data, int rowCount, int columnCount,
 			int offset, int rowStride, int columnStride) {
-		super(data,rowCount,columnCount);
-		this.offset = offset;
-		this.rowStride = rowStride;
-		this.colStride = columnStride;
+		super(data,rowCount,columnCount,offset,rowStride,columnStride);
 	}
 
 	public static StridedMatrix create(int rowCount, int columnCount) {
@@ -71,22 +64,7 @@ public final class StridedMatrix extends AStridedMatrix {
 			dest[destOffset+i]=data[colOffset+i*rowStride];
 		}
 	}
-	
-	@Override
-	public int rowStride() {
-		return rowStride;
-	}
-	
-	@Override
-	public int columnStride() {
-		return colStride;
-	}
-	
-	@Override
-	public int getArrayOffset() {
-		return offset;
-	}
-	
+
 	@Override
 	public boolean isPackedArray() {
 		return (offset == 0) 
@@ -136,17 +114,6 @@ public final class StridedMatrix extends AStridedMatrix {
 	public AMatrix getTransposeView() {
 		return Matrixx.wrapStrided(data, cols, rows, offset,
 				colStride, rowStride);
-	}
-
-	@Override
-	public double get(int i, int j) {
-		checkIndex(i,j);
-		return data[index(i,j)];
-	}
-	
-	@Override
-	public double unsafeGet(int i, int j) {
-		return data[index(i,j)];
 	}
 	
 	@Override
@@ -201,11 +168,6 @@ public final class StridedMatrix extends AStridedMatrix {
 		if (!equals(this.exactClone())) throw new VectorzException("Thing not equal to itself");
 		if (offset<0) throw new VectorzException("Negative offset! ["+offset+"]");
 		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
-	}
-
-	@Override
-	protected final int index(int row, int col) {
-		return offset+(row*rowStride)+(col*colStride);
 	}
 	
 	@Override
