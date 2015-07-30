@@ -36,6 +36,12 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, I
 		return new DenseColumnMatrix(rows, cols, data);
 	}
 	
+	public static DenseColumnMatrix create(AMatrix m) {
+		DenseColumnMatrix dm= new DenseColumnMatrix(m.rowCount(), m.columnCount());
+		dm.set(m);
+		return dm;
+	}
+	
 	@Override
 	public int getArrayOffset() {
 		return 0;
@@ -89,6 +95,13 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, I
 		
 		for (int i=0; i<cc; i++) {
 			getColumnView(i).addMultiple(m.getColumn(i), factor);
+		}
+	}
+	
+	@Override public void set(AMatrix m) {
+		checkSameShape(m);
+		for (int i=0; i<cols; i++) {
+			m.copyColumnTo(i, data, index(0,i));
 		}
 	}
 
