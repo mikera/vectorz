@@ -1,7 +1,8 @@
 package mikera.matrixx.impl;
 
 public abstract class BaseStridedMatrix extends AStridedMatrix {
-
+	private static final long serialVersionUID = 4101975245958427299L;
+	
 	protected final int rowStride;
 	protected final int colStride;
 	protected final int offset;

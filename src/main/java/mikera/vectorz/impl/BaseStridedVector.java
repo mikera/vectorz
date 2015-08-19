@@ -9,6 +9,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 public abstract class BaseStridedVector extends AStridedVector {
+	private static final long serialVersionUID = 7038506080494281379L;
 
 	protected BaseStridedVector(int length, double[] data, int offset, int stride) {
 		super(length, data);

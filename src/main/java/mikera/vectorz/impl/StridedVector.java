@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.VectorzException;
 
 public final class StridedVector extends BaseStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
