@@ -18,7 +18,7 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Lightweight immutable zero matrix class. 
  * 
- * Can be any shape.
+ * Can be any shape, including empty shapes.
  */
 public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, IFastColumns, ISparse {
 	private static final long serialVersionUID = 875833013123277805L;
