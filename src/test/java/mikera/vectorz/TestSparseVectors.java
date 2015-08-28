@@ -43,6 +43,14 @@ public class TestSparseVectors {
         empty.add(nonEmpty);
         assertEquals(Vector.of(1,0,2), empty);
 	}
+	
+	@Test
+	public void testSpareIndexedCreate() {
+		// regression test for basic bug with sparse matrix operations (vectorz-clj #52)
+		Vector v=Vector.of(0,0,0,0,0,0,1,0,0,0,0,0,1);
+		AVector sv=SparseIndexedVector.createWithIndices(v, v.nonZeroIndices());
+		assertEquals(v,sv);
+	}
 
     @Test
     public void testRoundToZero() {
