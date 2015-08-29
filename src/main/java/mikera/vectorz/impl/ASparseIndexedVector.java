@@ -88,6 +88,12 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
+	public double distanceSquared(AVector v) {
+		AVector d=this.subCopy(v);
+		return d.elementSquaredSum();
+	}
+	
+	@Override
 	public AVector innerProduct(AMatrix a) {
 		// we assume sufficient sparsity to make specialised implementation worthwhile?
 		// TODO should we go in a different order and calculate via non-zero elements in this? (i.e. avoid iterating over all columns of a)

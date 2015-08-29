@@ -109,7 +109,6 @@ public class TestVectors {
 		assertEquals(6.0,v.elementSum(),0.0);
 	}
 	
-	
 	@Test public void testCreateFromIterable() {
 		ArrayList<Object> al=new ArrayList<Object>();
 		al.add(1);
@@ -276,6 +275,12 @@ public class TestVectors {
 			res+=v.get(i);
 		}
 		assertEquals(res,v.elementSum(),0.00001);
+	}
+	
+	private void testElementSquaredSum(AVector v) {
+		double ss=v.elementSquaredSum();
+		assertEquals(ss,v.distanceSquared(Vectorz.createZeroVector(v.length())),0.000001);
+		assertEquals(ss,v.multiplyCopy(v).elementSum(),0.000001);
 	}
 	
 	private void testElementProduct(AVector v) {
@@ -828,6 +833,7 @@ public class TestVectors {
 		testAddEquivalents(v);
 		testAddToArray(v);
 		testElementSum(v);
+		testElementSquaredSum(v);
 		testElementProduct(v);
 		testAddAt(v);
 		testUnsafeGet(v);
