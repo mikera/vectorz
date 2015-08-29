@@ -150,7 +150,9 @@ public abstract class Op implements IOperator {
 		return false;
 	}
 	
-	public abstract double averageValue();
+	public double averageValue() {
+		throw new UnsupportedOperationException();
+	}
 	
 	public double minValue() {
 		return Double.NEGATIVE_INFINITY;
