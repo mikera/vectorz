@@ -83,6 +83,12 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		
 	// ================================================
 	// standard implementations
+
+	@Override
+	public double distanceSquared(AVector v) {
+		AVector d=this.subCopy(v);
+		return d.elementSquaredSum();
+	}
 	
 	@Override
 	public double dotProduct(AVector v) {

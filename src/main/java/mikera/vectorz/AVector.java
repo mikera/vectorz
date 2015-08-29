@@ -973,6 +973,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public double distanceSquared(AVector v) {
+		// TODO: consider implementing with subCopy by default?
 		int len=checkSameLength(v);
 		double total=0.0;
 		for (int i=0; i<len; i++) {
