@@ -1471,6 +1471,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 	
+	public double[][] toNestedDoubleArrays() {
+		int rc=rowCount();
+		double[][] result=new double[rc][];
+		for (int i=0; i<rc; i++) {
+			result[i]=getRow(i).toDoubleArray();
+		}
+		return result;
+	}
+	
 	@Override
 	public INDArray[] toSliceArray() {
 		int n=sliceCount();
