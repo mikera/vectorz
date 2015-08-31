@@ -776,7 +776,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		double[] tdata=v.getArray();
 		for (int i=0; i<inds.length; i++) {
 			int ix=inds[i];
-			checkIndex(i);
+			checkIndex(ix);
 			tdata[i]=unsafeGet(ix);
 		}
 		return v;
