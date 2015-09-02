@@ -305,6 +305,11 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public double magnitudeSquared() {
+		return DoubleArrays.elementSquaredSum(data, getArrayOffset(), length,getStride());
+	}
+	
+	@Override
 	public void fill(double value) {
 		int stride=getStride();
 		double[] array=getArray();

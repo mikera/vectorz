@@ -131,6 +131,16 @@ public final class DoubleArrays {
 		}
 		return result;	
 	}
+	
+	public static double elementSquaredSum(double[] data, int offset, int length, int stride) {
+		if (stride==1) return elementSquaredSum(data,offset,length);
+		double result = 0.0;
+		for (int i=0; i<length; i++) {
+			double x=data[offset+i*stride];
+			result+=x*x;
+		}
+		return result;	
+	}
 
 	public static double elementPowSum(double[] data, int offset,
 			int length, double exponent) {
