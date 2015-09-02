@@ -51,6 +51,24 @@ public abstract class AJoinedVector extends ASizedVector {
 	} 
 	
 	@Override
+	public boolean equals(AVector a) {
+		if (this==a) return true;
+		if (a instanceof ADenseArrayVector) {
+			return equals((ADenseArrayVector)a);
+		}
+		if (length()!=a.length()) return false;
+		long n=componentCount();
+		int offset=0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			int length=v.length();
+			if (!v.equals(a.subVector(offset, length))) return false;
+			offset+=length;
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean equalsArray(double[] values, int offset) {
 		long n=componentCount();
 		for (int i=0; i<n; i++) {

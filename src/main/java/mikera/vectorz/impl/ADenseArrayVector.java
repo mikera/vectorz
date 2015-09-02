@@ -602,6 +602,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	@Override
 	public boolean equals(INDArray v) {
 		if (v.dimensionality()!=1) return false;
+		if (v==this) return true;
 		int len=length();
 		if (len != v.getShape(0)) return false;
 		
@@ -610,6 +611,14 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public boolean equals(AVector v) {
+		if (v==this) return true;
+		int len = length();
+		if (v.length() != len) return false;
+		return v.equalsArray(getArray(), getArrayOffset());
+	}
+	
+	@Override
+	public boolean equals(ADenseArrayVector v) {
 		if (v==this) return true;
 		int len = length();
 		if (v.length() != len) return false;

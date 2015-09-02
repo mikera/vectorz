@@ -359,12 +359,10 @@ public final class AxisVector extends ASingleElementVector {
 	
 	@Override
 	public boolean equals(AVector v) {
-		int len=v.length();
-		if (len!=length) return false;
+		if (v==this) return true;
+		if (length!=v.length()) return false;
 		if (v.unsafeGet(index)!=1.0) return false;
-		if (!v.isRangeZero(0,index)) return false;
-		if (!v.isRangeZero(index+1,length-index-1)) return false;
-		return true;
+		return v.isRangeZero(0, index-1)&&(v.isRangeZero(index+1, length-index-1));
 	}
 	
 	@Override

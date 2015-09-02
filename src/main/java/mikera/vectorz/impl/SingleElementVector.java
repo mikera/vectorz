@@ -196,6 +196,14 @@ public final class SingleElementVector extends ASingleElementVector {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (v==this) return true;
+		if (length!=v.length()) return false;
+		if (v.unsafeGet(index)!=value) return false;
+		return v.isRangeZero(0, index-1)&&(v.isRangeZero(index+1, length-index-1));
+	}
 
 	@Override
 	public int nonSparseElementCount() {
