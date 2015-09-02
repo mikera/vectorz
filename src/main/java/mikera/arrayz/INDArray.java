@@ -293,25 +293,44 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray broadcast(int... shape);
 	
 	/**
-	 * Broadcasts to match the shape of the target
+	 * Broadcasts an array to match the shape of the target
+	 * @param target The target array
+	 * @returns An array representing the broadcasted value of this array
+	 * @throws IllegalArgumentException if this array cannot be broadcasted to match the target 
 	 */
 	public INDArray broadcastLike(INDArray target);
 	
+	/**
+	 * Broadcasts an array to match the shape of the target matrix
+	 * @param target The target matrix
+	 * @returns A matrix representing the broadcasted value of this array
+	 * @throws IllegalArgumentException if this array cannot be broadcasted to match the target 
+	 */
 	public AMatrix broadcastLike(AMatrix target);
 
+	/**
+	 * Broadcasts an array to match the shape of the target vector
+	 * @param target The target vector
+	 * @returns A vector representing the broadcasted value of this array
+	 * @throws IllegalArgumentException if this array cannot be broadcasted to match the target 
+	 */
 	public AVector broadcastLike(AVector target);
 	
 	/**
 	 * Creates a mutable clone of the array, broadcasted if necessary to match the shape of the target.
 	 * 
-	 * @Throws IllegalArgumentException if the array cannot be broadcasted to match the target or vice versa 
+	 * @param target The target array
+	 * @throws IllegalArgumentException if the array cannot be broadcasted to match the target or vice versa 
 	 */
 	public INDArray broadcastCloneLike(INDArray target);
 	
 	/**
 	 * Creates a copy of the array, broadcasted if necessary to match the shape of the target
 	 * Like broadCastCloneLike, but does not guarantee a mutable clone - hence may be faster
-	 * when used with immutable or specialised arrays
+	 * when used with immutable or specialized arrays
+	 * 
+	 * @param target The target array
+	 * @throws IllegalArgumentException if the array cannot be broadcasted to match the target or vice versa 
 	 */
 	public INDArray broadcastCopyLike(INDArray target);
 
@@ -320,6 +339,8 @@ public interface INDArray extends Cloneable, Serializable {
 	 * 
 	 * 0 dimensional slice results are permitted, but attempting to slice a 0 dimensional array
 	 * will result in an error.
+	 * 
+	 * @throws IndexOutOfBoundsException if the slice does not exist
 	 */
 	public INDArray slice(int majorSlice);
 	
@@ -327,6 +348,8 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns the value of a major slice of this array (slice along dimension 0)
 	 * 
 	 * Like 'slice', except returns a Double value for slices of 1D vectors
+	 * 
+	 * @throws IndexOutOfBoundsException if the slice does not exist
 	 */
 	public Object sliceValue(int majorSlice);
 	
