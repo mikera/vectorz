@@ -61,6 +61,18 @@ public abstract class AJoinedVector extends ASizedVector {
 		return true;
 	} 
 	
+	@Override
+	public void scaleAdd(double factor, AVector b, double bfactor, double constant) {
+		long n=componentCount();
+		int offset=0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			int length=v.length();
+			v.scaleAdd(factor,b.subVector(offset, length),bfactor,constant);
+			offset+=length;
+		}
+	}
+	
 //	TODO: should have a fast implementation for this?
 //	@Override
 //	public void setElements(int pos, double[] values, int offset, int length) {
