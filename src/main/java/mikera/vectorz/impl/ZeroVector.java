@@ -189,9 +189,11 @@ public final class ZeroVector extends ASparseVector {
 	}
 
 	@Override
-	public AVector multiplyCopy(double factor) {
-		// note we need to do this in case of NaN
-		return Vectorz.createRepeatedElement(length, factor*0.0);
+	public ZeroVector multiplyCopy(double factor) {
+		// TODO: consider handling handle special case of Double.NaN
+		// if (factor==Double.NaN) 
+		// return Vectorz.createRepeatedElement(length, factor*0.0);
+		return this;
 	}
 	
 	@Override
