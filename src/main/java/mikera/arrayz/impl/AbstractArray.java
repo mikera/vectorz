@@ -391,6 +391,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			add(src.multiplyCopy(factor));
 		}
 	}
+	
+	@Override
+	public INDArray addCopy(double d) {
+		INDArray result=clone();
+		result.add(d);
+		return result;
+	}
 
 	public void set(double value) {
 		set(new int[0],value);

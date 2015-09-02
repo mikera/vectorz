@@ -46,6 +46,7 @@ public class TestArrays {
 		int[] shape = a.getShape();
 		
 		int dims=a.dimensionality();
+		assertEquals(dims, shape.length);
 
 		for (int i = 0; i < dims; i++) {
 			assertEquals(shape[i], a.getShape(i));
@@ -56,14 +57,14 @@ public class TestArrays {
 			assertEquals(longShape[i], shape[i]);
 		}
 
-		assertEquals(a.dimensionality(), shape.length);
 		long r = 1;
 		for (int i = 0; i < shape.length; i++) {
 			r *= shape[i];
 		}
 		assertEquals(v.length(), r);
+		assertEquals(r,a.elementCount());
 
-		assertEquals(a, a.reshape(shape));
+		assertEquals(a, v.reshape(shape));
 		
 		try {
 			a.getShape(-1);
@@ -438,6 +439,7 @@ public class TestArrays {
 		assertEquals(a, a.sparse());
 
 		assertTrue(a.epsilonEquals(a.exactClone()));
+		if (a.elementCount()>0) assertFalse(a.epsilonEquals(a.addCopy(Vectorz.TEST_EPSILON * 1.5)));
 
 		if ((!a.isFullyMutable()) || (a.elementCount() == 0)) return;
 

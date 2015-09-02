@@ -2089,6 +2089,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return m;
 	}
 	
+	@Override
+	public AMatrix addCopy(double d) {
+		AMatrix result=clone();
+		result.add(d);
+		return result;
+	}
+	
 	public Matrix addCopy(Matrix a) {
 		checkSameShape(a);
 		Matrix r=a.clone();

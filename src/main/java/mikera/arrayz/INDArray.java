@@ -160,6 +160,15 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray addCopy(INDArray a);	
 	
+
+	/**
+	 * Creates a new array equal to this array with a constant value added to every element
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public INDArray addCopy(double d);
+	
 	/**
 	 * Adds all the elements of this array to a double array, in row-major order
 	 */
@@ -878,4 +887,5 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @return
 	 */
 	INDArray[] getComponents();
+
 }

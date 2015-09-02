@@ -130,6 +130,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	public void add(double d) {
 		set(get()+d);
 	}
+	
+	@Override
+	public AScalar addCopy(double d) {
+		return Scalar.create(get()+d);
+	}
 
 	@Override
 	public void addAt(int i, double v) {
