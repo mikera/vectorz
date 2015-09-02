@@ -389,8 +389,8 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
-		return left.magnitudeSquared()+right.magnitudeSquared();
+	public double elementSquaredSum() {
+		return left.elementSquaredSum()+right.elementSquaredSum();
 	}
 	
 	@Override

@@ -89,7 +89,7 @@ public final class RepeatedElementVector extends ASizedVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return length*value*value;
 	}
 	

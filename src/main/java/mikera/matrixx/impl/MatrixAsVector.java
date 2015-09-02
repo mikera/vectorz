@@ -112,7 +112,7 @@ public class MatrixAsVector extends AMatrixViewVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return source.elementSquaredSum();
 	}
 	

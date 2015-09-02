@@ -112,7 +112,7 @@ public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 	}
 
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return 0.0;
 	}
 

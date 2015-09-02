@@ -414,7 +414,7 @@ public class SparseHashedVector extends ASparseVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		double result=0.0;
 		for (Map.Entry<Integer,Double> e:hash.entrySet()) {
 			double d=e.getValue();

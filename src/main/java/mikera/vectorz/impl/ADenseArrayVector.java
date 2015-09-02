@@ -537,7 +537,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return DoubleArrays.elementSquaredSum(data, getArrayOffset(), length);
 	}
 

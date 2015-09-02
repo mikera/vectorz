@@ -208,7 +208,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return 0.0;
 	}
 

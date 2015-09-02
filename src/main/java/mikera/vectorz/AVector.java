@@ -733,14 +733,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		scaleAdd(1.0-alpha,v,alpha,0.0);
 	}
 	
-	public double magnitudeSquared() {
-		int len=length();
-		double total=0.0;
-		for (int i=0; i<len; i++) {
-			double x=unsafeGet(i);
-			total+=x*x;
-		}
-		return total;
+	public final double magnitudeSquared() {
+		return elementSquaredSum();
 	}
 	
 	@Override
@@ -1146,8 +1140,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return unsafeGet(minElementIndex());
 	}
 	
-	@Override public final double elementSquaredSum() {
-		return magnitudeSquared();
+	@Override
+	public double elementSquaredSum() {
+		double result=0.0;
+		int len=length();
+		for (int i=0; i<len; i++) {
+			double x=unsafeGet(i);
+			result+=x*x;
+		}
+		return result;
 	}
 	
 	@Override

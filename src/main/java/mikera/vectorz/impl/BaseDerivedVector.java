@@ -41,6 +41,16 @@ public abstract class BaseDerivedVector extends AVector {
 	}
 	
 	@Override
+	public double elementSum() {
+		return source.elementSum();
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		return source.elementSquaredSum();
+	}
+	
+	@Override
 	public void unsafeSet(int i, double value) {
 		source.unsafeSet(i,value);
 	}

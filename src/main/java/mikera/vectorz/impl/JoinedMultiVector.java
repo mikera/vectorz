@@ -421,15 +421,6 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
-		double result=0.0;
-		for (int i=0; i<n; i++) {
-			result+=vecs[i].magnitudeSquared();
-		}
-		return result;
-	}
-	
-	@Override
 	public long nonZeroCount() {
 		long result=0;
 		for (int i=0; i<n; i++) {

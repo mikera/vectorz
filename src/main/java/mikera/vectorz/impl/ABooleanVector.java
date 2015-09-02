@@ -35,6 +35,12 @@ public abstract class ABooleanVector extends ASizedVector {
 		return false;
 	}
 	
+	@Override
+	public double elementSquaredSum() {
+		// same as the element sum, since only values are 0 and 1
+		return elementSum();
+	}
+	
 	/**
      * Returns the sum of all the elements raised to a specified power
      * @return

@@ -247,4 +247,14 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
     public double elementAbsPowSum(double p) {
     	return nonSparseValues().elementAbsPowSum(p);
     }
+    
+    @Override
+    public double elementSum() {
+    	return nonSparseValues().elementSum();
+    }
+    
+    @Override
+    public double elementSquaredSum() {
+    	return nonSparseValues().elementSquaredSum();
+    }
 }

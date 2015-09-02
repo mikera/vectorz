@@ -67,7 +67,7 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return DoubleArrays.elementSquaredSum(internalData());
 	}
 	

@@ -196,7 +196,7 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override 
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return (x*x)+(y*y);
 	}
 	

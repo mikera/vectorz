@@ -83,6 +83,12 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	}
 	
 	@Override
+	public double elementSquaredSum() {
+		double x= scalar.get();
+		return x*x;
+	}
+	
+	@Override
 	public double elementMax(){
 		return scalar.get();
 	}

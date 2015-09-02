@@ -154,7 +154,7 @@ public class ImmutableVector extends AArrayVector implements IDense {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return DoubleArrays.elementSquaredSum(data, offset, length);
 	}
 	

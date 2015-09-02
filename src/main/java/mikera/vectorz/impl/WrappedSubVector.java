@@ -158,4 +158,26 @@ public final class WrappedSubVector extends ASizedVector {
 			wrapped.unsafeSet(ix,wrapped.unsafeGet(ix)*factor);
 		}
 	}
+	
+	@Override
+	public double elementSum() {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			int ix=i+offset;
+			double x=wrapped.unsafeGet(ix);
+			result+=x;
+		}
+		return result;
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			int ix=i+offset;
+			double x=wrapped.unsafeGet(ix);
+			result+=x*x;
+		}
+		return result;
+	}
 }

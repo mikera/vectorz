@@ -39,7 +39,7 @@ public final class AxisVector extends ASingleElementVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return 1.0;
 	}
 	

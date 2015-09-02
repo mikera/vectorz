@@ -73,7 +73,7 @@ public final class SingleElementVector extends ASingleElementVector {
 	}
 	
 	@Override
-	public double magnitudeSquared() {
+	public double elementSquaredSum() {
 		return value*value;
 	}
 	

@@ -62,6 +62,11 @@ public final class Vector1 extends APrimitiveVector {
 		return x;
 	}
 	
+	@Override 
+	public double elementSquaredSum() {
+		return (x*x);
+	}
+	
 	@Override
 	public double elementProduct() {
 		return x;

@@ -73,6 +73,28 @@ public abstract class AJoinedVector extends ASizedVector {
 		}
 	}
 	
+	@Override
+	public double elementSquaredSum() {
+		long n=componentCount();
+		double result=0.0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			result+=v.elementSquaredSum();
+		}
+		return result;
+	}
+	
+	@Override
+	public double elementSum() {
+		long n=componentCount();
+		double result=0.0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			result+=v.elementSum();
+		}
+		return result;
+	}
+	
 //	TODO: should have a fast implementation for this?
 //	@Override
 //	public void setElements(int pos, double[] values, int offset, int length) {

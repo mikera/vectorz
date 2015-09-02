@@ -44,6 +44,18 @@ public class RangeVector extends AComputedVector {
 		// compute sum of arithmetic progression directly
 		return ((double)start*length) + ((length*(length-1))/2);
 	}
+	
+	
+	private static long sumOfSquares(int n) {
+	   // formula for sum of the first n natural number squares
+	   return (n*(n+1)*(2*n+1))/6;
+	}
+	
+	@Override
+	public double elementSquaredSum() {
+		// compute sum of arithmetic progression directly
+		return sumOfSquares(start+length-1)-sumOfSquares(start-1);
+	}
 
 	@Override
 	public double get(int i) {
