@@ -105,6 +105,14 @@ public final class Vector4 extends APrimitiveVector {
 		t=-t;
 	}
 	
+	@Override
+	public void multiply(double factor) {
+		x*=factor;
+		y*=factor;
+		z*=factor;
+		t*=factor;
+	}
+	
 	public void addMultiple(double dx, double dy, double dz, double dt, double factor) {
 		x+=dx*factor;
 		y+=dy*factor;

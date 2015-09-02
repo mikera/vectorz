@@ -72,6 +72,17 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public void multiply(double factor) {
+		int len=length();
+		double[] array=getArray();
+		int offset=getArrayOffset();
+		int stride=getStride();
+		for (int i=0; i<len; i++) {
+			array[offset+i*stride]*=factor;
+		}		
+	}
+	
+	@Override
 	public double elementProduct() {
 		int len=length();
 		double[] array=getArray();

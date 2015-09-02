@@ -145,6 +145,11 @@ public final class Vector1 extends APrimitiveVector {
 	}
 	
 	@Override
+	public void multiply(double factor) {
+		x*=factor;
+	}
+	
+	@Override
 	public boolean isZero() {
 		return (x==0.0);
 	}
@@ -168,4 +173,5 @@ public final class Vector1 extends APrimitiveVector {
 	public Vector1 exactClone() {
 		return clone();
 	}
+
 }

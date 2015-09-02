@@ -145,6 +145,12 @@ public final class Vector2 extends APrimitiveVector {
 		x=-x;
 		y=-y;
 	}
+	
+	@Override
+	public void multiply(double factor) {
+		x*=factor;
+		y*=factor;
+	}
 
 	@Override
 	public void add(double constant) {

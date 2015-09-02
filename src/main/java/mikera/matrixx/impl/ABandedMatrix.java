@@ -138,6 +138,13 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 		}
 	}
 	
+	@Override 
+	public void multiply(double value) {
+		for (int i=-rowCount()+1; i<columnCount(); i++) {
+			getBand(i).multiply(value);
+		}
+	}
+	
 	@Override
 	public Matrix toMatrix() {
 		int rc = rowCount();

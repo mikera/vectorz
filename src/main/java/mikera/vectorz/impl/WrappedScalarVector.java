@@ -35,6 +35,11 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	}
 	
 	@Override
+	public void multiply(double factor) {
+		scalar.multiply(factor);
+	}
+	
+	@Override
 	public AScalar getComponent(int k) {
 		if (k!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidComponent(this,k));
 		return scalar;
