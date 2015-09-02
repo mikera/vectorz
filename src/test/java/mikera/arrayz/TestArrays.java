@@ -132,6 +132,19 @@ public class TestArrays {
 		assertEquals(r,b);	
 	}
 	
+	private void testScaleAdd(INDArray a) {
+		if (!a.isFullyMutable()) return;
+		INDArray t=a.exactClone();
+		INDArray b=TestingUtils.createRandomLike(a, 23456);
+		
+		INDArray r=a.exactClone();
+		r.scale(1.5);
+		r.addMultiple(b,3.0);
+		t.scaleAdd(1.5, b, 3.0, 2.0);
+		t.sub(2.0);
+		assertTrue(r.epsilonEquals(t, 0.0001));
+	}
+	
 	private void testSub(INDArray a) {
 		INDArray b=TestingUtils.createRandomLike(a, 16786);
 		INDArray r=a.subCopy(b);
@@ -751,6 +764,7 @@ public class TestArrays {
 		testTranspose(a);
 		testAsVector(a);
 		testAdd(a);
+		testScaleAdd(a);
 		testSub(a);
 		testToArray(a);
 		testMultiply(a);
