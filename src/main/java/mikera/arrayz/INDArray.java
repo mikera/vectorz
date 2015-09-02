@@ -570,6 +570,18 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Scales all elements of the array by a given double value and adds a constant value
 	 */
 	public void scaleAdd(double factor, double constant);
+
+	/**
+	 * Scales all elements of the array by a given double value, adds a scaled second array and adds a constant value
+	 */
+	public void scaleAdd(double factor, INDArray b, double bfactor, double constant);
+	
+	/**
+	 * Adds a sclaed multiple of another array to this array
+	 * @param src
+	 * @param factor
+	 */
+	public void addMultiple(INDArray src, double factor);
 	
 	/**
 	 * Multiplies all elements of the array in place by a given double value

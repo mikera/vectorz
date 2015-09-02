@@ -376,8 +376,25 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void scaleAdd(double factor, double constant) {
+		if (factor!=1.0) multiply(factor);
+		if (constant!=0.0) add(constant);
+	}
+	
+	@Override
+	public void scaleAdd(double factor, INDArray b, double bfactor, double constant) {
 		multiply(factor);
-		add(constant);
+		addMultiple(b,bfactor);
+		if (constant!=0.0) add(constant);
+	}
+	
+	@Override
+	public void addMultiple(INDArray src, double factor) {
+		if (factor==0.0) return;
+		if (factor==1.0) {
+			add(src);
+		} else {
+			add(src.scaleCopy(factor));
+		}
 	}
 
 	public void set(double value) {
