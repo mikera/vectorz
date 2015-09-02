@@ -376,19 +376,8 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public double dotProduct(AVector v) {
-		checkSameLength(v);
-		return v.dotProduct(data,0);
-	}
-	
-	@Override
-	public Vector multiplyCopy(double a) {
-		int n=length;
-		double[] result=new double[n];
-		for (int i=0; i<length; i++) {
-			result[i]=data[i]*a;
-		}
-		return wrap(result);
+	public Vector multiplyCopy(double factor) {
+		return wrap(DoubleArrays.multiplyCopy(data, factor));
 	}
 	
 	@Override public Scalar innerProduct(AVector v) {
@@ -397,16 +386,6 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override public Scalar innerProduct(Vector v) {
 		return Scalar.create(dotProduct(v));
-	}
-	
-	public double dotProduct(Vector v) {
-		int len=checkSameLength(v);
-
-		double result=0.0;
-		for (int i=0; i<len; i++) {
-			result+=data[i]*v.data[i];
-		}
-		return result;
 	}
 	
 	public double distanceSquared(Vector v) {
