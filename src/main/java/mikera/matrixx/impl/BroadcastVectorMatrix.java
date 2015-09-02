@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -39,6 +40,17 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 	public AVector getRowView(int row) {
 		checkRow(row);
 		return vector;
+	}
+	
+	@Override
+	public AVector getRow(int row) {
+		checkRow(row);
+		return vector;
+	}
+	
+	@Override
+ 	public AVector getColumn(int col) {
+		return RepeatedElementVector.create(rows, vector.get(col));
 	}
 	
 	@Override
