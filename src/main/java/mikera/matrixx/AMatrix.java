@@ -807,22 +807,20 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public void sub(double d) {
+	public final void sub(double d) {
 		add(-d);
 	}
 	
 	@Override
 	public final void scaleAdd(double factor, double constant) {
-		if (factor!=1.0) multiply(factor);
-		if (constant!=0.0) add(constant);
+		multiply(factor);
+		add(constant);
 	}
 	
 	@Override
 	public void scaleAdd(double factor, INDArray b, double bfactor, double constant) {
 		scaleAdd(factor,constant);
-		if (bfactor!=0.0) {
-			addMultiple(b,bfactor);
-		}
+		addMultiple(b,bfactor);
 	}
 	
 	
@@ -1632,6 +1630,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public void add(double d) {
+		if (d==0.0) return;
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
 			getRowView(i).add(d);
