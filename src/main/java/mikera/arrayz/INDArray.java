@@ -762,7 +762,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns true if the elements in this array exactly match the elements in the given array, in
 	 * row-major order
 	 * 
-	 * @param data
+	 * @param data Array of double element values to check for equality
 	 * @return
 	 */
 	public boolean equalsArray(double[] data);	
@@ -771,33 +771,34 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns true if the elements in this array exactly match the elements in the given array, in
 	 * row-major order
 	 * 
-	 * @param data
+	 * @param data Array of double element values to check for equality
+	 * @param offset Offset into the data array
 	 * @return
 	 */
 	public boolean equalsArray(double[] data, int offset);
 
 	/**
 	 * Computes the inner product of this array with a vector
-	 * @param v
-	 * @return
+	 * @param v A vector
+	 * @return A new array representing the inner product
 	 */
 	public INDArray innerProduct(AVector v);
 
 	/**
 	 * Returns a copy of the array with the abs operator applied to each element
-	 * @return
+	 * @return A new array containing the absolute element values
 	 */
 	public INDArray absCopy();
 
 	/**
 	 * Returns a copy of the array with the signum operator applied to each element
-	 * @return
+	 * @return A new array containing the signums of element values
 	 */
 	public INDArray signumCopy();
 
 	/**
 	 * Gets all elements of the array as a Java double[] array
-	 * @return
+	 * @return A Java double[] array containing all elements in row-major order
 	 */
 	public double[] getElements();
 
@@ -809,14 +810,14 @@ public interface INDArray extends Cloneable, Serializable {
 
 	/**
 	 * Returns a copy of the array with all elements multiplied by a single constant value
-	 * @param d
-	 * @return
+	 * @param factor A scalar factor
+	 * @return A new array, with all element values scaled by the given factor
 	 */
-	public INDArray multiplyCopy(double d);
+	public INDArray multiplyCopy(double factor);
 
 	/**
-	 * Returns true if any element is this array is NaN or infinite
-	 * @return
+	 * Checks if the array has any uncountable element values (i.e. NaN or infinite)
+	 * @return True if any element is this array is NaN or infinite, false otherwise
 	 */
 	public boolean hasUncountable();
 	
