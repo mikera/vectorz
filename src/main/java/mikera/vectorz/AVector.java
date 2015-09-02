@@ -543,14 +543,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Multiplies the vector by a constant factor
 	 * @param factor Factor by which to multiply each component of the vector
 	 */
+	@Override
 	public void multiply(double factor) {
-		int len=length();
 		if (factor==1.0) return;
+		int len=length();
 		for (int i = 0; i < len; i++) {
 			unsafeSet(i,unsafeGet(i)*factor);
 		}	
 	}
 	
+	@Override
 	public void multiply(INDArray a) {
 		if (a instanceof AVector) {
 			multiply((AVector)a);
@@ -2110,8 +2112,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Scales this vector and adds a constant to every element
 	 */
+	@Override
 	public void scaleAdd(double factor, double constant) {
-		scale(factor);
+		multiply(factor);
 		add(constant);
 	}
 
