@@ -178,7 +178,8 @@ public final class NDArray extends BaseNDArray {
 	
 	@Override
 	public INDArray slice(int dimension, int index) {
-		checkDimension(dimension);
+		Arrayz.checkShape(this, dimension, index);
+		
 		if (dimension==0) return slice(index);
 		if (dimensions==2) {
 			// note: dimension must be 1 if we are here

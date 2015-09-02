@@ -311,6 +311,13 @@ public class Arrayz {
 		Vectorz.fillNormal(a.asVector(),random);
 	}
 
+	/**
+	 * Checks that a specified index exists along a specified dimension. Throws an exception if the index does not exist.
+	 * @param array
+	 * @param dimension
+	 * @param index
+	 * @throws IndexOutOfBoundsException if the specified index or dimension does not exist.
+	 */
 	public static void checkShape(INDArray array, int dimension, int index) {
 		int size=array.getShape(dimension);
 		if ((index<0)||(index>=size)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(array, dimension, index));
