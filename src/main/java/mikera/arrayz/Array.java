@@ -156,7 +156,8 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 
 	@Override
 	public INDArray slice(int dimension, int index) {
-		checkDimension(dimension);
+		Arrayz.checkShape(this,dimension,index);
+		
 		if (dimensions == 1) return ArrayIndexScalar.wrap(data, index);
 		if (dimensions == 2) {
 			if (dimension == 0) {

@@ -2179,6 +2179,18 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i,j));
 		}
 	}
+	
+	public int checkColumn(int column) {
+		int cc=columnCount();
+		if ((column<0)||(column>=cc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, column));
+		return cc;
+	}
+	
+	public int checkRow(int row) {
+		int rc=rowCount();
+		if ((row<0)||(row>=rc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, row));
+		return rc;
+	}
 
 	@Override
 	public void add2(AMatrix a, AMatrix b) {

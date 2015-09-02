@@ -105,6 +105,11 @@ public class TestArrays {
 	}
 
 	private void testSlices(INDArray a) {
+		try {
+			a.slice(-1);
+			fail();
+		} catch (RuntimeException e) { /* OK */ } 
+		
 		int dims=a.dimensionality();
 		if ((a.elementCount() == 0) || (dims == 0)) return;
 

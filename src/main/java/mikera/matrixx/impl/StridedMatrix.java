@@ -41,6 +41,7 @@ public final class StridedMatrix extends BaseStridedMatrix {
 	
 	@Override
 	public AStridedVector getRowView(int i) {
+		checkRow(i);
 		return Vectorz.wrapStrided(data, offset+i*rowStride, cols, colStride);
 	}
 	

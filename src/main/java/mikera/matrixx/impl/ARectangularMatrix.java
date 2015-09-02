@@ -80,13 +80,15 @@ public abstract class ARectangularMatrix extends AMatrix {
 		}
 	}
 	
-	protected int checkColumn(int column) {
+	@Override
+	public int checkColumn(int column) {
 		int cc=columnCount();
 		if ((column<0)||(column>=cc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, column));
 		return cc;
 	}
 	
-	protected int checkRow(int row) {
+	@Override
+	public int checkRow(int row) {
 		int rc=rowCount();
 		if ((row<0)||(row>=rc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, row));
 		return rc;

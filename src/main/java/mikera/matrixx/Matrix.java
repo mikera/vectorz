@@ -330,11 +330,13 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public ArraySubVector getRowView(int row) {
+		checkRow(row);
 		return ArraySubVector.wrap(data, row * cols, cols);
 	}
 
 	@Override
 	public AStridedVector getColumnView(int col) {
+		checkColumn(col);
 		if (cols == 1) {
 			if (col != 0)
 				throw new IndexOutOfBoundsException("Column does not exist: "

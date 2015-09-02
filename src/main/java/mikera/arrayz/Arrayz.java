@@ -310,4 +310,9 @@ public class Arrayz {
 	public static void fillNormal(INDArray a, Random random) {
 		Vectorz.fillNormal(a.asVector(),random);
 	}
+
+	public static void checkShape(INDArray array, int dimension, int index) {
+		int size=array.getShape(dimension);
+		if ((index<0)||(index>=size)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(array, dimension, index));
+	}
 }

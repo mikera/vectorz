@@ -97,11 +97,13 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	
 	@Override
 	public AVector getRowView(int row) {
+		checkRow(row);
 		return Vectorz.createZeroVector(cols);
 	}
 	
 	@Override
 	public AVector getColumnView(int col) {
+		checkColumn(col);
 		return Vectorz.createZeroVector(rows);
 	}
 	

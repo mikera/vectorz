@@ -103,12 +103,14 @@ public final class LowerTriangularMatrix extends ATriangularMatrix implements IF
 	
 	@Override
 	public AVector getRowView(int i) {
+		this.checkRow(i);
 		int end=Math.min(i+1, cols);
 		return ArraySubVector.wrap(data, internalIndex(i,0), end).join(Vectorz.createZeroVector(cols-end));
 	}
 	
 	@Override
 	public void copyRowTo(int i, double[] dest, int offset) {
+		this.checkRow(i);
 		int nn=Math.min(i+1,cols);
 		System.arraycopy(data, internalIndex(i,0), dest, offset, nn);
 		if (nn<cols) Arrays.fill(dest, offset+nn, offset+cols, 0.0);

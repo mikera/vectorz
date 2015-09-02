@@ -159,7 +159,8 @@ public final class NDArray extends BaseNDArray {
 
 	@Override
 	public INDArray slice(int majorSlice) {
-		// if ((majorSlice<0)||(majorSlice>=shape[0])) throw new IllegalArgumentException(ErrorMessages.invalidSlice(this,majorSlice));
+		Arrayz.checkShape(this, 0, majorSlice);
+
 		if (dimensions==0) {
 			throw new IllegalArgumentException("Can't slice a 0-d NDArray");
 		} else if (dimensions==1) {

@@ -27,7 +27,7 @@ public class MatrixIndexScalar extends AScalar {
 	
 	public static MatrixIndexScalar wrap(AMatrix matrix, int row, int col) {
 		MatrixIndexScalar m= new MatrixIndexScalar(matrix,row,col);
-		if (!m.isValidIndex()) throw new VectorzException(ErrorMessages.invalidIndex(matrix, row,col));
+		if (!m.isValidIndex()) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(matrix, row,col));
 		return m;
 	}
 	

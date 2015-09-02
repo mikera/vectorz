@@ -340,7 +340,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * 0 dimensional slice results are permitted, but attempting to slice a 0 dimensional array
 	 * will result in an error.
 	 * 
-	 * @throws IndexOutOfBoundsException if the slice does not exist
+	 * @throws RuntimeException if the slice does not exist
 	 */
 	public INDArray slice(int majorSlice);
 	

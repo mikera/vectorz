@@ -1,5 +1,6 @@
 package mikera.arrayz.impl;
 
+import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -66,6 +67,7 @@ public class JoinedArray extends BaseShapedArray {
 
 	@Override
 	public INDArray slice(int majorSlice) {
+		Arrayz.checkShape(this, 0, majorSlice);
 		if (dimension==0) {
 			return (majorSlice<split)?left.slice(majorSlice):right.slice(majorSlice-split);
 		} else {

@@ -14,6 +14,7 @@ public final class MatrixRowView extends AMatrixViewVector {
 
 	public MatrixRowView(AMatrix aMatrix, int row) {
 		super(aMatrix,aMatrix.columnCount());
+		aMatrix.checkRow(row);
 		this.row = row;
 	}
 
