@@ -33,6 +33,12 @@ public abstract class BaseShapedArray extends AbstractArray<INDArray> {
 	}
 	
 	@Override
+	public boolean isZero() {
+		if (dimensionality()==0) return (get()==0.0);
+		return super.isZero();
+	}
+	
+	@Override
 	public int getShape(int dim) {
 		return shape[dim];
 	}	
