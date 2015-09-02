@@ -1624,6 +1624,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
 		}
 	}
+	
+	@Override
+	public void addMultiple(INDArray src, double factor) {
+		addMultiple(src.broadcastLike(this),factor);
+	}
 
 	/**
 	 * Adds a scaled multiple of another vector to this one

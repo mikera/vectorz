@@ -1057,6 +1057,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return false;
 	}
 	
+	@Override
+	public void addMultiple(INDArray src, double factor) {
+		addMultiple(src.broadcastLike(this),factor);
+	}
+	
 	public void addMultiple(AMatrix m, double factor) {
 		int rc=rowCount();
 		int cc=columnCount();
