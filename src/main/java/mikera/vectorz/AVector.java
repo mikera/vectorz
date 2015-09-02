@@ -866,16 +866,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Returns the dot product of this vector with a target Vector.
+	 * Returns the dot product of this vector with a target ADenseArrayVector.
 	 * 
 	 * @param v
 	 * @return
 	 */
-	public double dotProduct(Vector v) {
-		v.checkLength(length());
-		return dotProduct(v.getArray(), 0);
-	}
-	
 	public double dotProduct(ADenseArrayVector v) {
 		v.checkLength(length());
 		return dotProduct(v.getArray(), v.getArrayOffset());

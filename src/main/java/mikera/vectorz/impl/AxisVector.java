@@ -176,12 +176,6 @@ public final class AxisVector extends ASingleElementVector {
 		return data[offset+axis()];
 	}
 	
-	@Override 
-	public double dotProduct(Vector v) {
-		assert(length==v.length());
-		return v.data[axis()];
-	}
-	
 	public double dotProduct(Vector3 v) {
 		switch (axis()) {
 			case 0: return v.x;

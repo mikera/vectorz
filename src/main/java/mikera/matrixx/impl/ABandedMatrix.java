@@ -4,7 +4,6 @@ import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.util.VectorzException;
 
@@ -200,15 +199,6 @@ public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBan
 		
 		@Override 
 		public double dotProduct(AVector v) {
-			double result=0.0;
-			for (int i=Math.max(0,lower+row); i<=Math.min(length-1, row+upper);i++) {
-				result+=getBand(i-row).unsafeGet(Math.min(i, row))*v.unsafeGet(i);
-			}
-			return result;
-		}
-		
-		@Override 
-		public double dotProduct(Vector v) {
 			double result=0.0;
 			for (int i=Math.max(0,lower+row); i<=Math.min(length-1, row+upper);i++) {
 				result+=getBand(i-row).unsafeGet(Math.min(i, row))*v.unsafeGet(i);

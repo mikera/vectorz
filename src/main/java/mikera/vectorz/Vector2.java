@@ -83,13 +83,6 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	@Override
-	public double dotProduct(Vector v) {
-		v.checkLength(2);
-		double[] data=v.getArray();
-		return x*data[0]+y*data[1];
-	}
-	
-	@Override
 	public double dotProduct(double[] data, int offset) {
 		return x*data[offset+0]+y*data[offset+1];
 	}
