@@ -145,7 +145,9 @@ public interface INDArray extends Cloneable, Serializable {
 	public void set(Object o);
 	
 	/**
-	 * Adds a double value to all elements in this array
+	 * Adds a double value to all elements in this array.
+	 * 
+	 * Implementations may optimize the case of 0.0
 	 */
 	public void add(double a);
 	

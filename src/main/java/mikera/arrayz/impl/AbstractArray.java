@@ -37,6 +37,8 @@ import mikera.vectorz.util.LongArrays;
  * Contains generic implementations for most INDArray operations, enabling new INDArray implementations
  * to inherit these (at least until more optimised implementations can be written).
  * 
+ * Assumes dimensionality of 1 or above
+ * 
  * Most INDArray instances should ultimately inherit from AbstractArray
  * 
  * @author Mike
@@ -741,10 +743,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void multiply(INDArray a) {
-		int dims=dimensionality();
-		if (dims==0) {set(get()*a.get()); return;}
 		int adims=a.dimensionality();
 		if (adims==0) {multiply(a.get()); return;}
+		int dims=dimensionality();
 		
 		int n=sliceCount();
 		int na=a.sliceCount();
@@ -764,10 +765,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void divide(INDArray a) {
-		int dims=dimensionality();
-		if (dims==0) {set(get()/a.get()); return;}
 		int adims=a.dimensionality();
-		if (adims==0) {scale(1.0/a.get()); return;}
+		if (adims==0) {multiply(1.0/a.get()); return;}
+		int dims=dimensionality();
 		
 		int n=sliceCount();
 		int na=a.sliceCount();
