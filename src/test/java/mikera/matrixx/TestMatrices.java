@@ -519,13 +519,7 @@ public class TestMatrices {
 		
 	}	
 	
-	@Test public void g_VectorMatrix() {
-		// specialised Mx3 matrix
-		VectorMatrixM3 mm3=new VectorMatrixM3(10);
-		randomise(mm3);
-		doGenericTests(mm3);
-		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
-	
+	@Test public void g_VectorMatrixMN() {
 		// general M*N matrix
 		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
 		randomise(mmn);
@@ -543,6 +537,14 @@ public class TestMatrices {
 		// square M*M matrix
 		mmn=new VectorMatrixMN(6 ,6);
 		doGenericTests(mmn);
+	}
+	
+	@Test public void g_VectorMatrixM3() {
+		// specialised Mx3 matrix
+		VectorMatrixM3 mm3=new VectorMatrixM3(10);
+		randomise(mm3);
+		doGenericTests(mm3);
+		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
 	}
 	
 	private static long seed;
