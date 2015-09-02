@@ -6,16 +6,26 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
+/**
+ * Specialized array class representing the broadcasting of a scalar value to fill an entire array.
+ * 
+ * @author Mike
+ *
+ */
 public class BroadcastScalarArray extends BaseShapedArray {
 	private static final long serialVersionUID = 4529531791977491726L;
 
 	private final double value;
 	private final int dims;
 	
+	// this implements caching of major slices to improve performance and avoid allocations
+	private final INDArray majorSlice;
+	
 	private BroadcastScalarArray(double d, int[] targetShape) {
 		super(targetShape);
 		dims=targetShape.length;
 		value=d;
+		majorSlice=(dims>0)?createMajorSlice():null;
 	}
 
 	public static INDArray create(double d, int[] targetShape) {
@@ -43,10 +53,15 @@ public class BroadcastScalarArray extends BaseShapedArray {
 
 	@Override
 	public INDArray slice(int majorSlice) {
+		if ((majorSlice>=0)&&(majorSlice<shape[0])) return this.majorSlice;
+		throw new UnsupportedOperationException(ErrorMessages.invalidSlice(this,majorSlice));
+	}
+	
+	private INDArray createMajorSlice() {
 		if (dims>0) {
 			return create(value,IntArrays.removeIndex(shape, 0));
 		}
-		throw new UnsupportedOperationException(ErrorMessages.invalidSlice(this,majorSlice));
+		throw new UnsupportedOperationException("Can't slice a scalar array");
 	}
 
 	@Override
