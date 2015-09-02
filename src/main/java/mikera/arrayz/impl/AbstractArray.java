@@ -890,6 +890,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 	@Override
 	public void sub(INDArray a) {
+		a=a.broadcastLike(this);
 		int dims=dimensionality();
 		if (dims==0) {
 			sub(a.get());
@@ -897,20 +898,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		
 		int n=sliceCount();
-		int na=a.sliceCount();
-		int adims=a.dimensionality();
-		if (dims==adims) {
-			if (n!=na) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
-			for (int i=0; i<n; i++) {
-				slice(i).sub(a.slice(i));
-			}
-		} else if (adims<dims) {
-			for (int i=0; i<n; i++) {
-				slice(i).sub(a);
-			}	
-		} else {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
-		}	
+		for (int i=0; i<n; i++) {
+			slice(i).sub(a.slice(i));
+		}
 	}
 	
 	@Override

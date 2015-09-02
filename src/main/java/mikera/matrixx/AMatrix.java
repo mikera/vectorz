@@ -1063,6 +1063,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	public void addMultiple(AMatrix m, double factor) {
+		if (factor==0.0) return;
+		
 		int rc=rowCount();
 		int cc=columnCount();
 		m.checkShape(rc, cc);
