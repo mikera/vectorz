@@ -109,7 +109,7 @@ public final class RepeatedElementVector extends ASizedVector {
 	}
 	
 	@Override
-	public AVector innerProduct(double d) {
+	public AVector multiplyCopy(double d) {
 		return RepeatedElementVector.create(length,d*value);
 	}
 	

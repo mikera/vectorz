@@ -121,11 +121,6 @@ public final class ZeroVector extends ASparseVector {
 	}
 
 	@Override
-	public ZeroVector innerProduct(double a) {
-		return this;
-	}
-
-	@Override
 	public double get(int i) {
 		checkIndex(i);
 		return 0.0;

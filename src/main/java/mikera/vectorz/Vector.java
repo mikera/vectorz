@@ -382,7 +382,7 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public Vector innerProduct(double a) {
+	public Vector multiplyCopy(double a) {
 		int n=length;
 		double[] result=new double[n];
 		for (int i=0; i<length; i++) {

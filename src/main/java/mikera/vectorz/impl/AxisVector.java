@@ -198,7 +198,7 @@ public final class AxisVector extends ASingleElementVector {
 	}
 	
 	@Override
-	public AVector innerProduct(double d) {
+	public AVector multiplyCopy(double d) {
 		return SingleElementVector.create(d,index,length);
 	}
 	

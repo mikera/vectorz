@@ -160,7 +160,7 @@ public final class SingleElementVector extends ASingleElementVector {
 	}
 	
 	@Override
-	public AVector innerProduct(double d) {
+	public AVector multiplyCopy(double d) {
 		return SingleElementVector.create(value*d,index,length);
 	}
 	
