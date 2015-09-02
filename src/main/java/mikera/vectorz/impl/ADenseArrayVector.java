@@ -321,15 +321,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public double dotProduct(AVector v) {
-		int length = checkSameLength(v);
-		
-		if (v instanceof ADenseArrayVector) {
-			ADenseArrayVector vv = (ADenseArrayVector) v;
-			return DoubleArrays.dotProduct(getArray(), getArrayOffset(),
-					vv.getArray(), vv.getArrayOffset(), length);
-		} else {
-			return v.dotProduct(this.getArray(), this.getArrayOffset());
-		}
+		checkSameLength(v);
+		return v.dotProduct(this.getArray(), this.getArrayOffset());
 	}
 
 	@Override
@@ -527,11 +520,9 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		if (v instanceof ADenseArrayVector) {scaleAdd(factor,(ADenseArrayVector)v,vfactor,constant); return;}
 		int length=checkSameLength(v);
 
-		int off=this.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			int ix=off+i;
-			data[ix] = (data[ix]*factor) + (v.unsafeGet(i)*vfactor) + constant;
-		}
+		int dataOffset=this.getArrayOffset();
+		v.addMultipleToArray(vfactor, 0, data, dataOffset, length);
+		if (constant!=0.0) add(constant);
 	}
 	
 	public void scaleAdd(double factor, ADenseArrayVector v, double vfactor, double constant) {
@@ -581,7 +572,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void multiply(double factor) {
-		DoubleArrays.multiply(getArray(), getArrayOffset(), length(), factor);
+		if (factor==1.0) return;
+		if (factor==0.0) {
+			fill(0.0);
+		} else {
+			DoubleArrays.multiply(getArray(), getArrayOffset(), length(), factor);
+		}
 	}
 
 	@Override
