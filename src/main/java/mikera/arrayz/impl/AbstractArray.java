@@ -1355,6 +1355,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		// TBC: any generic validation?
 	}
 	
+	/**
+	 * Checks if an array has the specified dimension. Throws an exception if not.
+	 * @param dimension
+	 */
 	protected void checkDimension(int dimension) {
 		if ((dimension < 0) || (dimension >= dimensionality()))
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));

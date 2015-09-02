@@ -1602,7 +1602,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Checks that a vector is the specified length, throws an exception if not.
 	 * @param length
-	 * @return
+	 * @return The length of the vector
 	 */
 	public int checkLength(int length) {
 		int len=length();

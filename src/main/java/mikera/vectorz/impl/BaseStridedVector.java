@@ -17,7 +17,7 @@ public abstract class BaseStridedVector extends AStridedVector {
 		this.offset=offset;
 		if ((offset<0)) throw new IndexOutOfBoundsException();
 		if (length>0) {
-			// check last element is in the array
+			// check if last element is in the array
 			int lastOffset=(offset+(length-1)*stride);
 			if ((lastOffset>=data.length)||(lastOffset<0)) throw new IndexOutOfBoundsException("StridedVector ends outside array");
 		}
@@ -81,26 +81,6 @@ public abstract class BaseStridedVector extends AStridedVector {
 	public void set(AVector v) {
 		int length=checkSameLength(v);
 		v.copyTo(0, data, offset, length, stride);
-	}
-	
-	
-	@Override
-	public void add(AVector v) {
-		if (v instanceof AStridedVector) {
-			add((AStridedVector)v);
-			return;
-		}
-		super.add(v);
-	}
-	
-	public void add(AStridedVector v) {
-		int length=checkLength(v.length());
-		double[] vdata=v.getArray();
-		int voffset=v.getArrayOffset();
-		int vstride=v.getStride();
-		for (int i=0; i<length; i++) {
-			data[offset+i*stride]+=vdata[voffset+i*vstride];
-		}
 	}
 	
 	@Override

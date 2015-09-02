@@ -209,6 +209,12 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public void add(AVector v) {
+		v.checkLength(length());
+		v.addToArray(getArray(), getArrayOffset(),getStride());
+	}
+	
+	@Override
 	public void add(int offset, AVector a) {
 		int stride=getStride();
 		a.addToArray(getArray(), getArrayOffset()+offset*stride,stride);	
