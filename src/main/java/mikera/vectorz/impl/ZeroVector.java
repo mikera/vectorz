@@ -155,6 +155,11 @@ public final class ZeroVector extends ASparseVector {
 		checkSameLength(a);
 		return a.copy();
 	}
+	
+	@Override
+	public AVector addCopy(double a) {
+		return Vectorz.createRepeatedElement(length, a);
+	}
 
 	@Override
 	public AVector subCopy(AVector a) {
