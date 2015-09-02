@@ -451,25 +451,6 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public void scaleAdd(double factor, AVector v, double vfactor, double constant) {
-		if (v instanceof ADenseArrayVector) {scaleAdd(factor,(ADenseArrayVector)v,vfactor,constant); return;}
-		int length=checkSameLength(v);
-
-		for (int i = 0; i < length; i++) {
-			data[i] = (data[i]*factor) + (v.unsafeGet(i)*vfactor) + constant;
-		}
-	}
-	
-	public void scaleAdd(double factor, ADenseArrayVector v, double vfactor, double constant) {
-		int length=checkSameLength(v);
-		double[] arr=v.getArray();
-		int offset=v.getArrayOffset();
-		for (int i = 0; i < length; i++) {
-			data[i] = (data[i]*factor) + (arr[i+offset]*vfactor) + constant;
-		}
-	}
-	
-	@Override
 	public void addMultiple(Vector source, Index index, double factor) {
 		int len=source.length();
 		if (index.length()!=len) throw new VectorzException(ErrorMessages.incompatibleShapes(index, source));

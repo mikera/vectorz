@@ -521,6 +521,29 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		int tOffset=offset+this.getArrayOffset();
 		src.addMultipleToArray(factor, srcOffset, this.getArray(), tOffset, length);
 	}
+	
+	@Override
+	public void scaleAdd(double factor, AVector v, double vfactor, double constant) {
+		if (v instanceof ADenseArrayVector) {scaleAdd(factor,(ADenseArrayVector)v,vfactor,constant); return;}
+		int length=checkSameLength(v);
+
+		int off=this.getArrayOffset();
+		for (int i = 0; i < length; i++) {
+			int ix=off+i;
+			data[ix] = (data[ix]*factor) + (v.unsafeGet(i)*vfactor) + constant;
+		}
+	}
+	
+	public void scaleAdd(double factor, ADenseArrayVector v, double vfactor, double constant) {
+		int length=checkSameLength(v);
+		double[] arr=v.getArray();
+		int start=getArrayOffset();
+		int end=start+length;
+		int deltaOffset=v.getArrayOffset()-start;
+		for (int i = start; i < end; i++) {
+			data[i] = (data[i]*factor) + (arr[i+deltaOffset]*vfactor) + constant;
+		}
+	}
 
 	@Override
 	public double magnitudeSquared() {
