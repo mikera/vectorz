@@ -544,6 +544,12 @@ public class Vectorz {
 		return toVector(o);
 	}
 
+	/**
+	 * Create a mutable vector contain the sequence of integers from 0 to length-1
+	 * 
+	 * @param length The length of vector to create
+	 * @return
+	 */
 	public static AVector createMutableRange(int length) {
 		AVector v=Vectorz.newVector(length);
 		for (int i=0; i<length; i++) {
@@ -552,10 +558,23 @@ public class Vectorz {
 		return v;
 	}
 	
+	/**
+	 * Create an immutable vector contain the sequence of integers from 0 to length-1
+	 * 
+	 * @param length The length of vector to create
+	 * @return
+	 */
 	public static AVector createRange(int length) {
 		return RangeVector.create(0,length);
 	}
 	
+	/**
+	 * Create an immutable vector containing a single repeated value. Guaranteed to be O(1).
+	 * 
+	 * @param length
+	 * @param value
+	 * @return
+	 */
 	public static AVector createRepeatedElement(int length,double value) {
 		if (length==0) return Vector0.INSTANCE;
 		if (value==0.0) return ZeroVector.create(length);
@@ -564,13 +583,13 @@ public class Vectorz {
 
 	/**
 	 * Cast a long to an int value, and throws an exception if the result does not fit in an int
-	 * @param value
-	 * @return
+	 * 
+	 * @param value A long value
+	 * @return An int equal to the long value argument
+	 * @throws IllegalArgumentException if the long value is out of range for an int
 	 */
 	public static int safeLongToInt(long value) {
-		int result=(int)value;
-		if (result!=value) throw new IllegalArgumentException("Can't cast safely to int: "+value);
-		return result;
+		return Tools.toInt(value);
 	}
 
 	/**
