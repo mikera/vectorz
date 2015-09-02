@@ -305,10 +305,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public boolean equals(AVector v) {
+		if (this==v) return true;
 		if (v instanceof ADenseArrayVector) {
 			return equals((ADenseArrayVector)v);
 		}
-		if (this==v) return true;
 		int len=length();
 		if (len != v.length())
 			return false;

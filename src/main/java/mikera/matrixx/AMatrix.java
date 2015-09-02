@@ -1133,11 +1133,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if this matrix is exactly equal to another matrix
 	 */
 	public boolean equals(AMatrix a) {
-		if (a instanceof ADenseArrayMatrix) return a.equals(this);
-		
 		if (a==this) return true;
-		int rc = rowCount();
-		if (rc != a.rowCount()) return false;
+		if (a instanceof ADenseArrayMatrix) return a.equals(this);	
+		if (!a.isSameShape(this)) return false;
 		
 		return equalsByRows(a);		
 	}

@@ -408,7 +408,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		set(new int[] {x,y},value);	
 	}
 	
-	public void set (INDArray a) {
+	public void set(INDArray a) {
 		int tdims=this.dimensionality();
 		int adims=a.dimensionality();
 		if (adims<tdims) {
@@ -1352,7 +1352,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void validate() {
-		// TODO: any generic validation?
+		// TBC: any generic validation?
 	}
 	
 	protected void checkDimension(int dimension) {
