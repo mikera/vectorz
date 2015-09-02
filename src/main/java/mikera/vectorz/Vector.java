@@ -451,22 +451,21 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public void addWeighted(AVector v, double factor) {
-		if (v instanceof ADenseArrayVector) {addWeighted(((ADenseArrayVector)v),factor); return;}
+	public void scaleAdd(double factor, AVector v, double vfactor, double constant) {
+		if (v instanceof ADenseArrayVector) {scaleAdd(factor,(ADenseArrayVector)v,vfactor,constant); return;}
 		int length=checkSameLength(v);
 
 		for (int i = 0; i < length; i++) {
-			data[i] = (data[i]*(1.0-factor)) + (v.unsafeGet(i)*factor);
+			data[i] = (data[i]*factor) + (v.unsafeGet(i)*vfactor) + constant;
 		}
 	}
 	
-	public void addWeighted(ADenseArrayVector v, double factor) {
-		int length=length();
-		assert(length==v.length());
+	public void scaleAdd(double factor, ADenseArrayVector v, double vfactor, double constant) {
+		int length=checkSameLength(v);
 		double[] arr=v.getArray();
 		int offset=v.getArrayOffset();
 		for (int i = 0; i < length; i++) {
-			data[i] = (data[i]*(1.0-factor)) + (arr[i+offset]*factor);
+			data[i] = (data[i]*factor) + (arr[i+offset]*vfactor) + constant;
 		}
 	}
 	

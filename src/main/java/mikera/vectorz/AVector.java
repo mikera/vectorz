@@ -1670,9 +1670,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Updates a weighted average of this vector with another vector
 	 * @param v
 	 */
-	public void addWeighted(AVector v, double factor) {
-		multiply(1.0-factor);
-		addMultiple(v,factor);
+	public final void addWeighted(AVector v, double factor) {
+		scaleAdd(1.0-factor,v,factor,0.0);
 	}
 	
 	@Override
@@ -1760,7 +1759,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Utility function to check vector length and throw an exception in not same shape
+	 * Utility function to check vector length and throw an exception if not same shape.
+	 * @return The length of both vectors (which must be equals)
 	 */
 	protected int checkSameLength(AVector v) {
 		int len=length();
