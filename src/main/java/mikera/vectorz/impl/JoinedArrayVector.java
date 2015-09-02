@@ -587,7 +587,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 	}
 
 	@Override
-	public AJoinedVector withComponents(INDArray[] segments) {
+	public AJoinedVector withComponents(INDArray... segments) {
 		int sc=componentCount();
 		double[][] newData=new double[sc][];
 		int[] offs=this.offsets.clone();

@@ -1070,7 +1070,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public INDArray withComponents(INDArray[] cs) {
+	public INDArray withComponents(INDArray... cs) {
 		throw new UnsupportedOperationException("Component re-wrapping not supported for class "+this.getClass().getCanonicalName());	
 	}
 

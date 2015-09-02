@@ -579,7 +579,7 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 
 	@Override
-	public AJoinedVector withComponents(INDArray[] segments) {
+	public AJoinedVector withComponents(INDArray... segments) {
 		AVector[] nvecs=new AVector[n];
 		for (int i=0; i<n; i++) {
 			INDArray a=segments[i];

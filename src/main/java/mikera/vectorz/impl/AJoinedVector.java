@@ -33,7 +33,7 @@ public abstract class AJoinedVector extends ASizedVector {
 	 * @return
 	 */
 	@Override
-	public abstract AJoinedVector withComponents(INDArray[] segments);
+	public abstract AJoinedVector withComponents(INDArray... segments);
 
 	@Override
 	public boolean isView() {

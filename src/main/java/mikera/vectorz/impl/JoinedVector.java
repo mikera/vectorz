@@ -558,7 +558,7 @@ public final class JoinedVector extends AJoinedVector {
 	}
 
 	@Override
-	public JoinedVector withComponents(INDArray[] segments) {
+	public JoinedVector withComponents(INDArray... segments) {
 		AVector left=segments[0].asVector();
 		AVector right=segments[1].asVector();
 		return new JoinedVector(left,right);

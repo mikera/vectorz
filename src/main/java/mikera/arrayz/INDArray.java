@@ -515,11 +515,13 @@ public interface INDArray extends Cloneable, Serializable {
 
 	/**
 	 * Applies a unary operator to all elements of the array (in-place)
+	 * @param operator The operator to apply to the array
 	 */
-	void applyOp(IOperator op);
+	void applyOp(IOperator operator);
 	
 	/**
-	 * Returns true if the two arrays are exactly equal in value and shape
+	 * Checks if two arrays are equal exactly in terms of both  value and shape
+	 * @returns true if the two arrays are exactly equal, false otherwise
 	 */
 	public boolean equals(INDArray a);
 
@@ -529,22 +531,34 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean elementsEqual(double value);
 
 	/**
-	 * Returns an exact deep clone of an array (i.e. of the same class as the original).
+	 * Creates a deep clone of an array, using the same class implementation as the original array
+	 * @return A clone of the original array
 	 */
 	public INDArray exactClone();
 	
 	/**
 	 * Sets all elements in an array using the given double values
+	 * 
+	 * @param values Element values in a double[] array. There must be at least as many element values as elements in this array.
 	 */
 	public void setElements(double... values);
 	
 	/**
 	 * Sets all elements in an array using the given double values
+
+	 * @param values Element values in a double[] array. There must be at least as many element values as elements in this array.
+	 * @param offset Position in the values array from which to start taking values.
 	 */
 	public void setElements(double[] values, int offset);
 	
 	/**
-	 * Sets elements in an array using the given double values
+	 * Sets elements in an array using the given double values. The source array must contain at least the specified length in 
+	 * terms of number of elements
+	 * 
+	 * @param pos Offset into this array, expressed in terms of number of elements in row major order
+	 * @param values Element values in a double[] array. There must be at least as many element values as elements in this array.
+	 * @param offset Position in the values array from which to start taking values.
+	 * @param length Number of elements to set.
 	 */
 	public void setElements(int pos, double[] values, int offset, int length);
 
@@ -855,7 +869,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * 
 	 * Components must be of a compatible type and identical shape to the original components.
 	 */
-	public INDArray withComponents(INDArray[] cs);
+	public INDArray withComponents(INDArray... components);
 
 	/**
 	 * Gets all components in a new array, with length componentCount();
