@@ -583,4 +583,14 @@ public final class DoubleArrays {
 		}
 	}
 
+	public static double[] multiplyCopy(double[] src, double factor) {
+		int length=src.length;
+		double[] result=new double[length];
+		if (factor==0.0) return result;
+		for (int i=0; i<length; i++) {
+			result[i]=src[i]*factor;
+		}
+		return result;
+	}
+
 }

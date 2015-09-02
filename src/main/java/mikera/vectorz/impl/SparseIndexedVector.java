@@ -342,6 +342,11 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
+	public SparseIndexedVector multiplyCopy(double factor) {
+		return create(length,index,DoubleArrays.multiplyCopy(data, factor));
+	}
+	
+	@Override
 	public void multiply(double[] array, int offset) {
 		double[] data=this.data;
 		int[] ixs=index.data;
