@@ -1,6 +1,8 @@
 package mikera.arrayz.impl;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.Scalar;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
@@ -10,14 +12,23 @@ public class BroadcastScalarArray extends BaseShapedArray {
 	private final double value;
 	private final int dims;
 	
-	public BroadcastScalarArray(double d, int[] targetShape) {
+	private BroadcastScalarArray(double d, int[] targetShape) {
 		super(targetShape);
 		dims=targetShape.length;
 		value=d;
 	}
 
 	public static INDArray create(double d, int[] targetShape) {
-		return new BroadcastScalarArray(d,targetShape);
+		int tdims=targetShape.length;
+		if (tdims==0) {
+			return Scalar.create(d);
+		} else if (tdims==1) {
+			return Vectorz.createRepeatedElement(targetShape[0],d);
+		} else if (tdims==2) {
+			return Vectorz.createRepeatedElement(targetShape[1],d).broadcast(targetShape);
+		} else {
+			return new BroadcastScalarArray(d,targetShape);
+		}
 	}
 
 	@Override
@@ -27,8 +38,7 @@ public class BroadcastScalarArray extends BaseShapedArray {
 
 	@Override
 	public void set(int[] indexes, double value) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
 	@Override

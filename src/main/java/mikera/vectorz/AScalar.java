@@ -339,13 +339,9 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		int tdims=targetShape.length;
 		if (tdims==0) {
 			return this;
-		} else if (tdims==1) {
-			return Vectorz.createRepeatedElement(targetShape[0],get());
-		} else if (tdims==2) {
-			return Vectorz.createRepeatedElement(targetShape[1],get()).broadcast(targetShape);
-		} else {
-			return BroadcastScalarArray.create(get(),targetShape);
-		}
+		} 
+		// note that BroadcastScalarArray handles vector and matrix scpecial cases
+		return BroadcastScalarArray.create(get(),targetShape);
 	}
 	
 	@Override
