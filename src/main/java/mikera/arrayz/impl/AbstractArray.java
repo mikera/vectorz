@@ -49,19 +49,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 	public abstract double get();
 	
-	public abstract double get(int x);
+	public abstract double get(int i);
 	
-	public double get(long x) {
-		if (x>=getShape(0)) throw new IndexOutOfBoundsException("Index: "+x);
-		return get((int)x);
+	public double get(long i) {
+		return get(Tools.toInt(i));
 	}
 	
-	public abstract double get(int x, int y);
+	public abstract double get(int i, int j);
 	
 	public double get(long x,long y) {
-		if (x>=getShape(0)) throw new IndexOutOfBoundsException("Index [0]: "+x);
-		if (y>=getShape(1)) throw new IndexOutOfBoundsException("Index [1]: "+y);
-		return get((int)x,(int)y);
+		return get(Tools.toInt(x),Tools.toInt(y));
 	}
 	
 	public double get(long[] xs) {
@@ -69,8 +66,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int[] ixs=new int[n];
 		for (int i=0; i<n; i++) {
 			long ix=xs[i];
-			if (ix>=getShape(i)) throw new IndexOutOfBoundsException("Index ["+i+"]: "+ix);
-			ixs[i]=(int)ix;
+			ixs[i]=Tools.toInt(ix);
 		}
 		return get(ixs);
 	}
@@ -228,7 +224,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public AVector asVector() {
 		if (this instanceof IDenseArray) {
 			IDenseArray a=(IDenseArray) this;
-			return Vectorz.wrap(a.getArray(), a.getArrayOffset(), (int)elementCount());
+			return Vectorz.wrap(a.getArray(), a.getArrayOffset(), Tools.toInt(elementCount()));
 		}
 		int n=sliceCount();
 		AVector result=slice(0).asVector();
@@ -240,13 +236,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void setElements(double[] values, int offset) {
-		setElements(0,values,offset,(int)elementCount());
+		setElements(0,values,offset,Tools.toInt(elementCount()));
 	}
 	
 	@Override
 	public void setElements(int pos, double[] values, int offset, int length) {
 		if (length==0) return;
-		int ss=(int)(slice(0).elementCount());
+		int ss=Tools.toInt(slice(0).elementCount());
 		int s1=pos/ss;
 		int s2=(pos+length-1)/ss;
 		if (s1==s2) {
@@ -622,7 +618,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			return asVector().equalsArray(data, offset);
 		} else {
 			int sc=sliceCount();
-			int skip=(int) slice(0).elementCount();
+			int skip=Tools.toInt(slice(0).elementCount());
 			for (int i=0; i<sc; i++) {
 				if (!slice(i).equalsArray(data,offset+i*skip)) return false;
 			}
@@ -671,7 +667,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void addAt(int i, double v) {
-		int ss=(int)(elementCount()/sliceCount());
+		int ss=Tools.toInt(elementCount()/sliceCount());
 		int s=i/ss;
 		slice(s).addAt(i-s*ss, v);
 	}
@@ -712,7 +708,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		} else {
 			int n=sliceCount();
 			INDArray s0=slice(0);
-			int ec=(int) s0.elementCount();
+			int ec=Tools.toInt(s0.elementCount());
 			s0.addToArray(data, offset);
 			for (int i=1; i<n; i++) {
 				slice(i).addToArray(data, offset+i*ec);
@@ -1136,7 +1132,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public Vector toVector() {
-		int n=(int)elementCount();
+		int n=Tools.toInt(elementCount());
 		double[] data=new double[n];
 		this.getElements(data, 0);
 		return Vector.wrap(data);
