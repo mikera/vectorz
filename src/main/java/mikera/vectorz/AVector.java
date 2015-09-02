@@ -730,13 +730,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public void interpolate(AVector v, double alpha) {
-		multiply(1.0-alpha);
-		addMultiple(v,alpha);
-	}
-	
-	public void interpolate(AVector a, AVector b, double alpha) {
-		set(a);
-		interpolate(b,alpha);
+		scaleAdd(1.0-alpha,v,alpha,0.0);
 	}
 	
 	public double magnitudeSquared() {
@@ -2153,6 +2147,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Returns an exact clone of this vector, i.e. of the same type
 	 * @return
 	 */
+	@Override
 	public abstract AVector exactClone();
 
 	/**
