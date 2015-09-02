@@ -44,8 +44,10 @@ public class TestArrays {
 	private void testShape(INDArray a) {
 		AVector v = a.asVector();
 		int[] shape = a.getShape();
+		
+		int dims=a.dimensionality();
 
-		for (int i = 0; i < a.dimensionality(); i++) {
+		for (int i = 0; i < dims; i++) {
 			assertEquals(shape[i], a.getShape(i));
 		}
 
@@ -62,6 +64,16 @@ public class TestArrays {
 		assertEquals(v.length(), r);
 
 		assertEquals(a, a.reshape(shape));
+		
+		try {
+			a.getShape(-1);
+			fail();
+		} catch (IndexOutOfBoundsException e) { /* OK */ }
+		
+		try {
+			a.getShape(dims);
+			fail();
+		} catch (IndexOutOfBoundsException e) { /* OK */ }
 	}
 	
 	private void testReorder(INDArray a) {

@@ -50,7 +50,8 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Returns the dimension size for a specific dimension in the array's shape
-	 * Throws an error if the dimension does not exist.
+	 * 
+	 * @throws IndexOutOfBoundsException if the dimension does not exist.
 	 */
 	public int getShape(int dim);
 	
