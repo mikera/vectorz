@@ -1670,6 +1670,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addMultiple(v,factor);
 	}
 	
+	@Override
+	public void scaleAdd(double factor, INDArray b, double bfactor, double constant) {
+		if (b instanceof AVector) {
+			scaleAdd(factor,(AVector)b,bfactor,constant);
+		} else {
+			scaleAdd(factor,b.broadcastLike(this),bfactor,constant);
+		}
+	}
+	
+	public void scaleAdd(double factor, AVector b, double bfactor, double constant) {
+		multiply(factor);
+		if (bfactor==0.0) {
+			// do nothing 
+		} else {
+			addMultiple(b,bfactor);
+		}
+		if (constant!=0.0) add(constant);
+	}
+	
 	/**
 	 * Subtracts a vector from this vector
 	 * @param v

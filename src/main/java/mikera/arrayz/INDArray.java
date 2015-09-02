@@ -577,7 +577,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void scaleAdd(double factor, INDArray b, double bfactor, double constant);
 	
 	/**
-	 * Adds a sclaed multiple of another array to this array
+	 * Adds a scaled multiple of another array to this array
 	 * @param src
 	 * @param factor
 	 */
