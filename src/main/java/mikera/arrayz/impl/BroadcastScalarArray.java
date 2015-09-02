@@ -61,10 +61,10 @@ public class BroadcastScalarArray extends BaseShapedArray {
 	public boolean isView() {
 		return false;
 	}
-
+	
 	@Override
-	public INDArray exactClone() {
-		return create(value,shape);
+	public boolean isFullyMutable() {
+		return false;
 	}
 
 	@Override
@@ -84,5 +84,9 @@ public class BroadcastScalarArray extends BaseShapedArray {
 		if ((dims==0)&&(x>=0)&&(y>=0)&&(x<shape[0])&&(y<shape[1])) return value;
 		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, new int[]{x,y}));
 	}
-
+	
+	@Override
+	public BroadcastScalarArray exactClone() {
+		return new BroadcastScalarArray(value,shape);
+	}
 }

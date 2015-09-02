@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import mikera.arrayz.impl.BroadcastScalarArray;
 import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
@@ -845,6 +846,12 @@ public class TestArrays {
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
+	}
+	
+	@Test
+	public void g_BroadcastScalarArray() {
+		INDArray a = BroadcastScalarArray.create(1.5, new int[]{2,1,3});
+		testArray(a);
 	}
 		
 	@Test

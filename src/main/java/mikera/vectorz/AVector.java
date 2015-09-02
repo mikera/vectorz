@@ -2208,10 +2208,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (tdims==1) {
 			return this;
 		} else if (tdims==2) {
-			int n=targetShape[0];
-			AVector[] vs=new AVector[n];
-			for (int i=0; i<n; i++) {vs[i]=this;}
-			return Matrixx.createFromVectors(vs);
+			int rows=targetShape[0];
+			return BroadcastVectorMatrix.wrap(this, rows);
 		} else {
 			int n=targetShape[0];
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
