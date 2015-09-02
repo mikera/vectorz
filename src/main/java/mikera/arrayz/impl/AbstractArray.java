@@ -377,15 +377,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void scaleAdd(double factor, double constant) {
-		if (factor!=1.0) multiply(factor);
-		if (constant!=0.0) add(constant);
+		multiply(factor);
+		add(constant);
 	}
 	
 	@Override
 	public void scaleAdd(double factor, INDArray b, double bfactor, double constant) {
-		multiply(factor);
+		scaleAdd(factor,constant);
 		addMultiple(b,bfactor);
-		if (constant!=0.0) add(constant);
 	}
 	
 	@Override
@@ -659,6 +658,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void add(double a) {
+		if (a==0.0) return;
 		int dims=dimensionality();
 		if (dims==0) {
 			set(a+get());
