@@ -267,6 +267,7 @@ public class Vectorz {
 		return v;
 	}
 
+	@Deprecated
 	public static AVector createMutableVector(AVector v) {
 		return v.clone();
 	}

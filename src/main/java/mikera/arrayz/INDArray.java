@@ -581,6 +581,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Scales all elements of the array by a given double value, returning a new array
 	 */
+	@Deprecated
 	public INDArray scaleCopy(double factor);
 	
 	/**

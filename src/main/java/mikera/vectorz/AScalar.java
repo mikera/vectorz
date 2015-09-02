@@ -202,7 +202,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	@Override
 	public INDArray innerProduct(INDArray a) {
-		return a.scaleCopy(get());
+		return a.multiplyCopy(get());
 	}
 	
 	public Scalar innerProduct(AScalar a) {
@@ -221,7 +221,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	@Override
 	public INDArray outerProduct(INDArray a) {
-		return a.scaleCopy(get());
+		return a.multiplyCopy(get());
 	}
 	
 	@Override 

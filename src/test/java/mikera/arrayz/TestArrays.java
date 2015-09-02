@@ -476,8 +476,8 @@ public class TestArrays {
 	}
 
 	private void testMultiply(INDArray a) {
-		assertTrue(a.scaleCopy(0.0).isZero());
-		assertEquals(a, a.scaleCopy(1.0));
+		assertTrue(a.multiplyCopy(0.0).isZero());
+		assertEquals(a, a.multiplyCopy(1.0));
 
 		if (!a.isFullyMutable()) return;
 		INDArray m = a.exactClone();

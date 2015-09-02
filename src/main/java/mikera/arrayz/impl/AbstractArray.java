@@ -388,7 +388,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (factor==1.0) {
 			add(src);
 		} else {
-			add(src.scaleCopy(factor));
+			add(src.multiplyCopy(factor));
 		}
 	}
 
