@@ -44,6 +44,12 @@ public class IntArrays {
 		return r;
 	}
 	
+	/**
+	 * Removes an element from a specified position in an int[] array. 
+	 * @param data
+	 * @param index
+	 * @return A new array copy with one element removed
+	 */
 	public static int[] removeIndex(int[] data, int index) {
 		int len=data.length;
 		int[] result=new int[len-1];

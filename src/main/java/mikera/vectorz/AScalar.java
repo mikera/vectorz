@@ -6,13 +6,12 @@ import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
+import mikera.arrayz.impl.BroadcastScalarArray;
 import mikera.arrayz.impl.IDense;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
-import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleDoubleIterator;
-import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedScalarVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -340,21 +339,20 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		int tdims=targetShape.length;
 		if (tdims==0) {
 			return this;
+		} else if (tdims==1) {
+			return Vectorz.createRepeatedElement(targetShape[0],get());
+		} else if (tdims==2) {
+			return Vectorz.createRepeatedElement(targetShape[1],get()).broadcast(targetShape);
 		} else {
-			int n=targetShape[tdims-1];
-			if (n==0) return Vector0.INSTANCE;
-			AVector v=RepeatedElementVector.create(n,get());
-			return v.broadcast(targetShape);
+			return BroadcastScalarArray.create(get(),targetShape);
 		}
 	}
 	
 	@Override
 	public INDArray broadcastLike(INDArray v) {
-		int dims=v.dimensionality();
-		if (dims==0) return this;
-		int lastShape=v.getShape(dims-1);
-		AVector rv=Vectorz.createRepeatedElement(lastShape,get());
-		return rv.broadcastLike(v);
+		if (v instanceof AVector) return broadcastLike((AVector) v);
+		if (v instanceof AMatrix) return broadcastLike((AMatrix) v);
+		return broadcast(v.getShape());
 	}
 	
 	@Override
