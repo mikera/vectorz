@@ -236,14 +236,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public List<INDArray> getSlices(int dimension) {
+	public final List<AVector> getSlices(int dimension) {
 		checkDimension(dimension);
-		int l=getShape(dimension);
-		ArrayList<INDArray> al=new ArrayList<INDArray>(l);
-		for (int i=0; i<l; i++) {
-			al.add(slice(dimension,i));
-		}
-		return al;	
+		return (dimension==0)?getRows():getColumns();
 	}
 	
 	@Override
