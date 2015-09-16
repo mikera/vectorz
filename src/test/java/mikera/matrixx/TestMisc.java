@@ -24,6 +24,7 @@ import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SparseIndexedVector;
 
+@SuppressWarnings("deprecation")
 public class TestMisc {
 	@Test
 	public void testCompose() {

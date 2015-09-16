@@ -1,9 +1,6 @@
 package mikera.vectorz.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -77,14 +74,6 @@ public final class JoinedArrayVector extends AJoinedVector {
 	
 	public ArraySubVector getComponent(int i) {
 		return ArraySubVector.wrap(data[i], offsets[i], subLength(i));
-	}
-	
-	public List<ADenseArrayVector> toSubArrays() {
-		ArrayList<ADenseArrayVector> al=new ArrayList<ADenseArrayVector>(numArrays);
-		for (int i=0; i<numArrays; i++) {
-			al.add(getComponent(i));
-		}
-		return al;
 	}
 	
 	@Override

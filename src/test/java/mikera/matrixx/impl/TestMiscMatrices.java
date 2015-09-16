@@ -13,6 +13,7 @@ public class TestMiscMatrices {
 		assertNotEquals(ZeroMatrix.create(2, 2),ZeroMatrix.create(2, 3));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test public void testSubsetIdentity() {
 		assertTrue(SubsetMatrix.create(Index.of(0,1,2),3).isIdentity());
 	}

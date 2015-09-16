@@ -43,6 +43,7 @@ import mikera.vectorz.ops.Constant;
 
 import org.junit.Test;
 
+@SuppressWarnings("deprecation")
 public class TestMatrices {
 
 	private void doMutationTest(AMatrix m) {
