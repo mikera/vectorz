@@ -403,6 +403,18 @@ public class TestMatrices {
 		assertEquals(t,m.innerProduct(v));
 	}
 	
+	private void doDotProductTest(AMatrix m) {
+		AVector a=Vectorz.newVector(m.rowCount());
+		AVector b=Vectorz.newVector(m.columnCount());
+		
+		Vectorz.fillGaussian(a, new Random(352478));
+		Vectorz.fillGaussian(b, new Random(123));
+		
+		AVector r=a.addCopy(m.innerProduct(b));
+		a.addInnerProduct(m, b);
+		assertTrue(a.epsilonEquals(r));
+	}
+	
 	private void doNDArrayTest(AMatrix m) {
 		NDArray a=NDArray.newArray(m.getShape());
 		a.set(m);
@@ -464,6 +476,7 @@ public class TestMatrices {
 		doMulTest(m);
 		doAddTest(m);
 		doRowColumnTests(m);
+		doDotProductTest(m);
 		doBandTests(m);
 		doCloneSafeTest(m);
 		doMutationTest(m);

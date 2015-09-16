@@ -1377,6 +1377,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 		return Arrayz.create(al);
 	}
+	
+	/**
+	 * Returns the dot product of a specific row with a vector.
+	 * @param i
+	 * @param a
+	 * @return
+	 */
+	public double rowDotProduct(int i, AVector a) {
+		return getRow(i).dotProduct(a);
+	}
 
 	/**
 	 * Computes the inverse of a matrix. Returns null if the matrix is singular.
@@ -2192,4 +2202,5 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		add(a);
 		add(b);
 	}
+
 }
