@@ -202,6 +202,16 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public double rowDotProduct(int i, AVector a) {
+		int cc=columnCount();
+		if(cc!=a.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+
+		return a.dotProduct(data, offset+i*cc);
+	}
+	
+	@Override
 	public boolean equals(AMatrix a) {
 		if (!isSameShape(a)) return false;
 		return a.equalsArray(getArray(), getArrayOffset());
