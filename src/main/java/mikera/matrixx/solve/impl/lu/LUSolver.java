@@ -68,6 +68,7 @@ public class LUSolver {
 
         double []vv = decomp._getVV();
         AMatrix LU = decomp.getLU();
+        if (decomp.isSingular()) return null; // no inverse exists!
         
         Matrix A_inv = Matrix.create(LU.rowCount(), LU.columnCount());
 

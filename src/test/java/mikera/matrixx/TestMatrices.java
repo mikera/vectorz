@@ -314,6 +314,19 @@ public class TestMatrices {
 		assertEquals(m,BandedMatrix.create(m));
 	}
 	
+	private void doInverseTests(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		if ((rc!=cc)||(rc==0)) return;
+		
+		AMatrix im=m.inverse();
+		if (im==null) return; // no inverse exists
+		
+		AMatrix i=Matrixx.createIdentityMatrix(rc);
+		assertTrue(i.epsilonEquals(im.innerProduct(m)));
+		assertTrue(i.epsilonEquals(m.innerProduct(im)));
+	}
+	
 	private void doVectorTest(AMatrix m) {
 		m=m.clone();
 		AVector v=m.asVector();
@@ -484,6 +497,7 @@ public class TestMatrices {
 		doRandomTests(m);
 		doBigComposeTest(m);
 		doSubMatrixTest(m);
+		doInverseTests(m);
 		
 		TestTransformz.doITransformTests(new MatrixTransform(m));
 		

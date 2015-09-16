@@ -18,12 +18,15 @@ public class TestMatrix {
     assertEquals(4, A.columnCount());
 
     assertEquals(4, A.elementSum(), 0);
+    assertEquals(A,A.inverse());
+    assertTrue(A.isIdentity());
 
-    A = Matrix.createIdentity(4, 6);
-    assertEquals(4, A.rowCount());
-    assertEquals(6, A.columnCount());
+    AMatrix B = Matrix.createIdentity(4, 6);
+    assertEquals(4, B.rowCount());
+    assertEquals(6, B.columnCount());
 
-    assertEquals(4, A.elementSum(), 0);
+    assertEquals(4, B.elementSum(), 0);
+    assertEquals(A, B.subMatrix(0, 4, 0, 4));
   }
   
   @Test

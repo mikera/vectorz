@@ -41,8 +41,18 @@ public interface IMatrix extends INDArray {
 	 */
 	public AVector getBand(int band);
 
+	/**
+	 * Checks if this is a square matrix
+	 * 
+	 * @return true if square, false otherwise
+	 */
 	boolean isSquare();
 
+	/**
+	 * Checks if this is an invertible matrix (i.e. a square matrix with a non-zero determinant)
+	 * 
+	 * @return true if invertible, false otherwise
+	 */
 	boolean isInvertible();	
 
 	AVector transform(AVector source);
@@ -51,6 +61,11 @@ public interface IMatrix extends INDArray {
 
 	void transformInPlace(AVector v);
 
+	/**
+	 * Computes the inverse of this matrix.
+	 * 
+	 * @return A matrix which is the inverse of this matrix, or null if the inverse does not exist.
+	 */
 	AMatrix inverse();
 
 	AMatrix addCopy(AMatrix a);

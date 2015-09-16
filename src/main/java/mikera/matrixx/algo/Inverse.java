@@ -1,7 +1,6 @@
 package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix11;
 import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrix33;
@@ -39,10 +38,11 @@ public final class Inverse {
 		throw new IllegalArgumentException(ErrorMessages.incompatibleShape(m));
 	}
 	
-	static Matrix createLUPInverse(AMatrix m) {
+	static AMatrix createLUPInverse(AMatrix m) {
 		LUSolver lus = new LUSolver();
         lus.setA(m);
-		return lus.invert().toMatrix();
+        AMatrix im=lus.invert();
+		return im;
 	}
 	
 }
