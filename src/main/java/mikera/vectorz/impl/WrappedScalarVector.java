@@ -117,4 +117,9 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	public void addAt(int i, double v) {
 		scalar.add(v);
 	}
+
+	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		return data[offset]*scalar.get();
+	}
 }

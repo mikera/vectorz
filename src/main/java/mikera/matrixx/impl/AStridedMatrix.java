@@ -134,6 +134,16 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
+	public double rowDotProduct(int i, AVector a) {
+		int cc=columnCount();
+		if(cc!=a.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		double[] data=getArray();
+		int offset=getArrayOffset();
+
+		return a.dotProduct(data, offset+i*rowStride(),columnStride());
+	}
+	
+	@Override
 	public void add(AMatrix m) {
 		checkSameShape(m);
 		int offset=getArrayOffset();

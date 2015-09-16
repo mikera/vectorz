@@ -34,6 +34,11 @@ public abstract class BaseDerivedVector extends AVector {
 	public double dotProduct(double[] data, int offset) {
 		return source.dotProduct(data,offset);
 	}
+	
+	@Override 
+	public double dotProduct(double[] data, int offset, int stride) {
+		return source.dotProduct(data,offset,stride);
+	}
 
 	@Override
 	public void set(int i, double value) {

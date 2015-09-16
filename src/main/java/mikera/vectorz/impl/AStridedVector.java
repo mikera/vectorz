@@ -47,28 +47,12 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override public double dotProduct(double[] data, int offset) {
-		double[] array=getArray();
-		int thisOffset=getArrayOffset();
-		int stride=getStride();
-		int length=length();
-		double result=0.0;
-		for (int i=0; i<length; i++) {
-			result+=array[i*stride+thisOffset]*data[i+offset];
-		}
-		return result;
+		return DoubleArrays.dotProduct(data,offset,getArray(), getArrayOffset(), getStride(), length());
 	}
 	
 	@Override
 	public double elementSum() {
-		int len=length();
-		double[] array=getArray();
-		int offset=getArrayOffset();
-		int stride=getStride();
-		double result=0.0;
-		for (int i=0; i<len; i++) {
-			result+=array[offset+i*stride];
-		}		
-		return result;
+		return DoubleArrays.elementSum(getArray(), getArrayOffset(), getStride(), length());
 	}
 	
 	@Override

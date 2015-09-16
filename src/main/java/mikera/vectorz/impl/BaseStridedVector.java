@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -70,11 +71,12 @@ public abstract class BaseStridedVector extends AStridedVector {
 	
 	@Override
 	public double dotProduct(double[] ds, int off) {
-		double result=0.0;
-		for (int i=0; i<length; i++) {
-			result+=data[offset+i*stride]*ds[i+off];
-		}
-		return result;
+		return DoubleArrays.dotProduct(ds, off, data, offset, stride, length);
+	}
+	
+	@Override
+	public double dotProduct(double[] ds, int doffset, int dstride) {
+		return DoubleArrays.dotProduct(data, offset, stride, ds, doffset, dstride, length);
 	}
 	
 	@Override
@@ -85,16 +87,8 @@ public abstract class BaseStridedVector extends AStridedVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		int length=checkLength(v.length());
-		if (v instanceof ADenseArrayVector) {
-			ADenseArrayVector av=(ADenseArrayVector) v;
-			return dotProduct(av.getArray(),av.getArrayOffset());
-		}
-		double result=0.0;
-		for (int i=0; i<length; i++) {
-			result+=data[offset+i*stride]*v.unsafeGet(i);
-		}
-		return result;
+		checkLength(v.length());
+		return v.dotProduct(getArray(), getArrayOffset(), getStride());
 	}
 	
 	@Override

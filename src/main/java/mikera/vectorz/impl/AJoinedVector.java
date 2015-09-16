@@ -113,6 +113,30 @@ public abstract class AJoinedVector extends ASizedVector {
 		return result;
 	}
 	
+	@Override
+	public double dotProduct(double[] data, int offset) {
+		long n=componentCount();
+		double result=0.0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			result+=v.dotProduct(data,offset);
+			offset+=v.length();
+		}
+		return result;
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		long n=componentCount();
+		double result=0.0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			result+=v.dotProduct(data,offset,stride);
+			offset+=stride*v.length();
+		}
+		return result;
+	}
+	
 //	TODO: should have a fast implementation for this?
 //	@Override
 //	public void setElements(int pos, double[] values, int offset, int length) {

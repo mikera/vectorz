@@ -152,6 +152,15 @@ public final class WrappedSubVector extends ASizedVector {
 	}
 	
 	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset+i*stride]*unsafeGet(i);
+		}
+		return result;
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		for (int i=0; i<length; i++) {
 			int ix=i+offset;

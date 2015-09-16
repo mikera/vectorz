@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Vector referring to a fixed offset into a double[] array
@@ -129,5 +130,10 @@ public final class ArraySubVector extends ADenseArrayVector {
 	@Override
 	protected int index(int i) {
 		return offset+i;
+	}
+
+	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		return DoubleArrays.dotProduct(this.data, this.offset, data, offset, stride, length);
 	}
 }

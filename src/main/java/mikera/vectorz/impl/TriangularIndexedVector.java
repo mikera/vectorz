@@ -71,5 +71,15 @@ public final class TriangularIndexedVector extends AArrayVector {
 		}
 		return result;
 	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset]*unsafeGet(i);
+			offset+=stride;
+		}
+		return result;
+	}
 
 }

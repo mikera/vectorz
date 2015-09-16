@@ -893,12 +893,30 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	
+	
 	/**
 	 * Fast dot product with a double[] array. Performs no bounds checking. 
 	 * 
 	 * Likely to be faster than other dot product operations
 	 */
 	public abstract double dotProduct(double[] data, int offset);
+	
+	/**
+	 * Fast dot product with a double[] array and a stride. Performs no bounds checking. 
+	 * 
+	 * Likely to be faster than other dot product operations
+	 */
+	public double dotProduct(double[] data, int offset, int stride) {
+		if (stride==1) return dotProduct(data,offset);
+		int length=length();
+		double result=0.0;
+		for (int i=0; i<length; i++) {
+			result+=data[offset]*unsafeGet(i);
+			offset+=stride;
+		}
+		return result;
+	}
 	
 	/**
 	 * Computes the crossProduct of this vector with another vector, and stores the result in this vector.

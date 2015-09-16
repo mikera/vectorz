@@ -176,6 +176,12 @@ public final class AxisVector extends ASingleElementVector {
 		return data[offset+axis()];
 	}
 	
+	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		return data[offset+index*stride];
+	}
+	
+	
 	public double dotProduct(Vector3 v) {
 		switch (axis()) {
 			case 0: return v.x;
@@ -420,5 +426,5 @@ public final class AxisVector extends ASingleElementVector {
 	public void multiply(double factor) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
-	
+
 }

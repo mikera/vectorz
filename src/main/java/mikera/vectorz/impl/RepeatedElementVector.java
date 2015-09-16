@@ -104,6 +104,11 @@ public final class RepeatedElementVector extends ASizedVector {
 	}
 	
 	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		return value*DoubleArrays.elementSum(data, offset, stride, length);
+	}
+	
+	@Override
 	public AVector multiplyCopy(double d) {
 		return RepeatedElementVector.create(length,d*value);
 	}

@@ -501,4 +501,9 @@ public final class ZeroVector extends ASparseVector {
 		return 0.0;
 	}
 
+	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		return 0.0;
+	}
+
 }

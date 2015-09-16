@@ -78,11 +78,22 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	
 	@Override
 	public double dotProduct(double[] data, int offset) {
-		double result=0.0;
 		double[] tdata=this.internalData();
 		int[] ixs=internalIndex().data;
+		double result=0.0;
 		for (int j=0; j<tdata.length; j++) {
 			result+=tdata[j]*data[offset+ixs[j]];
+		}
+		return result;
+	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		double[] tdata=this.internalData();
+		int[] ixs=internalIndex().data;
+		double result=0.0;
+		for (int j=0; j<tdata.length; j++) {
+			result+=tdata[j]*data[offset+ixs[j]*stride];
 		}
 		return result;
 	}

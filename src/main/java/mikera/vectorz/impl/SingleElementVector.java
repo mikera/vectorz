@@ -266,6 +266,11 @@ public final class SingleElementVector extends ASingleElementVector {
 	public double dotProduct(double[] data, int offset) {
 		return value*data[offset+index];
 	}
+	
+	@Override
+	public double dotProduct(double[] data, int offset, int stride) {
+		return value*data[offset+index*stride];
+	}
 
 	@Override
 	protected double value() {
