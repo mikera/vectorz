@@ -318,7 +318,14 @@ public class TestMatrices {
 	private void doInverseTests(AMatrix m) {
 		int rc=m.rowCount();
 		int cc=m.columnCount();
-		if ((rc!=cc)||(rc==0)) return;
+		if ((rc!=cc)||(rc==0)) {
+			try {
+				m.inverse();
+			} catch (Throwable t) {
+				return; 
+			}
+			fail("No excption thrown for invalid matrix shape in inverse()");
+		};
 		
 		AMatrix im=m.inverse();
 		if (im==null) return; // no inverse exists
