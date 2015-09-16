@@ -23,10 +23,21 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		super(data, rows, cols);
 	}
 
+	/**
+	 * Gets the array offset into this strided matrix
+	 */
 	public abstract int getArrayOffset();
 
+	/**
+	 * Gets the row stride for this strided matrix. Each row has this offset in the underlying data array 
+	 * vs. the previous row. May be positive, zero or negative.
+	 */
 	public abstract int rowStride();
 	
+	/**
+	 * Gets the column stride for this strided matrix. Each column has this offset in the underlying data array 
+	 * vs. the previous column. May be positive, zero or negative.
+	 */
 	public abstract int columnStride();	
 	
 	@Override
@@ -136,7 +147,7 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	@Override
 	public double rowDotProduct(int i, AVector a) {
 		int cc=columnCount();
-		if(cc!=a.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		if(cc!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		double[] data=getArray();
 		int offset=getArrayOffset();
 

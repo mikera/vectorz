@@ -20,6 +20,13 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 		this.data=data;
 	}
 	
+	/**
+	 * Gets the underlying data array for this array-backed matrix.
+	 * 
+	 * Mutation of this data array is possible, but caution is advised as this may cause 
+	 * unpredictable side effects if the array is aliased elsewhere
+	 * @return
+	 */
 	public double[] getArray() {
 		return data;
 	}
