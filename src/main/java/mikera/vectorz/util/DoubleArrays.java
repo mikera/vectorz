@@ -626,6 +626,13 @@ public final class DoubleArrays {
 			dest[i]+=src[i]*factor;
 		}
 	}
+	
+	public static void addMultiple(double[] dest, double[] src, int srcOffset, double factor) {
+		int len=dest.length;
+		for (int i=0; i<len; i++) {
+			dest[i]+=src[srcOffset+i]*factor;
+		}
+	}
 
 	/**
 	 * Performs addition of two double arrays and stores the result in the desination array

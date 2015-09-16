@@ -486,9 +486,9 @@ public final class Matrix extends ADenseArrayMatrix {
 		op.applyTo(data);
 	}
 
-	public void addMultiple(Matrix m, double factor) {
+	public void addMultiple(ADenseArrayMatrix m, double factor) {
 		checkSameShape(m);
-		DoubleArrays.addMultiple(data,m.data,factor);
+		DoubleArrays.addMultiple(data,m.data, m.getArrayOffset(),factor);
 	}
 	
 	public void setMultiple(Matrix m, double factor) {
@@ -561,8 +561,8 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void addMultiple(AMatrix m, double factor) {
-		if (m instanceof Matrix) {
-			addMultiple((Matrix) m, factor);
+		if (m instanceof ADenseArrayMatrix) {
+			addMultiple((ADenseArrayMatrix) m, factor);
 			return;
 		}
 		int rc = rowCount();
