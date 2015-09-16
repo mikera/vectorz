@@ -638,11 +638,13 @@ public class TestMatrices {
 	}
 	
 	@Test public void g_StridedMatrix() {	
-		StridedMatrix strm=StridedMatrix.create(1, 1);
+		AMatrix strm=StridedMatrix.create(1, 1);
 		doGenericTests(strm);
 		strm=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
 		doGenericTests(strm);
 		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3)));
+		doGenericTests(strm);
+		strm=Matrix.create(Matrixx.createRandomMatrix(5, 5)).subMatrix(1, 3, 1, 3);
 		doGenericTests(strm);
 	}
 
