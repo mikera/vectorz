@@ -4,7 +4,6 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -162,12 +161,6 @@ public final class SingleElementVector extends ASingleElementVector {
 	@Override
 	public AVector multiplyCopy(double d) {
 		return SingleElementVector.create(value*d,index,length);
-	}
-	
-	@Override
-	public AScalar innerProduct(AVector v) {
-		checkSameLength(v);
-		return Scalar.create(value*v.unsafeGet(index));
 	}
 	
 	@Override

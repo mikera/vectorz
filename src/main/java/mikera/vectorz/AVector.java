@@ -793,14 +793,18 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	public AScalar innerProduct(AVector v) {
+		checkSameLength(v);
 		return Scalar.create(dotProduct(v));
 	}
 
-	public Scalar innerProduct(Vector v) {
-		double[] data=v.getArray();
-		int vl=data.length;
-		checkLength(vl);
-		return Scalar.create(dotProduct(data,0));
+	/**
+	 * Overloaded inner product for dense array vector argument
+	 * @param v
+	 * @return
+	 */
+	public Scalar innerProduct(ADenseArrayVector v) {
+		checkLength(v.length());
+		return Scalar.create(dotProduct(v.getArray(),v.getArrayOffset()));
 	}
 	
 	public AVector innerProduct(AMatrix m) {

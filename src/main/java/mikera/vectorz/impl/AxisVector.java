@@ -203,13 +203,7 @@ public final class AxisVector extends ASingleElementVector {
 	}
 	
 	@Override
-	public Scalar innerProduct(Vector v) {
-		checkSameLength(v);
-		return Scalar.create(v.unsafeGet(index));
-	}
-	
-	@Override
-	public Scalar innerProduct(AVector v) {
+	public Scalar innerProduct(ADenseArrayVector v) {
 		checkSameLength(v);
 		return Scalar.create(v.unsafeGet(index));
 	}

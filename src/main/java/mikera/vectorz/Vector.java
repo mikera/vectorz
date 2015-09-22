@@ -380,14 +380,6 @@ public final class Vector extends ADenseArrayVector {
 		return wrap(DoubleArrays.multiplyCopy(data, factor));
 	}
 	
-	@Override public Scalar innerProduct(AVector v) {
-		return Scalar.create(dotProduct(v));
-	}
-	
-	@Override public Scalar innerProduct(Vector v) {
-		return Scalar.create(dotProduct(v));
-	}
-	
 	public double distanceSquared(Vector v) {
 		int len=length();
 		double total=0.0;

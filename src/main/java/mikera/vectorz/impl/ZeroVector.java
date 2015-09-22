@@ -10,7 +10,6 @@ import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Scalar;
-import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
@@ -109,13 +108,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 
 	@Override
-	public ImmutableScalar innerProduct(AVector a) {
-		checkSameLength(a);
-		return ImmutableScalar.ZERO;
-	}
-
-	@Override
-	public Scalar innerProduct(Vector v) {
+	public Scalar innerProduct(ADenseArrayVector v) {
 		checkSameLength(v);
 		return Scalar.create(0.0);
 	}

@@ -5,7 +5,6 @@ import java.util.List;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
@@ -125,11 +124,6 @@ public final class RepeatedElementVector extends ASizedVector {
 			r.unsafeSet(i, value*col.elementSum());
 		}
 		return r;
-	}
-	
-	@Override
-	public Scalar innerProduct(AVector v) {
-		return Scalar.create(dotProduct(v));
 	}
 	
 	@Override
