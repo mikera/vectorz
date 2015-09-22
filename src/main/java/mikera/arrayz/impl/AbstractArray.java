@@ -393,6 +393,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void addInnerProduct(INDArray a, INDArray b) {
+		add(a.innerProduct(b));
+	}
+	
+	@Override
 	public INDArray addCopy(double d) {
 		INDArray result=clone();
 		result.add(d);

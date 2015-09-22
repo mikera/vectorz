@@ -636,6 +636,13 @@ public interface INDArray extends Cloneable, Serializable {
 	public void addMultiple(INDArray src, double factor);
 	
 	/**
+	 * Adds the inner product of two arrays to this array
+	 * @param src
+	 * @param factor
+	 */
+	public void addInnerProduct(INDArray a, INDArray b);
+	
+	/**
 	 * Multiplies all elements of the array in place by a given double value
 	 */
 	public void multiply(double factor);

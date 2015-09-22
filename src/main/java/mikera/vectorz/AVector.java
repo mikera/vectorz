@@ -2077,6 +2077,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
+	public void addInnerProduct(INDArray a, INDArray b) {
+		if ((a instanceof AMatrix)&&(b instanceof AVector)) {
+			addInnerProduct((AMatrix)a,(AVector)b);
+			return;
+		}
+		super.addInnerProduct(a, b);
+	}
+	
 	/**
 	 * Adds the inner product of the arguments (matrix a and vector b) to this vector.
 	 * 
