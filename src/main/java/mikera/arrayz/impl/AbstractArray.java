@@ -21,6 +21,7 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Tools;
@@ -177,6 +178,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override
+	public void applyOp(Op2 op, INDArray b) {
+		applyOp(op,b.broadcastLike(this));
+	}
+
+	@Override
+	public void applyOp(Op2 op, double b) {
+		if (dimensionality()>0) {
+			int rc = sliceCount();
+			for (int i = 0; i < rc; i++) {
+				slice(i).applyOp(op,b);
+			}			
+		} else {
+			set(op.apply(get(),b));
+		}
+	}
 
 	@Override
 	public void multiply(double d) {

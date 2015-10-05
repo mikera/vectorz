@@ -47,6 +47,7 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -1522,6 +1523,19 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
 			getRowView(i).applyOp(op);
+		}
+	}
+	
+	@Override
+	public void applyOp(Op2 op, INDArray b) {
+		applyOp(op,b.broadcastLike(this));
+	}
+
+	@Override
+	public void applyOp(Op2 op, double b) {
+		int rc = rowCount();
+		for (int i = 0; i < rc; i++) {
+			getRowView(i).applyOp(op,b);
 		}
 	}
 	

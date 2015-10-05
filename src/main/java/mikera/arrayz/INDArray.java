@@ -12,6 +12,7 @@ import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 
 /**
@@ -921,5 +922,25 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @return
 	 */
 	INDArray[] getComponents();
+
+	/**
+	 * Applies a binary operator to this array and a second array.
+	 * 
+	 * Broadcasts the second array to the shape of this array if required.
+	 * 
+	 * @param op
+	 * @param b
+	 */
+	void applyOp(Op2 op, INDArray b);
+	
+	/**
+	 * Applies a binary operator to this array and a double value.
+	 * 
+	 * Works as if the double value was broadcast to the shape of this array.
+	 * 
+	 * @param op
+	 * @param b
+	 */
+	void applyOp(Op2 op, double b);
 
 }

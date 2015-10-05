@@ -2,24 +2,16 @@ package mikera.vectorz;
 
 import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
-import mikera.transformz.ATransform;
-import mikera.transformz.impl.AOpTransform;
 import mikera.vectorz.impl.ADenseArrayVector;
-import mikera.vectorz.ops.Composed;
-import mikera.vectorz.ops.Derivative;
-import mikera.vectorz.ops.Division;
-import mikera.vectorz.ops.Inverse;
-import mikera.vectorz.ops.Product;
-import mikera.vectorz.ops.Sum;
 
 /**
  * Abstract class for representing a unary operation
  * 
  * @author Mike
  */
-public abstract class Op implements IOperator {
+public abstract class Op2 {
 	
-	public abstract double apply(double x);
+	public abstract double apply(double x, double y);
 	
 	/**
 	 * Applies the inverse of this Op. Throws an error if the inverse function does not exist.
@@ -32,74 +24,58 @@ public abstract class Op implements IOperator {
 		throw new UnsupportedOperationException("Inverse not defined for operator: "+this.toString());
 	}
 	
-	@Override
-	public void applyTo(AVector v) {
-		if (v instanceof ADenseArrayVector) {
-			applyTo((ADenseArrayVector)v);
+	public void applyTo(AVector a, AVector b) {
+		if (a instanceof ADenseArrayVector) {
+			applyTo((ADenseArrayVector)a,b);
 		} else {
-			v.applyOp(this);
+			a.applyOp(this,b);
 		}
 	}
 	
-	public void applyTo(AMatrix m) {
-		m.applyOp(this);
+	public void applyTo(AMatrix a, AMatrix b) {
+		a.applyOp(this, b);
 	}
 	
-	@Override
-	public void applyTo(AVector v, int start, int length) {
+	public void applyTo(AVector v, int start, int length, AVector b) {
 		if (start<0) throw new IllegalArgumentException("Negative start position: "+start);
 		if ((start==0)&&(length==v.length())) {
-			v.applyOp(this);
+			v.applyOp(this,b);
 		} else {
-			v.subVector(start, length).applyOp(this);
+			v.subVector(start, length).applyOp(this,b);
 		}
 	}
 	
-	public void applyTo(AScalar s) {
-		s.set(apply(s.get()));
+	public void applyTo(AScalar a, AScalar b) {
+		a.set(apply(a.get(),b.get()));
 	}
 	
-	public void applyTo(ADenseArrayVector v) {
-		applyTo(v.getArray(), v.getArrayOffset(),v.length());
+	public void applyTo(ADenseArrayVector a, AVector b) {
+		applyTo(a.getArray(), a.getArrayOffset(),a.length(),b);
 	}
 	
 	
-	public void applyTo(INDArray a) {
+	public void applyTo(INDArray a, INDArray b) {
 		if (a instanceof AVector) {
-			applyTo((AVector)a);
+			applyTo((AVector)a,b.broadcastLike(a));
 		} else if (a instanceof AMatrix) {
-			applyTo((AMatrix)a);
+			applyTo((AMatrix)a,b.broadcastLike(a));
 		} else if (a instanceof AScalar) {
-			applyTo((AScalar)a);
+			applyTo((AScalar)a,b.broadcastLike(a));
 		} else {
-			a.applyOp(this);
+			a.applyOp(this,b);
 		}
 	}
 
-	@Override
-	public void applyTo(double[] data, int start, int length) {
+	public void applyTo(double[] data, int start, int length, AVector b) {
+		b.checkLength(length);
 		for (int i=0; i<length; i++) {
 			double x=data[start+i];
-			data[start+i]=apply(x);
+			data[start+i]=apply(x,b.unsafeGet(i));
 		}
 	}
 	
-	public void applyTo(double[] data) {
-		applyTo(data,0,data.length);
-	}
-	
-	@Override
-	public ATransform getTransform(int dims) {
-		return new AOpTransform(this,dims);
-	}
-	
-	@Override 
-	public Op getInverse() {
-		if (hasInverse()) {
-			return new Inverse(this);
-		} else {
-			throw new UnsupportedOperationException("No inverse available: "+this.getClass());
-		}
+	public void applyTo(double[] data, AVector b) {
+		applyTo(data,0,data.length,b);
 	}
 	
 	public boolean hasDerivative() {
@@ -112,32 +88,6 @@ public abstract class Op implements IOperator {
 	
 	public boolean hasInverse() {
 		return false;
-	}
-	
-	/**
-	 * Returns the derivative of this Op for a given output value y
-	 * 
-	 * i.e. f'(g(y)) where f is the operator, g is the inverse of f 
-	 * 
-	 * @param y
-	 * @return
-	 */
-	public double derivativeForOutput(double y) {
-		assert(!hasDerivative());
-		throw new UnsupportedOperationException("No derivative defined for "+this.toString());
-	}
-	
-	/**
-	 * Returns the derivative of this Op for a given input value x
-	 * 
-	 * i.e. f'(x) where f is the operator
-	 * 
-	 * @param y
-	 * @return
-	 */
-	public double derivative(double x) {
-		assert(!hasDerivative());
-		return derivativeForOutput(apply(x));
 	}
 	
 	/**
@@ -216,30 +166,6 @@ public abstract class Op implements IOperator {
 	
 	public boolean isBounded() {
 		return (minValue()>=-Double.MAX_VALUE)||(maxValue()<=Double.MAX_VALUE);
-	}
-	
-	public Op getDerivativeOp() {
-		return new Derivative(this);
-	}
-	
-	public static Op compose(Op op1, Op op2) {
-		return Ops.compose(op1,op2);
-	}
- 
-	public Op compose(Op op) {
-		return Composed.create(this, op);
-	}
-	
-	public Op product(Op op) {
-		return Product.create(this, op);
-	}
-	
-	public Op divide(Op op) {
-		return Division.create(this, op);
-	}
-	
-	public Op sum(Op op) {
-		return Sum.create(this, op);
 	}
 	
 	@Override public String toString() {

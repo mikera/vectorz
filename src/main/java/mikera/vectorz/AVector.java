@@ -2127,6 +2127,27 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public void applyOp(Op2 op, INDArray b) {
+		applyOp(op,b.broadcastLike(this));
+	}
+	
+	public void applyOp(Op2 op, AVector b) {
+		int len=length();
+		b.checkLength(len);
+		for (int i=0; i<len; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i),b.unsafeGet(i)));
+		}
+	}
+	
+	@Override
+	public void applyOp(Op2 op, double b) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i),b));
+		}
+	}
+	
+	@Override
 	public AVector applyOpCopy(Op op) {
 		AVector r=clone();
 		r.applyOp(op);
