@@ -749,20 +749,34 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	@Override
 	public final AVector getTransposeView() {return this;}
 	
-	public AVector select(int... inds) {
-		if (IntArrays.isRange(inds)) {
-			if (inds.length==0) return Vector0.INSTANCE;
-			return subVector(inds[0],inds.length);
+	/**
+	 * Selects a subset of indices from a vector
+	 * @param indices
+	 * @return
+	 */
+	public AVector select(int... indices) {
+		if (IntArrays.isRange(indices)) {
+			if (indices.length==0) return Vector0.INSTANCE;
+			return subVector(indices[0],indices.length);
 		}
 		if (isMutable()) {
-			return selectView(inds);
+			return selectView(indices);
 		} else {
-			return selectClone(inds);
+			return selectClone(indices);
 		}		
 	}
 	
-	public AVector selectView(int... inds) {
-		return IndexedSubVector.wrap(this, inds.clone());
+	/**
+	 * Selects a subset of indices from a vector, returning a view
+	 * @param indices
+	 * @return a view of the selected indices
+	 */
+	public AVector selectView(int... indices) {
+		if (IntArrays.isRange(indices)) {
+			if (indices.length==0) return Vector0.INSTANCE;
+			return subVector(indices[0],indices.length);
+		}
+		return IndexedSubVector.wrap(this, indices.clone());
 	}
 	
 	
