@@ -586,6 +586,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		if (v instanceof JoinedArrayVector) return join((JoinedArrayVector) v);
 		return null;
 	}
+	
+	@Override
+	public AVector join(AVector v) {
+		if (v instanceof ADenseArrayVector) return join((ADenseArrayVector)v);
+		return super.join(v);
+	}
 
 	public AVector join(ADenseArrayVector v) {
 		if ((v.getArray() == getArray())
