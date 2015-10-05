@@ -761,6 +761,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		scaleAdd(1.0-alpha,v,alpha,0.0);
 	}
 	
+	/**
+	 * Computes the squared magnitude (sum of squares) for this vector
+	 * @return
+	 */
 	public final double magnitudeSquared() {
 		return elementSquaredSum();
 	}
@@ -848,6 +852,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return super.outerProduct(a);
 	}
 	
+	/**
+	 * Computes the inner product of this vector with another vector
+	 * @return an AScalar instance representing the inner product
+	 */
 	public AScalar innerProduct(AVector v) {
 		checkSameLength(v);
 		return Scalar.create(dotProduct(v));
@@ -1201,6 +1209,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	@Override
 	public double elementProduct() {
 		int len=length();
 		double result=1.0;
@@ -1551,6 +1560,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return r;
 	}
 	
+	@Override
 	public AVector addCopy(double a) {
 		// clone ensures mutability
 		AVector r=this.clone();
@@ -1656,22 +1666,45 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}		
 	}
 	
+	/**
+	 * Adds the element-wise product of two vectors to this vector. Mutates this vector.
+	 * @param a
+	 * @param b
+	 */
 	public void addProduct(AVector a, AVector b) {
 		addProduct(a,b,1.0);
 	}
 	
+	/**
+	 * Adds the element-wise product of two vectors to this vector.
+	 * @param a
+	 * @param b
+	 * @return A new vector representing the result
+	 */
 	public AVector addProductCopy(AVector a, AVector b) {
 		AVector r=clone();
 		r.addProduct(a,b);
 		return r;
 	}
 	
+	/**
+	 * Adds the element-wise product of two vectors and a constant factor to this vector.
+	 * @param a
+	 * @param b
+	 * @return A new vector representing the result
+	 */
 	public AVector addProductCopy(AVector a, AVector b, double factor) {
 		AVector r=clone();
 		r.addProduct(a,b,factor);
 		return r;
 	}
 	
+	/**
+	 * Adds the element-wise product of two vectors and a constant factor to this vector. 
+	 * Mutates this vector.
+	 * @param a
+	 * @param b
+	 */
 	public void addProduct(AVector a, AVector b, double factor) {
 		checkSameLength(a,b);
 		if (factor==0.0) return;
