@@ -19,6 +19,7 @@ import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Ops;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
 import mikera.vectorz.TestingUtils;
@@ -360,6 +361,14 @@ public class TestArrays {
 		c.asVector().fill(5.0);
 		d.applyOp(Constant.create(5.0));
 		assertTrue(c.equals(d));
+	}
+	
+	private void testApplyOp2(INDArray a) {
+		if (!a.isFullyMutable()) return;
+		INDArray b = a.exactClone();
+		
+		Arrayz.fillRandom(b, 568758);
+		b.applyOp(Ops.MIN, b);
 	}
 
 	private void testApplyAllOps(INDArray a) {
@@ -790,6 +799,7 @@ public class TestArrays {
 		testMultiply(a);
 		testReciprocal(a);
 		testApplyOp(a);
+		testApplyOp2(a);
 		testApplyAllOps(a);
 		testElementIterator(a);
 		testElementSums(a);

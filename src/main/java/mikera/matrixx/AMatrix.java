@@ -1530,6 +1530,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void applyOp(Op2 op, INDArray b) {
 		applyOp(op,b.broadcastLike(this));
 	}
+	
+	public void applyOp(Op2 op, AMatrix b) {
+		checkSameShape(b);
+		int rc = rowCount();
+		for (int i = 0; i < rc; i++) {
+			getRowView(i).applyOp(op,b.getRow(i));
+		}
+	}
 
 	@Override
 	public void applyOp(Op2 op, double b) {
@@ -2171,6 +2179,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
 	}
 	
+	/**
+	 * Checks if this matrix has the same shape as another matrix. Throws an exception if not.
+	 * @param m
+	 */
 	protected void checkSameShape(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
@@ -2179,6 +2191,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	/**
+	 * Checks if this matrix has the same shape as another matrix. Throws an exception if not.
+	 * @param m
+	 */
 	protected void checkSameShape(ARectangularMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();

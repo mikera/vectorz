@@ -12,6 +12,7 @@ import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Log;
 import mikera.vectorz.ops.LogN;
 import mikera.vectorz.ops.Logistic;
+import mikera.vectorz.ops.Min;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Power;
 import mikera.vectorz.ops.Reciprocal;
@@ -55,6 +56,10 @@ public final class Ops {
 	public static final Op LOG10 = LogN.LOG10;
 
 	public static final Op RECIPROCAL = Reciprocal.INSTANCE;
+	
+	// binary operators
+	public static final Op2 MIN = new Min();
+
 
 	public static final ARoundingOp CEIL = new ARoundingOp() {
 		@Override

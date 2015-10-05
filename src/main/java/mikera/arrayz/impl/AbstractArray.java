@@ -180,7 +180,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void applyOp(Op2 op, INDArray b) {
-		applyOp(op,b.broadcastLike(this));
+		int dims=dimensionality();
+		if (dims>0) {
+			int rc = sliceCount();
+			for (int i = 0; i < rc; i++) {
+				slice(i).applyOp(op,(dims==b.dimensionality())?b.slice(i):b);
+			}			
+		} else {
+			set(op.apply(get(),b.get()));
+		}
 	}
 
 	@Override
