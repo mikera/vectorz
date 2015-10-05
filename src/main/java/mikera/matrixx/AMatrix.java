@@ -56,6 +56,7 @@ import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -405,23 +406,31 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AMatrix reorder(int dim, int[] order) {
 		int n=order.length;
 		switch (dim) {
-		case 0: {
-			if (n==0) return ZeroMatrix.create(0, columnCount());
-			ArrayList<AVector> al=new ArrayList<AVector>(n);
-			for (int si: order) {
-				al.add(slice(si));
+			case 0: {
+				if (n==0) return ZeroMatrix.create(0, columnCount());
+				if (IntArrays.isRange(order)) {
+					return subMatrix(order[0],n,0,columnCount());
+				}
+				
+				ArrayList<AVector> al=new ArrayList<AVector>(n);
+				for (int si: order) {
+					al.add(slice(si));
+				}
+				return SparseRowMatrix.wrap(al);
 			}
-			return SparseRowMatrix.wrap(al);
-		}
-		case 1: {
-			if (n==0) return ZeroMatrix.create(rowCount(),0);
-			ArrayList<AVector> al=new ArrayList<AVector>(n);
-			for (int si: order) {
-				al.add(slice(1,si));
+			case 1: {
+				if (n==0) return ZeroMatrix.create(rowCount(),0);
+				if (IntArrays.isRange(order)) {
+					return subMatrix(0,rowCount(),order[0],n);
+				}
+				
+				ArrayList<AVector> al=new ArrayList<AVector>(n);
+				for (int si: order) {
+					al.add(slice(1,si));
+				}
+				return SparseColumnMatrix.wrap(al);
 			}
-			return SparseColumnMatrix.wrap(al);
-		}
-		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
 		}
 	}	
 	
