@@ -34,6 +34,7 @@ import mikera.vectorz.ops.Logistic;
 import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -749,6 +750,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public final AVector getTransposeView() {return this;}
 	
 	public AVector select(int... inds) {
+		if (IntArrays.isRange(inds)) {
+			if (inds.length==0) return Vector0.INSTANCE;
+			return subVector(inds[0],inds.length);
+		}
 		if (isMutable()) {
 			return selectView(inds);
 		} else {

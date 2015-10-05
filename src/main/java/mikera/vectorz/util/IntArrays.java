@@ -291,6 +291,16 @@ public class IntArrays {
 		}
 		return true;
 	}
+	
+	public static boolean isRange(int[] as) {
+		int len=as.length;
+		if (len==0) return true;
+		int start=as[0];
+		for (int i=1; i<as.length; i++) {
+			if (as[i]!=start+i) return false;
+		}
+		return true;
+	}
 
 	public static int[] insert(int[] data, int position, int value) {
 		int len=data.length;
