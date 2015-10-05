@@ -1786,13 +1786,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public void scaleAdd(double factor, INDArray b, double bfactor, double constant) {
-		if (b instanceof AVector) {
-			scaleAdd(factor,(AVector)b,bfactor,constant);
-		} else {
-			scaleAdd(factor,b.broadcastLike(this),bfactor,constant);
-		}
+		scaleAdd(factor,b.broadcastLike(this),bfactor,constant);
 	}
 	
+	/**
+	 * Scales all elements of the array by a given double value, adds a 
+	 * scaled second vector and adds a constant value
+	 * @param factor
+	 * @param b
+	 * @param bfactor
+	 * @param constant
+	 */
 	public void scaleAdd(double factor, AVector b, double bfactor, double constant) {
 		multiply(factor);
 		if (bfactor==0.0) {
@@ -1878,6 +1882,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return len;
 	}
 	
+	/**
+	 * Utility function to check vector length and throw an exception if not same shape.
+	 * @return The length of both vectors (which must be equals)
+	 */
 	protected int checkSameLength(AVector v, AVector w) {
 		int len=length();
 		if (len!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));		
