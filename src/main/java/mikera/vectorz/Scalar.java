@@ -1,6 +1,5 @@
 package mikera.vectorz;
 
-import mikera.arrayz.INDArray;
 import mikera.vectorz.impl.ImmutableScalar;
 
 /**
