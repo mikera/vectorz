@@ -601,6 +601,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
+	@Override
 	public void divide(double factor) {
 		multiply(1.0/factor);
 	}
@@ -621,6 +622,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
+	/**
+	 * Divides the elements in this vector by corresponding elements in the target array
+	 * @param data
+	 * @param offset The offset into the target array
+	 */
 	public void divide(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
@@ -628,6 +634,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
+	/**
+	 * Divides the elements in the target array by corresponding elements in this vector
+	 * @param data
+	 * @param offset The offset into the target array
+	 */
 	public void divideTo(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
@@ -836,6 +847,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return Scalar.create(dotProduct(v.getArray(),v.getArrayOffset()));
 	}
 	
+	/**
+	 * Computes the inner product of this vector with a matrix
+	 * @param m
+	 * @return a vector representing the inner product
+	 */
 	public AVector innerProduct(AMatrix m) {
 		int cc=m.columnCount();
 		int rc=m.rowCount();
@@ -849,6 +865,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return r;		
 	}
 	
+	/**
+	 * Computes the inner product of this vector with a scalar
+	 * @param s A scalar instance
+	 * @return a vector representing the inner product
+	 */
 	public AVector innerProduct(AScalar s) {
 		return scaleCopy(s.get());
 	}
@@ -1037,23 +1058,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public double distanceL1(AVector v) {
-		int len=checkSameLength(v);
-		double total=0.0;
-		for (int i=0; i<len; i++) {
-			double d=unsafeGet(i)-v.unsafeGet(i);
-			total+=Math.abs(d);
-		}
-		return total;
+		AVector t=this.subCopy(v).mutable();
+		t.abs();
+		return t.elementSum();
 	}
 	
+	/**
+	 * Returns the distance from this vector to another vector according to the Linf norm.
+	 * 
+	 * @param v
+	 * @return
+	 */
 	public double distanceLinf(AVector v) {
-		int len=checkSameLength(v);
-		double result=0.0;
-		for (int i=0; i<len; i++) {
-			double d=Math.abs(unsafeGet(i)-v.unsafeGet(i));
-			result=Math.max(result,d);
-		}
-		return result;
+		AVector t=this.subCopy(v);
+		return t.maxAbsElement();
 	}
 	
 	/**
