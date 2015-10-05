@@ -587,6 +587,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		multiply(v.getArray(),v.getArrayOffset());
 	}
 	
+	/**
+	 * Multiplies the elements in this vector by corresponding elements in the target array
+	 * @param data
+	 * @param offset The offset into the target array
+	 */
 	public void multiply(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
@@ -594,6 +599,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}	
 	}
 	
+	/**
+	 * Multiplies the elements in the target array by corresponding elements in this vector
+	 * @param data
+	 * @param offset The offset into the target array
+	 */
 	public void multiplyTo(double[] data, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
@@ -702,6 +712,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return r;
 	}
 	
+    /**
+     * Computes the tanh of every element in this vector. Mutates this vector.
+     */
 	public void tanh() {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -710,6 +723,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}			
 	}
 	
+    /**
+     * Computes the logistic function for every element in this vector. Mutates this vector.
+     */
 	public void logistic() {
 		int len=length();
 		for (int i=0; i<len; i++) {
