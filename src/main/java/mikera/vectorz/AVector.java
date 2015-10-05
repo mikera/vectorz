@@ -779,7 +779,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return IndexedSubVector.wrap(this, indices.clone());
 	}
 	
-	
+	/**
+	 * Selects a subset of indices from a vector, returning a mutable clone of data
+	 * @param indices
+	 * @return a new mutable vector containing the selected indices
+	 */	
 	public AVector selectClone(int... inds) {
 		Vector v=Vector.createLength(inds.length);
 		double[] tdata=v.getArray();
@@ -791,6 +795,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return v;
 	}
 	
+	/**
+	 * Computes the outer product of this vector with another vector 
+	 * @param a
+	 * @return a matrix representing the outer product
+	 */
 	public AMatrix outerProduct(AVector a) {
 		int rc=length();
 		int cc=a.length();
@@ -804,6 +813,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return m;
 	}
 	
+	@Override
 	public INDArray outerProduct(INDArray a) {
 		if (a instanceof AVector) {
 			return outerProduct((AVector)a);
