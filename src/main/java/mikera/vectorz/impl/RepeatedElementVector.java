@@ -127,15 +127,11 @@ public final class RepeatedElementVector extends ASizedVector {
 	}
 	
 	@Override
-	public AVector reorder(int dim, int[] order) {
-		checkDimension(dim);
-		return reorder(order);
-	}	
-	
-	@Override
-	public AVector reorder(int[] order) {
+	public AVector select(int... order) {
 		int n=order.length;
+		for (int i:order) checkIndex(i);
 		if (n==length) return this;
+		if (n==0) return Vector0.INSTANCE;
 		return create(n,value);
 	}	
 	

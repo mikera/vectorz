@@ -1467,16 +1467,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public AVector reorder(int[] order) {
-		return reorder(0,order);
+	public final AVector reorder(int[] order) {
+		return select(order);	
 	}	
 	
 	@Override
-	public AVector reorder(int dim, int[] order) {
+	public final AVector reorder(int dim, int[] order) {
 		checkDimension(dim);
-		Vector result=Vector.createLength(order.length);
-		result.set(this, order);
-		return result;
+		return reorder(order);
 	}	
 	
 	/**

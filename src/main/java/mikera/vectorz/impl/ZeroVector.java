@@ -365,19 +365,13 @@ public final class ZeroVector extends ASparseVector {
 	}
 
 	@Override
-	public AVector reorder(int[] order) {
-		int n = order.length;
-		if (n == length) return this;
+	public AVector select(int... order) {
 		for (int i: order) {
 			checkIndex(i);
 		}
+		int n = order.length;
+		if (n == length) return this;
 		return createNew(n);
-	}
-
-	@Override
-	public AVector reorder(int dim, int[] order) {
-		checkDimension(dim);
-		return reorder(order);
 	}
 
 	/**
