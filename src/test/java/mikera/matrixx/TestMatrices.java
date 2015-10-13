@@ -201,6 +201,8 @@ public class TestMatrices {
 				assertEquals(m.get(i,j),sm.get(i-1,j-1),0.0);
 			}
 		}
+		
+		assertEquals(0,m.subMatrix(0, 0, 0, 0).elementCount());
 	}
 	
 	private void doBoundsTest(AMatrix m) {
