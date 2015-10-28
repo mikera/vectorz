@@ -125,6 +125,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	public boolean isZero() {
 		return get()==0.0;
 	}
+	
+	@Override
+	public boolean isBoolean() {
+		return Tools.isBoolean(get());
+	}
 
 	@Override
 	public void add(double d) {

@@ -55,7 +55,6 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.MatrixViewVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.Constants;
-import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
@@ -894,9 +893,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public boolean isBoolean() {
-		double[] data=Tools.getElements(this);
-		return DoubleArrays.isBoolean(data,0,data.length);
-	}
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			if (!getRow(i).isBoolean()) return false;
+		}
+		return true;
+	}	
 	
 	@Override
 	public long nonZeroCount() {

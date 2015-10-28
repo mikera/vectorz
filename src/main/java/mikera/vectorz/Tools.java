@@ -1,10 +1,8 @@
 package mikera.vectorz;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
-
-import mikera.arrayz.INDArray;
+import java.util.List;
 
 public final class Tools {
 	public static void debugBreak(Object o) {
@@ -171,13 +169,4 @@ public final class Tools {
 	public static boolean isBoolean(double d) {
 		return (d==0.0)||(d==1.0);
 	}
-
-	public static double[] getElements(INDArray a) {
-		int n=(int)a.elementCount();
-		double[] data=new double[n];
-		a.getElements(data, 0);
-		return data;
-	}
-
-
 }

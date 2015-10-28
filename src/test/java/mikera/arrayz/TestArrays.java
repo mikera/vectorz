@@ -1,10 +1,19 @@
 package mikera.arrayz;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.StringReader;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import org.junit.Test;
 
 import mikera.arrayz.impl.BroadcastScalarArray;
 import mikera.arrayz.impl.IDense;
@@ -23,16 +32,12 @@ import mikera.vectorz.Ops;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
 import mikera.vectorz.TestingUtils;
-import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
-import static org.junit.Assert.*;
-
-import org.junit.Test;
 
 /**
  * Tests for general purpose INDArray implementations
@@ -527,7 +532,7 @@ public class TestArrays {
 	}
 	
 	private void testBoolean(INDArray a) {
-		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(Tools.getElements(a)));
+		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(a.getElements()));
 	}
 
 	private void testBroadcast(INDArray a) {
