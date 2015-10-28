@@ -2091,14 +2091,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Adds to a specific position in a matrix, indexed by element position.
 	 * 
-	 * Unsafe operation - may not prform bounds checking.
+	 * Unsafe operation - may not perform bounds checking.
 	 * 
 	 * @param i
 	 * @param d
 	 */
-	public void addAt(int i, double d) {
+	public void addAt(long i, double d) {
 		int cc=columnCount();
-		addAt(i/cc,i%cc,d);
+		addAt((int)(i/cc),(int)(i%cc),d);
 	}
 
 	/**

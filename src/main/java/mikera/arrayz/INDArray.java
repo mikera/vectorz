@@ -198,7 +198,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Adds to a mutable array, indexed by element position. 
 	 * This is an unsafe operation: bounds are not checked
 	 */
-	public void addAt(int i, double v);
+	public void addAt(long i, double v);
 	
 	/**
 	 * Subtracts all the elements of another array from this array, in an elementwise order.

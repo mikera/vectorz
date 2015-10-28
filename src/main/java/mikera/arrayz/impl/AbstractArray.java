@@ -703,10 +703,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public void addAt(int i, double v) {
-		int ss=Tools.toInt(elementCount()/sliceCount());
-		int s=i/ss;
-		slice(s).addAt(i-s*ss, v);
+	public void addAt(long i, double v) {
+		long ss=elementCount()/sliceCount();
+		long slice=i/ss;
+		slice(Tools.toInt(slice)).addAt(i-slice*ss, v);
 	}
 	
 	@Override

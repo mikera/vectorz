@@ -142,7 +142,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 
 	@Override
-	public void addAt(int i, double v) {
+	public void addAt(long i, double v) {
 		// Note: this is an unsafe operation, so ignore the index
 		add(v);
 	}

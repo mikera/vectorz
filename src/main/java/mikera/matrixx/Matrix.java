@@ -15,6 +15,7 @@ import mikera.matrixx.impl.StridedMatrix;
 import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
@@ -456,8 +457,8 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public void addAt(int i, double d) {
-		data[i] += d;
+	public void addAt(long i, double d) {
+		data[Tools.toInt(i)] += d;
 	}
 
 	@Override

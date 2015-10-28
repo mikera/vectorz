@@ -2269,6 +2269,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		unsafeSet(i,unsafeGet(i)+v);
 	}
 
+	@Override
+	public void addAt(long i, double v) {
+		addAt(Tools.toInt(i),v);
+	}
+
 	/**
 	 * Scales this vector and adds a constant to every element
 	 */
