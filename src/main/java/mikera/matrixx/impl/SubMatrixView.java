@@ -1,6 +1,8 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
+import mikera.vectorz.impl.SubMatrixWrapVector;
 
 /**
  * Matrix class that wraps a SubMatrix of another matrix
@@ -50,6 +52,11 @@ public class SubMatrixView extends ARectangularMatrix {
 	@Override
 	public AMatrix exactClone() {
 		return new SubMatrixView(source.exactClone(),rowStart,colStart,rows,cols);
+	}
+	
+	@Override
+	public AVector asVector() {
+		return new SubMatrixWrapVector(source, rowStart, colStart, rows, cols);
 	}
 
 }

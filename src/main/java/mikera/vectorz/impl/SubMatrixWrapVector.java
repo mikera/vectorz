@@ -17,7 +17,7 @@ public class SubMatrixWrapVector extends ASizedVector {
 	private int cols;
 	private AMatrix source;
 
-	protected SubMatrixWrapVector(AMatrix source, int rowStart, int colStart, int rows, int cols) {
+	public SubMatrixWrapVector(AMatrix source, int rowStart, int colStart, int rows, int cols) {
 		super(rows*cols);
 		source.checkRow(rowStart);
 		source.checkRow(rowStart+rows-1);
