@@ -600,6 +600,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 
+	/**
+	 * Sets this matrix with the element values from another matrix. Source matrix must have the same shape.
+	 * @param a
+	 */
 	public void set(AMatrix a) {
 		int rc = rowCount();
 		int cc = columnCount();
@@ -618,6 +622,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		throw new UnsupportedOperationException("Can't set matrix to array: "+a.getClass() +" with shape: "+Arrays.toString(a.getShape()));
 	}
 	
+	/**
+	 * Sets every row of this matrix with the element values from a vector.
+	 * @param a
+	 */
 	public void set(AVector v) {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
