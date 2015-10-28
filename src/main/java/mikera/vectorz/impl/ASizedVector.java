@@ -101,8 +101,16 @@ public abstract class ASizedVector extends AVector {
 	
 	@Override
 	public boolean equalsArray(double[] data) {
-		if (length!=data.length) return false;
+		if (length!=data.length) throw new IllegalArgumentException("Wrong size of data array: "+data.length);
 		return equalsArray(data,0);
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			if (unsafeGet(i)!=data[offset++]) return false;
+		}
+		return true;
 	}
 
 }

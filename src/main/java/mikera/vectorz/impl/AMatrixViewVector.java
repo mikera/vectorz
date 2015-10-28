@@ -36,19 +36,19 @@ public abstract class AMatrixViewVector extends ASizedVector {
 	 * @return
 	 */
 	protected abstract int calcCol(int i);
+		
+	@Override
+	public void addAt(int i, double v) {
+		int r=calcRow(i);
+		int c=calcCol(i);
+		source.unsafeSet(r,c,source.unsafeGet(r,c)+v);
+	}
 	
 	@Override 
 	public void set(int i, double value) {
 		checkIndex(i);
 		// we assume unsafe is OK, i.e. calculations are correct given correct i
 		source.unsafeSet(calcRow(i),calcCol(i),value);
-	}
-	
-	@Override
-	public void addAt(int i, double v) {
-		int r=calcRow(i);
-		int c=calcCol(i);
-		source.unsafeSet(r,c,source.unsafeGet(r,c)+v);
 	}
 	
 	@Override 
@@ -66,6 +66,7 @@ public abstract class AMatrixViewVector extends ASizedVector {
 	
 	@Override 
 	public double unsafeGet(int i) {
+		// we assume unsafe is OK, i.e. calculations are correct given correct i
 		return source.unsafeGet(calcRow(i),calcCol(i));
 	}
 	
@@ -87,14 +88,6 @@ public abstract class AMatrixViewVector extends ASizedVector {
 		if (v.length()!=length) return false;
 		for (int i=0; i<length; i++) {
 			if (v.unsafeGet(i)!=source.unsafeGet(calcRow(i), calcCol(i))) return false;
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean equalsArray(double[] data, int offset) {
-		for (int i=0; i<length; i++) {
-			if (unsafeGet(i)!=data[offset++]) return false;
 		}
 		return true;
 	}
