@@ -8,23 +8,21 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public class SubMatrixWrapVector extends ASizedVector {
+public class SubMatrixWrapVector extends AMatrixViewVector {
 	private static final long serialVersionUID = -839770692590916488L;
 	
-	private int rowStart;
-	private int colStart;
-	private int rows;
-	private int cols;
-	private AMatrix source;
+	private final int rowStart;
+	private final int colStart;
+	private final int rows;
+	private final int cols;
 
 	public SubMatrixWrapVector(AMatrix source, int rowStart, int colStart, int rows, int cols) {
-		super(rows*cols);
+		super(source,rows*cols);
 		source.checkRow(rowStart);
 		source.checkRow(rowStart+rows-1);
 		source.checkColumn(colStart);
 		source.checkColumn(colStart+cols-1);
 		
-		this.source=source;
 		this.rowStart=rowStart;
 		this.colStart=colStart;
 		this.rows=rows;
@@ -34,13 +32,13 @@ public class SubMatrixWrapVector extends ASizedVector {
 	@Override
 	public double get(int i) {
 		checkIndex(i);
-		return source.unsafeGet(rowStart+i/cols, colStart+i%cols);
+		return source.unsafeGet(calcRow(i), calcCol(i));
 	}
 
 	@Override
 	public void set(int i, double value) {
 		checkIndex(i);
-		source.unsafeSet(rowStart+i/cols, colStart+i%cols,value);
+		source.unsafeSet(calcRow(i), calcCol(i),value);
 	}
 
 	@Override
@@ -56,6 +54,16 @@ public class SubMatrixWrapVector extends ASizedVector {
 			offset+=cols;
 		}
 		return result;
+	}
+
+	@Override
+	protected int calcRow(int i) {
+		return rowStart+i/cols;
+	}
+
+	@Override
+	protected int calcCol(int i) {
+		return colStart+i%cols;
 	}
 
 }
