@@ -15,7 +15,7 @@ public class SubMatrixView extends ARectangularMatrix {
 	private int rowStart;
 	private int colStart;
 
-	protected SubMatrixView(AMatrix source, int rowStart, int colStart, int rows, int cols) {
+	public SubMatrixView(AMatrix source, int rowStart, int colStart, int rows, int cols) {
 		super(rows, cols);
 		source.checkRow(rowStart);
 		source.checkRow(rowStart+rows-1);
