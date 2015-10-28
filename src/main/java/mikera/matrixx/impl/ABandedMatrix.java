@@ -1,6 +1,5 @@
 package mikera.matrixx.impl;
 
-import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -18,7 +17,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public abstract class ABandedMatrix extends AMatrix implements ISparse, IFastBands {
+public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 	private static final long serialVersionUID = -229314208418131186L;
 
 	@Override

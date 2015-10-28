@@ -1837,7 +1837,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * A limit on the upper bandwidth of the banded matrix. Actual upper bandwidth is guaranteed
-	 * to be less than or equal to this value
+	 * to be less than or equal to this value. Implementation should be O(1).
 	 * @return
 	 */
 	public int upperBandwidthLimit() {
@@ -1846,7 +1846,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * A limit on the lower bandwidth of the banded matrix. Actual lower bandwidth is guaranteed
-	 * to be less than or equal to this value
+	 * to be less than or equal to this value. Implementation should be O(1).
 	 * @return
 	 */
 	public int lowerBandwidthLimit() {
@@ -1910,7 +1910,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Computes the upper bandwidth of a matrix
+	 * Computes the upper bandwidth of a matrix, i.e. the number of bands above the leading diagonal
+	 * that cover all non-zero values
 	 * @return
 	 */
 	public int upperBandwidth() {
@@ -1921,7 +1922,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Computes the lower bandwidth of a matrix
+	 * Computes the lower bandwidth of a matrix, i.e. the number of bands below the leading diagonal
+	 * that cover all non-zero values
 	 * @return
 	 */
 	public int lowerBandwidth() {
