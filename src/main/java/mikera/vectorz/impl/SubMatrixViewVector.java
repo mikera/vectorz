@@ -4,9 +4,8 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**
- * A vector that wraps a submatrix of an arbitrary matrix
+ * A vector that wraps a sub-matrix of an arbitrary matrix
  * @author Mike
- *
  */
 public class SubMatrixViewVector extends AMatrixViewVector {
 	private static final long serialVersionUID = -839770692590916488L;
