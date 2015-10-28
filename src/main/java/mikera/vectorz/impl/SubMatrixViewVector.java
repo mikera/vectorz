@@ -8,7 +8,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public class SubMatrixWrapVector extends AMatrixViewVector {
+public class SubMatrixViewVector extends AMatrixViewVector {
 	private static final long serialVersionUID = -839770692590916488L;
 	
 	private final int rowStart;
@@ -16,7 +16,7 @@ public class SubMatrixWrapVector extends AMatrixViewVector {
 	private final int rows;
 	private final int cols;
 
-	public SubMatrixWrapVector(AMatrix source, int rowStart, int colStart, int rows, int cols) {
+	public SubMatrixViewVector(AMatrix source, int rowStart, int colStart, int rows, int cols) {
 		super(source,rows*cols);
 		source.checkRow(rowStart);
 		source.checkRow(rowStart+rows-1);
@@ -43,7 +43,7 @@ public class SubMatrixWrapVector extends AMatrixViewVector {
 
 	@Override
 	public AVector exactClone() {
-		return new SubMatrixWrapVector(source.exactClone(),rowStart,colStart,rows,cols);
+		return new SubMatrixViewVector(source.exactClone(),rowStart,colStart,rows,cols);
 	}
 
 	@Override

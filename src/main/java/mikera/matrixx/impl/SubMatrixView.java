@@ -2,7 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.impl.SubMatrixWrapVector;
+import mikera.vectorz.impl.SubMatrixViewVector;
 
 /**
  * Matrix class that wraps a SubMatrix of another matrix
@@ -60,7 +60,7 @@ public class SubMatrixView extends ARectangularMatrix {
 	
 	@Override
 	public AVector asVector() {
-		return new SubMatrixWrapVector(source, rowStart, colStart, rows, cols);
+		return new SubMatrixViewVector(source, rowStart, colStart, rows, cols);
 	}
 	
 	@Override

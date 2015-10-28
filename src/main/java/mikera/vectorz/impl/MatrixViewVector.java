@@ -14,11 +14,11 @@ import mikera.vectorz.Op;
  *
  */
 @SuppressWarnings("serial")
-public class MatrixAsVector extends AMatrixViewVector {
+public class MatrixViewVector extends AMatrixViewVector {
 	protected final int rows;
 	protected final int columns;
 	
-	public MatrixAsVector(AMatrix a) {
+	public MatrixViewVector(AMatrix a) {
 		super(a,a.rowCount()*a.columnCount());
 		rows=a.rowCount();
 		columns=a.columnCount();
@@ -48,7 +48,7 @@ public class MatrixAsVector extends AMatrixViewVector {
 	
 	@Override
 	public AVector exactClone() {
-		return new MatrixAsVector(source.exactClone());
+		return new MatrixViewVector(source.exactClone());
 	}
 	
 	@Override

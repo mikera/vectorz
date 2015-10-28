@@ -21,7 +21,7 @@ import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.impl.JoinedMultiVector;
-import mikera.vectorz.impl.MatrixAsVector;
+import mikera.vectorz.impl.MatrixViewVector;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.IndexedArrayVector;
@@ -998,7 +998,7 @@ public class TestVectors {
 		doGenericTests(m2.getRow(1));
 		doGenericTests(m2.getColumn(1));
 		doGenericTests(m2.getLeadingDiagonal());
-		doGenericTests(new MatrixAsVector(m2));
+		doGenericTests(new MatrixViewVector(m2));
 	}
 
 	@Test public void g_MatrixViews4x5() {	
@@ -1007,7 +1007,7 @@ public class TestVectors {
 		doGenericTests(m3.getRow(2));
 		doGenericTests(m3.getColumn(2));
 		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
-		doGenericTests(new MatrixAsVector(m3));
+		doGenericTests(new MatrixViewVector(m3));
 	}
 		
 	@Test public void g_AxisVector() {	

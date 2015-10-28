@@ -52,7 +52,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ADenseArrayVector;
-import mikera.vectorz.impl.MatrixAsVector;
+import mikera.vectorz.impl.MatrixViewVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.Constants;
 import mikera.vectorz.util.DoubleArrays;
@@ -1292,7 +1292,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc= columnCount();
 		if (cc==1) return getColumnView(0);
 
-		return new MatrixAsVector(this);
+		return new MatrixViewVector(this);
 	}
 	
 	@Override
