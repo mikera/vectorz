@@ -1,7 +1,6 @@
 package mikera.arrayz.impl;
 
 import mikera.arrayz.INDArray;
-import mikera.vectorz.Tools;
 import mikera.vectorz.util.IntArrays;
 
 public abstract class BaseShapedArray extends AbstractArray<INDArray> {
@@ -37,12 +36,6 @@ public abstract class BaseShapedArray extends AbstractArray<INDArray> {
 	public boolean isZero() {
 		if (dimensionality()==0) return (get()==0.0);
 		return super.isZero();
-	}
-	
-	@Override
-	public boolean isBoolean() {
-		if (dimensionality()==0) return Tools.isBoolean(get());
-		return super.isBoolean();
 	}
 	
 	@Override

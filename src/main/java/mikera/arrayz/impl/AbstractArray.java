@@ -125,6 +125,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public boolean isBoolean() {
+		if (dimensionality()==0) return Tools.isBoolean(get());
 		int sc=sliceCount();
 		for (int i=0; i<sc; i++) {
 			INDArray s=slice(i);
@@ -292,6 +293,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public boolean isZero() {
+		if (dimensionality()==0) return (get()==0.0);
 		int sc=sliceCount();
 		for (int i=0; i<sc; i++) {
 			INDArray s=slice(i);
