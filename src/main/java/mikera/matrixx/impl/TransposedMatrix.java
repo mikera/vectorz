@@ -240,4 +240,9 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public boolean equals(AMatrix m) {
 		return m.equalsTranspose(source);
 	}
+	
+	@Override
+	public boolean equalsTranspose(AMatrix a) {
+		return source.equals(a);
+	}
 }
