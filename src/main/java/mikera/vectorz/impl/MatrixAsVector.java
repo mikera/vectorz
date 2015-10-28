@@ -1,11 +1,11 @@
-package mikera.matrixx.impl;
+package mikera.vectorz.impl;
 
 import java.util.List;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.impl.IFastRows;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
-import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
  * Specialised class for viewing a matrix as a flattened vector
