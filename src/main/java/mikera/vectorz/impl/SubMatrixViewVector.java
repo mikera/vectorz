@@ -32,12 +32,22 @@ public class SubMatrixViewVector extends AMatrixViewVector {
 	@Override
 	public double get(int i) {
 		checkIndex(i);
-		return source.unsafeGet(calcRow(i), calcCol(i));
+		return unsafeGet(i);
 	}
 
 	@Override
 	public void set(int i, double value) {
 		checkIndex(i);
+		unsafeSet(i,value);
+	}
+	
+	@Override
+	public double unsafeGet(int i) {
+		return source.unsafeGet(calcRow(i), calcCol(i));
+	}
+
+	@Override
+	public void unsafeSet(int i, double value) {
 		source.unsafeSet(calcRow(i), calcCol(i),value);
 	}
 
