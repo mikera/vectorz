@@ -75,6 +75,18 @@ public abstract class ABlockMatrix extends AMatrix {
 	}
 	
 	@Override
+	public boolean isBoolean() {
+		int rbc=rowBlockCount();
+		int cbc=columnBlockCount();
+		for (int i=0; i<rbc; i++) {
+			for (int j=0; j<cbc; j++) {
+				if (!getBlock(i,j).isBoolean()) return false;
+			}			
+		}
+		return true;
+	}
+	
+	@Override
 	public AVector getColumnView(int col) {
 		int blockIndex=getColumnBlockIndex(col);
 		int blockPos=getBlockColumnStart(blockIndex);
