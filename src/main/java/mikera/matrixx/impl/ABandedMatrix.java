@@ -101,6 +101,11 @@ public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 		return true;
 	}
 	
+	@Override
+	public boolean isSparse() {
+		return (lowerBandwidthLimit()<(rowCount()-1))||(upperBandwidthLimit()<(columnCount()-1));
+	}
+	
 	@Override 
 	public double elementSum() {
 		double t=0;
