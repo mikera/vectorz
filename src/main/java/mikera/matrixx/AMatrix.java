@@ -584,20 +584,20 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * You may modify the cloned row without affecting the source matrix.
 	 */
 	public AVector getRowClone(int row) {
-		int cc=this.columnCount();
-		Vector v=Vector.createLength(cc);
-		copyRowTo(row,v.getArray(),0);
-		return v;
+		int cc=columnCount();
+		Vector result=Vector.createLength(cc);
+		this.copyRowTo(row,result.getArray(),0);
+		return result;
 	}
 
 	/**
 	 * Returns a column of the matrix as a new cloned vector
 	 */
 	public AVector getColumnClone(int column) {
-		int rc=this.rowCount();
-		Vector v=Vector.createLength(rc);
-		copyColumnTo(column,v.getArray(),0);
-		return v;
+		int rc=rowCount();
+		Vector result=Vector.createLength(rc);
+		this.copyColumnTo(column,result.getArray(),0);
+		return result;
 	}
 
 	public void set(AMatrix a) {
@@ -2047,6 +2047,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		// nothing to do since we have no data to validate
 	}
 
+	/**
+	 * Copies the elements in a slected row of this matrix to a double array
+	 * @param i The index of the selected row
+	 * @param dest Destination double[] array
+	 * @param destOffset Offset into destination array
+	 */
 	public void copyRowTo(int i, double[] dest, int destOffset) {
 		// note: using getRow() may be faster when overriding
 		int cc=columnCount();
@@ -2055,6 +2061,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	/**
+	 * Copies the elements in a slected row of this matrix to a double array
+	 * @param i The index of the selected column
+	 * @param dest Destination double[] array
+	 * @param destOffset
+	 */
 	public void copyColumnTo(int j, double[] dest, int destOffset) {
 		// note: using getColumn() may be faster when overriding
 		int rc=rowCount();
