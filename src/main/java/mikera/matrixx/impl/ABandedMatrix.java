@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.Arrays;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -82,6 +84,17 @@ public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 	@Override
 	public AVector getRow(int row) {
 		return new BandedMatrixRow(row);
+	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		int cc=columnCount();
+		Arrays.fill(dest, destOffset,destOffset+cc,0.0);
+		int start=Math.max(-row, -lowerBandwidthLimit());
+		int end=Math.min(cc-1-row, upperBandwidthLimit());
+		for (int b=start; b<=end; b++) {
+			dest[destOffset+row+b]=unsafeGet(row,row+b);
+		}
 	}
 	
 	@Override 
@@ -239,6 +252,11 @@ public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 				result+=data[offset+i]*unsafeGet(i);
 			}
 			return result;
+		}
+		
+		@Override
+		public void getElements(double[] dest, int offset) {
+			copyRowTo(row,dest,offset);
 		}
 	}
 	

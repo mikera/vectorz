@@ -74,5 +74,17 @@ public class SubMatrixView extends ARectangularMatrix {
 		checkColumn(j);
 		return source.getColumnView(colStart+j).subVector(rowStart, rows);
 	}
+	
+	@Override
+	public AVector getRowClone(int i) {
+		checkRow(i);
+		return source.getRowView(rowStart+i).subVector(colStart, cols).clone();
+	}
+	
+	@Override
+	public AVector getColumnClone(int j) {
+		checkColumn(j);
+		return source.getColumnView(colStart+j).subVector(rowStart, rows).clone();
+	}
 
 }
