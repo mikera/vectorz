@@ -8,18 +8,21 @@ import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Specialised class representing the broadcasting of a vector to a matrix shape
+ * Specialised class representing the broadcasting of a vector to a matrix shape.
+ * All rows of this matrix are identical views of the source vector.
+ * 
+ * Matrices of this type should be considered immutable.
  * @author Mike
  *
  */
-public final class BroadcastVectorMatrix extends ARectangularMatrix implements IFastRows {
+public final class BroadcastVectorMatrix extends ARectangularMatrix implements IFastRows, IFastColumns {
 	private static final long serialVersionUID = 8586152718389477791L;
 
-	private final AVector vector;
+	private final AVector source;
 	
 	private BroadcastVectorMatrix(AVector v, int rows) {
 		super(rows,v.length());
-		this.vector=v;
+		this.source=v;
 	}
 	
 	@Override
@@ -39,50 +42,50 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 	@Override
 	public AVector getRowView(int row) {
 		checkRow(row);
-		return vector;
+		return source;
 	}
 	
 	@Override
 	public AVector getRow(int row) {
 		checkRow(row);
-		return vector;
+		return source;
 	}
 	
 	@Override
  	public AVector getColumn(int col) {
-		return RepeatedElementVector.create(rows, vector.get(col));
+		return RepeatedElementVector.create(rows, source.get(col));
 	}
 	
 	@Override
 	public final void copyColumnTo(int col, double[] dest, int destOffset) {
-		double v=vector.get(col);
+		double v=source.get(col);
 		Arrays.fill(dest, destOffset, destOffset+rows, v);
 	}
 	
 	@Override
 	public final void copyRowTo(int row, double[] dest, int destOffset) {
-		vector.getElements(dest,destOffset);
+		source.getElements(dest,destOffset);
 	}
 	
 	@Override
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
-		return BroadcastVectorMatrix.wrap(vector.subVector(colStart, cols), rows);
+		return BroadcastVectorMatrix.wrap(source.subVector(colStart, cols), rows);
 	}
 
 	@Override
 	public AMatrix exactClone() {
-		return BroadcastVectorMatrix.wrap(vector.exactClone(),rows);
+		return BroadcastVectorMatrix.wrap(source.exactClone(),rows);
 	}
 
 	@Override
 	public double get(int row, int column) {
 		checkRow(row);
-		return vector.get(column);
+		return source.get(column);
 	}
 	
 	@Override
 	public double unsafeGet(int row, int column) {
-		return vector.unsafeGet(column);
+		return source.unsafeGet(column);
 	}
 
 	@Override
@@ -92,6 +95,6 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 
 	@Override
 	public boolean isZero() {
-		return vector.isZero();
+		return source.isZero();
 	}
 }

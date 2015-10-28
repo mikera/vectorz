@@ -17,7 +17,7 @@ public abstract class ASingleBandMatrix extends ABandedMatrix implements ISparse
 	private static final long serialVersionUID = -213068993524224396L;
 
 	/**
-	 * Override to specify which band of the matrix is nonzero
+	 * Specifies which band of the matrix is nonzero
 	 * @return
 	 */
 	public abstract int nonZeroBand();
