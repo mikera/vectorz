@@ -142,7 +142,8 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Sets this array to the element values contained in the given object.
-	 * Attempts to interpret the object as an array
+	 * Attempts to interpret the object as an array, and broadcasts the object to the
+	 * shape of this array if required.
 	 */
 	public void set(Object o);
 	

@@ -633,6 +633,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	@Override
 	public void set(Object o) {
 		if (o instanceof INDArray) {
 			set((INDArray)o);
@@ -697,10 +698,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return this;
 	}
 	
+	@Deprecated
 	public final AVector cloneRow(int i) {
 		return getRowClone(i);
 	}
 	
+	@Deprecated
 	public final AVector cloneColumn(int j) {
 		return getColumnClone(j);
 	}

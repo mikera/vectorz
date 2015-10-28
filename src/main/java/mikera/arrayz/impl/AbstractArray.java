@@ -478,6 +478,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override
 	public void set(Object o) {
 		if (o instanceof INDArray) {set((INDArray)o); return;}
 		if (o instanceof Number) {

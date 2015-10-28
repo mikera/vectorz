@@ -265,12 +265,15 @@ public class TestMatrices {
 		
 		for (int i=0; i<rc; i++) {
 			AVector row=m.getRow(i);
-			assertEquals(row,m.cloneRow(i));
+			assertEquals(row,m.getRowView(i));
+			assertEquals(row,m.getRowClone(i));
 			assertEquals(cc,row.length());
 		}
 		
 		for (int i=0; i<cc; i++) {
 			AVector col=m.getColumn(i);
+			assertEquals(col,m.getColumnView(i));
+			assertEquals(col,m.getColumnClone(i));
 			assertEquals(rc,col.length());
 		}
 		
