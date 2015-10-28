@@ -19,8 +19,22 @@ public abstract class AMatrixViewVector extends ASizedVector {
 		this.source=source;
 	}
 
+	/**
+	 * Calculates the row in the source matrix that corresponds to an index in this vector.
+	 * 
+	 * This method is unsafe: caller is assumed to have checked that the index is in range
+	 * @param i
+	 * @return
+	 */
 	protected abstract int calcRow(int i);
 	
+	/**
+	 * Calculates the row in the source matrix that corresponds to an index in this vector
+	 * 
+	 * This method is unsafe: caller is assumed to have checked that the index is in range
+	 * @param i
+	 * @return
+	 */
 	protected abstract int calcCol(int i);
 	
 	@Override 

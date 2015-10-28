@@ -344,15 +344,16 @@ public class Matrixx {
 	/**
 	 * Creates a new matrix using the elements in the specified vector.
 	 * Truncates or zero-pads the data as required to fill the new matrix
-	 * @param data
+	 * @param source
 	 * @param rows
 	 * @param columns
 	 * @return
 	 */
-	public static Matrix createFromVector(AVector data, int rows, int columns) {
+	public static Matrix createFromVector(AVector source, int rows, int columns) {
+		int length=source.length();
 		Matrix m = Matrix.create(rows, columns);
-		int n=Math.min(rows*columns, data.length());
-		data.copyTo(0, m.data, 0, n);
+		int n=Math.min(rows*columns, length);
+		source.copyTo(0, m.data, 0, n);
 		return m;
 	}
 	
