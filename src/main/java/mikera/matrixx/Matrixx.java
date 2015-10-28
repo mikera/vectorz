@@ -344,7 +344,7 @@ public class Matrixx {
 	/**
 	 * Creates a new matrix using the elements in the specified vector.
 	 * Truncates or zero-pads the data as required to fill the new matrix
-	 * @param source
+	 * @param data
 	 * @param rows
 	 * @param columns
 	 * @return

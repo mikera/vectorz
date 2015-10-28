@@ -91,15 +91,6 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	public final int getShape(int dim) {
-		if (dim==0) {
-			return length;
-		} else {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dim));
-		}
-	}
-	
-	@Override
 	public boolean equalsArray(double[] data) {
 		if (length!=data.length) throw new IllegalArgumentException("Wrong size of data array: "+data.length);
 		return equalsArray(data,0);

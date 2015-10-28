@@ -152,7 +152,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public int getShape(int dim) {
+	public final int getShape(int dim) {
 		if (dim==0) {
 			return length();
 		} else {
