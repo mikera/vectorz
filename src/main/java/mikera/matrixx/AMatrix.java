@@ -86,12 +86,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Returns a specified element in the matrix
 	 */
-	public abstract double get(int row, int column);
+	public abstract double get(int i, int j);
 
 	/**
 	 * Sets a specified element in the matrix
 	 */
-	public abstract void set(int row, int column, double value);
+	public abstract void set(int i, int j, double value);
 
 	// =============================================
 	// Standard implementations
@@ -127,23 +127,23 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Sets an element value in the matrix in an unsafe fashion, without performing bound checks
 	 * The result is undefined if the row and column are out of bounds.
-	 * @param row
-	 * @param column
+	 * @param i
+	 * @param j
 	 * @return
 	 */
-	public void unsafeSet(int row, int column, double value) {
-		set(row,column,value);
+	public void unsafeSet(int i, int j, double value) {
+		set(i,j,value);
 	}
 	
 	/**
 	 * Gets an element in the matrix in an unsafe fashion, without performing bound checks
 	 * The result is undefined if the row and column are out of bounds.
-	 * @param row
-	 * @param column
+	 * @param i
+	 * @param j
 	 * @return
 	 */
-	public double unsafeGet(int row, int column) {
-		return get(row,column);
+	public double unsafeGet(int i, int j) {
+		return get(i,j);
 	}
 	
 	@Override

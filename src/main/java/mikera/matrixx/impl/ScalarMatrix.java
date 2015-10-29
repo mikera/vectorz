@@ -7,7 +7,10 @@ import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Immutable scalar matrix class - i.e. multiplies every component by a constant factor
+ * Immutable scalar matrix class - a diagonal matrix with an identical value along the leading diagonal.
+ * 
+ * When used to transform a vector, multiplies every component by a constant factor
+ * 
  * @author Mike
  */
 public class ScalarMatrix extends ADiagonalMatrix {
