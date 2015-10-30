@@ -219,7 +219,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public DiagonalMatrix inverse() {
-		double[] newData=new double[dimensions];
+		double[] newData=DoubleArrays.copyOf(data);
 		DoubleArrays.reciprocal(newData);
 		return new DiagonalMatrix(newData);
 	}
