@@ -22,6 +22,10 @@ public class ErrorMessages {
 		return Index.of(indexes).toString();
 	}
 	
+	private static String pos(long[] indexes) {
+		return Index.of(IntArrays.copyOf(indexes)).toString();
+	}
+	
 	/**
 	 * Returns an error message indicating that two arrays have different sizes
 	 * @param a
@@ -113,6 +117,15 @@ public class ErrorMessages {
 		}
 	}
 	
+	public static String invalidIndex(AVector a, long[] indexes) {
+		int[] shape=a.getShape();
+		if (shape.length!=indexes.length) {
+			return ""+indexes.length+"-D access with index "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
+		} else {
+			return "Access at position "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
+		}
+	}
+	
 	public static String invalidIndex(INDArray a, long i) {
 		return "1-D access with index "+i+" not possible for "+a.getClass()+" with shape "+shape(a);
 	}
@@ -169,8 +182,4 @@ public class ErrorMessages {
 	public static String noElements(INDArray a) {
 		return "Array of class "+a.getClass()+" has no elements";
 	}
-
-
-
-
 }

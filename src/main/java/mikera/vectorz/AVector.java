@@ -118,6 +118,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public final double get(long[] indexes) {
+		if (indexes.length!=1) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, indexes));
+		return get(Tools.toInt(indexes[0]));
+	}
+	
+	@Override
 	public double get() {
 		throw new UnsupportedOperationException("Can't do 0-d get on a vector!");
 	}
