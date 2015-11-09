@@ -180,6 +180,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	@Override 
+	public void set(long[] indexes, double value) {
+		if (indexes.length==2) {
+			set(Tools.toInt(indexes[0]),Tools.toInt(indexes[1]),value);
+		} else {
+			throw new VectorzException(""+indexes.length+"D set not supported on AMatrix");
+		}
+	}
+	
 	@Override
 	public final int dimensionality() {
 		return 2;

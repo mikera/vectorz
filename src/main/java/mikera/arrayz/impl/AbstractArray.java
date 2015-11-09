@@ -442,6 +442,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		set(new int[] {x,y},value);	
 	}
 	
+	@Override
+	public void set(long[] xs, double value) {
+		set(IntArrays.copyOf(xs),value);	
+	}
+	
 	public void set(INDArray a) {
 		int tdims=this.dimensionality();
 		int adims=a.dimensionality();

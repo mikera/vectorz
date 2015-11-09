@@ -944,4 +944,6 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	void applyOp(Op2 op, double b);
 
+	void set(long[] indexes, double value);
+
 }

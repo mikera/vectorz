@@ -436,5 +436,14 @@ public class IntArrays {
 		}
 	}
 
+	public static int[] copyOf(long[] xs) {
+		int n=xs.length;
+		int[] result=new int[n];
+		for (int i=0; i<n; i++) {
+			result[i]=Tools.toInt(xs[i]);
+		}
+		return result;
+	}
+
 
 }
