@@ -2043,10 +2043,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return iterator();
 	}
 
-	public void set(IVector vector) {
-		set(vector.asVector());
-	}
-
 	/**
 	 * Adds source vector to this vector at the specified indexes which should map from source->this
 	 * @param source
