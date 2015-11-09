@@ -79,8 +79,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void set(int[] indexes, double value) {
 		if (indexes.length==1) {
 			set(indexes[0],value);
-		} if (indexes.length==0) {
-			fill(value);
+		} else {
+			throw new UnsupportedOperationException(""+indexes.length+"D set not supported on AVector");
+		}
+	}
+	
+	@Override
+	public void set(long[] indexes, double value) {
+		if (indexes.length==1) {
+			set(Tools.toInt(indexes[0]),value);
 		} else {
 			throw new UnsupportedOperationException(""+indexes.length+"D set not supported on AVector");
 		}
