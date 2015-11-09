@@ -408,11 +408,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		return hashCode;
 	}
-
-	@Override
-	public final void copyTo(double[] arr) {
-		getElements(arr,0);
-	}
 	
 	public final void copyTo(double[] arr, int offset) {
 		getElements(arr,offset);

@@ -1226,7 +1226,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public void copyTo(double[] arr) {
+	public void getElements(double[] arr) {
+		if (arr.length!=this.elementCount()) throw new IllegalArgumentException(ErrorMessages.wrongElementCount());
 		getElements(arr,0);
 	}
 	

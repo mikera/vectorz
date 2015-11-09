@@ -182,4 +182,8 @@ public class ErrorMessages {
 	public static String noElements(INDArray a) {
 		return "Array of class "+a.getClass()+" has no elements";
 	}
+
+	public static String wrongElementCount() {
+		return "Incorrect number of elements";
+	}
 }

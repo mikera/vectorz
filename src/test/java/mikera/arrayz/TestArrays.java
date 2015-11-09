@@ -212,7 +212,7 @@ public class TestArrays {
 
 	private void testToArray(INDArray a) {
 		double[] arr = new double[(int) a.elementCount()];
-		a.copyTo(arr);
+		a.getElements(arr);
 		assertEquals(a.nonZeroCount(),
 				DoubleArrays.nonZeroCount(arr, 0, arr.length));
 

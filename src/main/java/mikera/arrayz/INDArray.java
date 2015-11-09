@@ -610,6 +610,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public void getElements(Object[] dest, int offset);
 	
 	/**
+	 * Copies all the elements of this INDArray to the specified double array
+	 */
+	public void getElements(double[] arr);
+	
+	/**
 	 * Scales all elements of the array in place by a given double value
 	 */
 	public void scale(double factor);
@@ -697,11 +702,6 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public void validate();
 
-	/**
-	 * Copies all the elements of this INDArray to the specified double array
-	 */
-	public void copyTo(double[] arr);
-	
 	/**
 	 * Copies the elements of this INDArray to the specified double buffer
 	 */

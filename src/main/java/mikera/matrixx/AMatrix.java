@@ -662,11 +662,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public final void copyTo(double[] arr) {
-		getElements(arr,0);
-	}
-	
-	@Override
 	public void setElements(double... values) {
 		int vl=values.length;
 		if (vl!=elementCount()) throw new IllegalArgumentException("Incorrect number of elements in array: "+vl);
