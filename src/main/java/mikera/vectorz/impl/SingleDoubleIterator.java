@@ -3,6 +3,9 @@ package mikera.vectorz.impl;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/*
+ * A basic iterator that returns a single double value
+ */
 public class SingleDoubleIterator implements Iterator<Double> {
 	boolean used=false;
 	final double value;

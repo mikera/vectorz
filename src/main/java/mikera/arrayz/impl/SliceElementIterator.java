@@ -48,7 +48,7 @@ public class SliceElementIterator implements Iterator<Double> {
 
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException("Cannot remove from VectorIterator");
+		throw new UnsupportedOperationException();
 	}
 
 }

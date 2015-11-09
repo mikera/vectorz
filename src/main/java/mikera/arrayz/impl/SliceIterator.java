@@ -3,6 +3,7 @@ package mikera.arrayz.impl;
 import java.util.Iterator;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * General purpose iterator for slices of arbitrary arrays.
@@ -40,7 +41,7 @@ public class SliceIterator<T> implements Iterator<T> {
 
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException("Cannot remove from VectorIterator");
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
 }
