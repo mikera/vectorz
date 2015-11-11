@@ -57,6 +57,8 @@ public class TestOps {
 		assertEquals(0.0, op.derivative(-1000.0),0.0001);
 		assertEquals(0.25, op.derivative(0.0),0.0001);
 		assertEquals(0.0, op.derivative(1000.0),0.0001);
+		
+		assertEquals(Vector.of(0,0.5,1),Vector.of(-1000,0,1000).applyOpCopy(op));
 	}
 	
 	@Test public void testTanh() {
@@ -134,21 +136,28 @@ public class TestOps {
 	}
 	
 	private void testVectorApply(Op op) {
+		int SIZE=10;
 		if (op.isStochastic()) return;
 		if (op.isDomainBounded()) return;
 		
-		Vector sv=Vector.createLength(10);
+		Vector sv=Vector.createLength(SIZE);
 		Vectorz.fillGaussian(sv);
 		
 		AVector v1=sv.clone();
 		AVector v2=sv.clone();
+		AVector v3=v1.applyOpCopy(op);
 		op.applyTo(v1);
 		v2.applyOp(op);
 		assertEquals(v1,v2);
-		
-		AVector v3=Vector.createLength(10);
-		op.getTransform(10).transform(sv, v3);
 		assertEquals(v1,v3);
+		for (int i=0; i<SIZE; i++) {
+			// check individual elements
+			assertEquals(op.apply(sv.get(i)),v1.get(i),0.0);
+		}
+		
+		AVector v4=Vector.createLength(10);
+		op.getTransform(10).transform(sv, v4);
+		assertEquals(v1,v4);
 
 		double[] d1=new double[10];
 		double[] d2=new double[10];
