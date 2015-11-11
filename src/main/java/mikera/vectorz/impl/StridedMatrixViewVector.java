@@ -129,6 +129,7 @@ public final class StridedMatrixViewVector extends AArrayVector {
 		if (((length%cols)==0)&&((length%cols)==0)) {
 			int newRows=(length/cols);
 			if (newRows==0) return Vector0.INSTANCE;
+			if (newRows==rows) return this;
 			
 			int rowStart=(start/cols);
 			int newOffset=offset+rowStart*rowStride;
