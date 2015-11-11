@@ -88,6 +88,15 @@ public final class StridedMatrixViewVector extends AArrayVector {
 	}
 	
 	@Override
+	public double elementSum() {
+		double result=0.0;
+		for (int i=0; i<rows; i++) {
+			result+=DoubleArrays.elementSum(data,offset+i*rowStride,colStride,cols);
+		};
+		return result;
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		for (int i=0; i<rows; i++) {
 			op.applyTo(data, offset+i*rowStride, colStride, cols);
