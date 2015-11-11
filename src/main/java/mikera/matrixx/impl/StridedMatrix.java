@@ -8,6 +8,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
+import mikera.vectorz.impl.StridedMatrixViewVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -126,7 +127,7 @@ public final class StridedMatrix extends BaseStridedMatrix {
 		} else if (rows ==1){
 			return Vectorz.wrapStrided(data, offset, cols, colStride);			
 		}
-		return super.asVector();
+		return new StridedMatrixViewVector(this);
 	}
 
 	@Override

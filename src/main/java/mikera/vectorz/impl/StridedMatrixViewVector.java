@@ -13,7 +13,7 @@ public final class StridedMatrixViewVector extends AArrayVector {
 	private final int rows;
 	private final int cols;
 	
-	private StridedMatrixViewVector(StridedMatrix m) {
+	public StridedMatrixViewVector(StridedMatrix m) {
 		this(m.getArray(),m.getArrayOffset(),m.rowCount(),m.columnCount(),m.getStride(0),m.getStride(1));
 	}
 	
