@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.matrixx.impl.StridedMatrix;
+import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.util.DoubleArrays;
 
@@ -84,5 +85,12 @@ public final class StridedMatrixViewVector extends AArrayVector {
 		    offset+=cols;
 		};
 		return result;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		for (int i=0; i<rows; i++) {
+			op.applyTo(data, offset+i*rowStride, colStride, cols);;
+		};
 	}
 }

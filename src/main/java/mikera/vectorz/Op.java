@@ -84,6 +84,15 @@ public abstract class Op implements IOperator {
 		}
 	}
 	
+	@Override
+	public void applyTo(double[] data, int start, int stride, int length) {
+		for (int i=0; i<length; i++) {
+			int ii=start+i*stride;
+			double x=data[ii];
+			data[ii]=apply(x);
+		}
+	}
+	
 	public void applyTo(double[] data) {
 		applyTo(data,0,data.length);
 	}

@@ -21,6 +21,8 @@ public interface IOperator {
 	public void applyTo(AVector v, int start, int length);
 	
 	public void applyTo(double[] data, int start, int length);
+	
+	void applyTo(double[] data, int start, int stride, int length);
 
 	/**
 	 * Converts an operator into a corresponding transform that applies the operator to all elements of its input
@@ -30,4 +32,5 @@ public interface IOperator {
 	public ATransform getTransform(int dims);
 
 	public Op getInverse();
+
 }
