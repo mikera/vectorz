@@ -9,6 +9,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -237,6 +238,11 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 		for (int i = 0; i < length; i++) {
 			dest[destOffset+i*destStride]+=tdata[toffset+i*stride];
 		}
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		op.applyTo(data, getArrayOffset(), getStride(), length);
 	}
 	
 	@Override
