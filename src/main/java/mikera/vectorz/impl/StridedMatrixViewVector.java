@@ -125,8 +125,10 @@ public final class StridedMatrixViewVector extends AArrayVector {
 	@Override
 	public AVector subVector(int start, int length) {
 		checkRange(start,length);
-		if ((length%cols)==0) {
-			
+		if (((length%cols)==0)&&((length%cols)==0)) {
+			int rowStart=(start/cols);
+			int rs=(length/cols);
+			return new StridedMatrixViewVector(data,offset+rowStart*rowStride,rs,cols,rowStride,colStride);
 		}
 		return super.subVector(start, length);
 	}
