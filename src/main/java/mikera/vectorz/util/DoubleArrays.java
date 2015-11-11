@@ -635,7 +635,7 @@ public final class DoubleArrays {
 	}
 
 	/**
-	 * Performs addition of two double arrays and stores the result in the desination array
+	 * Performs addition of two double arrays and stores the result in the destination array
 	 */
 	public static void addResult(double[] dest, double[] as, double[] bs) {
 		int len=dest.length;
@@ -659,6 +659,12 @@ public final class DoubleArrays {
 			result[i]=src[i]*factor;
 		}
 		return result;
+	}
+
+	public static void copy(double[] src, int srcOffset, int srcStride, double[] dest, int destOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]=src[srcOffset+i*srcStride];
+		}
 	}
 
 }

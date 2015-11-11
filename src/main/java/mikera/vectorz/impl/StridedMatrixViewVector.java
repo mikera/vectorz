@@ -90,7 +90,15 @@ public final class StridedMatrixViewVector extends AArrayVector {
 	@Override
 	public void applyOp(Op op) {
 		for (int i=0; i<rows; i++) {
-			op.applyTo(data, offset+i*rowStride, colStride, cols);;
+			op.applyTo(data, offset+i*rowStride, colStride, cols);
+		};
+	}
+	
+	@Override
+	public void getElements(double[] dest, int destOffset) {
+		for (int i=0; i<rows; i++) {
+			DoubleArrays.copy(this.data,this.offset+i*rowStride, colStride, dest, destOffset, cols);
+			destOffset+=cols; // move to next dest line
 		};
 	}
 }
