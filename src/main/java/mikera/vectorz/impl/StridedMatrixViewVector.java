@@ -83,7 +83,7 @@ public final class StridedMatrixViewVector extends AArrayVector {
 		for (int i=0; i<rows; i++) {
 			result+=DoubleArrays.dotProduct(xs, offset, this.data, this.offset+i*rowStride, colStride, cols);
 		    offset+=cols;
-		};
+		}
 		return result;
 	}
 	
@@ -92,7 +92,7 @@ public final class StridedMatrixViewVector extends AArrayVector {
 		double result=0.0;
 		for (int i=0; i<rows; i++) {
 			result+=DoubleArrays.elementSum(data,offset+i*rowStride,colStride,cols);
-		};
+		}
 		return result;
 	}
 	
@@ -100,7 +100,7 @@ public final class StridedMatrixViewVector extends AArrayVector {
 	public void applyOp(Op op) {
 		for (int i=0; i<rows; i++) {
 			op.applyTo(data, offset+i*rowStride, colStride, cols);
-		};
+		}
 	}
 	
 	@Override
@@ -108,6 +108,6 @@ public final class StridedMatrixViewVector extends AArrayVector {
 		for (int i=0; i<rows; i++) {
 			DoubleArrays.copy(this.data,this.offset+i*rowStride, colStride, dest, destOffset, cols);
 			destOffset+=cols; // move to next dest line
-		};
+		}
 	}
 }
