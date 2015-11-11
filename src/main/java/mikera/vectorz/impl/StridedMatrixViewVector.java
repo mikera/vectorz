@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.matrixx.impl.StridedMatrix;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.util.DoubleArrays;
@@ -119,5 +120,14 @@ public final class StridedMatrixViewVector extends AArrayVector {
 			destOffset+=cols; 
 			srcOffset+=rowStride;
 		}
+	}
+	
+	@Override
+	public AVector subVector(int start, int length) {
+		checkRange(start,length);
+		if ((length%cols)==0) {
+			
+		}
+		return super.subVector(start, length);
 	}
 }
