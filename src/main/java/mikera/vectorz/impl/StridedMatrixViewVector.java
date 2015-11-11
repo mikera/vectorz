@@ -110,4 +110,14 @@ public final class StridedMatrixViewVector extends AArrayVector {
 			destOffset+=cols; // move to next dest line
 		}
 	}
+	
+	@Override
+	public void addToArray(double[] dest, int destOffset) {
+		int srcOffset=this.offset;
+		for (int i=0; i<rows; i++) {
+			DoubleArrays.add(data, srcOffset, colStride, dest, destOffset, cols);
+			destOffset+=cols; 
+			srcOffset+=rowStride;
+		}
+	}
 }

@@ -365,6 +365,12 @@ public final class DoubleArrays {
 		}
 	}
 	
+	public static void add(double[] src, int srcOffset, int srcStride, double[] dest, int destOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]+=src[srcOffset+i*srcStride];
+		}
+	}
+	
 	public static void clamp(double[] data, double min,double max) {
 		for (int i=0; i<data.length; i++) {
 			double v=data[i];
