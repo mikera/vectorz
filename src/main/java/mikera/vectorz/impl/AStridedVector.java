@@ -28,7 +28,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
-	public double[] getArray() {
+	public final double[] getArray() {
 		return data;
 	}
 	
@@ -223,11 +223,8 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	@Override
 	public void addToArray(int offset, double[] destData, int destOffset,int length) {
 		int stride=getStride();
-		double[] tdata=getArray();
 		int toffset=getArrayOffset()+offset*stride;
-		for (int i = 0; i < length; i++) {
-			destData[destOffset+i]+=tdata[toffset+i*stride];
-		}
+		DoubleArrays.add(getArray(), toffset, stride, destData, destOffset, length);
 	}
 	
 	@Override
