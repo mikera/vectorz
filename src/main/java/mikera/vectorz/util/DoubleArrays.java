@@ -662,8 +662,13 @@ public final class DoubleArrays {
 	}
 
 	public static void copy(double[] src, int srcOffset, int srcStride, double[] dest, int destOffset, int length) {
-		for (int i=0; i<length; i++) {
-			dest[destOffset+i]=src[srcOffset+i*srcStride];
+		if (srcStride==1) {
+			// not sure if this works as an optimisation?
+			System.arraycopy(src, srcOffset, dest, destOffset, length);
+		} else {		
+			for (int i=0; i<length; i++) {
+				dest[destOffset+i]=src[srcOffset+i*srcStride];
+			}
 		}
 	}
 
