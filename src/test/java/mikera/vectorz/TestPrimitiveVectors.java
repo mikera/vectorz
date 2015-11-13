@@ -25,6 +25,13 @@ public class TestPrimitiveVectors {
 	}
 	
 	@Test 
+	public void testVector1Softmax() {
+		Vector1 v=Vector1.of(8.89);
+		AVector sm=v.softmaxCopy();
+		assertEquals(1.0,sm.elementSum(),0.0001);
+	}
+	
+	@Test 
 	public void testCompoenetGetters() {
 		APrimitiveVector v1=Vector1.of(1);
 		APrimitiveVector v2=Vector2.of(2,3);

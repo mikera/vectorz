@@ -677,6 +677,13 @@ public class TestVectors {
 		assertEquals(1.24,v.elementSum()/n,0.0001);
 	}
 	
+	private void testSoftmax(AVector v) {
+		if (v.length()==0) return;
+		v=v.exactClone();
+		AVector sm=v.softmaxCopy();
+		assertEquals("Testing:"+v.getClass(), 1.0,sm.elementSum(),0.0001);
+	}
+	
 	private void testEquality(AVector v) {
 		assertEquals(v,v.clone());
 		assertNotEquals(v,v.join(Vector.of(1)));
@@ -861,6 +868,7 @@ public class TestVectors {
 		testHashCode(v);
 		testAsList(v);
 		testIterator(v);
+		testSoftmax(v);
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
 		testImmutable(v);

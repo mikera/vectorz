@@ -697,6 +697,15 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Computes the softmax function over this vector, returning a new mutable vector
+	 */
+	public AVector softmaxCopy() {
+		AVector result=applyOpCopy(Ops.EXP).mutable();
+		result.divide(result.elementSum());
+		return result;
+	}
+	
 	@Override
 	public void square() {
 		int len=length();
