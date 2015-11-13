@@ -706,6 +706,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	/**
+	 * Computes the softmax function over this vector, mutating this vector
+	 */
+	public void softmax() {
+		applyOp(Ops.EXP);
+		divide(elementSum());
+	}
+	
 	@Override
 	public void square() {
 		int len=length();
