@@ -681,7 +681,11 @@ public class TestVectors {
 		if (v.length()==0) return;
 		v=v.exactClone();
 		AVector sm=v.softmaxCopy();
-		assertEquals("Testing:"+v.getClass(), 1.0,sm.elementSum(),0.0001);
+		assertEquals("Testing:"+v.getClass(), 1.0,sm.elementSum(),0.000001);
+	
+		v=v.mutable();
+		v.softmax();
+		assertTrue(sm.epsilonEquals(v, 0.000001));
 	}
 	
 	private void testEquality(AVector v) {
