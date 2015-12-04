@@ -716,10 +716,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		divide(elementSum());
 	}
 	
-	private void softmaxImpl() {
-		
-	}
-	
 	@Override
 	public void square() {
 		int len=length();
