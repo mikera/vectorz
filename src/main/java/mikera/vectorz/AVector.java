@@ -711,7 +711,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void softmax() {
 		double max=this.maxElement();
-		sub(max);
+		if (max>100) sub(max); // ensure we don't overflow exp calculation
 		applyOp(Ops.EXP);
 		divide(elementSum());
 	}
