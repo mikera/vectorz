@@ -157,10 +157,4 @@ public class JoinedArray extends BaseShapedArray {
 			
 		}
 	}
-
-	@Override
-	public boolean equalsArray(double[] data, int offset) {
-		return left.equalsArray(data, offset)&&right.equalsArray(data,(int) (offset+left.elementCount()));
-	}
-
 }

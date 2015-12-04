@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import mikera.arrayz.INDArray;
 import mikera.indexz.Index;
 import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.impl.AStridedMatrix;
@@ -424,5 +425,14 @@ public class TestMisc {
 		
 		AMatrix mt=m.getTranspose();
 		assertEquals(0,mt.columnCount());
+	}
+	
+	@Test public void testRotateEquals() {
+		AMatrix m =Matrix.create(Vector.of(1,2), Vector.of(3,4));
+		
+		INDArray a=m.rotateView(1, 1);
+		a=a.rotateView(1, -1);
+		
+		assertTrue(m.equals(a));
 	}
 }
