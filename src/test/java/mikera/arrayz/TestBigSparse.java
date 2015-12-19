@@ -105,7 +105,7 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testSparseInnerProduct() {
-		int SIZE=100000;
+		int SIZE=10000;
 		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
 		
 		AMatrix mt=m.getTranspose();
