@@ -5,11 +5,13 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import org.junit.Test;
+
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
-import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
@@ -26,7 +28,6 @@ import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.UpperTriangularMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -41,9 +42,6 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.ops.Constant;
 
-import org.junit.Test;
-
-@SuppressWarnings("deprecation")
 public class TestMatrices {
 
 	private void doMutationTest(AMatrix m) {
@@ -613,13 +611,7 @@ public class TestMatrices {
 		randomise(am2);
 		doGenericTests(am2.getTranspose());
 	}
-	
-	@Test public void g_SubsetMatrix() {
-		doGenericTests(SubsetMatrix.create(Index.of(0,1,2),3));
-		doGenericTests(SubsetMatrix.create(Index.of(0,1,3,10),12));
-		doGenericTests(SubsetMatrix.create(Index.of(0,3,2,1),4));
-	}
-	
+		
 	@Test public void g_BufferMatrix() {
 		doGenericTests(BufferMatrix.create(Matrixx.createRandomSquareMatrix(3,new Random(5645))));
 		doGenericTests(BufferMatrix.create(Matrixx.createRandomMatrix(2, 4, new Random(55645))));

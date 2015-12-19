@@ -1,18 +1,19 @@
 package mikera.matrixx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
 import mikera.arrayz.INDArray;
-import mikera.indexz.Index;
 import mikera.matrixx.algo.Inverse;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.RowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.UpperTriangularMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -23,9 +24,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.SparseIndexedVector;
 
-@SuppressWarnings("deprecation")
 public class TestMisc {
 	@Test
 	public void testCompose() {
@@ -250,25 +249,6 @@ public class TestMisc {
 		assertEquals(m.get(1, 2), 5, 0.0);
 		m.multiplyAt(5, 2);
 		assertEquals(m.get(1, 2), 10, 0.0);
-	}
-
-	@Test
-	public void testSubsetMatrix() {
-		SubsetMatrix m = SubsetMatrix.create(Index.of(0, 1, 2), 3);
-
-		assertEquals(1.0, m.get(0, 0), 0.0);
-		assertEquals(Vector.of(1, 0, 0), m.getRow(0));
-		assertEquals(Vector.of(0, 1, 0), m.getColumn(1));
-		assertEquals(Vector.of(0, 1, 0),
-				SparseIndexedVector.create(m.getColumn(1)));
-	}
-
-	@Test
-	public void testSubsetMatrix2() {
-		SubsetMatrix m = SubsetMatrix.create(Index.of(1, 1), 2);
-
-		assertEquals(Vector.of(0, 0), m.getColumn(0));
-		assertEquals(Vector.of(1, 1), m.getColumn(1));
 	}
 
 	@Test
