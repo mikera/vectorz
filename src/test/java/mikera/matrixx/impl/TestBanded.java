@@ -41,8 +41,14 @@ public class TestBanded {
 	@Test
 	public void testBandedSubMatrix() {
 		AMatrix m=DiagonalMatrix.create(1,2,3,4,5);
+		
+		assertTrue(m.subMatrix(2, 2, 0, 2).isZero());
+		
 		AMatrix sm=m.subMatrix(2, 3, 1, 3);
 		assertEquals(Vector.of(3,4),sm.getBand(1));
+		sm.getBand(1).setElements(30,40);
+		assertEquals(Vector.of(1,2,30,40,5),m.getLeadingDiagonal());
+
 	}
 
 }
