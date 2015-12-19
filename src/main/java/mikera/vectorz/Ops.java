@@ -333,6 +333,12 @@ public final class Ops {
 		return NEGATE.compose(op);
 	}
 
+	/**
+	 * Composes two ops together, to get an op c(x)= a(b(x))
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	public static final Op compose(Op a, Op b) {
 		return a.compose(b);
 	}

@@ -26,6 +26,10 @@ public final class Power extends Op {
 		return new Power(exponent);
 	}
 	
+	public static Op create(double exponent, double factor) {
+		return Ops.compose(Linear.create(factor, 0.0), create(exponent));
+	}
+	
 	@Override 
 	public double minDomain() {
 		if (exponent!=(long)exponent) return 0.0;
