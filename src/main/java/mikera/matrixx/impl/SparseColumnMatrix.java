@@ -6,6 +6,9 @@ import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.IOperator;
+import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleElementVector;
@@ -181,6 +184,32 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
         for (int i = 0; i < cols; ++i) {
 			AVector v = unsafeGetVector(i);
 			if (v != null) v.addToArray(targetData, offset+i, cols);
+		}
+	}
+	
+	public void applyOp(Op2 op, AMatrix b) {
+		checkSameShape(b);
+		int cc = columnCount();
+		List<AVector> bcols=b.getColumns();
+		for (int i = 0; i < cc; i++) {
+			getColumnView(i).applyOp(op,bcols.get(i));
+		}
+	}
+
+	@Override
+	public void applyOp(Op2 op, double b) {
+		int cc = columnCount();
+		for (int i = 0; i < cc; i++) {
+			getColumnView(i).applyOp(op,b);
+		}
+	}
+	
+	@Override
+	public void applyOp(IOperator op) {
+		if (op instanceof Op) {applyOp((Op)op); return;}
+		int cc = columnCount();
+		for (int i = 0; i < cc; i++) {
+			getColumnView(i).applyOp(op);
 		}
 	}
 
