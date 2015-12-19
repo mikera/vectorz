@@ -2238,6 +2238,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	/**
+	 * Checks if this matrix has the specified shape. Throws an exception if not.
+	 */
 	protected void checkShape(int rows, int cols) {
 		int rc=rowCount();
 		int cc=columnCount();
@@ -2246,6 +2249,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	/**
+	 * Checks if the given index is valid for this matrix. Throws an exception if not.
+	 */
 	protected void checkIndex(int i, int j) {
 		int rc=rowCount();
 		int cc=columnCount();
@@ -2254,12 +2260,22 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	/**
+	 * Checks if the given column index is valid for this matrix. Throws an exception if not.
+	 *
+	 * @return the number of columns in this matrix
+	 */
 	public int checkColumn(int column) {
 		int cc=columnCount();
 		if ((column<0)||(column>=cc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, column));
 		return cc;
 	}
 	
+	/**
+	 * Checks if the given rows index is valid for this matrix. Throws an exception if not.
+	 * 
+	 * @return the number of rows in this matrix
+	 */
 	public int checkRow(int row) {
 		int rc=rowCount();
 		if ((row<0)||(row>=rc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, row));
