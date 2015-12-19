@@ -31,6 +31,10 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
 	private Index index;
+	
+	/**
+	 * double[] array containing the non-sparse values for this indexed vector
+	 */
 	private double[] data;
 	
 	private SparseIndexedVector(int length, Index index) {
@@ -300,6 +304,16 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		} else {
 			DoubleArrays.multiply(data, d);
 		}
+	}
+	
+	@Override
+	public void pow(double exponent) {
+		DoubleArrays.pow(data, exponent);
+	}
+	
+	@Override
+	public void square() {
+		DoubleArrays.square(data);
 	}
 	
 	@Override
