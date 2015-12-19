@@ -43,7 +43,7 @@ public final class IndexedSubVector extends BaseIndexedVector {
 	@Override
 	public AVector selectView(int... inds) {
 		int[] ci=IntArrays.select(indexes,inds);
-		return new IndexedSubVector(source,ci);
+		return replaceIndex(ci);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public final class IndexedSubVector extends BaseIndexedVector {
 		for (int i=0; i<length; i++) {
 			newIndexes[i]=indexes[offset+i];
 		}
-		return wrap(this.source,newIndexes);
+		return replaceIndex(newIndexes);
 	}
 	
 	@Override 
@@ -107,5 +107,10 @@ public final class IndexedSubVector extends BaseIndexedVector {
 			result+=data[offset+i]*unsafeGet(i);
 		}
 		return result;
+	}
+
+	@Override
+	protected BaseIndexedVector replaceIndex(int[] newIndices) {
+		return new IndexedSubVector(source,newIndices);
 	}
 }

@@ -39,7 +39,7 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	@Override
 	public IndexedArrayVector selectView(int... inds) {
 		int[] ci=IntArrays.select(indexes,inds);
-		return new IndexedArrayVector(data,ci);
+		return replaceIndex(ci);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 
 		int end=offset+length;
 		int[] newIndexes=Arrays.copyOfRange(indexes, offset, end);
-		return wrap(this.data,newIndexes);
+		return replaceIndex(newIndexes);
 	}
 	
 	@Override
@@ -116,5 +116,10 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	@Override 
 	public IndexedArrayVector exactClone() {
 		return IndexedArrayVector.wrap(data.clone(), indexes.clone());
+	}
+
+	@Override
+	protected IndexedArrayVector replaceIndex(int[] newIndices) {
+		return new IndexedArrayVector(data,newIndices);
 	}
 }
