@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -35,9 +37,7 @@ public final class IndexedSubVector extends BaseIndexedVector {
 	
 	@Override
 	public void getElements(double[] dest, int offset) {
-		for (int i=0; i<length; i++) {
-			dest[offset+i]=source.unsafeGet(indexes[i]);
-		}
+		source.getElements(dest,offset,indexes);
 	}
 	
 	@Override
@@ -73,11 +73,8 @@ public final class IndexedSubVector extends BaseIndexedVector {
 		}
 		if (length==0) return Vector0.INSTANCE;
 		if (length==this.length) return this;
-		
-		int[] newIndexes=new int[length];
-		for (int i=0; i<length; i++) {
-			newIndexes[i]=indexes[offset+i];
-		}
+
+		int[] newIndexes=Arrays.copyOfRange(indexes, offset, offset+length);
 		return replaceIndex(newIndexes);
 	}
 	
@@ -121,7 +118,7 @@ public final class IndexedSubVector extends BaseIndexedVector {
 	}
 
 	@Override
-	protected BaseIndexedVector replaceIndex(int[] newIndices) {
+	protected IndexedSubVector replaceIndex(int[] newIndices) {
 		return new IndexedSubVector(source,newIndices);
 	}
 }

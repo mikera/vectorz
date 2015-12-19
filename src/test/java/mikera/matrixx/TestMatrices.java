@@ -680,11 +680,14 @@ public class TestMatrices {
 //				m2));	
 	}
 	
-	@Test public void g_SparseMatrix() {	
+	@Test public void g_SparseRowMatrix() {	
 		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,-Math.E),null,null,AxisVector.create(2, 3)));
 		doGenericTests(SparseRowMatrix.create(Matrixx.createRandomSquareMatrix(3)));
+	}
+	
+	@Test public void g_SparseColumnMatrix() {	
 		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,-Math.PI),null,null,AxisVector.create(2, 3)));
-		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(4)));
+		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(3)));
 	}
 	
 	@Test public void g_TriangularMatrix() {	

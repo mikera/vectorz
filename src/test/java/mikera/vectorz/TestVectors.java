@@ -932,9 +932,10 @@ public class TestVectors {
 	}
 	
 	@Test public void g_IndexedSubVector() {
-		double[] data=new double[100];
-		int[] indexes=new int[100];
-		for (int i=0; i<100; i++) {
+		int ASIZE=50;
+		double[] data=new double[ASIZE];
+		int[] indexes=new int[ASIZE];
+		for (int i=0; i<ASIZE; i++) {
 			data[i]=i+(1.0/Math.E);
 			indexes[i]=i;
 		}
@@ -960,8 +961,9 @@ public class TestVectors {
 	}
 
 	@Test public void g_JoinedVector() {
-		double[] data=new double[100];
-		for (int i=0; i<100; i++) {
+		int ASIZE=50;
+		double[] data=new double[ASIZE];
+		for (int i=0; i<ASIZE; i++) {
 			data[i]=i;
 		}
 
