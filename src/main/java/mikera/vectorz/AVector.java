@@ -1434,14 +1434,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Gets the elements in this vector from the specified indices
-	 * @param data
-	 * @param offset
+	 * @param dest
+	 * @param destOffset
 	 * @param indices
 	 */
-	public void getElements(double[] data, int offset, int[] indices) {
+	public void getElements(double[] dest, int destOffset, int[] indices) {
 		int n=indices.length;
 		for (int i=0; i<n; i++) {
-			data[offset+i]=unsafeGet(indices[i]);
+			dest[destOffset+i]=unsafeGet(indices[i]);
 		}
 	}
 	
@@ -1449,11 +1449,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Set the vector equal to an offset into another vector
 	 */
 	public void set(AVector src, int srcOffset) {
-		int len=length();
-		src.checkRange(srcOffset, len);
-		for (int i=0; i<len; i++) {
-			unsafeSet(i,src.unsafeGet(srcOffset+i));
-		}
+		set(src.subVector(srcOffset,length()));
 	}
 	
 	public long zeroCount() {
