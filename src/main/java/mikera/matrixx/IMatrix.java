@@ -15,17 +15,34 @@ import mikera.vectorz.AVector;
  *
  */
 public interface IMatrix extends INDArray {
-	
+	/**
+	 * Gets the number of rows in this matrix (dimension 0)
+	 * @return
+	 */
 	public int rowCount();
 
+	/**
+	 * Gets the number of columns in this matrix (dimension 1)
+	 * @return
+	 */
 	public int columnCount();
 
 	public double get(int row, int column);
 
 	public void set(int row, int column, double value);
 	
+	/**
+	 * Gets a matrix row as a vector. May or may not be a mutable view.
+	 * @param row
+	 * @return
+	 */
 	public AVector getRow(int row);
 	
+	/**
+	 * Gets a matrix column as a vector. May or may not be a mutable view.
+	 * @param row
+	 * @return
+	 */
 	public AVector getColumn(int column);
 
 	/**
@@ -88,6 +105,11 @@ public interface IMatrix extends INDArray {
 	 */
 	List<AVector> getColumns();
 
+	/**
+	 * Returns true if this matrix is symmetric 
+	 * 
+	 * @return
+	 */
 	boolean isSymmetric();
 
 	/**
