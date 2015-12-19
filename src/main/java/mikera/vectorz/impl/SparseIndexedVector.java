@@ -9,7 +9,6 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
-import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
@@ -245,9 +244,11 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 
 	@Override
 	public void add(double[] src, int srcOffset) {
-		includeIndices(Vectorz.wrap(src, srcOffset, length));	
-		for (int i=0; i<data.length; i++) {
-			data[i]+=src[srcOffset+index.get(i)];
+		int[] nixs=IntArrays.nonSparseIndices(src,srcOffset,length);
+		includeIndices(nixs);
+		for (int i=0; i<nixs.length; i++) {
+			int ix=nixs[i];
+			addAt(ix,src[srcOffset+ix]);
 		}
 	}
 	
