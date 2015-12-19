@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import static org.junit.Assert.*;
 import mikera.vectorz.AVector;
+import mikera.vectorz.GrowableVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
@@ -48,6 +49,19 @@ public class TestMiscVectors {
 		AVector sv2=v.subVector(5, 5);
 		assertEquals(5,sv2.length());
 		assertEquals(v.getClass(),sv1.join(sv2).getClass());
+	}
+	
+	@Test public void testGrowableVector() {
+		GrowableVector gv=new GrowableVector(1);
+		assertEquals(0,gv.length());
+		gv.append(1);
+		assertEquals(1,gv.length());
+		assertEquals(1,gv.currentCapacity());
+		gv.set(2,3);
+		assertEquals(Vector.of(1,0,3),gv);
+		gv.unsafeSet(1,2);
+		assertEquals(Vector.of(1,2,3),gv);
+		
 	}
 
 	@Test public void testReorder() {

@@ -7,6 +7,11 @@ import mikera.vectorz.util.VectorzException;
 /**
  * Implements a growable vector, intended for incrementally building vectors
  * 
+ * Supports the following operations which etend the vector's length:
+ *  - set (when used beyond array length)
+ *  - append (adds a value to the end of the vector, extending length by one)
+ *  
+ * 
  * Note that getting the underlying array or a subVector is unsafe, since the 
  * underlying array may be discarded as the vector is grown.
  * 
@@ -64,14 +69,18 @@ public final class GrowableVector extends AVector {
 
 	@Override
 	public double get(int i) {
-		if ((i<0)||(i>=count)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
+		checkIndex(i);
 		return data[i];
 	}
 
 	@Override
 	public void set(int i, double value) {
 		if (i<0) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
-		ensureCapacity(i+1);
+		int newMinLength=i+1;
+		if (count<newMinLength) {
+			ensureCapacity(newMinLength);
+			count=newMinLength;
+		}
 		data[i]=value;
 	}
 	
