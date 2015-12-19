@@ -1878,11 +1878,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addMultiple(v,-1.0);
 	}
 	
-	@Override
-	public void sub(double d) {
-		add(-d);
-	}
-	
 	public void subAt(int i, double v) {
 		addAt(i,-v);
 	}

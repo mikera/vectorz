@@ -830,11 +830,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public final void sub(double d) {
-		add(-d);
-	}
-	
-	@Override
 	public final void scaleAdd(double factor, double constant) {
 		multiply(factor);
 		add(constant);
