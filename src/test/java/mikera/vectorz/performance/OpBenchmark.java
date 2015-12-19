@@ -4,6 +4,7 @@ import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 
 import mikera.vectorz.Op2;
+import mikera.vectorz.Ops;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.AddFunction;
@@ -19,7 +20,7 @@ public class OpBenchmark extends SimpleBenchmark {
 	private static final int VECTOR_SIZE = 1000;
 	private static final Vector a=Vector.createLength(VECTOR_SIZE);
 	private static final Vector b=Vector.createLength(VECTOR_SIZE);
-	private static final Op2 op=AddFunction.create(0.5,0.5,Power.create(3.0));
+	private static final Op2 op=AddFunction.create(0.5,0.5,Ops.SQUARE);
 
 	static {
 		Vectorz.fillGaussian(a);
@@ -28,7 +29,7 @@ public class OpBenchmark extends SimpleBenchmark {
 	
 	public volatile double output=0.0;
 	
-	// op benchmark for addPower function with scaling 0.5,0.5, exponent 3.0
+	// op benchmark for z = 0.5*x + 0.5*y*y
 	
 	public void timeOp(int runs) {
 		Vector t=Vector.createLength(VECTOR_SIZE);
@@ -43,9 +44,22 @@ public class OpBenchmark extends SimpleBenchmark {
 		Vector t=Vector.createLength(VECTOR_SIZE);
 		for (int run=0; run<runs; run++) {
 			t.set(b);
-			t.pow(3.0);
+			t.square();
 			t.scale(0.5);
 			t.addMultiple(a, 0.5);
+			output=t.get(0);
+		}
+	}
+	
+	public void timeElementwise(int runs) {
+		Vector t=Vector.createLength(VECTOR_SIZE);
+		for (int run=0; run<runs; run++) {
+			for (int j=0; j<VECTOR_SIZE; j++) {
+				double x=a.unsafeGet(j);
+				double y=b.unsafeGet(j);
+				double z=0.5*x + 0.5*y*y;
+				t.unsafeSet(j,z);
+			}
 			output=t.get(0);
 		}
 	}
