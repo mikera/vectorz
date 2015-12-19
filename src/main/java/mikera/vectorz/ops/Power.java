@@ -9,16 +9,13 @@ import mikera.vectorz.util.DoubleArrays;
 
 public final class Power extends Op {
 	private final double exponent;
-	private final Op inverse;
 	
 	private Power(double d) {
 		exponent=d;
-		inverse=new Power(1.0/d,this);
 	}
 	
 	private Power(double d, Op inv) {
 		exponent=d;
-		inverse=inv;
 	}
 	
 	public static Op create(double exponent) {
@@ -94,7 +91,7 @@ public final class Power extends Op {
 	
 	@Override
 	public Op getInverse() {
-		return inverse;
+		return new Power(1.0/exponent,this);
 	}
 
 	@Override
