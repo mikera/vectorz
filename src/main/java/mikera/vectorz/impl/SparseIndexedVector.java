@@ -595,6 +595,20 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[ip]=value;
 		}
 	}
+	
+	@Override
+	public void addAt(int i, double value) {
+		if (value==0.0) return; // no change required
+		int ip=index.indexPosition(i);
+		if (ip<0) {
+			if (value==0.0) return;
+			int npos=index.seekPosition(i);
+			data=DoubleArrays.insert(data,npos,value);
+			index=index.insert(npos,i);
+		} else {
+			data[ip]+=value;
+		}
+	}
 
     // TODO: consider a generic sparseApplyOp instead.
     //       keep in mind efficiency when randomly
@@ -618,20 +632,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 
         return SparseIndexedVector.wrap(this.length, newInds, newData);
     }
-	
-	@Override
-	public void addAt(int i, double value) {
-		// worth checking for zero when dealing with sparse vectors
-		// can often avoid a relatively expensive index lookup
-		if (value==0.0) return; 
-		
-		int ip=index.indexPosition(i);
-		if (ip<0) {
-			unsafeSet(i,value);
-		} else {
-			data[ip]+=value;
-		}
-	}
 
 	@Override
 	public Vector nonSparseValues() {
