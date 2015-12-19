@@ -564,5 +564,4 @@ public final class Vector extends ADenseArrayVector {
 	protected int index(int i) {
 		return i;
 	}
-
 }

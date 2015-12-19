@@ -643,6 +643,20 @@ public interface INDArray extends Cloneable, Serializable {
 	public void addMultiple(INDArray src, double factor);
 	
 	/**
+	 * Adds an array with all elements raised to the specified power
+	 * @param src
+	 * @param factor
+	 */
+	public void addPower(INDArray src, double exponent);
+	
+	/**
+	 * Adds an array with all elements raised to the specified power and scaled by the given factor
+	 * @param src
+	 * @param factor
+	 */
+	public void addPower(INDArray src, double exponent, double factor);
+	
+	/**
 	 * Adds the inner product of two arrays to this array.
 	 * 
 	 * @param a

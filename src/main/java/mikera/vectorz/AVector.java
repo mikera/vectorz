@@ -1340,6 +1340,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public void pow(double exponent) {
+		if (exponent==1.0) return;
+		if (exponent==0.0) {
+			set(1.0);
+			return;
+		}
+		if (exponent==2.0) {
+			square();
+			return;
+		}
+		// default for arbitrary exponent
 		int len=length();
 		for (int i=0; i<len; i++) {
 			unsafeSet(i,Math.pow(unsafeGet(i),exponent));
@@ -1830,6 +1840,38 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			addMultiple(b,bfactor);
 		}
 		if (constant!=0.0) add(constant);
+	}
+	
+
+	@Override
+	public void addPower(INDArray src, double exponent) {
+		if (src instanceof AVector) {
+			addPower((AVector)src,exponent,1.0);
+		} else {
+			AVector tmp=src.broadcastLike(this);
+			tmp=tmp.clone();
+			tmp.pow(exponent);
+			add(tmp);
+		}
+	}
+
+	@Override
+	public void addPower(INDArray src, double exponent, double factor) {
+		if (src instanceof AVector) {
+			addPower((AVector)src,exponent,factor);
+		} else {
+			AVector tmp=src.broadcastLike(this);
+			tmp=tmp.clone();
+			tmp.pow(exponent);
+			tmp.scale(factor);
+			add(tmp);
+		}
+	}
+	
+	protected void addPower(AVector src, double exponent, double factor) {
+		AVector tmp=src.clone();
+		tmp.pow(exponent);
+		addMultiple(tmp,factor);
 	}
 	
 	/**

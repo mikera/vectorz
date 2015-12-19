@@ -419,6 +419,23 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void addPower(INDArray src, double exponent) {
+		INDArray tmp=src.broadcastLike(this);
+		tmp=tmp.clone();
+		tmp.pow(exponent);
+		add(tmp);
+	}
+
+	@Override
+	public void addPower(INDArray src, double exponent, double factor) {
+		INDArray tmp=src.broadcastLike(this);
+		tmp=tmp.clone();
+		tmp.pow(exponent);
+		tmp.scale(factor);
+		add(tmp);
+	}
+	
+	@Override
 	public void addInnerProduct(INDArray a, INDArray b) {
 		add(a.innerProduct(b));
 	}
