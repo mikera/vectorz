@@ -868,7 +868,7 @@ public class TestArrays {
 		testArray(nd2);
 		testArray(Array.create(nd2));
 		
-		NDArray nd3 = NDArray.newArray(3, 3, 3);
+		NDArray nd3 = NDArray.newArray(2, 2, 2);
 		Vectorz.fillIndexes(nd3.asVector());
 		testArray(nd3);
 		testArray(Array.create(nd3));

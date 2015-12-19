@@ -579,7 +579,7 @@ public class TestMatrices {
 	
 	@Test public void g_VectorMatrixM3() {
 		// specialised Mx3 matrix
-		VectorMatrixM3 mm3=new VectorMatrixM3(10);
+		VectorMatrixM3 mm3=new VectorMatrixM3(6);
 		randomise(mm3);
 		doGenericTests(mm3);
 		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
@@ -648,7 +648,7 @@ public class TestMatrices {
 	@Test public void g_PermutationMatrix() {	
 		doGenericTests(PermutationMatrix.create(0,1,2));
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
-		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(8)));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(7)));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(6)).subMatrix(1,3,2,4));	
 	}
 	

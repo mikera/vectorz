@@ -636,8 +636,4 @@ public class Vectorz {
 	public static boolean isUncountable(double value) {
 		return Double.isNaN(value) || Double.isInfinite(value);
 	}
-
-
-
-	
 }
