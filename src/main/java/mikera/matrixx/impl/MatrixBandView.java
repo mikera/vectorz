@@ -51,6 +51,7 @@ public final class MatrixBandView extends AMatrixViewVector {
 	protected int calcRow(int i) {
 		return (band<0)?i-band:i;
 	}
+	
 	@Override
 	protected int calcCol(int i) {
 		return (band>0)?i+band:i;

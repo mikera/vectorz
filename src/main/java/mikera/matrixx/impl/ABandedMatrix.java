@@ -82,7 +82,8 @@ public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 	}
 	
 	@Override
-	public AVector getRow(int row) {
+	public AVector getRowView(int row) {
+		checkRow(row);
 		return new BandedMatrixRow(row);
 	}
 	
@@ -237,7 +238,7 @@ public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 
 		@Override
 		public AVector exactClone() {
-			return ABandedMatrix.this.exactClone().getRow(row);
+			return ABandedMatrix.this.exactClone().getRowView(row);
 		}
 	
 		@Override

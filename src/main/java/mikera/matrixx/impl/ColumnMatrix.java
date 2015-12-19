@@ -130,7 +130,7 @@ public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IF
 	}
 	
 	@Override
-	public AVector getColumn(int i) {
+	public AVector getColumnView(int i) {
 		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1,i));
 		return vector;
 	}
