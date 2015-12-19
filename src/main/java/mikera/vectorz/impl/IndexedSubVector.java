@@ -108,6 +108,17 @@ public final class IndexedSubVector extends BaseIndexedVector {
 		}
 		return result;
 	}
+	
+	@Override 
+	public AVector join(AVector v) {
+		if (v instanceof IndexedSubVector) {
+			IndexedSubVector iv=(IndexedSubVector) v;
+			if (iv.source==source) {
+				return replaceIndex(IntArrays.concat(indexes,iv.indexes));
+			}
+		} 
+		return super.join(v);
+	}
 
 	@Override
 	protected BaseIndexedVector replaceIndex(int[] newIndices) {

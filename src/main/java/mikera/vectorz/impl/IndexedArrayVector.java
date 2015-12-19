@@ -117,6 +117,17 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	public IndexedArrayVector exactClone() {
 		return IndexedArrayVector.wrap(data.clone(), indexes.clone());
 	}
+	
+	@Override 
+	public AVector join(AVector v) {
+		if (v instanceof IndexedArrayVector) {
+			IndexedArrayVector iv=(IndexedArrayVector) v;
+			if (iv.data==data) {
+				return replaceIndex(IntArrays.concat(indexes,iv.indexes));
+			}
+		} 
+		return super.join(v);
+	}
 
 	@Override
 	protected IndexedArrayVector replaceIndex(int[] newIndices) {
