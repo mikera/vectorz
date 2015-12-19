@@ -42,10 +42,15 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	/**
 	 * Gets a row of the matrix. 
 	 * 
-	 * Guaranteed to be an existing vector by all descendants of VectorMatrix.
+	 * Guaranteed to be an existing vector view by all descendants of AVectorMatrix.
 	 */
 	@Override
-	public abstract T getRowView(int row);
+	public abstract T getRow(int row);
+	
+	@Override
+	public final T getRowView(int i) {
+		return getRow(i);
+	}
 
 	@Override
 	public double get(int row, int column) {

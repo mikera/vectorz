@@ -65,7 +65,7 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	@Override
-	public Vector3 getRowView(int row) {
+	public Vector3 getRow(int row) {
 		return  rowData[row];
 	}
 	
