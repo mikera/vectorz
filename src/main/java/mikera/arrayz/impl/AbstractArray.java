@@ -182,8 +182,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void applyOp(Op2 op, INDArray b) {
 		int dims=dimensionality();
 		if (dims>0) {
-			int rc = sliceCount();
-			for (int i = 0; i < rc; i++) {
+			int sc = sliceCount();
+			for (int i = 0; i < sc; i++) {
 				slice(i).applyOp(op,(dims==b.dimensionality())?b.slice(i):b);
 			}			
 		} else {
@@ -1318,12 +1318,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if (isFullyMutable()&&(!isView())) return this;
 		return clone();
 	}
-	
-	@Override
-	public final INDArray mutableClone() {
-		return clone();
-	}
-	
+		
 	@Override
 	public INDArray sparse() {
 		if (this instanceof ISparse) return this;

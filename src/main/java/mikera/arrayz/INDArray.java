@@ -793,11 +793,6 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray mutable();
 	
 	/**
-	 * Creates a fully mutable clone of this array
-	 */
-	public INDArray mutableClone();
-	
-	/**
 	 * Coerces this INDArray to a sparse format, without changing its element values.
 	 * 
 	 * May return the same INDArray if already sparse. May also mutate the internal structure of the original 
