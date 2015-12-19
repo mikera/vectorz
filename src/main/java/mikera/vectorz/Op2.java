@@ -74,7 +74,18 @@ public abstract class Op2 {
 		}
 	}
 	
+	public void applyTo(double[] data, int start, int length, double b) {
+		for (int i=0; i<length; i++) {
+			double x=data[start+i];
+			data[start+i]=apply(x,b);
+		}
+	}
+	
 	public void applyTo(double[] data, AVector b) {
+		applyTo(data,0,data.length,b);
+	}
+	
+	public void applyTo(double[] data, double b) {
 		applyTo(data,0,data.length,b);
 	}
 	

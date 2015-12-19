@@ -7,6 +7,7 @@ import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
@@ -435,6 +436,16 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			super.applyOp(op);
 		} else {
 			op.applyTo(data);
+		}
+	}
+	
+	@Override
+	public void applyOp(Op2 op, double d) {
+		int dlen=data.length;
+		if ((dlen<length())&&(op.isStochastic()||(op.apply(0.0,d)!=0.0))) {
+			super.applyOp(op,d);
+		} else {
+			op.applyTo(data,d);
 		}
 	}
 	
