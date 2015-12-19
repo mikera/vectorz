@@ -704,17 +704,12 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * Useful to improve performance if subsequent operations will access these indices.
 	 * 
 	 * @param ixs
+	 * @return the newly included indices from the vector v
 	 */
-	public void includeIndices(AVector v) {
-		if (v instanceof ASparseIndexedVector) {
-			includeIndices((ASparseIndexedVector)v);
-		} else {
-			includeIndices(v.nonSparseIndex());
-		}
-	}
-	
-	public void includeIndices(ASparseIndexedVector v) {
-		includeIndices(v.internalIndex());
+	protected Index includeIndices(AVector v) {
+		Index ix=v.nonSparseIndex();
+		includeIndices(ix);
+		return ix;
 	}
 	
 	@Override
