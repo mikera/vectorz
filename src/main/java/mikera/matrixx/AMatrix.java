@@ -443,6 +443,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}	
 	
+	/**
+	 * Gets a rectangular submatrix view of part of a matrix
+	 */
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
 		if ((rows==0)||(cols==0)) return ZeroMatrix.create(rows, cols);
 		return new SubMatrixView(this, rowStart, colStart, rows, cols);	

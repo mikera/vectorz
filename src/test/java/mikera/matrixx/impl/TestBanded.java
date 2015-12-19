@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.vectorz.Vector;
 
 public class TestBanded {
 
@@ -35,6 +36,13 @@ public class TestBanded {
 		m.getBand(-1).fill(1.0);
 		assertEquals(0,m.upperBandwidth());
 		assertEquals(1,m.lowerBandwidth());
+	}
+	
+	@Test
+	public void testBandedSubMatrix() {
+		AMatrix m=DiagonalMatrix.create(1,2,3,4,5);
+		AMatrix sm=m.subMatrix(2, 3, 1, 3);
+		assertEquals(Vector.of(3,4),sm.getBand(1));
 	}
 
 }
