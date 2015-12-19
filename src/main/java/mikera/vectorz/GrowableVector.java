@@ -146,6 +146,13 @@ public final class GrowableVector extends AVector {
 	}
 	
 	@Override
+	public double[] toDoubleArray() {
+		double[] result=new double[count];
+		getElements(result,0);
+		return result;
+	}
+	
+	@Override
 	public void getElements(double[] dest, int offset) {
 		System.arraycopy(data, 0, dest, offset, count);
 	}
