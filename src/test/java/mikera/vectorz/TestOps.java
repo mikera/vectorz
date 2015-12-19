@@ -276,6 +276,8 @@ public class TestOps {
 		testVectorApply(op);
 		testTransforms(op);
 		testBounds(op);
+		testCompositions(op);
+		testProducts(op);
 		testDerivative(op);
 		TestTransformz.doITransformTests(op.getTransform(3));
 	}
@@ -302,6 +304,34 @@ public class TestOps {
 		assertTrue(v.epsilonEquals(v3, 0.00001));
 		
 		testComposedDerivative(op1,op2);
+	}
+	
+	private void testCompositions(Op a) {
+		if (a.isStochastic()) return;
+		AVector v=Vector.of(1,2,3);
+		for (Op b: ALL_OPS) {
+			if (b.isStochastic()) continue;
+			Op comp=Ops.compose(a,b);
+			AVector tmp=v.clone();
+			tmp.applyOp(b);
+			tmp.applyOp(a);
+			if (tmp.hasUncountable()) return;
+			assertTrue(a.toString()+" x "+b.toString(),tmp.epsilonEquals(v.applyOpCopy(comp),0.001));
+		}
+	}
+	
+	private void testProducts(Op a) {
+		if (a.isStochastic()) return;
+		AVector v=Vector.of(1,2,3);
+		for (Op b: ALL_OPS) {
+			if (b.isStochastic()) continue;
+			Op comp=Ops.product(a,b);
+			AVector tmp=v.clone();
+			tmp.applyOp(a);
+			tmp.multiply(v.applyOpCopy(b));
+			if (tmp.hasUncountable()) return;
+			assertTrue(a.toString()+" x "+b.toString(),tmp.epsilonEquals(v.applyOpCopy(comp),0.001));
+		}
 	}
 	
 	@Test public void genericTests() {

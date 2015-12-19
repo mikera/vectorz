@@ -101,7 +101,7 @@ public final class Identity extends ALinearOp {
 			Linear o=(Linear)op;
 			return Quadratic.create(o.getFactor(), o.getConstant(), 0.0);
 		}
-		if (op instanceof Power) return Power.create(((Power)op).getExponent());
-		return super.compose(op);
+		if (op instanceof Power) return Power.create(((Power)op).getExponent()+1.0);
+		return super.product(op);
 	}
 }
