@@ -21,15 +21,15 @@ public final class AddFunction extends Op2 {
 		this.f=f;
 	}
 
-	public AddFunction create(Op f) {
+	public static AddFunction create(Op f) {
 		return new AddFunction(1.0,1.0,f);
 	}
 	
-	public AddFunction create(double b, Op f) {
+	public static AddFunction create(double b, Op f) {
 		return new AddFunction(1.0,b,f);
 	}
 	
-	public AddFunction create(double a,double b, Op f) {
+	public static AddFunction create(double a,double b, Op f) {
 		return new AddFunction(a,b,f);
 	}
 	
