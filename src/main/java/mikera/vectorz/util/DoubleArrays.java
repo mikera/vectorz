@@ -600,6 +600,13 @@ public final class DoubleArrays {
 		return rs;
 	}
 
+	/**
+	 * Finds the non-zero indices as offsets within a range of a double array
+	 * @param data
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
 	public static int[] nonZeroIndices(double[] data, int offset, int length) {
 		int n=DoubleArrays.nonZeroCount(data, offset, length);
 		int[] rs=new int[n];

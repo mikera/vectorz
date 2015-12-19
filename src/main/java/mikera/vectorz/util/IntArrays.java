@@ -461,24 +461,4 @@ public class IntArrays {
 		System.arraycopy(bs, 0, result, alen, blen);
 		return result;
 	}
-
-	/**
-	 * Finds the non-sparse indexes as offsets within a range of a double array
-	 * @param src
-	 * @param srcOffset
-	 * @param length
-	 * @return
-	 */
-	public static int[] nonSparseIndices(double[] src, int srcOffset, int length) {
-		int n=DoubleArrays.nonZeroCount(src,srcOffset,length);
-		int[] result=new int[n];
-		int ix=0;
-		for (int i=0; i<length; i++) {
-			double x=src[srcOffset+i];
-			if (x!=0.0) result[ix++]=i;
-		}
-		return result;
-	}
-
-
 }

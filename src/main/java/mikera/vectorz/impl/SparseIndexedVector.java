@@ -244,7 +244,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 
 	@Override
 	public void add(double[] src, int srcOffset) {
-		int[] nixs=IntArrays.nonSparseIndices(src,srcOffset,length);
+		int[] nixs=DoubleArrays.nonZeroIndices(src,srcOffset,length);
 		includeIndices(nixs);
 		for (int i=0; i<nixs.length; i++) {
 			int ix=nixs[i];
@@ -258,9 +258,12 @@ public class SparseIndexedVector extends ASparseIndexedVector {
         if (v instanceof ZeroVector) {
             return;
         }
-		includeIndices(v);	
-		for (int i=0; i<data.length; i++) {
-			data[i]+=v.unsafeGet(index.get(i));
+		Index vix=includeIndices(v);	
+		AVector vns=v.nonSparseValues();
+		int n=vix.length();
+		for (int i=0; i<n; i++) {
+			int ix=vix.get(i);
+			addAt(ix,vns.unsafeGet(i));
 		}
 	}
 	
@@ -269,32 +272,18 @@ public class SparseIndexedVector extends ASparseIndexedVector {
         if ((factor==0.0)||(v instanceof ZeroVector)) {
             return;
         }
-		includeIndices(v);	
-		for (int i=0; i<data.length; i++) {
-			data[i]+=v.unsafeGet(index.get(i))*factor;
+		Index vix=includeIndices(v);	
+		AVector vns=v.nonSparseValues();
+		int n=vix.length();
+		for (int i=0; i<n; i++) {
+			int ix=vix.get(i);
+			addAt(ix,vns.unsafeGet(i)*factor);
 		}
 	}
     
     @Override
 	public void sub(AVector v) {
-		if (v instanceof ASparseVector) {
-			sub((ASparseVector)v);
-			return;
-		}
-		includeIndices(v);	
-		for (int i=0; i<data.length; i++) {
-			data[i]-=v.unsafeGet(index.get(i));
-		}
-	}
-
-	public void sub(ASparseVector v) {
-        if (v instanceof ZeroVector) {
-            return;
-        }
-		includeIndices(v);	
-		for (int i=0; i<data.length; i++) {
-			data[i]-=v.unsafeGet(index.get(i));
-		}
+		addMultiple(v,-1.0);
 	}
 
 	@Override
