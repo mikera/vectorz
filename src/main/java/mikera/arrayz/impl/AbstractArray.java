@@ -49,20 +49,26 @@ import mikera.vectorz.util.LongArrays;
 public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	private static final long serialVersionUID = -958234961396539071L;
 
+	@Override
 	public abstract double get();
 	
+	@Override
 	public abstract double get(int i);
 	
+	@Override
 	public double get(long i) {
 		return get(Tools.toInt(i));
 	}
 	
+	@Override
 	public abstract double get(int i, int j);
 	
+	@Override
 	public double get(long x,long y) {
 		return get(Tools.toInt(x),Tools.toInt(y));
 	}
 	
+	@Override
 	public double get(long[] xs) {
 		int n=xs.length;
 		int[] ixs=new int[n];
@@ -393,6 +399,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return nd.getTransposeView();
 	}
 	
+	@Override
 	public final void scale(double d) {
 		multiply(d);
 	}
@@ -448,14 +455,17 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return result;
 	}
 
+	@Override
 	public void set(double value) {
 		set(new int[0],value);
 	}
 	
+	@Override
 	public void set(int x, double value) {
 		set(new int[] {x},value);
 	}
 	
+	@Override
 	public void set(int x, int y, double value) {
 		set(new int[] {x,y},value);	
 	}
@@ -523,12 +533,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		throw new UnsupportedOperationException("Can't set to value for "+o.getClass().toString());		
 	}
 	
+	@Override
 	public void setElements(double... values) {
 		int vl=values.length;
 		if (vl!=elementCount()) throw new IllegalArgumentException("Wrong array length: "+vl);
 		setElements(0,values,0,vl);
 	}
 	
+	@Override
 	public void square() {
 		applyOp(Ops.SQUARE);
 	}
@@ -575,6 +587,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof INDArray)) return false;
 		return equals((INDArray)o);
@@ -1438,7 +1451,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
      * Returns the sum of all the elements raised to a specified power
      * @return
      */
-    public double elementPowSum(double p) {
+    @Override
+	public double elementPowSum(double p) {
         if (dimensionality()==0) {
             double value=get();
             return Math.pow(value, p);
@@ -1455,7 +1469,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
      * Returns the sum of the absolute values of all the elements raised to a specified power
      * @return
      */
-    public double elementAbsPowSum(double p) {
+    @Override
+	public double elementAbsPowSum(double p) {
         if (dimensionality()==0) {
             double value=Math.abs(get());
             return Math.pow(value, p);
