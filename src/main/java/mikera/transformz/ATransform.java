@@ -19,23 +19,13 @@ public abstract class ATransform implements Cloneable, ITransform {
 	// =====================================
 	// Abstract interface
 	
-	/**
-	 * Transforms the source vector, storing the result in the given destination vector
-	 * @param source
-	 * @param dest
-	 */
+	@Override
 	public abstract void transform(AVector source, AVector dest);
 	
-	/**
-	 * Returns the number of dimensions required for input vectors
-	 * @return
-	 */
+	@Override
 	public abstract int inputDimensions();
 	
-	/**
-	 * Returns the number of dimensions required for output vectors
-	 * @return
-	 */
+	@Override
 	public abstract int outputDimensions();
 	
 
@@ -46,6 +36,7 @@ public abstract class ATransform implements Cloneable, ITransform {
 	/**
 	 * Clones the transform, performing a deep copy where needed
 	 */
+	@Override
 	public ATransform clone() {
 		try {
 			return (ATransform) super.clone();
