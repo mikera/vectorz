@@ -188,6 +188,7 @@ public final class Vector extends ADenseArrayVector {
 		System.arraycopy(data, 0, dest, offset, data.length);
 	}
 	
+	@Override
 	public void getElements(double[] data, int offset, int[] indices) {
 		int n=indices.length;
 		for (int i=0; i<n; i++) {
@@ -390,10 +391,7 @@ public final class Vector extends ADenseArrayVector {
 		return total;
 	}
 	
-	public double distance(Vector v) {
-		return Math.sqrt(distanceSquared(v));
-	}
-	
+	@Override
 	public double distance(AVector v) {
 		if (v instanceof Vector) {
 			return distance((Vector)v);
@@ -465,6 +463,7 @@ public final class Vector extends ADenseArrayVector {
 		v.divideTo(data, 0);	
 	}
 	
+	/** Performance Override for divide */
 	public void divide(Vector v) {
 		int len=checkSameLength(v);
 		for (int i = 0; i < len; i++) {
@@ -472,6 +471,7 @@ public final class Vector extends ADenseArrayVector {
 		}	
 	}
 
+	@Override
     public void divide(double factor) {
 		multiply(1.0/factor);
 	}

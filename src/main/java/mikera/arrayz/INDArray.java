@@ -209,7 +209,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void sub(INDArray a);
 	
 	/**
-	 * Fills the array with a single double value
+	 * Fills this array with a single double value. Requires the array to be mutable.
 	 */
 	public void fill(double value);
 	
@@ -730,7 +730,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void toDoubleBuffer(DoubleBuffer dest);
 	
 	/**
-	 * Copies the elements of this INDArray to a new double array
+	 * Copies the elements of this array to a new double[] array.
 	 */
 	public double[] toDoubleArray();
 	

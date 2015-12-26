@@ -434,6 +434,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
 	public double[] toDoubleArray() {
 		double[] result=new double[length()];
 		getElements(result,0);
@@ -500,6 +501,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Fills the entire vector with a given value
 	 * @param value
 	 */
+	@Override
 	public void fill(double value) {
 		int len=length();
 		for (int i=0; i<len; i++) {
@@ -883,6 +885,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Computes the inner product of this vector with another vector
 	 * @return an AScalar instance representing the inner product
 	 */
+	@Override
 	public AScalar innerProduct(AVector v) {
 		checkSameLength(v);
 		return Scalar.create(dotProduct(v));
@@ -921,6 +924,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param s A scalar instance
 	 * @return a vector representing the inner product
 	 */
+	@Override
 	public AVector innerProduct(AScalar s) {
 		return scaleCopy(s.get());
 	}
@@ -1433,7 +1437,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Gets the elements in this vector from the specified indices
+	 * Gets the elements in this vector from the specified indices, storing at the specified 
+	 * offset in the destination array
 	 * @param dest
 	 * @param destOffset
 	 * @param indices
@@ -1478,6 +1483,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Clones the vector into a sparse mutable format
 	 */
+	@Override
 	public AVector sparseClone() {
 		return Vectorz.createSparseMutable(this);
 	}
@@ -1886,6 +1892,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Returns true if this vector is a zero vector (all components zero)
 	 * @return
 	 */
+	@Override
 	public boolean isZero() {
 		return isRangeZero(0,length());
 	}
@@ -2081,6 +2088,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return v;
 	}
 	
+	@Override
 	public List<Double> asElementList() {
 		return new ListWrapper(this);
 	}
@@ -2404,6 +2412,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param data
 	 * @return
 	 */
+	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		int len=length();
 		for (int i=0; i<len; i++) {
