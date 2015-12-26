@@ -1619,7 +1619,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			int dims=a.dimensionality();
 			int rc=rowCount();
 			if (dims==0) {
-				multiply(1.0/a.get());
+				divide(a.get());
 			} else if (dims==1) {
 				for (int i=0; i<rc; i++) {
 					slice(i).divide(a);
@@ -1681,15 +1681,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (tdims<2) {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
 		} else if (2==tdims) {
-			if (rowCount()==targetShape[0]&&columnCount()==targetShape[1]) return this;
-			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
+			checkShape(targetShape[0],targetShape[1]);
+			return this;			
 		} else {
-			if (rowCount()!=targetShape[tdims-2]||(columnCount()!=targetShape[tdims-1])) {
-				throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, targetShape));				
-			}
-			int n=targetShape[0];
+			checkShape(targetShape[tdims-2],targetShape[tdims-1]);
 			INDArray s=broadcast(Arrays.copyOfRange(targetShape, 1, tdims));
-			return SliceArray.repeat(s,n);
+			return SliceArray.repeat(s,targetShape[0]);
 		}
 	}
 	
@@ -1703,11 +1700,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public AMatrix broadcastLike(AMatrix target) {
-		if (rowCount()==target.rowCount()&&(columnCount()==target.columnCount())) {
-			return this;
-		} else {
-			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
-		}
+		checkSameShape(target);
+		return this;
 	}
 	
 	@Override
