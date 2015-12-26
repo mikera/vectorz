@@ -216,7 +216,12 @@ public class TestJoinedVectors {
 		Vector v=Vector.createLength(10);
 		Vectorz.fillGaussian(v);
 		
-		AVector rv=v.subVector(0, 3).join(v.subVector(3,5)).join(v.subVector(8,2));
+		// join two sub-vectors
+		AVector sv=v.subVector(0, 3).join(v.subVector(3,5));
+		assertEquals(ArraySubVector.class,sv.getClass());
+		
+		// join remaining sub vector
+		AVector rv=sv.join(v.subVector(8,2));
 		assertEquals(Vector.class,rv.getClass());
 	}
 	
