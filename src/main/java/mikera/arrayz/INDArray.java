@@ -330,7 +330,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public AVector broadcastLike(AVector target);
 	
 	/**
-	 * Creates a mutable clone of the array, broadcasted if necessary to match the shape of the target.
+	 * Creates a mutable clone of the array, broadcasted upwards if necessary to match the shape of the target.
 	 * 
 	 * @param target The target array
 	 * @throws IllegalArgumentException if the array cannot be broadcasted to match the target or vice versa 
@@ -338,7 +338,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray broadcastCloneLike(INDArray target);
 	
 	/**
-	 * Creates a copy of the array, broadcasted if necessary to match the shape of the target
+	 * Creates a copy of the array, broadcasted upwards if necessary to match the shape of the target
 	 * Like broadCastCloneLike, but does not guarantee a mutable clone - hence may be faster
 	 * when used with immutable or specialized arrays
 	 * 

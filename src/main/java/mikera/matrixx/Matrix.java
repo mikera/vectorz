@@ -1,18 +1,14 @@
 package mikera.matrixx;
 
 import java.nio.DoubleBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
-
 import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
@@ -94,14 +90,17 @@ public final class Matrix extends ADenseArrayMatrix {
 		return Matrix.wrap(rows, cols, m.toDoubleArray());
 	}
 
-	public static Matrix createFromRows(Object... rowVectors) {
-		int rc=rowVectors.length;
-		List<AVector> vs = new ArrayList<AVector>(rc);
-		for (Object o : rowVectors) {
-			vs.add(Vectorz.create(o));
+	public static Matrix createFromRows(Object... rows) {
+		int rc=rows.length;
+		AVector row0=Vectorz.create(rows[0]);
+		int cc=row0.length();
+		Matrix m = create(rc,cc);
+		m.setRow(0, row0);
+		for (int i=1; i<rc ; i++) {
+			AVector v=Vectorz.create(rows[i]);
+			m.setRow(i, v);
 		}
-		AMatrix m = VectorMatrixMN.create(vs);
-		return create(m);
+		return m;
 	}
 
 	public static Matrix create(double[][] data) {

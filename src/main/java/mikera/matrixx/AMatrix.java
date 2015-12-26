@@ -1710,6 +1710,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (target.dimensionality()>2) r=r.broadcastLike(target);
 		return r.clone();
 	}
+	
+	@Override
+	public INDArray broadcastCopyLike(INDArray target) {
+		INDArray r=this.copy();
+		if (target.dimensionality()>2) r=r.broadcastLike(target);
+		return r;
+	}
 
 	/**
 	 * Returns true if the matrix is the zero matrix (all components zero)
