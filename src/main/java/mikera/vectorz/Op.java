@@ -75,7 +75,10 @@ public abstract class Op implements IOperator {
 		applyTo(v.getArray(), v.getArrayOffset(),v.length());
 	}
 	
-	
+	/**
+	 * Applies this operator to every element of a target array. Mutates the array in place.
+	 * @param a
+	 */
 	public void applyTo(INDArray a) {
 		if (a instanceof AVector) {
 			applyTo((AVector)a);
@@ -110,7 +113,7 @@ public abstract class Op implements IOperator {
 	}
 	
 	/**
-	 * Applies this operator to every element in a double array, mutating the array
+	 * Applies this operator to every element in a double[] array, mutating the array in place
 	 * @param data
 	 */
 	public void applyTo(double[] data) {
@@ -124,6 +127,7 @@ public abstract class Op implements IOperator {
 	
 	@Override 
 	public Op getInverse() {
+		if (!hasInverse()) return null;
 		return new Inverse(this);
 	}
 	
@@ -259,7 +263,16 @@ public abstract class Op implements IOperator {
 		return (minValue()>=-Double.MAX_VALUE)||(maxValue()<=Double.MAX_VALUE);
 	}
 	
+	/**
+	 * Gets an operator which represents the derivative of this operator.
+	 * 
+	 * Returns nil if this cannot be computed or does not exist.
+	 * @return
+	 */
 	public Op getDerivativeOp() {
+		if (!hasDerivative()) {
+			return null;
+		}
 		return new Derivative(this);
 	}
 	
