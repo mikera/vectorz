@@ -156,6 +156,11 @@ public interface IMatrix {
 	 */
 	void add2(AMatrix a, AMatrix b);
 
+	/**
+	 * Returns true iff this matrix is a square diagonal matrix
+	 */
+	boolean isDiagonal();
+
 
 
 }

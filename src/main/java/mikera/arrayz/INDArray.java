@@ -136,7 +136,10 @@ public interface INDArray extends Cloneable, Serializable {
 	public void set(int[] indexes, double value);
 	
 	/**
-	 * Sets this array to the element values contained in another array
+	 * Sets this array to the element values contained in another array. 
+	 * 
+	 * Broadcasts the source array if necessary to the shape of this array. Throws
+	 * an exception if the shapes are incompatible.
 	 */
 	public void set(INDArray a);
 	

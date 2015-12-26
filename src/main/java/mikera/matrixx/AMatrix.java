@@ -831,10 +831,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}	
 
 	/**
-	 * Returns the sum of all elements in the matrix
+	 * Returns the sum of all elements in this matrix
 	 * @param m
 	 * @return 
 	 */
+	@Override
 	public double elementSum() {
 		int rc=rowCount();
 		
@@ -846,7 +847,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Returns the squared sum of all elements in the matrix
+	 * Returns the squared sum of all elements in this matrix
 	 * @param m
 	 * @return 
 	 */
@@ -1669,6 +1670,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		unsafeSet(i,j,unsafeGet(i,j)+d);
 	}
 	
+	@Override
 	public INDArray broadcast(int... targetShape) {
 		int tdims=targetShape.length;
 		if (tdims<2) {
@@ -1713,6 +1715,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Returns true if the matrix is the zero matrix (all components zero)
 	 */
+	@Override
 	public boolean isZero() {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
@@ -1728,9 +1731,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Definite.isPositiveDefinite(this);
 	}
 	
-	/**
-	 * Returns true iff a matrix is a square diagonal matrix
-	 */
+	@Override
 	public boolean isDiagonal() {
 		int rc=rowCount();
 		int cc=columnCount();
@@ -2135,7 +2136,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 	
-	public Matrix addCopy(Matrix a) {
+	/* Performance overload */
+	public Matrix addCopy(ADenseArrayMatrix a) {
 		checkSameShape(a);
 		Matrix r=a.clone();
 		this.addToArray(r.data,0);

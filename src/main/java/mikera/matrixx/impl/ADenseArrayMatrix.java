@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -233,6 +234,11 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		if (!isSameShape(m)) return false;
 		
 		return DoubleArrays.equals(getArray(), getArrayOffset(), m.getArray(), m.getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public Matrix clone() {
+		return Matrix.wrap(rows, cols, toDoubleArray());
 	}
 
 }

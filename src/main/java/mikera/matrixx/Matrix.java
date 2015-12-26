@@ -511,14 +511,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 	
 	@Override
-	public Matrix addCopy(Matrix a) {
-		checkSameShape(a);
-		Matrix r=Matrix.create(rows, cols);
-		Matrix.add(r,this,a);
-		return r;
-	}
-	
-	@Override
 	public void add2(AMatrix a, AMatrix b) {
 		if (a instanceof ADenseArrayMatrix) {
 			if ((a instanceof Matrix)&&(b instanceof Matrix)) {
@@ -636,11 +628,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void clamp(double min, double max) {
 		DoubleArrays.clamp(data, 0, data.length, min, max);
-	}
-
-	@Override
-	public Matrix clone() {
-		return new Matrix(rows, cols, DoubleArrays.copyOf(data));
 	}
 
 	@Override
