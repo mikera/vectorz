@@ -12,20 +12,12 @@ public class HessenbergResult implements IHessenbergResult{
 		this.Q = Q;
 	}
 
-	/**
-     * An upper Hessenberg matrix from the decompostion.
-     *
-     * @return The extracted H matrix.
-     */
+    @Override
 	public AMatrix getH() {
 		return H;
 	}
 	
-	/**
-     * An orthogonal matrix that has the following property: H = Q<sup>T</sup>AQ
-     *
-     * @return The extracted Q matrix.
-     */
+    @Override
 	public AMatrix getQ() {
 		return Q;
 	}
