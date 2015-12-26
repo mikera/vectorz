@@ -209,12 +209,8 @@ public class TestOps {
 				assertEquals(op.derivative(x),d.apply(x),0.00001);
 			}
 		} else {
-			try {
-				op.derivative(x);
-				fail("Derivative did not throw exception!");
-			} catch (Throwable t) {
-				// OK
-			}
+			assertNull(op.getDerivativeOp());
+			
 			try {
 				op.derivativeForOutput(x);
 				fail("Derivative for output did not throw exception!");
@@ -231,12 +227,7 @@ public class TestOps {
 			double x2=inv.apply(op.apply(x));
 			assertEquals(x2,inv.apply(op.apply(x2)),0.0001);
 		} else {
-			try {
-				op.getInverse();
-				fail("getInverse did not throw exception!");
-			} catch (Throwable t) {
-				// OK
-			}
+			assertNull(op.getInverse());
 		}
 	}
 	

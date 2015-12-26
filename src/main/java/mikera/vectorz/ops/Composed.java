@@ -88,7 +88,11 @@ public class Composed extends Op {
 	
 	@Override
 	public Op getInverse() {
-		return inner.getInverse().compose(outer.getInverse());
+		Op innerInv=inner.getInverse();
+		Op outerInv=outer.getInverse();
+		if ((outerInv==null)||(innerInv==null)) return null;
+		
+		return innerInv.compose(outerInv);
 	}
 	
 	@Override
