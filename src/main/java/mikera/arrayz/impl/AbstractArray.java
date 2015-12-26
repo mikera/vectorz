@@ -29,6 +29,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleDoubleIterator;
 import mikera.vectorz.util.Constants;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
@@ -1259,7 +1260,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 
 	@Override
 	public double[] toDoubleArray() {
-		double[] result=Array.createStorage(this.getShape());
+		double[] result=DoubleArrays.createStorageArray(this.getShape());
 		if (this.isSparse()) {
 			addToArray(result,0);
 		} else {

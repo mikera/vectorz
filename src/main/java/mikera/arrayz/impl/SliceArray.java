@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.matrixx.Matrix;
@@ -12,6 +11,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.impl.Vector0;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -323,7 +323,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	
 	@Override
 	public double[] toDoubleArray() {
-		double[] result=Array.createStorage(this.getShape());
+		double[] result=DoubleArrays.createStorageArray(this.getShape());
 		int skip=(int)slice(0).elementCount();
 		for (int i=0; i<slices.length; i++) {
 			INDArray s=slices[i];

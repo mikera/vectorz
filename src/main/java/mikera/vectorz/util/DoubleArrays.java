@@ -685,4 +685,21 @@ public final class DoubleArrays {
 		}
 	}
 
+	/**
+	 * Creates a double[] storage array of the specified shape
+	 * @param shape
+	 * @return
+	 */
+	public static double[] createStorageArray(int... shape) {
+		long ec=1;
+		for (int i=0; i<shape.length; i++) {
+			int si=shape[i];
+			if ((ec*si)!=(((int)ec)*si)) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+			ec*=shape[i];
+		}
+		int n=(int)ec;
+		if (ec!=n) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+		return new double[n];
+	}
+
 }
