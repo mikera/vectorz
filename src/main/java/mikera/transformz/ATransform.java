@@ -154,7 +154,10 @@ public abstract class ATransform implements Cloneable, ITransform {
 	}
 
 	/**
-	 * Return the inverse of this transformation if possible
+	 * Return the inverse of this transformation (if possible).
+	 * 
+	 * Throws an exception if the inverse cannot be computed.
+	 * 
 	 * @return
 	 */
 	public AAffineTransform inverse() {
