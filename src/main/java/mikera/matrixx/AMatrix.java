@@ -728,10 +728,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void transposeInPlace() {
 		int dims = checkSquare();
 		for (int i = 0; i < dims; i++) {
+			AVector row=getRowView(i);
+			AVector col=getColumnView(i);
 			for (int j = i + 1; j < dims; j++) {
-				double temp = unsafeGet(i, j);
-				unsafeSet(i, j, unsafeGet(j, i));
-				unsafeSet(j, i, temp);
+				double vr = row.unsafeGet(j);
+				double vc = col.unsafeGet(j);
+				if (vr!=vc) {
+					row.unsafeSet(j,vc);
+					col.unsafeSet(j,vr);
+				}
 			}
 		}
 	}
