@@ -187,6 +187,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		}
 	}
 	
+	@Override
 	public void applyOp(Op2 op, AMatrix b) {
 		checkSameShape(b);
 		int cc = columnCount();

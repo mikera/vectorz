@@ -128,6 +128,7 @@ public class BandedMatrix extends ABandedMatrix {
 		getBand(bandIndex(i,j)).unsafeSet(bandPosition(i,j),value);
 	}
 	
+	@Override
 	public void addAt(int i, int j, double d) {
 		int band=j-i;
 		AVector b=getBand(band);

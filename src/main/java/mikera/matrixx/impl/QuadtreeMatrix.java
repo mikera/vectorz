@@ -269,6 +269,7 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 		}
 	}
 	
+	@Override
 	public int getBlockColumnStart(int colBlock) {
 		switch (colBlock) {
 		case 0: return 0;
@@ -277,6 +278,7 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 		}
 	}
 	
+	@Override
 	public int getBlockRowStart(int rowBlock) {
 		switch (rowBlock) {
 		case 0: return 0;

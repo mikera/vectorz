@@ -160,6 +160,7 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 		return Matrix.wrap(rows, cols, DoubleArrays.copyOf(data));
 	}
 	
+	@Override
 	public Matrix toMatrixTranspose() {
 		Matrix m = Matrix.create(cols, rows);
 		for (int j=0; j<cols; j++) {
