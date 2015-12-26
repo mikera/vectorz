@@ -147,7 +147,8 @@ public class HouseholderColQR implements QRDecomposition {
      * to it.
      * </p>
      */
-    public QRResult decompose( AMatrix A ) {
+    @Override
+	public QRResult decompose( AMatrix A ) {
         this.numCols = A.columnCount();
         this.numRows = A.rowCount();
         minLength = Math.min(numCols,numRows);
