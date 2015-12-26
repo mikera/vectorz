@@ -518,7 +518,8 @@ public class Vectorz {
 	}
 
 	/**
-	 * Coerce to AVector
+	 * Coerce to AVector. Avoids copying if possible.
+	 * 
 	 * @param o
 	 * @return
 	 */
