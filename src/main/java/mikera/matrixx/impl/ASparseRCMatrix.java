@@ -11,6 +11,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -366,7 +367,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double[] toDoubleArray() {
-		double[] result=Matrix.createStorage(rowCount(),columnCount());
+		double[] result=DoubleArrays.createStorage(rowCount(),columnCount());
 		// since this array is sparse, fastest to use addToArray to modify only non-zero elements
 		addToArray(result,0);
 		return result;

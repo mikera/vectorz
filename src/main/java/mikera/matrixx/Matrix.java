@@ -36,7 +36,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	private static final long serialVersionUID = -3260581688928230431L;
 
 	private Matrix(int rowCount, int columnCount) {
-		this(rowCount, columnCount, createStorage(rowCount, columnCount));
+		this(rowCount, columnCount, DoubleArrays.createStorage(rowCount, columnCount));
 	}
 
 	/**
@@ -64,15 +64,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	 */
 	public Matrix(AMatrix m) {
 		this(m.rowCount(), m.columnCount(), m.toDoubleArray());
-	}
-
-	public static double[] createStorage(int rowCount, int columnCount) {
-		long elementCount = ((long) rowCount) * columnCount;
-		int ec = (int) elementCount;
-		if (ec != elementCount)
-			throw new IllegalArgumentException(ErrorMessages.tooManyElements(
-					rowCount, columnCount));
-		return new double[ec];
 	}
 
 	public static Matrix createRandom(int rows, int cols) {

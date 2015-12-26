@@ -6,6 +6,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.impl.ASizedVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /** 
@@ -275,7 +276,7 @@ public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 	
 	@Override
 	public double[] toDoubleArray() {
-		double[] result=Matrix.createStorage(rowCount(),columnCount());
+		double[] result=DoubleArrays.createStorage(rowCount(),columnCount());
 		// since this array is sparse, fastest to use addToArray to modify only non-zero elements
 		addToArray(result,0);
 		return result;

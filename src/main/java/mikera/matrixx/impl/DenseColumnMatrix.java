@@ -29,7 +29,7 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, I
 	}
 	
 	private DenseColumnMatrix(int rowCount, int columnCount) {
-		this(rowCount, columnCount, Matrix.createStorage(rowCount, columnCount));
+		this(rowCount, columnCount, DoubleArrays.createStorage(rowCount, columnCount));
 	}
 	
 	public static DenseColumnMatrix wrap(int rows, int cols, double[] data) {

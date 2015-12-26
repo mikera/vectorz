@@ -702,4 +702,19 @@ public final class DoubleArrays {
 		return new double[n];
 	}
 
+	/**
+	 * Creates a storage double[] array for a matrix of the specifid shape
+	 * @param rowCount
+	 * @param columnCount
+	 * @return
+	 */
+	public static double[] createStorage(int rowCount, int columnCount) {
+		long elementCount = ((long) rowCount) * columnCount;
+		int ec = (int) elementCount;
+		if (ec != elementCount)
+			throw new IllegalArgumentException(ErrorMessages.tooManyElements(
+					rowCount, columnCount));
+		return new double[ec];
+	}
+
 }

@@ -55,6 +55,7 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.MatrixViewVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.Constants;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
@@ -1509,7 +1510,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public double[] toDoubleArray() {
-		double[] result=Matrix.createStorage(rowCount(),columnCount());
+		double[] result=DoubleArrays.createStorage(rowCount(),columnCount());
 		getElements(result,0);
 		return result;
 	}
