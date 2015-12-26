@@ -30,6 +30,7 @@ public class InterfaceVsVirtualBenchmark extends SimpleBenchmark {
 	}
 	
 	public static class A implements I {
+		@Override
 		public long foo(Long a) {
 			return a+1;
 		}
