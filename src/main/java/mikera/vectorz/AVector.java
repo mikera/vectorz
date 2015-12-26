@@ -612,10 +612,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param data
 	 * @param offset The offset into the target array
 	 */
-	public void multiplyTo(double[] data, int offset) {
+	public void multiplyTo(double[] dest, int offset) {
 		int len=length();
 		for (int i = 0; i < len; i++) {
-			data[i+offset]*=unsafeGet(i);
+			dest[i+offset]*=unsafeGet(i);
 		}	
 	}
 	
