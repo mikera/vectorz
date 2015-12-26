@@ -2,10 +2,7 @@ package mikera.matrixx;
 
 import java.util.List;
 
-import mikera.matrixx.impl.MatrixColumnView;
-import mikera.matrixx.impl.MatrixRowView;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 
 /**
  * Interface for fundamental matrix access operations.
