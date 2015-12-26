@@ -648,13 +648,9 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void setColumn(int j, AVector col) {
-		int rc = rows;
-		if (col.length() != rc)
-			throw new IllegalArgumentException(ErrorMessages.mismatch(
-					this.getColumn(j), col));
-		for (int i = 0; i < rc; i++) {
-			data[index(i, j)] = col.unsafeGet(i);
-		}
+		int rc = checkRow(j);
+		col.checkLength(rc);
+		col.copyTo(0, data, j, rc, cols);
 	}
 
 	@Override

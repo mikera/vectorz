@@ -371,7 +371,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
 //                    System.out.println("error after = "+error);
 //                    A.print("%f");
 //                    System.out.println();
-                    fail("Error was too large");
+                    fail("Error was too large: "+error);
                 }
 
                 assertTrue(error <= 1e-12);

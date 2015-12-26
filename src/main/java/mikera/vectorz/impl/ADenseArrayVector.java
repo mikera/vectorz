@@ -488,6 +488,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	
 	@Override
 	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		offset+=getArrayOffset();
 		for (int i=0; i<length; i++) {
 			dest[destOffset+i*stride]=data[i+offset];
 		}
