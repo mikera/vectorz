@@ -81,7 +81,7 @@ public class MatrixIndexScalar extends AScalar {
 	}
 
 	@Override
-	public AScalar immutable() {
+	public ImmutableScalar immutable() {
 		return ImmutableScalar.create(get());
 	}
 	

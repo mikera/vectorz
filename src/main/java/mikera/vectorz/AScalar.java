@@ -500,7 +500,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 
 	@Override
-	public AScalar immutable() {
+	public ImmutableScalar immutable() {
 		return ImmutableScalar.create(get());
 	}
 	

@@ -65,15 +65,6 @@ public class VectorIndexScalar extends AScalar {
 			return Scalar.create(get());
 		}
 	}
-
-	@Override
-	public AScalar immutable() {
-		if (vector.isMutable()) {
-			return ImmutableScalar.create(get());
-		} else {
-			return this;
-		}
-	}
 	
 	@Override
 	public void validate() {

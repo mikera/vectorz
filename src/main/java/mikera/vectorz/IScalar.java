@@ -1,13 +1,13 @@
 package mikera.vectorz;
 
-import mikera.arrayz.INDArray;
+import mikera.vectorz.impl.ImmutableScalar;
 
 /**
  * Interface for scalar array objects
  * 
  * @author Mike
  */
-public interface IScalar extends INDArray {
+public interface IScalar {
 
 	/**
 	 * Returns the double value of a scalar array
@@ -20,8 +20,13 @@ public interface IScalar extends INDArray {
 	 */
 	public void set(double value);
 	
-	
+	/**
+	 * Coerces this scalar to a mutable form
+	 */
 	public AScalar mutable();
 	
-	public AScalar immutable();
+	/**
+	 * Coerces this scalar to an immutable form
+	 */
+	public ImmutableScalar immutable();
 }
