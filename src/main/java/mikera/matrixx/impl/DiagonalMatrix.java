@@ -69,20 +69,12 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double trace() {
-		double result=0.0;
-		for (int i=0; i<dimensions; i++) {
-			result+=data[i];
-		}
-		return result;
+		return lead.elementSum();
 	}
 	
 	@Override
 	public double diagonalProduct() {
-		double result=1.0;
-		for (int i=0; i<dimensions; i++) {
-			result*=data[i];
-		}
-		return result;
+		return lead.elementProduct();
 	}
 	
 	@Override
