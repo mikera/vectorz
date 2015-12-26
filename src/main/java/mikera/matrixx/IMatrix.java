@@ -14,7 +14,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public interface IMatrix extends INDArray {
+public interface IMatrix {
 	/**
 	 * Gets the number of rows in this matrix (dimension 0)
 	 * @return
@@ -27,8 +27,16 @@ public interface IMatrix extends INDArray {
 	 */
 	public int columnCount();
 
+	/**
+	 * Gets the element at the specified position in this matrix
+	 * @return
+	 */
 	public double get(int row, int column);
 
+	/**
+	 * Sets the element at the specified position in this matrix
+	 * @return
+	 */
 	public void set(int row, int column, double value);
 	
 	/**
