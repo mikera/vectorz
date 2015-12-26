@@ -7,6 +7,11 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
+/**
+ * Scalar class wrapping a single element of a dense double[] array.
+ * 
+ * @author Mike
+ */
 public class ArrayIndexScalar extends AScalar implements IStridedArray, IDenseArray {
 	private static final long serialVersionUID = 5928615452582152522L;
 
