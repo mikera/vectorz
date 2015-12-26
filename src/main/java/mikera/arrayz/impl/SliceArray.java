@@ -101,6 +101,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		}
 	}
 	
+	@Override
 	public void fill(double value) {
 		for (T s:slices) {
 			s.fill(value);
