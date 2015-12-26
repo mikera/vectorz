@@ -2,7 +2,7 @@ package mikera.transformz;
 
 public abstract class ASizedTransform extends ATransform {
 
-	private final int size;
+	protected final int size;
 	
 	protected ASizedTransform(int size) {
 		this.size=size;

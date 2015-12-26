@@ -160,7 +160,7 @@ public abstract class ATransform implements Cloneable, ITransform {
 	 * 
 	 * @return
 	 */
-	public AAffineTransform inverse() {
+	public ATransform inverse() {
 		throw new UnsupportedOperationException("inverse not supported by "+this.getClass());
 	}
 	
