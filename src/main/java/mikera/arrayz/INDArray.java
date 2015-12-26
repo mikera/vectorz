@@ -505,7 +505,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean isSameShape(INDArray a);
 	
 	/**
-	 * Return true if this array is a view type
+	 * Return true if this array is considered as a view type. This indicates (but does not guarantee):
+	 * a) Data is *likely* to be shared with other arrays, so mutation of one may affect others
+	 * b) It is *unlikely* to be in the most efficient general purpose format
+	 * 
+	 * isView is intended to be used as for heuristics. It should *not* be used where the outcome might
+	 * affect correctness.
 	 */
 	public boolean isView();
 

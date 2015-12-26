@@ -34,9 +34,22 @@ import mikera.vectorz.util.ErrorMessages;
  */
 public final class Matrix extends ADenseArrayMatrix {
 	private static final long serialVersionUID = -3260581688928230431L;
+	
+	/**
+	 * Creates a new Matrix with a copy of all data from the source matrix
+	 * 
+	 * @param m
+	 */
+	public Matrix(AMatrix m) {
+		this(m.rowCount(), m.columnCount(), m.toDoubleArray());
+	}
 
-	private Matrix(int rowCount, int columnCount) {
+	public Matrix(int rowCount, int columnCount) {
 		this(rowCount, columnCount, DoubleArrays.createStorage(rowCount, columnCount));
+	}
+
+	private Matrix(int rowCount, int columnCount, double[] data) {
+		super(data, rowCount, columnCount);
 	}
 
 	/**
@@ -46,6 +59,9 @@ public final class Matrix extends ADenseArrayMatrix {
 		return new Matrix(rowCount, columnCount);
 	}
 	
+	/**
+	 * Creates a new zero-filled matrix of the specified shape.
+	 */
 	public static Matrix create(int... shape) {
 		int dims=shape.length;
 		if (dims!=2) throw new IllegalArgumentException("Cannot create Matrix with dimensionality: "+dims);
@@ -53,17 +69,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 
+	/**
+	 * Creates a new mutable dense matrix containing a copy of another matroix
+	 */
 	public static Matrix create(AMatrix m) {
 		return new Matrix(m);
-	}
-
-	/**
-	 * Creates a new Matrix with a copy of all data from the source matrix
-	 * 
-	 * @param m
-	 */
-	public Matrix(AMatrix m) {
-		this(m.rowCount(), m.columnCount(), m.toDoubleArray());
 	}
 
 	public static Matrix createRandom(int rows, int cols) {
@@ -147,10 +157,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public boolean isPackedArray() {
 		return true;
-	}
-
-	private Matrix(int rowCount, int columnCount, double[] data) {
-		super(data, rowCount, columnCount);
 	}
 
 	public static Matrix wrap(int rowCount, int columnCount, double[] data) {
