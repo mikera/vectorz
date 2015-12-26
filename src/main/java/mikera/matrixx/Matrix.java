@@ -92,12 +92,12 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	public static Matrix createFromRows(Object... rows) {
 		int rc=rows.length;
-		AVector row0=Vectorz.create(rows[0]);
+		AVector row0=Vectorz.toVector(rows[0]);
 		int cc=row0.length();
 		Matrix m = create(rc,cc);
 		m.setRow(0, row0);
 		for (int i=1; i<rc ; i++) {
-			AVector v=Vectorz.create(rows[i]);
+			AVector v=Vectorz.toVector(rows[i]);
 			m.setRow(i, v);
 		}
 		return m;
