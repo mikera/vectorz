@@ -128,13 +128,21 @@ public interface INDArray extends Cloneable, Serializable {
 	public void set(int i, int j, double value);
 	
 	/**
-	 * Sets a value at a given indexed position in a mutable array
+	 * Sets the element at the given indexed position in a mutable array
 	 *
-	 * @param i
+	 * @param index
 	 * @param value
 	 */
-	public void set(int[] indexes, double value);
+	public void set(int[] index, double value);
 	
+
+	/**
+	 * Sets the element at the given indexed position in a mutable array
+	 * @param index
+	 * @param value
+	 */
+	public void set(long[] index, double value);
+
 	/**
 	 * Sets this array to the element values contained in another array. 
 	 * 
@@ -963,7 +971,4 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param b
 	 */
 	void applyOp(Op2 op, double b);
-
-	void set(long[] indexes, double value);
-
 }
