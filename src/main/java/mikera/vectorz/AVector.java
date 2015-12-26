@@ -1002,12 +1002,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
-	
-	
 	/**
 	 * Fast dot product with a double[] array. Performs no bounds checking. 
 	 * 
-	 * Likely to be faster than other dot product operations
+	 * Likely to be faster than most other dot product operations
 	 */
 	public abstract double dotProduct(double[] data, int offset);
 	

@@ -1,7 +1,5 @@
 package mikera.vectorz;
 
-import mikera.arrayz.INDArray;
-
 /**
  * Basic interface for a Vector
  * 

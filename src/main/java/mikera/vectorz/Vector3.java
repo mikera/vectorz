@@ -115,6 +115,7 @@ public final class Vector3 extends APrimitiveVector {
 		return Math.sqrt(distanceSquared(v));
 	}
 	
+	@Override
 	public double distance(AVector v) {
 		if (v instanceof Vector3) {
 			return distance((Vector3)v);
@@ -257,6 +258,7 @@ public final class Vector3 extends APrimitiveVector {
 		z=tz;		
 	}
 	
+	@Override
 	public void crossProduct(Vector3 a) {
 		double tx=y*a.z-z*a.y;
 		double ty=z*a.x-x*a.z;

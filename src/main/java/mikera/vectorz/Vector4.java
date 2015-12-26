@@ -158,6 +158,7 @@ public final class Vector4 extends APrimitiveVector {
 		return (x*a.x)+(y*a.y)+(z*a.z)+(t*a.t);
 	}
 	
+	@Override
 	public double dotProduct(double[] as, int offset) {
 		return (x*as[offset])+(y*as[offset+1])+(z*as[offset+2])+(t*as[offset+3]);
 	}
