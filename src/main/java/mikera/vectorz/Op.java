@@ -42,6 +42,9 @@ public abstract class Op implements IOperator {
 		}
 	}
 	
+	/**
+	 * Applies this operator to every element of a target matrix, mutating the matrix
+	 */
 	public void applyTo(AMatrix m) {
 		m.applyOp(this);
 	}
@@ -56,10 +59,18 @@ public abstract class Op implements IOperator {
 		}
 	}
 	
+	/**
+	 * Applies this operator to a scalar, mutating the scalar
+	 * @param s
+	 */
 	public void applyTo(AScalar s) {
 		s.set(apply(s.get()));
 	}
 	
+	/**
+	 * Applies this operator to a dense array vector, mutating the vector
+	 * @param s
+	 */
 	public void applyTo(ADenseArrayVector v) {
 		applyTo(v.getArray(), v.getArrayOffset(),v.length());
 	}
@@ -98,6 +109,10 @@ public abstract class Op implements IOperator {
 		}
 	}
 	
+	/**
+	 * Applies this operator to every element in a double array, mutating the array
+	 * @param data
+	 */
 	public void applyTo(double[] data) {
 		applyTo(data,0,data.length);
 	}
@@ -112,14 +127,26 @@ public abstract class Op implements IOperator {
 		return new Inverse(this);
 	}
 	
+	/**
+	 * Returns true if this operator supports computing the derivative for a given input
+	 * @return
+	 */
 	public boolean hasDerivative() {
 		return false;
 	}
 	
+	/**
+	 * Returns true if this operator supports computing the derivative for a given output
+	 * @return
+	 */
 	public boolean hasDerivativeForOutput() {
 		return hasDerivative();
 	}
 	
+	/**
+	 * Returns true if this operator supports computing the inverse for a given output
+	 * @return
+	 */
 	public boolean hasInverse() {
 		return false;
 	}
