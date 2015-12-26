@@ -19,6 +19,7 @@ import mikera.vectorz.ops.Sum;
  */
 public abstract class Op implements IOperator {
 	
+	@Override
 	public abstract double apply(double x);
 	
 	/**

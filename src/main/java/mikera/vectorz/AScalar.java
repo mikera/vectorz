@@ -30,8 +30,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	private static final int[] SCALAR_SHAPE=IntArrays.EMPTY_INT_ARRAY;
 	private static final long[] SCALAR_LONG_SHAPE=LongArrays.EMPTY_LONG_ARRAY;
 
+	@Override
 	public abstract double get();
 	
+	@Override
 	public void set(double value) {
 		throw new UnsupportedOperationException();
 	}
@@ -215,6 +217,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		return a.multiplyCopy(get());
 	}
 	
+	@Override
 	public Scalar innerProduct(AScalar a) {
 		return Scalar.create(get()*a.get());
 	}

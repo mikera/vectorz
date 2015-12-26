@@ -10,7 +10,7 @@ import mikera.arrayz.INDArray;
  * 
  * @author Mike
  */
-public interface IVector extends INDArray {
+public interface IVector {
 
 	/**
 	 * Returns the length of a vector, in terms of the number of elements.
@@ -56,4 +56,6 @@ public interface IVector extends INDArray {
 	double normalise();
 
 	AVector normaliseCopy();
+	
+	AVector clone();
 }
