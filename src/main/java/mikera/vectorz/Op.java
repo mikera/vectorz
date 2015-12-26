@@ -109,11 +109,7 @@ public abstract class Op implements IOperator {
 	
 	@Override 
 	public Op getInverse() {
-		if (hasInverse()) {
-			return new Inverse(this);
-		} else {
-			throw new UnsupportedOperationException("No inverse available: "+this.getClass());
-		}
+		return new Inverse(this);
 	}
 	
 	public boolean hasDerivative() {

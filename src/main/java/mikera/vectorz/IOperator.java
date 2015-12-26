@@ -52,7 +52,10 @@ public interface IOperator {
 	public ATransform getTransform(int dims);
 
 	/**
-	 * Gets the inverse of this operator
+	 * Gets the inverse of this operator.
+	 * 
+	 * Returns null if no inverse exists.
+	 * 
 	 * @return
 	 */
 	public Op getInverse();
