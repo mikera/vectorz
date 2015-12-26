@@ -2,7 +2,10 @@ package mikera.matrixx;
 
 import java.util.List;
 
+import mikera.matrixx.impl.MatrixColumnView;
+import mikera.matrixx.impl.MatrixRowView;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 
 /**
  * Interface for fundamental matrix access operations.
@@ -53,6 +56,30 @@ public interface IMatrix {
 	 * but might not be (e.g. getColumn on a Matrix33 returns a Vector3).
 	 */
 	public AVector getColumn(int column);
+	
+	/**
+	 * Returns a row of the matrix as a vector view. May be used to modify the original matrix.
+	 */
+	public AVector getRowView(int row);
+
+	/**
+	 * Returns a column of the matrix as a vector view. May be used to modify the original matrix.
+	 */
+	public AVector getColumnView(int column);
+	
+	/**
+	 * Returns a row of the matrix as a new cloned, mutable vector.
+	 * 
+	 * The cloned row may be modified without affecting the original matrix.
+	 */
+	public AVector getRowClone(int row);
+
+	/**
+	 * Returns a column of the matrix as a new cloned, mutable vector
+	 * 
+	 * The cloned column may be modified without affecting the original matrix.
+	 */
+	public AVector getColumnClone(int column);
 
 	/**
 	 * Gets a band of a matrix

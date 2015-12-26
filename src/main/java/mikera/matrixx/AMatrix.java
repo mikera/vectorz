@@ -557,25 +557,17 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return getColumnView(column);
 	}
 	
-	/**
-	 * Returns a row of the matrix as a vector view
-	 */
+	@Override
 	public AVector getRowView(int row) {
 		return new MatrixRowView(this, row);
 	}
 
-	/**
-	 * Returns a column of the matrix as a vector view. May be used to modify the original matrix
-	 */
+	@Override
 	public AVector getColumnView(int column) {
 		return new MatrixColumnView(this, column);
 	}
 	
-	/**
-	 * Returns a row of the matrix as a new cloned, mutable vector.
-	 * 
-	 * You may modify the cloned row without affecting the source matrix.
-	 */
+	@Override
 	public AVector getRowClone(int row) {
 		int cc=columnCount();
 		Vector result=Vector.createLength(cc);
@@ -583,9 +575,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 
-	/**
-	 * Returns a column of the matrix as a new cloned vector
-	 */
+	@Override
 	public AVector getColumnClone(int column) {
 		int rc=rowCount();
 		Vector result=Vector.createLength(rc);
