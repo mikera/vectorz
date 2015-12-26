@@ -75,23 +75,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	private static final double TOLERANCE = 1e-8;
 
 	/**
-	 * Returns the number of rows in the matrix
-	 */
-	public abstract int rowCount();
-
-	/**
-	 * Returns the number of columns in the matrix
-	 */
-	public abstract int columnCount();
-
-	/**
 	 * Returns a specified element in the matrix
 	 */
+	@Override
 	public abstract double get(int i, int j);
 
 	/**
 	 * Sets a specified element in the matrix
 	 */
+	@Override
 	public abstract void set(int i, int j, double value);
 
 	// =============================================
@@ -555,23 +547,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		v.setElements(temp);
 	}
 
-
-	/**
-	 * Returns a row of the matrix. May or may not be a view, depending on matrix type.
-	 * 
-	 * Intended for the fastest possible read access of the row. This often means a view, 
-	 * but might not be (e.g. getRow on a Matrix33 returns a Vector3).
-	 */
+	@Override
 	public AVector getRow(int row) {
 		return getRowView(row);
 	}
 
-	/**
-	 * Returns a column of the matrix. May or may not be a view, depending on matrix type.
-	 * 
-	 * Intended for the fastest possible read access of the column. This often means a view, 
-	 * but might not be (e.g. getColumn on a Matrix33 returns a Vector3).
-	 */
+	@Override
 	public AVector getColumn(int column) {
 		return getColumnView(column);
 	}
@@ -879,6 +860,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param m
 	 * @return 
 	 */
+	@Override
 	public double elementSquaredSum() {
 		int rc=rowCount();
 		

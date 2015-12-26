@@ -2,7 +2,6 @@ package mikera.matrixx;
 
 import java.util.List;
 
-import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 
 /**
@@ -40,16 +39,18 @@ public interface IMatrix {
 	public void set(int row, int column, double value);
 	
 	/**
-	 * Gets a matrix row as a vector. May or may not be a mutable view.
-	 * @param row
-	 * @return
+	 * Returns a row of the matrix. May or may not be a view, depending on matrix type.
+	 * 
+	 * Intended for the fastest possible read access of the row. This often means a view, 
+	 * but might not be (e.g. getRow on a Matrix33 returns a Vector3).
 	 */
 	public AVector getRow(int row);
 	
 	/**
-	 * Gets a matrix column as a vector. May or may not be a mutable view.
-	 * @param row
-	 * @return
+	 * Returns a column of the matrix. May or may not be a view, depending on matrix type.
+	 * 
+	 * Intended for the fastest possible read access of the column. This often means a view, 
+	 * but might not be (e.g. getColumn on a Matrix33 returns a Vector3).
 	 */
 	public AVector getColumn(int column);
 
