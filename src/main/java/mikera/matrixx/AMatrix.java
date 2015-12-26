@@ -2130,9 +2130,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public AMatrix addCopy(AMatrix a) {
-		AMatrix m=this.clone();
-		m.add(a);
-		return m;
+		AMatrix result=a.clone();
+		result.add(this);
+		return result;
 	}
 	
 	@Override
@@ -2145,9 +2145,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/* Performance overload */
 	public Matrix addCopy(ADenseArrayMatrix a) {
 		checkSameShape(a);
-		Matrix r=a.clone();
-		this.addToArray(r.data,0);
-		return r;
+		Matrix result=a.clone();
+		this.addToArray(result.data,0);
+		return result;
 	}
 
 	/**
@@ -2177,12 +2177,24 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return rc;
 	}
 	
+	/**
+	 * Checks if this matrix has the expected number of rows.
+	 * Throws an exception if not.
+	 * @param expected
+	 * @return The actual number of rows in this matrix
+	 */
 	protected int checkRowCount(int expected) {
 		int rc=rowCount();
 		if (rc!=expected) throw new IllegalArgumentException("Unexpected row count: "+rc+" expected: "+expected);
 		return rc;
 	}
 	
+	/**
+	 * Checks if this matrix has the expected number of columns.
+	 * Throws an exception if not.
+	 * @param expected
+	 * @return The actual number of columns in this matrix
+	 */
 	protected int checkColumnCount(int expected) {
 		int cc=columnCount();
 		if (cc!=expected) throw new IllegalArgumentException("Unexpected column count: "+cc+" expected: "+expected);
