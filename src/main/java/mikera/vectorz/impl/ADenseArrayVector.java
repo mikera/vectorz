@@ -37,13 +37,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		return 1;
 	}
 
-	/**
-	 * Returns a vector referencing a sub-vector of the current vector
-	 * 
-	 * @param offset
-	 * @param length
-	 * @return
-	 */
+	@Override
 	public AVector subVector(int offset, int length) {
 		int len = checkRange(offset,length);
 		if (length == 0) return Vector0.INSTANCE;
@@ -64,6 +58,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		return IndexedArrayVector.wrap(getArray(), inds);
 	}
 
+	@Override
 	public boolean isPackedArray() {
 		return (getArrayOffset() == 0) && (length() == getArray().length);
 	}
@@ -437,9 +432,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		DoubleArrays.sqrt(getArray(), getArrayOffset(), length());
 	}
 
-	/**
-	 * Sets each component of the vector to its sign value (-1, 0 or 1)
-	 */
+	@Override
 	public void signum() {
 		DoubleArrays.signum(getArray(), getArrayOffset(), length());
 	}

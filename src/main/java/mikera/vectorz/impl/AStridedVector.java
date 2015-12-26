@@ -28,11 +28,18 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
+	@Override
 	public final double[] getArray() {
 		return data;
 	}
 	
+	@Override
 	public abstract int getArrayOffset();
+	
+	/**
+	 * Gets the stride of this strided vector.
+	 * @return
+	 */
 	public abstract int getStride();
 	
 	@Override

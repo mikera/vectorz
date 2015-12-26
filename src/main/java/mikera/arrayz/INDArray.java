@@ -699,7 +699,9 @@ public interface INDArray extends Cloneable, Serializable {
 	public void sqrt();
 	
 	/**
-	 * Calculates the signum of all elements of the array
+	 * Calculates the signum of all elements of this mutable array
+	 * 
+	 * Sets each component of the array to its sign value (-1, 0 or 1)
 	 */
 	public void signum();
 

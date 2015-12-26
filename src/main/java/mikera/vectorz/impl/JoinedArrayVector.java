@@ -72,6 +72,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 		return pos[j+1]-pos[j];
 	}
 	
+	@Override
 	public ArraySubVector getComponent(int i) {
 		return ArraySubVector.wrap(data[i], offsets[i], subLength(i));
 	}
@@ -152,7 +153,8 @@ public final class JoinedArrayVector extends AJoinedVector {
 		return super.dotProduct(v);
 	}
 	
-	public double dotProduct (ADenseArrayVector v) {
+	@Override
+	public double dotProduct(ADenseArrayVector v) {
 		double result=0.0;
 		double[] arr=v.getArray();
 		int ao=v.getArrayOffset();
