@@ -94,10 +94,12 @@ public final class Constant extends ALinearOp {
 		return Constant.ZERO;
 	}
 	
+	@Override
 	public Op compose(Op op) {
 		return this;
 	}
 	
+	@Override
 	public Op product(Op op) {
 		if (value==0) return Constant.ZERO;
 		return Linear.create(value, 0.0).compose(op);

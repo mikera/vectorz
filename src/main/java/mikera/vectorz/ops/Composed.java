@@ -81,6 +81,7 @@ public class Composed extends Op {
 		return (outer.hasInverse())&&(inner.hasInverse());
 	}
 	
+	@Override
 	public boolean isStochastic() {
 		return (outer.isStochastic())||(inner.isStochastic());
 	}

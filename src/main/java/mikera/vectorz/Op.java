@@ -228,6 +228,10 @@ public abstract class Op implements IOperator {
 		}		
 	}
 	
+	/**
+	 * Returns true if this operator has a known finite upper or lower bound
+	 * @return
+	 */
 	public boolean isBounded() {
 		return (minValue()>=-Double.MAX_VALUE)||(maxValue()<=Double.MAX_VALUE);
 	}
