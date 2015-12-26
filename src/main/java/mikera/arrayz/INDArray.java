@@ -793,7 +793,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public void exp();
 	
 	/**
-	 * Returns an immutable version of this INDArray's data. May return the same array if already immutable.
+	 * Returns an immutable version of this array. May return the same array if already immutable.
+	 * Guarantees a defensive copy if the array is mutable.
 	 */
 	public INDArray immutable();
 
