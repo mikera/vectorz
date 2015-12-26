@@ -162,7 +162,6 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray addCopy(INDArray a);	
 	
-
 	/**
 	 * Creates a new array equal to this array with a constant value added to every element
 	 * 

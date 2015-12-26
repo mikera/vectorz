@@ -159,6 +159,16 @@ public final class Matrix extends ADenseArrayMatrix {
 		return true;
 	}
 
+	/**
+	 * Wraps a double[] array as a dense Matrix. 
+	 * 
+	 * Double array must contain exactly the right number of elements, if not consider Matrixx.wrapStrided(..)
+	 * *
+	 * @param rowCount
+	 * @param columnCount
+	 * @param data
+	 * @return
+	 */
 	public static Matrix wrap(int rowCount, int columnCount, double[] data) {
 		if (data.length != rowCount * columnCount)
 			throw new IllegalArgumentException("data array is of wrong size: "
@@ -550,11 +560,6 @@ public final class Matrix extends ADenseArrayMatrix {
 		checkSameShape(a);
 		checkSameShape(b);
 		DoubleArrays.add2(data, a.data,b.data);
-	}
-
-	public void add(Matrix m) {
-		checkSameShape(m);
-		DoubleArrays.add(data, m.data);
 	}
 
 	@Override
