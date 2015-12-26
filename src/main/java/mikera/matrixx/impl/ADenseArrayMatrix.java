@@ -151,6 +151,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		data[index(i,j)]=value;
 	}
 	
+	@Override
 	protected int index(int row, int col) {
 		return getArrayOffset()+(row*cols)+col;
 	}

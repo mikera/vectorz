@@ -23,9 +23,7 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		super(data, rows, cols);
 	}
 
-	/**
-	 * Gets the array offset into this strided matrix
-	 */
+	@Override
 	public abstract int getArrayOffset();
 
 	/**

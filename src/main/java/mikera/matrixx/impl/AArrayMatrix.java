@@ -65,7 +65,7 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	}
 	
 	/**
-	 * Computes the index into the data array for a given position in the matrix
+	 * Computes the index into the underlying data array for a given position in this array-backed matrix
 	 * @param i
 	 * @param j
 	 * @return
