@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 
 /**
  * Mutable strided vector class
@@ -45,9 +46,34 @@ public final class StridedVector extends BaseStridedVector {
 	}
 	
 	@Override
+	public void applyOp(Op op) {
+		op.applyTo(data, offset, stride, length);
+	}
+	
+	@Override
 	public void set(AVector v) {
 		int length=checkSameLength(v);
 		v.copyTo(0, data, offset, length, stride);
+	}
+		
+	@Override
+	public void setElements(double[] values, int offset) {
+		double[] data=getArray();
+		int stride=getStride();		
+		int off=getArrayOffset();
+		for (int i=0; i<length; i++) {
+			data[off+i*stride]=values[offset+i];
+		}
+	}
+	
+	@Override
+	public void setElements(int pos, double[] values, int offset, int length) {
+		double[] data=getArray();
+		int stride=getStride();		
+		int off=getArrayOffset()+pos*stride;
+		for (int i=0; i<length; i++) {
+			data[off+i*stride]=values[offset+i];
+		}
 	}
 	
 	@Override

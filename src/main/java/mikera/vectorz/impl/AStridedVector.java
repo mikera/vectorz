@@ -164,31 +164,13 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void set(AVector v) {
-		int length=checkSameLength(v);
-		int stride=getStride();
-		v.copyTo(0, getArray(), getArrayOffset(), length, stride);
-	}
+	public abstract void set(AVector v);
 	
 	@Override
-	public void setElements(double[] values, int offset) {
-		double[] data=getArray();
-		int stride=getStride();		
-		int off=getArrayOffset();
-		for (int i=0; i<length; i++) {
-			data[off+i*stride]=values[offset+i];
-		}
-	}
+	public abstract void setElements(double[] values, int offset);
 	
 	@Override
-	public void setElements(int pos, double[] values, int offset, int length) {
-		double[] data=getArray();
-		int stride=getStride();		
-		int off=getArrayOffset()+pos*stride;
-		for (int i=0; i<length; i++) {
-			data[off+i*stride]=values[offset+i];
-		}
-	}
+	public abstract void setElements(int pos, double[] values, int offset, int length);
 	
 	@Override
 	public void add(double[] data, int offset) {
@@ -222,11 +204,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void addAt(int i, double v) {
-		int ix=index(i);
-		double[] data=getArray();
-		data[ix]+=v;
-	}
+	public abstract void addAt(int i, double v);
 	
 	@Override
 	public void addToArray(int offset, double[] destData, int destOffset,int length) {
@@ -246,9 +224,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void applyOp(Op op) {
-		op.applyTo(data, getArrayOffset(), getStride(), length);
-	}
+	public abstract void applyOp(Op op);
 	
 	@Override
 	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {

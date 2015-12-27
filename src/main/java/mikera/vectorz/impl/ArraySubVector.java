@@ -121,6 +121,11 @@ public final class ArraySubVector extends ADenseArrayVector {
 		if (len==length) return this;
 		return ArraySubVector.wrap(data, offset+start, length);
 	}
+	
+	@Override
+	public void setElements(double[] src, int srcOffset) {
+		System.arraycopy(src, srcOffset, data, this.offset, length);
+	}
 
 	@Override 
 	public ArraySubVector exactClone() {

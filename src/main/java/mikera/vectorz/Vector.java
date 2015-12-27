@@ -564,4 +564,9 @@ public final class Vector extends ADenseArrayVector {
 	protected int index(int i) {
 		return i;
 	}
+
+	@Override
+	public void setElements(double[] values, int offset) {
+		System.arraycopy(values, offset, data, 0, length);
+	}
 }
