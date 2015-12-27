@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op2;
 
 /**
  * Base class for joined vectors
@@ -145,6 +146,19 @@ public abstract class AJoinedVector extends ASizedVector {
 			offset+=stride*v.length();
 		}
 		return result;
+	}
+	
+	@Override
+	public void applyOp(Op2 op, AVector b) {
+		long n=componentCount();
+		checkSameLength(b);
+		int offset=0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			int vlen=v.length();
+			v.applyOp(op,b.subVector(offset,vlen));
+			offset+=vlen;
+		}
 	}
 	
 //	TODO: should have a fast implementation for this?
