@@ -32,13 +32,6 @@ public final class Vector extends ADenseArrayVector {
 		super(values.length,values);
 	}
 	
-	private Vector(Object... values) {
-		super(values.length,new double[values.length]);
-		for (int i=0; i<length; i++) {
-			data[i]=Tools.toDouble(values[i]);
-		}
-	}
-
 	private Vector(int length) {
 		this(new double[length]);
 	}
@@ -181,11 +174,6 @@ public final class Vector extends ADenseArrayVector {
 		} else {
 			super.set(a);
 		}
-	}
-	
-	@Override
-	public void getElements(double[] dest, int offset) {
-		System.arraycopy(data, 0, dest, offset, data.length);
 	}
 	
 	@Override
@@ -566,5 +554,10 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public void setElements(double[] values, int offset) {
 		System.arraycopy(values, offset, data, 0, length);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int destOffset) {
+		System.arraycopy(data, 0, dest, destOffset, length());
 	}
 }

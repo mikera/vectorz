@@ -86,22 +86,16 @@ public final class StridedVector extends BaseStridedVector {
 	}
 		
 	@Override
-	public void setElements(double[] values, int offset) {
-		double[] data=getArray();
-		int stride=getStride();		
-		int off=getArrayOffset();
+	public void setElements(double[] src, int srcOffset) {
 		for (int i=0; i<length; i++) {
-			data[off+i*stride]=values[offset+i];
+			data[offset+i*stride]=src[srcOffset+i];
 		}
 	}
 	
 	@Override
-	public void setElements(int pos, double[] values, int offset, int length) {
-		double[] data=getArray();
-		int stride=getStride();		
-		int off=getArrayOffset()+pos*stride;
+	public void setElements(int pos, double[] src, int srcOffset, int length) {
 		for (int i=0; i<length; i++) {
-			data[off+i*stride]=values[offset+i];
+			data[offset+i*stride]=src[srcOffset+i];
 		}
 	}
 	

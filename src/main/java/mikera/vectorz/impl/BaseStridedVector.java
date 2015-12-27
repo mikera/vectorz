@@ -69,11 +69,4 @@ public abstract class BaseStridedVector extends AStridedVector {
 		checkLength(v.length());
 		return v.dotProduct(getArray(), getArrayOffset(), getStride());
 	}
-	
-	@Override
-	public void getElements(double[] dest, int destOffset) {
-		for (int i=0; i<length; i++) {
-			dest[destOffset+i]=data[offset+(i*stride)];
-		}
-	}
 }

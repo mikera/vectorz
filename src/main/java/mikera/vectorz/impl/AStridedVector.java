@@ -268,12 +268,30 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public boolean equalsArray(double[] data, int offset) {
+	public void getElements(double[] dest, int destOffset) {
+		int offset=getArrayOffset();
 		int stride=getStride();
-		double[] array=getArray();
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]=data[offset+(i*stride)];
+		}
+	}
+	
+	@Override
+	public void getElements(double[] dest, int destOffset, int[] indices) {
+		int n=indices.length;
+		int offset=getArrayOffset();
+		int stride=getStride();
+		for (int i=0; i<n; i++) {
+			dest[destOffset+i]=dest[offset+(stride*indices[i])];
+		}
+	}
+	
+	@Override
+	public boolean equalsArray(double[] vs, int offset) {
+		int stride=getStride();
 		int di=getArrayOffset();
 		for (int i=0; i<length; i++) {
-			if (data[offset+i]!=array[di]) return false;
+			if (vs[offset+i]!=data[di]) return false;
 			di+=stride;
 		}
 		return true;
@@ -281,7 +299,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	
 	@Override
 	public void validate() {
-		double[] data=getArray();
 		if (length>0) {
 			int offset=getArrayOffset();
 			if ((offset<0)||(offset>=data.length)) throw new VectorzException("offset out of bounds: "+offset);
