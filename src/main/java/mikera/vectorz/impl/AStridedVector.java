@@ -163,29 +163,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	public abstract void setElements(int pos, double[] values, int offset, int length);
 	
 	@Override
-	public void add(double[] data, int offset) {
-		int stride=getStride();
-		double[] tdata=getArray();
-		int toffset=getArrayOffset();
-		int length=length();
-		for (int i = 0; i < length; i++) {
-			tdata[toffset+i*stride]+=data[offset+i];
-		}
-	}
-	
-	@Override
-	public void add(AVector v) {
-		v.checkLength(length());
-		v.addToArray(getArray(), getArrayOffset(),getStride());
-	}
-	
-	@Override
-	public void add(int offset, AVector a) {
-		int stride=getStride();
-		a.addToArray(getArray(), getArrayOffset()+offset*stride,stride);	
-	}
-	
-	@Override
 	public void add(int offset, AVector a, int aOffset, int length) {
 		double[] tdata=getArray();
 		int stride=getStride();

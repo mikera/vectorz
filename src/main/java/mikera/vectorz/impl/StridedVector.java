@@ -46,6 +46,29 @@ public final class StridedVector extends BaseStridedVector {
 	}
 	
 	@Override
+	public void add(double[] data, int offset) {
+		int stride=getStride();
+		double[] tdata=getArray();
+		int toffset=getArrayOffset();
+		int length=length();
+		for (int i = 0; i < length; i++) {
+			tdata[toffset+i*stride]+=data[offset+i];
+		}
+	}
+	
+	@Override
+	public void add(AVector v) {
+		v.checkLength(length());
+		v.addToArray(getArray(), getArrayOffset(),getStride());
+	}
+	
+	@Override
+	public void add(int offset, AVector a) {
+		int stride=getStride();
+		a.addToArray(getArray(), getArrayOffset()+offset*stride,stride);	
+	}
+	
+	@Override
 	public void applyOp(Op op) {
 		op.applyTo(data, offset, stride, length);
 	}
