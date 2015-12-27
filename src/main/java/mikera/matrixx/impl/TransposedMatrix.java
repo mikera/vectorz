@@ -1,5 +1,7 @@
 package mikera.matrixx.impl;
 
+import java.util.List;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -82,6 +84,16 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	@Override
 	public AVector getColumnView(int column) {
 		return source.getRowView(column);
+	}
+	
+	@Override
+	public List<AVector> getRows() {
+		return source.getColumns();
+	}
+	
+	@Override
+	public List<AVector> getColumns() {
+		return source.getRows();
 	}
 
 	@Override

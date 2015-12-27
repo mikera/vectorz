@@ -74,7 +74,6 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 	public void applyOp(IOperator op) {
 		source.applyOp(op);
 	}
-	
 
 	@Override
 	public void multiply(double factor) {
