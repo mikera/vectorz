@@ -144,7 +144,7 @@ public class Vectorz {
 			}
 			return ArraySubVector.wrap(data, offset, length);
 		}
-		return StridedVector.wrapStrided(data,offset,length,stride);
+		return StridedVector.wrap(data,offset,length,stride);
 	}
 
 	/**

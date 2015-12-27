@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.VectorzException;
 
 public final class StridedVector extends BaseStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
@@ -9,12 +10,18 @@ public final class StridedVector extends BaseStridedVector {
 		super(length,data,offset,stride);
 	}
 	
-	public static StridedVector wrapStrided(double[] data, int offset, int length, int stride) {
-		return new StridedVector(data,offset,length,stride);
-	}
-
+	/**
+	 * Wraps a StridedVector around a strided range of a double[] array.
+	 * 
+	 * Performs no bounds checking.
+	 * @param data
+	 * @param offset
+	 * @param length
+	 * @param stride
+	 * @return
+	 */
 	public static StridedVector wrap(double[] data, int offset, int length, int stride) {
-		return wrapStrided(data,offset,length,stride);
+		return new StridedVector(data,offset,length,stride);
 	}
 	
 	@Override
@@ -42,12 +49,20 @@ public final class StridedVector extends BaseStridedVector {
 		if (length==1) {
 			return ArraySubVector.wrap(data, offset+start*stride, 1);
 		} 
-		return wrapStrided(data,offset+start*stride,length,stride);
+		return wrap(data,offset+start*stride,length,stride);
 	}
 	
 	@Override
 	public StridedVector exactClone() {
 		double[] data=this.data.clone();
-		return wrapStrided(data,offset,length,stride);
+		return wrap(data,offset,length,stride);
+	}
+	
+	@Override
+	public void validate() {
+		super.validate();
+		int end=offset+(length-1)*stride;
+		if (Math.min(offset, end)<0) throw new VectorzException("Strided vector out of array range");
+		if (Math.max(offset, end)>=data.length) throw new VectorzException("Strided vector out of array range");
 	}
 }
