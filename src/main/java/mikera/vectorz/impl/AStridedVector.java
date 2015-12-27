@@ -227,7 +227,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	public abstract void applyOp(Op op);
 	
 	@Override
-	public Vector applyOpCopy(Op op) {
+	public AStridedVector applyOpCopy(Op op) {
 		double[] da=toDoubleArray();
 		op.applyTo(da);
 		return Vector.wrap(da);
