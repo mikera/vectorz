@@ -392,7 +392,7 @@ public final class Vector extends ADenseArrayVector {
 	@Override
 	public double distance(AVector v) {
 		if (v instanceof Vector) {
-			return distance((Vector)v);
+			return Math.sqrt(distanceSquared((Vector)v));
 		}
 		return super.distance(v);
 	}
