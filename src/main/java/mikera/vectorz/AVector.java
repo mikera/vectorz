@@ -2307,6 +2307,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		applyOp(op,b.broadcastLike(this));
 	}
 	
+	/**
+	 * Applies a binary operator to this vector and a second vector
+	 * @param op
+	 * @param b
+	 */
 	public void applyOp(Op2 op, AVector b) {
 		int len=length();
 		b.checkLength(len);
