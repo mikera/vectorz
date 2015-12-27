@@ -55,6 +55,35 @@ public final class StridedVector extends BaseStridedVector {
 		int length=checkSameLength(v);
 		v.copyTo(0, data, offset, length, stride);
 	}
+	
+	@Override
+	public void clamp(double min, double max) {
+		for (int i = 0; i < length; i++) {
+			int ix=offset+i*stride;
+			double v=data[ix];
+			if (v<min) {
+				data[ix]=min;
+			} else if (v>max) {
+				data[ix]=max;
+			}
+		}
+	}
+	
+	@Override
+	public void fill(double value) {
+		int di=offset;
+		for (int i=0; i<length; i++) {
+			data[di]=value;
+			di+=stride;
+		}
+	}
+	
+	@Override
+	public void multiply(double factor) {
+		for (int i=0; i<length; i++) {
+			data[offset+i*stride]*=factor;
+		}		
+	}
 		
 	@Override
 	public void setElements(double[] values, int offset) {

@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
+
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.DoubleArrays;
@@ -56,6 +58,11 @@ public final class ArraySubVector extends ADenseArrayVector {
 	public void set(int i, double value) {
 		checkIndex(i);
 		data[offset + i] = value;
+	}
+	
+	@Override
+	public void fill(double value) {
+		Arrays.fill(data, offset, offset+length, value);
 	}
 	
 	@Override

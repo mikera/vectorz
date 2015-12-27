@@ -45,6 +45,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	
 	@Override
 	public AStridedVector ensureMutable() {
+		if (isFullyMutable()) return this;
 		return clone();
 	}
 	
@@ -62,17 +63,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(getArray(), getArrayOffset(), getStride(), length());
-	}
-	
-	@Override
-	public void multiply(double factor) {
-		int len=length();
-		double[] array=getArray();
-		int offset=getArrayOffset();
-		int stride=getStride();
-		for (int i=0; i<len; i++) {
-			array[offset+i*stride]*=factor;
-		}		
 	}
 	
 	@Override
@@ -244,23 +234,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void clamp(double min, double max) {
-		int len=length();
-		int stride=getStride();
-		double[] data=getArray();
-		int offset=getArrayOffset();
-		for (int i = 0; i < len; i++) {
-			int ix=offset+i*stride;
-			double v=data[ix];
-			if (v<min) {
-				data[ix]=min;
-			} else if (v>max) {
-				data[ix]=max;
-			}
-		}
-	}
-	
-	@Override
 	public double[] asDoubleArray() {
 		if (isPackedArray()) return getArray();
 		return null;
@@ -292,17 +265,6 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	@Override
 	public double elementSquaredSum() {
 		return DoubleArrays.elementSquaredSum(data, getArrayOffset(), length,getStride());
-	}
-	
-	@Override
-	public void fill(double value) {
-		int stride=getStride();
-		double[] array=getArray();
-		int di=getArrayOffset();
-		for (int i=0; i<length; i++) {
-			array[di]=value;
-			di+=stride;
-		}
 	}
 	
 	@Override
