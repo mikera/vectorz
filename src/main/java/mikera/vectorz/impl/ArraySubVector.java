@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.util.DoubleArrays;
 
 /**
@@ -97,6 +98,11 @@ public final class ArraySubVector extends ADenseArrayVector {
 	public void addAt(int i, double v) {
 		assert((i>=0)&&(i<length));
 		data[i+offset]+=v;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		op.applyTo(data, offset, length);
 	}
 	
 	@Override

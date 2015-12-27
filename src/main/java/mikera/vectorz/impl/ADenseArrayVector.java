@@ -6,7 +6,6 @@ import java.util.Arrays;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -329,11 +328,6 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	@Override
 	public void exp() {
 		DoubleArrays.exp(getArray(), getArrayOffset(), length());
-	}
-
-	@Override
-	public void applyOp(Op op) {
-		op.applyTo(getArray(), getArrayOffset(), length());
 	}
 	
 	@Override

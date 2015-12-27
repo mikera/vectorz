@@ -668,35 +668,22 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public void abs() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			double val=unsafeGet(i);
-			if (val<0) unsafeSet(i,-val);
-		}
+		applyOp(Ops.ABS);
 	}
 	
 	@Override
 	public AVector absCopy() {
-		AVector v=clone();
-		v.abs();
-		return v;
+		return applyOpCopy(Ops.ABS);
 	}
 	
 	@Override
 	public void log() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			double val=unsafeGet(i);
-			unsafeSet(i,Math.log(val));
-		}
+		applyOp(Ops.LOG);
 	}
 	
 	@Override
 	public void signum() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			unsafeSet(i,Math.signum(unsafeGet(i)));
-		}
+		applyOp(Ops.SIGNUM);
 	}
 	
 	/**
