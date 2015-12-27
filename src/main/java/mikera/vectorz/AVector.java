@@ -1868,6 +1868,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Adds a multiple of the source vector raised to the specified power to this vector
+	 * @param src
+	 * @param exponent
+	 * @param factor
+	 */
 	protected void addPower(AVector src, double exponent, double factor) {
 		AVector tmp=src.clone();
 		tmp.pow(exponent);
@@ -1882,6 +1888,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addMultiple(v,-1.0);
 	}
 	
+	/**
+	 * Subtracts a value from the specified element in this vector.
+	 * 
+	 * @param i
+	 * @param v
+	 */
 	public void subAt(int i, double v) {
 		addAt(i,-v);
 	}
