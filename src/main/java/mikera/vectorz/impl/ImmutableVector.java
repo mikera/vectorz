@@ -6,6 +6,7 @@ import java.util.Iterator;
 import mikera.arrayz.impl.IDense;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -17,7 +18,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public class ImmutableVector extends AArrayVector implements IDense {
+public class ImmutableVector extends AStridedVector implements IDense {
 	private static final long serialVersionUID = -3679147880242779555L;
 
 	public final int offset;
@@ -242,6 +243,36 @@ public class ImmutableVector extends AArrayVector implements IDense {
 	@Override
 	protected int index(int i) {
 		return offset+i;
+	}
+
+	@Override
+	public int getArrayOffset() {
+		return offset;
+	}
+
+	@Override
+	public int getStride() {
+		return 1;
+	}
+
+	@Override
+	public void set(AVector v) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+
+	@Override
+	public void setElements(double[] values, int offset) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));		
+	}
+
+	@Override
+	public void setElements(int pos, double[] values, int offset, int length) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+
+	@Override
+	public void applyOp(Op op) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
 }
