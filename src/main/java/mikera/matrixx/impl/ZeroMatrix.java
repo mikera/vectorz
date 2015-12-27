@@ -168,9 +168,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector v) {
-		assert(i>=0);
-		assert(i<rows);
+	public double rowDotProduct(int i, AVector v) {
 		return 0.0;
 	}
 

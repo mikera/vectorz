@@ -139,15 +139,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}	
 	
 	@Override
-	public double calculateElement(int i, AVector v) {
+	public double rowDotProduct(int i, AVector v) {
 		return data[i]*v.unsafeGet(i);
 	}
-	
-	@Override
-	public double calculateElement(int i, Vector v) {
-		return data[i]*v.unsafeGet(i);
-	}
-	
+		
 	@Override
 	public void transform(Vector source, Vector dest) {
 		int rc = rowCount();

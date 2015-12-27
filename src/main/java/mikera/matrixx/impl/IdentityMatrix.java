@@ -52,7 +52,7 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector v) {
+	public double rowDotProduct(int i, AVector v) {
 		return v.unsafeGet(i);
 	}
 

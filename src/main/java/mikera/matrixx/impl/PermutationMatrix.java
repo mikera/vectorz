@@ -274,13 +274,8 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector inputVector) {
-		return inputVector.unsafeGet(perm.get(i));
-	}
-	
-	@Override
-	public double calculateElement(int i, Vector inputVector) {
-		return inputVector.unsafeGet(perm.get(i));
+	public double rowDotProduct(int i, AVector v) {
+		return v.unsafeGet(perm.get(i));
 	}
 	
 	@Override

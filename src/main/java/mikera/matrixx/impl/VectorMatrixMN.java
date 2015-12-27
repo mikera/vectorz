@@ -146,8 +146,7 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector inputVector) {
-		assert(i<rows);
+	public double rowDotProduct(int i, AVector inputVector) {
 		AVector row=rowData[i];
 		return row.dotProduct(inputVector);
 	}

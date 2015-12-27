@@ -80,9 +80,8 @@ public abstract class AAffineTransform extends ATransform {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return getMatrix().calculateElement(i,v)
+		return getMatrix().rowDotProduct(i,v)
 				+getTranslation().getTranslationComponent(i);
-		
 	}
 
 

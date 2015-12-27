@@ -303,14 +303,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return getBand(0);
 	}
 	
-	public double calculateElement(int i, AVector v) {
-		return getRow(i).dotProduct(v);
-	}
-	
-	public double calculateElement(int i, Vector v) {
-		return getRow(i).dotProduct(v);
-	}
-	
 	public AAffineTransform toAffineTransform() {
 		return new AffineMN(this,IdentityTranslation.create(rowCount()));
 	}
@@ -1385,6 +1377,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * Returns the dot product of a specific row with a vector.
+	 * 
+	 * Unsafe operation: performs no bounds checking
 	 * @param i
 	 * @param a
 	 * @return

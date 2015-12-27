@@ -322,7 +322,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector v) {
+	public double rowDotProduct(int i, AVector v) {
 		return v.unsafeGet(i)*unsafeGetDiagonalValue(i);
 	}
 	

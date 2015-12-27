@@ -82,8 +82,7 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector inputVector) {
-		assert(i<rows);
+	public double rowDotProduct(int i, AVector inputVector) {
 		Vector3 row=rowData[i];
 		return row.dotProduct(inputVector);
 	}
