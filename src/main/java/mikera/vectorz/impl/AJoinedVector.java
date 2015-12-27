@@ -114,6 +114,16 @@ public abstract class AJoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public boolean isZero() {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			if (!v.isZero()) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public double dotProduct(double[] data, int offset) {
 		long n=componentCount();
 		double result=0.0;
