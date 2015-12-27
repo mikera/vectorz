@@ -98,6 +98,11 @@ public final class ArraySubVector extends ADenseArrayVector {
 		assert((i>=0)&&(i<length));
 		data[i+offset]+=v;
 	}
+	
+	@Override
+	public void abs() {
+		DoubleArrays.abs(data, offset, length);
+	}
 
 	/**
 	 * Vector hashcode, designed to match hashcode of Java double array

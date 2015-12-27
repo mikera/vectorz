@@ -322,11 +322,6 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public void abs() {
-		DoubleArrays.abs(getArray(), getArrayOffset(), length());
-	}
-
-	@Override
 	public void log() {
 		DoubleArrays.log(getArray(), getArrayOffset(), length());
 	}
