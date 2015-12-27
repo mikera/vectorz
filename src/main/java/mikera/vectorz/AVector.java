@@ -1545,13 +1545,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Add a DenseArrayVector to this vector
+	 * @param v
+	 */
 	public final void add(ADenseArrayVector v) {
 		checkSameLength(v);
 		add(v.getArray(),v.getArrayOffset());
 	}
 	
 	@Override
-	public void add(INDArray a) {
+	public final void add(INDArray a) {
 		if (a instanceof AVector) {
 			add((AVector)a);
 		} else if (a instanceof AScalar) {
