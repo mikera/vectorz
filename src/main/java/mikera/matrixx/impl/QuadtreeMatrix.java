@@ -128,7 +128,6 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 		}	
 	}
 	
-
 	@Override
 	public void addAt(int row, int column, double value) {
 		if (row<rowSplit) {
