@@ -5,6 +5,8 @@ import mikera.vectorz.util.DoubleArrays;
 
 /**
  * Base class for strided vectors backed with a double array and fixed offset / stride
+ * 
+ * Supports both mutable an immutable subclasses
  * @author Mike
  *
  */
@@ -27,12 +29,12 @@ public abstract class BaseStridedVector extends AStridedVector {
 	protected final int offset;
 
 	@Override
-	public int getArrayOffset() {
+	public final int getArrayOffset() {
 		return offset;
 	}
 
 	@Override
-	public int getStride() {
+	public final int getStride() {
 		return stride;
 	}
 
@@ -53,22 +55,6 @@ public abstract class BaseStridedVector extends AStridedVector {
 	}
 	
 	@Override
-	public void set(int i, double value) {
-		checkIndex(i);
-		data[offset+i*stride]=value;
-	}
-	
-	@Override
-	public void unsafeSet(int i, double value) {
-		data[offset+i*stride]=value;
-	}
-	
-	@Override
-	public void addAt(int i, double value) {
-		data[offset+i*stride]+=value;
-	}
-	
-	@Override
 	public double dotProduct(double[] ds, int off) {
 		return DoubleArrays.dotProduct(ds, off, data, offset, stride, length);
 	}
@@ -77,13 +63,7 @@ public abstract class BaseStridedVector extends AStridedVector {
 	public double dotProduct(double[] ds, int doffset, int dstride) {
 		return DoubleArrays.dotProduct(data, offset, stride, ds, doffset, dstride, length);
 	}
-	
-	@Override
-	public void set(AVector v) {
-		int length=checkSameLength(v);
-		v.copyTo(0, data, offset, length, stride);
-	}
-	
+		
 	@Override
 	public double dotProduct(AVector v) {
 		checkLength(v.length());

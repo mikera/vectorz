@@ -2,6 +2,11 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 
+/**
+ * Mutable strided vector class
+ * @author Mike
+ *
+ */
 public final class StridedVector extends BaseStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
 	
@@ -21,6 +26,28 @@ public final class StridedVector extends BaseStridedVector {
 	 */
 	public static StridedVector wrap(double[] data, int offset, int length, int stride) {
 		return new StridedVector(data,offset,length,stride);
+	}
+	
+	@Override
+	public void set(int i, double value) {
+		checkIndex(i);
+		data[offset+i*stride]=value;
+	}
+	
+	@Override
+	public void unsafeSet(int i, double value) {
+		data[offset+i*stride]=value;
+	}
+	
+	@Override
+	public void addAt(int i, double value) {
+		data[offset+i*stride]+=value;
+	}
+	
+	@Override
+	public void set(AVector v) {
+		int length=checkSameLength(v);
+		v.copyTo(0, data, offset, length, stride);
 	}
 	
 	@Override
