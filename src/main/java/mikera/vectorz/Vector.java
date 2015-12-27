@@ -287,13 +287,11 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void add(double[] srcData, int srcOffset) {
-		int length=length();
 		DoubleArrays.add(srcData, srcOffset, data, 0, length);
 	}
 	
 	@Override
 	public void scaleAdd(double factor, double constant) {
-		int length=length();
 		for (int i=0; i<length; i++) {
 			data[i]=(factor*data[i])+constant;
 		}
@@ -301,7 +299,7 @@ public final class Vector extends ADenseArrayVector {
 
 	@Override
 	public void add(double constant) {
-		DoubleArrays.add(data, 0, data.length, constant);
+		DoubleArrays.add(data, 0, length, constant);
 	}
 	
 	@Override
