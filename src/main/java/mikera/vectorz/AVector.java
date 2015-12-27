@@ -2235,7 +2235,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
 		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*unsafeGet(i+offset)*other.get(i+otherOffset);
+			array[i+arrayOffset]+=factor*unsafeGet(i+offset)*other.unsafeGet(i+otherOffset);
 		}		
 	}
 	

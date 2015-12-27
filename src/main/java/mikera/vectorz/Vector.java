@@ -254,10 +254,10 @@ public final class Vector extends ADenseArrayVector {
 		int length=length();
 		assert(srcOffset>=0);
 		assert(srcOffset+length<=src.length());
-		double[] vdata=src.getArray();
-		int voffset=src.getArrayOffset()+srcOffset;
+		double[] srcData=src.getArray();
+		int relativeOffset=src.getArrayOffset()+srcOffset;
 		for (int i = 0; i < length; i++) {
-			data[i] += vdata[voffset + i];
+			data[i] += srcData[relativeOffset + i];
 		}
 	}
 	
