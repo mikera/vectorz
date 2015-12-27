@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.DoubleArrays;
-import mikera.vectorz.util.VectorzException;
 
 /**
  * Base class for strided vectors backed with a double array and fixed offset / stride
@@ -96,16 +95,5 @@ public abstract class BaseStridedVector extends AStridedVector {
 		for (int i=0; i<length; i++) {
 			dest[destOffset+i]=data[offset+(i*stride)];
 		}
-	}
-	
-	@Override
-	public void validate() {
-		if (length>0) {
-			if ((offset<0)||(offset>=data.length)) throw new VectorzException("offset out of bounds: "+offset);
-			int lastIndex=offset+(stride*(length-1));
-			if ((lastIndex<0)||(lastIndex>=data.length)) throw new VectorzException("lastIndex out of bounds: "+lastIndex);
-		}
-		
-		super.validate();
 	}
 }

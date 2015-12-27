@@ -13,6 +13,7 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Abstract base class for vectors backed by a double[] array with a constant stride
@@ -330,5 +331,17 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 			di+=stride;
 		}
 		return true;
+	}
+	
+	@Override
+	public void validate() {
+		double[] data=getArray();
+		if (length>0) {
+			int offset=getArrayOffset();
+			if ((offset<0)||(offset>=data.length)) throw new VectorzException("offset out of bounds: "+offset);
+			int lastIndex=offset+(getStride()*(length-1));
+			if ((lastIndex<0)||(lastIndex>=data.length)) throw new VectorzException("lastIndex out of bounds: "+lastIndex);
+		}
+		super.validate();
 	}
 }
