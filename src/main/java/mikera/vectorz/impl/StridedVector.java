@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.util.VectorzException;
 
 public final class StridedVector extends BaseStridedVector {
 	private static final long serialVersionUID = 5807998427323932401L;
@@ -56,13 +55,5 @@ public final class StridedVector extends BaseStridedVector {
 	public StridedVector exactClone() {
 		double[] data=this.data.clone();
 		return wrap(data,offset,length,stride);
-	}
-	
-	@Override
-	public void validate() {
-		super.validate();
-		int end=offset+(length-1)*stride;
-		if (Math.min(offset, end)<0) throw new VectorzException("Strided vector out of array range");
-		if (Math.max(offset, end)>=data.length) throw new VectorzException("Strided vector out of array range");
 	}
 }
