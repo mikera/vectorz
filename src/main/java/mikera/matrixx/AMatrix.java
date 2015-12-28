@@ -1596,10 +1596,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
-	public void divide(AVector a) {
+	/**
+	 * Divides every row of this matrix by the given vector
+	 * @param v
+	 */
+	public void divide(AVector v) {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
-			getRowView(i).divide(a);
+			getRowView(i).divide(v);
 		}
 	}
 	
