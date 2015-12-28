@@ -270,4 +270,12 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		AVector t=this.subCopy(v);
 		return t.maxAbsElement();
 	}
+
+	/**
+	 * Coerces this vector to a SparseIndexedVector. May return this vector if already a SparseIndexedVector
+	 * @return
+	 */
+	public SparseIndexedVector toSparseIndexedVector() {
+		return SparseIndexedVector.create(this);
+	}
 }

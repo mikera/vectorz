@@ -26,6 +26,7 @@ import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.VectorIndexScalar;
 import mikera.vectorz.impl.VectorIterator;
@@ -1767,12 +1768,33 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 
 	/**
-	 * Adds a scaled multiple of another vector to this one
+	 * Adds a scaled multiple of another vector to this vector
 	 * @param src
 	 */
 	public void addMultiple(AVector src, double factor) {
+		if (src instanceof ASparseVector) {
+			addMultiple(((ASparseVector)src).toSparseIndexedVector(),factor); 
+			return;
+		}
 		checkSameLength(src);
 		addMultiple(src,0,factor);
+	}
+	
+	/**
+	 * Adds a scaled multiple of a sparse indexed vector to this vector
+	 * @param src
+	 */
+	public void addMultiple(SparseIndexedVector src, double factor) {
+		checkSameLength(src);
+        if (factor==0.0) return;
+		Index srcIndex=src.nonSparseIndex();	
+		if (srcIndex.length()==0) return;
+		Vector nonSparseValues=src.nonSparseValues();
+		int n=srcIndex.length();
+		for (int i=0; i<n; i++) {
+			int ix=srcIndex.get(i);
+			addAt(ix,nonSparseValues.unsafeGet(i)*factor);
+		}	
 	}
 	
 	/**

@@ -3,7 +3,7 @@ package mikera.vectorz.impl;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
-import mikera.matrixx.impl.SparseColumnMatrix;
+import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -185,7 +185,12 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		return r;
 	}
 
-    public AVector innerProduct(SparseColumnMatrix m) {
+    /**
+     * Specialised overloaded innerProduct for multiplication with matrices that support fast column access
+     * @param m
+     * @return
+     */
+    public AVector innerProduct(IFastColumns m) {
 		int cc = m.columnCount();
 		int rc = m.rowCount();
 		checkLength(rc);
@@ -201,8 +206,8 @@ public class SparseIndexedVector extends ASparseIndexedVector {
         if (m instanceof SparseRowMatrix) {
             return this.innerProduct((SparseRowMatrix)m);
         }
-        if (m instanceof SparseColumnMatrix) {
-            return this.innerProduct((SparseColumnMatrix)m);
+        if (m instanceof IFastColumns) {
+            return this.innerProduct((IFastColumns)m);
         }
 		int cc=m.columnCount();
 		int rc=m.rowCount();
@@ -230,7 +235,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public void addMultiple(AVector v,double factor) {
     	if (factor==0.0) return;
 		if (v instanceof ASparseVector) {
-			addMultiple((ASparseVector)v,factor);
+			addMultiple(((ASparseVector)v).toSparseIndexedVector(),factor);
 			return;
 		}
 		super.addMultiple(v, factor);
@@ -240,9 +245,11 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public void add(double[] src, int srcOffset) {
 		int[] nixs=DoubleArrays.nonZeroIndices(src,srcOffset,length);
 		includeIndices(nixs);
-		for (int i=0; i<nixs.length; i++) {
-			int ix=nixs[i];
-			addAt(ix,src[srcOffset+ix]);
+		// data array now contains new indices
+		for (int i=0; i<data.length; i++) {
+			int ix=index.get(i);
+			double sv=src[srcOffset+ix];
+			if (sv!=0.0) data[i]+=src[srcOffset+ix]; // TODO: benchamark does conditional help??
 		}
 	}
 	
@@ -261,11 +268,10 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		}
 	}
 	
-	public void addMultiple(ASparseVector v, double factor) {
+	@Override
+	public void addMultiple(SparseIndexedVector v, double factor) {
 		checkSameLength(v);
-        if ((factor==0.0)||(v instanceof ZeroVector)) {
-            return;
-        }
+        if (factor==0.0) return;
 		Index vix=includeIndices(v);	
 		AVector vns=v.nonSparseValues();
 		int n=vix.length();
@@ -638,6 +644,11 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			v.unsafeSet(ixs[i],data[i]);
 		}	
 		return v;
+	}
+	
+	@Override
+	public SparseIndexedVector toSparseIndexedVector() {
+		return this;
 	}
 	
 	@Override
