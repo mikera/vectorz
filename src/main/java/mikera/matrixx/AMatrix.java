@@ -1757,6 +1757,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return true;
 	}
 	
+	/**
+	 * Returns true iff this matrix is exactly the same shape as another matrix
+	 * @param a
+	 * @return
+	 */
 	public boolean isSameShape(AMatrix a) {
 		return (this.rowCount()==a.rowCount())&&(this.columnCount()==a.columnCount());
 	}
