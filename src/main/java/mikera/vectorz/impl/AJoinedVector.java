@@ -52,6 +52,15 @@ public abstract class AJoinedVector extends ASizedVector {
 	} 
 	
 	@Override
+	public void copyTo(AVector dest, int offset) {
+		long n=componentCount();
+		for (int j=0; j<n; j++) {
+			AVector v=getComponent(j);
+			dest.subVector(offset,v.length()).set(v);
+		}
+	}
+	
+	@Override
 	public boolean equals(AVector a) {
 		if (this==a) return true;
 		if (a instanceof ADenseArrayVector) {

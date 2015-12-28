@@ -114,13 +114,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		assert (offset + length() <= a.length());
 		a.copyTo(offset, this, 0, length());
 	}
-
-	@Override
-	public void setRange(int offset, double[] data, int dataOffset, int length) {
-		System.arraycopy(data, dataOffset, getArray(), getArrayOffset()
-				+ offset, length);
-	}
-
+	
 	@Override
 	public void setElements(int pos,double[] values, int offset, int length) {
 		checkRange(pos,length);

@@ -159,12 +159,7 @@ public final class Vector extends ADenseArrayVector {
 	public void unsafeSet(int i, double value) {
 		data[i]=value;
 	}
-	
-	@Override
-	public void setRange(int offset, double[] data, int dataOffset, int length) {
-		System.arraycopy(data, dataOffset, this.data, offset, length);
-	}
-	
+		
 	@Override
 	public void set(AVector a) {
 		if (a instanceof Vector) {

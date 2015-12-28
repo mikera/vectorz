@@ -118,13 +118,6 @@ public final class JoinedArrayVector extends AJoinedVector {
 		int ai=findArrayNum(i);
 		data[ai][i-pos[ai]+offsets[ai]]+=value;
 	}
-	
-	@Override
-	public void copyTo(AVector dest, int offset) {
-		for (int j=0; j<numArrays; j++) {
-			dest.setRange(pos[j]+offset,data[j],offsets[j],subLength(j));
-		}
-	}
 
 	@Override
 	public double elementSum() {
