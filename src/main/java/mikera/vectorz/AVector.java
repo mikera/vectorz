@@ -1775,12 +1775,26 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		addMultiple(src,0,factor);
 	}
 	
+	/**
+	 * Returns the sum of this vector with a scaled multiple of a second vector.
+	 * @param src
+	 * @param factor
+	 * @return
+	 */
 	public AVector addMultipleCopy(AVector src, double factor) {
 		AVector r=clone();
 		r.addMultiple(src, factor);
 		return r;
 	}
 	
+	/**
+	 * Adds a multiple of a subvector of another vector to this vector.
+	 * 
+	 * Useful as a specialised override for joined vectors etc.
+	 * @param src
+	 * @param srcOffset
+	 * @param factor
+	 */
 	public void addMultiple(AVector src, int srcOffset, double factor) {
 		addMultiple(0,src,srcOffset,length(),factor);
 	}
