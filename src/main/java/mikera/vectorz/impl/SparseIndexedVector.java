@@ -652,9 +652,9 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * 
 	 * @param ixs
 	 */
-	public void includeIndices(int[] ixs) {
+	protected void includeIndices(int[] ixs) {
 		int[] nixs = IntArrays.mergeSorted(index.data,ixs);
-		if (nixs.length==index.length()) return;
+		if (nixs.length==index.length()) return; // no new indices
 		int nl=nixs.length;
 		double[] data=this.data;
 		double[] ndata=new double[nl];
