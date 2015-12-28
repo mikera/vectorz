@@ -29,12 +29,13 @@ import mikera.vectorz.util.VectorzException;
 public class SparseIndexedVector extends ASparseIndexedVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
-	private Index index;
-	
 	/**
 	 * double[] array containing the non-sparse values for this indexed vector
+	 * index contains the indexes of the vector that are non-sparse
+	 * Both can be modified, enabling arbitrary mutation of this vector
 	 */
 	private double[] data;
+	private Index index;
 	
 	private SparseIndexedVector(int length, Index index) {
 		this(length,index,new double[index.length()]);

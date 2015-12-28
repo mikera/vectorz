@@ -31,15 +31,15 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 		this(length,index,new double[index.length()]);
 	}
 	
-	private SparseImmutableVector(int length, Index index, double[] data) {
+	private SparseImmutableVector(int length, Index index, double[] nonSparseValues) {
 		super(length);
 		this.index=index;
-		this.data=data;
-		dataLength=data.length;
+		this.data=nonSparseValues;
+		dataLength=nonSparseValues.length;
 	}
 	
-	private SparseImmutableVector(int length, Index index, AVector data) {
-		this(length,index,data.toDoubleArray());
+	private SparseImmutableVector(int length, Index index, AVector nonSparseValues) {
+		this(length,index,nonSparseValues.toDoubleArray());
 	}
 	
 	/**
@@ -47,10 +47,10 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	 * 
 	 * WARNING: Performs no checking - Index must be distinct and sorted, and data must be non-zero.
 	 */
-	public static SparseImmutableVector wrap(int length, Index index, double[] data) {
-		assert(index.length()==data.length);
+	public static SparseImmutableVector wrap(int length, Index index, double[] nonSparseValues) {
+		assert(index.length()==nonSparseValues.length);
 		assert(index.isDistinctSorted());
-		return new SparseImmutableVector(length, index,data);
+		return new SparseImmutableVector(length, index,nonSparseValues);
 	}
 	
 	@Override
@@ -67,46 +67,47 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	 * Creates a SparseImmutableVector using the given sorted Index to identify the indexes of non-zero values,
 	 * and a double[] array to specify all the non-zero element values
 	 */
-	public static AVector create(int length, Index index, double[] data) {
-		int dataLength=data.length;
-		if (!index.isDistinctSorted()) {
+	public static AVector create(int length, Index sparseIndex, double[] sparseValues) {
+		int dataLength=sparseValues.length;
+		if (!sparseIndex.isDistinctSorted()) {
 			throw new IllegalArgumentException("Index must be sorted and distinct");
 		}
-		if (!(index.length()==dataLength)) {
+		if (!(sparseIndex.length()==dataLength)) {
 			throw new IllegalArgumentException("Length of index: mismatch woth data");			
 		}
 		if (dataLength==0) return ZeroVector.create(length);
-		if (dataLength==length) return ImmutableVector.create(data);
-		return new SparseImmutableVector(length, index.clone(),DoubleArrays.copyOf(data));
+		if (dataLength==length) return ImmutableVector.create(sparseValues);
+		return new SparseImmutableVector(length, sparseIndex.clone(),DoubleArrays.copyOf(sparseValues));
 	}
 	
 	/**
 	 * Creates a SparseImmutableVector using the given sorted Index to identify the indexes of non-zero values,
 	 * and a dense vector to specify all the non-zero element values
 	 */
-	public static AVector create(int length, Index index, AVector data) {
-		int dataLength=data.length();
-		if (!index.isDistinctSorted()) {
+	public static AVector create(int length, Index sparseIndex, AVector sparseValues) {
+		int dataLength=sparseValues.length();
+		if (!sparseIndex.isDistinctSorted()) {
 			throw new IllegalArgumentException("Index must be sorted and distinct");
 		}
-		if (!(index.length()==dataLength)) {
+		if (!(sparseIndex.length()==dataLength)) {
 			throw new IllegalArgumentException("Length of index: mismatch woth data");			
 		}
 		if (dataLength==0) return ZeroVector.create(length);
-		if (dataLength==length) return ImmutableVector.create(data);
-		return wrap(length, index.clone(), data.toDoubleArray());
+		if (dataLength==length) return ImmutableVector.create(sparseValues);
+		return wrap(length, sparseIndex.clone(), sparseValues.toDoubleArray());
 	}
 	
 	/** 
-	 * Creates a SparseIndexedVector from the given vector, ignoring the zeros in the source.
+	 * Creates a sparse immutable vector from the given vector, ignoring the zeros in the source.
 	 * 
 	 */
 	public static AVector create(AVector source) {
 		int length = source.length();
 		if (length==0) return Vector0.INSTANCE;
+		
 		int dataLength=(int) source.nonZeroCount();
-		if (dataLength==length) return ImmutableVector.create(source);
 		if (dataLength==0) return ZeroVector.create(length);
+		if (dataLength*3>=length) return ImmutableVector.create(source); // no point making sparse
 		
 		int[] indexes=new int[dataLength];
 		double[] vals=new double[dataLength];
