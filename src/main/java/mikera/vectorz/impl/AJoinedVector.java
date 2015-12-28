@@ -134,6 +134,16 @@ public abstract class AJoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public boolean hasUncountable() {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			if (!v.hasUncountable()) return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public double dotProduct(double[] data, int offset) {
 		long n=componentCount();
 		double result=0.0;
