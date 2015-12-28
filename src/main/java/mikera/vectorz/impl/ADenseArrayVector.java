@@ -287,12 +287,11 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	public void add(ADenseArrayVector src, int srcOffset) {
 		src.checkRange(srcOffset,length);
-		double[] vdata = src.getArray();
-		double[] data = getArray();
+		double[] srcData = src.getArray();
 		int offset = getArrayOffset();
-		int voffset = src.getArrayOffset() + srcOffset;
+		int relativeOffset = src.getArrayOffset() + srcOffset;
 		for (int i = 0; i < length; i++) {
-			data[offset + i] += vdata[voffset + i];
+			data[offset + i] += srcData[relativeOffset + i];
 		}
 	}
 	
