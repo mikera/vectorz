@@ -456,6 +456,23 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
+	public double reduce(Op2 op, double init) {
+		double[] data=this.data;
+		int[] ixs=index.data;
+		int n=data.length;
+		double result=init;
+		int start=0;
+		for (int i=0; i<n; i++) {
+			int ix=ixs[i];
+			double v=data[i];
+			result=op.reduceZeros(result,ix-start);
+			result=op.apply(result, v);
+			start=ix+1;
+		}
+		return op.reduceZeros(result,length-start); // reduce over any remaining zeros
+	}
+	
+	@Override
 	public void abs() {
 		DoubleArrays.abs(data);
 	}
