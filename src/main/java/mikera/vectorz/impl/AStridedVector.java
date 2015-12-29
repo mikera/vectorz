@@ -12,6 +12,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -227,6 +228,19 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 		for (int i=offset; i<length; i++) {
 			dest[destOffset+i*stride]=data[thisOffset+i*thisStride];
 		}
+	}
+	
+	@Override
+	public boolean hasUncountable() {
+		int stride=getStride(); 
+		int offset=this.getArrayOffset();
+		for(int i=0; i<length; i++) {
+			double v=data[offset+(i*stride)];
+			if (Vectorz.isUncountable(v)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Override
