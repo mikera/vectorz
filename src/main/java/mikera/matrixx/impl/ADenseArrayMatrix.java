@@ -5,6 +5,7 @@ import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -200,6 +201,13 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	@Override
 	public void addToArray(double[] data, int offset) {
 		DoubleArrays.add(getArray(), getArrayOffset(), data, offset, rows*cols);
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		int offset=getArrayOffset();
+		int n=rows*cols;
+		return DoubleArrays.reduce(op,init,data,offset,n);
 	}
 	
 	@Override

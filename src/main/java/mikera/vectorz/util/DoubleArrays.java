@@ -1,5 +1,6 @@
 package mikera.vectorz.util;
 
+import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
 import mikera.vectorz.ops.Logistic;
 
@@ -715,6 +716,22 @@ public final class DoubleArrays {
 			throw new IllegalArgumentException(ErrorMessages.tooManyElements(
 					rowCount, columnCount));
 		return new double[ec];
+	}
+
+	public static double reduce(Op2 op, double init, double[] data, int offset, int length) {
+		double result=init;
+		for (int i=0; i<length; i++) {
+			result=op.apply(result, data[offset+i]);
+		}
+		return result;
+	}
+	
+	public static double reduce(Op2 op, double init, double[] data, int offset, int length, int stride) {
+		double result=init;
+		for (int i=0; i<length; i++) {
+			result=op.apply(result, data[offset+i*stride]);
+		}
+		return result;
 	}
 
 }
