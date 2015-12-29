@@ -191,7 +191,7 @@ public class ErrorMessages {
 		return "Can't reduce without initial value in empty "+describeArray(a);
 	}
 
-	private static String describeArray(INDArray a) {
-		return a.getClass().getSimpleName()+" with shape "+shape();
+	static String describeArray(INDArray a) {
+		return a.getClass().getSimpleName()+" with shape "+shape(a);
 	}
 }
