@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op2;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Base class for joined vectors
@@ -202,7 +203,7 @@ public abstract class AJoinedVector extends ASizedVector {
 			result=v.reduce(op);
 			break;
 		}
-		if (++i>n) throw new IllegalArgumentException("Can't reduce over empty vector without initial value.");
+		if (++i>n) throw new IllegalArgumentException(ErrorMessages.zeroElementReduce(this));
 		for (; i<n; i++) {
 			AVector v=getComponent(i);
 			result=v.reduce(op, result);
