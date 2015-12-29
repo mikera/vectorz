@@ -573,6 +573,12 @@ public interface INDArray extends Cloneable, Serializable {
 	void applyOp(IOperator operator);
 	
 	/**
+	 * Reduces over all elements of the array in row-major order. Applies the operator to 
+	 * the initial/previous result at each step. Returns the final result.
+	 */
+	double reduce(Op2 op, double init);
+	
+	/**
 	 * Checks if two arrays are equal exactly in terms of both  value and shape
 	 * @returns true if the two arrays are exactly equal, false otherwise
 	 */

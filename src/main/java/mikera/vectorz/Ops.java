@@ -12,6 +12,7 @@ import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Log;
 import mikera.vectorz.ops.LogN;
 import mikera.vectorz.ops.Logistic;
+import mikera.vectorz.ops.Max;
 import mikera.vectorz.ops.Min;
 import mikera.vectorz.ops.NormalRBF;
 import mikera.vectorz.ops.Power;
@@ -59,6 +60,7 @@ public final class Ops {
 	
 	// binary operators
 	public static final Op2 MIN = new Min();
+	public static final Op2 MAX = new Max();
 
 
 	public static final ARoundingOp CEIL = new ARoundingOp() {

@@ -672,6 +672,9 @@ public class TestArrays {
 			double min=m.elementMin();
 			double max=m.elementMax();
 			assertTrue(min<=max);
+			
+			assertEquals(min,m.reduce(Ops.MIN,Double.POSITIVE_INFINITY),0.0);
+			assertEquals(max,m.reduce(Ops.MAX,Double.NEGATIVE_INFINITY),0.0);
 		} else {
 			try {
 				double min=m.elementMin();

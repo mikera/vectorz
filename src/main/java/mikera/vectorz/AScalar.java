@@ -314,6 +314,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public double reduce(Op2 op, double init) {
+		return op.apply(init, get());
+	}
+	
+	@Override
 	public Scalar clone() {
 		return Scalar.create(get());
 	}

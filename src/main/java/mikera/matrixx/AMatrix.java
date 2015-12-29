@@ -1551,6 +1551,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
+	public double reduce(Op2 op, double init) {
+		int rc=rowCount();
+		double result=init;
+		for (int i=0; i<rc; i++) {
+			result=getRow(i).reduce(op, result);
+		}
+		return result;
+	}
+	
+	@Override
 	public void add(INDArray a) {
 		if (a instanceof AMatrix) {
 			add((AMatrix)a);
