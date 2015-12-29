@@ -10,6 +10,7 @@ import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -199,7 +200,13 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 		op.applyTo(da);
 		return Vector.wrap(da);
 	}
-
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		int stride=getStride();
+		int offset=this.getArrayOffset();
+		return DoubleArrays.reduce(op, init, data, offset, length, stride);
+	}
 	
 	@Override
 	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
