@@ -141,6 +141,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public double reduce(Op2 op) {
+		return op.reduceZeros(elementCount());
+	}
+	
+	@Override
 	public AMatrix addCopy(AMatrix a) {
 		if (!isSameShape(a)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		return a.copy();

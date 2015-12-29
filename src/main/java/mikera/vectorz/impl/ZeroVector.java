@@ -300,6 +300,11 @@ public final class ZeroVector extends ASparseVector {
 	public double reduce(Op2 op, double init) {
 		return op.reduceZeros(init,length);
 	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		return op.reduceZeros(length);
+	}
 
 	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset,

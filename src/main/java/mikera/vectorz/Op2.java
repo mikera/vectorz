@@ -210,4 +210,9 @@ public abstract class Op2 {
 			return r2;
 		}
 	}
+
+	public double reduceZeros(long length) {
+		if (length<=0) throw new IllegalArgumentException("Can't reduce over zero elements without initial value");
+		return reduceZeros(0.0,length-1);
+	}
 }
