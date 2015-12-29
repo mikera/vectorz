@@ -473,6 +473,25 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
+	public double reduce(Op2 op) {
+		double[] data=this.data;
+		int[] ixs=index.data;
+		int n=data.length;
+		if (n==0) return op.reduceZeros(length);
+		double result=unsafeGet(0);
+		int start=1;
+		int starti=(ixs[0]==0)?1:0; // start at data array element 0 if not at index 0, 1 otherwise
+		for (int i=starti; i<n; i++) {
+			int ix=ixs[i];
+			double v=data[i];
+			result=op.reduceZeros(result,ix-start);
+			result=op.apply(result, v);
+			start=ix+1;
+		}
+		return op.reduceZeros(result,length-start); // reduce over any remaining zeros
+	}
+	
+	@Override
 	public void abs() {
 		DoubleArrays.abs(data);
 	}
