@@ -4,6 +4,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
@@ -111,6 +112,13 @@ public final class SingleElementVector extends ASingleElementVector {
 	@Override
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		init=op.reduceZeros(init,index);
+		init=op.apply(init,value);
+		return op.reduceZeros(init, length-index-1);
 	}
 	
 	@Override
