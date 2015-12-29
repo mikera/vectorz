@@ -89,7 +89,12 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public double reduce(Op2 op, double init) {
 		return toSparseIndexedVector().reduce(op,init);
 	}
-	
+
+	@Override
+	public double reduce(Op2 op) {
+		return toSparseIndexedVector().reduce(op);
+	}
+
 	@Override
 	public double distanceSquared(AVector v) {
 		AVector d=this.subCopy(v);
