@@ -325,7 +325,7 @@ public class TestOps {
 		}
 	}
 	
-	@Test public void genericTests() {
+	@Test public void genericOpTests() {
 		doOpTest(Constant.create(5.0));
 		doOpTest(Linear.create(0.5, 3.0));
 		doOpTest(Identity.INSTANCE);
@@ -383,8 +383,9 @@ public class TestOps {
 		
 		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));	
 		doOpTest(Ops.LINEAR.divide(Quadratic.create(0, 3, 4)));
-
+	}
 		
+	@Test public void genericComposeTests() {
 		doComposeTest(Linear.create(0.31, 0.12),Linear.create(-100, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));
 		doComposeTest(Logistic.INSTANCE,Linear.create(10.0, -0.2));

@@ -863,36 +863,38 @@ public class TestArrays {
 	}
 
 	@Test
-	public void g_NDArray() {
-		NDArray nd0 = NDArray.newArray();
-		Vectorz.fillIndexes(nd0.asVector());
-		testArray(nd0);
-		testArray(Array.create(nd0));
-		
+	public void g_NDArrayScalar() {
+		NDArray ndscalar = NDArray.newArray();
+		ndscalar.set(1.0);
+		testArray(ndscalar);
+		testArray(Array.create(ndscalar));
+	}
+
+	@Test
+	public void g_NDArray3() {
 		NDArray nd1 = NDArray.newArray(3);
 		Vectorz.fillIndexes(nd1.asVector());
 		testArray(nd1);
 		testArray(Array.create(nd1));
+	}
 		
+	@Test
+	public void g_NDArray33() {
 		NDArray nd2 = NDArray.newArray(3, 3);
 		assertEquals(9,nd2.elementCount());
 		Vectorz.fillIndexes(nd2.asVector());
 		testArray(nd2);
 		testArray(Array.create(nd2));
+	}
 		
+	@Test
+	public void g_NDArray222() {
 		NDArray nd3 = NDArray.newArray(2, 2, 2);
 		Vectorz.fillIndexes(nd3.asVector());
 		testArray(nd3);
 		testArray(Array.create(nd3));
 	}
 
-	@Test
-	public void g_NDScalar() {
-		NDArray ndscalar = NDArray.newArray();
-		ndscalar.set(1.0);
-		testArray(ndscalar);
-		testArray(Array.create(ndscalar));
-	}
 	
 	@Test
 	public void g_BroadcastScalarArray() {
