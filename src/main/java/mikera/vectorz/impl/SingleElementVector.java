@@ -122,6 +122,17 @@ public final class SingleElementVector extends ASingleElementVector {
 	}
 	
 	@Override
+	public double reduce(Op2 op) {
+		if (index==0) {
+			return op.reduceZeros(value, length-1);
+		} else {
+			double result=op.reduceZeros(index);
+			result=op.apply(result,value);
+			return op.reduceZeros(result, length-index-1);
+		}
+	}
+	
+	@Override
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		if (index<offset) return;
 		if (index>=offset+length) return;
