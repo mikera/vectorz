@@ -104,6 +104,7 @@ public class TestBigSparse {
 		}
 		
 		assertEquals(m.elementMax(),m.reduce(Ops.MAX, 0.0),0.0);
+		assertEquals(m.elementMax(),m.reduce(Ops.MAX),0.0);
 	}
 	
 	@Test public void testSparseAdd() {
