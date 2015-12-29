@@ -334,6 +334,11 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 	
 	@Override
+	public double reduce(Op2 op) {
+		return DoubleArrays.reduce(op, data, getArrayOffset(), length);
+	}
+	
+	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(getArray(), getArrayOffset(), length());
 	}

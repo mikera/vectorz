@@ -209,6 +209,11 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public double reduce(Op2 op) {
+		return DoubleArrays.reduce(op, data, getArrayOffset(), length, getStride());
+	}
+	
+	@Override
 	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
 		int thisStride=getStride();
 		int thisOffset=this.getArrayOffset();
