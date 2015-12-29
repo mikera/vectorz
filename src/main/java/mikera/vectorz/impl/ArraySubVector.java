@@ -154,9 +154,4 @@ public final class ArraySubVector extends ADenseArrayVector {
 	protected int index(int i) {
 		return offset+i;
 	}
-
-	@Override
-	public double dotProduct(double[] data, int offset, int stride) {
-		return DoubleArrays.dotProduct(this.data, this.offset, data, offset, stride, length);
-	}
 }

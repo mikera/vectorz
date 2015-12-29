@@ -306,6 +306,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public double dotProduct(double[] data, int offset) {
 		return DoubleArrays.dotProduct(getArray(), getArrayOffset(), data, offset, length());
 	}
+	
+
+	@Override
+	public double dotProduct(double[] src, int srcOffset, int stride) {
+		return DoubleArrays.dotProduct(getArray(), getArrayOffset(), src, srcOffset, stride, length);
+	}
 
 	@Override
 	public double dotProduct(AVector v) {

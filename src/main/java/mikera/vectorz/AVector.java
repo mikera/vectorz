@@ -674,7 +674,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector absCopy() {
-		return applyOpCopy(Ops.ABS);
+		AVector result=clone();
+		result.abs();
+		return result;
 	}
 	
 	@Override

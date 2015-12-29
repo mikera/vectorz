@@ -62,6 +62,13 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public double dotProduct(AVector v) {
+		checkLength(v.length());
+		return v.dotProduct(getArray(), getArrayOffset(), getStride());
+	}
+
+	
+	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(getArray(), getArrayOffset(), getStride(), length());
 	}
