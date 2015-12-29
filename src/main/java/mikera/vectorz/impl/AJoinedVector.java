@@ -180,6 +180,17 @@ public abstract class AJoinedVector extends ASizedVector {
 		}
 	}
 	
+	@Override
+	public double reduce(Op2 op, double init) {
+		long n=componentCount();
+		double result=init;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			result=v.reduce(op, result);
+		}
+		return result;
+	}
+	
 //	TODO: should have a fast implementation for this?
 //	@Override
 //	public void setElements(int pos, double[] values, int offset, int length) {
