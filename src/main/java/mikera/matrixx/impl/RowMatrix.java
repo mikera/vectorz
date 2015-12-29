@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -58,6 +59,11 @@ public class RowMatrix extends ARectangularMatrix implements IFastColumns, IFast
 	@Override
 	public void applyOp(Op op) {
 		vector.applyOp(op);
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		return vector.reduce(op, init);
 	}
 	
 	@Override 
