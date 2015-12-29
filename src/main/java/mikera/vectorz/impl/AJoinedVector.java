@@ -191,6 +191,25 @@ public abstract class AJoinedVector extends ASizedVector {
 		return result;
 	}
 	
+	@Override
+	public double reduce(Op2 op) {
+		long n=componentCount();
+		int i=0;
+		double result=Double.NaN;
+		for (; i<n; i++) {
+			AVector v=getComponent(i);
+			if (v.length()==0) continue;
+			result=v.reduce(op);
+			break;
+		}
+		if (++i>n) throw new IllegalArgumentException("Can't reduce over empty vector without initial value.");
+		for (; i<n; i++) {
+			AVector v=getComponent(i);
+			result=v.reduce(op, result);
+		}
+		return result;
+	}
+	
 //	TODO: should have a fast implementation for this?
 //	@Override
 //	public void setElements(int pos, double[] values, int offset, int length) {
