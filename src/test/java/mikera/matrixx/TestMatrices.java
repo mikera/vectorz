@@ -639,9 +639,7 @@ public class TestMatrices {
 		doGenericTests(strm);
 		strm=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
 		doGenericTests(strm);
-		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3)));
-		doGenericTests(strm);
-		strm=Matrix.create(Matrixx.createRandomMatrix(5, 5)).subMatrix(1, 3, 1, 3);
+		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3))).getTranspose();
 		doGenericTests(strm);
 	}
 

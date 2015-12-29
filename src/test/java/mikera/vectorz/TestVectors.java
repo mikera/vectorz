@@ -914,8 +914,8 @@ public class TestVectors {
 		doGenericTests(new Vector3(1.0,2.0,3.0).subVector(2, 0));
 	}
 		
-	@Test public void g_SmallMutable() {
-		for (int j=0; j<10; j++) {
+	@Test public void g_Vector_Small() {
+		for (int j=0; j<8; j++) {
 			double[] data=new double[j];
 			for (int i=0; i<j; i++) data[i]=i;
 			doGenericTests(Vectorz.create(data));
@@ -928,7 +928,7 @@ public class TestVectors {
 			data[i]=i+(1.0/Math.PI);
 		}
 
-		doGenericTests(ArraySubVector.wrap(data));
+		doGenericTests(ArraySubVector.wrap(data,10,80));
 	}
 	
 	@Test public void g_IndexedSubVector() {
@@ -942,16 +942,6 @@ public class TestVectors {
 
 		doGenericTests(IndexedArrayVector.wrap(data,indexes));
 		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
-	}
-		
-	@Test public void g_SubVectors() {
-		double[] data=new double[100];
-		for (int i=0; i<100; i++) {
-			data[i]=i;
-		}
-		
-		doGenericTests(Vector.create(data).subVector(25, 50));
-		doGenericTests(ArraySubVector.wrap(data).subVector(25, 50));
 	}
 		
 	@Test public void g_MiscSubVectors() {
@@ -998,14 +988,6 @@ public class TestVectors {
 		doGenericTests(g0);
 	}
 		
-	@Test public void g_MatrixViews5x5() {	
-		AMatrix m1=Matrixx.createRandomSquareMatrix(5);
-		doGenericTests(m1.asVector());
-		doGenericTests(m1.getRow(4));
-		doGenericTests(m1.getColumn(1));
-		doGenericTests(m1.getLeadingDiagonal());
-	}
-		
 	@Test public void g_MatrixViews3x3() {	
 		AMatrix m2=Matrixx.createRandomSquareMatrix(3);
 		doGenericTests(m2.asVector());
@@ -1023,6 +1005,16 @@ public class TestVectors {
 		doGenericTests(m3.subMatrix(1, 1, 2, 3).asVector());
 		doGenericTests(new MatrixViewVector(m3));
 	}
+	
+	@Test public void g_MatrixViews5x5() {	
+		AMatrix m1=Matrixx.createRandomSquareMatrix(5);
+		doGenericTests(m1.asVector());
+		doGenericTests(m1.getRow(4));
+		doGenericTests(m1.getColumn(1));
+		doGenericTests(m1.getLeadingDiagonal());
+	}
+		
+
 		
 	@Test public void g_AxisVector() {	
 		doGenericTests(AxisVector.create(1,3));

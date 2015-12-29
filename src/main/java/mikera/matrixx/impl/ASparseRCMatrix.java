@@ -336,7 +336,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void applyOp(Op op) {
 		boolean stoch = op.isStochastic();
-		AVector rr = (stoch) ? null : RepeatedElementVector.create(lineLength(), op.apply(0.0));
+		AVector rr = (stoch) ? null : Vectorz.createRepeatedElement(lineLength(), op.apply(0.0));
 
 		long n=componentCount();
 		for (int i = 0; i < n; i++) {
