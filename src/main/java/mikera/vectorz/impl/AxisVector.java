@@ -415,10 +415,4 @@ public final class AxisVector extends ASingleElementVector {
 	protected double value() {
 		return 1.0;
 	}
-
-	@Override
-	public void multiply(double factor) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
-
 }
