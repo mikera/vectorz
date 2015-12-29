@@ -675,16 +675,25 @@ public class TestArrays {
 			
 			assertEquals(min,m.reduce(Ops.MIN,Double.POSITIVE_INFINITY),0.0);
 			assertEquals(max,m.reduce(Ops.MAX,Double.NEGATIVE_INFINITY),0.0);
+			assertEquals(min,m.reduce(Ops.MIN),0.0);
+			assertEquals(max,m.reduce(Ops.MAX),0.0);
 		} else {
 			try {
 				double min=m.elementMin();
-				fail("Should not be able to get minimum of array with non elements!");
+				fail("Should not be able to get minimum of array with no elements!");
 			} catch (Throwable t ) { /* OK */ }
 			
 			try {
 				double max=m.elementMax();
-				fail("Should not be able to get maximum of array with non elements!");
+				fail("Should not be able to get maximum of array with no elements!");
 			} catch (Throwable t ) { /* OK */ }
+			
+			try {
+				double min=m.reduce(Ops.MIN);
+				fail("Should not be able to reduce array with no elements!");
+			} catch (Throwable t ) { /* OK */ }
+
+			assertEquals(-1010.0,m.reduce(Ops.MIN,-1010.0),0.0);
 		}
 
 	}

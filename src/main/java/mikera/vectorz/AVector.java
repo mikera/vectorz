@@ -2376,6 +2376,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return result;
 	}
 	
+	@Override
+	public double reduce(Op2 op) {
+		int n=length();
+		double result=get(0);
+		for (int i=1; i<n; i++) {
+			result=op.apply(result, unsafeGet(i));
+		}
+		return result;
+	}
+	
 	/**
 	 * Adds a value to a specific element of the vector
 	 * 

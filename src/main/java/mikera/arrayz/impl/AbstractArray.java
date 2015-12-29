@@ -242,6 +242,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		return result;
 	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		double result=slice(0).reduce(op);
+		int n=sliceCount();
+		for (int i=1; i<n; i++) {
+			result=slice(i).reduce(op,result);
+		}
+		return result;
+	}
 
 	@Override
 	public boolean isElementConstrained() {

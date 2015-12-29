@@ -45,6 +45,12 @@ public abstract class BaseShapedArray extends AbstractArray<INDArray> {
 	}
 	
 	@Override
+	public double reduce(Op2 op) {
+		if (shape.length==0) return get();
+		return super.reduce(op);
+	}
+	
+	@Override
 	public boolean isZero() {
 		if (dimensionality()==0) return (get()==0.0);
 		return super.isZero();
