@@ -1070,7 +1070,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
-	
 	@Override
 	public INDArray reshape(int... targetShape) {
 		return Arrayz.createFromVector(asVector(), targetShape);
@@ -1113,7 +1112,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public INDArray reorder(int[] order) {
 		return reorder(0,order);
 	}
-
 	
 	@Override
 	public List<?> getSlices(int dimension) {

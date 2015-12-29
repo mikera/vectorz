@@ -733,5 +733,23 @@ public final class DoubleArrays {
 		}
 		return result;
 	}
+	
+	public static double reduce(Op2 op, double[] data, int offset, int length) {
+		if (length<=0) throw new IllegalArgumentException(ErrorMessages.zeroElementReduce());
+		double result=data[offset];
+		for (int i=1; i<length; i++) {
+			result=op.apply(result, data[offset+i]);
+		}
+		return result;
+	}
+
+	public static double reduce(Op2 op, double[] data, int offset, int length, int stride) {
+		if (length<=0) throw new IllegalArgumentException(ErrorMessages.zeroElementReduce());
+		double result=data[offset];
+		for (int i=1; i<length; i++) {
+			result=op.apply(result, data[offset+i*stride]);
+		}
+		return result;
+	}
 
 }

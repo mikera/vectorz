@@ -190,8 +190,13 @@ public class ErrorMessages {
 	public static String zeroElementReduce(INDArray a) {
 		return "Can't reduce without initial value in empty "+describeArray(a);
 	}
+	
+	public static String zeroElementReduce() {
+		return "Can't reduce without initial value over zero elements";
+	}
 
 	static String describeArray(INDArray a) {
 		return a.getClass().getSimpleName()+" with shape "+shape(a);
 	}
+
 }

@@ -14,6 +14,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -293,6 +294,16 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	@Override
 	public void applyOp(Op op) {
 		op.applyTo(data);
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		return DoubleArrays.reduce(op, data, 0, data.length);
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		return DoubleArrays.reduce(op, init, data, 0, data.length);
 	}
 
 	@Override
