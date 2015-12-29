@@ -252,18 +252,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	public Matrix innerProduct(Matrix a) {
-		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		Matrix m=a.clone();
-		for (int i=0; i<dimensions; i++) {
-			double dv=unsafeGetDiagonalValue(i);
-			m.multiplyRow(i, dv);
-		}
-		return m;
-	}
-	
-	@Override
-	public Matrix transposeInnerProduct(Matrix s) {
+	public AMatrix transposeInnerProduct(AMatrix s) {
 		return innerProduct(s);
 	}
 	

@@ -1,7 +1,6 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ADenseArrayVector;
@@ -202,12 +201,6 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	public AMatrix innerProduct(AMatrix a) {
 		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		return a.copy(); 
-	}
-	
-	@Override 
-	public Matrix innerProduct(Matrix a) {
-		if(a.rowCount()!=this.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		return a.copy();
 	}
 	
 	@Override 

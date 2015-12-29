@@ -227,11 +227,6 @@ public class TransposedMatrix extends ADelegatedMatrix {
 	public AMatrix innerProduct(AMatrix s) {
 		return source.transposeInnerProduct(s);
 	}
-
-	@Override
-	public AMatrix innerProduct(Matrix s) {
-		return source.transposeInnerProduct(s);
-	}
 	
 	@Override
 	public AMatrix sparseClone() {

@@ -197,22 +197,9 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public Matrix innerProduct(Matrix a) {
-		return Multiplications.multiply(this, a);
-	}
-
-	@Override
 	public Matrix transposeInnerProduct(Matrix s) {
 		Matrix r = toMatrixTranspose();
 		return Multiplications.multiply(r, s);
-	}
-
-	@Override
-	public Matrix innerProduct(AMatrix a) {
-		if (a instanceof Matrix) { return innerProduct((Matrix) a); }
-		if ((this.columnCount() != a.rowCount())) { throw new IllegalArgumentException(
-				ErrorMessages.mismatch(this, a)); }
-		return Multiplications.multiply(this, a);
 	}
 
 	@Override
