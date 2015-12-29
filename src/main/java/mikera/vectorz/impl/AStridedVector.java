@@ -31,11 +31,17 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
+	/**
+	 * Gets the underlying double[] data array for this vector
+	 */
 	@Override
 	public final double[] getArray() {
 		return data;
 	}
 	
+	/**
+	 * Gets the offset into the underlying double[] data array for the first element of this vector
+	 */
 	@Override
 	public abstract int getArrayOffset();
 	
