@@ -189,13 +189,13 @@ public abstract class Op2 {
 	 * @param length
 	 * @return
 	 */
-	public double reduceZeros(double init, int length) {
+	public double reduceZeros(double init, long length) {
 		if (length==0) return init;
 		if (length==1) return apply(init,0.0);
 		
 		if (isStochastic()) {
 			// can't guarantee stability
-			for (int i=0; i<length; i++) {
+			for (long i=0; i<length; i++) {
 				init=apply(init,0.0);
 			}
 			return init;
@@ -204,7 +204,7 @@ public abstract class Op2 {
 			if (r1==init) return r1; // is stable after one applications to zero?
 			double r2=apply(r1,0.0); 
 			if (r2==r1) return r2; // is stable after two applications to zero?
-			for (int i=2; i<length; i++) {
+			for (long i=2; i<length; i++) {
 				r2=apply(r2,0.0);
 			}
 			return r2;

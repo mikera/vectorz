@@ -9,6 +9,7 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementIterator;
@@ -132,6 +133,11 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	@Override
 	public void addToArray(double[] dest, int offset) {
 		// do nothing
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		return op.reduceZeros(init,elementCount());
 	}
 	
 	@Override
