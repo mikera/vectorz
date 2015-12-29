@@ -11,6 +11,7 @@ import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -491,6 +492,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void applyOp(Op op) {
 		op.applyTo(data);
+	}
+	
+	@Override
+	public void applyOp(Op2 op, double b) {
+		op.applyTo(data, b);
 	}
 
 	public void addMultiple(ADenseArrayMatrix m, double factor) {

@@ -16,7 +16,6 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Abstract base class for matrices wrapping a dense (rows*cols) subset of a double[] array
  * @author Mike
- *
  */
 public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows, IDenseArray {
 	private static final long serialVersionUID = -2144964424833585026L;
