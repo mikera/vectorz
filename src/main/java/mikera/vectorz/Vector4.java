@@ -61,6 +61,23 @@ public final class Vector4 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double reduce(Op2 op,double init) {
+		init=op.apply(init, x);
+		init=op.apply(init, y);
+		init=op.apply(init, z);
+		init=op.apply(init, t);
+		return init;
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		double result=op.apply(x, y);
+		result=op.apply(result, z);
+		result=op.apply(result, t);
+		return result;
+	}
+	
+	@Override
 	public boolean isZero() {
 		return (x==0.0)&&(y==0.0)&&(z==0.0)&&(t==0.0);
 	}
