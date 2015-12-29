@@ -266,10 +266,8 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	
 	@Override
 	public int getStride(int dimension) {
-		switch (dimension) {
-		case 0: return getStride();
-		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
-		}
+		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		return getStride();
 	}
 	
 	@Override
