@@ -526,17 +526,21 @@ public class TestMatrices {
 		doGenericTests(Matrixx.createImmutableZeroMatrix(0, 0));
 	}
 	
-	@Test public void g_PrimitiveMatrix() {
+	@Test public void g_PrimitiveMatrix33() {
 		// specialised 3x3 matrix
 		Matrix33 m33=new Matrix33();
 		randomise(m33);
 		doGenericTests(m33);
+	}
 		
+	@Test public void g_PrimitiveMatrix22() {
 		// specialised 2*2 matrix
 		Matrix22 m22=new Matrix22();
 		randomise(m22);
 		doGenericTests(m22);
+	}
 		
+	@Test public void g_PrimitiveMatrix11() {
 		// specialised 1*1 matrix
 		Matrix11 m11=new Matrix11();
 		randomise(m11);
@@ -646,7 +650,7 @@ public class TestMatrices {
 	@Test public void g_PermutationMatrix() {	
 		doGenericTests(PermutationMatrix.create(0,1,2));
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
-		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(7)));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(5)));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(6)).subMatrix(1,3,2,4));	
 	}
 	
