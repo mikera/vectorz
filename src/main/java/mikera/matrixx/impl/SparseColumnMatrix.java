@@ -307,7 +307,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public void copyColumnTo(int i, double[] targetData, int offset) {
-		getColumn(i).copyTo(targetData, offset);
+		getColumn(i).getElements(targetData, offset);
 	}
 	
 	@Override
@@ -354,7 +354,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public Matrix toMatrixTranspose() {
 		Matrix m=Matrix.create(cols, rows);
         for (int i = 0; i < cols; ++i) {
-			getColumn(i).copyTo(m.data, rows*i);
+			getColumn(i).getElements(m.data, rows*i);
 		}
 		return m;
 	}

@@ -221,12 +221,12 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public void copyRowTo(int i, double[] dest, int destOffset) {
-		getRow(i).copyTo(dest, destOffset);
+		getRow(i).getElements(dest, destOffset);
 	}
 	
 	@Override
 	public void copyColumnTo(int j, double[] dest, int destOffset) {
-		getColumn(j).copyTo(dest, destOffset);
+		getColumn(j).getElements(dest, destOffset);
 	}
 
     // Rotate the AVectors in data[]. Transforms data that was represented as

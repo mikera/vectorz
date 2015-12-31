@@ -349,6 +349,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return true;
 	}
 	
+	/**
+	 * Returns a java.util.List instance containing all elements of this vector
+	 * @return
+	 */
 	public List<Double> toList() {
 		int len=length();
 		ArrayList<Double> al=new ArrayList<Double>(len);
@@ -375,6 +379,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return epsilonEquals(a,Vectorz.TEST_EPSILON);
 	}
 	
+	/**
+	 * Returns true if this vector is approximately equal to another vector.
+	 * A small default tolerance is used.
+	 * @param v
+	 * @return
+	 */
 	public boolean epsilonEquals(AVector v) {
 		return epsilonEquals(v,Vectorz.TEST_EPSILON);
 	}
@@ -404,10 +414,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			hashCode = 31 * hashCode + (Hash.hashCode(unsafeGet(i)));
 		}
 		return hashCode;
-	}
-	
-	public final void copyTo(double[] arr, int offset) {
-		getElements(arr,offset);
 	}
 	
 	/**
