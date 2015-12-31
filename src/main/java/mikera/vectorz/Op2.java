@@ -13,17 +13,6 @@ public abstract class Op2 {
 	
 	public abstract double apply(double x, double y);
 	
-	/**
-	 * Applies the inverse of this Op. Throws an error if the inverse function does not exist.
-	 * Returns Double.NaN if no inverse exists for the specific value of y.
-	 * 
-	 * @param y
-	 * @return
-	 */
-	public double applyInverse(double y) {
-		throw new UnsupportedOperationException("Inverse not defined for operator: "+this.toString());
-	}
-	
 	public void applyTo(AVector a, AVector b) {
 		if (a instanceof ADenseArrayVector) {
 			applyTo((ADenseArrayVector)a,b);
@@ -52,7 +41,6 @@ public abstract class Op2 {
 	public void applyTo(ADenseArrayVector a, AVector b) {
 		applyTo(a.getArray(), a.getArrayOffset(),a.length(),b);
 	}
-	
 	
 	public void applyTo(INDArray a, INDArray b) {
 		if (a instanceof AVector) {
@@ -87,18 +75,6 @@ public abstract class Op2 {
 	
 	public void applyTo(double[] data, double b) {
 		applyTo(data,0,data.length,b);
-	}
-	
-	public boolean hasDerivative() {
-		return false;
-	}
-	
-	public boolean hasDerivativeForOutput() {
-		return hasDerivative();
-	}
-	
-	public boolean hasInverse() {
-		return false;
 	}
 	
 	/**
@@ -198,6 +174,11 @@ public abstract class Op2 {
 		}
 	}
 
+	/**
+	 * Method to reduce over a sequence of zeros. Optimises for common stable cases.
+	 * @param length
+	 * @return
+	 */
 	public double reduceZeros(long length) {
 		if (length<=0) throw new IllegalArgumentException("Can't reduce over zero elements without initial value");
 		return reduceZeros(0.0,length-1);
