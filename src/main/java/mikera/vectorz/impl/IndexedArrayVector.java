@@ -5,6 +5,7 @@ import java.util.Arrays;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Vector that addresses elements indexed into double[] array.
@@ -23,6 +24,15 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 		this.data=source;
 	}
 	
+	/**
+	 * Wraps the specified indexes into a double[] array as an IndexedArrayVector
+	 * 
+	 * The length of the vector will equal the number of indices provided.
+	 * 
+	 * @param data
+	 * @param indexes
+	 * @return
+	 */
 	public static IndexedArrayVector wrap(double[] data, int[] indexes) {
 		return new IndexedArrayVector(data,indexes);
 	}
@@ -154,5 +164,11 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	@Override
 	protected IndexedArrayVector replaceIndex(int[] newIndices) {
 		return new IndexedArrayVector(data,newIndices);
+	}
+	
+	@Override
+	public void validate() {
+		if (length!=indexes.length) throw new VectorzException("Invalid index length");
+		super.validate();
 	}
 }
