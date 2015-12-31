@@ -4,6 +4,7 @@ import mikera.matrixx.impl.APrimitiveMatrix;
 import mikera.transformz.Affine34;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -148,6 +149,20 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 		default: throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, row,column));
 		}	
 	}
+	
+	@Override
+	public void applyOp(Op op) {
+		m00=op.apply(m00);
+		m01=op.apply(m01);
+		m02=op.apply(m02);
+		m10=op.apply(m10);
+		m11=op.apply(m11);
+		m12=op.apply(m12);
+		m20=op.apply(m20);
+		m21=op.apply(m21);
+		m22=op.apply(m22);
+	}
+
 	
 	@Override
 	public AMatrix innerProduct(AMatrix a) {

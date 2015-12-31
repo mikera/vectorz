@@ -1,6 +1,7 @@
 package mikera.matrixx;
 
 import mikera.matrixx.impl.APrimitiveMatrix;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -128,6 +129,11 @@ public final class Matrix11 extends APrimitiveMatrix {
 	@Override
 	public void addAt(int i, int j, double value) {
 		this.value+=value;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		value=op.apply(value);
 	}
 	
 	@Override
