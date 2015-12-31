@@ -190,9 +190,16 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	
 	@Override
 	public void addToArray(int offset, double[] destData, int destOffset,int length) {
-		int stride=getStride();
-		int toffset=getArrayOffset()+offset*stride;
-		DoubleArrays.add(getArray(), toffset, stride, destData, destOffset, length);
+		int thisStride=getStride();
+		int thisOffset=getArrayOffset()+offset*thisStride;
+		DoubleArrays.add(this.data, thisOffset, thisStride, destData, destOffset, length);
+	}
+	
+	@Override
+	public void addMultipleToArray(double factor,int offset, double[] destData, int destOffset,int length) {
+		int thisStride=getStride();
+		int thisOffset=getArrayOffset()+offset*thisStride;
+		DoubleArrays.addMultiple(destData, destOffset, this.data, thisOffset, thisStride, length, factor);
 	}
 	
 	@Override

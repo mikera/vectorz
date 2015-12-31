@@ -279,6 +279,12 @@ public final class DoubleArrays {
 		}
 	}
 	
+	public static void addMultiple(double[] dest, int destOffset, double[] src, int srcOffset, int srcStride, int length, double factor) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]+=factor*src[srcOffset+i*srcStride];
+		}
+	}
+	
 	public static void addProduct(double[] dest, int offset, double[] src1, int src1Offset, double[] src2, int src2Offset, int length, double factor) {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]+=factor*src1[src1Offset+i]*src2[src2Offset+i];

@@ -2243,6 +2243,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 
+	/**
+	 * Adds a subvector of this vector into a double array at the specified offset
+	 * @param offset
+	 * @param array
+	 * @param arrayOffset
+	 * @param length
+	 */
 	public void addToArray(int offset, double[] array, int arrayOffset, int length) {
 		checkRange(offset,length);
 		for (int i=0; i<length; i++) {
@@ -2250,6 +2257,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Adds a multiple of a subvector of this vector into a double array at the specified offset
+	 * @param offset
+	 * @param array
+	 * @param arrayOffset
+	 * @param length
+	 */
 	public void addMultipleToArray(double factor, int offset, double[] array, int arrayOffset, int length) {
 		checkRange(offset,length);
 		for (int i=0; i<length; i++) {
