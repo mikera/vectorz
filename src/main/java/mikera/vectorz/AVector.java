@@ -2276,21 +2276,40 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			addProductToArray(factor,offset,(ADenseArrayVector)other,otherOffset,array,arrayOffset,length);
 			return;
 		}
-		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
+		checkRange(offset,length);
 		for (int i=0; i<length; i++) {
 			array[i+arrayOffset]+=factor*unsafeGet(i+offset)*other.unsafeGet(i+otherOffset);
 		}		
 	}
 	
-	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] array, int arrayOffset, int length) {
-		if((offset<0)||(offset+length>length())) throw new IndexOutOfBoundsException();
+	/**
+	 * Adds the scaled elementwise product of this vector and another vector to the destimation array
+	 * @param factor
+	 * @param offset
+	 * @param other
+	 * @param otherOffset
+	 * @param dest
+	 * @param destOffset
+	 * @param length
+	 */
+	public void addProductToArray(double factor, int offset, ADenseArrayVector other,int otherOffset, double[] dest, int destOffset, int length) {
+		checkRange(offset,length);
+		other.checkRange(otherOffset,length);
 		double[] otherArray=other.getArray();
-		otherOffset+=other.getArrayOffset();
+		int otherArrayOffset=otherOffset+other.getArrayOffset();
 		for (int i=0; i<length; i++) {
-			array[i+arrayOffset]+=factor*unsafeGet(i+offset)*otherArray[i+otherOffset];
+			dest[i+destOffset]+=factor*unsafeGet(i+offset)*otherArray[i+otherArrayOffset];
 		}		
 	}
 
+	/**
+	 * Adds the scaled elementwise product of two vectors to this vector
+	 * @param a
+	 * @param aOffset
+	 * @param b
+	 * @param bOffset
+	 * @param factor
+	 */
 	public void addProduct(AVector a, int aOffset, AVector b, int bOffset, double factor) {
 		int length=length();
 		a.checkRange(aOffset, length);
