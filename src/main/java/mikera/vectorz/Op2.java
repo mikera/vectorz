@@ -121,19 +121,6 @@ public abstract class Op2 {
 		return Double.POSITIVE_INFINITY;
 	}
 	
-	public double minDomain() {
-		return Double.NEGATIVE_INFINITY;
-	}
-	
-	public double maxDomain() {
-		return Double.POSITIVE_INFINITY;
-	}
-	
-	public boolean isDomainBounded() {
-		return (minDomain()>=-Double.MAX_VALUE)||(maxDomain()<=Double.MAX_VALUE);
-		
-	}
-	
 	/**
 	 * Validates whether all values in a double[] are within the possible output range for this Op
 	 * @param output
