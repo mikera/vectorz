@@ -24,16 +24,7 @@ public abstract class Op2 {
 	public void applyTo(AMatrix a, AMatrix b) {
 		a.applyOp(this, b);
 	}
-	
-	public void applyTo(AVector v, int start, int length, AVector b) {
-		if (start<0) throw new IllegalArgumentException("Negative start position: "+start);
-		if ((start==0)&&(length==v.length())) {
-			v.applyOp(this,b);
-		} else {
-			v.subVector(start, length).applyOp(this,b);
-		}
-	}
-	
+		
 	public void applyTo(AScalar a, AScalar b) {
 		a.set(apply(a.get(),b.get()));
 	}
