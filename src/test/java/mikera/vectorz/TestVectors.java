@@ -1,10 +1,17 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.junit.Test;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
@@ -15,18 +22,17 @@ import mikera.matrixx.Matrixx;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
-import mikera.vectorz.GrowableVector;
 import mikera.vectorz.impl.BufferVector;
 import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
+import mikera.vectorz.impl.IndexedArrayVector;
+import mikera.vectorz.impl.IndexedSubVector;
+import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.JoinedMultiVector;
 import mikera.vectorz.impl.MatrixViewVector;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
-import mikera.vectorz.impl.IndexedArrayVector;
-import mikera.vectorz.impl.IndexedSubVector;
-import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseImmutableVector;
@@ -35,8 +41,6 @@ import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
 import mikera.vectorz.ops.Constant;
-
-import org.junit.Test;
 
 
 public class TestVectors {
@@ -932,7 +936,19 @@ public class TestVectors {
 	}
 	
 	@Test public void g_IndexedSubVector() {
-		int ASIZE=50;
+		int ASIZE=30;
+		double[] data=new double[ASIZE];
+		int[] indexes=new int[ASIZE];
+		for (int i=0; i<ASIZE; i++) {
+			data[i]=i+(1.0/Math.E);
+			indexes[i]=i;
+		}
+
+		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
+	}
+	
+	@Test public void g_IndexedArrayVector() {
+		int ASIZE=30;
 		double[] data=new double[ASIZE];
 		int[] indexes=new int[ASIZE];
 		for (int i=0; i<ASIZE; i++) {
@@ -941,7 +957,6 @@ public class TestVectors {
 		}
 
 		doGenericTests(IndexedArrayVector.wrap(data,indexes));
-		doGenericTests(IndexedSubVector.wrap(Vector.of(data),indexes));
 	}
 		
 	@Test public void g_MiscSubVectors() {

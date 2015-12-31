@@ -612,14 +612,6 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 		if (v.length() != len) return false;
 		return v.equalsArray(getArray(), getArrayOffset());
 	}
-	
-	@Override
-	public boolean equals(ADenseArrayVector v) {
-		if (v==this) return true;
-		int len = length();
-		if (v.length() != len) return false;
-		return v.equalsArray(getArray(), getArrayOffset());
-	}
 
 	@Override
 	public boolean equalsArray(double[] data, int offset) {

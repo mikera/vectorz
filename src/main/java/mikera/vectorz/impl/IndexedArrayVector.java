@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.util.IntArrays;
 
 /**
@@ -27,12 +28,12 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	}
 
 	@Override
-	public double get(int i) {
+	public final double get(int i) {
 		return data[indexes[i]];
 	}
 	
 	@Override
-	public double unsafeGet(int i) {
+	public final double unsafeGet(int i) {
 		return data[indexes[i]];
 	}
 	
@@ -43,18 +44,25 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	}
 
 	@Override
-	public void set(int i, double value) {
+	public final void set(int i, double value) {
 		data[indexes[i]]=value;
 	}
 	
 	@Override
-	public void unsafeSet(int i, double value) {
+	public final void unsafeSet(int i, double value) {
 		data[indexes[i]]=value;
 	}
 	
 	@Override
 	public void addAt(int i, double value) {
 		data[indexes[i]]+=value;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		for (int i=0; i<length; i++) {
+			data[indexes[i]]=op.apply(data[indexes[i]]);
+		}
 	}
 	
 	@Override
@@ -77,6 +85,20 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	public void getElements(double[] dest, int offset) {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]=data[indexes[i]];
+		}
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]=unsafeGet(i+offset);
+		}
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i*stride]=unsafeGet(i+offset);
 		}
 	}
 	

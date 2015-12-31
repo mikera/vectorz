@@ -64,10 +64,11 @@ public abstract class AJoinedVector extends ASizedVector {
 	@Override
 	public boolean equals(AVector a) {
 		if (this==a) return true;
-		if (a instanceof ADenseArrayVector) {
-			return equals((ADenseArrayVector)a);
-		}
 		if (length()!=a.length()) return false;
+		if (a instanceof ADenseArrayVector) {
+			ADenseArrayVector dav=(ADenseArrayVector)a;
+			return equalsArray(dav.getArray(),dav.getArrayOffset());
+		}
 		long n=componentCount();
 		int offset=0;
 		for (int i=0; i<n; i++) {
