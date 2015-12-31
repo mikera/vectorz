@@ -2236,12 +2236,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
-	 * Adds this vector to a double[] array, using the specified offset and stride into the target array
+	 * Adds this vector to a double[] array, using the specified offset and stride into the destination array
 	 */
-	public void addToArray(double[] data, int offset, int stride) {
+	public void addToArray(double[] dest, int destOffset, int destStride) {
 		int n=length();
 		for (int i=0; i<n; i++) {
-			data[offset+i*stride]+=unsafeGet(i);
+			dest[destOffset+i*destStride]+=unsafeGet(i);
 		}
 	}
 

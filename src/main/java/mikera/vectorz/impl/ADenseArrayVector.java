@@ -82,6 +82,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(getArray(), getArrayOffset(), length());
 	}
+	
+	@Override
+	public double[] toDoubleArray() {
+		int offset=getArrayOffset();
+		return Arrays.copyOfRange(getArray(), offset, offset+length);
+	}
 
 	@Override
 	public void getElements(double[] data, int offset) {
@@ -109,10 +115,10 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public void set(AVector a, int offset) {
-		assert (offset >= 0);
-		assert (offset + length() <= a.length());
-		a.copyTo(offset, this, 0, length());
+	public void set(AVector src, int srcOffset) {
+		assert (srcOffset >= 0);
+		assert (srcOffset + length() <= src.length());
+		src.copyTo(srcOffset, this.data, this.getArrayOffset(), length);
 	}
 	
 	@Override
@@ -193,12 +199,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 	
 	@Override
-	public void addToArray(double[] dest, int offset, int stride) {
+	public void addToArray(double[] dest, int destOffset, int destStride) {
 		double[] data = getArray();
 		int dataOffset = getArrayOffset();
 
 		for (int i = 0; i < length; i++) {
-			dest[offset + i*stride] += data[dataOffset + i];
+			dest[destOffset + i*destStride] += data[dataOffset + i];
 		}
 	}
 	
