@@ -6,6 +6,9 @@ import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
  * A class representing a view of a matrix column as a vector
+ * 
+ * Used where no better implementations for getColumnView(...) on a matrix exist. 
+ * 
  * @author Mike
  */
 @SuppressWarnings("serial")
