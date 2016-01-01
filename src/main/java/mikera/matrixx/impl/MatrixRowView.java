@@ -106,6 +106,13 @@ public final class MatrixRowView extends AMatrixViewVector {
 	}
 	
 	@Override
+	public void applyOp(Op2 op, double v) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i),v));
+		}
+	}
+	
+	@Override
 	public void multiply(double factor) {
 		for (int i=0; i<length; i++) {
 			unsafeSet(i,factor*(unsafeGet(i)));

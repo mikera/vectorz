@@ -7,7 +7,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * Class representing a scalar view indexed from an underlying matrix
+ * Class representing a scalar view over a single element indexed from an underlying matrix
  * @author Mike
  *
  */
@@ -68,7 +68,7 @@ public class MatrixIndexScalar extends AScalar {
 	
 	@Override
 	public MatrixIndexScalar exactClone() {
-		return new MatrixIndexScalar(matrix.clone(),row,col);
+		return new MatrixIndexScalar(matrix.exactClone(),row,col);
 	}
 	
 	@Override
