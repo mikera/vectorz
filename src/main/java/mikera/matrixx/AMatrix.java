@@ -2084,54 +2084,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			dest[destOffset+i]=unsafeGet(i,j);
 		}
 	}
-
-	/**
-	 * Adds to a specific position in a matrix, indexed by element position in row-major order.
-	 * 
-	 * Unsafe operation - may not perform bounds checking.
-	 * 
-	 * @param i
-	 * @param d
-	 */
-	@Override
-	public void addAt(long i, double d) {
-		int cc=columnCount();
-		addAt((int)(i/cc),(int)(i%cc),d);
-	}
-
-	/**
-	 * Subtracts from a specific position in a matrix, indexed by element position
-	 * @param i
-	 * @param d
-	 */
-	public void subAt(int i, double d) {
-		int cc=columnCount();
-		addAt(i/cc,i%cc,-d);
-	}
-
-	/**
-	 * Divides a specific position in a matrix, indexed by element position
-	 * @param i
-	 * @param d
-	 */
-	public void divideAt(int i, double d) {
-		int cc=columnCount();
-		int y=i/cc;
-		int x=i%cc;
-		unsafeSet(y,x,unsafeGet(y,x)/d);
-	}
-
-	/**
-	 * Multiplies a specific position in a matrix, indexed by element position
-	 * @param i
-	 * @param d
-	 */
-	public void multiplyAt(int i, double d) {
-		int cc=columnCount();
-		int y=i/cc;
-		int x=i%cc;
-		unsafeSet(y,x,unsafeGet(y,x)*d);
-	}
 	
 	@Override
 	public final INDArray addCopy(INDArray a) {

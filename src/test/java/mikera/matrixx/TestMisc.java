@@ -227,28 +227,13 @@ public class TestMisc {
 
 
 	@Test
-	public void testBasicCalculation() {
+	public void testAddAt() {
 		Matrix m = Matrix.create(2, 3);
 
 		m.set(0, 0, 1);
 		assertEquals(m.get(0, 0), 1, 0.0);
-		m.addAt(0, 2);
+		m.addAt(0, 0, 2);
 		assertEquals(m.get(0, 0), 3, 0.0);
-
-		m.set(0, 1, 3);
-		assertEquals(m.get(0, 1), 3, 0.0);
-		m.subAt(1, 2);
-		assertEquals(m.get(0, 1), 1, 0.0);
-
-		m.set(1, 1, 4);
-		assertEquals(m.get(1, 1), 4, 0.0);
-		m.divideAt(4, 2);
-		assertEquals(m.get(1, 1), 2, 0.0);
-
-		m.set(1, 2, 5);
-		assertEquals(m.get(1, 2), 5, 0.0);
-		m.multiplyAt(5, 2);
-		assertEquals(m.get(1, 2), 10, 0.0);
 	}
 
 	@Test

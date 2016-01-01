@@ -3,6 +3,7 @@ package mikera.matrixx;
 import java.nio.DoubleBuffer;
 import java.util.Arrays;
 import java.util.Iterator;
+
 import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
@@ -12,7 +13,6 @@ import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
-import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
@@ -448,26 +448,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void addAt(int i, int j, double d) {
 		data[(i * cols) + j] += d;
-	}
-
-	@Override
-	public void addAt(long i, double d) {
-		data[Tools.toInt(i)] += d;
-	}
-
-	@Override
-	public void subAt(int i, double d) {
-		data[i] -= d;
-	}
-
-	@Override
-	public void divideAt(int i, double d) {
-		data[i] /= d;
-	}
-
-	@Override
-	public void multiplyAt(int i, double d) {
-		data[i] *= d;
 	}
 
 	@Override
