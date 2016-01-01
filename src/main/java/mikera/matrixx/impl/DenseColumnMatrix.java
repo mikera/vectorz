@@ -21,7 +21,7 @@ import mikera.vectorz.util.DoubleArrays;
  * @author Mike
  *
  */
-public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, IDense {
+public final class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, IDense {
 	private static final long serialVersionUID = 5459617932072332096L;
 
 	private DenseColumnMatrix(int rowCount, int columnCount, double[] data) {
@@ -98,7 +98,8 @@ public class DenseColumnMatrix extends AStridedMatrix implements IFastColumns, I
 		}
 	}
 	
-	@Override public void set(AMatrix m) {
+	@Override 
+	public void set(AMatrix m) {
 		checkSameShape(m);
 		for (int i=0; i<cols; i++) {
 			m.copyColumnTo(i, data, index(0,i));
