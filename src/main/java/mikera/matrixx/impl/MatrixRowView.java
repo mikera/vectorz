@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
@@ -87,5 +88,12 @@ public final class MatrixRowView extends AMatrixViewVector {
 			result+=data[offset+i]*unsafeGet(i);
 		}
 		return result;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i)));
+		}
 	}
 }
