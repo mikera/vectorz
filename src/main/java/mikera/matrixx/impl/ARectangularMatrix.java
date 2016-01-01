@@ -34,6 +34,11 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	@Override
+	public final boolean isSquare() {
+		return rows==cols;
+	}
+	
+	@Override
 	public final int[] getShape() {
 		return new int[] {rows,cols};
 	}

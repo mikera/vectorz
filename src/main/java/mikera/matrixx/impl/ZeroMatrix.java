@@ -45,12 +45,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	public boolean isSparse() {
 		return true;
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return cols==rows;
-	}
-	
+		
 	@Override
 	public boolean isMutable() {
 		return false;

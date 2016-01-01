@@ -150,12 +150,7 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 		AVector row=rowData[i];
 		return row.dotProduct(inputVector);
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return rows==cols;
-	}
-	
+		
 	@Override
 	public Matrix clone() {
 		return Matrixx.create(this);

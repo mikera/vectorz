@@ -86,12 +86,7 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 		Vector3 row=rowData[i];
 		return row.dotProduct(inputVector);
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return rows==3;
-	}
-	
+		
 	@Override
 	public VectorMatrixM3 clone() {
 		VectorMatrixM3 m=new VectorMatrixM3(rowData.clone());
