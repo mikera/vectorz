@@ -122,7 +122,7 @@ public class TestSparseColumnMatrix {
 	}
 
 	@Test public void testConversionAndEquals() {
-        int SSIZE = 100, DSIZE = 20;
+        int SSIZE = 40, DSIZE = 10;
 		SparseColumnMatrix M=SparseColumnMatrix.create(SSIZE,SSIZE);
 		for (int i=0; i<SSIZE; i++) {
 			double[] data=new double[DSIZE];

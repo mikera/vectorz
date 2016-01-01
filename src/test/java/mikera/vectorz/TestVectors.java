@@ -922,7 +922,7 @@ public class TestVectors {
 		for (int j=0; j<8; j++) {
 			double[] data=new double[j];
 			for (int i=0; i<j; i++) data[i]=i;
-			doGenericTests(Vectorz.create(data));
+			doGenericTests(Vector.wrap(data));
 		}
 	}
 		

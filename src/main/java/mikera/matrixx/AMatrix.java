@@ -23,7 +23,6 @@ import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.ARectangularMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
-import mikera.matrixx.impl.IFastRows;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.MatrixBandView;
@@ -1082,12 +1081,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public boolean epsilonEquals(INDArray a) {
+	public final boolean epsilonEquals(INDArray a) {
 		return epsilonEquals(a,Vectorz.TEST_EPSILON);
 	}
 	
 	@Override
-	public boolean epsilonEquals(INDArray a, double epsilon) {
+	public final boolean epsilonEquals(INDArray a, double epsilon) {
 		if (a instanceof AMatrix) {
 			return epsilonEquals((AMatrix) a,epsilon);
 		} if (a.dimensionality()!=2) {
@@ -1103,17 +1102,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
-	public boolean epsilonEquals(AMatrix a, double epsilon) {
-		if (a==this) return true;
-		int sc=rowCount();
-		if (a.rowCount()!=sc) return false;
-		for (int i=0; i<sc; i++) {
-			AVector s=getRow(i);
-			if (!s.epsilonEquals(a.getRow(i),epsilon)) return false;
-		}			
-		return true;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof AMatrix) return equals((AMatrix) o);
@@ -1194,26 +1182,20 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Returns true if this matrix is approximately equal to 
 	 * a second matrix, up to a default tolerance level
 	 */
-	public boolean epsilonEquals(AMatrix a) {
-		int rc = rowCount();
-		int cc = columnCount();
-		a.checkShape(rc,cc);
-		
-		if ((this instanceof IFastRows)&&(a instanceof IFastRows)) {
-			for (int i = 0; i < rc; i++) {
-				if (!getRow(i).epsilonEquals(a.getRow(i))) return false;	
-			}
-		} else {
-			for (int i = 0; i < rc; i++) {
-				for (int j = 0; j < cc; j++) {
-					if (!Tools.epsilonEquals(unsafeGet(i, j), a.unsafeGet(i, j)))
-						return false;
-				}
-			}
-		}
+	public final boolean epsilonEquals(AMatrix a) {
+		return epsilonEquals(a,Vectorz.TEST_EPSILON);
+	}
+	
+	public boolean epsilonEquals(AMatrix a, double epsilon) {
+		if (a==this) return true;
+		int sc=rowCount();
+		if (a.rowCount()!=sc) return false;
+		for (int i=0; i<sc; i++) {
+			AVector s=getRow(i);
+			if (!s.epsilonEquals(a.getRow(i),epsilon)) return false;
+		}			
 		return true;
 	}
-
 
 	/**
 	 * Internal method to test for equality in a row-wise basis. Assumes row counts are already proven equal.

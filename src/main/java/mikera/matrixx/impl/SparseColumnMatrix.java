@@ -5,6 +5,7 @@ import java.util.List;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
@@ -409,6 +410,17 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public boolean epsilonEquals(AMatrix a, double epsilon) {
+		int cc = columnCount();
+		checkSameShape(a);
+		
+		for (int i = 0; i < cc; i++) {
+			if (!getColumn(i).epsilonEquals(a.getColumn(i),epsilon)) return false;	
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean equals(AMatrix m) {
 		if (m==this) return true;
 		if (!isSameShape(m)) return false;
@@ -422,6 +434,13 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		int rc = rowCount();
+		int cc = columnCount();
+		return equals(Matrixx.wrapStrided(data, rc, cc, offset, cc, 1));
 	}
 
 }
