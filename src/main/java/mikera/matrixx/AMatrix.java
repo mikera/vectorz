@@ -2054,7 +2054,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override 
 	public void validate() {
-		// nothing to do since we have no data to validate
+		// nothing special to do
+		super.validate();
 	}
 
 	/**
