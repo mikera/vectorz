@@ -135,4 +135,27 @@ public final class MatrixRowView extends AMatrixViewVector {
 			unsafeSet(i,unsafeGet(i)+v.unsafeGet(i)*factor);
 		}
 	}
+	
+	@Override
+	public void sub(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,unsafeGet(i)-v.unsafeGet(i));
+		}
+	}
+	
+	@Override
+	public void set(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,v.unsafeGet(i));
+		}
+	}
+	
+	@Override
+	public void fill(double v) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,v);
+		}
+	}
 }
