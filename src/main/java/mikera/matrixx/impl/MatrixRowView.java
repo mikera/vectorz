@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
@@ -94,6 +95,44 @@ public final class MatrixRowView extends AMatrixViewVector {
 	public void applyOp(Op op) {
 		for (int i=0; i<length; i++) {
 			unsafeSet(i,op.apply(unsafeGet(i)));
+		}
+	}
+	
+	@Override
+	public void applyOp(Op2 op, AVector v) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i),v.unsafeGet(i)));
+		}
+	}
+	
+	@Override
+	public void multiply(double factor) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,factor*(unsafeGet(i)));
+		}
+	}
+	
+	@Override
+	public void multiply(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,v.unsafeGet(i)*unsafeGet(i));
+		}
+	}
+	
+	@Override
+	public void add(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,v.unsafeGet(i)+unsafeGet(i));
+		}
+	}
+	
+	@Override
+	public void addMultiple(AVector v, double factor) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,unsafeGet(i)+v.unsafeGet(i)*factor);
 		}
 	}
 }

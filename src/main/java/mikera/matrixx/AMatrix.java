@@ -1581,7 +1581,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
-	public void multiply (AVector v) {
+	/**
+	 * Multiply each row in this matrix by a vector. Mutates this matrix.
+	 * @param v
+	 */
+	public void multiply(AVector v) {
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
 			getRowView(i).multiply(v);
