@@ -248,6 +248,15 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	}
 	
 	@Override
+	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		AVector[] newRows=new AVector[rows];
+		for (int i=0; i<rows; i++) {
+			newRows[i]=getRowView(i+rowStart).subVector(colStart,cols);
+		}
+		return VectorMatrixMN.wrap(newRows);
+	}
+	
+	@Override
 	public boolean equals(AMatrix m) {
 		return equalsByRows(m);
 	}
