@@ -1512,6 +1512,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
+	public AMatrix applyOpCopy(Op op) {
+		AMatrix r=clone();
+		r.applyOp(op);
+		return r;
+	}
+	
+	@Override
 	public void applyOp(Op2 op, INDArray b) {
 		applyOp(op,b.broadcastLike(this));
 	}
