@@ -188,7 +188,6 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		return new StridedElementIterator(this);
 	}
 	
-	
 	@Override
 	public AMatrix getTranspose() {
 		return getTransposeView();
