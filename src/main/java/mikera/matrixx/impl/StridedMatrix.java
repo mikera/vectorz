@@ -107,13 +107,13 @@ public final class StridedMatrix extends BaseStridedMatrix {
 	}
 
 	@Override
-	public AMatrix getTranspose() {
+	public AStridedMatrix getTranspose() {
 		return Matrixx.wrapStrided(data, cols, rows, offset,
 				colStride, rowStride);
 	}
 	
 	@Override
-	public AMatrix getTransposeView() {
+	public AStridedMatrix getTransposeView() {
 		return Matrixx.wrapStrided(data, cols, rows, offset,
 				colStride, rowStride);
 	}

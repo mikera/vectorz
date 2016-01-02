@@ -17,6 +17,7 @@ import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.BufferMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.LowerTriangularMatrix;
@@ -588,7 +589,7 @@ public class TestMatrices {
 		doGenericTests(mm3);
 		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
 	}
-	
+		
 	private static long seed;
 	
 	private void randomise(INDArray m) {
@@ -608,12 +609,12 @@ public class TestMatrices {
 	}
 	
 	@Test public void g_DenseColumnMatrix() {
-		Matrix am1=new Matrix(Matrix33.createScaleMatrix(Math.PI));
-		doGenericTests(am1.getTranspose());
+		DenseColumnMatrix am1=new Matrix(Matrix33.createScaleMatrix(Math.PI)).getTranspose();
+		doGenericTests(am1);
 		
-		Matrix am2=new Matrix(new VectorMatrixMN(6 ,7));
+		DenseColumnMatrix am2=new Matrix(new VectorMatrixMN(6 ,7)).getTranspose();
 		randomise(am2);
-		doGenericTests(am2.getTranspose());
+		doGenericTests(am2);
 	}
 		
 	@Test public void g_BufferMatrix() {

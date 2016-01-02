@@ -197,12 +197,12 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
-	public AMatrix getTranspose() {
+	public AStridedMatrix getTranspose() {
 		return getTransposeView();
 	}
 	
 	@Override
-	public AMatrix getTransposeView() {
+	public AStridedMatrix getTransposeView() {
 		return Matrixx.wrapStrided(getArray(),columnCount(),rowCount(),getArrayOffset(),columnStride(),rowStride());
 	}
 	
