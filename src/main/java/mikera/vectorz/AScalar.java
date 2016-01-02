@@ -161,20 +161,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	@Override
 	public void add(INDArray a) {
-		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
-			add(a.get());
-		} else {
-			super.add(a);
-		}
+		add(a.get());
 	}
 	
 	@Override
 	public void sub(INDArray a) {
-		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
-			sub(a.get());
-		} else {
-			super.sub(a);
-		}
+		sub(a.get());
 	}
 		
 	@Override
