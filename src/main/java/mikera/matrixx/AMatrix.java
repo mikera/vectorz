@@ -995,7 +995,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * This is an elementary row operation
 	 */
 	public void addRowMultiple(int src, int dst, double factor) {
-		getRowView(dst).addMultiple(getRow(src), factor);
+		if (src==dst) {
+			getRowView(dst).scale(1.0+factor);
+		} else {
+			getRowView(dst).addMultiple(getRow(src), factor);			
+		}
 	}
 	
 	@Override
