@@ -747,6 +747,22 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	/**
+	 * Subtracts a scalar from every element of this array
+	 * @param a
+	 */
+	public final void sub(AScalar a) {
+		add(-a.get());
+	}
+	
+	/**
+	 * Subtracts a scalar from every element of this array
+	 * @param a
+	 */
+	public final void add(AScalar a) {
+		add(a.get());
+	}
+	
 	@Override
 	public void add(double a) {
 		if (a==0.0) return;

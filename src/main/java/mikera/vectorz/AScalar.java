@@ -159,10 +159,6 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		set(get()-d);
 	}
 	
-	public void add(AScalar s) {
-		set(get()+s.get());
-	}
-	
 	@Override
 	public void add(INDArray a) {
 		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
@@ -180,11 +176,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 			super.sub(a);
 		}
 	}
-	
-	public void sub(AScalar s) {
-		set(get()-s.get());
-	}
-	
+		
 	@Override
 	public void negate() {
 		set(-get());

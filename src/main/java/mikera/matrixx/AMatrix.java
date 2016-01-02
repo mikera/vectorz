@@ -893,15 +893,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void sub(AMatrix m) {
 		addMultiple(m,-1.0);
 	}
-	
-	public void sub(AScalar a) {
-		add(-a.get());
-	}
-	
-	public void add(AScalar a) {
-		add(a.get());
-	}
-	
+		
 	@Override
 	public void negate() {
 		multiply(-1.0);
