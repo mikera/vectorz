@@ -67,7 +67,7 @@ public abstract class Op2 {
 	public void applyTo(double[] data, double b) {
 		applyTo(data,0,data.length,b);
 	}
-	
+		
 	/**
 	 * Returns true if the operator is stochastic, i.e returns random values for at least some inputs
 	 * @return

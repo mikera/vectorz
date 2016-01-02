@@ -70,7 +70,6 @@ public final class Ops {
 	public static final Op2 ADD_ABS = ComposedOp2.create(ADD, ABS);
 	public static final Op2 ADD_SQUARE = ComposedOp2.create(ADD, SQUARE);
 
-
 	public static final ARoundingOp CEIL = new ARoundingOp() {
 		@Override
 		public double apply(double x) {

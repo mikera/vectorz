@@ -4,6 +4,11 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
 
+/**
+ * Class representing a composed operation of the form  z = f(x,g(y))
+ * 
+ * @author Mike
+ */
 public class ComposedOp2 extends Op2 {
 	public final Op inner;
 	public final Op2 outer;
