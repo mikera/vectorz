@@ -662,6 +662,7 @@ public class TestArrays {
 		assertEquals(m.getClass().toString(),es,m.elementPowSum(1.0),0.0001);
 		assertEquals(ess,m.elementAbsPowSum(2.0),0.0001);
 
+		assertEquals(ess,m.reduce(Ops.ADD_SQUARE, 0.0),0.0001);
 	}
 	
 	@SuppressWarnings("unused")

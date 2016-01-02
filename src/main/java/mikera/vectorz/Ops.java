@@ -4,7 +4,9 @@ import mikera.util.Maths;
 import mikera.vectorz.ops.AFunctionOp;
 import mikera.vectorz.ops.ARoundingOp;
 import mikera.vectorz.ops.Absolute;
+import mikera.vectorz.ops.Add;
 import mikera.vectorz.ops.Clamp;
+import mikera.vectorz.ops.ComposedOp2;
 import mikera.vectorz.ops.Cosh;
 import mikera.vectorz.ops.Exp;
 import mikera.vectorz.ops.Identity;
@@ -61,6 +63,12 @@ public final class Ops {
 	// binary operators
 	public static final Op2 MIN = new Min();
 	public static final Op2 MAX = new Max();
+	public static final Op2 ADD = new Add();
+
+	// composite binary operators
+	public static final Op2 MAX_ABS = ComposedOp2.create(MAX, ABS);
+	public static final Op2 ADD_ABS = ComposedOp2.create(ADD, ABS);
+	public static final Op2 ADD_SQUARE = ComposedOp2.create(ADD, SQUARE);
 
 
 	public static final ARoundingOp CEIL = new ARoundingOp() {
