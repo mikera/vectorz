@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import mikera.arrayz.INDArray;
+
 /**
  * Basic interface for a Vector
  * 
@@ -8,7 +10,7 @@ package mikera.vectorz;
  * 
  * @author Mike
  */
-public interface IVector {
+public interface IVector extends INDArray {
 
 	/**
 	 * Returns the length of a vector, in terms of the number of elements.
@@ -22,22 +24,14 @@ public interface IVector {
 	/**
 	 * Gets a specified element from a vector.
 	 */
+	@Override
 	public double get(int i);
 	
 	/**
 	 * Set a specified element in a vector
 	 */
+	@Override
 	public void set(int i, double value);
-
-	/**
-	 * Convert a vector to an immutable format
-	 */
-	AVector immutable();
-
-	/**
-	 * Convert a vector to a mutable format
-	 */
-	AVector mutable();
 
 	AVector addCopy(AVector a);
 
@@ -55,5 +49,6 @@ public interface IVector {
 
 	AVector normaliseCopy();
 	
+	@Override
 	AVector clone();
 }
