@@ -951,7 +951,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Multiplies this matrix in-place by another in an entrywise manner (Hadamard product).
 	 * @param m
 	 */
-	public void elementMul(AMatrix m) {
+	public void multiply(AMatrix m) {
 		int rc=rowCount();
 		checkSameShape(m);
 		
@@ -964,7 +964,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Divides this matrix in-place by another in an entrywise manner.
 	 * @param m
 	 */
-	private void elementDiv(AMatrix m) {
+	private void divide(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
 		m.checkShape(rc,cc);
@@ -1590,7 +1590,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public void multiply(INDArray a) {
 		if (a instanceof AMatrix) {
-			elementMul((AMatrix)a);
+			multiply((AMatrix)a);
 		} else if (a instanceof AVector) {
 			multiply((AVector)a);
 		} else{
@@ -1621,7 +1621,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public void divide(INDArray a) {
 		if (a instanceof AMatrix) {
-			elementDiv((AMatrix)a);
+			divide((AMatrix)a);
 		} else if (a instanceof AVector) {
 			divide((AVector)a);
 		} else {

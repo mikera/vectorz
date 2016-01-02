@@ -270,7 +270,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override 
-	public void elementMul(AMatrix m) {
+	public void multiply(AMatrix m) {
 		// do nothing, already zero!
 	}
 
