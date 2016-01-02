@@ -121,9 +121,9 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		int colStride=columnStride();
 		int rowStride=rowStride();
 		for (int i=0; i<rows; i++) {
-			int ro=offset+i*rowStride;
+			int thisSrcOffset=offset+i*rowStride;
 			for (int j=0; j<cols; j++) {
-				dest[destOffset++]+=data[ro+j*colStride];
+				dest[destOffset++]+=data[thisSrcOffset+j*colStride];
 			}
 		}
 	}

@@ -787,6 +787,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}		
 	}
 	
+	/**
+	 * Subtracts a vector from every row of this matrix.
+	 */
 	public void sub(AVector v) {
 		int rc=rowCount();
 		int cc=columnCount();
