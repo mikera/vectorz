@@ -7,6 +7,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -142,14 +143,13 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public AMatrix broadcastLike(AMatrix target) {
+	public AStridedMatrix broadcastLike(AMatrix target) {
 		if (length()==target.columnCount()) {
 			return StridedMatrix.wrap(getArray(), target.rowCount(), length(), getArrayOffset(), 0, getStride());
 		} else {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}
 	}
-	
 	
 	@Override
 	public AVector selectView(int... inds) {
@@ -164,7 +164,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public AStridedVector clone() {
+	public Vector clone() {
 		return Vector.create(this);
 	}
 	
@@ -216,7 +216,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	public abstract void applyOp(Op op);
 	
 	@Override
-	public final AStridedVector applyOpCopy(Op op) {
+	public final Vector applyOpCopy(Op op) {
 		double[] da=toDoubleArray();
 		op.applyTo(da);
 		return Vector.wrap(da);
