@@ -4,6 +4,7 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.util.ErrorMessages;
@@ -130,6 +131,17 @@ public final class SingleElementVector extends ASingleElementVector {
 			result=op.apply(result,value);
 			return op.reduceZeros(result, length-index-1);
 		}
+	}
+	
+	@Override
+	public AVector applyOpCopy(Op op) {
+		if (op.isStochastic()) return super.applyOpCopy(op);
+		
+		double v=op.apply(0.0);
+		if (v==0.0) {
+			return SingleElementVector.create(op.apply(value), index, length);
+		} 
+		return super.applyOpCopy(op);
 	}
 	
 	@Override

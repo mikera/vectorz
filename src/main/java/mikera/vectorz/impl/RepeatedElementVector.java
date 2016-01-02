@@ -5,6 +5,7 @@ import java.util.List;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
@@ -65,6 +66,14 @@ public final class RepeatedElementVector extends ASizedVector {
 	@Override
 	public double unsafeGet(int i) {
 		return value;
+	}
+	
+	@Override
+	public AVector applyOpCopy(Op op) {
+		if (op.isStochastic()) return super.applyOpCopy(op);
+		
+		double v=op.apply(value);
+		return Vectorz.createRepeatedElement(length, v);
 	}
 	
 	@Override
