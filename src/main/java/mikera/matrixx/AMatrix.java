@@ -1478,6 +1478,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 	
+	@Override
 	public double[][] toNestedDoubleArrays() {
 		int rc=rowCount();
 		double[][] result=new double[rc][];

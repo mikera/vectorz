@@ -161,6 +161,13 @@ public interface IMatrix extends INDArray {
 	 */
 	boolean isDiagonal();
 
+	/**
+	 * Converts this matrix to nested double[][] array
+	 * 
+	 * @return
+	 */
+	double[][] toNestedDoubleArrays();
+
 
 
 }

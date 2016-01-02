@@ -98,5 +98,15 @@ public class SubMatrixView extends ARectangularMatrix {
 		checkColumn(j);
 		return source.getColumn(colStart+j).subVector(rowStart, rows).clone();
 	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		source.getRow(rowStart+row).copyTo(colStart, dest, destOffset, cols);
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		source.getColumn(colStart+col).copyTo(rowStart, dest, destOffset, rows);
+	}	
 
 }
