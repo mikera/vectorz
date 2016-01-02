@@ -64,14 +64,14 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
-	public AScalar getTranspose() {return this;}
+	public final AScalar getTranspose() {return this;}
 	
 	@Override
 	public final AScalar getTransposeView() {return this;}
 
 	
 	@Override
-	public int dimensionality() {
+	public final int dimensionality() {
 		return 0;
 	}
 	
@@ -86,7 +86,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}	
 	
 	@Override
-	public int sliceCount() {
+	public final int sliceCount() {
 		return 0;
 	}
 	
