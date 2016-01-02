@@ -2,6 +2,7 @@ package mikera.matrixx;
 
 import java.util.List;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 
 /**
@@ -13,7 +14,7 @@ import mikera.vectorz.AVector;
  * @author Mike
  *
  */
-public interface IMatrix {
+public interface IMatrix extends INDArray {
 	/**
 	 * Gets the number of rows in this matrix (dimension 0)
 	 * @return
@@ -30,12 +31,14 @@ public interface IMatrix {
 	 * Gets the element at the specified position in this matrix
 	 * @return
 	 */
+	@Override
 	public double get(int row, int column);
 
 	/**
 	 * Sets the element at the specified position in this matrix
 	 * @return
 	 */
+	@Override
 	public void set(int row, int column, double value);
 	
 	/**
