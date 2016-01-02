@@ -157,11 +157,8 @@ public class RowMatrix extends ARectangularMatrix implements IFastColumns, IFast
 	
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
-		if (row==0) {
-			vector.getElements(dest, destOffset);
-		} else {
-			throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
-		}
+		if (row!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
+		vector.getElements(dest, destOffset);
 	}
 	
 	@Override

@@ -1077,14 +1077,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public double distanceSquared(AVector v) {
-		// TODO: consider implementing with subCopy by default?
-		int len=checkSameLength(v);
-		double total=0.0;
-		for (int i=0; i<len; i++) {
-			double d=unsafeGet(i)-v.unsafeGet(i);
-			total+=d*d;
-		}
-		return total;
+		// we rely on the identity:  (a-b)^2  = a^2 + b^2 - 2a.b
+		return this.elementSquaredSum()+v.elementSquaredSum()-2*v.dotProduct(this);
 	}
 	
 	/**
@@ -1965,6 +1959,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return length()==a.getShape(0);
 	}
 	
+	@Override
 	public boolean isSameShape(AVector a) {
 		return length()==a.length();
 	}

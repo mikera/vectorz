@@ -80,4 +80,11 @@ public interface IVector extends INDArray {
 	
 	@Override
 	AVector clone();
+
+	/**
+	 * Returns true if this vector is exactly the same shape as another vector.
+	 * @param a
+	 * @return
+	 */
+	boolean isSameShape(AVector a);
 }
