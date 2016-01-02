@@ -274,10 +274,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public AVector asVector() {
-		if (this instanceof IDenseArray) {
-			IDenseArray a=(IDenseArray) this;
-			return Vectorz.wrap(a.getArray(), a.getArrayOffset(), Tools.toInt(elementCount()));
-		}
 		int n=sliceCount();
 		AVector result=slice(0).asVector();
 		for (int i=1; i<n; i++) {

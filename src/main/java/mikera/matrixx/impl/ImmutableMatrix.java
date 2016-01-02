@@ -156,6 +156,11 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	}
 	
 	@Override
+	public ImmutableVector asVector() {
+		return ImmutableVector.wrap(data, getArrayOffset(), rows*cols);
+	}
+
+	@Override
 	public Matrix toMatrix() {
 		return Matrix.wrap(rows, cols, DoubleArrays.copyOf(data));
 	}

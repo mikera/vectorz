@@ -245,6 +245,11 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public ADenseArrayVector asVector() {
+		return Vectorz.wrap(data, getArrayOffset(), rows*cols);
+	}
+	
+	@Override
 	public Matrix clone() {
 		return Matrix.wrap(rows, cols, toDoubleArray());
 	}
