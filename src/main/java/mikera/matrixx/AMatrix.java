@@ -964,7 +964,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Divides this matrix in-place by another in an entrywise manner.
 	 * @param m
 	 */
-	private void divide(AMatrix m) {
+	public void divide(AMatrix m) {
 		int rc=rowCount();
 		int cc=columnCount();
 		m.checkShape(rc,cc);
