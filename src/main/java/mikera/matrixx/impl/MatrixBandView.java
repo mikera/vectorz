@@ -4,7 +4,6 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.impl.AMatrixViewVector;
-import mikera.vectorz.impl.MatrixIndexScalar;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -68,12 +67,6 @@ public final class MatrixBandView extends AMatrixViewVector {
 		source.unsafeSet(calcRow(i), calcCol(i),v);
 	}
 	
-	@Override
-	public MatrixIndexScalar slice(int i) {
-		checkIndex(i);
-		return MatrixIndexScalar.wrap(source, calcRow(i), calcCol(i));
-	}
-
 	@Override
 	public AVector exactClone() {
 		return new MatrixBandView(source.exactClone(),band);
