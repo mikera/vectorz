@@ -1378,12 +1378,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void set(double a) {
 		fill(a);
 	}
-	
-	@Deprecated
-	public void set(double[] data) {
-		setElements(data);
-	}
-	
+		
 	@Override
 	public void setElements(double... data) {
 		checkLength(data.length);
