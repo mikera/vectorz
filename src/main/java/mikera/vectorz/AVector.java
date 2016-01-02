@@ -1447,10 +1447,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		set(src.subVector(srcOffset,length()));
 	}
 	
-	public long zeroCount() {
-		return elementCount()-nonZeroCount();
-	}
-	
 	/**
 	 * Clones the vector, creating a new mutable copy of all data. 
 	 * 
