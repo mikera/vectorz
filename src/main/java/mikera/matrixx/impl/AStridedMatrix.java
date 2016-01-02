@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -140,6 +141,13 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 				data[ix]=op.apply(data[ix]);
 			}
 		}
+	}
+	
+	@Override
+	public final Matrix applyOpCopy(Op op) {
+		double[] da=toDoubleArray();
+		op.applyTo(da);
+		return Matrix.wrap(rows,cols,da);
 	}
 	
 	@Override
