@@ -74,7 +74,7 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 
 	@Override
 	public void set(int i, double value) {
-		if (i!=0) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		scalar.set(value);
 	}
 	
@@ -112,11 +112,6 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	@Override
 	public WrappedScalarVector exactClone() {
 		return new WrappedScalarVector(scalar.exactClone());
-	}
-
-	@Override
-	public AScalar getWrappedObject() {
-		return scalar;
 	}
 
 	@Override

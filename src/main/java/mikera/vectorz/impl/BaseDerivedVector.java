@@ -3,10 +3,10 @@ package mikera.vectorz.impl;
 import mikera.vectorz.AVector;
 
 /**
- * Derived vector delegates all calls to an underlying vector
+ * Derived vector delegates all calls element-wise to an underlying vector
  * @author Mike
  */
-public abstract class BaseDerivedVector extends AVector {
+public abstract class BaseDerivedVector extends AWrappedVector<AVector> {
 	private static final long serialVersionUID = -9039112666567131812L;
 
 	protected final AVector source;

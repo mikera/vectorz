@@ -10,6 +10,5 @@ import mikera.vectorz.AVector;
  */
 @SuppressWarnings("serial")
 public abstract class AWrappedVector<T> extends AVector {
-
-	public abstract T getWrappedObject();
+	// nothing to do??
 }
