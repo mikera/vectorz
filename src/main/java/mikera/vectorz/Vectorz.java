@@ -144,7 +144,7 @@ public class Vectorz {
 			}
 			return ArraySubVector.wrap(data, offset, length);
 		}
-		return StridedVector.wrapStrided(data,offset,length,stride);
+		return StridedVector.wrap(data,offset,length,stride);
 	}
 
 	/**
@@ -518,7 +518,8 @@ public class Vectorz {
 	}
 
 	/**
-	 * Coerce to AVector
+	 * Coerce to AVector. Avoids copying if possible.
+	 * 
 	 * @param o
 	 * @return
 	 */
@@ -636,8 +637,4 @@ public class Vectorz {
 	public static boolean isUncountable(double value) {
 		return Double.isNaN(value) || Double.isInfinite(value);
 	}
-
-
-
-	
 }

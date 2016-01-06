@@ -15,8 +15,8 @@ import mikera.vectorz.util.VectorzException;
 /**
  * Hashed sparse vector, intended for large vectors with very few randomly positioned non-zero elements. 
  * 
- * Maintains hash elements for non-zero values only. This is useful (and better than SparseIndexedVector)
- * if elements are likely to be changed or set back to zero on a frequent basis
+ * Maintains hash elements for non-zero values only. This is useful (and maybe better than SparseIndexedVector)
+ * if random individual elements are likely to be changed, accessed or set back to zero on a frequent basis
  * 
  * Mutable in all elements, but performance will be reduced if density is high. In general, if density 
  * is more than about 1% then a dense Vector is likely to be better.
@@ -43,13 +43,15 @@ public class SparseHashedVector extends ASparseVector {
 	 * Creates a SparseHashedVector with the specified values
 	 */
 	public static SparseHashedVector create(AVector v) {
-		int n=v.length();
-		HashMap<Integer,Double> hm=new HashMap<Integer,Double>();
+		Index ix=v.nonSparseIndex();
+		int n=ix.length();
+		HashMap<Integer,Double> hm=new HashMap<Integer,Double>(n);
 		for (int i=0; i<n; i++) {
-			double val=v.unsafeGet(i);
-			if (val!=0) hm.put(i,val);
+			int ii=ix.get(i);
+			double val=v.unsafeGet(ii);
+			if (val!=0.0) hm.put(ii,val);
 		}
-		return new SparseHashedVector(n,hm);
+		return new SparseHashedVector(v.length(),hm);
 	}
 	
 	/**
@@ -299,6 +301,7 @@ public class SparseHashedVector extends ASparseVector {
 	
 	@Override
 	public void addAt(int i, double value) {
+		if (value==0.0) return;
 		Integer ind=i;
 		unsafeSetInteger(ind, value+unsafeGet(ind));
 	}

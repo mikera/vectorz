@@ -24,36 +24,67 @@ public interface IVector extends INDArray {
 	/**
 	 * Gets a specified element from a vector.
 	 */
+	@Override
 	public double get(int i);
 	
 	/**
 	 * Set a specified element in a vector
 	 */
+	@Override
 	public void set(int i, double value);
 
 	/**
-	 * Convert a vector to an immutable format
+	 * Adds a vector element-wise to this vector, returning a new vector.
+	 * @param a
+	 * @return
 	 */
-	AVector immutable();
-
-	/**
-	 * Convert a vector to a mutable format
-	 */
-	AVector mutable();
-
 	AVector addCopy(AVector a);
 
+	/**
+	 * Subtracts a vector element-wise from this vector, returning a new vector.
+	 * @param a
+	 * @return
+	 */
 	AVector subCopy(AVector a);
 
+	/**
+	 * Multiplies a vector element-wise with this vector, returning a new vector.
+	 * @param a
+	 * @return
+	 */
 	AVector multiplyCopy(AVector a);
 
+	/**
+	 * Divides this vector element-wise by another vector, returning a new vector.
+	 * @param a
+	 * @return
+	 */
 	AVector divideCopy(AVector a);
 
+	/**
+	 * Computes the square root for each element in this vector, returning a new vector.
+	 * @param a
+	 * @return
+	 */
 	AVector sqrtCopy();
 
 	boolean epsilonEquals(AVector v, double tolerance);
 
 	double normalise();
 
+	/**
+	 * Normalises this vector to unit length, returning a new vector.
+	 * @return
+	 */
 	AVector normaliseCopy();
+	
+	@Override
+	AVector clone();
+
+	/**
+	 * Returns true if this vector is exactly the same shape as another vector.
+	 * @param a
+	 * @return
+	 */
+	boolean isSameShape(AVector a);
 }

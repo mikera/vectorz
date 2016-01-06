@@ -1,10 +1,8 @@
 package mikera.matrixx;
 
 import java.nio.DoubleBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Multiplications;
@@ -12,10 +10,9 @@ import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.matrixx.impl.VectorMatrixMN;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
-import mikera.vectorz.Tools;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
@@ -34,29 +31,7 @@ import mikera.vectorz.util.ErrorMessages;
  */
 public final class Matrix extends ADenseArrayMatrix {
 	private static final long serialVersionUID = -3260581688928230431L;
-
-	private Matrix(int rowCount, int columnCount) {
-		this(rowCount, columnCount, createStorage(rowCount, columnCount));
-	}
-
-	/**
-	 * Creates a new zero-filled matrix of the specified shape.
-	 */
-	public static Matrix create(int rowCount, int columnCount) {
-		return new Matrix(rowCount, columnCount);
-	}
 	
-	public static Matrix create(int... shape) {
-		int dims=shape.length;
-		if (dims!=2) throw new IllegalArgumentException("Cannot create Matrix with dimensionality: "+dims);
-		return create(shape[0],shape[1]);
-	}
-
-
-	public static Matrix create(AMatrix m) {
-		return new Matrix(m);
-	}
-
 	/**
 	 * Creates a new Matrix with a copy of all data from the source matrix
 	 * 
@@ -66,13 +41,36 @@ public final class Matrix extends ADenseArrayMatrix {
 		this(m.rowCount(), m.columnCount(), m.toDoubleArray());
 	}
 
-	public static double[] createStorage(int rowCount, int columnCount) {
-		long elementCount = ((long) rowCount) * columnCount;
-		int ec = (int) elementCount;
-		if (ec != elementCount)
-			throw new IllegalArgumentException(ErrorMessages.tooManyElements(
-					rowCount, columnCount));
-		return new double[ec];
+	public Matrix(int rowCount, int columnCount) {
+		this(rowCount, columnCount, DoubleArrays.createStorage(rowCount, columnCount));
+	}
+
+	private Matrix(int rowCount, int columnCount, double[] data) {
+		super(data, rowCount, columnCount);
+	}
+
+	/**
+	 * Creates a new zero-filled matrix of the specified shape.
+	 */
+	public static Matrix create(int rowCount, int columnCount) {
+		return new Matrix(rowCount, columnCount);
+	}
+	
+	/**
+	 * Creates a new zero-filled matrix of the specified shape.
+	 */
+	public static Matrix create(int... shape) {
+		int dims=shape.length;
+		if (dims!=2) throw new IllegalArgumentException("Cannot create Matrix with dimensionality: "+dims);
+		return create(shape[0],shape[1]);
+	}
+
+
+	/**
+	 * Creates a new mutable dense matrix containing a copy of another matroix
+	 */
+	public static Matrix create(AMatrix m) {
+		return new Matrix(m);
 	}
 
 	public static Matrix createRandom(int rows, int cols) {
@@ -93,14 +91,17 @@ public final class Matrix extends ADenseArrayMatrix {
 		return Matrix.wrap(rows, cols, m.toDoubleArray());
 	}
 
-	public static Matrix createFromRows(Object... rowVectors) {
-		int rc=rowVectors.length;
-		List<AVector> vs = new ArrayList<AVector>(rc);
-		for (Object o : rowVectors) {
-			vs.add(Vectorz.create(o));
+	public static Matrix createFromRows(Object... rows) {
+		int rc=rows.length;
+		AVector row0=Vectorz.toVector(rows[0]);
+		int cc=row0.length();
+		Matrix m = create(rc,cc);
+		m.setRow(0, row0);
+		for (int i=1; i<rc ; i++) {
+			AVector v=Vectorz.toVector(rows[i]);
+			m.setRow(i, v);
 		}
-		AMatrix m = VectorMatrixMN.create(vs);
-		return create(m);
+		return m;
 	}
 
 	public static Matrix create(double[][] data) {
@@ -158,10 +159,16 @@ public final class Matrix extends ADenseArrayMatrix {
 		return true;
 	}
 
-	private Matrix(int rowCount, int columnCount, double[] data) {
-		super(data, rowCount, columnCount);
-	}
-
+	/**
+	 * Wraps a double[] array as a dense Matrix. 
+	 * 
+	 * Double array must contain exactly the right number of elements, if not consider Matrixx.wrapStrided(..)
+	 * *
+	 * @param rowCount
+	 * @param columnCount
+	 * @param data
+	 * @return
+	 */
 	public static Matrix wrap(int rowCount, int columnCount, double[] data) {
 		if (data.length != rowCount * columnCount)
 			throw new IllegalArgumentException("data array is of wrong size: "
@@ -190,22 +197,9 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public Matrix innerProduct(Matrix a) {
-		return Multiplications.multiply(this, a);
-	}
-
-	@Override
 	public Matrix transposeInnerProduct(Matrix s) {
 		Matrix r = toMatrixTranspose();
 		return Multiplications.multiply(r, s);
-	}
-
-	@Override
-	public Matrix innerProduct(AMatrix a) {
-		if (a instanceof Matrix) { return innerProduct((Matrix) a); }
-		if ((this.columnCount() != a.rowCount())) { throw new IllegalArgumentException(
-				ErrorMessages.mismatch(this, a)); }
-		return Multiplications.multiply(this, a);
 	}
 
 	@Override
@@ -457,26 +451,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public void addAt(long i, double d) {
-		data[Tools.toInt(i)] += d;
-	}
-
-	@Override
-	public void subAt(int i, double d) {
-		data[i] -= d;
-	}
-
-	@Override
-	public void divideAt(int i, double d) {
-		data[i] /= d;
-	}
-
-	@Override
-	public void multiplyAt(int i, double d) {
-		data[i] *= d;
-	}
-
-	@Override
 	public void set(int i, int j, double value) {
 		checkColumn(j); // only need to check column, row out of bounds will cause IndexOutOfBoundsException
 		data[(i * cols) + j] = value;
@@ -485,6 +459,11 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public void applyOp(Op op) {
 		op.applyTo(data);
+	}
+	
+	@Override
+	public void applyOp(Op2 op, double b) {
+		op.applyTo(data, b);
 	}
 
 	public void addMultiple(ADenseArrayMatrix m, double factor) {
@@ -501,14 +480,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	public void add(AMatrix m) {
 		checkSameShape(m);
 		m.addToArray(data, 0);
-	}
-	
-	@Override
-	public Matrix addCopy(Matrix a) {
-		checkSameShape(a);
-		Matrix r=Matrix.create(rows, cols);
-		Matrix.add(r,this,a);
-		return r;
 	}
 	
 	@Override
@@ -553,11 +524,6 @@ public final class Matrix extends ADenseArrayMatrix {
 		checkSameShape(a);
 		checkSameShape(b);
 		DoubleArrays.add2(data, a.data,b.data);
-	}
-
-	public void add(Matrix m) {
-		checkSameShape(m);
-		DoubleArrays.add(data, m.data);
 	}
 
 	@Override
@@ -637,11 +603,6 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public Matrix clone() {
-		return new Matrix(rows, cols, DoubleArrays.copyOf(data));
-	}
-
-	@Override
 	public Matrix copy() {
 		return clone();
 	}
@@ -660,13 +621,9 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void setColumn(int j, AVector col) {
-		int rc = rows;
-		if (col.length() != rc)
-			throw new IllegalArgumentException(ErrorMessages.mismatch(
-					this.getColumn(j), col));
-		for (int i = 0; i < rc; i++) {
-			data[index(i, j)] = col.unsafeGet(i);
-		}
+		int rc = checkRow(j);
+		col.checkLength(rc);
+		col.copyTo(0, data, j, rc, cols);
 	}
 
 	@Override

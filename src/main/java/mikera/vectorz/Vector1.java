@@ -79,6 +79,16 @@ public final class Vector1 extends APrimitiveVector {
 	public void applyOp(Op op) {
 		x=op.apply(x);
 	}
+	
+	@Override
+	public double reduce(Op2 op,double init) {
+		return op.apply(init, x);
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		return x;
+	}
 
 	@Override
 	public double get(int i) {

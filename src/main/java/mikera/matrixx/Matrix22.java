@@ -3,6 +3,7 @@ package mikera.matrixx;
 import mikera.matrixx.impl.APrimitiveMatrix;
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 import mikera.vectorz.util.ErrorMessages;
@@ -183,6 +184,14 @@ public final class Matrix22 extends APrimitiveMatrix implements ISpecialisedTran
 		m01-=a.m01;
 		m10-=a.m10;
 		m11-=a.m11;		
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		m00=op.apply(m00);
+		m01=op.apply(m01);
+		m10=op.apply(m10);
+		m11=op.apply(m11);
 	}
 	
 	@Override

@@ -72,6 +72,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 		return pos[j+1]-pos[j];
 	}
 	
+	@Override
 	public ArraySubVector getComponent(int i) {
 		return ArraySubVector.wrap(data[i], offsets[i], subLength(i));
 	}
@@ -117,13 +118,6 @@ public final class JoinedArrayVector extends AJoinedVector {
 		int ai=findArrayNum(i);
 		data[ai][i-pos[ai]+offsets[ai]]+=value;
 	}
-	
-	@Override
-	public void copyTo(AVector dest, int offset) {
-		for (int j=0; j<numArrays; j++) {
-			dest.setRange(pos[j]+offset,data[j],offsets[j],subLength(j));
-		}
-	}
 
 	@Override
 	public double elementSum() {
@@ -152,7 +146,8 @@ public final class JoinedArrayVector extends AJoinedVector {
 		return super.dotProduct(v);
 	}
 	
-	public double dotProduct (ADenseArrayVector v) {
+	@Override
+	public double dotProduct(ADenseArrayVector v) {
 		double result=0.0;
 		double[] arr=v.getArray();
 		int ao=v.getArrayOffset();

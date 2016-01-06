@@ -9,6 +9,7 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementIterator;
@@ -44,12 +45,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	public boolean isSparse() {
 		return true;
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return cols==rows;
-	}
-	
+		
 	@Override
 	public boolean isMutable() {
 		return false;
@@ -135,6 +131,16 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
+	public double reduce(Op2 op, double init) {
+		return op.reduceZeros(init,elementCount());
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		return op.reduceZeros(elementCount());
+	}
+	
+	@Override
 	public AMatrix addCopy(AMatrix a) {
 		if (!isSameShape(a)) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		return a.copy();
@@ -168,9 +174,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector v) {
-		assert(i>=0);
-		assert(i<rows);
+	public double rowDotProduct(int i, AVector v) {
 		return 0.0;
 	}
 
@@ -266,7 +270,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	}
 	
 	@Override 
-	public void elementMul(AMatrix m) {
+	public void multiply(AMatrix m) {
 		// do nothing, already zero!
 	}
 
@@ -302,7 +306,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	public double[] toDoubleArray() {
 		return new double[rows*cols];
 	}
-	
+		
 	@Override
 	public AMatrix sparseClone() {
 		return Matrixx.createSparse(rows, cols);

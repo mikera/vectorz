@@ -2,6 +2,7 @@ package mikera.matrixx.impl;
 
 import mikera.transformz.marker.ISpecialisedTransform;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.Vector3;
 
 /**
@@ -13,7 +14,7 @@ import mikera.vectorz.Vector3;
 public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISpecialisedTransform  {
 	private static final long serialVersionUID = -8148184725377519520L;
 
-	private Vector3[] rowData;
+	private final Vector3[] rowData;
 	
 	public VectorMatrixM3(int rowCount) {
 		super(rowCount,3);
@@ -32,6 +33,13 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	public void multiply(double factor) {
 		for (Vector3 vector:rowData) {
 			vector.scale(factor);
+		}
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		for (Vector3 vector:rowData) {
+			vector.applyOp(op);
 		}
 	}
 	
@@ -65,10 +73,15 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	@Override
-	public Vector3 getRowView(int row) {
+	public Vector3 getRow(int row) {
 		return  rowData[row];
 	}
 	
+	@Override
+	public Vector3 getRowClone(int row) {
+		return rowData[row].clone();
+	}
+
 	@Override
 	public void transform(AVector source, AVector dest) {
 		if (source instanceof Vector3) {transform((Vector3)source,dest); return;}
@@ -82,17 +95,11 @@ public final class VectorMatrixM3 extends AVectorMatrix<Vector3>  implements ISp
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector inputVector) {
-		assert(i<rows);
+	public double rowDotProduct(int i, AVector inputVector) {
 		Vector3 row=rowData[i];
 		return row.dotProduct(inputVector);
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return rows==3;
-	}
-	
+		
 	@Override
 	public VectorMatrixM3 clone() {
 		VectorMatrixM3 m=new VectorMatrixM3(rowData.clone());

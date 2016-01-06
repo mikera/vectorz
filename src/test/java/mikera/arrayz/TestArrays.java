@@ -662,6 +662,7 @@ public class TestArrays {
 		assertEquals(m.getClass().toString(),es,m.elementPowSum(1.0),0.0001);
 		assertEquals(ess,m.elementAbsPowSum(2.0),0.0001);
 
+		assertEquals(ess,m.reduce(Ops.ADD_SQUARE, 0.0),0.0001);
 	}
 	
 	@SuppressWarnings("unused")
@@ -672,16 +673,28 @@ public class TestArrays {
 			double min=m.elementMin();
 			double max=m.elementMax();
 			assertTrue(min<=max);
+			
+			assertEquals(min,m.reduce(Ops.MIN,Double.POSITIVE_INFINITY),0.0);
+			assertEquals(max,m.reduce(Ops.MAX,Double.NEGATIVE_INFINITY),0.0);
+			assertEquals(min,m.reduce(Ops.MIN),0.0);
+			assertEquals(max,m.reduce(Ops.MAX),0.0);
 		} else {
 			try {
 				double min=m.elementMin();
-				fail("Should not be able to get minimum of array with non elements!");
+				fail("Should not be able to get minimum of array with no elements!");
 			} catch (Throwable t ) { /* OK */ }
 			
 			try {
 				double max=m.elementMax();
-				fail("Should not be able to get maximum of array with non elements!");
+				fail("Should not be able to get maximum of array with no elements!");
 			} catch (Throwable t ) { /* OK */ }
+			
+			try {
+				double min=m.reduce(Ops.MIN);
+				fail("Should not be able to reduce array with no elements!");
+			} catch (Throwable t ) { /* OK */ }
+
+			assertEquals(-1010.0,m.reduce(Ops.MIN,-1010.0),0.0);
 		}
 
 	}
@@ -851,36 +864,38 @@ public class TestArrays {
 	}
 
 	@Test
-	public void g_NDArray() {
-		NDArray nd0 = NDArray.newArray();
-		Vectorz.fillIndexes(nd0.asVector());
-		testArray(nd0);
-		testArray(Array.create(nd0));
-		
-		NDArray nd1 = NDArray.newArray(3);
-		Vectorz.fillIndexes(nd1.asVector());
-		testArray(nd1);
-		testArray(Array.create(nd1));
-		
-		NDArray nd2 = NDArray.newArray(3, 3);
-		assertEquals(9,nd2.elementCount());
-		Vectorz.fillIndexes(nd2.asVector());
-		testArray(nd2);
-		testArray(Array.create(nd2));
-		
-		NDArray nd3 = NDArray.newArray(3, 3, 3);
-		Vectorz.fillIndexes(nd3.asVector());
-		testArray(nd3);
-		testArray(Array.create(nd3));
-	}
-
-	@Test
-	public void g_NDScalar() {
+	public void g_NDArrayScalar() {
 		NDArray ndscalar = NDArray.newArray();
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
 	}
+
+	@Test
+	public void g_NDArray3() {
+		NDArray nd1 = NDArray.newArray(3);
+		Vectorz.fillIndexes(nd1.asVector());
+		testArray(nd1);
+		testArray(Array.create(nd1));
+	}
+		
+	@Test
+	public void g_NDArray33() {
+		NDArray nd2 = NDArray.newArray(3, 3);
+		assertEquals(9,nd2.elementCount());
+		Vectorz.fillIndexes(nd2.asVector());
+		testArray(nd2);
+		testArray(Array.create(nd2));
+	}
+		
+	@Test
+	public void g_NDArray222() {
+		NDArray nd3 = NDArray.newArray(2, 2, 2);
+		Vectorz.fillIndexes(nd3.asVector());
+		testArray(nd3);
+		testArray(Array.create(nd3));
+	}
+
 	
 	@Test
 	public void g_BroadcastScalarArray() {

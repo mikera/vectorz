@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
+import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -73,8 +74,13 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 
 	@Override
 	public void set(int i, double value) {
-		if (i!=0) throw new IndexOutOfBoundsException();
+		checkIndex(i);
 		scalar.set(value);
+	}
+	
+	@Override 
+	public void applyOp(Op op) {
+		scalar.applyOp(op);
 	}
 	
 	@Override
@@ -106,11 +112,6 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	@Override
 	public WrappedScalarVector exactClone() {
 		return new WrappedScalarVector(scalar.exactClone());
-	}
-
-	@Override
-	public AScalar getWrappedObject() {
-		return scalar;
 	}
 
 	@Override

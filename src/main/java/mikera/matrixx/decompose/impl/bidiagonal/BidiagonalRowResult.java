@@ -15,29 +15,17 @@ public class BidiagonalRowResult implements IBidiagonalResult {
 		this.V = V;
 	}
 	
-	/**
-     * Returns the bidiagonal matrix.
-     *
-     * @return The bidiagonal matrix.
-     */
+	@Override
     public AMatrix getB() {
     	return B;
     }
     
-    /**
-     * Returns the orthogonal U matrix.
-     *
-     * @return The extracted Q matrix.
-     */
+	@Override
     public AMatrix getU() {
     	return U;
     }
     
-    /**
-     * Returns the orthogonal V matrix.
-     *
-     * @return The extracted Q matrix.
-     */
+	@Override
     public AMatrix getV() {
     	return V;
     }   

@@ -2,10 +2,14 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
  * A class representing a view of a matrix column as a vector
+ * 
+ * Used where no better implementations for getColumnView(...) on a matrix exist. 
+ * 
  * @author Mike
  */
 @SuppressWarnings("serial")
@@ -68,6 +72,13 @@ public final class MatrixColumnView extends AMatrixViewVector {
 			result+=data[offset+i]*unsafeGet(i);
 		}
 		return result;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i)));
+		}
 	}
 	
 	@Override

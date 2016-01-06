@@ -5,16 +5,19 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import org.junit.Test;
+
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
-import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.BufferMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
+import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.LowerTriangularMatrix;
@@ -26,7 +29,6 @@ import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.matrixx.impl.SubsetMatrix;
 import mikera.matrixx.impl.UpperTriangularMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -41,9 +43,6 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.ops.Constant;
 
-import org.junit.Test;
-
-@SuppressWarnings("deprecation")
 public class TestMatrices {
 
 	private void doMutationTest(AMatrix m) {
@@ -528,17 +527,21 @@ public class TestMatrices {
 		doGenericTests(Matrixx.createImmutableZeroMatrix(0, 0));
 	}
 	
-	@Test public void g_PrimitiveMatrix() {
+	@Test public void g_PrimitiveMatrix33() {
 		// specialised 3x3 matrix
 		Matrix33 m33=new Matrix33();
 		randomise(m33);
 		doGenericTests(m33);
+	}
 		
+	@Test public void g_PrimitiveMatrix22() {
 		// specialised 2*2 matrix
 		Matrix22 m22=new Matrix22();
 		randomise(m22);
 		doGenericTests(m22);
+	}
 		
+	@Test public void g_PrimitiveMatrix11() {
 		// specialised 1*1 matrix
 		Matrix11 m11=new Matrix11();
 		randomise(m11);
@@ -581,12 +584,12 @@ public class TestMatrices {
 	
 	@Test public void g_VectorMatrixM3() {
 		// specialised Mx3 matrix
-		VectorMatrixM3 mm3=new VectorMatrixM3(10);
+		VectorMatrixM3 mm3=new VectorMatrixM3(6);
 		randomise(mm3);
 		doGenericTests(mm3);
 		doGenericTests(mm3.subMatrix(1, 1, 1, 1));
 	}
-	
+		
 	private static long seed;
 	
 	private void randomise(INDArray m) {
@@ -606,20 +609,14 @@ public class TestMatrices {
 	}
 	
 	@Test public void g_DenseColumnMatrix() {
-		Matrix am1=new Matrix(Matrix33.createScaleMatrix(Math.PI));
-		doGenericTests(am1.getTranspose());
+		DenseColumnMatrix am1=new Matrix(Matrix33.createScaleMatrix(Math.PI)).getTranspose();
+		doGenericTests(am1);
 		
-		Matrix am2=new Matrix(new VectorMatrixMN(6 ,7));
+		DenseColumnMatrix am2=new Matrix(new VectorMatrixMN(6 ,7)).getTranspose();
 		randomise(am2);
-		doGenericTests(am2.getTranspose());
+		doGenericTests(am2);
 	}
-	
-	@Test public void g_SubsetMatrix() {
-		doGenericTests(SubsetMatrix.create(Index.of(0,1,2),3));
-		doGenericTests(SubsetMatrix.create(Index.of(0,1,3,10),12));
-		doGenericTests(SubsetMatrix.create(Index.of(0,3,2,1),4));
-	}
-	
+		
 	@Test public void g_BufferMatrix() {
 		doGenericTests(BufferMatrix.create(Matrixx.createRandomSquareMatrix(3,new Random(5645))));
 		doGenericTests(BufferMatrix.create(Matrixx.createRandomMatrix(2, 4, new Random(55645))));
@@ -647,16 +644,14 @@ public class TestMatrices {
 		doGenericTests(strm);
 		strm=StridedMatrix.create(Matrixx.createRandomMatrix(3, 4));
 		doGenericTests(strm);
-		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3)));
-		doGenericTests(strm);
-		strm=Matrix.create(Matrixx.createRandomMatrix(5, 5)).subMatrix(1, 3, 1, 3);
+		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3))).getTranspose();
 		doGenericTests(strm);
 	}
 
 	@Test public void g_PermutationMatrix() {	
 		doGenericTests(PermutationMatrix.create(0,1,2));
 		doGenericTests(PermutationMatrix.create(4,2,3,1,0));
-		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(8)));
+		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(5)));
 		doGenericTests(PermutationMatrix.create(Indexz.createRandomPermutation(6)).subMatrix(1,3,2,4));	
 	}
 	
@@ -688,11 +683,14 @@ public class TestMatrices {
 //				m2));	
 	}
 	
-	@Test public void g_SparseMatrix() {	
+	@Test public void g_SparseRowMatrix() {	
 		doGenericTests(SparseRowMatrix.create(Vector.of(0,1,-Math.E),null,null,AxisVector.create(2, 3)));
 		doGenericTests(SparseRowMatrix.create(Matrixx.createRandomSquareMatrix(3)));
+	}
+	
+	@Test public void g_SparseColumnMatrix() {	
 		doGenericTests(SparseColumnMatrix.create(Vector.of(0,1,-Math.PI),null,null,AxisVector.create(2, 3)));
-		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(4)));
+		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(3)));
 	}
 	
 	@Test public void g_TriangularMatrix() {	

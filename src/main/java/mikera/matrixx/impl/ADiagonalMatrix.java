@@ -220,14 +220,19 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		copyRowTo(col,dest,destOffset);
 	}
 	
+	/**
+	 * Computes the inner product of this matrix with another diagonal matrix of the same shape.
+	 * 
+	 * The result will be a diagnonal matrix of the same shape.
+	 * @param a
+	 * @return
+	 */
 	public AMatrix innerProduct(ADiagonalMatrix a) {
 		int dims=this.dimensions;
 		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		DiagonalMatrix result=DiagonalMatrix.createDimensions(dims);
-		for (int i=0; i<dims; i++) {
-			result.data[i]=unsafeGetDiagonalValue(i)*a.unsafeGetDiagonalValue(i);
-		}
-		return result;
+		double[] data=this.getLeadingDiagonal().toDoubleArray();
+		a.getLeadingDiagonal().multiplyTo(data, 0);
+		return DiagonalMatrix.wrap(data);
 	}
 	
 	@Override
@@ -247,18 +252,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	public Matrix innerProduct(Matrix a) {
-		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		Matrix m=a.clone();
-		for (int i=0; i<dimensions; i++) {
-			double dv=unsafeGetDiagonalValue(i);
-			m.multiplyRow(i, dv);
-		}
-		return m;
-	}
-	
-	@Override
-	public Matrix transposeInnerProduct(Matrix s) {
+	public AMatrix transposeInnerProduct(AMatrix s) {
 		return innerProduct(s);
 	}
 	
@@ -317,7 +311,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector v) {
+	public double rowDotProduct(int i, AVector v) {
 		return v.unsafeGet(i)*unsafeGetDiagonalValue(i);
 	}
 	

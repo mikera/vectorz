@@ -128,15 +128,26 @@ public interface INDArray extends Cloneable, Serializable {
 	public void set(int i, int j, double value);
 	
 	/**
-	 * Sets a value at a given indexed position in a mutable array
+	 * Sets the element at the given indexed position in a mutable array
 	 *
-	 * @param i
+	 * @param index
 	 * @param value
 	 */
-	public void set(int[] indexes, double value);
+	public void set(int[] index, double value);
 	
+
 	/**
-	 * Sets this array to the element values contained in another array
+	 * Sets the element at the given indexed position in a mutable array
+	 * @param index
+	 * @param value
+	 */
+	public void set(long[] index, double value);
+
+	/**
+	 * Sets this array to the element values contained in another array. 
+	 * 
+	 * Broadcasts the source array if necessary to the shape of this array. Throws
+	 * an exception if the shapes are incompatible.
 	 */
 	public void set(INDArray a);
 	
@@ -162,7 +173,6 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public INDArray addCopy(INDArray a);	
 	
-
 	/**
 	 * Creates a new array equal to this array with a constant value added to every element
 	 * 
@@ -195,7 +205,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public void add(INDArray a);
 	
 	/**
-	 * Adds to a mutable array, indexed by element position. 
+	 * Adds to a mutable array, indexed by element position in row major order.
+	 *  
 	 * This is an unsafe operation: bounds are not checked
 	 */
 	public void addAt(long i, double v);
@@ -206,7 +217,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void sub(INDArray a);
 	
 	/**
-	 * Fills the array with a single double value
+	 * Fills this array with a single double value. Requires the array to be mutable.
 	 */
 	public void fill(double value);
 	
@@ -319,7 +330,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public AVector broadcastLike(AVector target);
 	
 	/**
-	 * Creates a mutable clone of the array, broadcasted if necessary to match the shape of the target.
+	 * Creates a mutable clone of the array, broadcasted upwards if necessary to match the shape of the target.
 	 * 
 	 * @param target The target array
 	 * @throws IllegalArgumentException if the array cannot be broadcasted to match the target or vice versa 
@@ -327,7 +338,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray broadcastCloneLike(INDArray target);
 	
 	/**
-	 * Creates a copy of the array, broadcasted if necessary to match the shape of the target
+	 * Creates a copy of the array, broadcasted upwards if necessary to match the shape of the target
 	 * Like broadCastCloneLike, but does not guarantee a mutable clone - hence may be faster
 	 * when used with immutable or specialized arrays
 	 * 
@@ -505,7 +516,12 @@ public interface INDArray extends Cloneable, Serializable {
 	public boolean isSameShape(INDArray a);
 	
 	/**
-	 * Return true if this array is a view type
+	 * Return true if this array is considered as a view type. This indicates (but does not guarantee):
+	 * a) Data is *likely* to be shared with other arrays, so mutation of one may affect others
+	 * b) It is *unlikely* to be in the most efficient general purpose format
+	 * 
+	 * isView is intended to be used as for heuristics. It should *not* be used where the outcome might
+	 * affect correctness.
 	 */
 	public boolean isView();
 
@@ -555,6 +571,18 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param operator The operator to apply to the array
 	 */
 	void applyOp(IOperator operator);
+	
+	/**
+	 * Reduces over all elements of the array in row-major order. Applies the operator to 
+	 * the initial/previous result at each step. Returns the final result.
+	 */
+	double reduce(Op2 op, double init);
+	
+	/**
+	 * Reduces over all elements of the array in row-major order. Applies the operator to 
+	 * the previous result at each step. Returns the final result.
+	 */
+	double reduce(Op2 op);
 	
 	/**
 	 * Checks if two arrays are equal exactly in terms of both  value and shape
@@ -643,6 +671,20 @@ public interface INDArray extends Cloneable, Serializable {
 	public void addMultiple(INDArray src, double factor);
 	
 	/**
+	 * Adds an array with all elements raised to the specified power
+	 * @param src
+	 * @param factor
+	 */
+	public void addPower(INDArray src, double exponent);
+	
+	/**
+	 * Adds an array with all elements raised to the specified power and scaled by the given factor
+	 * @param src
+	 * @param factor
+	 */
+	public void addPower(INDArray src, double exponent, double factor);
+	
+	/**
 	 * Adds the inner product of two arrays to this array.
 	 * 
 	 * @param a
@@ -677,7 +719,9 @@ public interface INDArray extends Cloneable, Serializable {
 	public void sqrt();
 	
 	/**
-	 * Calculates the signum of all elements of the array
+	 * Calculates the signum of all elements of this mutable array
+	 * 
+	 * Sets each component of the array to its sign value (-1, 0 or 1)
 	 */
 	public void signum();
 
@@ -708,7 +752,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void toDoubleBuffer(DoubleBuffer dest);
 	
 	/**
-	 * Copies the elements of this INDArray to a new double array
+	 * Copies the elements of this array to a new double[] array.
 	 */
 	public double[] toDoubleArray();
 	
@@ -769,7 +813,8 @@ public interface INDArray extends Cloneable, Serializable {
 	public void exp();
 	
 	/**
-	 * Returns an immutable version of this INDArray's data. May return the same array if already immutable.
+	 * Returns an immutable version of this array. May return the same array if already immutable.
+	 * Guarantees a defensive copy if the array is mutable.
 	 */
 	public INDArray immutable();
 
@@ -777,11 +822,6 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Coerces this INDArray to a fully mutable format. May return the same INDArray if already fully mutable
 	 */
 	public INDArray mutable();
-	
-	/**
-	 * Creates a fully mutable clone of this array
-	 */
-	public INDArray mutableClone();
 	
 	/**
 	 * Coerces this INDArray to a sparse format, without changing its element values.
@@ -943,7 +983,4 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param b
 	 */
 	void applyOp(Op2 op, double b);
-
-	void set(long[] indexes, double value);
-
 }

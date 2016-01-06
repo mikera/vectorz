@@ -13,6 +13,7 @@ import mikera.vectorz.AVector;
 public abstract class AConstantTransform extends AAffineTransform {
 	private final int inputDimensions;
 
+	@Override
 	public AAffineTransform inverse() {
 		throw new UnsupportedOperationException("Cannot get inverse of a constant transform!");
 	}

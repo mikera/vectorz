@@ -7,6 +7,7 @@ import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op2;
 import mikera.vectorz.util.VectorzException;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.Vectorz;
@@ -83,6 +84,16 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		
 	// ================================================
 	// standard implementations
+
+	@Override
+	public double reduce(Op2 op, double init) {
+		return toSparseIndexedVector().reduce(op,init);
+	}
+
+	@Override
+	public double reduce(Op2 op) {
+		return toSparseIndexedVector().reduce(op);
+	}
 
 	@Override
 	public double distanceSquared(AVector v) {
@@ -269,5 +280,13 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public double distanceLinf(AVector v) {
 		AVector t=this.subCopy(v);
 		return t.maxAbsElement();
+	}
+
+	/**
+	 * Coerces this vector to a SparseIndexedVector. May return this vector if already a SparseIndexedVector
+	 * @return
+	 */
+	public SparseIndexedVector toSparseIndexedVector() {
+		return SparseIndexedVector.create(this);
 	}
 }

@@ -1,7 +1,10 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
+
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.util.DoubleArrays;
 
 /**
@@ -59,6 +62,11 @@ public final class ArraySubVector extends ADenseArrayVector {
 	}
 	
 	@Override
+	public void fill(double value) {
+		Arrays.fill(data, offset, offset+length, value);
+	}
+	
+	@Override
 	public double unsafeGet(int i) {
 		return data[offset + i];
 	}
@@ -91,6 +99,16 @@ public final class ArraySubVector extends ADenseArrayVector {
 		assert((i>=0)&&(i<length));
 		data[i+offset]+=v;
 	}
+	
+	@Override
+	public void applyOp(Op op) {
+		op.applyTo(data, offset, length);
+	}
+	
+	@Override
+	public void abs() {
+		DoubleArrays.abs(data, offset, length);
+	}
 
 	/**
 	 * Vector hashcode, designed to match hashcode of Java double array
@@ -121,6 +139,11 @@ public final class ArraySubVector extends ADenseArrayVector {
 		if (len==length) return this;
 		return ArraySubVector.wrap(data, offset+start, length);
 	}
+	
+	@Override
+	public void setElements(double[] src, int srcOffset) {
+		System.arraycopy(src, srcOffset, data, this.offset, length);
+	}
 
 	@Override 
 	public ArraySubVector exactClone() {
@@ -130,10 +153,5 @@ public final class ArraySubVector extends ADenseArrayVector {
 	@Override
 	protected int index(int i) {
 		return offset+i;
-	}
-
-	@Override
-	public double dotProduct(double[] data, int offset, int stride) {
-		return DoubleArrays.dotProduct(this.data, this.offset, data, offset, stride, length);
 	}
 }

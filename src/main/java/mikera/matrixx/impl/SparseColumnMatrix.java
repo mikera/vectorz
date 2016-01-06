@@ -5,7 +5,11 @@ import java.util.List;
 import mikera.arrayz.ISparse;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
+import mikera.vectorz.IOperator;
+import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.SingleElementVector;
@@ -183,6 +187,43 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 			if (v != null) v.addToArray(targetData, offset+i, cols);
 		}
 	}
+	
+	@Override
+	public void applyOp(Op2 op, AMatrix b) {
+		checkSameShape(b);
+		int cc = columnCount();
+		List<AVector> bcols=b.getColumns();
+		for (int i = 0; i < cc; i++) {
+			getColumnView(i).applyOp(op,bcols.get(i));
+		}
+	}
+
+	@Override
+	public void applyOp(Op2 op, double b) {
+		int cc = columnCount();
+		for (int i = 0; i < cc; i++) {
+			getColumnView(i).applyOp(op,b);
+		}
+	}
+	
+	@Override
+	public void applyOp(IOperator op) {
+		if (op instanceof Op) {applyOp((Op)op); return;}
+		int cc = columnCount();
+		for (int i = 0; i < cc; i++) {
+			getColumnView(i).applyOp(op);
+		}
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		// override this because getting rows individually is expensive for SparseColumnMatrix
+		double result=init;
+		for (AVector row: getRows()) {
+			result=row.reduce(op, result);
+		}
+		return result;
+	}
 
     @Override
     public List<AVector> getRows() {
@@ -267,7 +308,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public void copyColumnTo(int i, double[] targetData, int offset) {
-		getColumn(i).copyTo(targetData, offset);
+		getColumn(i).getElements(targetData, offset);
 	}
 	
 	@Override
@@ -314,7 +355,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	public Matrix toMatrixTranspose() {
 		Matrix m=Matrix.create(cols, rows);
         for (int i = 0; i < cols; ++i) {
-			getColumn(i).copyTo(m.data, rows*i);
+			getColumn(i).getElements(m.data, rows*i);
 		}
 		return m;
 	}
@@ -369,6 +410,17 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public boolean epsilonEquals(AMatrix a, double epsilon) {
+		int cc = columnCount();
+		checkSameShape(a);
+		
+		for (int i = 0; i < cc; i++) {
+			if (!getColumn(i).epsilonEquals(a.getColumn(i),epsilon)) return false;	
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean equals(AMatrix m) {
 		if (m==this) return true;
 		if (!isSameShape(m)) return false;
@@ -382,6 +434,13 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		int rc = rowCount();
+		int cc = columnCount();
+		return equals(Matrixx.wrapStrided(data, rc, cc, offset, cc, 1));
 	}
 
 }

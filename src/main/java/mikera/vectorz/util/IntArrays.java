@@ -445,5 +445,20 @@ public class IntArrays {
 		return result;
 	}
 
-
+	/**
+	 * Concatenates two integer arrays. If one is empty, returns the other unchanged.
+	 * @param as
+	 * @param bs
+	 * @return
+	 */
+	public static int[] concat(int[] as, int[] bs) {
+		int alen=as.length;
+		if (alen==0) return bs;
+		int blen=bs.length;
+		if (blen==0) return as;
+		int[] result=new int[alen+blen];
+		System.arraycopy(as, 0, result, 0, alen);
+		System.arraycopy(bs, 0, result, alen, blen);
+		return result;
+	}
 }

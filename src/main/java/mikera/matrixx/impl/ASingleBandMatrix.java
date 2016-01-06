@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.arrayz.ISparse;
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vectorz;
 
@@ -33,6 +34,21 @@ public abstract class ASingleBandMatrix extends ABandedMatrix implements ISparse
 		if (rowCount()!=columnCount()) return false;
 		if ((nonZeroBand()==0)||getNonZeroBand().isZero()) return true;
 		return false;
+	}
+	
+	@Override
+	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		int nzb=nonZeroBand();
+		int minBand=colStart-rowStart-rows+1;
+		int maxBand=colStart-rowStart+cols-1;
+		if ((rows==0)||(cols==0)||(nzb<minBand)||(nzb>maxBand)) {
+			return ZeroMatrix.create(rows, cols);
+		}
+		int destBand=nzb+rowStart-colStart;
+		int destBandLength=BandedMatrix.bandLength(rows, cols, destBand);
+		int destBandStart=Math.max(rowStart-bandStartRow(nzb),colStart-bandStartColumn(nzb));
+		AVector b=getNonZeroBand().subVector(destBandStart,destBandLength);
+		return BandedMatrix.wrap(rows, cols, destBand, destBand, new AVector[] {b});
 	}
 	
 	@Override

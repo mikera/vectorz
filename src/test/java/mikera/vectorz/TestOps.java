@@ -209,12 +209,8 @@ public class TestOps {
 				assertEquals(op.derivative(x),d.apply(x),0.00001);
 			}
 		} else {
-			try {
-				op.derivative(x);
-				fail("Derivative did not throw exception!");
-			} catch (Throwable t) {
-				// OK
-			}
+			assertNull(op.getDerivativeOp());
+			
 			try {
 				op.derivativeForOutput(x);
 				fail("Derivative for output did not throw exception!");
@@ -231,12 +227,7 @@ public class TestOps {
 			double x2=inv.apply(op.apply(x));
 			assertEquals(x2,inv.apply(op.apply(x2)),0.0001);
 		} else {
-			try {
-				op.getInverse();
-				fail("getInverse did not throw exception!");
-			} catch (Throwable t) {
-				// OK
-			}
+			assertNull(op.getInverse());
 		}
 	}
 	
@@ -276,6 +267,8 @@ public class TestOps {
 		testVectorApply(op);
 		testTransforms(op);
 		testBounds(op);
+		testCompositions(op);
+		testProducts(op);
 		testDerivative(op);
 		TestTransformz.doITransformTests(op.getTransform(3));
 	}
@@ -304,7 +297,35 @@ public class TestOps {
 		testComposedDerivative(op1,op2);
 	}
 	
-	@Test public void genericTests() {
+	private void testCompositions(Op a) {
+		if (a.isStochastic()) return;
+		AVector v=Vector.of(1,2,3);
+		for (Op b: ALL_OPS) {
+			if (b.isStochastic()) continue;
+			Op comp=Ops.compose(a,b);
+			AVector tmp=v.clone();
+			tmp.applyOp(b);
+			tmp.applyOp(a);
+			if (tmp.hasUncountable()) return;
+			assertTrue(a.toString()+" x "+b.toString(),tmp.epsilonEquals(v.applyOpCopy(comp),0.001));
+		}
+	}
+	
+	private void testProducts(Op a) {
+		if (a.isStochastic()) return;
+		AVector v=Vector.of(1,2,3);
+		for (Op b: ALL_OPS) {
+			if (b.isStochastic()) continue;
+			Op comp=Ops.product(a,b);
+			AVector tmp=v.clone();
+			tmp.applyOp(a);
+			tmp.multiply(v.applyOpCopy(b));
+			if (tmp.hasUncountable()) return;
+			assertTrue(a.toString()+" x "+b.toString(),tmp.epsilonEquals(v.applyOpCopy(comp),0.001));
+		}
+	}
+	
+	@Test public void genericOpTests() {
 		doOpTest(Constant.create(5.0));
 		doOpTest(Linear.create(0.5, 3.0));
 		doOpTest(Identity.INSTANCE);
@@ -362,8 +383,9 @@ public class TestOps {
 		
 		doOpTest(Ops.LINEAR.product(Quadratic.create(0, 3, 4)));	
 		doOpTest(Ops.LINEAR.divide(Quadratic.create(0, 3, 4)));
-
+	}
 		
+	@Test public void genericComposeTests() {
 		doComposeTest(Linear.create(0.31, 0.12),Linear.create(-100, 11.0));
 		doComposeTest(StochasticBinary.INSTANCE,GaussianNoise.create(2.0));
 		doComposeTest(Logistic.INSTANCE,Linear.create(10.0, -0.2));

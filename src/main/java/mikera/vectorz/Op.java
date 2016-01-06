@@ -19,6 +19,7 @@ import mikera.vectorz.ops.Sum;
  */
 public abstract class Op implements IOperator {
 	
+	@Override
 	public abstract double apply(double x);
 	
 	/**
@@ -41,6 +42,9 @@ public abstract class Op implements IOperator {
 		}
 	}
 	
+	/**
+	 * Applies this operator to every element of a target matrix, mutating the matrix
+	 */
 	public void applyTo(AMatrix m) {
 		m.applyOp(this);
 	}
@@ -55,15 +59,26 @@ public abstract class Op implements IOperator {
 		}
 	}
 	
+	/**
+	 * Applies this operator to a scalar, mutating the scalar
+	 * @param s
+	 */
 	public void applyTo(AScalar s) {
 		s.set(apply(s.get()));
 	}
 	
+	/**
+	 * Applies this operator to a dense array vector, mutating the vector
+	 * @param s
+	 */
 	public void applyTo(ADenseArrayVector v) {
 		applyTo(v.getArray(), v.getArrayOffset(),v.length());
 	}
 	
-	
+	/**
+	 * Applies this operator to every element of a target array. Mutates the array in place.
+	 * @param a
+	 */
 	public void applyTo(INDArray a) {
 		if (a instanceof AVector) {
 			applyTo((AVector)a);
@@ -97,6 +112,10 @@ public abstract class Op implements IOperator {
 		}
 	}
 	
+	/**
+	 * Applies this operator to every element in a double[] array, mutating the array in place
+	 * @param data
+	 */
 	public void applyTo(double[] data) {
 		applyTo(data,0,data.length);
 	}
@@ -108,21 +127,30 @@ public abstract class Op implements IOperator {
 	
 	@Override 
 	public Op getInverse() {
-		if (hasInverse()) {
-			return new Inverse(this);
-		} else {
-			throw new UnsupportedOperationException("No inverse available: "+this.getClass());
-		}
+		if (!hasInverse()) return null;
+		return new Inverse(this);
 	}
 	
+	/**
+	 * Returns true if this operator supports computing the derivative for a given input
+	 * @return
+	 */
 	public boolean hasDerivative() {
 		return false;
 	}
 	
+	/**
+	 * Returns true if this operator supports computing the derivative for a given output
+	 * @return
+	 */
 	public boolean hasDerivativeForOutput() {
 		return hasDerivative();
 	}
 	
+	/**
+	 * Returns true if this operator supports computing the inverse for a given output
+	 * @return
+	 */
 	public boolean hasInverse() {
 		return false;
 	}
@@ -227,11 +255,24 @@ public abstract class Op implements IOperator {
 		}		
 	}
 	
+	/**
+	 * Returns true if this operator has a known finite upper or lower bound
+	 * @return
+	 */
 	public boolean isBounded() {
 		return (minValue()>=-Double.MAX_VALUE)||(maxValue()<=Double.MAX_VALUE);
 	}
 	
+	/**
+	 * Gets an operator which represents the derivative of this operator.
+	 * 
+	 * Returns nil if this cannot be computed or does not exist.
+	 * @return
+	 */
 	public Op getDerivativeOp() {
+		if (!hasDerivative()) {
+			return null;
+		}
 		return new Derivative(this);
 	}
 	

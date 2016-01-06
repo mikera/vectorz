@@ -53,7 +53,7 @@ public class ErrorMessages {
 	}
 	
 	public static String incompatibleShapes(Index index, AVector v) {
-		return "Index shape: "+shape(index)+" must match vector shape: "+shape(v);
+		return "Index shape: "+shape(index)+" must match "+describeArray(v);
 	}
 
 	public static String incompatibleShapes(int specified, int actual) {
@@ -69,11 +69,11 @@ public class ErrorMessages {
 	 * @return
 	 */
 	public static String incompatibleBroadcast(INDArray a, int... shape) {
-		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(shape);
+		return "Can't broadcast "+describeArray(a)+" to shape: "+shape(shape);
 	}
 	
 	public static String incompatibleBroadcast(INDArray a, INDArray b) {
-		return "Can't broadcast "+a.getClass()+" with shape "+shape(a)+" to shape: "+shape(b);
+		return "Can't broadcast "+describeArray(a)+" to shape: "+shape(b);
 	}
 
 	public static String notFullyMutable(AMatrix m,	int row, int column) {
@@ -89,7 +89,7 @@ public class ErrorMessages {
 	}
 
 	public static String squareMatrixRequired(AMatrix m) {
-		return "Square matrix required! This matrix has shape: "+shape(m);
+		return "Square matrix required but got "+describeArray(m);
 	}
 
 	public static String position(int... indexes) {
@@ -105,29 +105,29 @@ public class ErrorMessages {
 	}
 
 	public static String invalidDimension(INDArray a, int dimension) {
-		return ""+a.getClass()+" with shape "+shape(a)+" does not have dimension: "+dimension;
+		return describeArray(a)+" does not have dimension: "+dimension;
 	}
 
 	public static String invalidIndex(INDArray a, int... indexes) {
 		int[] shape=a.getShape();
 		if (shape.length!=indexes.length) {
-			return ""+indexes.length+"-D access with index "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
+			return ""+indexes.length+"-D access with index "+pos(indexes)+" not possible for "+describeArray(a);
 		} else {
-			return "Access at position "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
+			return "Access at position "+pos(indexes)+" not possible for "+describeArray(a);
 		}
 	}
 	
 	public static String invalidIndex(AVector a, long[] indexes) {
 		int[] shape=a.getShape();
 		if (shape.length!=indexes.length) {
-			return ""+indexes.length+"-D access with index "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
+			return ""+indexes.length+"-D access with index "+pos(indexes)+" not possible for "+describeArray(a);
 		} else {
-			return "Access at position "+pos(indexes)+" not possible for "+a.getClass()+" with shape "+shape(shape);
+			return "Access at position "+pos(indexes)+" not possible for "+describeArray(a);
 		}
 	}
 	
 	public static String invalidIndex(INDArray a, long i) {
-		return "1-D access with index "+i+" not possible for "+a.getClass()+" with shape "+shape(a);
+		return "1-D access with index "+i+" not possible for "+describeArray(a);
 	}
 	
 	public static String invalidRange(AVector v, int start, int length) {
@@ -135,16 +135,16 @@ public class ErrorMessages {
 	}
 
 	public static String invalidSlice(INDArray a, long slice) {
-		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice;
+		return describeArray(a)+" does not have slice: "+slice;
 	}
 	
 	public static String invalidComponent(INDArray a, long i) {
-		return ""+a.getClass()+" with shape "+shape(a)+" does not have component: "+i;
+		return describeArray(a)+" does not have component: "+i;
 	}
 	
 
 	public static String invalidSlice(INDArray a, int dimension, int slice) {
-		return ""+a.getClass()+" with shape "+shape(a)+" does not have slice: "+slice +" on dimension "+dimension;
+		return describeArray(a)+" does not have slice: "+slice +" on dimension "+dimension;
 	}
 	
 	public static String noSlices(INDArray a) {
@@ -172,7 +172,7 @@ public class ErrorMessages {
 	}
 
 	public static String invalidBand(AMatrix source, int band) {
-		return "Illegal band "+band+ " on matrix with shape: "+shape(source);
+		return "Illegal band "+band+ " on "+describeArray(source);
 	}
 
 	public static String nonSquareMatrix(AMatrix a) {
@@ -180,10 +180,23 @@ public class ErrorMessages {
 	}
 
 	public static String noElements(INDArray a) {
-		return "Array of class "+a.getClass()+" has no elements";
+		return "No elements available in "+describeArray(a);
 	}
 
 	public static String wrongElementCount() {
 		return "Incorrect number of elements";
 	}
+
+	public static String zeroElementReduce(INDArray a) {
+		return "Can't reduce without initial value in empty "+describeArray(a);
+	}
+	
+	public static String zeroElementReduce() {
+		return "Can't reduce without initial value over zero elements";
+	}
+
+	static String describeArray(INDArray a) {
+		return a.getClass().getSimpleName()+" with shape "+shape(a);
+	}
+
 }

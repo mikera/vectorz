@@ -39,13 +39,8 @@ public abstract class AComputedVector extends ASizedVector {
 	}
 	
 	@Override
-	public void multiply(double factor) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
-	
-	@Override
 	public AComputedVector exactClone() {
-		return this;
+		return this; // OK since immutable
 	}
 	
 	@Override

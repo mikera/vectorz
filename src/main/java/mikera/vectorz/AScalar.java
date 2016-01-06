@@ -30,8 +30,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	private static final int[] SCALAR_SHAPE=IntArrays.EMPTY_INT_ARRAY;
 	private static final long[] SCALAR_LONG_SHAPE=LongArrays.EMPTY_LONG_ARRAY;
 
+	@Override
 	public abstract double get();
 	
+	@Override
 	public void set(double value) {
 		throw new UnsupportedOperationException();
 	}
@@ -62,14 +64,14 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
-	public AScalar getTranspose() {return this;}
+	public final AScalar getTranspose() {return this;}
 	
 	@Override
 	public final AScalar getTransposeView() {return this;}
 
 	
 	@Override
-	public int dimensionality() {
+	public final int dimensionality() {
 		return 0;
 	}
 	
@@ -84,7 +86,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}	
 	
 	@Override
-	public int sliceCount() {
+	public final int sliceCount() {
 		return 0;
 	}
 	
@@ -157,32 +159,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		set(get()-d);
 	}
 	
-	public void add(AScalar s) {
-		set(get()+s.get());
-	}
-	
 	@Override
 	public void add(INDArray a) {
-		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
-			add(a.get());
-		} else {
-			super.add(a);
-		}
+		add(a.get());
 	}
 	
 	@Override
 	public void sub(INDArray a) {
-		if ((a instanceof AScalar)||(a.dimensionality()==0)) {
-			sub(a.get());
-		} else {
-			super.sub(a);
-		}
+		sub(a.get());
 	}
-	
-	public void sub(AScalar s) {
-		set(get()-s.get());
-	}
-	
+		
 	@Override
 	public void negate() {
 		set(-get());
@@ -215,6 +201,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		return a.multiplyCopy(get());
 	}
 	
+	@Override
 	public Scalar innerProduct(AScalar a) {
 		return Scalar.create(get()*a.get());
 	}
@@ -308,6 +295,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	@Override
 	public void applyOp(Op2 op, double b) {
 		set(op.apply(get(),b));
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		return op.apply(init, get());
+	}
+	
+	@Override
+	public final double reduce(Op2 op) {
+		return get();
 	}
 	
 	@Override
@@ -497,7 +494,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 
 	@Override
-	public AScalar immutable() {
+	public ImmutableScalar immutable() {
 		return ImmutableScalar.create(get());
 	}
 	

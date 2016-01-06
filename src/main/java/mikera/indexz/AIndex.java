@@ -204,6 +204,7 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 		return true;
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof AIndex) return equals((AIndex)o);
 		return false;
@@ -269,6 +270,7 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 	/**
 	 * Gets an iterator over all elements of this index
 	 */
+	@Override
 	public IndexIterator iterator() {
 		return new IndexIterator(this);
 	}

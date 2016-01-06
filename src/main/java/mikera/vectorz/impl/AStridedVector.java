@@ -7,12 +7,16 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Abstract base class for vectors backed by a double[] array with a constant stride
@@ -28,15 +32,29 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 
 	private static final long serialVersionUID = -7239429584755803950L;
 
+	/**
+	 * Gets the underlying double[] data array for this vector
+	 */
+	@Override
 	public final double[] getArray() {
 		return data;
 	}
 	
+	/**
+	 * Gets the offset into the underlying double[] data array for the first element of this vector
+	 */
+	@Override
 	public abstract int getArrayOffset();
+	
+	/**
+	 * Gets the stride of this strided vector.
+	 * @return
+	 */
 	public abstract int getStride();
 	
 	@Override
 	public AStridedVector ensureMutable() {
+		if (isFullyMutable()) return this;
 		return clone();
 	}
 	
@@ -52,19 +70,15 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public double elementSum() {
-		return DoubleArrays.elementSum(getArray(), getArrayOffset(), getStride(), length());
+	public double dotProduct(AVector v) {
+		checkLength(v.length());
+		return v.dotProduct(getArray(), getArrayOffset(), getStride());
 	}
+
 	
 	@Override
-	public void multiply(double factor) {
-		int len=length();
-		double[] array=getArray();
-		int offset=getArrayOffset();
-		int stride=getStride();
-		for (int i=0; i<len; i++) {
-			array[offset+i*stride]*=factor;
-		}		
+	public double elementSum() {
+		return DoubleArrays.elementSum(getArray(), getArrayOffset(), getStride(), length());
 	}
 	
 	@Override
@@ -129,14 +143,13 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public AMatrix broadcastLike(AMatrix target) {
+	public AStridedMatrix broadcastLike(AMatrix target) {
 		if (length()==target.columnCount()) {
 			return StridedMatrix.wrap(getArray(), target.rowCount(), length(), getArrayOffset(), 0, getStride());
 		} else {
 			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(this, target));
 		}
 	}
-	
 	
 	@Override
 	public AVector selectView(int... inds) {
@@ -151,59 +164,18 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public AStridedVector clone() {
+	public Vector clone() {
 		return Vector.create(this);
 	}
 	
 	@Override
-	public void set(AVector v) {
-		int length=checkSameLength(v);
-		int stride=getStride();
-		v.copyTo(0, getArray(), getArrayOffset(), length, stride);
-	}
+	public abstract void set(AVector v);
 	
 	@Override
-	public void setElements(double[] values, int offset) {
-		double[] data=getArray();
-		int stride=getStride();		
-		int off=getArrayOffset();
-		for (int i=0; i<length; i++) {
-			data[off+i*stride]=values[offset+i];
-		}
-	}
+	public abstract void setElements(double[] values, int offset);
 	
 	@Override
-	public void setElements(int pos, double[] values, int offset, int length) {
-		double[] data=getArray();
-		int stride=getStride();		
-		int off=getArrayOffset()+pos*stride;
-		for (int i=0; i<length; i++) {
-			data[off+i*stride]=values[offset+i];
-		}
-	}
-	
-	@Override
-	public void add(double[] data, int offset) {
-		int stride=getStride();
-		double[] tdata=getArray();
-		int toffset=getArrayOffset();
-		int length=length();
-		for (int i = 0; i < length; i++) {
-			tdata[toffset+i*stride]+=data[offset+i];
-		}
-	}
-	
-	@Override
-	public void add(AVector v) {
-		v.checkLength(length());
-		v.addToArray(getArray(), getArrayOffset(),getStride());
-	}
-	
-	@Override
-	public void add(int offset, AVector a) {
-		int stride=getStride();
-		a.addToArray(getArray(), getArrayOffset()+offset*stride,stride);	
-	}
+	public abstract void setElements(int pos, double[] values, int offset, int length);
 	
 	@Override
 	public void add(int offset, AVector a, int aOffset, int length) {
@@ -214,17 +186,20 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void addAt(int i, double v) {
-		int ix=index(i);
-		double[] data=getArray();
-		data[ix]+=v;
-	}
+	public abstract void addAt(int i, double v);
 	
 	@Override
 	public void addToArray(int offset, double[] destData, int destOffset,int length) {
-		int stride=getStride();
-		int toffset=getArrayOffset()+offset*stride;
-		DoubleArrays.add(getArray(), toffset, stride, destData, destOffset, length);
+		int thisStride=getStride();
+		int thisOffset=getArrayOffset()+offset*thisStride;
+		DoubleArrays.add(this.data, thisOffset, thisStride, destData, destOffset, length);
+	}
+	
+	@Override
+	public void addMultipleToArray(double factor,int offset, double[] destData, int destOffset,int length) {
+		int thisStride=getStride();
+		int thisOffset=getArrayOffset()+offset*thisStride;
+		DoubleArrays.addMultiple(destData, destOffset, this.data, thisOffset, thisStride, length, factor);
 	}
 	
 	@Override
@@ -238,8 +213,25 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void applyOp(Op op) {
-		op.applyTo(data, getArrayOffset(), getStride(), length);
+	public abstract void applyOp(Op op);
+	
+	@Override
+	public final Vector applyOpCopy(Op op) {
+		double[] da=toDoubleArray();
+		op.applyTo(da);
+		return Vector.wrap(da);
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		int stride=getStride();
+		int offset=this.getArrayOffset();
+		return DoubleArrays.reduce(op, init, data, offset, length, stride);
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		return DoubleArrays.reduce(op, data, getArrayOffset(), length, getStride());
 	}
 	
 	@Override
@@ -252,20 +244,16 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void clamp(double min, double max) {
-		int len=length();
-		int stride=getStride();
-		double[] data=getArray();
-		int offset=getArrayOffset();
-		for (int i = 0; i < len; i++) {
-			int ix=offset+i*stride;
-			double v=data[ix];
-			if (v<min) {
-				data[ix]=min;
-			} else if (v>max) {
-				data[ix]=max;
+	public boolean hasUncountable() {
+		int stride=getStride(); 
+		int offset=this.getArrayOffset();
+		for(int i=0; i<length; i++) {
+			double v=data[offset+(i*stride)];
+			if (Vectorz.isUncountable(v)) {
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	@Override
@@ -291,10 +279,8 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	
 	@Override
 	public int getStride(int dimension) {
-		switch (dimension) {
-		case 0: return getStride();
-		default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
-		}
+		if (dimension!=0) throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+		return getStride();
 	}
 	
 	@Override
@@ -303,25 +289,43 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
-	public void fill(double value) {
+	public void getElements(double[] dest, int destOffset) {
+		int offset=getArrayOffset();
 		int stride=getStride();
-		double[] array=getArray();
-		int di=getArrayOffset();
 		for (int i=0; i<length; i++) {
-			array[di]=value;
-			di+=stride;
+			dest[destOffset+i]=data[offset+(i*stride)];
 		}
 	}
 	
 	@Override
-	public boolean equalsArray(double[] data, int offset) {
+	public void getElements(double[] dest, int destOffset, int[] indices) {
+		int n=indices.length;
+		int offset=getArrayOffset();
 		int stride=getStride();
-		double[] array=getArray();
+		for (int i=0; i<n; i++) {
+			dest[destOffset+i]=dest[offset+(stride*indices[i])];
+		}
+	}
+	
+	@Override
+	public boolean equalsArray(double[] vs, int offset) {
+		int stride=getStride();
 		int di=getArrayOffset();
 		for (int i=0; i<length; i++) {
-			if (data[offset+i]!=array[di]) return false;
+			if (vs[offset+i]!=data[di]) return false;
 			di+=stride;
 		}
 		return true;
+	}
+	
+	@Override
+	public void validate() {
+		if (length>0) {
+			int offset=getArrayOffset();
+			if ((offset<0)||(offset>=data.length)) throw new VectorzException("offset out of bounds: "+offset);
+			int lastIndex=offset+(getStride()*(length-1));
+			if ((lastIndex<0)||(lastIndex>=data.length)) throw new VectorzException("lastIndex out of bounds: "+lastIndex);
+		}
+		super.validate();
 	}
 }

@@ -5,6 +5,7 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 
 /**
  * Abstract base class that delegates certain elementwise methods to a source matrix.
@@ -75,6 +76,10 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 		source.applyOp(op);
 	}
 	
+	@Override
+	public void applyOp(Op2 op, double b) {
+		source.applyOp(op,b);
+	}
 
 	@Override
 	public void multiply(double factor) {

@@ -1,6 +1,7 @@
 package mikera.arrayz.impl;
 
 import mikera.arrayz.INDArray;
+import mikera.vectorz.Op2;
 import mikera.vectorz.util.IntArrays;
 
 public abstract class BaseShapedArray extends AbstractArray<INDArray> {
@@ -30,6 +31,23 @@ public abstract class BaseShapedArray extends AbstractArray<INDArray> {
 	@Override
 	public int sliceCount() {
 		return shape[0];
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		if (shape.length==0) return op.apply(init, get());
+		double result=init;
+		int n=sliceCount();
+		for (int i=0; i<n; i++) {
+			result=slice(i).reduce(op,result);
+		}
+		return result;
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		if (shape.length==0) return get();
+		return super.reduce(op);
 	}
 	
 	@Override

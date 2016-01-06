@@ -50,11 +50,6 @@ public final class Scalar extends AScalar {
 	}
 
 	@Override
-	public void add(AScalar s) {
-		value += s.get();
-	}
-
-	@Override
 	public void multiply(double factor) {
 		value *= factor;
 	}

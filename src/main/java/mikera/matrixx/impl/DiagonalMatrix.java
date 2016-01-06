@@ -69,20 +69,12 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double trace() {
-		double result=0.0;
-		for (int i=0; i<dimensions; i++) {
-			result+=data[i];
-		}
-		return result;
+		return lead.elementSum();
 	}
 	
 	@Override
 	public double diagonalProduct() {
-		double result=1.0;
-		for (int i=0; i<dimensions; i++) {
-			result*=data[i];
-		}
-		return result;
+		return lead.elementProduct();
 	}
 	
 	@Override
@@ -147,15 +139,10 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}	
 	
 	@Override
-	public double calculateElement(int i, AVector v) {
+	public double rowDotProduct(int i, AVector v) {
 		return data[i]*v.unsafeGet(i);
 	}
-	
-	@Override
-	public double calculateElement(int i, Vector v) {
-		return data[i]*v.unsafeGet(i);
-	}
-	
+		
 	@Override
 	public void transform(Vector source, Vector dest) {
 		int rc = rowCount();
@@ -247,6 +234,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		return super.innerProduct(a);
 	}
 	
+	@Override
 	public AMatrix innerProduct(ADiagonalMatrix a) {
 		if (!(a instanceof DiagonalMatrix)) return a.innerProduct(this);
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));

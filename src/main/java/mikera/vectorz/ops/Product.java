@@ -11,6 +11,9 @@ public final class Product extends Op {
 		this.b=b;
 	}
 	
+	/**
+	 * Tries to create an optimised product operation
+	 */
 	private static Op tryOptimisedCreate(Op a, Op b) {
 		if (a instanceof Constant) {
 			return Linear.create(((Constant) a).value,0.0).compose(b);

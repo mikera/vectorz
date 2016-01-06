@@ -21,6 +21,8 @@ abstract class BaseIndexedVector extends ASizedVector {
 		this.indexes=indexes;
 	}
 	
+	protected abstract BaseIndexedVector replaceIndex(int[] newIndices);
+	
 	@Override
 	public boolean isView() {
 		return true;
@@ -30,15 +32,5 @@ abstract class BaseIndexedVector extends ASizedVector {
 	public void validate() {
 		if (length!=indexes.length) throw new VectorzException("Wrong index length");
 		super.validate();
-	}
-	
-	@Override
-	public double elementSquaredSum() {
-		double result=0.0;
-		for (int i=0; i<length; i++) {
-			double x=unsafeGet(i);
-			result+=x*x;
-		}
-		return result;
 	}
 }

@@ -2,8 +2,8 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.impl.AMatrixViewVector;
-import mikera.vectorz.impl.MatrixIndexScalar;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -51,17 +51,22 @@ public final class MatrixBandView extends AMatrixViewVector {
 	protected int calcRow(int i) {
 		return (band<0)?i-band:i;
 	}
+	
 	@Override
 	protected int calcCol(int i) {
 		return (band>0)?i+band:i;
 	}
 	
 	@Override
-	public MatrixIndexScalar slice(int i) {
-		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
-		return MatrixIndexScalar.wrap(source, calcRow(i), calcCol(i));
+	public double unsafeGet(int i) {
+		return source.unsafeGet(calcRow(i), calcCol(i));
 	}
-
+	
+	@Override
+	public void unsafeSet(int i, double v) {
+		source.unsafeSet(calcRow(i), calcCol(i),v);
+	}
+	
 	@Override
 	public AVector exactClone() {
 		return new MatrixBandView(source.exactClone(),band);
@@ -74,6 +79,14 @@ public final class MatrixBandView extends AMatrixViewVector {
 			result+=data[offset+i]*unsafeGet(i);
 		}
 		return result;
+	}
+
+	@Override
+	public void applyOp(Op op) {
+		for (int i=0; i<length; i++) {
+			double v=unsafeGet(i);
+			unsafeSet(i,op.apply(v));
+		}
 	}
 
 }

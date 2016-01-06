@@ -43,6 +43,21 @@ public final class Vector3 extends APrimitiveVector {
 	}
 	
 	@Override
+	public double reduce(Op2 op,double init) {
+		init=op.apply(init, x);
+		init=op.apply(init, y);
+		init=op.apply(init, z);
+		return init;
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		double result=op.apply(x, y);
+		result=op.apply(result, z);
+		return result;
+	}
+	
+	@Override
 	public double normalise() {
 		double d=magnitude();
 		if (d>0) multiply(1.0/d);
@@ -115,6 +130,7 @@ public final class Vector3 extends APrimitiveVector {
 		return Math.sqrt(distanceSquared(v));
 	}
 	
+	@Override
 	public double distance(AVector v) {
 		if (v instanceof Vector3) {
 			return distance((Vector3)v);
@@ -257,6 +273,7 @@ public final class Vector3 extends APrimitiveVector {
 		z=tz;		
 	}
 	
+	@Override
 	public void crossProduct(Vector3 a) {
 		double tx=y*a.z-z*a.y;
 		double ty=z*a.x-x*a.z;

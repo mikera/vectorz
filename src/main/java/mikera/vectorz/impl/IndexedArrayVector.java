@@ -3,7 +3,9 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 import mikera.vectorz.util.IntArrays;
+import mikera.vectorz.util.VectorzException;
 
 /**
  * Vector that addresses elements indexed into double[] array.
@@ -22,39 +24,55 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 		this.data=source;
 	}
 	
+	/**
+	 * Wraps the specified indexes into a double[] array as an IndexedArrayVector
+	 * 
+	 * The length of the vector will equal the number of indices provided.
+	 * 
+	 * @param data
+	 * @param indexes
+	 * @return
+	 */
 	public static IndexedArrayVector wrap(double[] data, int[] indexes) {
 		return new IndexedArrayVector(data,indexes);
 	}
 
 	@Override
-	public double get(int i) {
+	public final double get(int i) {
 		return data[indexes[i]];
 	}
 	
 	@Override
-	public double unsafeGet(int i) {
+	public final double unsafeGet(int i) {
 		return data[indexes[i]];
 	}
 	
 	@Override
 	public IndexedArrayVector selectView(int... inds) {
 		int[] ci=IntArrays.select(indexes,inds);
-		return new IndexedArrayVector(data,ci);
+		return replaceIndex(ci);
 	}
 
 	@Override
-	public void set(int i, double value) {
+	public final void set(int i, double value) {
 		data[indexes[i]]=value;
 	}
 	
 	@Override
-	public void unsafeSet(int i, double value) {
+	public final void unsafeSet(int i, double value) {
 		data[indexes[i]]=value;
 	}
 	
 	@Override
 	public void addAt(int i, double value) {
 		data[indexes[i]]+=value;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		for (int i=0; i<length; i++) {
+			data[indexes[i]]=op.apply(data[indexes[i]]);
+		}
 	}
 	
 	@Override
@@ -65,7 +83,7 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 
 		int end=offset+length;
 		int[] newIndexes=Arrays.copyOfRange(indexes, offset, end);
-		return wrap(this.data,newIndexes);
+		return replaceIndex(newIndexes);
 	}
 	
 	@Override
@@ -77,6 +95,20 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	public void getElements(double[] dest, int offset) {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]=data[indexes[i]];
+		}
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]=unsafeGet(i+offset);
+		}
+	}
+	
+	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i*stride]=unsafeGet(i+offset);
 		}
 	}
 	
@@ -116,5 +148,27 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	@Override 
 	public IndexedArrayVector exactClone() {
 		return IndexedArrayVector.wrap(data.clone(), indexes.clone());
+	}
+	
+	@Override 
+	public AVector join(AVector v) {
+		if (v instanceof IndexedArrayVector) {
+			IndexedArrayVector iv=(IndexedArrayVector) v;
+			if (iv.data==data) {
+				return replaceIndex(IntArrays.concat(indexes,iv.indexes));
+			}
+		} 
+		return super.join(v);
+	}
+
+	@Override
+	protected IndexedArrayVector replaceIndex(int[] newIndices) {
+		return new IndexedArrayVector(data,newIndices);
+	}
+	
+	@Override
+	public void validate() {
+		if (length!=indexes.length) throw new VectorzException("Invalid index length");
+		super.validate();
 	}
 }

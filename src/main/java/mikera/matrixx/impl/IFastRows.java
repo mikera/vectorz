@@ -14,7 +14,10 @@ import mikera.vectorz.AVector;
  *
  */
 public interface IFastRows extends IMatrix {
-	
+	/**
+	 * Gets a row of this matrix. Guaranteed to be efficient as part of IFastColumns interface
+	 */
+	@Override
 	public AVector getRow(int i);
 
 }

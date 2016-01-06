@@ -3,6 +3,7 @@ package mikera.matrixx.impl;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -59,6 +60,11 @@ public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IF
 	@Override
 	public void applyOp(Op op) {
 		vector.applyOp(op);
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		return vector.reduce(op, init);
 	}
 	
 	@Override
@@ -130,7 +136,7 @@ public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IF
 	}
 	
 	@Override
-	public AVector getColumn(int i) {
+	public AVector getColumnView(int i) {
 		if (i!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1,i));
 		return vector;
 	}

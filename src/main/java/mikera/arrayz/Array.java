@@ -14,6 +14,7 @@ import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
@@ -70,35 +71,43 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 		this.data = data;
 	}
 	
+	/**
+	 * Wraps the underlying data from a dense Vector as an array with the same shape
+	 * @param v
+	 * @return
+	 */
 	public static Array wrap(Vector v) {
 		return new Array(v.getShape(),v.getArray());
 	}
 	
+	/**
+	 * Wraps the underlying data from a dense Matrix as an array with the same shape
+	 * @param v
+	 * @return
+	 */
 	public static Array wrap(Matrix m) {
 		return new Array(m.getShape(),m.getArray());
 	}
 
+	/**
+	 * Creates a new zero-filled mutable Array of the specified shape
+	 * @param shape
+	 * @return
+	 */
 	public static Array newArray(int... shape) {
-		return new Array(shape.length, shape, createStorage(shape));
+		return new Array(shape.length, shape, DoubleArrays.createStorageArray(shape));
 	}
 
+	/** 
+	 * Crates a new Array with a copt of the data from the sepcified array, in the same shape 
+	 * @param a
+	 * @return
+	 */
 	public static Array create(INDArray a) {
 		int[] shape=a.getShape();
 		return new Array(a.dimensionality(), shape, a.toDoubleArray());
 	}
 	
-	public static double[] createStorage(int... shape) {
-		long ec=1;
-		for (int i=0; i<shape.length; i++) {
-			int si=shape[i];
-			if ((ec*si)!=(((int)ec)*si)) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
-			ec*=shape[i];
-		}
-		int n=(int)ec;
-		if (ec!=n) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
-		return new double[n];
-	}
-
 	@Override
 	public int dimensionality() {
 		return dimensions;
@@ -117,11 +126,17 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 		return lshape;
 	}
 
+	@Override
 	public int getStride(int dim) {
 		return strides[dim];
 	}
 
-	public int getIndex(int... indexes) {
+	/**
+	 * Computes the array index of the specified index position in the underlyind data array
+	 * @param indexes
+	 * @return
+	 */
+	protected int getIndex(int... indexes) {
 		int ix = 0;
 		for (int i = 0; i < dimensions; i++) {
 			ix += indexes[i] * getStride(i);
@@ -279,6 +294,16 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	@Override
 	public void applyOp(Op op) {
 		op.applyTo(data);
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		return DoubleArrays.reduce(op, data, 0, data.length);
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		return DoubleArrays.reduce(op, init, data, 0, data.length);
 	}
 
 	@Override

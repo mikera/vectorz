@@ -11,6 +11,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
+import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
@@ -220,12 +221,12 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public void copyRowTo(int i, double[] dest, int destOffset) {
-		getRow(i).copyTo(dest, destOffset);
+		getRow(i).getElements(dest, destOffset);
 	}
 	
 	@Override
 	public void copyColumnTo(int j, double[] dest, int destOffset) {
-		getColumn(j).copyTo(dest, destOffset);
+		getColumn(j).getElements(dest, destOffset);
 	}
 
     // Rotate the AVectors in data[]. Transforms data that was represented as
@@ -335,7 +336,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	@Override
 	public void applyOp(Op op) {
 		boolean stoch = op.isStochastic();
-		AVector rr = (stoch) ? null : RepeatedElementVector.create(lineLength(), op.apply(0.0));
+		AVector rr = (stoch) ? null : Vectorz.createRepeatedElement(lineLength(), op.apply(0.0));
 
 		long n=componentCount();
 		for (int i = 0; i < n; i++) {
@@ -366,7 +367,7 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	
 	@Override
 	public double[] toDoubleArray() {
-		double[] result=Matrix.createStorage(rowCount(),columnCount());
+		double[] result=DoubleArrays.createStorage(rowCount(),columnCount());
 		// since this array is sparse, fastest to use addToArray to modify only non-zero elements
 		addToArray(result,0);
 		return result;

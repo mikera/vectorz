@@ -1,5 +1,6 @@
 package mikera.vectorz.util;
 
+import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
 import mikera.vectorz.ops.Logistic;
 
@@ -275,6 +276,12 @@ public final class DoubleArrays {
 	public static void addMultiple(double[] dest, int offset, double[] src, int srcOffset, int length, double factor) {
 		for (int i=0; i<length; i++) {
 			dest[offset+i]+=factor*src[srcOffset+i];
+		}
+	}
+	
+	public static void addMultiple(double[] dest, int destOffset, double[] src, int srcOffset, int srcStride, int length, double factor) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]+=factor*src[srcOffset+i*srcStride];
 		}
 	}
 	
@@ -600,6 +607,13 @@ public final class DoubleArrays {
 		return rs;
 	}
 
+	/**
+	 * Finds the non-zero indices as offsets within a range of a double array
+	 * @param data
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
 	public static int[] nonZeroIndices(double[] data, int offset, int length) {
 		int n=DoubleArrays.nonZeroCount(data, offset, length);
 		int[] rs=new int[n];
@@ -676,6 +690,72 @@ public final class DoubleArrays {
 				dest[destOffset+i]=src[srcOffset+i*srcStride];
 			}
 		}
+	}
+
+	/**
+	 * Creates a double[] storage array of the specified shape
+	 * @param shape
+	 * @return
+	 */
+	public static double[] createStorageArray(int... shape) {
+		long ec=1;
+		for (int i=0; i<shape.length; i++) {
+			int si=shape[i];
+			if ((ec*si)!=(((int)ec)*si)) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+			ec*=shape[i];
+		}
+		int n=(int)ec;
+		if (ec!=n) throw new IllegalArgumentException(ErrorMessages.tooManyElements(shape));
+		return new double[n];
+	}
+
+	/**
+	 * Creates a storage double[] array for a matrix of the specifid shape
+	 * @param rowCount
+	 * @param columnCount
+	 * @return
+	 */
+	public static double[] createStorage(int rowCount, int columnCount) {
+		long elementCount = ((long) rowCount) * columnCount;
+		int ec = (int) elementCount;
+		if (ec != elementCount)
+			throw new IllegalArgumentException(ErrorMessages.tooManyElements(
+					rowCount, columnCount));
+		return new double[ec];
+	}
+
+	public static double reduce(Op2 op, double init, double[] data, int offset, int length) {
+		double result=init;
+		for (int i=0; i<length; i++) {
+			result=op.apply(result, data[offset+i]);
+		}
+		return result;
+	}
+	
+	public static double reduce(Op2 op, double init, double[] data, int offset, int length, int stride) {
+		double result=init;
+		for (int i=0; i<length; i++) {
+			result=op.apply(result, data[offset+i*stride]);
+		}
+		return result;
+	}
+	
+	public static double reduce(Op2 op, double[] data, int offset, int length) {
+		if (length<=0) throw new IllegalArgumentException(ErrorMessages.zeroElementReduce());
+		double result=data[offset];
+		for (int i=1; i<length; i++) {
+			result=op.apply(result, data[offset+i]);
+		}
+		return result;
+	}
+
+	public static double reduce(Op2 op, double[] data, int offset, int length, int stride) {
+		if (length<=0) throw new IllegalArgumentException(ErrorMessages.zeroElementReduce());
+		double result=data[offset];
+		for (int i=1; i<length; i++) {
+			result=op.apply(result, data[offset+i*stride]);
+		}
+		return result;
 	}
 
 }

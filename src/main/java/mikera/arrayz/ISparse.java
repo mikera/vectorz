@@ -3,9 +3,9 @@ package mikera.arrayz;
 /**
  * Marker interface for sparse arrays.
  * 
- * Good hint that array can be used to drive calculations more efficiently. A sparse array
- * will use space than the total implied by its elements, assuming a sufficient number
- * are non-zero
+ * May be used to hint that an array can be used to drive calculations more efficiently. A sparse array
+ * will often use less space than the total implied by its elements, assuming a sufficient number
+ * of elements are zero
  * 
  * @author Mike
  */

@@ -513,7 +513,7 @@ public final class JoinedMultiVector extends AJoinedVector {
 	public double[] toDoubleArray() {
 		double[] data=new double[length];
 		for (int i=0; i<n; i++) {
-			vecs[i].copyTo(data,splits[i]);
+			vecs[i].getElements(data,splits[i]);
 		}
 		return data;
 	}

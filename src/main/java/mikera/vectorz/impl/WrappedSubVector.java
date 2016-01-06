@@ -3,6 +3,7 @@ package mikera.vectorz.impl;
 import java.util.Iterator;
 
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
 
 /**
  * View class referencing a contiguous subvector of another vector. 
@@ -82,6 +83,16 @@ public final class WrappedSubVector extends ASizedVector {
 	@Override
 	public void unsafeSet(int i, double value) {
 		wrapped.unsafeSet(i+offset,value);
+	}
+	
+	@Override 
+	public void applyOp(Op op) {
+		for (int i=0; i<length; i++) {
+			int ix=i+offset;
+			double v=wrapped.unsafeGet(ix);
+			double nv=op.apply(v);
+			if (v!=nv) wrapped.unsafeSet(ix,nv);
+		}
 	}
 	
 	@Override

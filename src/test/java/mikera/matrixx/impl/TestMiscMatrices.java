@@ -1,23 +1,18 @@
 package mikera.matrixx.impl;
 
-import mikera.indexz.Index;
-import mikera.matrixx.Matrix;
-import mikera.vectorz.Vector;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import mikera.matrixx.Matrix;
+import mikera.vectorz.Vector;
 
 public class TestMiscMatrices {
 	@Test public void testEquals() {
 		assertNotEquals(ZeroMatrix.create(2, 2),ZeroMatrix.create(2, 3));
 	}
 
-	@SuppressWarnings("deprecation")
-	@Test public void testSubsetIdentity() {
-		assertTrue(SubsetMatrix.create(Index.of(0,1,2),3).isIdentity());
-	}
-	
 	@Test public void testDivideByVector() {
 		Matrix m=Matrix.create(new double[][]{{1,2},{3,4}});
 		m.divide(Vector.of(1,2));

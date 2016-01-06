@@ -34,12 +34,12 @@ public abstract class ABlockMatrix extends AMatrix {
 	
 	@Override
 	public void copyRowTo(int i, double[] dest, int destOffset) {
-		getRow(i).copyTo(dest, destOffset);
+		getRow(i).getElements(dest, destOffset);
 	}
 	
 	@Override
 	public void copyColumnTo(int j, double[] dest, int destOffset) {
-		getColumn(j).copyTo(dest, destOffset);
+		getColumn(j).getElements(dest, destOffset);
 	}
 	
 	@Override

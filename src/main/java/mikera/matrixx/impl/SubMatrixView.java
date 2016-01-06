@@ -64,6 +64,18 @@ public class SubMatrixView extends ARectangularMatrix {
 	}
 	
 	@Override
+	public AVector getRow(int i) {
+		checkRow(i);
+		return source.getRow(rowStart+i).subVector(colStart, cols);
+	}
+	
+	@Override
+	public AVector getColumn(int j) {
+		checkColumn(j);
+		return source.getColumn(colStart+j).subVector(rowStart, rows);
+	}
+	
+	@Override
 	public AVector getRowView(int i) {
 		checkRow(i);
 		return source.getRowView(rowStart+i).subVector(colStart, cols);
@@ -78,13 +90,23 @@ public class SubMatrixView extends ARectangularMatrix {
 	@Override
 	public AVector getRowClone(int i) {
 		checkRow(i);
-		return source.getRowView(rowStart+i).subVector(colStart, cols).clone();
+		return source.getRow(rowStart+i).subVector(colStart, cols).clone();
 	}
 	
 	@Override
 	public AVector getColumnClone(int j) {
 		checkColumn(j);
-		return source.getColumnView(colStart+j).subVector(rowStart, rows).clone();
+		return source.getColumn(colStart+j).subVector(rowStart, rows).clone();
 	}
+	
+	@Override
+	public void copyRowTo(int row, double[] dest, int destOffset) {
+		source.getRow(rowStart+row).copyTo(colStart, dest, destOffset, cols);
+	}
+	
+	@Override
+	public void copyColumnTo(int col, double[] dest, int destOffset) {
+		source.getColumn(colStart+col).copyTo(rowStart, dest, destOffset, rows);
+	}	
 
 }

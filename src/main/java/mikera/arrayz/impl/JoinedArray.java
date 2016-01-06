@@ -2,6 +2,7 @@ package mikera.arrayz.impl;
 
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
+import mikera.vectorz.Op;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
@@ -104,6 +105,12 @@ public class JoinedArray extends BaseShapedArray {
 	@Override
 	public boolean isView() {
 		return true;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		left.applyOp(op);
+		right.applyOp(op);
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package mikera.vectorz.impl;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op2;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Base class for joined vectors
@@ -51,12 +53,22 @@ public abstract class AJoinedVector extends ASizedVector {
 	} 
 	
 	@Override
+	public void copyTo(AVector dest, int offset) {
+		long n=componentCount();
+		for (int j=0; j<n; j++) {
+			AVector v=getComponent(j);
+			dest.subVector(offset,v.length()).set(v);
+		}
+	}
+	
+	@Override
 	public boolean equals(AVector a) {
 		if (this==a) return true;
-		if (a instanceof ADenseArrayVector) {
-			return equals((ADenseArrayVector)a);
-		}
 		if (length()!=a.length()) return false;
+		if (a instanceof ADenseArrayVector) {
+			ADenseArrayVector dav=(ADenseArrayVector)a;
+			return equalsArray(dav.getArray(),dav.getArrayOffset());
+		}
 		long n=componentCount();
 		int offset=0;
 		for (int i=0; i<n; i++) {
@@ -114,6 +126,26 @@ public abstract class AJoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public boolean isZero() {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			if (!v.isZero()) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean hasUncountable() {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			if (!v.hasUncountable()) return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public double dotProduct(double[] data, int offset) {
 		long n=componentCount();
 		double result=0.0;
@@ -133,6 +165,49 @@ public abstract class AJoinedVector extends ASizedVector {
 			AVector v=getComponent(i);
 			result+=v.dotProduct(data,offset,stride);
 			offset+=stride*v.length();
+		}
+		return result;
+	}
+	
+	@Override
+	public void applyOp(Op2 op, AVector b) {
+		long n=componentCount();
+		checkSameLength(b);
+		int offset=0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			int vlen=v.length();
+			v.applyOp(op,b.subVector(offset,vlen));
+			offset+=vlen;
+		}
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		long n=componentCount();
+		double result=init;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			result=v.reduce(op, result);
+		}
+		return result;
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		long n=componentCount();
+		int i=0;
+		double result=Double.NaN;
+		for (; i<n; i++) {
+			AVector v=getComponent(i);
+			if (v.length()==0) continue;
+			result=v.reduce(op);
+			break;
+		}
+		if (++i>n) throw new IllegalArgumentException(ErrorMessages.zeroElementReduce(this));
+		for (; i<n; i++) {
+			AVector v=getComponent(i);
+			result=v.reduce(op, result);
 		}
 		return result;
 	}

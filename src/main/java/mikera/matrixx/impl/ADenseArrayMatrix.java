@@ -3,7 +3,9 @@ package mikera.matrixx.impl;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
@@ -15,7 +17,6 @@ import mikera.vectorz.util.ErrorMessages;
 /**
  * Abstract base class for matrices wrapping a dense (rows*cols) subset of a double[] array
  * @author Mike
- *
  */
 public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastRows, IDenseArray {
 	private static final long serialVersionUID = -2144964424833585026L;
@@ -150,6 +151,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		data[index(i,j)]=value;
 	}
 	
+	@Override
 	protected int index(int row, int col) {
 		return getArrayOffset()+(row*cols)+col;
 	}
@@ -202,6 +204,13 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public double reduce(Op2 op, double init) {
+		int offset=getArrayOffset();
+		int n=rows*cols;
+		return DoubleArrays.reduce(op,init,data,offset,n);
+	}
+	
+	@Override
 	public double rowDotProduct(int i, AVector a) {
 		int cc=columnCount();
 		if(cc!=a.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
@@ -233,6 +242,16 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		if (!isSameShape(m)) return false;
 		
 		return DoubleArrays.equals(getArray(), getArrayOffset(), m.getArray(), m.getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public ADenseArrayVector asVector() {
+		return Vectorz.wrap(data, getArrayOffset(), rows*cols);
+	}
+	
+	@Override
+	public Matrix clone() {
+		return Matrix.wrap(rows, cols, toDoubleArray());
 	}
 
 }

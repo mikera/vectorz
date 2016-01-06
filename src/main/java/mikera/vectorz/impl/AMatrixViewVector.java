@@ -79,6 +79,7 @@ public abstract class AMatrixViewVector extends ASizedVector {
 	
 	@Override
 	public MatrixIndexScalar slice(int i) {
+		checkIndex(i);
 		return MatrixIndexScalar.wrap(source, calcRow(i), calcCol(i));
 	}
 	

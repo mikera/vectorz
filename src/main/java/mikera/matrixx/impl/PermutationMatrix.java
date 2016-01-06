@@ -274,18 +274,12 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector inputVector) {
-		return inputVector.unsafeGet(perm.get(i));
-	}
-	
-	@Override
-	public double calculateElement(int i, Vector inputVector) {
-		return inputVector.unsafeGet(perm.get(i));
+	public double rowDotProduct(int i, AVector v) {
+		return v.unsafeGet(perm.get(i));
 	}
 	
 	@Override
 	public Matrix innerProduct(AMatrix a) {
-		if (a instanceof Matrix) return innerProduct((Matrix)a);
 		if (a.rowCount()!=size) throw new IllegalArgumentException(ErrorMessages.mismatch(this,a));
 		int cc=a.columnCount();
 		Matrix result=Matrix.create(size,cc);
@@ -293,19 +287,6 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 			int dstIndex=i*cc;
 			int srcRow=perm.get(i);
 			a.copyRowTo(srcRow, result.data, dstIndex);
-		}
-		return result;
-	}
-	
-	@Override
-	public Matrix innerProduct(Matrix a) {
-		if (a.rowCount()!=size) throw new IllegalArgumentException(ErrorMessages.mismatch(this,a));
-		int cc=a.columnCount();
-		Matrix result=Matrix.create(size,cc);
-		for (int i=0; i<size; i++) {
-			int srcIndex=perm.get(i)*cc;
-			int dstIndex=i*cc;
-			System.arraycopy(a.data,srcIndex,result.data,dstIndex,cc);
 		}
 		return result;
 	}

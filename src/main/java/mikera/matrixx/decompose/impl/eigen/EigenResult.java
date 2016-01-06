@@ -19,11 +19,13 @@ public class EigenResult implements IEigenResult {
         this.eigenVectors  = null;
     }
     
+    @Override
     public Vector2[] getEigenvalues() {
         return eigenValues;
     }
 
-    public AVector[] getEigenVectors() {
+   @Override
+   public AVector[] getEigenVectors() {
         if (eigenVectors == null)
             throw new UnsupportedOperationException("EigenVectors not computed");
         return eigenVectors;

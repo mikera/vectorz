@@ -2,13 +2,15 @@ package mikera.vectorz.ops;
 
 import mikera.vectorz.Op;
 
+/**
+ * A class that represents the derivative of another op. Assumes the other op has a derivative
+ * @author Mike
+ *
+ */
 public class Derivative extends AFunctionOp {
 	private Op op;
 	
 	public Derivative(Op base) {
-		if (!base.hasDerivative()) {
-			throw new IllegalArgumentException("Op has no derivative: "+base.getClass());
-		}
 		this.op=base;
 	}
 

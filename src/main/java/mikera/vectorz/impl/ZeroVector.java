@@ -9,6 +9,8 @@ import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.Constants;
@@ -293,6 +295,28 @@ public final class ZeroVector extends ASparseVector {
 	@Override
 	public boolean isUnitLengthVector() {
 		return false;
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		return op.reduceZeros(init,length);
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		return op.reduceZeros(length);
+	}
+	
+	@Override
+	public AVector applyOpCopy(Op op) {
+		if (op.isStochastic()) return super.applyOpCopy(op);
+		
+		double v=op.apply(0.0);
+		if (v==0) {
+			return this;
+		} else {
+			return RepeatedElementVector.create(length, v);
+		}
 	}
 
 	@Override

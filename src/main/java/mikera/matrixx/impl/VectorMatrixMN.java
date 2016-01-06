@@ -109,21 +109,18 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	}
 
 	@Override
-	public AVector getRowView(int row) {
-		if (row>=rows) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
+	public AVector getRow(int row) {
 		return rowData[row];
 	}
 	
 	@Override
 	public double get(int row, int column) {
-		checkIndex(row,column);
-		return rowData[row].unsafeGet(column);
+		return rowData[row].get(column);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
-		checkIndex(row,column);
-		rowData[row].unsafeSet(column,value);
+		rowData[row].set(column,value);
 	}
 	
 	@Override
@@ -149,17 +146,11 @@ public class VectorMatrixMN extends AVectorMatrix<AVector> {
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector inputVector) {
-		assert(i<rows);
+	public double rowDotProduct(int i, AVector inputVector) {
 		AVector row=rowData[i];
 		return row.dotProduct(inputVector);
 	}
-	
-	@Override
-	public boolean isSquare() {
-		return rows==cols;
-	}
-	
+		
 	@Override
 	public Matrix clone() {
 		return Matrixx.create(this);

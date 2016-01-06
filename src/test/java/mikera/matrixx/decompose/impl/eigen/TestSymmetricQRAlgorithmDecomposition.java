@@ -253,7 +253,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
         for( int i = 0; i < 20; i++ ) {
             SymmetricQRAlgorithmDecomposition alg = createDecomposition();
             Matrix z = Matrix.createRandom(3, 3);
-            Matrix A = z.innerProduct(z.getTranspose());  // symmetric
+            AMatrix A = z.innerProduct(z.getTranspose());  // symmetric
 
 //            CommonOps.scale(1e-200,A);
 //            A.scale(1e100);
@@ -282,7 +282,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
      * Preforms standard tests that can be performed on any decomposition without prior knowledge of
      * what the results should be.
      */
-    public void performStandardTests( SymmetricQRAlgorithmDecomposition alg , Matrix A , int numReal )
+    public void performStandardTests( SymmetricQRAlgorithmDecomposition alg , AMatrix A , int numReal )
     {
 
         // basic sanity tests
@@ -315,7 +315,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
      * Checks to see if an eigenvalue is complex then the eigenvector is null.  If it is real it
      * then checks to see if the equation A*v = lambda*v holds true.
      */
-    public void testPairsConsistent( SymmetricQRAlgorithmDecomposition alg , Matrix A )
+    public void testPairsConsistent( SymmetricQRAlgorithmDecomposition alg , AMatrix A )
     {
 //        System.out.println("-------------------------------------------------------------------------");
         int N = alg.getNumberOfEigenvalues();
@@ -371,7 +371,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
 //                    System.out.println("error after = "+error);
 //                    A.print("%f");
 //                    System.out.println();
-                    fail("Error was too large");
+                    fail("Error was too large: "+error);
                 }
 
                 assertTrue(error <= 1e-12);

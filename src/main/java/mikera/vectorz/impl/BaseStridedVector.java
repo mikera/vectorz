@@ -2,10 +2,11 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.util.DoubleArrays;
-import mikera.vectorz.util.VectorzException;
 
 /**
  * Base class for strided vectors backed with a double array and fixed offset / stride
+ * 
+ * Supports both mutable an immutable subclasses
  * @author Mike
  *
  */
@@ -28,12 +29,12 @@ public abstract class BaseStridedVector extends AStridedVector {
 	protected final int offset;
 
 	@Override
-	public int getArrayOffset() {
+	public final int getArrayOffset() {
 		return offset;
 	}
 
 	@Override
-	public int getStride() {
+	public final int getStride() {
 		return stride;
 	}
 
@@ -54,22 +55,6 @@ public abstract class BaseStridedVector extends AStridedVector {
 	}
 	
 	@Override
-	public void set(int i, double value) {
-		checkIndex(i);
-		data[offset+i*stride]=value;
-	}
-	
-	@Override
-	public void unsafeSet(int i, double value) {
-		data[offset+i*stride]=value;
-	}
-	
-	@Override
-	public void addAt(int i, double value) {
-		data[offset+i*stride]+=value;
-	}
-	
-	@Override
 	public double dotProduct(double[] ds, int off) {
 		return DoubleArrays.dotProduct(ds, off, data, offset, stride, length);
 	}
@@ -78,34 +63,10 @@ public abstract class BaseStridedVector extends AStridedVector {
 	public double dotProduct(double[] ds, int doffset, int dstride) {
 		return DoubleArrays.dotProduct(data, offset, stride, ds, doffset, dstride, length);
 	}
-	
-	@Override
-	public void set(AVector v) {
-		int length=checkSameLength(v);
-		v.copyTo(0, data, offset, length, stride);
-	}
-	
+		
 	@Override
 	public double dotProduct(AVector v) {
 		checkLength(v.length());
 		return v.dotProduct(getArray(), getArrayOffset(), getStride());
-	}
-	
-	@Override
-	public void getElements(double[] dest, int destOffset) {
-		for (int i=0; i<length; i++) {
-			dest[destOffset+i]=data[offset+(i*stride)];
-		}
-	}
-	
-	@Override
-	public void validate() {
-		if (length>0) {
-			if ((offset<0)||(offset>=data.length)) throw new VectorzException("offset out of bounds: "+offset);
-			int lastIndex=offset+(stride*(length-1));
-			if ((lastIndex<0)||(lastIndex>=data.length)) throw new VectorzException("lastIndex out of bounds: "+lastIndex);
-		}
-		
-		super.validate();
 	}
 }

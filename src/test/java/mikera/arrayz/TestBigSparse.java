@@ -12,6 +12,7 @@ import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.util.Random;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Ops;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RangeVector;
@@ -94,6 +95,18 @@ public class TestBigSparse {
 		m.innerProduct(m);
 	}
 	
+	@Test public void testBigReduce() {
+		int SIZE=3000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
+		Random r=new Random(4535634);
+		for (int i=0; i<SIZE; i++) {
+			m.set(r.nextInt(SIZE),r.nextInt(SIZE),r.nextGaussian());
+		}
+		
+		assertEquals(m.elementMax(),m.reduce(Ops.MAX, 0.0),0.0);
+		assertEquals(m.elementMax(),m.reduce(Ops.MAX),0.0);
+	}
+	
 	@Test public void testSparseAdd() {
 		AMatrix m=Matrixx.createSparse(20000,20000);
 		m.add(ZeroMatrix.create(20000, 20000));
@@ -105,7 +118,7 @@ public class TestBigSparse {
 	}
 	
 	@Test public void testSparseInnerProduct() {
-		int SIZE=100000;
+		int SIZE=10000;
 		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
 		
 		AMatrix mt=m.getTranspose();

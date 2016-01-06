@@ -36,6 +36,10 @@ public abstract class AAffineTransform extends ATransform {
 		return new MatrixTransform(getMatrix());
 	}
 	
+	/**
+	 * Gets the translation offset that is part of this affine transform.
+	 * @return
+	 */
 	public AVector getTranslationVector() {
 		return getTranslation().getTranslationVector();
 	}
@@ -76,9 +80,8 @@ public abstract class AAffineTransform extends ATransform {
 	
 	@Override
 	public double calculateElement(int i, AVector v) {
-		return getMatrix().calculateElement(i,v)
+		return getMatrix().rowDotProduct(i,v)
 				+getTranslation().getTranslationComponent(i);
-		
 	}
 
 

@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import mikera.arrayz.impl.IStridedArray;
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -23,9 +24,7 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		super(data, rows, cols);
 	}
 
-	/**
-	 * Gets the array offset into this strided matrix
-	 */
+	@Override
 	public abstract int getArrayOffset();
 
 	/**
@@ -123,9 +122,9 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		int colStride=columnStride();
 		int rowStride=rowStride();
 		for (int i=0; i<rows; i++) {
-			int ro=offset+i*rowStride;
+			int thisSrcOffset=offset+i*rowStride;
 			for (int j=0; j<cols; j++) {
-				dest[destOffset++]+=data[ro+j*colStride];
+				dest[destOffset++]+=data[thisSrcOffset+j*colStride];
 			}
 		}
 	}
@@ -142,6 +141,13 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 				data[ix]=op.apply(data[ix]);
 			}
 		}
+	}
+	
+	@Override
+	public final Matrix applyOpCopy(Op op) {
+		double[] da=toDoubleArray();
+		op.applyTo(da);
+		return Matrix.wrap(rows,cols,da);
 	}
 	
 	@Override
@@ -190,14 +196,13 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		return new StridedElementIterator(this);
 	}
 	
-	
 	@Override
-	public AMatrix getTranspose() {
+	public AStridedMatrix getTranspose() {
 		return getTransposeView();
 	}
 	
 	@Override
-	public AMatrix getTransposeView() {
+	public AStridedMatrix getTransposeView() {
 		return Matrixx.wrapStrided(getArray(),columnCount(),rowCount(),getArrayOffset(),columnStride(),rowStride());
 	}
 	

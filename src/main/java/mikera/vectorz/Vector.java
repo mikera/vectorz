@@ -32,13 +32,6 @@ public final class Vector extends ADenseArrayVector {
 		super(values.length,values);
 	}
 	
-	private Vector(Object... values) {
-		super(values.length,new double[values.length]);
-		for (int i=0; i<length; i++) {
-			data[i]=Tools.toDouble(values[i]);
-		}
-	}
-
 	private Vector(int length) {
 		this(new double[length]);
 	}
@@ -166,12 +159,7 @@ public final class Vector extends ADenseArrayVector {
 	public void unsafeSet(int i, double value) {
 		data[i]=value;
 	}
-	
-	@Override
-	public void setRange(int offset, double[] data, int dataOffset, int length) {
-		System.arraycopy(data, dataOffset, this.data, offset, length);
-	}
-	
+		
 	@Override
 	public void set(AVector a) {
 		if (a instanceof Vector) {
@@ -184,10 +172,6 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public void getElements(double[] dest, int offset) {
-		System.arraycopy(data, 0, dest, offset, data.length);
-	}
-	
 	public void getElements(double[] data, int offset, int[] indices) {
 		int n=indices.length;
 		for (int i=0; i<n; i++) {
@@ -265,10 +249,10 @@ public final class Vector extends ADenseArrayVector {
 		int length=length();
 		assert(srcOffset>=0);
 		assert(srcOffset+length<=src.length());
-		double[] vdata=src.getArray();
-		int voffset=src.getArrayOffset()+srcOffset;
+		double[] srcData=src.getArray();
+		int relativeOffset=src.getArrayOffset()+srcOffset;
 		for (int i = 0; i < length; i++) {
-			data[i] += vdata[voffset + i];
+			data[i] += srcData[relativeOffset + i];
 		}
 	}
 	
@@ -286,13 +270,11 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void add(double[] srcData, int srcOffset) {
-		int length=length();
 		DoubleArrays.add(srcData, srcOffset, data, 0, length);
 	}
 	
 	@Override
 	public void scaleAdd(double factor, double constant) {
-		int length=length();
 		for (int i=0; i<length; i++) {
 			data[i]=(factor*data[i])+constant;
 		}
@@ -300,7 +282,7 @@ public final class Vector extends ADenseArrayVector {
 
 	@Override
 	public void add(double constant) {
-		DoubleArrays.add(data, 0, data.length, constant);
+		DoubleArrays.add(data, 0, length, constant);
 	}
 	
 	@Override
@@ -390,13 +372,10 @@ public final class Vector extends ADenseArrayVector {
 		return total;
 	}
 	
-	public double distance(Vector v) {
-		return Math.sqrt(distanceSquared(v));
-	}
-	
+	@Override
 	public double distance(AVector v) {
 		if (v instanceof Vector) {
-			return distance((Vector)v);
+			return Math.sqrt(distanceSquared((Vector)v));
 		}
 		return super.distance(v);
 	}
@@ -465,6 +444,7 @@ public final class Vector extends ADenseArrayVector {
 		v.divideTo(data, 0);	
 	}
 	
+	/** Performance Override for divide */
 	public void divide(Vector v) {
 		int len=checkSameLength(v);
 		for (int i = 0; i < len; i++) {
@@ -472,6 +452,7 @@ public final class Vector extends ADenseArrayVector {
 		}	
 	}
 
+	@Override
     public void divide(double factor) {
 		multiply(1.0/factor);
 	}
@@ -545,12 +526,6 @@ public final class Vector extends ADenseArrayVector {
 	}
 	
 	@Override
-	public boolean equals(ADenseArrayVector v) {
-		if (length!=v.length()) return false;
-		return v.equalsArray(data, 0);
-	}
-	
-	@Override
 	public boolean equalsArray(double[] arr, int offset) {
 		return DoubleArrays.equals(data, 0, arr, offset, length);
 	}
@@ -565,4 +540,13 @@ public final class Vector extends ADenseArrayVector {
 		return i;
 	}
 
+	@Override
+	public void setElements(double[] values, int offset) {
+		System.arraycopy(values, offset, data, 0, length);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int destOffset) {
+		System.arraycopy(data, 0, dest, destOffset, length());
+	}
 }

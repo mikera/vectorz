@@ -1,6 +1,8 @@
 package mikera.matrixx.algo;
 
 import static org.junit.Assert.*;
+
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.algo.Multiplications;
@@ -11,7 +13,7 @@ public class TestDenseMultiply {
 
 	@Test public void testBigMul() {
 		Matrix m=(Matrix)Matrixx.createRandomMatrix(50, 50);
-		Matrix ip=m.innerProduct(m);
+		AMatrix ip=m.innerProduct(m);
 		assertEquals(ip,Multiplications.multiply(m, m));
 		assertEquals(ip,Multiplications.blockedMultiply(m, m));
 		assertEquals(ip,Multiplications.doubleBlockedMultiply(m, m));
@@ -20,7 +22,7 @@ public class TestDenseMultiply {
 	
 	@Test public void testSmallMul() {
 		Matrix m=(Matrix)Matrixx.createRandomMatrix(5, 5);
-		Matrix ip=m.innerProduct(m);
+		AMatrix ip=m.innerProduct(m);
 		assertEquals(ip,Multiplications.multiply(m, m));
 		assertEquals(ip,Multiplications.blockedMultiply(m, m));
 		assertEquals(ip,Multiplications.naiveMultiply(m, m));
@@ -29,7 +31,7 @@ public class TestDenseMultiply {
 	@Test public void testRectangularMul() {
 		Matrix m=(Matrix)Matrixx.createRandomMatrix(4, 7);
 		Matrix mt=m.toMatrixTranspose();
-		Matrix ip=m.innerProduct(mt);
+		AMatrix ip=m.innerProduct(mt);
 		assertEquals(ip,Multiplications.multiply(m, mt));
 		assertEquals(ip,Multiplications.blockedMultiply(m, mt));
 		assertEquals(ip,Multiplications.naiveMultiply(m, mt));

@@ -3,10 +3,12 @@ package mikera.vectorz.impl;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
+import mikera.matrixx.impl.IFastColumns;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
@@ -31,8 +33,13 @@ import mikera.vectorz.util.VectorzException;
 public class SparseIndexedVector extends ASparseIndexedVector {
 	private static final long serialVersionUID = 750093598603613879L;
 
-	private Index index;
+	/**
+	 * double[] array containing the non-sparse values for this indexed vector
+	 * index contains the indexes of the vector that are non-sparse
+	 * Both can be modified, enabling arbitrary mutation of this vector
+	 */
 	private double[] data;
+	private Index index;
 
 	private SparseIndexedVector(int length, Index index) {
 		this(length, index, new double[index.length()]);
@@ -271,10 +278,22 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[i] += v.unsafeGet(index.get(i));
 		}
 	}
-
+	
 	public void addMultiple(ASparseVector v, double factor) {
 		checkSameLength(v);
-		if ((factor == 0.0) || (v instanceof ZeroVector)) {
+		if ((factor == 0.0)) {
+			return;
+		}
+		includeIndices(v);
+		for (int i = 0; i < data.length; i++) {
+			data[i] += v.unsafeGet(index.get(i)) * factor;
+		}
+	}
+
+	@Override
+	public void addMultiple(SparseIndexedVector v, double factor) {
+		checkSameLength(v);
+		if ((factor == 0.0)) {
 			return;
 		}
 		includeIndices(v);
@@ -316,6 +335,16 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 
 	@Override
+	public void pow(double exponent) {
+		DoubleArrays.pow(data, exponent);
+	}
+	
+	@Override
+	public void square() {
+		DoubleArrays.square(data);
+	}
+	
+	@Override
 	public void multiply(AVector v) {
 		if (v instanceof ADenseArrayVector) {
 			multiply((ADenseArrayVector) v);
@@ -353,6 +382,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		this.index = Index.wrap(tix);
 	}
 
+	@Override
 	public void multiply(ADenseArrayVector v) {
 		multiply(v.getArray(), v.getArrayOffset());
 	}
@@ -459,6 +489,52 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		}
 	}
 
+	@Override
+	public void applyOp(Op2 op, double d) {
+		int dlen=data.length;
+		if ((dlen<length())&&(op.isStochastic()||(op.apply(0.0,d)!=0.0))) {
+			super.applyOp(op,d);
+		} else {
+			op.applyTo(data,d);
+		}
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		double[] data=this.data;
+		int[] ixs=index.data;
+		int n=data.length;
+		double result=init;
+		int start=0;
+		for (int i=0; i<n; i++) {
+			int ix=ixs[i];
+			double v=data[i];
+			result=op.reduceZeros(result,ix-start);
+			result=op.apply(result, v);
+			start=ix+1;
+		}
+		return op.reduceZeros(result,length-start); // reduce over any remaining zeros
+	}
+	
+	@Override
+	public double reduce(Op2 op) {
+		double[] data=this.data;
+		int[] ixs=index.data;
+		int n=data.length;
+		if (n==0) return op.reduceZeros(length);
+		double result=unsafeGet(0);
+		int start=1;
+		int starti=(ixs[0]==0)?1:0; // start at data array element 0 if not at index 0, 1 otherwise
+		for (int i=starti; i<n; i++) {
+			int ix=ixs[i];
+			double v=data[i];
+			result=op.reduceZeros(result,ix-start);
+			result=op.apply(result, v);
+			start=ix+1;
+		}
+		return op.reduceZeros(result,length-start); // reduce over any remaining zeros
+	}
+	
 	@Override
 	public void abs() {
 		DoubleArrays.abs(data);
@@ -596,6 +672,20 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			data[ip] = value;
 		}
 	}
+	
+	@Override
+	public void addAt(int i, double value) {
+		if (value==0.0) return; // no change required
+		int ip=index.indexPosition(i);
+		if (ip<0) {
+			if (value==0.0) return;
+			int npos=index.seekPosition(i);
+			data=DoubleArrays.insert(data,npos,value);
+			index=index.insert(npos,i);
+		} else {
+			data[ip]+=value;
+		}
+	}
 
 	// TODO: consider a generic sparseApplyOp instead.
 	// keep in mind efficiency when randomly
@@ -621,21 +711,6 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 
 	@Override
-	public void addAt(int i, double value) {
-		// worth checking for zero when dealing with sparse vectors
-		// can often avoid a relatively expensive index lookup
-		if (value == 0.0)
-			return;
-
-		int ip = index.indexPosition(i);
-		if (ip < 0) {
-			unsafeSet(i, value);
-		} else {
-			data[ip] += value;
-		}
-	}
-
-	@Override
 	public Vector nonSparseValues() {
 		return Vector.wrap(data);
 	}
@@ -657,6 +732,11 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 
 	@Override
+	public SparseIndexedVector toSparseIndexedVector() {
+		return this;
+	}
+	
+	@Override
 	public SparseIndexedVector clone() {
 		return exactClone();
 	}
@@ -669,7 +749,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * 
 	 * @param ixs
 	 */
-	public void includeIndices(int[] ixs) {
+	protected void includeIndices(int[] ixs) {
 		int[] nixs = IntArrays.mergeSorted(index.data, ixs);
 		if (nixs.length == index.length())
 			return;
@@ -710,6 +790,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * indices.
 	 * 
 	 * @param ixs
+	 * @return the newly included indices from the vector v
 	 */
 	public void includeIndices(AVector v) {
 		if (v instanceof ASparseIndexedVector) {

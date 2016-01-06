@@ -62,10 +62,12 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 		return mats[rowBlock];
 	}
 	
+	@Override
 	public int getBlockColumnStart(int colBlock) {
 		return offsets[colBlock];
 	}
 	
+	@Override
 	public int getBlockRowStart(int rowBlock) {
 		return offsets[rowBlock];
 	}

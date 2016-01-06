@@ -277,6 +277,12 @@ public class Arrayz {
 		}
 	}
 	
+	/**
+	 * Creates a mutable sparse array of the specified shape.
+	 * 
+	 * @param shape
+	 * @return
+	 */
 	public static INDArray createSparseArray(int... shape) {
 		switch (shape.length) {
 			case 0: return Scalar.create(0.0);

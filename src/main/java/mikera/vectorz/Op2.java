@@ -13,17 +13,6 @@ public abstract class Op2 {
 	
 	public abstract double apply(double x, double y);
 	
-	/**
-	 * Applies the inverse of this Op. Throws an error if the inverse function does not exist.
-	 * Returns Double.NaN if no inverse exists for the specific value of y.
-	 * 
-	 * @param y
-	 * @return
-	 */
-	public double applyInverse(double y) {
-		throw new UnsupportedOperationException("Inverse not defined for operator: "+this.toString());
-	}
-	
 	public void applyTo(AVector a, AVector b) {
 		if (a instanceof ADenseArrayVector) {
 			applyTo((ADenseArrayVector)a,b);
@@ -35,16 +24,7 @@ public abstract class Op2 {
 	public void applyTo(AMatrix a, AMatrix b) {
 		a.applyOp(this, b);
 	}
-	
-	public void applyTo(AVector v, int start, int length, AVector b) {
-		if (start<0) throw new IllegalArgumentException("Negative start position: "+start);
-		if ((start==0)&&(length==v.length())) {
-			v.applyOp(this,b);
-		} else {
-			v.subVector(start, length).applyOp(this,b);
-		}
-	}
-	
+		
 	public void applyTo(AScalar a, AScalar b) {
 		a.set(apply(a.get(),b.get()));
 	}
@@ -52,7 +32,6 @@ public abstract class Op2 {
 	public void applyTo(ADenseArrayVector a, AVector b) {
 		applyTo(a.getArray(), a.getArrayOffset(),a.length(),b);
 	}
-	
 	
 	public void applyTo(INDArray a, INDArray b) {
 		if (a instanceof AVector) {
@@ -74,22 +53,21 @@ public abstract class Op2 {
 		}
 	}
 	
+	public void applyTo(double[] data, int start, int length, double b) {
+		for (int i=0; i<length; i++) {
+			double x=data[start+i];
+			data[start+i]=apply(x,b);
+		}
+	}
+	
 	public void applyTo(double[] data, AVector b) {
 		applyTo(data,0,data.length,b);
 	}
 	
-	public boolean hasDerivative() {
-		return false;
+	public void applyTo(double[] data, double b) {
+		applyTo(data,0,data.length,b);
 	}
-	
-	public boolean hasDerivativeForOutput() {
-		return hasDerivative();
-	}
-	
-	public boolean hasInverse() {
-		return false;
-	}
-	
+		
 	/**
 	 * Returns true if the operator is stochastic, i.e returns random values for at least some inputs
 	 * @return
@@ -108,19 +86,6 @@ public abstract class Op2 {
 	
 	public double maxValue() {
 		return Double.POSITIVE_INFINITY;
-	}
-	
-	public double minDomain() {
-		return Double.NEGATIVE_INFINITY;
-	}
-	
-	public double maxDomain() {
-		return Double.POSITIVE_INFINITY;
-	}
-	
-	public boolean isDomainBounded() {
-		return (minDomain()>=-Double.MAX_VALUE)||(maxDomain()<=Double.MAX_VALUE);
-		
 	}
 	
 	/**
@@ -170,5 +135,43 @@ public abstract class Op2 {
 	
 	@Override public String toString() {
 		return getClass().toString();
+	}
+
+	/**
+	 * Method to reduce over a sequence of zeros. Optimises for common stable cases.
+	 * @param init
+	 * @param length
+	 * @return
+	 */
+	public double reduceZeros(double init, long length) {
+		if (length==0) return init;
+		if (length==1) return apply(init,0.0);
+		
+		if (isStochastic()) {
+			// can't guarantee stability
+			for (long i=0; i<length; i++) {
+				init=apply(init,0.0);
+			}
+			return init;
+		} else {
+			double r1=apply(init,0.0);
+			if (r1==init) return r1; // is stable after one applications to zero?
+			double r2=apply(r1,0.0); 
+			if (r2==r1) return r2; // is stable after two applications to zero?
+			for (long i=2; i<length; i++) {
+				r2=apply(r2,0.0);
+			}
+			return r2;
+		}
+	}
+
+	/**
+	 * Method to reduce over a sequence of zeros. Optimises for common stable cases.
+	 * @param length
+	 * @return
+	 */
+	public double reduceZeros(long length) {
+		if (length<=0) throw new IllegalArgumentException("Can't reduce over zero elements without initial value");
+		return reduceZeros(0.0,length-1);
 	}
 }

@@ -42,10 +42,15 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	/**
 	 * Gets a row of the matrix. 
 	 * 
-	 * Guaranteed to be an existing vector by all descendants of VectorMatrix.
+	 * Guaranteed to be an existing vector view by all descendants of AVectorMatrix.
 	 */
 	@Override
-	public abstract T getRowView(int row);
+	public abstract T getRow(int row);
+	
+	@Override
+	public final T getRowView(int i) {
+		return getRow(i);
+	}
 
 	@Override
 	public double get(int row, int column) {
@@ -116,7 +121,7 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	}
 	
 	@Override
-	public double calculateElement(int i, AVector inputVector) {
+	public double rowDotProduct(int i, AVector inputVector) {
 		T row=getRowView(i);
 		return row.dotProduct(inputVector);
 	}
@@ -240,6 +245,15 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 			r.unsafeSet(i, getRow(i).dotProduct(v));
 		}
 		return r;
+	}
+	
+	@Override
+	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		AVector[] newRows=new AVector[rows];
+		for (int i=0; i<rows; i++) {
+			newRows[i]=getRowView(i+rowStart).subVector(colStart,cols);
+		}
+		return VectorMatrixMN.wrap(newRows);
 	}
 	
 	@Override

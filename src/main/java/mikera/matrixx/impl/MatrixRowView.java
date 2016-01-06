@@ -2,12 +2,14 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
  * A class representing a view of a matrix row as a vector.
  * 
- * Used where no better implementations for getRow(...) on a matrix exist. 
+ * Used where no better implementations for getRowView(...) on a matrix exist. 
  * 
  * @author Mike
  */
@@ -87,5 +89,80 @@ public final class MatrixRowView extends AMatrixViewVector {
 			result+=data[offset+i]*unsafeGet(i);
 		}
 		return result;
+	}
+	
+	@Override
+	public void applyOp(Op op) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i)));
+		}
+	}
+	
+	@Override
+	public void applyOp(Op2 op, AVector v) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i),v.unsafeGet(i)));
+		}
+	}
+	
+	@Override
+	public void applyOp(Op2 op, double v) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,op.apply(unsafeGet(i),v));
+		}
+	}
+	
+	@Override
+	public void multiply(double factor) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,factor*(unsafeGet(i)));
+		}
+	}
+	
+	@Override
+	public void multiply(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,v.unsafeGet(i)*unsafeGet(i));
+		}
+	}
+	
+	@Override
+	public void add(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,v.unsafeGet(i)+unsafeGet(i));
+		}
+	}
+	
+	@Override
+	public void addMultiple(AVector v, double factor) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,unsafeGet(i)+v.unsafeGet(i)*factor);
+		}
+	}
+	
+	@Override
+	public void sub(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,unsafeGet(i)-v.unsafeGet(i));
+		}
+	}
+	
+	@Override
+	public void set(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,v.unsafeGet(i));
+		}
+	}
+	
+	@Override
+	public void fill(double v) {
+		for (int i=0; i<length; i++) {
+			unsafeSet(i,v);
+		}
 	}
 }
