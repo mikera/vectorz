@@ -2332,6 +2332,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			addAt(i,v);
 		}
 	}
+	
+	/**
+	 * Adds the inner product of the arguments (vector a and matrix b) to this vector.
+	 * 
+	 * @param a A vector with the same lengths as the number of rows in the matrix parameter b
+	 * @param b A matrix with the same number of columns as this vector
+	 */
+	public void addInnerProduct(AVector a, AMatrix b) {
+		addInnerProduct(b.getTranspose(),a);
+	}
 
 	@Override
 	public void applyOp(IOperator op) {
