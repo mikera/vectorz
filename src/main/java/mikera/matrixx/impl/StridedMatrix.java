@@ -199,10 +199,9 @@ public final class StridedMatrix extends BaseStridedMatrix {
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		for (int i = 0; i < rows; i++) {
-			int si=this.offset+i*rowStride;
+			int rowOffset=this.offset+i*rowStride;
 			for (int j = 0; j < cols; j++) {
-				if (this.data[si] != data[offset++]) return false;
-				si+=colStride;
+				if (this.data[rowOffset+j*colStride] != data[offset++]) return false;
 			}
 		}
 		return true;

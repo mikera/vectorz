@@ -2201,9 +2201,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param m
 	 */
 	protected void checkSameShape(AMatrix m) {
-		int rc=rowCount();
-		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+		if((rowCount()!=m.rowCount())||(columnCount()!=m.columnCount())) {
 			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
 		}
 	}
@@ -2213,9 +2211,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @param m
 	 */
 	protected void checkSameShape(ARectangularMatrix m) {
-		int rc=rowCount();
-		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+		if((rowCount()!=m.rowCount())||(columnCount()!=m.columnCount())) {
 			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
 		}
 	}
