@@ -1,6 +1,6 @@
 package mikera.vectorz.impl;
 
-import mikera.matrixx.impl.StridedMatrix;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
@@ -16,10 +16,6 @@ public final class StridedMatrixViewVector extends AArrayVector {
 	private final int rows;
 	private final int cols;
 	
-	public StridedMatrixViewVector(StridedMatrix m) {
-		this(m.getArray(),m.getArrayOffset(),m.rowCount(),m.columnCount(),m.getStride(0),m.getStride(1));
-	}
-	
 	private StridedMatrixViewVector(double[] data, int offset, int rows, int cols, int rowStride, int colStride) {
 		super(Tools.toInt(rows*cols),data);
 		this.offset=offset;
@@ -29,6 +25,10 @@ public final class StridedMatrixViewVector extends AArrayVector {
 		this.colStride=colStride;
 	}
 	
+	public StridedMatrixViewVector(AStridedMatrix m) {
+		this(m.getArray(),m.getArrayOffset(),m.rowCount(),m.columnCount(),m.rowStride(),m.columnStride());
+	}
+
 	@Override
 	public boolean isView() {
 		return true;

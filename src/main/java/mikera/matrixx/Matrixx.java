@@ -18,6 +18,7 @@ import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
+import mikera.matrixx.impl.StridedRowMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Tools;
@@ -563,6 +564,9 @@ public class Matrixx {
 			if ((rows==colStride)&&(rowStride==1)) {
 				return DenseColumnMatrix.wrap(rows, cols, data);
 			} 
+		}
+		if (colStride==1) {
+			return StridedRowMatrix.wrap(data, rows, cols, offset, rowStride);			
 		}
 		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);
 	}

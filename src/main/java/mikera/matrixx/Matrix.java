@@ -9,7 +9,7 @@ import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
-import mikera.matrixx.impl.StridedMatrix;
+import mikera.matrixx.impl.StridedRowMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
@@ -186,8 +186,8 @@ public final class Matrix extends ADenseArrayMatrix {
 		if ((rowStart + rows > this.rows) || (colStart + cols > this.cols))
 			throw new IndexOutOfBoundsException(
 					"Invalid submatrix end position");
-		return StridedMatrix.wrap(data, rows, cols, rowStart * rowStride()
-				+ colStart * columnStride(), rowStride(), columnStride());
+		return StridedRowMatrix.wrap(data, rows, cols, rowStart * rowStride()
+				+ colStart, rowStride());
 	}
 
 	@Override

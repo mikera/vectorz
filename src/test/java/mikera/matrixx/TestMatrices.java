@@ -13,6 +13,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.NDArray;
 import mikera.arrayz.TestArrays;
 import mikera.indexz.Indexz;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.BufferMatrix;
@@ -29,6 +30,7 @@ import mikera.matrixx.impl.ScalarMatrix;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.StridedMatrix;
+import mikera.matrixx.impl.StridedRowMatrix;
 import mikera.matrixx.impl.UpperTriangularMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
@@ -646,6 +648,13 @@ public class TestMatrices {
 		doGenericTests(strm);
 		strm=StridedMatrix.wrap(Matrix.create(Matrixx.createRandomMatrix(3, 3))).getTranspose();
 		doGenericTests(strm);
+	}
+	
+	@Test public void g_StridedRowMatrix() {	
+		Matrix m=Matrix.create(Matrixx.createRandomMatrix(4, 5));
+		AStridedMatrix sm=m.subMatrix(1, 3, 1, 4);
+		assertTrue(sm instanceof StridedRowMatrix);
+		doGenericTests(sm);
 	}
 
 	@Test public void g_PermutationMatrix() {	
