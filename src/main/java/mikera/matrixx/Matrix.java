@@ -590,7 +590,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public void set(double value) {
+	public void fill(double value) {
 		Arrays.fill(data, value);
 	}
 

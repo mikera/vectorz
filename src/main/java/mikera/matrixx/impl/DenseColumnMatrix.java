@@ -224,7 +224,7 @@ public final class DenseColumnMatrix extends AStridedMatrix implements IFastColu
 	}
 	
 	@Override
-	public void set(double value) {
+	public void fill(double value) {
 		Arrays.fill(data, value);
 	}
 	

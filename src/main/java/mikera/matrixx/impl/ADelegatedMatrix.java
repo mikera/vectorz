@@ -87,8 +87,8 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
-	public void set(double value) {
-		source.set(value);
+	public void fill(double value) {
+		source.fill(value);
 	}
 	
 	@Override
@@ -155,11 +155,4 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 	public void reciprocal() {
 		source.reciprocal();
 	}
-	
-	@Override
-	public void fill(double value) {
-		source.fill(value);
-	}
-
-
 }

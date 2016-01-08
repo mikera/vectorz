@@ -72,14 +72,6 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	}
 	
 	@Override 
-	public void set(double value) {
-		int rc=rowCount();
-		for (int i=0; i<rc; i++) {
-			getRowView(i).set(value);
-		}
-	}
-	
-	@Override 
 	public void fill(double value) {
 		int rc=rowCount();
 		for (int i=0; i<rc; i++) {
