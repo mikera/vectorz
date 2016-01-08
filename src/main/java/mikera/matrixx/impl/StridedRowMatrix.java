@@ -16,6 +16,8 @@ import mikera.vectorz.util.VectorzException;
 /**
  * A strided matrix implementation with a column stride of 1
  * 
+ * Provides a fast subMatrix view for the dense Matrix class
+ * 
  * @author Mike
  */
 public final class StridedRowMatrix extends AStridedMatrix {
@@ -33,6 +35,28 @@ public final class StridedRowMatrix extends AStridedMatrix {
 	public static StridedRowMatrix create(int rowCount, int columnCount) {
 		double[] data = new double[rowCount * columnCount];
 		return new StridedRowMatrix(data, rowCount, columnCount, 0, columnCount);
+	}
+	
+	@Override
+	public final double get(int i, int j) {
+		checkIndex(i,j);
+		return data[index(i,j)];
+	}
+	
+	@Override
+	public final void set(int i, int j, double value) {
+		checkIndex(i,j);
+		data[index(i,j)]=value;
+	}
+	
+	@Override
+	public final double unsafeGet(int i, int j) {
+		return data[index(i,j)];
+	}
+	
+	@Override
+	public final void unsafeSet(int i, int j, double value) {
+		data[index(i,j)]=value;
 	}
 	
 	@Override
@@ -130,18 +154,7 @@ public final class StridedRowMatrix extends AStridedMatrix {
 		}
 		return new StridedMatrixViewVector(this);
 	}
-
-	@Override
-	public void set(int i, int j, double value) {
-		checkIndex(i,j);
-		data[index(i,j)] = value;
-	}
 	
-	@Override
-	public void unsafeSet(int i, int j, double value) {
-		data[index(i,j)] = value;
-	}
-
 	@Override
 	public AMatrix exactClone() {
 		return new StridedRowMatrix(data.clone(), rows, cols, offset,
