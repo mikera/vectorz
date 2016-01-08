@@ -2308,11 +2308,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public void addInnerProduct(INDArray a, INDArray b) {
+	public final void addInnerProduct(INDArray a, INDArray b) {
 		if ((a instanceof AMatrix)&&(b instanceof AVector)) {
 			addInnerProduct((AMatrix)a,(AVector)b);
 			return;
 		}
+		if ((b instanceof AMatrix)&&(a instanceof AVector)) {
+			addInnerProduct((AVector)a,(AMatrix)b);
+			return;
+		}
+
 		super.addInnerProduct(a, b);
 	}
 	
