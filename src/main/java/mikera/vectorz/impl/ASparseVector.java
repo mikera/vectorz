@@ -94,6 +94,22 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	public double reduce(Op2 op) {
 		return toSparseIndexedVector().reduce(op);
 	}
+	
+	@Override
+	public final AVector reduceSlices(Op2 op, double init) {
+		// can't do anything if op won't result in sparse vector
+		if (op.isStochastic()||(op.apply(init,0.0)!=0.0)) return super.reduceSlices(op, init);
+		
+		// TODO: replace with applyOpCopy when we have it
+		Index ni=nonSparseIndex();
+		AVector result=clone();
+		int len=ni.length();
+		for (int i=0; i<len; i++) {
+			int ix=ni.get(i);
+			result.unsafeSet(ix,op.apply(init,result.unsafeGet(ix)));
+		}
+		return result;
+	}
 
 	@Override
 	public double distanceSquared(AVector v) {
