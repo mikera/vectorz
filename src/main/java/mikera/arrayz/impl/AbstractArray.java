@@ -1513,4 +1513,23 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
         return result;
     }
 
+	@Override
+	public AVector reduceSlices(Op2 op) {
+		int sc=sliceCount();
+		AVector result=Vector.createLength(sc);
+		for (int i=0; i<sc; i++) {
+			result.unsafeSet(i, slice(i).reduce(op));
+		}
+		return result;
+	}
+	
+	@Override
+	public AVector reduceSlices(Op2 op, double init) {
+		int sc=sliceCount();
+		AVector result=Vector.createLength(sc);
+		for (int i=0; i<sc; i++) {
+			result.unsafeSet(i, slice(i).reduce(op,init));
+		}
+		return result;
+	}
 }

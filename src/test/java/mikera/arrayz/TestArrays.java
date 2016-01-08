@@ -137,6 +137,9 @@ public class TestArrays {
 		
 		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
 		
+		assertEquals(a.elementSum(), a.reduceSlices(Ops.ADD).elementSum(),0.0001);
+		assertEquals(a.elementSquaredSum(), a.reduceSlices(Ops.ADD_SQUARE,0.0).elementSum(),0.0001);
+		
 		List<?> vslices = a.getSliceViews();
 		assertEquals(sl, vslices.get(0));
 	}

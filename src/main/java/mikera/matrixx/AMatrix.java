@@ -812,7 +812,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		addMultiple(b,bfactor);
 	}
 	
-	
 	@Override
 	public void multiply(double factor) {
 		int rc=rowCount();
@@ -1565,6 +1564,26 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		double result=getRow(0).reduce(op);
 		for (int i=1; i<rc; i++) {
 			result=getRow(i).reduce(op, result);
+		}
+		return result;
+	}
+	
+	@Override
+	public AVector reduceSlices(Op2 op) {
+		int rc=rowCount();
+		AVector result=Vector.createLength(rc);
+		for (int i=0; i<rc; i++) {
+			result.unsafeSet(i, getRow(i).reduce(op));
+		}
+		return result;
+	}
+	
+	@Override
+	public AVector reduceSlices(Op2 op, double init) {
+		int rc=rowCount();
+		AVector result=Vector.createLength(rc);
+		for (int i=0; i<rc; i++) {
+			result.unsafeSet(i, getRow(i).reduce(op,init));
 		}
 		return result;
 	}

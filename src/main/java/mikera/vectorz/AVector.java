@@ -2381,9 +2381,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int len=length();
 		b.checkLength(len);
 		for (int i=0; i<len; i++) {
-			double v=unsafeGet(i);
+			double v=this.unsafeGet(i);
 			double nv=op.apply(v, b.unsafeGet(i));
-			if (v!=nv) unsafeSet(i,nv);
+			if (v!=nv) this.unsafeSet(i,nv);
 		}
 	}
 	
@@ -2420,6 +2420,22 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		double result=get(0);
 		for (int i=1; i<n; i++) {
 			result=op.apply(result, unsafeGet(i));
+		}
+		return result;
+	}
+	
+	@Override
+	public final AVector reduceSlices(Op2 op) {
+		return this.clone();
+	}
+	
+	@Override
+	public final AVector reduceSlices(Op2 op, double init) {
+		// TODO: replace with applyOpCopy when we have it
+		AVector result=clone();
+		int len=length();
+		for (int i=0; i<len; i++) {
+			result.unsafeSet(i,op.apply(init,result.unsafeGet(i)));
 		}
 		return result;
 	}

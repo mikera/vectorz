@@ -972,7 +972,7 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param op
 	 * @param b
 	 */
-	void applyOp(Op2 op, INDArray b);
+	public void applyOp(Op2 op, INDArray b);
 	
 	/**
 	 * Applies a binary operator to this array and a double value.
@@ -982,5 +982,22 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param op
 	 * @param b
 	 */
-	void applyOp(Op2 op, double b);
+	public void applyOp(Op2 op, double b);
+
+	/**
+	 * Reduces each slice of the array by the given operator
+	 * 
+	 * @param op
+	 * @param b
+	 */	
+	public AVector reduceSlices(Op2 op);
+	
+	/**
+	 * Reduces each slice of the array by the given operator
+	 * Uses the specified init value for reduction of each slice
+	 * 
+	 * @param op
+	 * @param b
+	 */	
+	public AVector reduceSlices(Op2 op, double init);
 }
