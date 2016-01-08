@@ -1167,16 +1167,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Optimised override of equals that tests whether this matrix is equal to a dense matrix. 
-	 * @param a
-	 * @return
-	 */
-	public boolean equals(ADenseArrayMatrix a) {
-		if (!isSameShape(a)) return false;
-		return equalsArray(a.getArray(),a.getArrayOffset());
-	}
-
-	/**
 	 * Returns true if this matrix is approximately equal to 
 	 * a second matrix, up to a default tolerance level
 	 */

@@ -180,9 +180,12 @@ public final class StridedMatrix extends BaseStridedMatrix {
 	@Override
 	public boolean equals(AMatrix a) {
 		if (a==this) return true;	
-		if (a instanceof ADenseArrayMatrix) return equals((ADenseArrayMatrix)a);
-		
 		if (!isSameShape(a)) return false;
+		
+		if (a instanceof ADenseArrayMatrix) {
+			ADenseArrayMatrix da=(ADenseArrayMatrix)a;
+			return equalsArray(da.getArray(),da.getArrayOffset());
+		}
 		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
