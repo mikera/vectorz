@@ -667,17 +667,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (isMutable()) return clone();
 		return this;
 	}
-	
-	@Deprecated
-	public final AVector cloneRow(int i) {
-		return getRowClone(i);
-	}
-	
-	@Deprecated
-	public final AVector cloneColumn(int j) {
-		return getColumnClone(j);
-	}
-	
+		
 	@Override
 	public AMatrix sparseClone() {
 		return Matrixx.createSparse(this);
