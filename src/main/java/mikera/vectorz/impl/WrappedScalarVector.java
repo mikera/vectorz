@@ -123,4 +123,9 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	public double dotProduct(double[] data, int offset, int stride) {
 		return data[offset]*scalar.get();
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return (scalar.get()==data[offset]);
+	}
 }

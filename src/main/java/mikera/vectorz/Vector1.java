@@ -182,4 +182,9 @@ public final class Vector1 extends APrimitiveVector {
 		return clone();
 	}
 
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return x==data[offset];
+	}
+
 }

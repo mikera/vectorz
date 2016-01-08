@@ -170,4 +170,9 @@ public final class GrowableVector extends AVector {
 	public double dotProduct(double[] data, int offset) {
 		return DoubleArrays.dotProduct(data, offset, this.data, 0, count);
 	}
+
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return DoubleArrays.equals(this.data, 0, data, offset, count);
+	}
 }

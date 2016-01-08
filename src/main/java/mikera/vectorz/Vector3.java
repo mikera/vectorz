@@ -485,4 +485,9 @@ public final class Vector3 extends APrimitiveVector {
 	public boolean equals(Vector3 v) {
 		return (x==v.x)&&(y==v.y)&&(z==v.z);
 	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return (x==data[offset])&&(y==data[offset+1])&&(z==data[offset+2]);
+	}
 }

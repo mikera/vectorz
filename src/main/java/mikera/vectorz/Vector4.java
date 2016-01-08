@@ -296,4 +296,9 @@ public final class Vector4 extends APrimitiveVector {
 	public Vector4 exactClone() {
 		return clone();
 	}
+
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		return (x==data[offset])&&(y==data[offset+1])&&(z==data[offset+2])&&(t==data[offset+3]);
+	}
 }
