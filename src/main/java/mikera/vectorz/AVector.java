@@ -865,7 +865,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public INDArray outerProduct(INDArray a) {
+	public final INDArray outerProduct(INDArray a) {
 		if (a instanceof AVector) {
 			return outerProduct((AVector)a);
 		}
