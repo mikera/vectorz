@@ -324,13 +324,13 @@ public final class Matrix extends ADenseArrayMatrix {
 	}
 
 	@Override
-	public ArraySubVector getRowView(int row) {
+	public ArraySubVector getRow(int row) {
 		checkRow(row);
 		return ArraySubVector.wrap(data, row * cols, cols);
 	}
 
 	@Override
-	public AStridedVector getColumnView(int col) {
+	public AStridedVector getColumn(int col) {
 		checkColumn(col);
 		if (cols == 1) {
 			if (col != 0)

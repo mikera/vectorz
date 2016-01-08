@@ -112,12 +112,12 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
-	public ADenseArrayVector getRowView(int i) {
+	public ADenseArrayVector getRow(int i) {
 		return Vectorz.wrap(data, getArrayOffset()+i*cols, cols);
 	}
 	
 	@Override
-	public AStridedVector getColumnView(int i) {
+	public AStridedVector getColumn(int i) {
 		return Vectorz.wrapStrided(data, getArrayOffset()+i, rows, cols);
 	}
 	

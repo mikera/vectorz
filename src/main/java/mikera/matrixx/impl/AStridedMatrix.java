@@ -60,12 +60,12 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
-	public AStridedVector getRowView(int i) {
+	public final AStridedVector getRowView(int i) {
 		return getRow(i);
 	}
 	
 	@Override
-	public AStridedVector getColumnView(int i) {
+	public final AStridedVector getColumnView(int i) {
 		return getColumn(i);
 	}
 	

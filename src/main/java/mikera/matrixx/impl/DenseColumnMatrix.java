@@ -58,7 +58,7 @@ public final class DenseColumnMatrix extends AStridedMatrix implements IFastColu
 	}
 	
 	@Override
-	public ArraySubVector getColumnView(int j) {
+	public ArraySubVector getColumn(int j) {
 		return ArraySubVector.wrap(data, j*rows, rows);
 	}
 
