@@ -16,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
 /**
  * A strided matrix implementation with a column stride of 1
  * 
- * Provides a fast subMatrix view for the dense Matrix class
+ * Provides a fast, mutable subMatrix view for the dense Matrix class
  * 
  * @author Mike
  */
@@ -30,11 +30,6 @@ public final class StridedRowMatrix extends AStridedMatrix {
 		super(data,rowCount,columnCount);
 		this.rowStride=rowStride;
 		this.offset=offset;
-	}
-
-	public static StridedRowMatrix create(int rowCount, int columnCount) {
-		double[] data = new double[rowCount * columnCount];
-		return new StridedRowMatrix(data, rowCount, columnCount, 0, columnCount);
 	}
 	
 	@Override
@@ -130,6 +125,16 @@ public final class StridedRowMatrix extends AStridedMatrix {
 			copyRowTo(row, dest, destOffset+row*cc);
 		}
 	}
+	
+	@Override
+	public double rowDotProduct(int row, AVector v) {
+		return v.dotProduct(data,index(row,0));
+	}
+	
+	@Override
+	public void setRow(int row, AVector v) {
+		v.getElements(data,index(row,0));
+	}
 
 	@Override
 	public AStridedMatrix getTranspose() {
@@ -204,10 +209,9 @@ public final class StridedRowMatrix extends AStridedMatrix {
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		for (int i = 0; i < rows; i++) {
-			int si=this.offset+i*rowStride;
+			int rowOffset=this.offset+i*rowStride;
 			for (int j = 0; j < cols; j++) {
-				if (this.data[si] != data[offset++]) return false;
-				si++;
+				if (this.data[rowOffset+j] != data[offset++]) return false;
 			}
 		}
 		return true;
