@@ -3,7 +3,6 @@ package mikera.matrixx.impl;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.IDenseArray;
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
@@ -241,10 +240,4 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	public ADenseArrayVector asVector() {
 		return Vectorz.wrap(data, getArrayOffset(), rows*cols);
 	}
-	
-	@Override
-	public Matrix clone() {
-		return Matrix.wrap(rows, cols, toDoubleArray());
-	}
-
 }

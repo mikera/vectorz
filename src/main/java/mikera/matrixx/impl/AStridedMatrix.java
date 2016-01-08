@@ -233,4 +233,11 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		}
 		return true;
 	}
+	
+	@Override
+	public final Matrix clone() {
+		// always want a dense result when cloning a strided matrix
+		return Matrix.create(this);
+	}
+
 }

@@ -263,12 +263,7 @@ public final class DenseColumnMatrix extends AStridedMatrix implements IFastColu
 	public DenseColumnMatrix copy() {
 		return exactClone();
 	}
-	
-	@Override
-	public DenseColumnMatrix clone() {
-		return exactClone();
-	}
-	
+		
 	@Override
 	public Matrix toMatrixTranspose() {
 		return Matrix.wrap(cols, rows, data);

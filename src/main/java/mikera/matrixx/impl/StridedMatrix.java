@@ -1,7 +1,6 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
@@ -170,11 +169,6 @@ public final class StridedMatrix extends BaseStridedMatrix {
 		if (!equals(this.exactClone())) throw new VectorzException("Thing not equal to itself");
 		if (offset<0) throw new VectorzException("Negative offset! ["+offset+"]");
 		if (index(rows-1,cols-1)>=data.length) throw new VectorzException("Negative offset! ["+offset+"]");
-	}
-	
-	@Override
-	public Matrix clone() {
-		return Matrix.create(this);
 	}
 
 	@Override

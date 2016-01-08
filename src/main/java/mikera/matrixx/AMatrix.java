@@ -22,6 +22,7 @@ import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.ARectangularMatrix;
+import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
@@ -2131,8 +2132,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return result;
 	}
 	
-	/* Performance overload */
-	public Matrix addCopy(ADenseArrayMatrix a) {
+	/**
+     * Adds a dense matrix to this matrix, returning a new dense Matrix
+     *
+     * @param m A matrix. Not modified.
+     * @return True if any element in the matrix is NaN of Infinite.
+     */
+	public Matrix addCopy(AStridedMatrix a) {
 		checkSameShape(a);
 		Matrix result=a.clone();
 		this.addToArray(result.data,0);
