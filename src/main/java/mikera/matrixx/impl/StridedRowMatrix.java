@@ -161,15 +161,10 @@ public final class StridedRowMatrix extends AStridedMatrix {
 				rowStride);
 	}
 
-	public static StridedRowMatrix create(AMatrix m) {
-		StridedRowMatrix sm = StridedRowMatrix.create(m.rowCount(), m.columnCount());
-		sm.set(m);
-		return sm;
-	}
-
-	public static StridedRowMatrix wrap(Matrix m) {
-		return new StridedRowMatrix(m.data, m.rowCount(), m.columnCount(), 0,
-				m.columnCount());
+	public static StridedRowMatrix wrap(AStridedMatrix m) {
+		if (m.columnStride()!=1) throw new IllegalArgumentException("StridedRowMatrix creation requires a column stride of 1");
+		return new StridedRowMatrix(m.getArray(), m.rowCount(), m.columnCount(), m.getArrayOffset(),
+				m.rowStride());
 	}
 
 	public static StridedRowMatrix wrap(double[] data, int rows, int columns,

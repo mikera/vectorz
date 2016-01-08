@@ -153,9 +153,9 @@ public final class StridedMatrix extends BaseStridedMatrix {
 		return sm;
 	}
 
-	public static StridedMatrix wrap(Matrix m) {
-		return new StridedMatrix(m.data, m.rowCount(), m.columnCount(), 0,
-				m.columnCount(), 1);
+	public static StridedMatrix wrap(AStridedMatrix m) {
+		return new StridedMatrix(m.getArray(), m.rowCount(), m.columnCount(), m.getArrayOffset(),
+				m.rowStride(),m.columnStride());
 	}
 
 	public static StridedMatrix wrap(double[] data, int rows, int columns,
