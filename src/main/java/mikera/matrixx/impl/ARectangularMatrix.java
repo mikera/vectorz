@@ -78,32 +78,26 @@ public abstract class ARectangularMatrix extends AMatrix {
 	
 	@Override
 	protected void checkSameShape(AMatrix m) {
-		int rc=rowCount();
-		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+		if((rows!=m.rowCount())||(cols!=m.columnCount())) {
 			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
 		}
 	}
 	
 	@Override
-	public int checkColumn(int column) {
-		int cc=columnCount();
-		if ((column<0)||(column>=cc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, column));
-		return cc;
+	public final int checkColumn(int column) {
+		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, column));
+		return cols;
 	}
 	
 	@Override
-	public int checkRow(int row) {
-		int rc=rowCount();
-		if ((row<0)||(row>=rc)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, row));
-		return rc;
+	public final int checkRow(int row) {
+		if ((row<0)||(row>=rows)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 0, row));
+		return rows;
 	}
 	
 	@Override
 	protected void checkSameShape(ARectangularMatrix m) {
-		int rc=rowCount();
-		int cc=columnCount();
-		if((rc!=m.rowCount())||(cc!=m.columnCount())) {
+		if((rows!=m.rowCount())||(cols!=m.columnCount())) {
 			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
 		}
 	}
