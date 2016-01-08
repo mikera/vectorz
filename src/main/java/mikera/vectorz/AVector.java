@@ -858,7 +858,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int cc=a.length();
 		Matrix m=Matrix.create(rc, cc);
 		for (int i=0; i<rc; i++) {
-			ArraySubVector row=m.getRow(i);
+			ArraySubVector row=m.getRowView(i);
 			row.addMultiple(a, this.unsafeGet(i));
 		}
 		return m;

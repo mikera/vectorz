@@ -328,14 +328,16 @@ public final class Matrix extends ADenseArrayMatrix {
 		checkRow(row);
 		return ArraySubVector.wrap(data, row * cols, cols);
 	}
+	
+	@Override
+	public ArraySubVector getRowView(int row) {
+		return getRow(row);
+	}
 
 	@Override
 	public AStridedVector getColumn(int col) {
 		checkColumn(col);
 		if (cols == 1) {
-			if (col != 0)
-				throw new IndexOutOfBoundsException("Column does not exist: "
-						+ col);
 			return Vector.wrap(data);
 		} else {
 			return StridedVector.wrap(data, col, rows, cols);
