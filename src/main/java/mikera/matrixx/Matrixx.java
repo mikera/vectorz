@@ -534,11 +534,6 @@ public class Matrixx {
 		return m;
 	}
 
-	public static Matrix deepCopy(AMatrix m) {
-		return create(m);
-	}
-
-
 	public static AMatrix create(Object... vs) {
 		return create(Arrays.asList(vs));
 	}

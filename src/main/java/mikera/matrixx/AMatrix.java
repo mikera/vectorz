@@ -659,7 +659,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	@Override
 	public AMatrix clone() {
-		return Matrixx.deepCopy(this);
+		return Matrix.create(this);
 	}
 	
 	@Override
