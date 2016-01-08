@@ -22,6 +22,7 @@ import mikera.util.Maths;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.impl.ASparseVector;
+import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
@@ -856,11 +857,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		int rc=length();
 		int cc=a.length();
 		Matrix m=Matrix.create(rc, cc);
-		int di=0;
 		for (int i=0; i<rc; i++) {
-			for (int j=0; j<cc; j++) {
-				m.data[di++]=unsafeGet(i)*a.unsafeGet(j);
-			}
+			ArraySubVector row=m.getRow(i);
+			row.addMultiple(a, this.unsafeGet(i));
 		}
 		return m;
 	}

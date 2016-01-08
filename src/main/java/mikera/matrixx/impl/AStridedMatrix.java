@@ -60,7 +60,7 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	}
 	
 	@Override
-	public final AStridedVector getRowView(int i) {
+	public AStridedVector getRowView(int i) {
 		return getRow(i);
 	}
 	
