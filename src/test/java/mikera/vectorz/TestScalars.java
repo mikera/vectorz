@@ -3,6 +3,10 @@ package mikera.vectorz;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+
+import mikera.arrayz.Array;
+import mikera.arrayz.Arrayz;
+import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.IdentityMatrix;
@@ -16,6 +20,17 @@ public class TestScalars {
 		AScalar s = new Scalar(2.0);
 		assertEquals(2.0, s.elementSum(), 0.0);
 		assertEquals(1, s.nonZeroCount(), 0.0);
+	}
+	
+	@Test
+	public void testProducts() {
+		AScalar s = new Scalar(1.0);
+		INDArray a=Array.newArray(2,3,4);
+		Arrayz.fillNormal(a, 12456);
+		assertEquals(a,s.outerProduct(a));
+		assertEquals(a,s.innerProduct(a));
+		assertEquals(a,a.outerProduct(s));
+		assertEquals(a,a.innerProduct(s));
 	}
 
 	private void testAsVector(AScalar s) {
