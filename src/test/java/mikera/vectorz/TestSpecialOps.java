@@ -1,21 +1,36 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 import mikera.util.Rand;
-import mikera.vectorz.Op;
 import mikera.vectorz.ops.Constant;
 import mikera.vectorz.ops.Linear;
 import mikera.vectorz.ops.Power;
 import mikera.vectorz.ops.Quadratic;
-
-import org.junit.Test;
 
 public class TestSpecialOps {
 	private void testDerivativesAt(Op op, double... xs) {
 		for (double x:xs) {
 			testDerivativeAt(op,x);
 		}
+	}
+	
+	@Test public void testCrossEntropy() {
+		Vector target=Vector.of(0,1,0,0,1);
+		
+		Vector output=Vector.of(0,0,0.5,1,1);
+		
+		Vector crossEntropy=Vector.create(output);
+		crossEntropy.applyOp(Ops.CROSS_ENTROPY,target); 
+		assertEquals(Vector.of(0,Double.POSITIVE_INFINITY,-Math.log(0.5),Double.POSITIVE_INFINITY,0),crossEntropy);
+
+		Vector dCrossEntropy=Vector.create(output);
+		dCrossEntropy.applyOp(Ops.D_CROSS_ENTROPY_LOGISTIC,target);
+		assertEquals(Vector.of(0,1,-0.5,-1,0),dCrossEntropy);
+		
 	}
 	
 	@Test public void testSinh() {

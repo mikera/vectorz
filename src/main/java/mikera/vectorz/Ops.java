@@ -8,6 +8,9 @@ import mikera.vectorz.ops.Add;
 import mikera.vectorz.ops.Clamp;
 import mikera.vectorz.ops.ComposedOp2;
 import mikera.vectorz.ops.Cosh;
+import mikera.vectorz.ops.CrossEntropy;
+import mikera.vectorz.ops.CrossEntropyDerivative;
+import mikera.vectorz.ops.CrossEntropyLogisticDerivative;
 import mikera.vectorz.ops.Exp;
 import mikera.vectorz.ops.Identity;
 import mikera.vectorz.ops.Linear;
@@ -69,6 +72,11 @@ public final class Ops {
 	public static final Op2 MAX_ABS = ComposedOp2.create(MAX, ABS);
 	public static final Op2 ADD_ABS = ComposedOp2.create(ADD, ABS);
 	public static final Op2 ADD_SQUARE = ComposedOp2.create(ADD, SQUARE);
+	
+	// machine learning operators
+	public static final Op2 CROSS_ENTROPY = new CrossEntropy();
+	public static final Op2 D_CROSS_ENTROPY= new CrossEntropyDerivative();
+	public static final Op2 D_CROSS_ENTROPY_LOGISTIC= new CrossEntropyLogisticDerivative();
 
 	public static final ARoundingOp CEIL = new ARoundingOp() {
 		@Override
@@ -337,7 +345,7 @@ public final class Ops {
 			return Math.PI;
 		}
 	};
-
+	
 	public static Op negate(Op op) {
 		return NEGATE.compose(op);
 	}

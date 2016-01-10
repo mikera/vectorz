@@ -3,6 +3,7 @@ package mikera.vectorz;
 import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.impl.ADenseArrayVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Abstract class for representing a unary operation
@@ -173,5 +174,14 @@ public abstract class Op2 {
 	public double reduceZeros(long length) {
 		if (length<=0) throw new IllegalArgumentException("Can't reduce over zero elements without initial value");
 		return reduceZeros(0.0,length-1);
+	}
+
+	/**
+	 * Gets the derivative of this Op2 with respect to the specified parameter (0 or 1)
+	 * @param i
+	 * @return
+	 */
+	public Op2 getDerivative(int i) {
+		throw new UnsupportedOperationException(ErrorMessages.noDerivative(this));
 	}
 }

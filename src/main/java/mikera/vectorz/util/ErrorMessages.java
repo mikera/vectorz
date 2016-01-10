@@ -199,4 +199,8 @@ public class ErrorMessages {
 		return a.getClass().getSimpleName()+" with shape "+shape(a);
 	}
 
+	public static String noDerivative(Object a) {
+		return "No derivative available for class: "+a.getClass();
+	}
+
 }
