@@ -437,17 +437,30 @@ public class TestArrays {
 		
 		INDArray b=a.mutable();
 		assertTrue(mikera.vectorz.util.Testing.validateFullyMutable(b));
+	}
+	
+	private void testImmutable(INDArray a) {
+		if (a.isMutable()||(a.elementCount()==0)) return;
+
+		AVector av=a.asVector();
+		try {
+			av.set(0,Math.PI);
+			// System.out.println(a.getClass());
+			fail("Set on immutable array succeeded!");
+		} catch (UnsupportedOperationException t) {
+			// OK
+		} catch (VectorzException t) {
+			// Also OK
+		}
 		
-		if ((!a.isMutable())&&(a.elementCount()>0)) {
-			try {
-				a.asVector().set(0,Math.PI);
-				// System.out.println(a.getClass());
-				fail("Set on immutable array succeeded!");
-			} catch (UnsupportedOperationException t) {
-				// OK
-			} catch (VectorzException t) {
-				// Also OK
-			}
+		try {
+			av.set(av.length()-1,Math.PI);
+			// System.out.println(a.getClass());
+			fail("Set on immutable array succeeded!");
+		} catch (UnsupportedOperationException t) {
+			// OK
+		} catch (VectorzException t) {
+			// Also OK
 		}
 	}
 
@@ -841,6 +854,7 @@ public class TestArrays {
 		testClamp(a);
 		testHash(a);
 		testClone(a);
+		testImmutable(a);
 		testMutability(a);
 		testSlices(a);
 		testSubArray(a);
