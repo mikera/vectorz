@@ -3,14 +3,13 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import mikera.arrayz.ISparse;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op2;
-import mikera.vectorz.util.VectorzException;
-import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.VectorzException;
 
 
 /**
@@ -19,7 +18,7 @@ import mikera.vectorz.Vectorz;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ASparseVector extends ASizedVector implements ISparse {
+public abstract class ASparseVector extends ASizedVector implements ISparseVector {
 
 	protected ASparseVector(int length) {
 		super(length);
@@ -34,10 +33,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 	 */
 	public abstract int nonSparseElementCount();
 	
-	/**
-	 * Returns the non-sparse elements as a compacted vector
-	 * @return
-	 */
+	@Override
 	public abstract AVector nonSparseValues();
 	
 	@Override
@@ -298,10 +294,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparse {
 		return t.maxAbsElement();
 	}
 
-	/**
-	 * Coerces this vector to a SparseIndexedVector. May return this vector if already a SparseIndexedVector
-	 * @return
-	 */
+	@Override
 	public SparseIndexedVector toSparseIndexedVector() {
 		return SparseIndexedVector.create(this);
 	}

@@ -62,6 +62,22 @@ public class TestMiscVectors {
 		gv.unsafeSet(1,2);
 		assertEquals(Vector.of(1,2,3),gv);
 		
+		gv.set(3,4);
+		assertEquals(Vector.of(1,2,3,4),gv);
+	}
+	
+	@Test public void testGrowableIndexedVector() {
+		GrowableIndexedVector gv=GrowableIndexedVector.create(Vector0.INSTANCE);
+		assertEquals(0,gv.length());
+		gv.append(1);
+		assertEquals(1,gv.length());
+		gv.set(2,3);
+		assertEquals(Vector.of(1,0,3),gv);
+		gv.unsafeSet(1,2);
+		assertEquals(Vector.of(1,2,3),gv);
+		
+		gv.set(3,4);
+		assertEquals(Vector.of(1,2,3,4),gv);
 	}
 
 	@Test public void testReorder() {

@@ -65,6 +65,22 @@ public final class GrowableVector extends AVector {
 	}
 	
 	/**
+	 * Creates a GrowableVector containing a copy of the elements of a given vector
+	 * @param values
+	 * @return
+	 */
+	public static GrowableVector create(AVector values) {
+		return wrap(values.toDoubleArray());
+	}
+	
+	/**
+	 * Creates a GrowableVector initialised with the given double[] values
+	 */
+	public static GrowableVector wrap(double[] values) {
+		return new GrowableVector(values,values.length);
+	}	
+	
+	/**
 	 * Creates a GrowableVector by consuming all numbers in the given iterator
 	 * @param iterable An Iterable instance over java.lang.Number instances
 	 * @return
@@ -218,6 +234,11 @@ public final class GrowableVector extends AVector {
 		System.arraycopy(data, pos, data, pos+1, count-pos);
 		data[pos]=value;
 		count++;
+	}
+
+	public static Object create(double[] nonZeroValues) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

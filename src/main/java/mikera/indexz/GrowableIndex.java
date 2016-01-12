@@ -16,12 +16,31 @@ public class GrowableIndex extends AIndex {
 		data=new int[initialCapacity];
 	}
 	
+	public GrowableIndex(int[] values) {
+		data=values;
+		count=values.length;
+	}
+	
+	/**
+	 * Creates a GrowableVector with the specified index values included
+	 * @param source
+	 * @return
+	 */
 	public static GrowableIndex create(AIndex source) {
 		int n=source.length();
 		GrowableIndex g=new GrowableIndex(n);
 		source.copyTo(g.data, 0);
 		g.count=n;
 		return g;
+	}
+	
+	/**
+	 * Creates a GrowableVector with the specified index values included
+	 * @param source
+	 * @return
+	 */
+	public static GrowableIndex wrap(int[] indexes) {
+		return new GrowableIndex(indexes);
 	}
 
 	@Override

@@ -58,6 +58,22 @@ public class GrowableIndexedVector extends AVector implements ISparse {
 	}
 	
 	/**
+	 * Creates a GrowableIndexedVector from the specified Iterable object
+	 * @param iterable An Iterable containing java.lang.Number instances
+	 * @return
+	 */
+	public static GrowableIndexedVector create(AVector v) {
+		if (v instanceof ISparseVector) {
+			return create((ISparseVector) v);
+		}
+		return new GrowableIndexedVector(v.length(),GrowableIndex.wrap(v.nonZeroIndices().clone()),GrowableVector.wrap(v.nonZeroValues().clone()));
+	}
+	
+	public static GrowableIndexedVector create(ISparseVector v) {
+		return new GrowableIndexedVector(v.length(),GrowableIndex.create(v.nonSparseIndex()),GrowableVector.create(v.nonSparseValues()));
+	}
+
+	/**
 	 * Creates a GrowableIndexedVector from the specified Iterator object
 	 * @param iterator An Iterator over java.lang.Number instances
 	 * @return
@@ -110,6 +126,10 @@ public class GrowableIndexedVector extends AVector implements ISparse {
 		} else {
 			data.unsafeSet(ix, value);
 		}
+	}
+	
+	public void append(double v) {
+		set(length,v);
 	}
 	
 	@Override
