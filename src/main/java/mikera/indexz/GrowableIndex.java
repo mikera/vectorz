@@ -85,5 +85,33 @@ public class GrowableIndex extends AIndex {
 		return create(this);
 	}
 
+	@Override
+	public int last() {
+		return data[count-1];
+	}
 
+	/**
+	 * Includes a value in a distinct, sorted growable index.
+	 * @param i
+	 * @return The position at which the value is added (or already exists)
+	 */
+	public int include(int i) {
+		int ix=this.seekPosition(i);
+		if (ix==count) {
+			append(i);
+			return ix;
+		} else if (data[ix]==i) {
+			return ix;
+		}
+		ensureCapacity(count+1);
+		System.arraycopy(data, ix, data, ix+1, count-ix);
+		data[ix]=i;
+		count++;
+		return ix;
+	}
+
+	@Override
+	public int seekPosition(int i) {
+		return IntArrays.seekPosition(data,i,0,count);
+	}
 }

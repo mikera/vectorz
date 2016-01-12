@@ -204,4 +204,20 @@ public final class GrowableVector extends AVector {
 		return DoubleArrays.equals(this.data, 0, data, offset, count);
 	}
 
+	/**
+	 * Inserts a double value at the specified position in this GrowableVector.
+	 * Increases the vector length by 1
+	 * @param pos
+	 * @param value
+	 */
+	public void insert(int pos, double value) {
+		if (pos>count) {
+			throw new IllegalArgumentException("Attempting to insert beyond bounds of GrowableVector, length="+count+" and position="+pos);
+		}
+		ensureCapacity(count+1);
+		System.arraycopy(data, pos, data, pos+1, count-pos);
+		data[pos]=value;
+		count++;
+	}
+
 }

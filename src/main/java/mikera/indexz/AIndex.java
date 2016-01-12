@@ -299,7 +299,26 @@ public abstract class AIndex implements Serializable, Cloneable, Comparable<AInd
 	 * @return
 	 */	
 	public abstract int indexPosition(int x);
+	
+	/**
+	 * Returns the position at which an index value exists or should be inserted at in an index
+	 * Index must be both sorted and distinct.
+	 * @param i
+	 * @return The target position in the index, which will satisfy 0 <= position <= this.length()
+	 */
+	public int seekPosition(int i) {
+		return toIndex().seekPosition(i);
+	}
 
 	public abstract AIndex exactClone();
+
+	/**
+	 * Gets the last index value in this index. 
+	 * Throws an exception if the index is empty
+	 * @return
+	 */
+	public abstract int last();
+
+
 
 }

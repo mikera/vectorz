@@ -31,4 +31,8 @@ public class SequentialIndex extends ComputedIndex {
 		return start+i;
 	}
 
+	@Override
+	public int last() {
+		return start+length-1;
+	}
 }

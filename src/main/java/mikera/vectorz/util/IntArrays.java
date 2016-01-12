@@ -204,6 +204,59 @@ public class IntArrays {
 		return min;
 	}
 	
+
+	public static int seekPosition(int[] data, int i) {
+		return seekPosition(data,i,0,data.length);
+	}
+	
+	public static int seekPosition(int[] data, int i, int min, int max) {
+		if ((max-min)>20) {
+			return seekPositionBig(data,i,0,max);
+		} else {
+			return seekPositionSmall(data,i, 0, max);
+		}	
+	}
+	
+	private static int seekPositionBig(int[] data, int x, int min, int max) {
+		int lx=data[min];
+		int hx=data[max-1];
+		if (x<=lx) {
+			return min;
+		}
+		if (x>=hx) {
+			if (x==hx) return max-1;
+			return max;
+		}
+		
+		while ((min+10)<max) {
+			int mid = (int)(min+(((long)(max-min))*((long)(x-lx)))/(((long)(hx-lx))*2)); // best estimate of position
+			int mx=data[mid];
+			if (x==mx) return mid;
+			if (x<mx) {
+				max=mid;
+				hx=mx;
+			} else {
+				min=mid+1;
+				lx=mx;
+			}
+		}
+		return seekPositionSmall(data, x,min,max);				
+	}
+	
+	private static int seekPositionSmall(int[] data, int x, int min, int max) {
+		while (min<max) {
+			int mid=(min+max)>>1; // bisect interval
+			int mx=data[mid];
+			if (x==mx) return mid;
+			if (x<mx) {
+				max=mid;
+			} else {
+				min=mid+1;
+			}
+		}
+		return min;		
+	}
+		
 	public static int indexPosition(int[] data, int x) {
 		return indexPosition(data,x,0,data.length);
 	}

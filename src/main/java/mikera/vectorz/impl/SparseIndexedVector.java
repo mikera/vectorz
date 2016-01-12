@@ -1,5 +1,8 @@
 package mikera.vectorz.impl;
 
+import java.util.Iterator;
+import java.util.List;
+
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.AVectorMatrix;
@@ -11,6 +14,7 @@ import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -122,6 +126,34 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		data.getElements(sv.data, 0);
 		return sv;
 	}
+	
+	/**
+	 * Creates a SparseIndexedVector from the source object
+	 * @param o
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static SparseIndexedVector create(Object o) {
+		if (o instanceof AVector) {
+			return create((AVector)o);
+		} else if (o instanceof List) {
+			return create((List<Number>)o);
+		} else if (o.getClass().isArray()) {
+			
+			return create((List<Number>)o);
+		} else if (o instanceof Iterable){
+			return create((Iterable<Number>)o);
+		} else if (o instanceof Iterator){
+			return create((Iterator<Number>)o);
+		} 
+		Class<?> ec=o.getClass().getComponentType();
+		if (ec!=null) {
+			if (ec.isPrimitive()) {
+				if (ec==Double.TYPE) return create((double[])o);
+			} 
+		}
+		throw new IllegalArgumentException(ErrorMessages.cantCreateVector(o));
+	}
 
 	/**
 	 * Creates a SparseIndexedVector from the given vector, ignoring the zeros
@@ -167,6 +199,27 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			vals[i] = source.unsafeGet(ixs.unsafeGet(i));
 		}
 		return wrap(length, ixs, vals);
+	}
+	
+	
+	/**
+	 * Creates a SparseIndexedVector from the specified Iterable object
+	 * @param iterable An Iterable containing java.lang.Number instances
+	 * @return
+	 */
+	public static SparseIndexedVector create(Iterable<Number> iterable) {
+		GrowableIndexedVector v=GrowableIndexedVector.create(iterable);
+		return v.toSparseIndexedVector();
+	}
+	
+	/**
+	 * Creates a SparseIndexedVector from the specified Iterator object
+	 * @param iterator An Iterator over java.lang.Number instances
+	 * @return
+	 */
+	public static SparseIndexedVector create(Iterator<Number> iterator) {
+		GrowableIndexedVector v=GrowableIndexedVector.create(iterator);
+		return v.toSparseIndexedVector();
 	}
 
 	/** Creates a SparseIndexedVector from a row of an existing matrix */

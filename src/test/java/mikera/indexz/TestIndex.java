@@ -96,9 +96,25 @@ public class TestIndex {
 	private void doDistinctSortedTest(AIndex index) {
 		assertTrue(index.isDistinctSorted() == (index.isSorted() & index.isDistinct()));
 	}
+	
+	private void doLastTest(AIndex index) {
+		int il=index.length();
+		if (il==0) {
+			try {
+				index.last();
+				fail("last() should throw an excpetion with empty index");
+			} catch (Throwable t) {
+				//OK
+			}
+		} else {
+			assertEquals(index.get(index.length()-1),index.last());
+		}
+	}
+
 
 	private void doTests(AIndex index) {
 		doCloneTest(index);
+		doLastTest(index);
 		doDistinctSortedTest(index);
 		doRandomSubsetTest(index);
 	}
@@ -143,6 +159,10 @@ public class TestIndex {
 				return length-1-i;
 			}
 
+			@Override
+			public int last() {
+				return 0;
+			}
 		};
 		doTests(ci);
 	}

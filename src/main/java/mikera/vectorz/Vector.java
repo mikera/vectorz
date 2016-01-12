@@ -81,11 +81,21 @@ public final class Vector extends ADenseArrayVector {
 		return v;
 	}
 	
+	/**
+	 * Creates a Vector from the specified Iterable object
+	 * @param iterable An Iterable containing java.lang.Number instances
+	 * @return
+	 */
 	public static Vector create(Iterable<Number> iterable) {
 		GrowableVector v=GrowableVector.create(iterable);
 		return v.toVector();
 	}
 	
+	/**
+	 * Creates a Vector from the specified Iterator object
+	 * @param iterator An Iterator over java.lang.Number instances
+	 * @return
+	 */
 	public static Vector create(Iterator<Number> iterator) {
 		GrowableVector v=GrowableVector.create(iterator);
 		return v.toVector();
@@ -112,7 +122,6 @@ public final class Vector extends ADenseArrayVector {
 			} 
 		}
 		throw new IllegalArgumentException(ErrorMessages.cantCreateVector(o));
-		
 	}
 	
 	/**

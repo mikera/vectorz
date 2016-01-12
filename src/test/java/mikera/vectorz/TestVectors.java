@@ -734,7 +734,7 @@ public class TestVectors {
 				fail();
 			} catch (IndexOutOfBoundsException a) {/* OK */}
 			
-			if (!(v instanceof GrowableVector)) try {
+			if (!((v instanceof GrowableVector)||(v instanceof GrowableIndexedVector))) try {
 				v.set(v.length(),1);
 				fail();
 			} catch (IndexOutOfBoundsException a) {/* OK */}
@@ -996,8 +996,7 @@ public class TestVectors {
 	
 	@Test public void g_GrowableIndexed() {
 		GrowableIndexedVector g0=GrowableIndexedVector.createLength(10);
-		doGenericTests(g0);
-
+		doGenericTests(g0.exactClone());
 		g0.append(2,3.0);
 		g0.append(4,7.0);
 		doGenericTests(g0);

@@ -412,6 +412,11 @@ public final class Index extends AIndex {
 		return IntArrays.indexPosition(data, x);
 	}
 	
+	@Override
+	public int seekPosition(int i) {
+		return IntArrays.seekPosition(data, i);
+	}
+	
 	/**
 	 * Finds the first missing index value, assuming the index is sorted and distinct.
 	 * 
@@ -437,26 +442,6 @@ public final class Index extends AIndex {
 	 */
 	public Index insert(int position, int value) {
 		return new Index(IntArrays.insert(data,position,value));
-	}
-
-	/**
-	 * Finds the position a value would take assuming a sorted index. Uses a binary search.
-	 * @param i The position of the value - will point to either the value or the next higher value present 
-	 * @return
-	 */
-	public int seekPosition(int i) {
-		int min=0; int max=data.length;
-		while (min<max) {
-			int mid=(min+max)>>1;
-			int mi=data[mid];
-			if (i==mi) return mid;
-			if (i<mi) {
-				max=mid;
-			} else {
-				min=mid+1;
-			}
-		}
-		return min;
 	}
 
 	/**
@@ -510,6 +495,8 @@ public final class Index extends AIndex {
 		return create(this);
 	}
 
-
-
+	@Override
+	public int last() {
+		return data[data.length-1];
+	}
 }
