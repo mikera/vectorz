@@ -1,7 +1,6 @@
 package mikera.vectorz.impl;
 
 import java.util.Arrays;
-
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
@@ -329,7 +328,7 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		}
 		return SparseIndexedVector.wrap(length, nixs, ndata);
 	}
-	
+		
 	@Override 
 	public final void getElements(double[] array, int offset) {
 		Arrays.fill(array,offset,offset+length,0.0);
