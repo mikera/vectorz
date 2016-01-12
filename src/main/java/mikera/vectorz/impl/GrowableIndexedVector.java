@@ -2,7 +2,6 @@ package mikera.vectorz.impl;
 
 import java.util.Iterator;
 
-import mikera.arrayz.ISparse;
 import mikera.indexz.GrowableIndex;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
@@ -17,7 +16,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public class GrowableIndexedVector extends AVector implements ISparse {
+public class GrowableIndexedVector extends AVector implements ISparseVector {
 	private static final long serialVersionUID = 441979517032171392L;
 
 	private int length;
@@ -142,8 +141,9 @@ public class GrowableIndexedVector extends AVector implements ISparse {
 		return toSparseIndexedVector().dotProduct(data,offset);
 	}
 
+	@Override
 	public SparseIndexedVector toSparseIndexedVector() {
-		return SparseIndexedVector.create(length, Index.create(index), data.toDoubleArray());
+		return SparseIndexedVector.wrap(length, Index.create(index), data.toDoubleArray());
 	}
 
 	@Override
@@ -160,6 +160,7 @@ public class GrowableIndexedVector extends AVector implements ISparse {
 		return index.length();
 	}
 
+	@Override
 	public AVector nonSparseValues() {
 		return data;
 	}
