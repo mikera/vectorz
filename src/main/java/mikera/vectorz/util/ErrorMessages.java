@@ -203,4 +203,8 @@ public class ErrorMessages {
 		return "No derivative available for class: "+a.getClass();
 	}
 
+	public static String cantCreateVector(Object o) {
+		return "Can't create vector from class: "+o.getClass();
+	}
+
 }

@@ -3,6 +3,7 @@ package mikera.vectorz;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import mikera.arrayz.INDArray;
@@ -62,22 +63,56 @@ public final class Vector extends ADenseArrayVector {
 		return wrap(data.clone());
 	}
 	
-	public static Vector create(ArrayList<Double> al) {
+	public static Vector create(ArrayList<Number> al) {
 		int n=al.size();
 		Vector v=Vector.createLength(n);
 		for (int i=0; i<n; i++) {
-			v.unsafeSet(i,al.get(i));
+			v.unsafeSet(i,al.get(i).doubleValue());
 		}
 		return v;
 	}
 	
-	public static Vector create(List<Double> al) {
+	public static Vector create(List<Number> al) {
 		int n=al.size();
 		Vector v=Vector.createLength(n);
 		for (int i=0; i<n; i++) {
-			v.unsafeSet(i,al.get(i));
+			v.unsafeSet(i,al.get(i).doubleValue());
 		}
 		return v;
+	}
+	
+	public static Vector create(Iterable<Number> iterable) {
+		GrowableVector v=GrowableVector.create(iterable);
+		return v.toVector();
+	}
+	
+	public static Vector create(Iterator<Number> iterator) {
+		GrowableVector v=GrowableVector.create(iterator);
+		return v.toVector();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Vector create(Object o) {
+		if (o instanceof AVector) {
+			return create((AVector)o);
+		} else if (o instanceof List) {
+			return create((List<Number>)o);
+		} else if (o.getClass().isArray()) {
+			
+			return create((List<Number>)o);
+		} else if (o instanceof Iterable){
+			return create((Iterable<Number>)o);
+		} else if (o instanceof Iterator){
+			return create((Iterator<Number>)o);
+		} 
+		Class<?> ec=o.getClass().getComponentType();
+		if (ec!=null) {
+			if (ec.isPrimitive()) {
+				if (ec==Double.TYPE) return create((double[])o);
+			} 
+		}
+		throw new IllegalArgumentException(ErrorMessages.cantCreateVector(o));
+		
 	}
 	
 	/**

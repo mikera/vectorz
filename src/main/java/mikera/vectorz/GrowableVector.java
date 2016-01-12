@@ -1,5 +1,7 @@
 package mikera.vectorz;
 
+import java.util.Iterator;
+
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -47,6 +49,32 @@ public final class GrowableVector extends AVector {
 	private GrowableVector(double[] array, int length) {
 		this.data=array;
 		this.count=length;
+	}
+	
+	/**
+	 * Creates a GrowableVector by consuming all numbers in the given iterable object
+	 * @param iterable An Iterable instance over java.lang.Number instances
+	 * @return
+	 */
+	public static GrowableVector create(Iterable<Number> iterable) {
+		GrowableVector v=new GrowableVector();
+		for (Number n: iterable) {
+			v.append(n.doubleValue());
+		}
+		return v;
+	}
+	
+	/**
+	 * Creates a GrowableVector by consuming all numbers in the given iterator
+	 * @param iterable An Iterable instance over java.lang.Number instances
+	 * @return
+	 */
+	public static GrowableVector create(Iterator<Number> iterator) {
+		GrowableVector v=new GrowableVector();
+		while (iterator.hasNext()) {
+			v.append(iterator.next().doubleValue());
+		}
+		return v;
 	}
 
 	@Override
@@ -175,4 +203,5 @@ public final class GrowableVector extends AVector {
 	public boolean equalsArray(double[] data, int offset) {
 		return DoubleArrays.equals(this.data, 0, data, offset, count);
 	}
+
 }
