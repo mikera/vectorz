@@ -11,7 +11,7 @@ import org.junit.Test;
 public class TestPrimitiveVectors {
 	@Test 
 	public void testSmallEquals() {
-		assertEquals(Vectorz.create(0.0),Vector.of(0.0));
+		assertEquals(Vectorz.create(new double[]{1.0}),Vector.of(1.0));
 		
 		assertEquals(Vector.of(1.0),Vector1.of(1.0));
 		

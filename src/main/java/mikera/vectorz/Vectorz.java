@@ -542,7 +542,6 @@ public class Vectorz {
 	}
 
 	public static AVector create(Object o) {
-		if (o instanceof Double) return Vector1.of(Tools.toDouble(o));
 		return toVector(o);
 	}
 
