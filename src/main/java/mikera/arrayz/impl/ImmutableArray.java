@@ -183,7 +183,7 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 	
 	@Override
 	public INDArray sparseClone() {
-		return Arrayz.createSparse(this);
+		return Arrayz.createSparseMutable(this);
 	}
 	
 	@Override
@@ -199,7 +199,7 @@ public class ImmutableArray extends BaseNDArray implements IDense {
 	public boolean equalsArray(double[] data, int offset) {
 		return DoubleArrays.equals(this.data, this.offset, data, offset, Tools.toInt(elementCount()));
 	}
-
+	
 	public static INDArray create(INDArray a) {
 		int[] shape=a.getShape();
 		int n=(int)IntArrays.arrayProduct(shape);

@@ -43,6 +43,16 @@ public abstract class AJoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public boolean isMutable() {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			if (v.isMutable()) return true;
+		}
+		return false;
+	} 
+	
+	@Override
 	public void setElements(double[] values, int offset) {
 		long n=componentCount();
 		for (int i=0; i<n; i++) {

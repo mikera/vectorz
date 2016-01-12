@@ -52,6 +52,11 @@ public class SubMatrixView extends ARectangularMatrix {
 	public boolean isFullyMutable() {
 		return source.isFullyMutable();
 	}
+	
+	@Override
+	public boolean isMutable() {
+		return source.isMutable();
+	}
 
 	@Override
 	public AMatrix exactClone() {

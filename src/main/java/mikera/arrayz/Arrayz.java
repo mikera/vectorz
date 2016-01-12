@@ -244,12 +244,40 @@ public class Arrayz {
 		return true;
 	}
 
+	/**
+	 * Creates a sparse copy of the given array. May or may not be mutable.
+	 * @param a
+	 * @return
+	 */
 	public static INDArray createSparse(INDArray a) {
 		int dims=a.dimensionality();
 		if (dims==0) {
 			return Scalar.create(a.get());
 		} else if (dims==1) {
 			return Vectorz.createSparse(a.asVector());
+		} else if (dims==2) {
+			return Matrixx.createSparse(Matrixx.toMatrix(a));
+		} else {
+			int n=a.sliceCount();
+			List<INDArray> slices=a.getSliceViews();
+			for (int i=0; i<n; i++) {
+				slices.set(i, slices.get(i).sparseClone());
+			}
+			return SliceArray.create(slices);	
+		}
+	}
+	
+	/**
+	 * Creates a fully mutable sparse clone of the given array
+	 * @param a
+	 * @return
+	 */
+	public static INDArray createSparseMutable(INDArray a) {
+		int dims=a.dimensionality();
+		if (dims==0) {
+			return Scalar.create(a.get());
+		} else if (dims==1) {
+			return Vectorz.createSparseMutable(a.asVector());
 		} else if (dims==2) {
 			return Matrixx.createSparse(Matrixx.toMatrix(a));
 		} else {

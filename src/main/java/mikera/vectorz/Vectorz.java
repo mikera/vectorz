@@ -205,6 +205,13 @@ public class Vectorz {
 		}
 	}
 	
+	/**
+	 * Creates a mutable sparse vector from the data in the given vector. Selects the appropriate sparse
+	 * vector type based on analysis of the element values.
+	 * 
+	 * @param v Vector containing sparse element data
+	 * @return
+	 */
 	public static AVector createSparseMutable(int length) {
 		if (length<MIN_SPARSE_LENGTH) {
 			return Vector.createLength(length); // not enough sparsity to make worthwhile

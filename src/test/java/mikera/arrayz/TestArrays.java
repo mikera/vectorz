@@ -441,8 +441,10 @@ public class TestArrays {
 	
 	private void testImmutable(INDArray a) {
 		if (a.isMutable()||(a.elementCount()==0)) return;
+		assertFalse(a.isFullyMutable());
 
 		AVector av=a.asVector();
+		assertFalse("Should be immutable: "+av.getClass(),av.isMutable());
 		try {
 			av.set(0,Math.PI);
 			// System.out.println(a.getClass());

@@ -248,6 +248,11 @@ public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 		}
 		
 		@Override
+		public boolean isMutable() {
+			return ABandedMatrix.this.isMutable();
+		}
+		
+		@Override
 		public double dotProduct(double[] data, int offset) {
 			double result=0.0;
 			for (int i=0; i<length; i++) {

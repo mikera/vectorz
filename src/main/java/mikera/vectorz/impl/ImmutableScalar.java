@@ -79,7 +79,7 @@ public final class ImmutableScalar extends AScalar {
 	public AScalar sparse() {
 		return this;
 	}
-
+	
 	@Override
 	public ImmutableScalar immutable() {
 		return this;
