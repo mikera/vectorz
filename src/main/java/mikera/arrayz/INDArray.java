@@ -771,23 +771,24 @@ public interface INDArray extends Cloneable, Serializable {
 	 * Returns a list of slices as mutable INDArray views.
 	 * 
 	 * Note: will return a list of AScalar values when this array is a 1D vector
-	 * 
 	 */
 	public List<INDArray> getSliceViews();
 
 	/**
-	 * Converts the array into a flattened dense Vector
+	 * Coerces the array into a flattened dense Vector
+	 * May return the same array if it is already a Vector instance
 	 */
 	public Vector toVector();
 	
 	/**
-	 * Converts the array into a packed mutable Array instance
+	 * Coerces the array into a packed mutable Array instance
+	 * May return the same array if it is already a dense Array instance
 	 */
 	public Array toArray();
 
 	/**
-	 * Tests is this array is approximately equal to another array.
-	 * The arrays must have the same shape
+	 * Tests if this array is approximately equal to another array.
+	 * The arrays must have the same shape.
 	 */
 	public boolean epsilonEquals(INDArray a);
 	
