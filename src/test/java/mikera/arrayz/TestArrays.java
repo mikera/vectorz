@@ -862,8 +862,8 @@ public class TestArrays {
 	public void g_SparseArray() {
 		testArray(Arrayz.createSparseArray(new int[] {4}));
 		testArray(Arrayz.createSparseArray(new int[] {4,3}));
-		testArray(Arrayz.createSparseArray(new int[] {4,5,2}));
-		testArray(Arrayz.createSparseArray(new int[] {2,3,2,4}));
+		testArray(Arrayz.createSparseArray(new int[] {3,4,2}));
+		testArray(Arrayz.createSparseArray(new int[] {2,3,1,4}));
 	}
 
 	@Test

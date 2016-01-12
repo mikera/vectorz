@@ -312,7 +312,7 @@ public final class ZeroVector extends ASparseVector {
 		if (op.isStochastic()) return super.applyOpCopy(op);
 		
 		double v=op.apply(0.0);
-		if (v==0) {
+		if (v==0.0) {
 			return this;
 		} else {
 			return RepeatedElementVector.create(length, v);
