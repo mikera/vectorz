@@ -1,10 +1,6 @@
 package mikera.matrixx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -305,9 +301,14 @@ public class TestMatrices {
 		int bandMax=m.columnCount();
 		Matrix mc=m.toMatrix();
 		
-		// TODO: consider what to do about out-of-range bands?
-		//assertNull(m.getBand(bandMin-1));
-		//assertNull(m.getBand(bandMax+1));
+		try {
+			m.getBand(bandMin-1);
+			fail("Managed to get illegal band!");
+		} catch (Throwable t) {/* OK */}
+		try {
+			m.getBand(bandMax+1);
+			fail("Managed to get illegal band!");
+		} catch (Throwable t) {/* OK */}
 		
 		for (int i=bandMin; i<=bandMax; i++) {
 			AVector b=m.getBand(i);
