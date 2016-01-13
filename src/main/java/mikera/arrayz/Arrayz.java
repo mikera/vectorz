@@ -21,7 +21,6 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.ImmutableScalar;
-import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -314,7 +313,7 @@ public class Arrayz {
 	public static INDArray createSparseArray(int... shape) {
 		switch (shape.length) {
 			case 0: return Scalar.create(0.0);
-			case 1: return SparseIndexedVector.createLength(shape[0]);
+			case 1: return Vectorz.createSparseMutable(shape[0]);
 			case 2: return Matrixx.createSparse(shape[0],shape[1]);
 		}
 		int sliceCount=shape[0];

@@ -923,9 +923,13 @@ public class TestArrays {
 	}
 		
 	@Test
-	public void g_JoinedArray() {
-		testArray(JoinedArray.join(Vector.of(1,2),Vector.of(1,2,3,4,5),0));
+	public void g_JoinedArray2D() {
 		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 3),1));
+	}
+	
+	@Test
+	public void g_JoinedArray1D() {
+		testArray(JoinedArray.join(Vector.of(1,2),Vector.of(1,2,3,4,5),0));
 	}
 	
 	@Test
