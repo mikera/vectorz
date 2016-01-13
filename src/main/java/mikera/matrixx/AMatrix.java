@@ -74,15 +74,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	private static final double TOLERANCE = 1e-8;
 
-	/**
-	 * Returns a specified element in the matrix
-	 */
 	@Override
 	public abstract double get(int i, int j);
 
-	/**
-	 * Sets a specified element in the matrix
-	 */
 	@Override
 	public abstract void set(int i, int j, double value);
 
@@ -705,10 +699,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Matrixx.create(this);
 	}
 
-	/**
-	 * Transposes a matrix in place, if possible.
-	 * Throws an exception if this is not possible (e.g. if the matrix is not square or not sufficiently mutable)
-	 */
+	@Override
 	public void transposeInPlace() {
 		int dims = checkSquare();
 		for (int i = 0; i < dims; i++) {
@@ -725,22 +716,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 
-	/**
-	 * Returns the transpose of this matrix. 
-	 * 
-	 * Will be a transposed view by default, but specialised matrix type may override this if they are able to provide
-	 * a better implementation.
-	 * 
-	 * @return
-	 */
 	@Override
 	public AMatrix getTranspose() {
 		return getTransposeView();
 	}
 	
-	/**
-	 * Returns a transposed view of the matrix. 
-	 */
 	@Override
 	public AMatrix getTransposeView() {
 		return TransposedMatrix.wrap(this);

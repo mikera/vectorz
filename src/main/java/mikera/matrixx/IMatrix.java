@@ -93,6 +93,31 @@ public interface IMatrix extends INDArray {
 	 * @return
 	 */
 	public AVector getBand(int band);
+	
+	/**
+	 * Returns the transpose of this matrix. 
+	 * 
+	 * Will be a transposed view by default, but specialised matrix type may override this if they are able to provide
+	 * a better implementation.
+	 * 
+	 * @return the transpose of this matrix
+	 */
+	@Override
+	public AMatrix getTranspose();
+	
+	/**
+	 * Returns a transposed view of this matrix. 
+	 * 
+	 * @return the transpose of this matrix, as a view
+	 */
+	@Override
+	public AMatrix getTransposeView();
+	
+	/**
+	 * Transposes a matrix in place, if possible.
+	 * Throws an exception if this is not possible (e.g. if the matrix is not square or not sufficiently mutable)
+	 */
+	public void transposeInPlace();
 
 	/**
 	 * Checks if this is a square matrix
