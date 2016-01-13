@@ -1239,13 +1239,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return innerProduct(a);
 	}
 	
-	/**
-	 * Computes the inner product of this matrix with another.
-	 * 
-	 * Equivalent to matrix x matrix multiplication
-	 * @param a
-	 * @return
-	 */
+	@Override
 	public AMatrix innerProduct(AMatrix a) {
 		return Multiplications.multiply(this, a);
 	}

@@ -172,6 +172,15 @@ public interface IMatrix extends INDArray {
 	AMatrix addCopy(AMatrix a);
 
 	double diagonalProduct();
+	
+	/**
+	 * Computes the inner product of this matrix with another.
+	 * 
+	 * Equivalent to matrix x matrix multiplication
+	 * @param a
+	 * @return
+	 */
+	public AMatrix innerProduct(AMatrix a);
 
 	/**
 	 * Gets a List of rows of a matrix.
