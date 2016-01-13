@@ -307,10 +307,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return new AffineMN(this,IdentityTranslation.create(rowCount()));
 	}
 	
-	/**
-	 * Checks if this matrix is equal to a square identity matrix of the same shape.
-	 * @return true if this matrix is a square identity matrix, false otherwise.
-	 */
+	@Override
 	public boolean isIdentity() {
 		int rc=this.rowCount();
 		int cc=this.columnCount();

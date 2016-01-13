@@ -107,6 +107,13 @@ public interface IMatrix extends INDArray {
 	 * @return true if invertible, false otherwise
 	 */
 	boolean isInvertible();	
+	
+	/**
+	 * Checks if this is an identity matrix (i.e. 1.0 in leading diagonal, 0.0 elsewhere)
+	 * 
+	 * @return true if this matrix is a square identity matrix, false otherwise.
+	 */
+	boolean isIdentity();
 
 	AVector transform(AVector source);
 
