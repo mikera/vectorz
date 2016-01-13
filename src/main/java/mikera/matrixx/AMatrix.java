@@ -1017,7 +1017,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	public void composeWith(AMatrix a) {
-		AMatrix t=compose(a);
+		AMatrix t=innerProduct(a);
 		this.set(t);
 	}
 	
@@ -1229,16 +1229,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return asVector().asElementList();
 	}
 	
-	/**
-	 * Composes this matrix with another matrix (matrix multiplication)
-	 * Returns a new matrix that represents the compose transformation.
-	 * @param a
-	 * @return
-	 */
-	public final AMatrix compose(AMatrix a) {
-		return innerProduct(a);
-	}
-	
 	@Override
 	public AMatrix innerProduct(AMatrix a) {
 		return Multiplications.multiply(this, a);
@@ -1297,7 +1287,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		if (a instanceof AVector) {
 			return innerProduct((AVector)a);
 		} else if (a instanceof AMatrix) {
-			return compose((AMatrix) a);
+			return innerProduct((AMatrix) a);
 		} else if (a instanceof AScalar) {
 			return innerProduct((AScalar)a);
 		} else if (a.dimensionality()<=2) {

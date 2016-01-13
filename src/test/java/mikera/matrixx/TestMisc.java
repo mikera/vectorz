@@ -34,7 +34,7 @@ public class TestMisc {
 
 		AMatrix tr = Matrixx.createRandomMatrix(6, 3);
 
-		AMatrix r = tr.compose(rot);
+		AMatrix r = tr.innerProduct(rot);
 
 		assertEquals(6, r.rowCount());
 		assertEquals(3, r.columnCount());
@@ -323,8 +323,8 @@ public class TestMisc {
 		DiagonalMatrix d = DiagonalMatrix.create(1, 2);
 		Matrix22 m = new Matrix22(1, 2, 3, 4);
 
-		assertEquals(new Matrix22(1, 2, 6, 8), d.compose(m));
-		assertEquals(new Matrix22(1, 4, 3, 8), m.compose(d));
+		assertEquals(new Matrix22(1, 2, 6, 8), d.innerProduct(m));
+		assertEquals(new Matrix22(1, 4, 3, 8), m.innerProduct(d));
 	}
 
 	@Test

@@ -62,7 +62,7 @@ public abstract class AAffineTransform extends ATransform {
 		thisM.transformInPlace(v);
 		v.add(getTranslation().getTranslationVector());
 		
-		AMatrix m=thisM.compose(a.getMatrix());
+		AMatrix m=thisM.innerProduct(a.getMatrix());
 		
 		return Transformz.createAffineTransform(m, v);
 	}

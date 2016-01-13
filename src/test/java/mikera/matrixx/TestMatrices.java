@@ -367,8 +367,8 @@ public class TestMatrices {
 	void doBigComposeTest(AMatrix m) {
 		AMatrix a=Matrixx.createRandomSquareMatrix(m.rowCount());
 		AMatrix b=Matrixx.createRandomSquareMatrix(m.columnCount());
-		AMatrix mb=m.compose(b);
-		AMatrix amb=a.compose(mb);
+		AMatrix mb=m.innerProduct(b);
+		AMatrix amb=a.innerProduct(mb);
 		
 		AVector v=Vectorz.createUniformRandomVector(b.columnCount());
 		
