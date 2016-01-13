@@ -6,10 +6,10 @@ import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 
 /**
- * Interface for fundamental matrix access operations.
+ * Interface for matrix operations.
  * 
- * Matrix implementation should generally extend AMatrix which contains important
- * functionality implementations.
+ * Matrix implementations should generally extend AMatrix which contains important
+ * functionality implementations, and serves as an abstract base class for matrices.
  * 
  * @author Mike
  *
