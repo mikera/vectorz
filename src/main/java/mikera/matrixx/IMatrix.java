@@ -161,6 +161,13 @@ public interface IMatrix extends INDArray {
 	 * @return A matrix which is the inverse of this matrix, or null if the inverse does not exist.
 	 */
 	AMatrix inverse();
+	
+	/**
+	 * Computes the trace of a matrix, i.e. the sum of all elements on the leading diagonal
+	 * 
+	 * @return
+	 */
+	public double trace();
 
 	AMatrix addCopy(AMatrix a);
 

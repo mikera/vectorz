@@ -1352,11 +1352,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return Inverse.calculate(this);
 	}
 	
-	/**
-	 * Computes the trace of a matrix
-	 * 
-	 * @return
-	 */
+	@Override
 	public double trace() {
 		int rc=Math.min(rowCount(), columnCount());
 		double result=0.0;
