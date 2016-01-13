@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -106,17 +105,7 @@ public class IdentityMatrix extends ADiagonalMatrix implements IFastRows, IFastC
 	public void transform(AVector source, AVector dest) {
 		dest.set(source);
 	}
-	
-	@Override
-	public Vector transform(AVector source) {
-		return source.toVector();		
-	}
-	
-	@Override
-	public Vector transform(Vector source) {
-		return source.clone();		
-	}
-	
+		
 	@Override
 	public void transformInPlace(AVector v) {
 		// nothing to do

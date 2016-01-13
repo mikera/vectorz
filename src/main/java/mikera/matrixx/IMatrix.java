@@ -115,8 +115,17 @@ public interface IMatrix extends INDArray {
 	 */
 	boolean isIdentity();
 
-	AVector transform(AVector source);
+	/**
+	 * Transforms a source vector into a using matrix multiplication (inner product).
+	 * 
+	 * @return A new vector
+	 */
+	public AVector transform(AVector source);
 
+	/**
+	 * Transforms a source vector into a destination vector, using matrix multiplication (inner product).
+	 * The destination vector is overwritten.
+	 */
 	void transform(AVector source, AVector dest);
 
 	void transformInPlace(AVector v);

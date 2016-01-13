@@ -347,11 +347,6 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
 	@Override
 	public AVector innerProduct(AVector a) {
-		return transform(a);
-	}
-	
-	@Override
-	public AVector transform(AVector a) {
 		AVector r=Vector.createLength(rows);
 		for (int i=0; i<rows; i++) {
 			r.set(i,getRow(i).dotProduct(a));

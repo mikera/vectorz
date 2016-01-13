@@ -460,7 +460,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public AVector transform(AVector source) {
+	public final AVector transform(AVector source) {
 		Vector v=Vector.createLength(rowCount());
 		if (source instanceof Vector) {
 			transform((Vector)source,v);
@@ -470,6 +470,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return v;
 	}
 	
+	/**
+	 * Transforms a dense Vector using matrix multiplication (inner product)
+	 * @param source
+	 * @return A new Vector
+	 */
 	public Vector transform(Vector source) {
 		Vector v=Vector.createLength(rowCount());
 		transform(source,v);

@@ -119,12 +119,7 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	
 	@Override
 	public Vector innerProduct(AVector a) {
-		return asMatrix().transform(a);
-	}
-	
-	@Override
-	public Vector transform (AVector a) {
-		return asMatrix().transform(a);
+		return asMatrix().innerProduct(a);
 	}
 	
 	@Override

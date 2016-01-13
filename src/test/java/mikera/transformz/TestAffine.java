@@ -25,7 +25,7 @@ public class TestAffine {
 		AVector v=Vectorz.createUniformRandomVector(inputDim);
 		AVector d=Vectorz.createUniformRandomVector(inputDim);
 		
-		AVector td=t.getMatrix().transform(d);
+		AVector td=t.getMatrix().innerProduct(d);
 		AVector tv=t.transform(v);
 		
 		AVector r1=tv.clone();
@@ -48,7 +48,7 @@ public class TestAffine {
 		
 		AVector r1=t.transform(z);
 		
-		AVector r2=t.getMatrix().transform(z);
+		AVector r2=t.getMatrix().innerProduct(z);
 		t.getTranslation().transformInPlace(r2);
 		
 		assertTrue(r1.epsilonEquals(r2));

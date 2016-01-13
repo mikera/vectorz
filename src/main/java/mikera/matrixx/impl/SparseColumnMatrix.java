@@ -336,14 +336,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		}
 		return wrap(ndata,rows,cols);
 	}
-	
+		
 	@Override
 	public AVector innerProduct(AVector a) {
-		return transform(a);
-	}
-	
-	@Override
-	public AVector transform(AVector a) {
 		Vector r=Vector.createLength(rows);
 		for (int i=0; i<cols; i++) {
 			getColumn(i).addMultipleToArray(a.get(i), 0, r.getArray(), 0, rows);

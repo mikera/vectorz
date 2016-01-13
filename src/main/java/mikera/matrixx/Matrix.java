@@ -193,7 +193,9 @@ public final class Matrix extends ADenseArrayMatrix {
 	@Override
 	public Vector innerProduct(AVector a) {
 		if (a instanceof Vector) return innerProduct((Vector) a);
-		return transform(a);
+		Vector result = Vector.createLength(rows);
+		transform(a,result);
+		return result;
 	}
 
 	@Override
@@ -264,23 +266,6 @@ public final class Matrix extends ADenseArrayMatrix {
 		for (int i = 0; i < rows; i++) {
 			dest[destOffset + i] = data[colOffset + i * cols];
 		}
-	}
-
-	@Override
-	public Vector transform(AVector a) {
-		Vector v = Vector.createLength(rows);
-		double[] vdata = v.getArray();
-		for (int i = 0; i < rows; i++) {
-			vdata[i] = a.dotProduct(data, i * cols);
-		}
-		return v;
-	}
-
-	@Override
-	public Vector transform(Vector a) {
-		Vector v = Vector.createLength(rows);
-		transform(a, v);
-		return v;
 	}
 
 	@Override
