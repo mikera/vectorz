@@ -11,11 +11,15 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.util.ErrorMessages;
+import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
  * Class representing a square permutation matrix
  * i.e. has single 1.0 in every row and column
+ * 
+ * Mutable only for swapping rows and columns
+ * 
  * @author Mike
  *
  */
@@ -94,11 +98,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	
 	@Override
 	public boolean isIdentity() {
-		int[] data=perm.data;
-		for (int i=0; i<size; i++) {
-			if (data[i]!=i) return false;
-		}
-		return true;
+		return IntArrays.isRange(perm.data);
 	}
 	
 	@Override
@@ -300,6 +300,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	public void validate() {
 		super.validate();
 		if (size!=perm.length()) throw new VectorzException("Whoops!");
+		if (isFullyMutable()) throw new VectorzException("Should not be fully mutable!");
 	}
 
 	@Override
@@ -339,5 +340,4 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	public boolean isZero() {
 		return false;
 	}
-
 }
