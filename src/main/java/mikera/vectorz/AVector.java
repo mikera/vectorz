@@ -2320,6 +2320,19 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		super.addInnerProduct(a, b);
 	}
 	
+	@Override
+	public final void setInnerProduct(INDArray a, INDArray b) {
+		if ((a instanceof AMatrix)&&(b instanceof AVector)) {
+			setInnerProduct((AMatrix)a,(AVector)b);
+			return;
+		}
+		if ((b instanceof AMatrix)&&(a instanceof AVector)) {
+			setInnerProduct((AVector)a,(AMatrix)b);
+			return;
+		}
+		set(a.innerProduct(b));
+	}
+	
 	/**
 	 * Adds the inner product of the arguments (matrix a and vector b) to this vector.
 	 * 
@@ -2345,6 +2358,26 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public void addInnerProduct(AVector a, AMatrix b) {
 		addInnerProduct(b.getTranspose(),a);
+	}
+	
+	/**
+	 * Sets this vector to the inner product of the arguments (matrix a and vector b).
+	 * 
+	 * @param a A matrix with the same number or rows as this vector
+	 * @param b A vector with the same lengths as the number of columns in the parameter a
+	 */
+	public void setInnerProduct(AMatrix a, AVector b) {
+		a.transform(b, this);
+	}
+	
+	/**
+	 * Sets this vector to the inner product of the arguments (vector a and matrix b) to this vector.
+	 * 
+	 * @param a A vector with the same lengths as the number of rows in the matrix parameter b
+	 * @param b A matrix with the same number of columns as this vector
+	 */
+	public void setInnerProduct(AVector a, AMatrix b) {
+		setInnerProduct(b.getTranspose(),a);
 	}
 
 	@Override

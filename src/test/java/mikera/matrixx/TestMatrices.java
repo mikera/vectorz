@@ -440,6 +440,9 @@ public class TestMatrices {
 		AVector r=a.addCopy(m.innerProduct(b));
 		a.addInnerProduct(m, b);
 		assertTrue(a.epsilonEquals(r));
+		
+		a.setInnerProduct(m, b);
+		assertTrue(a.epsilonEquals(m.innerProduct(b)));
 	}
 	
 	private void doNDArrayTest(AMatrix m) {

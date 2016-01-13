@@ -692,6 +692,15 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @throws IllegalArgumentException if the inner product is a different shape to this array
 	 */
 	public void addInnerProduct(INDArray a, INDArray b);
+
+	/**
+	 * Sets this array to the inner product of two arrays. Must be the correct shape.
+	 * 
+	 * @param a
+	 * @param b
+	 * @throws IllegalArgumentException if the inner product is a different shape to this array
+	 */
+	public void setInnerProduct(INDArray a, INDArray b);
 	
 	/**
 	 * Multiplies all elements of the array in place by a given double value
