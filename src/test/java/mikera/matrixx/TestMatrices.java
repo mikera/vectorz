@@ -711,15 +711,18 @@ public class TestMatrices {
 		doGenericTests(SparseColumnMatrix.create(Matrixx.createRandomSquareMatrix(3)));
 	}
 	
-	@Test public void g_TriangularMatrix() {	
-		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(1)));
-		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(4)));
-		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomMatrix(4,3)));
-		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomMatrix(2,3)));
+	@Test public void g_LowerTriangularMatrix() {	
 		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(1)));
 		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(4)));
 		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomMatrix(4,3)));
 		doGenericTests(LowerTriangularMatrix.createFrom(Matrixx.createRandomMatrix(2,3)));	
+	}	
+	
+	@Test public void g_UpperTriangularMatrix() {	
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(1)));
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomSquareMatrix(4)));
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomMatrix(4,3)));
+		doGenericTests(UpperTriangularMatrix.createFrom(Matrixx.createRandomMatrix(2,3)));
 	}	
 	
 	@Test public void g_ImmutableMatrix() {	
