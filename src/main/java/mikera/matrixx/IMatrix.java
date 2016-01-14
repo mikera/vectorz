@@ -217,6 +217,11 @@ public interface IMatrix extends INDArray {
 	 * Returns true iff this matrix is a square diagonal matrix
 	 */
 	boolean isDiagonal();
+	
+	/**
+	 * Returns true iff this matrix is a diagonal matrix (might not be square)
+	 */
+	boolean isRectangularDiagonal();
 
 	/**
 	 * Converts this matrix to nested double[][] array

@@ -995,8 +995,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int cc = columnCount();
 		for (int k = 0; k < cc; k++) {
 			double t = a.unsafeGet(k);
-			a.unsafeSet(k, b.unsafeGet(k));
-			b.unsafeSet(k, t);
+			double bt= b.unsafeGet(k);
+			if (t!=bt) {
+				a.unsafeSet(k, bt);
+				b.unsafeSet(k, t);
+			}
 		}
 	}
 
@@ -1011,8 +1014,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc = rowCount();
 		for (int k = 0; k < rc; k++) {
 			double t = a.unsafeGet(k);
-			a.unsafeSet(k, b.unsafeGet(k));
-			b.unsafeSet(k, t);
+			double bt= b.unsafeGet(k);
+			if (t!=bt) {
+				a.unsafeSet(k, bt);
+				b.unsafeSet(k, t);
+			}
 		}
 	}
 	
@@ -1751,6 +1757,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return (this.rowCount()==a.rowCount())&&(this.columnCount()==a.columnCount());
 	}
 	
+	@Override
 	public boolean isRectangularDiagonal() {
 		int rc=rowCount();
 		int cc=columnCount();
