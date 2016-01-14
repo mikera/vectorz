@@ -172,7 +172,12 @@ public class TestMatrices {
 		if (!m.isFullyMutable()) return;
 		AMatrix m2=m.exactClone();
 		AMatrix m3=m.exactClone();
+		
+		// m2 = 2 x m
 		m2.add(m);
+		assertEquals(m2,m.addCopy(m));
+		
+		// m2 = 3 x m
 		m2.add(m);
 		m3.addMultiple(m, 2.0);
 		assertTrue(m2.epsilonEquals(m3));
