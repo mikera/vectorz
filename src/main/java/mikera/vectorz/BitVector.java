@@ -40,7 +40,6 @@ public final class BitVector extends ABooleanVector {
 		this.data=data;
 	}
 	
-	
 	private int requiredArraySize(int length) {
 		assert(length>=0);
 		return (length+63)/64;
@@ -140,6 +139,21 @@ public final class BitVector extends ABooleanVector {
 			}
 			offset+=64;
 		}
+		return result;
+	}
+	
+	@Override 
+	public void multiplyTo(double[] data, int offset) {
+		int len = length();
+		for (int i=0; i<len; i++) {
+			if (!getBit(i)) data[offset+i]=0.0;
+		}		
+	}
+	
+	@Override 
+	public Vector multiplyCopy(AVector v) {
+		Vector result=Vector.create(v);
+		multiplyTo(result.getArray(),0);
 		return result;
 	}
 	

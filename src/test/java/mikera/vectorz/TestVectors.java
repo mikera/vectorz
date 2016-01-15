@@ -30,6 +30,7 @@ import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
 import mikera.vectorz.impl.JoinedMultiVector;
+import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.MatrixViewVector;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -40,6 +41,7 @@ import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.WrappedSubVector;
+import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.ops.Constant;
 
 
@@ -964,20 +966,6 @@ public class TestVectors {
 		doGenericTests(v3.subVector(1, 2));
 		doGenericTests(WrappedSubVector.wrap(v3,1,2));
 	}
-
-	@Test public void g_JoinedVector() {
-		int ASIZE=50;
-		double[] data=new double[ASIZE];
-		for (int i=0; i<ASIZE; i++) {
-			data[i]=i;
-		}
-
-		AVector joined = Vectorz.join( new Vector3(1.0,2.0,-Math.PI), Vectorz.create(data));
-		doGenericTests(joined);
-		
-		AVector j5=Vectorz.join(Vector4.of(1,2,3,4),joined,Vector3.of(1,2,3),Vector.of(2,3,4,5),Vector0.INSTANCE,Vector.of(),joined);
-		doGenericTests(j5);
-	}
 		
 	@Test public void g_Length4() {
 		AVector v4 = Vectorz.create(1.0,2.0,Math.PI,4.0);
@@ -1085,7 +1073,7 @@ public class TestVectors {
 		
 	@Test public void g_JoinedMultiVector() {	
 		doGenericTests(JoinedMultiVector.create(Vector4.of(1,2,3,4),Vector.of(10,20,30,40,50)));
-		doGenericTests(JoinedMultiVector.create(Vectorz.createRange(3)));
+		doGenericTests(JoinedMultiVector.create(Vectorz.createRange(3),ZeroVector.create(2)));
 	}
 		
 	@Test public void g_JoinedArrayVector() {	
@@ -1096,6 +1084,17 @@ public class TestVectors {
 		doGenericTests(jav2.join(jav1));
 		doGenericTests(jav2.join(jav1).subVector(2, 5));
 		doGenericTests(Vector3.of(1,2,3).join(JoinedArrayVector.create(Vector.of(3,4,5,6))));
+	}
+	
+	@Test public void g_JoinedVector() {
+		int ASIZE=50;
+		double[] data=new double[ASIZE];
+		for (int i=0; i<ASIZE; i++) {
+			data[i]=i;
+		}
+
+		AVector joined = JoinedVector.joinVectors( new Vector3(1.0,2.0,-Math.PI), Vectorz.create(data));
+		doGenericTests(joined);
 	}
 		
 	@Test public void g_StridedVector() {	

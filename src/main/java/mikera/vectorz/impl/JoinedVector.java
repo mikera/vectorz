@@ -31,7 +31,7 @@ public final class JoinedVector extends AJoinedVector {
 	}
 	
 	/**
-	 *  returns a JoinedVector connecting the two vectors
+	 * Returns a JoinedVector connecting the two vectors
 	 * @param left
 	 * @param right
 	 * @return

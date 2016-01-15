@@ -435,6 +435,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void multiply(AVector v) {
+		checkSameLength(v);
 		v.multiplyTo(getArray(), getArrayOffset());
 	}
 

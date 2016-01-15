@@ -626,6 +626,49 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public AVector multiplyCopy(double d) {
+		AVector r= clone();
+		r.multiply(d);
+		return r;
+	}
+	
+	@Override
+	public INDArray multiplyCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return multiplyCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			return multiplyCopy(a.asVector());
+		} else {
+			return multiplyCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public AVector multiplyCopy(AVector a) {
+		AVector r=this.clone();
+		r.multiply(a);
+		return r;
+	}
+	
+	@Override
+	public INDArray divideCopy(INDArray a) {
+		if (a instanceof AVector) {
+			return divideCopy((AVector)a);
+		} else if (a.dimensionality()==1) {
+			return divideCopy(a.asVector());
+		} else {
+			return divideCopy(a.broadcastLike(this));
+		}
+	}
+	
+	@Override
+	public AVector divideCopy(AVector a) {
+		AVector r=this.clone();
+		r.divide(a);
+		return r;
+	}
+	
+	@Override
 	public void divide(double factor) {
 		multiply(1.0/factor);
 	}
@@ -1599,42 +1642,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		// clone ensures mutability
 		AVector r=this.clone();
 		r.sub(a);
-		return r;
-	}
-	
-	@Override
-	public INDArray multiplyCopy(INDArray a) {
-		if (a instanceof AVector) {
-			return multiplyCopy((AVector)a);
-		} else if (a.dimensionality()==1) {
-			return multiplyCopy(a.asVector());
-		} else {
-			return multiplyCopy(a.broadcastLike(this));
-		}
-	}
-	
-	@Override
-	public INDArray divideCopy(INDArray a) {
-		if (a instanceof AVector) {
-			return divideCopy((AVector)a);
-		} else if (a.dimensionality()==1) {
-			return divideCopy(a.asVector());
-		} else {
-			return divideCopy(a.broadcastLike(this));
-		}
-	}
-	
-	@Override
-	public AVector multiplyCopy(AVector a) {
-		AVector r=this.clone();
-		r.multiply(a);
-		return r;
-	}
-	
-	@Override
-	public AVector divideCopy(AVector a) {
-		AVector r=this.clone();
-		r.divide(a);
 		return r;
 	}
 	
@@ -2651,13 +2658,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		if (di!=n) throw new VectorzException("Invalid non-zero index count. Maybe concurrent modification?");
 		return ret;
-	}
-
-	@Override
-	public AVector multiplyCopy(double d) {
-		AVector r= clone();
-		r.multiply(d);
-		return r;
 	}
 
 	@Override
