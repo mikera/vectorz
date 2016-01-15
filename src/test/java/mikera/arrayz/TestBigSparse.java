@@ -17,6 +17,7 @@ import mikera.vectorz.Scalar;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
+import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 
 /**
@@ -71,6 +72,16 @@ public class TestBigSparse {
 		r.multiply(1.0/7.0);
 		assertEquals(7.0,r.get(3,3),0.0);
 		assertEquals(7.0,r.elementSum(),0.0);
+	}
+	
+	@Test public void testBigVectorDot() {
+		int SIZE=10000;
+		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
+		m.set(3,4,7.0);
+		
+		AVector v=Vectorz.createUniformRandomVector(SIZE);
+		assertEquals(SingleElementVector.create(7.0*v.get(4), 3, SIZE),m.innerProduct(v));
+		assertEquals(SingleElementVector.create(7.0*v.get(4), 3, SIZE),v.innerProduct(m.getTranspose()));	
 	}
 	
 	@Test public void testBigMultiply2() {
