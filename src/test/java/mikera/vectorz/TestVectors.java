@@ -1,11 +1,6 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -652,7 +647,12 @@ public class TestVectors {
 
 	private void testNormalise(AVector v) {
 		AVector vn=v.toNormal();
-		assertTrue((v.elementSquaredSum()==0.0)^(vn!=null));
+		if (v.elementSquaredSum()==0.0) {
+			assertNull(vn);
+		} else {
+			assertNotNull(vn);
+			assertTrue(vn.isUnitLengthVector(0.0001));
+		}
 		
 		if (v.isFullyMutable()) {
 			v=v.exactClone();
