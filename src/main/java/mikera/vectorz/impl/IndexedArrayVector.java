@@ -167,6 +167,14 @@ public final class IndexedArrayVector extends BaseIndexedVector {
 	}
 	
 	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		for (int i=0; i<length; i++) {
+			if (data[offset+i]!=this.data[indexes[i]]) return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public void validate() {
 		if (length!=indexes.length) throw new VectorzException("Invalid index length");
 		super.validate();

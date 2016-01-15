@@ -2470,7 +2470,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public AVector reduceSlices(Op2 op, double init) {
-		// TODO: replace with applyOpCopy when we have it
 		AVector result=clone();
 		int len=length();
 		for (int i=0; i<len; i++) {

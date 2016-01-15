@@ -1,6 +1,7 @@
 package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
+import mikera.vectorz.AVector;
 
 /**
  * Base class for all vectors backed by a single final double[] array
@@ -25,6 +26,20 @@ public abstract class AArrayVector extends ASizedVector {
 	public AScalar slice(int i) {
 		checkIndex(i);
 		return ArrayIndexScalar.wrap(data,index(i));
+	}
+	
+	@Override
+	public AVector selectView(int... indices) {
+		if (isFullyMutable()) {
+			int len=indices.length;
+			int[] ixs=new int[len];
+			for (int i=0; i<len; i++) {
+				ixs[i]=index(indices[i]);
+			}
+			return IndexedArrayVector.wrap(data, ixs);
+		} else {
+			return super.select(indices);
+		}
 	}
 	
 	/**
