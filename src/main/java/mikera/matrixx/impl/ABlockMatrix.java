@@ -10,7 +10,7 @@ import mikera.vectorz.impl.Vector0;
  * @author Mike
  *
  */
-public abstract class ABlockMatrix extends AMatrix {
+public abstract class ABlockMatrix extends ARectangularMatrix {
 	private static final long serialVersionUID = 5047577000801031158L;
 
 	public abstract AMatrix getBlock(int rowBlock, int colBlock);
@@ -26,6 +26,10 @@ public abstract class ABlockMatrix extends AMatrix {
 	
 	public abstract int columnBlockCount();
 	public abstract int rowBlockCount();
+	
+	protected ABlockMatrix(int rows, int cols) {
+		super(rows, cols);
+	}
 	
 	@Override
 	public int componentCount() {
@@ -96,5 +100,21 @@ public abstract class ABlockMatrix extends AMatrix {
 			v=v.join(getBlock(i,blockIndex).getColumnView(col-blockPos));
 		}
 		return v;
+	}
+	
+	protected static int sumRowCounts(AMatrix... mats) {
+		int result=0;
+		for (int i=0; i<mats.length; i++) {
+			result+=mats[i].rowCount();
+		}
+		return result;
+	}
+	
+	protected static int sumColumnCounts(AMatrix... mats) {
+		int result=0;
+		for (int i=0; i<mats.length; i++) {
+			result+=mats[i].columnCount();
+		}
+		return result;
 	}
 }

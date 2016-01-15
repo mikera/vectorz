@@ -21,18 +21,15 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 	
 	private final int rowSplit;
 	private final int columnSplit;
-	private final int rows;
-	private final int cols;
 	
 	private QuadtreeMatrix(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
+		super(c00.rowCount()+c10.rowCount(),c00.columnCount()+c01.columnCount());
 		this.c00=c00;
 		this.c01=c01;
 		this.c10=c10;
 		this.c11=c11;
 		this.rowSplit= c00.rowCount();
 		this.columnSplit=c00.columnCount();
-		this.rows=rowSplit+c10.rowCount();
-		this.cols=columnSplit+c01.columnCount();
 	}
 	
 	public static QuadtreeMatrix wrap(AMatrix c00, AMatrix c01, AMatrix c10, AMatrix c11) {
@@ -70,16 +67,6 @@ public class QuadtreeMatrix extends ABlockMatrix implements ISparse {
 		} else {
 			return super.isDiagonal();
 		}
-	}
-
-	@Override
-	public int rowCount() {
-		return rows;
-	}
-
-	@Override
-	public int columnCount() {
-		return cols;
 	}
 
 	@Override

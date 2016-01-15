@@ -21,9 +21,9 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 	private final int[] sizes;
 	private final int[] offsets;
 	private final int blockCount;
-	private final int size;
 	
 	private BlockDiagonalMatrix(AMatrix[] newMats) {
+		super(sumRowCounts(newMats),sumColumnCounts(newMats));
 		blockCount=newMats.length;
 		mats=newMats;
 		sizes=new int[blockCount];
@@ -31,12 +31,12 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 		int totalSize=0;
 		for (int i=0; i<blockCount; i++) {
 			int size=mats[i].rowCount();
+			if (size!=mats[i].columnCount()) throw new IllegalArgumentException("Matrices in BlockDiagonalMatrix must be square");
 			sizes[i]=size;
 			offsets[i]=totalSize;
 			totalSize+=size;
 		}
-		this.size=totalSize;
-		offsets[blockCount]=size;
+		offsets[blockCount]=rows;
 	}
 	
 	public static BlockDiagonalMatrix create(AMatrix... blocks) {
@@ -84,7 +84,7 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 
 	@Override
 	public int getColumnBlockIndex(int col) {
-		if ((col<0)||(col>=size)) throw new IndexOutOfBoundsException("Column: "+ col);
+		checkColumn(col);
 		int i=IntArrays.indexLookup(offsets, col);
 		if (i<0) throw new IndexOutOfBoundsException("Column: "+ col);
 		return i;
@@ -92,20 +92,10 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 
 	@Override
 	public int getRowBlockIndex(int row) {
-		if ((row<0)||(row>=size)) throw new IndexOutOfBoundsException("Row: "+ row);
+		checkRow(row);
 		int i=IntArrays.indexLookup(offsets, row);
 		if (i<0) throw new IndexOutOfBoundsException("Row: "+ row);
 		return i;
-	}
-
-	@Override
-	public int rowCount() {
-		return size;
-	}
-
-	@Override
-	public int columnCount() {
-		return size;
 	}
 
 	@Override
@@ -154,7 +144,7 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 		int di=offsets[i+1];
 		Arrays.fill(dest, destOffset, si+destOffset, 0.0);
 		mats[i].copyColumnTo(col-si, dest, destOffset+si);
-		Arrays.fill(dest, di+destOffset, size+destOffset, 0.0);
+		Arrays.fill(dest, di+destOffset, cols+destOffset, 0.0);
 	}
 	
 	@Override
@@ -164,7 +154,7 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 		int di=offsets[i+1];
 		Arrays.fill(dest, destOffset, si+destOffset, 0.0);
 		mats[i].copyRowTo(row-si, dest, destOffset+si);
-		Arrays.fill(dest, di+destOffset, size+destOffset, 0.0);
+		Arrays.fill(dest, di+destOffset, rows+destOffset, 0.0);
 	}
 
 	@Override
