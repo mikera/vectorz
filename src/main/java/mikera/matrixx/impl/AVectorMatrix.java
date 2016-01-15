@@ -114,7 +114,7 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	
 	@Override
 	public double rowDotProduct(int i, AVector inputVector) {
-		T row=getRowView(i);
+		T row=getRow(i);
 		return row.dotProduct(inputVector);
 	}
 	

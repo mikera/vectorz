@@ -152,8 +152,6 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 	
 	@Override
 	public double rowDotProduct(int i, AVector a) {
-		int cc=columnCount();
-		if(cc!=a.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
 		double[] data=getArray();
 		int offset=getArrayOffset();
 

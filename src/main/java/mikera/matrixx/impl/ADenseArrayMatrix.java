@@ -211,11 +211,9 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public double rowDotProduct(int i, AVector a) {
-		int cc=a.checkLength(cols);
 		double[] data=getArray();
 		int offset=getArrayOffset();
-
-		return a.dotProduct(data, offset+i*cc);
+		return a.dotProduct(data, offset+i*cols);
 	}
 	
 	@Override
