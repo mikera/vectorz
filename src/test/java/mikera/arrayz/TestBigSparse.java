@@ -74,7 +74,7 @@ public class TestBigSparse {
 		assertEquals(7.0,r.elementSum(),0.0);
 	}
 	
-	@Test public void testBigVectorDot() {
+	@Test public void testBigMatrixVectorDot() {
 		int SIZE=10000;
 		AMatrix m=Matrixx.createSparse(SIZE,SIZE);
 		m.set(3,4,7.0);
