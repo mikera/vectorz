@@ -211,8 +211,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public double rowDotProduct(int i, AVector a) {
-		int cc=columnCount();
-		if(cc!=a.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		int cc=a.checkLength(cols);
 		double[] data=getArray();
 		int offset=getArrayOffset();
 

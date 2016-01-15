@@ -634,11 +634,6 @@ public final class Matrix extends ADenseArrayMatrix {
 		return 0;
 	}
 
-	@Override
-	public double[] getArray() {
-		return data;
-	}
-
 	/**
 	 * Creates a Matrix which contains ones along the main diagonal and zeros
 	 * everywhere else. If square, is equal to the identity matrix.

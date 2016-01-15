@@ -27,7 +27,7 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	 * unpredictable side effects if the array is aliased elsewhere
 	 * @return
 	 */
-	public double[] getArray() {
+	public final double[] getArray() {
 		return data;
 	}
 	
