@@ -12,12 +12,8 @@ public abstract class BaseDerivedVector extends AWrappedVector<AVector> {
 	protected final AVector source;
 	
 	protected BaseDerivedVector(AVector source) {
+		super(source.length());
 		this.source=source;
-	}
-	
-	@Override
-	public int length() {
-		return source.length();
 	}
 
 	@Override

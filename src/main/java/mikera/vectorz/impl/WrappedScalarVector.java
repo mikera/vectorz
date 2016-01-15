@@ -17,6 +17,7 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	public final AScalar scalar;
 	
 	public WrappedScalarVector(AScalar s) {
+		super(1);
 		this.scalar=s;
 	}
 	
@@ -44,11 +45,6 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 	public AScalar getComponent(int k) {
 		if (k!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidComponent(this,k));
 		return scalar;
-	}
-	
-	@Override
-	public int length() {
-		return 1;
 	}
 
 	@Override
