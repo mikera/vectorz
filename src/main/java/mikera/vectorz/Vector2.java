@@ -243,8 +243,10 @@ public final class Vector2 extends APrimitiveVector {
 	
 	@Override
 	public Vector2 toNormal() {
-		double d=this.magnitude();
-		return (d==0)?new Vector2():new Vector2(x/d,y/d);
+		double d=this.magnitudeSquared();
+		if (d==0) return null;
+		d=Math.sqrt(d);
+		return new Vector2(x/d,y/d);
 	}
 
 	@Override

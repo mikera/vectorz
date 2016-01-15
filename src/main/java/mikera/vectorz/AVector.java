@@ -1332,6 +1332,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * 
 	 * Has no effect on a zero-length vector (i.e. it will remain zero)
 	 * 
+	 * @return the magnitude of the original vector
 	 */
 	@Override
 	public double normalise() {
@@ -1342,6 +1343,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Returns a copy of this vector normalised to a Euclidean length of 1.0
+	 * 
+	 * Has no effect on a zero-length vector (i.e. it will return a zero length vector)
 	 */
 	@Override
 	public AVector normaliseCopy() {
@@ -2113,12 +2116,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	/**
 	 * Creates a new mutable vector representing the normalised value of this vector
+	 * 
+	 * Returns null if the vector cannot be normalised (i.e. is a zero length vector)
 	 * @return
 	 */
 	public AVector toNormal() {
-		Vector v= Vector.create(this);
-		v.normalise();
-		return v;
+		double dd=elementSquaredSum();
+		if (dd==0.0) return null;
+		return scaleCopy(1.0/Math.sqrt(dd));
 	}
 	
 	@Override
