@@ -216,6 +216,14 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public void applyOp(Op op) {
+		int cc = columnCount();
+		for (int i = 0; i < cc; i++) {
+			getColumnView(i).applyOp(op);
+		}
+	}
+	
+	@Override
 	public double reduce(Op2 op, double init) {
 		// override this because getting rows individually is expensive for SparseColumnMatrix
 		double result=init;
