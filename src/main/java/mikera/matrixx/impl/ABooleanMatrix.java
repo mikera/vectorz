@@ -11,9 +11,13 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
-public abstract class ABooleanMatrix extends AMatrix {
+public abstract class ABooleanMatrix extends ARectangularMatrix {
 	private static final long serialVersionUID = 1599922421314660198L;
 
+	protected ABooleanMatrix(int rows, int cols) {
+		super(rows, cols);
+	}
+	
 	@Override
 	public boolean isBoolean() {
 		return true;

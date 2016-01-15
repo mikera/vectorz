@@ -27,12 +27,11 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	private static final long serialVersionUID = 8098287603508120428L;
 
 	private final Index perm;
-	private final int size;
 	
 	private PermutationMatrix(Index perm) {
+		super(perm.length(),perm.length());
 		if (!perm.isPermutation()) throw new IllegalArgumentException("Not a valid permutation: "+perm);
 		this.perm=perm;
-		size=perm.length();
 	}
 	
 	public static PermutationMatrix createIdentity(int length) {
@@ -70,8 +69,8 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	
 	@Override
 	public void addToArray(double[] data, int offset) {
-		for (int i=0; i<size; i++) {
-			data[offset+(i*size)+perm.get(i)]+=1.0;
+		for (int i=0; i<rows; i++) {
+			data[offset+(i*cols)+perm.get(i)]+=1.0;
 		}
 	}
 	
@@ -93,7 +92,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	
 	@Override 
 	public int rank() {
-		return size;
+		return rows;
 	}
 	
 	@Override
@@ -141,39 +140,24 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	}
 	
 	@Override
-	public boolean isSquare() {
-		return true;
-	}
-
-	@Override
-	public int rowCount() {
-		return size;
-	}
-
-	@Override
-	public int columnCount() {
-		return size;
-	}
-	
-	@Override
 	public double elementSum() {
-		return size;
+		return rows;
 	}
 	
 	@Override
 	public double elementSquaredSum() {
-		return size;
+		return rows;
 	}
 	
 	@Override
 	public long nonZeroCount() {
-		return size;
+		return rows;
 	}
 	
 	@Override
 	public double trace() {
 		int result=0;
-		for (int i=0; i<size; i++) {
+		for (int i=0; i<rows; i++) {
 			if (perm.data[i]==i) result++;
 		}
 		return result;
@@ -191,7 +175,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 
 	@Override
 	public double get(int row, int column) {
-		if (column<0||(column>=size)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this,row,column));
+		checkColumn(column);
 		return (perm.get(row)==column)?1.0:0.0;
 	}
 
@@ -213,23 +197,23 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	
 	@Override
 	public AxisVector getRow(int i) {
-		return AxisVector.create(perm.get(i), size);
+		return AxisVector.create(perm.get(i), cols);
 	}
 	
 	@Override
 	public AxisVector getColumn(int j) {
-		return AxisVector.create(perm.find(j), size);
+		return AxisVector.create(perm.find(j), rows);
 	}
 	
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
-		Arrays.fill(dest, destOffset,destOffset+size,0.0);
+		Arrays.fill(dest, destOffset,destOffset+cols,0.0);
 		dest[destOffset+perm.get(row)]=1.0;
 	}
 	
 	@Override
 	public void copyColumnTo(int col, double[] dest, int destOffset) {
-		Arrays.fill(dest, destOffset,destOffset+size,0.0);
+		Arrays.fill(dest, destOffset,destOffset+rows,0.0);
 		dest[destOffset+perm.find(col)]=1.0;
 	}
 	
@@ -257,7 +241,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 		}
 		if(rowCount()!=dest.length()) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
 		if(columnCount()!=source.length()) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(dest));
-		for (int i=0; i<size; i++) {
+		for (int i=0; i<rows; i++) {
 			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
 		}
 	}
@@ -268,7 +252,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 		int cc = columnCount();
 		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
 		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
-		for (int i=0; i<size; i++) {
+		for (int i=0; i<rows; i++) {
 			dest.unsafeSet(i,source.unsafeGet(perm.unsafeGet(i)));
 		}
 	}
@@ -280,10 +264,10 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	
 	@Override
 	public Matrix innerProduct(AMatrix a) {
-		if (a.rowCount()!=size) throw new IllegalArgumentException(ErrorMessages.mismatch(this,a));
+		if (a.rowCount()!=rows) throw new IllegalArgumentException(ErrorMessages.mismatch(this,a));
 		int cc=a.columnCount();
-		Matrix result=Matrix.create(size,cc);
-		for (int i=0; i<size; i++) {
+		Matrix result=Matrix.create(rows,cc);
+		for (int i=0; i<rows; i++) {
 			int dstIndex=i*cc;
 			int srcRow=perm.get(i);
 			a.copyRowTo(srcRow, result.data, dstIndex);
@@ -299,13 +283,13 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
 	@Override
 	public void validate() {
 		super.validate();
-		if (size!=perm.length()) throw new VectorzException("Whoops!");
+		if (!isSquare()) throw new VectorzException("Whoops!");
 		if (isFullyMutable()) throw new VectorzException("Should not be fully mutable!");
 	}
 
 	@Override
 	public double density() {
-		return 1.0/size;
+		return 1.0/rows;
 	}
 
 	@Override
@@ -324,7 +308,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
      */
     @Override
     public double elementPowSum(double p) {
-        return size;
+        return rows;
     }
     
     /**
@@ -333,7 +317,7 @@ public final class PermutationMatrix extends ABooleanMatrix implements IFastRows
      */
     @Override
     public double elementAbsPowSum(double p) {
-        return elementPowSum(p);
+        return rows;
     }
 
 	@Override
