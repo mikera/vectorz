@@ -103,5 +103,4 @@ public abstract class ASizedVector extends AVector {
 		}
 		return true;
 	}
-
 }

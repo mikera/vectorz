@@ -2576,7 +2576,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	@Override
-	public abstract boolean equalsArray(double[] data, int offset);
+	public boolean equalsArray(double[] data, int offset) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			if (unsafeGet(i)!=data[offset++]) return false;
+		}
+		return true;
+	}
 	
 	@Override
 	public INDArray broadcast(int... targetShape) {

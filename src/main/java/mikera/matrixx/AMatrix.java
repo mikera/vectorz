@@ -1353,10 +1353,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 
-	/**
-	 * Converts the matrix to a single flattened vector
-	 * in row major order.
-	 */
 	@Override
 	public Vector toVector() {
 		int rc = rowCount();

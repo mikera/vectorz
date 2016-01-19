@@ -784,7 +784,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public List<INDArray> getSliceViews();
 
 	/**
-	 * Coerces the array into a flattened dense Vector
+	 * Coerces the array into a flattened dense Vector, in row-major order
 	 * May return the same array if it is already a Vector instance
 	 */
 	public Vector toVector();
