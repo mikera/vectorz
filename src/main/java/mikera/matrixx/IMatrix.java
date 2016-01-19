@@ -145,7 +145,8 @@ public interface IMatrix extends INDArray {
 	 * 
 	 * @return A new vector
 	 */
-	public AVector transform(AVector source);
+	@Override
+	public AVector innerProduct(AVector source);
 
 	/**
 	 * Transforms a source vector into a destination vector, using matrix multiplication (inner product).

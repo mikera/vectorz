@@ -228,7 +228,7 @@ public class TestVectors {
 		if (len>20) return;
 		
 		AMatrix m=Matrixx.createRandomMatrix(len, len);
-		assertTrue(v.innerProduct(m).epsilonEquals(m.getTranspose().transform(v)));
+		assertTrue(v.innerProduct(m).epsilonEquals(m.getTranspose().innerProduct(v)));
 	}
 	
 	private void testSelect(AVector v) {

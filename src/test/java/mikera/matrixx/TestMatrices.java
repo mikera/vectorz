@@ -378,8 +378,8 @@ public class TestMatrices {
 		
 		AVector v=Vectorz.createUniformRandomVector(b.columnCount());
 		
-		AVector ambv=a.transform(m.transform(b.transform(v)));
-		assertTrue(amb.transform(v).epsilonEquals(ambv));
+		AVector ambv=a.innerProduct(m.innerProduct(b.innerProduct(v)));
+		assertTrue(amb.innerProduct(v).epsilonEquals(ambv));
 	}
 
 	private void testApplyOp(AMatrix m) {
@@ -430,7 +430,7 @@ public class TestMatrices {
 		AVector t=Vectorz.newVector(m.rowCount());
 		
 		m.transform(v, t);
-		AVector t2=m.transform(v);
+		AVector t2=m.innerProduct(v);
 		
 		assertEquals(t,t2);
 		assertEquals(t,m.innerProduct(v));

@@ -452,28 +452,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		INDArray left=subArray(off,shp);
 		return left.join(right,dimension);
 	}
-	
-	@Override
-	public final AVector transform(AVector source) {
-		Vector v=Vector.createLength(rowCount());
-		if (source instanceof Vector) {
-			transform((Vector)source,v);
-		} else {
-			transform(source,v);
-		}
-		return v;
-	}
-	
-	/**
-	 * Transforms a dense Vector using matrix multiplication (inner product)
-	 * @param source
-	 * @return A new Vector
-	 */
-	public Vector transform(Vector source) {
-		Vector v=Vector.createLength(rowCount());
-		transform(source,v);
-		return v;
-	}
 
 	@Override
 	public void transform(AVector source, AVector dest) {
@@ -1248,16 +1226,26 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @return
 	 */
 	public Vector innerProduct(Vector v) {
-		return transform(v);
+		int cc=this.columnCount();
+		int rc=this.rowCount();
+		v.checkLength(cc);
+		Vector r=Vector.createLength(rc);
+		for (int i=0; i<rc; i++) {
+			r.unsafeSet(i,rowDotProduct(i,v));
+		}
+		return r;
 	}
 	
 	@Override
 	public AVector innerProduct(AVector v) {
-		if (v instanceof Vector) {
-			return transform((Vector)v);
-		} else {
-			return transform(v);
+		int cc=this.columnCount();
+		int rc=this.rowCount();
+		v.checkLength(cc);
+		Vector r=Vector.createLength(rc);
+		for (int i=0; i<rc; i++) {
+			r.unsafeSet(i,rowDotProduct(i,v));
 		}
+		return r;
 	}
 	
 	@Override

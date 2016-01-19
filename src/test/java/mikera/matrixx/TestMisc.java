@@ -42,8 +42,8 @@ public class TestMisc {
 		AVector x = Vectorz.createUniformRandomVector(3);
 		AVector x2 = x.clone();
 
-		AVector y = r.transform(x);
-		AVector y2 = tr.transform(rot.transform(x2));
+		AVector y = r.innerProduct(x);
+		AVector y2 = tr.innerProduct(rot.innerProduct(x2));
 
 		assertTrue(y.epsilonEquals(y2));
 	}
@@ -54,7 +54,7 @@ public class TestMisc {
 		double angle = Math.PI;
 		Matrix33 rot = Matrixx.createYAxisRotationMatrix(angle);
 
-		AVector r = rot.transform(v);
+		AVector r = rot.innerProduct(v);
 		v.negate();
 		assertTrue(v.epsilonEquals(r));
 	}
@@ -79,11 +79,11 @@ public class TestMisc {
 		double angle = Math.random();
 		Matrix33 rot = Matrixx.createRotationMatrix(axis, angle);
 
-		AVector r = rot.transform(v);
+		AVector r = rot.innerProduct(v);
 		assertEquals(v.magnitude(), r.magnitude(), 0.00001);
 
 		Matrix33 inv = rot.inverse();
-		AVector ri = inv.transform(r);
+		AVector ri = inv.innerProduct(r);
 		assertTrue(v.epsilonEquals(ri));
 	}
 
@@ -160,7 +160,7 @@ public class TestMisc {
 		double angle=Math.random();
 		Matrix33 rot=Matrixx.createRotationMatrix(v, angle);
 		
-		AVector r=rot.transform(v);
+		AVector r=rot.innerProduct(v);
 		assertEquals(v.get(0),r.get(0),0.00001);
 		assertEquals(v.get(1),r.get(1),0.00001);
 		assertEquals(v.get(2),r.get(2),0.00001);
@@ -177,8 +177,8 @@ public class TestMisc {
 		
 		assertTrue(mi.epsilonEquals(Inverse.calculate(m)));
 		
-		AVector mv=m.transform(v);
-		AVector mimv=mi.transform(mv);
+		AVector mv=m.innerProduct(v);
+		AVector mimv=mi.innerProduct(mv);
 		
 		assertTrue(mimv.epsilonEquals(v));		
 		
