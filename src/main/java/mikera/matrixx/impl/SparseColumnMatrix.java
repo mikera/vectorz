@@ -307,8 +307,8 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public void add(AMatrix a) {
-		int count=columnCount();
-		for (int i=0; i<count; i++) {
+		int cc=columnCount();
+		for (int i=0; i<cc; i++) {
 			AVector myVec=unsafeGetVector(i);
 			AVector aVec=a.getColumn(i);
 			if (myVec==null) {
@@ -321,6 +321,32 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 				unsafeSetVec(i,myVec.addCopy(aVec));
 			}
 		}
+	}
+	
+	@Override
+	public AMatrix addCopy(AMatrix m) {
+		if (m instanceof SparseColumnMatrix) return addCopy((SparseColumnMatrix)m);
+		SparseRowMatrix result=SparseRowMatrix.create(this);
+		result.add(m);
+		return result;
+	}
+	
+	@Override
+	public SparseRowMatrix addCopy(AVector v) {
+		SparseRowMatrix result=SparseRowMatrix.create(this);
+		result.add(v);
+		return result;
+	}
+	
+	/**
+	 * Adds another SparseColumnMatrix to this matrix
+	 * @param m
+	 * @return A new SparseColumnMatrix
+	 */
+	public SparseColumnMatrix addCopy(SparseColumnMatrix m) {
+		SparseColumnMatrix result=exactClone();
+		result.add(m);
+		return result;
 	}
 	
 	@Override
