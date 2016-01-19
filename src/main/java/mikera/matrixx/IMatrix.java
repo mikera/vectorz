@@ -255,6 +255,11 @@ public interface IMatrix extends INDArray {
 	 */
 	double[][] toNestedDoubleArrays();
 
+	/**
+	 * Gets a rectangular submatrix view of part of a matrix
+	 */
+	AMatrix subMatrix(int rowStart, int rows, int colStart, int cols);
+
 
 
 }
