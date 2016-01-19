@@ -308,9 +308,10 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	@Override
 	public void add(AMatrix a) {
 		int cc=columnCount();
+		List<AVector> acols=a.getColumns();
 		for (int i=0; i<cc; i++) {
 			AVector myVec=unsafeGetVector(i);
-			AVector aVec=a.getColumn(i);
+			AVector aVec=acols.get(i);
 			if (myVec==null) {
 				if (!aVec.isZero()) {
 					unsafeSetVec(i,aVec.copy());
