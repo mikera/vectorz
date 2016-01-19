@@ -4,6 +4,7 @@ import java.util.List;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Vector;
 
 /**
  * Interface for matrix operations.
@@ -148,6 +149,13 @@ public interface IMatrix extends INDArray {
 	@Override
 	public AVector innerProduct(AVector source);
 
+	/**
+	 * Transforms a dense source Vector into a using matrix multiplication (inner product).
+	 * 
+	 * @return A new dense vector
+	 */
+	public Vector innerProduct(Vector source);
+	
 	/**
 	 * Transforms a source vector into a destination vector, using matrix multiplication (inner product).
 	 * The destination vector is overwritten.
