@@ -8,12 +8,14 @@ import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.IdentityMatrix;
+import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.util.Random;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Scalar;
+import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
@@ -172,6 +174,21 @@ public class TestBigSparse {
 		a.dotProduct(b);
 		assertEquals(a.magnitudeSquared(),a.dotProduct(a),0.0);
 	}
+	
+	@Test public void testSparseColumnDotProduct() {
+		int SIZE=1000;
+		SparseColumnMatrix m=SparseColumnMatrix.create(SIZE, SIZE);
+		Random r=new Random(3425237);
+		for (int i=0; i<SIZE; i++) {
+			m.set(r.nextInt(SIZE),r.nextInt(SIZE),r.nextGaussian());
+		}
+		
+		Vector v=Vector.createLength(SIZE);
+		Vectorz.fillGaussian(v);
+		
+		m.innerProduct(v);
+	}
+
 	 
 	@Test public void testBigVectorAdd() {
 		int SIZE=1000000000;

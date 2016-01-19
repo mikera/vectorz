@@ -238,12 +238,21 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
         return getRotatedData(cols, rows);
     }
     
+    /**
+     * Coerces this matrix into a SparseRowMatrix format.
+     * @return
+     */
     public SparseRowMatrix toSparseRowMatrix() {
         AVector[] rowVecs = getRows().toArray(new AVector[rows]);
         SparseRowMatrix rm = SparseRowMatrix.create(rowVecs, rows, cols);
         return rm;
     }
     
+    /**
+     * Ensures that a specific column is stored as a non-null, fully mutable vector.
+     * @param i
+     * @return
+     */
 	private AVector ensureMutableColumn(int i) {
 		AVector v = unsafeGetVector(i);
 		if (v == null) {
@@ -347,13 +356,24 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		
 	@Override
 	public AVector innerProduct(AVector a) {
+		a.checkLength(cols);
 		Vector r=Vector.createLength(rows);
 		for (int i=0; i<cols; i++) {
-			getColumn(i).addMultipleToArray(a.get(i), 0, r.getArray(), 0, rows);
+			r.addMultiple(getColumn(i),a.get(i));
 		}
 		return r;
 	}
 	
+	@Override
+	public Vector transform(Vector a) {
+		a.checkLength(cols);
+		Vector r=Vector.createLength(rows);
+		for (int i=0; i<cols; i++) {
+			r.addMultiple(getColumn(i),a.get(i));
+		}
+		return r;
+	}
+		
 	@Override
 	public Matrix toMatrixTranspose() {
 		Matrix m=Matrix.create(cols, rows);
