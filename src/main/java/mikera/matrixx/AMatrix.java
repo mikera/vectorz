@@ -2052,10 +2052,15 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public final INDArray addCopy(INDArray a) {
 		if (a instanceof AMatrix) {
 			return addCopy((AMatrix)a);
-		} else {
-			INDArray r=this.broadcastCloneLike(a);
-			r.add(a);
-			return r;
+		} 
+		switch(a.dimensionality()) {
+			case 0: return addCopy(a.get());
+			case 1: return addCopy(a.asVector());
+			default: {
+				INDArray r=this.broadcastCloneLike(a);
+				r.add(a);
+				return r;
+			}
 		}
 	}
 
@@ -2063,6 +2068,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public AMatrix addCopy(AMatrix a) {
 		AMatrix result=a.clone();
 		result.add(this);
+		return result;
+	}
+	
+	@Override
+	public AMatrix addCopy(AVector v) {
+		int rc=this.rowCount();
+		AMatrix result=this.clone();
+		for (int i=0; i<rc; i++) {
+			result.getRowView(i).add(v);
+		}
 		return result;
 	}
 	

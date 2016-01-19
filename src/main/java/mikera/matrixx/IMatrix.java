@@ -178,8 +178,24 @@ public interface IMatrix extends INDArray {
 	 */
 	public double trace();
 
-	AMatrix addCopy(AMatrix a);
+	/**
+	 * Adds another matrix to this matrix, returning a new matrix
+	 * @param v
+	 * @return
+	 */
+	public AMatrix addCopy(AMatrix a);
+	
+	/**
+	 * Adds a vector to every row of this matrix, returning a new matrix
+	 * @param v
+	 * @return
+	 */
+	public AMatrix addCopy(AVector v);
 
+	/**
+	 * Returns the product of all elements on the leading diagonal of this matrix
+	 * @return
+	 */
 	double diagonalProduct();
 	
 	/**
