@@ -121,6 +121,13 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public void setRow(int i, AVector row) {
+		int cc = columnCount();
+		row.checkLength(cc);
+		row.getElements(data, getArrayOffset()+ i * cc);
+	}
+	
+	@Override
 	public double elementSum() {
 		return DoubleArrays.elementSum(data,getArrayOffset(), rows*cols);
 	}
