@@ -1631,11 +1631,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 
-	/**
-	 * Adds a value at a specific position in the matrix.
-	 * 
-	 * Does not perform bounds checking - this in an unsafe operation
-	 */
+	@Override
 	public void addAt(int i, int j, double d) {
 		unsafeSet(i,j,unsafeGet(i,j)+d);
 	}
@@ -1933,7 +1929,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Sets a row in a matrix. 
+	 * Sets a row in a matrix to the value specified by the given vector
 	 * 
 	 * @param i
 	 * @param row

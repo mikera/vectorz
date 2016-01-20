@@ -260,6 +260,13 @@ public interface IMatrix extends INDArray {
 	 */
 	AMatrix subMatrix(int rowStart, int rows, int colStart, int cols);
 
+	/**
+	 * Adds a value at a specific position in the matrix, mutating the matrix
+	 * 
+	 * Does not perform bounds checking - this in an unsafe operation
+	 */
+	void addAt(int i, int j, double d);
+
 
 
 }

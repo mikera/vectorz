@@ -116,7 +116,6 @@ public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IF
 	
 	@Override
 	public void addAt(int i, int j, double d) {
-		assert(j==0);
 		vector.addAt(i,d);
 	}
 	
