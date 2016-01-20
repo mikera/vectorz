@@ -181,7 +181,7 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		switch (dimension) {
 			case 0: return rowStride();
 			case 1: return columnStride();
-			default: throw new IllegalArgumentException(ErrorMessages.invalidDimension(this, dimension));
+			default: throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this, dimension));
 		}
 	}
 	

@@ -11,6 +11,8 @@ import mikera.arrayz.INDArray;
 public interface IStridedArray extends INDArray {
 	/**
 	 * Gets the underlying data array for this strided array
+	 * 
+	 * Unsafe operation - may allow modification of otherwise immutable arrays
 	 * @return
 	 */
 	public double[] getArray();
