@@ -2010,7 +2010,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override 
 	public void validate() {
-		// nothing special to do
+		if (((long)rowCount())*columnCount()!=elementCount()) throw new VectorzException("Invalid Array shape?");
 		super.validate();
 	}
 
