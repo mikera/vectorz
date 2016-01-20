@@ -27,7 +27,7 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose mutable dense N-dimensional array
+ * General purpose, mutable, dense N-dimensional array
  * 
  * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
  * most efficient storage type for dense 3D+ arrays
@@ -58,6 +58,15 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 		this(dims, shape, IntArrays.calcStrides(shape), data);
 	}
 	
+	/**
+	 * Wraps double[] array data in an Array of the specified shape.
+	 * 
+	 * The number of elements in the array must match the length of the array.
+	 * 
+	 * @param data
+	 * @param shape
+	 * @return
+	 */
 	public static INDArray wrap(double[] data, int... shape) {
 		long ec=IntArrays.arrayProduct(shape);
 		if (data.length!=ec) throw new IllegalArgumentException("Data array does not have correct number of elements, expected: "+ec);
@@ -319,15 +328,8 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 
 	@Override
 	public boolean equals(INDArray a) {
-		if (a instanceof Array) return equals((Array) a);
 		if (!isSameShape(a)) return false;
 		return a.equalsArray(data, 0);
-	}
-
-	public boolean equals(Array a) {
-		if (a.dimensions != dimensions) return false;
-		if (!IntArrays.equals(shape, a.shape)) return false;
-		return DoubleArrays.equals(data, a.data);
 	}
 
 	@Override

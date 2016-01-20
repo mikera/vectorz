@@ -30,7 +30,7 @@ import mikera.vectorz.Vector;
 public interface INDArray extends Cloneable, Serializable {
 	
 	/**
-	 * Returns the dimensionality of the array (number of dimensions in the array shape)
+	 * Returns the dimensionality of the array (i.e. the number of dimensions in the array shape)
 	 * e.g. 0 for a scalar, 1 for a vector, 2 for a matrix etc.
 	 */
 	public int dimensionality();
