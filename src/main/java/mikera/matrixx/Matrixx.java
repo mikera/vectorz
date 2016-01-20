@@ -200,6 +200,15 @@ public class Matrixx {
 		return ZeroMatrix.create(rows, columns);
 	}
 
+	/**
+	 * Creates a diagonal scaling matrix (same factor on every element of main diagonal, 0.0 elsewhere)
+	 * 
+	 * Mutable only on main diagonal.
+	 * 
+	 * @param dimensions
+	 * @param factor
+	 * @return
+	 */
 	public static ADiagonalMatrix createScaleMatrix(int dimensions,
 			double factor) {
 		DiagonalMatrix im = new DiagonalMatrix(dimensions);
@@ -208,7 +217,6 @@ public class Matrixx {
 		}
 		return im;
 	}
-
 	
 	/**
 	 * Creates a scalar matrix with the given scale factor. Scalar matrices are efficient,
