@@ -345,12 +345,25 @@ public class Matrixx {
 		return m;
 	}
 
+	/**
+	 * Creates a mutable matrix containing random double values in the range [0.0 , 1.0)
+	 * @param rows
+	 * @param columns
+	 * @return
+	 */
 	public static AMatrix createRandomMatrix(int rows, int columns) {
 		AMatrix m = newMatrix(rows, columns);
 		fillRandomValues(m);
 		return m;
 	}
 	
+	/**
+	 * Creates a mutable matrix containing random double values in the range [0.0 , 1.0)
+	 * @param rows
+	 * @param columns
+	 * @param rand A random number generator to use as the seed
+	 * @return
+	 */
 	public static AMatrix createRandomMatrix(int rows, int columns, Random rand) {
 		AMatrix m = newMatrix(rows, columns);
 		fillRandomValues(m,rand);
@@ -358,7 +371,8 @@ public class Matrixx {
 	}
 
 	/**
-	 * Creates an empty (zero-filled) mutable matrix of the specified size
+	 * Creates an empty (zero-filled) mutable matrix of the specified size. Uses mutable primitive
+	 * matrices for small sizes (1x1, 2x2, 3x3)
 	 * 
 	 * @param rows
 	 * @param columns
@@ -370,6 +384,7 @@ public class Matrixx {
 			if (rows == 2) return new Matrix22();
 			if (rows == 3) return new Matrix33();
 		}
+		if ((rows==0)||(columns==0)) return ZeroMatrix.create(rows, columns);
 		if (rows*((long)columns)>SPARSE_ELEMENT_THRESHOLD) return createSparse(rows,columns);
 		return Matrix.create(rows, columns);
 	}
@@ -566,10 +581,20 @@ public class Matrixx {
 		return m;
 	}
 
+	/**
+	 * Creates a matrix using the given objects to generate individual rows
+	 * @param vs
+	 * @return
+	 */
 	public static AMatrix create(Object... vs) {
 		return create(Arrays.asList(vs));
 	}
 
+	/**
+	 * Creates a matrix using the given double[][] data
+	 * @param data
+	 * @return
+	 */
 	public static Matrix create(double[][] data) {
 		return Matrix.create(data);
 	}
@@ -598,6 +623,11 @@ public class Matrixx {
 		return StridedMatrix.wrap(data, rows, cols, offset, rowStride, colStride);
 	}
 
+	/**
+	 * Creates a sparse matrix using the given arrays as slices
+	 * @param slices An iterable object containing n length m vectors to use as matrix rows 
+	 * @return
+	 */
 	public static AMatrix createSparse(Iterable<INDArray> slices) {
 		INDArray slice1=slices.iterator().next();
 		int cc=slice1.sliceCount();

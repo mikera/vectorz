@@ -26,7 +26,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 
 	@Override public 
 	boolean isFullyMutable() {
-		return false;
+		return (rows==0)||(cols==0);
 	}
 	
 	private ZeroMatrix(int rows, int columns) {
@@ -186,6 +186,7 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 
 	@Override
 	public void set(int row, int column, double value) {
+		checkIndex(row,column);
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
