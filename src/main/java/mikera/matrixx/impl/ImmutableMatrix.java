@@ -123,6 +123,11 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	}
 	
 	@Override
+	public Matrix innerProduct(AMatrix a) {
+		return asMatrix().innerProduct(a);
+	}
+	
+	@Override
 	public void transform(Vector source, Vector dest) {
 		asMatrix().transform(source, dest);
 	}
