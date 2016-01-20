@@ -303,7 +303,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	
 	@Override
 	public double reduce(Op2 op, double init) {
-		return DoubleArrays.reduce(op, init, data, 0, data.length);
+		return op.reduce(init, data, 0, data.length);
 	}
 
 	@Override

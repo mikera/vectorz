@@ -608,13 +608,12 @@ public class TestMatrices {
 	}
 
 	@Test public void g_Matrix() {
-		// general M*N matrix
-		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
-		randomise(mmn);
-
 		Matrix am1=new Matrix(Matrix33.createScaleMatrix(4.0));
 		doGenericTests(am1);
 		
+		// general M*N matrix
+		VectorMatrixMN mmn=new VectorMatrixMN(6 ,7);
+		randomise(mmn);
 		Matrix am2=new Matrix(mmn);
 		doGenericTests(am2);
 	}

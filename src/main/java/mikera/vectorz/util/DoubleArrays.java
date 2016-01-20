@@ -723,22 +723,6 @@ public final class DoubleArrays {
 					rowCount, columnCount));
 		return new double[ec];
 	}
-
-	public static double reduce(Op2 op, double init, double[] data, int offset, int length) {
-		double result=init;
-		for (int i=0; i<length; i++) {
-			result=op.apply(result, data[offset+i]);
-		}
-		return result;
-	}
-	
-	public static double reduce(Op2 op, double init, double[] data, int offset, int length, int stride) {
-		double result=init;
-		for (int i=0; i<length; i++) {
-			result=op.apply(result, data[offset+i*stride]);
-		}
-		return result;
-	}
 	
 	public static double reduce(Op2 op, double[] data, int offset, int length) {
 		if (length<=0) throw new IllegalArgumentException(ErrorMessages.zeroElementReduce());

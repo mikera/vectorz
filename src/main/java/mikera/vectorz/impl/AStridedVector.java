@@ -226,7 +226,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	public double reduce(Op2 op, double init) {
 		int stride=getStride();
 		int offset=this.getArrayOffset();
-		return DoubleArrays.reduce(op, init, data, offset, length, stride);
+		return op.reduce(init, data, offset, length, stride);
 	}
 	
 	@Override

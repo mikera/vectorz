@@ -137,6 +137,28 @@ public abstract class Op2 {
 	@Override public String toString() {
 		return getClass().toString();
 	}
+	
+	/**
+	 * Method to reduce over a subset of a double[] array
+	 */
+	public double reduce(double init, double[] data, int offset, int length) {
+		double result=init;
+		for (int i=0; i<length; i++) {
+			result=apply(result,data[offset+i]);
+		}
+		return result;
+	}
+	
+	/**
+	 * Method to reduce over a strided subset of a double[] array
+	 */
+	public double reduce(double init, double[] data, int offset, int length, int stride) {
+		double result=init;
+		for (int i=0; i<length; i++) {
+			result=apply(result,data[offset+i*stride]);
+		}
+		return result;
+	}
 
 	/**
 	 * Method to reduce over a sequence of zeros. Optimises for common stable cases.

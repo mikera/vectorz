@@ -213,7 +213,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	public double reduce(Op2 op, double init) {
 		int offset=getArrayOffset();
 		int n=rows*cols;
-		return DoubleArrays.reduce(op,init,data,offset,n);
+		return op.reduce(init,data,offset,n);
 	}
 	
 	@Override

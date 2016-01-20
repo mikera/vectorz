@@ -8,6 +8,7 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
+import mikera.vectorz.Op2;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AStridedVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -144,6 +145,19 @@ public abstract class AStridedMatrix extends AArrayMatrix implements IStridedArr
 		double[] da=toDoubleArray();
 		op.applyTo(da);
 		return Matrix.wrap(rows,cols,da);
+	}
+	
+	@Override
+	public double reduce(Op2 op, double init) {
+		int rc=rowCount();
+		int rs=rowStride();
+		int cs=columnStride();
+		int offset=getArrayOffset();
+		double result=init;
+		for (int i=0; i<rc; i++) {
+			result=op.reduce(result, data, offset+rs*i, cols,cs);
+		}
+		return result;
 	}
 	
 	@Override
