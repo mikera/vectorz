@@ -265,6 +265,13 @@ public class Matrixx {
 		return createRotationMatrix(axis.x, axis.y, axis.z, angle);
 	}
 
+	/**
+	 * Create a 3x3 rotation matrix using the given rotation axis and angle in radians
+	 * @param angle Rotation angle in radians
+	 * @param x x-element of rotation vector
+	 * @param y y-element of rotation vector
+	 * @param z z-element of rotation vector
+	 */
 	public static Matrix33 createRotationMatrix(double x, double y, double z,
 			double angle) {
 		double d = Math.sqrt(x * x + y * y + z * z);
@@ -285,6 +292,11 @@ public class Matrixx {
 						* (1 - ca) + u * sa, w * w + (1 - w * w) * ca);
 	}
 
+	/**
+	 * Create a 3x3 rotation matrix using the given rotation axis and angle in radians
+	 * @param angle Rotation angle in radians
+	 * @param v Rotation axis vector
+	 */
 	public static Matrix33 createRotationMatrix(AVector v, double angle) {
 		if (!(v.length() == 3))
 			throw new VectorzException(
@@ -293,14 +305,26 @@ public class Matrixx {
 				v.unsafeGet(2), angle);
 	}
 
+	/**
+	 * Create a 3x3 rotation matrix using the given rotation angle in radians around the x-axis
+	 * @param angle Rotation angle in radians
+	 */
 	public static Matrix33 createXAxisRotationMatrix(double angle) {
 		return createRotationMatrix(1, 0, 0, angle);
 	}
 
+	/**
+	 * Create a 3x3 rotation matrix using the given rotation angle in radians around the y-axis
+	 * @param angle Rotation angle in radians
+	 */
 	public static Matrix33 createYAxisRotationMatrix(double angle) {
 		return createRotationMatrix(0, 1, 0, angle);
 	}
 
+	/**
+	 * Create a 3x3 rotation matrix using the given rotation angle in radians around the z-axis
+	 * @param angle Rotation angle in radians
+	 */
 	public static Matrix33 createZAxisRotationMatrix(double angle) {
 		return createRotationMatrix(0, 0, 1, angle);
 	}
