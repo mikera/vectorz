@@ -4,6 +4,13 @@ import mikera.arrayz.INDArray;
 import mikera.vectorz.Op2;
 import mikera.vectorz.util.IntArrays;
 
+/**
+ * Abstract base class for N-dimensional arrays that use a fixed int[] shape vector.
+ * 
+ * Any dimensionality (including 0) is supported.
+ * 
+ * @author Mike
+ */
 public abstract class BaseShapedArray extends AbstractArray<INDArray> {
 	private static final long serialVersionUID = -1486048632091493890L;
 

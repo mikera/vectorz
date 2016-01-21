@@ -33,14 +33,17 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 		super(rows,columns);
 	}
 	
+	/**
+	 * Create a ZeroMatrix of the specified size
+	 * 
+	 * @param rows
+	 * @param columns
+	 * @return
+	 */
 	public static ZeroMatrix create(int rows, int columns) {
 		return new ZeroMatrix(rows,columns);
 	}
-	
-	public static ZeroMatrix createSameShape(AMatrix a) {
-		return new ZeroMatrix(a.rowCount(),a.columnCount());
-	}
-	
+		
 	@Override
 	public boolean isSparse() {
 		return true;
@@ -84,11 +87,6 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	@Override
 	public int lowerBandwidthLimit() {
 		return 0;
-	}
-	
-	@Override
-	public void multiply(double factor) {
-		// no change - should maybe be an exception because immutable?
 	}
 	
 	@Override
