@@ -75,7 +75,7 @@ public abstract class AJoinedVector extends ASizedVector {
 	public void copyTo(int offset, AVector dest, int destOffset, int length) {
 		if (dest instanceof AStridedVector) {
 			AStridedVector sv=(AStridedVector)dest;
-			if (!dest.isFullyMutable()) throw new IllegalArgumentException(ErrorMessages.immutable(dest));
+			sv.checkMutable(); 
 			int stride=sv.getStride();
 			copyTo(offset,sv.getArray(),sv.getArrayOffset()+destOffset*stride,length,stride);
 		} else {

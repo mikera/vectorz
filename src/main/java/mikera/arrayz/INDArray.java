@@ -1010,4 +1010,10 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param b
 	 */	
 	public AVector reduceSlices(Op2 op, double init);
+
+	/**
+	 * Checks if an array is mutable. Throws an exception if not.
+	 * @param dimension
+	 */
+	public void checkMutable();
 }
