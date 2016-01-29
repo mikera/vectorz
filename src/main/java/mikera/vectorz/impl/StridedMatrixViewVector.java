@@ -70,6 +70,14 @@ public final class StridedMatrixViewVector extends AArrayVector {
 	}
 	
 	@Override
+	public void set(AVector v) {
+		v.checkLength(length);
+		for (int i=0; i<rows; i++) {
+			v.copyTo(i*cols, data, offset+rowStride*i, cols, colStride);
+		}
+	}
+	
+	@Override
 	public double unsafeGet(int i) {
 		return data[index(i)];
 	}
