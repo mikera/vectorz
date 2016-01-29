@@ -1469,7 +1469,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void checkMutable() {
-		if (!this.isFullyMutable()) throw new IllegalArgumentException(ErrorMessages.immutable(this));
+		if (!this.isMutable()) throw new IllegalArgumentException(ErrorMessages.immutable(this));
 	}
 
 	/**
