@@ -2360,6 +2360,51 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public void setInnerProduct(AVector a, AMatrix b) {
 		setInnerProduct(b.getTranspose(),a);
 	}
+	
+	@Override
+	public final void setMultiple(INDArray a, INDArray b) {
+		int bdims=b.dimensionality();
+		if (bdims==0) {
+			setMultiple(a,b.get());
+		} else if ((bdims==1)&&a.dimensionality()==1) {
+			setMultiple(a.asVector(), b.asVector());
+		} else {
+			set(a);
+			multiply(b);
+		}
+	}
+	
+	/**
+	 * Sets this vector to the element-wise product of two otehr vectors
+	 * @param a
+	 * @param b
+	 */
+	public final void setMultiple(AVector a, AVector b) {
+		set(a);
+		multiply(b);
+	}
+
+	@Override
+	public final void setMultiple(INDArray a, double b) {
+		if (a instanceof AVector) {
+			setMultiple((AVector)a,b);
+		} else if (a.dimensionality()==1){
+			set(a.get()*b);
+		} else {
+			set(a);
+			scale(b);
+		}
+	}
+	
+	/**
+	 * Sets this vector to be a multiple of another vector
+	 * @param a
+	 * @param b
+	 */
+	public final void setMultiple(AVector a, double b) {
+		set(a);
+		scale(b);
+	}
 
 	@Override
 	public void applyOp(IOperator op) {
