@@ -72,6 +72,24 @@ public abstract class AJoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		long n=componentCount();
+		int vstart=0;
+		for (int i=0; i<n; i++) {
+			AVector v=getComponent(i);
+			int vlen=v.length();
+			int sstart=Math.max(offset, vstart);
+			int send=Math.min(offset+length, vstart+vlen);
+			if (sstart<send) {
+				v.copyTo(sstart-vstart, dest, destOffset+stride*(sstart-offset),send-sstart,stride);
+			} else if (vstart>=(offset+length)) {
+				return;
+			}
+			vstart+=vlen;
+		}
+	}
+	
+	@Override
 	public boolean equals(AVector a) {
 		if (this==a) return true;
 		if (length()!=a.length()) return false;
