@@ -453,17 +453,7 @@ public final class Vector extends ADenseArrayVector {
 			this.data[j]+=source.data[i]*factor;
 		}
 	}
-	
-	@Override
-	public void addMultiple(Index destToSource, Vector source, double factor) {
-		int len=this.length();
-		if (destToSource.length()!=len) throw new VectorzException("Index length must match this vector");
-		for (int i=0; i<len; i++) {
-			int j=destToSource.data[i];
-			this.data[i]+=source.data[j]*factor;
-		}
-	}
-	
+		
 	@Override
 	public void multiply(double factor) {
 		DoubleArrays.multiply(data, factor);

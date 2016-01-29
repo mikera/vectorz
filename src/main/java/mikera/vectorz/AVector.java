@@ -2171,37 +2171,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			this.addAt(j,source.unsafeGet(i)*factor);
 		}
 	}
-	
-	/**
-	 * Adds to this vector at taking values from source at the specified indexes which should map from this->source
-	 * @param source
-	 * @param destToSource
-	 * @param factor
-	 */
-	public void addMultiple(Index destToSource, Vector source, double factor) {
-		int len=this.length();
-		if (len!=destToSource.length()) throw new IllegalArgumentException("Index length must match this vector length.");
-		double[] data=source.getArray();
-		for (int i=0; i<len; i++) {
-			int j=destToSource.data[i];
-			this.addAt(i,data[j]*factor);
-		}
-	}
-	
-	/**
-	 * Adds to this vector at taking values from source at the specified indexes which should map from this->source
-	 * @param source
-	 * @param destToSource
-	 * @param factor
-	 */
-	public void addMultiple(Index destToSource, AVector source, double factor) {
-		int len=this.length();
-		if (len!=destToSource.length()) throw new IllegalArgumentException("Index length must match this vector length.");
-		for (int i=0; i<len; i++) {
-			int j=destToSource.data[i];
-			this.addAt(i,source.get(j)*factor);
-		}
-	}
 
 	/**
 	 * sets the vector using values indexed from another vector
