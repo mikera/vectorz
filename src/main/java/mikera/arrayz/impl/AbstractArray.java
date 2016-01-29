@@ -470,6 +470,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void setMultiple(INDArray a, INDArray b) {
+		set(a);
+		multiply(b);
+	}
+
+	@Override
+	public void setMultiple(INDArray a, double b) {
+		set(a);
+		scale(b);
+	}
+	
+	@Override
 	public INDArray addCopy(double d) {
 		INDArray result=clone();
 		result.add(d);

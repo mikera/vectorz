@@ -703,6 +703,24 @@ public interface INDArray extends Cloneable, Serializable {
 	public void setInnerProduct(INDArray a, INDArray b);
 	
 	/**
+	 * Sets this array to the element-wise multiple of two arrays. Must have compatible shapes.
+	 * 
+	 * @param a
+	 * @param b
+	 * @throws IllegalArgumentException if the inner product is a different shape to this array
+	 */
+	public void setMultiple(INDArray a, INDArray b);
+
+	/**
+	 * Sets this array to be the multiple of another array. Must have compatible shapes.
+	 * 
+	 * @param a
+	 * @param b
+	 * @throws IllegalArgumentException if the inner product is a different shape to this array
+	 */
+	public void setMultiple(INDArray a, double b);
+	
+	/**
 	 * Multiplies all elements of the array in place by a given double value
 	 */
 	public void multiply(double factor);
