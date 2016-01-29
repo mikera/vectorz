@@ -154,11 +154,6 @@ public final class JoinedMultiVector extends AJoinedVector {
 	}
 	
 	@Override
-	public void copyTo(int start, AVector dest, int destOffset, int length) {
-		subVector(start,length).copyTo(dest, destOffset);
-	}
-	
-	@Override
 	public AVector subVector(int start, int length) {
 		int end=start+length;
 		if (length==0) return Vector0.INSTANCE;
