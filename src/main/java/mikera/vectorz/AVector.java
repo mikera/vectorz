@@ -416,28 +416,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 		return hashCode;
 	}
-	
-	/**
-	 * Copies a subset of this vector to a specified destination array offset
-	 */
-	public void copyTo(int offset, double[] dest, int destOffset, int length) {
-		for (int i=0; i<length; i++) {
-			dest[destOffset+i]=unsafeGet(i+offset);
-		}
-	}
-	
-	/**
-	 * Copies a subset of this vector to a specified destination array offset
-	 * using the given stride.
-	 * 
-	 * Unsafe operation: performs no bounds checking
-	 */
-	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
-		for (int i=0; i<length; i++) {
-			dest[destOffset+i*stride]=unsafeGet(i+offset);
-		}
-	}
-	
+		
 	@Override
 	public double[] toDoubleArray() {
 		double[] result=new double[length()];
@@ -498,6 +477,27 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		dest.checkRange(destOffset,length);
 		for (int i=0; i<length; i++) {
 			dest.unsafeSet(destOffset+i,unsafeGet(offset+i));
+		}
+	}
+	
+	/**
+	 * Copies a subset of this vector to a specified destination array offset
+	 */
+	public void copyTo(int offset, double[] dest, int destOffset, int length) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i]=unsafeGet(i+offset);
+		}
+	}
+	
+	/**
+	 * Copies a subset of this vector to a specified destination array offset
+	 * using the given stride.
+	 * 
+	 * Unsafe operation: performs no bounds checking
+	 */
+	public void copyTo(int offset, double[] dest, int destOffset, int length, int stride) {
+		for (int i=0; i<length; i++) {
+			dest[destOffset+i*stride]=unsafeGet(i+offset);
 		}
 	}
 
