@@ -34,7 +34,6 @@ public class Vectorz {
 	 * dense vectors. This acts as a hint to modify the behaviour of sparse vector construction functions.
 	 */
 	public static final int MIN_SPARSE_LENGTH=50;
-	public static final int BIG_SPARSE_LENGTH=1000000;
 
 	// threshold below which it is worthwhile making big vectors sparse
 	private static final double SPARSE_DENSITY_THRESHOLD = 0.2;
@@ -150,7 +149,7 @@ public class Vectorz {
 	/**
 	 * Returns a new mutable vector filled with zeros of the specified length.
 	 * 
-	 * Attempts to select the most efficient mutable concrete Vector type for any given length.
+	 * Attempts to select the most efficient dense mutable concrete Vector type for any given length.
 	 * @param length
 	 * @return
 	 */
@@ -162,7 +161,6 @@ public class Vectorz {
 			case 3: return new Vector3();
 			case 4: return new Vector4();
 		}
-		if (length>=BIG_SPARSE_LENGTH) return createSparseMutable(length);
 		return Vector.createLength(length);
 	}
 	
