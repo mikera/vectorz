@@ -40,13 +40,22 @@ public class ImmutableVector extends AStridedVector implements IDense {
 		return wrap(DoubleArrays.copyOf(data));
 	}
 	
+	/** 
+	 * Create an ImmutableVector with a copy of the elements in the source vector
+	 * @param v
+	 * @return
+	 */
 	public static ImmutableVector create(AVector v) {
-		int length=v.length();
-		double[] data=new double[length];
-		v.getElements(data, 0);
-		return new ImmutableVector(data, 0,length);
+		double[] data=v.getElements();
+		return wrap(data);
 	}
 	
+	/**
+	 * Wraps the given double array as an ImmutableVector. Caller should ensure that
+	 * the data array is never subsequently modified
+	 * @param data
+	 * @return
+	 */
 	public static ImmutableVector wrap(double[] data) {
 		return new ImmutableVector(data,0,data.length);
 	}
