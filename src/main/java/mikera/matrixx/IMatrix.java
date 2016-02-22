@@ -150,7 +150,7 @@ public interface IMatrix extends INDArray {
 	public AVector innerProduct(AVector source);
 
 	/**
-	 * Transforms a dense source Vector into a using matrix multiplication (inner product).
+	 * Transforms a dense source Vector using matrix multiplication (inner product).
 	 * 
 	 * @return A new dense vector
 	 */
