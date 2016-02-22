@@ -459,16 +459,4 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 		}
 		return true;
 	}
-
-	public static AVector innerProduct(AMatrix a, AVector b) {
-		// TODO: consider reducing working set?
-		return create(a).innerProduct(b);
-	}
-
-	public static AMatrix innerProduct(AMatrix a, AMatrix b) {
-		// TODO: consider reducing working set?
-		return create(a).innerProduct(b);
-	}
-
-
 }

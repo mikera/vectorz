@@ -380,7 +380,12 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		}
 		return wrap(ndata,rows,cols);
 	}
-		
+	
+	@Override
+	public AMatrix innerProduct(AMatrix a) {
+		return toSparseRowMatrix().innerProduct(a);
+	}
+			
 	@Override
 	public AVector innerProduct(AVector a) {
 		a.checkLength(cols);
