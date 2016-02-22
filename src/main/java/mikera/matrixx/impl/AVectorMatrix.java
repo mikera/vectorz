@@ -12,11 +12,7 @@ import mikera.vectorz.util.ErrorMessages;
  * Abstract base class for matrices that use a collection of Vectors 
  * as storage for the matrix rows.
  * 
- * Vector matrices can support appending / replacing with new rows - 
- * - this functionality can be useful e.g. when building a matrix to represent a data set.
- * 
  * @author Mike
- *
  */
 public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatrix implements IFastRows {
 	private static final long serialVersionUID = -6838429336358726743L;
