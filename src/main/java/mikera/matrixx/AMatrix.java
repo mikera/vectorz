@@ -1445,7 +1445,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public void applyOp(Op2 op, INDArray b) {
-		applyOp(op,b.broadcastLike(this));
+		int dims=b.dimensionality();
+		if (dims==0) {
+			applyOp(op,b.get());
+		} else if (dims==1) {
+			applyOp(op,b.asVector());
+		} else {
+			applyOp(op,b.broadcastLike(this));			
+		}
 	}
 	
 	public void applyOp(Op2 op, AMatrix b) {
@@ -1453,6 +1460,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
 			getRowView(i).applyOp(op,b.getRow(i));
+		}
+	}
+	
+	public void applyOp(Op2 op, AVector b) {
+		b.checkLength(columnCount());
+		int rc = rowCount();
+		for (int i = 0; i < rc; i++) {
+			getRowView(i).applyOp(op,b);
 		}
 	}
 
