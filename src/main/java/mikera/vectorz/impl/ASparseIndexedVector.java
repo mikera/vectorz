@@ -159,7 +159,7 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	public int[] nonZeroIndices() {
 		int n=(int)nonZeroCount();
         if (n==0) {
-            return new int[0];
+            return IntArrays.EMPTY_INT_ARRAY;
         }
 		double[] data=internalData();
 		Index index=internalIndex();
