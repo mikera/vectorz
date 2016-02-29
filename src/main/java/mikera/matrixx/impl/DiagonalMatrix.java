@@ -1,6 +1,7 @@
 package mikera.matrixx.impl;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ADenseArrayVector;
@@ -194,9 +195,8 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public DiagonalMatrix clone() {
-		DiagonalMatrix m=new DiagonalMatrix(data);
-		return m;
+	public AMatrix clone() {
+		return Matrixx.create(this);
 	}
 	
 	@Override

@@ -1,6 +1,8 @@
 package mikera.matrixx.impl;
 
 import static org.junit.Assert.*;
+
+import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Definite;
 
 import org.junit.Test;
@@ -27,5 +29,10 @@ public class TestDiagonalMatrix {
 		assertTrue(Definite.isPositiveSemiDefinite(DiagonalMatrix.create(1,0.4,2)));
 		assertTrue(Definite.isPositiveSemiDefinite(DiagonalMatrix.create(1,0)));
 		assertFalse(Definite.isPositiveSemiDefinite(DiagonalMatrix.create(-1,1)));
+	}
+	
+	@Test public void testDiagonalAdd() {
+		assertTrue(DiagonalMatrix.create(1,2).clone().isFullyMutable());
+		assertEquals(Matrix.create(new double[][] {{4,3},{3,5}}),DiagonalMatrix.create(1,2).addCopy(3.0));
 	}
 }
