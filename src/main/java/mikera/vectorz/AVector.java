@@ -232,7 +232,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return rotateView(shift);
 	}
 	
-	public INDArray rotateView(int shift) {
+	@Override
+	public AVector rotateView(int shift) {
 		int n=length();
 		if (n==0) return this;
 		
