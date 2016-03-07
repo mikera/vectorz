@@ -87,4 +87,11 @@ public interface IVector extends INDArray {
 	 * @return
 	 */
 	boolean isSameShape(AVector a);
+
+	/**
+	 * Shifts a vector by the specified number of elements, filling with zeros. Returns a new vector.
+	 * @param shift
+	 * @return
+	 */
+	AVector shiftCopy(int shift);
 }

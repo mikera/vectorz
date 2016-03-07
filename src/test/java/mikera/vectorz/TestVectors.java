@@ -245,6 +245,25 @@ public class TestVectors {
 		assertEquals(v.get(len-1),sv.select(1).get(0),0.0);		
 	}
 	
+	private void testShift(AVector v) {
+		int len=v.length();
+		if (len<2) return;
+		
+		AVector s0=v.shiftCopy(-1);
+		assertEquals(0.0,s0.get(0),0.0);
+		assertEquals(v.get(len-2),s0.get(len-1),0.0);
+		
+		AVector s1=v.shiftCopy(1);
+		assertEquals(0.0,s1.get(len-1),0.0);
+		assertEquals(v.get(1),s1.get(0),0.0);
+		
+		AVector s2=v.shiftCopy(0);
+		assertFalse((v.isMutable())&&(v==s2));
+		assertEquals(v,s2);
+
+	}
+	
+	
 	private void testAddMultipleToArray(AVector v) {
 		int len=v.length();
 		double[] ds=new double[len+10];
@@ -872,6 +891,7 @@ public class TestVectors {
 		testMultiply(v);
 		testDivide(v);
 		testSet(v);
+		testShift(v);
 		testSparseOps(v);
 		testSquare(v);
 		testSubvectors(v);

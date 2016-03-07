@@ -1372,6 +1372,20 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public AVector shiftCopy(int shift) {
+		if (shift==0) return copy();
+		int n=length();
+		Vector v=Vector.createLength(n);
+		if ((shift>=n)||(shift<=-n)) return v;
+		if (shift<0) {
+			v.add(-shift,this,0,n+shift);
+		} else {
+			v.add(0,this,shift,n-shift);
+		}
+		return v;
+	}
+	
+	@Override
 	public void pow(double exponent) {
 		if (exponent==1.0) return;
 		if (exponent==0.0) {
