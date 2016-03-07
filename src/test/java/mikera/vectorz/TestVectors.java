@@ -260,9 +260,7 @@ public class TestVectors {
 		AVector s2=v.shiftCopy(0);
 		assertFalse((v.isMutable())&&(v==s2));
 		assertEquals(v,s2);
-
 	}
-	
 	
 	private void testAddMultipleToArray(AVector v) {
 		int len=v.length();
