@@ -96,9 +96,16 @@ public interface IVector extends INDArray {
 	AVector shiftCopy(int shift);
 
 	/**
-	 * Shifts a vector by the specified number of elements, wrapping around element values. Returns a view.
+	 * Rotates a vector by the specified number of elements, wrapping around element values. Returns a view.
 	 * @param shift
 	 * @return
 	 */
 	AVector rotateView(int shift);
+
+	/**
+	 * Rotates a vector by the specified number of elements, wrapping around element values. Returns a new vector.
+	 * @param shift
+	 * @return
+	 */
+	AVector rotateCopy(int shift);
 }

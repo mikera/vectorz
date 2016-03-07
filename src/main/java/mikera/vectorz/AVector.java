@@ -243,6 +243,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return subVector(shift,n-shift).join(subVector(0,shift));
 	}	
 	
+	@Override
+	public AVector rotateCopy(int shift) {
+		return rotateView(shift).copy();
+	}	
+	
 	/**
 	 * Obtains a sub-vector view that refers to this vector.
 	 * Changes to the sub-vector will be reflected in this vector
