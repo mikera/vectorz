@@ -1,7 +1,5 @@
 package mikera.vectorz.nativeimpl;
 
-import java.nio.ByteBuffer;
-import java.nio.DoubleBuffer;
 import com.github.fommil.netlib.BLAS;
 import com.github.fommil.netlib.LAPACK;
 
