@@ -56,7 +56,7 @@ public class TestTridiagonalDecompositionHouseholder {
             AMatrix T = alg.getT();
 
 //            SimpleMatrix A_found = Q.mult(T).mult(Q.transpose());
-            Matrix A_found = Multiplications.multiply(Q, Multiplications.multiply(T, Q.getTranspose()));
+            AMatrix A_found = Multiplications.multiply(Q, Multiplications.multiply(T, Q.getTranspose()));
 
             assertTrue("width = "+width,A.epsilonEquals(A_found,1e-8));
         }

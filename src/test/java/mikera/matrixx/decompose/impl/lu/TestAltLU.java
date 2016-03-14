@@ -224,7 +224,7 @@ public class TestAltLU {
       assertTrue(octUpper.epsilonEquals(U,1e-5));
 
 //      DenseMatrix64F A_found = P.mult(L).mult(U).getMatrix();
-      Matrix A_found = Multiplications.multiply(P, Multiplications.multiply(L, U));
+      AMatrix A_found = Multiplications.multiply(P, Multiplications.multiply(L, U));
       assertTrue(A_found.epsilonEquals(A,1e-8));
   }
 
@@ -245,7 +245,7 @@ public class TestAltLU {
           AMatrix P = result.getP();
 
 //          DenseMatrix64F A_found = P.transpose().mult(L).mult(U).getMatrix();
-          Matrix A_found = Multiplications.multiply(P, Multiplications.multiply(L, U));
+          AMatrix A_found = Multiplications.multiply(P, Multiplications.multiply(L, U));
           assertTrue(A_found.epsilonEquals(A,1e-8));
       }
   }
@@ -264,7 +264,7 @@ public class TestAltLU {
       AMatrix U = result.getU();
 
 //      CommonOps.mult(L,U,A_found);
-      Matrix A_found = Multiplications.multiply(L, U);      
+      AMatrix A_found = Multiplications.multiply(L, U);      
 
       assertFalse(A_found.hasUncountable());
       assertTrue(A_found.epsilonEquals(A,1e-8));
@@ -302,7 +302,7 @@ public class TestAltLU {
       AMatrix P = result.getP();
 
 //      DenseMatrix64F A_found = P.mult(L).mult(U).getMatrix();
-      Matrix A_found = Multiplications.multiply(P, Multiplications.multiply(L, U));
+      AMatrix A_found = Multiplications.multiply(P, Multiplications.multiply(L, U));
 
       assertTrue(A_found.epsilonEquals(A,1e-8));
   }
@@ -319,7 +319,7 @@ public class TestAltLU {
       AMatrix P = result.getP();
 
 //      DenseMatrix64F A_found = P.transpose().mult(L).mult(U).getMatrix();
-      Matrix A_found = Multiplications.multiply(P.getTranspose(), Multiplications.multiply(L, U));
+      AMatrix A_found = Multiplications.multiply(P.getTranspose(), Multiplications.multiply(L, U));
 
       assertTrue(A_found.epsilonEquals(A,1e-8));
   }

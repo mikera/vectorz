@@ -18,6 +18,7 @@
 
 package mikera.matrixx.decompose.impl.svd;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.decompose.IBidiagonalResult;
@@ -204,7 +205,7 @@ public class TestSvdImplicitQrAlgorithm {
         DiagonalMatrix W = DiagonalMatrix.create(svd.diag);
 //
 //            Ut.mult(W).mult(V).print();
-        Matrix A_found = Multiplications.multiply(Multiplications.multiply(Ut.getTranspose(), W), Vt);
+        AMatrix A_found = Multiplications.multiply(Multiplications.multiply(Ut.getTranspose(), W), Vt);
 //            A_found.print();
 
         assertEquals(diag[0],A_found.get(0,0),1e-8);

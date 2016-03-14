@@ -52,7 +52,7 @@ public class TestHouseholderQR extends GenericQrCheck {
 
         Matrix I = Matrix.createIdentity(width-w);
 //      SimpleMatrix Q = I.minus(U.mult(U.transpose()).scale(qr.getGamma()));
-        Matrix temp1 = Multiplications.multiply(U, U.getTranspose());
+        AMatrix temp1 = Multiplications.multiply(U, U.getTranspose());
         temp1.scale(qr.getGamma());
         I.sub(temp1);
         Matrix Q = I;
@@ -101,7 +101,7 @@ public class TestHouseholderQR extends GenericQrCheck {
 //        SimpleMatrix A_sub = A.extractMatrix(w,width,w,width);
         AStridedMatrix A_sub = A.subMatrix(w,width-w,w,width-w);
 //        SimpleMatrix expected = I.minus(u_sub.mult(u_sub.transpose()).scale(gamma)).mult(A_sub);
-        Matrix temp1 = Multiplications.multiply(u_sub, u_sub.getTranspose());
+        AMatrix temp1 = Multiplications.multiply(u_sub, u_sub.getTranspose());
         temp1.scale(gamma);
         I.sub(temp1);
         Matrix expected = Multiplications.multiply(I, A_sub);

@@ -5,9 +5,9 @@ import static mikera.vectorz.nativeimpl.BlasInstance.blas;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
+import mikera.matrixx.impl.ZeroMatrix;
 import mikera.vectorz.nativeimpl.BlasInstance;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
@@ -25,7 +25,10 @@ public class Multiplications {
 	 * @param b
 	 * @return
 	 */
-	public static Matrix multiply(AMatrix a, AMatrix b) {
+	public static AMatrix multiply(AMatrix a, AMatrix b) {
+		if (BlasInstance.blas!=null) {
+			return nativeMultiply(a,b);
+		}
 		if (a instanceof Matrix) {
 			return multiply((Matrix)a,b);
 		} else if (a instanceof ImmutableMatrix) {
@@ -184,29 +187,23 @@ public class Multiplications {
 		return result;		
 	}
 	
-	public static AMatrix nativeMultiply(Matrix a, AStridedMatrix b) {
+	public static AMatrix nativeMultiply(AMatrix a, AMatrix b) {
 		if (BlasInstance.blas==null) throw new UnsupportedOperationException("Native BLAs not available. You need netlib-java on your classpath");
-		if (!((b.getArrayOffset()==0)&&(b.rowStride()==1))) b=DenseColumnMatrix.create(b);
-		int n=b.columnCount();
-		int m=a.rowCount();
-		int k=a.columnCount();
+		// Note: we want a and b in column major format
+		return nativeMultiply(DenseColumnMatrix.create(a),DenseColumnMatrix.create(b));
+	}
+	
+	private static AMatrix nativeMultiply(DenseColumnMatrix a, DenseColumnMatrix b) {
+		int m=a.rowCount(); // rows of destination array
+		int n=b.columnCount(); // columns of destination array
+		int k=a.columnCount(); 
 		if (k!=b.rowCount()) throw new Error(ErrorMessages.incompatibleShapes(a, b));
+		if (k==0) return ZeroMatrix.create(m, n);
 		
-		if (a.isPackedArray()) {
-			// row major format
-			double[] dest=new double[m*n];
-			double[] src=b.getArray();
-			blas.dgemm("T","N", m, n, k, 1.0, a.data, k, src, k, 0.0, dest, m);
-			return Matrixx.wrapStrided(dest,m,n,0,1,m);
-		} else if ((a.getArrayOffset()==0) && (a.rowStride()==1)) {
-			// column major format
-			// row major format
-			double[] dest=new double[m*n];
-			double[] src=b.getArray();
-			blas.dgemm("N","N", m, n, k, 1.0, a.data, m, src, k, 0.0, dest, m);
-			return Matrixx.wrapStrided(dest,m,n,0,1,m);
-		} else {
-			throw new UnsupportedOperationException("Unexpected matrix strides!");
-		}
+		double[] dest=new double[m*n];
+		double[] adata=a.getArray();
+		double[] bdata=b.getArray();
+		blas.dgemm("N","N", m, n, k, 1.0, adata, 0, m, bdata, 0, k, 0.0, dest, 0 , m);
+		return Matrixx.wrapStrided(dest,m,n,0,1,m);
 	}
 }
