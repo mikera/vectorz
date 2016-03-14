@@ -11,13 +11,13 @@ public class BlasInstance {
 	static {
 		try {
 			blas=BLAS.getInstance();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			
 		}
 
 		try {
 			lapack=LAPACK.getInstance();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			
 		}	
 	}
