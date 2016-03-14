@@ -42,6 +42,26 @@ public final class DenseColumnMatrix extends AStridedMatrix implements IFastColu
 		return dm;
 	}
 	
+	/**
+	 * Coerces a matrix to DenseColumnMatrix format. Will wrap data if already in correct format
+	 * @param m
+	 * @return
+	 */
+	public static DenseColumnMatrix coerce(AMatrix m) {
+		if (m instanceof DenseColumnMatrix) return (DenseColumnMatrix) m;
+		if (m instanceof AStridedMatrix) {
+			AStridedMatrix am=(AStridedMatrix)m;
+			int rc=am.rowCount();
+			int cc=am.columnCount();
+			double[] data=am.getArray();
+		    if ((am.rowStride()==1)&&(am.columnStride()==rc)&&(data.length==rc*cc)) {
+		    	return DenseColumnMatrix.wrap(rc,cc, data);
+		    }
+		}
+		return DenseColumnMatrix.create(m);
+	}
+
+	
 	@Override
 	public int getArrayOffset() {
 		return 0;

@@ -190,7 +190,7 @@ public class Multiplications {
 	public static AMatrix nativeMultiply(AMatrix a, AMatrix b) {
 		if (BlasInstance.blas==null) throw new UnsupportedOperationException("Native BLAs not available. You need netlib-java on your classpath");
 		// Note: we want a and b in column major format
-		return nativeMultiply(DenseColumnMatrix.create(a),DenseColumnMatrix.create(b));
+		return nativeMultiply(DenseColumnMatrix.coerce(a),DenseColumnMatrix.coerce(b));
 	}
 	
 	private static AMatrix nativeMultiply(DenseColumnMatrix a, DenseColumnMatrix b) {
