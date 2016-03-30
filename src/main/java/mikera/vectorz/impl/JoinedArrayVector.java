@@ -313,6 +313,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 	
 	@Override 
 	public void set(AVector v) {
+		checkSameLength(v);
 		for (int j=0; j<numArrays; j++) {
 			v.copyTo(pos[j],data[j], offsets[j],subLength(j));
 		}
