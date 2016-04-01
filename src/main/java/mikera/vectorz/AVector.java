@@ -566,7 +566,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public void multiply(double factor) {
-		if (factor==1.0) return;
 		int len=length();
 		for (int i = 0; i < len; i++) {
 			unsafeSet(i,unsafeGet(i)*factor);
@@ -2549,8 +2548,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public void scaleAdd(double factor, double constant) {
-		multiply(factor);
-		add(constant);
+		if (factor==0.0) {
+			set(constant);
+		} else {
+			if (factor!=1.0) multiply(factor);
+			if (constant!=0.0) add(constant);
+		} 
 	}
 
 	@Override

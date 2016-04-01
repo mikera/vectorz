@@ -423,8 +423,12 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void scaleAdd(double factor, double constant) {
-		multiply(factor);
-		add(constant);
+		if (factor==0.0) {
+			set(constant);
+		} else {
+			if (factor!=1.0) multiply(factor);
+			if (constant!=0.0) add(constant);
+		}
 	}
 	
 	@Override
@@ -445,19 +449,16 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void addPower(INDArray src, double exponent) {
-		INDArray tmp=src.broadcastLike(this);
-		tmp=tmp.clone();
+		INDArray tmp=src.clone();
 		tmp.pow(exponent);
 		add(tmp);
 	}
 
 	@Override
 	public void addPower(INDArray src, double exponent, double factor) {
-		INDArray tmp=src.broadcastLike(this);
-		tmp=tmp.clone();
+		INDArray tmp=src.clone();
 		tmp.pow(exponent);
-		tmp.scale(factor);
-		add(tmp);
+		addMultiple(tmp,factor);
 	}
 	
 	@Override
