@@ -694,6 +694,15 @@ public interface INDArray extends Cloneable, Serializable {
 	public void addInnerProduct(INDArray a, INDArray b);
 
 	/**
+	 * Adds the outer product of two arrays to this array.
+	 * 
+	 * @param a
+	 * @param b
+	 * @throws IllegalArgumentException if the inner product is a different shape to this array
+	 */
+	public void addOuterProduct(INDArray a, INDArray b);
+	
+	/**
 	 * Sets this array to the inner product of two arrays. Must be the correct shape.
 	 * 
 	 * @param a

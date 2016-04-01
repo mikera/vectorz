@@ -538,6 +538,15 @@ public class TestArrays {
 		assertTrue(m2.epsilonEquals(a));	
 	}
 	
+	private void testAddOuterProduct(INDArray a) {
+		if (a.dimensionality()>2) return;
+		INDArray opa=a.outerProduct(a);
+		INDArray opc=opa.clone();
+		opc.addOuterProduct(a, a);
+		opc.scale(0.5);
+		assertTrue(opa.epsilonEquals(opc));
+	}
+	
 	private void testReciprocal(INDArray a) {
 		a=a.exactClone();
 		
@@ -829,6 +838,7 @@ public class TestArrays {
 		testTranspose(a);
 		testAsVector(a);
 		testAdd(a);
+		testAddOuterProduct(a);
 		testScaleAdd(a);
 		testSub(a);
 		testToArray(a);

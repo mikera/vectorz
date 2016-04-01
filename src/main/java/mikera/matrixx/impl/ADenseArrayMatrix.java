@@ -210,6 +210,17 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	}
 	
 	@Override
+	public void addOuterProduct(AVector a, AVector b) {
+		int rc= a.checkLength(rows);
+		b.checkLength(cols);
+		double[] data=getArray();
+		int offset=getArrayOffset();
+		for (int i=0; i<rc; i++) {
+			b.addMultipleToArray(a.unsafeGet(i), 0, data, offset+cols*i, cols);
+		}	
+	}
+	
+	@Override
 	public double reduce(Op2 op, double init) {
 		int offset=getArrayOffset();
 		int n=rows*cols;
