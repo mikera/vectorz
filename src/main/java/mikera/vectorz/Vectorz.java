@@ -428,6 +428,18 @@ public class Vectorz {
 		}		
 	}
 	
+	/**
+	 * Swaps two vectors, mutating both. 
+	 * @param a
+	 * @param b
+	 */
+	public static void swap(AVector a, AVector b) {
+		AVector temp=Vector.createLength(a.length());
+		temp.set(a);
+		a.set(b);
+		b.set(temp);
+	}
+	
 	public static void invSqrt(Vector v) {
 		int len=v.length();
 		double[] data=v.getArray();

@@ -971,7 +971,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Adds the inner product (matrix multiply) of two matrices to this matrix
 	 */
-	public final void addInnerProduct(AMatrix a, AMatrix b) {
+	public void addInnerProduct(AMatrix a, AMatrix b) {
 		add(a.innerProduct(b));
 	}
 
@@ -1015,15 +1015,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			return;
 		AVector a = getRowView(i);
 		AVector b = getRowView(j);
-		int cc = columnCount();
-		for (int k = 0; k < cc; k++) {
-			double t = a.unsafeGet(k);
-			double bt= b.unsafeGet(k);
-			if (t!=bt) {
-				a.unsafeSet(k, bt);
-				b.unsafeSet(k, t);
-			}
-		}
+		Vectorz.swap(a, b);
 	}
 
 	/**
@@ -1034,15 +1026,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			return;
 		AVector a = getColumnView(i);
 		AVector b = getColumnView(j);
-		int rc = rowCount();
-		for (int k = 0; k < rc; k++) {
-			double t = a.unsafeGet(k);
-			double bt= b.unsafeGet(k);
-			if (t!=bt) {
-				a.unsafeSet(k, bt);
-				b.unsafeSet(k, t);
-			}
-		}
+		Vectorz.swap(a, b);
 	}
 	
 	public void composeWith(AMatrix a) {
