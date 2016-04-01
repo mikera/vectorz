@@ -96,7 +96,7 @@ public class TestMatrices {
 		AVector v2=Vectorz.createUniformRandomVector(cc);
 		AMatrix r1=m.addCopy(v1.outerProduct(v2));
 		
-		m=m.clone();
+		m=(m.isFullyMutable())?m.exactClone():m.clone();
 		
 		m.addOuterProduct(v1, v2);
 		assertEquals(r1,m);
