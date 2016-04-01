@@ -2254,6 +2254,17 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Adds a multiple of this vector into a double array at the specified offset
+	 * @param offset
+	 * @param array
+	 * @param arrayOffset
+	 * @param length
+	 */
+	public void addMultipleToArray(double factor, double[] array, int arrayOffset) {
+		addMultipleToArray(factor,0,array,arrayOffset,length());
+	}
+	
+	/**
 	 * Adds a multiple of a subvector of this vector into a double array at the specified offset
 	 * @param offset
 	 * @param array

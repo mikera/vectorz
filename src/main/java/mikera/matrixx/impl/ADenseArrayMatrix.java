@@ -216,7 +216,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 		double[] data=getArray();
 		int offset=getArrayOffset();
 		for (int i=0; i<rc; i++) {
-			b.addMultipleToArray(a.unsafeGet(i), 0, data, offset+cols*i, cols);
+			b.addMultipleToArray(a.unsafeGet(i), data, offset+cols*i);
 		}	
 	}
 	

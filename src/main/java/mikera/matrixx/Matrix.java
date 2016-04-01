@@ -529,7 +529,7 @@ public final class Matrix extends ADenseArrayMatrix {
 		m.checkShape(rc, cc);
 		
 		for (int i = 0; i < rc; i++) {
-			m.getRow(i).addMultipleToArray(factor, 0, data, i * cols, cc);
+			m.getRow(i).addMultipleToArray(factor, data, i * cols);
 		}
 	}
 

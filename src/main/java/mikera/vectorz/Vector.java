@@ -302,8 +302,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(ADenseArrayVector v, double factor) {
-		int length=checkSameLength(v);
-		v.addMultipleToArray(factor,0,data, 0,length);
+		checkSameLength(v);
+		v.addMultipleToArray(factor,data, 0);
 	}
 	
 	@Override
@@ -440,8 +440,8 @@ public final class Vector extends ADenseArrayVector {
 	
 	@Override
 	public void addMultiple(AVector v, double factor) {
-		if (v instanceof ADenseArrayVector) {addMultiple(((ADenseArrayVector)v),factor); return;}
-		v.addMultipleToArray(factor, 0, data, 0, length());
+		checkSameLength(v);
+		v.addMultipleToArray(factor, data, 0);
 	}
 	
 	@Override

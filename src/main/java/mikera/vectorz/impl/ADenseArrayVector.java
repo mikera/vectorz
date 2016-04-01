@@ -236,6 +236,11 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 			a.addProductToArray(factor, 0, b, 0, array, offset, len);			
 		}
 	}
+	
+	@Override
+	public void addMultipleToArray(double factor, double[] array, int arrayOffset) {
+		DoubleArrays.addMultiple(array, arrayOffset, data, getArrayOffset(), length, factor);
+	}
 
 	@Override
 	public void addMultipleToArray(double factor, int offset, double[] array,
@@ -499,8 +504,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	public void addMultiple(ADenseArrayVector v, double factor) {
-		int length = checkSameLength(v);
-		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
+		checkSameLength(v);
+		v.addMultipleToArray(factor, getArray(), getArrayOffset());
 	}
 	
 	@Override
@@ -514,25 +519,12 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	
 	@Override
 	public void scaleAdd(double factor, AVector v, double vfactor, double constant) {
-		if (v instanceof ADenseArrayVector) {scaleAdd(factor,(ADenseArrayVector)v,vfactor,constant); return;}
-		int length=checkSameLength(v);
-
+		checkSameLength(v);
 		int dataOffset=this.getArrayOffset();
-		v.addMultipleToArray(vfactor, 0, data, dataOffset, length);
-		if (constant!=0.0) add(constant);
+		scaleAdd(factor,constant);
+		v.addMultipleToArray(vfactor, data, dataOffset);
 	}
 	
-	public void scaleAdd(double factor, ADenseArrayVector v, double vfactor, double constant) {
-		int length=checkSameLength(v);
-		double[] arr=v.getArray();
-		int start=getArrayOffset();
-		int end=start+length;
-		int deltaOffset=v.getArrayOffset()-start;
-		for (int i = start; i < end; i++) {
-			data[i] = (data[i]*factor) + (arr[i+deltaOffset]*vfactor) + constant;
-		}
-	}
-
 	@Override
 	public double elementSquaredSum() {
 		return DoubleArrays.elementSquaredSum(data, getArrayOffset(), length);

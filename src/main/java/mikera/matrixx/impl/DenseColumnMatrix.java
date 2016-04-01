@@ -104,7 +104,7 @@ public final class DenseColumnMatrix extends AStridedMatrix implements IFastColu
 		int cc=b.checkLength(cols);
 		double[] data=getArray();
 		for (int i=0; i<cc; i++) {
-			a.addMultipleToArray(b.unsafeGet(i), 0, data, rows*i, rows);
+			a.addMultipleToArray(b.unsafeGet(i), data, rows*i);
 		}	
 	}
 	
