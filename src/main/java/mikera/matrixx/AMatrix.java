@@ -952,15 +952,26 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public void addInnerProduct(INDArray a, INDArray b) {
-		if (a instanceof AMatrix && b instanceof AMatrix) {
-			addInnerProduct((AVector)a,(AVector)b);
+		if (a instanceof AMatrix) {
+			addInnerProduct((AMatrix)a,b);
 		} else {
 			super.addInnerProduct(a, b);
 		}
 	}
 	
-	public void addInnerProduct(AMatrix a, AMatrix b) {
-		// TODO: optimised overloads without copying
+	@Override
+	public final void addInnerProduct(AMatrix a, INDArray b) {
+		if (b instanceof AMatrix) {
+			addInnerProduct(a,(AMatrix)b);
+		} else {
+			super.addInnerProduct(a, b);
+		}
+	}
+	
+	/**
+	 * Adds the inner product (matrix multiply) of two matrices to this matrix
+	 */
+	public final void addInnerProduct(AMatrix a, AMatrix b) {
 		add(a.innerProduct(b));
 	}
 

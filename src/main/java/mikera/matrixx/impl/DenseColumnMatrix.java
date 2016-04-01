@@ -98,6 +98,16 @@ public final class DenseColumnMatrix extends AStridedMatrix implements IFastColu
 		}
 	}
 	
+	@Override
+	public void addOuterProduct(AVector a, AVector b) {
+		a.checkLength(rows);
+		int cc=b.checkLength(cols);
+		double[] data=getArray();
+		for (int i=0; i<cc; i++) {
+			a.addMultipleToArray(b.unsafeGet(i), 0, data, rows*i, rows);
+		}	
+	}
+	
 	@Override 
 	public void set(AMatrix m) {
 		checkSameShape(m);

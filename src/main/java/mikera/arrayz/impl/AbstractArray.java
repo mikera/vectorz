@@ -462,12 +462,53 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void addInnerProduct(INDArray a, INDArray b) {
-		add(a.innerProduct(b));
+		if (a.dimensionality()==0) {
+			addMultiple(b,a.get());
+		} else if (a instanceof AMatrix) {
+			addInnerProduct((AMatrix) a,b);
+		} else if (a instanceof AVector) {
+			addInnerProduct((AVector) a,b);
+		} else {
+			add(a.innerProduct(b));
+		}
 	}
+	
+	/**
+	 * Adds the inner product of a matrix and an array to this array
+	 * @param a
+	 * @param b
+	 */
+	public void addInnerProduct(AMatrix a, INDArray b) {
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			slice(i).addInnerProduct(a.getRow(i),b);
+		}
+	}	
+	
+	/**
+	 * Adds the inner product of a vector and an array to this array
+	 * @param a
+	 * @param b
+	 */
+	public void addInnerProduct(AVector a, INDArray b) {
+		int n=a.length();
+		if (b.getShape(0)!=n) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a, b));
+		for (int i=0; i<n; i++) {
+			addMultiple(b.slice(i),a.unsafeGet(i));
+		}
+	}	
+
 	
 	@Override
 	public void addOuterProduct(INDArray a, INDArray b) {
-		add(a.outerProduct(b));	
+		if (a.dimensionality()==0) {
+			addMultiple(b,a.get());
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).addOuterProduct(a.slice(i),b);
+			}
+		}
 	}
 	
 	@Override
