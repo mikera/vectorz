@@ -32,6 +32,13 @@ public class TestScalars {
 		assertEquals(a,a.outerProduct(s));
 		assertEquals(a,a.innerProduct(s));
 	}
+	
+	@Test
+	public void testSetElements() {
+		AScalar s = new Scalar(1.0);
+		s.setElements(new double[] {2.0});
+		assertEquals(2.0, s.get(), 0.0);
+	}
 
 	private void testAsVector(AScalar s) {
 		s=s.exactClone();

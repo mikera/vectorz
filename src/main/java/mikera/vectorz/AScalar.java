@@ -268,6 +268,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public void setElements(double[] values, int offset) {
+		set(values[offset]);
+	}
+	
+	@Override
 	public AVector asVector() {
 		return new WrappedScalarVector(this);
 	}
