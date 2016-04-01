@@ -118,10 +118,10 @@ public final class JoinedMultiVector extends AJoinedVector {
 			return;
 		}
 		vecs[i1].addMultipleToArray(factor,offset-splits[i1], array, arrayOffset,splits[i1+1]-offset);
-		vecs[i2].addMultipleToArray(factor,0, array, arrayOffset+splits[i2]-offset,end-splits[i2]);
+		vecs[i2].addMultipleToArray(factor,array, arrayOffset+splits[i2]-offset);
 		for (int i=i1+1;i<i2; i++) {
 			int io=splits[i]-offset;
-			vecs[i].addMultipleToArray(factor,0,array, arrayOffset+io,vecs[i].length());
+			vecs[i].addMultipleToArray(factor,array, arrayOffset+io);
 		}
 	}
 	

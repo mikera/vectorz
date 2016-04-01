@@ -104,7 +104,7 @@ public final class JoinedVector extends AJoinedVector {
 			left.addMultipleToArray(factor,offset, array, arrayOffset, length);
 		} else {
 			left.addMultipleToArray(factor,offset, array, arrayOffset, (split-offset));
-			right.addMultipleToArray(factor,0, array, arrayOffset+(split-offset), length-(split-offset));		
+			right.addMultipleToArray(factor,array, arrayOffset+(split-offset));		
 		}
 	}
 	
