@@ -89,6 +89,19 @@ public class TestMatrices {
 		assertEquals(m,m2);
 	}
 	
+	private void doAddOuterProductTest(AMatrix m) {
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		AVector v1=Vectorz.createUniformRandomVector(rc);
+		AVector v2=Vectorz.createUniformRandomVector(cc);
+		AMatrix r1=m.addCopy(v1.outerProduct(v2));
+		
+		m=m.clone();
+		
+		m.addOuterProduct(v1, v2);
+		assertEquals(r1,m);
+	}
+	
 	private void doNotSquareTests(AMatrix m) {
 		try {
 			m.getLeadingDiagonal();
@@ -510,6 +523,7 @@ public class TestMatrices {
 		doScaleTest(m);
 		doBoundsTest(m);
 		doMulTest(m);
+		doAddOuterProductTest(m);
 		doAddTest(m);
 		doRowColumnTests(m);
 		doDotProductTest(m);

@@ -2308,6 +2308,19 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public final void setInnerProduct(INDArray a, INDArray b) {
+		if ((a instanceof AMatrix)&&(b instanceof AVector)) {
+			setInnerProduct((AMatrix)a,(AVector)b);
+			return;
+		}
+		if ((b instanceof AMatrix)&&(a instanceof AVector)) {
+			setInnerProduct((AVector)a,(AMatrix)b);
+			return;
+		}
+		set(a.innerProduct(b));
+	}
+	
+	@Override
 	public final void addInnerProduct(INDArray a, INDArray b) {
 		if ((a instanceof AMatrix)&&(b instanceof AVector)) {
 			addInnerProduct((AMatrix)a,(AVector)b);
@@ -2319,19 +2332,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 
 		super.addInnerProduct(a, b);
-	}
-	
-	@Override
-	public final void setInnerProduct(INDArray a, INDArray b) {
-		if ((a instanceof AMatrix)&&(b instanceof AVector)) {
-			setInnerProduct((AMatrix)a,(AVector)b);
-			return;
-		}
-		if ((b instanceof AMatrix)&&(a instanceof AVector)) {
-			setInnerProduct((AVector)a,(AMatrix)b);
-			return;
-		}
-		set(a.innerProduct(b));
 	}
 	
 	/**
