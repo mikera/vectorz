@@ -385,6 +385,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray outerProduct(INDArray a) {
+		if (this.dimensionality()==0) return a.multiplyCopy(get());
 		ArrayList<INDArray> al=new ArrayList<INDArray>(sliceCount());
 		for (Object s:this) {
 			if (s instanceof INDArray) {
@@ -462,6 +463,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public void addInnerProduct(INDArray a, INDArray b) {
 		add(a.innerProduct(b));
+	}
+	
+	@Override
+	public void addOuterProduct(INDArray a, INDArray b) {
+		add(a.outerProduct(b));	
 	}
 	
 	@Override

@@ -951,6 +951,42 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
+	public void addInnerProduct(INDArray a, INDArray b) {
+		if (a instanceof AMatrix && b instanceof AMatrix) {
+			addInnerProduct((AVector)a,(AVector)b);
+		} else {
+			super.addInnerProduct(a, b);
+		}
+	}
+	
+	public void addInnerProduct(AMatrix a, AMatrix b) {
+		// TODO: optimised overloads without copying
+		add(a.innerProduct(b));
+	}
+
+	@Override
+	public void addOuterProduct(INDArray a, INDArray b) {
+		if (a instanceof AVector && b instanceof AVector) {
+			addOuterProduct((AVector)a,(AVector)b);
+		} else {
+			super.addOuterProduct(a, b);
+		}		
+	}
+
+	/**
+	 * Adds the outer product of two vectors to this matrix
+	 * @param a
+	 * @param b
+	 */
+	public void addOuterProduct(AVector a, AVector b) {
+		int rc=rowCount();
+		a.checkLength(rc);
+		for (int i=0; i<rc; i++) {
+			getRowView(i).addMultiple(b, a.unsafeGet(i));;
+		}	
+	}
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		int cc=columnCount();
 		int rc=rowCount();
