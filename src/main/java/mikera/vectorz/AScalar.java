@@ -155,6 +155,18 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public final void addInnerProduct(INDArray a, INDArray b) {
+		int adims=a.dimensionality();
+		if ((adims==1)&&b.dimensionality()==1) {
+			add(a.asVector().dotProduct(b.asVector()));
+		} else if ((adims==0)&&b.dimensionality()==0) {
+			add(a.get()*b.get());
+		} else {
+			throw new IllegalArgumentException("Inner product must be a scalar");
+		}
+	}
+	
+	@Override
 	public void sub(double d) {
 		set(get()-d);
 	}
