@@ -192,7 +192,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 		}
 
 		int offset = index * getStride(dimension);
-		return new NDArray(
+		return Arrayz.wrapStrided(
 				data, 
 				offset,
 				IntArrays.removeIndex(shape, dimension), 
