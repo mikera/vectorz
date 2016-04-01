@@ -1057,9 +1057,38 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	@Override
 	public void addMultiple(INDArray src, double factor) {
-		addMultiple(src.broadcastLike(this),factor);
+		int srcDims=src.dimensionality();
+		if (srcDims==0) {
+			add(factor*src.get());
+		} else if (srcDims==1) {
+			addMultiple(src.asVector(),factor);
+		} else {
+			addMultiple(src.broadcastLike(this),factor);
+		}
 	}
 	
+	/**
+	 * Adds a scalar multiple of a vector to every row of this matrix
+	 * @param m
+	 * @param factor
+	 */
+	public void addMultiple(AVector v, double factor) {
+		if (factor==0.0) return;
+		
+		int rc=rowCount();
+		int cc=columnCount();
+		v.checkLength(cc);
+		
+		for (int i=0; i<rc; i++) {
+			getRowView(i).addMultiple(v, factor);
+		}
+	}
+	
+	/**
+	 * Adds a scalar multiple of another matrix to this matrix
+	 * @param m
+	 * @param factor
+	 */
 	public void addMultiple(AMatrix m, double factor) {
 		if (factor==0.0) return;
 		

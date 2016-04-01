@@ -498,7 +498,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}	
 
-	
 	@Override
 	public void addOuterProduct(INDArray a, INDArray b) {
 		if (a.dimensionality()==0) {
