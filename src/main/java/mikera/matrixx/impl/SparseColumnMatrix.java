@@ -307,8 +307,9 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	@Override
 	public void add(AMatrix a) {
+		checkSameShape(a);
 		int cc=columnCount();
-		List<AVector> acols=a.getColumns();
+		List<AVector> acols=a.getColumns(); // allows SparseRowMatrix to efficiently construct column vectors
 		for (int i=0; i<cc; i++) {
 			AVector myVec=unsafeGetVector(i);
 			AVector aVec=acols.get(i);
@@ -320,6 +321,26 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 				myVec.add(aVec);
 			} else {
 				unsafeSetVec(i,myVec.addCopy(aVec));
+			}
+		}
+	}
+	
+	@Override
+	public void addMultiple(AMatrix a, double factor) {
+		checkSameShape(a);
+		int cc=columnCount();
+		List<AVector> acols=a.getColumns(); // allows SparseRowMatrix to efficiently construct column vectors
+		for (int i=0; i<cc; i++) {
+			AVector myVec=unsafeGetVector(i);
+			AVector aVec=acols.get(i);
+			if (myVec==null) {
+				if (!aVec.isZero()) {
+					unsafeSetVec(i,aVec.scaleCopy(factor));
+				}
+			} else if (myVec.isMutable()) {
+				myVec.addMultiple(aVec,factor);
+			} else {
+				unsafeSetVec(i,myVec.addMultipleCopy(aVec,factor));
 			}
 		}
 	}
