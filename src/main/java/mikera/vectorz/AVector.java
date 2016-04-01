@@ -2044,6 +2044,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return len;
 	}
 	
+	/**
+	 * Projects the vector to the plane defined by: x.normal=distance
+	 * @param normal A Vector of unit length
+	 * @param distance 
+	 */
 	public void projectToPlane(AVector normal, double distance) {
 		assert(Tools.epsilonEquals(normal.magnitude(), 1.0));
 		double d=dotProduct(normal);
