@@ -547,6 +547,14 @@ public class TestArrays {
 		assertTrue(opa.epsilonEquals(opc));
 	}
 	
+	private void testAddMultiple(INDArray a) {
+		INDArray b=(a.isFullyMutable())?a.exactClone():a.clone();
+		b.addMultiple(a, 3.0);
+		
+		b.scale(0.25);
+		assertTrue(b.epsilonEquals(a, 0.0001));
+	}
+	
 	private void testReciprocal(INDArray a) {
 		a=a.exactClone();
 		
@@ -839,6 +847,7 @@ public class TestArrays {
 		testAsVector(a);
 		testAdd(a);
 		testAddOuterProduct(a);
+		testAddMultiple(a);
 		testScaleAdd(a);
 		testSub(a);
 		testToArray(a);
