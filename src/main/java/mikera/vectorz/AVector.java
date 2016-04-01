@@ -1865,8 +1865,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public void scaleAdd(double factor, INDArray b, double bfactor, double constant) {
-		scaleAdd(factor,b.broadcastLike(this),bfactor,constant);
+	public final void scaleAdd(double factor, INDArray b, double bfactor, double constant) {
+		switch (b.dimensionality()) {
+		case 0: scaleAdd(factor,b.get()*factor+constant); return;
+		case 1: scaleAdd(factor,b.asVector(),bfactor,constant); return;
+		default: throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		}
 	}
 	
 	/**
