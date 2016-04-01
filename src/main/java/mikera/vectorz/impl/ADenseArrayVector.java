@@ -167,8 +167,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 
 	@Override
 	public void addMultiple(AVector v, double factor) {
-		int length = checkSameLength(v);
-		v.addMultipleToArray(factor, 0, getArray(), getArrayOffset(), length);
+		checkSameLength(v);
+		v.addMultipleToArray(factor, getArray(), getArrayOffset());
 	}
 
 	@Override
