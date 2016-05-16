@@ -2717,6 +2717,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	public int[] nonZeroIndices() {
 		int n=(int)nonZeroCount();
+		if (n==0) return IntArrays.EMPTY_INT_ARRAY;
 		int[] ret=new int[n];
 		int length=length();
 		int di=0;
