@@ -31,6 +31,16 @@ public class TestSparseRowMatrix {
 		assertTrue(v==m.getRow(1)); // identical objects
 		assertEquals(Vector.of(0,2,0),m.getColumn(1));
 	}
+	
+	@Test public void testMatrixConvert() {
+		Matrix m =Matrix.create(67, 128);
+		for (int i=0; i<300; i++) {
+			m.set(Rand.r(67),Rand.r(128),Rand.nextGaussian());
+		}
+		AMatrix sm=m.sparse();
+		
+		assertEquals(m,sm);
+	}
 
     @Test public void testSetRow() {
         SparseRowMatrix m=SparseRowMatrix.create(3, 3);

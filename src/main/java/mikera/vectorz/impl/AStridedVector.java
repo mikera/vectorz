@@ -303,7 +303,7 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 		int offset=getArrayOffset();
 		int stride=getStride();
 		for (int i=0; i<n; i++) {
-			dest[destOffset+i]=dest[offset+(stride*indices[i])];
+			dest[destOffset+i]=data[offset+(stride*indices[i])];
 		}
 	}
 	
