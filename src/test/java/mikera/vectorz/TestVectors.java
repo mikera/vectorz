@@ -848,6 +848,13 @@ public class TestVectors {
 		assertEquals(v.elementSum(),total,0.00000001);
 	}
 	
+	private void testIndices(AVector v) {
+		int[] ixs=v.nonZeroIndices();
+		for (int i=0; i<ixs.length; i++) {
+			assertNotEquals("Error error in position "+i+" with vector "+v+" of type"+v.getClass(),0,v.get(ixs[i]),0.0);
+		}
+	}
+	
 	private void testApplyOp(AVector v) {
 		if (!v.isFullyMutable()) return;
 		AVector c=v.exactClone();
@@ -921,6 +928,7 @@ public class TestVectors {
 		testHashCode(v);
 		testAsList(v);
 		testIterator(v);
+		testIndices(v);
 		testSoftmax(v);
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
