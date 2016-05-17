@@ -204,6 +204,15 @@ public class Vectorz {
 	}
 	
 	/**
+	 * Creates a sparse vector from an array of Object values
+	 * @param values
+	 * @return
+	 */
+	public static AVector createSparse(Object... values) {
+		return SparseIndexedVector.create(values);
+	}
+	
+	/**
 	 * Creates a mutable sparse vector from the data in the given vector. Selects the appropriate sparse
 	 * vector type based on analysis of the element values.
 	 * 
@@ -653,4 +662,5 @@ public class Vectorz {
 	public static boolean isUncountable(double value) {
 		return Double.isNaN(value) || Double.isInfinite(value);
 	}
+
 }

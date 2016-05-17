@@ -639,4 +639,21 @@ public class Matrixx {
 		return SparseRowMatrix.create(al);
 	}
 
+	/**
+	 * Creates a sparse matrix using the given objects as slices
+	 * @param slices
+	 * @return
+	 */
+	public static AMatrix createSparse(Object... slices) {
+		int rc=slices.length;
+		AVector[] vs=new AVector[rc];
+		AVector s0=Vectorz.createSparse(slices[0]);
+		int cc=s0.length();
+		vs[0]=s0;
+		for (int i=1; i<rc; i++) {
+			vs[i]=Vectorz.createSparse(slices[i]);
+		}
+		return SparseRowMatrix.create(vs,rc,cc);
+	}
+
 }

@@ -267,6 +267,69 @@ public class Arrayz {
 	}
 	
 	/**
+	 * Creates a sparse copy of the given data, given an array of slices to make sparse.
+	 * 
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public static INDArray createSparse(Object... slices) {
+		int sc=slices.length;
+		INDArray a0=Arrayz.createSparse(slices[0]);
+		int sliceDims=a0.dimensionality();
+		if (sliceDims==0) {
+			return Vectorz.createSparse(slices);
+		} else if (sliceDims==1) {
+			return Matrixx.createSparse(slices);
+		} else {
+			INDArray[] arrs=new INDArray[sc];
+			arrs[0]=a0;
+			for (int i=1; i<sc; i++) {
+				arrs[i]=Arrayz.createSparse(slices[i]);
+			}
+			return SliceArray.of(arrs);
+		}
+	}
+	
+	/** 
+	 * Creates a sparse array given the provided input object
+	 * 
+	 * Supports
+	 * - Numbers (wrapped as scalars)
+	 * - Existing INDArrays (copied into sparse format)
+	 * - Iterable objects (interpreted as ordered lists of major slices)
+	 * - Java Arrays (interpreted as arrays of slices Objects)
+	 */
+	@SuppressWarnings("unchecked")
+	public static INDArray createSparse(Object o) {
+		if (o instanceof INDArray) {
+			return createSparse((INDArray)o);
+		} else if (o instanceof Number) {
+			return Scalar.create(((Number)o).doubleValue());
+		} else if (o instanceof Iterable) {
+			Iterable<Object> it=(Iterable<Object>)o;
+			List<Object> target = new ArrayList<Object>();
+			for (Object slice:it) {
+				target.add(slice);
+				return createSparse(target);
+			}
+		} 
+		Class<?> klass=o.getClass();
+		if (klass.isArray()) {
+			return createSparse(Arrays.asList(o));
+		}
+		
+		throw new IllegalArgumentException("Unable to create sparse array from input of type: "+klass);
+	}
+	
+	/** 
+	 * Creates a sparse array given the provided List of slice objects
+	 */
+	public static INDArray createSparse(List<Object> o) {
+		return createSparse(o.toArray());
+	}
+	
+	/**
 	 * Creates a fully mutable sparse clone of the given array
 	 * @param a
 	 * @return

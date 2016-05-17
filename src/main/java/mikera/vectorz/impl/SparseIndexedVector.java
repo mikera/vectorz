@@ -11,6 +11,7 @@ import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.util.DoubleArrays;
@@ -154,6 +155,24 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		}
 		throw new IllegalArgumentException(ErrorMessages.cantCreateVector(o));
 	}
+	
+	/**
+	 * Creates a SparseIndexedVector from the source object array
+	 * @param o
+	 * @return
+	 */
+	public static SparseIndexedVector create(Object... values) {
+		int n=values.length;
+		GrowableIndexedVector gv=GrowableIndexedVector.createLength(n);
+		for (int i=0; i<n; i++) {
+			double v=Tools.toDouble(values[i]);
+			if (i!=0.0) {
+				gv.append(i, v);
+			}
+		}
+		return gv.toSparseIndexedVector();
+	}
+	
 
 	/**
 	 * Creates a SparseIndexedVector from the given vector, ignoring the zeros
