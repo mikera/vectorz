@@ -114,7 +114,7 @@ public class TestMiscArrayOps {
 		assertEquals(3,Arrayz.createSparse(new Vector[][] {{Vector.of(0,1)}}).dimensionality());
 		assertEquals(Vector.of(0,1,2),Arrayz.createSparse(new Integer[]{0,1,2}));
 	}
-	
+
 	@Test public void testDenseArrayCreation() {
 		assertEquals(Vector.of(0,1,0,2,0),Arrayz.create(new Object[] {0,1,0.0,2.0,0}));
 		assertEquals(Matrix22.create(1, 2, 3, 4),Arrayz.create((Object[])new Object[][] {{1,2},{3,4}}));
@@ -161,8 +161,5 @@ public class TestMiscArrayOps {
 	   
 	   assertEquals(9, SingleElementVector.create(3,1,5).elementAbsPowSum(2), 0.0001);
        assertEquals(-512, SingleElementVector.create(-8,5,6).elementPowSum(3), 0.0001);
-       
 	}
-
-
 }
