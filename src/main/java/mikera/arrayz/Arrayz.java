@@ -116,7 +116,7 @@ public class Arrayz {
 	 * @param data
 	 * @return
 	 */
-	public static INDArray create(Object... data) {
+	public static <T> INDArray create(T[] data) {
 		return create((Object)data);
 	}
 	

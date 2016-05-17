@@ -112,6 +112,14 @@ public class TestMiscArrayOps {
 		assertEquals(Vector.of(0,1,0,2,0),Arrayz.createSparse(new Object[] {0,1,0.0,2.0,0}));
 		assertEquals(Matrix22.create(1, 2, 3, 4),Arrayz.createSparse((Object[])new Object[][] {{1,2},{3,4}}));
 		assertEquals(3,Arrayz.createSparse(new Vector[][] {{Vector.of(0,1)}}).dimensionality());
+		assertEquals(Vector.of(0,1,2),Arrayz.createSparse(new Integer[]{0,1,2}));
+	}
+	
+	@Test public void testDenseArrayCreation() {
+		assertEquals(Vector.of(0,1,0,2,0),Arrayz.create(new Object[] {0,1,0.0,2.0,0}));
+		assertEquals(Matrix22.create(1, 2, 3, 4),Arrayz.create((Object[])new Object[][] {{1,2},{3,4}}));
+		assertEquals(3,Arrayz.create(new Vector[][] {{Vector.of(0,1)}}).dimensionality());
+		assertEquals(Vector.of(0,1,2),Arrayz.create(new Integer[]{0,1,2}));
 	}
 	
 	@Test

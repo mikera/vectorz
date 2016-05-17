@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrixx;
@@ -83,7 +84,7 @@ public class TestNDArray {
 	@Test public void testSlice() {
 		Matrix22 m1=new Matrix22(1,2,3,4);
 		Matrix22 m2=new Matrix22(5,6,7,8);
-		NDArray a=NDArray.wrap(Array.create(Arrayz.create(m1,m2)));
+		NDArray a=NDArray.wrap(Array.create(Arrayz.create(new AMatrix[]{m1,m2})));
 		assertEquals(m2,a.slice(0,1));
 		assertEquals(new Matrix22(3,4,7,8),a.slice(1,1));
 	}

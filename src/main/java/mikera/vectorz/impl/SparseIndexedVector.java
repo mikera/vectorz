@@ -147,11 +147,14 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		} else if (o instanceof Iterator){
 			return create((Iterator<Number>)o);
 		} 
-		Class<?> ec=o.getClass().getComponentType();
-		if (ec!=null) {
-			if (ec.isPrimitive()) {
-				if (ec==Double.TYPE) return create((double[])o);
-			} 
+		Class<?> klass=o.getClass();
+		if (klass.isArray()) {
+			Class<?> ec=klass.getComponentType();
+			if (ec!=null) {
+				if (ec.isPrimitive()) {
+					if (ec==Double.TYPE) return create((double[])o);
+				} 
+			}
 		}
 		throw new IllegalArgumentException(ErrorMessages.cantCreateVector(o));
 	}
@@ -178,7 +181,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * @param o
 	 * @return
 	 */
-	public static SparseIndexedVector create(Object... values) {
+	public static SparseIndexedVector create(Object[] values) {
 		int n=values.length;
 		GrowableIndexedVector gv=GrowableIndexedVector.createLength(n);
 		for (int i=0; i<n; i++) {
