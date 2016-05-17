@@ -5,6 +5,7 @@ import mikera.arrayz.impl.SliceArray;
 import mikera.arrayz.impl.ZeroArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrix22;
 import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
@@ -105,6 +106,11 @@ public class TestMiscArrayOps {
 		assertEquals(Scalar.create(2),Vector.of(2,3,4).reshape());
 		
 		assertEquals(Vector0.INSTANCE,Array.newArray(2,3,4,5).reshape(0));
+	}
+	
+	@Test public void testSparseArrayCreation() {
+		assertEquals(Vector.of(0,1,0,2,0),Arrayz.createSparse(new Object[] {0,1,0.0,2.0,0}));
+		assertEquals(Matrix22.create(1, 2, 3, 4),Arrayz.createSparse((Object[])new Object[][] {{1,2},{3,4}}));
 	}
 	
 	@Test

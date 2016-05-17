@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -138,10 +139,9 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		if (o instanceof AVector) {
 			return create((AVector)o);
 		} else if (o instanceof List) {
-			return create((List<Number>)o);
+			return create((Iterable<?>)o);
 		} else if (o.getClass().isArray()) {
-			
-			return create((List<Number>)o);
+			return create(Arrays.asList((Object[])o));
 		} else if (o instanceof Iterable){
 			return create((Iterable<Number>)o);
 		} else if (o instanceof Iterator){
@@ -226,7 +226,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * @param iterable An Iterable containing java.lang.Number instances
 	 * @return
 	 */
-	public static SparseIndexedVector create(Iterable<Number> iterable) {
+	public static SparseIndexedVector create(Iterable<?> iterable) {
 		GrowableIndexedVector v=GrowableIndexedVector.create(iterable);
 		return v.toSparseIndexedVector();
 	}
@@ -236,7 +236,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * @param iterator An Iterator over java.lang.Number instances
 	 * @return
 	 */
-	public static SparseIndexedVector create(Iterator<Number> iterator) {
+	public static SparseIndexedVector create(Iterator<?> iterator) {
 		GrowableIndexedVector v=GrowableIndexedVector.create(iterator);
 		return v.toSparseIndexedVector();
 	}

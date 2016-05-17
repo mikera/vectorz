@@ -311,11 +311,12 @@ public class Arrayz {
 			List<Object> target = new ArrayList<Object>();
 			for (Object slice:it) {
 				target.add(slice);
-				return createSparse(target);
 			}
+			return createSparse(target);
 		} 
 		Class<?> klass=o.getClass();
 		if (klass.isArray()) {
+			if (klass.getComponentType()==Object.class) return createSparse((Object[])o);
 			return createSparse(Arrays.asList(o));
 		}
 		

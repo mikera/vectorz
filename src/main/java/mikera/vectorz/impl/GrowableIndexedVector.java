@@ -6,6 +6,7 @@ import mikera.indexz.GrowableIndex;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.GrowableVector;
+import mikera.vectorz.Tools;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -44,11 +45,11 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 	 * @param iterable An Iterable containing java.lang.Number instances
 	 * @return
 	 */
-	public static GrowableIndexedVector create(Iterable<Number> iterable) {
+	public static GrowableIndexedVector create(Iterable<?> iterable) {
 		GrowableIndexedVector v=new GrowableIndexedVector();
-		for (Number n: iterable) {
+		for (Object o: iterable) {
 			v.length++;
-			double d=n.doubleValue();
+			double d=Tools.toDouble(o);
 			if (d!=0.0) {
 				v.append(v.length-1,d);
 			}
@@ -77,11 +78,11 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 	 * @param iterator An Iterator over java.lang.Number instances
 	 * @return
 	 */
-	public static GrowableIndexedVector create(Iterator<Number> iterator) {
+	public static GrowableIndexedVector create(Iterator<?> iterator) {
 		GrowableIndexedVector v=new GrowableIndexedVector();
 		while (iterator.hasNext()) {
 			v.length++;
-			double d=iterator.next().doubleValue();
+			double d=Tools.toDouble(iterator.next());
 			if (d!=0.0) {
 				v.append(v.length-1,d);
 			}

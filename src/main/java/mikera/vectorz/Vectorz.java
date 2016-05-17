@@ -18,6 +18,7 @@ import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.StridedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 import us.bpsm.edn.parser.CollectionBuilder;
 import us.bpsm.edn.parser.Parser;
@@ -210,6 +211,20 @@ public class Vectorz {
 	 */
 	public static AVector createSparse(Object... values) {
 		return SparseIndexedVector.create(values);
+	}
+	
+	/**
+	 * Creates a sparse vector from an array of Object values
+	 * @param values
+	 * @return
+	 */
+	public static AVector createSparse(Object data) {
+		if (data instanceof INDArray) {
+			INDArray a=(INDArray)data;
+			if (a.dimensionality()!=1) throw new IllegalArgumentException("Can't convert to sparse vector: "+ErrorMessages.incompatibleShape(a));
+			return createSparse(a.asVector());
+		}
+		return SparseIndexedVector.create(data);
 	}
 	
 	/**
