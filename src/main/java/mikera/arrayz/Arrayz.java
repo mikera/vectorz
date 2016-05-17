@@ -273,7 +273,8 @@ public class Arrayz {
 	 * @param a
 	 * @return
 	 */
-	public static INDArray createSparse(Object... slices) {
+	@SuppressWarnings("unchecked")
+	public static <T> INDArray createSparse(T... slices) {
 		int sc=slices.length;
 		INDArray a0=Arrayz.createSparse(slices[0]);
 		int sliceDims=a0.dimensionality();
@@ -305,7 +306,7 @@ public class Arrayz {
 		if (o instanceof INDArray) {
 			return createSparse((INDArray)o);
 		} else if (o instanceof Number) {
-			return Scalar.create(((Number)o).doubleValue());
+			return Scalar.create(((Number)o));
 		} else if (o instanceof Iterable) {
 			Iterable<Object> it=(Iterable<Object>)o;
 			List<Object> target = new ArrayList<Object>();
@@ -317,7 +318,12 @@ public class Arrayz {
 		Class<?> klass=o.getClass();
 		if (klass.isArray()) {
 			if (klass.getComponentType()==Object.class) return createSparse((Object[])o);
-			return createSparse(Arrays.asList(o));
+			int n=java.lang.reflect.Array.getLength(o);
+			Object[] os=new Object[n];
+			for (int i=0; i<n; i++) {
+				os[i]=java.lang.reflect.Array.get(o,i);
+			}
+			return createSparse(os);
 		}
 		
 		throw new IllegalArgumentException("Unable to create sparse array from input of type: "+klass);
@@ -326,7 +332,7 @@ public class Arrayz {
 	/** 
 	 * Creates a sparse array given the provided List of slice objects
 	 */
-	public static INDArray createSparse(List<Object> o) {
+	public static <T> INDArray createSparse(List<T> o) {
 		return createSparse(o.toArray());
 	}
 	

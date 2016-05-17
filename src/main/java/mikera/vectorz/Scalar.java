@@ -1,5 +1,6 @@
 package mikera.vectorz;
 
+import mikera.arrayz.INDArray;
 import mikera.vectorz.impl.ImmutableScalar;
 
 /**
@@ -18,6 +19,10 @@ public final class Scalar extends AScalar {
 
 	public static Scalar create(double value) {
 		return new Scalar(value);
+	}
+	
+	public static INDArray create(Number number) {
+		return create(number.doubleValue());
 	}
 
 	public static Scalar create(AScalar a) {
@@ -105,4 +110,5 @@ public final class Scalar extends AScalar {
 	public ImmutableScalar immutable() {
 		return ImmutableScalar.create(value);
 	}
+
 }
