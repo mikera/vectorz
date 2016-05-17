@@ -21,6 +21,7 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ArrayIndexScalar;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.ImmutableScalar;
+import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
@@ -318,6 +319,7 @@ public class Arrayz {
 		Class<?> klass=o.getClass();
 		if (klass.isArray()) {
 			if (klass.getComponentType()==Object.class) return createSparse((Object[])o);
+			if (klass==double[].class) return SparseIndexedVector.create((double[])o);
 			int n=java.lang.reflect.Array.getLength(o);
 			Object[] os=new Object[n];
 			for (int i=0; i<n; i++) {

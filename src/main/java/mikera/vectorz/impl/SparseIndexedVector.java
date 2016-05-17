@@ -157,6 +157,23 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	/**
+	 * Creates a SparseIndexedVector from an array of double values
+	 * @param o
+	 * @return
+	 */
+	public static SparseIndexedVector create(double[] values) {
+		int n=values.length;
+		GrowableIndexedVector gv=GrowableIndexedVector.createLength(n);
+		for (int i=0; i<n; i++) {
+			double v=values[i];
+			if (i!=0.0) {
+				gv.append(i, v);
+			}
+		}
+		return gv.toSparseIndexedVector();
+	}
+	
+	/**
 	 * Creates a SparseIndexedVector from the source object array
 	 * @param o
 	 * @return
