@@ -16,9 +16,9 @@ import mikera.vectorz.Vector3;
 public class InterfacePerformanceBenchmark extends SimpleBenchmark {
 	double r;
 	
-	public static IVector[] ivectors=new IVector[16];
-	public static AVector[] avectors=new AVector[16];
-	public static Vector3[] vector3s=new Vector3[16];
+	public static final IVector[] ivectors=new IVector[16];
+	public static final AVector[] avectors=new AVector[16];
+	public static final Vector3[] vector3s=new Vector3[16];
 	static {
 		for (int i=0; i<ivectors.length; i++) {
 			Vector3 v=new Vector3();
