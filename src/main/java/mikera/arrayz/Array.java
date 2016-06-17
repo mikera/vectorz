@@ -288,12 +288,14 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 
 	@Override
 	public boolean equals(INDArray a) {
+		if(a==null) return false;
 		if (a instanceof Array) return equals((Array) a);
 		if (!isSameShape(a)) return false;
 		return a.equalsArray(data, 0);
 	}
 
 	public boolean equals(Array a) {
+		if(a==null) return false;
 		if (a.dimensions != dimensions) return false;
 		if (!IntArrays.equals(shape, a.shape)) return false;
 		return DoubleArrays.equals(data, a.data);
