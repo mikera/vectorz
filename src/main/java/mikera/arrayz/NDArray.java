@@ -257,6 +257,7 @@ public final class NDArray extends BaseNDArray {
 	}
 	
 	public boolean equals(NDArray a) {
+		if(a==null) return false;
 		if (dimensions!=a.dimensions) return false;
 		if (dimensions==0) return get()==a.get();
 		
@@ -271,6 +272,7 @@ public final class NDArray extends BaseNDArray {
 
 	@Override
 	public boolean equals(INDArray a) {
+		if(a==null) return false;
 		if (a instanceof NDArray) {
 			return equals((NDArray)a);
 		}

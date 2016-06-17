@@ -573,6 +573,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public boolean equals(INDArray a) {
+		if(a==null) return false;
 		int dims=dimensionality();
 		if (a.dimensionality()!=dims) return false;
 		if (dims==0) {
@@ -589,6 +590,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	public boolean equals(AVector a) {
+		if(a==null) return false;
 		if (dimensionality()!=1) return false;
 		int sc=sliceCount();
 		if (a.length()!=sc) return false;
