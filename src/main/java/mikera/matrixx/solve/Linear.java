@@ -15,6 +15,8 @@ import mikera.vectorz.AVector;
  *
  */
 public class Linear {
+
+	private Linear(){}
     
     /**
      * 

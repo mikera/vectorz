@@ -11,6 +11,9 @@ package mikera.vectorz;
  *
  */
 public class Quaternions {
+
+	private Quaternions(){}
+
 	/** 
 	 * Computes the conjugate of a quaternion
 	 * 

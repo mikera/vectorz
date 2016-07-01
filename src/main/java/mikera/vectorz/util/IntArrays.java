@@ -7,6 +7,9 @@ import mikera.util.Rand;
 import mikera.vectorz.Tools;
 
 public class IntArrays {
+
+	private IntArrays(){}
+
 	public static final int[] EMPTY_INT_ARRAY=new int[0];
 	
 	public static int[] of(int... ints) {

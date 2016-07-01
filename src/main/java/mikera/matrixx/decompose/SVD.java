@@ -13,6 +13,8 @@ import mikera.matrixx.decompose.impl.svd.SvdImplicitQr;
  *
  */
 public class SVD {
+
+	private SVD(){}
 	
 	/**
 	 * Computes the Singular Value Decomposition of a matrix, which is the decomposition

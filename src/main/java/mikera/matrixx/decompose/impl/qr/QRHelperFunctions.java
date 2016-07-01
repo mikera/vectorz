@@ -43,6 +43,8 @@ import mikera.matrixx.Matrix;
  */
 public class QRHelperFunctions {
 
+    private QRHelperFunctions(){}
+
     public static double findMax( double[] u, int startU , int length ) {
         double max = -1;
 

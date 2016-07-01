@@ -1,6 +1,9 @@
 package mikera.vectorz.util;
 
 public class LongArrays {
+
+	private LongArrays(){}
+
 	public static final long[] EMPTY_LONG_ARRAY=new long[0];
 	
 	public static long[] removeIndex(long[] data, int index) {

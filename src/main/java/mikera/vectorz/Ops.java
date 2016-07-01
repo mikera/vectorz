@@ -37,6 +37,9 @@ import mikera.vectorz.ops.Tanh;
  * 
  */
 public final class Ops {
+
+	private Ops(){}
+
 	public static final Op ABS = Absolute.INSTANCE;
 	public static final Op SIGNUM = Signum.INSTANCE;
 	public static final Op STOCHASTIC_BINARY = StochasticBinary.INSTANCE;

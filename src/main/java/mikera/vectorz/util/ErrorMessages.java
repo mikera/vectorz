@@ -6,6 +6,9 @@ import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 public class ErrorMessages {
+
+	private ErrorMessages(){}
+
 	private static String shape(INDArray a) {
 		return Index.of(a.getShape()).toString();
 	}

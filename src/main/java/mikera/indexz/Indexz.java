@@ -12,6 +12,8 @@ import mikera.util.Rand;
  *
  */
 public class Indexz {
+
+	private Indexz(){}
 	
 	public static Index create(List<Integer> data) {
 		int length=data.size();

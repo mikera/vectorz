@@ -22,6 +22,8 @@ import mikera.util.Maths;
  */
 public class SimpleCholesky {
 
+	private SimpleCholesky(){}
+
 	/**
 	 * Decompose a matrix according the the Cholesky decomposition A = L.L*
 	 * 

@@ -34,6 +34,8 @@ import mikera.vectorz.Vector;
  */
 public class ThinSVD {
 
+	private ThinSVD(){}
+
 	public static ISVDResult decompose(AMatrix a) {
 		return decompose(Matrix.create(a));
 	}
