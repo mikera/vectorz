@@ -17,6 +17,7 @@ import mikera.vectorz.util.IntArrays;
  *
  */
 public class Determinant {
+	private Determinant(){}
 	
 	/**
 	 * Calculate the determinant of an AMatrix.

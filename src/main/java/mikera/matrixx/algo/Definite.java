@@ -8,6 +8,8 @@ import mikera.vectorz.Vector2;
 
 public class Definite {
 
+	private Definite(){}
+
 	/**
 	 * Tests whether a symmetric matrix is positive definite
 	 * 

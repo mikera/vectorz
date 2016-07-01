@@ -36,6 +36,8 @@ package mikera.matrixx.solve.impl;
  */
 public class TriangularSolver {
 
+    private TriangularSolver(){}
+
     /**
      * <p>
      * Inverts a square lower triangular matrix:  L = L<sup>-1</sup>

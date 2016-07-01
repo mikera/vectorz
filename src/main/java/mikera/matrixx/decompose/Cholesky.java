@@ -18,6 +18,8 @@ import mikera.matrixx.AMatrix;
  */
 public class Cholesky {
 	// TODO: refactor to use best available Cholesky decomposition algorithm for different matrix types and sizes
+
+	private Cholesky(){}
 	
 	/**
 	 * Decompose a Matrix according the the Cholesky decomposition A = L.L*

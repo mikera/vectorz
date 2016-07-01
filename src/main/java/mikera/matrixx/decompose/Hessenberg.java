@@ -8,6 +8,8 @@ import mikera.matrixx.decompose.impl.hessenberg.HessenbergSimilarDecomposition;
  * Public API class for Hessenberg decomposition
  */
 public class Hessenberg {
+
+	private Hessenberg(){}
 	
 	/**
 	 * <p>

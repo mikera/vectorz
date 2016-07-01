@@ -25,6 +25,9 @@ import us.bpsm.edn.parser.Parser;
 import us.bpsm.edn.parser.Parsers;
 
 public class Vectorz {
+
+	private Vectorz(){}
+
 	/**
 	 * Constant tolerance used for testing double values
 	 */

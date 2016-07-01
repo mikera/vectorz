@@ -4,6 +4,8 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.decompose.impl.eigen.SymmetricQRAlgorithmDecomposition;
 
 public class Eigen {
+
+    private Eigen(){}
     
     /**
      * <p>

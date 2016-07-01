@@ -40,6 +40,8 @@ import mikera.matrixx.decompose.impl.qr.HouseholderQR;
  */
 public class QR {
 
+	private QR(){}
+
     /**
      * Computes the QR factorisation of a matrix A such that:
      * 

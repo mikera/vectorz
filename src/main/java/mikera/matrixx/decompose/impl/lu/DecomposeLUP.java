@@ -7,6 +7,8 @@ import mikera.vectorz.util.ErrorMessages;
 
 public class DecomposeLUP {
 
+	private DecomposeLUP(){}
+
 	public static Matrix createLUPInverse(AMatrix m) {
 		if (!m.isSquare()) { throw new IllegalArgumentException(
 				"Matrix must be square for inverse!"); }

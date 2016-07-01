@@ -6,6 +6,8 @@ import mikera.matrixx.decompose.SVD;
 import mikera.vectorz.AVector;
 
 public class Rank {
+
+	private Rank(){}
 	
 	private static double DEFAULT_THRESHOLD = 2.220446e-15;
 	

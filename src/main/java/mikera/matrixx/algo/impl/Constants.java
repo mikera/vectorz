@@ -2,6 +2,8 @@ package mikera.matrixx.algo.impl;
 
 public class Constants {
 
+	private Constants(){}
+
 	public static final double EPS;
 	
 	// Determine the machine epsilon

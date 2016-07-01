@@ -14,6 +14,8 @@ import mikera.vectorz.impl.Vector0;
  */
 public class Testing {
 
+	private Testing(){}
+
 	public static AVector createTestVector(int length) {
 		return createTestVector(length,new Random());
 	} 

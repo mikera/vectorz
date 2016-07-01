@@ -37,6 +37,9 @@ import us.bpsm.edn.parser.Parsers;
  * @author Mike
  */
 public class Arrayz {
+
+	private Arrayz(){}
+
 	/**
 	 * Creates an array from the given data
 	 * 

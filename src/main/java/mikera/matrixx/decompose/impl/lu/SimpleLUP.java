@@ -34,6 +34,9 @@ import mikera.matrixx.impl.PermutationMatrix;
  *
  */
 public class SimpleLUP {
+
+	private SimpleLUP(){}
+
 	public static ILUPResult decompose(AMatrix matrix) {
 		return decomposeLUPInternal(Matrix.create(matrix));
 	}

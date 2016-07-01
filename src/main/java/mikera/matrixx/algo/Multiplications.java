@@ -7,6 +7,9 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 public class Multiplications {
+
+	private Multiplications(){}
+
 	// target number of elements in working set group
 	// aim for around 200kb => fits comfortably in L2 cache in modern machines
 	protected static final int WORKING_SET_TARGET=8192;

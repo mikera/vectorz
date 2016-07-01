@@ -9,6 +9,8 @@ import mikera.vectorz.util.ErrorMessages;
 
 public final class Inverse {
 
+	private Inverse(){}
+
 	/**
 	 * Computes the inverse of an arbitrary square Matrix.
 	 * 
