@@ -11,6 +11,7 @@ import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.matrixx.impl.SparseRowMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
+import mikera.util.Rand;
 import mikera.util.Random;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Ops;
@@ -243,6 +244,20 @@ public class TestBigSparse {
 		
 		cm.set(10,200,2);
 		SparseRowMatrix rm=SparseRowMatrix.create(cm);
+		assertEquals(cm,rm);
+		assertEquals(rm,cm);
+	}
+	
+	@Test public void testBigConvert() {
+		int SIZE=10000;
+		SparseColumnMatrix cm=SparseColumnMatrix.create(SIZE,SIZE);
+		assertTrue(cm.isZero());
+		
+		for (int i=0; i<100; i++) {
+			cm.set(Rand.r(SIZE),Rand.r(SIZE),Rand.nextDouble());
+		}
+		
+		SparseRowMatrix rm=cm.toSparseRowMatrix();
 		assertEquals(cm,rm);
 		assertEquals(rm,cm);
 	}
