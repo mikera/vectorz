@@ -46,16 +46,8 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		emptyColumn=Vectorz.createZeroVector(rowCount);
 	}
 
-	protected SparseColumnMatrix(AVector... vectors) {
-		this(vectors, vectors[0].length(), vectors.length);
-	}
-
 	protected SparseColumnMatrix(List<AVector> data, int rowCount, int columnCount) {
 		this(data.toArray(new AVector[0]),rowCount,columnCount);
-	}
-
-	protected SparseColumnMatrix(List<AVector> data) {
-		this(data.toArray(new AVector[0]));
 	}
 
 //  	protected SparseColumnMatrix(HashMap<Integer,AVector> data, int rowCount, int columnCount) {
@@ -71,9 +63,21 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		return new SparseColumnMatrix(data, rows, cols);
 	}
 
+	/**
+	 * Create a SparseColumnMatrix wrapping a specified array of columns
+	 * null may be provided after first row
+	 * @param vecs
+	 * @return
+	 */
 	public static SparseColumnMatrix create(AVector... vecs) {
-		return new SparseColumnMatrix(vecs);
-        // don't validate; user can call validate() if they want it.
+		int rows=vecs[0].length();
+		int cols=vecs.length;
+		for (int i=1; i<cols; i++) {
+			AVector col=vecs[i];
+			if (col==null) continue;
+			if (vecs[i].length()!=rows) throw new IllegalArgumentException("Mismatched vector lengths");
+		}
+		return new SparseColumnMatrix(vecs,rows,cols);
 	}
 	
 	public static SparseColumnMatrix create(List<AVector> columns) {
@@ -235,7 +239,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 
     @Override
     public List<AVector> getRows() {
-        return getRotatedData(cols, rows);
+        return getTransposeView().getColumns();
     }
     
     /**

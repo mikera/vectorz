@@ -40,6 +40,21 @@ public abstract class ASparseVector extends ASizedVector implements ISparseVecto
 	@Override
 	public abstract Index nonSparseIndex();
 	
+	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		Index ix=nonSparseIndex();
+		int cnt=ix.length();
+		if (cnt==0) return 0.0;
+		AVector vs=nonSparseValues();
+		for (int k=0; k<cnt; k++) {
+			int i=ix.get(k);
+			double v=vs.unsafeGet(k);
+			v=elementVisitor.visit(i, v);
+			if (v!=0.0) return v;
+		}
+		return 0.0;
+	}
+	
 	/**
 	 * Returns true iff the sparse vector contains the index i 
 	 * @param i

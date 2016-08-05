@@ -2,6 +2,7 @@ package mikera.vectorz;
 
 import java.util.Iterator;
 
+import mikera.vectorz.impl.ElementVisitor;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -241,6 +242,11 @@ public final class GrowableVector extends AVector {
 	public static Object create(double[] nonZeroValues) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		return toVector().visitNonZero(elementVisitor);
 	}
 
 }

@@ -11,8 +11,11 @@ import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
+import mikera.vectorz.impl.ElementVisitor;
+import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
+import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -221,7 +224,41 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 
     @Override
     public List<AVector> getColumns() {
-        return getRotatedData(rows, cols);
+    	// initial arraylist with nulls for each column
+        final ArrayList<AVector> columns=new ArrayList<AVector>();
+        for (int j=0; j<cols; j++) columns.add(null);
+        
+        for (int i=0; i<rows; i++) {
+        	final int ix=i;
+        	AVector row=unsafeGetVector(i);
+        	if (row==null) continue;
+        	row.visitNonZero(new ElementVisitor() {
+				@Override
+				public double visit(int j, double value) {
+					AVector gv=columns.get(j);
+					if (gv==null) {
+						gv=GrowableIndexedVector.createLength(rows);
+						columns.set(j, gv);
+					}
+					gv.set(ix, value);
+					return 0.0;
+				}    		
+        	});
+        }
+        
+        // convert elements
+        ZeroVector zeroCol=ZeroVector.create(rows);
+        for (int j=0; j<cols; j++) {
+        	AVector v=columns.get(j);
+        	if (v==null) {
+        		v=zeroCol;
+        	} else {
+        		v=v.sparse();
+        	}
+        	columns.set(j, v);
+        }
+        
+        return columns;
     }
     
     public SparseColumnMatrix toSparseColumnMatrix() {
@@ -446,6 +483,30 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
 	
 	@Override
 	public boolean equals(AMatrix m) {
+		if (m==this) return true;
+		if (m instanceof IFastRows) return equals((IFastRows)m);
+		
+		if (!isSameShape(m)) return false;
+		List<AVector> mrows=m.getRows();
+		for (int i=0; i<rows; i++) {
+			AVector v=unsafeGetVector(i);
+            AVector ov = mrows.get(i);
+			if (v==null) {
+				if (!ov.isZero()) return false;
+			} else {
+				if (!v.equals(ov)) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Compares this matrix to another matrix implementing IFastColumns
+	 * This can be much faster than the default equals
+	 * @param m
+	 * @return
+	 */
+	public boolean equals(IFastRows m) {
 		if (m==this) return true;
 		if (!isSameShape(m)) return false;
 		for (int i=0; i<rows; i++) {

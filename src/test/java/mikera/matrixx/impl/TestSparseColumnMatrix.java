@@ -1,25 +1,26 @@
 package mikera.matrixx.impl;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+
+import org.junit.Test;
 
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
-import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.util.Rand;
-import mikera.vectorz.Ops;
 import mikera.vectorz.AVector;
+import mikera.vectorz.Ops;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.SparseIndexedVector;
-import mikera.vectorz.util.VectorzException;
+import mikera.vectorz.impl.ZeroVector;
 
 public class TestSparseColumnMatrix {
 
@@ -72,6 +73,15 @@ public class TestSparseColumnMatrix {
         assertEquals(Vector.of(1,0,3), rows.get(0));
         assertEquals(Vector.of(2,0,4), rows.get(1));
     }
+    
+    @Test public void testClone() {
+    	SparseColumnMatrix cm=SparseColumnMatrix.create(Vector.of(0,1,-Math.PI),null,null,AxisVector.create(2, 3));
+    	AMatrix m=cm.toMatrix();
+    	AMatrix rm=cm.toSparseRowMatrix();
+    	assertTrue(rm.equals(cm));
+    	assertTrue(m.equals(cm));
+    	assertTrue(cm.equals(m));
+    }
 	
 	@Test public void testOps() {
 		SparseColumnMatrix m=SparseColumnMatrix.create(Vector.of(0,1,2),AxisVector.create(2, 3));
@@ -108,7 +118,7 @@ public class TestSparseColumnMatrix {
 
         int[] index = {0,2};
         double[] data = {7,8};
-		SparseColumnMatrix M2 = SparseColumnMatrix.create(Vector.of(0,1,2),SparseIndexedVector.wrap(3, index, data),null);
+		SparseColumnMatrix M2 = SparseColumnMatrix.create(Vector.of(0,1,2),SparseIndexedVector.wrap(3, index, data),ZeroVector.createNew(3));
         M2.validate();
 		
 		M1.add(M2); 				// test adding SparseColumnMatrix
@@ -140,7 +150,7 @@ public class TestSparseColumnMatrix {
 			M.replaceColumn(i,SparseIndexedVector.create(SSIZE, indy, data));
 		}
 		Matrix D = Matrix.create(M);
-		assertTrue(M.equals(D));
+		assertEquals(M,D);
 		assertTrue(D.epsilonEquals(M, 0.1));
         M.set(SSIZE-1, SSIZE-1, M.get(SSIZE-1, SSIZE-1) + 3.14159);
 		assertFalse(M.equals(D));
@@ -172,13 +182,12 @@ public class TestSparseColumnMatrix {
 		assertTrue(N.equals(Dt));
 	}
 
-	@Test public void testValidate() {
+	@SuppressWarnings("unused")
+	@Test public void testInvalidCreate() {
         try {
 		    AVector[] vecs = { Vectorz.createZeroVector(6), Vector.of(1,2,3), Vectorz.createZeroVector(6) };
 		    SparseColumnMatrix M = SparseColumnMatrix.create(vecs);
-		    M.validate();
-            fail("Expected a VectorzException to be thrown");
-        } catch (VectorzException E) {
+       } catch (IllegalArgumentException E) {
             // assertThat(E.getMessage(), is("Invalid column count at row: 1"));
             // assertThat(E.getMessage(), is("Wrong length data line vector, length 3 at position: 1"));
         }

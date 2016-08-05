@@ -156,6 +156,12 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 	public SparseIndexedVector sparseClone() {
 		return toSparseIndexedVector();
 	}
+	
+	@Override
+	public SparseIndexedVector sparse() {
+		// we do this to ensure a "full" implementation is used
+		return toSparseIndexedVector();
+	}
 
 	public int nonSparseElementCount() {
 		return index.length();
@@ -204,5 +210,10 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		return toSparseIndexedVector().equalsArray(data,offset);
+	}
+
+	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		return toSparseIndexedVector().visitNonZero(elementVisitor);
 	}
 }

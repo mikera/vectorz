@@ -58,6 +58,11 @@ public abstract class APrimitiveVector extends AVector {
 		return v;
 	}
 	
+	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		return toVector().visitNonZero(elementVisitor);
+	}
+	
 	// any clones of primitive vectors should themselves be primitive vectors
 	
 	@Override

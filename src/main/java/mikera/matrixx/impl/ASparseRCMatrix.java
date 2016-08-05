@@ -1,8 +1,5 @@
 package mikera.matrixx.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
@@ -10,7 +7,6 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.RepeatedElementVector;
-import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.VectorzException;
 
@@ -218,68 +214,6 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	public void copyColumnTo(int j, double[] dest, int destOffset) {
 		getColumn(j).getElements(dest, destOffset);
 	}
-
-    // Rotate the AVectors in data[]. Transforms data that was represented as
-    // row vectors to now be represented as column vectors and vice versa.
-    public List<AVector> getRotatedData(int outerLen, int innerLen) {
-        int numVecs = outerLen;
-        int numElems = innerLen;
-        ArrayList<ArrayList<Integer>> rotIndexList = new ArrayList<ArrayList<Integer>>(numElems);
-        ArrayList<ArrayList<Double>> rotValueList = new ArrayList<ArrayList<Double>>(numElems);
-        ArrayList<AVector> rotList = new ArrayList<AVector>(numElems);
-        AVector emptyRotVec = Vectorz.createZeroVector(numVecs);
-
-        for (int i = 0; i < numElems; i++) {
-            rotIndexList.add(new ArrayList<Integer>());
-            rotValueList.add(new ArrayList<Double>());
-        }
-
-        for (int i = 0; i < numVecs; i++) {
-            AVector vec = unsafeGetVector(i);
-            if (null != vec) {
-                int[] nonZeroIdxs = vec.nonZeroIndices();
-                Vector nonZeroVals = null;
-                if (vec instanceof SparseIndexedVector) {
-                    nonZeroVals = ((SparseIndexedVector)vec).nonSparseValues();
-                } else {
-                    // TODO: AVector@nonZeroValues() could be sped up by using nonZeroIndices.
-                    nonZeroVals = Vector.wrap(vec.nonZeroValues());
-                }
-
-                assert(nonZeroIdxs.length == nonZeroVals.length());
-
-                for (int j = 0; j < nonZeroIdxs.length; j++) {
-                    int idx = nonZeroIdxs[j];
-                    double val = nonZeroVals.unsafeGet(j);
-
-                    rotIndexList.get(idx).add(i);
-                    rotValueList.get(idx).add(val);
-                }
-            }
-        }
-
-        for (int i = 0; i < numElems; i++) {
-            ArrayList<Integer> rotIndex = rotIndexList.get(i);
-            ArrayList<Double> rotValue = rotValueList.get(i);
-            AVector rotVec = emptyRotVec;
-
-            if (!rotIndex.isEmpty()) {
-                int size = rotIndex.size();
-                int[] indices = new int[size];
-                double[] vals = new double[size];
-
-                for (int j = 0; j < size; j++) {
-                    indices[j] = rotIndex.get(j);
-                    vals[j] = rotValue.get(j);
-                }
-
-                rotVec = SparseIndexedVector.wrap(numVecs, indices, vals);
-            }
-            rotList.add(rotVec);
-        }
-
-        return rotList;
-    }
 	
 	@Override
 	public double elementSum() {

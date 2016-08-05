@@ -517,4 +517,8 @@ public final class ZeroVector extends ASparseVector {
 		return 0.0;
 	}
 
+	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		return 0.0;
+	}
 }

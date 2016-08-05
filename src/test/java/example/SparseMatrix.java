@@ -118,7 +118,7 @@ public class SparseMatrix {
         // ----------------------------------------------------------------------
 		// Convert this sparse matrix into a dense matrix.
 		startTimer();
-		Matrix D = Matrix.create(M);
+		AMatrix D = Matrix.create(M);
 		printTime("Convert small sparse matrix to dense: ");
 
 		

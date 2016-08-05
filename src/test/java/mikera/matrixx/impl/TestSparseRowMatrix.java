@@ -154,7 +154,7 @@ public class TestSparseRowMatrix {
 			Index indy=Indexz.createRandomChoice(DSIZE, SSIZE);
 			M.replaceRow(i,SparseIndexedVector.create(SSIZE, indy, data));
 		}
-		Matrix D = Matrix.create(M);
+		AMatrix D = Matrix.create(M);
 		assertTrue(M.equals(D));
 		assertTrue(D.epsilonEquals(M, 0.1));
         M.set(SSIZE-1, SSIZE-1, M.get(SSIZE-1, SSIZE-1) + 3.14159);

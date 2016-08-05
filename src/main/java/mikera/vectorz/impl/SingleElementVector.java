@@ -245,6 +245,11 @@ public final class SingleElementVector extends ASingleElementVector {
 	}
 	
 	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		return (value==0.0)?0.0:elementVisitor.visit(index,value);
+	}
+	
+	@Override
 	public int[] nonZeroIndices() {
 		if (value==0.0) {
 			return IntArrays.EMPTY_INT_ARRAY;
