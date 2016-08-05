@@ -29,6 +29,16 @@ public class IntArrays {
 		throw new IllegalArgumentException("Can't convert to int[]: "+o);
 	}
 	
+	/**
+	 * Creates a new int array. Use the default EMPTY_INT_ARRAY if requested size is zero
+	 * @param size
+	 * @return
+	 */
+	public static int[] create(int size) {
+		if (size==0) return EMPTY_INT_ARRAY;
+		return new int[size];
+	}
+	
 	public static int[] create(double[] ls) {
 		int n=ls.length;
 		int[] r=new int[n];

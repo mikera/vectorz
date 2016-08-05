@@ -2,18 +2,25 @@ package mikera.indexz;
 
 import mikera.vectorz.util.IntArrays;
 
+/**
+ * An index implementation that supports appending, allowing the Index to be enlarged.
+ * 
+ * @author Mike
+ */
 public class GrowableIndex extends AIndex {
 	private static final long serialVersionUID = 4466899007444582094L;
 
 	private int[] data;
 	private int count=0;
-	
+
+	private static final int DEFAULT_INITIAL_CAPACITY=4;
+
 	public GrowableIndex() {
-		this(4);
+		this(DEFAULT_INITIAL_CAPACITY);
 	}
 	
 	public GrowableIndex(int initialCapacity) {
-		data=new int[initialCapacity];
+		data=IntArrays.create(initialCapacity);
 	}
 	
 	public GrowableIndex(int[] values) {

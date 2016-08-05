@@ -745,4 +745,14 @@ public final class DoubleArrays {
 		return result;
 	}
 
+	/**
+	 * Create a new double arry. Uses the EMPTY array if the required size is zero
+	 * @param initialCapacity
+	 * @return
+	 */
+	public static double[] create(int size) {
+		if (size==0) return EMPTY;
+		return new double[size];
+	}
+
 }

@@ -23,6 +23,8 @@ import mikera.vectorz.util.VectorzException;
 public final class GrowableVector extends AVector {
 	private static final long serialVersionUID = -4560854157937758671L;
 
+	private static final int DEFAULT_INITIAL_CAPACITY=4;
+	
 	private double[] data;
 	private int count;
 	
@@ -32,11 +34,11 @@ public final class GrowableVector extends AVector {
 	}
 	
 	public GrowableVector(int initialCapacity) {
-		this(new double[initialCapacity],0);
+		this(DoubleArrays.create(initialCapacity),0);
 	}
 	
 	public GrowableVector() {
-		this(4);
+		this(DEFAULT_INITIAL_CAPACITY);
 	}
 	
 	/**
