@@ -810,6 +810,20 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	public Index nonSparseIndex() {
 		return index;
 	}
+	
+	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		Index ix=index;
+		int cnt=ix.length();
+		if (cnt==0) return 0.0;
+		for (int k=0; k<cnt; k++) {
+			int i=ix.get(k);
+			double v=data[k];
+			v=elementVisitor.visit(i, v);
+			if (v!=0.0) return v;
+		}
+		return 0.0;
+	}
 
 	@Override
 	public Vector toVector() {

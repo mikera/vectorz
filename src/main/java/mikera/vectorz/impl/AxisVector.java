@@ -315,6 +315,11 @@ public final class AxisVector extends ASingleElementVector {
 	}
 	
 	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		return elementVisitor.visit(index,1.0);
+	}
+	
+	@Override
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
