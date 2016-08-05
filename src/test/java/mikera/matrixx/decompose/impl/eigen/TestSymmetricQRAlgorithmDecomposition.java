@@ -41,7 +41,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
     boolean together;
     private boolean computeVectors;
     
-    public static double EPS = Math.pow(2,-52);
+    public static final double EPS = Math.pow(2,-52);
 
     public SymmetricQRAlgorithmDecomposition createDecomposition() {
         SymmetricQRAlgorithmDecomposition alg = new SymmetricQRAlgorithmDecomposition(computeVectors);

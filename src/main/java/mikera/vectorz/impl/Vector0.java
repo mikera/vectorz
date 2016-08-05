@@ -34,7 +34,7 @@ public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 		return INSTANCE;
 	}
 
-	public static Vector0 INSTANCE = new Vector0();
+	public static final Vector0 INSTANCE = new Vector0();
 
 	@Override
 	public int length() {

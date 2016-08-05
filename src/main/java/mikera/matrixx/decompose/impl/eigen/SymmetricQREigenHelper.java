@@ -30,7 +30,7 @@ import mikera.matrixx.Matrix;
  */
 public class SymmetricQREigenHelper {
     
-    public static double EPS = Math.pow(2,-52);
+    public static final double EPS = Math.pow(2,-52);
 
     // used in exceptional shifts
     protected Random rand = new Random(0x34671e);
