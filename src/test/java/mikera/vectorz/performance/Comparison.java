@@ -34,6 +34,7 @@ public class Comparison {
 
 
 	public static final Runnable testA = new Runnable() {
+		@Override
 		public void run() {
 			Vector3 v=Vector3.of(1,2,3);
 			Vector3 v2=Vector3.of(1,2,3);
@@ -45,6 +46,7 @@ public class Comparison {
 	};
 
 	public static final Runnable testB = new Runnable() {
+		@Override
 		public void run() {
 			AVector v=Vector.of(1,2,3);
 			AVector v2=Vector3.of(1,2,3);
