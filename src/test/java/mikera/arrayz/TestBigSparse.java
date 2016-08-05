@@ -235,6 +235,17 @@ public class TestBigSparse {
 		assertEquals(m.rowCount(),m.nonZeroCount());
 	}
 	
+	@Test public void testBigEquals() {
+		int SIZE=1000;
+		AMatrix m=IdentityMatrix.create(SIZE);
+		SparseColumnMatrix cm=SparseColumnMatrix.create(m);
+		assertEquals(cm,m);
+		
+		cm.set(10,200,2);
+		SparseRowMatrix rm=SparseRowMatrix.create(cm);
+		assertEquals(cm,rm);
+		assertEquals(rm,cm);
+	}
 	
 	@Test public void testSparseSet() {
 		int SIZE=300;

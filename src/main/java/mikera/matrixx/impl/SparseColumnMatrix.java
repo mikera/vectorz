@@ -499,6 +499,17 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	@Override
 	public boolean equals(AMatrix m) {
 		if (m==this) return true;
+		if (m instanceof IFastColumns) return equals((IFastColumns)m);
+		return toSparseRowMatrix().equals(m);
+	}
+	
+	/**
+	 * Compares this matrix to another matrix implementing IFastColumns
+	 * @param m
+	 * @return
+	 */
+	public boolean equals(IFastColumns m) {
+		if (m==this) return true;
 		if (!isSameShape(m)) return false;
 		for (int i=0; i<cols; i++) {
 			AVector v=unsafeGetVector(i);
