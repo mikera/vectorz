@@ -505,6 +505,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	
 	/**
 	 * Compares this matrix to another matrix implementing IFastColumns
+	 * This is much faster than the default equals
 	 * @param m
 	 * @return
 	 */
