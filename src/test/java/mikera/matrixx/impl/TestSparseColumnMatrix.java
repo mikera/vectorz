@@ -10,6 +10,7 @@ import mikera.indexz.Index;
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.SparseColumnMatrix;
 import mikera.util.Rand;
 import mikera.vectorz.Ops;
@@ -22,6 +23,12 @@ import mikera.vectorz.util.VectorzException;
 
 public class TestSparseColumnMatrix {
 
+	@Test public void testSparseRowConvert() {
+		SparseColumnMatrix m=SparseColumnMatrix.create(Matrixx.createRandomMatrix(30, 30));
+		SparseRowMatrix rm=m.toSparseRowMatrix();
+		assertEquals(m,rm);
+	}
+	
 	@Test public void testReplace() {
 		SparseColumnMatrix m=SparseColumnMatrix.create(3, 3);
 		
