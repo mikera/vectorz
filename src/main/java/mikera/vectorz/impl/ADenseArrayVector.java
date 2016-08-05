@@ -415,6 +415,11 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	public int[] nonZeroIndices() {
 		return DoubleArrays.nonZeroIndices(getArray(), getArrayOffset(), length());
 	}
+	
+	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		return DoubleArrays.visitNonZero(elementVisitor, getArray(), getArrayOffset(), length());
+	}
 
 	@Override
 	public void square() {

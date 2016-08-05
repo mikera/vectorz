@@ -2,6 +2,7 @@ package mikera.vectorz.util;
 
 import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
+import mikera.vectorz.impl.ElementVisitor;
 import mikera.vectorz.ops.Logistic;
 
 public final class DoubleArrays {
@@ -746,13 +747,23 @@ public final class DoubleArrays {
 	}
 
 	/**
-	 * Create a new double arry. Uses the EMPTY array if the required size is zero
+	 * Create a new double array. Uses the EMPTY array if the required size is zero
 	 * @param initialCapacity
 	 * @return
 	 */
 	public static double[] create(int size) {
 		if (size==0) return EMPTY;
 		return new double[size];
+	}
+
+	public static double visitNonZero(ElementVisitor elementVisitor, double[] data, int offset, int length) {
+		for (int i=0; i<length; i++) {
+			double v=data[i];
+			if (v==0.0) continue;
+			v=elementVisitor.visit(i, data[offset+i]);
+			if (v!=0) return v;
+		}
+		return 0.0;
 	}
 
 }
