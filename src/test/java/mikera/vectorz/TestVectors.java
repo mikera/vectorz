@@ -18,6 +18,7 @@ import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.BufferVector;
+import mikera.vectorz.impl.ElementVisitor;
 import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
@@ -806,6 +807,21 @@ public class TestVectors {
 		assertEquals(len,tl.size());
 	}
 	
+	private void testVisitNonZero(final AVector v) {
+		int len=v.length();
+		final AVector a=Vector.createLength(len);
+		v.visitNonZero(new ElementVisitor() {
+			@Override
+			public double visit(int i, double value) {
+				if (value==0) fail("Expected non-zero value at position "+i+" in vector "+v);
+				a.set(i,value);
+				return 0;
+			}
+			
+		});
+		assertEquals(a,v);
+	}
+	
 	private void testMultiply(AVector v) {
 		if (!v.isFullyMutable()) return;
 		
@@ -933,6 +949,7 @@ public class TestVectors {
 		testOutOfBoundsSet(v);
 		testOutOfBoundsGet(v);
 		testImmutable(v);
+		testVisitNonZero(v);
 		
 		doNonDegenerateTests(v);
 		

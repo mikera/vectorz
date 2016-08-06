@@ -819,6 +819,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		for (int k=0; k<cnt; k++) {
 			int i=ix.get(k);
 			double v=data[k];
+			if (v==0.0) continue; // skip zero values
 			v=elementVisitor.visit(i, v);
 			if (v!=0.0) return v;
 		}

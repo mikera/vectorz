@@ -192,7 +192,7 @@ public abstract class AJoinedVector extends ASizedVector {
 		}
 		return true;
 	}
-	
+		
 	@Override
 	public boolean hasUncountable() {
 		long n=componentCount();
