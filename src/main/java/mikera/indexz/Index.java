@@ -9,7 +9,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import mikera.vectorz.AVector;
-import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
@@ -346,10 +345,6 @@ public final class Index extends AIndex {
 		Arrays.sort(data);
 	}
 	
-	public AVector asVector() {
-		return IndexVector.wrap(this);
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Index) return equals((Index)o);
