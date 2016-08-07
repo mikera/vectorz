@@ -358,6 +358,42 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Returns true if this vector exactly matches a double[] array.
+	 * @param data
+	 * @return
+	 */
+	@Override
+	public boolean equalsArray(double[] data) {
+		if (length()!=data.length) return false;
+		return equalsArray(data,0);
+	}
+	
+	@Override
+	public boolean elementsEqual(double value) {
+		int length=length();
+		for (int i=0; i<length; i++) {
+			if (unsafeGet(i)!=value) return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true if this vector exactly matches the elements in double[] array, starting
+	 * from the specified offset
+	 * 
+	 * @param data
+	 * @return
+	 */
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			if (unsafeGet(i)!=data[offset++]) return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * Returns a java.util.List instance containing all elements of this vector
 	 * @return
 	 */
@@ -2621,42 +2657,6 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 */
 	@Override
 	public abstract AVector exactClone();
-
-	/**
-	 * Returns true if this vector exactly matches a double[] array.
-	 * @param data
-	 * @return
-	 */
-	@Override
-	public boolean equalsArray(double[] data) {
-		if (length()!=data.length) return false;
-		return equalsArray(data,0);
-	}
-	
-	@Override
-	public boolean elementsEqual(double value) {
-		int length=length();
-		for (int i=0; i<length; i++) {
-			if (unsafeGet(i)!=value) return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Returns true if this vector exactly matches the elements in double[] array, starting
-	 * from the specified offset
-	 * 
-	 * @param data
-	 * @return
-	 */
-	@Override
-	public boolean equalsArray(double[] data, int offset) {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			if (unsafeGet(i)!=data[offset++]) return false;
-		}
-		return true;
-	}
 	
 	@Override
 	public INDArray broadcast(int... targetShape) {

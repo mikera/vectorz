@@ -200,4 +200,30 @@ public final class WrappedSubVector extends ASizedVector {
 		}
 		return result;
 	}
+	
+	@Override
+	public boolean equals(AVector v) {
+		if (this==v) return true;
+		int len=length();
+		if (len != v.length())
+			return false;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector dav=(ADenseArrayVector)v;
+			return equalsArray(dav.getArray(),dav.getArrayOffset());
+		}
+		for (int i = 0; i < len; i++) {
+			if (wrapped.unsafeGet(i+offset) != v.unsafeGet(i))
+				return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean equalsArray(double[] data, int offset) {
+		int len=length();
+		for (int i=0; i<len; i++) {
+			if (wrapped.unsafeGet(i+this.offset)!=data[offset+i]) return false;
+		}
+		return true;
+	}
 }
