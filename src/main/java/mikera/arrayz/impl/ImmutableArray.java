@@ -14,7 +14,7 @@ import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
 /**
- * Immutable N-dimensional array class
+ * General immutable N-dimensional array class
  * 
  * Uses strided array storage
  * 
