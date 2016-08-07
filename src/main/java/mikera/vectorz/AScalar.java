@@ -16,7 +16,6 @@ import mikera.vectorz.impl.WrappedScalarVector;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
-import mikera.vectorz.util.VectorzException;
 
 /**
  * Class to represent a wrapped 0-d scalar value.
@@ -244,7 +243,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		if (indexes.length==0) {
 			set(value);
 		} else {
-			throw new VectorzException(""+indexes.length+"D set not supported on AScalar");
+			throw new IllegalArgumentException(""+indexes.length+"D set not supported on AScalar");
 		}
 	}
 	
