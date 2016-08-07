@@ -654,7 +654,9 @@ public class TestMatrices {
 	}
 	
 	@Test public void g_RowMatrix() {	
-		doGenericTests(new RowMatrix(Vector.of(1,2,3,4,7)));
+		RowMatrix rm=new RowMatrix(Vector.of(1,2,3,4,7));
+		assertEquals(5,rm.elementCount());
+		doGenericTests(rm);
 		doGenericTests(new RowMatrix(Vector3.of(1,2,3)));		
 	}
 	
