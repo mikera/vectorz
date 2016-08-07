@@ -49,7 +49,7 @@ public class WrappedScalarVector extends AWrappedVector<AScalar> {
 
 	@Override
 	public double get(int i) {
-		if (i!=0) throw new IndexOutOfBoundsException("Index: "+i);
+		checkIndex(i);
 		return scalar.get();
 	}
 	

@@ -4,7 +4,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Unmodifiable wrapped for arbitrary vectors
+ * Unmodifiable wrapper for arbitrary vectors
  * 
  * @author Mike
  *
