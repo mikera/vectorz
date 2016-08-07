@@ -238,7 +238,7 @@ public final class RepeatedElementVector extends ASizedVector {
 
 	@Override
 	public boolean hasUncountable() {
-		return Double.isNaN(value) || Double.isInfinite(value);
+		return Vectorz.isUncountable(value);
 	}
 	
 	/**
