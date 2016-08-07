@@ -18,10 +18,6 @@ public final class ArraySubVector extends ADenseArrayVector {
 
 	private final int offset;
 
-	public static ArraySubVector wrap(double[] values) {
-		return new ArraySubVector(values);
-	}
-	
 	private ArraySubVector(double[] values) {
 		this(values,0,values.length);
 	}
@@ -31,6 +27,20 @@ public final class ArraySubVector extends ADenseArrayVector {
 		this.offset=offset;
 	}
 
+	/**
+	 * Wraps a double array as a dense ArraySubVector
+	 */
+	public static ArraySubVector wrap(double[] values) {
+		return new ArraySubVector(values);
+	}
+
+	/**
+	 * Wraps a segment of a double array as a dense ArraySubVector
+	 * @param data
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
 	public static ArraySubVector wrap(double[] data, int offset, int length) {
 		return new ArraySubVector(data,offset,length);
 	}
