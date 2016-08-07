@@ -96,10 +96,24 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	/**
+	 * Like set, but performs no bounds checking.
+	 * 
+	 * Results are undefined if the index is out of range
+	 * @param i
+	 * @param value
+	 */
 	public void unsafeSet(int i, double value) {
 		set(i,value);
 	}
 	
+	/**
+	 * Like get, but performs no bounds checking.
+	 * 
+	 * Results are undefined if the index is out of range
+	 * @param i
+	 * @param value
+	 */	
 	public double unsafeGet(int i) {
 		return get(i);
 	}
