@@ -181,6 +181,18 @@ public final class Vector1 extends APrimitiveVector {
 	public Vector1 exactClone() {
 		return clone();
 	}
+	
+	@Override 
+	public boolean equals(AVector v) {
+		if (v instanceof Vector1) {
+			return equals((Vector1)v);
+		}
+		return (v.length()==1)&&(x==v.unsafeGet(0));
+	}
+	
+	public boolean equals(Vector1 v) {
+		return (x==v.x);
+	}
 
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
