@@ -308,6 +308,25 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public boolean equals(AVector v) {
+		if (this==v) return true;
+		int len=length();
+		if (len != v.length())
+			return false;
+		if (v instanceof ADenseArrayVector) {
+			ADenseArrayVector dav=(ADenseArrayVector)v;
+			return equalsArray(dav.getArray(),dav.getArrayOffset());
+		}
+		int stride=getStride();
+		int di=getArrayOffset();
+		for (int i = 0; i < len; i++) {
+			if (data[di+i*stride] != v.unsafeGet(i))
+				return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean equalsArray(double[] vs, int offset) {
 		int stride=getStride();
 		int di=getArrayOffset();
