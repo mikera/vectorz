@@ -354,23 +354,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int dims=dimensionality();
 		switch (dims) {
 			case 0: {
-				a=a.clone();
-				a.scale(get());
-				return a;
+				return a.multiplyCopy(get());
 			}
 			case 1: {
 				return toVector().innerProduct(a);
 			}
-			case 2: {
-				return Matrix.create(this).innerProduct(a);
-			}
 		}
 		int sc=sliceCount();
-		ArrayList<INDArray> sips=new ArrayList<INDArray>(sc);
+		ArrayList<INDArray> sliceInnerProducts=new ArrayList<INDArray>(sc);
 		for (int i=0; i<sc; i++) {
-			sips.add(slice(i).innerProduct(a));
+			sliceInnerProducts.add(slice(i).innerProduct(a));
 		}
-		return SliceArray.create(sips);
+		return SliceArray.create(sliceInnerProducts);
 	}
 	
 	@Override
