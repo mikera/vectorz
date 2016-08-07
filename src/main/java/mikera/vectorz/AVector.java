@@ -965,7 +965,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return a vector representing the inner product
 	 */
 	@Override
-	public AVector innerProduct(AScalar s) {
+	public final AVector innerProduct(AScalar s) {
 		return scaleCopy(s.get());
 	}
 	
@@ -984,8 +984,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		List<INDArray> al=a.getSliceViews();
 		INDArray result=Arrayz.newArray(al.get(0).getShape());
 		for (int i=0; i<len; i++) {
-			// TODO: make faster with addMultiple?
-			result.add(al.get(i).innerProduct(get(i)));
+			double v=unsafeGet(i);
+			if (v!=0.0) result.addMultiple(al.get(i),v);
 		}
 		return result;
 	}
@@ -2744,7 +2744,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	/**
 	 * Visits all non-zero elements of this vector. 
 	 * 
-	 * Visitor may return a non-zero value to terminate, which will return the given value.
+	 * Visitor may return a non-zero value to terminate early, which will return the given value.
+	 * Returns 0.0 otherwise.
+	 * 
 	 * @param elementVisitor
 	 */
 	public abstract double visitNonZero(ElementVisitor elementVisitor);
