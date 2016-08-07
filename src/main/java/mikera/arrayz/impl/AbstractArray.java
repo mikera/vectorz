@@ -1521,11 +1521,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		if ((dimension < 0) || (dimension >= dimensionality()))
 			throw new IndexOutOfBoundsException(ErrorMessages.invalidDimension(this,dimension));
 	}
-	
-	@Override
-	public void checkMutable() {
-		if (!this.isMutable()) throw new IllegalArgumentException(ErrorMessages.immutable(this));
-	}
 
 	/**
 	 * Returns true if any element is this array is NaN or infinite

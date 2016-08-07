@@ -1022,7 +1022,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void applyOp(Op2 op, double b);
 
 	/**
-	 * Reduces each slice of the array by the given operator
+	 * Reduces each slice of the array by the given binary operator
 	 * 
 	 * @param op
 	 * @param b
@@ -1030,17 +1030,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public AVector reduceSlices(Op2 op);
 	
 	/**
-	 * Reduces each slice of the array by the given operator
+	 * Reduces each slice of the array by the given binary operator
 	 * Uses the specified init value for reduction of each slice
 	 * 
 	 * @param op
 	 * @param b
 	 */	
 	public AVector reduceSlices(Op2 op, double init);
-
-	/**
-	 * Checks if an array is mutable. Throws an exception if not.
-	 * @param dimension
-	 */
-	public void checkMutable();
 }
