@@ -823,11 +823,27 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return oldMagnitude;
 	}
 	
+	/**
+	 * Scales this vector then adds another vector
+	 * @param factor
+	 * @param v
+	 */
 	public void scaleAdd(double factor, AVector v) {
 		multiply(factor);
 		add(v);
 	}
 	
+	/**
+	 * Interpolates between this vector and a second vector, according to the ratio alpha.
+	 * alpha = 0.0 returns this vector. 
+	 * alpha = 1.0 returns the other vector
+	 * Other values perform linear interpolation.
+	 * 
+	 * Stores the result in this vector
+	 * 
+	 * @param v
+	 * @param alpha
+	 */
 	public void interpolate(AVector v, double alpha) {
 		scaleAdd(1.0-alpha,v,alpha,0.0);
 	}

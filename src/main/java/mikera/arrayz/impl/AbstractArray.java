@@ -357,6 +357,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 				return a.multiplyCopy(get());
 			}
 			case 1: {
+				// 1D array (but not already a vector, otherwise innerProduct should be overriden)
 				return toVector().innerProduct(a);
 			}
 		}

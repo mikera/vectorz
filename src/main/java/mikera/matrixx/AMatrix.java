@@ -1339,7 +1339,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		} else if (a.dimensionality()<=2) {
 			return innerProduct(Arrayz.create(a)); // convert to most efficient format
 		}
-		// TODO: figure out a faster approach?
 		int rc=rowCount();
 		List<AVector> al=getRows();
 		List<INDArray> rl=new ArrayList<INDArray>(rc);
