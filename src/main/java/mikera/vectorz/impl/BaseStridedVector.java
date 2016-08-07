@@ -6,7 +6,7 @@ import mikera.vectorz.util.DoubleArrays;
 /**
  * Base class for strided vectors backed with a double array and fixed offset / stride
  * 
- * Supports both mutable an immutable subclasses
+ * Supports both mutable and immutable subclasses
  * @author Mike
  *
  */
