@@ -123,9 +123,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public void set(int i, double value) {
-        if (0.0 != value) {
-            throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-        }
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
 	@Override
@@ -135,9 +133,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public void unsafeSet(int i, double value) {
-        if (0.0 != value) {
-            throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-        }
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 
 	@Override
@@ -190,7 +186,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public ZeroVector multiplyCopy(double factor) {
-		// TODO: consider handling handle special case of Double.NaN
+		// We currently avoid handling special case of Double.NaN
 		// if (factor==Double.NaN) 
 		// return Vectorz.createRepeatedElement(length, factor*0.0);
 		return this;
@@ -519,6 +515,7 @@ public final class ZeroVector extends ASparseVector {
 
 	@Override
 	public double visitNonZero(ElementVisitor elementVisitor) {
+		// never visits any values
 		return 0.0;
 	}
 }
