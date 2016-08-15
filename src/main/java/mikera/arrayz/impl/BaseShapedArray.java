@@ -78,10 +78,11 @@ public abstract class BaseShapedArray extends AbstractArray<INDArray> {
 	public double getElement(long i) { 
 		if (dimensionality()==0) {
 			if (i==0) return get();
-			throw new IllegalArgumentException(ErrorMessages.invalidElementIndex(this, i));
+			throw new IndexOutOfBoundsException(ErrorMessages.invalidElementIndex(this, i));
 		}
-		long sec=slice(0).elementCount();
-		int slice=(int)(i/sec);
-		return slice(slice).getElement(i-slice*sec);
+		long sliceElementCount=slice(0).elementCount();
+		if (sliceElementCount==0) throw new IndexOutOfBoundsException(ErrorMessages.invalidElementIndex(this, i));
+		int slice=(int)(i/sliceElementCount);
+		return slice(slice).getElement(i-slice*sliceElementCount);
 	}
 }

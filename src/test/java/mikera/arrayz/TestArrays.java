@@ -363,6 +363,16 @@ public class TestArrays {
 		assertEquals(a, b);
 		b.setElements(0,data, 1, ecount);
 		assertEquals(a, b);
+		
+		try {
+			a.getElement(-1);
+			fail();
+		} catch (IndexOutOfBoundsException e) { /* OK */ }
+
+		try {
+			a.getElement(ecount);
+			fail();
+		} catch (IndexOutOfBoundsException e) { /* OK */ }
 	}
 
 	private void testApplyOp(INDArray a) {
