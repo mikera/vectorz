@@ -215,6 +215,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 		if (offsets.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
 		if (shape.length!=n) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
 		
+		// check if we can return the whole array
 		if (IntArrays.equals(shape, this.shape)) {
 			if (IntArrays.isZero(offsets)) {
 				return this;

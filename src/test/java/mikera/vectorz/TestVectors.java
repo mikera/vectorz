@@ -738,8 +738,10 @@ public class TestVectors {
 	}
 	
 	private void testEquality(AVector v) {
+		int n=v.length();
 		assertEquals(v,v.clone());
 		assertNotEquals(v,v.join(Vector.of(1)));
+		if (n>0) assertNotEquals(v,v.subVector(0, n-1));
 		assertEquals(v,Vectorz.createSparse(v));
 	}
 	
