@@ -83,7 +83,7 @@ public class Arrayz {
 	}
 	
 	/**
-	 * Create a new array instance with the given shape. New array will be filled with zeroes.
+	 * Create a new array instance with the given shape. New array will be filled with zeros.
 	 * 
 	 * @param shape
 	 * @return
