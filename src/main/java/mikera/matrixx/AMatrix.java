@@ -784,6 +784,13 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		r.multiply(factor);
 		return r;
 	}	
+	
+	@Override
+	public AMatrix divideCopy(double d) {
+		AMatrix r = clone();
+		r.multiply(1.0/d);
+		return r;
+	}
 
 	/**
 	 * Returns the sum of all elements in this matrix

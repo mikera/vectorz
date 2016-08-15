@@ -961,6 +961,13 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray multiplyCopy(double factor);
 
 	/**
+	 * Returns a copy of the array with all elements divided by a single constant value
+	 * @param factor A scalar factor
+	 * @return A new array, with all element values scaled by the given factor
+	 */
+	public INDArray divideCopy(double d);
+	
+	/**
 	 * Checks if the array has any uncountable element values (i.e. NaN or infinite)
 	 * @return True if any element is this array is NaN or infinite, false otherwise
 	 */
@@ -1044,4 +1051,5 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @param b
 	 */	
 	public AVector reduceSlices(Op2 op, double init);
+
 }

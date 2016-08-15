@@ -228,6 +228,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public INDArray divideCopy(double d) {
+		INDArray r = clone();
+		r.multiply(1.0/d);
+		return r;
+	}
+
+	
+	@Override
 	public INDArray applyOpCopy(Op op) {
 		INDArray r=clone();
 		r.applyOp(op);

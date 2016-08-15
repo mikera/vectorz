@@ -694,6 +694,13 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public AVector divideCopy(double d) {
+		AVector r = clone();
+		r.multiply(1.0/d);
+		return r;
+	}
+	
+	@Override
 	public INDArray multiplyCopy(INDArray a) {
 		if (a instanceof AVector) {
 			return multiplyCopy((AVector)a);
@@ -713,9 +720,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public INDArray divideCopy(INDArray a) {
-		if (a instanceof AVector) {
+		int adims=a.dimensionality();
+		if (adims==0) {
+			return divideCopy(a.get());
+		} else if (a instanceof AVector) {
 			return divideCopy((AVector)a);
-		} else if (a.dimensionality()==1) {
+		} else if (adims==1) {
 			return divideCopy(a.asVector());
 		} else {
 			return divideCopy(a.broadcastLike(this));
