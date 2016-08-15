@@ -2,8 +2,6 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Op;
-import mikera.vectorz.Op2;
 import mikera.vectorz.Vector;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -12,33 +10,15 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IFastRows {
+public class ColumnMatrix extends AMatrixVectorView implements IFastColumns, IFastRows {
 	private static final long serialVersionUID = -6040718921619985258L;
 
-	private final AVector vector;
-	
 	public ColumnMatrix(AVector v) {
-		super(v.length(),1);
-		vector=v;
+		super(v, v.length(),1);
 	}
 	
 	public static ColumnMatrix wrap(AVector v) {
 		return new ColumnMatrix(v);
-	}
-	
-	@Override
-	public boolean isFullyMutable() {
-		return vector.isFullyMutable();
-	}
-	
-	@Override
-	public boolean isMutable() {
-		return vector.isMutable();
-	}
-	
-	@Override
-	public boolean isZero() {
-		return vector.isZero();
 	}
 	
 	@Override
@@ -50,46 +30,6 @@ public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IF
 	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		dest[destOffset]=vector.get(row);
-	}
-	
-	@Override
-	public void getElements(double[] data, int offset) {
-		vector.getElements(data, offset);
-	}
-	
-	@Override
-	public void applyOp(Op op) {
-		vector.applyOp(op);
-	}
-	
-	@Override
-	public double reduce(Op2 op, double init) {
-		return vector.reduce(op, init);
-	}
-	
-	@Override
-	public void multiply(double factor) {
-		vector.scale(factor);
-	}
-	
-	@Override 
-	public double elementSum() {
-		return vector.elementSum();
-	}
-	
-	@Override 
-	public double elementMin() {
-		return vector.elementMin();
-	}
-	
-	@Override 
-	public double elementMax() {
-		return vector.elementMax();
-	}
-	
-	@Override 
-	public long nonZeroCount() {
-		return vector.nonZeroCount();
 	}
 
 	@Override
@@ -144,16 +84,6 @@ public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IF
 	public AVector getRowView(int i) {
 		return vector.subVector(i, 1);
 	}
-	
-	@Override
-	public Vector toVector() {
-		return vector.toVector();
-	}
-	
-	@Override
-	public AVector asVector() {
-		return vector;
-	}
 
 	@Override
 	public ColumnMatrix exactClone() {
@@ -171,27 +101,6 @@ public class ColumnMatrix extends ARectangularMatrix implements IFastColumns, IF
 		return Matrix.wrap(1, s.columnCount(), v.asDoubleArray());
 	}
 	
-	@Override
-	public boolean hasUncountable() {
-	    return vector.hasUncountable();
-	}
-	
-	/**
-     * Returns the sum of all the elements raised to a specified power
-     * @return
-     */
-    @Override
-    public double elementPowSum(double p) {
-        return vector.elementPowSum(p);
-    }
-    
-    /**
-     * Returns the sum of the absolute values of all the elements raised to a specified power
-     * @return
-     */
-    @Override
-    public double elementAbsPowSum(double p) {
-        return vector.elementAbsPowSum(p);
-    }
+
 
 }

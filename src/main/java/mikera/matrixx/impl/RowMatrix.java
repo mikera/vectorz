@@ -2,9 +2,6 @@ package mikera.matrixx.impl;
 
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-import mikera.vectorz.Op;
-import mikera.vectorz.Op2;
-import mikera.vectorz.Vector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -12,84 +9,18 @@ import mikera.vectorz.util.ErrorMessages;
  * Matrix class that wraps an arbitrary vector as a single-row matrix
  * @author Mike
  */
-public class RowMatrix extends ARectangularMatrix implements IFastColumns, IFastRows {
+public class RowMatrix extends AMatrixVectorView implements IFastColumns, IFastRows {
 	private static final long serialVersionUID = 2636365975400418264L;
 
-	private final AVector vector;
-	
 	public RowMatrix(AVector v) {
-		super(1,v.length());
-		vector=v;
+		super(v,1,v.length());
 	}
 	
 	public static RowMatrix wrap(AVector v) {
 		return new RowMatrix(v);
 	}
 	
-	@Override
-	public boolean isFullyMutable() {
-		return vector.isFullyMutable();
-	}
-	
-	@Override
-	public boolean isMutable() {
-		return vector.isMutable();
-	}
-	
-	@Override
-	public boolean isZero() {
-		return vector.isZero();
-	}
-	
-	@Override
-	public Vector toVector() {
-		return vector.toVector();
-	}
-	
-	@Override
-	public AVector asVector() {
-		return vector;
-	}
-	
-	@Override
-	public void multiply(double factor) {
-		vector.scale(factor);
-	}
-	
-	@Override
-	public void applyOp(Op op) {
-		vector.applyOp(op);
-	}
-	
-	@Override
-	public double reduce(Op2 op, double init) {
-		return vector.reduce(op, init);
-	}
-	
-	@Override 
-	public double elementSum() {
-		return vector.elementSum();
-	}
-	
-	@Override 
-	public double elementSquaredSum() {
-		return vector.elementSquaredSum();
-	}
-	
-	@Override 
-	public double elementMin() {
-		return vector.elementMin();
-	}
-	
-	@Override 
-	public double elementMax() {
-		return vector.elementMax();
-	}
-	
-	@Override 
-	public long nonZeroCount() {
-		return vector.nonZeroCount();
-	}
+
 
 	@Override
 	public double get(int row, int column) {
@@ -151,11 +82,6 @@ public class RowMatrix extends ARectangularMatrix implements IFastColumns, IFast
 	}
 	
 	@Override
-	public boolean equalsArray(double[] data, int offset) {
-		return vector.equalsArray(data, offset);
-	}
-	
-	@Override
 	public void copyRowTo(int row, double[] dest, int destOffset) {
 		if (row!=0) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, row));
 		vector.getElements(dest, destOffset);
@@ -166,11 +92,6 @@ public class RowMatrix extends ARectangularMatrix implements IFastColumns, IFast
 		dest[destOffset]=vector.get(col);
 	}
 	
-	@Override
-	public void getElements(double[] data, int offset) {
-		vector.getElements(data, offset);
-	}
-
 	@Override
 	public Matrix transposeInnerProduct(Matrix s) {
 		if (s.rowCount()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, s));
