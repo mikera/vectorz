@@ -11,7 +11,7 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-@SuppressWarnings("serial")
+@Deprecated @SuppressWarnings("serial")
 public class IndexVector extends ASizedVector {
 	private final Index index; 
 	

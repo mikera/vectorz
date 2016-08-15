@@ -23,6 +23,7 @@ import mikera.vectorz.util.VectorzException;
  * @author Mike
  *
  */
+@SuppressWarnings("deprecation")
 public final class Index extends AIndex {
 	private static final long serialVersionUID = 8698831088064498284L;
 

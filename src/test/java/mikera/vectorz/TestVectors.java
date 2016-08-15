@@ -41,6 +41,7 @@ import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.ops.Constant;
 
 
+@SuppressWarnings("deprecation")
 public class TestVectors {
 	@Test public void testDistances() {
 		Vector3 v=Vector3.of(1,2,3);
