@@ -1083,9 +1083,7 @@ public class TestVectors {
 		doGenericTests(m1.getColumn(1));
 		doGenericTests(m1.getLeadingDiagonal());
 	}
-		
-
-		
+	
 	@Test public void g_AxisVector() {	
 		doGenericTests(AxisVector.create(1,3));
 		doGenericTests(AxisVector.create(0,1));
