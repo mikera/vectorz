@@ -34,9 +34,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	public abstract double get();
 	
 	@Override
-	public void set(double value) {
-		throw new UnsupportedOperationException();
-	}
+	public abstract void set(double value);
 	
 	@Override
 	public double get(int x) {
@@ -142,6 +140,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	public AScalar addCopy(double d) {
 		return Scalar.create(get()+d);
 	}
+	
+	@Override
+	public final INDArray addCopy(INDArray a) {
+		return a.addCopy(get());
+	}
 
 	@Override
 	public void addAt(long i, double v) {
@@ -157,9 +160,10 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	@Override
 	public final void addInnerProduct(INDArray a, INDArray b) {
 		int adims=a.dimensionality();
-		if ((adims==1)&&b.dimensionality()==1) {
+		int bdims=b.dimensionality();
+		if ((adims==1)&&(bdims==1)) {
 			add(a.asVector().dotProduct(b.asVector()));
-		} else if ((adims==0)&&b.dimensionality()==0) {
+		} else if ((adims==0)&&(bdims==0)) {
 			add(a.get()*b.get());
 		} else {
 			throw new IllegalArgumentException("Inner product must be a scalar");
