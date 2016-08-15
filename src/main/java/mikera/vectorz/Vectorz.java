@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import mikera.arrayz.INDArray;
+import mikera.indexz.AIndex;
 import mikera.util.Rand;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
@@ -281,6 +282,20 @@ public class Vectorz {
 	 */
 	public static AVector create(IVector vector) {
 		return (AVector)vector.clone();
+	}	
+	
+	/**
+	 * Creates a new vector containing the values in the specified index
+	 * @param index
+	 * @return
+	 */
+	public static AVector create(AIndex index) {
+		int n=index.length();
+		Vector v=Vector.createLength(n);
+		for (int i=0; i<n; i++) {
+			v.unsafeSet(i,index.get(i));
+		}
+		return v;
 	}	
 
 	public static Scalar createScalar(double value) {
