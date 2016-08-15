@@ -33,6 +33,7 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
+import mikera.vectorz.util.VectorzException;
 /**
  * Abstract base class for INDArray implementations
  * 
@@ -1510,7 +1511,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void validate() {
-		// TBC: any generic validation?
+		if(elementCount()!=IntArrays.arrayProduct(getShape())) throw new VectorzException("Element count not correct");
 	}
 	
 	/**

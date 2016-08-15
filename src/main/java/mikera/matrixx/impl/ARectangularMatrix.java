@@ -125,9 +125,7 @@ public abstract class ARectangularMatrix extends AMatrix {
 	
 	@Override
 	public final double getElement(long i) { 
-		int rc=rowCount();
-		int cc=columnCount();
-		if ((i<0)||(i>=(rc*cc))) throw new IllegalArgumentException(ErrorMessages.invalidElementIndex(this,i));
-		return unsafeGet((int)(i/rc),(int)(i%cc));
+		if ((i<0)||(i>=(((long)rows)*cols))) throw new IllegalArgumentException(ErrorMessages.invalidElementIndex(this,i));
+		return unsafeGet((int)(i/rows),(int)(i%cols));
 	}
 }
