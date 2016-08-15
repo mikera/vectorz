@@ -245,7 +245,7 @@ public final class SingleElementVector extends ASingleElementVector {
 	}
 	
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		return (value==0.0)?0.0:elementVisitor.visit(index,value);
 	}
 	

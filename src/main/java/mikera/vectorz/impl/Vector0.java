@@ -181,7 +181,7 @@ public final class Vector0 extends APrimitiveVector implements IDense, ISparse {
 	}
 
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		return 0.0;
 	}
 }

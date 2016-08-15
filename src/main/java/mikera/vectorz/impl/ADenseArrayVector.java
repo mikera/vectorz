@@ -417,7 +417,7 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 	
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		return DoubleArrays.visitNonZero(elementVisitor, getArray(), getArrayOffset(), length());
 	}
 

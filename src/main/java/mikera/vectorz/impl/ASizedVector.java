@@ -105,7 +105,7 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		for (int i=0; i<length; i++) {
 			double v=unsafeGet(i);
 			if (v!=0.0) v=elementVisitor.visit(i,v);

@@ -315,7 +315,7 @@ public final class AxisVector extends ASingleElementVector {
 	}
 	
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		return elementVisitor.visit(index,1.0);
 	}
 	

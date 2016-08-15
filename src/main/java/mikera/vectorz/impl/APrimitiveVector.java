@@ -59,7 +59,7 @@ public abstract class APrimitiveVector extends AVector {
 	}
 	
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		return toVector().visitNonZero(elementVisitor);
 	}
 	

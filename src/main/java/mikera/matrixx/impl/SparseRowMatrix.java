@@ -11,7 +11,7 @@ import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
-import mikera.vectorz.impl.ElementVisitor;
+import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
@@ -232,7 +232,7 @@ public class SparseRowMatrix extends ASparseRCMatrix implements ISparse, IFastRo
         	final int ix=i;
         	AVector row=unsafeGetVector(i);
         	if (row==null) continue;
-        	row.visitNonZero(new ElementVisitor() {
+        	row.visitNonZero(new IndexedElementVisitor() {
 				@Override
 				public double visit(int j, double value) {
 					AVector gv=columns.get(j);

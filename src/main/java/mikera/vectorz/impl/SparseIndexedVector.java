@@ -812,7 +812,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	}
 	
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		Index ix=index;
 		int cnt=ix.length();
 		if (cnt==0) return 0.0;

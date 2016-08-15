@@ -41,7 +41,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparseVecto
 	public abstract Index nonSparseIndex();
 	
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		Index ix=nonSparseIndex();
 		int cnt=ix.length();
 		if (cnt==0) return 0.0;

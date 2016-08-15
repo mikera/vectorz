@@ -1,11 +1,12 @@
 package mikera.vectorz.impl;
 
 /**
- * Vistor abstract base class for iteraing over vector values
+ * Visitor abstract base class for iterating over vector values, with an int index.
+ * 
  * @author Mike
  *
  */
-public abstract class ElementVisitor {
+public abstract class IndexedElementVisitor {
 	/**
 	 * Visitor function, should be overriden by visitor classes. 
 	 */

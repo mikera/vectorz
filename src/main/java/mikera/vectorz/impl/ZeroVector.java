@@ -514,7 +514,7 @@ public final class ZeroVector extends ASparseVector {
 	}
 
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		// never visits any values
 		return 0.0;
 	}

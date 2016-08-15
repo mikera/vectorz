@@ -2,7 +2,7 @@ package mikera.vectorz;
 
 import java.util.Iterator;
 
-import mikera.vectorz.impl.ElementVisitor;
+import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
@@ -245,7 +245,7 @@ public final class GrowableVector extends AVector {
 	}
 
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		return toVector().visitNonZero(elementVisitor);
 	}
 

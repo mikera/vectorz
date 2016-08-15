@@ -18,7 +18,7 @@ import mikera.util.Rand;
 import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.impl.AxisVector;
 import mikera.vectorz.impl.BufferVector;
-import mikera.vectorz.impl.ElementVisitor;
+import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexVector;
@@ -811,7 +811,7 @@ public class TestVectors {
 	private void testVisitNonZero(final AVector v) {
 		int len=v.length();
 		final AVector a=Vector.createLength(len);
-		v.visitNonZero(new ElementVisitor() {
+		v.visitNonZero(new IndexedElementVisitor() {
 			@Override
 			public double visit(int i, double value) {
 				if (value==0) fail("Expected non-zero value at position "+i+" in vector "+v);

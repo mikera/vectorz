@@ -2,7 +2,7 @@ package mikera.vectorz.util;
 
 import mikera.vectorz.Op2;
 import mikera.vectorz.Tools;
-import mikera.vectorz.impl.ElementVisitor;
+import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.ops.Logistic;
 
 public final class DoubleArrays {
@@ -764,7 +764,7 @@ public final class DoubleArrays {
 	 * @param length
 	 * @return
 	 */
-	public static double visitNonZero(ElementVisitor elementVisitor, double[] data, int offset, int length) {
+	public static double visitNonZero(IndexedElementVisitor elementVisitor, double[] data, int offset, int length) {
 		for (int i=0; i<length; i++) {
 			double v=data[offset+i];
 			if (v==0.0) continue;
@@ -782,7 +782,7 @@ public final class DoubleArrays {
 	 * @param length
 	 * @return
 	 */
-	public static double visitNonZero(ElementVisitor elementVisitor, double[] data, int offset, int length, int stride) {
+	public static double visitNonZero(IndexedElementVisitor elementVisitor, double[] data, int offset, int length, int stride) {
 		for (int i=0; i<length; i++) {
 			double v=data[offset+i*stride];
 			if (v==0.0) continue;

@@ -224,7 +224,7 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 	}
 
 	@Override
-	public double visitNonZero(ElementVisitor elementVisitor) {
+	public double visitNonZero(IndexedElementVisitor elementVisitor) {
 		return toSparseIndexedVector().visitNonZero(elementVisitor);
 	}
 }

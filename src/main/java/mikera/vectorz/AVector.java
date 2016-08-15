@@ -23,7 +23,7 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.impl.ASparseVector;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.ElementVisitor;
+import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
@@ -2794,5 +2794,5 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * 
 	 * @param elementVisitor
 	 */
-	public abstract double visitNonZero(ElementVisitor elementVisitor);
+	public abstract double visitNonZero(IndexedElementVisitor elementVisitor);
 }
