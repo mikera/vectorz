@@ -856,6 +856,16 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public void sub(AMatrix m) {
 		addMultiple(m,-1.0);
 	}
+	
+	/**
+	 * Subtracts another matrix from this one, returning a new matrix
+	 * @param m
+	 */
+	public AMatrix subCopy(AMatrix m) {
+		AMatrix r=clone();
+		r.addMultiple(m,-1.0);
+		return r;
+	}
 		
 	@Override
 	public void negate() {
