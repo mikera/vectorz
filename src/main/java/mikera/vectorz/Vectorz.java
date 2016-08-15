@@ -694,7 +694,8 @@ public class Vectorz {
 	}
 
 	/**
-	 * utility function to test whether a value is uncountable
+	 * Utility function to test whether a double value is uncountable
+	 * Uncountable values are NaN and infinity
 	 * @param value
 	 * @return
 	 */
