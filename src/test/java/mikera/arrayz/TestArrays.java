@@ -521,11 +521,13 @@ public class TestArrays {
 	private void testMultiply(INDArray a) {
 		assertTrue(a.multiplyCopy(0.0).isZero());
 		assertEquals(a, a.multiplyCopy(1.0));
+		assertEquals(a, a.multiplyCopy(2.0).divideCopy(2.0));
 
 		if (!a.isFullyMutable()) return;
 		INDArray m = a.exactClone();
 
 		m.multiply(2.0);
+		
 		m.multiply(Scalar.create(0.5));
 		assertEquals(a, m);
 		
