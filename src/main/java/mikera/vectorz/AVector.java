@@ -1710,7 +1710,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		} else if (a.dimensionality()==0) {
 			return addCopy(a.get());
 		} else {
-			return addCopy(a.broadcastLike(this));
+			// must have higher dimensionality
+			return a.addCopy(this);
 		}
 	}
 	
@@ -1736,8 +1737,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 			return subCopy((AVector)a);
 		} else if (a.dimensionality()==1) {
 			return subCopy(a.asVector());
+		} else if (a.dimensionality()==0) {
+			return addCopy(-a.get());
 		} else {
-			return subCopy(a.broadcastLike(this));
+			return this.broadcastLike(a).subCopy(a);
 		}
 	}
 	
