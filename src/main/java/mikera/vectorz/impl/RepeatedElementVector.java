@@ -1,5 +1,6 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -214,6 +215,11 @@ public final class RepeatedElementVector extends ASizedVector {
 	@Override 
 	public RepeatedElementVector exactClone() {
 		return new RepeatedElementVector(length,value);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		Arrays.fill(dest, offset,offset+length, value);
 	}
 	
 	@Override

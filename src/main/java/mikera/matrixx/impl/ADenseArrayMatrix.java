@@ -81,6 +81,7 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	public void set(AVector v) {
 		int rc=rowCount();
 		if (v.length()!=cols) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
+		if (rc==0) return;
 		double[] data=getArray();
 		int offset=getArrayOffset();
 		for (int i=0; i<rc; i++) {

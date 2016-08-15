@@ -1,5 +1,7 @@
 package mikera.vectorz.impl;
 
+import java.util.Arrays;
+
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector1;
@@ -56,6 +58,12 @@ public abstract class ASingleElementVector extends ASparseVector {
 	@Override
 	public Index nonSparseIndex() {
 		return Index.of(index);
+	}
+	
+	@Override
+	public void getElements(double[] dest, int offset) {
+		Arrays.fill(dest, offset,offset+length, 0.0);
+		dest[offset+index()]=value();
 	}
 	
 	@Override
