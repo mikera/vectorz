@@ -18,9 +18,9 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.LongArrays;
 
 /**
- * Class to represent a wrapped 0-d scalar value.
+ * Abstract base class for scalar arrays that represent a wrapped 0-d scalar value.
  * 
- * Can be a view into another vector/matrix/array
+ * These may be a 0-d view into another vector/matrix/array
  * 
  * @author Mike
  */
@@ -446,6 +446,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		return data[offset]==get();
 	}
 	
+	/**
+	 * Returns true if this scalar is equal in value to another scalar.
+	 * 
+	 * @param o
+	 * @return
+	 */
 	public boolean equals(AScalar o) {
 		return get()==o.get();
 	}

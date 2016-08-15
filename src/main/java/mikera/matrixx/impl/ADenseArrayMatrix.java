@@ -10,6 +10,7 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.AStridedVector;
+import mikera.vectorz.impl.ArraySubVector;
 import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
@@ -113,11 +114,13 @@ public abstract class ADenseArrayMatrix extends AStridedMatrix implements IFastR
 	
 	@Override
 	public ADenseArrayVector getRow(int i) {
-		return Vectorz.wrap(data, getArrayOffset()+i*cols, cols);
+		checkRow(i);
+		return ArraySubVector.wrap(data, getArrayOffset()+i*cols, cols);
 	}
 	
 	@Override
 	public AStridedVector getColumn(int i) {
+		checkColumn(i);
 		return Vectorz.wrapStrided(data, getArrayOffset()+i, rows, cols);
 	}
 	
