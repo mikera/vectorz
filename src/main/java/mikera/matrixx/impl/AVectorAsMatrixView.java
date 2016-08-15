@@ -10,12 +10,12 @@ import mikera.vectorz.Vector;
  * @author Mike
  *
  */
-public abstract class AMatrixVectorView extends ARectangularMatrix {
+public abstract class AVectorAsMatrixView extends ARectangularMatrix {
 	private static final long serialVersionUID = 6573998754193745829L;
 
 	protected final AVector vector;
 	
-	protected AMatrixVectorView(AVector vector, int rows, int cols) {
+	protected AVectorAsMatrixView(AVector vector, int rows, int cols) {
 		super(rows, cols);
 		this.vector=vector;
 	}

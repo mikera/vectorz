@@ -9,7 +9,7 @@ import mikera.vectorz.util.ErrorMessages;
  * Matrix class that wraps an arbitrary vector as a single-row matrix
  * @author Mike
  */
-public class RowMatrix extends AMatrixVectorView implements IFastColumns, IFastRows {
+public class RowMatrix extends AVectorAsMatrixView implements IFastColumns, IFastRows {
 	private static final long serialVersionUID = 2636365975400418264L;
 
 	public RowMatrix(AVector v) {

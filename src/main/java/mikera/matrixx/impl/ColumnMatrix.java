@@ -10,7 +10,7 @@ import mikera.vectorz.util.ErrorMessages;
  * 
  * @author Mike
  */
-public class ColumnMatrix extends AMatrixVectorView implements IFastColumns, IFastRows {
+public class ColumnMatrix extends AVectorAsMatrixView implements IFastColumns, IFastRows {
 	private static final long serialVersionUID = -6040718921619985258L;
 
 	public ColumnMatrix(AVector v) {
