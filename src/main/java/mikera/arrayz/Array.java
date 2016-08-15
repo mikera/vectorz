@@ -27,7 +27,7 @@ import mikera.vectorz.util.IntArrays;
 import mikera.vectorz.util.VectorzException;
 
 /**
- * General purpose, mutable, dense N-dimensional array
+ * General purpose, mutable, packed, dense N-dimensional array
  * 
  * This is the general multi-dimensional equivalent of Matrix and Vector, and as such is the 
  * most efficient storage type for dense 3D+ arrays
@@ -61,7 +61,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	/**
 	 * Wraps double[] array data in an Array of the specified shape.
 	 * 
-	 * The number of elements in the array must match the length of the array.
+	 * The number of elements in the array must exactly match the length of the array.
 	 * 
 	 * @param data
 	 * @param shape
