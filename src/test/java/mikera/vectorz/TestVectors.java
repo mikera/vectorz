@@ -1,13 +1,6 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +21,7 @@ import mikera.vectorz.impl.BufferVector;
 import mikera.vectorz.impl.ElementVisitor;
 import mikera.vectorz.impl.GrowableIndexedVector;
 import mikera.vectorz.impl.ImmutableVector;
+import mikera.vectorz.impl.IndexVector;
 import mikera.vectorz.impl.IndexedArrayVector;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedArrayVector;
@@ -1109,7 +1103,13 @@ public class TestVectors {
 		doGenericTests(RepeatedElementVector.create(10,Math.PI));
 		doGenericTests(RepeatedElementVector.create(10,Math.PI).subVector(2, 5));
 	}
-				
+		
+	@Test public void g_IndexVector() {	
+		doGenericTests(IndexVector.of(1,2,3));
+		doGenericTests(IndexVector.of(1));
+		doGenericTests(IndexVector.of());
+	}
+		
 	@Test public void g_SparseIndexedVector() {	
 		doGenericTests(SparseIndexedVector.create(10,Index.of(1,3,6),Vector.of(1.0,2.0,3.0)));
 		doGenericTests(SparseIndexedVector.create(10,Index.of(),Vector.of()));
