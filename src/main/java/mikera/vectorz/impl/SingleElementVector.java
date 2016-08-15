@@ -82,28 +82,12 @@ public final class SingleElementVector extends ASingleElementVector {
 	public boolean isFullyMutable() {
 		return false;
 	}
-	
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isElementConstrained() {
-		return true;
-	}
-	
-	@Override
-	public double density() {
-		return 1.0/length();
-	}
 
 	@Override
 	public double get(int i) {
 		if(!((i>=0)&&(i<length))) throw new IndexOutOfBoundsException();
 		return (i==index)?value:0.0;
 	}
-	
 
 	@Override
 	public double unsafeGet(int i) {
@@ -304,6 +288,11 @@ public final class SingleElementVector extends ASingleElementVector {
 	@Override
 	protected double value() {
 		return value;
+	}
+
+	@Override
+	public double dotProduct(AVector v) {
+		return value*v.get(index);
 	}
 
 }

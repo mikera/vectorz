@@ -4,7 +4,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Abstract base class for vectors using a fixed final size
+ * Abstract base class for vectors using a fixed final int size
  * 
  * @author Mike
  *
@@ -33,7 +33,7 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	public double get(long i) {
+	public final double get(long i) {
 		if ((i<0)||(i>=length)) throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, i));
 		return unsafeGet((int)i);
 	}
@@ -44,7 +44,7 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	public boolean isSameShape(AVector a) {
+	public final boolean isSameShape(AVector a) {
 		return length==a.length();
 	}
 	
@@ -91,7 +91,7 @@ public abstract class ASizedVector extends AVector {
 	}
 	
 	@Override
-	public boolean equalsArray(double[] data) {
+	public final boolean equalsArray(double[] data) {
 		if (length!=data.length) throw new IllegalArgumentException("Wrong size of data array: "+data.length);
 		return equalsArray(data,0);
 	}

@@ -3,12 +3,13 @@ package mikera.vectorz.impl;
 import java.util.Arrays;
 
 import mikera.indexz.Index;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector1;
 import mikera.vectorz.util.IntArrays;
 
 /**
- * Abstract base classes for sparse vectors that have a single potentially non-zero element
+ * Abstract base classes for immutable sparse vectors that have a single potentially non-zero element
  * 
  * @author Mike
  *
@@ -35,10 +36,18 @@ public abstract class ASingleElementVector extends ASparseVector {
 	// =============================================
 	// Generic implementations
 	
-	@Override 
-	public double dotProduct(AVector v) {
-		return value()*v.unsafeGet(index());
+	@Override
+	public final boolean isMutable() {
+		return false;
 	}
+	
+	@Override
+	public final boolean isElementConstrained() {
+		return true;
+	}
+	
+	@Override 
+	public abstract double dotProduct(AVector v);
 	
 	@Override 
 	public double dotProduct(double[] data, int offset) {
@@ -72,15 +81,14 @@ public abstract class ASingleElementVector extends ASparseVector {
 	}
 	
 	@Override
-	public boolean equals(AVector v) {
-		int len=v.length();
-		if (len!=this.length) return false;
-		
-		if (v.unsafeGet(index)!=value()) return false;
-		if (!v.isRangeZero(0, index)) return false;
-		if (!(v.isRangeZero(index+1, len-(index+1)))) return false;
-		return true;
+	public AScalar slice(int i) {
+		checkIndex(i);
+		if (i==index) return ImmutableScalar.create(value());
+		return ImmutableScalar.ZERO;
 	}
+	
+	@Override
+	public abstract boolean equals(AVector v);
 	
 	@Override
 	public int[] nonZeroIndices() {

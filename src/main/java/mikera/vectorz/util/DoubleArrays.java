@@ -538,13 +538,6 @@ public final class DoubleArrays {
 		return true;
 	}
 	
-	public static boolean isBoolean(double[] data) {
-		for (int i=0; i<data.length; i++) {
-			if (!Tools.isBoolean(data[i])) return false;
-		}
-		return true;		
-	}
-
 	public static boolean isBoolean(double[] data, int offset, int length) {
 		for (int i=0; i<length; i++) {
 			if (!Tools.isBoolean(data[offset+i])) return false;

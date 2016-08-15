@@ -150,12 +150,7 @@ public final class AxisVector extends ASingleElementVector {
 	public boolean isRangeZero(int start, int length) {
 		return (start>index)||(start+length<=index);
 	}
-	
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
-	
+		
 	@Override
 	public boolean isBoolean() {
 		return true;

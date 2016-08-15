@@ -583,7 +583,7 @@ public class TestArrays {
 	}
 	
 	private void testBoolean(INDArray a) {
-		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(a.getElements()));
+		assertEquals(a.isBoolean(),DoubleArrays.isBoolean(a.getElements(),0,(int)a.elementCount()));
 	}
 
 	private void testBroadcast(INDArray a) {
