@@ -306,6 +306,12 @@ public class Vectorz {
 		source.copyTo(srcOffset, dest, destOffset, length);
 	}
 
+	/**
+	 * Creates a random vector containing the specified number of elements.
+	 * Each element will be randomly distributed in the range [0,1)
+	 * @param dimensions
+	 * @return
+	 */
 	public static AVector createUniformRandomVector(int dimensions) {
 		AVector v=Vectorz.newVector(dimensions);
 		for (int i=0; i<dimensions; i++) {
