@@ -83,8 +83,10 @@ public class Arrayz {
 	}
 	
 	/**
-	 * Create a new array instance with the given shape. New array will be filled with zeros.
+	 * Create a new mutable array instance with the given shape. New array will be filled with zeros.
 	 * 
+	 * Uses the most efficient densely packed format where possible.
+	 *
 	 * @param shape
 	 * @return
 	 */
@@ -99,6 +101,14 @@ public class Arrayz {
 		}
 	}
 	
+	/**
+	 * Create a new mutable array instance with the given source data.
+	 * 
+	 * Uses the most efficient densely packed format where possible.
+	 * 
+	 * @param shape
+	 * @return
+	 */
 	public static INDArray create(INDArray a) {
 		int dims=a.dimensionality();
 		switch (dims) {
@@ -220,6 +230,16 @@ public class Arrayz {
 		}
 	}
 	
+	/**
+	 * Returns true if the offset, shape and strides describe a fully packed, row-major dense layout
+	 * for the given data array. 
+	 * 
+	 * @param data
+	 * @param offset
+	 * @param shape
+	 * @param strides
+	 * @return
+	 */
 	public static boolean isPackedLayout(double[] data, int offset, int[] shape, int[] strides) {
 		if (offset!=0) return false;
 		int dims=shape.length;
