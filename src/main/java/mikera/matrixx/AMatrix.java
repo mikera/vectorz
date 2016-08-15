@@ -736,9 +736,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	public void add(AVector v) {
 		int rc=rowCount();
-		int cc=columnCount();
-		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.mismatch(this, v));
-
 		for (int i=0; i<rc; i++) {
 			getRowView(i).add(v);
 		}		
@@ -749,9 +746,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 */
 	public void sub(AVector v) {
 		int rc=rowCount();
-		int cc=columnCount();
-		if(cc!=v.length()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, v));
-
 		for (int i=0; i<rc; i++) {
 			getRowView(i).sub(v);
 		}		
