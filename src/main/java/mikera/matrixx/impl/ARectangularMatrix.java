@@ -49,6 +49,12 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	@Override
+	public void set(int i, int j,double value) {
+		checkIndex(i,j);
+		unsafeSet(i,j,value);
+	}
+	
+	@Override
 	public int bandLength(int band) {
 		return bandLength(rows,cols,band);
 	}
