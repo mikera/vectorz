@@ -1702,7 +1702,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public INDArray addCopy(INDArray a) {
+	public final INDArray addCopy(INDArray a) {
 		if (a instanceof AVector) {
 			return addCopy((AVector)a);
 		} else if (a.dimensionality()==1) {
@@ -1732,7 +1732,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public INDArray subCopy(INDArray a) {
+	public final INDArray subCopy(INDArray a) {
 		if (a instanceof AVector) {
 			return subCopy((AVector)a);
 		} else if (a.dimensionality()==1) {

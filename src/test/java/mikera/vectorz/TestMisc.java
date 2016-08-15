@@ -6,6 +6,11 @@ import mikera.matrixx.Matrix22;
 
 import static org.junit.Assert.*;
 
+/**
+ * Miscellaneous tests for vector functionality
+ * @author Mike
+ *
+ */
 public class TestMisc {
 
 	@Test public void testBigSoftmax() {
@@ -17,5 +22,9 @@ public class TestMisc {
 	
 	@Test public void testVectorSubCopy() {
 		assertEquals(Matrix22.create(9,18,7,16),Vector.of(10,20).subCopy(Matrix22.create(1, 2, 3, 4)));
+	}
+
+	@Test public void testVectorAddCopy() {
+		assertEquals(Matrix22.create(11,22,13,24),Vector.of(10,20).addCopy(Matrix22.create(1, 2, 3, 4)));
 	}
 }

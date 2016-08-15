@@ -539,6 +539,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		result.add(d);
 		return result;
 	}
+	
+	public final INDArray addCopy(AScalar a) {
+		return addCopy(a.get());
+	}
 
 	@Override
 	public void set(double value) {
