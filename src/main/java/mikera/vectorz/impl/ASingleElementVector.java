@@ -61,6 +61,11 @@ public abstract class ASingleElementVector extends ASparseVector {
 	}
 	
 	@Override
+	public long nonZeroCount() {
+		return (value()==0.0)?0:1;
+	}
+	
+	@Override
 	public void getElements(double[] dest, int offset) {
 		Arrays.fill(dest, offset,offset+length, 0.0);
 		dest[offset+index()]=value();

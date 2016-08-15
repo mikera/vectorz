@@ -353,11 +353,6 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
-	public double density() {
-		return 1.0/dimensions;
-	}
-	
-	@Override
 	public Matrix toMatrix() {
 		Matrix m=Matrix.create(dimensions, dimensions);
 		for (int i=0; i<dimensions; i++) {
