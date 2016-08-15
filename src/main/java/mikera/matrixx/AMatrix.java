@@ -289,6 +289,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return get(indexes[0],indexes[1]);
 	}
 	
+	@Override
+	public double getElement(long i) { 
+		int rc=rowCount();
+		int cc=columnCount();
+		if ((i<0)||(i>=(rc*cc))) throw new IllegalArgumentException(ErrorMessages.invalidElementIndex(this,i));
+		return unsafeGet((int)(i/rc),(int)(i%cc));
+	}
+	
 	/**
 	 * Returns a vector view of the leading diagonal values of the matrix
 	 * @return

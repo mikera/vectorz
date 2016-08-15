@@ -336,6 +336,7 @@ public class TestArrays {
 		Arrays.fill(data, Double.NaN);
 
 		a.getElements(data, 1);
+		if (ecount>0) assertEquals(data[1],a.getElement(0),0.0);
 		assertTrue(Double.isNaN(data[0]));
 		for (int i = 1; i < (ecount+1); i++) {
 			assertFalse(Double.isNaN(data[i]));

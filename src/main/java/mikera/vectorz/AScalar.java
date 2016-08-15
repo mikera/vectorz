@@ -273,6 +273,12 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public double getElement(long i) {
+		if (i!=0) throw new IllegalArgumentException(ErrorMessages.invalidElementIndex(this, i));
+		return get();
+	}
+	
+	@Override
 	public void getElements(double[] arr) {
 		if (arr.length!=1) throw new IllegalArgumentException(ErrorMessages.wrongElementCount());
 		arr[0]=get();

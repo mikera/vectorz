@@ -940,6 +940,13 @@ public interface INDArray extends Cloneable, Serializable {
 	 */
 	public double[] getElements();
 
+	
+	/**
+	 * Gets a specific element of this array, indexed in row-major order
+	 * @return The element value
+	 */
+	public double getElement(long i);
+
 	/**
 	 * Returns the product of all elements in the array.
 	 * @return

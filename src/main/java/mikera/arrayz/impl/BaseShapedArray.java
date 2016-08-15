@@ -2,6 +2,7 @@ package mikera.arrayz.impl;
 
 import mikera.arrayz.INDArray;
 import mikera.vectorz.Op2;
+import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.IntArrays;
 
 /**
@@ -71,5 +72,16 @@ public abstract class BaseShapedArray extends AbstractArray<INDArray> {
 	@Override
 	public long elementCount() {
 		return IntArrays.arrayProduct(shape);
+	}
+	
+	@Override
+	public double getElement(long i) { 
+		if (dimensionality()==0) {
+			if (i==0) return get();
+			throw new IllegalArgumentException(ErrorMessages.invalidElementIndex(this, i));
+		}
+		long sec=slice(0).elementCount();
+		int slice=(int)(i/sec);
+		return slice(slice).getElement(i-slice*sec);
 	}
 }

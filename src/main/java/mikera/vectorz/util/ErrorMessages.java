@@ -133,6 +133,10 @@ public class ErrorMessages {
 		return "1-D access with index "+i+" not possible for "+describeArray(a);
 	}
 	
+	public static String invalidElementIndex(INDArray a, long i) {
+		return "Element index "+i+" invalid for "+a.getClass()+" with shape "+shape(a);
+	}
+	
 	public static String invalidRange(AVector v, int start, int length) {
 		return "Subrange {start="+start+", length="+length+"} not valid on vector with length "+v.length();
 	}
@@ -209,5 +213,7 @@ public class ErrorMessages {
 	public static String cantCreateVector(Object o) {
 		return "Can't create vector from class: "+o.getClass();
 	}
+
+
 
 }
