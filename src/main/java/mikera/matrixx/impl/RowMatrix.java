@@ -9,7 +9,7 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Matrix class that wraps a vector as a single-row matrix
+ * Matrix class that wraps an arbitrary vector as a single-row matrix
  * @author Mike
  */
 public class RowMatrix extends ARectangularMatrix implements IFastColumns, IFastRows {
