@@ -18,7 +18,7 @@ import mikera.vectorz.util.VectorzException;
 /**
  * A general N-dimensional double array implemented as a collection of (n-1) dimensional slices
  * 
- * Must have dimensionality 1 or above, and at least one slice
+ * Must have dimensionality 1 or above, and contain at least one slice
  * 
  * @author Mike
  *
@@ -33,6 +33,7 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 	private SliceArray(int[] shape, T[] slices) {
 		super(shape);
 		this.slices=slices;
+		if (slices.length==0) throw new IllegalArgumentException("Can't create SliceArray with zero slices");
 		int dims=shape.length;
 		this.longShape=new long[dims];
 		for (int i=0; i<dims; i++) {
@@ -50,17 +51,23 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		return new SliceArray<T>(IntArrays.consArray(slices.length,slices[0].getShape()),slices.clone());
 	}
 	
-	public static SliceArray<INDArray> repeat (INDArray s, int n) {
+	/**
+	 * Create a SliceArray by repeating the same slice instance a given number of times
+	 * @param slice
+	 * @param n
+	 * @return
+	 */
+	public static SliceArray<INDArray> repeat(INDArray slice, int n) {
 		ArrayList<INDArray> al=new ArrayList<INDArray>(n);
 		for (int i=0; i<n; i++) {
-			al.add(s);
+			al.add(slice);
 		}
 		return SliceArray.create(al);
 	}
 	
 	public static SliceArray<INDArray> create(List<INDArray> slices) {
 		int slen=slices.size();
-		if (slen==0) throw new IllegalArgumentException("Empty list of slices provided to SliceArray");
+		if (slen==0) throw new IllegalArgumentException("Can't create SliceArray with zero slices");
 		INDArray[] arr=new INDArray[slen];
 		return new SliceArray<INDArray>(IntArrays.consArray(slen,slices.get(0).getShape()),slices.toArray(arr));
 	}

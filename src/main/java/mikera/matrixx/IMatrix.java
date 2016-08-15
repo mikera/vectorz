@@ -7,10 +7,11 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 
 /**
- * Interface for matrix operations.
+ * Interface to specify matrix-specific operations.
  * 
- * Matrix implementations should generally extend AMatrix which contains important
- * functionality implementations, and serves as an abstract base class for matrices.
+ * Matrix implementations should extend AMatrix which implements this interface,
+ * contains important functionality implementations, and serves as the abstract base class 
+ * for all Vectorz matrices.
  * 
  * @author Mike
  *
