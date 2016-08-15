@@ -294,7 +294,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc=rowCount();
 		int cc=columnCount();
 		if ((i<0)||(i>=(rc*cc))) throw new IllegalArgumentException(ErrorMessages.invalidElementIndex(this,i));
-		return unsafeGet((int)(i/rc),(int)(i%cc));
+		return unsafeGet((int)(i/cc),(int)(i%cc));
 	}
 	
 	/**
