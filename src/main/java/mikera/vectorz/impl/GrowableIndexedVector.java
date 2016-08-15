@@ -90,6 +90,11 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 		return v;
 	}
 	
+	/**
+	 * Creates a zero-filled GrowableIndexedVector with the specified initial length
+	 * @param len
+	 * @return
+	 */
 	public static GrowableIndexedVector createLength(int len) {
 		return new GrowableIndexedVector(len);
 	}
@@ -102,6 +107,12 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 		return data.get(ix);
 	}
 	
+	/**
+	 * Adds a value to this GrawableIndexedVector at the specified position.
+	 * Grows the vector if required.
+	 * @param i
+	 * @param value
+	 */
 	public void append(int i, double value) {
 		index.checkedAppend(i);
 		data.append(value);
