@@ -109,7 +109,7 @@ public class BlockDiagonalMatrix extends ABlockMatrix implements ISparse {
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
+	public void unsafeSet(int row, int column, double value) {
 		int bi=getRowBlockIndex(row);
 		int bj=getColumnBlockIndex(column);
 		if (bi!=bj) throw new UnsupportedOperationException("Block Diagonal Matrix immutable at this position");

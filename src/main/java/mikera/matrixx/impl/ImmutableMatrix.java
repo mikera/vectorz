@@ -9,7 +9,6 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.util.DoubleArrays;
-import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Immutable dense matrix class
@@ -104,11 +103,6 @@ public final class ImmutableMatrix extends ARectangularMatrix implements IDenseA
 	@Override
 	public double unsafeGet(int i, int j) {
 		return data[i*cols+j];
-	}
-
-	@Override
-	public void set(int row, int column, double value) {
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
 	
 	@Override

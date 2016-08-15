@@ -41,10 +41,7 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 	
 	@Override
 	public abstract double get(int row, int column);
-	
-	@Override
-	public abstract void set(int row, int column, double value);
-	
+		
 	@Override
 	public abstract double unsafeGet(int row, int column);
 

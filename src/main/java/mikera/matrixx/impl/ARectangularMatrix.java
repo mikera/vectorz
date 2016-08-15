@@ -55,7 +55,7 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	@Override
-	public int bandLength(int band) {
+	public final int bandLength(int band) {
 		return bandLength(rows,cols,band);
 	}
 	
@@ -83,13 +83,6 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	@Override
-	protected void checkSameShape(AMatrix m) {
-		if((rows!=m.rowCount())||(cols!=m.columnCount())) {
-			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
-		}
-	}
-	
-	@Override
 	public final int checkColumn(int column) {
 		if ((column<0)||(column>=cols)) throw new IndexOutOfBoundsException(ErrorMessages.invalidSlice(this, 1, column));
 		return cols;
@@ -102,10 +95,31 @@ public abstract class ARectangularMatrix extends AMatrix {
 	}
 	
 	@Override
-	protected void checkSameShape(ARectangularMatrix m) {
+	protected final void checkSameShape(AMatrix m) {
 		if((rows!=m.rowCount())||(cols!=m.columnCount())) {
 			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
 		}
+	}
+	
+	@Override
+	protected final void checkSameShape(ARectangularMatrix m) {
+		if((rows!=m.rows)||(cols!=m.cols)) {
+			throw new IndexOutOfBoundsException(ErrorMessages.mismatch(this, m));
+		}
+	}
+	
+	@Override
+	protected final int checkRowCount(int expected) {
+		int rc=rowCount();
+		if (rc!=expected) throw new IllegalArgumentException("Unexpected row count: "+rc+" expected: "+expected);
+		return rc;
+	}
+	
+	@Override
+	protected final int checkColumnCount(int expected) {
+		int cc=columnCount();
+		if (cc!=expected) throw new IllegalArgumentException("Unexpected column count: "+cc+" expected: "+expected);
+		return cc;
 	}
 	
 	@Override

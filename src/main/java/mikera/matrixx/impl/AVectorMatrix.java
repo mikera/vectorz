@@ -76,12 +76,6 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	}
 
 	@Override
-	public void set(int row, int column, double value) {
-		checkColumn(column);
-		unsafeSet(row,column,value);
-	}
-
-	@Override
 	public void unsafeSet(int row, int column, double value) {
 		getRowView(row).unsafeSet(column,value);
 	}

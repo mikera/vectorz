@@ -38,19 +38,13 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
-	public void set(int i, int j,double value) {
-		checkIndex(i,j);
+	public void unsafeSet(int i, int j,double value) {
 		data[index(i,j)]=value;
 	}
 	
 	@Override
 	public double unsafeGet(int i, int j) {
 		return data[index(i,j)];
-	}
-	
-	@Override
-	public void unsafeSet(int i, int j,double value) {
-		data[index(i,j)]=value;
 	}
 	
 	/**

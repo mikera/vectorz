@@ -181,12 +181,6 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 		checkIndex(i,j);
 		return 0.0;
 	}
-
-	@Override
-	public void set(int row, int column, double value) {
-		checkIndex(row,column);
-		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
-	}
 	
 	@Override
 	public double unsafeGet(int row, int column) {
