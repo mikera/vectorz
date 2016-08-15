@@ -338,6 +338,11 @@ public abstract class AStridedVector extends AArrayVector implements IStridedArr
 	}
 	
 	@Override
+	public double visitNonZero(ElementVisitor elementVisitor) {
+		return DoubleArrays.visitNonZero(elementVisitor, getArray(), getArrayOffset(), length(),getStride());
+	}
+	
+	@Override
 	public void validate() {
 		if (length>0) {
 			int offset=getArrayOffset();

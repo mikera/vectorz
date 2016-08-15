@@ -756,11 +756,37 @@ public final class DoubleArrays {
 		return new double[size];
 	}
 
+	/**
+	 * Calls the specified element visitor for each non-zero element in a double array segment
+	 * @param elementVisitor
+	 * @param data
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
 	public static double visitNonZero(ElementVisitor elementVisitor, double[] data, int offset, int length) {
 		for (int i=0; i<length; i++) {
-			double v=data[i];
+			double v=data[offset+i];
 			if (v==0.0) continue;
-			v=elementVisitor.visit(i, data[offset+i]);
+			v=elementVisitor.visit(i, v);
+			if (v!=0) return v;
+		}
+		return 0.0;
+	}
+	
+	/**
+	 * Calls the specified element visitor for each non-zero element in a strided double array segment
+	 * @param elementVisitor
+	 * @param data
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
+	public static double visitNonZero(ElementVisitor elementVisitor, double[] data, int offset, int length, int stride) {
+		for (int i=0; i<length; i++) {
+			double v=data[offset+i*stride];
+			if (v==0.0) continue;
+			v=elementVisitor.visit(i, v);
 			if (v!=0) return v;
 		}
 		return 0.0;
