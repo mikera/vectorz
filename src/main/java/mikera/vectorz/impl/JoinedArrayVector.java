@@ -234,6 +234,11 @@ public final class JoinedArrayVector extends AJoinedVector {
 	}
 	
 	@Override
+	public void addMultiple(AVector a, int aOffset, double factor) {
+		addMultiple(0,a,aOffset,length(),factor);
+	}
+
+	@Override
 	public void addMultiple(int offset, AVector a, int aOffset, int length, double factor) {
 		int alen=length;
 		for (int j=0; j<numArrays; j++) {

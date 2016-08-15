@@ -1754,7 +1754,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		if (a instanceof AVector) {
 			sub((AVector)a);
 		} else if (a instanceof AScalar) {
-			sub(a.get());
+			add(-a.get());
 		}else {
 			super.sub(a);
 		}	
@@ -2024,7 +2024,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param i
 	 * @param v
 	 */
-	public void subAt(int i, double v) {
+	public final void subAt(int i, double v) {
 		addAt(i,-v);
 	}
 	
