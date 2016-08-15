@@ -8,6 +8,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.BroadcastScalarArray;
 import mikera.arrayz.impl.IDense;
+import mikera.arrayz.impl.ZeroArray;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
@@ -380,8 +381,13 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		if (tdims==0) {
 			return this;
 		} 
-		// note that BroadcastScalarArray handles vector and matrix scpecial cases
-		return BroadcastScalarArray.create(get(),targetShape);
+		// note that BroadcastScalarArray handles vector and matrix special cases
+		double value=get();
+		if (value==0) {
+			return ZeroArray.create(targetShape);
+		} else {
+			return BroadcastScalarArray.create(value,targetShape);
+		}
 	}
 	
 	@Override

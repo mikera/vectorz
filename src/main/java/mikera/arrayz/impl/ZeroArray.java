@@ -44,6 +44,11 @@ public final class ZeroArray extends BaseShapedArray implements ISparse {
 		return new ZeroArray(shape);
 	}
 	
+	/**
+	 * Returns a zero array with specified shape. Takes a defensive clone of the shape array.
+	 * @param shape
+	 * @return
+	 */
 	public static ZeroArray create(int... shape) {
 		return new ZeroArray(shape.clone());
 	}
