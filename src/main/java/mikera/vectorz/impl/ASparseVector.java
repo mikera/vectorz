@@ -266,6 +266,11 @@ public abstract class ASparseVector extends ASizedVector implements ISparseVecto
 	}
 	
 	@Override
+	public double density() {
+		return ((double)nonZeroCount())/elementCount();
+	}
+	
+	@Override
 	public boolean equals(AVector v) {
 		if (v instanceof ASparseVector) {
 			return equals((ASparseVector)v);

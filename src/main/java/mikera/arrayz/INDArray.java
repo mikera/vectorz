@@ -783,7 +783,7 @@ public interface INDArray extends Cloneable, Serializable {
 	public void validate();
 
 	/**
-	 * Copies the elements of this INDArray to the specified double buffer
+	 * Copies the elements of this INDArray to the specified double buffer.
 	 */
 	public void toDoubleBuffer(DoubleBuffer dest);
 	
@@ -798,8 +798,9 @@ public interface INDArray extends Cloneable, Serializable {
 	public INDArray[] toSliceArray();
 	
 	/**
-	 * Returns the underlying double array representing the densely packed elements of this array
-	 * Returns null if there is no such array
+	 * Returns the underlying double array representing the densely packed elements of this array.
+	 * 
+	 * Returns null if there is no such array.
 	 */
 	public double[] asDoubleArray();
 
@@ -811,14 +812,14 @@ public interface INDArray extends Cloneable, Serializable {
 	public List<INDArray> getSliceViews();
 
 	/**
-	 * Coerces the array into a flattened dense Vector, in row-major order
-	 * May return the same array if it is already a Vector instance
+	 * Coerces the array into a flattened dense Vector, in row-major order.
+	 * May return the same array if it is already a Vector instance.
 	 */
 	public Vector toVector();
 	
 	/**
-	 * Coerces the array into a packed mutable Array instance
-	 * May return the same array if it is already a dense Array instance
+	 * Coerces the array into a packed mutable Array instance.
+	 * May return the same array if it is already a dense Array instance.
 	 */
 	public Array toArray();
 
