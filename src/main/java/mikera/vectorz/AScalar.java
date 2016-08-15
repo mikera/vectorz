@@ -8,7 +8,6 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.BroadcastScalarArray;
 import mikera.arrayz.impl.IDense;
-import mikera.arrayz.impl.ZeroArray;
 import mikera.matrixx.AMatrix;
 import mikera.randomz.Hash;
 import mikera.vectorz.impl.ImmutableScalar;
@@ -354,6 +353,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		multiply(a.get());
 	}
 	
+	@Override 
+	public final INDArray multiplyCopy(INDArray a) {
+		return a.multiplyCopy(get());
+	}
+	
 	@Override
 	public final double elementSum() {
 		return get();
@@ -387,11 +391,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		} 
 		// note that BroadcastScalarArray handles vector and matrix special cases
 		double value=get();
-		if (value==0) {
-			return ZeroArray.create(targetShape);
-		} else {
-			return BroadcastScalarArray.create(value,targetShape);
-		}
+		return BroadcastScalarArray.create(value,targetShape);
 	}
 	
 	@Override

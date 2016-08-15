@@ -28,16 +28,18 @@ public class BroadcastScalarArray extends BaseShapedArray {
 		majorSlice=(dims>0)?createMajorSlice():null;
 	}
 
-	public static INDArray create(double d, int[] targetShape) {
+	public static INDArray create(double value, int[] targetShape) {
 		int tdims=targetShape.length;
 		if (tdims==0) {
-			return Scalar.create(d);
+			return Scalar.create(value);
 		} else if (tdims==1) {
-			return Vectorz.createRepeatedElement(targetShape[0],d);
+			return Vectorz.createRepeatedElement(targetShape[0],value);
 		} else if (tdims==2) {
-			return Vectorz.createRepeatedElement(targetShape[1],d).broadcast(targetShape);
+			return Vectorz.createRepeatedElement(targetShape[1],value).broadcast(targetShape);
+		} else if (value==0) {
+			return ZeroArray.create(targetShape);
 		} else {
-			return new BroadcastScalarArray(d,targetShape);
+			return new BroadcastScalarArray(value,targetShape);
 		}
 	}
 
