@@ -609,7 +609,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public void setElements(double... values) {
+	public final void setElements(double... values) {
 		int vl=values.length;
 		if (vl!=elementCount()) throw new IllegalArgumentException("Incorrect number of elements in array: "+vl);
 		setElements(values,0);
