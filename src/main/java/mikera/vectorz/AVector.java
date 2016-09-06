@@ -23,8 +23,8 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.impl.ASparseVector;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.impl.ImmutableVector;
+import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.impl.IndexedSubVector;
 import mikera.vectorz.impl.JoinedVector;
 import mikera.vectorz.impl.ListWrapper;
@@ -417,10 +417,11 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @return
 	 */
 	public List<Double> toList() {
-		int len=length();
-		ArrayList<Double> al=new ArrayList<Double>(len);
-		for (int i=0; i<len; i++) {
-			al.add(unsafeGet(i));
+		ArrayList<Double> al=new ArrayList<Double>(length());
+		double[] ds=asDoubleArray();
+		if (ds==null) ds=toDoubleArray();
+		for (double d: getElements()) {
+			al.add(d);
 		}
 		return al;
 	}
@@ -513,15 +514,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * Copies a the contents of a vector to a vector at the specified offset
 	 */
 	public void copyTo(AVector dest, int destOffset) {
-		if (dest instanceof ADenseArrayVector) {
-			copyTo((ADenseArrayVector) dest,destOffset);
-			return;
-		}
-		int len = length();
-		if (destOffset+len>dest.length()) throw new IndexOutOfBoundsException();
-		for (int i=0; i<len; i++) {
-			dest.unsafeSet(destOffset+i,unsafeGet(i));
-		}
+		copyTo(0,dest,destOffset,length());
 	}
 	
 	/**
@@ -827,11 +820,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	
 	@Override
 	public void square() {
-		int len=length();
-		for (int i=0; i<len; i++) {
-			double x=unsafeGet(i);
-			unsafeSet(i,x*x);
-		}		
+		applyOp(Ops.SQUARE);
 	}
 	
 	@Override
