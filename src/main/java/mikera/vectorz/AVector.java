@@ -860,6 +860,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Computes the reciprocal of all elements in this vector. Mutates this vector
+	 */
+	@Override
+	public void reciprocal() {
+		applyOp(Ops.RECIPROCAL);
+	}
+	
+	/**
 	 * Scales the vector by another vector of the same size
 	 * @param v
 	 */
