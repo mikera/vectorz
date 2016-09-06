@@ -3,7 +3,7 @@ package mikera.arrayz.impl;
 import mikera.arrayz.INDArray;
 
 /**
- * Interface for arrays that support strided access over underlying data
+ * Interface for arrays that support strided access over an underlying double[] array
  * 
  * @author Mike
  *
