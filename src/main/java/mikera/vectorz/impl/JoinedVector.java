@@ -259,12 +259,7 @@ public final class JoinedVector extends AJoinedVector {
 		left.add(data,offset);
 		right.add(data,offset+split);
 	}
-	
-	@Override
-	public void add(int offset, AVector a) {
-		add(offset,a,0,a.length());
-	}
-	
+		
 	@Override
 	public void add(int offset, AVector a, int aOffset, int length) {
 		if (offset>=split) {

@@ -63,9 +63,9 @@ public final class StridedVector extends BaseStridedVector {
 	}
 	
 	@Override
-	public void add(int offset, AVector a) {
+	public void add(int offset, AVector a,int srcOffset, int length) {
 		int stride=getStride();
-		a.addToArray(getArray(), getArrayOffset()+offset*stride,stride);	
+		a.subVector(srcOffset,length).addToArray(getArray(), getArrayOffset()+offset*stride,stride);	
 	}
 	
 	@Override

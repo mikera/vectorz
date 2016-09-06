@@ -1780,7 +1780,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param offset
 	 * @param src
 	 */
-	public void add(int offset, AVector src) {
+	public final void add(int offset, AVector src) {
 		add(offset,src,0,src.length());
 	}
 	

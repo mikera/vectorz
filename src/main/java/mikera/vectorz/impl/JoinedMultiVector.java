@@ -296,12 +296,7 @@ public final class JoinedMultiVector extends AJoinedVector {
 			vecs[i].add(data, offset+splits[i]);
 		}
 	}
-	
-	@Override
-	public void add(int offset, AVector a) {
-		add(offset,a,0,a.length());
-	}
-	
+		
 	@Override
 	public void addMultiple(AVector a, double factor) {
 		for (int i=0; i<n; i++) {

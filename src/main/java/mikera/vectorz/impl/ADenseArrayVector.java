@@ -150,8 +150,8 @@ public abstract class ADenseArrayVector extends AStridedVector implements IDense
 	}
 
 	@Override
-	public void add(int offset, AVector src) {
-		src.addToArray(0, getArray(), getArrayOffset() + offset, length);
+	public void add(int offset, AVector src, int srcOffset, int length) {
+		src.addToArray(srcOffset, getArray(), getArrayOffset() + offset, length);
 	}
 
 	public void add(int offset, ADenseArrayVector src) {

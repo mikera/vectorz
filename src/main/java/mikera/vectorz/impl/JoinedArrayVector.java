@@ -191,12 +191,7 @@ public final class JoinedArrayVector extends AJoinedVector {
 			DoubleArrays.add(srcData, srcOffset+pos[i], this.data[i], offsets[i], subLength(i));
 		}
 	}
-		
-	@Override
-	public void add(int offset, AVector a) {
-		add(offset,a,0,a.length());
-	}
-	
+			
 	@Override
 	public void add(int offset, AVector a, int aOffset, int length) {
 		int alen=length;
