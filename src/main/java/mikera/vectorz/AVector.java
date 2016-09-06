@@ -2239,7 +2239,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
-	public Iterator<Double> elementIterator() {
+	public final Iterator<Double> elementIterator() {
 		return iterator();
 	}
 
