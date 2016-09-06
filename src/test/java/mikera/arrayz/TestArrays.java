@@ -434,9 +434,9 @@ public class TestArrays {
 				assertEquals(b, c);
 			}
 			assertEquals(b, d);
-			assertEquals(v, b.toVector());
-			assertEquals(v, Vector.wrap(ds));
-			assertEquals(v, Vector.wrap(tmp));
+			assertTrue(v.epsilonEquals(b.toVector()));
+			assertTrue(v.epsilonEquals(Vector.wrap(ds)));
+			assertTrue(v.epsilonEquals(Vector.wrap(tmp)));
 		}
 	}
 
