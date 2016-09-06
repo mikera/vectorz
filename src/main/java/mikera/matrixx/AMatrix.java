@@ -2104,7 +2104,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 
 	/**
-	 * Copies the elements in a slected row of this matrix to a double array
+	 * Copies the elements in a selected row of this matrix to a double array
 	 * @param i The index of the selected row
 	 * @param dest Destination double[] array
 	 * @param destOffset Offset into destination array
