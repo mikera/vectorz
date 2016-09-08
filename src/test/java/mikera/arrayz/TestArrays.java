@@ -433,7 +433,7 @@ public class TestArrays {
 				c.validate();
 				assertEquals(b, c);
 			}
-			assertEquals(b, d);
+			assertTrue(b.epsilonEquals(d));
 			assertTrue(v.epsilonEquals(b.toVector()));
 			assertTrue(v.epsilonEquals(Vector.wrap(ds)));
 			assertTrue(v.epsilonEquals(Vector.wrap(tmp)));
