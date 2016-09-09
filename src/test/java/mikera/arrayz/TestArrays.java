@@ -32,6 +32,7 @@ import mikera.vectorz.Ops;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.TestOps;
 import mikera.vectorz.TestingUtils;
+import mikera.vectorz.Tools;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Constant;
@@ -144,7 +145,7 @@ public class TestArrays {
 		assertEquals(sl, vslices.get(0));
 	}
 	
-	public void testAdd(INDArray a) {
+	private void testAdd(INDArray a) {
 		INDArray b=TestingUtils.createRandomLike(a, 16786);
 		INDArray r=a.addCopy(b);
 		assertTrue(r.isSameShape(a));
@@ -158,6 +159,19 @@ public class TestArrays {
 		
 		b.add(a);
 		assertEquals(r,b);	
+	}
+	
+	private void testAbsDiff(INDArray a) {
+		INDArray b=TestingUtils.createRandomLike(a, 16786);
+		INDArray r=a.absDiffCopy(b);
+		assertTrue(r.isSameShape(a));
+		
+		double[] adata=a.getElements();
+		double[] bdata=b.getElements();
+		double[] rdata=r.getElements();
+		for (int i=0; i<adata.length; i++) {
+			assertTrue(Tools.epsilonEquals(rdata[i], Math.abs(adata[i]-bdata[i])));
+		}
 	}
 	
 	private void testScaleAdd(INDArray a) {
@@ -862,6 +876,7 @@ public class TestArrays {
 		testComponents(a);
 		testTranspose(a);
 		testAsVector(a);
+		testAbsDiff(a);
 		testAdd(a);
 		testAddOuterProduct(a);
 		testAddMultiple(a);

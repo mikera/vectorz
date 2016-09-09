@@ -1,12 +1,13 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
-import mikera.arrayz.INDArray;
-import mikera.arrayz.TestArrays;
-import mikera.matrixx.Matrix22;
-import mikera.vectorz.impl.APrimitiveVector;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import mikera.arrayz.INDArray;
+import mikera.matrixx.Matrix22;
+import mikera.vectorz.impl.APrimitiveVector;
 
 public class TestPrimitiveVectors {
 	@Test 
@@ -21,7 +22,6 @@ public class TestPrimitiveVectors {
 	@Test 
 	public void testEpsilonEquals() {
 		assertTrue(Vector1.of(1.0).epsilonEquals(Vector1.of(0.0),1.1));
-		new TestArrays().testAdd(Vector1.of(1.0));
 	}
 	
 	@Test 

@@ -790,6 +790,34 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public void absDiff(INDArray a) {
+		if (a instanceof AVector) {
+			absDiff((AVector)a);
+		} else if (a.dimensionality()==0) {
+			absDiff(a.get());
+		} else {
+			absDiff(a.asVector());
+		}
+	}
+	
+	public void absDiff(AVector a) {
+		sub(a);
+		abs();
+	}
+	
+	public void absDiff(double v) {
+		sub(v);
+		abs();
+	}
+	
+	@Override
+	public INDArray absDiffCopy(INDArray a) {
+		INDArray res=subCopy(a).mutable();
+		res.abs();
+		return res;
+	}
+	
+	@Override
 	public void log() {
 		applyOp(Ops.LOG);
 	}
