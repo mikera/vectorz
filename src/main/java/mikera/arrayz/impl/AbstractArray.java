@@ -851,9 +851,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public void addAt(long i, double v) {
-		long ss=elementCount()/sliceCount();
-		long slice=i/ss;
-		slice(Tools.toInt(slice)).addAt(i-slice*ss, v);
+		long sliceSize=elementCount()/sliceCount();
+		long slice=i/sliceSize;
+		slice(Tools.toInt(slice)).addAt(i-slice*sliceSize, v);
 	}
 	
 	@Override
