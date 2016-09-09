@@ -1111,6 +1111,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void absDiff(INDArray a) {
+		sub(a);
+		abs();
+	}
+	
+	@Override
+	public INDArray absDiffCopy(INDArray a) {
+		INDArray res=subCopy(a).mutable();
+		res.abs();
+		return res;
+	}
+	
+	@Override
 	public void sqrt() {
 		if (dimensionality()==0) {
 			set(Math.sqrt(get()));

@@ -928,6 +928,18 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @return A new array containing the absolute element values
 	 */
 	public INDArray absCopy();
+	
+	/**
+	 * Sets this array to the absolute values of the difference between this array and another
+	 */
+	public void absDiff(INDArray a);
+	
+	
+	/**
+	 * Returns an array containing the absolute values of the difference between this array and another
+	 * @return A new array containing the absolute element values
+	 */
+	public INDArray absDiffCopy(INDArray a);
 
 	/**
 	 * Returns a copy of the array with the signum operator applied to each element
