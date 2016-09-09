@@ -434,7 +434,7 @@ public class TestArrays {
 				assertEquals(b, c);
 			}
 			// assertEquals(b,d);
-			assertTrue(a.toString()+" vs "+b.toString(),b.epsilonEquals(d));
+			assertTrue(b.epsilonEquals(d));
 			assertTrue(v.epsilonEquals(b.toVector()));
 			assertTrue(v.epsilonEquals(Vector.wrap(ds)));
 			assertTrue(v.epsilonEquals(Vector.wrap(tmp)));

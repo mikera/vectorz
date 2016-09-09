@@ -120,10 +120,9 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int dims=a.dimensionality();
 		if (a.dimensionality()!=dims) return false;
 		if (dims==0) {
-			double d=get()-a.get();
-			return (Math.abs(d)<=epsilon);
+			return Tools.epsilonEquals(get(), a.get(), epsilon);
 		} else if (dims==1) {
-			return asVector().epsilonEquals(a.asVector());
+			return asVector().epsilonEquals(a.asVector(),epsilon);
 		} else {
 			int sc=sliceCount();
 			if (a.sliceCount()!=sc) return false;

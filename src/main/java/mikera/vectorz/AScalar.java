@@ -431,8 +431,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		if (a.dimensionality()!=0) {
 			return false;
 		} else {
-			double d=get()-a.get();
-			return (Math.abs(d)<=epsilon);
+			return Tools.epsilonEquals(get(), a.get(), epsilon);
 		}
 	}
 	
