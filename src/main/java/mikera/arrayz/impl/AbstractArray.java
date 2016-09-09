@@ -767,14 +767,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		return true;
 	}
 	
+	/**
+	 * Returns true if this array is exactly equal to a vector.
+	 * @param a
+	 * @return
+	 */
 	public boolean equals(AVector a) {
 		if (dimensionality()!=1) return false;
-		int sc=sliceCount();
-		if (a.length()!=sc) return false;
-		for (int i=0; i<sc; i++) {
-			if (!(get(i)==a.unsafeGet(i))) return false;
-		}
-		return true;
+		return asVector().equals(a);
 	}
 	
 	@Override
