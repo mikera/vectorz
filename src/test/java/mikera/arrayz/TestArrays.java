@@ -411,7 +411,7 @@ public class TestArrays {
 			boolean nan=false;
 			for (int i = 0; i < n; i++) {
 				double x= op.apply(v.unsafeGet(i));
-				if (Double.isNaN(x)) nan=true;
+				if (Vectorz.isUncountable(x)) nan=true;
 				tmp[i] = x;
 			}
 			if (nan) continue; // TODO: compare NaNs properly
@@ -433,7 +433,8 @@ public class TestArrays {
 				c.validate();
 				assertEquals(b, c);
 			}
-			assertTrue(b.epsilonEquals(d));
+			// assertEquals(b,d);
+			assertTrue(a.toString()+" vs "+b.toString(),b.epsilonEquals(d));
 			assertTrue(v.epsilonEquals(b.toVector()));
 			assertTrue(v.epsilonEquals(Vector.wrap(ds)));
 			assertTrue(v.epsilonEquals(Vector.wrap(tmp)));

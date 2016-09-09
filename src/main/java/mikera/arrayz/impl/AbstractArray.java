@@ -117,9 +117,13 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public boolean epsilonEquals(INDArray a, double epsilon) {
-		if (dimensionality()==0) {
+		int dims=a.dimensionality();
+		if (a.dimensionality()!=dims) return false;
+		if (dims==0) {
 			double d=get()-a.get();
 			return (Math.abs(d)<=epsilon);
+		} else if (dims==1) {
+			return asVector().epsilonEquals(a.asVector());
 		} else {
 			int sc=sliceCount();
 			if (a.sliceCount()!=sc) return false;
