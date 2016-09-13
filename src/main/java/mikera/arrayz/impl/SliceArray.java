@@ -46,6 +46,11 @@ public final class SliceArray<T extends INDArray> extends BaseShapedArray {
 		return new SliceArray<T>(a.getShape(),(T[]) a.toSliceArray());
 	}
 	
+	/**
+	 * Create a SliceArray by wrapping a set of slices.
+	 * @param slices
+	 * @return
+	 */
 	@SafeVarargs
 	public static <T extends INDArray>  SliceArray<T> of(T... slices) {
 		return new SliceArray<T>(IntArrays.consArray(slices.length,slices[0].getShape()),slices.clone());

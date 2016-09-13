@@ -368,6 +368,14 @@ public class IntArrays {
 		return true;
 	}
 
+	/**
+	 * Inserts a new integer value into a specified position in an int[] array.
+	 * Returns a new int[] array.
+	 * @param data
+	 * @param position
+	 * @param value
+	 * @return
+	 */
 	public static int[] insert(int[] data, int position, int value) {
 		int len=data.length;
 		int[] nas=new int[len+1];
