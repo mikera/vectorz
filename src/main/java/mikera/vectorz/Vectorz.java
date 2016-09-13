@@ -688,9 +688,12 @@ public class Vectorz {
 	 */
 	public static void fillNormal(AVector v, Random random) {
 		int n=v.length();
+		double[] vdata=v.asDoubleArray();
+		double[] data=(vdata==null)?new double[n]:vdata;	
 		for (int i=0; i<n ; i++) {
-			v.unsafeSet(i, random.nextGaussian());
+			data[i]=random.nextGaussian();
 		}
+		if (vdata==null) v.setElements(data);
 	}
 
 	/**
