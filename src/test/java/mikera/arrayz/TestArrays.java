@@ -590,6 +590,7 @@ public class TestArrays {
 		
 		c.scale(0.1);
 		assertTrue(c.epsilonEquals(a, 0.0001));
+		//assertEquals(a,c);
 
 	}
 	

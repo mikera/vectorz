@@ -680,5 +680,4 @@ public final class Matrix extends ADenseArrayMatrix {
 
 		return ret;
 	}
-
 }

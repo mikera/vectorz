@@ -2295,6 +2295,37 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}
 	}
 	
+	@Override
+	public void addSparse(double c) {
+		add(c);
+	}
+	
+	@Override
+	public void addMultipleSparse(INDArray a, double factor) {
+		if (a instanceof AVector) {
+			addMultipleSparse((AVector)a,factor);
+			return;
+		} 
+		int dims=a.dimensionality();
+		if (dims==0) {
+			addSparse(factor*a.get());
+		} else if (dims==1) {
+			addMultipleSparse(a.asVector(),factor);
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+	}
+	
+	/**
+	 * Adds a multiple of a source vector to the non-sparse elements of this vector only
+	 * @param v
+	 * @param factor
+	 */
+	public void addMultipleSparse(AVector v, double factor) {
+		// default is just a simple addMultiple
+		addMultiple(v,factor);
+	}
+	
 	/**
 	 * Adds source vector to this vector at the specified indexes which should map from source->this
 	 * @param source

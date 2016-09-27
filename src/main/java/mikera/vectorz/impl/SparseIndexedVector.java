@@ -349,6 +349,32 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		}
 		super.addMultiple(v, factor);
 	}
+	
+	@Override
+	public void addMultipleSparse(AVector v, double factor) {
+		if (v instanceof ADenseArrayVector) {
+			addMultipleSparse((ADenseArrayVector)v,factor);
+		} else if (v instanceof SparseIndexedVector) {
+			addMultipleSparse((SparseIndexedVector)v,factor);
+		} else {
+			int n=data.length;
+			double[] ds=new double[n];
+			v.getElements(ds, 0, index.data);
+			DoubleArrays.addMultiple(data, ds, factor);
+		}
+	}
+	
+	public void addMultipleSparse(SparseIndexedVector v, double factor) {
+		checkSameLength(v);
+		if (index.equals(v.index)) {
+			DoubleArrays.addMultiple(data, v.data, factor);
+		} else {
+			int n=data.length;
+			double[] ds=new double[n];
+			v.getElements(ds, 0, index.data);
+			DoubleArrays.addMultiple(data, ds, factor);		
+		}
+	}
 
 	@Override
 	public void add(double[] src, int srcOffset) {

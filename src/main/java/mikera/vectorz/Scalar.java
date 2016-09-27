@@ -111,4 +111,9 @@ public final class Scalar extends AScalar {
 		return ImmutableScalar.create(value);
 	}
 
+	@Override
+	public void addSparse(double c) {
+		value+=c;
+	}
+
 }
