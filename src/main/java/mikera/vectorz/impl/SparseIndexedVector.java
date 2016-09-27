@@ -369,6 +369,12 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		DoubleArrays.add(data, c);
 	}
 	
+	@Override
+	public void setSparse(AVector v) {
+		checkSameLength(v);
+		v.getElements(data, 0, index.data);
+	}
+	
 	public void addMultipleSparse(SparseIndexedVector v, double factor) {
 		checkSameLength(v);
 		if (index.equals(v.index)) {

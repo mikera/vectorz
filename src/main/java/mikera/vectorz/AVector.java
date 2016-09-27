@@ -23,6 +23,7 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.impl.ASparseVector;
 import mikera.vectorz.impl.ArraySubVector;
+import mikera.vectorz.impl.ISparseVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -2301,6 +2302,29 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public void setSparse(INDArray src) {
+		int sdims=src.dimensionality();
+		if (sdims==1) {
+			setSparse(src.asVector());
+		} else {
+			super.setSparse(src);
+		}
+	}
+	
+	/**
+	 * Sets the non-sparse elements of this vectolr to the corresponding elements of another vector
+	 * @param v
+	 */
+	public void setSparse(AVector src) {
+		if (this instanceof ISparseVector) {
+			// TODO: generic sparse implementation?
+			set(src);
+		} else {
+			set(src);
+		}
+	}
+	
+	@Override
 	public void addMultipleSparse(INDArray a, double factor) {
 		if (a instanceof AVector) {
 			addMultipleSparse((AVector)a,factor);
@@ -2854,4 +2878,5 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param elementVisitor
 	 */
 	public abstract double visitNonZero(IndexedElementVisitor elementVisitor);
+
 }
