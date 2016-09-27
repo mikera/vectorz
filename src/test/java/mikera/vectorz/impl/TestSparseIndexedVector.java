@@ -37,6 +37,13 @@ public class TestSparseIndexedVector {
 		Assert.assertNotEquals(sc,sv);
 	}
 	
+	@Test public void testAddSparse() {
+		SparseIndexedVector sv=SparseIndexedVector.createLength(10);
+		sv.set(3,3.0);
+		sv.addSparse(2.0);
+		assertEquals(5.0,sv.elementSum(),0.0);
+	}
+	
 	@Test public void testSparseHashedConversion() {
 		SparseIndexedVector sv=SparseIndexedVector.create(SparseHashedVector.createLength(10));
 		assertTrue(sv.isZero());
