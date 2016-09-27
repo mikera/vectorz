@@ -456,6 +456,14 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void addMultipleSparse(INDArray src, double factor) {
+		INDArray res=src.multiplyCopy(factor);
+		res=res.mutable();
+		res.add(this);
+		setSparse(res);
+	}
+	
+	@Override
 	public void addPower(INDArray src, double exponent) {
 		INDArray tmp=src.clone();
 		tmp.pow(exponent);
@@ -520,6 +528,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void addOuterProductSparse(INDArray a, INDArray b) {
+		if (a.dimensionality()==0) {
+			addMultipleSparse(b,a.get());
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).addOuterProductSparse(a.slice(i),b);
+			}
+		}
+	}
+	
+	@Override
 	public void setInnerProduct(INDArray a, INDArray b) {
 		set(a.innerProduct(b));
 	}
@@ -534,6 +554,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	public void setMultiple(INDArray a, double b) {
 		set(a);
 		scale(b);
+	}
+	
+	@Override
+	public void setSparse(INDArray a) {
+		set(a);
 	}
 	
 	@Override

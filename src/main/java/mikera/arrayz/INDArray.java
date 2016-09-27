@@ -701,6 +701,17 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @throws IllegalArgumentException if the inner product is a different shape to this array
 	 */
 	public void addOuterProduct(INDArray a, INDArray b);
+
+	/**
+	 * Adds the outer product of two arrays to this array.
+	 * Only affects the mutable, non-sparse elements of this array.
+	 * 
+	 * @param a
+	 * @param b
+	 * @throws IllegalArgumentException if the inner product is a different shape to this array
+	 */
+	public void addOuterProductSparse(INDArray a, INDArray b);
+
 	
 	/**
 	 * Sets this array to the inner product of two arrays. Must be the correct shape.
@@ -728,6 +739,16 @@ public interface INDArray extends Cloneable, Serializable {
 	 * @throws IllegalArgumentException if the inner product is a different shape to this array
 	 */
 	public void setMultiple(INDArray a, double b);
+	
+	/**
+	 * Sets the non-sparse elements of this array to the corresponding elements of the source array
+	 */
+	public void setSparse(INDArray src);
+	
+	/**
+	 * Adds a multiple of the source array to the non-sparse elements of this array 
+	 */
+	public void addMultipleSparse(INDArray src, double factor);
 	
 	/**
 	 * Multiplies all elements of the array in place by a given double value

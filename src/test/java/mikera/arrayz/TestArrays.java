@@ -584,6 +584,13 @@ public class TestArrays {
 		
 		b.scale(0.25);
 		assertTrue(b.epsilonEquals(a, 0.0001));
+		
+		INDArray c=(a.isFullyMutable())?a.exactClone():a.clone();
+		c.addMultipleSparse(a, 9.0);
+		
+		c.scale(0.1);
+		assertTrue(c.epsilonEquals(a, 0.0001));
+
 	}
 	
 	private void testReciprocal(INDArray a) {
