@@ -252,6 +252,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	}
 	
 	@Override
+	public void addOuterProductSparse(AVector a, AVector b) {
+		getLeadingDiagonal().addProduct(a, b);
+	}
+	
+	@Override
 	public AMatrix transposeInnerProduct(AMatrix s) {
 		return innerProduct(s);
 	}
