@@ -14,7 +14,7 @@ public interface ISparseVector extends IVector, ISparse{
 	SparseIndexedVector toSparseIndexedVector();
 
 	/**
-	 * Returns the non-sparse elements as a compacted vector
+	 * Returns the non-sparse elements as a compacted vector. May or may not be a view.
 	 * @return
 	 */
 	public AVector nonSparseValues();

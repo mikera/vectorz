@@ -2301,6 +2301,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		add(c);
 	}
 	
+	/**
+	 * Adds the corresponding elements of the source vector to the non-sparse elements of this vector
+	 * @param v
+	 */
+	public void addSparse(AVector v) {
+		add(v);
+	}
+	
 	@Override
 	public void setSparse(INDArray src) {
 		int sdims=src.dimensionality();
@@ -2878,5 +2886,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	 * @param elementVisitor
 	 */
 	public abstract double visitNonZero(IndexedElementVisitor elementVisitor);
+
+
 
 }

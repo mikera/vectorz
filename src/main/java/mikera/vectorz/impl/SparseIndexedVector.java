@@ -357,10 +357,25 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		} else if (v instanceof SparseIndexedVector) {
 			addMultipleSparse((SparseIndexedVector)v,factor);
 		} else {
+			checkSameLength(v);
 			int n=data.length;
 			double[] ds=new double[n];
 			v.getElements(ds, 0, index.data);
 			DoubleArrays.addMultiple(data, ds, factor);
+		}
+	}
+	
+	/**
+	 * Adds a multiple of the source array to the non-sparse elements of this array
+	 */
+	public void addMultipleSparse(ADenseArrayVector v, double factor) {
+		checkSameLength(v);
+		int n=data.length;
+		int[] ix=index.data;
+		int voffset=v.getArrayOffset();
+		double[] vdata=v.getArray();
+		for (int i=0; i<n; i++) {
+			data[i]+=vdata[voffset+ix[i]]*factor;
 		}
 	}
 	

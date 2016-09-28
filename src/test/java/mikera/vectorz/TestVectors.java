@@ -309,6 +309,17 @@ public class TestVectors {
 		assertEquals(0.0,tv.get(5+len),0.0);
 	}
 	
+	private void testAddSparse(AVector v) {
+		if (!v.isMutable()) return;
+		AVector src=TestingUtils.createRandomLike(v, 0x145674).asVector();
+		
+		AVector a=v.exactClone();
+		AVector b=v.exactClone();
+		a.addSparse(src.multiplyCopy(2.0));
+		b.addMultipleSparse(src,2.0);
+		assertEquals(a,b);
+	}
+	
 	private void testElementSum(AVector v) {
 		double res=0.0;
 		for (int i=0; i<v.length(); i++) {
@@ -929,6 +940,7 @@ public class TestVectors {
 		testNonZero(v);
 		testAddProduct(v);
 		testAddMultipleToArray(v);
+		testAddSparse(v);
 		testApplyOp(v);
 		testEquality(v);
 		testInnerProducts(v);

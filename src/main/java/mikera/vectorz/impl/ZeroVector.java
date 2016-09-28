@@ -140,6 +140,11 @@ public final class ZeroVector extends ASparseVector {
 	public void add(ASparseVector v) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
+	
+	@Override
+	public void addSparse(AVector v) {
+		// nothing to do
+	}
 
 	@Override
 	public AVector addCopy(AVector a) {
