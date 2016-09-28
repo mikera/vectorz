@@ -751,6 +751,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public void addSparse(double c);
 	
 	/**
+	 * Adds the corresponding elements of the source array the non-sparse elements of this array
+	 */
+	public void addSparse(INDArray a);
+	
+	/**
 	 * Adds a multiple of the source array to the non-sparse elements of this array 
 	 */
 	public void addMultipleSparse(INDArray src, double factor);

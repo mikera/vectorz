@@ -552,6 +552,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void addSparse(INDArray a) {
+		int adims=a.dimensionality();
+		if (adims==0) {
+			addSparse(a.get());
+		} else {
+			int sc=sliceCount();
+			for (int i=0; i<sc; i++) {
+				slice(i).addSparse(a.slice(i));
+			}
+		}
+	}
+	
+	@Override
 	public void setInnerProduct(INDArray a, INDArray b) {
 		set(a.innerProduct(b));
 	}

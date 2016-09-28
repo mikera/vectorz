@@ -1041,6 +1041,41 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
+	public void addSparse(INDArray a) {
+		if (a instanceof AMatrix) {
+			addSparse((AMatrix)a);
+			return;
+		} 
+		int adims=a.dimensionality();
+		if (adims==0) {
+			addSparse(a.get());
+		} else if (adims==1){
+			addSparse(a.asVector());
+		} else {
+			super.addSparse(a);
+		}
+	}
+	
+	/**
+	 * Adds the corresponding elements of the source vector to the non-sparse elements in rows of this matrix
+	 * @param a
+	 */
+	public void addSparse(AVector a) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRowView(i).addSparse(a);
+		}
+	}
+	
+	/**
+	 * Sets the non-sparse elements in this matrix to the corresponding values in the source matrix
+	 * @param a
+	 */
+	public void setSparse(AMatrix a) {
+		set(a);
+	}
+	
+	@Override
 	public void addToArray(double[] data, int offset) {
 		int cc=columnCount();
 		int rc=rowCount();
@@ -2334,5 +2369,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		add(a);
 		add(b);
 	}
+
 
 }
