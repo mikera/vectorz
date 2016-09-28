@@ -1002,6 +1002,30 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 			super.addOuterProduct(a, b);
 		}		
 	}
+	
+	@Override
+	public void addOuterProductSparse(INDArray a, INDArray b) {
+		if (a instanceof AVector && b instanceof AVector) {
+			addOuterProductSparse((AVector)a,(AVector)b);
+		} else {
+			super.addOuterProductSparse(a, b);
+		}		
+	}
+	
+	/**
+	 * Adds the outer product of two vectors to this matrix.
+	 * Mutates only the non-sparse elements in this matrix
+	 * @param a
+	 * @param b
+	 */
+	public void addOuterProductSparse(AVector a, AVector b) {
+		int rc=a.length();
+		int cc=b.length();
+		checkShape(rc, cc);
+		for (int i=0; i<rc; i++) {
+			getRowView(i).addMultipleSparse(b,a.get(i));
+		}
+	}
 
 	/**
 	 * Adds the outer product of two vectors to this matrix
