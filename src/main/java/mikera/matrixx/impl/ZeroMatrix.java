@@ -17,7 +17,7 @@ import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 
 /**
- * Lightweight immutable zero matrix class. 
+ * Lightweight, sparse immutable zero matrix class. 
  * 
  * Can be any shape, including empty shapes.
  */
@@ -126,6 +126,17 @@ public final class ZeroMatrix extends ARectangularMatrix implements IFastRows, I
 	@Override
 	public void addToArray(double[] dest, int offset) {
 		// do nothing
+	}
+	
+	@Override
+	public void addSparse(double c) {
+		// no change
+	}
+	
+	@Override
+	public void setSparse(AMatrix a) {
+		checkSameShape(a);
+		// no change
 	}
 	
 	@Override
