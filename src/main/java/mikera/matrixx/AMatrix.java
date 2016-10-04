@@ -23,7 +23,6 @@ import mikera.matrixx.algo.Rank;
 import mikera.matrixx.impl.ADenseArrayMatrix;
 import mikera.matrixx.impl.ARectangularMatrix;
 import mikera.matrixx.impl.AStridedMatrix;
-import mikera.matrixx.impl.DenseColumnMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.MatrixBandView;
@@ -343,13 +342,14 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public boolean isOrthogonal(double tolerance) {
 	    if(!isSquare())
 	        return false;
+	    int n=rowCount();
 	    
-        AMatrix Q = DenseColumnMatrix.wrap(this.rowCount(), this.columnCount(), this.getTransposeView().toDoubleArray());
-        for( int i = 0; i < Q.columnCount(); i++ ) {
-            AVector a = Q.getColumn(i);
+        List<AVector> cols=getColumns();
+	    for( int i = 0; i < n; i++ ) {
+            AVector a = cols.get(i);
             if (!a.isUnitLengthVector(tolerance)) return false;
-            for( int j = i+1; j < Q.columnCount(); j++ ) {
-                double val = a.innerProduct(Q.getColumn(j)).get();
+            for( int j = i+1; j < n; j++ ) {
+                double val = a.dotProduct(cols.get(j));
                 if ((Math.abs(val) > tolerance)) return false;
             }
         }
