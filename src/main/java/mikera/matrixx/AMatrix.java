@@ -72,8 +72,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	// Abstract interface
 	private static final long serialVersionUID = 4854869374064155441L;
 	
-	private static final double TOLERANCE = 1e-8;
-
 	@Override
 	public abstract double get(int i, int j);
 
@@ -334,8 +332,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * @return
 	 */
 	public boolean isOrthogonal() {
-	    return isOrthogonal(TOLERANCE);
+	    return isOrthogonal(Vectorz.TEST_EPSILON);
 	}
+	
 	/**
 	 * Check to see if the matrix is orthogonal
 	 * @param tolerance inner product of a column with all of the next columns should be less than tolerance
@@ -351,7 +350,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
             if (!a.isUnitLengthVector(tolerance)) return false;
             for( int j = i+1; j < Q.columnCount(); j++ ) {
                 double val = a.innerProduct(Q.getColumn(j)).get();
-                if ((Math.abs(val) > TOLERANCE)) return false;
+                if ((Math.abs(val) > tolerance)) return false;
             }
         }
         

@@ -213,6 +213,15 @@ public class Arrayz {
 		return load(new StringReader(ednString));	
 	}
 
+	/**
+	 * Wraps a Java double[] as a general, mutable strided array.
+	 * Selects the most appropriate Vectorz type (Vector, Matrix, Array etc.)
+	 * @param data
+	 * @param offset
+	 * @param shape
+	 * @param strides
+	 * @return
+	 */
 	public static INDArray wrapStrided(double[] data, int offset, int[] shape, int[] strides) {
 		int dims=shape.length;
 		if (dims==0) {
