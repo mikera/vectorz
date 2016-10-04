@@ -433,7 +433,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public AMatrix subArray(int[] offsets, int[] shape) {
+	public final AMatrix subArray(int[] offsets, int[] shape) {
 		if (offsets.length!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, offsets));
 		if (shape.length!=2) throw new IllegalArgumentException(ErrorMessages.illegalSize(shape));
 		return subMatrix(offsets[0],shape[0],offsets[1],shape[1]);
