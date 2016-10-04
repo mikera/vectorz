@@ -1606,6 +1606,28 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
+	public final void setApplyOp(INDArray a, Op op) {
+		if (a instanceof AMatrix) {
+			setApplyOp((AMatrix)a,op);
+		} else {
+			super.setApplyOp(a, op);
+		}
+	}
+	
+	/**
+	 * Sets this matrix to the result of applying an operator to another matrix
+	 * @param a
+	 * @param op
+	 */
+	public void setApplyOp(AMatrix a, Op op) {
+		checkSameShape(a);
+		int rc = rowCount();
+		for (int i = 0; i < rc; i++) {
+			getRowView(i).setApplyOp(a.getRow(i),op);
+		}
+	}
+	
+	@Override
 	public AMatrix applyOpCopy(Op op) {
 		AMatrix r=clone();
 		r.applyOp(op);
