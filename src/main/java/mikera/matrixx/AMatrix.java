@@ -616,6 +616,40 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
+	public final void setMultiple(INDArray a, double b) {
+		if (a instanceof AMatrix) {
+			setMultiple((AMatrix)a,b);
+		} else if (a.dimensionality()==1){
+			setMultiple(a.asVector(),b);
+		} else {
+			set(a);
+			scale(b);
+		}
+	}
+	
+	/**
+	 * Sets this matrix to a multiple of another matrix
+	 * @param a
+	 * @param b
+	 */
+	public final void setMultiple(AMatrix a, double b) {
+		set(a);
+		scale(b);
+	}
+	
+	/**
+	 * Sets every row of this matrix to a multiple of a vector
+	 * @param a
+	 * @param b
+	 */
+	public final void setMultiple(AVector a, double b) {
+		int rc=rowCount();
+		for (int i=0; i<rc; i++) {
+			getRowView(i).setMultiple(a, b);
+		}
+	}
+	
+	@Override
 	public void setElements(double[] values, int offset) {
 		int rc=rowCount();
 		int cc=columnCount();
