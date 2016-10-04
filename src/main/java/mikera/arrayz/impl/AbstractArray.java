@@ -643,7 +643,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public void setApplyOp(INDArray a, Op op) {
+	public void setApplyOp(Op op, INDArray a) {
 		int dims=dimensionality();
 		int adims=a.dimensionality();
 		if (dims==adims) {
@@ -652,7 +652,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		} else if (dims>adims){
 			INDArray sl=slice(0);
 			int sc=sliceCount();
-			sl.setApplyOp(a, op);
+			sl.setApplyOp(op, a);
 			for (int i=1; i<sc; i++) {
 				slice(i).set(sl);
 			}

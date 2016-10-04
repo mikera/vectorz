@@ -1606,11 +1606,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	@Override
-	public final void setApplyOp(INDArray a, Op op) {
+	public final void setApplyOp(Op op, INDArray a) {
 		if (a instanceof AMatrix) {
 			setApplyOp((AMatrix)a,op);
 		} else {
-			super.setApplyOp(a, op);
+			super.setApplyOp(op, a);
 		}
 	}
 	
@@ -1623,7 +1623,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		checkSameShape(a);
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
-			getRowView(i).setApplyOp(a.getRow(i),op);
+			getRowView(i).setApplyOp(op,a.getRow(i));
 		}
 	}
 	

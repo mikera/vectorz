@@ -725,7 +725,7 @@ public interface INDArray extends Cloneable, Serializable {
 	/**
 	 * Sets this array to the result of applyin an operation to a source array
 	 */
-	public void setApplyOp(INDArray a, Op op);
+	public void setApplyOp(Op op, INDArray a);
 	
 	/**
 	 * Sets this array to the element-wise multiple of two arrays. Must have compatible shapes.
