@@ -390,6 +390,7 @@ public class TestArrays {
 	}
 
 	private void testApplyOp(INDArray a) {
+		
 		if (!a.isFullyMutable()) return;
 		INDArray c = a.exactClone();
 		INDArray d = a.exactClone();
@@ -408,6 +409,22 @@ public class TestArrays {
 	}
 
 	private void testApplyAllOps(INDArray a) {
+		// tests for any arrays, may not be mutable
+		for (Op op : TestOps.ALL_OPS) {
+			if (op.isStochastic()) continue;
+			INDArray r=a.exactClone().ensureMutable();
+			r.applyOp(op);
+			if (r.hasUncountable()) continue;
+			
+			assertEquals(r,a.applyOpCopy(op));
+			
+			INDArray tmp=r.copy();
+			r.fill(Double.NaN);
+			r.setApplyOp(op, a);
+			assertEquals(tmp,r);
+		}
+		
+		// continue with tests for mutable arrays only
 		if (!a.isFullyMutable()) return;
 		for (Op op : TestOps.ALL_OPS) {
 			if (op.isStochastic()) continue;

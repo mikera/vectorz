@@ -89,18 +89,24 @@ public abstract class ASparseVector extends ASizedVector implements ISparseVecto
 		checkRange(offset,length);
 		SparseIndexedVector sv=toSparseIndexedVector();
 		Vector svs=sv.nonSparseValues();
-		int[] ixs=sv.nonSparseIndex().data;
-		int ii=0;
-		while (ixs[ii]<offset) ii++;
-		int ind=ixs[ii];
-		for (int i=0; i<length; i++) {
-			int di=destOffset+i*stride;
-			if (ind==(offset+i)) {
-				destData[di]=svs.unsafeGet(ii);
-				ii++;
-				ind=(ii<ixs.length)?ixs[ii]:0; // set to 0 if no more indexes to access
-			} else {
-				destData[di]=0.0;
+		if (svs.length==0) {
+			for (int i=0; i<length; i++) {
+				destData[destOffset+i*stride]=0.0;
+			}
+		} else {
+			int[] ixs=sv.nonSparseIndex().data;
+			int ii=0;
+			while (ixs[ii]<offset) ii++;
+			int ind=ixs[ii];
+			for (int i=0; i<length; i++) {
+				int di=destOffset+i*stride;
+				if (ind==(offset+i)) {
+					destData[di]=svs.unsafeGet(ii);
+					ii++;
+					ind=(ii<ixs.length)?ixs[ii]:0; // set to 0 if no more indexes to access
+				} else {
+					destData[di]=0.0;
+				}
 			}
 		}
 	}

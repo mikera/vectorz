@@ -550,10 +550,9 @@ public interface INDArray extends Cloneable, Serializable {
 
 
 	/**
-	 * Ensures the array is a fully mutable, efficient representation that is not 
-	 * a view. Returns either the same array or a new clone.
+	 * Ensures the array is a fully mutable representation.
+	 * Returns either the same array or a new clone.
 	 */
-	@Deprecated
 	public INDArray ensureMutable();
 	
 	/**
