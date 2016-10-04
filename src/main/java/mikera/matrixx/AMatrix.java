@@ -619,12 +619,11 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public final void setMultiple(INDArray a, double b) {
 		if (a instanceof AMatrix) {
 			setMultiple((AMatrix)a,b);
-		} else if (a.dimensionality()==1){
-			setMultiple(a.asVector(),b);
-		} else {
-			set(a);
-			scale(b);
+		} else switch (a.dimensionality()) {
+			case 1: setMultiple(a.asVector(),b); return;
+			case 0: fill(a.get()*b); return;
 		}
+		super.setMultiple(a, b);
 	}
 	
 	/**
