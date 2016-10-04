@@ -1608,7 +1608,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	@Override
 	public final void setApplyOp(Op op, INDArray a) {
 		if (a instanceof AMatrix) {
-			setApplyOp((AMatrix)a,op);
+			setApplyOp(op,(AMatrix)a);
 		} else {
 			super.setApplyOp(op, a);
 		}
@@ -1616,10 +1616,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * Sets this matrix to the result of applying an operator to another matrix
-	 * @param a
 	 * @param op
+	 * @param a
 	 */
-	public void setApplyOp(AMatrix a, Op op) {
+	public void setApplyOp(Op op, AMatrix a) {
 		checkSameShape(a);
 		int rc = rowCount();
 		for (int i = 0; i < rc; i++) {
