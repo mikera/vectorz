@@ -643,6 +643,25 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void setApplyOp(INDArray a, Op op) {
+		int dims=dimensionality();
+		int adims=a.dimensionality();
+		if (dims==adims) {
+			set(a);
+			applyOp(op);
+		} else if (dims>adims){
+			INDArray sl=slice(0);
+			int sc=sliceCount();
+			sl.setApplyOp(a, op);
+			for (int i=1; i<sc; i++) {
+				slice(i).set(sl);
+			}
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+	}
+	
+	@Override
 	public void clamp(double min, double max) {
 		if (dimensionality()==0) {
 			set(Maths.bound(get(), min, max));

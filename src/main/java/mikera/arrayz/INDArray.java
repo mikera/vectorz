@@ -723,6 +723,11 @@ public interface INDArray extends Cloneable, Serializable {
 	public void setInnerProduct(INDArray a, INDArray b);
 	
 	/**
+	 * Sets this array to the result of applyin an operation to a source array
+	 */
+	public void setApplyOp(INDArray a, Op op);
+	
+	/**
 	 * Sets this array to the element-wise multiple of two arrays. Must have compatible shapes.
 	 * 
 	 * @param a
