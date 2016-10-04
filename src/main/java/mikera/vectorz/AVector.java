@@ -2675,6 +2675,43 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public final void setApplyOp(Op op, INDArray a) {
+		int dims=a.dimensionality();
+		switch (dims) {
+		    case 0: setApplyOp(op,a.get());
+			case 1: setApplyOp(op,a.asVector());
+			default: throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		}
+	}
+	
+	/**
+	 * Sets this vector to the result of applying an operator to another vector
+	 * @param op
+	 * @param a
+	 */
+	public void setApplyOp(Op op, AVector a) {
+		checkSameLength(a);
+		set(a);
+		applyOp(op);
+	}
+	
+	/**
+	 * Sets this vector to the result of applying an operator to a double value
+	 * @param op
+	 * @param a
+	 */
+	public void setApplyOp(Op op, double a) {
+		if (op.isStochastic()) {
+			// we need to handle the stochastic case which may result in different values for each element
+			set(a);
+			applyOp(op);
+		} else {
+			// fill with a single value
+			fill(op.apply(a));
+		}
+	}
+	
+	@Override
 	public double reduce(Op2 op, double init) {
 		int n=length();
 		double result=init;
