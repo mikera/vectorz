@@ -248,7 +248,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	
 	@Override 
 	public double get(int... indexes) {
-		assert(indexes.length==0);
+		if (indexes.length!=0) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, indexes));
 		return get();
 	}
 	
@@ -257,7 +257,7 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 		if (indexes.length==0) {
 			set(value);
 		} else {
-			throw new IllegalArgumentException(""+indexes.length+"D set not supported on AScalar");
+			throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, indexes));
 		}
 	}
 	

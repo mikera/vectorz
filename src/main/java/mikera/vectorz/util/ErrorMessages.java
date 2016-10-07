@@ -53,7 +53,7 @@ public class ErrorMessages {
 	 * @return
 	 */
 	public static String incompatibleShapes(INDArray a, INDArray b) {
-		return "Incompatible shapes: "+shape(a)+" vs. "+shape(b);
+		return "Incompatible shapes: "+describeArray(a)+" vs. "+describeArray(b);
 	}
 	
 	public static String incompatibleShape(INDArray m) {
@@ -81,7 +81,7 @@ public class ErrorMessages {
 	}
 	
 	public static String incompatibleBroadcast(INDArray a, INDArray b) {
-		return "Can't broadcast "+describeArray(a)+" to shape: "+shape(b);
+		return "Can't broadcast "+describeArray(a)+" to shape of "+describeArray(b);
 	}
 
 	public static String notFullyMutable(AMatrix m,	int row, int column) {
@@ -143,11 +143,11 @@ public class ErrorMessages {
 	}
 	
 	public static String invalidElementIndex(INDArray a, long i) {
-		return "Element index "+i+" invalid for "+a.getClass()+" with shape "+shape(a);
+		return "Element index "+i+" invalid for "+describeArray(a);
 	}
 	
 	public static String invalidRange(AVector v, int start, int length) {
-		return "Subrange {start="+start+", length="+length+"} not valid on vector with length "+v.length();
+		return "Subrange {start="+start+", length="+length+"} not valid on "+describeArray(v);
 	}
 
 	public static String invalidSlice(INDArray a, long slice) {
@@ -192,7 +192,7 @@ public class ErrorMessages {
 	}
 
 	public static String nonSquareMatrix(AMatrix a) {
-		return "Matrix should be square but has shape: "+shape(a);
+		return "Matrix must be square: "+describeArray(a);
 	}
 
 	public static String noElements(INDArray a) {
