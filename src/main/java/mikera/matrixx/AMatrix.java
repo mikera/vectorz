@@ -632,6 +632,34 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		super.setMultiple(a, b);
 	}
 	
+	@Override
+	public void setMultiple(INDArray a, INDArray b) {
+		if (a instanceof AMatrix) {
+			if (b instanceof AMatrix) {
+				setMultiple((AMatrix)a,(AMatrix)b);
+				return;
+			} else if (b.dimensionality()==0) {
+				setMultiple((AMatrix)a,b.get());
+			} else {
+				set((AMatrix)a);
+				multiply(b);
+			}
+		} else {
+			set(a);
+			multiply(b);
+		}
+	}
+
+	/**
+	 * Sets this matrix to the elementwise product of two other matrices
+	 * @param a
+	 * @param b
+	 */
+	public void setMultiple(AMatrix a, AMatrix b) {
+		set(a);
+		multiply(b);
+	}
+	
 	/**
 	 * Sets this matrix to a multiple of another matrix
 	 * @param a

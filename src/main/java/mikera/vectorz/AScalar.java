@@ -170,6 +170,16 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public void addMultiple(INDArray src, double factor) {
+		add(src.get()*factor);
+	}
+	
+	@Override
+	public void addPower(INDArray src, double factor) {
+		add(Math.pow(src.get(),factor));
+	}
+	
+	@Override
 	public void sub(double d) {
 		set(get()-d);
 	}
@@ -318,6 +328,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	@Override
 	public void applyOp(Op op) {
 		set(op.apply(get()));
+	}
+	
+	@Override
+	public void setApplyOp(Op op, INDArray a) {
+		set(op.apply(a.get()));
 	}
 	
 	@Override
