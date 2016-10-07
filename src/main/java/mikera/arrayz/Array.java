@@ -67,7 +67,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	 * @param shape
 	 * @return
 	 */
-	public static INDArray wrap(double[] data, int... shape) {
+	public static Array wrap(double[] data, int... shape) {
 		long ec=IntArrays.arrayProduct(shape);
 		if (data.length!=ec) throw new IllegalArgumentException("Data array does not have correct number of elements, expected: "+ec);
 		return new Array(shape.length,shape,data);
@@ -375,6 +375,12 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	@Override
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
+	}
+	
+	@Override
+	public Array toArray() {
+		// already an Array, so just return this
+		return this;
 	}
 	
 	@Override

@@ -1404,6 +1404,8 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public Array toArray() {
+		double[] arr=asDoubleArray();
+		if (arr!=null) return Array.wrap(arr, getShapeClone());
 		return Array.create(this);
 	}
 	
