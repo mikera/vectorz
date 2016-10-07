@@ -27,7 +27,7 @@ import mikera.vectorz.Vector;
  * 
  * @author Mike
  */
-public interface INDArray extends Cloneable, Serializable {
+public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> {
 	
 	/**
 	 * Returns the dimensionality of the array (i.e. the number of dimensions in the array shape)

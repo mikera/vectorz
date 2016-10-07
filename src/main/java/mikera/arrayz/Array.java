@@ -498,5 +498,4 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	public boolean equalsArray(double[] data, int offset) {
 		return DoubleArrays.equals(this.data, 0, data, offset, Tools.toInt(elementCount()));
 	}
-
 }

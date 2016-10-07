@@ -1672,6 +1672,19 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public int compareTo(INDArray a) {
+		int dims=dimensionality();
+		if (dims!=a.dimensionality()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
+		if (dims==0) return Double.compare(get(), a.get());
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			int result=slice(i).compareTo(a.slice(i));
+			if (result!=0) return result;
+		}
+		return 0;
+	}
+	
+	@Override
 	public AVector reduceSlices(Op2 op, double init) {
 		int sc=sliceCount();
 		AVector result=Vector.createLength(sc);

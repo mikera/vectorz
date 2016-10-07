@@ -52,7 +52,7 @@ import mikera.vectorz.util.VectorzException;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AVector extends AbstractArray<Double> implements IVector, Comparable<AVector> {
+public abstract class AVector extends AbstractArray<Double> implements IVector {
 
 	// ================================================
 	// Abstract interface
@@ -331,13 +331,25 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	@Override
+	public int compareTo(INDArray a) {
+		if (a instanceof AVector) {
+			return compareTo((AVector)a);
+		} else if (a.dimensionality()!=1) {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, a));
+		} else {
+			return compareTo(a.asVector());
+		}
+	}
+	
+	/**
+	 * Compares this vector to another vector
+	 */
 	public int compareTo(AVector a) {
 		int len=checkSameLength(a);
 		
 		for (int i=0; i<len; i++) {
-			double diff=unsafeGet(i)-a.unsafeGet(i);
-			if (diff<0.0) return -1;
-			if (diff>0.0) return 1;
+			int r= Double.compare(unsafeGet(i),a.unsafeGet(i));
+			if (r!=0) return r;
 		}
 		return 0;
 	}
