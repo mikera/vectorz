@@ -954,20 +954,20 @@ public class TestArrays {
 		testArray(Arrayz.createSparseArray(new int[] {4}));
 		testArray(Arrayz.createSparseArray(new int[] {4,3}));
 		testArray(Arrayz.createSparseArray(new int[] {3,4,2}));
-		testArray(Arrayz.createSparseArray(new int[] {2,3,1,4}));
-	}
-
-	@Test
-	public void g_NDArrayScalar() {
-		NDArray ndscalar = NDArray.newArray();
-		ndscalar.set(1.0);
-		testArray(ndscalar);
-		testArray(Array.create(ndscalar));
+		testArray(Arrayz.createSparseArray(new int[] {2,3,1,2}));
 	}
 	
 	@Test
 	public void g_ArrayScalar() {
 		INDArray ndscalar = Array.newArray();
+		ndscalar.set(1.0);
+		testArray(ndscalar);
+		testArray(Array.create(ndscalar));
+	}
+
+	@Test
+	public void g_NDArrayScalar() {
+		NDArray ndscalar = NDArray.newArray();
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
@@ -1007,7 +1007,7 @@ public class TestArrays {
 		
 	@Test
 	public void g_JoinedArray2D() {
-		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 3),1));
+		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 1),1));
 	}
 	
 	@Test
