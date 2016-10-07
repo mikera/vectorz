@@ -956,14 +956,6 @@ public class TestArrays {
 		testArray(Arrayz.createSparseArray(new int[] {3,4,2}));
 		testArray(Arrayz.createSparseArray(new int[] {2,3,1,2}));
 	}
-	
-	@Test
-	public void g_ArrayScalar() {
-		INDArray ndscalar = Array.newArray();
-		ndscalar.set(1.0);
-		testArray(ndscalar);
-		testArray(Array.create(ndscalar));
-	}
 
 	@Test
 	public void g_NDArrayScalar() {
