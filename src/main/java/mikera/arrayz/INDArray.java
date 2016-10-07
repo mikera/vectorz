@@ -829,6 +829,8 @@ public interface INDArray extends Cloneable, Serializable {
 	
 	/**
 	 * Copies the slices of this array to a new INDArray[]
+	 * 
+	 * Throws an error if the array has no slices (i.e. is zero-dimensional)
 	 */
 	public INDArray[] toSliceArray();
 	

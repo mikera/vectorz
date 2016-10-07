@@ -118,31 +118,44 @@ public class TestArrays {
 		} catch (RuntimeException e) { /* OK */ } 
 		
 		int dims=a.dimensionality();
-		if ((a.elementCount() == 0) || (dims == 0)) return;
-
-		INDArray sl = a.slice(0);
-		assertEquals(sl,a.slice(0,0));
+		if (a.elementCount() == 0) return; // exit if no elements
 		
-		// assertTrue(sl.isView()); not always... damn contained vectors
-		assertTrue(sl.dimensionality() == (dims - 1));
-
-		if (a.isFullyMutable()) {
-			assert (sl.isFullyMutable());
-			assert (sl.isMutable());
+		if (dims==0) {
+			// no slices, test for errors
+			try {
+				a.slice(0);
+			} catch (Throwable t) {/* OK */}
+			
+			try {
+				a.toSliceArray();
+			} catch (Throwable t) {/* OK */}
+			return;
+		} else {
+			// we have at least one slice
+			INDArray sl = a.slice(0);
+			assertEquals(sl,a.slice(0,0));
+			
+			// assertTrue(sl.isView()); not always... damn contained vectors
+			assertTrue(sl.dimensionality() == (dims - 1));
+	
+			if (a.isFullyMutable()) {
+				assert (sl.isFullyMutable());
+				assert (sl.isMutable());
+			}
+	
+			testArray(sl);
+	
+			List<?> slices = a.getSlices();
+			assertEquals(a, Arrayz.create(slices));
+			
+			assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
+			
+			assertEquals(a.elementSum(), a.reduceSlices(Ops.ADD).elementSum(),0.0001);
+			assertEquals(a.elementSquaredSum(), a.reduceSlices(Ops.ADD_SQUARE,0.0).elementSum(),0.0001);
+			
+			List<?> vslices = a.getSliceViews();
+			assertEquals(sl, vslices.get(0));
 		}
-
-		testArray(sl);
-
-		List<?> slices = a.getSlices();
-		assertEquals(a, Arrayz.create(slices));
-		
-		assertEquals(Arrayz.create(slices),Arrayz.create(a.getSlices(0)));
-		
-		assertEquals(a.elementSum(), a.reduceSlices(Ops.ADD).elementSum(),0.0001);
-		assertEquals(a.elementSquaredSum(), a.reduceSlices(Ops.ADD_SQUARE,0.0).elementSum(),0.0001);
-		
-		List<?> vslices = a.getSliceViews();
-		assertEquals(sl, vslices.get(0));
 	}
 	
 	private void testAdd(INDArray a) {
