@@ -168,8 +168,17 @@ public final class Tools {
 		if ((diff>tolerance)||(diff<-tolerance)) return false;
 		return true;
 	}
+	
+	/**
+	 * Tests if two double values are exactly equal
+     */ 
+	public static boolean equals(double a, double b) {
+		return Double.compare(a, b)==0;
+	}
 
 	public static boolean isBoolean(double d) {
 		return (d==0.0)||(d==1.0);
 	}
+
+
 }

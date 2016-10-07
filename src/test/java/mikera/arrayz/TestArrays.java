@@ -472,7 +472,7 @@ public class TestArrays {
 			op.applyTo(d.asVector());
 
 			if (b.dimensionality()>0) for (int i=0; i<b.sliceCount(); i++) {
-				assertEquals(b.slice(i),c.slice(i));
+				assertTrue(b.slice(i).epsilonEquals(c.slice(i),0.0));
 			}
 			if (!b.equals(c)) {
 				b=a.exactClone();
@@ -480,7 +480,7 @@ public class TestArrays {
 				op.applyTo(b);
 				b.validate();
 				c.validate();
-				assertEquals(b, c);
+				assertTrue(b.epsilonEquals(c,0.0));
 			}
 			// assertEquals(b,d);
 			assertTrue(b.epsilonEquals(d));

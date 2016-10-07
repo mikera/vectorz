@@ -533,7 +533,7 @@ public final class DoubleArrays {
 	public static boolean equals(double[] as, int aOffset, double[] bs, int bOffset, int length) {
 		if ((as==bs)&&(aOffset==bOffset)) return true;
 		for (int i=0; i<length; i++) {
-			if (as[i+aOffset]!=bs[i+bOffset]) return false;
+			if (!Tools.equals(as[i+aOffset],bs[i+bOffset])) return false;
 		}
 		return true;
 	}

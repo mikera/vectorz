@@ -584,7 +584,9 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	double reduce(Op2 op);
 	
 	/**
-	 * Checks if two arrays are equal exactly in terms of both  value and shape
+	 * Checks if two arrays are equal exactly in terms of both value and shape
+	 * Element equality checks are consistent with compareTo
+	 * 
 	 * @returns true if the two arrays are exactly equal, false otherwise
 	 */
 	public boolean equals(INDArray a);

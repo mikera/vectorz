@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class TestQuaternions {
 	@Test public void testInvert() {
-		assertEquals(Vector4.of(0,0,0,1),Quaternions.invert(Vector4.of(0,0,0,1)));
+		assertTrue(Vector4.of(0,0,0,1).epsilonEquals(Quaternions.invert(Vector4.of(0,0,0,1)),0.0));
 		
 		Vector4 a=Vector4.of(1,2,3,4);
 		Vector4 b=Quaternions.invert(a);

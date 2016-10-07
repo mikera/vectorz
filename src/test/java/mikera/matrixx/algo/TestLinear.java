@@ -29,7 +29,7 @@ public class TestLinear {
         
         AVector x = Linear.solveLeastSquares(m, Vector.of(1,2,3));
         
-        assertEquals(Vector.of(0,0.5),x);
+        assertTrue(Vector.of(0,0.5).epsilonEquals(x));
     }
     
     @Test 

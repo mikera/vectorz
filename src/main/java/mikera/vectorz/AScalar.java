@@ -453,13 +453,18 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public int compareTo(INDArray a) {
+		return Double.compare(get(), a.get());
+	}
+	
+	@Override
 	public boolean equals(INDArray o) {
-		return (o.dimensionality()==0)&&(o.get()==get());
+		return (o.dimensionality()==0)&&(Tools.equals(o.get(),get()));
 	}
 	
 	@Override
 	public boolean equalsArray(double[] data, int offset) {
-		return data[offset]==get();
+		return Tools.equals(data[offset],get());
 	}
 	
 	/**

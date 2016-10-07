@@ -824,7 +824,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		int dims=dimensionality();
 		if (a.dimensionality()!=dims) return false;
 		if (dims==0) {
-			return (get()==a.get());
+			return Tools.equals(get(),a.get());
 		} else if (dims==1) {
 			return equals(a.asVector());
 		} else {

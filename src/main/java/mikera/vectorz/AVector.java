@@ -376,7 +376,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 			return equalsArray(dav.getArray(),dav.getArrayOffset());
 		}
 		for (int i = 0; i < len; i++) {
-			if (unsafeGet(i) != v.unsafeGet(i))
+			if (!Tools.equals(unsafeGet(i),v.unsafeGet(i)))
 				return false;
 		}
 		return true;
