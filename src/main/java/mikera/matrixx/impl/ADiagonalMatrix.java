@@ -247,7 +247,6 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		return m;
 	}
 	
-	
 	@Override
 	public void addOuterProductSparse(AVector a, AVector b) {
 		getLeadingDiagonal().addProduct(a, b);

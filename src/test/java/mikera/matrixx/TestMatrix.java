@@ -74,9 +74,7 @@ public class TestMatrix {
 	  assertEquals(Vector.class,v.getClass());
 	  v.set(2,7);
 	  assertTrue(m.get(1,0)==7);
-	  
   }
-  
   
   @Test 
   public void testDegenerate() {
@@ -87,7 +85,6 @@ public class TestMatrix {
 	  
 	  m=Matrixx.wrapStrided(new double[1], 1, 1, 0, 1, 1);
 	  assertEquals(Matrix.class,m.getClass());
-
   }
   
   @Test

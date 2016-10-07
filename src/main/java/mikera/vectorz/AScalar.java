@@ -289,6 +289,13 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public void setElements(double... values) {
+		int vl=values.length;
+		if (vl!=1) throw new IllegalArgumentException("Wrong number of elements in source array: "+vl);
+		set(values[0]);
+	}
+	
+	@Override
 	public void setElements(double[] values, int offset) {
 		set(values[offset]);
 	}
