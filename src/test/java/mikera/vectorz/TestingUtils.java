@@ -6,8 +6,14 @@ import mikera.arrayz.INDArray;
 public class TestingUtils {
 	private TestingUtils(){}
 
-	public static INDArray createRandomLike(INDArray a, long seed) {
-		INDArray r=Arrayz.newArray(a.getShape());
+	/**
+	 * Creates a randomised mutable array array with the same shape as the source
+	 * @param source
+	 * @param seed
+	 * @return
+	 */
+	public static INDArray createRandomLike(INDArray source, long seed) {
+		INDArray r=Arrayz.newArray(source.getShape());
 		Arrayz.fillNormal(r, seed);
 		return r;
 	}
