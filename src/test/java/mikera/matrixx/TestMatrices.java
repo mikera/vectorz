@@ -15,6 +15,7 @@ import mikera.matrixx.impl.BlockDiagonalMatrix;
 import mikera.matrixx.impl.BufferMatrix;
 import mikera.matrixx.impl.ColumnMatrix;
 import mikera.matrixx.impl.DenseColumnMatrix;
+import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ImmutableMatrix;
 import mikera.matrixx.impl.LowerTriangularMatrix;
@@ -30,12 +31,14 @@ import mikera.matrixx.impl.StridedRowMatrix;
 import mikera.matrixx.impl.UpperTriangularMatrix;
 import mikera.matrixx.impl.VectorMatrixM3;
 import mikera.matrixx.impl.VectorMatrixMN;
+import mikera.matrixx.impl.WrappedDiagonalMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
 import mikera.transformz.MatrixTransform;
 import mikera.transformz.TestTransformz;
 import mikera.util.Random;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import mikera.vectorz.Vector2;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AxisVector;
@@ -747,5 +750,13 @@ public class TestMatrices {
 
 	@Test public void g_BlockDiagonalMatrix() {	
 		doGenericTests(BlockDiagonalMatrix.create(IdentityMatrix.create(2),Matrixx.createRandomSquareMatrix(2)));
+	}
+	
+	@Test public void g_DiagonalMatrix() {	
+		doGenericTests(DiagonalMatrix.create(Vectorz.createUniformRandomVector(5)));
+	}
+	
+	@Test public void g_WrappedDiagonalMatrix() {	
+		doGenericTests(WrappedDiagonalMatrix.wrap(Vector2.of(1,2).join(Vector.of(3,4))));
 	}
 }

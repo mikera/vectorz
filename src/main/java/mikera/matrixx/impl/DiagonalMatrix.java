@@ -247,8 +247,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public AMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(a instanceof DiagonalMatrix)) return a.innerProduct(this);
-		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
+		if (dimensions!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
 		DiagonalMatrix result=DiagonalMatrix.create(this.data);
 		result.lead.multiply(a.getLeadingDiagonal());
 		return result;

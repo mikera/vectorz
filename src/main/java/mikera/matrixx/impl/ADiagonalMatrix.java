@@ -228,20 +228,16 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 	 * @return
 	 */
 	public AMatrix innerProduct(ADiagonalMatrix a) {
-		int dims=this.dimensions;
-		if (dims!=a.dimensions) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
-		double[] data=this.getLeadingDiagonal().toDoubleArray();
-		a.getLeadingDiagonal().multiplyTo(data, 0);
-		return DiagonalMatrix.wrap(data);
+		AMatrix result=clone();
+		result.getLeadingDiagonal().multiply(a.getLeadingDiagonal());
+		return result;
 	}
 	
 	@Override
 	public AMatrix innerProduct(AMatrix a) {
 		if (a instanceof ADiagonalMatrix) {
 			return innerProduct((ADiagonalMatrix) a);
-		} else if (a instanceof Matrix) {
-			return innerProduct((Matrix) a);
-		}
+		} 
 		if (!(dimensions==a.rowCount())) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this,a));
 		AMatrix m=a.clone();
 		for (int i=0; i<dimensions; i++) {
@@ -250,6 +246,7 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		}
 		return m;
 	}
+	
 	
 	@Override
 	public void addOuterProductSparse(AVector a, AVector b) {

@@ -47,7 +47,7 @@ public final class WrappedDiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	public static WrappedDiagonalMatrix create(AVector v) {
-		return wrap(v.toDoubleArray());
+		return wrap(v.clone());
 	}
 	
 	public static WrappedDiagonalMatrix create(AMatrix m) {
