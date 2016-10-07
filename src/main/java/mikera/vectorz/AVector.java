@@ -904,6 +904,16 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	}
 	
 	/**
+	 * Computes the reciprocal of all elements in this vector. Mutates this vector
+	 */
+	@Override
+	public AVector reciprocalCopy() {
+		AVector result=clone();
+		result.reciprocal();
+		return result;
+	}
+	
+	/**
 	 * Scales the vector by another vector of the same size
 	 * @param v
 	 */

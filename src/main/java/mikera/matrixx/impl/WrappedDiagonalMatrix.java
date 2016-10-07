@@ -5,7 +5,6 @@ import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.impl.ADenseArrayVector;
-import mikera.vectorz.util.DoubleArrays;
 import mikera.vectorz.util.ErrorMessages;
 import mikera.vectorz.util.VectorzException;
 
@@ -16,56 +15,52 @@ import mikera.vectorz.util.VectorzException;
  * 
  * @author Mike
  */
-public final class DiagonalMatrix extends ADiagonalMatrix {
+public final class WrappedDiagonalMatrix extends ADiagonalMatrix {
 	private static final long serialVersionUID = -6721785163444613243L;
 
-	final double[] data;
-	private final Vector lead;
+	private final AVector lead;
 	
-	public DiagonalMatrix(int dimensions) {
+	public WrappedDiagonalMatrix(int dimensions) {
 		super(dimensions);
-		data=new double[dimensions];
-		lead=Vector.wrap(data);
+		lead=Vector.createLength(dimensions);
 	}
 	
-	private DiagonalMatrix(double... values) {
+	private WrappedDiagonalMatrix(double... values) {
 		super(values.length);
-		data=values;
-		lead=Vector.wrap(data);
+		lead=Vector.wrap(values);
 	}
 	
-	private DiagonalMatrix(Vector values) {
-		super(values.length());
-		data=values.getArray();
-		lead=values;
+	private WrappedDiagonalMatrix(AVector leadingDiagonal) {
+		super(leadingDiagonal.length());
+		lead=leadingDiagonal;
 	}
 	
-	public static DiagonalMatrix createDimensions(int dims) {
-		return new DiagonalMatrix(dims);
+	public static WrappedDiagonalMatrix createDimensions(int dims) {
+		return new WrappedDiagonalMatrix(dims);
 	}
 	
-	public static DiagonalMatrix create(double... values) {
+	public static WrappedDiagonalMatrix create(double... values) {
 		int dimensions=values.length;
 		double[] data=new double[dimensions];
 		System.arraycopy(values, 0, data, 0, dimensions);
-		return new DiagonalMatrix(data);
+		return new WrappedDiagonalMatrix(data);
 	}
 	
-	public static DiagonalMatrix create(AVector v) {
+	public static WrappedDiagonalMatrix create(AVector v) {
 		return wrap(v.toDoubleArray());
 	}
 	
-	public static DiagonalMatrix create(AMatrix m) {
+	public static WrappedDiagonalMatrix create(AMatrix m) {
 		if (!m.isDiagonal()) throw new IllegalArgumentException("Source is not a diagonal matrix!");
 		return wrap(m.getLeadingDiagonal().toDoubleArray());
 	}
 	
-	public static DiagonalMatrix wrap(double[] data) {
-		return new DiagonalMatrix(data);
+	public static WrappedDiagonalMatrix wrap(double[] data) {
+		return new WrappedDiagonalMatrix(data);
 	}
 	
-	public static DiagonalMatrix wrap(Vector data) {
-		return new DiagonalMatrix(data);
+	public static WrappedDiagonalMatrix wrap(AVector data) {
+		return new WrappedDiagonalMatrix(data);
 	}
 	
 	@Override
@@ -105,37 +100,39 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 			checkIndex(row,column);
 			return 0.0;
 		}
-		return data[row];
+		return lead.get(row);
 	}
 	
 	@Override
 	public double unsafeGet(int row, int column) {
 		if (row!=column) return 0.0;
-		return data[row];
+		return lead.unsafeGet(row);
 	}
 
 	@Override
 	public void set(int row, int column, double value) {
+		checkIndex(row,column);
 		if (row!=column) {
 			if (value!=0.0) throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 		} else {
-			data[row]=value;
+			lead.unsafeSet(row,value);
 		}
 	}
 	
 	@Override
 	public void unsafeSet(int row, int column, double value) {
-		data[row]=value;
+		if (row!=column) throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
+		lead.unsafeSet(row,value);
 	}
 	
 	@Override
 	public boolean isMutable() {
-		return true;
+		return lead.isMutable();
 	}
 	
 	@Override
 	public boolean isFullyMutable() {
-		return dimensions<=1;
+		return (dimensions<=1)&&lead.isFullyMutable();
 	}
 	
 	@Override
@@ -144,65 +141,43 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
-	public DiagonalMatrix multiplyCopy(double factor) {
-		double[] newData=DoubleArrays.copyOf(data);
-		DoubleArrays.multiply(newData, factor);
-		return wrap(newData);
+	public WrappedDiagonalMatrix multiplyCopy(double factor) {
+		return wrap(lead.multiplyCopy(factor));
 	}	
 	
 	@Override
 	public double rowDotProduct(int i, AVector v) {
-		return data[i]*v.unsafeGet(i);
+		return lead.unsafeGet(i)*v.unsafeGet(i);
 	}
 		
 	@Override
 	public void transform(Vector source, Vector dest) {
-		int rc = rowCount();
-		int cc = rc;
-		if (source.length()!=cc) throw new IllegalArgumentException(ErrorMessages.wrongSourceLength(source));
-		if (dest.length()!=rc) throw new IllegalArgumentException(ErrorMessages.wrongDestLength(dest));
-		double[] sdata=source.getArray();
-		double[] ddata=dest.getArray();
-		for (int i = 0; i < rc; i++) {
-			ddata[i]=sdata[i]*this.data[i];
-		}
+		dest.setInnerProduct(this, source);
 	}
 
 	@Override
 	public void transformInPlace(AVector v) {
-		if (v instanceof ADenseArrayVector) {
-			transformInPlace((ADenseArrayVector) v);
-			return;
-		}
-		if (v.length()!=dimensions) throw new IllegalArgumentException("Wrong length vector: "+v.length());
-		for (int i=0; i<dimensions; i++) {
-			v.unsafeSet(i,v.unsafeGet(i)*data[i]);
-		}
+		v.multiply(lead);
 	}
 	
 	@Override
 	public void transformInPlace(ADenseArrayVector v) {
-		double[] dest=v.getArray();
-		int offset=v.getArrayOffset();
-		DoubleArrays.arraymultiply(data, 0, dest, offset, dimensions);
+		v.multiply(lead);
 	}
 	
 	@Override 
 	public boolean isIdentity() {
-		for (int i=0; i<dimensions; i++) {
-			if (data[i]!=1.0) return false;
-		}
-		return true;
+		return lead.elementsEqual(1.0);
 	}
 	
 	@Override
 	public boolean isBoolean() {
-		return DoubleArrays.isBoolean(data, 0, dimensions);
+		return lead.isBoolean();
 	}
 	
 	@Override
 	public boolean isZero() {
-		return DoubleArrays.isZero(data);
+		return lead.isZero();
 	}
 	
 	@Override
@@ -212,28 +187,27 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public double determinant() {
-		return DoubleArrays.elementProduct(data, 0, dimensions);
+		return lead.elementProduct();
 	}
 	
 	@Override
-	public DiagonalMatrix inverse() {
-		double[] newData=DoubleArrays.copyOf(data);
-		DoubleArrays.reciprocal(newData);
-		return new DiagonalMatrix(newData);
+	public WrappedDiagonalMatrix inverse() {
+		if (lead.elementProduct()==0.0) return null;
+		return wrap(lead.reciprocalCopy());
 	}
 	
 	@Override
 	public double getDiagonalValue(int i) {
-		return data[i];
+		return lead.get(i);
 	}
 	
 	@Override
 	public double unsafeGetDiagonalValue(int i) {
-		return data[i];
+		return lead.unsafeGet(i);
 	}
 	
 	@Override
-	public Vector getLeadingDiagonal() {
+	public AVector getLeadingDiagonal() {
 		return lead;
 	}
 
@@ -247,21 +221,20 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	
 	@Override
 	public AMatrix innerProduct(ADiagonalMatrix a) {
-		if (!(a instanceof DiagonalMatrix)) return a.innerProduct(this);
 		if (!(dimensions==a.dimensions)) throw new IllegalArgumentException(ErrorMessages.mismatch(this, a));
-		DiagonalMatrix result=DiagonalMatrix.create(this.data);
-		result.lead.multiply(a.getLeadingDiagonal());
-		return result;
+		AVector newLead=lead.clone();
+		newLead.multiply(a.getLeadingDiagonal());
+		return WrappedDiagonalMatrix.wrap(newLead);
 	}
 	
 	@Override
-	public DiagonalMatrix exactClone() {
-		return DiagonalMatrix.create(data);
+	public WrappedDiagonalMatrix exactClone() {
+		return WrappedDiagonalMatrix.wrap(lead.exactClone());
 	}
 	
 	@Override
 	public void validate() {
-		if (dimensions!=data.length) throw new VectorzException("dimension mismatch: "+dimensions);
+		if (dimensions!=lead.length()) throw new VectorzException("dimension mismatch: "+dimensions);
 		
 		super.validate();
 	}
