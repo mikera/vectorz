@@ -652,6 +652,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 		}
 	}
 	
+	/**
+	 * Multiplies this vector by another vector, elementwise.
+	 * @param v
+	 */
 	public void multiply(AVector v) {
 		if (v instanceof ADenseArrayVector) {
 			multiply((ADenseArrayVector) v);
@@ -664,7 +668,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 		}	
 	}
 	
-	public void multiply(ADenseArrayVector v) {
+	public final void multiply(ADenseArrayVector v) {
 		checkSameLength(v);
 		
 		multiply(v.getArray(),v.getArrayOffset());

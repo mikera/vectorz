@@ -524,12 +524,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		this.data = ndata;
 		this.index = Index.wrap(tix);
 	}
-
-	@Override
-	public void multiply(ADenseArrayVector v) {
-		multiply(v.getArray(), v.getArrayOffset());
-	}
-
+	
 	@Override
 	public SparseIndexedVector multiplyCopy(double factor) {
 		return create(length, index, DoubleArrays.multiplyCopy(data, factor));

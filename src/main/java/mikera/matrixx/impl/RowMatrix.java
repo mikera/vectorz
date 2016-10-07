@@ -19,8 +19,6 @@ public class RowMatrix extends AVectorAsMatrixView implements IFastColumns, IFas
 	public static RowMatrix wrap(AVector v) {
 		return new RowMatrix(v);
 	}
-	
-
 
 	@Override
 	public double get(int row, int column) {
