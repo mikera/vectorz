@@ -1525,18 +1525,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	@Override
 	public INDArray sparse() {
 		if (this instanceof ISparse) return this;
-		int dims=dimensionality();
-		switch (dims) {
-			case 0: return this;
-			case 1: return Vectorz.createSparse(this.asVector());
-			case 2:	return Matrixx.createSparse(this.getSliceViews());
-		}
-		int n=this.sliceCount();
-		List<INDArray> sls=this.getSliceViews();
-		for (int i=0; i<n; i++) {
-			sls.set(i,sls.get(i).sparse());
-		}
-		return SliceArray.create(sls);
+		return sparseClone();
 	}
 	
 	@Override
@@ -1571,7 +1560,6 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		return Array.create(this);
 	}
-
 	
 	@Override
 	public INDArray broadcastLike(INDArray target) {

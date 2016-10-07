@@ -129,6 +129,11 @@ public class TestArrays {
 			try {
 				a.toSliceArray();
 			} catch (Throwable t) {/* OK */}
+			
+			try {
+				a.getSliceViews();
+			} catch (Throwable t) {/* OK */}
+
 			return;
 		} else {
 			// we have at least one slice
