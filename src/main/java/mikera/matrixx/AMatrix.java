@@ -14,6 +14,7 @@ import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.IDense;
 import mikera.arrayz.impl.JoinedArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.matrixx.algo.Definite;
 import mikera.matrixx.algo.Determinant;
@@ -284,6 +285,12 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public double get(int... indexes) {
 		assert(indexes.length==2);
 		return get(indexes[0],indexes[1]);
+	}
+	
+	@Override
+	public final double get(AIndex ix) {
+		if (ix.length()!=2) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, ix));
+		return get(ix.get(0),ix.get(1));
 	}
 	
 	@Override

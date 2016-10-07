@@ -1,6 +1,7 @@
 package mikera.vectorz.util;
 
 import mikera.arrayz.INDArray;
+import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
@@ -27,6 +28,10 @@ public class ErrorMessages {
 	
 	private static String pos(long[] indexes) {
 		return Index.of(IntArrays.copyOf(indexes)).toString();
+	}
+	
+	private static String pos(AIndex ix) {
+		return ix.toString();
 	}
 	
 	/**
@@ -129,6 +134,10 @@ public class ErrorMessages {
 		}
 	}
 	
+	public static String invalidIndex(INDArray a, AIndex ix) {
+		return "Access at position "+pos(ix)+" not possible for "+describeArray(a);
+	}
+
 	public static String invalidIndex(INDArray a, long i) {
 		return "1-D access with index "+i+" not possible for "+describeArray(a);
 	}
@@ -213,6 +222,7 @@ public class ErrorMessages {
 	public static String cantCreateVector(Object o) {
 		return "Can't create vector from class: "+o.getClass();
 	}
+
 
 
 
