@@ -11,6 +11,7 @@ import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
 import mikera.arrayz.impl.AbstractArray;
 import mikera.arrayz.impl.SliceArray;
+import mikera.indexz.AIndex;
 import mikera.indexz.Index;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -144,6 +145,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 	public final double get(long[] indexes) {
 		if (indexes.length!=1) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, indexes));
 		return get(Tools.toInt(indexes[0]));
+	}
+	
+	@Override
+	public final double get(AIndex ix) {
+		if (ix.length()!=1) throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, ix));
+		return get(ix.get(0));
 	}
 	
 	@Override
