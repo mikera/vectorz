@@ -2667,7 +2667,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	
 	@Override
 	public void applyOp(Op2 op, INDArray b) {
-		applyOp(op,b.broadcastLike(this));
+		int dims=b.dimensionality();
+		switch (dims) {
+		   case 0: applyOp(op,b.get()); return;
+		   case 1: applyOp(op,b.asVector()); return;
+		   default: throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		}
 	}
 	
 	/**

@@ -1088,7 +1088,8 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public void applyOp(Op2 op, double b);
 
 	/**
-	 * Reduces each slice of the array by the given binary operator
+	 * Reduces each vector slice of the array by the given binary operator
+	 * Reduces down to a single vector
 	 * 
 	 * @param op
 	 * @param b
