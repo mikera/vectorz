@@ -445,12 +445,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		}		
 		return true;
 	}
-	
-	@Override
-	public boolean epsilonEquals(INDArray a) {
-		return epsilonEquals(a,Vectorz.TEST_EPSILON);
-	}
-	
+		
 	/**
 	 * Returns true if this vector is approximately equal to another vector.
 	 * A small default tolerance is used.

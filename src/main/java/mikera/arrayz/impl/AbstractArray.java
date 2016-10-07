@@ -111,7 +111,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
-	public boolean epsilonEquals(INDArray a) {
+	public final boolean epsilonEquals(INDArray a) {
 		return epsilonEquals(a,Vectorz.TEST_EPSILON);
 	}
 	

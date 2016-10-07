@@ -1237,12 +1237,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	public Iterator<AVector> iterator() {
 		return new MatrixRowIterator(this);
 	}
-	
-	@Override
-	public final boolean epsilonEquals(INDArray a) {
-		return epsilonEquals(a,Vectorz.TEST_EPSILON);
-	}
-	
+		
 	@Override
 	public final boolean epsilonEquals(INDArray a, double epsilon) {
 		if (a instanceof AMatrix) {
