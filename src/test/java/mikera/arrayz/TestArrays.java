@@ -964,6 +964,14 @@ public class TestArrays {
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
 	}
+	
+	@Test
+	public void g_ArrayScalar() {
+		INDArray ndscalar = Array.newArray();
+		ndscalar.set(1.0);
+		testArray(ndscalar);
+		testArray(Array.create(ndscalar));
+	}
 
 	@Test
 	public void g_NDArray3() {
