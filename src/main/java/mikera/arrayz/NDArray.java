@@ -10,6 +10,7 @@ import mikera.arrayz.impl.BaseNDArray;
 import mikera.arrayz.impl.IStridedArray;
 import mikera.arrayz.impl.ImmutableArray;
 import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
@@ -168,6 +169,8 @@ public final class NDArray extends BaseNDArray {
 		} else if (dimensions==2) {
 			int st=stride[1];
 			return Vectorz.wrapStrided(data, offset+majorSlice*getStride(0), getShape(1), st);
+		} else if (dimensions==3) {
+			return Matrixx.wrapStrided(data, getShape(1), getShape(2),offset+majorSlice*getStride(0), getStride(1),getStride(2));
 		} else {
 			return Arrayz.wrapStrided(data,
 					offset+majorSlice*getStride(0),
@@ -238,13 +241,7 @@ public final class NDArray extends BaseNDArray {
 		} else if (dimensions==1) {
 			int len=sliceCount();
 			int st=getStride(0);
-			if (st==1) {
-				op.applyTo(data, offset, len);
-			} else {
-				for (int i=0; i<len; i++) {
-					data[offset+i*st]=op.apply(data[offset+i*st]);
-				}
-			}
+			op.applyTo(data, offset, st, len);
 		} else {
 			int n=sliceCount();
 			for (int i=0; i<n; i++) {
@@ -268,18 +265,8 @@ public final class NDArray extends BaseNDArray {
 		return true;
 	}
 	
-	public boolean equals(NDArray a) {
-		if (a==this) return true;
-		if (dimensions!=a.dimensions) return false;
-		if (dimensions==0) return get()==a.get();
-		return equalsBySlices(a);
-	}
-
 	@Override
 	public boolean equals(INDArray a) {
-		if (a instanceof NDArray) {
-			return equals((NDArray)a);
-		}
 		if (dimensions!=a.dimensionality()) return false;
 		if (dimensions==0) return (get()==a.get());
 		return equalsBySlices(a);
