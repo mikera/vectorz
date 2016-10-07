@@ -2090,6 +2090,10 @@ public abstract class AVector extends AbstractArray<Double> implements IVector, 
 		return isUnitLengthVector(Vectorz.TEST_EPSILON);
 	}
 	
+	/**
+	 * Returns true if the vector has unit length with the given tolerance
+	 * @return
+	 */
 	public boolean isUnitLengthVector(double tolerance) {
 		double mag=magnitudeSquared();
 		return Math.abs(mag-1.0)<=tolerance;
