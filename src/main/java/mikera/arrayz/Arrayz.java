@@ -83,6 +83,32 @@ public class Arrayz {
 	}
 	
 	/**
+	 * Creates an array from the given List of slices.
+	 * 
+	 * Calls create recursively on underlying slices if needed, so that nested structures can be used
+	 * 
+	 * @param object
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static INDArray create(List<?> slices) {
+		int n=slices.size();
+		if (n==0) return Vector0.INSTANCE;
+		Object o1=slices.get(0);
+		if ((o1 instanceof AScalar)||(o1 instanceof Number)) {
+			return Vectorz.create((List<Object>)slices);
+		} else if (o1 instanceof AVector) {
+			return Matrixx.create((List<Object>)slices);
+		} else {
+			ArrayList<INDArray> al=new ArrayList<INDArray>(n);
+			for (Object o: slices) {
+				al.add(create(o));
+			}
+			return SliceArray.create(al);
+		}
+	}
+	
+	/**
 	 * Create a new mutable array instance with the given shape. New array will be filled with zeros.
 	 * 
 	 * Uses the most efficient densely packed format where possible.

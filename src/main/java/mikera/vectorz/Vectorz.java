@@ -588,27 +588,38 @@ public class Vectorz {
 	 * @param o
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static AVector toVector(Object o) {
 		if (o instanceof AVector) {
 			return (AVector)o;
 		} else if (o instanceof double[]) {
-			return Vectorz.create((double[])o);
+			return Vectorz.wrap((double[])o);
 		} else if (o instanceof INDArray) {
 			INDArray a=(INDArray)o;
 			if (a.dimensionality()!=1) throw new IllegalArgumentException("Cannot coerce INDArray with shape "+a.getShape().toString()+" to a vector");
 			return a.asVector();
+		} else {
+			return create(o);
+		}
+	}
+
+	/**
+	 * Creates a vector from the given source data. Copies undelying data as needed.
+	 * @param o
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static AVector create(Object o) {
+		if (o instanceof AVector) {
+			return create((AVector)o);
+		} else if (o instanceof double[]) {
+			return Vector.create((double)o);
 		} else if (o instanceof List<?>) {
 			return Vectorz.create((List<Object>)o);
 		} else if (o instanceof Iterable<?>) {
 			return Vectorz.create((Iterable<Object>)o);
 		}
 		throw new UnsupportedOperationException("Cannot coerce to AVector: "+o.getClass());
-	}
-
-	public static AVector create(Object o) {
-		return toVector(o);
-	}
+	} 
 
 	/**
 	 * Create a mutable vector contain the sequence of integers from 0 to length-1
