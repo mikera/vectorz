@@ -1,6 +1,9 @@
 package mikera.arrayz;
 
 import static org.junit.Assert.*;
+
+import java.util.Arrays;
+
 import mikera.arrayz.impl.SliceArray;
 import mikera.arrayz.impl.ZeroArray;
 import mikera.matrixx.AMatrix;
@@ -12,12 +15,14 @@ import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.PermutationMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
+import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 import mikera.vectorz.BitVector;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 import mikera.vectorz.impl.AxisVector;
+import mikera.vectorz.impl.ImmutableScalar;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.Vector0;
@@ -121,6 +126,27 @@ public class TestMiscArrayOps {
 		assertEquals(3,Arrayz.create(new Vector[][] {{Vector.of(0,1)}}).dimensionality());
 		assertEquals(Vector.of(0,1,2),Arrayz.create(new Integer[]{0,1,2}));
 	}
+	
+	@Test
+	public void testConstruction() {
+		AScalar a0 = Scalar.create(1);
+		AVector a1 = Vector.of(1,2);
+		AMatrix a2 = Matrix22.create(1,2,3,4);
+		INDArray a3 =SliceArray.of(Matrix22.create(1,2,3,4),Matrix22.create(5,6,7,8));
+		
+		assertEquals(a0,Arrayz.create(1));
+		assertEquals(a0,Arrayz.create(1.0f));
+		assertEquals(a0,Arrayz.create((Object)ImmutableScalar.create(1)));
+
+		assertEquals(a1,Arrayz.create(new Integer[]{1,2}));
+		assertEquals(a1,Arrayz.create((Object)new double[]{1,2}));
+		assertEquals(a1,Arrayz.create(Arrays.asList(new Long[]{1L,2L})));
+
+		assertEquals(a2, Arrayz.create(new double[][]{{1,2},{3,4}}));
+		assertEquals(a2, Arrayz.create(Arrays.asList(new double[][]{{1,2},{3,4}})));
+		
+		assertEquals(a3, Arrayz.create(new double[][][]{{{1,2},{3,4}},{{5,6},{7,8}}}));
+}
 	
 	@Test
 	public void testElementSum() {
