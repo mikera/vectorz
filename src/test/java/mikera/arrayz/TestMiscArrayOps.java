@@ -146,6 +146,7 @@ public class TestMiscArrayOps {
 		assertEquals(a2, Arrayz.create(Arrays.asList(new double[][]{{1,2},{3,4}})));
 		
 		assertEquals(a3, Arrayz.create(new double[][][]{{{1,2},{3,4}},{{5,6},{7,8}}}));
+		assertEquals(a3, Arrayz.create(new Object[][][]{{{1,2},{3,4}},{{5,6},{7,8}}}));
 }
 	
 	@Test
