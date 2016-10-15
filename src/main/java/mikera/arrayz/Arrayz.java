@@ -41,9 +41,9 @@ public class Arrayz {
 	private Arrayz(){}
 
 	/**
-	 * Creates an array from the given data
+	 * Creates an array from the given data. Makes a copy of underlying data as necessary.
 	 * 
-	 * Handles double arrays, INDArray instances, and lists
+	 * Handles double arrays, Java arrays, INDArray instances, and lists
 	 * 
 	 * @param object
 	 * @return
