@@ -857,12 +857,6 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public Vector toVector();
 	
 	/**
-	 * Coerces the array into a packed mutable Array instance.
-	 * May return the same array if it is already a dense Array instance.
-	 */
-	public Array toArray();
-
-	/**
 	 * Tests if this array is approximately equal to another array.
 	 * The arrays must have the same shape.
 	 */

@@ -90,7 +90,7 @@ public class TestSvdImplicitQr extends StandardSvdChecks {
         double bb[] = new double[ length ];
 
         System.arraycopy(a,0,aa,0,length);
-        System.arraycopy(b.toArray(),0,bb,0,length);
+        System.arraycopy(b.toDoubleArray(),0,bb,0,length);
 
         Arrays.sort(aa);
         Arrays.sort(bb);

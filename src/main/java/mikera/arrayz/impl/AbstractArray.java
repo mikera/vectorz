@@ -1401,14 +1401,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		this.getElements(data, 0);
 		return Vector.wrap(data);
 	}
-	
-	@Override
-	public Array toArray() {
-		double[] arr=asDoubleArray();
-		if (arr!=null) return Array.wrap(arr, getShapeClone());
-		return Array.create(this);
-	}
-	
+		
 	@Override
 	public List<Double> asElementList() {
 		return asVector().asElementList();

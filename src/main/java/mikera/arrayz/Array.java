@@ -376,13 +376,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	public void toDoubleBuffer(DoubleBuffer dest) {
 		dest.put(data);
 	}
-	
-	@Override
-	public Array toArray() {
-		// already an Array, so just return this
-		return this;
-	}
-	
+		
 	@Override
 	public double[] toDoubleArray() {
 		return DoubleArrays.copyOf(data);

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import mikera.arrayz.Array;
 import mikera.arrayz.Arrayz;
 import mikera.arrayz.INDArray;
 import mikera.arrayz.ISparse;
@@ -1560,12 +1559,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		this.getElements(v.getArray(),0);
 		return v;
 	}
-	
-	@Override
-	public Array toArray() {
-		return Array.create(this);
-	}
-	
+		
 	/**
 	 * Coerces the matrix to the standard mutable Matrix type
 	 * in row major order. Performs a copy if necessary.
