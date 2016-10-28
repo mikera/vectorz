@@ -2352,7 +2352,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	}
 	
 	/**
-	 * Sets the non-sparse elements of this vectolr to the corresponding elements of another vector
+	 * Sets the non-sparse elements of this vector to the corresponding elements of another vector
 	 * @param v
 	 */
 	public void setSparse(AVector src) {
@@ -2391,7 +2391,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	}
 	
 	/**
-	 * Adds source vector to this vector at the specified indexes which should map from source->this
+	 * Adds a source vector to this vector at the specified indexes which should map from source->this
 	 * @param source
 	 * @param sourceToDest
 	 * @param factor
