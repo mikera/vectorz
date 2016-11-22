@@ -115,5 +115,4 @@ public final class Scalar extends AScalar {
 	public void addSparse(double c) {
 		value+=c;
 	}
-
 }

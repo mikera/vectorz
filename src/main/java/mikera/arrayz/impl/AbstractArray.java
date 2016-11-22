@@ -490,6 +490,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 	}
 	
+	@Override
+	public void addInnerProduct(INDArray a, INDArray b, double d) {
+		if (a.elementCount()<b.elementCount()) {
+			addInnerProduct(a.multiplyCopy(d),b);
+		} else {
+			addInnerProduct(a,b.multiplyCopy(d));
+		}
+	}
+	
 	/**
 	 * Adds the inner product of a matrix and an array to this array
 	 * @param a
