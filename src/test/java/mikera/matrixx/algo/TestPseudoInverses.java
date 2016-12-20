@@ -1,13 +1,13 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.DiagonalMatrix;
-import mikera.matrixx.impl.ZeroMatrix;
 
 public class TestPseudoInverses {
 	@Test

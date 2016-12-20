@@ -111,7 +111,7 @@ public class SvdImplicitQr {
 	 */
 	// public SvdImplicitQr(boolean compact, boolean computeU, boolean computeV,
 	// boolean canUseTallBidiagonal )
-	public SvdImplicitQr(boolean compact) {
+	SvdImplicitQr(boolean compact) {
 		this.compact = compact;
 		// this.prefComputeU = computeU;
 		// this.prefComputeV = computeV;
@@ -169,7 +169,7 @@ public class SvdImplicitQr {
 		if (computeUSV())
 			return null;
 
-		// make sure all the singular values or positive
+		// make sure all the singular values are positive
 		makeSingularPositive();
 
 		// if transposed undo the transposition

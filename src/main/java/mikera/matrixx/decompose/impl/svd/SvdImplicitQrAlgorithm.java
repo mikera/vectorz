@@ -79,7 +79,7 @@ public class SvdImplicitQrAlgorithm {
     protected int nextExceptional;
 
     // diagonal elements in the matrix
-    protected double diag[];
+	protected double diag[];
     // the off diagonal elements
     protected double off[];
     // value of the bulge
