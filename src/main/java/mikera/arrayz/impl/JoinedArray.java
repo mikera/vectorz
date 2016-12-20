@@ -28,7 +28,7 @@ public class JoinedArray extends BaseShapedArray {
 		shape[dimension]+=right.getShape(dimension);
 	}
 	
-	public static JoinedArray join(INDArray a, INDArray b, int dim) {
+	public static INDArray join(INDArray a, INDArray b, int dim) {
 		int n=a.dimensionality();
 		if (b.dimensionality()!=n) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a, b));
 		
@@ -37,6 +37,8 @@ public class JoinedArray extends BaseShapedArray {
 				throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(a,b)); 
 			}
 		}
+		if (a.getShape(dim)==0) return b;
+		if (b.getShape(dim)==0) return a;
 		return new JoinedArray(a,b,dim);
 	}
 	
@@ -77,6 +79,18 @@ public class JoinedArray extends BaseShapedArray {
 	}
 	
 	@Override
+	public INDArray slice(int dimension, int index) {
+		if (this.dimension==dimension) {
+			return (index<split)?left.slice(dimension,index):right.slice(dimension,index-split);			
+		} else if (dimension==0) {
+			return slice(index);
+		} else {
+			int nd= (dimension<this.dimension)?dimension:dimension-1;
+			return left.slice(dimension,index).join(right.slice(dimension,index),nd);			
+		}
+	}
+	
+	@Override
 	public int componentCount() {
 		return 2;
 	}
@@ -88,18 +102,6 @@ public class JoinedArray extends BaseShapedArray {
 			case 1: return right;
 		}
 		throw new IndexOutOfBoundsException(ErrorMessages.invalidComponent(this,k));
-	}
-
-	@Override
-	public INDArray slice(int dimension, int index) {
-		if (this.dimension==dimension) {
-			return (index<split)?left.slice(dimension,index):right.slice(dimension,index-split);			
-		} else if (dimension==0) {
-			return slice(index);
-		} else {
-			int nd= (dimension<this.dimension)?dimension:dimension-1;
-			return left.slice(dimension,index).join(right.slice(dimension,index),nd);			
-		}
 	}
 
 	@Override

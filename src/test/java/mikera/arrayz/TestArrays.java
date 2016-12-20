@@ -101,13 +101,16 @@ public class TestArrays {
 	}
 	
 	private void testRotateView(INDArray a) {
-		int n=a.dimensionality();
-		if (n==0) return;
+		int dims=a.dimensionality();
+		if (dims==0) return;
 		
-		for (int i=0; i<n; i++) {
+		for (int i=0; i<dims; i++) {
 			int size=a.getShape(i);
 			assertEquals(a,a.rotateView(i, 0));
-			assertEquals(a,a.rotateView(i, 1).rotateView(i, size-1));
+			
+			INDArray r1=a.rotateView(i, 1);
+			INDArray r2=r1.rotateView(i, size-1);
+			assertEquals(a,r2);
 		}
 	}
 
@@ -933,6 +936,7 @@ public class TestArrays {
 		testElementIterator(a);
 		testElementSums(a);
 		testElementMinMax(a);
+		testEmptyArray(a);
 		testStridedArray(a);
 		testBoolean(a);
 		testSums(a);
@@ -958,6 +962,24 @@ public class TestArrays {
 		testBufferRoundTrip(a);
 	}
 
+	private void testEmptyArray(INDArray a) {
+		if (a.elementCount()>0) return;
+		
+		try {
+			a.elementMax();
+			fail("Should not be able to get max value of an empty array!");
+		} catch (Throwable t) {
+			// OK
+		}
+		
+		try {
+			a.elementMin();
+			fail("Should not be able to get min value of an empty array!");
+		} catch (Throwable t) {
+			// OK
+		}
+	}
+
 	@Test
 	public void g_SliceArray() {
 		SliceArray<AVector> sa = SliceArray.of(
@@ -981,6 +1003,12 @@ public class TestArrays {
 		ndscalar.set(1.0);
 		testArray(ndscalar);
 		testArray(Array.create(ndscalar));
+	}
+	
+	@Test
+	public void g_EmptyArray() {
+		INDArray empty = Array.newArray(0,3);
+		testArray(empty);
 	}
 
 	@Test

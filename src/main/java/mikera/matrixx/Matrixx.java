@@ -66,19 +66,32 @@ public class Matrixx {
 		}
 		return m;
 	}
+	
+	public static AMatrix toMatrix(INDArray a) {
+		int dims=a.dimensionality();
+		if (dims==0) return Matrix.wrap(1, 1, new double[]{a.get()});
+		
+		if (dims==1) {
+			if (a instanceof AVector) return ColumnMatrix.wrap(((AVector)a).clone());
+			return ColumnMatrix.wrap(a.toVector());
+		}
+		if (dims==2) return Matrix.create(a);
+		throw new UnsupportedOperationException("Can't convert to matrix: "
+				+ a.getClass() + " with shape " +a.getShape());
+	}
 
 	/**
 	 * Coerce an object to a matrix format, on a best effort basis.
 	 * 
 	 * Can handle:
 	 * - Existing matrices
+	 * - Vectors (will be broadcast to column matrix)
+	 * - Scalars (will be broadcast to a 1x1 matrix)
 	 */
 	@SuppressWarnings("unchecked")
 	public static AMatrix toMatrix(Object o) {
-		if (o instanceof AMatrix) {
-			return (AMatrix) o;
-		} else if (o instanceof AVector) {
-			return ColumnMatrix.wrap((AVector) o);
+		if (o instanceof INDArray) {
+			return toMatrix((INDArray)o);
 		} else if (o instanceof Iterable<?>) {
 			List<INDArray> al = Tools.toList((Iterable<INDArray>) o);
 			return createFromVectors(al);

@@ -838,6 +838,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			return equals(a.asVector());
 		} else {
 			int sc=sliceCount();
+			if (a.sliceCount()!=sc) return false;
 			for (int i=0; i<sc; i++) {
 				if (!slice(i).equals(a.slice(i))) return false;
 			}
@@ -864,6 +865,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 			return asVector().equalsArray(data, offset);
 		} else {
 			int sc=sliceCount();
+			if (sc==0) return true;
 			int skip=Tools.toInt(slice(0).elementCount());
 			for (int i=0; i<sc; i++) {
 				if (!slice(i).equalsArray(data,offset+i*skip)) return false;
@@ -1363,6 +1365,7 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		
 		int nslices=shape[0];
+		if (nslices==0) return Array.newArray(shape);
 		ArrayList<INDArray> al=new ArrayList<INDArray>(nslices);
 		int endIndex=offsets[0]+nslices;
 		int[] zzoffsets=IntArrays.removeIndex(offsets, 0);
@@ -1380,18 +1383,18 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	
 	@Override
 	public INDArray join(INDArray a) {
-		return JoinedArray.join(this,a,0);		
+		return this.join(a,0);		
 	}
 	
 	@Override
 	public INDArray rotateView(int dimension, int shift) {
 		int dlen=getShape(dimension);
 		if (dlen==0) return this;
-		int n=dimensionality();
 		
 		shift = Maths.mod(shift,dlen);
 		if (shift==0) return this;
 		
+		int n=dimensionality();
 		int[] off=new int[n];
 		int[] shp=getShapeClone();
 		

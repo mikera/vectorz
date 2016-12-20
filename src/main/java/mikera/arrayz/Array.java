@@ -104,7 +104,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	 * @return
 	 */
 	public static Array newArray(int... shape) {
-		return new Array(shape.length, shape, DoubleArrays.createStorageArray(shape));
+		return new Array(shape.length, shape.clone(), DoubleArrays.createStorageArray(shape));
 	}
 
 	/** 
