@@ -853,6 +853,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	
 	/**
 	 * Returns the underlying double array representing the densely packed elements of this array.
+	 * Modifications to this double array will change the original array.
 	 * 
 	 * Returns null if there is no such array.
 	 */
@@ -1106,8 +1107,9 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public AVector reduceSlices(Op2 op);
 	
 	/**
-	 * Reduces each slice of the array by the given binary operator
-	 * Uses the specified init value for reduction of each slice
+	 * Reduces each slice of the array by the given binary operator.
+	 * Results are returned in a vector with one element for each slice.
+	 * Uses the specified initial value for reduction of each slice.
 	 * 
 	 * @param op
 	 * @param b
