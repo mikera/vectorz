@@ -125,6 +125,11 @@ public final class ZeroVector extends ASparseVector {
 	public void set(int i, double value) {
 		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
 	}
+	
+	@Override
+	public void setSparse(double value) {
+		// OK
+	}
 
 	@Override
 	public double unsafeGet(int i) {
