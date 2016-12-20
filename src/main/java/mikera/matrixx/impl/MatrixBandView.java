@@ -88,5 +88,4 @@ public final class MatrixBandView extends AMatrixViewVector {
 			unsafeSet(i,op.apply(v));
 		}
 	}
-
 }

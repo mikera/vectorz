@@ -64,6 +64,19 @@ public abstract class AMatrixViewVector extends ASizedVector {
 		return source.unsafeGet(calcRow(i),calcCol(i));
 	}
 	
+	@Override
+	public double dotProduct(AVector v) {
+		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
+ 		if (v instanceof ASparseVector) return ((ASparseVector)v).dotProduct(this);
+ 		
+ 		int len=checkSameLength(v);
+		double total=0.0;
+		for (int i=0; i<len; i++) {
+			total+=unsafeGet(i)*v.unsafeGet(i);
+		}
+		return total;
+	}
+	
 	@Override 
 	public double unsafeGet(int i) {
 		// we assume unsafe is OK, i.e. calculations are correct given correct i

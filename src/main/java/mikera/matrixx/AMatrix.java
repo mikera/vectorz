@@ -1550,7 +1550,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		return isSquare()&&(determinant()!=0.0);
 	}
 
-
 	@Override
 	public Vector toVector() {
 		int rc = rowCount();
