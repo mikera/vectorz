@@ -99,7 +99,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	}
 
 	/**
-	 * Creates a new zero-filled mutable Array of the specified shape
+	 * Creates a new zero-filled mutable Array of the specified shape.
 	 * @param shape
 	 * @return
 	 */
@@ -113,7 +113,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	 * @return
 	 */
 	public static Array create(INDArray a) {
-		int[] shape=a.getShape();
+		int[] shape=a.getShapeClone();
 		return new Array(a.dimensionality(), shape, a.toDoubleArray());
 	}
 	
