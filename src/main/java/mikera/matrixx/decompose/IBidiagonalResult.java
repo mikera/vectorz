@@ -3,6 +3,8 @@ package mikera.matrixx.decompose;
 import mikera.matrixx.AMatrix;
 
 /**
+ * Interface representing the result of a Bidiagonal decompostion
+ * 
  * @author prasant
  */
 public interface IBidiagonalResult {

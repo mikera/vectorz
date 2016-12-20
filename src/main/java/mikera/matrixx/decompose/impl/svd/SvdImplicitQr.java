@@ -22,6 +22,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.Bidiagonal;
 import mikera.matrixx.decompose.IBidiagonalResult;
+import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 
@@ -98,24 +99,9 @@ public class SvdImplicitQr {
 	 *
 	 * @param compact
 	 *            Compute a compact SVD
-	 * @param computeU
-	 *            If true it will compute the U matrix
-	 * @param computeV
-	 *            If true it will compute the V matrix
 	 */
-	/*
-	 * Once BidiagonalDecomposition is implemented, use the commented out
-	 * constructor and add:
-	 * "@param canUseTallBidiagonal If true then it can choose to use a tall Bidiagonal decomposition to improve runtime performance."
-	 * to doc
-	 */
-	// public SvdImplicitQr(boolean compact, boolean computeU, boolean computeV,
-	// boolean canUseTallBidiagonal )
 	SvdImplicitQr(boolean compact) {
 		this.compact = compact;
-		// this.prefComputeU = computeU;
-		// this.prefComputeV = computeV;
-		// this.canUseTallBidiagonal = canUseTallBidiagonal;
 	}
 
 	public AVector getSingularValues() {
@@ -162,9 +148,7 @@ public class SvdImplicitQr {
 		Matrix orig = _orig.copy().toMatrix();
 		setup(orig);
 
-		if (bidiagonalization(orig)) {
-			return null;
-		}
+		performBidiagonalisation(orig);
 
 		if (computeUSV())
 			return null;
@@ -175,10 +159,18 @@ public class SvdImplicitQr {
 		// if transposed undo the transposition
 		undoTranspose();
 
-		return new SVDResult(getU(), getS(), getV(), getSingularValues());
+		AVector svs=getSingularValues();
+		if (compact&&(numSingular<getS().rowCount())) {
+			AMatrix cU=getU().subMatrix(0, numRows, 0, numSingular);
+			AMatrix cS=DiagonalMatrix.create(svs);
+			AMatrix cV=getV().subMatrix(0, numCols, 0, numSingular);
+			return new SVDResult(cU,cS,cV,svs);	
+		} else {
+			return new SVDResult(getU(), getS(), getV(), svs);
+		}
 	}
 
-	private boolean bidiagonalization(Matrix orig) {
+	private void performBidiagonalisation(Matrix orig) {
 		// change the matrix to bidiagonal form
 		if (transposed) {
 			A_mod = orig.getTransposeCopy().toMatrix();
@@ -186,7 +178,6 @@ public class SvdImplicitQr {
 			A_mod = orig.copy().toMatrix();
 		}
 		bidiagResult = Bidiagonal.decompose(A_mod, compact);
-		return bidiagResult == null;
 	}
 
 	/**

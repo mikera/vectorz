@@ -225,24 +225,24 @@ public abstract class StandardSvdChecks {
     {
         Matrix U = svd.getU().toMatrix();
         Matrix Vt = svd.getV().getTranspose().toMatrix();
-        Matrix W = svd.getS().toMatrix();
+        Matrix S = svd.getS().toMatrix();
 
         assertTrue( !U.hasUncountable() );
         assertTrue( !Vt.hasUncountable() );
-        assertTrue( !W.hasUncountable() );
+        assertTrue( !S.hasUncountable() );
 
         if( svd.isCompact() ) {
-        	assertTrue(W.columnCount()==W.rowCount());
-        	assertTrue(U.columnCount()==W.rowCount());
-            assertTrue(Vt.rowCount()==W.columnCount());
+        	assertTrue(S.columnCount()==S.rowCount());
+        	assertTrue(U.columnCount()==S.rowCount());
+            assertTrue(Vt.rowCount()==S.columnCount());
         } else {
-        	assertTrue(U.columnCount()==W.rowCount());
-        	assertTrue(W.columnCount()==Vt.rowCount());
+        	assertTrue(U.columnCount()==S.rowCount());
+        	assertTrue(S.columnCount()==Vt.rowCount());
         	assertTrue(U.columnCount()==U.rowCount());
             assertTrue(Vt.columnCount()==Vt.rowCount());
         }
 
-        Matrix found = Multiplications.multiply(U, Multiplications.multiply(W, Vt));
+        Matrix found = Multiplications.multiply(U, Multiplications.multiply(S, Vt));
 
 //        found.print();
 //        expected.print();

@@ -18,18 +18,25 @@ public class TestPseudoInverses {
 	}
 	
 	@Test
-	public void testBAsicPseudoInverse() {
+	public void testBasicPseudoInverse() {
 		AMatrix m=Matrix.create(new double[][] {{4,7},{2,6}});
 		AMatrix mi=PseudoInverse.calculate(m);
 		assertTrue(Matrix.create(new double[][] {{0.6,-0.7},{-0.2,0.4}}).epsilonEquals(mi));
 	}
+	
+	@Test
+	public void testMiniPseudoInverse1() {
+		AMatrix m=Matrix.create(new double[][] {{1},{2}});
+		AMatrix mi=PseudoInverse.calculate(m);
+		assertTrue((Matrix.create(new double[][] {{0.2,0.4}}).epsilonEquals(mi)));
+	}
 
-// TODO: need to fix SVD with compact values
+ // TODO: need to fix SVD with compact values
 //	@Test
 //	public void testDiagonalPseudoInverse2() {
 //		AMatrix m=DiagonalMatrix.create(2,0);
 //		AMatrix mi=PseudoInverse.calculate(m);
-//		assertEquals(DiagonalMatrix.create(1,0.5),mi);
+//		assertEquals(DiagonalMatrix.create(0.5,0.0),mi);
 //	}
 
 // TODO: need to fix SVD with zero singular values	
