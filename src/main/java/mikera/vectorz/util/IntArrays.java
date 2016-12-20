@@ -115,6 +115,11 @@ public class IntArrays {
 		return copyIntsToLongs(src,dst);
 	}
 
+	/**
+	 * Computes the product of an array of integers. 
+	 * @param vs
+	 * @return
+	 */
 	public static long arrayProduct(int[] vs) {
 		long r=1;
 		for (int x:vs) {

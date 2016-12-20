@@ -331,6 +331,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	
 	/**
 	 * Creates a mutable clone of the array, broadcasted upwards if necessary to match the shape of the target.
+	 * If no upwards broadcasting is required, returns a regular clone() of this array.
 	 * 
 	 * @param target The target array
 	 * @throws IllegalArgumentException if the array cannot be broadcasted to match the target or vice versa 
@@ -339,7 +340,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	
 	/**
 	 * Creates a copy of the array, broadcasted upwards if necessary to match the shape of the target
-	 * Like broadCastCloneLike, but does not guarantee a mutable clone - hence may be faster
+	 * Like broadCastCloneLike, but does not guarantee a fully mutable clone - hence may be faster
 	 * when used with immutable or specialized arrays
 	 * 
 	 * @param target The target array
@@ -367,12 +368,16 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public Object sliceValue(int majorSlice);
 	
 	/**
-	 * Joins an array with another array along a specified dimension
+	 * Joins an array with another array along a specified dimension.
+	 * 
+	 * Guarantees a view that combines the two joined arrays.
 	 */
 	public INDArray join(INDArray a, int dimension);
 
 	/**
 	 * Joins an array with another array along the major dimension
+	 * 
+	 * Guarantees a view that combines the two joined arrays.
 	 */
 	public INDArray join(INDArray a);
 	
@@ -411,7 +416,8 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public int sliceCount();
 	
 	/**
-	 * Returns the total number of elements in this array. Equivalent to the product all dimension sizes.
+	 * Returns the total number of elements in this array. 
+	 * Equivalent to the product of all dimension sizes.
 	 */
 	public long elementCount();
 	
@@ -629,17 +635,17 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public void setElements(int pos, double[] values, int offset, int length);
 
 	/**
-	 * Gets all elements of the array, copying them into a double array at the specified offset
+	 * Copies all elements of this array a double array at the specified offset
 	 */
 	public void getElements(double[] dest, int offset);
 	
 	/**
-	 * Gets all elements of the array, copying them into an object array at the specified offset
+	 * Copies all elements of this array into an object array at the specified offset
 	 */
 	public void getElements(Object[] dest, int offset);
 	
 	/**
-	 * Copies all the elements of this INDArray to the specified double array
+	 * Copies all elements of this INDArray to the specified double array
 	 */
 	public void getElements(double[] arr);
 	
