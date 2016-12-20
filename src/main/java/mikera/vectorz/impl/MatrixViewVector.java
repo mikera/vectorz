@@ -67,7 +67,7 @@ public class MatrixViewVector extends AMatrixViewVector {
 	}
 	
 	@Override
-	public void set(double value) {
+	public void fill(double value) {
 		source.set(value);
 	}
 	

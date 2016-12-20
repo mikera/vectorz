@@ -321,6 +321,11 @@ public abstract class ADiagonalMatrix extends ASingleBandMatrix {
 		throw new UnsupportedOperationException(ErrorMessages.notFullyMutable(this, row, column));
 	}
 	
+	@Override
+	public void setSparse(double value) {
+		getLeadingDiagonal().setSparse(value);
+	}
+	
 	@Override 
 	public abstract AVector getLeadingDiagonal();
 

@@ -86,6 +86,11 @@ public abstract class AVectorAsMatrixView extends ARectangularMatrix {
 	}
 	
 	@Override
+	public void setSparse(double value) {
+		vector.setSparse(value);
+	}
+	
+	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		return vector.equalsArray(data, offset);
 	}

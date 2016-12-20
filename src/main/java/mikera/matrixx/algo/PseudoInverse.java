@@ -23,6 +23,6 @@ public class PseudoInverse {
 		AMatrix U=svd.getU();
 		AMatrix V=svd.getV();
 		
-		return V.getTranspose().innerProduct(DiagonalMatrix.create(s).innerProduct(U.getTranspose()));
+		return V.innerProduct(DiagonalMatrix.create(s).innerProduct(U.getTranspose()));
 	}
 }

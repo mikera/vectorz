@@ -1568,7 +1568,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	}
 	
 	@Override
-	public void set(double a) {
+	public final void set(double a) {
 		fill(a);
 	}
 		

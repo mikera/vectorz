@@ -78,12 +78,7 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 		checkSameShape(a);
 		lead.set(a.getLeadingDiagonal());
 	}
-	
-	@Override
-	public void setSparse(double value) {
-		lead.set(value);
-	}
-	
+		
 	@Override
 	public double trace() {
 		return lead.elementSum();
