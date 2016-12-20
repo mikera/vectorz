@@ -442,14 +442,21 @@ public class TestMatrices {
 	}
 	
 	private void doMulTest(AMatrix m) {
-		AVector v=Vectorz.newVector(m.columnCount());
-		AVector t=Vectorz.newVector(m.rowCount());
+		int rc=m.rowCount();
+		int cc=m.columnCount();
+		
+		AVector v=Vectorz.newVector(cc);
+		AVector t=Vectorz.newVector(rc);
 		
 		m.transform(v, t);
 		AVector t2=m.innerProduct(v);
 		
 		assertEquals(t,t2);
 		assertEquals(t,m.innerProduct(v));
+		
+		// zero element multiplication of subArrays
+		AMatrix zm=m.subMatrix(0, rc, 0, 0).innerProduct(m.subMatrix(0, 0, 0, cc));
+		assertEquals(ZeroMatrix.create(rc, cc),zm);
 	}
 	
 	private void doDotProductTest(AMatrix m) {

@@ -231,6 +231,7 @@ public abstract class AVectorMatrix<T extends AVector> extends ARectangularMatri
 	
 	@Override
 	public AMatrix subMatrix(int rowStart, int rows, int colStart, int cols) {
+		if ((rows==0)||(cols==0)) return ZeroMatrix.create(rows, cols);
 		AVector[] newRows=new AVector[rows];
 		for (int i=0; i<rows; i++) {
 			newRows[i]=getRowView(i+rowStart).subVector(colStart,cols);
