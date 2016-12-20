@@ -25,9 +25,8 @@ import mikera.matrixx.AMatrix;
  * 
  * <p>
  * LU Decomposition refactors the original matrix such that:<br>
- * <div align=center> *L*U = A</div> where L
- * is a lower triangular matrix, U is an upper triangular matrix and A is the
- * original matrix.
+ * <div align=center> *L*U = A</div> where L is a lower triangular matrix, U is
+ * an upper triangular matrix and A is the original matrix.
  * </p>
  * <p/>
  * <p>
@@ -41,27 +40,29 @@ import mikera.matrixx.AMatrix;
  */
 public interface ILUResult {
 
-  /**
-   * <p>
-   * Returns the L matrix from the decomposition. This matrix will have ones on the leading diagonal.
-   * </p>
-   *
-   * @return The L matrix.
-   */
-  public AMatrix getL();
+	/**
+	 * <p>
+	 * Returns the L matrix from the decomposition. This matrix will have ones
+	 * on the leading diagonal.
+	 * </p>
+	 *
+	 * @return The L matrix.
+	 */
+	public AMatrix getL();
 
-  /**
-   * <p>
-   * Returns the U matrix from the decomposition.
-   * </p>
-   *
-   * @return The U matrix.
-   */
-  public AMatrix getU();
-  
-  /**
+	/**
+	 * <p>
+	 * Returns the U matrix from the decomposition.
+	 * </p>
+	 *
+	 * @return The U matrix.
+	 */
+	public AMatrix getU();
+
+	/**
 	 * Computes the determinant from the LU decomposition.
+	 * 
 	 * @return The matrix's determinant.
 	 */
-  public double computeDeterminant();
+	public double computeDeterminant();
 }

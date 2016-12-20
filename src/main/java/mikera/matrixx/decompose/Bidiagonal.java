@@ -17,11 +17,10 @@ public class Bidiagonal {
 	/**
 	 * Computes the Bidiagonal decomposition of a matrix A
 	 * 
-	 *   A = U.B.Vt
-	 *   
-	 * Where:
-	 *    B is a bidiagonal matrix
-	 *   
+	 * A = U.B.Vt
+	 * 
+	 * Where: B is a bidiagonal matrix
+	 * 
 	 * @param A
 	 * @return
 	 */
