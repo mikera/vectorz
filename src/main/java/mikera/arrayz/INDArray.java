@@ -182,7 +182,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public INDArray addCopy(double d);
 	
 	/**
-	 * Adds all the elements of this array to a double array, in row-major order
+	 * Adds all the elements of this array to a double array at the specified offset, in row-major order
 	 */
 	public void addToArray(double[] data, int offset);
 	
@@ -672,7 +672,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public void addMultiple(INDArray src, double factor);
 	
 	/**
-	 * Adds an array with all elements raised to the specified power
+	 * Adds an array with all elements of the source array raised to the specified power
 	 * @param src
 	 * @param factor
 	 */
@@ -935,13 +935,13 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	/**
 	 * Creates a fully mutable dense clone of this array. 
 	 * 
-	 * Will always use a dense format.
+	 * Will always use a dense format, even if the array data is sparse.
 	 */
 	public INDArray denseClone();
 
 	/**
 	 * Returns true if the elements in this array exactly match the elements in the given array, in
-	 * row-major order
+	 * row-major order. Returns false otherwise.
 	 * 
 	 * @param data Array of double element values to check for equality
 	 * @return
