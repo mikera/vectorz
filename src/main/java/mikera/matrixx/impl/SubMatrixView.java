@@ -5,7 +5,7 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.impl.SubMatrixViewVector;
 
 /**
- * Matrix class that wraps a SubMatrix of another matrix
+ * Matrix view class that wraps a SubMatrix of another matrix
  * @author Mike
  *
  */

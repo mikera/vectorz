@@ -241,6 +241,22 @@ public abstract class AJoinedVector extends ASizedVector {
 	}
 	
 	@Override
+	public void setSparse(double value) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
+			getComponent(i).setSparse(value);
+		}
+	}
+	
+	@Override
+	public void addSparse(double value) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
+			getComponent(i).addSparse(value);
+		}
+	}
+	
+	@Override
 	public double reduce(Op2 op, double init) {
 		long n=componentCount();
 		double result=init;

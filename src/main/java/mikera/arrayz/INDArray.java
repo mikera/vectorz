@@ -1080,6 +1080,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 
 	/**
 	 * Gets all components in a new array, with length componentCount();
+	 * 
 	 * @return
 	 */
 	INDArray[] getComponents();
