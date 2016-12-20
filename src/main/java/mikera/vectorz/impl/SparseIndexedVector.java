@@ -273,12 +273,20 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		return data.length;
 	}
 
+	/**
+	 * Overloaded implementation for SparseIndexedVector x SparseRowMatrix
+	 * 
+	 * This is basically a weighted sum of rows!
+	 * 
+	 * @param m
+	 * @return
+	 */
 	public AVector innerProduct(SparseRowMatrix m) {
 		int cc = m.columnCount();
 		int rc = m.rowCount();
 		checkLength(rc);
-		ASparseIndexedVector r = SparseIndexedVector.createLength(cc);
 		int n = nonSparseElementCount();
+		AVector result= SparseIndexedVector.createLength(cc); // inistially use sparse result
 		for (int ii = 0; ii < n; ii++) {
 			double value = data[ii];
 			if (value == 0.0)
@@ -288,25 +296,34 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 			if (row == null)
 				continue; // skip zero rows
 
-			// TODO: we were casting to ASparseVector, necessary for speed??
-			// if (row instanceof ASparseVector)
-			// This vector could be of any type, such as Vector3.
-			// And some vectors don't have a sparseClone and instead return
-			// a reference to same instance!!!! (See Vector3...)
-			r.addMultiple(row, value);
+			result.addMultiple(row, value);
+			if ((result instanceof SparseIndexedVector)&& 
+					((SparseIndexedVector)result).nonSparseElementCount()>(cc/4)) {
+				result=result.toVector();
+			}
 		}
-		return r;
+		return result;
 	}
 
 	public AVector innerProduct(SparseColumnMatrix m) {
 		int cc = m.columnCount();
 		int rc = m.rowCount();
+		int nzc = 0;
 		checkLength(rc);
-		ASparseIndexedVector r = SparseIndexedVector.createLength(cc);
-		for (int i = 0; i < cc; i++) {
-			r.unsafeSet(i, this.dotProduct((ASparseVector) m.getColumn(i)));
+		AVector result = SparseIndexedVector.createLength(cc);
+		for (int i = 0; i < rc; i++) {
+			double v=this.dotProduct(m.getColumn(i));
+			if (v==0.0) continue;
+
+			nzc++;
+			if ((result instanceof SparseIndexedVector)&&(i>20)&&(nzc>(i/4))) {
+				// switch to dense vector if result becoming near-dense
+				result=result.toVector();
+			}
+			
+			result.unsafeSet(i, v);
 		}
-		return r;
+		return result;
 	}
 
 	@Override
@@ -320,11 +337,21 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 		int cc = m.columnCount();
 		int rc = m.rowCount();
 		checkLength(rc);
-		AVector r = SparseIndexedVector.createLength(cc);
+		AVector result = SparseIndexedVector.createLength(cc);
+		int nzc = 0;
 		for (int i = 0; i < cc; i++) {
-			r.unsafeSet(i, this.dotProduct(m.getColumn(i)));
+			double v=this.dotProduct(m.getColumn(i));
+			if (v==0.0) continue;
+			
+			nzc++;
+			if ((i>20)&&(nzc>(i/4))) {
+				// switch to dense vector
+				result=result.toVector();
+			}
+			
+			result.unsafeSet(i, v);
 		}
-		return r;
+		return result;
 	}
 
 	@Override

@@ -95,7 +95,9 @@ public class TestBigSparse {
 			m.set(r.nextInt(SIZE),r.nextInt(SIZE),r.nextGaussian());
 		}
 		
-		m.innerProduct(m.getTranspose());
+		AMatrix mt=m.getTranspose();
+		assertTrue(mt.isSparse());
+		m.innerProduct(mt);
 	}
 	
 	@Test public void testBigMultiply3() {
