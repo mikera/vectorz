@@ -767,6 +767,11 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public void setSparse(INDArray src);
 	
 	/**
+	 * Sets the non-sparse elements of this array to the specified value
+	 */
+	public void setSparse(double v);
+	
+	/**
 	 * Adds to the non-sparse elements of this array
 	 */
 	public void addSparse(double c);

@@ -117,7 +117,7 @@ public class BandedMatrix extends ABandedMatrix {
 	public void set(int i, int j, double value) {
 		getBand(bandIndex(i,j)).set(bandPosition(i,j),value);
 	}
-	
+		
 	@Override
 	public double unsafeGet(int i, int j) {
 		return getBand(bandIndex(i,j)).unsafeGet(bandPosition(i,j));

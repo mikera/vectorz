@@ -24,7 +24,6 @@ import mikera.vectorz.impl.ADenseArrayVector;
 import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.impl.ASparseVector;
 import mikera.vectorz.impl.ArraySubVector;
-import mikera.vectorz.impl.ISparseVector;
 import mikera.vectorz.impl.ImmutableVector;
 import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.impl.IndexedSubVector;
@@ -2356,12 +2355,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	 * @param v
 	 */
 	public void setSparse(AVector src) {
-		if (this instanceof ISparseVector) {
-			// TODO: generic sparse implementation?
-			set(src);
-		} else {
-			set(src);
-		}
+		set(src);
+	}
+	
+	@Override
+ 	public void setSparse(double v) {
+		set(v);
 	}
 	
 	@Override

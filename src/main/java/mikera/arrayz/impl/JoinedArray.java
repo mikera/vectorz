@@ -166,4 +166,10 @@ public class JoinedArray extends BaseShapedArray {
 			
 		}
 	}
+
+	@Override
+	public void setSparse(double v) {
+		left.setSparse(v);
+		right.setSparse(v);
+	}
 }

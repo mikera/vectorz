@@ -1133,6 +1133,21 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		}
 	}
 	
+	
+	@Override
+	public final void setSparse(INDArray a) {
+		int dims=a.dimensionality();
+		if (dims==0) {
+			setSparse(a.get());
+		} else if (dims==1) {
+			setSparse(a.asVector());
+		} else if (dims==2) {
+			setSparse(Matrixx.toMatrix(a));
+		} else {
+			throw new IllegalArgumentException(ErrorMessages.incompatibleBroadcast(a, this));
+		}
+	}
+	
 	/**
 	 * Sets the non-sparse elements in this matrix to the corresponding values in the source matrix
 	 * @param a

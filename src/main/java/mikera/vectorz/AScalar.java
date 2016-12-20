@@ -36,6 +36,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	public abstract void set(double value);
 	
 	@Override
+ 	public void setSparse(double v) {
+		set(v);
+	}
+	
+	@Override
 	public double get(int x) {
 		throw new IllegalArgumentException(ErrorMessages.invalidIndex(this, x));
 	}

@@ -281,6 +281,22 @@ public abstract class ASparseRCMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
+ 	public void setSparse(double value) {
+		long n=componentCount();
+		for (int i=0; i<n; i++) {
+			AVector v = unsafeGetVector(i);
+			if (v==null) continue;
+			if (v.isFullyMutable()) {
+				v.setSparse(value);
+			} else {
+				v = v.sparseClone();
+				v.setSparse(value);
+				unsafeSetVec(i, v);			
+			}
+		}
+	}
+	
+	@Override
 	public final long nonZeroCount() {
 		long result=0;
 		for (AVector vec: data) {

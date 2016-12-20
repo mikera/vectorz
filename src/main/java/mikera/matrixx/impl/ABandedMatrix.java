@@ -156,6 +156,15 @@ public abstract class ABandedMatrix extends AMatrix implements IFastBands {
 		}
 	}
 	
+	@Override
+	public void setSparse(double value) {
+		int minBand=-lowerBandwidthLimit();
+		int maxBand=upperBandwidthLimit();
+		for (int i=minBand; i<=maxBand; i++) {
+			getBand(i).setSparse(value);
+		}
+	}
+	
 	@Override 
 	public void multiply(double value) {
 		for (int i=-rowCount()+1; i<columnCount(); i++) {

@@ -596,6 +596,15 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void setSparse(double value) {
+		int sc=sliceCount();
+		for (int i=0; i<sc; i++) {
+			INDArray s=slice(i);
+			s.setSparse(value);
+		}
+	}
+	
+	@Override
 	public INDArray addCopy(double d) {
 		INDArray result=clone();
 		result.add(d);

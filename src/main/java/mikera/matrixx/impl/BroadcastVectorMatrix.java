@@ -97,4 +97,9 @@ public final class BroadcastVectorMatrix extends ARectangularMatrix implements I
 	public boolean isZero() {
 		return source.isZero();
 	}
+
+	@Override
+	public void setSparse(double v) {
+		throw new UnsupportedOperationException(ErrorMessages.immutable(this));
+	}
 }

@@ -91,6 +91,11 @@ public class ColumnMatrix extends AVectorAsMatrixView implements IFastColumns, I
 	}
 	
 	@Override
+	public void setSparse(double value) {
+		vector.setSparse(value);
+	}
+	
+	@Override
 	public boolean equalsArray(double[] data, int offset) {
 		return vector.equalsArray(data, offset);
 	}

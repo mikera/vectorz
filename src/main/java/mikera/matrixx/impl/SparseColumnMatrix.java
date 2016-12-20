@@ -173,6 +173,11 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	}
 	
 	@Override
+	public void setColumn(int i, AVector col) {
+		replaceColumn(i,col.clone());
+	}
+	
+	@Override
 	public void addAt(int i, int j, double d) {
 		AVector v=getColumn(j);
 		if (v.isFullyMutable()) {

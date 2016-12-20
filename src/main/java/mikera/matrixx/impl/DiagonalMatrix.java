@@ -80,6 +80,11 @@ public final class DiagonalMatrix extends ADiagonalMatrix {
 	}
 	
 	@Override
+	public void setSparse(double value) {
+		lead.set(value);
+	}
+	
+	@Override
 	public double trace() {
 		return lead.elementSum();
 	}
