@@ -157,16 +157,7 @@ public abstract class ASparseVector extends ASizedVector implements ISparseVecto
 	}
 	
 	@Override
-	public double dotProduct(AVector v) {
-		checkSameLength(v);
-		double result=0.0;
-		Index ni=nonSparseIndex();
-		for (int i=0; i<ni.length(); i++) {
-			int ii=ni.get(i);
-			result+=unsafeGet(ii)*v.unsafeGet(ii);
-		}		
-		return result;
-	}
+	public abstract double dotProduct(AVector v);
 	
 	@Override
 	public final double dotProduct(ADenseArrayVector v) {

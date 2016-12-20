@@ -114,6 +114,8 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 	public final double dotProduct(AVector v) {
 		if (v instanceof ADenseArrayVector) return dotProduct((ADenseArrayVector)v);
 		if (v instanceof ASparseVector) return dotProduct((ASparseVector)v);
+		
+		// no quick implementation, so use indexed gets
 		double result=0.0;
 		double[] data=internalData();
 		int[] ixs=internalIndexArray();
@@ -123,7 +125,22 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		return result;
 	}
 	
+	/**
+	 * Multiply this sparse indexed vector with another sparse vector.
+	 * @param v
+	 * @return
+	 */
 	public final double dotProduct(ASparseVector v) {
+		int vNonSparse=v.nonSparseElementCount();
+		if (vNonSparse==0) return 0.0; // zero vector
+		if (vNonSparse==1) { // single non-saprse element
+			if (v instanceof ASingleElementVector) {
+				ASingleElementVector av=(ASingleElementVector)v;
+				int ix=av.index(); // non-sparse index
+				return av.value()*unsafeGet(ix);
+			}
+		}
+		
 		double result=0.0;
 		double[] data=internalData();
 		int[] ixs=internalIndexArray();
@@ -132,7 +149,6 @@ public abstract class ASparseIndexedVector extends ASparseVector {
 		if (vdata==null) vdata=vvalues.toDoubleArray();
 		int[] vixs=v.nonSparseIndex().data;
 		if (data.length==0) return 0.0;
-		if (vdata.length==0) return 0.0;
 		
 		int ti=0;
 		int vi=0;

@@ -292,7 +292,7 @@ public final class SingleElementVector extends ASingleElementVector {
 
 	@Override
 	public double dotProduct(AVector v) {
-		return value*v.get(index);
+		return value*v.unsafeGet(index);
 	}
 
 }
