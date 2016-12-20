@@ -2545,6 +2545,12 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	}
 	
 	@Override
+	public void addInnerProduct(AMatrix a, INDArray b) {
+		if (b.dimensionality()!=1) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		addInnerProduct(a,b.asVector());
+	}	
+	
+	@Override
 	public final void addInnerProduct(INDArray a, INDArray b) {
 		if ((a instanceof AMatrix)&&(b instanceof AVector)) {
 			addInnerProduct((AMatrix)a,(AVector)b);
