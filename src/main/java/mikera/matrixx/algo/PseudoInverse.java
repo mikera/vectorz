@@ -14,6 +14,7 @@ public class PseudoInverse {
 	 * @return
 	 */
 	public static AMatrix calculate(AMatrix a) {
+		// compute a compact SVD decomposition. All singular values should be positive!
 		ISVDResult svd = SVD.decompose(a,true);
 		
 		Vector s=svd.getSingularValues().toVector();

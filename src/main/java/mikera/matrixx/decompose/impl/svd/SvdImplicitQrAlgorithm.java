@@ -234,6 +234,10 @@ public class SvdImplicitQrAlgorithm {
         return _process();
     }
 
+    /**
+     * 
+     * @return true if successful, false if number of iterations exceeded
+     */
     public boolean _process() {
         // it is a zero matrix
         if( maxValue == 0 )

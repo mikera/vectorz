@@ -32,7 +32,7 @@ import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
  * @author Peter Abeles
  */
 public class BidiagonalRow {
-    // A combined matrix that stores te upper Hessenberg matrix and the orthogonal matrix.
+    // A combined matrix that stores the upper Hessenberg matrix and the orthogonal matrix.
     private Matrix UBV;
 
     // number of rows
