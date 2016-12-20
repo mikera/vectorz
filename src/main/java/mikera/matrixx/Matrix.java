@@ -613,9 +613,8 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void setColumn(int j, AVector col) {
-		int rc = checkRow(j);
-		col.checkLength(rc);
-		col.copyTo(0, data, j, rc, cols);
+		col.checkLength(rows);
+		col.copyTo(0, data, j, rows, cols);
 	}
 
 	@Override

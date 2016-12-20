@@ -424,11 +424,12 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 	@Override
 	public Vector innerProduct(Vector a) {
 		a.checkLength(cols);
-		Vector r=Vector.createLength(rows);
+		Vector result=Vector.createLength(rows);
 		for (int i=0; i<cols; i++) {
-			r.addMultiple(getColumn(i),a.get(i));
+			double aval=a.unsafeGet(i);
+			if (aval!=0.0) result.addMultiple(getColumn(i),aval);
 		}
-		return r;
+		return result;
 	}
 		
 	@Override
@@ -446,7 +447,7 @@ public class SparseColumnMatrix extends ASparseRCMatrix implements ISparse, IFas
 		for (int i=0; i<cols; i++) {
 			AVector v = unsafeGetVector(i);
 			if (v != null) {
-                m.getColumn(i).set(v);
+                m.setColumn(i, v);;
             }
 		}
 		return m.getArray();
