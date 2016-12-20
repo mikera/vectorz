@@ -2,7 +2,6 @@ package mikera.matrixx.impl;
 
 import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
-import mikera.vectorz.AVector;
 import mikera.vectorz.IOperator;
 import mikera.vectorz.Op;
 import mikera.vectorz.Op2;
@@ -89,10 +88,15 @@ abstract class ADelegatedMatrix extends ARectangularMatrix {
 	}
 	
 	@Override
-	public AVector getLeadingDiagonal() {
-		return source.getLeadingDiagonal();
+	public void setSparse(double value) {
+		source.setSparse(value);
 	}
 	
+	@Override
+	public void addSparse(double value) {
+		source.addSparse(value);
+	}
+		
 	@Override
 	public double elementSum() {
 		return source.elementSum();

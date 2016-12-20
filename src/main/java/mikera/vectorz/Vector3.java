@@ -247,7 +247,6 @@ public final class Vector3 extends APrimitiveVector {
 	
 	@Override
 	public double dotProduct(AVector v) {
-		v.checkLength(3);
 		return x*v.unsafeGet(0)+y*v.unsafeGet(1)+z*v.unsafeGet(2);
 	}
 	

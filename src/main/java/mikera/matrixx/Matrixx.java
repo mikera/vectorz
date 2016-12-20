@@ -67,7 +67,16 @@ public class Matrixx {
 		return m;
 	}
 	
+	/**
+	 * Coerce an object to a matrix format, on a best effort basis.
+	 * 
+	 * Can handle:
+	 * - Existing matrices
+	 * - Vectors (will be broadcast to a n x 1 column matrix)
+	 * - Scalars (will be broadcast to a 1 x 1 matrix)
+	 */
 	public static AMatrix toMatrix(INDArray a) {
+		if (a instanceof AMatrix) return (AMatrix)a;
 		int dims=a.dimensionality();
 		if (dims==0) return Matrix.wrap(1, 1, new double[]{a.get()});
 		
@@ -84,9 +93,9 @@ public class Matrixx {
 	 * Coerce an object to a matrix format, on a best effort basis.
 	 * 
 	 * Can handle:
-	 * - Existing matrices
-	 * - Vectors (will be broadcast to column matrix)
-	 * - Scalars (will be broadcast to a 1x1 matrix)
+	 * - INDArray instances of suitable shape (will be broadcast to a matrix if needed)
+	 * - Iterable objects representing a list of rows
+	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	public static AMatrix toMatrix(Object o) {
