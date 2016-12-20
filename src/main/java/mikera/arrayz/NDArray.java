@@ -35,7 +35,7 @@ import mikera.vectorz.util.VectorzException;
 public final class NDArray extends BaseNDArray {
 	private static final long serialVersionUID = -262272579159731240L;
 
-	NDArray(int... shape) {
+	private NDArray(int... shape) {
 		super(new double[(int)IntArrays.arrayProduct(shape)],
 				shape.length,
 				0,
@@ -51,6 +51,13 @@ public final class NDArray extends BaseNDArray {
 		super(data,shape.length,offset,shape,stride);
 	}
 	
+	/**
+	 * Wraps the given double[] data in an NDArray with the given shape.
+	 * Does *not* take a defensive copy of either the data or shape array.
+	 * @param data
+	 * @param shape
+	 * @return
+	 */
 	public static NDArray wrap(double[] data, int[] shape) {
 		int dims=shape.length;
 		return new NDArray(data,dims,0,shape,IntArrays.calcStrides(shape));
@@ -73,8 +80,13 @@ public final class NDArray extends BaseNDArray {
 		return wrap((IStridedArray)a);
 	}
 	
+	/**
+	 * Creates a new zero-filled NDArray with the given shape.
+	 * @param shape
+	 * @return
+	 */
 	public static NDArray newArray(int... shape) {
-		return new NDArray(shape);
+		return new NDArray(shape.clone());
 	}
 	
 	@Override

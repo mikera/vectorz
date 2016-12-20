@@ -86,7 +86,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	 * @return
 	 */
 	public static Array wrap(Vector v) {
-		return new Array(v.getShape(),v.getArray());
+		return new Array(v.getShapeClone(),v.getArray());
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	 * @return
 	 */
 	public static Array wrap(Matrix m) {
-		return new Array(m.getShape(),m.getArray());
+		return new Array(m.getShapeClone(),m.getArray());
 	}
 
 	/**
@@ -108,7 +108,7 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	}
 
 	/** 
-	 * Crates a new Array with a copt of the data from the sepcified array, in the same shape 
+	 * Crates a new Array with a copy of the data from the specified array, in the same shape 
 	 * @param a
 	 * @return
 	 */
