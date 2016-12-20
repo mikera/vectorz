@@ -54,7 +54,7 @@ public class SVD {
 	}
 	
 	/**
-	 * Computes the Singular Value Decomposition of a matrix, which is the decomposition
+	 * Computes the compact Singular Value Decomposition of a matrix, which is the decomposition
 	 * of the given matrix A as:
 	 * A = U*S*V,
 	 * where U and V are orthogonal and S is a diagonal matrix containing singular values 
@@ -64,7 +64,6 @@ public class SVD {
 	 * U is m by s, S is s by s, and V is n by s, where s is the number of Singular Values
 	 * 
 	 * @param A
-	 * @param compact
 	 * @return
 	 */
 	public static ISVDResult decomposeCompact(AMatrix A) {

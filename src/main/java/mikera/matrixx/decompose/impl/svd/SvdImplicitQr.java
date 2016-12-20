@@ -27,273 +27,280 @@ import mikera.vectorz.Vector;
 
 /**
  * <p>
- * Computes the Singular value decomposition of a matrix using the implicit QR algorithm
- * for singular value decomposition.  It works by first by transforming the matrix
- * to a bidiagonal A=U*B*V<sup>T</sup> form, then it implicitly computing the eigenvalues of the B<sup>T</sup>B matrix,
- * which are the same as the singular values in the original A matrix.
+ * Computes the Singular value decomposition of a matrix using the implicit QR
+ * algorithm for singular value decomposition. It works by first by transforming
+ * the matrix to a bidiagonal A=U*B*V<sup>T</sup> form, then it implicitly
+ * computing the eigenvalues of the B<sup>T</sup>B matrix, which are the same as
+ * the singular values in the original A matrix.
  * </p>
  *
  * <p>
  * Based off of the description provided in:<br>
  * <br>
- * David S. Watkins, "Fundamentals of Matrix Computations," Second Edition. Page 404-411
+ * David S. Watkins, "Fundamentals of Matrix Computations," Second Edition. Page
+ * 404-411
  * </p>
  *
  * @author Peter Abeles
  */
 public class SvdImplicitQr {
 
-    private int numRows;
-    private int numCols;
+	private int numRows;
+	private int numCols;
 
-    // dimensions of transposed matrix
-    private int numRowsT;
-    private int numColsT;
+	// dimensions of transposed matrix
+	private int numRowsT;
+	private int numColsT;
 
-    // if true then it can use the special Bidiagonal decomposition
-//    private boolean canUseTallBidiagonal;
+	// if true then it can use the special Bidiagonal decomposition
+	// private boolean canUseTallBidiagonal;
 
-    // If U is not being computed and the input matrix is 'tall' then a special bidiagonal decomposition
-    // can be used which is faster.
-    private IBidiagonalResult bidiagResult;
-    private SvdImplicitQrAlgorithm qralg = new SvdImplicitQrAlgorithm();
+	// If U is not being computed and the input matrix is 'tall' then a special
+	// bidiagonal decomposition
+	// can be used which is faster.
+	private IBidiagonalResult bidiagResult;
+	private SvdImplicitQrAlgorithm qralg = new SvdImplicitQrAlgorithm();
 
-    double diag[];
-    double off[];
+	double diag[];
+	double off[];
 
-    private Matrix Ut;
-    private Matrix Vt;
+	private Matrix Ut;
+	private Matrix Vt;
 
-    private double singularValues[];
-    private int numSingular;
+	private double singularValues[];
+	private int numSingular;
 
-    // compute a compact SVD
-    private boolean compact;
-    // What is actually computed
-//    private boolean computeU;
-//    private boolean computeV;
+	// compute a compact SVD
+	private boolean compact;
+	// What is actually computed
+	// private boolean computeU;
+	// private boolean computeV;
 
-    // What the user requested to be computed
-    // If the transpose is computed instead then what is actually computed is swapped
-//    private boolean prefComputeU;
-//    private boolean prefComputeV;
+	// What the user requested to be computed
+	// If the transpose is computed instead then what is actually computed is
+	// swapped
+	// private boolean prefComputeU;
+	// private boolean prefComputeV;
 
-    // Should it compute the transpose instead
-    private boolean transposed;
+	// Should it compute the transpose instead
+	private boolean transposed;
 
-    // Either a copy of the input matrix or a copy of it transposed
-    private Matrix A_mod = Matrix.create(1,1);
-    
-    public static SVDResult decompose(AMatrix A, boolean compact) {
-    	SvdImplicitQr svd = new SvdImplicitQr(compact);
-    	return svd._decompose(A);
-    }
+	// Either a copy of the input matrix or a copy of it transposed
+	private Matrix A_mod = Matrix.create(1, 1);
 
-    /**
-     * Configures the class
-     *
-     * @param compact Compute a compact SVD
-     * @param computeU If true it will compute the U matrix
-     * @param computeV If true it will compute the V matrix
-     */
-    /*Once BidiagonalDecomposition is implemented, use the commented out constructor
-    and add:
-    "@param canUseTallBidiagonal If true then it can choose to use a tall Bidiagonal decomposition to improve runtime performance."
-    to doc*/
-//    public SvdImplicitQr(boolean compact, boolean computeU, boolean computeV,
-//    		boolean canUseTallBidiagonal )    
-    public SvdImplicitQr(boolean compact) {
-        this.compact = compact;
-//        this.prefComputeU = computeU;
-//        this.prefComputeV = computeV;
-//        this.canUseTallBidiagonal = canUseTallBidiagonal;
-    }
+	public static SVDResult decompose(AMatrix A, boolean compact) {
+		SvdImplicitQr svd = new SvdImplicitQr(compact);
+		return svd._decompose(A);
+	}
 
-    public AVector getSingularValues() {
-        return Vector.wrap(singularValues);
-    }
+	/**
+	 * Configures the class
+	 *
+	 * @param compact
+	 *            Compute a compact SVD
+	 * @param computeU
+	 *            If true it will compute the U matrix
+	 * @param computeV
+	 *            If true it will compute the V matrix
+	 */
+	/*
+	 * Once BidiagonalDecomposition is implemented, use the commented out
+	 * constructor and add:
+	 * "@param canUseTallBidiagonal If true then it can choose to use a tall Bidiagonal decomposition to improve runtime performance."
+	 * to doc
+	 */
+	// public SvdImplicitQr(boolean compact, boolean computeU, boolean computeV,
+	// boolean canUseTallBidiagonal )
+	public SvdImplicitQr(boolean compact) {
+		this.compact = compact;
+		// this.prefComputeU = computeU;
+		// this.prefComputeV = computeV;
+		// this.canUseTallBidiagonal = canUseTallBidiagonal;
+	}
 
-    public int numberOfSingularValues() {
-        return numSingular;
-    }
+	public AVector getSingularValues() {
+		return Vector.wrap(singularValues);
+	}
 
-    public boolean isCompact() {
-        return compact;
-    }
+	public int numberOfSingularValues() {
+		return numSingular;
+	}
 
-    public AMatrix getU() {
-//        if( !prefComputeU )
-//            throw new IllegalArgumentException("As requested U was not computed.");
-    	return Ut.getTranspose();
-    }
+	public boolean isCompact() {
+		return compact;
+	}
 
-    public AMatrix getV() {
-//        if( !prefComputeV )
-//            throw new IllegalArgumentException("As requested V was not computed.");
-        	return Vt.getTranspose();
-    }
+	public AMatrix getU() {
+		// if( !prefComputeU )
+		// throw new IllegalArgumentException("As requested U was not
+		// computed.");
+		return Ut.getTranspose();
+	}
 
-    public AMatrix getS() {
-        int m = compact ? numSingular : numRows;
-        int n = compact ? numSingular : numCols;
+	public AMatrix getV() {
+		// if( !prefComputeV )
+		// throw new IllegalArgumentException("As requested V was not
+		// computed.");
+		return Vt.getTranspose();
+	}
 
-        Matrix S = Matrix.create(m,n);
-        
-        for( int i = 0; i < numSingular; i++ ) {
-            S.unsafeSet(i,i, singularValues[i]);
-        }
+	public AMatrix getS() {
+		int m = compact ? numSingular : numRows;
+		int n = compact ? numSingular : numCols;
 
-        return S;
-    }
+		Matrix S = Matrix.create(m, n);
 
-    public SVDResult _decompose(AMatrix _orig) {
-//    	Creating a copy so that original matrix is not modified
-    	Matrix orig = _orig.copy().toMatrix();
-        setup(orig);
+		for (int i = 0; i < numSingular; i++) {
+			S.unsafeSet(i, i, singularValues[i]);
+		}
 
-        if (bidiagonalization(orig)) {
-            return null;
-        }
+		return S;
+	}
 
-        if( computeUSV() )
-            return null;
+	public SVDResult _decompose(AMatrix _orig) {
+		// Creating a copy so that original matrix is not modified
+		Matrix orig = _orig.copy().toMatrix();
+		setup(orig);
 
-        // make sure all the singular values or positive
-        makeSingularPositive();
+		if (bidiagonalization(orig)) {
+			return null;
+		}
 
-        // if transposed undo the transposition
-        undoTranspose();
+		if (computeUSV())
+			return null;
 
-        return new SVDResult(getU(), getS(), getV(), getSingularValues());
-    }
+		// make sure all the singular values or positive
+		makeSingularPositive();
 
-    private boolean bidiagonalization(Matrix orig) {
-        // change the matrix to bidiagonal form
-        if( transposed ) {
-            A_mod = orig.getTransposeCopy().toMatrix();
-        } else {
-            A_mod = orig.copy().toMatrix();
-        }
-        bidiagResult = Bidiagonal.decompose(A_mod, compact);
-        return bidiagResult == null;
-    }
+		// if transposed undo the transposition
+		undoTranspose();
 
-    /**
-     * If the transpose was computed instead do some additional computations
-     */
-    private void undoTranspose() {
-        if( transposed ) {
-            Matrix temp = Vt;
-            Vt = Ut;
-            Ut = temp;
-        }
-    }
+		return new SVDResult(getU(), getS(), getV(), getSingularValues());
+	}
 
-    /**
-     * Compute singular values and U and V at the same time
-     */
-    private boolean computeUSV() {
-        diag = bidiagResult.getB().getBand(0).toDoubleArray();
-        off = bidiagResult.getB().getBand(1).toDoubleArray();
-        qralg.setMatrix(numRowsT,numColsT,diag,off);
+	private boolean bidiagonalization(Matrix orig) {
+		// change the matrix to bidiagonal form
+		if (transposed) {
+			A_mod = orig.getTransposeCopy().toMatrix();
+		} else {
+			A_mod = orig.copy().toMatrix();
+		}
+		bidiagResult = Bidiagonal.decompose(A_mod, compact);
+		return bidiagResult == null;
+	}
 
-//        long pointA = System.currentTimeMillis();
-        // compute U and V matrices
-//        if( computeU )
-            Ut = bidiagResult.getU().getTranspose().toMatrix();
-//        if( computeV )
-            Vt = bidiagResult.getV().getTranspose().toMatrix();
+	/**
+	 * If the transpose was computed instead do some additional computations
+	 */
+	private void undoTranspose() {
+		if (transposed) {
+			Matrix temp = Vt;
+			Vt = Ut;
+			Ut = temp;
+		}
+	}
 
-        qralg.setFastValues(false);
-//        if( computeU )
-            qralg.setUt(Ut);
-//        else
-//            qralg.setUt(null);
-//        if( computeV )
-            qralg.setVt(Vt);
-//        else
-//            qralg.setVt(null);
+	/**
+	 * Compute singular values and U and V at the same time
+	 */
+	private boolean computeUSV() {
+		diag = bidiagResult.getB().getBand(0).toDoubleArray();
+		off = bidiagResult.getB().getBand(1).toDoubleArray();
+		qralg.setMatrix(numRowsT, numColsT, diag, off);
 
-//        long pointB = System.currentTimeMillis();
+		// long pointA = System.currentTimeMillis();
+		// compute U and V matrices
+		// if( computeU )
+		Ut = bidiagResult.getU().getTranspose().toMatrix();
+		// if( computeV )
+		Vt = bidiagResult.getV().getTranspose().toMatrix();
 
-        boolean ret = !qralg.process();
+		qralg.setFastValues(false);
+		// if( computeU )
+		qralg.setUt(Ut);
+		// else
+		// qralg.setUt(null);
+		// if( computeV )
+		qralg.setVt(Vt);
+		// else
+		// qralg.setVt(null);
 
-//        long pointC = System.currentTimeMillis();
-//        System.out.println("  compute UV "+(pointB-pointA)+"  QR = "+(pointC-pointB));
+		// long pointB = System.currentTimeMillis();
 
-        return ret;
-    }
+		boolean ret = !qralg.process();
 
-    private void setup(Matrix orig) {
-        transposed = orig.columnCount() > orig.rowCount();
+		// long pointC = System.currentTimeMillis();
+		// System.out.println(" compute UV "+(pointB-pointA)+" QR =
+		// "+(pointC-pointB));
 
-        // flag what should be computed and what should not be computed
-        if( transposed ) {
-//            computeU = prefComputeV;
-//            computeV = prefComputeU;
-            numRowsT = orig.columnCount();
-            numColsT = orig.rowCount();
-        } else {
-//            computeU = prefComputeU;
-//            computeV = prefComputeV;
-            numRowsT = orig.rowCount();
-            numColsT = orig.columnCount();
-        }
+		return ret;
+	}
 
-        numRows = orig.rowCount();
-        numCols = orig.columnCount();
+	private void setup(Matrix orig) {
+		transposed = orig.columnCount() > orig.rowCount();
 
-        diag = new double[ numColsT ];
-        off = new double[ numColsT-1 ];
+		// flag what should be computed and what should not be computed
+		if (transposed) {
+			// computeU = prefComputeV;
+			// computeV = prefComputeU;
+			numRowsT = orig.columnCount();
+			numColsT = orig.rowCount();
+		} else {
+			// computeU = prefComputeU;
+			// computeV = prefComputeV;
+			numRowsT = orig.rowCount();
+			numColsT = orig.columnCount();
+		}
 
-        // if it is a tall matrix and U is not needed then there is faster decomposition algorithm
-//        if( canUseTallBidiagonal && numRows > numCols * 2 && !computeU ) {
-//            if( bidiag == null || !(bidiag instanceof BidiagonalDecompositionTall) ) {
-//                bidiag = new BidiagonalDecompositionTall();
-//            }
-//        } else if( bidiag == null || !(bidiag instanceof BidiagonalDecompositionRow) ) {
-//            bidiag = new BidiagonalDecompositionRow();
-//        }
-//        TODO: ^Choose between BidiagonalTall and BidiagonalRow once  BidiagonalTall
-//        is implemented
-    }
+		numRows = orig.rowCount();
+		numCols = orig.columnCount();
 
-    /**
-     * With the QR algorithm it is possible for the found singular values to be negative.  This
-     * makes them all positive by multiplying it by a diagonal matrix that has
-     */
-    private void makeSingularPositive() {
-        numSingular = qralg.getNumberOfSingularValues();
-        singularValues = qralg.getSingularValues();
+		diag = new double[numColsT];
+		off = new double[numColsT - 1];
 
-        double[] UtData = Ut.asDoubleArray();
-        for( int i = 0; i < numSingular; i++ ) {
-            double val = qralg.getSingularValue(i);
+		// if it is a tall matrix and U is not needed then there is faster
+		// decomposition algorithm
+		// if( canUseTallBidiagonal && numRows > numCols * 2 && !computeU ) {
+		// if( bidiag == null || !(bidiag instanceof
+		// BidiagonalDecompositionTall) ) {
+		// bidiag = new BidiagonalDecompositionTall();
+		// }
+		// } else if( bidiag == null || !(bidiag instanceof
+		// BidiagonalDecompositionRow) ) {
+		// bidiag = new BidiagonalDecompositionRow();
+		// }
+		// TODO: ^Choose between BidiagonalTall and BidiagonalRow once
+		// BidiagonalTall
+		// is implemented
+	}
 
-            if( val < 0 ) {
-                singularValues[i] = 0.0d - val;
+	/**
+	 * With the QR algorithm it is possible for the found singular values to be
+	 * negative. This makes them all positive by multiplying it by a diagonal
+	 * matrix that has
+	 */
+	private void makeSingularPositive() {
+		numSingular = qralg.getNumberOfSingularValues();
+		singularValues = qralg.getSingularValues();
 
-//                if( computeU ) {
-                    // compute the results of multiplying it by an element of -1 at this location in
-                    // a diagonal matrix.
-                    int start = i* Ut.columnCount();
-                    int stop = start+ Ut.columnCount();
+		for (int i = 0; i < numSingular; i++) {
+			double val = qralg.getSingularValue(i);
 
-                    for( int j = start; j < stop; j++ ) {
-                        UtData[j] = 0.0d - UtData[j];
-//                    }
-                }
-            } else {
-                singularValues[i] = val;
-            }
-        }
-    }
-    
-    public int numRows() {
-        return numRows;
-    }
+			if (val < 0) {
+				singularValues[i] = 0.0d - val;
 
-    public int numCols() {
-        return numCols;
-    }
+				Ut.multiplyRow(i, -1.0);
+			} else {
+				singularValues[i] = val;
+			}
+		}
+	}
+
+	public int numRows() {
+		return numRows;
+	}
+
+	public int numCols() {
+		return numCols;
+	}
 }
