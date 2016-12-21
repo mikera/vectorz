@@ -148,9 +148,7 @@ public class SvdImplicitQr {
 		setup(orig);
 
 		performBidiagonalisation(orig);
-
-		if (computeUSV())
-			return null;
+		computeUSV();
 
 		// make sure all the singular values are positive
 		makeSingularPositive();
@@ -186,7 +184,7 @@ public class SvdImplicitQr {
 	/**
 	 * Compute singular values and U and V at the same time
 	 */
-	private boolean computeUSV() {
+	private void computeUSV() {
 		diag = bidiagResult.getB().getBand(0).toDoubleArray();
 		off = bidiagResult.getB().getBand(1).toDoubleArray();
 		qralg.setMatrix(numRowsT, numColsT, diag, off);
@@ -210,13 +208,11 @@ public class SvdImplicitQr {
 
 		// long pointB = System.currentTimeMillis();
 
-		boolean ret = !qralg.process();
+		qralg.process();
 
 		// long pointC = System.currentTimeMillis();
 		// System.out.println(" compute UV "+(pointB-pointA)+" QR =
 		// "+(pointC-pointB));
-
-		return ret;
 	}
 
 	private void setup(Matrix orig) {
