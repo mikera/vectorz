@@ -23,6 +23,9 @@ public class PLS implements IPLSResult {
 	private final Matrix W;
 	private final Vector b;
 	private final DiagonalMatrix B;
+	
+	private final Matrix coefficients;
+	private final Vector constant;
 
 	private final int l; 
 	private final int n; 
@@ -66,6 +69,16 @@ public class PLS implements IPLSResult {
 		return B;
 	}
 	
+	@Override
+	public AMatrix getCoefficients() {
+		return coefficients;
+	}
+	
+	@Override
+	public AVector getConstant() {
+		return constant;
+	}
+	
 	
 	private PLS(AMatrix X, AMatrix Y, int nFactors) {
 		this.origX=X;
@@ -84,6 +97,9 @@ public class PLS implements IPLSResult {
 		W=Matrix.create(m,l);
 		b=Vector.createLength(l);
 		B=DiagonalMatrix.createDimensions(l);
+		
+		coefficients=Matrix.create(m,p);
+		constant=Vector.createLength(p);
 	};
 	
 	public static IPLSResult calculate(AMatrix X, AMatrix Y, int nFactors) {
@@ -151,15 +167,21 @@ public class PLS implements IPLSResult {
 			
 			// X factor loadings
 			pv.setInnerProduct(t, X);
-			double tss=t.elementSquaredSum();
-			if (tss!=0.0) pv.multiply(1.0/tss);
 			P.setColumn(i, pv);
+			//double tss=t.elementSquaredSum();
+			//if (tss!=0.0) pv.multiply(1.0/tss);
 			
 			// deflate X = X - t.p'
 			pv.negate();
 			X.addOuterProduct(t, pv);
 		}
 		B.getLeadingDiagonal().set(b);
+		
+		AMatrix ptinv=PseudoInverse.calculate(P.getTranspose());
+		coefficients.setInnerProduct(ptinv,B.innerProduct(Q.getTranspose()));
+		//constant.setInnerProduct(B,Q.getColumn(0));
+		constant.set(Q.getColumn(0));
+		constant.addInnerProduct(P.getColumn(0), coefficients,-1);;
 	}
 
 	

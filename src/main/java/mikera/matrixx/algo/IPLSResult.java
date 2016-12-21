@@ -1,6 +1,7 @@
 package mikera.matrixx.algo;
 
 import mikera.matrixx.AMatrix;
+import mikera.vectorz.AVector;
 
 public interface IPLSResult {
 	
@@ -46,6 +47,24 @@ public interface IPLSResult {
 	 * @return
 	 */
 	public AMatrix getB();
+
+	/**
+	 * Get the matrix of regression coefficients B, for the equation:
+	 * 
+	 *   Y = X.Bt+C
+	 * 
+	 * @return
+	 */
+	AMatrix getCoefficients();
+
+	/**
+	 * Get the regression constant C, for the equation:
+	 * 
+	 * 	 Y = X.Bt+C
+	 * 
+	 * @return
+	 */
+	AVector getConstant();
 
 
 	
