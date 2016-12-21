@@ -160,14 +160,7 @@ public class SvdImplicitQr {
 		undoTranspose();
 
 		AVector svs=getSingularValues();
-		if (compact&&(numSingular<getS().rowCount())) {
-			AMatrix cU=getU().subMatrix(0, numRows, 0, numSingular);
-			AMatrix cS=DiagonalMatrix.create(svs);
-			AMatrix cV=getV().subMatrix(0, numCols, 0, numSingular);
-			return new SVDResult(cU,cS,cV,svs);	
-		} else {
-			return new SVDResult(getU(), getS(), getV(), svs);
-		}
+		return new SVDResult(getU(), getS(), getV(), svs);
 	}
 
 	private void performBidiagonalisation(Matrix orig) {

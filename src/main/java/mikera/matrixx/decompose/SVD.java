@@ -2,9 +2,10 @@ package mikera.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.decompose.ISVDResult;
-
-
+import mikera.matrixx.decompose.impl.svd.SVDResult;
 import mikera.matrixx.decompose.impl.svd.SvdImplicitQr;
+import mikera.matrixx.impl.DiagonalMatrix;
+import mikera.vectorz.AVector;
 
 /**
  * Public API class for SVD decomposition
@@ -69,5 +70,35 @@ public class SVD {
 	public static ISVDResult decomposeCompact(AMatrix A) {
 		return SvdImplicitQr.decompose(A, true);
 	}
-
+	
+	/**
+	 * Computes the singular value decomposition, keeping only non-zero singular values
+	 * @param A
+	 * @return
+	 */
+	public static ISVDResult decomposeNonZero(AMatrix A) {
+		ISVDResult svd=decomposeCompact(A);
+		
+		AVector svs=svd.getSingularValues();
+		int m=A.rowCount();
+		int n=A.columnCount();
+		int s=svs.length(); // length of singular values vector
+		
+		// count non-zero singular values
+		int svNumber=0;
+		for (int i=0; i<s; i++) {
+			if (svs.unsafeGet(i)==0.0) break;
+			svNumber++;
+		}
+		
+		if (svNumber<s) {
+			AVector newSvs=svs.subVector(0,svNumber); // truncated vector of singulat values
+			AMatrix cU=svd.getU().subMatrix(0, m, 0, svNumber);
+			AMatrix cS=DiagonalMatrix.create(newSvs);
+			AMatrix cV=svd.getV().subMatrix(0, n, 0, svNumber);
+			return new SVDResult(cU,cS,cV,newSvs);	
+		} else {
+			return svd;
+		}
+	}
 }

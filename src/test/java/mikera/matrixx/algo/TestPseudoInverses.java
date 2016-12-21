@@ -8,6 +8,7 @@ import org.junit.Test;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.DiagonalMatrix;
+import mikera.matrixx.impl.ZeroMatrix;
 
 public class TestPseudoInverses {
 	@Test
@@ -31,23 +32,21 @@ public class TestPseudoInverses {
 		assertTrue((Matrix.create(new double[][] {{0.2,0.4}}).epsilonEquals(mi)));
 	}
 
- // TODO: need to fix SVD with compact values
-//	@Test
-//	public void testDiagonalPseudoInverse2() {
-//		AMatrix m=DiagonalMatrix.create(2,0);
-//		AMatrix mi=PseudoInverse.calculate(m);
-//		assertEquals(DiagonalMatrix.create(0.5,0.0),mi);
-//	}
+	@Test
+	public void testDiagonalPseudoInverse2() {
+		AMatrix m=DiagonalMatrix.create(2,0);
+		AMatrix mi=PseudoInverse.calculate(m);
+		assertEquals(DiagonalMatrix.create(0.5,0.0),mi);
+	}
 
-// TODO: need to fix SVD with zero singular values	
-//	@Test
-//	public void testZeroPseudoInverse() {
-//		AMatrix m=ZeroMatrix.create(3,2);
-//		
-//		AMatrix mi=PseudoInverse.calculate(m);
-//		assertEquals(m.getTranspose(),mi);
-//		
-//		AMatrix mii=PseudoInverse.calculate(m);
-//		assertEquals(m,mii);
-//	}
+	@Test
+	public void testZeroPseudoInverse() {
+		AMatrix m=ZeroMatrix.create(3,2);
+		
+		AMatrix mi=PseudoInverse.calculate(m);
+		assertEquals(m.getTranspose(),mi);
+		
+		AMatrix mii=PseudoInverse.calculate(mi);
+		assertEquals(m,mii);
+	}
 }
