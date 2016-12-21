@@ -34,9 +34,9 @@ public class TestPseudoInverses {
 
 	@Test
 	public void testDiagonalPseudoInverse2() {
-		AMatrix m=DiagonalMatrix.create(2,0);
+		AMatrix m=DiagonalMatrix.create(0,2);
 		AMatrix mi=PseudoInverse.calculate(m);
-		assertEquals(DiagonalMatrix.create(0.5,0.0),mi);
+		assertEquals(DiagonalMatrix.create(0.0,0.5),mi);
 	}
 
 	@Test

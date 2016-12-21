@@ -1,7 +1,7 @@
 package mikera.matrixx.decompose;
 
 import mikera.matrixx.AMatrix;
-import mikera.matrixx.decompose.ISVDResult;
+import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.impl.svd.SVDResult;
 import mikera.matrixx.decompose.impl.svd.SvdImplicitQr;
 import mikera.matrixx.impl.DiagonalMatrix;
@@ -85,17 +85,30 @@ public class SVD {
 		int s=svs.length(); // length of singular values vector
 		
 		// count non-zero singular values
-		int svNumber=0;
-		for (int i=0; i<s; i++) {
-			if (svs.unsafeGet(i)==0.0) break;
-			svNumber++;
-		}
+		int svNumber=(int)svs.nonZeroCount();
 		
 		if (svNumber<s) {
-			AVector newSvs=svs.subVector(0,svNumber); // truncated vector of singulat values
-			AMatrix cU=svd.getU().subMatrix(0, m, 0, svNumber);
+			int[] ixs=new int[svNumber];
+			int ix=0;
+			for (int i=0; i<s; i++) {
+				if (svs.unsafeGet(i)==0.0) continue;
+				ixs[ix++]=i;
+			}
+			
+			AVector newSvs=svs.selectClone(ixs); // truncated vector of singular values
+			
+			// copy columns corresponding to non-zero singular values
+			AMatrix U=svd.getU();
+			AMatrix V=svd.getV();
+			AMatrix cU=Matrix.create(m, svNumber);
+			AMatrix cV=Matrix.create(n, svNumber);
+			for (int i=0; i<svNumber; i++) {
+				int si=ixs[i]; // index of non-zero singular value
+				cU.setColumn(i, U.getColumn(si));
+				cV.setColumn(i, V.getColumn(si));
+			}
+			
 			AMatrix cS=DiagonalMatrix.create(newSvs);
-			AMatrix cV=svd.getV().subMatrix(0, n, 0, svNumber);
 			return new SVDResult(cU,cS,cV,newSvs);	
 		} else {
 			return svd;

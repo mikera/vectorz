@@ -22,7 +22,6 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.Bidiagonal;
 import mikera.matrixx.decompose.IBidiagonalResult;
-import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 
