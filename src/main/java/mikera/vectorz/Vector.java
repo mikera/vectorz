@@ -326,7 +326,7 @@ public final class Vector extends ADenseArrayVector {
 
 	@Override
 	public void add(double constant) {
-		DoubleArrays.add(data, 0, length, constant);
+		DoubleArrays.add(data, constant);
 	}
 	
 	@Override

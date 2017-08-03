@@ -469,6 +469,11 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 			throw new IllegalArgumentException("O-d get not supported on Array of shape: "+Index.of(this.getShape()).toString());
 		}
 	}
+	
+	@Override
+	public void add(double x) {
+		DoubleArrays.add(data, x);
+	}
 
 	@Override
 	public double get(int x) {

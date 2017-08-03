@@ -24,6 +24,7 @@ public class VectorzTypeBenchmark extends SimpleBenchmark {
 			Vector a=Vector.createLength(ARRAY_SIZE);
 			for (int ii=0; ii<INNER_ITERATIONS; ii++) {
 				a.add(ii);
+				a.divide(ii);
 			}
 		}
 	}
@@ -33,6 +34,7 @@ public class VectorzTypeBenchmark extends SimpleBenchmark {
 			Matrix a=Matrix.create(1,ARRAY_SIZE);
 			for (int ii=0; ii<INNER_ITERATIONS; ii++) {
 				a.add(ii);
+				a.divide(ii);
 			}
 		}
 	}
@@ -42,6 +44,7 @@ public class VectorzTypeBenchmark extends SimpleBenchmark {
 			StridedMatrix a=StridedMatrix.create(1,ARRAY_SIZE);
 			for (int ii=0; ii<INNER_ITERATIONS; ii++) {
 				a.add(ii);
+				a.divide(ii);
 			}
 		}
 	}
@@ -51,6 +54,7 @@ public class VectorzTypeBenchmark extends SimpleBenchmark {
 			Array a=Array.newArray(1,ARRAY_SIZE);
 			for (int ii=0; ii<INNER_ITERATIONS; ii++) {
 				a.add(ii);
+				a.divide(ii);
 			}
 		}
 	}
@@ -60,6 +64,7 @@ public class VectorzTypeBenchmark extends SimpleBenchmark {
 			NDArray a=NDArray.newArray(1,ARRAY_SIZE);
 			for (int ii=0; ii<INNER_ITERATIONS; ii++) {
 				a.add(ii);
+				a.divide(ii);
 			}
 		}
 	}
