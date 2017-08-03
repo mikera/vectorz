@@ -7,9 +7,7 @@ import mikera.arrayz.Array;
 import mikera.arrayz.NDArray;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.vectorz.GrowableVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.Vectorz;
 
 /**
  * Caliper based benchmarks
