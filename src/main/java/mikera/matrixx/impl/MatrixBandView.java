@@ -9,6 +9,9 @@ import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Vector class representing a view of a matrix band
+ * 
+ * Performance of this implementation is generally not as good as specialised implementations.
+ * 
  * @author Mike
  *
  */

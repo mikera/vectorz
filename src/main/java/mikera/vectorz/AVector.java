@@ -2917,7 +2917,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	/**
 	 * Returns an Index indicating which elements of this vector are defined as non-sparse.
 	 * 
-	 * A sparse index must be zero. A non-sparse element may be zero, but is expected be non-zero.
+	 * A sparse index must be zero. A non-sparse element may be zero, but is typically expected be non-zero.
 	 * 
 	 * @return
 	 */

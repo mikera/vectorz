@@ -3,6 +3,13 @@ package mikera.transformz;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 
+
+/**
+ * Wrapper class that wraps an Op as a vector transform
+ * 
+ * @author Mike
+ *
+ */
 public class OpTransform extends ASizedTransform {
 	private final Op op;
 
@@ -16,8 +23,7 @@ public class OpTransform extends ASizedTransform {
 		dest.set(source);
 		op.applyTo(dest);
 	}
-	
-	
+
 	@Override 
 	public boolean isInvertible() {
 		return op.hasInverse();

@@ -7,9 +7,10 @@ import mikera.vectorz.Op2;
 import mikera.vectorz.impl.AMatrixViewVector;
 
 /**
- * A class representing a view of a matrix row as a vector.
+ * A class representing a wrapped view of a matrix row as a vector.
  * 
- * Used where no better implementations for getRowView(...) on a matrix exist. 
+ * Performance of this implementation is generally not as good as specialised implementations.
+ * Intended for use where no better implementations for getRowView(...) on a matrix exist. 
  * 
  * @author Mike
  */

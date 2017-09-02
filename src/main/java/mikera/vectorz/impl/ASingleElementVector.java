@@ -27,6 +27,11 @@ public abstract class ASingleElementVector extends ASparseVector {
 	// =============================================
 	// Abstract / standard methods
 
+	/**
+	 * Gets the single element value from this single element vector. 
+	 * All other elements can be assumed to be zero.
+	 * @return
+	 */
 	protected abstract double value();
 	
 	protected final int index() {
