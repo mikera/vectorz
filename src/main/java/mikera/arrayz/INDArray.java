@@ -728,6 +728,13 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	 */
 	public void addOuterProductSparse(INDArray a, INDArray b);
 
+	/**
+	 * Adds the result of applying an Op to another array to this array.
+	 * 
+	 * @param op A Vectorz Op
+	 * @param a
+	 */
+	public void addApplyOp(Op op, INDArray a);
 	
 	/**
 	 * Sets this array to the inner product of two arrays. Must be the correct shape.

@@ -680,6 +680,11 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 	}
 	
 	@Override
+	public void addApplyOp(Op op, INDArray a) {
+		add(a.applyOpCopy(op));
+	}
+	
+	@Override
 	public void clamp(double min, double max) {
 		if (dimensionality()==0) {
 			set(Maths.bound(get(), min, max));
