@@ -739,7 +739,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public void setInnerProduct(INDArray a, INDArray b);
 	
 	/**
-	 * Sets this array to the result of applyin an operation to a source array
+	 * Sets this array to the result of applying an operation to a source array
 	 */
 	public void setApplyOp(Op op, INDArray a);
 	
