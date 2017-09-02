@@ -31,7 +31,7 @@ import mikera.vectorz.ops.StochasticBinary;
 import mikera.vectorz.ops.Tanh;
 
 /**
- * Static unary operator instances and constructor functions.
+ * Static operator instances and constructor functions.
  * 
  * @author Mike
  * 
