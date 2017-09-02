@@ -17,7 +17,6 @@ import mikera.vectorz.impl.BufferVector;
 public class BufferMatrix extends ARectangularMatrix {
 	private static final long serialVersionUID = 2933979132279936135L;
 	
-	
 	final DoubleBuffer buffer;
 	
 	protected BufferMatrix(int rows, int cols) {

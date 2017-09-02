@@ -50,12 +50,12 @@ public abstract class Op implements IOperator {
 	}
 	
 	@Override
-	public void applyTo(AVector v, int start, int length) {
-		if (start<0) throw new IllegalArgumentException("Negative start position: "+start);
-		if ((start==0)&&(length==v.length())) {
+	public void applyTo(AVector v, int offset, int length) {
+		if (offset<0) throw new IllegalArgumentException("Negative start position: "+offset);
+		if ((offset==0)&&(length==v.length())) {
 			v.applyOp(this);
 		} else {
-			v.subVector(start, length).applyOp(this);
+			v.subVector(offset, length).applyOp(this);
 		}
 	}
 	
@@ -92,20 +92,20 @@ public abstract class Op implements IOperator {
 	}
 
 	@Override
-	public void applyTo(double[] data, int start, int length) {
+	public void applyTo(double[] data, int offset, int length) {
 		for (int i=0; i<length; i++) {
-			double x=data[start+i];
-			data[start+i]=apply(x);
+			double x=data[offset+i];
+			data[offset+i]=apply(x);
 		}
 	}
 	
 	@Override
-	public void applyTo(double[] data, int start, int stride, int length) {
+	public void applyTo(double[] data, int offset, int stride, int length) {
 		if (stride==1) {
-			applyTo(data,start,length);
+			applyTo(data,offset,length);
 		} else {
 			for (int i=0; i<length; i++) {
-				int ii=start+i*stride;
+				int ii=offset+i*stride;
 				double x=data[ii];
 				data[ii]=apply(x);
 			}

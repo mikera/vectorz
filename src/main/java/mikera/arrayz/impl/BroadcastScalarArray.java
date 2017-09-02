@@ -9,6 +9,8 @@ import mikera.vectorz.util.IntArrays;
 /**
  * Specialized array class representing the broadcasting of a scalar value to fill an entire array.
  * 
+ * Generally not mutable.
+ * 
  * @author Mike
  *
  */
