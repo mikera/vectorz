@@ -100,10 +100,10 @@ public class TestMatrix {
   
   @Test
   public void testSet() {
-	  Matrix m=Matrix.create(new double[][] {{1,2},{3,4}});
-	  m.set(Vector.of(5,5));
+	  Matrix m=Matrix.create(new double[][] {{1,2,3},{3,4,5}});
+	  m.set(Vector.of(4,5,5));
 	  
-	  assertEquals(m, Matrix.create(new double[][] {{5,5},{5,5}}));
+	  assertEquals(m, Matrix.create(new double[][] {{4,5,5},{4,5,5}}));
 	  
   }
   

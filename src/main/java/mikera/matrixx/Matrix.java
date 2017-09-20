@@ -551,7 +551,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	@Override
 	public void set(AVector a) {
-		if ((rowCount() != a.length())) { throw new IllegalArgumentException(
+		if ((columnCount() != a.length())) { throw new IllegalArgumentException(
 				ErrorMessages.incompatibleBroadcast(a, this)); }
 		a.getElements(data, 0);
 		for (int i = 1; i < rows; i++) {
