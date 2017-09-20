@@ -645,7 +645,7 @@ public final class Matrix extends ADenseArrayMatrix {
 	 * @param numRows
 	 *            Number of rows in the matrix.
 	 * @param numCols
-	 *            NUmber of columns in the matrix.
+	 *            Number of columns in the matrix.
 	 * @return A matrix with diagonal elements equal to one.
 	 */
 	public static Matrix createIdentity(int numRows, int numCols) {
@@ -662,7 +662,7 @@ public final class Matrix extends ADenseArrayMatrix {
 
 	/**
 	 * <p>
-	 * Creates a square identity Matrix of the specified size.<br>
+	 * Creates a square mutable dense identity Matrix of the specified size.<br>
 	 * <br>
 	 * a<sub>ij</sub> = 0 if i &ne; j<br>
 	 * a<sub>ij</sub> = 1 if i = j<br>
