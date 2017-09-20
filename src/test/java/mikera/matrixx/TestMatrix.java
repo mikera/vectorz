@@ -106,6 +106,15 @@ public class TestMatrix {
 	  assertEquals(m, Matrix.create(new double[][] {{5,5},{5,5}}));
 	  
   }
+
+  @Test
+  public void testSetWithMoreThanOneIteration() {
+          Matrix m=Matrix.create(new double[][] {{1,2},{3,4},{5,6},{7,8}});
+	  m.set(Vector.of(5,5,5,5));
+	  
+	  assertEquals(m, Matrix.create(new double[][] {{5,5},{5,5},{5,5},{5,5}}));
+	  
+  }
   
   @Test
   public void testIsOrthogonal() {
