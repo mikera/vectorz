@@ -155,7 +155,7 @@ public class JoinedArray extends BaseShapedArray {
 				return right.get(x-split,y);
 			}
 		} else {
-			if ((y<0)||(y>=sliceCount())) {
+			if ((y<0)||(y>=getShape(1))) {
 				throw new IndexOutOfBoundsException(ErrorMessages.invalidIndex(this, x,y));
 			}
 			if (y<split) {

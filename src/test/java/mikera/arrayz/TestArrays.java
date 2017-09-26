@@ -1046,6 +1046,7 @@ public class TestArrays {
 	@Test
 	public void g_JoinedArray2D() {
 		testArray(JoinedArray.join(NDArray.newArray(3, 3),NDArray.newArray(3, 1),1));
+		testArray(JoinedArray.join(NDArray.newArray(2, 2),NDArray.newArray(2, 2),0));
 	}
 	
 	@Test
