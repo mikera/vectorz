@@ -169,9 +169,13 @@ public class TestMatrices {
 		AMatrix m2=m.clone();
 		m2.swapRows(0, 1);
 		assert(!m2.equals(m));
+		assertEquals(m2.getRow(0), m.getRow(1));
+		assertEquals(m2.getRow(1), m.getRow(0));
 		m2.swapRows(0, 1);
 		assert(m2.equals(m));
 		m2.swapColumns(0, 1);
+		assertEquals(m2.getColumn(0), m.getColumn(1));
+		assertEquals(m2.getColumn(1), m.getColumn(0));
 		assert(!m2.equals(m));
 		m2.swapColumns(0, 1);
 		assert(m2.equals(m));	
