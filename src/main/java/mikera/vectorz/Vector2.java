@@ -281,16 +281,39 @@ public final class Vector2 extends APrimitiveVector {
 	}
 	
 	/**
-	 * Rotates a 2D vector around the origin by a given angle
+	 * Rotates a 2D vector around the origin by a given angle in radians
 	 * @param angle
 	 */
-	public void rotateInPlace(int angle) {
+	public void rotate2D(int angle) {
 		double ca=Math.cos(angle);
 		double sa=Math.sin(angle);
 		double nx=(x*ca)-(y*sa);
 		double ny=(x*sa)+(y*ca);
 		x=nx;
 		y=ny;
+	}
+	
+	/**
+	* Rotates a 2D vector around the origin by a given angle in radians
+	* @param angle
+	*/
+	public void rotate2D(double angle) {
+		double ca=Math.cos(angle);
+		double sa=Math.sin(angle);
+		double nx=(x*ca)-(y*sa);
+		double ny=(x*sa)+(y*ca);
+		x=nx;
+		y=ny;
+	}
+	
+	/**
+	* Rotates a 2D vector around the origin by a given angle in radians, returning a new Vector2
+	* @param angle
+	*/
+	public Vector2 rotate2DCopy(double angle) {
+		double ca=Math.cos(angle);
+		double sa=Math.sin(angle);
+		return new Vector2((x*ca)-(y*sa), (x*sa)+(y*ca));
 	}
 	
 	public void setValues(double x, double y) {
