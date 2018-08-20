@@ -409,6 +409,11 @@ public abstract class AScalar extends AbstractArray<Object> implements IScalar, 
 	}
 	
 	@Override
+	public double elementMaxAbs(){
+		return Math.abs(get());
+	}
+	
+	@Override
 	public double elementMax(){
 		return get();
 	}

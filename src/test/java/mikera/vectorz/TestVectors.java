@@ -52,21 +52,34 @@ public class TestVectors {
 	}
 	
 	public void testDistances(AVector v) {
+		int len=v.length();
 		AVector zero=Vectorz.newVector(v.length());
-		assertEquals(v.maxAbsElement(),v.distanceLinf(zero),0.0);
+		
+		if (len>0) {
+			assertEquals(v.maxAbsElement(),v.distanceLinf(zero),0.0);
+		} else {
+			try {
+				v.maxAbsElement();
+			} catch (IllegalArgumentException t) {
+				/* Should fail, no elements */
+			}
+		}
 		
 		if (!v.isFullyMutable()) return;
 		AVector z=v.exactClone();
 		z.fill(0.0);
-		assertEquals(v.maxAbsElement(),v.distanceLinf(z),0.0);
+		if (len>0) {
+			assertEquals(v.maxAbsElement(),v.distanceLinf(z),0.0);
+		}
 	}
 	
 	public void testMagnitudes(AVector v) {
+		int len=v.length();
 		double d=v.magnitude();
 		double d2=v.magnitudeSquared();
 		assertEquals(d*d,d2,0.00001);
 		
-		assertTrue(d<=(v.maxAbsElement()*v.length()));
+		if (len>0) assertTrue(d<=(v.maxAbsElement()*v.length()));
 	}
 	
 	public void testSquare(AVector v) {

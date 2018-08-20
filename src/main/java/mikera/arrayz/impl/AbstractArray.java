@@ -1712,4 +1712,10 @@ public abstract class AbstractArray<T> implements INDArray, Iterable<T> {
 		}
 		return result;
 	}
+
+	@Override
+	public double elementMaxAbs() {
+		if (elementCount()==0) throw new IllegalArgumentException(ErrorMessages.noElements(this));
+		return reduce(Ops.MAX_ABS,0.0);
+	}
 }

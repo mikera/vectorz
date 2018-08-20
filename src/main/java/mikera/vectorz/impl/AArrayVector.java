@@ -2,6 +2,7 @@ package mikera.vectorz.impl;
 
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
+import mikera.vectorz.util.ErrorMessages;
 
 /**
  * Base class for all vectors backed by a single final double[] array
@@ -46,5 +47,17 @@ public abstract class AArrayVector extends ASizedVector {
 	 * Computes an index into the underlying array for a given vector index
 	 */
 	protected abstract int index(int i);
+	
+	@Override
+	public double maxAbsElement(){
+		int len=length();
+		if (len==0) throw new IllegalArgumentException(ErrorMessages.noElements(this));
+		double result=0.0;
+		for (int i=0; i<len; i++) {
+			double v=Math.abs(unsafeGet(i));
+			if (v>result) result=v;
+		}
+		return result;
+	}
 
 }

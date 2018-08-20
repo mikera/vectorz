@@ -1301,6 +1301,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	 */
 	public double maxAbsElement() {
 		int len=length();
+		if (len==0) throw new IllegalArgumentException("Can't find maxAbsElement of a 0-length vector");
 		double result=0.0;
 		for (int i=0; i<len; i++) {
 			double comp=Math.abs(unsafeGet(i));
@@ -1419,6 +1420,14 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	@Override
 	public double elementMax(){
 		return unsafeGet(maxElementIndex());
+	}
+	
+	/**
+	 * Returns the maximum absolute element value in this vector. Throws an error if there are no elements.
+	 */
+	@Override
+	public final double elementMaxAbs() {
+		return maxAbsElement();
 	}
 	
 	@Override

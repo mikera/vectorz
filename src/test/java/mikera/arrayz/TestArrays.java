@@ -195,6 +195,18 @@ public class TestArrays {
 		}
 	}
 	
+	private void testAbs(INDArray a) {
+		long ec=a.elementCount();
+		INDArray ab=a.absCopy();
+		
+		assertEquals(a.applyOpCopy(Ops.ABS),ab);
+		
+		if (ec>0) {
+			double ema=a.elementMaxAbs();
+			assertEquals(ab.elementMax(),ema,0.0001);
+		}
+	}
+	
 	private void testScaleAdd(INDArray a) {
 		if (!a.isFullyMutable()) return;
 		INDArray t=a.exactClone();
@@ -921,6 +933,7 @@ public class TestArrays {
 		testComponents(a);
 		testTranspose(a);
 		testAsVector(a);
+		testAbs(a);
 		testAbsDiff(a);
 		testAdd(a);
 		testAddOuterProduct(a);

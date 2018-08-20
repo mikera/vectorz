@@ -150,7 +150,7 @@ public class SparseImmutableVector extends ASparseIndexedVector {
 	
 	@Override
 	public double maxAbsElement() {
-		double result=data[0];
+		double result=Math.abs(data[0]);
 		for (int i=1; i<dataLength; i++) {
 			double d=Math.abs(data[i]);
 			if (d>result) result=d; 
