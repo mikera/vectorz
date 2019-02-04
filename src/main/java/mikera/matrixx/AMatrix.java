@@ -1102,7 +1102,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		int rc=rowCount();
 		a.checkLength(rc);
 		for (int i=0; i<rc; i++) {
-			getRowView(i).addMultiple(b, a.unsafeGet(i));;
+			getRowView(i).addMultiple(b, a.unsafeGet(i));
 		}	
 	}
 	

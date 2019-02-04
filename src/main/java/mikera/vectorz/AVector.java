@@ -2029,9 +2029,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	 */
 	public void scaleAdd(double factor, AVector b, double bfactor, double constant) {
 		multiply(factor);
-		if (bfactor==0.0) {
-			// do nothing 
-		} else {
+		if (bfactor!=0.0) {
 			addMultiple(b,bfactor);
 		}
 		if (constant!=0.0) add(constant);
