@@ -361,15 +361,16 @@ public final class Matrix33 extends APrimitiveMatrix implements ISpecialisedTran
 	
 	@Override
 	public void getElements(double[] data, int offset) {
-		data[offset++]=m00;
-		data[offset++]=m01;
-		data[offset++]=m02;
-		data[offset++]=m10;
-		data[offset++]=m11;
-		data[offset++]=m12;
-		data[offset++]=m20;
-		data[offset++]=m21;
-		data[offset++]=m22;
+		int i=offset;
+		data[i++]=m00;
+		data[i++]=m01;
+		data[i++]=m02;
+		data[i++]=m10;
+		data[i++]=m11;
+		data[i++]=m12;
+		data[i++]=m20;
+		data[i++]=m21;
+		data[i++]=m22;
 	}
 	
 	@Override

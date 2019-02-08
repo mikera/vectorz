@@ -627,8 +627,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 		} else switch (a.dimensionality()) {
 			case 1: setMultiple(a.asVector(),b); return;
 			case 0: fill(a.get()*b); return;
+			default: super.setMultiple(a, b);
 		}
-		super.setMultiple(a, b);
 	}
 	
 	@Override
