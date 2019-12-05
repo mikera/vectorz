@@ -46,6 +46,7 @@ public class Arrayz {
 	 * Handles double arrays, Java arrays, INDArray instances, and lists
 	 * 
 	 * @param object
+	 * @throws VectorzException if the object is not instance of a supported type.
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -164,6 +165,7 @@ public class Arrayz {
 	 * 
 	 * @param data
 	 * @param shape
+	 * @throws IllegalArgumentException if data array does not have sufficient elements.
 	 * @return
 	 */
 	public static INDArray wrap(double[] data, int[] shape) {
@@ -359,6 +361,8 @@ public class Arrayz {
 	 * - Existing INDArrays (copied into sparse format)
 	 * - Iterable objects (interpreted as ordered lists of major slices)
 	 * - Java Arrays (interpreted as arrays of slices Objects)
+	 *
+	 * @throws IllegalArgumentException if object is not instance of a supported type.
 	 */
 	@SuppressWarnings("unchecked")
 	public static INDArray createSparse(Object o) {
