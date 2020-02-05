@@ -1,10 +1,11 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
 import mikera.matrixx.Matrix33;
 import mikera.matrixx.Matrixx;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestQuaternions {
 	@Test public void testInvert() {

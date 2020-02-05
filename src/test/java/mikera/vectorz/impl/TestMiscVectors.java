@@ -1,12 +1,13 @@
 package mikera.vectorz.impl;
 
-import static org.junit.Assert.*;
 import mikera.vectorz.AVector;
 import mikera.vectorz.GrowableVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMiscVectors {
 	@Test 

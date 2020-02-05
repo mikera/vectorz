@@ -18,10 +18,9 @@
 
 package mikera.matrixx.decompose.impl.svd;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;

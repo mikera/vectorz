@@ -2,13 +2,14 @@ package mikera.vectorz;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
 import mikera.vectorz.impl.SparseHashedVector;
 import mikera.vectorz.impl.SparseIndexedVector;
 import mikera.vectorz.impl.ZeroVector;
 import mikera.vectorz.impl.ASparseVector;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestSparseVectors {
 

@@ -1,6 +1,9 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -8,8 +11,6 @@ import mikera.matrixx.decompose.IQRResult;
 import mikera.matrixx.decompose.QR;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
-
-import org.junit.Test;
 
 public class TestQR {
 	
@@ -89,7 +90,7 @@ public class TestQR {
 		assertTrue(r.isUpperTriangular());
 		assertTrue(r.rowCount() == a.rowCount() && r.columnCount() == a.columnCount());
 		
-		assertTrue("product not valid",q.innerProduct(r).epsilonEquals(a));
+		assertTrue(q.innerProduct(r).epsilonEquals(a), "product not valid");
 	}
 
 }

@@ -1,15 +1,17 @@
 package mikera.matrixx;
 
-import static org.junit.Assert.*;
 import mikera.matrixx.impl.BandedMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestBands {
-	@Test public void testFilledMatrix() {
+	@Test
+	public void testFilledMatrix() {
 		Matrix m=Matrix.create(3, 3);
 		Vectorz.fillIndexes(m.asVector());
 		

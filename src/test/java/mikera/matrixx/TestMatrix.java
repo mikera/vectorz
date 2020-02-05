@@ -6,9 +6,9 @@ import mikera.matrixx.decompose.QR;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMatrix {
   @Test

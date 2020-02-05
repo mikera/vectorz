@@ -1,15 +1,15 @@
 package mikera.indexz;
 
-import static org.junit.Assert.*;
-
 import java.util.HashSet;
 
 import mikera.indexz.impl.ComputedIndex;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestIndex {
-	@Test public void testCreate() {
+	@Test
+	public void testCreate() {
 		Index ind=Index.of(0,1,2);
 		assertEquals(3,ind.length());
 		

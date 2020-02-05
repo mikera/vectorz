@@ -22,12 +22,12 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
 
-import org.junit.Test;
-
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 
 /**
@@ -58,7 +58,7 @@ public class TestTridiagonalDecompositionHouseholder {
 //            SimpleMatrix A_found = Q.mult(T).mult(Q.transpose());
             Matrix A_found = Multiplications.multiply(Q, Multiplications.multiply(T, Q.getTranspose()));
 
-            assertTrue("width = "+width,A.epsilonEquals(A_found,1e-8));
+            assertTrue(A.epsilonEquals(A_found,1e-8), "width = "+width);
         }
     }
     
@@ -66,7 +66,6 @@ public class TestTridiagonalDecompositionHouseholder {
      * Sets the provided square matrix to be a random symmetric matrix whose values are selected from an uniform distribution
      * from min to max, inclusive.
      *
-     * @param A The matrix that is to be modified.  Must be square.  Modified.
      * @param min Minimum value an element can have.
      * @param max Maximum value an element can have.
      * @param rand Random number generator.

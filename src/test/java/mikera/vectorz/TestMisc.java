@@ -1,10 +1,10 @@
 package mikera.vectorz;
 
-import org.junit.Test;
-
 import mikera.matrixx.Matrix22;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Miscellaneous tests for vector functionality

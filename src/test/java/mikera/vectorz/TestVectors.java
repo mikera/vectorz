@@ -1,12 +1,12 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import mikera.arrayz.INDArray;
 import mikera.arrayz.TestArrays;
@@ -704,7 +704,7 @@ public class TestVectors {
 		assertEquals(nz,v.nonZeroIndices().length);
 		
 		AVector sc=v.sparseClone();
-		assertTrue("clone = "+sc.getClass(), sc.isFullyMutable());
+		assertTrue(sc.isFullyMutable(), "clone = "+sc.getClass());
 		assertEquals(sc,v);
 	}
 
@@ -754,7 +754,7 @@ public class TestVectors {
 		if (v.length()==0) return;
 		v=v.exactClone();
 		AVector sm=v.softmaxCopy();
-		assertEquals("Testing:"+v.getClass(), 1.0,sm.elementSum(),0.000001);
+		assertEquals(1.0,sm.elementSum(),0.000001,"Testing:"+v.getClass());
 	
 		v=v.mutable();
 		v.softmax();
@@ -894,7 +894,7 @@ public class TestVectors {
 	private void testIndices(AVector v) {
 		int[] ixs=v.nonZeroIndices();
 		for (int i=0; i<ixs.length; i++) {
-			assertNotEquals("Error error in position "+i+" with vector "+v+" of type"+v.getClass(),0,v.get(ixs[i]),0.0);
+			assertNotEquals(0,v.get(ixs[i]),0.0,"Error error in position "+i+" with vector "+v+" of type"+v.getClass());
 		}
 	}
 	

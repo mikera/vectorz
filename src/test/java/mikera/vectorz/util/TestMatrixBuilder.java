@@ -1,12 +1,11 @@
 package mikera.vectorz.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 import mikera.matrixx.AMatrix;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
-
-import org.junit.Test;
 
 public class TestMatrixBuilder {
 	

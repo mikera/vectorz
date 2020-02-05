@@ -1,9 +1,8 @@
 package mikera.matrixx.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import mikera.matrixx.Matrix;
 import mikera.vectorz.Vector;

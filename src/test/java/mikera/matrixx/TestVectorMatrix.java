@@ -1,9 +1,10 @@
 package mikera.matrixx;
 
-import static org.junit.Assert.*;
-import mikera.matrixx.impl.VectorMatrixMN;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import mikera.matrixx.impl.VectorMatrixMN;
 
 public class TestVectorMatrix {
 

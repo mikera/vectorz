@@ -1,12 +1,10 @@
 package mikera.matrixx.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-
-import org.junit.Test;
 
 import mikera.indexz.Index;
 import mikera.indexz.Indexz;

@@ -1,7 +1,8 @@
 package mikera.vectorz.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
@@ -12,8 +13,6 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 import mikera.vectorz.Vectorz;
-
-import org.junit.Test;
 
 public class TestJoinedVectors {
 	

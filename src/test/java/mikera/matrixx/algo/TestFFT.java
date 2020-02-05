@@ -1,12 +1,13 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.assertEquals;
 import mikera.matrixx.algo.FFT;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestFFT {
-	@Test public void testFFT() {
+	@Test
+	public void testFFT() {
 		double[] d=new double[2];
 		double r=Math.random();
 		d[0]=r;

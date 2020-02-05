@@ -1,10 +1,11 @@
 package mikera.vectorz;
 
-import static org.junit.Assert.*;
 import mikera.vectorz.GrowableVector;
 import mikera.vectorz.impl.Vector0;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestVectorz {
 
@@ -50,7 +51,7 @@ public class TestVectorz {
 		Vector v = Vector.of(1, 2, 3);
 		assertEquals(v, v0.join(v));
 		assertEquals(v, v.join(v0));
-		assertTrue(v0 == Vectorz.newVector(0));
+		assertSame(v0 , Vectorz.newVector(0));
 		assertEquals(0, v0.length());
 	}
 

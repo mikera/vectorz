@@ -1,11 +1,10 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.impl.DiagonalMatrix;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestInverses {
 	@Test

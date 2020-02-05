@@ -1,17 +1,18 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.*;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.algo.Multiplications;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TestDenseMultiply {
 
-	@Test public void testBigMul() {
+	@Test
+	public void testBigMul() {
 		Matrix m=(Matrix)Matrixx.createRandomMatrix(50, 50);
 		AMatrix ip=m.innerProduct(m);
 		assertEquals(ip,Multiplications.multiply(m, m));

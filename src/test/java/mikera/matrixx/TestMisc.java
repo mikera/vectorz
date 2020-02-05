@@ -1,11 +1,8 @@
 package mikera.matrixx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import mikera.arrayz.INDArray;
 import mikera.matrixx.algo.Inverse;
@@ -83,6 +80,7 @@ public class TestMisc {
 		assertEquals(v.magnitude(), r.magnitude(), 0.00001);
 
 		Matrix33 inv = rot.inverse();
+		assertNotNull(inv);
 		AVector ri = inv.innerProduct(r);
 		assertTrue(v.epsilonEquals(ri));
 	}
@@ -357,12 +355,7 @@ public class TestMisc {
 
 		assertTrue(p.innerProduct(p.getTranspose()).isIdentity());
 
-		try {
-			p = PermutationMatrix.create(0, 1, 2, 2, 4);
-			fail("Should not be able to create PermutationMatrix with invalid permutation");
-		} catch (Throwable t) {
-			// OK
-		}
+		assertThrows(Throwable.class,()-> PermutationMatrix.create(0, 1, 2, 2, 4));
 	}
 
 	@Test 

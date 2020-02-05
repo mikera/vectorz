@@ -1,6 +1,5 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.*;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -8,12 +7,13 @@ import mikera.matrixx.decompose.Cholesky;
 import mikera.matrixx.decompose.ICholeskyResult;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCholesky {
 
-	@Test 
+	@Test
 	public void testCholeskyRegression() {
 		Matrix original = Matrix.create(new double[][] {{4,12,-16},{12,37,-43},{-16,-43,98}});	
 		Matrix a=Matrix.create(original);
@@ -64,11 +64,11 @@ public class TestCholesky {
 		AMatrix l=r.getL();
 		AMatrix u=r.getU();
 		
-		assertTrue("l and u and not transposes!",l.epsilonEquals(u.getTranspose()));
+		assertTrue(l.epsilonEquals(u.getTranspose()), "l and u and not transposes!");
 		assertTrue(l.isLowerTriangular());
 		assertTrue(u.isUpperTriangular());
 		
-		assertTrue("product not valid",l.innerProduct(u).epsilonEquals(a));
+		assertTrue(l.innerProduct(u).epsilonEquals(a), "product not valid");
 	}
 
 }

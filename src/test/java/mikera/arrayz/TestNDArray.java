@@ -1,7 +1,5 @@
 package mikera.arrayz;
 
-import static org.junit.Assert.*;
-
 import java.util.Arrays;
 
 import mikera.matrixx.AMatrix;
@@ -10,11 +8,13 @@ import mikera.matrixx.Matrix22;
 import mikera.matrixx.Matrixx;
 import mikera.vectorz.Scalar;
 import mikera.vectorz.Vector;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestNDArray {
-	@Test public void testScalarArray() {
+	@Test
+	public void testScalarArray() {
 		NDArray a=NDArray.newArray();
 		a.set(3.0);
 		assertEquals(3.0,a.get(),0.0);

@@ -18,7 +18,10 @@
 
 package mikera.matrixx.decompose.impl.chol;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.util.Random;
 
@@ -26,7 +29,6 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.ICholeskyResult;
 import mikera.matrixx.decompose.impl.chol.Cholesky;
 
-import org.junit.Test;
 
 
 /**

@@ -5,8 +5,9 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import mikera.transformz.TestTransformz;
 import mikera.util.Maths;
@@ -307,7 +308,7 @@ public class TestOps {
 			tmp.applyOp(b);
 			tmp.applyOp(a);
 			if (tmp.hasUncountable()) return;
-			assertTrue(a.toString()+" x "+b.toString(),tmp.epsilonEquals(v.applyOpCopy(comp),0.001));
+			assertTrue(tmp.epsilonEquals(v.applyOpCopy(comp),0.001),a.toString()+" x "+b.toString());
 		}
 	}
 	
@@ -321,7 +322,7 @@ public class TestOps {
 			tmp.applyOp(a);
 			tmp.multiply(v.applyOpCopy(b));
 			if (tmp.hasUncountable()) return;
-			assertTrue(a.toString()+" x "+b.toString(),tmp.epsilonEquals(v.applyOpCopy(comp),0.001));
+			assertTrue(tmp.epsilonEquals(v.applyOpCopy(comp),0.001),a.toString()+" x "+b.toString());
 		}
 	}
 	

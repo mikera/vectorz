@@ -1,18 +1,17 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.solve.Linear;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestLinear {
     
-    @Test 
+    @Test
     public void testSimpleSquareSolve() {
         AMatrix m= Matrix.create(new double[][] {{1,-2,1},{0,1,6},{0,0,1}});
         AMatrix mi=m.inverse();
@@ -47,13 +46,12 @@ public class TestLinear {
         AMatrix x = Linear.solveLeastSquares(m, Matrix.create(new double[][]{{1},{3},{3}}));
         assertArrayEquals(new double[] {-1.35294117647,1.05882352941,0.11764705882},x.asDoubleArray(), 1e-8);
     }
-    
-    @Test(expected=IllegalArgumentException.class)
+
+    @Test
     public void testSolveSquareMatrixRectangular() {
-        AMatrix m= Matrix.create(new double[][] {{1,2},{1,4},{5,9}});
+        final AMatrix m= Matrix.create(new double[][] {{1,2},{1,4},{5,9}});
         
-        AVector x = Linear.solve(m, Vector.of(1,3,3));
-        assertTrue(Vector.of(-1.35294117647,1.05882352941,0.11764705882).epsilonEquals(x, 1e-8));
+        assertThrows(IllegalArgumentException.class,()->Linear.solve(m, Vector.of(1,3)));
     }
 
 	@Test

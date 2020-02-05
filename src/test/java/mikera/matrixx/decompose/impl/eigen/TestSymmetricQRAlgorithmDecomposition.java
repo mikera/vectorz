@@ -18,11 +18,10 @@
 
 package mikera.matrixx.decompose.impl.eigen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -30,8 +29,6 @@ import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.decompose.impl.lu.AltLU;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector2;
-
-import org.junit.Test;
 
 
 /**
@@ -84,7 +81,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
      * eigen decompositions tests.
      */
     public void checkRandom() {
-        int sizes[] = new int[]{1,2,5,10,20,50,100,200};
+        int[] sizes = new int[]{1,2,5,10,20,50,100,200};
 
         SymmetricQRAlgorithmDecomposition alg = createDecomposition();
 
@@ -272,7 +269,7 @@ public class TestSymmetricQRAlgorithmDecomposition {
         for( int i = 0; i < alg.getNumberOfEigenvalues(); i++ ) {
             Vector2 c = alg.getEigenvalue(i);
 
-            assertTrue(c.y==0);
+            assertEquals(0,c.y);
 
             assertEquals(expected,c.x,1e-8);
         }

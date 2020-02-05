@@ -1,11 +1,11 @@
 package mikera.arrayz;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.StringReader;
 import java.nio.DoubleBuffer;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import mikera.arrayz.impl.BroadcastScalarArray;
 import mikera.arrayz.impl.IDense;
@@ -330,7 +330,8 @@ public class TestArrays {
 		
 		// sparse clone
 		INDArray sc=a.sparseClone();
-		assertTrue("Should have fully mutable sparseClone: "+a.getClass(), (sc.elementCount()==0)||sc.isFullyMutable());
+		// Should have fully mutable sparseClone"
+		assertTrue((sc.elementCount()==0)||sc.isFullyMutable());
 		assertEquals(a,sc);
 		
 		// sparse coercion
@@ -523,7 +524,7 @@ public class TestArrays {
 		assertFalse(a.isFullyMutable());
 
 		AVector av=a.asVector();
-		assertFalse("Should be immutable: "+av.getClass(),av.isMutable());
+		assertFalse(av.isMutable());
 		try {
 			av.set(0,Math.PI);
 			// System.out.println(a.getClass());
@@ -782,7 +783,7 @@ public class TestArrays {
 		double ess=m.elementSquaredSum();
 		
 		assertEquals(es,m.asVector().elementSum(),0.0001);
-		assertEquals(m.getClass().toString(),es,m.elementPowSum(1.0),0.0001);
+		assertEquals(es,m.elementPowSum(1.0),0.0001,m.getClass().toString());
 		assertEquals(ess,m.elementAbsPowSum(2.0),0.0001);
 
 		assertEquals(ess,m.reduce(Ops.ADD_SQUARE, 0.0),0.0001);

@@ -20,7 +20,9 @@ package mikera.matrixx.solve.chol;
 
 import mikera.matrixx.solve.impl.CholeskySolver;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

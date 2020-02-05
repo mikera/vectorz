@@ -21,12 +21,11 @@ package mikera.matrixx.solve.chol;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.solve.impl.CholeskyLDUSolver;
 
-import org.junit.Test;
-
 import java.util.Random;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

@@ -22,9 +22,10 @@ import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
 import mikera.vectorz.Vector;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TestHessenbergSimilarDecomposition {
 
@@ -61,7 +62,7 @@ public class TestHessenbergSimilarDecomposition {
 //        System.out.println("----- Found A ------");
 //        UtilEjml.print(H,"%8.2e");
 
-        assertTrue(!H.hasUncountable());
+        assertFalse(H.hasUncountable());
 
         assertTrue(A.epsilonEquals(H,TOLERANCE));
     }
@@ -77,9 +78,9 @@ public class TestHessenbergSimilarDecomposition {
         assertTrue(A.equals(B));
     }
 
-    /**
-     * Give it a matrix that is already a Hessenberg matrix and see if its comes out the same.
-     */
+//    /**
+//     * Give it a matrix that is already a Hessenberg matrix and see if its comes out the same.
+//     */
 //    @Test
 //    public void testNoChange() {
 //        DenseMatrix64F A = RandomMatrices.createUpperTriangle(4,1,-1,1,rand);
@@ -234,7 +235,6 @@ public class TestHessenbergSimilarDecomposition {
      * Converts the columns in a matrix into a set of vectors.
      *
      * @param A Matrix.  Not modified.
-     * @param v
      * @return An array of vectors.
      */
     public Vector[] columnsToVector(Matrix A) {

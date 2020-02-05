@@ -18,17 +18,14 @@
 
 package mikera.matrixx.decompose.impl.svd;
 
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
 import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
-
-import org.junit.Test;
-
 
 /**
  * @author Peter Abeles

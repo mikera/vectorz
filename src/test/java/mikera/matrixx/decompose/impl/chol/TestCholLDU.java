@@ -18,18 +18,16 @@
 
 package mikera.matrixx.decompose.impl.chol;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.util.Random;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.ICholeskyLDUResult;
 import mikera.matrixx.decompose.impl.chol.CholeskyLDU;
-
-import org.junit.Test;
-
 
 /**
  * @author Peter Abeles

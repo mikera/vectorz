@@ -1,15 +1,13 @@
 package mikera.vectorz.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import mikera.indexz.Index;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestSparseIndexedVector {
 
@@ -34,7 +32,7 @@ public class TestSparseIndexedVector {
 		sv.set(1,1.0);
 		sv.set(6,6.0);
 		sc.validate();
-		Assert.assertNotEquals(sc,sv);
+		assertNotEquals(sc,sv);
 	}
 	
 	@Test public void testAddSparse() {
@@ -50,9 +48,10 @@ public class TestSparseIndexedVector {
 		
 	}
 	
-	@Test (expected=java.lang.Throwable.class)
+	@Test
 	public void testFaultyConstruction() {
-		SparseIndexedVector.create(10, Index.of(10,3,6), Vector.of(1.0,2.0,3.0));
+		assertThrows(Throwable.class,()->SparseIndexedVector.create(10, Index.of(10,3,6), Vector.of(1.0,2.0,3.0)))
+		;
 	}
 	
 	@Test public void testCloneIncluding() {

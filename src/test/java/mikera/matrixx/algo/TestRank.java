@@ -6,9 +6,10 @@ import mikera.matrixx.decompose.ISVDResult;
 import mikera.matrixx.decompose.SVD;
 import mikera.matrixx.impl.ZeroMatrix;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TestRank {
 	@Test

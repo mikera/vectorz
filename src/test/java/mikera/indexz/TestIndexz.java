@@ -1,17 +1,19 @@
 package mikera.indexz;
 
-import static org.junit.Assert.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
 import mikera.vectorz.Vector;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class TestIndexz {
 		
-	@Test public void testCreateChoice() {
+	@Test
+	public void testCreateChoice() {
 		Index ind=Indexz.createSequence(100);
 		assertTrue(ind.isDistinct()&&ind.isSorted());
 		

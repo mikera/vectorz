@@ -1,13 +1,13 @@
 package mikera.matrixx.impl;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrix22;
 import mikera.matrixx.algo.Definite;
 import mikera.vectorz.Vector;
-
-import org.junit.Test;
 
 public class TestDiagonalMatrix {
 

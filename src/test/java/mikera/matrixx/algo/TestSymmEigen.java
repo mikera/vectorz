@@ -1,6 +1,5 @@
 package mikera.matrixx.algo;
 
-import static org.junit.Assert.assertTrue;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.decompose.Eigen;
 import mikera.matrixx.decompose.IEigenResult;
@@ -8,25 +7,28 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vector2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TestSymmEigen {
-    
-    @Test(expected = IllegalArgumentException.class)
+
+    @Test
     public void unsymmetric() {
         Matrix A = Matrix.create(new double[][] {{1,2,3},
                 {2,5,6},
                 {4,6,9}});
-        Eigen.decomposeSymmetric(A);
+        assertThrows(IllegalArgumentException.class,()->Eigen.decomposeSymmetric(A));
     }
-    
-    @Test(expected = UnsupportedOperationException.class)
+
+    @Test
     public void vectorsNotComputed() {
         Matrix A = Matrix.create(new double[][] {{1,2,3},
                                                  {2,5,6},
                                                  {3,6,9}});
         IEigenResult result = Eigen.decomposeSymmetric(A, false);
-        result.getEigenVectors();
+        assertThrows(UnsupportedOperationException.class,()->result.getEigenVectors());
     }
     
     @Test

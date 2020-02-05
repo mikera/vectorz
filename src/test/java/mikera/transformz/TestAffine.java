@@ -2,9 +2,10 @@ package mikera.transformz;
 
 import java.util.Random;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
 import mikera.transformz.impl.ConstantTransform;

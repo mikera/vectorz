@@ -24,13 +24,11 @@ import mikera.matrixx.decompose.IBidiagonalResult;
 import mikera.matrixx.decompose.impl.bidiagonal.BidiagonalRow;
 import mikera.matrixx.impl.DiagonalMatrix;
 
-import org.junit.Test;
-
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

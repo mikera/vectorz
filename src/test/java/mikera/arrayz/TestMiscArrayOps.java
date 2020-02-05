@@ -1,7 +1,5 @@
 package mikera.arrayz;
 
-import static org.junit.Assert.*;
-
 import java.util.Arrays;
 
 import mikera.arrayz.impl.SliceArray;
@@ -27,12 +25,16 @@ import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.impl.ZeroVector;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class TestMiscArrayOps {
 	
-	@Test public void testCreateFromArray() {
+	@Test
+	public void testCreateFromArray() {
 		INDArray[] as=new INDArray[2];
 		as[0]=Vector.of(1,2);
 		as[1]=Vector.of(3,4);

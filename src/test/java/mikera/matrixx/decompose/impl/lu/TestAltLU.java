@@ -18,13 +18,10 @@
 
 package mikera.matrixx.decompose.impl.lu;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
@@ -32,7 +29,6 @@ import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.decompose.ILUPResult;
 import mikera.matrixx.solve.impl.TriangularSolver;
 
-import org.junit.Test;
 
 public class TestAltLU {
 

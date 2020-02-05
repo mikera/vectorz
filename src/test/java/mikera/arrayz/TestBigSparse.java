@@ -1,9 +1,5 @@
 package mikera.arrayz;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import mikera.indexz.Indexz;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrixx;
@@ -22,6 +18,10 @@ import mikera.vectorz.impl.RangeVector;
 import mikera.vectorz.impl.RepeatedElementVector;
 import mikera.vectorz.impl.SingleElementVector;
 import mikera.vectorz.impl.SparseIndexedVector;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Set of tests designed to test large array handling
@@ -44,7 +44,8 @@ public class TestBigSparse {
 		assertEquals(0.0,m.elementMin(),0.0);		
 	}
 	
-	@Test public void testBigArray() {
+	@Test
+	public void testBigArray() {
 		INDArray m=Arrayz.createSparseArray(20000,20000);
 		assertEquals(400000000L,m.elementCount());
 
@@ -148,7 +149,7 @@ public class TestBigSparse {
 		int SIZE=100000;
 		AMatrix m=ZeroMatrix.create(SIZE, SIZE);
 		m=m.sparseClone();
-		assertTrue("Not fully sparse:" +m.getClass(), m.isFullyMutable());
+		assertTrue(m.isFullyMutable(), "Not fully sparse:" +m.getClass());
 		m.set(3,4,7.0);
 	
 		assertEquals(1,m.nonZeroCount());
