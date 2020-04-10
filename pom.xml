@@ -10,6 +10,7 @@
 		<artifactId>mikera-pom</artifactId>
 		<version>0.6.0</version>
 	</parent>
+	<packaging>bundle</packaging>
 
 	<properties>
 		<gpg.keyname>340395AC</gpg.keyname>
@@ -58,6 +59,12 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>3.3.0</version>
+				<extensions>true</extensions>
 			</plugin>
 		</plugins>
 	</build>
