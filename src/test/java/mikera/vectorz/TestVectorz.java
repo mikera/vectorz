@@ -1,11 +1,12 @@
 package mikera.vectorz;
 
-import mikera.vectorz.GrowableVector;
-import mikera.vectorz.impl.Vector0;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import mikera.vectorz.impl.Vector0;
 
 public class TestVectorz {
 

@@ -1,11 +1,11 @@
 package mikera.matrixx.algo;
 
-import mikera.matrixx.Matrix;
-import mikera.matrixx.Matrixx;
-import mikera.matrixx.algo.Determinant;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import mikera.matrixx.Matrix;
+import mikera.matrixx.Matrixx;
 
 public class TestDeterminant {
 

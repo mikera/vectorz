@@ -66,8 +66,8 @@ public class TestMiscArrayOps {
 	}
 	
 	@Test public void testDoubleSlice() {
-		assertEquals(new Double(2.0),Array.create(Vector.of(1,2,3)).getSlices().get(1));
-		assertEquals(new Double(2.0),SliceArray.create(Vector.of(1,2,3)).getSlices().get(1));
+		assertEquals(2.0,Array.create(Vector.of(1,2,3)).getSlices().get(1));
+		assertEquals(2.0,SliceArray.create(Vector.of(1,2,3)).getSlices().get(1));
 	}
 	
 	@Test

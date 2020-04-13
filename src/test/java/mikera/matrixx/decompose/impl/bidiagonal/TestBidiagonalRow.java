@@ -18,16 +18,16 @@
 
 package mikera.matrixx.decompose.impl.bidiagonal;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Random;
+
+import org.junit.jupiter.api.Test;
 
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.decompose.IBidiagonalResult;
-import mikera.matrixx.decompose.impl.bidiagonal.BidiagonalRow;
-
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 

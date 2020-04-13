@@ -18,15 +18,15 @@
 
 package mikera.matrixx.solve.chol;
 
-import mikera.matrixx.Matrix;
-import mikera.matrixx.impl.DiagonalMatrix;
-import mikera.matrixx.solve.impl.CholeskySolver;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import mikera.matrixx.Matrix;
+import mikera.matrixx.impl.DiagonalMatrix;
+import mikera.matrixx.solve.impl.CholeskySolver;
 
 
 /**
