@@ -19,6 +19,7 @@
 	<properties>
 		<gpg.keyname>340395AC</gpg.keyname>
 		<gpg.useagent>true</gpg.useagent>
+		<doclint>none</doclint>
 	</properties>
 
 	<licenses>
