@@ -25,7 +25,8 @@ public abstract class AArrayMatrix extends ARectangularMatrix {
 	 * 
 	 * Mutation of this data array is possible, but caution is advised as this may cause 
 	 * unpredictable side effects if the array is aliased elsewhere
-	 * @return
+	 * 
+	 * @return Underlying data array
 	 */
 	public final double[] getArray() {
 		return data;

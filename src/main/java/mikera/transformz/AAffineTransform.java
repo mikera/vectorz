@@ -38,7 +38,7 @@ public abstract class AAffineTransform extends ATransform {
 	
 	/**
 	 * Gets the translation offset that is part of this affine transform.
-	 * @return
+	 * @return Translation offset
 	 */
 	public AVector getTranslationVector() {
 		return getTranslation().getTranslationVector();
