@@ -21,6 +21,7 @@
 	<properties>
 		<gpg.keyname>340395AC</gpg.keyname>
 		<gpg.useagent>true</gpg.useagent>
+		<maven.javadoc.skip>true</maven.javadoc.skip>
 	</properties>
 
 	<licenses>
