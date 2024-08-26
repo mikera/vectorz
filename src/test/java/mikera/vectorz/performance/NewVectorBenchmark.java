@@ -25,7 +25,7 @@ public class NewVectorBenchmark extends SimpleBenchmark {
 	AVector preAllocated=Vector.createLength(LIST_SIZE);
 
 	public void timeNewVector(int runs) {
-		AVector res=null;
+		AVector res=Vector.EMPTY;
 		for (int i=0; i<runs; i++) {
 			res=Vector.createLength(LIST_SIZE);
 		}
@@ -33,7 +33,7 @@ public class NewVectorBenchmark extends SimpleBenchmark {
 	}
 	
 	public void timeNewDoubleArray(int runs) {
-		double[] res=null;
+		double[] res=DoubleArrays.EMPTY;
 		for (int i=0; i<runs; i++) {
 			res=new double[LIST_SIZE];
 		}

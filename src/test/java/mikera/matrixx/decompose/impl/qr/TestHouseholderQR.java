@@ -1,18 +1,19 @@
 package mikera.matrixx.decompose.impl.qr;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Random;
+
+import org.junit.jupiter.api.Test;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.algo.Multiplications;
 import mikera.matrixx.decompose.IQRResult;
-import mikera.matrixx.decompose.impl.qr.HouseholderQR;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.IdentityMatrix;
 import mikera.matrixx.impl.ZeroMatrix;
-
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class TestHouseholderQR extends GenericQrCheck {
     
