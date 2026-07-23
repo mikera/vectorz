@@ -19,7 +19,7 @@ jobs:
         java: [ '17', '21', '25' ]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v5
@@ -38,7 +38,7 @@ jobs:
 
       - name: Upload test results
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: surefire-reports-jdk${{ matrix.java }}
           path: target/surefire-reports/

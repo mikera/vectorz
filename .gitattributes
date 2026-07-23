@@ -1,0 +1,17 @@
+# Normalise line endings in the repository to LF, regardless of each
+# contributor's core.autocrlf setting. Without this, a contributor with
+# autocrlf=false can commit CRLF and produce whole-file diffs.
+* text=auto
+
+*.java   text
+*.xml    text
+*.md     text
+*.yml    text
+*.yaml   text
+*.txt    text
+*.classpath text
+*.project   text
+
+*.png    binary
+*.jar    binary
+*.dll    binary

@@ -21,6 +21,26 @@ Vectorz is reasonably mature, battle tested and being used in production applica
 
 See the [Vectorz Wiki](https://github.com/mikera/vectorz/wiki)
 
+### Building
+
+Requires **Java 17 or later** and Maven 3.6.3+. Artifacts target Java 17
+bytecode; CI builds on JDK 17, 21 and 25.
+
+```bash
+mvn clean test       # compile and run the test suite
+mvn clean install    # install to the local Maven repository
+```
+
+Benchmarks use [JMH](https://openjdk.org/projects/code-tools/jmh/) and live in
+`src/test/java/**/performance/`. Run one via its `main` method, or run a
+selection with:
+
+```bash
+mvn test-compile dependency:build-classpath -Dmdep.outputFile=target/cp.txt
+java -cp "target/classes:target/test-classes:$(cat target/cp.txt)" \
+    org.openjdk.jmh.Main MultiplyBenchmark
+```
+
 ### Example usage
 
 ```Java
