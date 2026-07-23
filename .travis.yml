@@ -1,6 +1,0 @@
-language: java
-jdk:
-  - oraclejdk9
-  - oraclejdk11
-  - openjdk8
-sudo: false
