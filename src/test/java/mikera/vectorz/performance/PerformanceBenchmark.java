@@ -1,7 +1,18 @@
 package mikera.vectorz.performance;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix33;
@@ -11,57 +22,61 @@ import mikera.vectorz.Vector;
 import mikera.vectorz.Vector3;
 
 /**
- * Caliper based benchmarks
- * 
+ * JMH based benchmarks for common small vector and matrix operations
+ *
  * @author Mike
  */
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+public class PerformanceBenchmark {
 
-public class PerformanceBenchmark extends SimpleBenchmark {
-	
-	public void timeVector3Addition(int runs) {
-		Vector3 v=Vector3.of(1,2,3);
-		Vector3 v2=Vector3.of(1,2,3);
-		for (int i=0; i<runs; i++) {
-			v.add(v2);
-		}
-	}
-	
-	public void timeMatrix3Rotation(int runs) {
-		Vector3 axis=Vector3.of(1,2,3);
-		Vector3 v=Vector3.of(Math.random(),Math.random(),Math.random());
+	private Vector3 v3;
+	private Vector3 v3b;
+	private Vector3 rotated;
+	private Matrix33 rot;
+	private AVector v;
+	private AVector vb;
+	private AMatrix square;
 
-		Matrix33 rot=Matrixx.createRotationMatrix(axis, Math.random());
-		for (int i=0; i<runs; i++) {
-			rot.transformInPlace(v);
-		}
-	}
-	
-	public void timeVectorAddMultiple(int runs) {
-		AVector v=Vector.of(1,2,3);
-		AVector v2=Vector.of(1,2,3);
-		
-		for (int i=0; i<runs; i++) {
-			v.addMultiple(v2,2.0);
-		}
-	}
-	
-	public void timeMatrixInverse(int runs) {
-		AMatrix m=Matrixx.createRandomSquareMatrix(5);
-		for (int i=0; i<runs; i++) {
-			m=m.inverse();
-		}
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new PerformanceBenchmark().run();
+	@Setup(Level.Iteration)
+	public void setup() {
+		v3=Vector3.of(1,2,3);
+		v3b=Vector3.of(1,2,3);
+		rotated=Vector3.of(Math.random(),Math.random(),Math.random());
+		rot=Matrixx.createRotationMatrix(Vector3.of(1,2,3), Math.random());
+		v=Vector.of(1,2,3);
+		vb=Vector.of(1,2,3);
+		square=Matrixx.createRandomSquareMatrix(5);
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public AVector vector3Addition() {
+		v3.add(v3b);
+		return v3;
+	}
+
+	@Benchmark
+	public AVector matrix3Rotation() {
+		rot.transformInPlace(rotated);
+		return rotated;
+	}
+
+	@Benchmark
+	public AVector vectorAddMultiple() {
+		v.addMultiple(vb,2.0);
+		return v;
+	}
+
+	@Benchmark
+	public AMatrix matrixInverse() {
+		return square.inverse();
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(PerformanceBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }

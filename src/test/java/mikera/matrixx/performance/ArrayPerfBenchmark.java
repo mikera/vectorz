@@ -1,8 +1,20 @@
 package mikera.matrixx.performance;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import java.util.concurrent.TimeUnit;
 
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Ops;
 import mikera.vectorz.Vector;
@@ -10,77 +22,70 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.Linear;
 
 /**
- * Caliper based benchmarks
- * 
+ * JMH based benchmarks comparing mutable, immutable and Op-based bulk array
+ * operations over a large vector.
+ *
+ * The vector is rebuilt once per iteration rather than per invocation: it is
+ * 8M elements, so per-invocation setup would dominate the measurement. The
+ * mutating benchmarks therefore accumulate across invocations within an
+ * iteration, as they did under the original Caliper harness.
+ *
  * @author Mike
  */
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+public class ArrayPerfBenchmark {
+	public static final int VECTOR_SIZE=8388608;
 
-public class ArrayPerfBenchmark extends SimpleBenchmark {
-	public static final int MATRIX_SIZE=10;
+	private Vector v;
+	private Op op;
 
-	public void timeMutable(int runs) {
-		Vector v=Vector.createLength(8388608);
+	@Setup(Level.Iteration)
+	public void setup() {
+		v=Vector.createLength(VECTOR_SIZE);
 		Vectorz.fillGaussian(v);
-		
-		for (int i=0; i<runs; i++) {
-			v.add(0.375);
-			v.sqrt();
-			v.scale(2.0);
-		}		
-	}
-	
-	public void timeImmutable(int runs) {
-		Vector v=Vector.createLength(8388608);
-		Vectorz.fillGaussian(v);
-		
-		for (int i=0; i<runs; i++) {
-			Vector a=(Vector) v.addCopy(0.375);
-			a=(Vector) a.sqrtCopy();
-			a=(Vector) a.scaleCopy(2.0);
-		}		
-	}
-	
-	@SuppressWarnings("unused")
-	public void timeOpsImmutable(int runs) {
-		Vector v=Vector.createLength(8388608);
-		Vectorz.fillGaussian(v);
-
-		Op op = Ops.compose(Linear.create(2.0,0.0), Ops.compose(Ops.SQRT, Linear.create(0.0,0.375)));
-		for (int i=0; i<runs; i++) {
-			Vector a=(Vector) v.applyOpCopy(op);
-		}		
-	}
-	
-	public void timeOpsMutable(int runs) {
-		Vector v=Vector.createLength(8388608);
-		Vectorz.fillGaussian(v);
-
-		Op op = Ops.compose(Linear.create(2.0,0.0), Ops.compose(Ops.SQRT, Linear.create(0.0,0.375)));
-		for (int i=0; i<runs; i++) {
-			v.applyOp(op);
-		}		
-	}
-	
-	public void timeOptimised(int runs) {
-		Vector v=Vector.createLength(8388608);
-		Vectorz.fillGaussian(v);
-
-		for (int i=0; i<runs; i++) {
-			v.scaleAdd(4.0, 1.5); // combine scaling and addition
-			v.sqrt();
-		}		
+		op=Ops.compose(Linear.create(2.0,0.0), Ops.compose(Ops.SQRT, Linear.create(0.0,0.375)));
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new ArrayPerfBenchmark().run();
+	@Benchmark
+	public AVector mutable() {
+		v.add(0.375);
+		v.sqrt();
+		v.scale(2.0);
+		return v;
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public AVector immutable() {
+		AVector a=v.addCopy(0.375);
+		a=a.sqrtCopy();
+		a=a.scaleCopy(2.0);
+		return a;
+	}
+
+	@Benchmark
+	public AVector opsImmutable() {
+		return v.applyOpCopy(op);
+	}
+
+	@Benchmark
+	public AVector opsMutable() {
+		v.applyOp(op);
+		return v;
+	}
+
+	@Benchmark
+	public AVector optimised() {
+		v.scaleAdd(4.0, 1.5); // combine scaling and addition
+		v.sqrt();
+		return v;
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(ArrayPerfBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }

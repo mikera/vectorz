@@ -1,42 +1,53 @@
 package mikera.vectorz.performance;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import mikera.vectorz.GrowableVector;
 import mikera.vectorz.Vector;
 import mikera.vectorz.Vectorz;
 
 /**
- * Caliper based benchmarks
- * 
+ * JMH based benchmark for incremental GrowableVector construction
+ *
  * @author Mike
  */
-
-public class MiscOperationBenchmark extends SimpleBenchmark {
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+public class MiscOperationBenchmark {
 	private static final int VECTOR_SIZE = 20;
-	
-	private static final Vector source=new Vector( Vectorz.createUniformRandomVector(1000+VECTOR_SIZE));
-	
-	public void timeBuildGrowableVector(int runs) {
-		for (int i=0; i<runs; i++) {
-			GrowableVector g=new GrowableVector();
-			for (int j=0; j<VECTOR_SIZE; j++) {
-				g.append(source.get(j));
-			}
-		}
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new MiscOperationBenchmark().run();
+
+	private Vector source;
+
+	@Setup
+	public void setup() {
+		source=new Vector(Vectorz.createUniformRandomVector(1000+VECTOR_SIZE));
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public GrowableVector buildGrowableVector() {
+		GrowableVector g=new GrowableVector();
+		for (int j=0; j<VECTOR_SIZE; j++) {
+			g.append(source.get(j));
+		}
+		return g;
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(MiscOperationBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }

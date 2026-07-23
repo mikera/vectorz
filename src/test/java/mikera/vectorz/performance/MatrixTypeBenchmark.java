@@ -1,74 +1,81 @@
 package mikera.vectorz.performance;
 
-import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.impl.AStridedMatrix;
 import mikera.matrixx.impl.StridedMatrix;
-import mikera.vectorz.Ops;
-import mikera.vectorz.Vector;
-import mikera.vectorz.util.DoubleArrays;
-
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
 
 /**
- * Caliper based benchmarks for sublist iteration
- * 
- * See debate at: http://stackoverflow.com/questions/17302130/enhanced-for-loop/17302215
- * 
+ * JMH based benchmarks comparing dense, strided and transposed-strided matrix
+ * layouts under the same bulk operations.
+ *
+ * The matrices are rebuilt per iteration rather than per invocation, so the
+ * mutating operations accumulate within an iteration as they did under the
+ * original Caliper harness.
+ *
  * @author Mike
  */
-@SuppressWarnings("unused")
-public class MatrixTypeBenchmark extends SimpleBenchmark {
-	double result;
-	
-	static int DIM_SIZE=100;
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+public class MatrixTypeBenchmark {
 
-	static final AMatrix src=Matrix.create(DIM_SIZE,DIM_SIZE);
-	
-	static{
+	static final int DIM_SIZE=100;
+
+	private AMatrix src;
+	private Matrix dense;
+	private StridedMatrix strided;
+	private AStridedMatrix stridedTranspose;
+
+	@Setup(Level.Iteration)
+	public void setup() {
+		src=Matrix.create(DIM_SIZE,DIM_SIZE);
 		Matrixx.fillRandomValues(src);
+		dense=Matrix.create(src);
+		strided=StridedMatrix.create(src);
+		stridedTranspose=StridedMatrix.create(src).getTransposeView();
 	}
-	
-	private void doMatrixText(AMatrix m) {
+
+	private AMatrix doMatrixTest(AMatrix m) {
 		m.add(1.0);
 		m.mul(src);
-	}
-	
-	public void timeMatrix(int runs) {
-		Matrix m=Matrix.create(src);	
-		for (int i=0; i<runs; i++) {
-			doMatrixText(m);
-		}
-		result=m.elementSum();
-	}
-	
-	public void timeStridedMatrix(int runs) {
-		StridedMatrix m=StridedMatrix.create(src);	
-		for (int i=0; i<runs; i++) {
-			doMatrixText(m);
-		}
-		result=m.elementSum();
-	}
-	
-	public void timeStridedMatrixTranspose(int runs) {
-		AStridedMatrix m=StridedMatrix.create(src).getTransposeView();	
-		for (int i=0; i<runs; i++) {
-			doMatrixText(m);
-		}
-		result=m.elementSum();
+		return m;
 	}
 
-	public static void main(String[] args) {
-		new MatrixTypeBenchmark().run();
+	@Benchmark
+	public AMatrix matrix() {
+		return doMatrixTest(dense);
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public AMatrix stridedMatrix() {
+		return doMatrixTest(strided);
+	}
+
+	@Benchmark
+	public AMatrix stridedMatrixTranspose() {
+		return doMatrixTest(stridedTranspose);
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(MatrixTypeBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }

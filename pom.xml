@@ -18,6 +18,7 @@
 	<properties>
 		<gpg.keyname>340395AC</gpg.keyname>
 		<junit.version>6.1.2</junit.version>
+		<jmh.version>1.37</jmh.version>
 		<gpg.useagent>true</gpg.useagent>
 	</properties>
 
@@ -84,6 +85,24 @@
 					     cannot link against APIs missing from Java 17. -->
 					<release>17</release>
 				</configuration>
+				<executions>
+					<execution>
+						<!-- JMH generates its benchmark harness with an annotation
+						     processor. Declared explicitly because recent javac no
+						     longer discovers processors from the classpath. Test
+						     sources only — no @Benchmark exists in main. -->
+						<id>default-testCompile</id>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.openjdk.jmh</groupId>
+									<artifactId>jmh-generator-annprocess</artifactId>
+									<version>${jmh.version}</version>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<!-- Pinned: the inherited version comes from the super-pom of
@@ -141,9 +160,15 @@
 			<version>0.7.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.caliper</groupId>
-			<artifactId>caliper</artifactId>
-			<version>0.5-rc1</version>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-core</artifactId>
+			<version>${jmh.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-generator-annprocess</artifactId>
+			<version>${jmh.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

@@ -1,78 +1,73 @@
 package mikera.matrixx.performance;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import mikera.matrixx.Matrix33;
 import mikera.vectorz.Vector3;
 
 /**
- * Caliper based benchmarks
- * 
+ * JMH based benchmarks for 3D vector and 3x3 matrix operations
+ *
  * @author Mike
  */
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+public class ThreeDBenchmark {
+	public static final Vector3 SMALL_DELTA=Vector3.of(0.00001,0.00001,0.00001);
 
-public class ThreeDBenchmark extends SimpleBenchmark {
-	public static final int VECTOR_SIZE=3;
-	public static final Vector3 r=Vector3.of(0,0,0);
+	private Vector3 v;
+	private Vector3 t;
+	private Matrix33 m;
 
-	public static final Vector3 smallDelta=Vector3.of(0.00001,0.00001,0.00001);
-
-	
-	public void timeMatrix33Transform(int runs) {
-		Vector3 v=new Vector3(1,2,3);
-		Matrix33 m=new Matrix33(1,2,3,4,5,6,7,8,9);
-		
-		for (int i=0; i<runs; i++) {
-			v.add(smallDelta);
-			r.set(m.transform(v));
-		}		
-	}
-	
-	public void timeMatrix33TransformInPlace(int runs) {
-		Vector3 v=new Vector3(1,2,3);
-		Vector3 t=new Vector3(1,2,3);
-		Matrix33 m=new Matrix33(1,2,3,4,5,6,7,8,9);
-		
-		for (int i=0; i<runs; i++) {
-			v.add(smallDelta);
-			t.set(v);
-			m.transformInPlace(t);
-		}
-		
-		r.set(t);
-	}
-	
-	public void timeMatrix33Clone(int runs) {
-		Matrix33 m=new Matrix33(1,2,3,4,5,6,7,8,9);
-		
-		for (int i=0; i<runs; i++) {
-			m=m.clone();
-		}
-	}
-	
-	public void timeMatrix33Determinant(int runs) {
-		Matrix33 m=new Matrix33(1,2,3,4,5,6,7,8,9);
-		double res=0;
-		
-		for (int i=0; i<runs; i++) {
-			m.m00+=0.0000001;
-			res+=m.determinant();
-		}
-		r.set(0,res);
-	}
-	
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new ThreeDBenchmark().run();
+	@Setup(Level.Iteration)
+	public void setup() {
+		v=new Vector3(1,2,3);
+		t=new Vector3(1,2,3);
+		m=new Matrix33(1,2,3,4,5,6,7,8,9);
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public Vector3 matrix33Transform() {
+		v.add(SMALL_DELTA);
+		return m.transform(v);
+	}
+
+	@Benchmark
+	public Vector3 matrix33TransformInPlace() {
+		v.add(SMALL_DELTA);
+		t.set(v);
+		m.transformInPlace(t);
+		return t;
+	}
+
+	@Benchmark
+	public Matrix33 matrix33Clone() {
+		return m.clone();
+	}
+
+	@Benchmark
+	public double matrix33Determinant() {
+		m.m00+=0.0000001;
+		return m.determinant();
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(ThreeDBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }

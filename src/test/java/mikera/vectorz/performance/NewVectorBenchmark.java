@@ -1,59 +1,62 @@
 package mikera.vectorz.performance;
 
-import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
-import mikera.vectorz.util.DoubleArrays;
-
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
 
 /**
- * Benchmark for generation of new vectors 
- * 
+ * Benchmark for generation of new vectors
+ *
  * See debate at: http://stackoverflow.com/questions/17302130/enhanced-for-loop/17302215
- * 
+ *
  * @author Mike
  */
-@SuppressWarnings("unused")
-public class NewVectorBenchmark extends SimpleBenchmark {
-	int result;
-	
-	int LIST_SIZE=100;
-	
-	AVector preAllocated=Vector.createLength(LIST_SIZE);
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+public class NewVectorBenchmark {
 
-	public void timeNewVector(int runs) {
-		AVector res=Vector.EMPTY;
-		for (int i=0; i<runs; i++) {
-			res=Vector.createLength(LIST_SIZE);
-		}
-		result=res.length();
-	}
-	
-	public void timeNewDoubleArray(int runs) {
-		double[] res=DoubleArrays.EMPTY;
-		for (int i=0; i<runs; i++) {
-			res=new double[LIST_SIZE];
-		}
-		result=res.length;
-	}
-	
-	public void timeZeroVector(int runs) {
-		for (int i=0; i<runs; i++) {
-			preAllocated.set(0.0);
-		}
-		result=preAllocated.length();
-	}
-	
-	public static void main(String[] args) {
-		new NewVectorBenchmark().run();
+	static final int LIST_SIZE=100;
+
+	private AVector preAllocated;
+
+	@Setup
+	public void setup() {
+		preAllocated=Vector.createLength(LIST_SIZE);
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public AVector newVector() {
+		return Vector.createLength(LIST_SIZE);
+	}
+
+	@Benchmark
+	public double[] newDoubleArray() {
+		return new double[LIST_SIZE];
+	}
+
+	@Benchmark
+	public AVector zeroVector() {
+		preAllocated.set(0.0);
+		return preAllocated;
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(NewVectorBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }

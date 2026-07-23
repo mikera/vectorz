@@ -1,57 +1,58 @@
 package mikera.vectorz.performance;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
- * Caliper based benchmarks
- * 
+ * JMH based benchmark comparing float and double arithmetic throughput
+ *
  * @author Mike
  */
-
-public class FloatVsDoubleBenchmark extends SimpleBenchmark {
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+public class FloatVsDoubleBenchmark {
 	private static final int VECTOR_SIZE = 50000;
-	
-	public volatile double output=0.0;
-	
-	public void timeFloat(int runs) {
-		for (int run=0; run<runs; run++) {
-			float result=0;
-			float[] fs = new float[VECTOR_SIZE];
-			for (int i =0; i<VECTOR_SIZE; i++) {
-				fs[i]+=i;
-			}
-			for (int i =0; i<VECTOR_SIZE; i++) {
-				result+=fs[i]/fs[VECTOR_SIZE-1-i];
-			}
-			output=result;
+
+	@Benchmark
+	public float floats() {
+		float result=0;
+		float[] fs = new float[VECTOR_SIZE];
+		for (int i =0; i<VECTOR_SIZE; i++) {
+			fs[i]+=i;
 		}
-	}
-	
-	public void timeDouble(int runs) {
-		for (int run=0; run<runs; run++) {
-			double result=0;
-			double[] ds = new double[VECTOR_SIZE];
-			for (int i =0; i<VECTOR_SIZE; i++) {
-				ds[i]+=i;
-			}
-			for (int i =0; i<VECTOR_SIZE; i++) {
-				result+=ds[i]/ds[VECTOR_SIZE-1-i];
-			}
-			output=result;
+		for (int i =0; i<VECTOR_SIZE; i++) {
+			result+=fs[i]/fs[VECTOR_SIZE-1-i];
 		}
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new FloatVsDoubleBenchmark().run();
+		return result;
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public double doubles() {
+		double result=0;
+		double[] ds = new double[VECTOR_SIZE];
+		for (int i =0; i<VECTOR_SIZE; i++) {
+			ds[i]+=i;
+		}
+		for (int i =0; i<VECTOR_SIZE; i++) {
+			result+=ds[i]/ds[VECTOR_SIZE-1-i];
+		}
+		return result;
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(FloatVsDoubleBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }

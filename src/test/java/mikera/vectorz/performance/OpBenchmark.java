@@ -1,7 +1,17 @@
 package mikera.vectorz.performance;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op2;
@@ -11,69 +21,63 @@ import mikera.vectorz.Vectorz;
 import mikera.vectorz.ops.AddFunction;
 
 /**
- * Caliper based benchmarks
- * 
+ * JMH based benchmarks computing z = 0.5*x + 0.5*y*y three ways: via a fused
+ * Op2, via a sequence of bulk vector functions, and element by element.
+ *
  * @author Mike
  */
-
-public class OpBenchmark extends SimpleBenchmark {
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+public class OpBenchmark {
 	public static final int VECTOR_SIZE = 1000;
-	public static AVector a=Vector.createLength(VECTOR_SIZE);
-	public static AVector b=Vector.createLength(VECTOR_SIZE);
-	public static Op2 op=AddFunction.create(0.5,0.5,Ops.SQUARE);
 
-	static {
+	private AVector a;
+	private AVector b;
+	private AVector t;
+	private Op2 op;
+
+	@Setup
+	public void setup() {
+		a=Vector.createLength(VECTOR_SIZE);
+		b=Vector.createLength(VECTOR_SIZE);
 		Vectorz.fillGaussian(a);
-		Vectorz.fillGaussian(b);		
-	}
-	
-	public volatile double output=0.0;
-	
-	// op benchmark for z = 0.5*x + 0.5*y*y
-	
-	public void timeOp(int runs) {
-		AVector t=Vector.createLength(VECTOR_SIZE);
-		for (int run=0; run<runs; run++) {
-			t.set(a);
-			t.applyOp(op, b);
-			output=t.get(0);
-		}
-	}
-	
-	public void timeFunctions(int runs) {
-		AVector t=Vector.createLength(VECTOR_SIZE);
-		for (int run=0; run<runs; run++) {
-			t.set(b);
-			t.square();
-			t.scale(0.5);
-			t.addMultiple(a, 0.5);
-			output=t.get(0);
-		}
-	}
-	
-	public void timeElementwise(int runs) {
-		AVector t=Vector.createLength(VECTOR_SIZE);
-		for (int run=0; run<runs; run++) {
-			for (int j=0; j<VECTOR_SIZE; j++) {
-				double x=a.unsafeGet(j);
-				double y=b.unsafeGet(j);
-				double z=0.5*x + 0.5*y*y;
-				t.unsafeSet(j,z);
-			}
-			output=t.get(0);
-		}
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new OpBenchmark().run();
+		Vectorz.fillGaussian(b);
+		t=Vector.createLength(VECTOR_SIZE);
+		op=AddFunction.create(0.5,0.5,Ops.SQUARE);
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public AVector withOp() {
+		t.set(a);
+		t.applyOp(op, b);
+		return t;
+	}
+
+	@Benchmark
+	public AVector withFunctions() {
+		t.set(b);
+		t.square();
+		t.scale(0.5);
+		t.addMultiple(a, 0.5);
+		return t;
+	}
+
+	@Benchmark
+	public AVector elementwise() {
+		for (int j=0; j<VECTOR_SIZE; j++) {
+			double x=a.unsafeGet(j);
+			double y=b.unsafeGet(j);
+			double z=0.5*x + 0.5*y*y;
+			t.unsafeSet(j,z);
+		}
+		return t;
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(OpBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }

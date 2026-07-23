@@ -1,87 +1,77 @@
 package mikera.matrixx.performance;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import java.util.concurrent.TimeUnit;
 
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.Matrixx;
 import mikera.matrixx.algo.Multiplications;
 
 /**
- * Caliper based benchmarks
- * 
+ * JMH based benchmarks comparing matrix multiplication strategies
+ *
  * @author Mike
  */
-
-public class MultiplyBenchmark extends SimpleBenchmark {
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+public class MultiplyBenchmark {
 	public static final int MATRIX_SIZE=10;
 
-	
-	public void timeBlockedMultiply(int runs) {
-		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		
-		for (int i=0; i<runs; i++) {
-			Multiplications.blockedMultiply(m1, m2);
-		}		
-	}
-	
-	public void timeDoubleBlockedMultiply(int runs) {
-		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		
-		for (int i=0; i<runs; i++) {
-			Multiplications.doubleBlockedMultiply(m1, m2);
-		}		
-	}
-	
-	public void timeDefaultMultiply(int runs) {
-		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		
-		for (int i=0; i<runs; i++) {
-			Multiplications.multiply(m1, m2);
-		}		
-	}
-	
-	public void timeInnerProductMultiply(int runs) {
-		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+	private Matrix m1;
+	private Matrix m2;
 
-		for (int i=0; i<runs; i++) {
-			m1.innerProduct(m2);
-		}		
-	}
-	
-	public void timeDirectMultiply(int runs) {
-		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-
-		for (int i=0; i<runs; i++) {
-			Multiplications.directMultiply(m1, m2);
-		}		
-	}
-	
-	public void timeNaiveMultiply(int runs) {
-		Matrix m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-		Matrix m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
-
-		for (int i=0; i<runs; i++) {
-			Multiplications.naiveMultiply(m1, m2);
-		}		
+	@Setup
+	public void setup() {
+		m1=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
+		m2=(Matrix)Matrixx.createRandomMatrix(MATRIX_SIZE, MATRIX_SIZE);
 	}
 
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new MultiplyBenchmark().run();
+	@Benchmark
+	public AMatrix blockedMultiply() {
+		return Multiplications.blockedMultiply(m1, m2);
 	}
 
-	private void run() {
-		Runner runner=new Runner();
-		runner.run(new String[] {this.getClass().getCanonicalName()});
+	@Benchmark
+	public AMatrix doubleBlockedMultiply() {
+		return Multiplications.doubleBlockedMultiply(m1, m2);
+	}
+
+	@Benchmark
+	public AMatrix defaultMultiply() {
+		return Multiplications.multiply(m1, m2);
+	}
+
+	@Benchmark
+	public AMatrix innerProductMultiply() {
+		return m1.innerProduct(m2);
+	}
+
+	@Benchmark
+	public AMatrix directMultiply() {
+		return Multiplications.directMultiply(m1, m2);
+	}
+
+	@Benchmark
+	public AMatrix naiveMultiply() {
+		return Multiplications.naiveMultiply(m1, m2);
+	}
+
+	public static void main(String[] args) throws RunnerException {
+		new Runner(new OptionsBuilder()
+				.include(MultiplyBenchmark.class.getSimpleName())
+				.build()).run();
 	}
 
 }
