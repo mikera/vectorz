@@ -161,8 +161,8 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	
 	/**
 	 * Creates a SparseIndexedVector from an array of double values
-	 * @param o
-	 * @return
+	 * @param values The element values
+	 * @return A new SparseIndexedVector containing the given values
 	 */
 	public static SparseIndexedVector create(double[] values) {
 		int n=values.length;
@@ -178,8 +178,8 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	
 	/**
 	 * Creates a SparseIndexedVector from the source object array
-	 * @param o
-	 * @return
+	 * @param values The source element values
+	 * @return A new SparseIndexedVector containing the given values
 	 */
 	public static SparseIndexedVector create(Object[] values) {
 		int n=values.length;
@@ -974,8 +974,7 @@ public class SparseIndexedVector extends ASparseIndexedVector {
 	 * Useful to improve performance if subsequent operations will access these
 	 * indices.
 	 * 
-	 * @param ixs
-	 * @return the newly included indices from the vector v
+	 * @param v The vector whose non-sparse indices should be included
 	 */
 	public void includeIndices(AVector v) {
 		if (v instanceof ASparseIndexedVector) {

@@ -38,7 +38,7 @@ import mikera.matrixx.decompose.impl.qr.QRResult;
  *
  * <p>
  * A column major decomposition is used in this solver.
- * <p>
+ * </p>
  *
  * @author Peter Abeles
  */

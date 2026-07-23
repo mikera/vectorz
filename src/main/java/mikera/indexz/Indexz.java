@@ -118,9 +118,9 @@ public class Indexz {
 	 * 
 	 * Results are not sorted. May contain duplicates
 	 * 
-	 * @param length
-	 * @param probability
-	 * @return
+	 * @param length The number of values to select
+	 * @param maxValue The exclusive upper bound of the values to select from
+	 * @return An Index containing the random selection
 	 */
 	public static Index createRandomSelection(int length, int maxValue) {
 		int[] sel=new int[length];

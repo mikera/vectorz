@@ -134,8 +134,9 @@ public final class Vector extends ADenseArrayVector {
 	/**
 	 * Creates a new vector using the elements in the specified vector.
 	 * Truncates or zero-pads the data as required to fill the new vector
-	 * @param data
-	 * @return
+	 * @param source The vector to take element values from
+	 * @param length The length of the new vector
+	 * @return A new Vector of the given length
 	 */
 	public static Vector createFromVector(AVector source, int length) {
 		Vector v=Vector.createLength(length);

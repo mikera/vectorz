@@ -175,9 +175,9 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	
 	/**
 	 * Creates a new array equal to this array with a constant value added to every element
-	 * 
-	 * @param a
-	 * @return
+	 *
+	 * @param d The constant value to add to every element
+	 * @return A new array with the value added
 	 */
 	public INDArray addCopy(double d);
 	
@@ -272,7 +272,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	public AVector asVector();
 	
 	/**
-	 * Returns a List<Double> containing all elements of this array
+	 * Returns a {@code List<Double>} containing all elements of this array
 	 */
 	public List<Double> asElementList();
 	
@@ -308,7 +308,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	/**
 	 * Broadcasts an array to match the shape of the target
 	 * @param target The target array
-	 * @returns An array representing the broadcasted value of this array
+	 * @return An array representing the broadcasted value of this array
 	 * @throws IllegalArgumentException if this array cannot be broadcasted to match the target 
 	 */
 	public INDArray broadcastLike(INDArray target);
@@ -316,7 +316,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	/**
 	 * Broadcasts an array to match the shape of the target matrix
 	 * @param target The target matrix
-	 * @returns A matrix representing the broadcasted value of this array
+	 * @return A matrix representing the broadcasted value of this array
 	 * @throws IllegalArgumentException if this array cannot be broadcasted to match the target 
 	 */
 	public AMatrix broadcastLike(AMatrix target);
@@ -324,7 +324,7 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	/**
 	 * Broadcasts an array to match the shape of the target vector
 	 * @param target The target vector
-	 * @returns A vector representing the broadcasted value of this array
+	 * @return A vector representing the broadcasted value of this array
 	 * @throws IllegalArgumentException if this array cannot be broadcasted to match the target 
 	 */
 	public AVector broadcastLike(AVector target);
@@ -598,7 +598,8 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	 * Checks if two arrays are equal exactly in terms of both value and shape
 	 * Element equality checks are consistent with compareTo
 	 * 
-	 * @returns true if the two arrays are exactly equal, false otherwise
+	 * @param a The array to compare with
+	 * @return true if the two arrays are exactly equal, false otherwise
 	 */
 	public boolean equals(INDArray a);
 
@@ -684,8 +685,8 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	
 	/**
 	 * Adds an array with all elements of the source array raised to the specified power
-	 * @param src
-	 * @param factor
+	 * @param src The source array
+	 * @param exponent The power to raise each source element to
 	 */
 	public void addPower(INDArray src, double exponent);
 	
@@ -1043,8 +1044,8 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 
 	/**
 	 * Returns a copy of the array with all elements divided by a single constant value
-	 * @param factor A scalar factor
-	 * @return A new array, with all element values scaled by the given factor
+	 * @param d A scalar divisor
+	 * @return A new array, with all element values divided by the given value
 	 */
 	public INDArray divideCopy(double d);
 	
@@ -1077,9 +1078,10 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	/**
 	 * Gets a component from the array at the specified index
 	 * 
-	 * Will throw an error if components are not supported, or if the component is out of bounds as defined by 0 <= k <componentCount()
-	 * @param k
-	 * @return
+	 * Will throw an error if components are not supported, or if the component is out of bounds
+	 * as defined by {@code 0 <= k < componentCount()}
+	 * @param k The index of the component to get
+	 * @return The component at the given index
 	 */
 	public INDArray getComponent(int k);
 	
@@ -1120,20 +1122,21 @@ public interface INDArray extends Cloneable, Serializable, Comparable<INDArray> 
 	/**
 	 * Reduces each vector slice of the array by the given binary operator
 	 * Reduces down to a single vector
-	 * 
-	 * @param op
-	 * @param b
-	 */	
+	 *
+	 * @param op The binary operator used for reduction
+	 * @return A vector containing the reduced result
+	 */
 	public AVector reduceSlices(Op2 op);
 	
 	/**
 	 * Reduces each slice of the array by the given binary operator.
 	 * Results are returned in a vector with one element for each slice.
 	 * Uses the specified initial value for reduction of each slice.
-	 * 
-	 * @param op
-	 * @param b
-	 */	
+	 *
+	 * @param op The binary operator used for reduction
+	 * @param init The initial value for the reduction of each slice
+	 * @return A vector with one element for each slice
+	 */
 	public AVector reduceSlices(Op2 op, double init);
 
 }

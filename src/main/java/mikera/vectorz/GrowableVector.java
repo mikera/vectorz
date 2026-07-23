@@ -85,8 +85,8 @@ public final class GrowableVector extends AVector {
 	
 	/**
 	 * Creates a GrowableVector by consuming all numbers in the given iterator
-	 * @param iterable An Iterable instance over java.lang.Number instances
-	 * @return
+	 * @param iterator An Iterator over java.lang.Number instances
+	 * @return A new GrowableVector containing the iterator's values
 	 */
 	public static GrowableVector create(Iterator<Number> iterator) {
 		GrowableVector v=new GrowableVector();

@@ -72,7 +72,7 @@ public class CholeskySolver {
     
     /**
      * Computes the quality of a triangular matrix, where the quality of a matrix
-     * is defined in {@link org.ejml.factory.LinearSolver#quality()}.  In
+     * is defined by the linear solver quality metric.  In
      * this situation the quality os the absolute value of the product of
      * each diagonal element divided by the magnitude of the largest diagonal element.
      * If all diagonal elements are zero then zero is returned.
@@ -138,7 +138,7 @@ public class CholeskySolver {
      * </p>
      *
      * @param B A matrix that is n by m.  Not modified.
-     * @param X An n by m matrix where the solution is written to.  Modified.
+     * @return An n by m matrix containing the solution.
      */
     public AMatrix solve(AMatrix B) {
     	Matrix X = Matrix.create(B.rowCount(), B.columnCount());
@@ -173,7 +173,7 @@ public class CholeskySolver {
     /**
      * Sets the matrix 'inv' equal to the inverse of the matrix that was decomposed.
      *
-     * @param inv Where the value of the inverse will be stored.  Modified.
+     * @return The inverse of the matrix that was decomposed.
      */
     public AMatrix invert() {
     	Matrix inv = Matrix.create(numRows, numCols);

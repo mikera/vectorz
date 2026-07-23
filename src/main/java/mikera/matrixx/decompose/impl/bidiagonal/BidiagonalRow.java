@@ -25,8 +25,8 @@ import mikera.matrixx.decompose.impl.qr.QRHelperFunctions;
 
 /**
  * <p>
- * Performs a {@link org.ejml.alg.dense.decomposition.bidiagonal.BidiagonalDecomposition} using
- * householder reflectors.  This is efficient on wide or square matrices.
+ * Performs a bidiagonal decomposition using householder reflectors.
+ * This is efficient on wide or square matrices.
  * </p>
  *
  * @author Peter Abeles

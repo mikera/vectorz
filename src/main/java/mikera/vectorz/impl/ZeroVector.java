@@ -77,9 +77,9 @@ public final class ZeroVector extends ASparseVector {
 
 	/**
 	 * Creates a ZeroVector with the same number of elements as the given array.
-	 * 
-	 * @param arraySize
-	 * @return
+	 *
+	 * @param array The array whose element count determines the length
+	 * @return A ZeroVector of the matching length
 	 */
 	public static ZeroVector create(INDArray array) {
 		int n = Vectorz.safeLongToInt(array.elementCount());

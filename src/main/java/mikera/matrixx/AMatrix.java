@@ -111,9 +111,9 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Sets an element value in the matrix in an unsafe fashion, without performing bound checks
 	 * The result is undefined if the row and column are out of bounds.
-	 * @param i
-	 * @param j
-	 * @return
+	 * @param i The row index
+	 * @param j The column index
+	 * @param value The value to set
 	 */
 	public void unsafeSet(int i, int j, double value) {
 		set(i,j,value);
@@ -584,7 +584,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * Sets every row of this matrix with the element values from a vector.
-	 * @param a
+	 * @param v The vector of values to set in each row
 	 */
 	public void set(AVector v) {
 		int rc=rowCount();
@@ -854,8 +854,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 
 	/**
 	 * Returns the sum of all elements in this matrix
-	 * @param m
-	 * @return 
+	 * @return The sum of all elements
 	 */
 	@Override
 	public double elementSum() {
@@ -870,8 +869,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * Returns the squared sum of all elements in this matrix
-	 * @param m
-	 * @return 
+	 * @return The sum of the squares of all elements
 	 */
 	@Override
 	public double elementSquaredSum() {
@@ -1212,8 +1210,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	
 	/**
 	 * Adds a scalar multiple of a vector to every row of this matrix
-	 * @param m
-	 * @param factor
+	 * @param v The vector to add to each row
+	 * @param factor The scalar factor to multiply the vector by
 	 */
 	public void addMultiple(AVector v, double factor) {
 		if (factor==0.0) return;
@@ -1527,8 +1525,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	 * Computes the inverse of a matrix. Returns null if the matrix is singular.
 	 * 
 	 * Throws an Exception is the matrix is not square
-	 * @param m
-	 * @return
+	 * @return The inverse of this matrix, or null if it is singular
 	 */
 	@Override
 	public AMatrix inverse() {
@@ -2029,7 +2026,7 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
 	 * Returns true if a matrix is lower triangular.
 	 * 
-	 * A lower triangular matrix is defined as having all elements equal to 0.0 where i < j
+	 * A lower triangular matrix is defined as having all elements equal to 0.0 where {@code i < j}
 	 */
 	public boolean isLowerTriangular() {
 		int rc=rowCount();
@@ -2207,10 +2204,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Sets a column in a matrix. 
-	 * 
-	 * @param i
-	 * @param row
+	 * Sets a column in a matrix.
+	 *
+	 * @param i The index of the column to set
+	 * @param col The vector of values to set in the column
 	 */
 	public void setColumn(int i, AVector col) {
 		getColumnView(i).set(col);
@@ -2269,10 +2266,10 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	}
 	
 	/**
-	 * Copies the elements in a selected row of this matrix to a double array
-	 * @param i The index of the selected column
+	 * Copies the elements in a selected column of this matrix to a double array
+	 * @param j The index of the selected column
 	 * @param dest Destination double[] array
-	 * @param destOffset
+	 * @param destOffset The offset into the destination array
 	 */
 	public void copyColumnTo(int j, double[] dest, int destOffset) {
 		// note: using getColumn() may be faster when overriding
@@ -2325,8 +2322,8 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
      * Adds a dense matrix to this matrix, returning a new dense Matrix
      *
-     * @param m A matrix. Not modified.
-     * @return True if any element in the matrix is NaN of Infinite.
+     * @param a A matrix. Not modified.
+     * @return A new dense Matrix containing the sum of the two matrices.
      */
 	public Matrix addCopy(AStridedMatrix a) {
 		checkSameShape(a);
@@ -2338,7 +2335,6 @@ public abstract class AMatrix extends AbstractArray<AVector> implements IMatrix 
 	/**
      * Checks to see if any element in the matrix is NaN of Infinite.
      *
-     * @param m A matrix. Not modified.
      * @return True if any element in the matrix is NaN of Infinite.
      */
 	@Override

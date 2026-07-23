@@ -741,8 +741,8 @@ public final class DoubleArrays {
 
 	/**
 	 * Create a new double array. Uses the EMPTY array if the required size is zero
-	 * @param initialCapacity
-	 * @return
+	 * @param size The required length of the array
+	 * @return A double array of the given length
 	 */
 	public static double[] create(int size) {
 		if (size==0) return EMPTY;

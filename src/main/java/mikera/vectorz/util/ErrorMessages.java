@@ -72,9 +72,9 @@ public class ErrorMessages {
 	 * Returns an error message indicating that a broadcast is not possible
 	 * 
 	 * e.g. "Can't broadcast Matrix with shape [2,2] to shape [3,3,3]
-	 * @param a
-	 * @param b
-	 * @return
+	 * @param a The array that cannot be broadcast
+	 * @param shape The target shape
+	 * @return The error message
 	 */
 	public static String incompatibleBroadcast(INDArray a, int... shape) {
 		return "Can't broadcast "+describeArray(a)+" to shape: "+shape(shape);

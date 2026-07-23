@@ -38,7 +38,9 @@ public interface IMatrix extends INDArray {
 
 	/**
 	 * Sets the element at the specified position in this matrix
-	 * @return
+	 * @param row The row index
+	 * @param column The column index
+	 * @param value The value to set
 	 */
 	@Override
 	public void set(int row, int column, double value);
@@ -181,8 +183,8 @@ public interface IMatrix extends INDArray {
 
 	/**
 	 * Adds another matrix to this matrix, returning a new matrix
-	 * @param v
-	 * @return
+	 * @param a The matrix to add
+	 * @return A new matrix containing the sum
 	 */
 	public AMatrix addCopy(AMatrix a);
 	

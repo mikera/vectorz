@@ -24,7 +24,7 @@ import mikera.matrixx.Matrix;
 
 /**
  * A specialized Cholesky decomposition algorithm that is designed to help out
- * {@link CholeskyDecompositionBlock} perform its calculations.  While decomposing
+ * a block Cholesky decomposition perform its calculations.  While decomposing
  * the matrix it will modify its internal lower triangular matrix and the original
  * that is being modified.
  *

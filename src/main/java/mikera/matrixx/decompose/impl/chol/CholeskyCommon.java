@@ -40,10 +40,6 @@ import mikera.matrixx.decompose.ICholeskyResult;
  * where L is a lower triangular matrix and R is an upper traingular matrix.<br>
  * </p>
  *
- * @see CholeskyDecompositionInner
- * @see org.ejml.alg.dense.decomposition.chol.CholeskyDecompositionBlock
- * @see org.ejml.alg.dense.decomposition.chol.CholeskyDecompositionLDL
- *
  * @author Peter Abeles
  */
 public abstract class CholeskyCommon {

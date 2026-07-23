@@ -25,8 +25,8 @@ import mikera.matrixx.decompose.ICholeskyResult;
  * <p>
  * This implementation of a Cholesky decomposition using the inner-product form.
  * For large matrices a block implementation is better.  On larger matrices the lower triangular
- * decomposition is significantly faster.  This is faster on smaller matrices than {@link CholeskyDecompositionBlock}
- * but much slower on larger matrices.
+ * decomposition is significantly faster.  This is faster on smaller matrices than a block
+ * decomposition but much slower on larger matrices.
  * </p>
  *
  * @author Peter Abeles

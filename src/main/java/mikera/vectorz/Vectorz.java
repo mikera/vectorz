@@ -219,8 +219,8 @@ public class Vectorz {
 	
 	/**
 	 * Creates a sparse vector from an array of Object values
-	 * @param values
-	 * @return
+	 * @param data The source data to build a sparse vector from
+	 * @return A new sparse vector
 	 */
 	public static AVector createSparse(Object data) {
 		if (data instanceof INDArray) {
@@ -232,11 +232,10 @@ public class Vectorz {
 	}
 	
 	/**
-	 * Creates a mutable sparse vector from the data in the given vector. Selects the appropriate sparse
-	 * vector type based on analysis of the element values.
-	 * 
-	 * @param v Vector containing sparse element data
-	 * @return
+	 * Creates a mutable sparse vector of the given length, with all elements initially zero.
+	 *
+	 * @param length The length of the sparse vector to create
+	 * @return A new mutable sparse vector
 	 */
 	public static AVector createSparseMutable(int length) {
 		if (length<MIN_SPARSE_LENGTH) {

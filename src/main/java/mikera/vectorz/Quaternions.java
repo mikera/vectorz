@@ -41,9 +41,9 @@ public class Quaternions {
 	
 	/**
 	 * Rotates a 3D vector using the given quaternion, returning a new 3D vector
-	 * @param q
-	 * @param a
-	 * @return
+	 * @param a The quaternion defining the rotation
+	 * @param b The 3D vector to rotate
+	 * @return A new rotated 3D vector
 	 */
 	public static Vector3 rotate(Vector4 a, Vector3 b) {
 		double rx=(a.t*b.x)+(a.y*b.z)-(a.z*b.y);

@@ -31,8 +31,8 @@ public abstract class AJoinedVector extends ASizedVector {
 	 * 
 	 * The segments must be the same shape as the original segments
 	 * 
-	 * @param aVectors
-	 * @return
+	 * @param segments The replacement segments, matching the shape of the originals
+	 * @return A new joined vector of the same type built from the given segments
 	 */
 	@Override
 	public abstract AJoinedVector withComponents(INDArray... segments);

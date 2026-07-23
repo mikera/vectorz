@@ -63,8 +63,7 @@ public interface IVector extends INDArray {
 
 	/**
 	 * Computes the square root for each element in this vector, returning a new vector.
-	 * @param a
-	 * @return
+	 * @return A new vector containing the element-wise square roots
 	 */
 	AVector sqrtCopy();
 

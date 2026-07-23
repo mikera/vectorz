@@ -85,7 +85,7 @@ public class CholeskyLDUSolver {
      * </p>
      *
      * @param B A matrix that is n by m.  Not modified.
-     * @param X An n by m matrix where the solution is writen to.  Modified.
+     * @return An n by m matrix containing the solution.
      */
     public AMatrix solve(AMatrix B) {
     	Matrix X = Matrix.create(B.rowCount(), B.columnCount());

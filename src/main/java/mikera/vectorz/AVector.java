@@ -117,8 +117,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	 * Like get, but performs no bounds checking.
 	 *
 	 * Results are undefined if the index is out of range
-	 * @param i
-	 * @param value
+	 * @param i The index of the element to get
+	 * @return The element value at the given index
 	 */
 	public double unsafeGet(int i) {
 		return get(i);
@@ -293,8 +293,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 	 *
 	 * Optimises the type of the returned vector to be as efficient as possible.
 	 *
-	 * @param second
-	 * @return
+	 * @param b The array to join to the end of this vector
+	 * @return A vector view of the two vectors joined together
 	 */
 	@Override
 	public AVector join(INDArray b) {
@@ -588,7 +588,8 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 
 	/**
 	 * Clamps all values in the vector to a given range
-	 * @param value
+	 * @param min The minimum value allowed
+	 * @param max The maximum value allowed
 	 */
 	@Override
 	public void clamp(double min, double max) {
@@ -687,7 +688,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 
 	/**
 	 * Multiplies the elements in the target array by corresponding elements in this vector
-	 * @param data
+	 * @param dest The target array
 	 * @param offset The offset into the target array
 	 */
 	public void multiplyTo(double[] dest, int offset) {
@@ -1017,7 +1018,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 
 	/**
 	 * Selects a subset of indices from a vector, returning a mutable clone of data
-	 * @param indices
+	 * @param inds The indices to select
 	 * @return a new mutable vector containing the selected indices
 	 */
 	public AVector selectClone(int... inds) {
@@ -2359,7 +2360,7 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 
 	/**
 	 * Sets the non-sparse elements of this vector to the corresponding elements of another vector
-	 * @param v
+	 * @param src The vector to take element values from
 	 */
 	public void setSparse(AVector src) {
 		set(src);
@@ -2466,10 +2467,9 @@ public abstract class AVector extends AbstractArray<Double> implements IVector {
 
 	/**
 	 * Adds a multiple of this vector into a double array at the specified offset
-	 * @param offset
-	 * @param array
-	 * @param arrayOffset
-	 * @param length
+	 * @param factor The scalar factor to multiply this vector by
+	 * @param array The target array
+	 * @param arrayOffset The offset into the target array
 	 */
 	public void addMultipleToArray(double factor, double[] array, int arrayOffset) {
 		addMultipleToArray(factor,0,array,arrayOffset,length());

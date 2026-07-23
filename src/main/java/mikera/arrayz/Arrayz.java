@@ -87,9 +87,9 @@ public class Arrayz {
 	 * Creates an array from the given List of slices.
 	 * 
 	 * Calls create recursively on underlying slices if needed, so that nested structures can be used
-	 * 
-	 * @param object
-	 * @return
+	 *
+	 * @param slices The list of slices to build the array from
+	 * @return A new array containing the given slices
 	 */
 	@SuppressWarnings("unchecked")
 	public static INDArray create(List<?> slices) {
@@ -132,9 +132,9 @@ public class Arrayz {
 	 * Create a new mutable array instance with the given source data.
 	 * 
 	 * Uses the most efficient densely packed format where possible.
-	 * 
-	 * @param shape
-	 * @return
+	 *
+	 * @param a The source array to copy data from
+	 * @return A new mutable array with the same shape and values
 	 */
 	public static INDArray create(INDArray a) {
 		int dims=a.dimensionality();
@@ -207,10 +207,9 @@ public class Arrayz {
 	/**
 	 * Creates a new array using the elements in the specified vector.
 	 * Truncates or zero-pads the data as required to fill the new array
-	 * @param data
-	 * @param rows
-	 * @param columns
-	 * @return
+	 * @param a The vector to take element values from
+	 * @param shape The shape of the new array
+	 * @return A new array with the given shape
 	 */
 	public static INDArray createFromVector(AVector a, int... shape) {
 		int dims=shape.length;
@@ -329,10 +328,10 @@ public class Arrayz {
 	
 	/**
 	 * Creates a sparse copy of the given data, given an array of slices to make sparse.
-	 * 
-	 * 
-	 * @param a
-	 * @return
+	 *
+	 * @param <T> The type of the source slices
+	 * @param slices The slices to make sparse
+	 * @return A new sparse array containing the given slices
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> INDArray createSparse(T... slices) {

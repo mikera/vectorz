@@ -24,7 +24,7 @@ import mikera.matrixx.AMatrix;
 /**
  * <p>
  * Interface for results of Cholesky Decomposition
- * <p>
+ * </p>
  * <p>
  * A Cholesky decomposition decomposes positive-definite symmetric matrices into either upper or
  * lower triangles:<br>

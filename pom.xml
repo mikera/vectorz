@@ -23,7 +23,6 @@
 		<gpg.keyname>340395AC</gpg.keyname>
 		<junit.version>5.11.0</junit.version>
 		<gpg.useagent>true</gpg.useagent>
-		<maven.javadoc.skip>true</maven.javadoc.skip>
 	</properties>
 
 	<licenses>
@@ -46,10 +45,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.11.2</version>
 				<configuration>
-					<additionalJOption>-Xdoclint:none</additionalJOption>
-					<doclint>none</doclint>
+					<!-- Check syntax, references and HTML, but do not demand a doc
+					     comment on every member ("missing" is disabled). -->
+					<doclint>all,-missing</doclint>
 				</configuration>
 			</plugin>
 			<plugin>

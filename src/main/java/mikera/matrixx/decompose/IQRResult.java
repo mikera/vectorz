@@ -28,21 +28,17 @@ import mikera.matrixx.AMatrix;
  * m</sup> is an upper triangular matrix. Some implementations of QR
  * decomposition require that A has full rank.
  * </p>
- * <p>
  * Some features of QR decompositions:
  * <ul>
  * <li>Can decompose rectangular matrices.</li>
  * <li>Numerically stable solutions to least-squares problem, but not as stable
  * as SVD</li>
  * </ul>
- * </p>
- * <p>
  * Orthogonal matrices have the following properties:
  * <ul>
  * <li>QQ<sup>T</sup>=I</li>
  * <li>Q<sup>T</sup>=Q<sup>-1</sup></li>
  * </ul>
- * </p>
  *
  * @author Peter Abeles
  */

@@ -25,10 +25,10 @@ import mikera.matrixx.AMatrix;
  * 
  * <p>
  * LU Decomposition refactors the original matrix such that:<br>
- * <div align=center> *L*U = A</div> where L is a lower triangular matrix, U is
- * an upper triangular matrix and A is the original matrix.
+ * L*U = A<br>
+ * where L is a lower triangular matrix, U is an upper triangular matrix and A
+ * is the original matrix.
  * </p>
- * <p/>
  * <p>
  * LU Decomposition is useful since once the decomposition has been performed
  * linear equations can be quickly solved and the original matrix A inverted.

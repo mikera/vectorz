@@ -26,6 +26,7 @@ Maven. Compiles to **Java 17 bytecode**; developed and tested on JDK 21+
 ```bash
 mvn -B clean test       # compile + full test suite (~11s, 460 tests)
 mvn -B clean install    # install to local repository
+mvn -B javadoc:javadoc  # Javadoc, with doclint enabled
 ```
 
 The parent POM is `net.mikera:mikera-pom`; runtime dependencies are
@@ -38,17 +39,25 @@ Do not report work as complete on the strength of a compile. The full suite runs
 in about ten seconds — there is no excuse for skipping it:
 
 ```bash
-mvn -B clean test
+mvn -B clean test javadoc:javadoc
 ```
 
 If tests fail, say so and quote the failure. Never describe a red build as
 passing.
 
-CI runs the same command via GitHub Actions
+**Javadoc is part of the gate.** `doclint` is enabled as `all,-missing`: syntax,
+HTML and reference errors fail the build, but a member without a doc comment
+does not. The Javadoc jar ships to Maven Central on release, so a doclint
+regression breaks the release rather than merely producing untidy docs. When
+adding or editing a doc comment, keep `@param` names matching the actual
+parameters, do not put `@return` on a `void` method, and wrap anything
+containing `<`, `>` or generics in `{@code ...}`.
+
+CI runs the same commands via GitHub Actions
 (`.github/workflows/build.yml`) on pushes and pull requests to `master` and
-`develop`, across JDK 17, 21 and 25. A local `mvn -B clean test` on any one of
-those is a good proxy, but the matrix is what gates a merge — a change that
-compiles only on a newer JDK will fail the 17 job.
+`develop`, across JDK 17, 21 and 25. A local run on any one of those is a good
+proxy, but the matrix is what gates a merge — a change that compiles only on a
+newer JDK will fail the 17 job.
 
 ## Code Organization
 

@@ -69,7 +69,7 @@ public abstract class Op implements IOperator {
 	
 	/**
 	 * Applies this operator to a dense array vector, mutating the vector
-	 * @param s
+	 * @param v The vector to modify in place
 	 */
 	public void applyTo(ADenseArrayVector v) {
 		applyTo(v.getArray(), v.getArrayOffset(),v.length());
@@ -172,9 +172,9 @@ public abstract class Op implements IOperator {
 	 * Returns the derivative of this Op for a given input value x
 	 * 
 	 * i.e. f'(x) where f is the operator
-	 * 
-	 * @param y
-	 * @return
+	 *
+	 * @param x The input value
+	 * @return The derivative of this operator at x
 	 */
 	public double derivative(double x) {
 		assert(!hasDerivative());

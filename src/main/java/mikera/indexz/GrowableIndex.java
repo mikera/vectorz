@@ -42,9 +42,9 @@ public class GrowableIndex extends AIndex {
 	}
 	
 	/**
-	 * Creates a GrowableVector with the specified index values included
-	 * @param source
-	 * @return
+	 * Creates a GrowableIndex wrapping the specified index values
+	 * @param indexes The index values to wrap
+	 * @return A GrowableIndex sharing the given array
 	 */
 	public static GrowableIndex wrap(int[] indexes) {
 		return new GrowableIndex(indexes);

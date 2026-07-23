@@ -58,9 +58,9 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 	}
 	
 	/**
-	 * Creates a GrowableIndexedVector from the specified Iterable object
-	 * @param iterable An Iterable containing java.lang.Number instances
-	 * @return
+	 * Creates a GrowableIndexedVector from the specified vector
+	 * @param v The vector to take element values from
+	 * @return A new GrowableIndexedVector containing the vector's values
 	 */
 	public static GrowableIndexedVector create(AVector v) {
 		if (v instanceof ISparseVector) {
@@ -208,8 +208,8 @@ public class GrowableIndexedVector extends AVector implements ISparseVector {
 	}
 	
 	/**
-	 * Sets the length of this vector. 
-	 * @return
+	 * Sets the length of this vector.
+	 * @param length The new length of this vector
 	 */
 	public void setLength(int length) {
 		if ((length>this.length)||(index.last()<length)) {

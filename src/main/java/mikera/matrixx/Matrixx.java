@@ -414,10 +414,10 @@ public class Matrixx {
 	/**
 	 * Creates a new matrix using the elements in the specified vector.
 	 * Truncates or zero-pads the data as required to fill the new matrix
-	 * @param data
-	 * @param rows
-	 * @param columns
-	 * @return
+	 * @param source The vector to take element values from
+	 * @param rows The number of rows in the new matrix
+	 * @param columns The number of columns in the new matrix
+	 * @return A new Matrix with the given shape
 	 */
 	public static Matrix createFromVector(AVector source, int rows, int columns) {
 		int length=source.length();
@@ -624,11 +624,13 @@ public class Matrixx {
 	/**
 	 * Wraps double[] data in a strided matrix of the most efficient available type.
 	 * 
-	 * @param array
-	 * @param arrayOffset
-	 * @param reverse
-	 * @param reverse2
-	 * @return
+	 * @param data The array containing the matrix element data
+	 * @param rows The number of rows in the matrix
+	 * @param cols The number of columns in the matrix
+	 * @param offset The offset of the first element within the array
+	 * @param rowStride The stride between successive rows
+	 * @param colStride The stride between successive columns
+	 * @return A strided matrix sharing the given array
 	 */
 	public static AStridedMatrix wrapStrided(double[] data, int rows, int cols, int offset, int rowStride, int colStride) {
 		if ((offset==0)&&(data.length==rows*cols)) {

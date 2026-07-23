@@ -91,8 +91,8 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	
 	/**
 	 * Wraps the underlying data from a dense Matrix as an array with the same shape
-	 * @param v
-	 * @return
+	 * @param m The matrix whose data should be wrapped
+	 * @return An Array sharing the matrix's underlying data
 	 */
 	public static Array wrap(Matrix m) {
 		return new Array(m.getShapeClone(),m.getArray());
@@ -417,12 +417,11 @@ public final class Array extends BaseShapedArray implements IStridedArray, IDens
 	}
 
 	/**
-	 * Creates a new matrix using the elements in the specified vector.
-	 * Truncates or zero-pads the data as required to fill the new matrix
-	 * @param data
-	 * @param rows
-	 * @param columns
-	 * @return
+	 * Creates a new array using the elements in the specified vector.
+	 * Truncates or zero-pads the data as required to fill the new array
+	 * @param a The vector to take element values from
+	 * @param shape The shape of the new array
+	 * @return A new Array with the given shape
 	 */
 	public static Array createFromVector(AVector a, int... shape) {
 		Array m = Array.newArray(shape);
