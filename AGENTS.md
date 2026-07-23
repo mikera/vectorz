@@ -229,6 +229,27 @@ Releases go through the `maven-release-plugin` (see the `vectorz-*` git tags and
 the `[maven-release-plugin]` commits). Do not hand-edit the version in `pom.xml`
 to cut a release.
 
+Publishing goes to the **Central Portal** via
+`central-publishing-maven-plugin`, not the old OSSRH staging repository —
+Sonatype decommissioned `oss.sonatype.org` in 2025 and it now returns 402. This
+POM deliberately has **no parent**: the former `net.mikera:mikera-pom` parent
+still pointed there. Snapshots go to `central.sonatype.com` — note `.com`;
+`central.sonatype.org` is the documentation site and 404s.
+
+`autoPublish` is `false`, so a deployment lands validated in the Portal awaiting
+a manual publish rather than going straight out.
+
+**Run releases from PowerShell or cmd, not Git Bash.** Two GnuPG installations
+are present, and `gpg` resolves differently per shell:
+
+| Shell | Resolves to | Keyring |
+|-------|-------------|---------|
+| PowerShell / cmd | Gpg4win `C:\Program Files (x86)\GnuPG\bin\gpg.exe` | has the signing keys |
+| Git Bash | Git's bundled `/usr/bin/gpg` | **empty** |
+
+Signing from Git Bash fails with what looks like a missing key. The release key
+is `340395AC`; signing works unattended from PowerShell.
+
 ## Resources
 
 - Wiki / documentation: https://github.com/mikera/vectorz/wiki
