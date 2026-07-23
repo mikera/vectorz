@@ -192,12 +192,10 @@ it rather than quietly deviating.
 
 ### Commit Identity
 
-Commit identity is **per repository** — never assume the global git config.
-Check `git config user.name` and `git config user.email` in this repository
-before committing, and leave them as you found them.
-
-For `gh` operations, follow the workspace rule in `../AGENTS.md`: act as
-`brittleboye` unless told otherwise.
+Commits and pushes use `mikera` / `mike@mikera.net`, inherited from the global
+git config — this repository deliberately sets no local override. `gh`
+operations (issues, PRs, releases) act as `brittleboye`. See `../AGENTS.md` for
+how the two are kept separate.
 
 ### Releases
 
