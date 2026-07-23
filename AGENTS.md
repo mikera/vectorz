@@ -193,8 +193,9 @@ it rather than quietly deviating.
 ### Commit Identity
 
 This repository pins its own identity in `.git/config`: commits and pushes use
-`mikera` / `mike@mikera.net`, via a local credential helper that requests that
-named account's token. `gh` operations (issues, PRs, releases) act as
+`mikera`, with the GitHub noreply address
+`212007+mikera@users.noreply.github.com`, via a local credential helper that
+requests that named account's token. `gh` operations (issues, PRs, releases) act as
 `brittleboye`. See `../AGENTS.md` for how the two are kept separate, and do not
 rely on the global git config — it defaults to `brittleboye` and cannot push
 here.
