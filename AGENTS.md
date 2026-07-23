@@ -31,7 +31,19 @@ mvn -B javadoc:javadoc  # Javadoc, with doclint enabled
 
 The parent POM is `net.mikera:mikera-pom`; runtime dependencies are
 `net.mikera:randomz`, `net.mikera:mathz` and `us.bpsm:edn-java` (for edn
-input/output). JUnit 5 (Jupiter) and Caliper are test-scoped.
+input/output). JUnit 6 (Jupiter) and Caliper are test-scoped.
+
+The compiler uses `<release>17</release>` rather than `source`/`target`, so
+building on a newer JDK cannot accidentally link against APIs absent from Java
+17. Surefire, the compiler, jar, javadoc and enforcer plugins are all pinned —
+unpinned plugins resolve from the super-pom of whichever Maven the build happens
+to run on, which differs between local and CI.
+
+**Do not bump Caliper.** It is pinned at `0.5-rc1`; the 19 benchmark classes in
+`src/test/java/**/performance/` extend `SimpleBenchmark` and use
+`com.google.caliper.Runner`, both of which were removed in Caliper 1.0. Caliper
+itself has been unmaintained since ~2015, so the real fix is a migration to JMH,
+not a version bump.
 
 ## Verifying Changes
 
@@ -123,7 +135,7 @@ harness, and breaking them causes subtle corruption rather than clean failures.
 
 ## Testing
 
-Tests are JUnit 5 under `src/test/java`, mirroring the main package structure.
+Tests are JUnit 6 under `src/test/java`, mirroring the main package structure.
 
 The important pattern is the **generic test harness**: rather than writing
 bespoke tests per type, every array implementation is fed through a shared
