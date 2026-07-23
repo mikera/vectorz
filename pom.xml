@@ -2,24 +2,27 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Deliberately has no parent. The old net.mikera:mikera-pom parent
+	     inherited from the long-deprecated org.sonatype.oss:oss-parent and
+	     pointed distributionManagement at oss.sonatype.org, which Sonatype
+	     decommissioned in 2025. Publishing now goes through the Central
+	     Portal, configured below. -->
+	<groupId>net.mikera</groupId>
 	<artifactId>vectorz</artifactId>
 	<version>0.67.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<name>Vectorz</name>
 	<description>Fast double-precision vector and matrix maths library for Java,
 		supporting N-dimensional numeric arrays.</description>
-	<parent>
-		<groupId>net.mikera</groupId>
-		<artifactId>mikera-pom</artifactId>
-		<version>0.6.0</version>
-	</parent>
-	<packaging>jar</packaging>
+	<url>https://github.com/mikera/vectorz</url>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gpg.keyname>340395AC</gpg.keyname>
 		<junit.version>6.1.2</junit.version>
 		<jmh.version>1.37</jmh.version>
-		<gpg.useagent>true</gpg.useagent>
 		<!-- Reproducible builds: fixes timestamps inside the built artifacts so
 		     the same source produces byte-identical jars. maven-release-plugin
 		     updates this automatically when cutting a release. -->
@@ -30,16 +33,44 @@
 		<license>
 			<name>GNU Lesser General Public License (LGPL)</name>
 			<url>http://www.gnu.org/licenses/lgpl.html</url>
+			<distribution>repo</distribution>
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<id>mikera</id>
+			<name>Mike Anderson</name>
+			<email>mike@mikera.net</email>
+			<url>https://mikera.net</url>
+			<roles>
+				<role>Lead developer</role>
+			</roles>
+		</developer>
+	</developers>
+
 	<scm>
-		<connection>scm:git:git@github.com:mikera/${project.artifactId}.git</connection>
-		<url>scm:git:git@github.com:mikera/${project.artifactId}.git</url>
-		<developerConnection>
-			scm:git:git@github.com:mikera/${project.artifactId}.git</developerConnection>
+		<connection>scm:git:https://github.com/mikera/vectorz.git</connection>
+		<developerConnection>scm:git:git@github.com:mikera/vectorz.git</developerConnection>
+		<url>https://github.com/mikera/vectorz</url>
 		<tag>HEAD</tag>
 	</scm>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/mikera/vectorz/issues</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<!-- Releases are uploaded by central-publishing-maven-plugin, which
+		     needs no repository entry here. Snapshots go to the Central Portal
+		     snapshot repository. Note the host is central.sonatype.COM —
+		     central.sonatype.org is the documentation site and 404s. -->
+		<snapshotRepository>
+			<id>central</id>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -69,21 +100,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.12.0</version>
-				<!-- combine.self=override discards the parent POM's
-				     additionalparam, which javadoc-plugin 3.x no longer accepts. -->
-				<configuration combine.self="override">
-					<!-- Check syntax, references and HTML, but do not demand a doc
-					     comment on every member ("missing" is disabled). -->
-					<doclint>all,-missing</doclint>
-					<!-- Without this the plugin cannot infer the JDK version from
-					     the compiler's <release> and links against the Java 7 API. -->
-					<release>17</release>
-				</configuration>
-			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -112,6 +129,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<!-- Pinned: the inherited version comes from the super-pom of
 				     whichever Maven the build runs on, which varies in CI. -->
@@ -119,6 +137,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.5.6</version>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -138,16 +157,115 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<!-- Maven Central requires a -sources jar. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!-- Maven Central requires a -javadoc jar. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.12.0</version>
+				<configuration>
+					<!-- Check syntax, references and HTML, but do not demand a doc
+					     comment on every member ("missing" is disabled). -->
+					<doclint>all,-missing</doclint>
+					<!-- Without this the plugin cannot infer the JDK version from
+					     the compiler's <release> and links against the Java 7 API. -->
+					<release>17</release>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!-- Pinned only to silence the "version is missing" model warning.
+				     central-publishing-maven-plugin's extension takes over the
+				     deploy phase, so this does not actually upload anything. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>3.1.4</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<!-- performRelease activates the signing profile below. -->
+					<arguments>-DperformRelease=true</arguments>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<tagNameFormat>vectorz-@{project.version}</tagNameFormat>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<!-- Uploads to the Central Portal. Replaces the retired OSSRH
+				     staging deploy; extensions=true makes it handle the deploy
+				     phase in place of maven-deploy-plugin. -->
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.9.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+					<checksums>all</checksums>
+					<!-- Deployments land validated in the Portal for a manual
+					     publish. Set true to publish without review. -->
+					<autoPublish>false</autoPublish>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
-	<repositories>
-		<repository>
-			<id>central</id>
-			<name>Maven Central</name>
-			<url>https://repo.maven.apache.org/maven2/</url>
-		</repository>
-	</repositories>
+	<profiles>
+		<profile>
+			<!-- Signing is required by Central, but only wanted for releases. -->
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.2.8</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
