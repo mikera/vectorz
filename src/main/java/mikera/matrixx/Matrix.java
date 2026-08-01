@@ -229,6 +229,54 @@ public final class Matrix extends ADenseArrayMatrix {
 		return DoubleArrays.elementMin(data);
 	}
 
+    public Matrix rowMax() {
+        double [] row_max = new double[rows];
+        for (int offset = 0, i = 0; offset < data.length; offset+=cols, ++i) {
+            row_max[i] = data[offset];
+            for (int c = 1; c < cols; ++c) {
+                double v = data[offset + c];
+                if (v > row_max[i]) row_max[i] = v;
+            }
+        }
+        return this.wrap(rows, 1, row_max);
+    }
+
+    public Matrix rowMin() {
+        double [] row_min = new double[rows];
+        for (int offset = 0, i = 0; offset < data.length; offset+=cols, ++i) {
+            row_min[i] = data[offset];
+            for (int c = 1; c < cols; ++c) {
+                double v = data[offset + c];
+                if (v < row_min[i]) row_min[i] = v;
+            }
+        }
+        return this.wrap(rows, 1, row_min);
+    }
+
+    public Matrix colMax() {
+        double [] col_max = new double[cols];
+        for (int i = 0; i < cols; ++i) {
+            col_max[i] = data[i];
+            for (int offset = cols; offset < data.length; offset+=cols) {
+                double v = data[i + offset];
+                if (v > col_max[i]) col_max[i] = v;
+            }
+        }
+        return this.wrap(1, cols, col_max);
+    }
+
+    public Matrix colMin() {
+        double [] col_min = new double[cols];
+        for (int i = 0; i < cols; ++i) {
+            col_min[i] = data[i];
+            for (int offset = cols; offset < data.length; offset+=cols) {
+                double v = data[i + offset];
+                if (v < col_min[i]) col_min[i] = v;
+            }
+        }
+        return this.wrap(1, cols, col_min);
+    }
+
 	@Override
 	public void abs() {
 		DoubleArrays.abs(data);
